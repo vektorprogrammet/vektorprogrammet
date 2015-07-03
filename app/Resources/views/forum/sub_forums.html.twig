@@ -1,0 +1,155 @@
+{% extends 'base.html.twig' %}
+
+{% block customScripts %}
+	
+	{# Easy routing with FOSJsRouting bundle #}
+	<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+	{# deleteableforum js file #}
+	<script src="{{ asset('bundles/app/js/deleteableforum.js') }}"></script>
+	
+	<script>
+	
+	$(document).ready(function() {
+            $('.delete').deleteableforum('forum_delete_subforum_by_id', {
+                confirmation: {
+                    modal: $('#confirmModal'),
+                    acceptButton: $('#modalAccept'),
+                    cancelButton: $('#modalCancel')
+                }
+            });
+        });
+
+	</script>
+	
+{% endblock %}
+
+{% block title %}
+	{{ forum }} 
+{% endblock %}
+
+
+
+{% block body %}
+    <p></p>
+	
+	<div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+         
+					<h1> {{ forum }} </h1>
+					
+					<hr>
+					
+					<ul class="breadcrumbs">
+						<li><a href=" {{ path('forum_show') }}">Forum</a></li>
+						<li class="current"><a href="#"> {{ forum }} </a></li>
+					</ul>
+					
+					
+					
+					
+					{% if is_granted('ROLE_SUPER_ADMIN') %}
+					
+						<ul class="inline-list">
+						
+							<li> <a href=" {{ path('forum_edit_forum_by_id', { 'id': forum.id }) }} " class="button tiny">Rediger </a> </li>
+							
+						</ul>
+						
+					{% endif %}
+					
+					<hr>
+					
+					<div class="row">
+						<div class="small-12 medium-12 large-12 columns">
+														
+								{% for sf in subforums %}	
+									
+									<forum>
+									
+										<div class="panel callout radius">
+											<div class="row">
+												
+												{% if is_granted('ROLE_SUPER_ADMIN') %}	
+													<div class="small-12 medium-12 large-5 columns">
+												{% else %}
+													<div class="small-12 medium-12 large-8 columns">
+												{% endif %}
+
+														<h3> <a href="{{ path('forum_show_specific_subforum_threads_by_id', { 'id': sf.id, 'forumId': forum.id } ) }}">{{ sf.name }}</a> </h3>
+													</div>
+												
+												<div class="small-12 medium-6 large-2 columns">
+													
+				
+													
+												</div>
+												
+												<div class="small-12 medium-6 large-2 columns">
+													
+													{% for key, la in latestActivity %}
+													
+														{% if key == sf.id  and la != null %}
+															
+															Siste aktivitet: <br>
+															
+															{% if la.thread is defined %}
+																
+																<a href="{{ path('forum_show_specific_thread_by_id', { 'id': la.thread.id, 'forumId': forum.id }) }}">{{ la.subject|length > 8 ? la.subject|slice(0, 8) ~ '...' : la.subject  }}</a>
+															
+															{% else %}
+															
+																<a href="{{ path('forum_show_specific_thread_by_id', { 'id': la.id, 'forumId': forum.id }) }}">{{ la.subject|length > 8 ? la.subject|slice(0, 8) ~ '...' : la.subject  }}</a>
+															
+															{% endif %}
+															
+															<br>
+															
+															{{ la.datetime|date ('d/m/y') }}
+
+															<br>
+															
+															Kl. {{ la.datetime|date ('H:i') }}
+														
+														{% endif %}
+
+													{% endfor %}
+													
+												</div>
+												
+												{% if is_granted('ROLE_SUPER_ADMIN') %}	
+													
+													<div class="small-12 medium-12 large-3 columns">
+													
+															<a href=" {{ path('forum_edit_subforum_by_id', { 'id': sf.id }) }} " class="button tiny">Rediger </a>
+
+															<a href="#" id="{{ sf.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a>
+
+													</div>
+													
+												{% endif %}
+										
+											</div>
+										</div>
+									
+									</forum>
+							
+								{% endfor %}
+
+						</div>
+					</div>
+					
+					
+			
+		</div>
+	</div>
+	
+	<div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true" role="dialog">
+		<h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
+		<ul class="inline-list">
+			<a id="modalAccept" href="#" class="button tiny">Slett</a>
+			<a id="modalCancel" href="#" class="button tiny">Avbryt</a>
+		</ul>
+	</div>
+	
+{% endblock %}

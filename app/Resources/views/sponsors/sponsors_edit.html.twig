@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{#
+ <table> {# Was unable to force preview of logo to be placed right of form with row class=columns...why?
+{% for form in forms %}
+    <tr border="1">
+        <td>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </td>
+        <td>
+            Nåværende logo:<br>
+            <img src="{{ asset(logos[loop.index0] ) }}" height="60px">
+        </td>
+    </tr>
+{% endfor %}
+</table>
+
+{# Place a button for adding a new sponsor
+<hr>
+<form action="{{ path('sponsors_add') }}">
+    <input type="submit" value="Legg til sponsor">
+</form> #}
+    {% for form in forms %}
+        <div class="row">
+            {{ form_start(form) }}
+
+            {# Name and url labels and fields#}
+            <div class="small-6 medium-6 large-6 columns">
+                <div class="row">
+                    <div class="small-4 medium-4 large-4 columns">
+                        {{ form_label(form.name) }}
+                    </div>
+                    <div class="small-8 medium-8 large-8 columns">
+                        {{ form_widget(form.name) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-4 medium-4 large-4 columns">
+                        {{ form_label(form.url) }}
+                    </div>
+                    <div class="small-8 medium-8 large-8 columns">
+                        {{ form_widget(form.url) }}
+                    </div>
+                </div>
+            </div>
+
+             {# Logo #}
+            <div class="small-3 medium-3 large-3 columns">
+                <div class="row">
+                    Nåværende logo
+                </div>
+                <div class="row">
+                   <img src="{{ asset(logos[loop.index0] ) }}" height="60px">
+                </div>
+                <div class="row">
+                    {{ form_widget(form.logoImagePath, {'attr': {'value': 'Last opp ny logo'}}) }}
+                </div>
+            </div>
+
+            {# Save and delete buttons #}
+            <div class="small-3 medium-3 large-3 columns text-center">
+                <ul class="stack button-group">
+                    <li>{{ form_widget(form.save, {'attr': {'class': 'small'}}) }}</li>
+                    <li>{{ form_widget(form.delete, {'attr': {'class': 'small alert'}}) }}</li>
+
+                </ul>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+        <br><br>
+    {% endfor %}
+    {# Place a button for adding a new sponsor #}
+    <div class="row">
+        <form action="{{ path('sponsors_add') }}">
+            <input type="submit" value="Legg til sponsor" class="button small">
+        </form>
+    </div>
+{% endblock %}

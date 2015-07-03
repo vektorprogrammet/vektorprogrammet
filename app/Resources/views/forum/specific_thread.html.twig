@@ -1,0 +1,210 @@
+{% extends 'base.html.twig' %}
+
+{% block customScripts %}
+	
+	{# Easy routing with FOSJsRouting bundle #}
+	<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+	{# deleteableforum js file #}
+	<script src="{{ asset('bundles/app/js/deleteableforum.js') }}"></script>
+	
+	<script>
+	
+	$(document).ready(function() {
+
+            $('.delete').deleteableforum('forum_delete_post_by_id', {
+                confirmation: {
+                    modal: $('#confirmModal'),
+                    acceptButton: $('#modalAccept'),
+                    cancelButton: $('#modalCancel')
+                }
+            });
+			
+			
+        });
+		
+
+	</script>
+	
+{% endblock %}
+
+{% block title %}
+	{{ thread.subject }}
+{% endblock %}
+
+{% block body %}
+    <p></p>
+	
+	<div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+					
+					<hr>
+					
+					<ul class="breadcrumbs">
+						<li><a href=" {{ path('forum_show') }}">Forum</a></li>
+						<li><a href=" {{ path('forum_show_specific_by_id', { id: forum.id } ) }}"> {{ forum }} </a></li>
+						<li> <a href=" {{ path('forum_show_specific_subforum_threads_by_id', { id:  thread.subforum.id, forumId: forum.id} ) }}">{{ thread.subforum|length > 8 ? thread.subforum|slice(0, 8) ~ '...' : thread.subforum  }}</a> </li>
+						<li class="current"><a href="#"> {{ thread.subject|length > 8 ? thread.subject|slice(0, 8) ~ '...' : thread.subject  }} </a></li>
+					</ul>
+					
+					<hr>
+					
+					<div class="row">
+						<div class="small-12 medium-12 large-12 columns">
+														
+								<div class="row">
+									<div class="small-12 medium-12 large-12 columns">
+										<hr>
+											
+											
+											<div class="row">
+											
+												<div class="small-12 medium-3 large-3 columns">
+													
+													<img src="{{ asset(thread.user.picturePath) }}" />
+													
+													<div class="panel callout radius">
+														<a href="{{ path('specific_profile', { 'id': thread.user.id }) }}">{{ thread.user }}</a>
+													</div>
+
+												</div>
+												
+												<div class="small-12 medium-9 large-9 columns">
+														
+														
+														
+														<h3> {{ thread.subject }} </h3>
+														
+														<p> 
+															{{ thread.text }}
+														</p>
+														
+														<p>
+															<em> Skrevet {{ thread.datetime|date ('m/d/y') }} Kl. {{ thread.datetime|date ('H:i') }} </em>
+														</p>
+														
+														<hr>
+												</div>
+												
+												
+												
+												{% if ( is_granted('ROLE_SUPER_ADMIN') or ( thread.user == app.user)) %}	
+													
+													<div class="small-12 medium-9 large-2 columns">
+														
+															
+															
+															<ul class="inline-list">
+																
+																<a href=" {{ path('forum_edit_thread_by_id', { 'id': thread.id, 'forumId': forum.id }) }} " class="button tiny">Rediger </a>
+																
+																
+															</ul>
+															
+												
+													</div>
+													
+												{% endif %}
+												
+											</div>
+											
+										<hr>
+										
+									</div>
+								</div>
+								
+								
+								{% for p in posts %}
+									
+									<forum> 
+									
+										<div class="row">
+											<div class="small-12 medium-12 large-12 columns">
+													<hr>
+													
+													<div class="row">
+												
+														<div class="small-12 medium-3 large-3 columns">
+															
+															<img src="{{ asset(p.user.picturePath) }}" />
+															
+															<div class="panel callout radius">
+																<a href="{{ path('specific_profile', { 'id': p.user.id }) }}">{{ p.user }}</a>
+															</div>
+
+														</div>
+														
+														<div class="small-12 medium-9 large-9 columns">
+																
+																
+																
+																<h3> {{ p.subject }} </h3>
+																
+																<p> 
+																	{{ p.text }}
+																</p>
+																
+																<p>
+																<em> Skrevet {{ p.datetime|date ('m/d/y') }} Kl. {{ p.datetime|date ('H:i') }} </em>
+																</p>
+																
+																<hr>
+																
+														</div>
+														
+														{% if ( is_granted('ROLE_SUPER_ADMIN') or ( p.user == app.user)) %}	
+														
+															<div class="small-12 medium-9 large-2 columns">
+													
+																
+																	<ul class="inline-list">
+																		
+																		<a href=" {{ path('forum_edit_post_by_id', { 'id': p.id, 'forumId': forum.id }) }} " class="button tiny">Rediger </a>
+
+																		<a href="#" id="{{ p.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a>
+																		
+																	</ul>
+																	
+															</div>
+														
+														{% endif %}
+													
+													</div>
+
+												<hr>
+											</div>
+										</div>	
+										
+									</forum>
+									
+								{% endfor %}
+								
+								<div class="row">
+									<div class="small-12 medium-12 large-12 columns">
+										
+											
+											<h3> Skriv et svar </h3>
+											
+											{{ form_start(form) }}
+											{{ form_widget(form) }}
+											{{ form_end(form) }}
+											
+									</div>
+								</div>
+					
+						</div>
+					</div>
+				
+		</div>
+	</div>
+	
+	<div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true" role="dialog">
+		<h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
+		<ul class="inline-list">
+			<a id="modalAccept" href="#" class="button tiny">Slett</a>
+			<a id="modalCancel" href="#" class="button tiny">Avbryt</a>
+		</ul>
+	</div>
+	
+	
+{% endblock %}

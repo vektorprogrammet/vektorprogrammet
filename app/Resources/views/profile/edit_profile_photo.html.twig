@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <p></p>
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+
+            <div class="row">
+                <div class="small-12 medium-12 large-12 columns">
+
+                    <h1> Profilbilde </h1>
+
+                    <p>
+                        Velg profilbilde for {{ user.firstName }} {{ user.lastName }}
+                    </p>
+
+                    <hr>
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,98 @@
+{# ------------------------  This template renders buttons and the drop down list in the gallery.  ------------------------ #}
+
+{% block stylesheets %}
+    <style>
+        select {
+            color: white;
+            background: #008CBA;
+        }
+        select:hover{
+            color: white;
+            background: #007095;
+        }
+
+        select > option {
+            color: black;
+            background: white;
+        }
+
+    </style>
+{% endblock %}
+
+<ul class="inline-list">
+{#  Create the album selector #}
+<li>
+    <select id="galleries_drop_down_list">
+        {{ render(controller("AppBundle:Gallery:galleriesListGet")) }}
+    </select>
+</li>
+
+{#  Create the create new album button #}
+{% if is_granted('ROLE_ADMIN') %}
+<li>
+    <a href="#" data-reveal-id="createGalleryModal" class="button tiny round">Opprett et nytt galleri</a>
+    <div id="createGalleryModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+        <h3 id="modalTitle">Opprett galleri</h3>
+        <form  id="gallery_create">
+            <div class="row">
+                <div class="small-12 columns">
+                    <div class="small-2 columns">
+                        <label for="gallery_name" class="right inline">Gallerinavn</label>
+                    </div>
+                    <div class="small-10 columns">
+                        <input type="text" name="gallery_name" id="gallery_name">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    <div class="small-2 columns">
+                        <label for="private_gallery" class="right inline">Gjør privat</label>
+                    </div>
+                    <div class="small-10 columns">
+                        <input type="checkbox" name="private_gallery" id="private_gallery" value="private">
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    <div class="small-2 small-centered columns">
+                        <input type="submit" class="button tiny round" value="Opprett"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+    </div>
+</li>
+{% endif %}
+
+
+
+{# Add photos to chosen album #}
+{% if is_granted('ROLE_ADMIN') %}
+<li>
+    <a href="#" data-reveal-id="uploadImageModal" class="button tiny round" id="edit_this_gallery">Legg til bilder i dette galleriet</a>
+    <div id="uploadImageModal" class="reveal-modal large" data-reveal aria-labelledby="modalTitleGallery" aria-hidden="true" role="dialog">
+        {% include("gallery/gallery_image_upload_form.html.twig") %}
+        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+    </div>
+</li>
+{% endif %}
+
+{#  Edit chosen album #}
+{% if is_granted('ROLE_ADMIN') %}
+    <li>
+        <input type="button" class="button tiny round" value="Rediger dette galleriet" id="edit_gallery"/>
+    </li>
+{% endif %}
+
+{#  Create the delete album button #}
+{% if is_granted('ROLE_ADMIN') %}
+<li>
+    <input type="button" class="button tiny round" value="Slett dette galleriet" id="delete_gallery"/>
+</li>
+{% endif %}
+
+</ul>

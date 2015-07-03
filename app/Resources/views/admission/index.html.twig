@@ -1,0 +1,290 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <p></p>
+            <div class="row">
+                <div class="small-12 medium-12 large-12 columns">
+                    {% for flashMessage in app.session.flashbag.get('contact-notice') %}
+                        <div class="contact-notice">
+                            <div data-alert class="alert-box success radius">
+                                {{ flashMessage }}
+                                <a href="#" class="close">&times;</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    {% for flashMessage in app.session.flashbag.get('admission-notice') %}
+                        <div class="admission-notice">
+                            <div data-alert class="alert-box success radius">
+                                {{ flashMessage }}
+                                <a href="#" class="close">&times;</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="admissioncontainer">
+				<div class="row">
+                    <div class="small-12 medium-12 large-12 columns">
+
+                            {% for d in department %}
+                                <h1 class="text-center"> Søk Vektorprogrammet ved {{ d.shortname }} </h1>
+                            {% endfor %}
+
+                            <br>
+
+                            {% if semesters is defined %}
+
+                                {{ form_start(form) }}
+                                {{ form_errors(form) }}
+
+                                <div class="row">
+                                    <div class="small-12 medium-6 large-4 large-offset-2 columns" >
+
+
+                                        <div>
+                                            {{ form_label(form.firstname) }}
+                                            {{ form_errors(form.firstname) }}
+                                            {{ form_widget(form.firstname) }}
+                                        </div>
+
+                                        <div>
+                                            {{ form_label(form.email) }}
+                                            {{ form_errors(form.email) }}
+                                            {{ form_widget(form.email) }}
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="small-12 medium-6 large-4  end columns">
+
+
+                                        <div>
+                                            {{ form_label(form.lastname) }}
+                                            {{ form_errors(form.lastname) }}
+                                            {{ form_widget(form.lastname) }}
+                                        </div>
+
+                                        <div>
+                                            {{ form_label(form.phone) }}
+                                            {{ form_errors(form.phone) }}
+                                            {{ form_widget(form.phone) }}
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="small-6 medium-4 large-1 columns large-offset-2">
+
+
+                                        <div>
+                                            {{ form_label(form.statistic.fieldOfStudy) }}
+                                            {{ form_errors(form.statistic.fieldOfStudy) }}
+                                            {{ form_widget(form.statistic.fieldOfStudy) }}
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="small-6 medium-4 large-1  columns">
+
+
+                                        <div>
+                                            {{ form_label(form.statistic.yearOfStudy) }}
+                                            {{ form_errors(form.statistic.yearOfStudy) }}
+                                            {{ form_widget(form.statistic.yearOfStudy) }}
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="small-6 medium-4 large-2  columns">
+
+
+                                        <div>
+                                            {{ form_label(form.statistic.gender) }}
+                                            {{ form_errors(form.statistic.gender) }}
+                                            {{ form_widget(form.statistic.gender) }}
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="small-6 medium-4 large-2 columns">
+
+
+                                        <div>
+                                            {{ form_label(form.statistic.previousParticipation) }}
+                                            {{ form_errors(form.statistic.previousParticipation) }}
+                                            {{ form_widget(form.statistic.previousParticipation) }}
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="6 medium-4 large-2 end columns">
+
+
+                                        <div>
+                                            {{ form_label(form.statistic.semester) }}
+                                            {{ form_errors(form.statistic.semester) }}
+                                            {{ form_widget(form.statistic.semester) }}
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+
+                                    {# The form.captcha is only defined for unauthenticated users #}
+
+                                    {% if form.captchaAdmission is defined %}
+
+                                            <div class="small-12 medium-6 large-2 large-offset-2 columns">
+
+                                                <div>
+                                                    {{ form_label(form.captchaAdmission) }}
+                                                    {{ form_errors(form.captchaAdmission) }}
+                                                    {{ form_widget(form.captchaAdmission) }}
+                                                </div>
+
+                                            </div>
+
+                                            <div class="small-12 medium-6 large-4 text-center columns">
+
+                                                {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted'}}) }}
+
+                                            </div>
+
+                                        {% else %}
+
+                                        <div class="small-12 medium-6 large-4 text-center large-offset-4 columns">
+                                            {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted'}}) }}
+                                        </div>
+
+                                    {% endif %}
+
+                                    <div class="small-12 medium-12 large-2 end columns">
+
+                                        <h3> Frister: </h3>
+
+                                        {% for s in semesters %}
+															{{s.name }}: {{  s.admissionEndDate|date('d-m') }} kl. {{  s.admissionEndDate|date('H:i') }}
+															</br>
+														{% endfor %}
+
+                                    </div>
+
+
+
+
+                                </div>
+
+                                {{ form_end(form) }}
+
+                            {% else %}
+
+                                {% for d in department %}
+                                    <p> Avdelingen {{ d.shortname }} har ikke en aktiv søkeperiode. </p>
+                                {% endfor %}
+
+                            {% endif %}
+
+
+                        </div>
+                    </div>
+
+				</div>
+				
+				<br/>
+				<br/>
+				
+				 <div class="row">
+					<div class="small-12 medium-12 large-12 columns">
+
+								<div class="row">
+									<div class="small-12 medium-12 large-6 columns">
+										
+												<h2> lato balck om Vektor NTNU </h2>
+												
+												<p>
+												
+													<strong> Lato bold Vektorprogrammet ved NTNU blabla bla </strong>
+													
+												</p>
+												
+												<p>
+													
+													Lato 	regular Vektorprogrammet er et studentddrevettiltak i  Trondheimsregionen, Akershus og Oslo, som skal bidra til å øke interessen og forståelsen for matematikk i ungdomsskolen. 
+													Dette gjøres ved å sende studenter fra realfagssterke linjer på NTNU, NMBU og UiO ut til ungdomsskolen der de bidrar med sin kunnskap i timene og fungerer som lærerens assistent. 
+													Studentene bidrar etter skolens ønske selv om hovedfokuset i arbeidet dreier seg om hjelp til oppgaveregning samt undervisning i mindre grupper rundt deltemaer. 
+													Vektorprogrammet sørger derfor for at flere får hjelp i timen raskere og at matematikktimene kan bli mer tilpasset ulike elevgrupper.
+													
+												</p>
+										
+									</div>
+									
+									<div class="small-12 medium-12 large-6 columns">
+						
+												<img src="{{ asset("bundles/app/img/temp/greybox2.png") }}" />
+										
+									</div>
+									
+								</div>
+								
+								<div class="row">
+									<div class="small-12 medium-12 large-6 columns">
+									
+												<h2> Hva gjør en Vektorassistent? </h2>
+												
+												<p>
+													
+													<strong> Har du lyst til å prøve læreryrket? Eller ønsker du å vise ungdommer at matte er gøy? </strong>
+												
+												</p>
+												
+												<p>
+													Da er kanskje Vektorprogrammet noe for deg. Som vektorassistent bidrar du til å øke interessen
+													for matematikk i ungdomsskolen. Du blir sendt ut i ungdomsskolen en gang i uka i 4-8 uker per semester. Der hjelper du til i matematikktimene, enten med oppgaveregning	eller som
+													veileder i små undervisningsgrupper. Oppholdet på skolen varer hele dagen, og du får selvfølgelig stor valgfrihet i hvilke dager som passer deg. Dette er en erfaring det er verdt å få
+													med seg! Alle som deltar som vektorassistent får også en attest man kan legge ved CV-en.
+													
+												</p>
+									</div>
+									
+									<div class="small-12 medium-12 large-6 columns">
+									
+												<img src="{{ asset("bundles/app/img/temp/greybox2.png") }}" />
+												
+									</div>
+									
+								</div>
+
+					</div>
+				</div>
+			
+				<br/>
+				<br/>
+				
+                {% for d in department %}
+				    {% render controller('AppBundle:Admission:contact', {'id' : d.id} ) %}
+				{% endfor %}
+				
+				<br/>
+				<br/>
+                {% for d in department %}
+                    <div class="row">
+                        <div class="small-12 columns">
+                            <h3>Siste vektornyheter fra {{ d.shortname }}:</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {% render controller('AppBundle:Article:showDepartmentNews', {'id' : d.id}) %}
+                    </div>
+                {% endfor %}
+{% endblock %}

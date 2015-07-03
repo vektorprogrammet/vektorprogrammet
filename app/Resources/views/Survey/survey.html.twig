@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <p></p>
+
+    <div class="row">
+        <div class="hide-for-large-up">
+            {% form_theme form 'form/survey_mobile_layout.html.twig' %}
+        </div>
+    </div>
+
+    <div class="row" id="survey">
+        <div class="large-7 large-offset-2 small-10 small-offset-1 medium-8 medium-offset-2">
+
+            <p>{{ form_errors(form) }}</p>
+            <p>{{ form_start(form) }}</p
+            {% for q in form %}
+                <div class="row">
+
+                    <p>{{ form_row(q) }}</p>
+
+                </div>
+            {% endfor %}
+            {{ form_widget(form.save) }}
+
+        </div>
+    </div>
+
+
+
+
+
+{% endblock %}

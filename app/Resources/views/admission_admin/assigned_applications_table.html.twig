@@ -1,0 +1,63 @@
+{% extends 'admission_admin/layout.html.twig' %}
+
+{% block applications %}
+    {% if applicants is defined %}
+
+        {# The table containing applications which are assiged to an interviewer but not interviewed #}
+        <table width="100%" id="application-table">
+
+            <thead>
+            <tr>
+                {# data-sort is used to sort the tables with stupidtable.js #}
+                <th data-sort="string">Fornavn</th>
+                <th data-sort="string">Etternavn</th>
+                <th data-sort="int">Tlf</th>
+                <th data-sort="string">E-post</th>
+                <th data-sort="string">Linje</th>
+                <th data-sort="int">År</th>
+                <th data-sort="int">Oppsatt dato</th>
+                <th data-sort="string">Intervjues av</th>
+                {# Add header columns to match the buttons added #}
+                <th colspan="2"></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for a in applicants %}
+                <tr>
+                    <td>{{ a.firstName }}</td>
+                    <td>{{ a.lastName }}</td>
+                    <td>{{ a.phone }}</td>
+                    <td>{{ a.email }}</td>
+                    <td>{{ a.statistic.fieldOfStudy }}</td>
+                    <td>{{ a.statistic.yearOfStudy }}</td>
+
+                        {% if a.interview.scheduled is not null %}
+                            <td data-sort-value="{{ a.interview.scheduled.getTimestamp }}">
+                            {{ a.interview.scheduled|date("d.m.y - G:i") }}
+                            </td>
+                            {% else %}
+                            <td data-sort-value="0"></td>
+                        {% endif %}
+
+                    <td>{{ a.interview.interviewer.firstName }} {{ a.interview.interviewer.lastName }}</td>
+
+                    {# Add the buttons to book(send email) and conduct an interview, given the correct permissions #}
+                    {% if is_granted('ROLE_SUPER_ADMIN') or a.interview.isInterviewer(app.user) %}
+                        <td >
+                            <a href="{{ path('interview_schedule', { 'id': a.interview.id }) }}" class="button tiny"><i class="fa fa-envelope"></i> Sett opp</a>
+                        </td>
+                        <td>
+                            <a href="{{ path('interview_conduct', { 'id': a.interview.id }) }}" class="button tiny"><i class="fa fa-list-ul"></i> Intervju</a>
+                        </td>
+                    {% else %}
+                        <td colspan="2"></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+
+    {% endif %}
+{% endblock %}

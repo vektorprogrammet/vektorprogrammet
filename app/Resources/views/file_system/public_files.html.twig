@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <ul>
+        {% for file in files %}
+            {% set splut_string = file|split('/') %}
+            <li>
+                <a href="{{ asset(file) }}">{{ splut_string[splut_string|length-1] }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

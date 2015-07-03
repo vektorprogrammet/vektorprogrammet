@@ -1,0 +1,27 @@
+{# The actual rendering of the photos in a album #}
+
+{% block stylesheets %}
+    <style>
+       .galleria{ width: 100%; height: 600px; background: #ffffff }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).foundation();
+        $(document).ready(function() {
+           Galleria.loadTheme('{{ asset('scripts/galleria/themes/classic/galleria.classic.min.js') }}');
+            Galleria.run('.galleria');
+        });
+    </script>
+{% endblock %}
+
+<div class="galleria">
+    {% for photo in photos %}
+        <img src="{{ asset(photo.pathToFile) }}"  data-description="{{ photo.comment }}">
+    {% endfor %}
+</div>
+
+
+
+

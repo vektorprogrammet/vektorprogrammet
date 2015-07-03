@@ -1,0 +1,90 @@
+# you can read more about security in the related section of the documentation
+# http://symfony.com/doc/current/book/security.html
+security:
+    # http://symfony.com/doc/current/book/security.html#encoding-the-user-s-password
+    encoders:
+        AppBundle\Entity\User:
+            algorithm: bcrypt
+            cost: 12
+
+    # http://symfony.com/doc/current/book/security.html#hierarchical-roles
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_HIGHEST_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        administrators:
+            entity: { class: AppBundle:User }
+        in_memory:
+            memory:
+                users:
+
+    # the main part of the security, where you can set up firewalls
+    # for specific sections of your app
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        admin_area:
+            pattern:    ^/admin
+            http_basic: ~ 
+        secured_area:
+            anonymous: ~
+            http_basic: ~
+            form_login:
+                login_path: /login
+                check_path: /login_check
+                always_use_default_target_path: false
+                default_target_path: /profile
+            logout:
+                path:  /logout
+                target:  /
+
+
+    # with these settings you can restrict or allow access for different parts
+    # of your application based on roles, ip, host or methods
+    # http://symfony.com/doc/current/cookbook/security/access_control.html
+    access_control:
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        # require ROLE_ADMIN for /admin*
+
+          #ROLE_HIGHEST_ADMIN = superadmin user
+
+
+          #ROLE_SUPER_ADMIN = admin user
+        - { path: ^/brukeradmin/opprett/, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/brukeradmin/avdeling/, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/opptakadmin/avdeling/, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/semesteradmin/avdeling/opprett/, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/intervju/skjema, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/intervju/fordel, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/vikar/rediger, roles: ROLE_SUPER_ADMIN }
+
+
+          #ROLE_ADMIN = team user
+        - { path: ^/opptakadmin/slett/, roles: ROLE_ADMIN }
+        - { path: ^/brukeradmin/opprett, roles: ROLE_ADMIN }
+        - { path: ^/profile/edit/, roles: ROLE_ADMIN }
+        - { path: ^/opptakadmin, roles: ROLE_ADMIN }
+        - { path: ^/brukeradmin, roles: ROLE_ADMIN }
+        - { path: ^/semesteradmin, roles: ROLE_ADMIN }
+        - { path: ^/statistikk/, roles: ROLE_ADMIN }
+        - { path: ^/efconnect, role: ROLE_ADMIN }
+        - { path: ^/elfinder, role: ROLE_ADMIN }
+        - { path: ^/artikkeladmin, role: ROLE_ADMIN }
+        - { path: ^/vikar, role: ROLE_ADMIN }
+        - { path: ^/intervju, role: ROLE_ADMIN }
+        - { path: ^/gallery_create, role: ROLE_ADMIN }
+        - { path: ^/gallery_upload, role: ROLE_ADMIN }
+        - { path: ^/gallery_delete_photo, role: ROLE_ADMIN }
+
+          #ROLE_USER = assistant user
+        - { path: ^/profile, roles: ROLE_USER }
+
+
+
+
+

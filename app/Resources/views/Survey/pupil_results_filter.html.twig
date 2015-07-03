@@ -1,0 +1,360 @@
+
+<div class="column">
+    <ul class="button-group" id="group">
+        <br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <ul class="no-bullet" id="gender">
+            <p>Kjønnsfordeling</p>
+            <li><input id="maleCheckBox" type="checkbox"><label for="maleCheckBox">Gutt</label></li>
+            <li><input id="femaleCheckBox" type="checkbox"><label for="femaleCheckBox">Jente</label></li>
+        </ul>
+        <br><br><br><br><br><br>
+        <ul class="no-bullet" id="class">
+            <p>Klassetrinn</p>
+            <li><input id="5CheckBox" type="checkbox"><label>5. Klasse</label></li>
+            <li><input id="6CheckBox" type="checkbox"><label>6. Klasse</label></li>
+            <li><input id="7CheckBox" type="checkbox"><label>7. Klasse</label></li>
+            <li><input id="8CheckBox" type="checkbox"><label>8. Klasse</label></li>
+            <li><input id="9CheckBox" type="checkbox"><label>9. Klasse</label></li>
+            <li><input id="10CheckBox" type="checkbox"><label>10. Klasse</label></li>
+        </ul>
+        <ul class="no-bullet" id="presence">
+            <p>Var tilstede</p>
+            <li><input id="presenceYesCheckBox" type="checkbox"><label>Ja</label></li>
+            <li><input id="presenceNoCheckBox" type="checkbox"><label>Nei</label></li>
+        </ul>
+        <br><br><br><br><br><br>
+        <ul class="no-bullet" id="gotHelp">
+            <p>Har fått hjelp av vektorassistentene</p>
+            <li><input id="gotHelpYesCheckBox" type="checkbox"><label>Ja</label></li>
+            <li><input id="gotHelpNoCheckBox" type="checkbox"><label>Nei</label></li>
+        </ul>
+        <br><br><br><br><br><br>
+        <ul class="no-bullet" id="okToAsk">
+            <p>Det gikk greit å spørre om hjelp</p>
+            <li><input id="okToAskHECheckBox" type="checkbox"><label>Helt enig</label></li>
+            <li><input id="okToAskNECheckBox" type="checkbox"><label>Noe enig</label></li>
+            <li><input id="okToAskNCheckBox" type="checkbox"><label>Nøytral</label></li>
+            <li><input id="okToAskNUCheckBox" type="checkbox"><label>Noe uenig</label></li>
+            <li><input id="okToAskHUCheckBox" type="checkbox"><label>Helt uenig</label></li>
+        </ul>
+        <br><br>
+        <ul class="no-bullet" id="easierToAsk">
+            <p>Lettere å spørre om hjelp studentene i timen</p>
+            <li><input id="easierToAskHECheckBox" type="checkbox"><label>Helt enig</label></li>
+            <li><input id="easierToAskNECheckBox" type="checkbox"><label>Noe enig</label></li>
+            <li><input id="easierToAskNCheckBox" type="checkbox"><label>Nøytral</label></li>
+            <li><input id="easierToAskNUCheckBox" type="checkbox"><label>Noe uenig</label></li>
+            <li><input id="easierToAskHUCheckBox" type="checkbox"><label>Helt uenig</label></li>
+        </ul>
+        <br>
+        <ul class="no-bullet" id="knewCurriculum">
+            <p>Studentene kunne pensum</p>
+            <li><input id="knewCurriculumHECheckBox" type="checkbox"><label>Helt enig</label></li>
+            <li><input id="knewCurriculumNECheckBox" type="checkbox"><label>Noe enig</label></li>
+            <li><input id="knewCurriculumNCheckBox" type="checkbox"><label>Nøytral</label></li>
+            <li><input id="knewCurriculumNUCheckBox" type="checkbox"><label>Noe uenig</label></li>
+            <li><input id="knewCurriculumHUCheckBox" type="checkbox"><label>Helt uenig</label></li>
+        </ul>
+        <br>
+        <ul class="no-bullet" id="moreInspiring">
+            <p>Mer spennende å jobbe med matte</p>
+            <li><input id="moreInspiringHECheckBox" type="checkbox"><label>Helt enig</label></li>
+            <li><input id="moreInspiringNECheckBox" type="checkbox"><label>Noe enig</label></li>
+            <li><input id="moreInspiringNCheckBox" type="checkbox"><label>Nøytral</label></li>
+            <li><input id="moreInspiringNUCheckBox" type="checkbox"><label>Noe uenig</label></li>
+            <li><input id="moreInspiringHUCheckBox" type="checkbox"><label>Helt uenig</label></li>
+        </ul>
+        <br>
+        <ul class="no-bullet" id="wantToComeBack">
+            <p>Jeg vil at assistentene kommer tilbake</p>
+            <li><input id="wantToComeBackHECheckBox" type="checkbox"><label>Helt enig</label></li>
+            <li><input id="wantToComeBackNECheckBox" type="checkbox"><label>Noe enig</label></li>
+            <li><input id="wantToComeBackNCheckBox" type="checkbox"><label>Nøytral</label></li>
+            <li><input id="wantToComeBackNUCheckBox" type="checkbox"><label>Noe uenig</label></li>
+            <li><input id="wantToComeBackHUCheckBox" type="checkbox"><label>Helt uenig</label></li>
+        </ul>
+    </ul>
+
+</div>
+
+
+<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+
+
+
+<script>
+
+    $(document).ready(function() {
+
+
+        $("#group").click(function () {
+            var filter = "";
+
+
+            if ($("#maleCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.1,1';
+                }else{
+                    filter += '1,1';
+                }
+            }
+            if ($("#femaleCheckBox").is(":checked")) {
+                if(filter != ""){
+                    filter += '.1,2';
+                }else{
+                    filter += '1,2';
+                }
+            }
+            if ($("#5CheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.2,1';
+                }else{
+                    filter += '2,1';
+                }
+            }
+            if ($("#6CheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.2,2';
+                }else{
+                    filter += '2,2';
+                }
+            }
+            if ($("#7CheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.2,3';
+                }else{
+                    filter += '2,3';
+                }
+            }
+            if ($("#8CheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.2,4';
+                }else{
+                    filter += '2,4';
+                }
+            }
+            if ($("#9CheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.2,5';
+                }else{
+                    filter += '2,5';
+                }
+            }
+            if ($("#10CheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.2,6';
+                }else{
+                    filter += '2,6';
+                }
+            }
+            if ($("#presenceYesCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.3,1';
+                }else{
+                    filter += '3,1';
+                }
+            }
+            if ($("#presenceNoCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.3,2';
+                }else{
+                    filter += '3,2';
+                }
+            }
+            if ($("#gotHelpYesCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.4,1';
+                }else{
+                    filter += '4,1';
+                }
+            }
+            if ($("#gotHelpNoCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.4,2';
+                }else{
+                    filter += '4,2';
+                }
+            }
+            if ($("#okToAskHECheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.5,1';
+                }else{
+                    filter += '5,1';
+                }
+            }
+            if ($("#okToAskNECheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.5,2';
+                }else{
+                    filter += '5,2';
+                }
+            }
+            if ($("#okToAskNCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.5,3';
+                }else{
+                    filter += '5,3';
+                }
+            }
+            if ($("#okToAskNUCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.5,4';
+                }else{
+                    filter += '5,4';
+                }
+            }
+            if ($("#okToAskHUCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.5,5';
+                }else{
+                    filter += '5,5';
+                }
+            }
+            if ($("#easierToAskHECheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.6,1';
+                }else{
+                    filter += '6,1';
+                }
+            }
+            if ($("#easierToAskNECheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.6,2';
+                }else{
+                    filter += '6,2';
+                }
+            }
+            if ($("#easierToAskNCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.6,3';
+                }else{
+                    filter += '6,3';
+                }
+            }
+            if ($("#easierToAskNUCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.6,4';
+                }else{
+                    filter += '6,4';
+                }
+            }
+            if ($("#easierToAskHUCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.6,5';
+                }else{
+                    filter += '6,5';
+                }
+            }
+            if ($("#knewCurriculumHECheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.7,1';
+                }else{
+                    filter += '7,1';
+                }
+            }
+            if ($("#knewCurriculumNECheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.7,2';
+                }else{
+                    filter += '7,2';
+                }
+            }
+            if ($("#knewCurriculumNCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.7,3';
+                }else{
+                    filter += '7,3';
+                }
+            }
+            if ($("#knewCurriculumNUCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.7,4';
+                }else{
+                    filter += '7,4';
+                }
+            }
+            if ($("#knewCurriculumHUCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.7,5';
+                }else{
+                    filter += '7,5';
+                }
+            }
+            if ($("#moreInspiringHECheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.8,1';
+                }else{
+                    filter += '8,1';
+                }
+            }
+            if ($("#moreInspiringNECheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.8,2';
+                }else{
+                    filter += '8,2';
+                }
+            }
+            if ($("#moreInspiringNCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.8,3';
+                }else{
+                    filter += '8,3';
+                }
+            }
+            if ($("#moreInspiringNUCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.8,4';
+                }else{
+                    filter += '8,4';
+                }
+            }
+            if ($("#moreInspiringHUCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.8,5';
+                }else{
+                    filter += '8,5';
+                }
+            }
+            if ($("#wantToComeBackHECheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.9,1';
+                }else{
+                    filter += '9,1';
+                }
+            }
+            if ($("#wantToComeBackNECheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.9,2';
+                }else{
+                    filter += '9,2';
+                }
+            }
+            if ($("#wantToComeBackNCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.9,3';
+                }else{
+                    filter += '9,3';
+                }
+            }
+            if ($("#wantToComeBackNUCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.9,4';
+                }else{
+                    filter += '9,4';
+                }
+            }
+            if ($("#wantToComeBackHUCheckBox").is(":checked")){
+                if(filter != ""){
+                    filter += '.9,5';
+                }else{
+                    filter += '9,5';
+                }
+            }
+            $("#survey-data").load(Routing.generate('survey_results_pupil_filter', {filter: filter}));
+        });
+
+
+    });
+
+</script>

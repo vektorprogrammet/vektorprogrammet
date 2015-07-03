@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Om vektor
+{% endblock %}
+
+{% block javascripts %}
+    {% include "statictext/js_loader_for_static_texts.html.twig" %}
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="small-12 medium-12 large-12 columns">
+			<img src="{{ asset("bundles/app/img/temp/greybox1.png") }}" />
+            <div class="{{ element_editable() }}" id="omvektor">
+                {{ get_content('omvektor') | raw }}
+            </div>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <p></p>
+
+    {% for flashMessage in app.session.flashbag.get('article-notice') %}
+        <div class="row">
+            <div class="small-12 medium-12 large-12 columns">
+                <div data-alert class="alert-box success radius">
+                    {{ flashMessage }}
+                    <a href="#" class="close">&times;</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <article>
+        <div class="row">
+            <div class="small-12 medium-12 large-12 columns">
+                <img src="{{ asset(article.imageLarge) }}" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-12 medium-12 large-12 columns">
+                <p class="for-department">Vektornyheter for
+                {% for department in article.departments %}
+                {{ department.shortName }}{% if not loop.last %}, {% endif %}{% else %}alle{% endfor %}:</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-12 medium-12 large-12 columns">
+                <h1>{{ article.title|raw }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-12 medium-8 large-8 columns">
+                <div class="row">
+                    <div class="small-12 medium-12 large-12 columns">
+                        <p class="byline"><strong>Skrevet av:</strong> {{ article.author.firstName }} {{ article.author.lastName }}. Publisert: {{ article.created|date("d.m.y — G:i") }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-12 medium-12 large-12 columns">
+                        {{ article.article|raw }}
+                    </div>
+                </div>
+            </div>
+            <div class="small-12 medium-3 large-3 columns">
+                {# Render the controller for the sidebar showing other articles #}
+                {% render controller('AppBundle:Article:showOther', { 'excludeId': article.id }) %}
+            </div>
+        </div>
+    </article>
+
+{% endblock %}

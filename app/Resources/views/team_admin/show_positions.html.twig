@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block customScripts %}
+	
+	{# Easy routing with FOSJsRouting bundle #}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+	{# We need the deletetablerow.js file #}
+    <script src="{{ asset('bundles/app/js/deleteablerow.js') }}"></script>
+	
+	<script>
+	
+	$(document).ready(function() {
+            $('.delete').deleteablerow('teamadmin_remove_position', {
+                confirmation: {
+                    modal: $('#confirmModal'),
+                    acceptButton: $('#modalAccept'),
+                    cancelButton: $('#modalCancel')
+                }
+            });
+        });
+		
+		$("#search").keyup(function(){
+		
+			_this = this;
+			
+			$.each($("#table tbody").find("tr"), function() {
+			
+				if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
+				   $(this).hide();
+				}
+				else {
+					 $(this).show();         
+				}
+			});
+			
+		}); 
+
+	</script>
+
+{% endblock %}
+
+{% block title %}
+	Stillinger
+{% endblock %}
+	
+{% block body %}
+    <p></p>
+	
+	<div class="row">
+		<div class="small-12 medium-12 large-12 columns">
+			
+			<h1> Stillinger </h1>
+			
+			<hr>
+			
+			<div class="row">
+				
+				{% if is_granted('ROLE_SUPER_ADMIN') %} 
+				
+					<div class="small-12 medium-12 large-6 columns">
+					
+						<ul class="inline-list">
+							
+							<li>
+								<a href="{{ path('teamadmin_create_position') }}" class="button tiny">Opprett stilling</a>
+							</li>
+							
+						</ul>
+						
+					</div>
+					
+				{% endif %}
+				
+				{% if is_granted('ROLE_SUPER_ADMIN') %} 
+					<div class="small-12 medium-12 large-6 columns">
+				{% else %}
+					<div class="small-12 medium-12 large-12 columns">
+				{% endif %}
+					
+					<input type="text" id="search" placeholder="Søk..." />
+					
+				</div>
+				
+			</div>
+					
+					
+					<hr>
+					
+					<table width="100%" id="table">
+				
+					<thead>
+						<tr>
+							<th> Navn </th>
+							<th> </th>
+							<th> </th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						{% for p in positions %}
+							<tr>
+								<td width="70%"> {{ p.name }} </a> </td>
+								
+								{# Only SUPER_ADMIN should be able to edit teams #}
+								{% if is_granted('ROLE_SUPER_ADMIN') %} 
+		
+										<td><a href="{{ path('teamadmin_edit_position', { 'id': p.id }) }}" class="button tiny" >Rediger</a></td>
+				
+										<td><a href="#" id={{p.id}} class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td>
+										
+								{% endif %}
+								
+							</tr>
+							{% endfor %} 
+					</tbody>
+					
+				</table>
+
+			</div>
+		</div>
+		
+		<div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true" role="dialog">
+			<h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
+			<ul class="inline-list">
+				<a id="modalAccept" href="#" class="button tiny">Slett</a>
+				<a id="modalCancel" href="#" class="button tiny">Avbryt</a>
+			</ul>
+		</div>
+	
+{% endblock %}

@@ -1,0 +1,18 @@
+{%- block choice_widget_expanded -%}
+    <ul {{ block('widget_container_attributes') }} class="no-bullet alternatives">
+        {%- for child in form %}
+            <li>
+                {{- form_widget(child) -}}
+                {{- form_label(child) -}}
+            </li>
+        {% endfor -%}
+    </ul>
+{%- endblock choice_widget_expanded -%}
+
+{%- block form_row -%}
+    <div class="left radio-grid">
+        {{- form_label(form) -}}
+        {{- form_errors(form) -}}
+        {{- form_widget(form) -}}
+    </div>
+{%- endblock form_row -%}

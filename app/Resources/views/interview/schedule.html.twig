@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<p></p>
+
+<div class="row">
+    <div class="small-12 medium-12 large-12 columns">
+        <div class="panel">
+            <div class="row">
+                <div class="small-12 medium-12 large-12 columns">
+                    <h3>Sett opp intervju</h3>
+                    <h5>Intervjuer</h5>
+                    <p>{{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}</p>
+                    <h5>Kandidat</h5>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th> Fornavn</th>
+                            <th> Etternavn</th>
+                            <th> Tlf </th>
+                            <th> E-post </th>
+                            <th> Linje </th>
+                            <th> År </th>
+                            <th> Tidligere deltagelse </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            {% set a = interview.application %}
+                            <td> {{ a.firstName }} </td>
+                            <td> {{ a.lastName }} </td>
+                            <td> {{ a.phone }} </td>
+                            <td> {{ a.email }} </td>
+                            <td> {{ a.statistic.fieldOfStudy }} </td>
+                            <td> {{ a.statistic.yearOfStudy }} </td>
+
+                            {% if a.statistic.previousParticipation == 1 %}
+                                <td> Ja </td>
+                            {% else %}
+                                <td> Nei </td>
+                            {% endif %}
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h5>Tidspunkt</h5>
+
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="small-12 medium-4 columns">
+                    {{ form_row(form.datetime) }}
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="small-12 medium-4 columns end">
+                    <div class="panel callout radius">
+                        <p>Format yyyy-MM-dd HH:mm:ss<br>Tidspunktet blir automatisk lagt til på slutten av e-posten.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h5>Melding</h5>
+            <div class="row">
+                {{ form_errors(form) }}
+                <div class="small-12 medium-4 columns">
+                    {{ form_row(form.from) }}
+                </div>
+                <div class="small-12 medium-4 columns end">
+                    {{ form_row(form.to) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 medium-8 columns">
+                    {{ form_row(form.message) }}
+                    {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
+                    {{ form_widget(form.saveAndSend, {'attr': {'class': 'button tiny'}}) }}
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

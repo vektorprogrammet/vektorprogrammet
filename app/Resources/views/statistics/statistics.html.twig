@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+
+            <div class="row">
+
+                <div class="small-12 medium-8 medium-offset-2 large-8 large-offset-3 columns">
+
+                    <div class="row">
+                        <div id="survey-data" class ="large-6 column">
+                            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+                            <script type="text/javascript">
+                                google.load("visualization", "1", {packages:["corechart", 'table', 'treemap', 'gauge']});
+                                google.load('jquery', '1.6.0');
+                            </script>
+
+                            <div class="row">
+                                 {% for chart in diagram %}
+                                    {% set index = loop.index %}
+                                        <div id="{{index}}">&nbsp;</div>
+                                        <script>
+                                            $(function() {
+                                                {{ gchart_pie_chart(chart, index, 500, 250, attribute(question, index - 1)) }}
+                                            });
+                                        </script>
+                                        <hr/>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        </body>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

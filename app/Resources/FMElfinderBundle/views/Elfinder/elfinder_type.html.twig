@@ -1,0 +1,43 @@
+{# This modifies a vendor template, the only line changed is 21 #}
+<!DOCTYPE html>
+<html>
+<head>
+    {% if includeAssets %}
+        {% include "FMElfinderBundle:Elfinder:helper/assets_css.html.twig" %}
+    {% endif %}
+</head>
+<body>
+{% if includeAssets %}
+    {% include "FMElfinderBundle:Elfinder:helper/assets_js.html.twig" %}
+{% endif %}
+<script type="text/javascript" charset="utf-8">
+    $().ready(function() {
+        var $f = $('.elfinder').elfinder({
+            url : '{{path('ef_connect', { 'instance': instance } )}}',
+            lang : '{{locale}}',
+            getFileCallback: function(file) {
+                {% if relative_path %}
+                    {# This is the only line changed, it adds a / prefix to the path and replaces all \ with / #}
+                    window.opener.setValue('{{ asset('') }}' + file.path.replace(/\\/g,"/"), "{{ id }}");
+                {% else %}
+                    window.opener.setValue(file.url, "{{ id }}");
+                {% endif %}
+                window.close();
+            }
+        });
+
+
+    {% if fullscreen %}
+    var $window = $(window);
+    $window.resize(function(){
+        var $win_height = $window.height();
+        if( $f.height() != $win_height ){
+            $f.height($win_height).resize();
+        }
+    });
+    {% endif %}
+    });
+</script>
+<div class="elfinder"></div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	For studenter
+{% endblock %}
+
+{% block javascripts %}
+    {% include "statictext/js_loader_for_static_texts.html.twig" %}
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		
+		<div class="small-12 medium-12 large-4 columns">
+			<div class="panel callout radius">
+                <div class="{{ element_editable() }}" id="contactinfo">
+                    {{ get_content('contactinfo') | raw }}
+                </div>
+			</div>
+		</div>
+		
+		<div class="small-12 medium-12 large-8 columns">
+            <div class="{{ element_editable() }}" id="studentinfo">
+                {{ get_content('studentinfo') | raw }}
+            </div>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,170 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <p></p>
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <div class="panel">
+                <div class="row">
+                    <div class="small-12 medium-12 large-12 columns">
+                        <h1>Intervju</h1>
+                        <h3>Intervjuer</h3>
+                        <p>{{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}</p>
+                        <h3>Kandidat</h3>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Fornavn</th>
+                                <th>Etternavn</th>
+                                <th>Tlf</th>
+                                <th>E-post</th>
+                                <th>Linje</th>
+                                <th>År</th>
+                                <th>Tidligere deltagelse</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                {% set a = interview.application %}
+                                <td> {{ a.firstName }} </td>
+                                <td> {{ a.lastName }} </td>
+                                <td> {{ a.phone }} </td>
+                                <td> {{ a.email }} </td>
+                                <td> {{ a.statistic.fieldOfStudy }} </td>
+                                <td> {{ a.statistic.yearOfStudy }} </td>
+
+                                {% if a.statistic.previousParticipation == 1 %}
+                                    <td> Ja </td>
+                                {% else %}
+                                    <td> Nei </td>
+                                {% endif %}
+                            </tr>
+                            </tbody>
+                        </table>
+                        <h3>Dato</h3>
+                        <p>{{ interview.conducted|date("d.m.y - G:i") }}</p>
+                    </div>
+                </div>
+
+                <h3>Praktisk informasjon</h3>
+                <div class="row">
+                    <div class="small-12 columns">
+                        <label class="question-label">Hvilke dager passer for deg?</label>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Mandag</th>
+                                <th>Tirsdag</th>
+                                <th>Onsdag</th>
+                                <th>Torsdag</th>
+                                <th>Fredag</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{ interview.interviewPractical.monday }}</td>
+                                <td>{{ interview.interviewPractical.tuesday }}</td>
+                                <td>{{ interview.interviewPractical.wednesday }}</td>
+                                <td>{{ interview.interviewPractical.thursday }}</td>
+                                <td>{{ interview.interviewPractical.friday }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-12 medium-12 large-9 columns">
+                        <label class="question-label">
+                            Kunne du tenke deg dobbelt stilling? Altså en gang i uka i 8 uker, eller 2 ganger i uka i 4 uker. Har du et ønske om bolk?
+                        </label>
+                        <p>
+                        {% for position in interview.interviewPractical.position %}
+                            {{ position }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-12 medium-12 large-9 columns">
+                        <label class="question-label">
+                            Dersom du ikke får stillingen som vektorassistent, vil du da være vikar for andre som melder frafall?
+                        </label>
+                        <p>
+                        {%  if interview.interviewPractical.substitute == 1 %}
+                            Ja
+                        {% else %}
+                            Nei
+                        {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-12 medium-12 large-9 columns">
+                        <label class="question-label">Er du komfortabel med engelsk?</label>
+                        <p>
+                        {%  if interview.interviewPractical.english == 1 %}
+                            Ja
+                        {% else %}
+                            Nei
+                        {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-12 medium-12 large-9 columns">
+                        <label class="question-label">Hvor hørte du om Vektorprogrammet?</label>
+                        <p>
+                        {% for from in interview.interviewPractical.heardAboutFrom %}
+                            {{ from }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                        </p>
+                    </div>
+                </div>
+
+                <h3>Intervjuspørsmål</h3>
+
+                {% for interviewAnswer in interview.interviewAnswers %}
+                    <label class="question-label">{{ interviewAnswer.interviewQuestion.question }}</label>
+                    <p>
+                    {% for answer in interviewAnswer.answer %}
+                        {{ answer }}{% if not loop.last %}, {% endif %}
+                    {% else %}
+                        {{ interviewAnswer.answer }}
+                    {% endfor %}
+                    </p>
+                {% endfor %}
+
+                <h3>Evaluering</h3>
+
+                <div class="row">
+                    <div class="small-12 columns">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Forklaringsevne</th>
+                                <th><span data-tooltip aria-haspopup="true" class="has-tip" title="Forbilde for ungdomsskoleelever">Forbilde</span></th>
+                                <th>Engasjement</th>
+                                <th>Totalintrykk</th>
+                                <th>Sum</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{ a.interview.interviewScore.explanatoryPower }}</td>
+                                <td>{{ a.interview.interviewScore.roleModel }}</td>
+                                <td>{{ a.interview.interviewScore.drive }}</td>
+                                <td>{{ a.interview.interviewScore.totalImpression }}</td>
+                                <td>{{ a.interview.interviewScore.sum }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

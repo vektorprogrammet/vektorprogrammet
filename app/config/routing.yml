@@ -1,0 +1,1047 @@
+home:
+ path: /
+ defaults: { _controller: AppBundle:Home:show }
+
+#FOSJsRoutingBundle/Resources/config/routing/routing bundle needs this
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+#LiipImagineBundle
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+
+##########################################
+#             Static pages               #
+##########################################
+
+students:
+ path: /studenter
+ defaults: { _controller: AppBundle:Students:show }
+
+schools:
+ path: /skoler
+ defaults: { _controller: AppBundle:Schools:show }
+
+businesses:
+ path: /bedrifter
+ defaults: { _controller: AppBundle:Businesses:show }
+
+about:
+ path: /omvektor
+ defaults: { _controller: AppBundle:AboutVektor:show }
+
+admission:
+ path: /opptak
+ defaults: { _controller: AppBundle:Admission:show }
+
+# Updates static content
+# Not meant for rendering a page. Receives a post request and updates the database.
+update_static_content:
+ path: /updatestaticcontent
+ defaults: {_controller: AppBundle:StaticContent:update }
+
+
+##########################################
+#                Survey                  #
+##########################################
+
+survey_pupil:
+ path: /undersokelse/elev
+ defaults: { _controller: AppBundle:Survey:showPupil }
+ requirements:
+    _method: GET|POST
+
+survey_teacher:
+ path: /undersokelse/laerer
+ defaults: { _controller: AppBundle:Survey:showTeacher }
+ requirements:
+    _method: GET|POST
+
+survey_results:
+ path: /statistikk/undersokelse
+ defaults: { _controller: AppBundle:SurveyResults:show }
+ requirements:
+    _method: GET|POST
+
+survey_results_pupil:
+ path: /statistikk/undersokelse/elev
+ defaults: { _controller: AppBundle:SurveyResults:showPupil }
+ options:
+  expose: true
+ requirements:
+    _method: GET
+
+survey_results_pupil_filter:
+ path: /statistikk/undersokelse/elev/{filter}
+ defaults: { _controller: AppBundle:SurveyResults:showPupil }
+ options:
+  expose: true
+ requirements:
+    _method: GET
+
+survey_results_pupil_filter_buttons:
+ path: /statistikk/undersokelse/elevbuttons
+ defaults: { _controller: AppBundle:SurveyResults:renderPupilFilterButtons }
+ options:
+  expose: true
+ requirements:
+    _method: GET
+
+survey_results_teacher:
+ path: /statistikk/undersokelse/laerer
+ defaults: { _controller: AppBundle:SurveyResults:showTeacher }
+ options:
+  expose: true
+ requirements:
+    _method: GET
+
+survey_results_teacher_filter:
+ path: /statistikk/undersokelse/laerer/{filter}
+ defaults: { _controller: AppBundle:SurveyResults:showTeacher }
+ options:
+  expose: true
+ requirements:
+    _method: GET
+
+survey_results_teacher_filter_buttons:
+ path: /statistikk/undersokelse/laererbuttons
+ defaults: { _controller: AppBundle:SurveyResults:renderTeacherFilterButtons }
+ options:
+  expose: true
+ requirements:
+    _method: GET
+
+
+##########################################
+#             Statistics                 #
+##########################################
+
+
+statistics_application:
+ path: /statistikk/opptak
+ defaults: { _controller: AppBundle:ApplicationStatistics:show }
+ options:
+  expose: true
+ requirements:
+    _method: GET
+
+
+##########################################
+#            BoardAndTeam                #
+##########################################
+
+boardandteam_show:
+ path: /styretogteam
+ defaults: { _controller: AppBundle:BoardAndTeam:show }
+
+
+##########################################
+#               Profile                  #
+##########################################
+
+profile:
+ path:   /profile
+ defaults: { _controller: AppBundle:Profile:show }
+
+profile_activate_user:
+ path:   /profile/aktiv/{id}
+ defaults: { _controller: AppBundle:Profile:activateUser }
+ requirements:
+    _method: GET
+    id: \d+
+ options:
+    expose: true
+
+profile_deactivate_user:
+ path:   /profile/deaktiv/{id}
+ defaults: { _controller: AppBundle:Profile:deactivateUser }
+ requirements:
+    _method: GET
+    id: \d+
+ options:
+    expose: true
+
+profile_promote_user_to_assistent:
+ path:   /profile/rolle/assistent/bruker/{id}
+ defaults: { _controller: AppBundle:Profile:promoteToAssistent }
+ requirements:
+    _method: GET
+    id: \d+
+ options:
+    expose: true
+
+profile_promote_user_to_team:
+ path:   /profile/rolle/team/bruker/{id}
+ defaults: { _controller: AppBundle:Profile:promoteToTeamMember }
+ requirements:
+    _method: GET
+    id: \d+
+ options:
+    expose: true
+
+profile_promote_user_to_admin:
+ path:   /profile/rolle/admin/bruker/{id}
+ defaults: { _controller: AppBundle:Profile:promoteToAdmin }
+ requirements:
+    _method: GET
+    id: \d+
+ options:
+    expose: true
+
+profile_certificate:
+ path:   /profile/attest/{id}
+ defaults: { _controller: AppBundle:Profile:downloadCertificate }
+
+specific_profile:
+ path:   /profile/{id}
+ defaults: { _controller: AppBundle:Profile:showSpecificProfile }
+ requirements:
+  _method: GET
+  id: \d+
+
+profile_edit_admin:
+ path:   /profil/rediger/{id}
+ defaults: { _controller: AppBundle:Profile:editProfileInformationAdmin }
+
+profile_edit:
+ path:   /profil/rediger
+ defaults: { _controller: AppBundle:Profile:editProfileInformation }
+
+profile_edit_password:
+ path:   /profil/rediger/passord/
+ defaults: { _controller: AppBundle:Profile:editProfilePassword }
+
+profile_edit_photo:
+  path: /profil/rediger/profilbilde/
+  defaults: { _controller: AppBundle:Profile:showEditProfilePhoto }
+
+profile_upload_photo:
+  path: /profil/rediger/profilbilde/upload
+  defaults: { _controller: AppBundle:Profile:editProfilePhoto }
+
+##########################################
+#               Members                  #
+##########################################
+
+members_show:
+ path:   /medlemmer
+ defaults: { _controller: AppBundle:Members:show }
+
+
+##########################################
+#          Participant History           #
+##########################################
+
+participanthistory_show:
+ path:   /deltakerhistorikk
+ defaults: { _controller: AppBundle:ParticipantHistory:show }
+
+
+##########################################
+#                Login                   #
+##########################################
+
+login_route:
+ path:   /login
+ defaults: { _controller: AppBundle:Security:login }
+
+login_check:
+ path:   /login_check
+ defaults: { _controller: AppBundle:Security:loginCheck }
+
+logout:
+ path: /logout
+
+forgot_password:
+  path: /resetpassord/{id}
+  defaults: { _controller: AppBundle:PasswordReset:resetPassword }
+  requirements:
+    _method: GET|POST
+
+reset_password:
+  path: /resetpassord
+  defaults: { _controller: AppBundle:PasswordReset:show }
+  requirements:
+    _method: GET|POST
+
+##########################################
+#               Article                  #
+##########################################
+
+article:
+  path: /artikkel
+  defaults: { _controller: AppBundle:Article:show }
+  requirements:
+    _method: GET
+
+article_show:
+  path: /artikkel/{id} #TODO: Change to slug
+  defaults: { _controller: AppBundle:Article:showSpecific }
+  requirements:
+    _method: GET
+    id: \d+
+
+article_filter:
+  path: /artikkel/{department}
+  defaults: { _controller: AppBundle:Article:showFilter }
+  requirements:
+    _method: GET
+
+
+##########################################
+#             ArticleAdmin               #
+##########################################
+
+articleadmin_show:
+  path: /artikkeladmin
+  defaults: { _controller: AppBundle:ArticleAdmin:show }
+  requirements:
+    _method: GET
+
+articleadmin_create:
+  path: /artikkeladmin/opprett
+  defaults: { _controller: AppBundle:ArticleAdmin:create }
+  requirements:
+    _method: GET|POST
+
+articleadmin_edit:
+  path: /artikkeladmin/rediger/{id}
+  defaults: { _controller: AppBundle:ArticleAdmin:edit }
+  requirements:
+    _method: GET|POST
+
+articleadmin_sticky:
+  path: /artikkeladmin/sticky/{id}
+  defaults: { _controller: AppBundle:ArticleAdmin:sticky }
+  requirements:
+    _method: GET
+  options:
+    expose: true
+
+articleadmin_delete:
+  path: /artikkeladmin/slett/{id}
+  defaults: { _controller: AppBundle:ArticleAdmin:delete }
+  requirements:
+    _method: GET
+  options:
+    expose: true
+
+articleadmin_crop:
+  path: /artikkeladmin/crop
+  defaults: { _controller: AppBundle:ArticleAdmin:cropImage }
+  requirements:
+    _method: GET|POST
+  options:
+    expose: true
+
+##########################################
+#             Admission                  #
+##########################################
+
+admission_show_specific_department:
+ path: /opptak/avdeling/{id}
+ defaults: {_controller: AppBundle:Admission:show }
+ requirements:
+    id: \d+
+
+admission_contact:
+ path: /opptakkontakt/{id}
+ defaults: {_controller: AppBundle:Admission:contact }
+
+
+##########################################
+#            AdmissionAdmin              #
+##########################################
+
+admissionadmin_show:
+ path: /opptakadmin
+ defaults: {_controller: AppBundle:AdmissionAdmin:show }
+
+admissionadmin_filter_applications_by_department:
+ path: /opptakadmin/avdeling/{id}
+ defaults: {_controller: AppBundle:AdmissionAdmin:showApplicationsByDepartment }
+ requirements:
+    _method: GET
+    id: \d+
+
+admissionadmin_delete_application_by_id:
+ path: /opptakadmin/slett/{id}
+ defaults: {_controller: AppBundle:AdmissionAdmin:deleteApplicationById }
+ requirements:
+    _method: GET
+    id: \d+
+ options:
+    expose: true
+
+admissionadmin_delete_application_bulk:
+ path: /opptakadmin/slett/bulk
+ defaults: {_controller: AppBundle:AdmissionAdmin:bulkDeleteApplication }
+ requirements:
+    _method: POST
+ options:
+    expose: true
+
+admissionadmin_create_new_userd:
+ path: /opprettbruker/{id}
+ defaults: {_controller: AppBundle:AdmissionAdmin:createNewUser }
+ requirements:
+    _method: GET|POST
+
+admissionadmin_send_new_user_mail:
+ path: /opptakadmin/oprettbruker/{id}
+ defaults: {_controller: AppBundle:AdmissionAdmin:createUnactivatedUser }
+ requirements:
+    _method: GET
+    id: \d+
+ options:
+    expose: true
+
+
+##########################################
+#              UserAdmin                 #
+##########################################
+
+useradmin_show:
+ path: /brukeradmin
+ defaults: {_controller: AppBundle:UserAdmin:show }
+
+useradmin_filter_users_by_department:
+ path: /brukeradmin/avdeling/{id}
+ defaults: {_controller: AppBundle:UserAdmin:showUsersByDepartment }
+ requirements:
+    _method: GET
+    id: \d+
+
+useradmin_delete_user_by_id:
+ path: /brukeradmin/slett/{id}
+ defaults: {_controller: AppBundle:UserAdmin:deleteUserById }
+ requirements:
+    _method: GET
+    id: \d+
+ options:
+    expose: true
+
+useradmin_create_user:
+ path: /brukeradmin/opprett
+ defaults: {_controller: AppBundle:UserAdmin:createUser }
+
+useradmin_create_user_superadmin:
+ path: /brukeradmin/opprett/{id}
+ defaults: {_controller: AppBundle:UserAdmin:createUserSuperadmin }
+ requirements:
+    id: \d+
+
+
+
+
+##########################################
+#              Semester                  #
+##########################################
+
+semesteradmin_show:
+ path: /semesteradmin
+ defaults: {_controller: AppBundle:Semester:show }
+
+semesteradmin_update:
+ path: /semesteradmin/update/{id}
+ defaults: {_controller: AppBundle:Semester:updateSemester }
+ requirements:
+    id: \d+
+
+semesteradmin_create_semester:
+ path: /semesteradmin/opprett
+ defaults: {_controller: AppBundle:Semester:createSemester }
+
+semesteradmin_create_semester_superadmin:
+ path: /semesteradmin/avdeling/opprett/{id]}
+ defaults: {_controller: AppBundle:Semester:SuperadminCreateSemester }
+ requirements:
+    id: \d+
+
+semesteradmin_filter_semesters_by_department:
+ path: /semesteradmin/avdeling/{id}
+ defaults: {_controller: AppBundle:Semester:showSemestersByDepartment }
+ requirements:
+    _method: GET
+    id: \d+
+
+semesteradmin_delete_semester_by_id:
+ path: /semesteradmin/slett/{id}
+ defaults: {_controller: AppBundle:Semester:deleteSemesterById }
+ requirements:
+    _method: GET
+    id: \d+
+ options:
+    expose: true
+
+
+##########################################
+#               Team                     #
+##########################################
+
+teamadmin_show:
+ path: /teamadmin
+ defaults: {_controller: AppBundle:TeamAdmin:show }
+
+teamadmin_create_position:
+ path: /teamadmin/opprett/stilling
+ defaults: {_controller: AppBundle:TeamAdmin:createPosition }
+
+teamadmin_edit_position:
+ path: /teamadmin/rediger/stilling/{id}
+ defaults: {_controller: AppBundle:TeamAdmin:editPosition }
+
+teamadmin_show_position:
+ path: /teamadmin/stillinger
+ defaults: {_controller: AppBundle:TeamAdmin:showPositions }
+
+teamadmin_remove_position:
+ path: /teamadmin/stilling/slett/{id}
+ defaults: {_controller: AppBundle:TeamAdmin:removePosition }
+ requirements:
+    _method: GET|POST
+    id: \d+
+ options:
+    expose: true
+
+
+teamadmin_show_specific_team:
+ path: /teamadmin/team/{id}
+ defaults: {_controller: AppBundle:TeamAdmin:showSpecificTeam }
+
+teamadmin_update_workhistory:
+ path: /teamadmin/oppdater/teamhistorie/{id}
+ defaults: {_controller: AppBundle:TeamAdmin:updateWorkHistory }
+ requirements:
+    _method: GET|POST
+    id: \d+
+
+teamadmin_remove_user_from_team_by_id:
+ path: /teamadmin/team/slett/bruker/{id}
+ defaults: {_controller: AppBundle:TeamAdmin:removeUserFromTeamById }
+ requirements:
+    _method: GET
+    id: \d+
+ options:
+    expose: true
+
+teamadmin_add_user_to_team:
+ path: /teamadmin/team/leggTilBruker/{id}
+ defaults: {_controller: AppBundle:TeamAdmin:addUserToTeam }
+ requirements:
+    _method: GET|POST
+    id: \d+
+
+teamadmin_create_team_for_department:
+ path: /teamadmin/avdeling/opprett/{id}
+ defaults: {_controller: AppBundle:TeamAdmin:createTeamForDepartment }
+ requirements:
+    id: \d+
+
+teamadmin_filter_teams_by_department:
+ path: /teamadmin/avdeling/{id}
+ defaults: {_controller: AppBundle:TeamAdmin:showTeamsByDepartment }
+ requirements:
+    _method: GET
+    id: \d+
+
+teamadmin_update:
+ path: /teamadmin/update/{id}
+ defaults: {_controller: AppBundle:TeamAdmin:updateTeam }
+ requirements:
+    id: \d+
+
+teamadmin_delete_team_by_id:
+ path: /teamadmin/slett/{id}
+ defaults: {_controller: AppBundle:TeamAdmin:deleteTeamById }
+ options:
+    expose: true
+
+
+##########################################
+#            DepartmentAdmin             #
+##########################################
+
+departmentadmin_show:
+ path: /avdelingadmin
+ defaults: {_controller: AppBundle:Department:show }
+
+departmentadmin_create_department:
+ path: /avdelingadmin/opprett
+ defaults: {_controller: AppBundle:Department:createDepartment }
+
+departmentadmin_delete_department_by_id:
+ path: /avdelingadmin/slett/{id}
+ defaults: {_controller: AppBundle:Department:deleteDepartmentById }
+ requirements:
+    _method: GET
+    id: \d+
+ options:
+    expose: true
+
+departmentadmin_update:
+ path: /avdelingadmin/update/{id}
+ defaults: {_controller: AppBundle:Department:updateDepartment }
+ requirements:
+    id: \d+
+
+
+##########################################
+#              SchoolAdmin               #
+##########################################
+
+schooladmin_show:
+ path: /skoleadmin
+ defaults: {_controller: AppBundle:SchoolAdmin:show }
+
+schooladmin_filter_schools_by_department:
+ path: /skoleadmin/avdeling/{id}
+ defaults: {_controller: AppBundle:SchoolAdmin:showSchoolsByDepartment }
+ requirements:
+    _method: GET|POST
+    id: \d+
+
+schooladmin_create_school_by_department:
+ path: /skoleadmin/opprett/{id}
+ defaults: {_controller: AppBundle:SchoolAdmin:createSchoolForDepartment }
+ requirements:
+    _method: GET|POST
+    id: \d+
+
+schooladmin_update:
+ path: /skoleadmin/oppdater/{id}
+ defaults: {_controller: AppBundle:SchoolAdmin:updateSchool }
+ requirements:
+    _method: GET|POST
+    id: \d+
+
+schooladmin_delete_school_by_id:
+ path: /skoleadmin/slett/{id}
+ defaults: {_controller: AppBundle:SchoolAdmin:deleteSchoolById }
+ requirements:
+    _method: GET
+    id: \d+
+ options:
+    expose: true
+
+schooladmin_remove_user_from_school_by_id:
+ path: /skoleadmin/skole/slett/{id}
+ defaults: {_controller: AppBundle:SchoolAdmin:removeUserFromSchoolById }
+ requirements:
+    _method: GET
+    id: \d+
+ options:
+    expose: true
+
+schooladmin_show_users_of_department_superadmin:
+ path: /skoleadmin/brukere/avdeling/{id}
+ defaults: {_controller: AppBundle:SchoolAdmin:showUsersByDepartmentSuperadmin }
+ requirements:
+    _method: GET|POST
+    id: \d+
+
+schooladmin_show_users_of_department:
+ path: /skoleadmin/brukere
+ defaults: {_controller: AppBundle:SchoolAdmin:showUsersByDepartment }
+ requirements:
+    _method: GET|POST
+    id: \d+
+
+schooladmin_delegate_school_to_user:
+ path: /skoleadmin/tildel/skole/{id}
+ defaults: {_controller: AppBundle:SchoolAdmin:delegateSchoolToUser }
+ requirements:
+    _method: GET|POST
+    id: \d+
+
+schooladmin_show_specific_school:
+ path: /skole/skole/{id}
+ defaults: {_controller: AppBundle:SchoolAdmin:showSpecificSchool }
+ requirements:
+    _method: GET|POST
+    id: \d+
+
+
+##########################################
+#              Interview                 #
+##########################################
+
+interview_conduct:
+ path: /intervju/conduct/{id}
+ defaults: { _controller: AppBundle:Interview:conduct }
+ requirements:
+  id: \d+
+
+interview_show:
+ path: /intervju/vis/{id}
+ defaults: { _controller: AppBundle:Interview:show }
+ requirements:
+  id: \d+
+
+interview_schema:
+ path: /intervju/skjema
+ defaults: { _controller: AppBundle:Interview:showSchemas }
+
+interview_schema_create:
+ path: /intervju/skjema/opprett
+ defaults: { _controller: AppBundle:Interview:createSchema }
+
+interview_schema_edit:
+ path: /intervju/skjema/{id}
+ defaults: { _controller: AppBundle:Interview:editSchema }
+ requirements:
+  id: \d+
+
+interview_schema_delete:
+ path: /intervju/skjema/slett/{id}
+ defaults: { _controller: AppBundle:Interview:deleteSchema }
+ requirements:
+  id: \d+
+ options:
+  expose: true
+
+interview_assign:
+ path: /intervju/fordel/{id}
+ defaults: { _controller: AppBundle:Interview:assign }
+ requirements:
+  id: \d+
+ options:
+  expose: true
+
+interview_assign_bulk:
+ path: /intervju/fordel/bulk
+ defaults: { _controller: AppBundle:Interview:bulkAssign }
+ options:
+  expose: true
+
+interview_delete:
+ path: /intervju/slett/{id}
+ defaults: { _controller: AppBundle:Interview:deleteInterview }
+ requirements:
+  id: \d+
+ options:
+  expose: true
+
+interview_delete_bulk:
+ path: /intervju/slett/bulk
+ defaults: { _controller: AppBundle:Interview:bulkDeleteInterview }
+ requirements:
+  _method: POST
+ options:
+  expose: true
+
+interview_delete_all_by_semester:
+ path: /intervju/slett/alle/{id}
+ defaults: { _controller: AppBundle:Interview:deleteInterviewsBySemester }
+ requirements:
+  id: \d+
+ options:
+  expose: true
+
+interview_schedule:
+ path: /intervju/settopp/{id}
+ defaults: { _controller: AppBundle:Interview:schedule }
+ requirements:
+  id: \d+
+
+
+##########################################
+#                Forum                   #
+##########################################
+
+forum_show:
+ path: /forum
+ defaults: { _controller: AppBundle:Forum:show }
+
+forum_show_specific_by_id:
+ path: /forum/{id}
+ defaults: { _controller: AppBundle:Subforum:showSpecific }
+ requirements:
+  _method: GET|POST
+  id: \d+
+
+forum_show_specific_subforum_threads_by_id:
+ path: /forum/{forumId}/subforum/{id}
+ defaults: { _controller: AppBundle:Thread:showSpecificSubforumThreads }
+ requirements:
+  _method: GET|POST
+  id: \d+
+
+forum_show_specific_thread_by_id:
+ path: /forum/{forumId}/subforum/tråd/{id}
+ defaults: { _controller: AppBundle:Post:showSpecificThread }
+ requirements:
+  _method: GET|POST
+  id: \d+
+
+forum_create_thread:
+ path: /forum/{forumId}/subforum/tråd/opprett/{id}
+ defaults: { _controller: AppBundle:Thread:createThread }
+ requirements:
+  _method: GET|POST
+  id: \d+
+
+forum_create_forum:
+ path: /forum/opprett
+ defaults: { _controller: AppBundle:Forum:createForum }
+
+forum_create_subforum:
+ path: /forum/subforum/opprett
+ defaults: { _controller: AppBundle:Subforum:createSubforum }
+
+forum_delete_forum_by_id:
+ path: /forum/slett/{id}
+ defaults: { _controller: AppBundle:Forum:deleteForum }
+ requirements:
+  _method: GET|POST
+  id: \d+
+ options:
+  expose: true
+
+forum_delete_subforum_by_id:
+ path: /forum/subforum/slett/{id}
+ defaults: { _controller: AppBundle:Subforum:deleteSubforum }
+ requirements:
+  _method: GET|POST
+  id: \d+
+ options:
+  expose: true
+
+forum_delete_thread_by_id:
+ path: /forum/subforum/tråd/slett/{id}
+ defaults: { _controller: AppBundle:Thread:deleteThread }
+ requirements:
+  _method: GET|POST
+  id: \d+
+ options:
+  expose: true
+
+forum_edit_forum_by_id:
+ path: /forum/rediger/{id}
+ defaults: { _controller: AppBundle:Forum:editForum }
+ requirements:
+  _method: GET|POST
+  id: \d+
+
+forum_edit_post_by_id:
+ path: /forum/{forumId}/subforum/tråd/innlegg/rediger/{id}
+ defaults: { _controller: AppBundle:Post:editPost }
+ requirements:
+  _method: GET|POST
+  id: \d+
+
+forum_delete_post_by_id:
+ path: /forum/subforum/tråd/innlegg/slett/{id}
+ defaults: { _controller: AppBundle:Post:deletePost }
+ requirements:
+  _method: GET|POST
+  id: \d+
+ options:
+  expose: true
+
+forum_edit_subforum_by_id:
+ path: /forum/subforum/rediger/{id}
+ defaults: { _controller: AppBundle:Subforum:editSubforum }
+ requirements:
+  _method: GET|POST
+  id: \d+
+
+forum_edit_thread_by_id:
+ path: /forum/subforum/{forumId}/tråd/rediger/{id}
+ defaults: { _controller: AppBundle:Thread:editThread }
+ requirements:
+  _method: GET|POST
+  id: \d+
+
+##########################################
+#                File browser            #
+##########################################
+#ElFinder routes
+elfinder:
+    path: /elfinder/{instance}
+    defaults: { _controller: FMElfinderBundle:ElFinder:show, instance: default }
+ef_connect: #This one is used only internally by FMElfinderBundle? TODO: Er det riktig?
+    path:  /efconnect/{instance}
+    defaults: { _controller: FMElfinderBundle:ElFinder:load, instance: default }
+
+#Route for opening a file browser window by a user of the website. Not related to ckeditor or any other subsystem.
+file_browser:
+   path: /filebrowser
+   defaults: { _controller: AppBundle:FileBrowser:browse }
+
+
+#Use when loading for example image files in website TODO: DISABLE THIS
+#uploads_folder_serve:
+#   path: /Offentlige filer/{file_path}
+#   defaults: { _controller: AppBundle:FileBrowser:fileStream }
+#   requirements:
+#     file_path: .+
+
+#Access to public files for users of the website (Requirement 11.3)
+#public_files:
+ #  path: /public_files
+  # defaults: { _controller: AppBundle:FileBrowser:showPublicFiles }
+
+##########################################
+#                Gallery                 #
+##########################################
+#todo: Some paths here are not in use anymore
+#todo: there is a bad mix of the words "gallery" and "album". A gallery is a collection of albums. In most cases when you
+#      read "gallery", "album" is the actual concept referred to here and elsewhere.
+
+# A quick-fix for a problem with the link back to album when editing a album.
+gallery_photos_xtra:
+    path: /gallery/album/{album_id}
+    defaults: { _controller: AppBundle:Gallery:photosGet }
+
+#Same type of fix as above
+edit_album_xtra:
+     path: /gallery/edit_album/{album_id}
+     defaults: { _controller: AppBundle:Gallery:editAlbum }
+
+#Take a guess...
+gallery_delete_album_xtra:
+    path: /gallery/gallery_delete_album/{album_id}
+    defaults: { _controller: AppBundle:Gallery:deleteAlbum }
+
+#Path to the main gallery page. id is the id of album to show at load
+gallery:
+   path: /gallery/{id}
+   defaults: { _controller: AppBundle:Gallery:show, id: -1 }
+
+gallery_upload:
+     path: /gallery_upload
+     defaults: { _controller: AppBundle:Gallery:upload }
+
+#todo: may delete check before i do it
+gallery_upload_form:
+     path: /gallery_upload_form/{album_id}
+     defaults: { _controller: AppBundle:Gallery:showUploadForm }
+
+# Returns form for editing an album
+edit_album:
+     path: /edit_album/{album_id}
+     defaults: { _controller: AppBundle:Gallery:editAlbum }
+
+
+gallery_create:
+    path: /gallery_create
+    defaults: { _controller: AppBundle:Gallery:createGallery }
+
+#Returns, in JSON format, a list of all the albums in the database that the requesting user is allowed to see.
+gallery_galleries:
+    path: /galleries
+    defaults: { _controller: AppBundle:Gallery:galleriesListGet }
+
+gallery_photos:
+    path: /album/{album_id}
+    defaults: { _controller: AppBundle:Gallery:photosGet }
+
+gallery_delete_album:
+   path: /gallery_delete_album/{album_id}
+   defaults: { _controller: AppBundle:Gallery:deleteAlbum }
+
+gallery_delete_photo: #todo: slett denne?
+    path: /gallery_delete_photo/{photo_id}
+    defaults: { _controller: AppBundle:Gallery:deletePhoto }
+
+gallery_edit_photo:
+   path: /gallery_edit_photo/{photo_id}
+   defaults: { _controller: AppBundle:Gallery:editPhoto }
+
+
+##########################################
+#                File uploader           #
+##########################################
+file_uploader:
+    path: /file_upload/  #Fix this
+#photo:
+#    path: ../Gallery photos/
+
+
+###########################################
+#                 File system             #
+#                                         #
+#  For streaming files (e.g. images, pdf) #
+###########################################
+public_files:
+   path: /Offentlige filer/{file_path}
+   defaults: { _controller: AppBundle:FileBrowser:fileStream }
+   requirements:
+     file_path: .+
+
+#todo: Is this path in use now?
+#profile_photos:
+#   path: /Profile photos/{file_path}
+#   defaults: { _controller: AppBundle:FileBrowser:fileStream }
+#   requirements:
+#     file_path: .+
+
+##########################################
+#                Subsitute               #
+##########################################
+
+substitute_show:
+   path: /vikar
+   defaults: { _controller: AppBundle:Substitute:show }
+
+substitute_show_by_department:
+   path: /vikar/{id}
+   defaults: { _controller: AppBundle:Substitute:showSubstitutesByDepartment }
+   requirements:
+      id: \d+
+
+substitute_edit:
+   path: /vikar/rediger/{id}
+   defaults: { _controller: AppBundle:Substitute:edit }
+
+substitute_create:
+   path: /vikar/opprett/{id}
+   defaults: { _controller: AppBundle:Substitute:create }
+   options:
+      expose: true
+
+substitute_delete:
+   path: /vikar/slett/{id}
+   defaults: { _controller: AppBundle:Substitute:delete }
+   options:
+      expose: true
+
+##########################################
+#                Certificate              #
+##########################################
+certificate_show:
+   path: /attest
+   defaults: { _controller: AppBundle:Certificate:show }
+
+certificate_delete_by_id:	
+  path: /attest/slett/{id}
+  defaults: { _controller: AppBundle:Certificate:delete }
+  requirements:
+    _method: GET|POST
+  options:
+    expose: true
+
+certificate_request:
+  path: /attest/forespør
+  defaults: { _controller: AppBundle:Certificate:request }
+  requirements:
+    _method: GET|POST
+  options:
+    expose: true
+
+##########################################	
+#                Sponsors                #
+##########################################
+
+sponsors_edit:	
+  path: /sponsors/edit
+  defaults: { _controller: AppBundle:Sponsors:sponsorsEdit }
+
+sponsors_update:	
+  path: /sponsors/update/{id}
+  defaults: { _controller: AppBundle:Sponsors:sponsorsUpdate }
+
+sponsors_add:	
+  path: /sponsors/add
+  defaults: { _controller: AppBundle:Sponsors:sponsorsAdd }

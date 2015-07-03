@@ -1,0 +1,27 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    app.twig_extension: #todo: change name
+        class: AppBundle\Twig\Extension\StaticContentExtension
+        arguments:
+              doctrine: "@doctrine"
+              securityContext: "@security.context"
+        tags:
+            - { name: twig.extension }
+
+    app.twig_sponsors_extension:
+        class: AppBundle\Twig\Extension\SponsorsExtension
+        arguments:
+             doctrine: "@doctrine"
+        tags:
+            - { name: twig.extension }
+
+    app.reversed_role_hierarchy:
+        class: AppBundle\Role\ReversedRoleHierarchy
+        arguments: ["%security.role_hierarchy.roles%"]

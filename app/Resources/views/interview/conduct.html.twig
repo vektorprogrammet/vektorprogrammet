@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{# Form themes user to modify the templates of the various form components #}
+{% form_theme form 'form/interview_layout.html.twig' %}
+{% form_theme form.interviewPractical.monday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.interviewPractical.tuesday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.interviewPractical.wednesday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.interviewPractical.thursday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.interviewPractical.friday 'form/radio_grid_layout.html.twig' %}
+
+
+{% block body %}
+    <p></p>
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <div class="panel">
+                <div class="row">
+                    <div class="small-12 medium-12 large-12 columns">
+                        <h1>Intervju</h1>
+                        <h3>Kandidat</h3>
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th> Fornavn</th>
+                                    <th> Etternavn</th>
+                                    <th> Tlf </th>
+                                    <th> E-post </th>
+                                    <th> Linje </th>
+                                    <th> År </th>
+                                    <th> Tidligere deltagelse </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    {% set a = interview.application %}
+                                    <td> {{ a.firstName }} </td>
+                                    <td> {{ a.lastName }} </td>
+                                    <td> {{ a.phone }} </td>
+                                    <td> {{ a.email }} </td>
+                                    <td> {{ a.statistic.fieldOfStudy }} </td>
+                                    <td> {{ a.statistic.yearOfStudy }} </td>
+
+                                    {% if a.statistic.previousParticipation == 1 %}
+                                        <td> Ja </td>
+                                    {% else %}
+                                        <td> Nei </td>
+                                    {% endif %}
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3>Intervjuet av</h3>
+                        <p>{{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}</p>
+                    </div>
+                </div>
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+
+
+                <h3>Praktisk informasjon</h3>
+                <div class="row">
+                    <div class="small-12 columns">
+                        <label class="question-label">Hvilke dager passer for deg?</label>
+                        {{ form_row(form.interviewPractical.monday) }}
+                        {{ form_row(form.interviewPractical.tuesday) }}
+                        {{ form_row(form.interviewPractical.wednesday) }}
+                        {{ form_row(form.interviewPractical.thursday) }}
+                        {{ form_row(form.interviewPractical.friday) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-12 medium-12 large-9 columns">
+                        {{ form_row(form.interviewPractical.position) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-12 medium-12 large-9 columns">
+                        {{ form_row(form.interviewPractical.substitute) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-12 medium-12 large-9 columns">
+                        {{ form_row(form.interviewPractical.english) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-12 medium-12 large-9 columns">
+                        {{ form_row(form.interviewPractical.heardAboutFrom) }}
+                    </div>
+                </div>
+
+                <h3>Intervjuspørsmål <small>{{ interview.interviewSchema.name }}</small></h3>
+                {% for interviewAnswer in form.interviewAnswers %}
+                    <div class="row">
+                        <div class="small-12 medium-12 large-9 columns">
+                            {{ form_row(interviewAnswer.answer) }}
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <h3>Evaluering</h3>
+                <div class="row">
+                    <div class="small-12 medium-12 large-4 columns">
+                        {{ form_row(form.interviewScore.explanatoryPower) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-12 medium-12 large-4 columns">
+                        {{ form_row(form.interviewScore.roleModel) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-12 medium-12 large-4 columns">
+                        {{ form_row(form.interviewScore.drive) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-12 medium-12 large-4 columns end">
+                        {{ form_row(form.interviewScore.totalImpression) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-12 medium-12 large-12 columns">
+                        {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

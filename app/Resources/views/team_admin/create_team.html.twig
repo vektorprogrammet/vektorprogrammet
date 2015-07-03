@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Opprett team
+{% endblock %}
+
+{% block body %}
+    <p></p>
+	
+	<div class="row">
+			<div class="small-12 medium-12 large-12 columns">
+					
+					<h1> Opprett team </h1>
+					
+					<p> Oppretter team for avdeling {{ department.shortname }} </p>
+					
+					<hr>
+					
+						<div class="row">
+							<div class="small-12 medium-12 large-12 columns">
+									
+									{{ form_start(form) }}
+									{{ form_widget(form) }}
+									{{ form_end(form) }}
+									
+							</div>
+						</div>
+						
+						
+						
+												
+			</div>
+		</div>
+	
+{% endblock %}

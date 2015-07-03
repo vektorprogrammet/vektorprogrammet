@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+    <script src="{{ asset('bundles/app/js/deleteablerow.js') }}"></script>
+
+    <script>
+
+        /**
+         * This object organizes the javascript used by this twig.
+         *
+         * The onReady function is called when the document is ready.
+         */
+        ArticleAdmin = {
+
+            onReady: function() {
+                // Bind delete article functionality to each delete button
+                $(".delete").deleteablerow('articleadmin_delete', {
+                    confirmation: {
+                        modal: $('#confirmModal'),
+                        acceptButton: $('#modalAccept'),
+                        cancelButton: $('#modalCancel')
+                    }
+                });
+
+                // Bind toggle sticky functionality to each sticky button
+                $(".sticky").on("click", ArticleAdmin.toggleSticky);
+            },
+
+            toggleSticky: function(event) {
+                event.preventDefault();
+                var entityId = parseInt(this.id);
+                var button = $(this);
+
+                $.ajax({
+                    type: 'GET',
+                    url: Routing.generate("articleadmin_sticky", { id: entityId }),
+                    cache: false,
+                    success: function(response) {
+                        // Update button depending on sticky status
+                        if (response.success) {
+                            if(response.sticky) {
+                                button.addClass("success");
+                            } else {
+                                button.removeClass("success");
+                            }
+                        }
+                    }
+                });
+            }
+        };
+
+        $(document).ready(ArticleAdmin.onReady);
+    </script>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+
+            <h1>Artikkel</h1>
+
+            <hr>
+
+            <ul class="inline-list">
+                <li>
+                    <a href="{{ path('articleadmin_create') }}" class="button tiny">Ny Artikkel</a>
+                </li>
+            </ul>
+
+            <table width="100%" id="article-table">
+                <thead>
+                <tr>
+                    <th width="40%">Tittel</th>
+                    <th>Sist Oppdatert</th>
+                    <th>Skrevet Av</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for a in pagination %}
+                    <tr id="{{ a.id }}">
+                        <td>{{ a.title|raw }}</td>
+                        <td>{{ a.updated|date("d.m.y - G:i") }}</td>
+                        <td>{{ a.author.firstName }} {{ a.author.lastName }}</td>
+
+                        <td>
+                            <a href="#" class="button tiny sticky{{ (a.sticky == 1) ? ' success' : '' }}" id="{{ a.id }}">
+                                <i class="fa fa-thumb-tack"></i> Sticky
+                            </a>
+                        </td>
+
+                        <td>
+                            <a href="{{ path('articleadmin_edit', { 'id': a.id }) }}" class="button tiny" id="{{ a.id }}">
+                                <i class="fa fa-pencil-square-o"></i> Rediger
+                            </a>
+                        </td>
+
+                        <td>
+                            <a href="#" class="button tiny alert delete" id="{{ a.id }}">
+                                <i class="fa fa-trash"></i> Slett
+                            </a>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="row" style="text-align: center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+
+    {% include 'common/confirmation_modal.html.twig' %}
+
+{% endblock %}

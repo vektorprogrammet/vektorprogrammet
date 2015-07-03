@@ -1,0 +1,287 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link  href="{{ asset('scripts/cropper/dist/cropper.min.css') }}" rel="stylesheet">
+    <link  href="{{ asset('css/jquery.guillotine.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('scripts/cropper/dist/cropper.min.js') }}"></script>
+    <script src="{{ asset('scripts/jquery.guillotine.min.js') }}"></script>
+    <script src="{{ asset('scripts/optionbox.js') }}"></script>
+
+    <script>
+
+        /**
+         * This object organizes the javascript used by this twig and the twigs extending it
+         *
+         * It holds the default image sizes used by the cropper function, see loadImages().
+         *
+         * The onReady function is called when the document is ready.
+         */
+        Article = {
+
+            onReady: function() {
+                // Load the toggle box used to group functionality (bilder/publisering etc)
+                $(".option-box").optionbox();
+
+                // Bind elfinder to each of the image url text inputs
+                $("input[id^='article_image']").on("click", Article.openElfinder);
+
+                // Bind elfinder to the crop image url text input
+                $("#crop_image").on("click", Article.openElfinder);
+
+                // Bind the button for loading the image in the crop url into img tags
+                $("#loadImage").on("click", Article.loadImages);
+
+                // Bind the open crop modal button
+                $("#openCropModal").on("click", Article.openCropModal);
+
+                // Bind the crop form submit button
+                $("form[name='crop']").submit(Article.onCropFormSubmit);
+            },
+
+            openElfinder: function() {
+                var childWin = window.open("{{ asset('/elfinder/article_form') }}?id=" + this.id, "popupWindow", "height=450, width=900");
+            },
+
+            loadImages: function(event) {
+                event.preventDefault();
+                var url = $("#crop_image").val();
+                var largeImageCrop = $("<img>").attr("src", url);
+                var mediumImageCrop = $("<img>").attr("src", url);
+                var smallImageCrop = $("<img>").attr("src", url);
+
+                $(".img-container-large").html(largeImageCrop);
+                $('.img-container-medium').html(mediumImageCrop);
+                $('.img-container-small').html(smallImageCrop);
+
+                largeImageCrop.on("load", function() {
+                    $(this).guillotine({
+                        width: 1100,
+                        height: 350,
+                        onChange: function(data, action){
+                            $("#crop_largeCropData").val(JSON.stringify(data));
+                        }
+                    });
+                    $("#crop_largeCropData").val(JSON.stringify($(this).guillotine('getData')));
+                    Article.addCropControls($(this));
+                });
+
+                mediumImageCrop.on("load", function() {
+                    $(this).guillotine({
+                        width: 715,
+                        height: 300,
+                        onChange: function(data, action){
+                            $("#crop_mediumCropData").val(JSON.stringify(data));
+                        }
+                    });
+                    $("#crop_mediumCropData").val(JSON.stringify($(this).guillotine('getData')));
+                    Article.addCropControls($(this));
+                });
+
+                smallImageCrop.on("load", function() {
+                    $(this).guillotine({
+                        width: 500,
+                        height: 300,
+                        onChange: function(data, action){
+                            $("#crop_smallCropData").val(JSON.stringify(data));
+                        }
+                    });
+                    $("#crop_smallCropData").val(JSON.stringify($(this).guillotine('getData')));
+                    Article.addCropControls($(this));
+                });
+            },
+
+            openCropModal: function(event) {
+                event.preventDefault();
+                $("#cropModal").foundation("reveal", "open");
+            },
+
+            addCropControls: function(image) {
+                var zoomInButton = $('<i class="fa fa-search-plus fa-lg"></i>');
+                var zoomOutButton = $('<i class="fa fa-search-minus fa-lg"></i>');
+
+                zoomInButton.on("click", function() {
+                    image.guillotine("zoomIn");
+                });
+
+                zoomOutButton.on("click", function() {
+                    image.guillotine("zoomOut");
+                });
+
+                var controls = $('<div></div>').addClass("cropControls");
+
+                controls.css("position", "absolute");
+                controls.css("top", "1rem");
+                controls.css("cursor", "pointer");
+
+                controls.append(zoomInButton).append(zoomOutButton);
+
+                image.closest(".columns").append(controls);
+            },
+
+            onCropFormSubmit: function(event) {
+                event.preventDefault();
+                var formdata = $(this).serialize();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('articleadmin_crop') }}",
+                    data: formdata,
+                    success: function(response) {
+                        if(response.success) {
+                            setValue(response.imageLarge, 'article_imageLarge');
+                            setValue(response.imageMedium, 'article_imageMedium');
+                            setValue(response.imageSmall, 'article_imageSmall');
+
+                            $("#cropModal").foundation("reveal", "close");
+                        } else {
+                            alert(response.cause);
+                        }
+                    }
+                });
+            }
+
+        };
+
+        $(document).ready(Article.onReady);
+
+        function setValue(value, element_id) {
+            $((element_id ? '[id="'+ element_id +'"]': '')).val(value);
+        }
+    </script>
+
+{% endblock %}
+
+
+{% block body %}
+
+    <div class="row">
+        <p></p>
+        <div class="small-12 medium-12 large-12 columns">
+            <h1>{{ title }}</h1>
+
+            <hr>
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            {{ form_row(form.title) }}
+            {{ form_row(form.article) }}
+
+
+            <div class="option-box">
+                <h5>Bilder</h5>
+                <div class="content">
+                    <div class="row">
+                        <div class="medium-4 columns">
+                            <span data-tooltip aria-haspopup="true" class="has-tip" title="Hovedbilde, vises over selve artikkelen og på forsiden.">Hovedbilde</span>
+                            {{ form_errors(form.imageLarge) }}
+                            {{ form_widget(form.imageLarge) }}
+                        </div>
+                        <div class="medium-4 columns">
+                            <span data-tooltip aria-haspopup="true" class="has-tip" title="Medium bilde, brukes av nyhetsiden.">
+                                Medium bilde
+                            </span>
+                            {{ form_errors(form.imageMedium) }}
+                            {{ form_widget(form.imageMedium) }}
+                        </div>
+                        <div class="medium-4 columns">
+                            <span data-tooltip aria-haspopup="true" class="has-tip" title="Lite bilde, brukes av regionsnyhetene på opptaksiden og nyhetsiden.">
+                                Lite bilde
+                            </span>
+                            {{ form_errors(form.imageSmall) }}
+                            {{ form_widget(form.imageSmall) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <div class="row">
+                        <div class="small-12 columns">
+                            <a href="#" id="openCropModal">Velg et bilde og crop</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="option-box">
+                <h5>Publisering</h5>
+                <div class="content">
+                    <div class="row">
+                        <div class="small-8 columns">
+                            <span data-tooltip aria-haspopup="true" class="has-tip" title="Hvilke regioner artikkelen er knyttet til. Velges ingen er artikkelen knyttet til alle.">
+                                Regioner
+                            </span>
+                            {{ form_errors(form.departments) }}
+                            {{ form_widget(form.departments) }}
+                        </div>
+                        <div class="small-4 columns">
+                            <div class="right">
+                                <span data-tooltip aria-haspopup="true" class="has-tip" title="Artikkelen fryses på forsiden i nyhetskarusellen.">
+                                    Sticky
+                                </span><br>
+                                {{ form_errors(form.sticky) }}
+                                {{ form_widget(form.sticky) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <div class="row">
+                        <div class="small-8 columns">
+                            {{ form_widget(form.preview, {'attr': {'class': 'button tiny', 'formtarget': '_blank'}}) }}
+                        </div>
+                        <div class="small-4 columns">
+                            {{ form_widget(form.publish, {'attr': {'class': 'button tiny right'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ form_end(form) }}
+
+            <div id="cropModal" class="reveal-modal small" data-reveal aria-labelledby="cropImageModal" aria-hidden="true" role="dialog">
+                <h4>Crop</h4>
+                {{ form_start(cropImageForm) }}
+                <div class="row">
+                    <div class="small-9 columns">
+                        {{ form_row(cropImageForm.image) }}
+                    </div>
+                    <div class="small-3 columns">
+                        <a href="#" class="button tiny right" id="loadImage">Last inn</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-12 columns">
+                        <div class="img-container-large">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-7 columns">
+                        <div class="img-container-medium">
+                        </div>
+                    </div>
+                    <div class="small-5 columns">
+                        <div class="img-container-small">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-12 columns">
+                        {{ form_widget(cropImageForm.crop, {'attr': {'class': 'button tiny right'}}) }}
+                    </div>
+                </div>
+                <div class="results"></div>
+                {{ form_end(cropImageForm) }}
+                <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

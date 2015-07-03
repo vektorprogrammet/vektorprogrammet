@@ -1,0 +1,54 @@
+{# This modifies a vendor template, the only line changed is 32 #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    {% if includeAssets %}
+        {% include "FMElfinderBundle:Elfinder:helper/assets_css.html.twig" %}
+    {% endif %}
+</head>
+<body>
+{% if includeAssets %}
+    {% include "FMElfinderBundle:Elfinder:helper/assets_js.html.twig" %}
+{% endif %}
+<script type="text/javascript" charset="utf-8">
+    function getUrlParam(paramName) {
+        var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
+        var match = window.location.search.match(reParam) ;
+
+        return (match && match.length > 1) ? match[1] : '' ;
+    }
+    $().ready(function() {
+        var funcNum = getUrlParam('CKEditorFuncNum');
+        var mode = getUrlParam('mode');
+
+        var f = $('.elfinder').elfinder({
+            url : '{{path('ef_connect', {'instance': instance })}}'+'?mode='+mode,
+            lang : '{{locale}}',
+            getFileCallback : function(file) {
+                if (funcNum) {
+                    {% if relative_path %}
+                        {# This is the only line changed, it adds a / prefix to the path and replaces all \ with / #}
+                        window.opener.CKEDITOR.tools.callFunction(funcNum, '/' + file.path.replace(/\\/g,"/"));
+                    {% else %}
+                        window.opener.CKEDITOR.tools.callFunction(funcNum, file.url);
+                    {% endif %}
+                    window.close();
+                }
+            }
+        });
+
+        {% if fullscreen %}
+        $(window).resize(function(){
+            var h = $(window).height();
+            var $ef = $('.elfinder');
+            if($ef.height() != h - 20){
+                $ef.height(h -20).resize();
+            }
+        });
+        {% endif %}
+    });
+</script>
+<div class="elfinder"></div>
+</body>
+</html>

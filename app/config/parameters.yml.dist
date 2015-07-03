@@ -1,0 +1,43 @@
+# This file is a "template" of what your parameters.yml file should look like
+parameters:
+    database_driver:   pdo_mysql
+    database_host:     127.0.0.1
+    database_port:     ~
+    database_name:     symfony
+    database_user:     root
+    database_password: ~
+    # You should uncomment this if you want use pdo_sqlite
+    # database_path: "%kernel.root_dir%/data.db3"
+
+    mailer_transport:  smtp
+    mailer_host:       127.0.0.1
+    mailer_port:       ~
+    mailer_user:       ~
+    mailer_password:   ~
+
+    locale:            en
+
+    # File upload parameters
+    public_uploads: "Offentlige filer"
+    private_uploads: "../Private filer"
+
+    # Gallery photos folder
+    gallery_folder: "../Gallery photos"
+
+    # Profile photos
+    profile_photos: '../Profile photos'
+
+    # Logo images
+    logo_images: '../Logo images'
+
+    # Article images
+    article_images: 'article_images'
+
+    # Sender email for user creation mails
+    no_reply_email_user_creation: ~
+
+    # Sender email for contact form mails
+    no_reply_email_contact_form: ~
+
+    # A secret key that's used to generate certain security-related tokens
+    secret:            ThisTokenIsNotSoSecretChangeIt

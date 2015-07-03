@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<p></p>
+
+<div class="row">
+    <div class="small-12 columns">
+
+        <h1>Endre vikarinformasjon</h1>
+
+        <hr>
+
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="small-12 medium-4 columns">
+                <h4>Personlig informasjon</h4>
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+                {{ form_row(form.phone) }}
+                {{ form_row(form.email) }}
+            </div>
+
+            <div class="small-12 medium-4 medium-offset-1 end columns">
+                <h4>Arbeidsdager</h4>
+                {{ form_row(form.monday) }}
+                {{ form_row(form.tuesday) }}
+                {{ form_row(form.wednesday) }}
+                {{ form_row(form.thursday) }}
+                {{ form_row(form.friday) }}
+            </div>
+        </div>
+        {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
+        <p></p>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

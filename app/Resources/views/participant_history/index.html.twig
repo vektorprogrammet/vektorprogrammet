@@ -1,0 +1,228 @@
+{% extends 'base.html.twig' %}
+
+{% block customScripts %}
+
+	<script>
+	
+	$(document).ready(function() {
+		
+		{# -------------------------------------------- #}
+		
+		
+		$("#assistantSearch").keyup(function(){
+		
+			_this = this;
+			
+			$.each($("#assistantTable tbody").find("tr"), function() {
+			
+				if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
+				   $(this).hide();
+				}
+				else {
+					 $(this).show();         
+				}
+			});
+			
+		}); 
+		
+		{# -------------------------------------------- #}
+		
+		
+		$("#workSearch").keyup(function(){
+		
+			_this = this;
+			
+			$.each($("#workTable tbody").find("tr"), function() {
+			
+				if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
+				   $(this).hide();
+				}
+				else {
+					 $(this).show();         
+				}
+			});
+			
+		}); 
+		
+	});
+
+	</script>
+
+{% endblock %}
+
+
+{% block body %}
+    <p></p>
+	
+	<div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+
+
+			<h1>Deltaker historikk</h1>
+				
+			<div class="row">		
+				
+				<div class="small-12 medium-12 large-12 columns">
+					<hr>
+				</div>
+				
+				<div class="small-12 medium-12 large-8 columns">
+										
+					<h3> Assistent historie </h3>
+
+				</div>
+								
+				<div class="small-12 medium-12 large-4 columns">
+
+					<input type="text" id="assistantSearch" placeholder="Søk..." />
+					
+				</div>
+				
+			</div>
+
+			
+			<div class="row">		
+				<div class="small-12 medium-12 large-12 columns">
+					
+					<hr>
+					
+					<table width="100%" id="assistantTable">
+									
+						<thead>
+									
+							<tr>
+								<th> Navn</th>
+								<th> Skole</th>
+								<th> E-post</th>
+								<th> Semester</th>
+								<th> Avdeling</th>
+							</tr>
+										
+						</thead>
+									
+						<tbody>
+										
+							{% for ah in assistantHistories %}
+											
+								<tr>
+									<td> <a href='{{ path('specific_profile', { 'id': ah.user.id }) }}'>{{ ah.user.firstName }} {{ah.user.lastName }}</a></td>
+									<td> 
+									
+									{% if ah.school is not null %}
+										{{ ah.school.name }}
+									{% else %}
+										Skolen er slettet.
+									{% endif %}
+									
+									</td>
+									<td> {{ ah.user.email }}</td>
+									<td> {{ ah.semester.name }}</td>
+									<td> {{ ah.semester.department.shortname }}</td>
+								</tr>
+												
+							{% endfor %} 
+										
+						</tbody>
+									
+					</table>
+
+				</div>
+			</div>
+				
+				
+			<div class="row">
+			
+				<div class="small-12 medium-12 large-12 columns">
+					<hr>
+				</div>
+							
+				<div class="small-12 medium-12 large-8 columns">
+
+					<h3> Arbeidshistorie </h3>
+									
+				</div>
+							
+				<div class="small-12 medium-12 large-4 columns">
+				
+					<input type="text" id="workSearch" placeholder="Søk..." />
+					
+				</div>
+					
+			</div>
+							
+			<div class="row">
+				<div class="small-12 medium-12 large-12 columns">
+					
+					<hr>
+					
+					<table width="100%" id="workTable">
+								
+						<thead>
+									
+							<tr>
+								<th> Navn</th>
+								<th> E-post</th>
+								<th> Team </th>
+								<th> Avdeling </th>
+								<th> Start </th>
+								<th> Slutt </th>
+							</tr>
+										
+						</thead>
+									
+						<tbody>
+									
+							{% for wh in workHistories %}
+										
+								<tr>
+									<td>
+										{% if wh.user is not null %}
+											<a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{ wh.user.firstName }} {{wh.user.lastName }}</a>
+										{% else %}
+											Brukeren er slettet.
+										{% endif %}
+									</td>
+									<td>
+										{% if wh.user is not null %}
+											{{ wh.user.email }}
+										{% else %}
+											Brukeren er slettet.
+										{% endif %}
+									</td>
+									<td>
+										{% if wh.team is not null %}
+											{{ wh.team.name }}
+										{% else %}
+											Teamet er slettet.
+										{% endif %}
+									</td>
+									<td> 
+										{% if wh.team is not null %}
+											{{ wh.team.department.shortName }}
+										{% else %}
+											Avdelingen er slettet.
+										{% endif %}
+									</td>
+									<td> {{ wh.startDate|date ('d/m/y') }} </td>
+													
+									{% if wh.endDate is not null %}
+										<td> {{ wh.endDate|date ('d/m/y') }}</td>
+									{% else %}
+										<td> - </td>
+									{% endif %}
+													
+								</tr>
+												
+							{% endfor %} 
+									
+						</tbody>
+								
+					</table>
+							
+				</div>
+			</dv>	
+			
+		</div>
+	</div>
+	
+{% endblock %}
