@@ -1,0 +1,415 @@
+@import "normalize";
+@import "settings";
+@import "foundation";
+
+// Or selectively include components
+// @import
+//   "foundation/components/accordion",
+//   "foundation/components/alert-boxes",
+//   "foundation/components/block-grid",
+//   "foundation/components/breadcrumbs",
+//   "foundation/components/button-groups",
+//   "foundation/components/buttons",
+//   "foundation/components/clearing",
+//   "foundation/components/dropdown",
+//   "foundation/components/dropdown-buttons",
+//   "foundation/components/flex-video",
+//   "foundation/components/forms",
+//   "foundation/components/grid",
+//   "foundation/components/inline-lists",
+//   "foundation/components/joyride",
+//   "foundation/components/keystrokes",
+//   "foundation/components/labels",
+//   "foundation/components/magellan",
+//   "foundation/components/orbit",
+//   "foundation/components/pagination",
+//   "foundation/components/panels",
+//   "foundation/components/pricing-tables",
+//   "foundation/components/progress-bars",
+//   "foundation/components/reveal",
+//   "foundation/components/side-nav",
+//   "foundation/components/split-buttons",
+//   "foundation/components/sub-nav",
+//   "foundation/components/switches",
+//   "foundation/components/tables",
+//   "foundation/components/tabs",
+//   "foundation/components/thumbs",
+//   "foundation/components/tooltips",
+//   "foundation/components/top-bar",
+//   "foundation/components/type",
+//   "foundation/components/offcanvas",
+//   "foundation/components/visibility";
+
+// Colors
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$vektor-white : #fafeff;
+$vektor-blue  : #6fceee;
+$vektor-grey  : #dbdcdd;
+
+// Global
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+
+body {
+  background: $vektor-white;
+}
+
+.inline-list {
+  margin: $inline-list-top-margin $inline-list-opposite-margin $inline-list-bottom-margin $inline-list-default-float-margin;
+}
+
+.f-dropdown {
+  outline: none;
+}
+
+.reveal-modal ul {
+  margin-left: 0;
+}
+
+// The default vektor button with the blue border
+.vektor-button {
+  @include button-base();
+
+  background: $vektor-white;
+  color: black;
+  border: solid $vektor-blue 3px;
+  padding: rem-calc(7 20 7 20);
+
+  // Medium screens
+  @media only screen and (min-width: 40.063em) {
+    font-size: rem-calc(16);
+  }
+
+  // Large screens
+  @media only screen and (min-width: 64.063em) {
+    font-size: rem-calc(20);
+  }
+}
+
+//The inverted vektor button
+.vektor-button-inverted {
+  @include button-base();
+
+  padding: rem-calc(7 20 7 20);
+  background: $vektor-blue;
+  color: white;
+  border: solid $vektor-white 3px;
+  font-size: rem-calc(20);
+}
+
+// A container with the same border as the vektor button
+.vektor-box {
+  padding: rem-calc(16);
+  border: solid $vektor-blue 3px;
+  margin-bottom: rem-calc(16);
+}
+
+// The toggle options box
+.option-box {
+  border: solid 1px $gainsboro;
+  background: $white;
+  margin: rem-calc(16) 0;
+
+  h5 {
+    padding: 8px 12px;
+    margin: 0 0;
+  }
+
+  .toggle-caret {
+    padding: 8px 12px;
+    float: right;
+    cursor: pointer;
+  }
+
+  .content {
+    border-top: solid 1px $gainsboro;
+    padding: 12px 12px;
+  }
+
+  .footer {
+    padding: 8px 12px;
+    border-top: solid 1px $gainsboro;
+    background: $white-smoke;
+  }
+}
+
+// Hide the content and the footer of the options box
+.closed {
+  .content, .footer {
+    display: none;
+  }
+}
+
+// Header
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.topbar {
+  width: 100%;
+  height: rem-calc(15);
+  background: $vektor-blue;
+  color: $vektor-white;
+  font-size: rem-calc(15);
+  margin-bottom: rem-calc(22);
+
+  .row, .columns {
+    height: rem-calc(30);
+  }
+
+  ul {
+    margin: $inline-list-top-margin $inline-list-opposite-margin 0 $inline-list-default-float-margin;
+    position: absolute;
+    bottom: 0.2rem;
+    right: 2rem + $column-gutter / 2;
+  }
+
+  li {
+    margin: 0 0.3rem 0 0;
+  }
+
+  i.fa-chevron-up, ul {
+    display: none;
+  }
+
+  .fa-chevron-up {
+    position: absolute;
+    bottom: 0;
+    right: $column-gutter / 2;
+  }
+
+  .fa-chevron-down {
+    position: absolute;
+    bottom: 0.9rem;
+    right: $column-gutter / 2;
+  }
+
+  &:hover {
+    height: rem-calc(30);
+    margin-bottom: rem-calc(7);
+
+    i.fa-chevron-down {
+      display: none;
+    }
+
+    i.fa-chevron-up, ul {
+      display: inherit;
+    }
+
+    ul {
+      font-size: 1.3rem;
+    }
+  }
+}
+
+header {
+  @include grid-row;
+
+  nav {
+    position: absolute;
+    bottom: rem-calc(7);
+    right: $column-gutter / 2;
+
+    > ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      margin-left: - rem-calc(35);
+
+      > li {
+        float: left;
+
+        // Medium screens
+        @media only screen and (min-width: 40.063em) {
+          margin-left: rem-calc(15);
+        }
+
+        // Large screens
+        @media only screen and (min-width: 64.063em) {
+          margin-left: rem-calc(30);
+        }
+      }
+    }
+  }
+}
+
+// Footer
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+footer{
+
+  .row {
+    border-top: solid 3px $vektor-blue;
+    padding-top: 2rem;
+  }
+
+  ul {
+    list-style-type: none;
+    margin-left: 0;
+  }
+
+}
+
+// Home
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+.banner-heading {
+  font-family: "Londrina Solid", sans-serif;
+  font-size: rem-calc(50);
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+
+  p {
+    font-family: "Londrina Solid", sans-serif;
+    font-size: rem-calc(50);
+  }
+}
+
+/*.home-icon-container {
+  padding: rem-calc(10 0);
+  background: $vektor-white;
+  border: solid $vektor-blue 3px;
+  //font-size: rem-calc(20);
+}*/
+
+#fa-calculator,#fa-briefcase,#fa-paperclip {
+  color: $vektor-blue;
+}
+
+
+
+// Article
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// News carousel graceful loading fix, hides images before javascript is finished loading.
+.news-carousel {
+  display: none;
+}
+
+.news-carousel-text {
+
+  // Small screens
+  @media only screen {
+    text-align: center;
+  }
+
+  // Medium screens and over
+  @media only screen and (min-width: 40.063em) {
+    text-align: inherit;
+  }
+
+}
+
+.article-box {
+  margin-bottom: rem-calc(20);
+}
+
+.article-heading {
+  font-family: "Londrina Solid", sans-serif;
+
+  // Medium screens
+  @media only screen and (min-width: 40.063em) {
+    font-size: rem-calc(35);
+  }
+
+  // Large screens
+  @media only screen and (min-width: 64.063em) {
+    font-size: rem-calc(55);
+  }
+
+  line-height: 1.1;
+}
+
+.department-filter {
+  a, p {
+    font-weight: bold;
+  }
+}
+
+.department-filter-active {
+  border-bottom: 2px solid $vektor-blue;
+}
+
+article {
+  h1,h2,h3,h4,h5,h6 {
+    font-weight: bold;
+  }
+
+  .byline {
+    color: $vektor-blue;
+  }
+
+  .for-department {
+    color: $vektor-blue;
+    font-weight: bold;
+    margin-bottom: 0;
+  }
+}
+
+
+
+// Admission & Contact
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.admissioncontainer {
+  background-color: $vektor-blue;
+  color: $vektor-white;
+  width: 100%;
+
+  h1,h3,label{
+    color: $vektor-white;
+  }
+}
+
+
+
+// AdmissionAdmin
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.interview-assign {
+  border-bottom: solid #dddddd 1px;
+}
+
+.active-application {
+  border-top: solid #dddddd 1px;
+  border-bottom: solid #dddddd 1px;
+}
+
+#bulkAllCheck, input[type="checkbox"].bulkCheck {
+  margin: rem-calc(4) 0 0 0;
+  min-width: rem-calc(16);
+  min-height: rem-calc(16);
+}
+
+#bulkAction {
+  line-height: rem-calc(34);
+  height: rem-calc(34);
+}
+
+#bulkSelect {
+  padding: 0 0 0 rem-calc(5);
+  height: rem-calc(34);
+}
+
+#interviewStatusNav {
+  margin: rem-calc(10) 0 0 0;
+}
+
+// Interview
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.question-label, .question-title {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.question-help {
+  font-size: 0.9rem;
+}
+
+ul.alternatives {
+  margin-bottom: 1rem;
+  input[type="checkbox"], input[type="radio"] {
+    margin: 0 0;
+  }
+}
+
+.radio-grid {
+  margin-right: 1rem;
+}

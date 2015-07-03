@@ -1,0 +1,9 @@
+services:
+#    app.example:
+#        class: AppBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+#  app.form.type.article:
+#   class: AppBundle\Form\Type\ArticleType
+#    arguments:
+#            - { name: form.type, alias: article }
