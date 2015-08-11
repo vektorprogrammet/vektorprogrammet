@@ -164,6 +164,13 @@ fm_elfinder:
                                 upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
                                 upload_deny: ['all']
                                 upload_max_size: 2M
+                          private:
+                                #show_hidden: false # defaults to false
+                                driver: LocalFileSystem
+                                path: %private_uploads%
+                                upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
+                                upload_deny: ['all']
+                                upload_max_size: 2M
 
         article_editor:
                     locale: %locale% # defaults to current request locale

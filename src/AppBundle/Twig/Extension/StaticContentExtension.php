@@ -38,6 +38,7 @@ class StaticContentExtension extends \Twig_Extension {
                     ->getRepository('AppBundle:StaticContent')
                     ->findOneByHtmlId($html_element_id);
         if (!$content) {
+		//TODO: opprett record i database tabellen staticcontent primary key lik html_element_id
            return "No content found!";
         }
         return $content->getHtml();
