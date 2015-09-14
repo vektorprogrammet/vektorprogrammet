@@ -47,7 +47,7 @@ class SurveyResultsController extends Controller
             'Lettere å spørre om hjelp studentene i timen',
             'Studentene kunne pensum',
             'Mer spennende å jobbe med matte',
-            'Jeg vil at assistentene kommer tilbake',];
+            'Jeg vil at assistentene kommer tilbake'];
 
         //Connects with the SurveyPupil entity
         $repositorySurvey = $this->getDoctrine()->getRepository('AppBundle:SurveyPupil');

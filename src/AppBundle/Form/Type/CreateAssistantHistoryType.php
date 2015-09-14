@@ -30,7 +30,7 @@ class CreateAssistantHistoryType extends AbstractType {
 				}
 			))
 			->add('workdays', 'choice', array(
-				'label' => 'Antall arbeidsdager i uken',
+				'label' => 'Antall uker (4 ganger = 4 uker, 2 ganger i uken i 4 uker = 8 uker)',
 				'choices' => array(
 					'1'   => '1',
 					'2'   => '2',
@@ -39,6 +39,7 @@ class CreateAssistantHistoryType extends AbstractType {
 					'5'   => '5',
 					'6'   => '6',
 					'7'   => '7',
+					'8'   => '8',
 				),
 			))
 			->add('School', 'entity', array(
