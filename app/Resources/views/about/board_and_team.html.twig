@@ -88,8 +88,7 @@
 						
 						<div class="small-12 medium-12 large-3 columns">
 
-							<img src="{{ asset(wh.user.picturePath) }}" onerror="if (this.src != 'images/defaultProfile.png') this.src = '../images/defaultProfile.jpg';" />
-							
+							<img src="{{ asset(wh.user.picturePath) }}" />
 							<div class="panel callout radius">
 								<h4> {{wh.user}}  </h4>
 								{% if wh.position is not null %}

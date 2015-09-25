@@ -103,6 +103,7 @@ class User implements AdvancedUserInterface, \Serializable {
 		$this->fieldOfStudy = new ArrayCollection();
 		$this->certificateRequests = new ArrayCollection();
 		$this->isActive = true;
+        $this->picture_path = '../images/defaultProfile.jpg';
     }
 	
 

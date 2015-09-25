@@ -38,8 +38,7 @@
 						<div class="large-4 small-12 columns">
 						
 							{# Get the picture saved for the user and display it #}
-							<img src="{{ asset(user.picturePath) }}" onerror="if (this.src != 'images/defaultProfile.png') this.src = '../images/defaultProfile.jpg';"/>
-
+							<img src="{{ asset(user.picturePath) }}" />
 								<div class="panel callout radius">
 									<h3>
 										{{ user.firstName }} {{ user.lastName }}
