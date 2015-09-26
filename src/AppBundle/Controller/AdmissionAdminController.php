@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntityValidator;
 
 /**
  * AdmissionAdminController is the controller responsible for administrative admission actions,
@@ -268,6 +269,26 @@ class AdmissionAdminController extends Controller {
             $user->setPhone($application->getPhone());
             $user->setFieldOfStudy($application->getStatistic()->getFieldOfStudy());
             $user->setEmail($application->getEmail());
+
+            // Create Username from email, and make sure it's unique
+            $new_username = explode("@", $application->getEmail())[0];
+            $user_rep = $em->getRepository('AppBundle:User');
+            $violator = $user_rep->findOneBy(
+                array('user_name' => $new_username)
+            );
+            $postfix = 0;
+            while($violator){
+                $postfix++;
+                $violator = $user_rep->findOneBy(
+                    array('user_name' => ($new_username . $postfix))
+                );
+            }
+            $new_username = $new_username . $postfix;
+
+
+            $user->setUserName($new_username);
+            $user->setPassword($new_username);
+
             $user->setIsActive('0');
             $user->setPicturePath("");
             $user->setNewUserCode($hashedNewUserCode);
@@ -289,15 +310,17 @@ class AdmissionAdminController extends Controller {
             //Sends a email with the url for resetting the password
             //echo('127.0.0.1:8000/opprettbruker/'.$createNewUserCode.'');
 
-            $this->sendNewUserEmail($createNewUserCode, $user->getEmail());
+            $this->sendNewUserEmail($createNewUserCode, 'sondreso@gmail.com');
 
             return new JsonResponse([
                 'success' => true,
             ]);
         }catch(\Exception $e){
             // If it is a integrity violation constraint (i.e a user with the email already exists)
-            if($e->getPrevious()->getCode() == 23000) {
-                $message = 'En bruker med denne E-posten eksisterer allerede.';
+            if($e->getPrevious()){ //If the error occurred when sending email, $e->getPrevious() will be null
+                if($e->getPrevious()->getCode() == 23000) {
+                    $message = 'En bruker med denne E-posten eksisterer allerede.';
+                }
             } else {
                 $message = 'En feil oppstod. Kontakt IT ansvarlig.';
             }
@@ -317,12 +340,15 @@ class AdmissionAdminController extends Controller {
      * @param $email
      */
     public function sendNewUserEmail($createNewUserCode, $email){
+        echo('Hei');
         $emailMessage = \Swift_Message::newInstance()
             ->setSubject('Opprett bruker på vektorprogrammet.no')
             ->setFrom($this->container->getParameter('no_reply_email_user_creation'))
             ->setTo($email)
-            ->setBody($this->renderView('new_user/create_new_user_email.txt.twig', array('newUserURL' => $this->generateURL('admissionadmin_send_new_user_mail', array( 'id' => $createNewUserCode), true))));
+            ->setBody($this->renderView('new_user/create_new_user_email.txt.twig', array('newUserURL' => $this->generateURL('admissionadmin_create_new_user', array( 'id' => $createNewUserCode), true))));
+        echo('Hei');
         $this->get('mailer')->send($emailMessage);
+        echo('Hei');
     }
 
     /**
