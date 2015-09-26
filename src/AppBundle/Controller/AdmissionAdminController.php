@@ -283,7 +283,9 @@ class AdmissionAdminController extends Controller {
                     array('user_name' => ($new_username . $postfix))
                 );
             }
-            $new_username = $new_username . $postfix;
+            if($postfix){
+                $new_username = $new_username . $postfix;
+            }
 
 
             $user->setUserName($new_username);
@@ -310,7 +312,7 @@ class AdmissionAdminController extends Controller {
             //Sends a email with the url for resetting the password
             //echo('127.0.0.1:8000/opprettbruker/'.$createNewUserCode.'');
 
-            $this->sendNewUserEmail($createNewUserCode, 'sondreso@gmail.com');
+            $this->sendNewUserEmail($createNewUserCode, $user->getEmail());
 
             return new JsonResponse([
                 'success' => true,
@@ -340,15 +342,12 @@ class AdmissionAdminController extends Controller {
      * @param $email
      */
     public function sendNewUserEmail($createNewUserCode, $email){
-        echo('Hei');
         $emailMessage = \Swift_Message::newInstance()
             ->setSubject('Opprett bruker på vektorprogrammet.no')
             ->setFrom($this->container->getParameter('no_reply_email_user_creation'))
             ->setTo($email)
             ->setBody($this->renderView('new_user/create_new_user_email.txt.twig', array('newUserURL' => $this->generateURL('admissionadmin_create_new_user', array( 'id' => $createNewUserCode), true))));
-        echo('Hei');
         $this->get('mailer')->send($emailMessage);
-        echo('Hei');
     }
 
     /**
