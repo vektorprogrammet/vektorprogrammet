@@ -8,7 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntityValidator;
 
 /**
  * AdmissionAdminController is the controller responsible for administrative admission actions,
