@@ -272,11 +272,15 @@ class AdmissionAdminController extends Controller {
             // Create Username from email, and make sure it's unique
             $new_username = explode("@", $application->getEmail())[0];
             $user_rep = $em->getRepository('AppBundle:User');
-            $violator = $user_rep->findUserByUsername($new_username);
+            $violator = $user_rep->findOneBy(
+                array('user_name' => $new_username)
+            );
             $postfix = 0;
             while($violator){
                 $postfix++;
-                $violator = $user_rep->findUserByUsername($new_username . $postfix);
+                $violator = $user_rep->findOneBy(
+                    array('user_name' => ($new_username . $postfix))
+                );
             }
             if($postfix){
                 $new_username = $new_username . $postfix;
