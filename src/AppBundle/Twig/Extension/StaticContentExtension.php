@@ -11,6 +11,7 @@
 
 namespace AppBundle\Twig\Extension;
 use AppBundle\Entity\StaticContent;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class StaticContentExtension extends \Twig_Extension {
     protected $doctrine;
@@ -38,8 +39,16 @@ class StaticContentExtension extends \Twig_Extension {
                     ->getRepository('AppBundle:StaticContent')
                     ->findOneByHtmlId($html_element_id);
         if (!$content) {
-		//TODO: opprett record i database tabellen staticcontent primary key lik html_element_id
-           return "No content found!";
+            //Makes new record for requested htmlID
+            $newStaticContent = new StaticContent();
+            $newStaticContent->setHtmlId($html_element_id);
+            $newStaticContent->setHtml("Dette er en ny statisk tekst for: " . $html_element_id);
+
+            $em = $this->doctrine->getEntityManager();
+            $em->persist($newStaticContent);
+            $em->flush();
+
+           return "Dette er en ny statisk tekst for: " . $html_element_id;
         }
         return $content->getHtml();
     }
