@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Profil | {{ user.firstName }} {{ user.lastName }}
+{% endblock %}
+
+
 {% block customScripts %}
 
 	{# Easy routing with FOSJsRouting bundle #}
