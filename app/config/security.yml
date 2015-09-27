@@ -39,6 +39,9 @@ security:
                 check_path: /login_check
                 always_use_default_target_path: false
                 default_target_path: /profile
+                require_previous_session: false
+                #Added this line to prevent the SessionUnavailable Exception
+                #See here for explenation: http://stackoverflow.com/questions/32802932/symfony2-sessionunavailable-exception
             logout:
                 path:  /logout
                 target:  /
