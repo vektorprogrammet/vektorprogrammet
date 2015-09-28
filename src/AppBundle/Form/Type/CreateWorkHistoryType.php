@@ -41,22 +41,28 @@ class CreateWorkHistoryType extends AbstractType {
 					  ->orderBy('p.name', 'ASC');
 					}
 			))
-			->add('startDate', 'datetime', array(
-				'label' => 'Starttidspunkt',
-				'widget' => 'single_text',
-				'date_format' => 'yyyy-MM-dd  HH:mm:ss',
-				'attr' => array(
-					'placeholder' => 'yyyy-MM-dd HH:mm:ss',
-				),
+			->add('startSemester', 'entity', array(
+				'label' => 'Start semester',
+				'class' => 'AppBundle:Semester',
+				'query_builder' => function(EntityRepository $er ) {
+					return $er->createQueryBuilder('s')
+						->orderBy('s.name', 'ASC')
+						->join('s.department', 'd')
+						->where('d.id = ?1')
+						->setParameter(1, $this->departmentId);
+				}
 			))
-			->add('endDate', 'datetime', array(
-				'label' => 'Sluttidspunkt (Valgfritt)',
-				'widget' => 'single_text',
-				'date_format' => 'yyyy-MM-dd  HH:mm:ss',
-				'required' => false ,
-				'attr' => array(
-					'placeholder' => 'yyyy-MM-dd HH:mm:ss',
-				),
+			->add('endSemester', 'entity', array(
+				'label' => 'Slutt semester (Valgfritt)',
+				'class' => 'AppBundle:Semester',
+				'query_builder' => function(EntityRepository $er ) {
+					return $er->createQueryBuilder('s')
+						->orderBy('s.name', 'ASC')
+						->join('s.department', 'd')
+						->where('d.id = ?1')
+						->setParameter(1, $this->departmentId);
+				},
+				'required' => false
 			))
 			->add('save', 'submit', array(
 				'label' => 'Opprett',
