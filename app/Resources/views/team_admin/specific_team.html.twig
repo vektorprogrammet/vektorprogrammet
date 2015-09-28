@@ -113,12 +113,12 @@
 								{% endif %}
 								
 								</td>
-								<td> {{ wh.startDate|date('Y-m-d') }} <br> Kl. {{wh.startDate|date('H-m-s') }}</td>
+								<td> {{ wh.startSemester }} </td>
 								
-								{% if wh.endDate is null %}
-									<td>{{ wh.endDate | default("-") }} </td>
+								{% if wh.endSemester is null %}
+									<td>{{ wh.endSemester | default("-") }} </td>
 								{% else %}
-									<td> {{ wh.endDate|date('Y-m-d') }} <br> Kl. {{wh.endDate|date('H-m-s') }}</td>
+									<td> {{ wh.endSemester }} </td>
 								{% endif %}
 								
 								{% if is_granted('ROLE_SUPER_ADMIN') %}

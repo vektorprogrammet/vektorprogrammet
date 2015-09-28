@@ -203,13 +203,11 @@
 											Avdelingen er slettet.
 										{% endif %}
 									</td>
-									<td> {{ wh.startDate|date ('d/m/y') }} </td>
+									<td> {{ wh.startSemester }} </td>
 													
-									{% if wh.endDate is not null %}
-										<td> {{ wh.endDate|date ('d/m/y') }}</td>
-									{% else %}
-										<td> - </td>
-									{% endif %}
+
+									<td> {{ wh.endSemester }}</td>
+
 													
 								</tr>
 												
