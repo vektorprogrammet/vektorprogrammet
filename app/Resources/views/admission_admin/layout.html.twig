@@ -300,56 +300,94 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
 
-            <h1>Opptak</h1>
+            <h1>Opptak {{ departmentName }}</h1>
 
             <hr>
 
-            <div class="row">
-                {# Contains the bulk action navigation. Bulk actions depends on interview status #}
-                {% block bulkNavigation %}
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <div class="row">
+                    {# Contains the bulk action navigation. Bulk actions depends on interview status #}
 
+
+                    <div class="small-3 columns">
+                        <ul class="inline-list">
+
+                            {# Department dropdown #}
+                                <li>
+                                    <a class="button tiny" data-dropdown="autoCloseExample" aria-controls="autoCloseExample" aria-expanded="false">Avdeling <i class="fa fa-caret-down"></i></a>
+                                    <ul id="autoCloseExample" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
+
+                                        {% for d in departments %}
+
+                                            <li><a href="{{ path('admissionadmin_filter_applications_by_department',
+                                                { 'id': d.id, 'status': status }) }}">{{ d.shortName }}</a></li>
+
+                                        {% endfor %}
+
+                                    </ul>
+                                </li>
+
+                                {# Semester dropdown #}
+                                <li>
+                                    <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown" aria-expanded="false">Semester <i class="fa fa-caret-down"></i></a>
+                                    <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
+
+                                        {% for s in semesters %}
+
+                                            <li> <a href="{{ path(app.request.attributes.get('_route'),
+                                                app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'semester': s.id })) }}">{{ s.name }}</a> </li>
+
+                                        {% endfor %}
+
+                                    </ul>
+                                </li>
+                        </ul>
+                    </div>
+                {% endif %}
+
+
+            </div>
+
+            <div class="row">
+
+                {% block bulkNavigation %}
 
                 {% endblock %}
 
-                <div class="small-4 columns">
-                    <ul class="inline-list">
-
-                        {# Department dropdown #}
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                {% if not is_granted('ROLE_SUPER_ADMIN') %}
+                    <div class="small-2 columns">
+                        <ul class="inline-list">
+                            {# Semester dropdown #}
                             <li>
-                                <a class="button tiny" data-dropdown="autoCloseExample" aria-controls="autoCloseExample" aria-expanded="false">Avdeling <i class="fa fa-caret-down"></i></a>
-                                <ul id="autoCloseExample" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
+                                <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown" aria-expanded="false">Semester <i class="fa fa-caret-down"></i></a>
+                                <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
 
-                                    {% for d in departments %}
+                                    {% for s in semesters %}
 
-                                        <li><a href="{{ path('admissionadmin_filter_applications_by_department',
-                                            { 'id': d.id, 'status': status }) }}">{{ d.shortName }}</a></li>
+                                        <li> <a href="{{ path(app.request.attributes.get('_route'),
+                                            app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'semester': s.id })) }}">{{ s.name }}</a> </li>
 
                                     {% endfor %}
 
                                 </ul>
                             </li>
-                        {% endif %}
+                        </ul>
+                    </div>
+                {% endif %}
 
-                        {# Semester dropdown #}
-                        <li>
-                            <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown" aria-expanded="false">Semester <i class="fa fa-caret-down"></i></a>
-                            <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                                {% for s in semesters %}
-
-                                    <li> <a href="{{ path(app.request.attributes.get('_route'),
-                                        app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'semester': s.id })) }}">{{ s.name }}</a> </li>
-
-                                {% endfor %}
-
-                            </ul>
-                        </li>
-                    </ul>
+                <div class="small-4 columns" style="width:445px;">
+                    <div class="row">
+                        <div class="small-9 columns">
+                            <p style="text-align: center;">Semester: {{ semesterName }}</p>
+                        </div>
+                        <div class="small-3 columns">
+                            <p>Antall: {{ numOfApplicants }}</p>
+                        </div>
+                    </div>
                 </div>
 
                 {# The interview status navigation #}
-                <div class="small-5 columns">
+                <div class="small-5 columns" style="width:380px;">
                     <dl id="interviewStatusNav" class="sub-nav right">
                         <dt>Status:</dt>
                         <dd {{ (status == "new") ? 'class="active"' : ''  }}>

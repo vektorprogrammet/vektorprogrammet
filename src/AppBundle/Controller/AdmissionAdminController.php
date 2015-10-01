@@ -28,7 +28,22 @@ class AdmissionAdminController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Request $request) {
+        return $this->renderApplicants($request);
+    }
 
+    /**
+     * Shows the admission admin page with applications from the given department.
+     * This is the method is only accessible by users with sufficient rights to manage all departments.
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+	public function showApplicationsByDepartmentAction(Request $request, $id){
+        return $this->renderApplicants($request, $id);
+	}
+
+    public function renderApplicants(Request $request, $departmentId=null){
         // Get query strings for filtering applications
         $status = $request->query->get('status', 'new');
         $semester = $request->query->get('semester', null);
@@ -36,8 +51,21 @@ class AdmissionAdminController extends Controller {
         // Finds all the departments
         $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
 
-        // Finds the department for the current logged in user
-        $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
+        if($departmentId === null){
+
+            // Finds the department for the current logged in user
+            $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
+
+        }else{
+
+            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
+        }
+
+        // Finds the name of the chosen semester. If no semester chosen display 'Alle'
+        $semesterName = 'Alle';
+        if($semester !== null){
+            $semesterName = $this->getDoctrine()->getRepository('AppBundle:Semester')->findNameById($semester);
+        }
 
         // Find all the semesters associated with the department
         $semesters =  $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
@@ -59,58 +87,16 @@ class AdmissionAdminController extends Controller {
                 $status = 'new';
         }
 
-		return $this->render('admission_admin/' . $template, array(
+        return $this->render('admission_admin/' . $template, array(
             'status' => $status,
-			'applicants' => $applicants,
-			'departments' => $allDepartments,
-			'semesters' => $semesters,
-		));
+            'applicants' => $applicants,
+            'departments' => $allDepartments,
+            'semesters' => $semesters,
+            'semesterName' => $semesterName,
+            'numOfApplicants' => sizeof($applicants),
+            'departmentName' => $department->getShortName(),
+        ));
     }
-
-    /**
-     * Shows the admission admin page with applications from the given department.
-     * This is the method is only accessible by users with sufficient rights to manage all departments.
-     *
-     * @param Request $request
-     * @param $id
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-	public function showApplicationsByDepartmentAction(Request $request, $id){
-
-        // Get query strings for filtering applications
-        $status = $request->query->get('status', 'new');
-        $semester = $request->query->get('semester', null);
-	
-		$allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
-
-        // Find all the semesters associated with the department
-        $semesters =  $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($id);
-
-        // Finds the applicants for the given department filtered by interview status and semester
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Application');
-        switch($status) {
-            case 'assigned':
-                $applicants = $repository->findAssignedApplicants($id,$semester);
-                $template = 'assigned_applications_table.html.twig';
-                break;
-            case 'interviewed':
-                $applicants = $repository->findInterviewedApplicants($id,$semester);
-                $template = 'interviewed_applications_table.html.twig';
-                break;
-            default:
-                $applicants = $repository->findNewApplicants($id,$semester);
-                $template = 'new_applications_table.html.twig';
-                $status = 'new';
-        }
-
-		return $this->render('admission_admin/' . $template, array(
-                'status' => $status,
-				'applicants' => $applicants,
-				'departments' => $allDepartments,
-				'semesters' => $semesters,
-		));
-		
-	}
 
     /**
      * Deletes the given application.
