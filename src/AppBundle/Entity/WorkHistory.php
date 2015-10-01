@@ -24,16 +24,16 @@ class WorkHistory {
 	 * @ORM\JoinColumn(onDelete="SET NULL")
      **/
     protected $user;
-	
-	/**
-     * @ORM\Column(type="datetime")
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Semester")
      */
-    protected $startDate;
-	
-	/**
-     * @ORM\Column(type="datetime", nullable=true)
+    protected $startSemester;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Semester")
      */
-    protected $endDate;
+    protected $endSemester;
 
 	/**
      * @ORM\ManyToOne(targetEntity="Team")
@@ -177,5 +177,51 @@ class WorkHistory {
     public function getPosition()
     {
         return $this->position;
+    }
+
+    /**
+     * Set startSemester
+     *
+     * @param \AppBundle\Entity\Semester $startSemester
+     * @return WorkHistory
+     */
+    public function setStartSemester(\AppBundle\Entity\Semester $startSemester = null)
+    {
+        $this->startSemester = $startSemester;
+
+        return $this;
+    }
+
+    /**
+     * Get startSemester
+     *
+     * @return \AppBundle\Entity\Semester 
+     */
+    public function getStartSemester()
+    {
+        return $this->startSemester;
+    }
+
+    /**
+     * Set endSemester
+     *
+     * @param \AppBundle\Entity\Semester $endSemester
+     * @return WorkHistory
+     */
+    public function setEndSemester(\AppBundle\Entity\Semester $endSemester = null)
+    {
+        $this->endSemester = $endSemester;
+
+        return $this;
+    }
+
+    /**
+     * Get endSemester
+     *
+     * @return \AppBundle\Entity\Semester 
+     */
+    public function getEndSemester()
+    {
+        return $this->endSemester;
     }
 }

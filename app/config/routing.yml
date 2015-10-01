@@ -381,14 +381,14 @@ admissionadmin_delete_application_bulk:
  options:
     expose: true
 
-admissionadmin_create_new_userd:
+admissionadmin_create_new_user:
  path: /opprettbruker/{id}
  defaults: {_controller: AppBundle:AdmissionAdmin:createNewUser }
  requirements:
     _method: GET|POST
 
 admissionadmin_send_new_user_mail:
- path: /opptakadmin/oprettbruker/{id}
+ path: /opptakadmin/opprettbruker/{id}
  defaults: {_controller: AppBundle:AdmissionAdmin:createUnactivatedUser }
  requirements:
     _method: GET

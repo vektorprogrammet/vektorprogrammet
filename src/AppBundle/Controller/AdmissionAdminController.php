@@ -28,7 +28,22 @@ class AdmissionAdminController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Request $request) {
+        return $this->renderApplicants($request);
+    }
 
+    /**
+     * Shows the admission admin page with applications from the given department.
+     * This is the method is only accessible by users with sufficient rights to manage all departments.
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+	public function showApplicationsByDepartmentAction(Request $request, $id){
+        return $this->renderApplicants($request, $id);
+	}
+
+    public function renderApplicants(Request $request, $departmentId=null){
         // Get query strings for filtering applications
         $status = $request->query->get('status', 'new');
         $semester = $request->query->get('semester', null);
@@ -36,8 +51,21 @@ class AdmissionAdminController extends Controller {
         // Finds all the departments
         $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
 
-        // Finds the department for the current logged in user
-        $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
+        if($departmentId === null){
+
+            // Finds the department for the current logged in user
+            $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
+
+        }else{
+
+            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
+        }
+
+        // Finds the name of the chosen semester. If no semester chosen display 'Alle'
+        $semesterName = 'Alle';
+        if($semester !== null){
+            $semesterName = $this->getDoctrine()->getRepository('AppBundle:Semester')->findNameById($semester);
+        }
 
         // Find all the semesters associated with the department
         $semesters =  $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
@@ -59,58 +87,16 @@ class AdmissionAdminController extends Controller {
                 $status = 'new';
         }
 
-		return $this->render('admission_admin/' . $template, array(
+        return $this->render('admission_admin/' . $template, array(
             'status' => $status,
-			'applicants' => $applicants,
-			'departments' => $allDepartments,
-			'semesters' => $semesters,
-		));
+            'applicants' => $applicants,
+            'departments' => $allDepartments,
+            'semesters' => $semesters,
+            'semesterName' => $semesterName,
+            'numOfApplicants' => sizeof($applicants),
+            'departmentName' => $department->getShortName(),
+        ));
     }
-
-    /**
-     * Shows the admission admin page with applications from the given department.
-     * This is the method is only accessible by users with sufficient rights to manage all departments.
-     *
-     * @param Request $request
-     * @param $id
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-	public function showApplicationsByDepartmentAction(Request $request, $id){
-
-        // Get query strings for filtering applications
-        $status = $request->query->get('status', 'new');
-        $semester = $request->query->get('semester', null);
-	
-		$allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
-
-        // Find all the semesters associated with the department
-        $semesters =  $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($id);
-
-        // Finds the applicants for the given department filtered by interview status and semester
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Application');
-        switch($status) {
-            case 'assigned':
-                $applicants = $repository->findAssignedApplicants($id,$semester);
-                $template = 'assigned_applications_table.html.twig';
-                break;
-            case 'interviewed':
-                $applicants = $repository->findInterviewedApplicants($id,$semester);
-                $template = 'interviewed_applications_table.html.twig';
-                break;
-            default:
-                $applicants = $repository->findNewApplicants($id,$semester);
-                $template = 'new_applications_table.html.twig';
-                $status = 'new';
-        }
-
-		return $this->render('admission_admin/' . $template, array(
-                'status' => $status,
-				'applicants' => $applicants,
-				'departments' => $allDepartments,
-				'semesters' => $semesters,
-		));
-		
-	}
 
     /**
      * Deletes the given application.
@@ -268,8 +254,29 @@ class AdmissionAdminController extends Controller {
             $user->setPhone($application->getPhone());
             $user->setFieldOfStudy($application->getStatistic()->getFieldOfStudy());
             $user->setEmail($application->getEmail());
+
+            // Create Username from email, and make sure it's unique
+            $new_username = explode("@", $application->getEmail())[0];
+            $user_rep = $em->getRepository('AppBundle:User');
+            $violator = $user_rep->findOneBy(
+                array('user_name' => $new_username)
+            );
+            $postfix = 0;
+            while($violator){
+                $postfix++;
+                $violator = $user_rep->findOneBy(
+                    array('user_name' => ($new_username . $postfix))
+                );
+            }
+            if($postfix){
+                $new_username = $new_username . $postfix;
+            }
+
+
+            $user->setUserName($new_username);
+            $user->setPassword($new_username);
+
             $user->setIsActive('0');
-            $user->setPicturePath("");
             $user->setNewUserCode($hashedNewUserCode);
 
             // Give the new user the default role
@@ -296,8 +303,10 @@ class AdmissionAdminController extends Controller {
             ]);
         }catch(\Exception $e){
             // If it is a integrity violation constraint (i.e a user with the email already exists)
-            if($e->getPrevious()->getCode() == 23000) {
-                $message = 'En bruker med denne E-posten eksisterer allerede.';
+            if($e->getPrevious()){ //If the error occurred when sending email, $e->getPrevious() will be null
+                if($e->getPrevious()->getCode() == 23000) {
+                    $message = 'En bruker med denne E-posten eksisterer allerede.';
+                }
             } else {
                 $message = 'En feil oppstod. Kontakt IT ansvarlig.';
             }
@@ -321,7 +330,7 @@ class AdmissionAdminController extends Controller {
             ->setSubject('Opprett bruker på vektorprogrammet.no')
             ->setFrom($this->container->getParameter('no_reply_email_user_creation'))
             ->setTo($email)
-            ->setBody($this->renderView('new_user/create_new_user_email.txt.twig', array('newUserURL' => $this->generateURL('admissionadmin_send_new_user_mail', array( 'id' => $createNewUserCode), true))));
+            ->setBody($this->renderView('new_user/create_new_user_email.txt.twig', array('newUserURL' => $this->generateURL('admissionadmin_create_new_user', array( 'id' => $createNewUserCode), true))));
         $this->get('mailer')->send($emailMessage);
     }
 
