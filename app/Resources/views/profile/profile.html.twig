@@ -124,19 +124,26 @@
 										{% if assistantHistory is not empty %}
 										
 											<h3>Assistent historie</h3>
-											
+											<table style="table-layout: fixed; width:100%;">
+												<tr>
+													<th>Skole</th>
+													<th>Semester</th>
+												</tr>
 											{% for as in assistantHistory %}
-												
 												{% if as.semester is not null and as.school is not null %}
-													{{ as.getSemester.getName }}: {{ as.getSchool.getName }} {{ as.getSemester.getSemesterStartDate|date('d-m') }} - {{ as.getSemester.getSemesterEndDate|date('d-m') }} <br>
+												<tr>
+													<td>{{ as.getSchool.getName }}</td>
+													<td>{{ as.getSemester.getName }}</td>
+												</tr>
 												{% else %}
-													Semesteret og/eller skolen har blitt slettet.
+													<tr>
+														<td>Semesteret og/eller skolen har blitt slettet.</td>
+														<td>Semesteret og/eller skolen har blitt slettet.</td>
+													</tr>
 												{% endif %}
 											
 											{% endfor %}
-												
-											<hr>
-											
+											</table>
 										{% endif %}
 										
 									</div>
@@ -146,30 +153,44 @@
 										{% if workHistory is not empty %}
 										
 											<h3>Team historie</h3>
-												
+												<table style="width:100%; table-layout: fixed;">
+													<tr>
+														<th>Team</th>
+														<th>Stilling</th>
+														<th>Start</th>
+														<th>Slutt</th>
+													</tr>
 											{% for wh in workHistory %}
-												
+												<tr>
+													<td>
 												{% if wh.team is not null %}
-													{{ wh.team.name }} - 
+													{{ wh.team.name }}
 												{% else %}
 													Teamet er slettet - 
 												{% endif %}
-												
+													</td>
+
+													<td>
 												{% if wh.position is not null %}
-													{{ wh.position.name }}:
+													{{ wh.position.name }}
 												{% else %}
-													Stillingen er fjernet :
+													Stillingen er fjernet
 												{% endif %}
-												
-												{{ wh.startDate|date ('Y-m-d') }}
-													
-												{% if wh.endDate is not null %}
-													- {{ wh.endDate|date ('Y-m-d') }}
+													</td>
+
+													<td>
+												{{ wh.startSemester }}
+													</td>
+
+													<td>
+												{% if wh.endSemester is not null %}
+													{{ wh.endSemester }}
 												{% endif %}
-													
-												<br>
+													</td>
+												</tr>
 												
 											{% endfor %}
+													</table>
 											
 										{% endif %}
 
