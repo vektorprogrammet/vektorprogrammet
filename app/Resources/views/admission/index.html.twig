@@ -1,5 +1,11 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    {% for d in department %}
+        Opptak {{ d.shortname }}
+    {% endfor %}
+{% endblock %}
+
 {% block body %}
     <p></p>
             <div class="row">
