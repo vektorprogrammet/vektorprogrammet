@@ -269,7 +269,6 @@ class AdmissionAdminController extends Controller {
             $user->setFieldOfStudy($application->getStatistic()->getFieldOfStudy());
             $user->setEmail($application->getEmail());
             $user->setIsActive('0');
-            $user->setPicturePath("");
             $user->setNewUserCode($hashedNewUserCode);
 
             // Give the new user the default role

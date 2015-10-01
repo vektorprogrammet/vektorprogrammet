@@ -35,9 +35,6 @@ class CreateUserType extends AbstractType {
 					1 => 'Dame'
 				),
 				))
-			->add('picture_path', 'text',  array(
-				'label' => 'Bilde',
-			))
 			->add('phone', 'text',  array(
 				'label' => 'Telefon',
 			))
