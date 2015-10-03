@@ -169,7 +169,7 @@
 														{% if wh.team is not null %}
 															{{ wh.team.name }}
 														{% else %}
-															Teamet er slettet -
+															Teamet er slettet
 														{% endif %}
 													</td>
 
@@ -182,12 +182,18 @@
 													</td>
 
 													<td>
-														{{ wh.startSemester }}
+														{% if wh.startSemester is null %}
+															Ingen startsemester valgt
+														{% else %}
+															{{ wh.startSemester }}
+														{% endif %}
 													</td>
 
 													<td>
 														{% if wh.endSemester is not null %}
 															{{ wh.endSemester }}
+														{% else %}
+															Fortsatt aktiv
 														{% endif %}
 													</td>
 												</tr>

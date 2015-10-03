@@ -6,6 +6,10 @@
     {% endfor %}
 {% endblock %}
 
+{% block javascripts %}
+    {% include "statictext/js_loader_for_static_texts.html.twig" %}
+{% endblock %}
+
 {% block body %}
     <p></p>
             <div class="row">
@@ -211,6 +215,15 @@
 				<br/>
 				
 				 <div class="row">
+
+                    <div class="small-12 medium-12 large-12 columns">
+                        {% for d in department %}
+                            <div class="{{ element_editable() }}" id={{ 'admission' ~ d.shortname }}>
+                                    {{ get_content('admission' ~ d.shortname) | raw }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
 					<div class="small-12 medium-12 large-12 columns">
 
 								<div class="row">
