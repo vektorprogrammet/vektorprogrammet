@@ -45,71 +45,7 @@ update_static_content:
 #                Survey                  #
 ##########################################
 
-survey_pupil:
- path: /undersokelse/elev
- defaults: { _controller: AppBundle:Survey:showPupil }
- requirements:
-    _method: GET|POST
 
-survey_teacher:
- path: /undersokelse/laerer
- defaults: { _controller: AppBundle:Survey:showTeacher }
- requirements:
-    _method: GET|POST
-
-survey_results:
- path: /statistikk/undersokelse
- defaults: { _controller: AppBundle:SurveyResults:show }
- requirements:
-    _method: GET|POST
-
-survey_results_pupil:
- path: /statistikk/undersokelse/elev
- defaults: { _controller: AppBundle:SurveyResults:showPupil }
- options:
-  expose: true
- requirements:
-    _method: GET
-
-survey_results_pupil_filter:
- path: /statistikk/undersokelse/elev/{filter}
- defaults: { _controller: AppBundle:SurveyResults:showPupil }
- options:
-  expose: true
- requirements:
-    _method: GET
-
-survey_results_pupil_filter_buttons:
- path: /statistikk/undersokelse/elevbuttons
- defaults: { _controller: AppBundle:SurveyResults:renderPupilFilterButtons }
- options:
-  expose: true
- requirements:
-    _method: GET
-
-survey_results_teacher:
- path: /statistikk/undersokelse/laerer
- defaults: { _controller: AppBundle:SurveyResults:showTeacher }
- options:
-  expose: true
- requirements:
-    _method: GET
-
-survey_results_teacher_filter:
- path: /statistikk/undersokelse/laerer/{filter}
- defaults: { _controller: AppBundle:SurveyResults:showTeacher }
- options:
-  expose: true
- requirements:
-    _method: GET
-
-survey_results_teacher_filter_buttons:
- path: /statistikk/undersokelse/laererbuttons
- defaults: { _controller: AppBundle:SurveyResults:renderTeacherFilterButtons }
- options:
-  expose: true
- requirements:
-    _method: GET
 
 
 ##########################################
