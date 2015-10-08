@@ -7,6 +7,93 @@
 {% block javascripts %}
 
     <script type="text/javascript" src="{{ asset('scripts/dropzone.js') }}"></script>
+    <script type="text/javascript" src="http://feather.aviary.com/imaging/v2/editor.js"></script>
+
+    <script>
+
+        /**
+         * This object organizes the javascript used by this twig and the twigs extending it
+         *
+         * It holds the default image sizes used by the cropper function, see loadImages().
+         *
+         * The onReady function is called when the document is ready.
+         */
+        var featherEditor = new Aviary.Feather({
+            apiKey: '4a1caf097b3d48e9b917e9f1bc430ad3',
+            fileFormat: 'jpg',
+            cropPresetsStrict: true,
+            //tools: ['draw', 'stickers'],
+            onSave: function(imageID, newURL) {
+                var img = document.getElementById(imageID);
+                img.src = newURL;
+            }
+        });
+
+        Dropzone.options.dropzone = {
+            paramName: "img", // The name that will be used to transfer the file
+            dictDefaultMessage: "Slipp bildet her<br>(eller trykk for &aring velge)",
+            maxFiles: 1
+        };
+        </script>
+
+    <style>
+
+        #dropzone {
+            position: relative;
+            border-radius: 5px;
+            color: #686868;
+            font-size:24px;
+            font-weight: bold;
+            text-align: center;
+            width: 300px;
+            cursor: pointer;
+            margin: 0px auto;
+            margin-top: 20px;
+            height: 300px;
+            background-color: #E5F2FA;
+            border:4px dashed #6fceee;
+        }
+
+        #dropzone div {
+            position: absolute;
+            top: 40%;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        #dropzone img {
+            border-radius: 10px;
+            vertical-align: middle;
+            max-width: 95%;
+            max-height: 95%;
+        }
+
+        #dropzone [type="file"] {
+            cursor: pointer;
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        #dropzone:hover {
+            border: 4px dashed #66abcc;
+            color: #323232;
+        }
+
+        #dropzone.dropped {
+            background: #222;
+            border: 10px solid #444;
+        }
+
+        .bordered{
+            border-left:1px solid #aaaaaa;
+        }
+
+    </style>
 
 {% endblock %}
 
@@ -28,18 +115,25 @@
                     <hr>
 
                     <div class="row">
-                        <div class="medium-6 columns text-center" style="border-right:1px solid #aaaaaa;">
+                        <div class="medium-6 columns text-center">
+                            <form action="/file-upload" class="dropzone" id="dropzone"></form>
+                        </div>
+                        <div class="medium-6 columns text-center bordered">
+                            <img src="" style="width: 300px; height: 300px;margin:0px auto;" />
                             <div class="row">
-                                <div class="columns medium-offset-2 medium-8">
-                                    <form style="width: 100%;height: 200px;background-color: #DDDDDD;border:4px dashed #008CBA;" action="/file-upload" class="dropzone" id="my-awesome-dropzone"></form>
-                                </div>
+                                <br>
+                                <a href="#" class="button small" id="editImageBtn">Rediger bilde</a>
                             </div>
                         </div>
-                        <div class="medium-6 columns">
-                            <img src="" style="width: 300px; height: 300px;"
+                        <div class="row">
+                            <div class="medium-12 columns text-center">
+                                <br>
+                                <a href="#" class="button medium" id="editImageBtn">Lagre</a>
+                            </div>
                         </div>
+
                     </div>
-                    <br><br><br>
+                    <br>
 
                     <hr>
 
