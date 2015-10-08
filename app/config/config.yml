@@ -184,7 +184,7 @@ fm_elfinder:
                                 #show_hidden: false # defaults to false
                                 driver: LocalFileSystem
                                 path: %article_images%
-                                upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                                upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
                                 upload_deny: ['all']
                                 upload_max_size: 2M
 
