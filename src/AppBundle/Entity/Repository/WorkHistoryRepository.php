@@ -18,10 +18,12 @@ class WorkHistoryRepository extends EntityRepository {
 		$workHistories =  $this->getEntityManager()->createQuery("
 		SELECT whistory
 		FROM AppBundle:WorkHistory whistory
-		WHERE (whistory.startDate < :today
-		AND whistory.endDate > :today)
-		OR (whistory.startDate < :today
-		AND whistory.endDate is NULL)
+		JOIN whistory.startSemester startSemester
+		LEFT JOIN whistory.endSemester endSemester
+		WHERE (startSemester.semesterStartDate < :today
+		AND endSemester.semesterEndDate > :today)
+		OR (startSemester.semesterStartDate < :today
+		AND endSemester.semesterEndDate is NULL)
 		")
 		->setParameter('today', $today)
 		->getResult();
@@ -35,13 +37,13 @@ class WorkHistoryRepository extends EntityRepository {
 		$workHistories =  $this->getEntityManager()->createQuery("
 		SELECT whistory
 		FROM AppBundle:WorkHistory whistory
-		
-		WHERE (whistory.startDate < :today
-		AND whistory.endDate > :today
+		JOIN whistory.startSemester startSemester
+		LEFT JOIN whistory.endSemester endSemester
+		WHERE (startSemester.semesterStartDate < :today
+		AND endSemester.semesterEndDate > :today
 		AND whistory.user = :user)
-		
-		OR (whistory.startDate < :today
-		AND whistory.endDate is NULL
+		OR (startSemester.semesterStartDate < :today
+		AND endSemester.semesterEndDate is NULL
 		AND whistory.user = :user )
 		
 		")

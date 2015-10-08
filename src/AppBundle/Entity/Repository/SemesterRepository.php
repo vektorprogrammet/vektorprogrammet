@@ -21,6 +21,7 @@ class SemesterRepository extends EntityRepository {
 		SELECT s
 		FROM AppBundle:Semester s
 		WHERE s.department = :department
+		ORDER BY s.semesterStartDate DESC
 		
 		")
 		->setParameter('department', $department)
