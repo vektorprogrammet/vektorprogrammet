@@ -4,6 +4,12 @@
     Velg profilbilde | {{ user.firstName }} {{ user.lastName }}
 {% endblock %}
 
+{% block javascripts %}
+
+    <script type="text/javascript" src="{{ asset('scripts/dropzone.js') }}"></script>
+
+{% endblock %}
+
 {% block body %}
     <p></p>
 
@@ -20,10 +26,27 @@
                     </p>
 
                     <hr>
+
+                    <div class="row">
+                        <div class="medium-6 columns text-center">
+                            <div class="row">
+                                <div class="columns medium-offset-2 medium-8">
+                                    <form style="width: 100%;height: 200px;background-color: #DDDDDD;border:4px dashed #008CBA;" action="/file-upload" class="dropzone" id="my-awesome-dropzone"></form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="medium-6 columns">
+
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!--
                     {{ form_start(form) }}
                     {{ form_widget(form) }}
                     {{ form_end(form) }}
-
+                    -->
 
                 </div>
             </div>
