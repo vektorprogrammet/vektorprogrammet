@@ -11,23 +11,90 @@
 
     <script>
 
-        /**
-         * This object organizes the javascript used by this twig and the twigs extending it
-         *
-         * It holds the default image sizes used by the cropper function, see loadImages().
-         *
-         * The onReady function is called when the document is ready.
-         */
+
         var featherEditor = new Aviary.Feather({
             apiKey: '4a1caf097b3d48e9b917e9f1bc430ad3',
             fileFormat: 'jpg',
             cropPresetsStrict: true,
-            //tools: ['draw', 'stickers'],
             onSave: function(imageID, newURL) {
                 var img = document.getElementById(imageID);
                 img.src = newURL;
             }
         });
+
+        function launchEditorCrop(id) {
+            featherEditor.launch({
+                tools: 'enhance',
+                forceCropPreset: ['Profile Preset','400x400'],
+                image: 'profileImg',
+                onSave: Article.saveImgCrop
+            });
+            return true;
+        }
+
+        function onReady(){
+            var inputs = $("input[id^='article_image']");
+
+            // Load the toggle box used to group functionality (bilder/publisering etc)
+            $(".option-box").optionbox();
+
+            // Bind elfinder to each of the image url text inputs
+            inputs.on("click", Article.openElfinder);
+
+            // Bind onchange when the user select one photo to be shown everywhere
+            $("#article_imageAll").change(Article.selectAllChange);
+
+            //Bind changes in input fields to img tag and make sure they are the correct value after startup
+            inputs.on("change", Article.imgLocationChange);
+            inputs.each(function(){
+                if($(this).attr('id') !== 'article_imageAll'){
+                    $(this).trigger('change');
+                }
+            });
+            // Bind editBtn to editor
+            $("a[id^='editBtn']").on('click',Article.editBtnClick);
+            $("a[id^='cropBtn']").on('click',Article.cropBtnClick);
+
+            // Bind elfinder to the crop image url text input
+            //$("#crop_image").on("click", Article.openElfinder);
+
+            // Bind the button for loading the image in the crop url into img tags
+            //$("#loadImage").on("click", Article.loadImages);
+
+            // Bind the open crop modal button
+            //$("#openCropModal").on("click", Article.openCropModal);
+
+            // Bind the crop form submit button
+            //$("form[name='crop']").submit(Article.onCropFormSubmit);
+        }
+
+
+        /*imgLocationChange: function(event){
+            event.preventDefault();
+            var elem = $(this).attr('id').substr(13);
+            //alert(elem);
+            var new_src = $(this).val();
+            if(new_src !== ""){
+                new_src += '?' + new Date().getTime();
+            }
+            $('#img'+elem).removeAttr("src").attr('src',new_src);
+            if(elem !== 'All'){
+                $('#imgPreview'+elem).removeAttr("src").attr('src',new_src);
+            }
+        },*/
+
+        function editBtnClick(event){
+            event.preventDefault();
+            var elem = $(this).attr('id').substr(7);
+            if($('#article_image' + elem).val() !== ''){
+
+                //alert(elem);
+                Article.launchEditor(elem);
+            }
+            else{
+                alert('Du må velge et bilde!')
+            }
+        }
 
         Dropzone.options.dropzone = {
             paramName: "img", // The name that will be used to transfer the file
@@ -116,10 +183,10 @@
 
                     <div class="row">
                         <div class="medium-6 columns text-center">
-                            <form action="/file-upload" class="dropzone" id="dropzone"></form>
+                            <form action="{{ path(profile_upload_photo) }}" class="dropzone" id="dropzone"></form>
                         </div>
                         <div class="medium-6 columns text-center bordered">
-                            <img src="" style="width: 300px; height: 300px;margin:0px auto;" />
+                            <img id="profileImg" src="" style="width: 300px; height: 300px;margin:0px auto;" />
                             <div class="row">
                                 <br>
                                 <a href="#" class="button small" id="editImageBtn">Rediger bilde</a>

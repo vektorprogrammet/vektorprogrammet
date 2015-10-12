@@ -219,6 +219,10 @@ profile_upload_photo:
   path: /profil/rediger/profilbilde/upload
   defaults: { _controller: AppBundle:Profile:editProfilePhoto }
 
+profile_save_photo:
+  path: /profil/rediger/profilbilde/save
+  defaults: { _controller: AppBundle:Profile:saveProfilePhoto }
+
 ##########################################
 #               Members                  #
 ##########################################

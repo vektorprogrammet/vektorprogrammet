@@ -451,29 +451,83 @@ class ProfileController extends Controller {
      * @throws \Exception
      */
     public function editProfilePhotoAction(Request $request){
+    //return new Response(var_dump($request->files));
+    if ($this->get('security.context')->isGranted('ROLE_USER')) {
+        //Target folder for the profile photo
+        $user = $this->get('security.context')->getToken()->getUser();
+        $id = $user->getId();
+
+        $targetFolder = $this->container->getParameter('profile_photos') . '/';
+        $path = $targetFolder . $id . "_temp.jpg";
+
+        move_uploaded_file($request->files['img']["tmp_name"], $path);
+
+        //Create a FileUploader with target folder and allowed file types as parameters
+        //$uploader = new FileUploader($targetFolder, ['image/gif', 'image/jpeg', 'image/png']);
+        //Move the file to target folder
+        //$result = $uploader->upload($request);
+        //todo: if $result contains 0 or more than 1 entry, 0 or more than 1 image was uploaded to the target folder. Not sure if this can happen, but if it does something is wrong and must be handled.
+        //$path = $result[array_keys($result)[0]];
+        //Update the database
+
+        $response = ['success' => true,
+            'url' => $path
+        ];
+
+
+        //return $this->redirect($this->generateUrl('specific_profile', array('id' => $id )));
+    }
+    else {
+        $response = ['success' => false,
+            'cause' => 'Det oppstod en feil under behandlingen av bildet. Prøv igjen eller kontakt IT ansvarlig.'
+        ];;
+    }
+
+    return new JsonResponse($response);
+    }
+
+
+    public function saveProfilePhotoAction(Request $request){
         //return new Response(var_dump($request->files));
         if ($this->get('security.context')->isGranted('ROLE_USER')) {
             //Target folder for the profile photo
-            $targetFolder = $this->container->getParameter('profile_photos') . '/';
-            //Create a FileUploader with target folder and allowed file types as parameters
-            $uploader = new FileUploader($targetFolder, ['image/gif', 'image/jpeg', 'image/png']);
-            //Move the file to target folder
-            $result = $uploader->upload($request);
-            //todo: if $result contains 0 or more than 1 entry, 0 or more than 1 image was uploaded to the target folder. Not sure if this can happen, but if it does something is wrong and must be handled.
-            $path = $result[array_keys($result)[0]];
-            //Update the database
             $user = $this->get('security.context')->getToken()->getUser();
+            $id = $user->getId();
+
+            $targetFolder = $this->container->getParameter('profile_photos') . '/';
+            $path = $targetFolder . $id . ".jpg";
+            $oldPath = $targetFolder . $id . "_temp.jpg";
+
+            rename($oldPath, $path);
+
+            //Create a FileUploader with target folder and allowed file types as parameters
+            //$uploader = new FileUploader($targetFolder, ['image/gif', 'image/jpeg', 'image/png']);
+            //Move the file to target folder
+            //$result = $uploader->upload($request);
+            //todo: if $result contains 0 or more than 1 entry, 0 or more than 1 image was uploaded to the target folder. Not sure if this can happen, but if it does something is wrong and must be handled.
+            //$path = $result[array_keys($result)[0]];
+            //Update the database
             $user->setPicturePath($path);
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($user);
             $em->flush();
-            $id = $this->get('security.context')->getToken()->getUser()->getId();
-            return $this->redirect($this->generateUrl('specific_profile', array('id' => $id )));
+
+            $response = ['success' => true,
+                'url' => $path
+            ];
+
+
+            //return $this->redirect($this->generateUrl('specific_profile', array('id' => $id )));
         }
         else {
-            return $this->redirect($this->generateUrl('home'));
+            $response = ['success' => false,
+                'cause' => 'Det oppstod en feil under lagring av bildet. Prøv igjen eller kontakt IT ansvarlig.'
+            ];;
         }
+
+        return new JsonResponse($response);
     }
+
 
     public function showEditProfilePhotoAction(){
         if ($this->get('security.context')->isGranted('ROLE_USER')) {
