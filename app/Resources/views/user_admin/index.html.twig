@@ -139,7 +139,7 @@
 							<tr>
 								<td>  <a href='{{ path('specific_profile', { 'id': u.id }) }}'>{{ u.firstName }}</a> </td>
 								<td> {{ u.lastName }} </td>
-								<td> {{ u.phone }} </td>
+								<td> {{ u.phone|slice(0,3) }} {{ u.phone|slice(3,2) }} {{ u.phone|slice(5,3) }} </td>
 								<td> {{ u.email }} </td>
 								<td> {{ u.fieldOfStudy }} </td>
 								<td> {{ u.fieldOfStudy.department }} </td>

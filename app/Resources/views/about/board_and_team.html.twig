@@ -96,7 +96,7 @@
 									{{ wh.position.name }} <br/>
 								{% endif %}
 								{{ wh.user.email }} <br/>
-								{{ wh.user.phone }} <br/>
+								{{ wh.user.phone|slice(0,3) }} {{ wh.user.phone|slice(3,2) }} {{ wh.user.phone|slice(5,3) }} <br/>
 							</div>
 							
 						</div>
