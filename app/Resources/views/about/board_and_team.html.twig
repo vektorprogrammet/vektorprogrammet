@@ -66,60 +66,56 @@
 						
 		</div>
 	</div>
-
+	
 	{% for t in Teams %}
-
-		<team class="team" id={{ t.department.id }}>
-
+								
+		<team class="team" id={{t.department.id}}>
+			
 			<div class="row">
-				<div class="small-12 medium-12 large-12 columns">
-
+				<div class="small-12 medium-12 large-12 columns">										
+					
 					<hr>
-
-					<h3> {{ t.department.shortName }}: {{ t.name }} </h3>
+					
+					<h3> {{t.department.shortName}}: {{ t.name }} </h3> 
 
 				</div>
+			
+					
+			{% for wh in WorkHistories %}
+				
+				{% if wh.team is not null %}
+					{% if wh.team.id == t.id %}
+						
+						<div class="small-12 medium-12 large-3 columns">
 
-				{% set count = 0 %}
-				{% for wh in WorkHistories %}
+							<img src="{{ asset(wh.user.picturePath) }}" />
 
-					{% if wh.team is not null %}
-						{% if wh.team.id == t.id %}
-							{% if count%4 == 0 %}
-								<div class="row">
-							{% endif %}
-
-							<div class="small-12 medium-12 large-3 columns left">
-
-								<img src="{{ asset(wh.user.picturePath) }}"/>
-
-								<div class="panel callout radius">
-									<h4> {{ wh.user }}  </h4>
+							<div class="panel callout radius">
+								{% if app.user %}
+									<h4><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{wh.user}}</a></h4>
+								{% else %}
+									<h4> {{wh.user}}  </h4>
+								{% endif %}
+								<p>
 									{% if wh.position is not null %}
-										{{ wh.position.name }} <br/>
+										{{ wh.position.name }}<br/>
 									{% endif %}
-									{{ wh.user.email }} <br/>
-									{{ wh.user.phone }} <br/>
-								</div>
-
+									<a href="mailto:{{ wh.user.email }}">E-post</a><br/>
+									{{ wh.user.phone }}<br/>
+								</p>
 							</div>
+							
+						</div>
 
-							{% if count%4 == 3 %}
-								</div>
-							{% endif %}
-							{% set count = count + 1 %}
-						{% endif %}
 					{% endif %}
-
-				{% endfor %}
-				{% if count%4 != 0 %}
-					</div>
-				{% endif %}
-
+				{% endif %}					
+																
+			{% endfor %}
+			
 			</div>
-
+										
 		</team>
-
+									
 	{% endfor %}
 					
 		
