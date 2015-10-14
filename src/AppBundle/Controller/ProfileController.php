@@ -453,25 +453,23 @@ class ProfileController extends Controller {
     public function editProfilePhotoAction(Request $request){
     //return new Response(var_dump($request->files));
     if ($this->get('security.context')->isGranted('ROLE_USER')) {
-        //Target folder for the profile photo
-        $user = $this->get('security.context')->getToken()->getUser();
-        $id = $user->getId();
+		$user = $this->get('security.context')->getToken()->getUser();
+		$id = $user->getId();
 
-        $targetFolder = $this->container->getParameter('profile_photos') . '/';
-        $path = $targetFolder . $id . "_temp.jpg";
+		//Target folder for the profile photo
+		$targetFolder = $this->container->getParameter('profile_photos') . '/';
+        $path = $targetFolder;
+        $extension = substr($request->files->get('img')->getClientOriginalName(),strlen($request->files->get('img')->getClientOriginalName())-3);
+        dump($request->files);
+        dump($path);
 
-        move_uploaded_file($request->files['img']["tmp_name"], $path);
+        dump($id . "_temp.". $extension);
 
-        //Create a FileUploader with target folder and allowed file types as parameters
-        //$uploader = new FileUploader($targetFolder, ['image/gif', 'image/jpeg', 'image/png']);
-        //Move the file to target folder
-        //$result = $uploader->upload($request);
-        //todo: if $result contains 0 or more than 1 entry, 0 or more than 1 image was uploaded to the target folder. Not sure if this can happen, but if it does something is wrong and must be handled.
-        //$path = $result[array_keys($result)[0]];
-        //Update the database
+
+        $request->files->get('img')->move($targetFolder, $id . "_temp.". $extension);
 
         $response = ['success' => true,
-            'url' => $path
+            'url' => $url = $this->container->get('templating.helper.assets')->getUrl($targetFolder . $id . "_temp.". $extension)
         ];
 
 

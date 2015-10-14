@@ -17,43 +17,43 @@
             fileFormat: 'jpg',
             cropPresetsStrict: true,
             onSave: function(imageID, newURL) {
-                var img = document.getElementById(imageID);
-                img.src = newURL;
+                $("#profileImg").attr('src',newURL);
+                $("#profileImgHidden").attr('src',newURL);
+
             }
         });
 
-        function launchEditorCrop(id) {
+        function launchEditor(event) {
+            event.preventDefault();
             featherEditor.launch({
                 tools: 'enhance',
                 forceCropPreset: ['Profile Preset','400x400'],
-                image: 'profileImg',
-                onSave: Article.saveImgCrop
+                image: 'profileImgHidden'
             });
             return true;
         }
 
         function onReady(){
-            var inputs = $("input[id^='article_image']");
+            //var inputs = $("input[id^='article_image']");
 
             // Load the toggle box used to group functionality (bilder/publisering etc)
-            $(".option-box").optionbox();
+            //$(".option-box").optionbox();
 
             // Bind elfinder to each of the image url text inputs
-            inputs.on("click", Article.openElfinder);
+            //inputs.on("click", Article.openElfinder);
 
             // Bind onchange when the user select one photo to be shown everywhere
-            $("#article_imageAll").change(Article.selectAllChange);
+            //$("#article_imageAll").change(Article.selectAllChange);
 
             //Bind changes in input fields to img tag and make sure they are the correct value after startup
-            inputs.on("change", Article.imgLocationChange);
-            inputs.each(function(){
+            //inputs.on("change", Article.imgLocationChange);
+            /*inputs.each(function(){
                 if($(this).attr('id') !== 'article_imageAll'){
                     $(this).trigger('change');
                 }
-            });
+            });*/
             // Bind editBtn to editor
-            $("a[id^='editBtn']").on('click',Article.editBtnClick);
-            $("a[id^='cropBtn']").on('click',Article.cropBtnClick);
+            $('#editImageBtn').on('click',launchEditor);
 
             // Bind elfinder to the crop image url text input
             //$("#crop_image").on("click", Article.openElfinder);
@@ -99,8 +99,20 @@
         Dropzone.options.dropzone = {
             paramName: "img", // The name that will be used to transfer the file
             dictDefaultMessage: "Slipp bildet her<br>(eller trykk for &aring velge)",
-            maxFiles: 1
+            maxFiles: 1,
+            createImageThumbnails: false,
+            init: function() {
+                this.on("success", function(file,response) {
+                    console.log(response);
+                    $("#profileImg").attr('src',response.url);
+                    $("#profileImgHidden").attr('src',response.url);
+                });
+            }
         };
+
+        $( document ).ready(function() {
+            onReady();
+        });
         </script>
 
     <style>
@@ -160,11 +172,30 @@
             border-left:1px solid #aaaaaa;
         }
 
+        #profileImg{
+            width: 300px;
+            height: 300px;
+            margin: 0px auto;
+        }
+
+        #profileImg{
+            width: 300px;
+            height: 300px;
+            margin: 0px auto;
+        }
+
+        #profileImgHidden{
+            display: none;
+            float: left;
+        }
+
+
     </style>
 
 {% endblock %}
 
 {% block body %}
+    <img id="profileImgHidden" src="" />
     <p></p>
 
     <div class="row">
@@ -183,10 +214,11 @@
 
                     <div class="row">
                         <div class="medium-6 columns text-center">
-                            <form action="{{ path(profile_upload_photo) }}" class="dropzone" id="dropzone"></form>
+                            <form action="{{ path('profile_upload_photo') }}" class="dropzone" id="dropzone"></form>
                         </div>
                         <div class="medium-6 columns text-center bordered">
-                            <img id="profileImg" src="" style="width: 300px; height: 300px;margin:0px auto;" />
+
+                            <img id="profileImg" src="" />
                             <div class="row">
                                 <br>
                                 <a href="#" class="button small" id="editImageBtn">Rediger bilde</a>
