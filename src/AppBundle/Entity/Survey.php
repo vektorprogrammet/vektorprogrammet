@@ -39,12 +39,6 @@ class Survey
     protected $surveySchema; // Bidirectional, may turn out to be unidirectional
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="surveyer_id", referencedColumnName="id")
-     */
-    protected $surveyer; // Unidirectional, may turn out to be bidirectional
-
-    /**
      * @ORM\OneToOne(targetEntity="Application", inversedBy="survey")
      * @ORM\JoinColumn(name="application_id", referencedColumnName="id")
      */
@@ -54,18 +48,6 @@ class Survey
      * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="survey", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $surveyAnswers;
-
-    /**
-     * @ORM\OneToOne(targetEntity="SurveyScore", cascade={"persist"})
-     * @ORM\JoinColumn(name="survey_score_id", referencedColumnName="id")
-     */
-    protected $surveyScore;
-
-    /**
-     * @ORM\OneToOne(targetEntity="SurveyPractical", cascade={"persist"})
-     * @ORM\JoinColumn(name="survey_practical_id", referencedColumnName="id")
-     */
-    protected $surveyPractical;
 
     /**
      * Constructor
@@ -108,28 +90,6 @@ class Survey
         return $this->surveySchema;
     }
 
-    /**
-     * Set surveyer
-     *
-     * @param \AppBundle\Entity\User $surveyer
-     * @return Survey
-     */
-    public function setSurveyer(\AppBundle\Entity\User $surveyer = null)
-    {
-        $this->surveyer = $surveyer;
-
-        return $this;
-    }
-
-    /**
-     * Get surveyer
-     *
-     * @return \AppBundle\Entity\User
-     */
-    public function getSurveyer()
-    {
-        return $this->surveyer;
-    }
 
     /**
      * Set application
@@ -188,29 +148,6 @@ class Survey
     }
 
     /**
-     * Set surveyScore
-     *
-     * @param \AppBundle\Entity\SurveyScore $surveyScore
-     * @return Survey
-     */
-    public function setSurveyScore(\AppBundle\Entity\SurveyScore $surveyScore = null)
-    {
-        $this->surveyScore = $surveyScore;
-
-        return $this;
-    }
-
-    /**
-     * Get surveyScore
-     *
-     * @return \AppBundle\Entity\SurveyScore
-     */
-    public function getSurveyScore()
-    {
-        return $this->surveyScore;
-    }
-
-    /**
      * Set surveyed
      *
      * @param boolean $surveyed
@@ -244,28 +181,6 @@ class Survey
         return $user && $user->getId() == $this->getSurveyer()->getId();
     }
 
-    /**
-     * Set surveyPractical
-     *
-     * @param \AppBundle\Entity\SurveyPractical $surveyPractical
-     * @return Survey
-     */
-    public function setSurveyPractical(\AppBundle\Entity\SurveyPractical $surveyPractical = null)
-    {
-        $this->surveyPractical = $surveyPractical;
-
-        return $this;
-    }
-
-    /**
-     * Get surveyPractical
-     *
-     * @return \AppBundle\Entity\SurveyPractical 
-     */
-    public function getSurveyPractical()
-    {
-        return $this->surveyPractical;
-    }
 
     /**
      * Set scheduled
