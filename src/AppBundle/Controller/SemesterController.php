@@ -79,7 +79,7 @@ class SemesterController extends Controller {
 	
 		if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 			// Find the department
-			$department = $request->get('id');	
+			$department = $request->get('id');
 			
 			// Finds all the departments
 			$allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
@@ -91,6 +91,7 @@ class SemesterController extends Controller {
 			return $this->render('semester_admin/index.html.twig', array(
 				'semesters' => $semesters,
 				'departments' => $allDepartments,
+				'departmentName' => $this->getDoctrine()->getRepository('AppBundle:Department')->find($department)->getShortName(),
 			));
 		}
 		else {
@@ -112,20 +113,21 @@ class SemesterController extends Controller {
 			return $this->render('semester_admin/index.html.twig', array(
 				'semesters' => $semesters,
 				'departments' => $allDepartments,
+				'departmentName' => $department->getShortName(),
 			));
 		}
 		else {
 			return $this->redirect($this->generateUrl('home'));
 		}
     }
-	
+
 	public function SuperadminCreateSemesterAction(request $request){
-		
+
 		if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 			$semester = new Semester();
-			
+
 			// Get the ID parameter sent in by the request
-			$departmentId = $request->get('id');	
+			$departmentId = $request->get('id');
 			
 			// Find the department where ID matches departmentId
 			$department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);

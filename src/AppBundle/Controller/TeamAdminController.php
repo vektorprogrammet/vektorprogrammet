@@ -160,6 +160,7 @@ class TeamAdminController extends Controller {
 			return $this->render('team_admin/index.html.twig', array(
 				'departments' => $allDepartments,
 				'teams' => $teams,
+				'departmentName' => $department->getShortName(),
 			));
 		}
 		else {
@@ -354,6 +355,7 @@ class TeamAdminController extends Controller {
 				'departments' => $allDepartments,
 				'userDepartment' => $department,
 				'teams' => $teams,
+				'departmentName' => $department->getShortName(),
 			));
 		}
 		else{

@@ -1,35 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block customScripts %}
-	
+
 	<script>
-	
-	$(document).ready(function() {
-		
-		{# Get all the teams as they are first presented #}
-		teams = $(".team");
-			
-		$('.departmentId').click(function(){
-			
-			{# Get the ID of the elemnt being clicked #}
-			var ID =  parseInt(this.id);
-			
-			{# Hide all teams #}
-			teams.hide();
-			
-			{# Show teams with id=ID and class="team" #}
-			$("#"+ID+".team").show();
+
+		$(document).ready(function() {
+
+			{# Get all the teams as they are first presented #}
+			teams = $(".team");
+
+			$('.departmentId').click(function(){
+
+				{# Get the ID of the elemnt being clicked #}
+				var ID =  parseInt(this.id);
+
+				{# Hide all teams #}
+				teams.hide();
+
+				{# Show teams with id=ID and class="team" #}
+				$("#"+ID+".team").show();
+
+			});
+
+			{# Show all departments #}
+			$('.AllDepartments').click(function(){
+
+				teams.show();
+
+			});
 
 		});
-		
-		{# Show all departments #}
-		$('.AllDepartments').click(function(){
-			
-			teams.show();
-			
-		});
-		
-	});
 
 	</script>
 
@@ -42,28 +42,28 @@
 	
 	
 {% block body %}
-    <p></p>
-	
+	<p></p>
+
 	<div class="row">
 		<div class="small-12 medium-12 large-12 columns">
-			
+
 			<h1> Styret og team </h1>
-			
+
 			<hr>
-			
+
 			<a class="button tiny" data-dropdown="department" aria-controls="department" aria-expanded="false">Avdeling &raquo;</a>
 			<ul id="department" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
 				<li> <a href="#" class="AllDepartments"> Vis alle </a></li>
-				
+
 				{% for d in Departments %}
-								
+
 					<li><a href="#" class="departmentId" id={{d.id}}> {{ d.shortname }} </a></li>
-								
-							
+
+
 				{% endfor %}
 
 			</ul>
-						
+
 		</div>
 	</div>
 
@@ -94,12 +94,18 @@
 								<img src="{{ asset(wh.user.picturePath) }}"/>
 
 								<div class="panel callout radius">
-									<h4> {{ wh.user }}  </h4>
-									{% if wh.position is not null %}
-										{{ wh.position.name }} <br/>
+									{% if app.user %}
+										<h4><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{wh.user}}</a></h4>
+									{% else %}
+										<h4> {{wh.user}}  </h4>
 									{% endif %}
-									{{ wh.user.email }} <br/>
-									{{ wh.user.phone }} <br/>
+									<p>
+										{% if wh.position is not null %}
+											{{ wh.position.name }}<br/>
+										{% endif %}
+										<a href="mailto:{{ wh.user.email }}">E-post</a><br/>
+										{{ wh.user.phone }}<br/>
+									</p>
 								</div>
 
 							</div>
@@ -113,15 +119,15 @@
 
 				{% endfor %}
 				{% if count%4 != 0 %}
-					</div>
-				{% endif %}
+			</div>
+			{% endif %}
 
 			</div>
 
 		</team>
 
 	{% endfor %}
-					
-		
-	
+
+
+
 {% endblock %}

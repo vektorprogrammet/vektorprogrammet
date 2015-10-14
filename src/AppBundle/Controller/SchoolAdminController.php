@@ -232,6 +232,7 @@ class SchoolAdminController extends Controller {
 			return $this->render('school_admin/index.html.twig', array(
 				'departments' => $allDepartments,
 				'schools' => $schools,
+				'departmentName' => $department->getShortName(),
 			));
 		}
 		else {
@@ -259,6 +260,7 @@ class SchoolAdminController extends Controller {
 			return $this->render('school_admin/index.html.twig', array(
 				'departments' => $allDepartments,
 				'schools' => $schools,
+				'departmentName' => $department->getShortName(),
 			));
 		}
 		else {
