@@ -17,38 +17,39 @@
     <script>
 
         /**
-         * This object organizes the javascript used by this twig and the twigs extending it
-         *
-         * It holds the default image sizes used by the cropper function, see loadImages().
-         *
-         * The onReady function is called when the document is ready.
+         * Define the Aviary SDK Component
          */
         var featherEditor = new Aviary.Feather({
             apiKey: '4a1caf097b3d48e9b917e9f1bc430ad3',
             fileFormat: 'jpg',
             cropPresetsStrict: true,
-            //tools: ['draw', 'stickers'],
             onSave: function(imageID, newURL) {
                 var img = document.getElementById(imageID);
                 img.src = newURL;
             }
         });
 
+        /**
+         * This object organizes the javascript used by this twig and the twigs extending it
+         *
+         * It holds the default image sizes used by the cropper function, see loadImages().
+         *
+         * The onReady function is called when the document is ready.
+         */
+
         Article = {
 
+            //Launches the editor with all tools
             launchEditor: function (id) {
-                //alert(id);
-                var img_url = 'vektorprogrammet.no' + $('#article_image'+id).val();
-                //alert(img_url);
                 featherEditor.launch({
                     tools: 'all',
-                    //url: img_url,
                     image: 'img'+id,
                     onSave: Article.saveImg
                 });
                 return true;
             },
 
+            //Launches the editor with crop preset
             launchEditorCrop: function(id, preset) {
                 var allPresets = {
                     Small: ['Small Preset','500x300'],
@@ -67,6 +68,8 @@
 
 
             onReady: function() {
+
+                //Define all input fields
                 var inputs = $("input[id^='article_image']");
 
                 // Load the toggle box used to group functionality (bilder/publisering etc)
@@ -89,17 +92,6 @@
                 $("a[id^='editBtn']").on('click',Article.editBtnClick);
                 $("a[id^='cropBtn']").on('click',Article.cropBtnClick);
 
-                // Bind elfinder to the crop image url text input
-                //$("#crop_image").on("click", Article.openElfinder);
-
-                // Bind the button for loading the image in the crop url into img tags
-                //$("#loadImage").on("click", Article.loadImages);
-
-                // Bind the open crop modal button
-                //$("#openCropModal").on("click", Article.openCropModal);
-
-                // Bind the crop form submit button
-                //$("form[name='crop']").submit(Article.onCropFormSubmit);
             },
 
             openElfinder: function() {
@@ -117,7 +109,6 @@
             imgLocationChange: function(event){
                 event.preventDefault();
                 var elem = $(this).attr('id').substr(13);
-                //alert(elem);
                 var new_src = $(this).val();
                 if(new_src !== ""){
                     new_src += '?' + new Date().getTime();
@@ -132,8 +123,6 @@
                 event.preventDefault();
                 var elem = $(this).attr('id').substr(7);
                 if($('#article_image' + elem).val() !== ''){
-
-                    //alert(elem);
                     Article.launchEditor(elem);
                 }
                 else{
@@ -145,8 +134,6 @@
                 event.preventDefault();
                 var elem = $(this).attr('id').substr(7);
                 if($('#article_image' + elem).val() !== ''){
-
-                    //alert(elem);
                     Article.launchEditorCrop(elem,elem);
                 }
                 else{
@@ -187,105 +174,6 @@
                     }
                 });
             }
-
-            /*loadImages: function(event) {
-                event.preventDefault();
-                var url = $("#crop_image").val();
-                var largeImageCrop = $("<img>").attr("src", url);
-                var mediumImageCrop = $("<img>").attr("src", url);
-                var smallImageCrop = $("<img>").attr("src", url);
-
-                $(".img-container-large").html(largeImageCrop);
-                $('.img-container-medium').html(mediumImageCrop);
-                $('.img-container-small').html(smallImageCrop);
-
-                largeImageCrop.on("load", function() {
-                    $(this).guillotine({
-                        width: 1100,
-                        height: 350,
-                        onChange: function(data, action){
-                            $("#crop_largeCropData").val(JSON.stringify(data));
-                        }
-                    });
-                    $("#crop_largeCropData").val(JSON.stringify($(this).guillotine('getData')));
-                    Article.addCropControls($(this));
-                });
-
-                mediumImageCrop.on("load", function() {
-                    $(this).guillotine({
-                        width: 715,
-                        height: 300,
-                        onChange: function(data, action){
-                            $("#crop_mediumCropData").val(JSON.stringify(data));
-                        }
-                    });
-                    $("#crop_mediumCropData").val(JSON.stringify($(this).guillotine('getData')));
-                    Article.addCropControls($(this));
-                });
-
-                smallImageCrop.on("load", function() {
-                    $(this).guillotine({
-                        width: 500,
-                        height: 300,
-                        onChange: function(data, action){
-                            $("#crop_smallCropData").val(JSON.stringify(data));
-                        }
-                    });
-                    $("#crop_smallCropData").val(JSON.stringify($(this).guillotine('getData')));
-                    Article.addCropControls($(this));
-                });
-            },
-
-            openCropModal: function(event) {
-                event.preventDefault();
-                $("#cropModal").foundation("reveal", "open");
-            },
-
-            addCropControls: function(image) {
-                var zoomInButton = $('<i class="fa fa-search-plus fa-lg"></i>');
-                var zoomOutButton = $('<i class="fa fa-search-minus fa-lg"></i>');
-
-                zoomInButton.on("click", function() {
-                    image.guillotine("zoomIn");
-                });
-
-                zoomOutButton.on("click", function() {
-                    image.guillotine("zoomOut");
-                });
-
-                var controls = $('<div></div>').addClass("cropControls");
-
-                controls.css("position", "absolute");
-                controls.css("top", "1rem");
-                controls.css("cursor", "pointer");
-
-                controls.append(zoomInButton).append(zoomOutButton);
-
-                image.closest(".columns").append(controls);
-            },
-
-            onCropFormSubmit: function(event) {
-                event.preventDefault();
-                var formdata = $(this).serialize();
-
-                $.ajax({
-                    type: "POST",
-                    url: "{{ path('articleadmin_crop') }}",
-                    data: formdata,
-                    success: function(response) {
-                        if(response.success) {
-                            setValue(response.imageLarge, 'article_imageLarge');
-                            setValue(response.imageMedium, 'article_imageMedium');
-                            setValue(response.imageSmall, 'article_imageSmall');
-
-                            $("#cropModal").foundation("reveal", "close");
-                        } else {
-                            alert(response.cause);
-                        }
-                    }
-                });
-            }
-        */
         };
 
         $(document).ready(Article.onReady);
