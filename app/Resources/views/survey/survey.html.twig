@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html class="no-js" lang="no">
+	<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock %}</title>
+		
+        {% block stylesheets %}
+            <link rel="stylesheet" href="../../../../../undersokelse/survey.css">
+        {% endblock %}
+
+        {# Used by Foundation for backwards compability, and is supposed to be in the header #}
+        <script src="{{ asset('bundles/app/js/vendor/modernizr.js') }}"></script>
+    </head>
+    
+	<body>
+	{#Do not extend the main
+		need functions for the surveys
+			place all in the main div#}
+
+    {#      Unødvendig
+	<div class="main">
+		<h2>
+			Sp&oslash;rreunders&oslash;kelse Vektorprogrammet ((semester))
+		</h2>
+			</div>		{#script som henter inn semesteret?#}
+		
+
+
+	
+	{% block scripts %}
+            {# jQuery and Foundation #}
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+            <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+            <script type="text/javascript" src="{{ asset('bundles/app/js/foundation.min.js') }}"></script>
+            <script>
+                {# This has to be in all twig files, can't be overwritten #}
+                $(document).foundation();
+            </script>
+        {% endblock %}
+	</body>
+
+</html>
