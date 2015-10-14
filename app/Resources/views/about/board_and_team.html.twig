@@ -104,7 +104,7 @@
 											{{ wh.position.name }}<br/>
 										{% endif %}
 										<a href="mailto:{{ wh.user.email }}">E-post</a><br/>
-										{{ wh.user.phone }}<br/>
+										{{ wh.user.phone|slice(0,3) }} {{ wh.user.phone|slice(3,2) }} {{ wh.user.phone|slice(5,3) }} <br/>
 									</p>
 								</div>
 
