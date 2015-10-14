@@ -91,12 +91,18 @@
 							<img src="{{ asset(wh.user.picturePath) }}" />
 
 							<div class="panel callout radius">
-								<h4> {{wh.user}}  </h4>
-								{% if wh.position is not null %}
-									{{ wh.position.name }} <br/>
+								{% if app.user %}
+									<h4><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{wh.user}}</a></h4>
+								{% else %}
+									<h4> {{wh.user}}  </h4>
 								{% endif %}
-								{{ wh.user.email }} <br/>
-								{{ wh.user.phone }} <br/>
+								<p>
+									{% if wh.position is not null %}
+										{{ wh.position.name }}<br/>
+									{% endif %}
+									<a href="mailto:{{ wh.user.email }}">E-post</a><br/>
+									{{ wh.user.phone }}<br/>
+								</p>
 							</div>
 							
 						</div>
