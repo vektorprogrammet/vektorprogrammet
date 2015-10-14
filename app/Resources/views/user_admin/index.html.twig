@@ -7,9 +7,9 @@
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 	{# We need the deletetablerow.js file #}
     <script src="{{ asset('bundles/app/js/deleteablerow.js') }}"></script>
-	
+
 	<script>
-	
+
 	$(document).ready(function() {
             $('.delete').deleteablerow('useradmin_delete_user_by_id', {
                 confirmation: {
@@ -19,109 +19,109 @@
                 }
             });
         });
-		
+
 		$("#search").keyup(function(){
-		
+
 			_this = this;
-			
+
 			$.each($("#table tbody").find("tr"), function() {
-			
+
 				if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
 				   $(this).hide();
 				}
 				else {
-					 $(this).show();         
+					 $(this).show();
 				}
 			});
-			
-		}); 
+
+		});
 
 	</script>
 
-	
+
 {% endblock %}
 
 {% block title %}
 	Brukere
 {% endblock %}
 
-	
+
 {% block body %}
     <p></p>
-	
+
 	<div class="row">
 		<div class="small-12 medium-12 large-12 columns">
-			
+
 			<h1> Brukere </h1>
-			
-			<hr>	
-			
+
+			<hr>
+
 			<div class="row">
-			
+
 				<div class="small-12 medium-12 large-6 columns">
-						
+
 					<ul class="inline-list">
-						
+
 						{# Dropdown to choose department, only for superadmins #}
-						{% if is_granted('ROLE_SUPER_ADMIN') %} 
-						
+						{% if is_granted('ROLE_SUPER_ADMIN') %}
+
 							<li>
 								<a class="button tiny" data-dropdown="selectDepartmentDropdown" aria-controls="selectDepartmentDropdown" aria-expanded="false">Avdeling &raquo;</a>
 								<ul id="selectDepartmentDropdown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
-									
+
 								{% for d in departments %}
-										
+
 								  <li><a href="{{ path('useradmin_filter_users_by_department', { 'id': d.id }) }}">{{ d.shortName }}</a></li>
-									  
+
 								{% endfor %}
-									
+
 								</ul>
 							</li>
-							
+
 						{% endif %}
-								
-							
+
+
 						{# Button to create a user, dropdown for superadmin and regular button for admin #}
-						{% if is_granted('ROLE_SUPER_ADMIN') %} 
+						{% if is_granted('ROLE_SUPER_ADMIN') %}
 							<li>
 							<a class="button tiny" data-dropdown="superadminCreateUser" aria-controls="superadminCreateUser" aria-expanded="false">Opprett bruker &raquo;</a>
 							<ul id="superadminCreateUser" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
-									
+
 								{% for d in departments %}
-										
+
 								<li><a href="{{ path('useradmin_create_user_superadmin', { 'id': d.id }) }}">{{ d.shortName }}</a></li>
-										  
+
 								{% endfor %}
-									
+
 							</ul>
 							</li>
 						{% else  %}
 								<li><a href="{{ path('useradmin_create_user') }}"" class="button tiny">Opprett bruker</a></li>
 						{% endif %}
-						
+
 					</ul>
-					
+
 				</div>
-				
+
 				<div class="small-12 medium-12 large-6 columns">
 
 					<input type="text" id="search" placeholder="Søk..." />
-								
+
 				</div>
-					
-			
+
+
 			</div>
 		</div>
 	</div>
-				
+
 	<div class="row">
 		<div class="small-12 medium-12 large-12 columns">
 				<hr>
-								
+
 				{% if users is defined%}
-					
+
 					<table width="100%" class="test" id="table">
-				
+
 					<thead>
 						<tr>
 							<th> Fornavn</th>
@@ -133,29 +133,31 @@
 							<th>  </th>
 						</tr>
 					</thead>
-					
+
 					<tbody>
 						{% for u in users %}
-							<tr>
-								<td>  <a href='{{ path('specific_profile', { 'id': u.id }) }}'>{{ u.firstName }}</a> </td>
-								<td> {{ u.lastName }} </td>
-								<td> {{ u.phone|slice(0,3) }} {{ u.phone|slice(3,2) }} {{ u.phone|slice(5,3) }} </td>
-								<td> {{ u.email }} </td>
-								<td> {{ u.fieldOfStudy }} </td>
-								<td> {{ u.fieldOfStudy.department }} </td>
-								<td><a href="#" id="{{ u.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td>
-							</tr>
-						{% endfor %} 
+							{% if u.isActive %}
+								<tr>
+									<td>  <a href='{{ path('specific_profile', { 'id': u.id }) }}'>{{ u.firstName }}</a> </td>
+									<td> {{ u.lastName }} </td>
+									<td> {{ u.phone }} </td>
+									<td> {{ u.email }} </td>
+									<td> {{ u.fieldOfStudy }} </td>
+									<td> {{ u.fieldOfStudy.department }} </td>
+									<td><a href="#" id="{{ u.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td>
+								</tr>
+							{% endif %}
+						{% endfor %}
 					</tbody>
-					
+
 				</table>
-					
-					
+
+
 				{% endif %}
-				
+
 			</div>
 		</div>
-		
+
 		<div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true" role="dialog">
 			<h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
 			<ul class="inline-list">
@@ -163,5 +165,89 @@
 				<a id="modalCancel" href="#" class="button tiny">Avbryt</a>
 			</ul>
 		</div>
-	
+
+	{% if is_granted('ROLE_SUPER_ADMIN') %}
+
+		<p></p>
+
+		<div class="row">
+			<div class="small-12 medium-12 large-12 columns">
+
+				<h1> Inaktive Brukere </h1>
+
+				<hr>
+
+				<div class="row">
+
+					<div class="small-12 medium-12 large-6 columns">
+
+
+					</div>
+
+					<div class="small-12 medium-12 large-6 columns">
+
+						<input type="text" id="search" placeholder="Søk..." />
+
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="small-12 medium-12 large-12 columns">
+				<hr>
+
+				{% if users is defined%}
+
+					<table width="100%" class="test" id="table">
+
+						<thead>
+						<tr>
+							<th> Fornavn</th>
+							<th> Etternavn</th>
+							<th> Tlf </th>
+							<th> E-post </th>
+							<th> Linje </th>
+							<th> Avdeling </th>
+							<th>  </th>
+						</tr>
+						</thead>
+
+						<tbody>
+						{% for u in users %}
+							{% if not u.isActive %}
+								<tr>
+									<td>  <a href='{{ path('specific_profile', { 'id': u.id }) }}'>{{ u.firstName }}</a> </td>
+									<td> {{ u.lastName }} </td>
+									<td> {{ u.phone }} </td>
+									<td> {{ u.email }} </td>
+									<td> {{ u.fieldOfStudy }} </td>
+									<td> {{ u.fieldOfStudy.department }} </td>
+									<td><a href="#" id="{{ u.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td>
+								</tr>
+							{% endif %}
+						{% endfor %}
+						</tbody>
+
+					</table>
+
+
+				{% endif %}
+
+			</div>
+		</div>
+
+		<div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true" role="dialog">
+			<h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
+			<ul class="inline-list">
+				<a id="modalAccept" href="#" class="button tiny">Slett</a>
+				<a id="modalCancel" href="#" class="button tiny">Avbryt</a>
+			</ul>
+		</div>
+	{% endif %}
 {% endblock %}
+
+
+
