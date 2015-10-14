@@ -1,35 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block customScripts %}
-	
+
 	<script>
-	
-	$(document).ready(function() {
-		
-		{# Get all the teams as they are first presented #}
-		teams = $(".team");
-			
-		$('.departmentId').click(function(){
-			
-			{# Get the ID of the elemnt being clicked #}
-			var ID =  parseInt(this.id);
-			
-			{# Hide all teams #}
-			teams.hide();
-			
-			{# Show teams with id=ID and class="team" #}
-			$("#"+ID+".team").show();
+
+		$(document).ready(function() {
+
+			{# Get all the teams as they are first presented #}
+			teams = $(".team");
+
+			$('.departmentId').click(function(){
+
+				{# Get the ID of the elemnt being clicked #}
+				var ID =  parseInt(this.id);
+
+				{# Hide all teams #}
+				teams.hide();
+
+				{# Show teams with id=ID and class="team" #}
+				$("#"+ID+".team").show();
+
+			});
+
+			{# Show all departments #}
+			$('.AllDepartments').click(function(){
+
+				teams.show();
+
+			});
 
 		});
-		
-		{# Show all departments #}
-		$('.AllDepartments').click(function(){
-			
-			teams.show();
-			
-		});
-		
-	});
 
 	</script>
 
@@ -42,82 +42,92 @@
 	
 	
 {% block body %}
-    <p></p>
-	
+	<p></p>
+
 	<div class="row">
 		<div class="small-12 medium-12 large-12 columns">
-			
+
 			<h1> Styret og team </h1>
-			
+
 			<hr>
-			
+
 			<a class="button tiny" data-dropdown="department" aria-controls="department" aria-expanded="false">Avdeling &raquo;</a>
 			<ul id="department" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
 				<li> <a href="#" class="AllDepartments"> Vis alle </a></li>
-				
+
 				{% for d in Departments %}
-								
+
 					<li><a href="#" class="departmentId" id={{d.id}}> {{ d.shortname }} </a></li>
-								
-							
+
+
 				{% endfor %}
 
 			</ul>
-						
+
 		</div>
 	</div>
-	
+
 	{% for t in Teams %}
-								
-		<team class="team" id={{t.department.id}}>
-			
+
+		<team class="team" id={{ t.department.id }}>
+
 			<div class="row">
-				<div class="small-12 medium-12 large-12 columns">										
-					
+				<div class="small-12 medium-12 large-12 columns">
+
 					<hr>
-					
-					<h3> {{t.department.shortName}}: {{ t.name }} </h3> 
+
+					<h3> {{ t.department.shortName }}: {{ t.name }} </h3>
 
 				</div>
-			
-					
-			{% for wh in WorkHistories %}
-				
-				{% if wh.team is not null %}
-					{% if wh.team.id == t.id %}
-						
-						<div class="small-12 medium-12 large-3 columns">
 
-							<img src="{{ asset(wh.user.picturePath) }}" />
+				{% set count = 0 %}
+				{% for wh in WorkHistories %}
 
-							<div class="panel callout radius">
-								{% if app.user %}
-									<h4><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{wh.user}}</a></h4>
-								{% else %}
-									<h4> {{wh.user}}  </h4>
-								{% endif %}
-								<p>
-									{% if wh.position is not null %}
-										{{ wh.position.name }}<br/>
+					{% if wh.team is not null %}
+						{% if wh.team.id == t.id %}
+							{% if count%4 == 0 %}
+								<div class="row">
+							{% endif %}
+
+							<div class="small-12 medium-12 large-3 columns left">
+
+								<img src="{{ asset(wh.user.picturePath) }}"/>
+
+								<div class="panel callout radius">
+									{% if app.user %}
+										<h4><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{wh.user}}</a></h4>
+									{% else %}
+										<h4> {{wh.user}}  </h4>
 									{% endif %}
-									<a href="mailto:{{ wh.user.email }}">E-post</a><br/>
-									{{ wh.user.phone }}<br/>
-								</p>
-							</div>
-							
-						</div>
+									<p>
+										{% if wh.position is not null %}
+											{{ wh.position.name }}<br/>
+										{% endif %}
+										<a href="mailto:{{ wh.user.email }}">E-post</a><br/>
+										{{ wh.user.phone }}<br/>
+									</p>
+								</div>
 
+							</div>
+
+							{% if count%4 == 3 %}
+								</div>
+							{% endif %}
+							{% set count = count + 1 %}
+						{% endif %}
 					{% endif %}
-				{% endif %}					
-																
-			{% endfor %}
-			
+
+				{% endfor %}
+				{% if count%4 != 0 %}
 			</div>
-										
+			{% endif %}
+
+			</div>
+
 		</team>
-									
+
 	{% endfor %}
-					
-		
-	
+
+
+
 {% endblock %}
