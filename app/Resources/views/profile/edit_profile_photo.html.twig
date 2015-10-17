@@ -17,71 +17,55 @@
             fileFormat: 'jpg',
             cropPresetsStrict: true,
             onSave: function(imageID, newURL) {
-                $("#profileImg").attr('src',newURL);
-                $("#profileImgHidden").attr('src',newURL);
+                saveImgToFile(imageID,newURL);
 
             }
         });
 
         function launchEditor(event) {
             event.preventDefault();
-            featherEditor.launch({
-                tools: 'enhance',
-                forceCropPreset: ['Profile Preset','400x400'],
-                image: 'profileImgHidden'
-            });
+            if($("#profileImgHidden").attr('src') !== ''){
+                featherEditor.launch({
+                    forceCropPreset: ['Profile Preset','400x400'],
+                    image: 'profileImgHidden'
+                });
+            }
+            else{
+                alert('Last opp et bilde!');
+            }
             return true;
         }
 
         function onReady(){
-            //var inputs = $("input[id^='article_image']");
 
-            // Load the toggle box used to group functionality (bilder/publisering etc)
-            //$(".option-box").optionbox();
 
-            // Bind elfinder to each of the image url text inputs
-            //inputs.on("click", Article.openElfinder);
 
-            // Bind onchange when the user select one photo to be shown everywhere
-            //$("#article_imageAll").change(Article.selectAllChange);
-
-            //Bind changes in input fields to img tag and make sure they are the correct value after startup
-            //inputs.on("change", Article.imgLocationChange);
-            /*inputs.each(function(){
-                if($(this).attr('id') !== 'article_imageAll'){
-                    $(this).trigger('change');
-                }
-            });*/
             // Bind editBtn to editor
             $('#editImageBtn').on('click',launchEditor);
 
-            // Bind elfinder to the crop image url text input
-            //$("#crop_image").on("click", Article.openElfinder);
 
-            // Bind the button for loading the image in the crop url into img tags
-            //$("#loadImage").on("click", Article.loadImages);
-
-            // Bind the open crop modal button
-            //$("#openCropModal").on("click", Article.openCropModal);
-
-            // Bind the crop form submit button
-            //$("form[name='crop']").submit(Article.onCropFormSubmit);
         }
 
-
-        /*imgLocationChange: function(event){
-            event.preventDefault();
-            var elem = $(this).attr('id').substr(13);
-            //alert(elem);
-            var new_src = $(this).val();
-            if(new_src !== ""){
-                new_src += '?' + new Date().getTime();
-            }
-            $('#img'+elem).removeAttr("src").attr('src',new_src);
-            if(elem !== 'All'){
-                $('#imgPreview'+elem).removeAttr("src").attr('src',new_src);
-            }
-        },*/
+        function saveImgToFile(imageID, newURL) {
+            featherEditor.showWaitIndicator();
+            $.ajax({
+                type: "POST",
+                url: "{{ path('profile_save_response_from_editor') }}",
+                data: JSON.stringify({
+                    aviaryURL: newURL,
+                }),
+                success: function(response) {
+                    if(response.success) {
+                        $("#profileImg").attr('src',response.localURL);
+                        $("#profileImgHidden").attr('src',response.localURL);
+                        featherEditor.close();
+                    } else {
+                        alert(response.cause);
+                        featherEditor.hideWaitIndicator();
+                    }
+                }
+            });
+        }
 
         function editBtnClick(event){
             event.preventDefault();
@@ -99,13 +83,15 @@
         Dropzone.options.dropzone = {
             paramName: "img", // The name that will be used to transfer the file
             dictDefaultMessage: "Slipp bildet her<br>(eller trykk for &aring velge)",
-            maxFiles: 1,
             createImageThumbnails: false,
+            acceptedFiles: ".jpg,.jpeg",
+            complete: function(file) {
+                    this.removeFile(file);
+                },
             init: function() {
                 this.on("success", function(file,response) {
-                    console.log(response);
-                    $("#profileImg").attr('src',response.url);
-                    $("#profileImgHidden").attr('src',response.url);
+                    $("#profileImg").attr('src',response.url + '?' + new Date().getTime());
+                    $("#profileImgHidden").attr('src',response.url + '?' + new Date().getTime());
                 });
             }
         };
@@ -168,6 +154,10 @@
             border: 10px solid #444;
         }
 
+        .dz-file-preview{
+            display: none;
+        }
+
         .bordered{
             border-left:1px solid #aaaaaa;
         }
@@ -195,7 +185,7 @@
 {% endblock %}
 
 {% block body %}
-    <img id="profileImgHidden" src="" />
+    <img id="profileImgHidden" src="{{ path }}" />
     <p></p>
 
     <div class="row">
@@ -210,6 +200,17 @@
                         Velg profilbilde for {{ user.firstName }} {{ user.lastName }}
                     </p>
 
+                    {% for flashMessage in app.session.flashbag.get('profile-notice') %}
+                        <div class="row">
+                            <div class="small-12 medium-12 large-12 columns">
+                                <div data-alert class="alert-box info radius">
+                                    {{ flashMessage }}
+                                    <a href="#" class="close">&times;</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
                     <hr>
 
                     <div class="row">
@@ -218,7 +219,7 @@
                         </div>
                         <div class="medium-6 columns text-center bordered">
 
-                            <img id="profileImg" src="" />
+                            <img id="profileImg" src="{{ path }}" />
                             <div class="row">
                                 <br>
                                 <a href="#" class="button small" id="editImageBtn">Rediger bilde</a>
@@ -227,7 +228,7 @@
                         <div class="row">
                             <div class="medium-12 columns text-center">
                                 <br>
-                                <a href="#" class="button medium" id="editImageBtn">Lagre</a>
+                                <a href="{{ path('profile_save_photo') }}" class="button medium" id="editImageBtn">Lagre</a>
                             </div>
                         </div>
 
@@ -235,12 +236,6 @@
                     <br>
 
                     <hr>
-
-                    <!--
-                    {{ form_start(form) }}
-                    {{ form_widget(form) }}
-                    {{ form_end(form) }}
-                    -->
 
                 </div>
             </div>
