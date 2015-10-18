@@ -153,7 +153,7 @@ profile_edit_photo:
 
 profile_upload_photo:
   path: /profil/rediger/profilbilde/upload
-  defaults: { _controller: AppBundle:Profile:editProfilePhoto }
+  defaults: { _controller: AppBundle:Profile:editProfilePhotoUpload }
 
 profile_save_response_from_editor:
   path: /profil/rediger/profilbilde/saveEditorResponse

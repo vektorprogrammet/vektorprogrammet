@@ -11,7 +11,8 @@
 
     <script>
 
-
+        // The Image Editor SDK object
+        // https://creativesdk.adobe.com/docs/web/#/articles/gettingstarted/index.html
         var featherEditor = new Aviary.Feather({
             apiKey: '4a1caf097b3d48e9b917e9f1bc430ad3',
             fileFormat: 'jpg',
@@ -22,6 +23,7 @@
             }
         });
 
+        //Launch the editor
         function launchEditor(event) {
             event.preventDefault();
             if($("#profileImgHidden").attr('src') !== ''){
@@ -37,15 +39,11 @@
         }
 
         function onReady(){
-
-
-
             // Bind editBtn to editor
             $('#editImageBtn').on('click',launchEditor);
-
-
         }
 
+        //Sends json request to server with the new image URL
         function saveImgToFile(imageID, newURL) {
             featherEditor.showWaitIndicator();
             $.ajax({
@@ -67,19 +65,20 @@
             });
         }
 
+        //If the user click the edit Button
         function editBtnClick(event){
             event.preventDefault();
             var elem = $(this).attr('id').substr(7);
             if($('#article_image' + elem).val() !== ''){
-
-                //alert(elem);
                 Article.launchEditor(elem);
             }
             else{
-                alert('Du m� velge et bilde!')
+                alert('Du må velge et bilde!')
             }
         }
 
+        //Configure the uploadzone
+        // http://www.dropzonejs.com/
         Dropzone.options.dropzone = {
             paramName: "img", // The name that will be used to transfer the file
             dictDefaultMessage: "Slipp bildet her<br>(eller trykk for &aring velge)",
@@ -200,6 +199,11 @@
                         Velg profilbilde for {{ user.firstName }} {{ user.lastName }}
                     </p>
 
+                    <p>
+                        <b>NB:</b> Du finner svart/hvitt filter ved å klikke på "Effects"->"Classic"->"B&W" inne i redigeringsprogrammet.
+                    </p>
+
+                    <hr>
                     {% for flashMessage in app.session.flashbag.get('profile-notice') %}
                         <div class="row">
                             <div class="small-12 medium-12 large-12 columns">
@@ -210,8 +214,6 @@
                             </div>
                         </div>
                     {% endfor %}
-
-                    <hr>
 
                     <div class="row">
                         <div class="medium-6 columns text-center">

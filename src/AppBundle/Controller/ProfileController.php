@@ -437,30 +437,26 @@ class ProfileController extends Controller {
     /**
      *
      * Updates profile photo for logged in user.
-     * Request must contain a file of mime type image/gif, image/jpeg or image/png.
-     * Moves the image file to the profile photos folder and updates the database.
-     *
-     * Note that no forms are created here, so it differs from the patterns used
-     * elsewhere in this source file. See showEditProfilePhotoAction for rendered
-     * page where user can upload photo. Reason: this function is also used by drag and drop
-     * uploader in addition to the normal form with file selector. So I separated upload
-     * handling and form rendering.
+     * Request must contain a file of mime type image/jpeg.
+     * Moves the image file to the profile photos folder.
      *
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws \Exception
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function editProfilePhotoAction(Request $request){
+    public function editProfilePhotoUploadAction(Request $request){
     if ($this->get('security.context')->isGranted('ROLE_USER')) {
+
+        //Get user
 		$user = $this->get('security.context')->getToken()->getUser();
 		$id = $user->getId();
 
 		//Target folder for the profile photo
 		$targetFolder = $this->container->getParameter('profile_photos') . '/';
-        $path = $targetFolder;
+        //Get filetype
         $extension = explode('.',$request->files->get('img')->getClientOriginalName());
         $extension = $extension[count($extension)-1];
 
+        //Remove previously uploaded photos
         if(file_exists($targetFolder . $id . "_temp.jpg")){
             unlink($targetFolder . $id . "_temp.jpg");
         }
@@ -469,8 +465,10 @@ class ProfileController extends Controller {
         }
 
         try{
+            //Move the file to new temporary location
             $request->files->get('img')->move($targetFolder, $id . "_temp.". $extension);
 
+            //Return the new URL
             $response = ['success' => true,
                 'url' => $url = $this->container->get('templating.helper.assets')->getUrl($targetFolder . $id . "_temp.". $extension)
             ];
@@ -478,13 +476,13 @@ class ProfileController extends Controller {
         catch (\Exception $e) {
             $response = ['success' => false,
                 'code' => $e->getCode(),
-                'cause' => 'Det oppstod en feil under lagringen av bildet. Prøv igjen eller kontakt IT ansvarlig.'
+                'cause' => 'Det oppstod en feil under lagringen av bildet. PrÃ¸v igjen eller kontakt IT ansvarlig.'
             ];
         }
     }
     else {
         $response = ['success' => false,
-            'cause' => 'Det oppstod en feil under behandlingen av bildet. Prøv igjen eller kontakt IT ansvarlig.'
+            'cause' => 'Du har ikke rettigheter til dette!'
         ];;
     }
 
@@ -494,49 +492,51 @@ class ProfileController extends Controller {
 
     public function saveProfilePhotoAction(Request $request){
         if ($this->get('security.context')->isGranted('ROLE_USER')) {
-            //Target folder for the profile photo
+            //Get user and ID
             $user = $this->get('security.context')->getToken()->getUser();
             $id = $user->getId();
 
+            //Target folder for the profile photo
             $targetFolder = $this->container->getParameter('profile_photos') . '/';
             $path = $targetFolder . $id . ".jpg";
+            //Get path to edited and cropped image
             $oldPath = $targetFolder . $id . "_cropped.jpg";
 
+            //Make sure the user have edited and cropped the image, if they have, set it as their new profile image
 			if(file_exists($oldPath)){
                 rename($oldPath, $path);
             }
-            elseif(file_exists($targetFolder . $id . "_temp.jpeg")){
-                $this->addFlash('profile-notice','Har du husket å redigere bildet?');
+            elseif(file_exists($targetFolder . $id . "_temp.jpeg")){ //We dont have an edited version of the image, but the user have uploaded an image (jpeg)
+                $this->addFlash('profile-notice','Har du husket Ã¥ redigere bildet?');
                 return $this->render('profile/edit_profile_photo.html.twig', array(
                     'path' => $this->get('request')->getBasePath() . '/' . $targetFolder . $id . "_temp.jpeg",
                     'user' => $user,
                 ));
             }
-            elseif(file_exists($targetFolder . $id . "_temp.jpg")){
-                $this->addFlash('profile-notice','Har du husket å redigere bildet?');
+            elseif(file_exists($targetFolder . $id . "_temp.jpg")){ //We dont have an edited version of the image, but the user have uploaded an image (jpg)
+                $this->addFlash('profile-notice','Har du husket Ã¥ redigere bildet?');
                 return $this->render('profile/edit_profile_photo.html.twig', array(
                     'path' => $this->get('request')->getBasePath() . '/' . $targetFolder . $id . "_temp.jpg",
                     'user' => $user,
                 ));
             }
-            else{
+            else{ //No edited image or uploaded image
                 $this->addFlash('profile-notice','Har du lastet opp et bilde?');
                 return $this->redirect($this->generateUrl('profile_edit_photo'));
             }
 
+            //Remove the old version of the photo if it exists (Is this necessary?)
             if(file_exists($targetFolder . $id . "_cropped.jpg")){
                 unlink($targetFolder . $id . "_cropped.jpg");
             }
 
+            //Update the database
             $user->setPicturePath($path);
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($user);
             $em->flush();
 
             return $this->redirect($this->generateUrl('profile'));
-
-
-            //return $this->redirect($this->generateUrl('specific_profile', array('id' => $id )));
         }
         else {
             return $this->redirect($this->generateUrl('home'));
@@ -551,13 +551,17 @@ class ProfileController extends Controller {
      */
     public function saveProfilePhotoEditorResponseAction(Request $request) {
         if ($this->get('security.context')->isGranted('ROLE_USER')) {
+
+            //Get the SDK url to the new picture
             $content = $request->getContent();
             $data = json_decode($content,true);
             $aviaryURL = $data['aviaryURL'];
 
+            // Get the user and their ID
             $user = $this->get('security.context')->getToken()->getUser();
             $id = $user->getId();
 
+            //Get path to where the new file will be stored
             $targetFolder = $this->container->getParameter('profile_photos') . '/';
             $path = $targetFolder . $id . "_cropped.jpg";
 
@@ -566,6 +570,7 @@ class ProfileController extends Controller {
                 //copy the image to the new location
                 copy($aviaryURL, $path);
 
+                //Remove the original upload of the photo
                 if(file_exists($targetFolder . $id . "_temp.jpg")){
                     unlink($targetFolder . $id . "_temp.jpg");
                 }
@@ -573,6 +578,7 @@ class ProfileController extends Controller {
                     unlink($targetFolder . $id . "_temp.jpeg");
                 }
 
+                //Return the new URL
                 $response = [
                     'success' => true,
                     'localURL' => $this->get('request')->getBasePath() . '/' . $path,
@@ -581,7 +587,7 @@ class ProfileController extends Controller {
             } catch (\Exception $e) {
                 $response = ['success' => false,
                     'code' => $e->getCode(),
-                    'cause' => 'Det oppstod en feil under lagringen av bildet. Prøv igjen eller kontakt IT ansvarlig.'
+                    'cause' => 'Det oppstod en feil under lagringen av bildet. PrÃ¸v igjen eller kontakt IT ansvarlig.'
                 ];
             }
 
@@ -600,20 +606,28 @@ class ProfileController extends Controller {
 
     public function showEditProfilePhotoAction(){
         if ($this->get('security.context')->isGranted('ROLE_USER')) {
+
             // Get the current user logged in
             $user = $this->get('security.context')->getToken()->getUser();
             $id = $user->getId();
 
+            //Remove previously uploaded and edited images, make sure we start with clean sheets
             $targetFolder = $this->container->getParameter('profile_photos') . '/';
             if(file_exists($targetFolder . $id . "_cropped.jpg")){
                 unlink($targetFolder . $id . "_cropped.jpg");
             }
+            if(file_exists($targetFolder . $id . "_temp.jpg")){
+                unlink($targetFolder . $id . "_temp.jpg");
+            }
+            if(file_exists($targetFolder . $id . "_temp.jpeg")){
+                unlink($targetFolder . $id . "_temp.jpeg");
+            }
 
+            //If the user already have a profile picture, get the url and send it to the editor
             if($user->getPicturePath() != 'images/defaultProfile.png'){
                 $path = $user->getPicturePath();
                 $path = $this->get('request')->getBasePath() . '/' . $path;
-            }
-            else{
+            }else{
                 $path = "";
             }
             return $this->render('profile/edit_profile_photo.html.twig', array(
