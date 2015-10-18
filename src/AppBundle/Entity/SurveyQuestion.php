@@ -38,6 +38,11 @@ class SurveyQuestion
     protected $alternatives;
 
     /**
+     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="surveyAnswer", cascade={"persist", "remove"})
+     */
+    protected $answers;
+
+    /**
      * Get id
      *
      * @return integer 

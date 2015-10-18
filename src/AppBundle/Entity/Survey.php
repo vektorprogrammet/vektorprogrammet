@@ -18,19 +18,9 @@ class Survey
     protected $id;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\ManyToOne(targetEntity="Semester")
      */
-    protected $surveyed;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $scheduled;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $conducted;
+    protected $semester;
 
     /**
      * @ORM\ManyToOne(targetEntity="SurveySchema")
@@ -45,16 +35,16 @@ class Survey
     protected $application;
 
     /**
-     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="survey", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="survey", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    protected $surveyAnswers;
+    protected $surveyQuestions;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->surveyAnswers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->surveyQuestions = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

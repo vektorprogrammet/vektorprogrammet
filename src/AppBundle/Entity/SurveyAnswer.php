@@ -18,12 +18,6 @@ class SurveyAnswer
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Survey", inversedBy="surveyAnswers")
-     * @ORM\JoinColumn(name="survey_id", referencedColumnName="id")
-     */
-    protected $survey;
-
-    /**
      * @ORM\ManyToOne(targetEntity="SurveyQuestion")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      */
@@ -65,29 +59,6 @@ class SurveyAnswer
     public function getAnswer()
     {
         return $this->answer;
-    }
-
-    /**
-     * Set survey
-     *
-     * @param \AppBundle\Entity\Survey $survey
-     * @return SurveyAnswer
-     */
-    public function setSurvey(\AppBundle\Entity\Survey $survey = null)
-    {
-        $this->survey = $survey;
-
-        return $this;
-    }
-
-    /**
-     * Get survey
-     *
-     * @return \AppBundle\Entity\Survey
-     */
-    public function getSurvey()
-    {
-        return $this->survey;
     }
 
     /**
