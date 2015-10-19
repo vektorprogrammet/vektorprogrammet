@@ -29,12 +29,6 @@ class Survey
     protected $surveySchema; // Bidirectional, may turn out to be unidirectional
 
     /**
-     * @ORM\OneToOne(targetEntity="Application", inversedBy="survey")
-     * @ORM\JoinColumn(name="application_id", referencedColumnName="id")
-     */
-    protected $application;
-
-    /**
      * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="survey", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $surveyQuestions;
@@ -80,30 +74,6 @@ class Survey
         return $this->surveySchema;
     }
 
-
-    /**
-     * Set application
-     *
-     * @param \AppBundle\Entity\Application $application
-     * @return Survey
-     */
-    public function setApplication(\AppBundle\Entity\Application $application = null)
-    {
-        $this->application = $application;
-
-        return $this;
-    }
-
-    /**
-     * Get application
-     *
-     * @return \AppBundle\Entity\Application
-     */
-    public function getApplication()
-    {
-        return $this->application;
-    }
-
     /**
      * Add surveyAnswers
      *
@@ -135,86 +105,5 @@ class Survey
     public function getSurveyAnswers()
     {
         return $this->surveyAnswers;
-    }
-
-    /**
-     * Set surveyed
-     *
-     * @param boolean $surveyed
-     * @return Survey
-     */
-    public function setSurveyed($surveyed)
-    {
-        $this->surveyed = $surveyed;
-
-        return $this;
-    }
-
-    /**
-     * Get surveyed
-     *
-     * @return boolean 
-     */
-    public function getSurveyed()
-    {
-        return $this->surveyed;
-    }
-
-    /**
-     * Is the given User the surveyer of this Survey?
-     *
-     * @param User $user
-     * @return boolean
-     */
-    public function isSurveyer(User $user = null)
-    {
-        return $user && $user->getId() == $this->getSurveyer()->getId();
-    }
-
-
-    /**
-     * Set scheduled
-     *
-     * @param \DateTime $scheduled
-     * @return Survey
-     */
-    public function setScheduled($scheduled)
-    {
-        $this->scheduled = $scheduled;
-
-        return $this;
-    }
-
-    /**
-     * Get scheduled
-     *
-     * @return \DateTime 
-     */
-    public function getScheduled()
-    {
-        return $this->scheduled;
-    }
-
-    /**
-     * Set conducted
-     *
-     * @param \DateTime $conducted
-     * @return Survey
-     */
-    public function setConducted($conducted)
-    {
-        $this->conducted = $conducted;
-
-        return $this;
-    }
-
-    /**
-     * Get conducted
-     *
-     * @return \DateTime 
-     */
-    public function getConducted()
-    {
-        return $this->conducted;
     }
 }
