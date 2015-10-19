@@ -52,6 +52,27 @@ survey_show:
     _method: GET
     id: \d+
 
+survey_create:
+  path: /create_survey
+  defaults: { _controller: AppBundle:Survey:createSurvey }
+
+surveys:
+ path: /surveys
+ defaults: { _controller: AppBundle:Survey:showSurveys }
+
+survey_edit:
+ path: /survey/{id}
+ defaults: { _controller: AppBundle:Survey:editSurvey }
+ requirements:
+  id: \d+
+
+survey_delete:
+ path: /survey/slett/{id}
+ defaults: { _controller: AppBundle:Survey:deleteSurvey }
+ requirements:
+  id: \d+
+ options:
+  expose: true
 
 ##########################################
 #             Statistics                 #

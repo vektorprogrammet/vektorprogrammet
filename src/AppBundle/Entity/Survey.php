@@ -23,15 +23,60 @@ class Survey
     protected $semester;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SurveySchema")
-     * @ORM\JoinColumn(name="schema_id", referencedColumnName="id")
+     * @ORM\Column(type="string")
      */
-    protected $surveySchema; // Bidirectional, may turn out to be unidirectional
+    protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="survey", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+     * @ORM\ManyToMany(targetEntity="SurveyQuestion", cascade={"persist"})
+     * @ORM\JoinTable(name="survey_surveys_questions_",
+     *      joinColumns={@ORM\JoinColumn(name="survey_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="question_id", referencedColumnName="id")}
+     *      )
+     **/
     protected $surveyQuestions;
+    /**
+     * @param mixed $name
+     */
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @param mixed $semester
+     */
+    public function setSemester($semester)
+    {
+        $this->semester = $semester;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSemester()
+    {
+        return $this->semester;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSurveyQuestions()
+    {
+        return $this->surveyQuestions;
+    }
+
+
 
     /**
      * Constructor
@@ -51,59 +96,4 @@ class Survey
         return $this->id;
     }
 
-    /**
-     * Set surveySchema
-     *
-     * @param \AppBundle\Entity\SurveySchema $surveySchema
-     * @return Survey
-     */
-    public function setSurveySchema(\AppBundle\Entity\SurveySchema $surveySchema = null)
-    {
-        $this->surveySchema = $surveySchema;
-
-        return $this;
-    }
-
-    /**
-     * Get surveySchema
-     *
-     * @return \AppBundle\Entity\SurveySchema
-     */
-    public function getSurveySchema()
-    {
-        return $this->surveySchema;
-    }
-
-    /**
-     * Add surveyAnswers
-     *
-     * @param \AppBundle\Entity\SurveyAnswer $surveyAnswers
-     * @return Survey
-     */
-    public function addSurveyAnswer(\AppBundle\Entity\SurveyAnswer $surveyAnswers)
-    {
-        $this->surveyAnswers[] = $surveyAnswers;
-
-        return $this;
-    }
-
-    /**
-     * Remove surveyAnswers
-     *
-     * @param \AppBundle\Entity\SurveyAnswer $surveyAnswers
-     */
-    public function removeSurveyAnswer(\AppBundle\Entity\SurveyAnswer $surveyAnswers)
-    {
-        $this->surveyAnswers->removeElement($surveyAnswers);
-    }
-
-    /**
-     * Get surveyAnswers
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getSurveyAnswers()
-    {
-        return $this->surveyAnswers;
-    }
 }

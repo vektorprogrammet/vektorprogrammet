@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Skjemaer for spørreundersøkelser
+{% endblock %}
+
+{% block javascripts %}
+
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+    <script src="{{ asset('bundles/app/js/deleteablerow.js') }}"></script>
+
+    <script>
+
+        $(document).ready(function() {
+
+            // Bind delete schema functionality to each delete button
+            $('.delete').deleteablerow('interview_schema_delete', {
+                confirmation: {
+                    modal: $('#confirmModal'),
+                    acceptButton: $('#modalAccept'),
+                    cancelButton: $('#modalCancel')
+                }
+            });
+        });
+
+    </script>
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+
+            <h1>Spørreundersøkelser</h1>
+
+            <hr>
+
+            <ul class="inline-list">
+                <li><a href="{{ path('survey_create') }}" class="button tiny">Ny undersøkelse</a></li>
+            </ul>
+
+            <table width="100%">
+                <thead>
+                <tr>
+                    <th width="80%">Tittel</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for survey in surveys %}
+                    <tr>
+                        <td>{{ survey.name }}</td>
+                        <td><a href="{{ path('survey_edit', {'id': survey.id }) }}" class="button right tiny" >
+                                <i class="fa fa-pencil-square-o"></i> Rediger</a></td>
+                        {# Delete button disabled because you can't delete surveys which have been used in interviews #}
+                        {# <td><a href="#" id="{{ survey.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td> #}
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>Ingen spørreundersøkelser</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% include 'common/confirmation_modal.html.twig' %}
+
+{% endblock %}

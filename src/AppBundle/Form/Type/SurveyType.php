@@ -2,20 +2,38 @@
 
 namespace AppBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 class SurveyType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('surveyAnswers', 'collection', array('type' => new SurveyAnswerType()));
+        /*$builder->add('semester', 'entity', array(
+            'label' => 'Semester',
+            'class' => 'AppBundle:Semester',
+            'query_builder' => function(EntityRepository $er){
+                return $er->createQueryBuilder('s')
+                    ->orderBy('s.semesterStartDate', 'DESC');
+            }
+        ));*/
+
+        $builder->add('name', 'text', array(
+            'label' => false,
+            'attr' => array('placeholder' => 'Fyll inn tittel til undersøkelse'),
+        ));
+
+        $builder->add('surveyQuestions', 'collection', array(
+            'type' => new SurveyQuestionType(),
+            'allow_add'    => true,
+            'allow_delete' => true,
+            'prototype_name' => '__q_prot__'
+        ));
 
         $builder->add('save', 'submit', array(
-            'label' => 'Send inn',
+            'label' => 'Lagre',
         ));
     }
 

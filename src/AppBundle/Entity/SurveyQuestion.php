@@ -22,6 +22,7 @@ class SurveyQuestion
      */
     protected $question;
 
+
     /**
      * @ORM\Column(type="string", nullable=true)
      */
@@ -38,8 +39,12 @@ class SurveyQuestion
     protected $alternatives;
 
     /**
-     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="surveyAnswer", cascade={"persist", "remove"})
-     */
+     * @ORM\ManyToMany(targetEntity="SurveyAnswer", cascade={"persist"})
+     * @ORM\JoinTable(name="survey_questions_answers_",
+     *      joinColumns={@ORM\JoinColumn(name="question_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="answer_id", referencedColumnName="id")}
+     *      )
+     **/
     protected $answers;
 
     /**

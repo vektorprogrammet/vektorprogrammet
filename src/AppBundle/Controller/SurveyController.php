@@ -11,8 +11,8 @@ use AppBundle\Form\Type\SurveySchemaType;
 use AppBundle\Form\Type\SurveyType;
 
 /**
- * InterviewController is the controller responsible for interview actions,
- * such as showing, assigning and conducting interviews.
+ * InterviewController is the controller responsible for survey actions,
+ * such as showing, assigning and conducting surveys.
  *
  * @package AppBundle\Controller
  */
@@ -39,6 +39,81 @@ class SurveyController extends Controller
         return $this->render('survey/survey.html.twig', array(
             'form' => $form->createView()
         ));
+    }
+
+    public function createSurveyAction(Request $request)
+    {
+        $survey = new Survey();
+
+        $form = $this->createForm(new SurveyType(), $survey);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($survey);
+            $em->flush();
+
+            // Need some form of redirect. Will cause wrong database entries if the form is rendered again
+            // after a valid submit, without remaking the form with up to date question objects from the database.
+            return $this->redirect($this->generateUrl('surveys'));
+        }
+
+        return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
+    }
+
+    public function showSurveysAction()
+    {
+        $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findAll();
+
+        return $this->render('survey/surveys.html.twig', array('surveys' => $surveys));
+    }
+
+    public function editSurveyAction(Request $request, Survey $survey)
+    {
+        $form = $this->createForm(new SurveyType(), $survey);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($survey);
+            $em->flush();
+
+            // Need some form of redirect. Will cause wrong database entries if the form is rendered again
+            // after a valid submit, without remaking the form with up to date question objects from the database.
+            return $this->redirect($this->generateUrl('surveys'));
+        }
+
+        return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
+    }
+
+    /**
+     * Deletes the given interview schema.
+     * This method is intended to be called by an Ajax request.
+     *
+     * @param Survey $survey
+     * @return JsonResponse
+     */
+    public function deleteSurveyAction(Survey $survey)
+    {
+        try {
+            if ($this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($survey);
+                $em->flush();
+
+                $response['success'] = true;
+            } else {
+                $response['success'] = false;
+                $response['cause'] = 'Ikke tilstrekkelig rettigheter';
+            }
+        } catch (\Exception $e) {
+            $response = ['success' => false,
+                'code' => $e->getCode(),
+                'cause' => 'Det oppstod en feil.'
+            ];
+        }
+
+        return new JsonResponse($response);
     }
 
 }
