@@ -6,10 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-/*use AppBundle\Entity\Interview;
-use AppBundle\Entity\InterviewAnswer;
-use AppBundle\Entity\InterviewSchema;
+/*use AppBundle\Entity\Survey;
+use AppBundle\Entity\SurveyAnswer;
+use AppBundle\Entity\SurveySchema;
 use AppBundle\Entity\Application;
+
 use AppBundle\Form\Type\ScheduleInterviewType;
 use AppBundle\Form\Type\InterviewSchemaType;
 use AppBundle\Form\Type\InterviewType;
@@ -30,7 +31,7 @@ class SurveyController extends Controller
      * The rendered page is the page used to conduct interviews.
      *
      * @param Request $request
-     * @param Interview $interview
+     * @param Survey $survey
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function conductAction(Request $request, Interview $interview)
