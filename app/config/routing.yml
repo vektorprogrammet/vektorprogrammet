@@ -45,7 +45,12 @@ update_static_content:
 #                Survey                  #
 ##########################################
 
-
+survey_show:
+  path: /undersokelse/{id}
+  defaults: { _controller: AppBundle:Survey:show }
+  requirements:
+    _method: GET
+    id: \d+
 
 
 ##########################################
