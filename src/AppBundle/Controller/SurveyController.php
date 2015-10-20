@@ -8,6 +8,7 @@ use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyAnswer;
 use AppBundle\Entity\SurveySchema;
 use AppBundle\Form\Type\SurveySchemaType;
+use AppBundle\Form\Type\SurveyAnswerType;
 use AppBundle\Form\Type\SurveyType;
 
 /**
@@ -28,7 +29,7 @@ class SurveyController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $form = $this->createForm(new surveyType(), $survey);
+        $form = $this->createForm('collection', array('type' => new surveyAnswerType()));
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -36,7 +37,7 @@ class SurveyController extends Controller
             $em->flush();
         }
 
-        return $this->render('survey/survey.html.twig', array(
+        return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView()
         ));
     }

@@ -53,21 +53,21 @@ survey_show:
     id: \d+
 
 survey_create:
-  path: /create_survey
+  path: /undersokelse/opprett
   defaults: { _controller: AppBundle:Survey:createSurvey }
 
 surveys:
- path: /surveys
+ path: /undersokelse/admin
  defaults: { _controller: AppBundle:Survey:showSurveys }
 
 survey_edit:
- path: /survey/{id}
+ path: /undersokelse/endre/{id}
  defaults: { _controller: AppBundle:Survey:editSurvey }
  requirements:
   id: \d+
 
 survey_delete:
- path: /survey/slett/{id}
+ path: /undersokelse/slett/{id}
  defaults: { _controller: AppBundle:Survey:deleteSurvey }
  requirements:
   id: \d+

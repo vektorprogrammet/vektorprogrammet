@@ -29,7 +29,7 @@ class Survey
 
     /**
      * @ORM\ManyToMany(targetEntity="SurveyQuestion", cascade={"persist"})
-     * @ORM\JoinTable(name="survey_surveys_questions_",
+     * @ORM\JoinTable(name="survey_surveys_questions",
      *      joinColumns={@ORM\JoinColumn(name="survey_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="question_id", referencedColumnName="id")}
      *      )
