@@ -11,14 +11,14 @@ class SurveyType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /*$builder->add('semester', 'entity', array(
+        $builder->add('semester', 'entity', array(
             'label' => 'Semester',
             'class' => 'AppBundle:Semester',
             'query_builder' => function(EntityRepository $er){
                 return $er->createQueryBuilder('s')
                     ->orderBy('s.semesterStartDate', 'DESC');
             }
-        ));*/
+        ));
 
         $builder->add('name', 'text', array(
             'label' => false,
