@@ -32,6 +32,7 @@ class InterviewController extends Controller
      */
     public function conductAction(Request $request, Interview $interview)
     {
+
         // Only admin and above, or the assigned interviewer should be able to conduct an interview
         if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') &&
             !$interview->isInterviewer($this->getUser())) {
@@ -60,6 +61,8 @@ class InterviewController extends Controller
 
         $form = $this->createForm(new interviewType(), $interview);
         $form->handleRequest($request);
+
+        dump($interview);
 
         if ($form->isValid()) {
             // Set interviewed to true if the form is valid

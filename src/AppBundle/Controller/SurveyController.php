@@ -10,6 +10,7 @@ use AppBundle\Entity\SurveySchema;
 use AppBundle\Form\Type\SurveySchemaType;
 use AppBundle\Form\Type\SurveyAnswerType;
 use AppBundle\Form\Type\SurveyType;
+use AppBundle\Form\Type\SurveyExecuteType;
 
 /**
  * InterviewController is the controller responsible for survey actions,
@@ -29,7 +30,7 @@ class SurveyController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $form = $this->createForm('collection', array('type' => new surveyAnswerType()));
+        $form = $this->createForm(new SurveyExecuteType(), $survey);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
