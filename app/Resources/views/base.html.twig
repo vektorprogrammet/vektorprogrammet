@@ -162,14 +162,14 @@
                                 </ul>
                             </li>
                             <li>
-                                {% if is_granted('ROLE_USER') %}
+                                {% if app.user and is_granted('ROLE_USER') %}
                                     <a href="#" data-dropdown="myVektorDropdown" aria-controls="myVektorDropdown" aria-expanded="false" class="vektor-button">Min Vektor</a>
                                     <ul id="myVektorDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
                                         <li><a href='{{ path('profile') }}'>Profil</a></li>
                                         <li><a href='{{ path('members_show') }}'>Medlemmer</a></li>
                                         <li><a href='{{ path('forum_show') }}'>Forum</a></li>
                                         <li><a href='{{ path('gallery') }}'>Galleri</a></li>
-                                        {% if is_granted('ROLE_ADMIN') %}
+                                        {% if app.user and is_granted('ROLE_ADMIN') %}
                                         <li>
                                             <a href='{{ path('file_browser') }}'
                                                onclick= "
@@ -242,14 +242,14 @@
                                     <li><label>Regioner,opptak og kontakt</label></li>
                                     {% render controller('AppBundle:Department:getAllDepartmentsForTopbar') %}
 
-                                    {% if is_granted('ROLE_USER') %}
+                                    {% if app.user and is_granted('ROLE_USER') %}
                                         <li><label>Min Vektor</label></li>
 
                                         <li><a href='{{ path('profile') }}'>Profil</a></li>
                                         <li><a href='{{ path('members_show') }}'>Medlemmer</a></li>
                                         <li><a href='{{ path('forum_show') }}'>Forum</a></li>
                                         <li><a href='{{ path('gallery') }}'>Galleri</a></li>
-                                        {% if is_granted('ROLE_ADMIN') %}
+                                        {% if app.user and is_granted('ROLE_ADMIN') %}
                                             <li>
                                                 <a href='{{ path('file_browser') }}'
                                                    onclick= "
@@ -289,7 +289,7 @@
 		
 		<br>
 		
-		{% if is_granted('ROLE_ADMIN') %} 
+		{% if app.user and is_granted('ROLE_ADMIN') %}
 	
 		 <div class="row">
 			<div class="small-12 medium-12 large-12 columns">
@@ -307,7 +307,7 @@
 
                             <li><a href="{{ path('semesteradmin_show') }}" class="button tiny">Semester</a></li>
 
-                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            {% if app.user and is_granted('ROLE_SUPER_ADMIN') %}
                                 <li><a href="{{ path('interview_schema') }}" class="button tiny">Intervjuskjema</a></li>
                             {% endif %}
                         </ul>
