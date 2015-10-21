@@ -189,6 +189,8 @@ class ArticleAdminController extends Controller
     }
 
     /**
+     * NOT IN USE
+     *
      * This method is intended to be called by an Ajax request.
      *
      * @param Request $request
@@ -239,6 +241,8 @@ class ArticleAdminController extends Controller
     }
 
     /**
+     * NOT IN USE
+     *
      * Crops an image using LiipImagineBundle. Moves the image from cache to the specified location.
      *
      * @param $image
@@ -284,5 +288,67 @@ class ArticleAdminController extends Controller
         rename($cache.$filter.$image, $location.basename($image));
 
         return $location.basename($image);
+    }
+
+
+    /**
+     * This method is intended to be called by an Ajax request.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function saveImageAction(Request $request) {
+
+        //Get all information from the request
+        $content = $request->getContent();
+        $data = json_decode($content,true);
+        $aviaryURL = $data['aviaryURL'];
+        $imageType = $data['imageType'];
+        $cropped = $data['cropped'];
+        $file_name = $data['filename'];
+
+        //Remove previous postfixs from the name
+        $file_name = str_replace(array("_cropped","_edited","_small","_medium","_large"),"",$file_name);
+
+        //Get desired location, and find correct subfolder depending on image type.
+        $articleImageFolder = $this->container->getParameter('article_images');
+        $sub_folder = ($cropped) ? strtolower($imageType) : 'edited';
+        $location = $articleImageFolder.'/'.$sub_folder.'/';
+
+        //Create the directory if it does not exist
+        if (!file_exists($location)) {
+            mkdir($location, 0777, true);
+        }
+
+        //Append new postfixs
+        $local_file_path = $location . $file_name;
+        if(!$cropped){
+            $local_file_path .= '_edited';
+            $local_file_path .= ($imageType === 'All') ? '' : '_' . strtolower($imageType);
+        }
+        else{
+            $local_file_path .= '_cropped';
+        }
+        $local_file_path .= '.jpg';
+
+        try {
+            //copy the image to the new location
+            copy($aviaryURL, $local_file_path);
+
+            $response = [
+                'success' => true,
+                'localURL' => $this->get('request')->getBasePath() . '/' . $local_file_path,
+                'imageType' => $imageType,
+            ];
+
+        } catch (\Exception $e) {
+            $response = ['success' => false,
+                'code' => $e->getCode(),
+                'cause' => 'Det oppstod en feil under lagringen av bildet. Prøv igjen eller kontakt IT ansvarlig.'
+            ];
+        }
+
+        return new JsonResponse($response);
+
     }
 }

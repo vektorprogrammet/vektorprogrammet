@@ -179,7 +179,15 @@ profile_edit_photo:
 
 profile_upload_photo:
   path: /profil/rediger/profilbilde/upload
-  defaults: { _controller: AppBundle:Profile:editProfilePhoto }
+  defaults: { _controller: AppBundle:Profile:editProfilePhotoUpload }
+
+profile_save_response_from_editor:
+  path: /profil/rediger/profilbilde/saveEditorResponse
+  defaults: { _controller: AppBundle:Profile:saveProfilePhotoEditorResponse }
+
+profile_save_photo:
+  path: /profil/rediger/profilbilde/save
+  defaults: { _controller: AppBundle:Profile:saveProfilePhoto }
 
 ##########################################
 #               Members                  #
@@ -291,6 +299,14 @@ articleadmin_delete:
 articleadmin_crop:
   path: /artikkeladmin/crop
   defaults: { _controller: AppBundle:ArticleAdmin:cropImage }
+  requirements:
+    _method: GET|POST
+  options:
+    expose: true
+
+articleadmin_saveImage:
+  path: /artikkeladmin/saveImage
+  defaults: { _controller: AppBundle:ArticleAdmin:saveImage }
   requirements:
     _method: GET|POST
   options:
