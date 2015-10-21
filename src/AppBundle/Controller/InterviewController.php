@@ -62,7 +62,7 @@ class InterviewController extends Controller
         $form = $this->createForm(new interviewType(), $interview);
         $form->handleRequest($request);
 
-        dump($interview);
+        dump($form);
 
         if ($form->isValid()) {
             // Set interviewed to true if the form is valid
