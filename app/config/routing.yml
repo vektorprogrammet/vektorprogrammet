@@ -278,6 +278,14 @@ articleadmin_crop:
   options:
     expose: true
 
+articleadmin_saveImage:
+  path: /artikkeladmin/saveImage
+  defaults: { _controller: AppBundle:ArticleAdmin:saveImage }
+  requirements:
+    _method: GET|POST
+  options:
+    expose: true
+
 ##########################################
 #             Admission                  #
 ##########################################
