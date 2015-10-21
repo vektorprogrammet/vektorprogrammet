@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyAnswer;
@@ -45,6 +46,9 @@ class SurveyController extends Controller
 
     public function createSurveyAction(Request $request)
     {
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
         $survey = new Survey();
 
         $form = $this->createForm(new SurveyType(), $survey);
@@ -65,6 +69,9 @@ class SurveyController extends Controller
 
     public function showSurveysAction()
     {
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
         $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findAll();
 
         return $this->render('survey/surveys.html.twig', array('surveys' => $surveys));
@@ -72,6 +79,10 @@ class SurveyController extends Controller
 
     public function editSurveyAction(Request $request, Survey $survey)
     {
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createForm(new SurveyType(), $survey);
         $form->handleRequest($request);
 
