@@ -201,7 +201,7 @@ fm_elfinder:
                                 path: %article_images%
                                 upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
                                 upload_deny: ['all']
-                                upload_max_size: 2M                                upload_max_size: 2M
+                                upload_max_size: 2M
 
 # Provides help text functionality to forms
 simple_things_form_extra:
