@@ -13,7 +13,7 @@ class SurveyExecuteType extends AbstractType
     {
         dump($builder);
 
-        $builder->add('surveyQuestions', 'collection', array('type' => new SurveyAnswerType()));;
+        $builder->add('surveyAnswers', 'collection', array('type' => new SurveyAnswerType()));;
 
         $builder->add('save', 'submit', array(
             'label' => 'Send inn',
@@ -29,6 +29,6 @@ class SurveyExecuteType extends AbstractType
 
     public function getName()
     {
-        return 'surveyExecute';
+        return 'survey';
     }
 }

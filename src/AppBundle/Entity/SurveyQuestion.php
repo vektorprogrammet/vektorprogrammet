@@ -48,6 +48,22 @@ class SurveyQuestion
     protected $answers;
 
     /**
+     * @return mixed
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
+    }
+
+    /**
+     * @param mixed $answers
+     */
+    public function setAnswers($answers)
+    {
+        $this->answers = $answers;
+    }
+
+    /**
      * Get id
      *
      * @return integer 

@@ -25,7 +25,6 @@ class InterviewType extends AbstractType
             'label' => 'Lagre',
         ));
     }
-
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(

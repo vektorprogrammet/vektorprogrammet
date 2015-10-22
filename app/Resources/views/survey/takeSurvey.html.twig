@@ -1,41 +1,41 @@
--<!DOCTYPE html>
--<html class="no-js" lang="no">
--	<head>
-    -        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    -        <title>Spørreundersøkelse Vektorprogrammet</title>
-    -
-    -        <link rel="stylesheet" href="../../../../../undersokelse/survey.css">
-    -
-    -        {# Used by Foundation for backwards compability, and is supposed to be in the header #}
-    -        <script src="{{ asset('bundles/app/js/vendor/modernizr.js') }}"></script>
-    -    </head>
--
--	<body>
--	{#Do not extend the main
--		need functions for the surveys
--			place all in the main div#}
--
--    {#      Unødvendig
--	<div class="main">
--		<h2>
--			Sp&oslash;rreunders&oslash;kelse Vektorprogrammet ((semester))
--		</h2>
--			</div>		{#script som henter inn semesteret?#}
--
--    {{ form_start(form) }} {#This is everything that is needed to show a form/survey#}
--    {{ form_errors(form) }}
--
--
--
--
--
--    {# jQuery and Foundation #}
--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
--    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
--    <script type="text/javascript" src="{{ asset('bundles/app/js/foundation.min.js') }}"></script>
--    <script>
-    -        {# This has to be in all twig files, can't be overwritten #}
-            -        $(document).foundation();
-    -    </script>
--	</body>
--</html>
+<!DOCTYPE html>
+<html class="nojs" lang="no">
+	<head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Spørreundersøkelse Vektorprogrammet</title>
+
+            <link rel="stylesheet" href="../../../../../undersokelse/survey.css">
+
+            {# Used by Foundation for backwards compability, and is supposed to be in the header #}
+            <script src="{{ asset('bundles/app/js/vendor/modernizr.js') }}"></script>
+        </head>
+
+	<body>
+
+    {{ form_start(form) }} {#This is everything that is needed to show a form/survey#}
+    {{ form_errors(form) }}
+    {{ dump(form) }}
+    {% for surveyAnswer in form.surveyAnswers %}
+        <div class="row">
+            <div class="small-12 medium-12 large-9 columns">
+                {{ form_row(surveyAnswer.answer) }}
+            </div>
+        </div>
+    {% endfor %}
+
+    {{ form_row(form._token) }}
+    {{ form_widget(form.save) }}
+
+
+
+
+    {# jQuery and Foundation #}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript" src="{{ asset('bundles/app/js/foundation.min.js') }}"></script>
+    <script>
+            {# This has to be in all twig files, can't be overwritten #}
+                    $(document).foundation();
+        </script>
+	</body>
+</html>

@@ -35,9 +35,30 @@ class Survey
      *      )
      **/
     protected $surveyQuestions;
+
+    /**
+     * @return mixed
+     */
+    public function getSurveyAnswers()
+    {
+        return $this->surveyAnswers;
+    }
+
+    /**
+     * @param mixed $surveyAnswers
+     */
+    public function setSurveyAnswers($surveyAnswers)
+    {
+        $this->surveyAnswers = $surveyAnswers;
+    }
     /**
      * @param mixed $name
      */
+
+    /**
+     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="survey", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    protected $surveyAnswers;
 
     public function setName($name)
     {

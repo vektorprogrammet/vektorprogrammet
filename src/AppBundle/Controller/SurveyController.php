@@ -29,6 +29,7 @@ class SurveyController extends Controller
      */
     public function showAction(Request $request, Survey $survey)
     {
+        dump($survey);
         $em = $this->getDoctrine()->getManager();
 
         $form = $this->createForm(new SurveyExecuteType(), $survey);
