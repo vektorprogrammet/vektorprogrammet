@@ -182,7 +182,7 @@ class Semester {
 	
 	public function __toString()
 	{
-		return (string) $this->getName();
+		return (string) $this->getName().' - '.$this->getDepartment(); //Fix for viewing departmentname in semesterlist.
 	}
 
     /**

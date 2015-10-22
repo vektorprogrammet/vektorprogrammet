@@ -45,7 +45,48 @@ update_static_content:
 #                Survey                  #
 ##########################################
 
+survey_show:
+  path: /undersokelse/{id}
+  defaults: { _controller: AppBundle:Survey:show }
+  requirements:
+    _method: GET
+    id: \d+
 
+survey_create:
+  path: /undersokelse/opprett
+  defaults: { _controller: AppBundle:Survey:createSurvey }
+
+surveys:
+ path: /undersokelse/admin
+ defaults: { _controller: AppBundle:Survey:showSurveys }
+
+survey_edit:
+ path: /undersokelse/endre/{id}
+ defaults: { _controller: AppBundle:Survey:editSurvey }
+ requirements:
+  id: \d+
+
+survey_delete:
+ path: /undersokelse/slett/{id}
+ defaults: { _controller: AppBundle:Survey:deleteSurvey }
+ requirements:
+  id: \d+
+ options:
+  expose: true
+
+survey_copy:
+ path: /undersokelse/kopier/{id}
+ defaults: { _controller: AppBundle:Survey:copySurvey }
+ requirements:
+  id: \d+
+ options:
+  expose: true
+
+survey_results:
+ path: /undersokelse/resultater/{id}
+ defaults: { _controller: AppBundle:Survey:resultSurvey }
+ requirements:
+  id: \d+
 
 
 ##########################################

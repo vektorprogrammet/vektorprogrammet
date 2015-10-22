@@ -8,47 +8,48 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-class InterviewAnswerType extends AbstractType
+class SurveyAnswerType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         dump($builder);
         // Have to use form events to access entity properties in an embedded form
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use (&$interviewAnswer) {
-            $interviewAnswer = $event->getData();
-            dump($interviewAnswer);
-            dump($interviewAnswer->getInterviewQuestion());
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use (&$surveyAnswer) {
+            $surveyAnswer = $event->getData();
+            dump($surveyAnswer);
+            dump($surveyAnswer->getSurveyQuestions());
             $form = $event->getForm();
 
-            // Add different form fields depending on the type of the interview question
-            switch($interviewAnswer->getInterviewQuestion()->getType()) {
+            // Add different form fields depending on the type of the survey question
+            switch($surveyAnswer->getSurveyQuestions()->getType()) {
                 case "list": // This creates a dropdown list if the type is list
-                    $choices = $this->createChoices($interviewAnswer);
+                    $choices = $this->createChoices($surveyAnswer);
 
                     $form->add('answer', 'choice', array(
-                        'label' => $interviewAnswer->getInterviewQuestion()->getQuestion(),
-                        'help' => $interviewAnswer->getInterviewQuestion()->getHelp(),
+                        'label' => $surveyAnswer->getSurveyQuestions()->getQuestion(),
+                        'help' => $surveyAnswer->getSurveyQuestions()->getHelp(),
                         'choices' => $choices
                     ));
 
                     break;
                 case "radio": // This creates a set of radio buttons if the type is radio
-                    $choices = $this->createChoices($interviewAnswer);
+                    $choices = $this->createChoices($surveyAnswer);
 
                     $form->add('answer', 'choice', array(
-                        'label' => $interviewAnswer->getInterviewQuestion()->getQuestion(),
-                        'help' => $interviewAnswer->getInterviewQuestion()->getHelp(),
+                        'label' => $surveyAnswer->getSurveyQuestions()->getQuestion(),
+                        'help' => $surveyAnswer->getSurveyQuestions()->getHelp(),
                         'choices' => $choices,
                         'expanded' => true
                     ));
                     break;
                 case "check": // This creates a set of checkboxes if the type is check
-                    $choices = $this->createChoices($interviewAnswer);
+                    $choices = $this->createChoices($surveyAnswer);
 
                     $form->add('answer', 'choice', array(
-                        'label' => $interviewAnswer->getInterviewQuestion()->getQuestion(),
-                        'help' => $interviewAnswer->getInterviewQuestion()->getHelp(),
+                        'label' => $surveyAnswer->getSurveyQuestions()->getQuestion(),
+                        'help' => $surveyAnswer->getSurveyQuestions()->getHelp(),
                         'choices' => $choices,
                         'expanded' => true,
                         'multiple' => true
@@ -57,52 +58,52 @@ class InterviewAnswerType extends AbstractType
                 default: // This creates a textarea if the type is text (default)
                     $type = "text";
                     $form->add('answer', 'textarea', array(
-                        'label' => $interviewAnswer->getInterviewQuestion()->getQuestion(),
-                        'help' => $interviewAnswer->getInterviewQuestion()->getHelp()
+                        'label' => $surveyAnswer->getSurveyQuestions()->getQuestion(),
+                        'help' => $surveyAnswer->getSurveyQuestions()->getHelp()
                     ));
             }
         });
 
         // If the user supplied a new value to a choice field, this new value must be added as one of the choices
         // in order for the form to validate, as values other than the specified choices are not allowed.
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use (&$interviewAnswer) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use (&$surveyAnswer) {
             $form = $event->getForm();
 
             // This is the data submitted in the form
             $data = $event->getData();
 
             // Remove and then add the form fields with the new choices.
-            switch($interviewAnswer->getInterviewQuestion()->getType()) {
+            switch($surveyAnswer->getSurveyQuestions()->getType()) {
                 case "list":
-                    $choices = $this->createChoices($interviewAnswer);
+                    $choices = $this->createChoices($surveyAnswer);
 
                     // Add the new value to the choice array
                     $choices[$data['answer']] = $data['answer'];
 
                     $form->remove('answer');
                     $form->add('answer', 'choice', array(
-                        'label' => $interviewAnswer->getInterviewQuestion()->getQuestion(),
-                        'help' => $interviewAnswer->getInterviewQuestion()->getHelp(),
+                        'label' => $surveyAnswer->getSurveyQuestions()->getQuestion(),
+                        'help' => $surveyAnswer->getSurveyQuestions()->getHelp(),
                         'choices' => $choices
                     ));
 
                     break;
                 case "radio":
-                    $choices = $this->createChoices($interviewAnswer);
+                    $choices = $this->createChoices($surveyAnswer);
 
                     // Add the new value to the choice array
                     $choices[$data['answer']] = $data['answer'];
 
                     $form->remove('answer');
                     $form->add('answer', 'choice', array(
-                        'label' => $interviewAnswer->getInterviewQuestion()->getQuestion(),
-                        'help' => $interviewAnswer->getInterviewQuestion()->getHelp(),
+                        'label' => $surveyAnswer->getSurveyQuestions()->getQuestion(),
+                        'help' => $surveyAnswer->getSurveyQuestions()->getHelp(),
                         'choices' => $choices,
                         'expanded' => true
                     ));
                     break;
                 case "check":
-                    $choices = $this->createChoices($interviewAnswer);
+                    $choices = $this->createChoices($surveyAnswer);
 
                     // Add the new value to the choice array
                     // The data from the form is an array (because it's checkboxes) in this case
@@ -111,8 +112,8 @@ class InterviewAnswerType extends AbstractType
 
                     $form->remove('answer');
                     $form->add('answer', 'choice', array(
-                        'label' => $interviewAnswer->getInterviewQuestion()->getQuestion(),
-                        'help' => $interviewAnswer->getInterviewQuestion()->getHelp(),
+                        'label' => $surveyAnswer->getSurveyQuestions()->getQuestion(),
+                        'help' => $surveyAnswer->getSurveyQuestions()->getHelp(),
                         'choices' => $newChoices,
                         'expanded' => true,
                         'multiple' => true
@@ -126,11 +127,11 @@ class InterviewAnswerType extends AbstractType
      * Creates a key value array of alternatives from a Doctrine collection of QuestionAlternatives.
      * The key and the value are the same.
      *
-     * @param $interviewAnswer
+     * @param $surveyAnswer
      * @return array
      */
-    public function createChoices($interviewAnswer) {
-        $alternatives = $interviewAnswer->getInterviewQuestion()->getAlternatives();
+    public function createChoices($surveyAnswer) {
+        $alternatives = $surveyAnswer->getSurveyQuestions()->getAlternatives();
 
         $values = array_map(function($a) { return $a->getAlternative(); }, $alternatives->getValues());
 
@@ -140,12 +141,12 @@ class InterviewAnswerType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\InterviewAnswer',
+            'data_class' => 'AppBundle\Entity\SurveyAnswer',
         ));
     }
 
     public function getName()
     {
-        return 'interviewAnswer';
+        return 'surveyAnswer';
     }
 }
