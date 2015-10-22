@@ -39,6 +39,7 @@ class SurveyController extends Controller
             $em->flush();
         }
 
+        dump($form);
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView()
         ));
