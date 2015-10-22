@@ -44,16 +44,21 @@
             <table width="100%">
                 <thead>
                 <tr>
-                    <th width="80%">Tittel</th>
-                    <th></th>
+                    <th width="100%">Tittel</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for survey in surveys %}
                     <tr>
-                        <td>{{ survey.name }}</td>
-                        <td><a href="{{ path('survey_edit', {'id': survey.id }) }}" class="button right tiny" >
+                        <td>{{ survey.name }} - {{ survey.semester }} - Antall svar: xx</td>
+                        <td><a href="{{ path('survey_results', {'id': survey.id }) }}" class="button tiny" >Vis resultater</a></td>
+                        <td><a href="{{ path('survey_copy', {'id': survey.id }) }}" class="button tiny" >Kopier</a></td>
+                        <td><a href="{{ path('survey_edit', {'id': survey.id }) }}" class="button tiny" >
                                 <i class="fa fa-pencil-square-o"></i> Rediger</a></td>
+
+
+
+
                         {# Delete button disabled because you can't delete surveys which have been used in interviews #}
                         {# <td><a href="#" id="{{ survey.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td> #}
                     </tr>

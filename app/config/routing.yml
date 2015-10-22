@@ -74,6 +74,21 @@ survey_delete:
  options:
   expose: true
 
+survey_copy:
+ path: /undersokelse/kopier/{id}
+ defaults: { _controller: AppBundle:Survey:copySurvey }
+ requirements:
+  id: \d+
+ options:
+  expose: true
+
+survey_results:
+ path: /undersokelse/resultater/{id}
+ defaults: { _controller: AppBundle:Survey:resultSurvey }
+ requirements:
+  id: \d+
+
+
 ##########################################
 #             Statistics                 #
 ##########################################
