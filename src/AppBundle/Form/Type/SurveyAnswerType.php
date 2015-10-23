@@ -20,7 +20,6 @@ class SurveyAnswerType extends AbstractType
             $surveyAnswer = $event->getData();
             //dump($surveyAnswer->getA());
             $form = $event->getForm();
-            dump($form);
             // Add different form fields depending on the type of the survey question
             switch($surveyAnswer->getSurveyQuestion()->getType()) {
                 case "list": // This creates a dropdown list if the type is list

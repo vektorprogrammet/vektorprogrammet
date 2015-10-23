@@ -14,13 +14,16 @@
 
     {{ form_start(form) }} {#This is everything that is needed to show a form/survey#}
     {{ form_errors(form) }}
-    {{ dump(form) }}
+    {% set counter = 0 %}
     {% for surveyAnswer in form.surveyAnswers %}
+        {% if counter >= oldAns %}
         <div class="row">
             <div class="small-12 medium-12 large-9 columns">
                 {{ form_row(surveyAnswer.answer) }}
             </div>
         </div>
+        {% endif %}
+        {% set counter = counter +1 %}
     {% endfor %}
 
     {{ form_row(form._token) }}

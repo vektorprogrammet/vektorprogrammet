@@ -29,8 +29,7 @@ class SurveyController extends Controller
      */
     public function showAction(Request $request, Survey $survey)
     {
-        $em = $this->getDoctrine()->getManager();
-
+        $oldAns = sizeof($survey->getSurveyAnswers());
         foreach($survey->getSurveyQuestions() as $surveyQuestion){
             $answer = new SurveyAnswer();
             $answer->setSurvey($survey);
@@ -38,17 +37,27 @@ class SurveyController extends Controller
 
             $survey->addSurveyAnswer($answer);
         }
-        dump($survey);
         $form = $this->createForm(new SurveyExecuteType(), $survey);
         $form->handleRequest($request);
-
         if ($form->isValid()) {
-            $em->persist($survey);
-            $em->flush();
-        }
+            $answers = $survey->getSurveyAnswers();
+            for($i = $oldAns; $i < sizeof($answers); $i++){
+                $question_id = $answers[$i]->getSurveyQuestion()->getId();
+                //$school_id = $answers[$i]->getSchool()->getId();
+                $survey_id = $answers[$i]->getSurvey()->getId();
+                $answer = $answers[$i]->getAnswer();
 
+                    $sql = "
+                        INSERT INTO survey_answer(question_id, school_id, survey_id, answer)
+                        VALUES (".$question_id.", NULL, ".$survey_id.", '".$answer."');
+                    ";
+                    $stmt = $this->getDoctrine()->getManager()->getConnection()->prepare($sql);
+                    $stmt->execute();
+
+            }
+        }
         return $this->render('survey/takeSurvey.html.twig', array(
-            'questions' => sizeof($survey->getSurveyQuestions()),
+            'oldAns' => $oldAns,
             'form' => $form->createView()
         ));
     }
