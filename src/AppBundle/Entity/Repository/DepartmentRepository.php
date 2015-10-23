@@ -29,7 +29,6 @@ class DepartmentRepository extends EntityRepository {
 		->getResult();
 
 		return $departments;
-	
 	}
 
     public function findAllDepartment(){
