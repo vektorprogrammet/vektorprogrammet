@@ -1,31 +1,37 @@
 <!DOCTYPE html>
 <html class="nojs" lang="no">
 	<head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Spørreundersøkelse Vektorprogrammet</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Spørreundersøkelse Vektorprogrammet</title>
 
-            <link rel="stylesheet" href="../../../../../undersokelse/survey.css">
+        <link rel="stylesheet" rel="stylesheet" type="text/css" href="{{ asset('css/survey.css') }}">
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=2" />
 
-            {# Used by Foundation for backwards compability, and is supposed to be in the header #}
-            <script src="{{ asset('bundles/app/js/vendor/modernizr.js') }}"></script>
-        </head>
+        {# Used by Foundation for backwards compability, and is supposed to be in the header #}
+        <script src="{{ asset('bundles/app/js/vendor/modernizr.js') }}"></script>
+
+    </head>
 
 	<body>
 
-    {{ form_start(form) }} {#This is everything that is needed to show a form/survey#}
-    {{ form_errors(form) }}
-    {{ dump(form) }}
-    {% for surveyAnswer in form.surveyAnswers %}
-        <div class="row">
-            <div class="small-12 medium-12 large-9 columns">
-                {{ form_row(surveyAnswer.answer) }}
+    <div class="formSurvey">
+        <img src="{{ asset('images/vektor.png') }}" alt="Vektor logo">
+        <br/>
+        <h1>{{ form.vars.data.name }}</h1>
+        {{ form_start(form) }} {#This is everything that is needed to show a form/survey#}
+        {{ form_errors(form) }}
+
+        {% for surveyAnswer in form.surveyAnswers %}
+            <div class="row">
+                <div class="small-12 medium-12 large-9 columns">
+                    {{ form_row(surveyAnswer.answer) }}
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
 
-    {{ form_row(form._token) }}
-    {{ form_widget(form.save) }}
-
+        {{ form_row(form._token) }}
+        {{ form_widget(form.save, {'attr': {'class': 'btn'}})}}
+    </div>
 
 
 
