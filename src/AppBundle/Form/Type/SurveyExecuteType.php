@@ -12,7 +12,15 @@ class SurveyExecuteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        dump($builder);
+        /*$department = $builder->getData();
+        $department ->getSemester()->getDepartment();
+        $builder->add('school', 'entity', array(
+            'label' => 'School',
+            'class' => 'AppBundle:School',
+            'query_builder' => function(EntityRepository $er) use ($department){
+                return $er->findSchoolsByDepartmentQuery($department);
+            }
+        ));*/
 
         $builder->add('surveyAnswers', 'collection', array('type' => new SurveyAnswerType()));;
 
