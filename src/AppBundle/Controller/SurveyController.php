@@ -29,9 +29,16 @@ class SurveyController extends Controller
      */
     public function showAction(Request $request, Survey $survey)
     {
-        dump($survey);
         $em = $this->getDoctrine()->getManager();
 
+        foreach($survey->getSurveyQuestions() as $surveyQuestion){
+            $answer = new SurveyAnswer();
+            $answer->setSurvey($survey);
+            $answer->setSurveyQuestion($surveyQuestion);
+
+            $survey->addSurveyAnswer($answer);
+        }
+        dump($survey);
         $form = $this->createForm(new SurveyExecuteType(), $survey);
         $form->handleRequest($request);
 
@@ -40,8 +47,8 @@ class SurveyController extends Controller
             $em->flush();
         }
 
-        dump($form);
         return $this->render('survey/takeSurvey.html.twig', array(
+            'questions' => sizeof($survey->getSurveyQuestions()),
             'form' => $form->createView()
         ));
     }

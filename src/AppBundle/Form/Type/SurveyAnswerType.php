@@ -72,7 +72,7 @@ class SurveyAnswerType extends AbstractType
             $data = $event->getData();
 
             // Remove and then add the form fields with the new choices.
-            switch($surveyAnswer->getType()) {
+            switch($surveyAnswer->getSurveyQuestion()->getType()) {
                 case "list":
                     $choices = $this->createChoices($surveyAnswer);
 

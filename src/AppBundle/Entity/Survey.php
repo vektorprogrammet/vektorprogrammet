@@ -44,6 +44,10 @@ class Survey
         return $this->surveyAnswers;
     }
 
+    public function addSurveyAnswer($answer){
+        $this->surveyAnswers[] = $answer;
+    }
+
     /**
      * @param mixed $surveyAnswers
      */

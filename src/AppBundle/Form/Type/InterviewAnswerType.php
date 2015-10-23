@@ -13,12 +13,9 @@ class InterviewAnswerType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        dump($builder);
         // Have to use form events to access entity properties in an embedded form
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use (&$interviewAnswer) {
             $interviewAnswer = $event->getData();
-            dump($interviewAnswer);
-            dump($interviewAnswer->getInterviewQuestion());
             $form = $event->getForm();
 
             // Add different form fields depending on the type of the interview question
