@@ -40,7 +40,7 @@ class SurveyAnswer
     protected $school;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SurveyQuestion")
+     * @ORM\ManyToOne(targetEntity="SurveyQuestion", inversedBy="answers")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      */
     protected $surveyQuestion;

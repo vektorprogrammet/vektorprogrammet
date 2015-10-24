@@ -60,11 +60,7 @@ class SurveyQuestion
     protected $alternatives;
 
     /**
-     * @ORM\ManyToMany(targetEntity="SurveyAnswer", cascade={"persist"})
-     * @ORM\JoinTable(name="survey_questions_answers",
-     *      joinColumns={@ORM\JoinColumn(name="question_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="answer_id", referencedColumnName="id")}
-     *      )
+     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="surveyQuestion", cascade={"persist", "remove"})
      **/
     protected $answers;
 
