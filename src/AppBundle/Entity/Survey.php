@@ -27,6 +27,21 @@ class Survey
      */
     protected $name;
 
+
+    protected $totalAnswered;
+
+
+    protected $school;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="SurveyQuestion", cascade={"persist"})
+     * @ORM\JoinTable(name="survey_surveys_questions",
+     *      joinColumns={@ORM\JoinColumn(name="survey_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="question_id", referencedColumnName="id")}
+     *      )
+     **/
+    protected $surveyQuestions;
+
     /**
      * @return mixed
      */
@@ -42,17 +57,6 @@ class Survey
     {
         $this->school = $school;
     }
-
-    protected $school;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="SurveyQuestion", cascade={"persist"})
-     * @ORM\JoinTable(name="survey_surveys_questions",
-     *      joinColumns={@ORM\JoinColumn(name="survey_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="question_id", referencedColumnName="id")}
-     *      )
-     **/
-    protected $surveyQuestions;
 
     /**
      * @return mixed
@@ -88,6 +92,22 @@ class Survey
     }
 
     /**
+     * @return mixed
+     */
+    public function getTotalAnswered()
+    {
+        return $this->totalAnswered;
+    }
+
+    /**
+     * @param mixed $totalAnswered
+     */
+    public function setTotalAnswered($totalAnswered)
+    {
+        $this->totalAnswered = $totalAnswered;
+    }
+
+    /**
      * @param mixed $semester
      */
     public function setSemester($semester)
@@ -118,8 +138,6 @@ class Survey
     {
         return $this->surveyQuestions;
     }
-
-
 
     /**
      * Constructor

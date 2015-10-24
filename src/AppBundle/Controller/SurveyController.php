@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\School;
+use AppBundle\Entity\SurveySchoolAnswered;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,16 +41,7 @@ class SurveyController extends Controller
 
             $survey->addSurveyAnswer($answer);
         }
-        $school = new School();
-        /*$schoolForm = $this->createFormBuilder($department)
-            ->add('schools', 'entity', array(
-                'label' => 'Skole',
-                'class' => 'AppBundle\Entity\School',
-                'query_builder' => function($re){
-                    return $re->createQueryBuilder('s')
-                        ->orderBy('s.name', 'ASC');
-                }))
-            ->getForm();*/
+
         $form = $this->createForm(new SurveyExecuteType(), $survey);
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -63,14 +55,30 @@ class SurveyController extends Controller
                 if(strlen($answer)!=0){
                     $sql = "
                         INSERT INTO survey_answer(question_id, school_id, survey_id, answer)
-                        VALUES (".$question_id.", ". $school_id.", ".$survey_id.", '".$answer."');
+                        VALUES (?,?,?,?);
                     ";
                     $stmt = $this->getDoctrine()->getManager()->getConnection()->prepare($sql);
+                    $stmt->bindValue(1, $question_id);
+                    $stmt->bindValue(2, $school_id);
+                    $stmt->bindValue(3, $survey_id);
+                    $stmt->bindValue(4, $answer);
                     $stmt->execute();
                     $new_answer = true;
                 }
 
             }
+            $schoolAnswered = new SurveySchoolAnswered();
+            $schoolAnswered->setSurvey($survey);
+            $schoolAnswered->setSchool($survey->getSchool());
+            $sql = "
+                INSERT INTO survey_schools_answered(survey_id, school_id)
+                VALUES (?,?)
+            ";
+            $stmt = $this->getDoctrine()->getManager()->getConnection()->prepare($sql);
+            $stmt->bindValue(1,$survey->getId());
+            $stmt->bindValue(2,$survey->getSchool()->getId());
+            $stmt->execute();
+
             if($new_answer){
                 $this->addFlash('undersokelse-notice','Tusen takk for ditt svar!');
                 //New form without previous answers
@@ -113,7 +121,17 @@ class SurveyController extends Controller
             throw $this->createAccessDeniedException();
         }
         $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findAll();
-
+        foreach($surveys as $survey){
+            $sql = "
+                  SELECT COUNT(id)
+                  FROM survey_schools_answered
+                  WHERE survey_id = ?";
+            $stmt = $this->getDoctrine()->getManager()->getConnection()->prepare($sql);
+            $stmt->bindValue(1,$survey->getId());
+            $stmt->execute();
+            $result = $stmt->fetch();
+            $survey->setTotalAnswered($result["COUNT(id)"]);
+        }
         return $this->render('survey/surveys.html.twig', array('surveys' => $surveys));
     }
 

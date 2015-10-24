@@ -49,18 +49,8 @@
                 </thead>
                 <tbody>
                 {% for survey in surveys %}
-                    {% set counter = 0 %}
-                    {%  if survey.getSurveyAnswers()|length > 0 %}
-                        {% set ids = [(survey.getSurveyAnswers()|first).getSurveyQuestion().getId()] %}
-                        {% for ans in survey.getSurveyAnswers() %}
-                            {# Teller hvor mange svar vi har på det første spørsmålet i undersøkelsen #}
-                            {% if (ans.getSurveyQuestion().getId() in  ids) %}
-                                {% set counter = counter +1 %}
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
                     <tr>
-                        <td>{{ survey.name }} - {{ survey.semester }} - Antall svar: {{ counter }}</td>
+                        <td>{{ survey.name }} - {{ survey.semester }} - Antall svar: {{ survey.getTotalAnswered }}</td>
                         <td><a href="{{ path('survey_show', {'id': survey.id }) }}" class="button tiny" >Vis undersøkelse</a></td>
                         <td><a href="{{ path('survey_results', {'id': survey.id }) }}" class="button tiny" >Vis resultater</a></td>
                         <td><a href="{{ path('survey_copy', {'id': survey.id }) }}" class="button tiny" >Kopier</a></td>
