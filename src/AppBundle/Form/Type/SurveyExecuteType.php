@@ -16,6 +16,7 @@ class SurveyExecuteType extends AbstractType
         $department = $builder->getData()->getSemester()->getDepartment();
         $builder->add('school', 'entity', array(
             'label' => 'School',
+            'placeholder' => 'Velg Skole',
             'class' => 'AppBundle:School',
             'query_builder' => function(EntityRepository $er) use ($department){
                 return $er

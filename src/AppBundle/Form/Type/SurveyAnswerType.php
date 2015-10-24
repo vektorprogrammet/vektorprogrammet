@@ -14,10 +14,6 @@ class SurveyAnswerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $builder->add('school', 'entity', array(
-            'label' => 'Skole',
-            'class' => 'AppBundle:School',
-        ));
         // Have to use form events to access entity properties in an embedded form
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use (&$surveyAnswer) {
             $surveyAnswer = $event->getData();
@@ -29,6 +25,7 @@ class SurveyAnswerType extends AbstractType
 
                     $ansOptions = array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
+                        'placeholder' => 'Velg',
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $choices
                     );
