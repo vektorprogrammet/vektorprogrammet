@@ -140,6 +140,11 @@ textarea{
     height: 120px;
     resize: none;
 }
+input[type=radio]{
+    margin-left:20px;
+    width: 1.5em;
+    height: 1.5em;
+}
 
 /* Spacing
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
