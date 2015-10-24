@@ -12,7 +12,7 @@ class SurveyExecuteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //$department = $options["data"]->getSemester()->getDepartent();
+        //$department  $options["data"]->getSemester()->getDepartent();
         $department = $builder->getData()->getSemester()->getDepartment();
         $builder->add('school', 'entity', array(
             'label' => 'School',

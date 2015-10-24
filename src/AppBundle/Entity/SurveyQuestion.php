@@ -22,6 +22,27 @@ class SurveyQuestion
      */
     protected $question;
 
+    /**
+     * @return mixed
+     */
+    public function getOptional()
+    {
+        return $this->optional;
+    }
+
+    /**
+     * @param mixed $optional
+     */
+    public function setOptional($optional)
+    {
+        $this->optional = $optional;
+    }
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $optional;
+
 
     /**
      * @ORM\Column(type="string", nullable=true)

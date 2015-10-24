@@ -58,13 +58,14 @@ class SurveyController extends Controller
                 $school_id = $survey->getSchool()->getId();
                 $survey_id = $answers[$i]->getSurvey()->getId();
                 $answer = $answers[$i]->getAnswer();
-
+                if(strlen($answer)!=0){
                     $sql = "
                         INSERT INTO survey_answer(question_id, school_id, survey_id, answer)
                         VALUES (".$question_id.", ". $school_id.", ".$survey_id.", '".$answer."');
                     ";
                     $stmt = $this->getDoctrine()->getManager()->getConnection()->prepare($sql);
                     $stmt->execute();
+                }
 
             }
         }

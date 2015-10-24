@@ -27,40 +27,58 @@ class SurveyAnswerType extends AbstractType
                 case "list": // This creates a dropdown list if the type is list
                     $choices = $this->createChoices($surveyAnswer);
 
-                    $form->add('answer', 'choice', array(
+                    $ansOptions = array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $choices
-                    ));
+                    );
+                    if($surveyAnswer->getSurveyQuestion()->getOptional() == true){
+                        $ansOptions["required"] = false;
+                    }
+                    $form->add('answer', 'choice', $ansOptions);
 
                     break;
                 case "radio": // This creates a set of radio buttons if the type is radio
                     $choices = $this->createChoices($surveyAnswer);
-
-                    $form->add('answer', 'choice', array(
+                    $ansOptions = array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $choices,
                         'expanded' => true
-                    ));
+                    );
+                    if($surveyAnswer->getSurveyQuestion()->getOptional() == true){
+                        $ansOptions["required"] = false;
+                    }
+                    $form->add('answer', 'choice',$ansOptions );
                     break;
                 case "check": // This creates a set of checkboxes if the type is check
                     $choices = $this->createChoices($surveyAnswer);
 
-                    $form->add('answer', 'choice', array(
+                    $ansOptions = array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $choices,
                         'expanded' => true,
                         'multiple' => true
-                    ));
+                    );
+                    if($surveyAnswer->getSurveyQuestion()->getOptional() == true){
+                        $ansOptions["required"] = false;
+                    }
+
+                    $form->add('answer', 'choice', $ansOptions);
                     break;
                 default: // This creates a textarea if the type is text (default)
                     $type = "text";
-                    $form->add('answer', 'textarea', array(
+
+                    $ansOptions = array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp()
-                    ));
+                    );
+                    if($surveyAnswer->getSurveyQuestion()->getOptional() == true){
+                        $ansOptions["required"] = false;
+                    }
+
+                    $form->add('answer', 'textarea',$ansOptions );
             }
         });
 
