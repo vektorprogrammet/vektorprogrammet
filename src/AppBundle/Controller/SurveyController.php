@@ -55,7 +55,7 @@ class SurveyController extends Controller
             $answers = $survey->getSurveyAnswers();
             for($i = $oldAns; $i < sizeof($answers); $i++){
                 $question_id = $answers[$i]->getSurveyQuestion()->getId();
-                $school_id = $survey->getSchool()->getId();
+                //$school_id = $answers[$i]->getSchool()->getId();
                 $survey_id = $answers[$i]->getSurvey()->getId();
                 $answer = $answers[$i]->getAnswer();
 
@@ -66,12 +66,19 @@ class SurveyController extends Controller
                     $stmt = $this->getDoctrine()->getManager()->getConnection()->prepare($sql);
                     $stmt->execute();
 
+                $this->get('session')->getFlashBag()->add(
+                    'notice',
+                    'Tusen takk!'
+                );
+
+                return $this->redirect($this->generateUrl('survey_show', array(
+                    'id' => $survey_id,
+                )));
             }
         }
         return $this->render('survey/takeSurvey.html.twig', array(
             'oldAns' => $oldAns,
-            'form' => $form->createView(),
-
+            'form' => $form->createView()
         ));
     }
 

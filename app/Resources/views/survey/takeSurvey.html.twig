@@ -15,6 +15,13 @@
 	<body>
 
     <div class="formSurvey">
+
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="flash-notice">
+            {{ flashMessage }}
+        </div>
+        {% endfor %}
+
         <img src="{{ asset('images/vektor.png') }}" alt="Vektor logo">
         <br/>
         <h1>{{ form.vars.data.name }}</h1>
@@ -45,8 +52,7 @@
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script type="text/javascript" src="{{ asset('bundles/app/js/foundation.min.js') }}"></script>
     <script>
-            {# This has to be in all twig files, can't be overwritten #}
-                    $(document).foundation();
+        $(document).foundation();
         </script>
 	</body>
 </html>
