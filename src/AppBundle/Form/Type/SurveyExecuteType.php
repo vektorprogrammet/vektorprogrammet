@@ -12,16 +12,21 @@ class SurveyExecuteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /*$department = $builder->getData();
-        $department ->getSemester()->getDepartment();
+        //$department = $options["data"]->getSemester()->getDepartent();
+        $department = $builder->getData()->getSemester()->getDepartment();
         $builder->add('school', 'entity', array(
             'label' => 'School',
             'class' => 'AppBundle:School',
             'query_builder' => function(EntityRepository $er) use ($department){
-                return $er->findSchoolsByDepartmentQuery($department);
+                return $er
+                    ->createQueryBuilder('s','d')
+                    ->from('AppBundle:School','sc')
+                    ->join('s.departments','d')
+                    ->where('d = :department')
+                    ->orderBy('s.name', 'ASC')
+                    ->setParameter('department',$department);
             }
-        ));*/
-
+        ));
         $builder->add('surveyAnswers', 'collection', array('type' => new SurveyAnswerType()));;
 
         $builder->add('save', 'submit', array(

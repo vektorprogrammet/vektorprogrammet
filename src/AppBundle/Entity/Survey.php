@@ -28,6 +28,24 @@ class Survey
     protected $name;
 
     /**
+     * @return mixed
+     */
+    public function getSchool()
+    {
+        return $this->school;
+    }
+
+    /**
+     * @param mixed $school
+     */
+    public function setSchool($school)
+    {
+        $this->school = $school;
+    }
+
+    protected $school;
+
+    /**
      * @ORM\ManyToMany(targetEntity="SurveyQuestion", cascade={"persist"})
      * @ORM\JoinTable(name="survey_surveys_questions",
      *      joinColumns={@ORM\JoinColumn(name="survey_id", referencedColumnName="id")},

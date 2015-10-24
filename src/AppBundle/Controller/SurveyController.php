@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\School;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,6 +30,7 @@ class SurveyController extends Controller
      */
     public function showAction(Request $request, Survey $survey)
     {
+        $department = $survey->getSemester()->getDepartment();
         $oldAns = sizeof($survey->getSurveyAnswers());
         foreach($survey->getSurveyQuestions() as $surveyQuestion){
             $answer = new SurveyAnswer();
@@ -37,19 +39,29 @@ class SurveyController extends Controller
 
             $survey->addSurveyAnswer($answer);
         }
+        $school = new School();
+        /*$schoolForm = $this->createFormBuilder($department)
+            ->add('schools', 'entity', array(
+                'label' => 'Skole',
+                'class' => 'AppBundle\Entity\School',
+                'query_builder' => function($re){
+                    return $re->createQueryBuilder('s')
+                        ->orderBy('s.name', 'ASC');
+                }))
+            ->getForm();*/
         $form = $this->createForm(new SurveyExecuteType(), $survey);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $answers = $survey->getSurveyAnswers();
             for($i = $oldAns; $i < sizeof($answers); $i++){
                 $question_id = $answers[$i]->getSurveyQuestion()->getId();
-                //$school_id = $answers[$i]->getSchool()->getId();
+                $school_id = $survey->getSchool()->getId();
                 $survey_id = $answers[$i]->getSurvey()->getId();
                 $answer = $answers[$i]->getAnswer();
 
                     $sql = "
                         INSERT INTO survey_answer(question_id, school_id, survey_id, answer)
-                        VALUES (".$question_id.", NULL, ".$survey_id.", '".$answer."');
+                        VALUES (".$question_id.", ". $school_id.", ".$survey_id.", '".$answer."');
                     ";
                     $stmt = $this->getDoctrine()->getManager()->getConnection()->prepare($sql);
                     $stmt->execute();
@@ -58,7 +70,8 @@ class SurveyController extends Controller
         }
         return $this->render('survey/takeSurvey.html.twig', array(
             'oldAns' => $oldAns,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+
         ));
     }
 
