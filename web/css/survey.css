@@ -1,13 +1,18 @@
 .formSurvey{
     position: absolute;
-    margin: 20%;
-    margin-top: 5%;
+    margin: 0 25%;
     padding-top: 5%;
     width: 50%;
     padding-bottom:30px;
     background-color: #abe0f4;
     font-family: 'Lato';
     text-align: center;
+}
+@media(max-width: 900px){
+    .formSurvey{
+        width:100%;
+        margin:0;
+    }
 }
 
 .row{
@@ -128,7 +133,7 @@ select {
 
 textarea{
     width:300px;
-    max-width: 100%;
+    max-width: 95%;
     height: 120px;
     resize: none;
 }
