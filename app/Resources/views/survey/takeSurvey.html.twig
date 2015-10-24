@@ -16,10 +16,10 @@
 
     <div class="formSurvey">
 
-        {% for flashMessage in app.session.flashbag.get('notice') %}
-        <div class="flash-notice">
-            {{ flashMessage }}
-        </div>
+        {% for flashMessage in app.session.flashbag.get('undersokelse-notice') %}
+            <div class="flash-notice" data-options="delay:4;color:red;animal:unicorn">
+                <h4>{{ flashMessage }}</h4>
+            </div>
         {% endfor %}
 
         <img src="{{ asset('images/vektor.png') }}" alt="Vektor logo">
@@ -57,6 +57,10 @@
     <script type="text/javascript" src="{{ asset('bundles/app/js/foundation.min.js') }}"></script>
     <script>
         $(document).foundation();
-        </script>
+
+        setTimeout(function(){
+            $( ".flash-notice" ).fadeOut(1000);
+        }, 3000);
+    </script>
 	</body>
 </html>

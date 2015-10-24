@@ -30,6 +30,7 @@ class SurveyController extends Controller
      */
     public function showAction(Request $request, Survey $survey)
     {
+
         $department = $survey->getSemester()->getDepartment();
         $oldAns = sizeof($survey->getSurveyAnswers());
         foreach($survey->getSurveyQuestions() as $surveyQuestion){
@@ -53,6 +54,7 @@ class SurveyController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $answers = $survey->getSurveyAnswers();
+            $new_answer = false;
             for($i = $oldAns; $i < sizeof($answers); $i++){
                 $question_id = $answers[$i]->getSurveyQuestion()->getId();
                 $school_id = $survey->getSchool()->getId();
@@ -65,8 +67,14 @@ class SurveyController extends Controller
                     ";
                     $stmt = $this->getDoctrine()->getManager()->getConnection()->prepare($sql);
                     $stmt->execute();
+                    $new_answer = true;
                 }
 
+            }
+            if($new_answer){
+                $this->addFlash('undersokelse-notice','Tusen takk for ditt svar!');
+                //New form without previous answers
+                return $this->redirect($this->generateUrl('survey_show',array('id' => $survey->getId())));
             }
         }
         return $this->render('survey/takeSurvey.html.twig', array(
