@@ -18,6 +18,13 @@ class SurveySchoolAnswered
     protected $id;
 
     /**
+     * @ORM\Column(type="datetime", nullable=false)
+     * @ORM\Version
+     * @var string
+     */
+    protected $time;
+
+    /**
      * @ORM\ManyToOne(targetEntity="School", cascade={"persist"})
      */
     protected $school;
@@ -26,7 +33,6 @@ class SurveySchoolAnswered
      * @ORM\ManyToOne(targetEntity="Survey", cascade={"persist"})
      */
     protected $survey;
-
 
     /**
      * @return mixed
