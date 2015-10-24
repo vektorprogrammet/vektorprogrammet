@@ -15,6 +15,13 @@
 	<body>
 
     <div class="formSurvey">
+
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="flash-notice">
+            {{ flashMessage }}
+        </div>
+        {% endfor %}
+
         <img src="{{ asset('images/vektor.png') }}" alt="Vektor logo">
         <br/>
         <h1>{{ form.vars.data.name }}</h1>
@@ -22,12 +29,16 @@
         {{ form_start(form) }} {#This is everything that is needed to show a form/survey#}
         {{ form_errors(form) }}
         {% set counter = 0 %}
+        {% set QustionNumber = 1 %}
+        <h3>Velg skole</h3>
         {{ form_widget(form.school) }}
+        <br/>
         {% for surveyAnswer in form.surveyAnswers %}
             {% if counter >= oldAns %}
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
-                        {{ form_row(surveyAnswer.answer) }}
+                        {{ QustionNumber }}. {{ form_row(surveyAnswer.answer) }}
+                        {% set QustionNumber = QustionNumber +1 %}
                     </div>
                 </div>
             {% endif %}
@@ -45,8 +56,7 @@
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script type="text/javascript" src="{{ asset('bundles/app/js/foundation.min.js') }}"></script>
     <script>
-            {# This has to be in all twig files, can't be overwritten #}
-                    $(document).foundation();
+        $(document).foundation();
         </script>
 	</body>
 </html>
