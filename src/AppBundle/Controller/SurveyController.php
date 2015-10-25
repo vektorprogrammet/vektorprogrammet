@@ -115,6 +115,12 @@ class SurveyController extends Controller
         return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
     }
 
+    public function copySurvey(Request $request){
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+    }
+
     public function showSurveysAction()
     {
         if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
