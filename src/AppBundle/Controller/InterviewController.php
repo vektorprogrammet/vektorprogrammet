@@ -62,8 +62,6 @@ class InterviewController extends Controller
         $form = $this->createForm(new interviewType(), $interview);
         $form->handleRequest($request);
 
-        dump($form);
-
         if ($form->isValid()) {
             // Set interviewed to true if the form is valid
             $interview->setInterviewed(true);
@@ -81,7 +79,7 @@ class InterviewController extends Controller
 
             return $this->redirect($this->generateUrl('admissionadmin_show', array('status' => 'interviewed')));
         }
-
+        dump($form);
         return $this->render('interview/conduct.html.twig', array(
             'interview' => $interview,
             'form' => $form->createView()

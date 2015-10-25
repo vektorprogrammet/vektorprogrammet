@@ -35,7 +35,16 @@ class SchoolRepository extends EntityRepository {
 		->getResult();
 
 		return $schools;
-			
+	}
+
+	public function findSchoolsByDepartmentQuery($department){
+
+		$query =  $this->createQueryBuilder('s','d')
+			->from('AppBundle:School','s')
+			->join('s.departments','d')
+			->where('d = :department')
+			->setParameter('department',$department);
+		return $query;
 	}
 
     public function getNumberOfSchools(){

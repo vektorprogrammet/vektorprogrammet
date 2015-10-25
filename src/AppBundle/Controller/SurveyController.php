@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\School;
+use AppBundle\Entity\SurveySchoolAnswered;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,18 +31,64 @@ class SurveyController extends Controller
      */
     public function showAction(Request $request, Survey $survey)
     {
-        $em = $this->getDoctrine()->getManager();
+
+        $department = $survey->getSemester()->getDepartment();
+        $oldAns = sizeof($survey->getSurveyAnswers());
+        foreach($survey->getSurveyQuestions() as $surveyQuestion){
+            $answer = new SurveyAnswer();
+            $answer->setSurvey($survey);
+            $answer->setSurveyQuestion($surveyQuestion);
+
+            $survey->addSurveyAnswer($answer);
+        }
 
         $form = $this->createForm(new SurveyExecuteType(), $survey);
         $form->handleRequest($request);
-
         if ($form->isValid()) {
-            $em->persist($survey);
-            $em->flush();
-        }
+            $answers = $survey->getSurveyAnswers();
+            $new_answer = false;
+            for($i = $oldAns; $i < sizeof($answers); $i++){
+                $question_id = $answers[$i]->getSurveyQuestion()->getId();
+                $school_id = $survey->getSchool()->getId();
+                $survey_id = $answers[$i]->getSurvey()->getId();
+                $answer = $answers[$i]->getAnswer();
+                if(strlen($answer)!=0){
+                    $sql = "
+                        INSERT INTO survey_answer(question_id, school_id, survey_id, answer)
+                        VALUES (?,?,?,?);
+                    ";
+                    $stmt = $this->getDoctrine()->getManager()->getConnection()->prepare($sql);
+                    $stmt->bindValue(1, $question_id);
+                    $stmt->bindValue(2, $school_id);
+                    $stmt->bindValue(3, $survey_id);
+                    $stmt->bindValue(4, $answer);
+                    $stmt->execute();
+                    $new_answer = true;
+                }
 
+            }
+            $schoolAnswered = new SurveySchoolAnswered();
+            $schoolAnswered->setSurvey($survey);
+            $schoolAnswered->setSchool($survey->getSchool());
+            $sql = "
+                INSERT INTO survey_schools_answered(survey_id, school_id)
+                VALUES (?,?)
+            ";
+            $stmt = $this->getDoctrine()->getManager()->getConnection()->prepare($sql);
+            $stmt->bindValue(1,$survey->getId());
+            $stmt->bindValue(2,$survey->getSchool()->getId());
+            $stmt->execute();
+
+            if($new_answer){
+                $this->addFlash('undersokelse-notice','Tusen takk for ditt svar!');
+                //New form without previous answers
+                return $this->redirect($this->generateUrl('survey_show',array('id' => $survey->getId())));
+            }
+        }
         return $this->render('survey/takeSurvey.html.twig', array(
-            'form' => $form->createView()
+            'oldAns' => $oldAns,
+            'form' => $form->createView(),
+
         ));
     }
 
@@ -67,13 +115,29 @@ class SurveyController extends Controller
         return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
     }
 
+    public function copySurvey(Request $request){
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+    }
+
     public function showSurveysAction()
     {
         if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             throw $this->createAccessDeniedException();
         }
         $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findAll();
-
+        foreach($surveys as $survey){
+            $sql = "
+                  SELECT COUNT(id)
+                  FROM survey_schools_answered
+                  WHERE survey_id = ?";
+            $stmt = $this->getDoctrine()->getManager()->getConnection()->prepare($sql);
+            $stmt->bindValue(1,$survey->getId());
+            $stmt->execute();
+            $result = $stmt->fetch();
+            $survey->setTotalAnswered($result["COUNT(id)"]);
+        }
         return $this->render('survey/surveys.html.twig', array('surveys' => $surveys));
     }
 

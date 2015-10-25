@@ -49,7 +49,7 @@ survey_show:
   path: /undersokelse/{id}
   defaults: { _controller: AppBundle:Survey:show }
   requirements:
-    _method: GET
+    _method: GET|POST
     id: \d+
 
 survey_create:

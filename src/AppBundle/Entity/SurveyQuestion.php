@@ -22,6 +22,27 @@ class SurveyQuestion
      */
     protected $question;
 
+    /**
+     * @return mixed
+     */
+    public function getOptional()
+    {
+        return $this->optional;
+    }
+
+    /**
+     * @param mixed $optional
+     */
+    public function setOptional($optional)
+    {
+        $this->optional = $optional;
+    }
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $optional;
+
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -39,13 +60,25 @@ class SurveyQuestion
     protected $alternatives;
 
     /**
-     * @ORM\ManyToMany(targetEntity="SurveyAnswer", cascade={"persist"})
-     * @ORM\JoinTable(name="survey_questions_answers",
-     *      joinColumns={@ORM\JoinColumn(name="question_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="answer_id", referencedColumnName="id")}
-     *      )
+     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="surveyQuestion", cascade={"persist", "remove"})
      **/
     protected $answers;
+
+    /**
+     * @return mixed
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
+    }
+
+    /**
+     * @param mixed $answers
+     */
+    public function setAnswers($answers)
+    {
+        $this->answers = $answers;
+    }
 
     /**
      * Get id

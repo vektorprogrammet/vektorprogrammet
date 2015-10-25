@@ -18,15 +18,59 @@ class SurveyAnswer
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SurveyQuestion")
+     * @return mixed
+     */
+    public function getSchool()
+    {
+        return $this->school;
+    }
+
+    /**
+     * @param mixed $school
+     */
+    public function setSchool($school)
+    {
+        $this->school = $school;
+    }
+
+    /**
+     * @ORM\ManyToOne(targetEntity="School")
+     * @ORM\JoinColumn(name="school_id", referencedColumnName="id")
+     */
+    protected $school;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="SurveyQuestion", inversedBy="answers")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      */
     protected $surveyQuestion;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $answer;
+
+    /**
+     * @return mixed
+     */
+    public function getSurvey()
+    {
+        return $this->survey;
+    }
+
+    /**
+     * @param mixed $survey
+     */
+    public function setSurvey($survey)
+    {
+        $this->survey = $survey;
+    }
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Survey", inversedBy="surveyAnswers")
+     * @ORM\JoinColumn(name="survey_id", referencedColumnName="id")
+     */
+    protected $survey;
 
     /**
      * Get id

@@ -25,7 +25,6 @@ class SurveyQuestionType extends AbstractType
             'choices' => array(
                 'text' => 'Text',
                 'radio' => 'Multiple choice',
-                'check' => 'Checkboxes',
                 'list' => 'Velg fra liste'
             ),
             'label' => 'Type',
@@ -37,6 +36,15 @@ class SurveyQuestionType extends AbstractType
             'allow_delete' => true,
             'prototype_name' => '__a_prot__',
             'by_reference' => false
+        ));
+
+        $builder->add('optional', 'choice', array(
+            'label' => 'Valgfritt',
+            'expanded' => 'true',
+            'choices' => array(
+                '0' => 'Nei',
+                '1' => 'Ja'
+            )
         ));
 
         /*

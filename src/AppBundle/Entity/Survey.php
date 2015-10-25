@@ -27,6 +27,12 @@ class Survey
      */
     protected $name;
 
+
+    protected $totalAnswered;
+
+
+    protected $school;
+
     /**
      * @ORM\ManyToMany(targetEntity="SurveyQuestion", cascade={"persist"})
      * @ORM\JoinTable(name="survey_surveys_questions",
@@ -35,13 +41,70 @@ class Survey
      *      )
      **/
     protected $surveyQuestions;
+
+    /**
+     * @return mixed
+     */
+    public function getSchool()
+    {
+        return $this->school;
+    }
+
+    /**
+     * @param mixed $school
+     */
+    public function setSchool($school)
+    {
+        $this->school = $school;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSurveyAnswers()
+    {
+        return $this->surveyAnswers;
+    }
+
+    public function addSurveyAnswer($answer){
+        $this->surveyAnswers[] = $answer;
+    }
+
+    /**
+     * @param mixed $surveyAnswers
+     */
+    public function setSurveyAnswers($surveyAnswers)
+    {
+        $this->surveyAnswers = $surveyAnswers;
+    }
     /**
      * @param mixed $name
      */
 
+    /**
+     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="survey", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    protected $surveyAnswers;
+
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTotalAnswered()
+    {
+        return $this->totalAnswered;
+    }
+
+    /**
+     * @param mixed $totalAnswered
+     */
+    public function setTotalAnswered($totalAnswered)
+    {
+        $this->totalAnswered = $totalAnswered;
     }
 
     /**
@@ -75,8 +138,6 @@ class Survey
     {
         return $this->surveyQuestions;
     }
-
-
 
     /**
      * Constructor
