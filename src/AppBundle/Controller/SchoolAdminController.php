@@ -177,7 +177,7 @@ class SchoolAdminController extends Controller {
 			$department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($id);
 			
 			// Find all the users of the department that are active
-			$users = $this->getDoctrine()->getRepository('AppBundle:User')->findAllActiveUsersByDepartment($department);
+			$users = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersByDepartment($department);
 			
 			// Return the view with suitable variables
 			return $this->render('school_admin/all_users.html.twig', array(
