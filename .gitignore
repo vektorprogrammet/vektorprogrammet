@@ -42,5 +42,9 @@ crashlytics-build.properties
 /bin/
 /composer.phar
 /vendor/
-/web/bundles/
-/web/scripts/ckeditor/
+/www/bundles/
+/www/article_images/
+/www/images
+/www/Logo images
+/www/Profile photos
+/www/scripts/ckeditor/
