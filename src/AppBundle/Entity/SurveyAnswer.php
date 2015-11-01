@@ -51,6 +51,12 @@ class SurveyAnswer
     protected $answer;
 
     /**
+     * @ORM\ManyToOne(targetEntity="SurveySchoolAnswered", inversedBy="surveyAnswers")
+     * @ORM\JoinColumn(name="schoolAnswered_id", referencedColumnName="id")
+     */
+    protected $surveySchoolAnswered;
+
+    /**
      * @return mixed
      */
     public function getSurvey()

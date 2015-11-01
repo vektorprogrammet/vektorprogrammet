@@ -45,6 +45,21 @@ class SurveyController extends Controller
         $form = $this->createForm(new SurveyExecuteType(), $survey);
         $form->handleRequest($request);
         if ($form->isValid()) {
+            $schoolAnswered = new SurveySchoolAnswered();
+            $schoolAnswered->setSurvey($survey);
+            $schoolAnswered->setSchool($survey->getSchool());
+            $sql = "
+                INSERT INTO survey_schools_answered(survey_id, school_id)
+                VALUES (?,?)
+            ";
+            $conn = $this->getDoctrine()->getManager()->getConnection();
+            $stmt = $conn->prepare($sql);
+            $stmt->bindValue(1,$survey->getId());
+            $stmt->bindValue(2,$survey->getSchool()->getId());
+            $stmt->execute();
+
+            $schoolAnsweredId = $conn->lastInsertId();
+
             $answers = $survey->getSurveyAnswers();
             $new_answer = false;
             for($i = $oldAns; $i < sizeof($answers); $i++){
@@ -54,30 +69,19 @@ class SurveyController extends Controller
                 $answer = $answers[$i]->getAnswer();
                 if(strlen($answer)!=0){
                     $sql = "
-                        INSERT INTO survey_answer(question_id, school_id, survey_id, answer)
-                        VALUES (?,?,?,?);
+                        INSERT INTO survey_answer(question_id, school_id, survey_id, answer, schoolAnswered_id)
+                        VALUES (?,?,?,?,?);
                     ";
                     $stmt = $this->getDoctrine()->getManager()->getConnection()->prepare($sql);
                     $stmt->bindValue(1, $question_id);
                     $stmt->bindValue(2, $school_id);
                     $stmt->bindValue(3, $survey_id);
                     $stmt->bindValue(4, $answer);
+                    $stmt->bindValue(5, $schoolAnsweredId);
                     $stmt->execute();
                     $new_answer = true;
                 }
-
             }
-            $schoolAnswered = new SurveySchoolAnswered();
-            $schoolAnswered->setSurvey($survey);
-            $schoolAnswered->setSchool($survey->getSchool());
-            $sql = "
-                INSERT INTO survey_schools_answered(survey_id, school_id)
-                VALUES (?,?)
-            ";
-            $stmt = $this->getDoctrine()->getManager()->getConnection()->prepare($sql);
-            $stmt->bindValue(1,$survey->getId());
-            $stmt->bindValue(2,$survey->getSchool()->getId());
-            $stmt->execute();
 
             if($new_answer){
                 $this->addFlash('undersokelse-notice','Tusen takk for ditt svar!');

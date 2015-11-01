@@ -35,6 +35,31 @@ class SurveySchoolAnswered
     protected $survey;
 
     /**
+     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="surveySchoolAnswered", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    protected $surveyAnswers;
+
+    /**
+     * @return mixed
+     */
+    public function getSurveyAnswers()
+    {
+        return $this->surveyAnswers;
+    }
+
+    public function addSurveyAnswer($answer){
+        $this->surveyAnswers[] = $answer;
+    }
+
+    /**
+     * @param mixed $surveyAnswers
+     */
+    public function setSurveyAnswers($surveyAnswers)
+    {
+        $this->surveyAnswers = $surveyAnswers;
+    }
+
+    /**
      * @return mixed
      */
     public function getId()
