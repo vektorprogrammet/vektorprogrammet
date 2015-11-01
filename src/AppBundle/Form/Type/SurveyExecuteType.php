@@ -13,7 +13,7 @@ class SurveyExecuteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         //$department  $options["data"]->getSemester()->getDepartent();
-        $department = $builder->getData()->getSemester()->getDepartment();
+        $department = $builder->getData()->getSurvey()->getSemester()->getDepartment();
         $builder->add('school', 'entity', array(
             'label' => 'School',
             'placeholder' => 'Velg Skole',
@@ -38,12 +38,12 @@ class SurveyExecuteType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Survey',
+            'data_class' => 'AppBundle\Entity\SurveyTaken',
         ));
     }
 
     public function getName()
     {
-        return 'survey';
+        return 'surveyTaken';
     }
 }

@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="survey_schools_answered")
+ * @ORM\Table(name="survey_taken")
  */
-class SurveySchoolAnswered
+class SurveyTaken
 {
     /**
      * @ORM\Id
@@ -35,9 +35,17 @@ class SurveySchoolAnswered
     protected $survey;
 
     /**
-     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="surveySchoolAnswered", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="surveyTaken", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $surveyAnswers;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->surveyAnswers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -49,6 +57,14 @@ class SurveySchoolAnswered
 
     public function addSurveyAnswer($answer){
         $this->surveyAnswers[] = $answer;
+    }
+
+    public function removeNullAnswers(){
+        foreach($this->surveyAnswers as $answer){
+            if($answer->getAnswer() == null){
+                $this->surveyAnswers->removeElement($answer);
+            }
+        }
     }
 
     /**
@@ -65,14 +81,6 @@ class SurveySchoolAnswered
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**

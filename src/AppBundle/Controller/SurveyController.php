@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyAnswer;
 use AppBundle\Entity\SurveySchema;
+use AppBundle\Entity\SurveyTaken;
 use AppBundle\Form\Type\SurveySchemaType;
 use AppBundle\Form\Type\SurveyAnswerType;
 use AppBundle\Form\Type\SurveyType;
@@ -31,58 +32,24 @@ class SurveyController extends Controller
      */
     public function showAction(Request $request, Survey $survey)
     {
-
-        $department = $survey->getSemester()->getDepartment();
-        $oldAns = sizeof($survey->getSurveyAnswers());
+        $surveyTaken = new SurveyTaken();
+        $surveyTaken->setSurvey($survey);
         foreach($survey->getSurveyQuestions() as $surveyQuestion){
             $answer = new SurveyAnswer();
-            $answer->setSurvey($survey);
             $answer->setSurveyQuestion($surveyQuestion);
+            $answer->setSurveyTaken($surveyTaken);
 
-            $survey->addSurveyAnswer($answer);
+            $surveyTaken->addSurveyAnswer($answer);
         }
 
-        $form = $this->createForm(new SurveyExecuteType(), $survey);
+        $form = $this->createForm(new SurveyExecuteType(), $surveyTaken);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $schoolAnswered = new SurveySchoolAnswered();
-            $schoolAnswered->setSurvey($survey);
-            $schoolAnswered->setSchool($survey->getSchool());
-            $sql = "
-                INSERT INTO survey_schools_answered(survey_id, school_id)
-                VALUES (?,?)
-            ";
-            $conn = $this->getDoctrine()->getManager()->getConnection();
-            $stmt = $conn->prepare($sql);
-            $stmt->bindValue(1,$survey->getId());
-            $stmt->bindValue(2,$survey->getSchool()->getId());
-            $stmt->execute();
-
-            $schoolAnsweredId = $conn->lastInsertId();
-
-            $answers = $survey->getSurveyAnswers();
-            $new_answer = false;
-            for($i = $oldAns; $i < sizeof($answers); $i++){
-                $question_id = $answers[$i]->getSurveyQuestion()->getId();
-                $school_id = $survey->getSchool()->getId();
-                $survey_id = $answers[$i]->getSurvey()->getId();
-                $answer = $answers[$i]->getAnswer();
-                if(strlen($answer)!=0){
-                    $sql = "
-                        INSERT INTO survey_answer(question_id, school_id, survey_id, answer, schoolAnswered_id)
-                        VALUES (?,?,?,?,?);
-                    ";
-                    $stmt = $this->getDoctrine()->getManager()->getConnection()->prepare($sql);
-                    $stmt->bindValue(1, $question_id);
-                    $stmt->bindValue(2, $school_id);
-                    $stmt->bindValue(3, $survey_id);
-                    $stmt->bindValue(4, $answer);
-                    $stmt->bindValue(5, $schoolAnsweredId);
-                    $stmt->execute();
-                    $new_answer = true;
-                }
-            }
-
+            $surveyTaken->removeNullAnswers();
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($surveyTaken);
+            $em->flush();
+            $new_answer = true;
             if($new_answer){
                 $this->addFlash('undersokelse-notice','Tusen takk for ditt svar!');
                 //New form without previous answers
@@ -90,7 +57,6 @@ class SurveyController extends Controller
             }
         }
         return $this->render('survey/takeSurvey.html.twig', array(
-            'oldAns' => $oldAns,
             'form' => $form->createView(),
 
         ));
@@ -134,7 +100,7 @@ class SurveyController extends Controller
         foreach($surveys as $survey){
             $sql = "
                   SELECT COUNT(id)
-                  FROM survey_schools_answered
+                  FROM survey_taken
                   WHERE survey_id = ?";
             $stmt = $this->getDoctrine()->getManager()->getConnection()->prepare($sql);
             $stmt->bindValue(1,$survey->getId());
