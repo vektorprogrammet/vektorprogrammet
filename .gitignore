@@ -1,3 +1,14 @@
+/app/bootstrap.php.cache
+/app/cache/*
+!app/cache/.gitkeep
+/app/config/parameters.yml
+/app/logs/*
+!app/logs/.gitkeep
+/app/phpunit.xml
+/bin/
+/composer.phar
+/vendor/
+
 /bootstrap/compiled.php
 .env.*.php
 .env.php
@@ -5,9 +16,8 @@
 
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
-
 *.iml
-
+/app/*
 ## Directory-based project format:
 .idea/
 
@@ -31,7 +41,19 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 
+
+
 ### Symfony ###
+/app/bootstrap.php.cache
+/app/cache/*
+!app/cache/.gitkeep
+/app/config/parameters.yml
+/app/logs/*
+!app/logs/.gitkeep
+/app/phpunit.xml
+/bin/
+/composer.phar
+/vendor/
 /app/bootstrap.php.cache
 /app/cache/*
 !app/cache/.gitkeep

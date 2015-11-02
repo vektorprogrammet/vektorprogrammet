@@ -204,7 +204,7 @@ class SemesterController extends Controller {
 		
 		try {
 			
-			if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+			if ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')) {
 			
 				// This deletes the given semester
 				$em = $this->getDoctrine()->getEntityManager();
