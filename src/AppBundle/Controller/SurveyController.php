@@ -2,22 +2,17 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\School;
-use AppBundle\Entity\SurveySchoolAnswered;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyAnswer;
-use AppBundle\Entity\SurveySchema;
 use AppBundle\Entity\SurveyTaken;
-use AppBundle\Form\Type\SurveySchemaType;
-use AppBundle\Form\Type\SurveyAnswerType;
 use AppBundle\Form\Type\SurveyType;
 use AppBundle\Form\Type\SurveyExecuteType;
 
 /**
- * InterviewController is the controller responsible for survey actions,
+ * SurveyController is the controller responsible for survey actions,
  * such as showing, assigning and conducting surveys.
  *
  * @package AppBundle\Controller
@@ -134,7 +129,7 @@ class SurveyController extends Controller
     }
 
     /**
-     * Deletes the given interview schema.
+     * Deletes the given Survey.
      * This method is intended to be called by an Ajax request.
      *
      * @param Survey $survey
@@ -161,6 +156,30 @@ class SurveyController extends Controller
         }
 
         return new JsonResponse($response);
+    }
+
+    public function resultSurveyAction(Survey $survey)
+    {
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $surveyTakenList = $this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findBySurvey($survey);
+        $schoolCompletedCount = array();
+        foreach($surveyTakenList as $surveyTaken){
+            $school = $surveyTaken->getSchool()->getName();
+            if(array_key_exists($school,$schoolCompletedCount)){
+                $schoolCompletedCount[$school]++;
+            }else {
+                $schoolCompletedCount[$school] = 1;
+            }
+            dump($schoolCompletedCount);
+        }
+
+        return $this->render('survey/survey_result.html.twig', array(
+            'schoolCompletedCount' => $schoolCompletedCount,
+            'survey' => $survey
+        ));
     }
 
 }
