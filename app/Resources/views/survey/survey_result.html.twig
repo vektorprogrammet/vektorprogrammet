@@ -7,19 +7,31 @@
 {% block body %}
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            <h1>Resultater {{ survey.name }} {{ survey.semester }}</h1>
-            <table>
-                <tr>
-                    <th>Skole</th>
-                    <th>Antall</th>
-                </tr>
-                {% for school in schoolCompletedCount|keys %}
-                    <tr>
-                        <td>{{ school}}</td>
-                        <td>{{ schoolCompletedCount[school] }}</td>
-                    </tr>
+            <h1 style="text-align: center;">Resultater {{ survey.name }} {{ survey.semester }}</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="survey-data" class="large-12 columns">
+            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+            <script type="text/javascript">
+                google.load("visualization", "1", {packages: ["corechart", 'table', 'treemap', 'gauge']});
+                google.load('jquery', '1.6.0');
+            </script>
+
+            <div class="row" style="width: 750px; margin: 0 auto;">
+                {% for chart in diagram %}
+                    {% set index = loop.index %}
+                    <div id="{{ index }}">&nbsp;</div>
+                    <script>
+                        $(function () {
+                            {{ gchart_pie_chart(chart, index, 750, 250, attribute(question, index - 1)) }}
+                        });
+                    </script>
+                    <hr style="width: 750px;"/>
                 {% endfor %}
-            </table>
+
+            </div>
         </div>
     </div>
 {% endblock %}

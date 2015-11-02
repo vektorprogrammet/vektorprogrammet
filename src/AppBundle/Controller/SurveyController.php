@@ -10,6 +10,7 @@ use AppBundle\Entity\SurveyAnswer;
 use AppBundle\Entity\SurveyTaken;
 use AppBundle\Form\Type\SurveyType;
 use AppBundle\Form\Type\SurveyExecuteType;
+use SaadTazi\GChartBundle\DataTable\DataTable;
 
 /**
  * SurveyController is the controller responsible for survey actions,
@@ -165,6 +166,8 @@ class SurveyController extends Controller
         }
 
         $surveyTakenList = $this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findBySurvey($survey);
+
+        //ADD SCHOOL CHART
         $schoolCompletedCount = array();
         foreach($surveyTakenList as $surveyTaken){
             $school = $surveyTaken->getSchool()->getName();
@@ -173,13 +176,60 @@ class SurveyController extends Controller
             }else {
                 $schoolCompletedCount[$school] = 1;
             }
-            dump($schoolCompletedCount);
+        }
+
+        $chart = new DataTable();
+        $chart->addColumn('1', 'Label', 'string');
+        $chart->addColumn('2', 'Quantity', 'number');
+        $alternativeArray = array_keys($schoolCompletedCount);
+        foreach($alternativeArray as $alternative){
+            $chart->addRow([$alternative, $schoolCompletedCount[$alternative]]);
+        }
+        $diagramArray[] = $chart->toArray();
+        $questionArray[] = 'Skole';
+        //SCHOOL CHART END
+
+        $lablesArray = array();
+        $questionsArray = array();
+        $counter = 0;
+
+        //Create question charts
+        foreach($survey->getSurveyQuestions() as $question){
+            if($question->getType()!="text"){
+                array_push($lablesArray, $question->getQuestion());
+                array_push($questionsArray, $question);
+            }
+        }
+
+        foreach($questionsArray as $question){
+            $chart = new DataTable();
+            $chart->addColumn('1', 'Label', 'string');
+            $chart->addColumn('2', 'Quantity', 'number');
+            $alternativeArray = $question->getAlternatives();
+
+            foreach($alternativeArray as $alternative){
+                $alternative = $alternative->getAlternative();
+                $num = 0;
+                foreach($question->getAnswers() as $answer){
+                    if($answer->getAnswer() == $alternative){
+                        $num++;
+                    }
+                }
+                $chart->addRow([$alternative, intval($num)]);
+            }
+
+            $diagramArray[] = $chart->toArray();
+            $questionArray[] = $lablesArray[$counter];
+            $counter++;
+
         }
 
         return $this->render('survey/survey_result.html.twig', array(
-            'schoolCompletedCount' => $schoolCompletedCount,
-            'survey' => $survey
+            'survey' => $survey,
+            'diagram' => $diagramArray,
+            'question' => $questionArray,
         ));
+
     }
 
 }
