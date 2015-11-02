@@ -4,7 +4,11 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}{% endblock %}</title>
-		
+        <meta property="og:title" content="{% block title %}{% endblock %}"/>
+        <meta property=="og:image" content="{% block facebookImage %}{% endblock %}" />
+        <meta property=="og:description" content="{% block facebookDescription %}{% endblock %}" />
+        <meta property=="og:site_name" content="Vektorprogrammet" />
+
         {% block stylesheets %}
             <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
             <link rel="stylesheet" type='text/css' href="http://fonts.googleapis.com/css?family=Lato:400,700|Londrina+Solid">
