@@ -18,28 +18,6 @@ class SurveyAnswer
     protected $id;
 
     /**
-     * @return mixed
-     */
-    public function getSchool()
-    {
-        return $this->school;
-    }
-
-    /**
-     * @param mixed $school
-     */
-    public function setSchool($school)
-    {
-        $this->school = $school;
-    }
-
-    /**
-     * @ORM\ManyToOne(targetEntity="School")
-     * @ORM\JoinColumn(name="school_id", referencedColumnName="id")
-     */
-    protected $school;
-
-    /**
      * @ORM\ManyToOne(targetEntity="SurveyQuestion", inversedBy="answers")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      */
@@ -51,26 +29,26 @@ class SurveyAnswer
     protected $answer;
 
     /**
+     * @ORM\ManyToOne(targetEntity="SurveyTaken", inversedBy="surveyAnswers")
+     * @ORM\JoinColumn(name="survey_taken_id", referencedColumnName="id")
+     */
+    protected $surveyTaken;
+
+    /**
      * @return mixed
      */
-    public function getSurvey()
+    public function getSurveyTaken()
     {
-        return $this->survey;
+        return $this->surveyTaken;
     }
 
     /**
-     * @param mixed $survey
+     * @param mixed $surveyTaken
      */
-    public function setSurvey($survey)
+    public function setSurveyTaken($surveyTaken)
     {
-        $this->survey = $survey;
+        $this->surveyTaken = $surveyTaken;
     }
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Survey", inversedBy="surveyAnswers")
-     * @ORM\JoinColumn(name="survey_id", referencedColumnName="id")
-     */
-    protected $survey;
 
     /**
      * Get id
