@@ -225,6 +225,7 @@ class SurveyController extends Controller
         }
 
         return $this->render('survey/survey_result.html.twig', array(
+            'numAnswered' => sizeof($surveyTakenList),
             'survey' => $survey,
             'diagram' => $diagramArray,
             'question' => $questionArray,
