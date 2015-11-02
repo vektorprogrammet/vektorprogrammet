@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Resultater {{ survey.name }} {{ survey.semester }}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <h1>Resultater {{ survey.name }} {{ survey.semester }}</h1>
+            <table>
+                <tr>
+                    <th>Skole</th>
+                    <th>Antall</th>
+                </tr>
+                {% for school in schoolCompletedCount|keys %}
+                    <tr>
+                        <td>{{ school}}</td>
+                        <td>{{ schoolCompletedCount[school] }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
