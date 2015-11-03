@@ -191,6 +191,8 @@ class SurveyController extends Controller
 
         $lablesArray = array();
         $questionsArray = array();
+        $textQuestionArray = array();
+        $textQAarray = array();
         $counter = 0;
 
         //Create question charts
@@ -198,6 +200,16 @@ class SurveyController extends Controller
             if($question->getType()!="text"){
                 array_push($lablesArray, $question->getQuestion());
                 array_push($questionsArray, $question);
+            }else{
+                $textQuestionArray[] = $question;
+            }
+        }
+        foreach($textQuestionArray as $textQuestion){
+            $questionText = $textQuestion->getQuestion();
+            $textQAarray[$questionText] = array();
+            foreach($textQuestion->getAnswers() as $answer){
+                dump($answer);
+                //array_push($textQAarray[$textQuestion],$answer->getAnswer());
             }
         }
 
@@ -223,8 +235,8 @@ class SurveyController extends Controller
             $counter++;
 
         }
-
         return $this->render('survey/survey_result.html.twig', array(
+            'textAnswers' => $textQAarray,
             'numAnswered' => sizeof($surveyTakenList),
             'survey' => $survey,
             'diagram' => $diagramArray,
