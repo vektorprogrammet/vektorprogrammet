@@ -8,7 +8,7 @@
         {% block stylesheets %}
             <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
             <link rel="stylesheet" type='text/css' href="http://fonts.googleapis.com/css?family=Lato:400,700|Londrina+Solid">
-            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
             <link rel="stylesheet" href="{{ asset('bundles/app/css/app.css') }}">
             <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/slick/slick.css') }}"/>
             <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/slick/slick-theme.css') }}"/>
@@ -17,8 +17,17 @@
 
         {# Used by Foundation for backwards compability, and is supposed to be in the header #}
         <script src="{{ asset('bundles/app/js/vendor/modernizr.js') }}"></script>
+        <style>
+            .arrow{
+                font-size: 16px;
+                color:#6FCEEE;
+            }
+        </style>
     </head>
     <body>
+    {% block topLine %}
+        <div style="width:100%;height:20px;background-color: #6FCEEE; margin-bottom:10px;"></div>
+    {% endblock %}
 
     {#
     {% block header %}
@@ -117,22 +126,6 @@
 
         {% block newHeader %}
 
-            <nav class="topbar">
-                <div class="row">
-                    <div class="small-12 columns">
-                        <i class="fa fa-chevron-up"></i>
-                        <i class="fa fa-chevron-down"></i>
-
-                        <ul class="inline-list">
-                            <li><a href="http://instagram.com/vektorprogrammet" target="_blank"><i class="fa fa-instagram"></i></a></li>
-                            <li><a href="http://twitter.com/vektorprogram" target="_blank"><i class="fa fa-twitter-square"></i></a></li>
-                            <li><a href="http://facebook.com/vektorprogrammet" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-
-
             <header data-equalizer>
                 <div class="small-12 medium-3 columns" data-equalizer-watch>
                     <a href="{{ path('home') }}">
@@ -143,7 +136,7 @@
                     <nav>
                         <ul>
                             <li>
-                                <a href="#" data-dropdown="aboutDropdown" aria-controls="aboutDropdown" aria-expanded="false" class="vektor-button">Om Vektor</a>
+                                <a href="#" data-dropdown="aboutDropdown" aria-controls="aboutDropdown" aria-expanded="false" class="vektor-button" data-options="is_hover:true; hover_timeout:200">Om Vektor<span class="arrow">&#9660;</span></a>
                                 <ul id="aboutDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
                                     <li><a href="{{ path('about') }}">Om vektor</a></li>
                                     <li><a href="{{ path('boardandteam_show') }}">Styre og team</a></li>
@@ -156,15 +149,18 @@
                                 <a href="{{ path('article') }}" class="vektor-button">Nyheter</a>
                             </li>
                             <li>
-                                <a href="#" data-dropdown="regionDropdown" aria-controls="regionDropdown" aria-expanded="false" class="vektor-button">Regioner, opptak & kontakt</a>
+                                <a href="#" data-dropdown="regionDropdown" aria-controls="regionDropdown" aria-expanded="false" class="vektor-button" data-options="is_hover:true; hover_timeout:200">Opptak & kontakt<span class="arrow">&#9660;</span></a>
                                 <ul id="regionDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
                                     {% render controller('AppBundle:Department:getAllDepartmentsForTopbar') %}
                                 </ul>
                             </li>
                             <li>
                                 {% if app.user and is_granted('ROLE_USER') %}
-                                    <a href="#" data-dropdown="myVektorDropdown" aria-controls="myVektorDropdown" aria-expanded="false" class="vektor-button">Min Vektor</a>
+                                    <a href="#" data-dropdown="myVektorDropdown" aria-controls="myVektorDropdown" aria-expanded="false" class="vektor-button" data-options="is_hover:true; hover_timeout:200">Min Vektor<span class="arrow">&#9660;</span></a>
                                     <ul id="myVektorDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
+                                        {% if app.user and is_granted('ROLE_ADMIN') %}
+                                        <li><a href='{{ path('control_panel') }}'>Kontrollpanel</a></li>
+                                        {% endif %}
                                         <li><a href='{{ path('profile') }}'>Profil</a></li>
                                         <li><a href='{{ path('members_show') }}'>Medlemmer</a></li>
                                         <li><a href='{{ path('forum_show') }}'>Forum</a></li>
@@ -281,75 +277,12 @@
                 </div>
 
             </header>
+            <br/>
 
         {% endblock %}
 
 
 		{% block adminpanel %}
-		
-		<br>
-		
-		{% if app.user and is_granted('ROLE_ADMIN') %}
-	
-		 <div class="row">
-			<div class="small-12 medium-12 large-12 columns">
-				<div class="panel">
-
-                    <div class="button-bar">
-                        <ul class="button-group">
-                            <li><a href="{{ path('useradmin_show') }}" class="button tiny" >Brukerere</a></li>
-
-                            <li><a href="{{ path('participanthistory_show') }}" class="button tiny" >Deltakerhistorie</a></li>
-                        </ul>
-
-                        <ul class="button-group">
-                            <li><a href="{{ path('admissionadmin_show') }}" class="button tiny">Opptak</a></li>
-
-                            <li><a href="{{ path('semesteradmin_show') }}" class="button tiny">Semester</a></li>
-
-                            {% if app.user and is_granted('ROLE_SUPER_ADMIN') %}
-                                <li><a href="{{ path('interview_schema') }}" class="button tiny">Intervjuskjema</a></li>
-                            {% endif %}
-                        </ul>
-
-                        <ul class="button-group">
-                            <li><a href="{{ path('departmentadmin_show') }}" class="button tiny">Avdeling</a></li>
-
-                            <li><a href="{{ path('teamadmin_show') }}" class="button tiny">Team</a></li>
-
-                            <li><a href="{{ path('schooladmin_show') }}" class="button tiny">Skole</a></li>
-
-                            <li><a href="{{ path('substitute_show') }}" class="button tiny">Vikar</a></li>
-
-							<li><a href="{{ path('certificate_show') }}" class="button tiny">Attest</a></li>
-                        </ul>
-
-                        <ul class="button-group">
-                            <a href="#" data-dropdown="hover1" data-options="is_hover:true" class="button tiny">Statistikk</a>
-                            <ul id="hover1" class="f-dropdown" data-dropdown-content>
-                                <li><a href="{{ path('statistics_application') }}">Opptak</a></li>
-                            </ul>
-
-
-
-                            <li><a href="{{ path('articleadmin_show') }}" class="button tiny">Artikkel</a></li>
-
-
-
-                            <li><a href="{{ path('sponsors_edit') }}" class="button tiny">Sponsorer</a></li>
-                        </ul>
-
-                        <ul class="button-group">
-                            <li><a href="{{ path('surveys') }}" class="button tiny" >Undersøkelser</a></li>
-                        </ul>
-                    </div>
-					
-				</div>
-			</div>
-		</div>
-	
-		{% endif %} 
-		
 		{% endblock %}
 		
         {% block body %}
