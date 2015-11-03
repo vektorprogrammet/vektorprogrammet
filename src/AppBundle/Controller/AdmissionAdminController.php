@@ -72,9 +72,24 @@ class AdmissionAdminController extends Controller {
 
         // Finds the applicants for the given department filtered by interview status and semester
         $repository = $this->getDoctrine()->getRepository('AppBundle:Application');
+        $yourApplicants = array();
+        $interviewDistribution = array();
         switch($status) {
             case 'assigned':
+                $user = $this->get('security.token_storage')->getToken()->getUser();
                 $applicants = $repository->findAssignedApplicants($department,$semester);
+                foreach($applicants as $applicant){
+                    $fullName = $applicant->getInterview()->getInterviewer()->getFirstName().' '.$applicant->getInterview()->getInterviewer()->getLastName();
+                    if(array_key_exists($fullName,$interviewDistribution)){
+                        $interviewDistribution[$fullName]++;
+                    }else{
+                        $interviewDistribution[$fullName] = 1;
+                    }
+                    if($applicant->getInterview()->getInterviewer() == $user){
+                        $yourApplicants[] = $applicant;
+                    }
+                }
+                arsort($interviewDistribution);
                 $template = 'assigned_applications_table.html.twig';
                 break;
             case 'interviewed':
@@ -90,6 +105,8 @@ class AdmissionAdminController extends Controller {
         return $this->render('admission_admin/' . $template, array(
             'status' => $status,
             'applicants' => $applicants,
+            'yourApplicants' => $yourApplicants,
+            'interviewDistribution' => $interviewDistribution,
             'departments' => $allDepartments,
             'semesters' => $semesters,
             'semesterName' => $semesterName,
