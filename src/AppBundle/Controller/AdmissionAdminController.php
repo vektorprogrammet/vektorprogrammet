@@ -44,9 +44,20 @@ class AdmissionAdminController extends Controller {
 	}
 
     public function renderApplicants(Request $request, $departmentId=null){
+        $user = $this->get('security.token_storage')->getToken()->getUser();
         // Get query strings for filtering applications
         $status = $request->query->get('status', 'new');
         $semester = $request->query->get('semester', null);
+        if($semester === null){
+            $allSemesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findByDepartment($user->getFieldOfStudy()->getDepartment());
+            foreach($allSemesters as $s){
+                $now = new \DateTime;
+                if($s->getSemesterStartDate() < $now && $s->getSemesterEndDate() > $now){
+                    $semester = $s->getId();
+                    break;
+                }
+            }
+        }
 
         // Finds all the departments
         $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
@@ -76,7 +87,6 @@ class AdmissionAdminController extends Controller {
         $interviewDistribution = array();
         switch($status) {
             case 'assigned':
-                $user = $this->get('security.token_storage')->getToken()->getUser();
                 $applicants = $repository->findAssignedApplicants($department,$semester);
                 foreach($applicants as $applicant){
                     $fullName = $applicant->getInterview()->getInterviewer()->getFirstName().' '.$applicant->getInterview()->getInterviewer()->getLastName();
