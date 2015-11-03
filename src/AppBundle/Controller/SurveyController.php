@@ -208,8 +208,7 @@ class SurveyController extends Controller
             $questionText = $textQuestion->getQuestion();
             $textQAarray[$questionText] = array();
             foreach($textQuestion->getAnswers() as $answer){
-                dump($answer);
-                //array_push($textQAarray[$textQuestion],$answer->getAnswer());
+                $textQAarray[$questionText][] = $answer->getAnswer();
             }
         }
 
