@@ -141,26 +141,29 @@
 								</thead>
 								
 								<tbody id="users">
-									
-										{% for user in users %}
-										
-											<tr class={{user.fieldOfStudy.department.id}} >
-												<td> <a href='{{ path('specific_profile', { 'id': user.id }) }}'>{{ user.firstName }}</a></td>
-												<td> {{ user.lastName }} </td>
-												<td> {{ user.phone }} </td>
-												<td> {{ user.email }} </td>
-												<td> {{ user.fieldOfStudy.shortname }} </td>
-												<td> {{ user.fieldOfStudy.department.shortname }} </td>
-												<td>
-													
-													{% for role in user.roles %}
-														{{ role.name }}
-													{% endfor %}
-												
-												</td>
-											</tr>
-											
-										{% endfor %} 
+
+								{% for user in users %}
+									{% if user.fieldOfStudy is not null %}
+										<tr class={{ user.fieldOfStudy.department.id }}>
+											<td>
+												<a href='{{ path('specific_profile', { 'id': user.id }) }}'>{{ user.firstName }}</a>
+											</td>
+											<td> {{ user.lastName }} </td>
+											<td> {{ user.phone }} </td>
+											<td> {{ user.email }} </td>
+											<td> {{ user.fieldOfStudy.shortname }} </td>
+											<td> {{ user.fieldOfStudy.department.shortname }} </td>
+											<td>
+
+												{% for role in user.roles %}
+													{{ role.name }}
+												{% endfor %}
+
+											</td>
+										</tr>
+									{% endif %}
+
+								{% endfor %}
 									
 								</tbody>
 								
