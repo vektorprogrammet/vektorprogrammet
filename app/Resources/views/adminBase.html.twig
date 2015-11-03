@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block topLine %}
-    <div style="width:100%;height:20px;background-color: #2b2b2b; margin-bottom:10px;"></div>
+    <div style="width:100%;height:20px;background-color: #333333; margin-bottom:10px;"></div>
 {% endblock %}
 {% block newHeader %}
     <header data-equalizer>
-        <div class="small-12 medium-3 columns" data-equalizer-watch>
+        <div class="small-12 medium-3 columns hide-for-small-only" data-equalizer-watch>
             <a href="{{ path('home') }}">
                 <img src="{{ asset('images/vektor.png') }}" alt="Vektor logo">
             </a>
@@ -16,41 +16,47 @@
             <a href="{{ path('home') }}">Tilbake til hovedsiden</a>
         </div>
     </header>
+
 {% endblock %}
 {% block adminpanel %}
     <style>
         .f-dropdown.mini {
             max-width: 100px;
         }
+
         .f-dropdown.very-small {
             max-width: 150px;
         }
+
         #control-menu {
-            padding-top:17px;
-            padding-bottom:1px;
-            background-color: #2b2b2b;
+            padding-top: 17px;
+            padding-bottom: 1px;
+            background-color: #333333;
         }
 
-        #control-menu>ul {
+        #control-menu > ul {
             display: flex;
             flex-direction: row;
             margin-left: 0;
             list-style-type: none;
         }
 
-        #control-menu>ul>li {
+        #control-menu > ul > li {
             text-align: center;
             flex-grow: 1;
             display: inline-block;
         }
-        #control-menu>ul>li>ul>li{
+
+        #control-menu > ul > li > ul > li {
             text-align: left;
         }
-        #control-menu>ul>li>a, .arrow{
+
+        #control-menu > ul > li > a, .arrow {
             font-weight: bold;
             color: #dfdfdf;
         }
-        #control-menu>ul>li>a:hover, #control-menu>ul>li>a:hover .arrow{
+
+        #control-menu > ul > li > a:hover, #control-menu > ul > li > a:hover .arrow {
             color: #ffffff;
         }
     </style>
@@ -60,53 +66,126 @@
         <div class="row">
 
             <div class="medium-12 columns hide-for-small-only" data-equalizer-watch>
-            <nav id="control-menu">
-                <ul>
-                    <li><a href="{{ path('control_panel') }}">Kontrollpanel</a></li>
-                    <li>
-                        <a href="#" data-dropdown="articleDropDown" data-options="is_hover:true; hover_timeout:200">Artikkel<span class="arrow">&#9660;</span></a>
+                <nav id="control-menu">
+                    <ul>
+                        <li><a href="{{ path('control_panel') }}">Kontrollpanel</a></li>
+                        <li>
+                            <a href="#" data-dropdown="articleDropDown" data-options="is_hover:true; hover_timeout:200">Artikkel<span
+                                        class="arrow">&#9660;</span></a>
 
-                        <ul id="articleDropDown" class="f-dropdown mini"  data-dropdown-content>
-                            <li><a href="{{ path('articleadmin_show') }}">Artikler</a></li>
-                            <li><a href="{{ path('articleadmin_create') }}">Ny artikkel</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" data-dropdown="usersDropDown" data-options="is_hover:true; hover_timeout:200">Brukere<span class="arrow">&#9660;</span></a>
+                            <ul id="articleDropDown" class="f-dropdown mini" data-dropdown-content>
+                                <li><a href="{{ path('articleadmin_show') }}">Artikler</a></li>
+                                <li><a href="{{ path('articleadmin_create') }}">Ny artikkel</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" data-dropdown="usersDropDown" data-options="is_hover:true; hover_timeout:200">Brukere<span
+                                        class="arrow">&#9660;</span></a>
 
-                        <ul id="usersDropDown" class="f-dropdown very-small" data-dropdown-content>
-                            <li><a href="{{ path('useradmin_show') }}">Brukere</a></li>
-                            <li><a href="{{ path('participanthistory_show') }}">Deltakerhistorikk</a></li>
-                            <li><a href="{{ path('substitute_show') }}">Vikarer</a></li>
-                            <li><a href="{{ path('teamadmin_show') }}">Team</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" data-dropdown="admissionDropDown" data-options="is_hover:true; hover_timeout:200">Opptak & Undersøkelse<span class="arrow">&#9660;</span></a>
+                            <ul id="usersDropDown" class="f-dropdown very-small" data-dropdown-content>
+                                <li><a href="{{ path('useradmin_show') }}">Brukere</a></li>
+                                <li><a href="{{ path('participanthistory_show') }}">Deltakerhistorikk</a></li>
+                                <li><a href="{{ path('substitute_show') }}">Vikarer</a></li>
+                                <li><a href="{{ path('teamadmin_show') }}">Team</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" data-dropdown="admissionDropDown"
+                               data-options="is_hover:true; hover_timeout:200">Opptak & Undersøkelse<span class="arrow">&#9660;</span></a>
 
-                        <ul id="admissionDropDown" class="f-dropdown very-small" data-dropdown-content>
-                            <li><a href="{{ path('admissionadmin_show') }}">Opptak</a></li>
-                            <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
-                            <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
-                            <li> <a href="{{ path('statistics_application') }}">Statistikk</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" data-dropdown="miscDropDown" data-options="is_hover:true; hover_timeout:200">Diverse<span class="arrow">&#9660;</span></a>
+                            <ul id="admissionDropDown" class="f-dropdown very-small" data-dropdown-content>
+                                <li><a href="{{ path('admissionadmin_show') }}">Opptak</a></li>
+                                <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
+                                <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
+                                <li><a href="{{ path('statistics_application') }}">Statistikk</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" data-dropdown="miscDropDown" data-options="is_hover:true; hover_timeout:200">Diverse<span
+                                        class="arrow">&#9660;</span></a>
 
-                        <ul id="miscDropDown" class="f-dropdown mini" data-dropdown-content>
-                            <li><a href="{{ path('departmentadmin_show') }}">Avdeling</a></li>
-                            <li><a href="{{ path('semesteradmin_show') }}">Semester</a></li>
-                            <li><a href="{{ path('schooladmin_show') }}">Skole</a></li>
-                            <li><a href="{{ path('sponsors_edit') }}">Sponsorer</a></li>
-                            <li><a href="{{ path('certificate_show') }}">Attest</a></li>
-                        </ul>
+                            <ul id="miscDropDown" class="f-dropdown mini" data-dropdown-content>
+                                <li><a href="{{ path('departmentadmin_show') }}">Avdeling</a></li>
+                                <li><a href="{{ path('semesteradmin_show') }}">Semester</a></li>
+                                <li><a href="{{ path('schooladmin_show') }}">Skole</a></li>
+                                <li><a href="{{ path('sponsors_edit') }}">Sponsorer</a></li>
+                                <li><a href="{{ path('certificate_show') }}">Attest</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+
+        <!--Mobile Navigation-->
+        <div class="row show-for-small-only">
+            <div class="small-12 columns" style="text-align: center;">
+                <a href="{{ path('home') }}">
+                    <img src="{{ asset('images/vektor.png') }}" alt="Vektor logo">
+                </a>
+            </div>
+        </div>
+        <div class="row show-for-small-only">
+            <div class="small-12 columns" style="text-align: center;margin-top:20px;margin-bottom:20px;">
+                <a href="{{ path('home') }}">Tilbake til hovedsiden</a>
+            </div>
+        </div>
+        <div class="row show-for-small-only">
+            <nav class="top-bar" data-topbar role="navigation">
+                <ul class="title-area">
+                    <li class="name">
+                        <h1><a href="#">Administrator</a></h1>
                     </li>
+                    <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+                    <li class="toggle-topbar menu-icon"><a href="#"><span>Meny</span></a></li>
                 </ul>
+
+                <section class="top-bar-section">
+                    <!-- Right Nav Section -->
+                    <ul class="right">
+                        <li class="has-dropdown">
+                            <a href="#">Artikkel</a>
+                            <ul class="dropdown">
+                                <li><a href="{{ path('articleadmin_show') }}">Artikler</a></li>
+                                <li><a href="{{ path('articleadmin_create') }}">Ny artikkel</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="has-dropdown">
+                            <a href="{{ path('useradmin_show') }}">Brukere</a>
+                            <ul class="dropdown">
+                                <li><a href="{{ path('participanthistory_show') }}">Deltakerhistorikk</a></li>
+                                <li><a href="{{ path('substitute_show') }}">Vikarer</a></li>
+                                <li><a href="{{ path('teamadmin_show') }}">Team</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="has-dropdown">
+                            <a href="#">Opptak & Undersøkelse</a>
+                            <ul class="dropdown">
+                                <li><a href="{{ path('admissionadmin_show') }}">Opptak</a></li>
+                                <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
+                                <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
+                                <li><a href="{{ path('statistics_application') }}">Statistikk</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="has-dropdown">
+                            <a href="#">Diverse</a>
+                            <ul class="dropdown">
+                                <li><a href="{{ path('departmentadmin_show') }}">Avdeling</a></li>
+                                <li><a href="{{ path('semesteradmin_show') }}">Semester</a></li>
+                                <li><a href="{{ path('schooladmin_show') }}">Skole</a></li>
+                                <li><a href="{{ path('sponsors_edit') }}">Sponsorer</a></li>
+                                <li><a href="{{ path('certificate_show') }}">Attest</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
             </nav>
         </div>
 
-        </div>
         <br/>
     {% endif %}
 
