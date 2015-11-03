@@ -5,6 +5,7 @@
         <title>Spørreundersøkelse Vektorprogrammet</title>
 
         <link rel="stylesheet" rel="stylesheet" type="text/css" href="{{ asset('css/survey.css') }}">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=2" />
 
         {# Used by Foundation for backwards compability, and is supposed to be in the header #}
@@ -43,7 +44,23 @@
 
         {{ form_row(form._token) }}
         {{ form_widget(form.save, {'attr': {'class': 'btn'}})}}
+        <div id="sending" style="display: none">
+            <i class="fa fa-paper-plane fa-2x"></i>
+
+            <p>Sender svar...</p>
+        </div>
     </div>
+    <script>
+        var btn = document.getElementById("surveyTaken_save");
+        var sending = document.getElementById("sending");
+        var form = document.getElementsByName("surveyTaken")[0];
+        btn.addEventListener("click", function(){
+            if(form.checkValidity()){
+                btn.style.display = "none";
+                sending.style.display = "block";
+            }
+        })
+    </script>
 
 
 
