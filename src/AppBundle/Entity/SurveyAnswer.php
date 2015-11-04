@@ -24,7 +24,7 @@ class SurveyAnswer
     protected $surveyQuestion;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $answer;
 
