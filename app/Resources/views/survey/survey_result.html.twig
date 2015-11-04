@@ -36,6 +36,15 @@
                 {% endfor %}
 
             </div>
+            <div class="row">
+                <h3 style="text-align: center;">Tekstsvar</h3>
+                {% for key in textAnswers|keys %}
+                    <h4>{{ key }}</h4>
+                    {% for answer in textAnswers[key] %}
+                        <p>{{ loop.index }}: {{ answer }}</p>
+                    {% endfor %}
+                {% endfor %}
+            </div>
         </div>
     </div>
         {% endif %}
