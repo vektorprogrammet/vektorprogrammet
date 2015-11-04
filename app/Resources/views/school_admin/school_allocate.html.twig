@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="large-8">
+            <table>
+                <thead>
+                <tr>
+                    <th>Skole</th>
+                    <th>Mandag</th>
+                    <th>Tirsdag</th>
+                    <th>Onsdag</th>
+                    <th>Torsdag</th>
+                    <th>Fredag</th>
+                    <th>Endre</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for allocation in allocations %}
+                    <tr>
+                        <td>{{ allocation.school.name }}</td>
+                        <td>{{ allocation.monday }}</td>
+                        <td>{{ allocation.tuesday }}</td>
+                        <td>{{ allocation.wednesday }}</td>
+                        <td>{{ allocation.thursday }}</td>
+                        <td>{{ allocation.friday }}</td>
+                        <td><a href="{{ path('allocate_edit', {'school': allocation.school.id, 'semester': allocation.semester.id}) }}" class="button tiny" >
+                                <i class="fa fa-pencil-square-o"></i> Rediger</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="large-4">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

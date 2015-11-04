@@ -654,6 +654,17 @@ schooladmin_show_specific_school:
     _method: GET|POST
     id: \d+
 
+##########################################
+#              SchoolAllocation          #
+##########################################
+
+allocate_schools:
+  path: /skole/fordel/
+  defaults: { _controller: AppBundle:schoolAllocation:allocate }
+
+allocate_edit:
+  path: /skole/fordel/endre
+  defaults: { _controller: AppBundle:schoolAllocation:edit }
 
 ##########################################
 #              Interview                 #
