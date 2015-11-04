@@ -2,10 +2,14 @@
 
 {% block body %}
     <div class="row">
+
         <div class="large-4">
             {{ form_start(form) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}
+        </div>
+        <div>
+            <p>{{ message }}</p>
         </div>
     </div>
 {% endblock %}

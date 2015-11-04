@@ -31,11 +31,12 @@
                 {% endfor %}
                 </tbody>
             </table>
+        <div class="row" style="text-align: center">
+
+            <a href="{{ path('allocate_create') }}" class="button tiny" >Legg til skole</a>
+
         </div>
-        <div class="large-4">
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-            {{ form_end(form) }}
         </div>
     </div>
+
 {% endblock %}

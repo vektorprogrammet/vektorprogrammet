@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\SchoolCapacity;
@@ -11,10 +12,23 @@ class schoolAllocationController extends Controller
 {
 
     public function allocateAction(Request $request, $departmentId=null){
-
-        $allAllocations = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findAll();
-
         $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        if(null === $departmentId){
+            $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
+        }
+
+        $allSemesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findByDepartment($departmentId);
+        $allAllocations = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($allSemesters);
+
+        return $this->render('school_admin/school_allocate.html.twig', array(
+            'allocations' => $allAllocations,
+        ));
+    }
+
+    public function createAction(Request $request, $departmentId=null){
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
         if(null === $departmentId){
             $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
         }
@@ -34,6 +48,18 @@ class schoolAllocationController extends Controller
         $form->handleRequest($request);
 
         if($form->isValid()){
+            try{
+                $exists = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySchoolAndSemester($schoolCapacity->getSchool(), $schoolCapacity->getSemester());
+                return $this->render('school_admin/school_allocate_create.html.twig', array(
+                    'message' => 'Skolen eksisterer allerede',
+                    'form' => $form->createView(),
+                ));
+            }catch (NoResultException $e){
+
+            }
+
+
+
             dump($schoolCapacity);
             $em = $this->getDoctrine()->getManager();
             $em->persist($schoolCapacity);
@@ -41,12 +67,11 @@ class schoolAllocationController extends Controller
             return $this->redirect($this->generateUrl('allocate_schools'));
         }
 
-        return $this->render('school_admin/school_allocate.html.twig', array(
-            'allocations' => $allAllocations,
+        return $this->render('school_admin/school_allocate_create.html.twig', array(
+            'message' => '',
             'form' => $form->createView(),
         ));
     }
-
     public function editAction(Request $request){
         $schoolId = $request->query->get("school");
         $semesterId = $request->query->get("semester");

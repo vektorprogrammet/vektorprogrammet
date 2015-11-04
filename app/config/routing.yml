@@ -666,6 +666,10 @@ allocate_edit:
   path: /skole/fordel/endre
   defaults: { _controller: AppBundle:schoolAllocation:edit }
 
+allocate_create:
+  path: /skole/fordel/opprett
+  defaults: { _controller: AppBundle:schoolAllocation:create }
+
 ##########################################
 #              Interview                 #
 ##########################################
