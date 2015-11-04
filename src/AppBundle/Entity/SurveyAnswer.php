@@ -30,7 +30,7 @@ class SurveyAnswer
 
     /**
      * @ORM\ManyToOne(targetEntity="SurveyTaken", inversedBy="surveyAnswers")
-     * @ORM\JoinColumn(name="survey_taken_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="survey_taken_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $surveyTaken;
 
