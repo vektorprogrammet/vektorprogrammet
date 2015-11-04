@@ -136,7 +136,11 @@
             <header data-equalizer>
                 <div class="small-12 medium-3 columns" data-equalizer-watch>
                     <a href="{{ path('home') }}">
-                        <img src="{{ asset('images/vektor.png') }}" alt="Vektor logo">
+                        {% if "now"|date("m") == "12" %}
+                            <img src="{{ asset('images/vektor-christmas-logo.png') }}" alt="Vektor logo">
+                        {% else %}
+                            <img src="{{ asset('images/vektor.png') }}" alt="Vektor logo">
+                        {% endif %}
                     </a>
                 </div>
                 <div class="medium-9 columns hide-for-small-only" data-equalizer-watch>
