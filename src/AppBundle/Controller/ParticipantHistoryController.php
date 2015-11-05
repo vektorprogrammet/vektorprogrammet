@@ -80,8 +80,19 @@ class ParticipantHistoryController extends Controller
 			//Finds the semester to sort by
 			$sortBySemester = $request->query->get('semester', null);
 
+			$activeHistories = array();
+
+			foreach($assistantHistories as $history){
+				$semester = $history->getSemester();
+				$now = new \DateTime();
+				if($semester->getSemesterStartDate()<$now && $semester->getSemesterEndDate() > $now){
+					$activeHistories[] = $history;
+				}
+			}
+
 
 			return $this->render('participant_history/index.html.twig', array(
+				'activeHistories' => $activeHistories,
 				'workHistories' => $workHistories,
 				'assistantHistories' => $assistantHistories,
 				'departments' => $departments,
