@@ -7,14 +7,13 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\CreateSemesterType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class SemesterController extends Controller {
 	
 	public function updateSemesterAction(request $request){
 		
 		$id = $request->get('id');
-		
-		$semester = new Semester();
 
 		$em = $this->getDoctrine()->getManager();
 		$semester = $em->getRepository('AppBundle:Semester')->find($id);
@@ -79,7 +78,7 @@ class SemesterController extends Controller {
 	
 		if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 			// Find the department
-			$department = $request->get('id');	
+			$department = $request->get('id');
 			
 			// Finds all the departments
 			$allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
@@ -91,6 +90,7 @@ class SemesterController extends Controller {
 			return $this->render('semester_admin/index.html.twig', array(
 				'semesters' => $semesters,
 				'departments' => $allDepartments,
+				'departmentName' => $this->getDoctrine()->getRepository('AppBundle:Department')->find($department)->getShortName(),
 			));
 		}
 		else {
@@ -112,20 +112,21 @@ class SemesterController extends Controller {
 			return $this->render('semester_admin/index.html.twig', array(
 				'semesters' => $semesters,
 				'departments' => $allDepartments,
+				'departmentName' => $department->getShortName(),
 			));
 		}
 		else {
 			return $this->redirect($this->generateUrl('home'));
 		}
     }
-	
+
 	public function SuperadminCreateSemesterAction(request $request){
-		
+
 		if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 			$semester = new Semester();
-			
+
 			// Get the ID parameter sent in by the request
-			$departmentId = $request->get('id');	
+			$departmentId = $request->get('id');
 			
 			// Find the department where ID matches departmentId
 			$department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
@@ -140,6 +141,13 @@ class SemesterController extends Controller {
 			if ($form->isValid()) {
 				// Set the department of the semester
 				$semester->setDepartment($department);
+
+				$semester->setName($semester->getSemesterTime().' '.$semester->getYear());
+				$year = $semester->getYear();
+				$startMonth = $semester->getSemesterTime() == "Vår" ? '01' : '08';
+				$endMonth = $semester->getSemesterTime() == "Vår" ? '06' : '12';
+				$semester->setSemesterStartDate(date_create($year.'-'.$startMonth.'-01 00:00:00'));
+				$semester->setSemesterEndDate(date_create($year.'-'.$endMonth.'-30 00:00:00'));
 				// If valid insert into database
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($semester);

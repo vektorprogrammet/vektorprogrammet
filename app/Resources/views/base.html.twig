@@ -4,7 +4,11 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}{% endblock %}</title>
-		
+        <meta property="og:title" content="{{ block('title') }}"/>
+        <meta property="og:image" content="{% block facebookImage %}{% endblock %}" />
+        <meta property="og:description" content="{% block facebookDescription %}{% endblock %}" />
+        <meta property="og:site_name" content="Vektorprogrammet" />
+
         {% block stylesheets %}
             <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
             <link rel="stylesheet" type='text/css' href="http://fonts.googleapis.com/css?family=Lato:400,700|Londrina+Solid">
@@ -162,14 +166,14 @@
                                 </ul>
                             </li>
                             <li>
-                                {% if is_granted('ROLE_USER') %}
+                                {% if app.user and is_granted('ROLE_USER') %}
                                     <a href="#" data-dropdown="myVektorDropdown" aria-controls="myVektorDropdown" aria-expanded="false" class="vektor-button">Min Vektor</a>
                                     <ul id="myVektorDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
                                         <li><a href='{{ path('profile') }}'>Profil</a></li>
                                         <li><a href='{{ path('members_show') }}'>Medlemmer</a></li>
                                         <li><a href='{{ path('forum_show') }}'>Forum</a></li>
                                         <li><a href='{{ path('gallery') }}'>Galleri</a></li>
-                                        {% if is_granted('ROLE_ADMIN') %}
+                                        {% if app.user and is_granted('ROLE_ADMIN') %}
                                         <li>
                                             <a href='{{ path('file_browser') }}'
                                                onclick= "
@@ -242,14 +246,14 @@
                                     <li><label>Regioner,opptak og kontakt</label></li>
                                     {% render controller('AppBundle:Department:getAllDepartmentsForTopbar') %}
 
-                                    {% if is_granted('ROLE_USER') %}
+                                    {% if app.user and is_granted('ROLE_USER') %}
                                         <li><label>Min Vektor</label></li>
 
                                         <li><a href='{{ path('profile') }}'>Profil</a></li>
                                         <li><a href='{{ path('members_show') }}'>Medlemmer</a></li>
                                         <li><a href='{{ path('forum_show') }}'>Forum</a></li>
                                         <li><a href='{{ path('gallery') }}'>Galleri</a></li>
-                                        {% if is_granted('ROLE_ADMIN') %}
+                                        {% if app.user and is_granted('ROLE_ADMIN') %}
                                             <li>
                                                 <a href='{{ path('file_browser') }}'
                                                    onclick= "
@@ -289,7 +293,7 @@
 		
 		<br>
 		
-		{% if is_granted('ROLE_ADMIN') %} 
+		{% if app.user and is_granted('ROLE_ADMIN') %}
 	
 		 <div class="row">
 			<div class="small-12 medium-12 large-12 columns">
@@ -307,7 +311,7 @@
 
                             <li><a href="{{ path('semesteradmin_show') }}" class="button tiny">Semester</a></li>
 
-                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            {% if app.user and is_granted('ROLE_SUPER_ADMIN') %}
                                 <li><a href="{{ path('interview_schema') }}" class="button tiny">Intervjuskjema</a></li>
                             {% endif %}
                         </ul>
@@ -327,7 +331,6 @@
                         <ul class="button-group">
                             <a href="#" data-dropdown="hover1" data-options="is_hover:true" class="button tiny">Statistikk</a>
                             <ul id="hover1" class="f-dropdown" data-dropdown-content>
-                                <li><a href="{{ path('survey_results') }}">Undersøkelser</a></li>
                                 <li><a href="{{ path('statistics_application') }}">Opptak</a></li>
                             </ul>
 
@@ -338,6 +341,10 @@
 
 
                             <li><a href="{{ path('sponsors_edit') }}" class="button tiny">Sponsorer</a></li>
+                        </ul>
+
+                        <ul class="button-group">
+                            <li><a href="{{ path('surveys') }}" class="button tiny" >Undersøkelser</a></li>
                         </ul>
                     </div>
 					

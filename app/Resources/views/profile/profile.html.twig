@@ -71,7 +71,7 @@
 								</div>
 								
 								<div class="panel callout radius">
-									<h6> Telefon: {{ user.phone }}</h6>
+									<h6> Telefon: {{ user.phone|slice(0,3) }} {{ user.phone|slice(3,2) }} {{ user.phone|slice(5,3) }}</h6>
 									<h6> E-post: {{ user.email }}</h6>
 								</div>	
 

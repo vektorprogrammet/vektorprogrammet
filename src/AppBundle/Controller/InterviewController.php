@@ -32,6 +32,7 @@ class InterviewController extends Controller
      */
     public function conductAction(Request $request, Interview $interview)
     {
+
         // Only admin and above, or the assigned interviewer should be able to conduct an interview
         if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') &&
             !$interview->isInterviewer($this->getUser())) {
@@ -78,7 +79,7 @@ class InterviewController extends Controller
 
             return $this->redirect($this->generateUrl('admissionadmin_show', array('status' => 'interviewed')));
         }
-
+        dump($form);
         return $this->render('interview/conduct.html.twig', array(
             'interview' => $interview,
             'form' => $form->createView()

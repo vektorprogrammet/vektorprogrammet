@@ -22,13 +22,13 @@ parameters:
     private_uploads: "../Private filer"
 
     # Gallery photos folder
-    gallery_folder: "../Gallery photos"
+    gallery_folder: "Gallery photos"
 
     # Profile photos
-    profile_photos: '../Profile photos'
+    profile_photos: 'Profile photos'
 
     # Logo images
-    logo_images: '../Logo images'
+    logo_images: 'Logo images'
 
     # Article images
     article_images: 'article_images'

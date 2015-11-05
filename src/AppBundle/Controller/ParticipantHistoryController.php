@@ -17,6 +17,19 @@ class ParticipantHistoryController extends Controller
 			
 			// Find all assistantHistories
 			$assistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findAll();
+
+			$activeHistories = array();
+
+			foreach($assistantHistories as $history){
+				$semester = $history->getSemester();
+				$now = new \DateTime();
+				if($semester->getSemesterStartDate()<$now && $semester->getSemesterEndDate() > $now){
+					$activeHistories[] = $history;
+				}
+			}
+
+			//$numActiveAssistants = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findAllActiveAssistants();
+
 			
 			// Find all departments
 			$departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
@@ -31,6 +44,7 @@ class ParticipantHistoryController extends Controller
 
 			
 			return $this->render('participant_history/index.html.twig', array(
+				'activeHistories' => $activeHistories,
 				'workHistories' => $workHistories,
 				'assistantHistories' => $assistantHistories,
 				'departments' => $departments,

@@ -1,0 +1,40 @@
+{%- block form_row -%}
+    <div class="row">
+        {%- if label is not empty -%}
+            <div class="small-3 medium-2 large-1 columns">
+                {{- form_label(form, null, {'label_attr': {'class': 'inline'}}) -}}
+            </div>
+            {%- set columns = 'small-8 medium-9 large-10' -%}
+        {%- else -%}
+            {%- set columns = 'small-11' -%}
+        {%- endif -%}
+        <div class="{{ columns }} columns end">
+            {{- form_errors(form) -}}
+            {{- form_widget(form) -}}
+        </div>
+    </div>
+{%- endblock form_row -%}
+
+{%- block choice_widget_collapsed -%}
+    {%- if required and placeholder is none and not placeholder_in_choices and not multiple -%}
+        {% set required = false %}
+    {%- endif -%}
+    <div class="row">
+        <div class="small-8 medium-5 large-3 columns">
+            <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+                {%- if placeholder is not none -%}
+                    <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder|trans({}, translation_domain) }}</option>
+                {%- endif -%}
+                {%- if preferred_choices|length > 0 -%}
+                    {% set options = preferred_choices %}
+                    {{- block('choice_widget_options') -}}
+                    {%- if choices|length > 0 and separator is not none -%}
+                        <option disabled="disabled">{{ separator }}</option>
+                    {%- endif -%}
+                {%- endif -%}
+                {%- set options = choices -%}
+                {{- block('choice_widget_options') -}}
+            </select>
+        </div>
+    </div>
+{%- endblock choice_widget_collapsed -%}

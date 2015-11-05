@@ -1,0 +1,50 @@
+/bootstrap/compiled.php
+.env.*.php
+.env.php
+.env
+
+### PhpStorm ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
+
+*.iml
+
+## Directory-based project format:
+.idea/
+
+## File-based project format:
+*.ipr
+*.iws
+
+## Plugin-specific files:
+
+# IntelliJ
+/out/
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+
+### Symfony ###
+/app/bootstrap.php.cache
+/app/cache/*
+!app/cache/.gitkeep
+/app/config/parameters.yml
+/app/logs/*
+!app/logs/.gitkeep
+/app/phpunit.xml
+/bin/
+/composer.phar
+/vendor/
+/www/bundles/
+/www/article_images/
+/www/images
+/www/Logo images
+/www/Profile photos
+/www/scripts/ckeditor/

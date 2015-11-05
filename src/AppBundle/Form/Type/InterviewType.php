@@ -12,6 +12,7 @@ class InterviewType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder->add('interviewPractical', new InterviewPracticalType());
 
         $builder->add('interviewAnswers', 'collection', array('type' => new InterviewAnswerType()));
@@ -22,7 +23,6 @@ class InterviewType extends AbstractType
             'label' => 'Lagre',
         ));
     }
-
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
