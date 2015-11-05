@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="row">
-        <div class="large-8">
+        <div class="large-6 columns">
             <table>
                 <thead>
                 <tr>
@@ -31,12 +31,74 @@
                 {% endfor %}
                 </tbody>
             </table>
-        <div class="row" style="text-align: center">
+            <div class="row" style="text-align: center">
 
             <a href="{{ path('allocate_create') }}" class="button tiny" >Legg til skole</a>
 
+            </div>
         </div>
+        <div class="large-6 columns">
+            <table>
+                <thead>
+                <tr>
+                    <th>Assistent</th>
+                    <th>Mandag</th>
+                    <th>Tirsdag</th>
+                    <th>Onsdag</th>
+                    <th>Torsdag</th>
+                    <th>Fredag</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for interview in interviews %}
+                    <tr>
+                        <td>{{ interview.application.firstName }} {{ interview.application.lastName }}</td>
+                        <td>{{ interview.interviewPractical.monday }}</td>
+                        <td>{{ interview.interviewPractical.tuesday }}</td>
+                        <td>{{ interview.interviewPractical.wednesday }}</td>
+                        <td>{{ interview.interviewPractical.thursday }}</td>
+                        <td>{{ interview.interviewPractical.friday }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
+    </div>
+    <div class="row">
+        <div class="large-8 columns">
+            {% for school in allocatedSchools %}
+                {% if school.assistants|length > 0 %}
+                    <h3>{{ school.name }}</h3>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Navan</th>
+                            <th>Dag</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for day in school.assistants|keys %}
+                            {% for assistant in school.assistants[day] %}
+                                <tr>
+                                {% if assistant.availability[day] == 2 %}
+                                    <td style="color: #007700">{{ assistant.name }}</td>
+                                {% elseif assistant.availability[day] == 1 %}
+                                    <td style="color: #bb6b10">{{ assistant.name }}</td>
+                                {% else %}
+                                    <td style="color: #770702">{{ assistant.name }}</td>
+                                {% endif %}
+                                    <td>{{ day }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="large-4 columns">{{ score }}</div>
     </div>
 
 {% endblock %}

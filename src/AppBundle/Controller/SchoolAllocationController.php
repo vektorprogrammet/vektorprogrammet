@@ -2,10 +2,14 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\SimulatedAnnealing\Assistant;
+use AppBundle\Entity\SimulatedAnnealing\School;
+use AppBundle\Entity\SimulatedAnnealing\Solution;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\SchoolCapacity;
+use AppBundle\Entity\Interview;
 use AppBundle\Form\Type\SchoolCapacityType;
 
 class schoolAllocationController extends Controller
@@ -19,10 +23,53 @@ class schoolAllocationController extends Controller
         }
 
         $allSemesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findByDepartment($departmentId);
-        $allAllocations = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($allSemesters);
 
+        $currentSemester = null;
+        foreach($allSemesters as $semester){
+            $now = new \DateTime();
+            if($semester->getSemesterStartDate() < $now && $semester->getSemesterEndDate() > $now){
+                $currentSemester = $semester;
+                break;
+            }
+        }
+        $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
+        $allInterviews = $this->getDoctrine()->getRepository('AppBundle:Interview')->findAllInterviewedInterviewsBySemester($currentSemester);
+
+        $assistants = array();
+        $schools = array();
+
+        foreach($allInterviews as $interview) {
+            $assistant = new Assistant();
+            $assistant->setName($interview->getApplication()->getFirstName() . ' ' . $interview->getApplication()->getLastName());
+            $availability = array();
+            $intPractical = $interview->getInterviewPractical();
+            $availabilityPoints = ["Ikke", "Ok", "Bra"];
+            $availability["Monday"] = array_search($intPractical->getMonday(), $availabilityPoints);
+            $availability["Tuesday"] = array_search($intPractical->getTuesday(), $availabilityPoints);
+            $availability["Wednesday"] = array_search($intPractical->getWednesday(), $availabilityPoints);
+            $availability["Thursday"] = array_search($intPractical->getThursday(), $availabilityPoints);
+            $availability["Friday"] = array_search($intPractical->getFriday(), $availabilityPoints);
+            $assistant->setAvailability($availability);
+
+            $assistants[] = $assistant;
+        }
+        foreach($allCurrentSchoolCapacities as $sc){
+            $capacity = array();
+            $capacity["Monday"] = $sc->getMonday();
+            $capacity["Tuesday"] = $sc->getTuesday();
+            $capacity["Wednesday"] = $sc->getWednesday();
+            $capacity["Thursday"] = $sc->getThursday();
+            $capacity["Friday"] = $sc->getFriday();
+            $school = new School($capacity, $sc->getSchool()->getName());
+
+            $schools[] = $school;
+        }
+        $solution = new Solution($schools, $assistants);
         return $this->render('school_admin/school_allocate.html.twig', array(
-            'allocations' => $allAllocations,
+            'interviews' => $allInterviews,
+            'allocations' => $allCurrentSchoolCapacities,
+            'allocatedSchools' => $solution->getSchools(),
+            'score' => $solution->evaluate(),
         ));
     }
 
