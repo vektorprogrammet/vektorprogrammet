@@ -24,6 +24,7 @@
 {% block applications %}
     {% if applicants is defined %}
 
+        <h3 style="text-align: center">Alle søkere | Antall: {{ applicants|length }}</h3>
         {# The table containing new applications #}
         <table width="100%" id="application-table">
             <thead>
