@@ -26,6 +26,7 @@ class Solution
             $bestSchool = null;
             $bestDay = null;
             while($bestSchool === null){
+                if($i > 4) break; //If there is no capacity left in any school
                 $bestDay = array_keys($availabilitySorted)[$i];
                 foreach($this->schools as $school){
                     $capacityOnBestDay = $school->getCapacity()[$bestDay];
@@ -41,13 +42,12 @@ class Solution
                 }
                 $i++;
             }
+            if($i > 4) break;//If there is no capacity left in any school
             $assistant->setAssignedSchool($bestSchool);
             $assistant->setAssignedDay($bestDay);
             $this->addAssistantToSchool($bestSchool, $assistant, $bestDay);
             $this->assistants[]=$assistant;
         }
-        dump($this->schools);
-        dump($this->assistants);
     }
 
 
