@@ -222,6 +222,16 @@ participanthistory_show:
  defaults: { _controller: AppBundle:ParticipantHistory:show }
 
 
+participanthistory_show_by_department:
+ path:   /deltakerhistorikk/{id}
+ defaults: { _controller: AppBundle:ParticipantHistory:showHistoriesByDepartment }
+ requirements:
+    _method: GET
+    id: \d+
+
+
+
+
 ##########################################
 #                Login                   #
 ##########################################
