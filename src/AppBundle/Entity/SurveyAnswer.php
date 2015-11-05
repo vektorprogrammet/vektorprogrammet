@@ -24,13 +24,13 @@ class SurveyAnswer
     protected $surveyQuestion;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $answer;
 
     /**
      * @ORM\ManyToOne(targetEntity="SurveyTaken", inversedBy="surveyAnswers")
-     * @ORM\JoinColumn(name="survey_taken_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="survey_taken_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $surveyTaken;
 
