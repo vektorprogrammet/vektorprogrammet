@@ -23,8 +23,27 @@
 				}
 			});
 			
-		}); 
-		
+		});
+
+		{# -------------------------------------------- #}
+
+
+		$("#activeAssistantSearch").keyup(function(){
+
+			_this = this;
+
+			$.each($("#activeAssistantTable tbody").find("tr"), function() {
+
+				if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
+					$(this).hide();
+				}
+				else {
+					$(this).show();
+				}
+			});
+
+		});
+
 		{# -------------------------------------------- #}
 		
 		
@@ -71,16 +90,84 @@
 				
 				<div class="small-12 medium-12 large-8 columns">
 										
-					<h3> Assistent historie </h3>
+					<h3> Aktive assistenter <span style="float:right;font-size: 80%;">Antall: {{ activeHistories|length }}</span></h3>
 
 				</div>
 								
 				<div class="small-12 medium-12 large-4 columns">
 
-					<input type="text" id="assistantSearch" placeholder="Søk..." />
+					<input type="text" id="activeAssistantSearch" placeholder="Søk..." />
 					
 				</div>
 				
+			</div>
+
+			<div class="row">
+				<div class="small-12 medium-12 large-12 columns">
+
+					<hr>
+
+					<table width="100%" id="activeAssistantTable">
+
+						<thead>
+
+						<tr>
+							<th> Navn</th>
+							<th> Skole</th>
+							<th> E-post</th>
+							<th> Semester</th>
+							<th> Avdeling</th>
+						</tr>
+
+						</thead>
+
+						<tbody>
+
+						{% for ah in activeHistories %}
+
+							<tr>
+								<td> <a href='{{ path('specific_profile', { 'id': ah.user.id }) }}'>{{ ah.user.firstName }} {{ah.user.lastName }}</a></td>
+								<td>
+
+									{% if ah.school is not null %}
+										{{ ah.school.name }}
+									{% else %}
+										Skolen er slettet.
+									{% endif %}
+
+								</td>
+								<td> {{ ah.user.email }}</td>
+								<td> {{ ah.semester.name }}</td>
+								<td> {{ ah.semester.department.shortname }}</td>
+							</tr>
+
+						{% endfor %}
+
+						</tbody>
+
+					</table>
+
+				</div>
+			</div>
+
+			<div class="row">
+
+				<div class="small-12 medium-12 large-12 columns">
+					<hr>
+				</div>
+
+				<div class="small-12 medium-12 large-8 columns">
+
+					<h3> Assistent historie <span style="float:right;font-size: 80%;">Antall: {{ assistantHistories|length }}</span></h3>
+
+				</div>
+
+				<div class="small-12 medium-12 large-4 columns">
+
+					<input type="text" id="assistantSearch" placeholder="Søk..." />
+
+				</div>
+
 			</div>
 
 			
@@ -141,7 +228,7 @@
 							
 				<div class="small-12 medium-12 large-8 columns">
 
-					<h3> Arbeidshistorie </h3>
+					<h3> Arbeidshistorie <span style="float:right;font-size: 80%;">Antall: {{ workHistories|length }}</span></h3>
 									
 				</div>
 							
