@@ -7,14 +7,13 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\CreateSemesterType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class SemesterController extends Controller {
 	
 	public function updateSemesterAction(request $request){
 		
 		$id = $request->get('id');
-		
-		$semester = new Semester();
 
 		$em = $this->getDoctrine()->getManager();
 		$semester = $em->getRepository('AppBundle:Semester')->find($id);
@@ -142,6 +141,13 @@ class SemesterController extends Controller {
 			if ($form->isValid()) {
 				// Set the department of the semester
 				$semester->setDepartment($department);
+
+				$semester->setName($semester->getSemesterTime().' '.$semester->getYear());
+				$year = $semester->getYear();
+				$startMonth = $semester->getSemesterTime() == "Vår" ? '01' : '08';
+				$endMonth = $semester->getSemesterTime() == "Vår" ? '06' : '12';
+				$semester->setSemesterStartDate(date_create($year.'-'.$startMonth.'-01 00:00:00'));
+				$semester->setSemesterEndDate(date_create($year.'-'.$endMonth.'-30 00:00:00'));
 				// If valid insert into database
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($semester);
