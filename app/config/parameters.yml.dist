@@ -22,16 +22,16 @@ parameters:
     private_uploads: "../Private filer"
 
     # Gallery photos folder
-    gallery_folder: "Gallery photos"
+    gallery_folder: "images/Gallery photos"
 
     # Profile photos
-    profile_photos: 'Profile photos'
+    profile_photos: 'images/Profile photos'
 
     # Logo images
-    logo_images: 'Logo images'
+    logo_images: 'images/Logo images'
 
     # Article images
-    article_images: 'article_images'
+    article_images: 'images/article_images'
 
     # Sender email for user creation mails
     no_reply_email_user_creation: ~

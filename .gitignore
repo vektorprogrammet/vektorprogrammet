@@ -43,7 +43,5 @@ crashlytics-build.properties
 /composer.phar
 /vendor/
 /www/bundles/
-/www/article_images/
-/www/images
-/www/Logo images
-/www/Profile photos
+/www/images/
+
