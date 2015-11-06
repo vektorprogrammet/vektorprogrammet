@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ article.title }}{% endblock %}
-{% block facebookImage %}{{ article.imageLarge|replace({" ": "%20"}) }}{% endblock %}
+{% block facebookImage %}{{ article.imageSmall|replace({" ": "%20"}) }}{% endblock %}
 {% block facebookDescription %}{{ article.article|raw }}{% endblock %}
 
 {% block body %}
