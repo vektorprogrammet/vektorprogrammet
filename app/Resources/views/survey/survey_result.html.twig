@@ -7,19 +7,45 @@
 {% block body %}
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            <h1>Resultater {{ survey.name }} {{ survey.semester }}</h1>
-            <table>
-                <tr>
-                    <th>Skole</th>
-                    <th>Antall</th>
-                </tr>
-                {% for school in schoolCompletedCount|keys %}
-                    <tr>
-                        <td>{{ school}}</td>
-                        <td>{{ schoolCompletedCount[school] }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
+            <h1 style="text-align: center;">Resultater {{ survey.name }} {{ survey.semester }}</h1>
+            {% if numAnswered == 0 %}
+                <h4 style="text-align: center; color: #750000">Ingen har svart på undersøkelsen</h4>
+            {% endif %}
         </div>
     </div>
+
+    {% if numAnswered > 0 %}
+    <div class="row">
+        <div id="survey-data" class="large-12 columns">
+            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+            <script type="text/javascript">
+                google.load("visualization", "1", {packages: ["corechart", 'table', 'treemap', 'gauge']});
+                google.load('jquery', '1.6.0');
+            </script>
+
+            <div class="row" style="width: 750px; margin: 0 auto;">
+                {% for chart in diagram %}
+                    {% set index = loop.index %}
+                    <div id="{{ index }}">&nbsp;</div>
+                    <script>
+                        $(function () {
+                            {{ gchart_pie_chart(chart, index, 750, 250, attribute(question, index - 1)) }}
+                        });
+                    </script>
+                    <hr style="width: 750px;"/>
+                {% endfor %}
+
+            </div>
+            <div class="row">
+                <h3 style="text-align: center;">Tekstsvar</h3>
+                {% for key in textAnswers|keys %}
+                    <h4>{{ key }}</h4>
+                    {% for answer in textAnswers[key] %}
+                        <p>{{ loop.index }}: {{ answer }}</p>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+        {% endif %}
 {% endblock %}

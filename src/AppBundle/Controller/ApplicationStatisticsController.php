@@ -44,7 +44,7 @@ class ApplicationStatisticsController extends Controller
             if ($diagramCounter == 0) {
                 $semesterCounter = 0;
                 foreach ($repositorySemester->findAllSemesters() as $semester) {
-                    array_push($AlternativeArray, $semester->getName());
+                    array_push($AlternativeArray, $semester->getName().' '.$semester->getDepartment()->getShortName());
                     $alternative = $AlternativeArray[$semesterCounter];
                     $semesterNumber = $repositoryApplicationStatistic->NumOfSemester($semester);
 

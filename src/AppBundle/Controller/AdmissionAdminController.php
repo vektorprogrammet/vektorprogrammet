@@ -44,9 +44,20 @@ class AdmissionAdminController extends Controller {
 	}
 
     public function renderApplicants(Request $request, $departmentId=null){
+        $user = $this->get('security.token_storage')->getToken()->getUser();
         // Get query strings for filtering applications
         $status = $request->query->get('status', 'new');
         $semester = $request->query->get('semester', null);
+        if($semester === null){
+            $allSemesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findByDepartment($user->getFieldOfStudy()->getDepartment());
+            foreach($allSemesters as $s){
+                $now = new \DateTime;
+                if($s->getSemesterStartDate() < $now && $s->getSemesterEndDate() > $now){
+                    $semester = $s->getId();
+                    break;
+                }
+            }
+        }
 
         // Finds all the departments
         $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
@@ -72,9 +83,23 @@ class AdmissionAdminController extends Controller {
 
         // Finds the applicants for the given department filtered by interview status and semester
         $repository = $this->getDoctrine()->getRepository('AppBundle:Application');
+        $yourApplicants = array();
+        $interviewDistribution = array();
         switch($status) {
             case 'assigned':
                 $applicants = $repository->findAssignedApplicants($department,$semester);
+                foreach($applicants as $applicant){
+                    $fullName = $applicant->getInterview()->getInterviewer()->getFirstName().' '.$applicant->getInterview()->getInterviewer()->getLastName();
+                    if(array_key_exists($fullName,$interviewDistribution)){
+                        $interviewDistribution[$fullName]++;
+                    }else{
+                        $interviewDistribution[$fullName] = 1;
+                    }
+                    if($applicant->getInterview()->getInterviewer() == $user){
+                        $yourApplicants[] = $applicant;
+                    }
+                }
+                arsort($interviewDistribution);
                 $template = 'assigned_applications_table.html.twig';
                 break;
             case 'interviewed':
@@ -90,6 +115,8 @@ class AdmissionAdminController extends Controller {
         return $this->render('admission_admin/' . $template, array(
             'status' => $status,
             'applicants' => $applicants,
+            'yourApplicants' => $yourApplicants,
+            'interviewDistribution' => $interviewDistribution,
             'departments' => $allDepartments,
             'semesters' => $semesters,
             'semesterName' => $semesterName,

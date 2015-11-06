@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}{{ article.title }}{% endblock %}
+{% block facebookImage %}{{ article.imageLarge }}{% endblock %}
+{% block facebookDescription %}{{ article.article|raw }}{% endblock %}
+
 {% block body %}
     <p></p>
 

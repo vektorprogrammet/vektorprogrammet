@@ -87,6 +87,21 @@ class AssistantHistoryRepository extends EntityRepository {
 
 		return $assistantHistories;
 	}
-	
+
+	public function findAssistantHistoriesByDepartment($department){
+		$today = new \DateTime('now');
+		$assistantHistories =  $this->getEntityManager()->createQuery("
+		SELECT ahistory
+		FROM AppBundle:AssistantHistory ahistory
+		JOIN ahistory.semester semester
+		WHERE semester.department = :department
+		AND semester.semesterStartDate < :today
+
+		")
+			->setParameter('department', $department)
+			->setParameter('today', $today)
+			->getResult();
+		return $assistantHistories;
+	}
 	
 }
