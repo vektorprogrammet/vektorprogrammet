@@ -5,6 +5,8 @@ class Solution
 {
     private $schools;
     private $assistants;
+    public $initializeTime;
+    public $optimizeTime;
 
     /**
      * Solution constructor.
@@ -13,11 +15,14 @@ class Solution
      */
     public function __construct($schools)
     {
+        $this->initializeTime = -1;
+        $this->optimizeTime = -1;
         $this->assistants = array();
         $this->schools = $schools;
     }
 
     public function initializeSolution($assistants){
+        $startTime = round(microtime(true) * 1000);
         foreach($assistants as $assistant){
             $availabilitySorted = $assistant->getAvailability();
             arsort($availabilitySorted);
@@ -48,6 +53,7 @@ class Solution
             $this->addAssistantToSchool($bestSchool, $assistant, $bestDay);
             $this->assistants[]=$assistant;
         }
+        $this->initializeTime = (round(microtime(true) * 1000)-$startTime)/1000;
     }
 
 

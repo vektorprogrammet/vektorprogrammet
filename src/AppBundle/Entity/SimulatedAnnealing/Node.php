@@ -33,7 +33,7 @@ class Node
                     $newSolution = new Solution($schoolsCopy);
                     $newSolution->setAssistants($assistantsCopy);
                     $newSolution->moveAssistant($assistantsCopy[$assistantIndex], $schoolsCopy[$schoolIndex], $assistant->getAssignedDay(), $day);
-                    $neighbours[] = $newSolution;
+                    $neighbours[] = new Node($newSolution);
                 }
 
                 $schoolIndex++;
@@ -43,4 +43,22 @@ class Node
 
         return $neighbours;
     }
+
+    /**
+     * @return Solution
+     */
+    public function getSolution()
+    {
+        return $this->solution;
+    }
+
+    /**
+     * @param Solution $solution
+     */
+    public function setSolution($solution)
+    {
+        $this->solution = $solution;
+    }
+
+
 }

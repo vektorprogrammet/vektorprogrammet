@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\SimulatedAnnealing\Assistant;
 use AppBundle\Entity\SimulatedAnnealing\Node;
+use AppBundle\Entity\SimulatedAnnealing\Optimizer;
 use AppBundle\Entity\SimulatedAnnealing\School;
 use AppBundle\Entity\SimulatedAnnealing\Solution;
 use Doctrine\ORM\NoResultException;
@@ -68,15 +69,17 @@ class schoolAllocationController extends Controller
         $solution = new Solution($schools);
         $solution->initializeSolution($assistants);
         $node = new Node($solution);
-        $neighbours = $node->generateNeighbours();
-        foreach($neighbours as $neighbour){
-            dump($neighbour->getSchools()[2]->getAssistants());
-        }
+        $optimizer = new Optimizer($node, 1, 0.01);
+        $bestSolution = $optimizer->optimize();
         return $this->render('school_admin/school_allocate.html.twig', array(
             'interviews' => $allInterviews,
             'allocations' => $allCurrentSchoolCapacities,
             'allocatedSchools' => $solution->getSchools(),
             'score' => $solution->evaluate(),
+            'initializeTime' => $solution->initializeTime,
+            'optimizeTime' => $bestSolution->optimizeTime,
+            'optimizedAllocatedSchools' => $bestSolution->getSchools(),
+            'optimizedScore' => $bestSolution->evaluate(),
         ));
     }
 

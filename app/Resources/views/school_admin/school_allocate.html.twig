@@ -16,8 +16,20 @@
                 </tr>
                 </thead>
 
+                {% set mondayCount = 0 %}
+                {% set tuesdayCount = 0 %}
+                {% set wednesdayCount = 0 %}
+                {% set thursdayCount = 0 %}
+                {% set fridayCount = 0 %}
+
                 <tbody>
                 {% for allocation in allocations %}
+                    {% set mondayCount = mondayCount + allocation.monday %}
+                    {% set tuesdayCount = tuesdayCount + allocation.tuesday %}
+                    {% set wednesdayCount = wednesdayCount + allocation.wednesday %}
+                    {% set thursdayCount = thursdayCount + allocation.thursday %}
+                    {% set fridayCount = fridayCount + allocation.friday %}
+
                     <tr>
                         <td>{{ allocation.school.name }}</td>
                         <td>{{ allocation.monday }}</td>
@@ -25,15 +37,25 @@
                         <td>{{ allocation.wednesday }}</td>
                         <td>{{ allocation.thursday }}</td>
                         <td>{{ allocation.friday }}</td>
-                        <td><a href="{{ path('allocate_edit', {'school': allocation.school.id, 'semester': allocation.semester.id}) }}" class="button tiny" >
+                        <td>
+                            <a href="{{ path('allocate_edit', {'school': allocation.school.id, 'semester': allocation.semester.id}) }}"
+                               class="button tiny">
                                 <i class="fa fa-pencil-square-o"></i> Rediger</a></td>
                     </tr>
                 {% endfor %}
+                <tr>
+                    <td>Totalt</td>
+                    <td>{{ mondayCount }}</td>
+                    <td>{{ tuesdayCount }}</td>
+                    <td>{{ wednesdayCount }}</td>
+                    <td>{{ thursdayCount }}</td>
+                    <td>{{ fridayCount }}</td>
+                </tr>
                 </tbody>
             </table>
             <div class="row" style="text-align: center">
 
-            <a href="{{ path('allocate_create') }}" class="button tiny" >Legg til skole</a>
+                <a href="{{ path('allocate_create') }}" class="button tiny">Legg til skole</a>
 
             </div>
         </div>
@@ -49,9 +71,64 @@
                     <th>Fredag</th>
                 </tr>
                 </thead>
+                {% set mondayGoodCount = 0 %}
+                {% set tuesdayGoodCount = 0 %}
+                {% set wednesdayGoodCount = 0 %}
+                {% set thursdayGoodCount = 0 %}
+                {% set fridayGoodCount = 0 %}
 
+                {% set mondayOkCount = 0 %}
+                {% set tuesdayOkCount = 0 %}
+                {% set wednesdayOkCount = 0 %}
+                {% set thursdayOkCount = 0 %}
+                {% set fridayOkCount = 0 %}
+
+                {% set mondayBadCount = 0 %}
+                {% set tuesdayBadCount = 0 %}
+                {% set wednesdayBadCount = 0 %}
+                {% set thursdayBadCount = 0 %}
+                {% set fridayBadCount = 0 %}
                 <tbody>
                 {% for interview in interviews %}
+                    {% if interview.interviewPractical.monday == "Bra" %}
+                        {% set mondayGoodCount = mondayGoodCount + 1 %}
+                    {% elseif interview.interviewPractical.monday == "Ok" %}
+                        {% set mondayOkCount = mondayOkCount + 1 %}
+                    {% else %}
+                        {% set mondayBadCount = mondayBadCount + 1 %}
+                    {% endif %}
+
+                    {% if interview.interviewPractical.tuesday == "Bra" %}
+                        {% set tuesdayGoodCount = tuesdayGoodCount + 1 %}
+                    {% elseif interview.interviewPractical.tuesday == "Ok" %}
+                        {% set tuesdayOkCount = tuesdayOkCount + 1 %}
+                    {% else %}
+                        {% set tuesdayBadCount = tuesdayBadCount + 1 %}
+                    {% endif %}
+
+                    {% if interview.interviewPractical.wednesday == "Bra" %}
+                        {% set wednesdayGoodCount = wednesdayGoodCount + 1 %}
+                    {% elseif interview.interviewPractical.wednesday == "Ok" %}
+                        {% set wednesdayOkCount = wednesdayOkCount + 1 %}
+                    {% else %}
+                        {% set wednesdayBadCount = wednesdayBadCount + 1 %}
+                    {% endif %}
+
+                    {% if interview.interviewPractical.thursday == "Bra" %}
+                        {% set thursdayGoodCount = thursdayGoodCount + 1 %}
+                    {% elseif interview.interviewPractical.thursday == "Ok" %}
+                        {% set thursdayOkCount = thursdayOkCount + 1 %}
+                    {% else %}
+                        {% set thursdayBadCount = thursdayBadCount + 1 %}
+                    {% endif %}
+
+                    {% if interview.interviewPractical.friday == "Bra" %}
+                        {% set fridayGoodCount = fridayGoodCount + 1 %}
+                    {% elseif interview.interviewPractical.friday == "Ok" %}
+                        {% set fridayOkCount = fridayOkCount + 1 %}
+                    {% else %}
+                        {% set fridayBadCount = fridayBadCount + 1 %}
+                    {% endif %}
                     <tr>
                         <td>{{ interview.application.firstName }} {{ interview.application.lastName }}</td>
                         <td>{{ interview.interviewPractical.monday }}</td>
@@ -61,51 +138,131 @@
                         <td>{{ interview.interviewPractical.friday }}</td>
                     </tr>
                 {% endfor %}
+                <tr>
+                    <td>Totalt Bra</td>
+                    <td>{{ mondayGoodCount }}</td>
+                    <td>{{ tuesdayGoodCount }}</td>
+                    <td>{{ wednesdayGoodCount }}</td>
+                    <td>{{ thursdayGoodCount }}</td>
+                    <td>{{ fridayGoodCount }}</td>
+                </tr>
+
+                <tr>
+                    <td>Totalt Ok</td>
+                    <td>{{ mondayOkCount }}</td>
+                    <td>{{ tuesdayOkCount }}</td>
+                    <td>{{ wednesdayOkCount }}</td>
+                    <td>{{ thursdayOkCount }}</td>
+                    <td>{{ fridayOkCount }}</td>
+                </tr>
+
+                <tr>
+                    <td>Totalt Ikke</td>
+                    <td>{{ mondayBadCount }}</td>
+                    <td>{{ tuesdayBadCount }}</td>
+                    <td>{{ wednesdayBadCount }}</td>
+                    <td>{{ thursdayBadCount }}</td>
+                    <td>{{ fridayBadCount }}</td>
+                </tr>
+
                 </tbody>
             </table>
         </div>
     </div>
-    <div class="row">
-        <div class="large-8 columns">
-            {% for school in allocatedSchools %}
-                {% if school.assistants|length > 0 %}
-                    <h3>{{ school.name }}</h3>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>Navan</th>
-                            <th>Dag</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        {% for day in school.assistants|keys %}
-                            {% for assistant in school.assistants[day] %}
-                                <tr>
-                                {% if assistant.availability[day] == 2 %}
-                                    <td style="color: #007700">{{ assistant.name }}</td>
-                                {% elseif assistant.availability[day] == 1 %}
-                                    <td style="color: #bb6b10">{{ assistant.name }}</td>
-                                {% else %}
-                                    <td style="color: #770702">{{ assistant.name }}</td>
-                                {% endif %}
-                                    <td>{{ day }}</td>
-                                </tr>
-                            {% endfor %}
-                        {% endfor %}
-                        </tbody>
-                    </table>
+    <div style="margin-bottom:50px; margin-top:250px;" class="row">
+        <div class="large-6 columns" style="border-right: 2px solid #333333;">
+            <div style="text-align:center; width:400px;margin:0 auto;">
+                <h2>Initial solution</h2>
+                {% if score > 90 %}
+                    {% set color = "#007700" %}
+                {% elseif score > 75 %}
+                    {% set color = "#bb6b10" %}
+                {% else %}
+                    {% set color = "#770702" %}
                 {% endif %}
-            {% endfor %}
+                <div class="row" style="font-size: 20px;">Score (1-100): <span
+                            style="color: {{ color }}">{{ score|round }}</span></div>
+                <div class="row" style="margin-bottom:50px;">Finished in: {{ initializeTime }}s</div>
+                {% for school in allocatedSchools %}
+                    {% if school.assistants|length > 0 %}
+                        <h3>{{ school.name }}</h3>
+                        <table style="table-layout: fixed; width: 100%;">
+                            <thead>
+                            <tr>
+                                <th>Navn</th>
+                                <th>Dag</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for day in school.assistants|keys %}
+                                {% for assistant in school.assistants[day] %}
+                                    <tr>
+                                        {% if assistant.availability[day] == 2 %}
+                                            <td style="color: #007700">{{ assistant.name }}</td>
+                                        {% elseif assistant.availability[day] == 1 %}
+                                            <td style="color: #bb6b10">{{ assistant.name }}</td>
+                                        {% else %}
+                                            <td style="color: #770702">{{ assistant.name }}</td>
+                                        {% endif %}
+                                        <td>{{ day }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
-        {% if score > 90 %}
-            {% set color = "#007700" %}
-        {% elseif score > 75 %}
-            {% set color = "#bb6b10" %}
-        {% else %}
-            {% set color = "#770702" %}
-        {% endif %}
-        <div class="large-4 columns">Score (1-100): <span style="color: {{ color }}">{{ score|round }}</span></div>
+
+        <div class="large-6 columns">
+            <div style="text-align:center; width:400px;margin:0 auto;">
+
+                <h2>Optimized solution</h2>
+                {% if optimizedScore > 90 %}
+                    {% set color = "#007700" %}
+                {% elseif optimizedScore > 75 %}
+                    {% set color = "#bb6b10" %}
+                {% else %}
+                    {% set color = "#770702" %}
+                {% endif %}
+                <div class="row" style="font-size: 20px;">Score (1-100): <span
+                            style="color: {{ color }}">{{ optimizedScore|round }}</span></div>
+                <div class="row" style="margin-bottom:50px;">Finished in: {{ optimizeTime }}s</div>
+                {% for school in optimizedAllocatedSchools %}
+                    {% if school.assistants|length > 0 %}
+                        <h3>{{ school.name }}</h3>
+                        <table style="table-layout: fixed; width: 100%;">
+                            <thead>
+                            <tr>
+                                <th>Navn</th>
+                                <th>Dag</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for day in school.assistants|keys %}
+                                {% for assistant in school.assistants[day] %}
+                                    <tr>
+                                        {% if assistant.availability[day] == 2 %}
+                                            <td style="color: #007700">{{ assistant.name }}</td>
+                                        {% elseif assistant.availability[day] == 1 %}
+                                            <td style="color: #bb6b10">{{ assistant.name }}</td>
+                                        {% else %}
+                                            <td style="color: #770702">{{ assistant.name }}</td>
+                                        {% endif %}
+                                        <td>{{ day }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
     </div>
+    <hr>
 
 {% endblock %}
