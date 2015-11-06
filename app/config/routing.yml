@@ -677,15 +677,15 @@ schooladmin_show_specific_school:
 
 allocate_schools:
   path: /skole/fordel/
-  defaults: { _controller: AppBundle:schoolAllocation:allocate }
+  defaults: { _controller: AppBundle:SchoolAllocation:allocate }
 
 allocate_edit:
   path: /skole/fordel/endre
-  defaults: { _controller: AppBundle:schoolAllocation:edit }
+  defaults: { _controller: AppBundle:SchoolAllocation:edit }
 
 allocate_create:
   path: /skole/fordel/opprett
-  defaults: { _controller: AppBundle:schoolAllocation:create }
+  defaults: { _controller: AppBundle:SchoolAllocation:create }
 
 ##########################################
 #              Interview                 #

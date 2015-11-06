@@ -162,7 +162,7 @@ class SchoolAllocationController extends Controller
 
     public function getName()
     {
-        return 'schoolAllocation'; // This must be unique
+        return 'SchoolAllocation'; // This must be unique
     }
 
 }
