@@ -40,7 +40,6 @@ class Node
             }
             $assistantIndex++;
         }
-
         return $neighbours;
     }
 

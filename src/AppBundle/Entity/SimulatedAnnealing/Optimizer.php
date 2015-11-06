@@ -10,7 +10,6 @@ class Optimizer
     private $startSolution;
     private $temp;
     private $dt;
-    private $currentSolution;
 
     /**
      * Optimizer constructor.
@@ -29,12 +28,17 @@ class Optimizer
     public function optimize(){
         $startTime = round(microtime(true) * 1000);
         $bestSolution = $this->startSolution;
-        if($bestSolution->getSolution()->evaluate() === 100) return $bestSolution->getSolution();
+        $currentSolution = $bestSolution;
 
         while($this->temp > 0){
+            if($currentSolution->getSolution()->evaluate() === 100){
+                $currentSolution->getSolution()->optimizeTime = (round(microtime(true) * 1000)-$startTime)/1000;
+                return $currentSolution->getSolution();
+            }
             $neighbours = $this->currentSolution->generateNeighbours();
 
             $bestScore = 0;
+            $pMax = null;
             foreach($neighbours as $n){
                 $currentScore = $n->getSolution()->evaluate();
                 if($currentScore === 100){
@@ -44,6 +48,7 @@ class Optimizer
 
                 if($currentScore > $bestScore){
                     $bestScore = $currentScore;
+                    $pMax = $n;
                     if($bestScore > $bestSolution->getSolution()->evaluate()){
                         $bestSolution = $n;
                     }
@@ -54,7 +59,7 @@ class Optimizer
             $x = rand(0,1);
 
             if($x > $p){
-                $this->currentSolution = $bestSolution;
+                $this->currentSolution = $pMax;
             }else{
                 $this->currentSolution = $neighbours[array_rand($neighbours,1)];
             }
