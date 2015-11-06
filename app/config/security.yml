@@ -66,6 +66,8 @@ security:
         - { path: ^/intervju/skjema, roles: ROLE_SUPER_ADMIN }
         - { path: ^/intervju/fordel, roles: ROLE_SUPER_ADMIN }
         - { path: ^/vikar/rediger, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/undersokelse/slett, role: ROLE_SUPER_ADMIN }
+
 
 
           #ROLE_ADMIN = team user
@@ -84,6 +86,10 @@ security:
         - { path: ^/gallery_create, role: ROLE_ADMIN }
         - { path: ^/gallery_upload, role: ROLE_ADMIN }
         - { path: ^/gallery_delete_photo, role: ROLE_ADMIN }
+        - { path: ^/kontrollpanel, role: ROLE_ADMIN }
+        - { path: ^/undersokelse/admin, role: ROLE_ADMIN }
+        - { path: ^/undersokelse/endre, role: ROLE_ADMIN }
+        - { path: ^/undersokelse/opprett, role: ROLE_ADMIN }
 
           #ROLE_USER = assistant user
         - { path: ^/profile, roles: ROLE_USER }

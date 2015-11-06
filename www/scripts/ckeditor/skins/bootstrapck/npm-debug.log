@@ -1,0 +1,21 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'c:\\Program Files (x86)\\nodejs\\node.exe',
+1 verbose cli   'c:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install' ]
+2 info using npm@2.7.4
+3 info using node@v0.12.2
+4 error install Couldn't read dependencies
+5 verbose stack Error: ENOENT, open 'c:\Symfony_Projects\bootstrapck\package.json'
+5 verbose stack     at Error (native)
+6 verbose cwd c:\Symfony_Projects\bootstrapck
+7 error Windows_NT 6.1.7601
+8 error argv "c:\\Program Files (x86)\\nodejs\\node.exe" "c:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install"
+9 error node v0.12.2
+10 error npm  v2.7.4
+11 error path c:\Symfony_Projects\bootstrapck\package.json
+12 error code ENOPACKAGEJSON
+13 error errno -4058
+14 error package.json ENOENT, open 'c:\Symfony_Projects\bootstrapck\package.json'
+14 error package.json This is most likely not a problem with npm itself.
+14 error package.json npm can't find a package.json file in your current directory.
+15 verbose exit [ -4058, true ]

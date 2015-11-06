@@ -40,6 +40,13 @@ update_static_content:
  path: /updatestaticcontent
  defaults: {_controller: AppBundle:StaticContent:update }
 
+##########################################
+#                Control Panel           #
+##########################################
+
+control_panel:
+  path: /kontrollpanel
+  defaults: { _controller: AppBundle:ControlPanel:show }
 
 ##########################################
 #                Survey                  #
