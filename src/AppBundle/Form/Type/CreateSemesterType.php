@@ -11,25 +11,24 @@ class CreateSemesterType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
 
+		$years = array();
+		for($i = 2012; $i <= intval(date("Y"))+1; $i++){
+			$years[] = $i;
+		}
+		$years = array_reverse($years);
+		$years = array_combine($years, $years);
+
 		$builder
-			->add('name', 'text', array(
-				'label' => 'Navn',
+			->add('semesterTime', 'choice', array(
+				'choices' => array('Vår' => 'Vår', 'Høst' => 'Høst'),
+				'expanded' => true,
+				'label' => 'Semester type',
+				'required' => true,
 			))
-			->add('semesterStartDate', 'datetime', array(
-				'label' => 'Semester starttidspunkt',
-				'widget' => 'single_text',
-				'date_format' => 'yyyy-MM-dd  HH:mm:ss',
-				'attr' => array(
-					'placeholder' => 'yyyy-MM-dd HH:mm:ss',
-				),
-			))
-			->add('semesterEndDate', 'datetime', array(
-				'label' => 'Semester sluttidspunkt',
-				'widget' => 'single_text',
-				'date_format' => 'yyyy-MM-dd  HH:mm:ss',
-				'attr' => array(
-					'placeholder' => 'yyyy-MM-dd HH:mm:ss',
-				),
+			->add('year', 'choice', array(
+				'choices' => $years,
+				'label' => 'År',
+				'required' => true,
 			))
             ->add('admission_start_date', 'datetime', array(
 				'label' => 'Opptak starttidspunkt',

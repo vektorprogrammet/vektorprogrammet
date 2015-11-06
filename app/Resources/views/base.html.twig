@@ -4,11 +4,15 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}{% endblock %}</title>
-		
+        <meta property="og:title" content="{{ block('title') }}"/>
+        <meta property="og:image" content="{% block facebookImage %}{% endblock %}" />
+        <meta property="og:description" content="{% block facebookDescription %}{% endblock %}" />
+        <meta property="og:site_name" content="Vektorprogrammet" />
+
         {% block stylesheets %}
             <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
             <link rel="stylesheet" type='text/css' href="http://fonts.googleapis.com/css?family=Lato:400,700|Londrina+Solid">
-            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
             <link rel="stylesheet" href="{{ asset('bundles/app/css/app.css') }}">
             <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/slick/slick.css') }}"/>
             <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/slick/slick-theme.css') }}"/>
@@ -17,8 +21,16 @@
 
         {# Used by Foundation for backwards compability, and is supposed to be in the header #}
         <script src="{{ asset('bundles/app/js/vendor/modernizr.js') }}"></script>
+        <style>
+            .arrow{
+                color:#6FCEEE;
+            }
+        </style>
     </head>
     <body>
+    {% block topLine %}
+        <div style="width:100%;height:20px;background-color: #6FCEEE; margin-bottom:20px;"></div>
+    {% endblock %}
 
     {#
     {% block header %}
@@ -117,33 +129,21 @@
 
         {% block newHeader %}
 
-            <nav class="topbar">
-                <div class="row">
-                    <div class="small-12 columns">
-                        <i class="fa fa-chevron-up"></i>
-                        <i class="fa fa-chevron-down"></i>
-
-                        <ul class="inline-list">
-                            <li><a href="http://instagram.com/vektorprogrammet" target="_blank"><i class="fa fa-instagram"></i></a></li>
-                            <li><a href="http://twitter.com/vektorprogram" target="_blank"><i class="fa fa-twitter-square"></i></a></li>
-                            <li><a href="http://facebook.com/vektorprogrammet" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-
-
             <header data-equalizer>
-                <div class="small-12 medium-3 columns" data-equalizer-watch>
+                <div class="small-12 medium-3 columns hide-for-small-only" data-equalizer-watch>
                     <a href="{{ path('home') }}">
-                        <img src="{{ asset('images/vektor.png') }}" alt="Vektor logo">
+                        {% if "now"|date("m") == "12" %}
+                            <img src="{{ asset('images/vektor-christmas-logo.png') }}" alt="Vektor logo">
+                        {% else %}
+                            <img src="{{ asset('images/vektor.png') }}" alt="Vektor logo">
+                        {% endif %}
                     </a>
                 </div>
                 <div class="medium-9 columns hide-for-small-only" data-equalizer-watch>
                     <nav>
                         <ul>
                             <li>
-                                <a href="#" data-dropdown="aboutDropdown" aria-controls="aboutDropdown" aria-expanded="false" class="vektor-button">Om Vektor</a>
+                                <a href="#" data-dropdown="aboutDropdown" aria-controls="aboutDropdown" aria-expanded="false" class="vektor-button" data-options="is_hover:true; hover_timeout:200">Om Vektor <i class="fa fa-chevron-down arrow"></i></a>
                                 <ul id="aboutDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
                                     <li><a href="{{ path('about') }}">Om vektor</a></li>
                                     <li><a href="{{ path('boardandteam_show') }}">Styre og team</a></li>
@@ -156,15 +156,18 @@
                                 <a href="{{ path('article') }}" class="vektor-button">Nyheter</a>
                             </li>
                             <li>
-                                <a href="#" data-dropdown="regionDropdown" aria-controls="regionDropdown" aria-expanded="false" class="vektor-button">Regioner, opptak & kontakt</a>
+                                <a href="#" data-dropdown="regionDropdown" aria-controls="regionDropdown" aria-expanded="false" class="vektor-button" data-options="is_hover:true; hover_timeout:200">Opptak & kontakt <i class="fa fa-chevron-down arrow"></i></a>
                                 <ul id="regionDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
                                     {% render controller('AppBundle:Department:getAllDepartmentsForTopbar') %}
                                 </ul>
                             </li>
                             <li>
                                 {% if app.user and is_granted('ROLE_USER') %}
-                                    <a href="#" data-dropdown="myVektorDropdown" aria-controls="myVektorDropdown" aria-expanded="false" class="vektor-button">Min Vektor</a>
+                                    <a href="#" data-dropdown="myVektorDropdown" aria-controls="myVektorDropdown" aria-expanded="false" class="vektor-button" data-options="is_hover:true; hover_timeout:200">Min Vektor <i class="fa fa-chevron-down arrow"></i></a>
                                     <ul id="myVektorDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
+                                        {% if app.user and is_granted('ROLE_ADMIN') %}
+                                        <li><a href='{{ path('control_panel') }}'>Kontrollpanel</a></li>
+                                        {% endif %}
                                         <li><a href='{{ path('profile') }}'>Profil</a></li>
                                         <li><a href='{{ path('members_show') }}'>Medlemmer</a></li>
                                         <li><a href='{{ path('forum_show') }}'>Forum</a></li>
@@ -214,143 +217,97 @@
                     </nav>
                 </div>
 
-                <div class="small-12 show-for-small-only">
-                    <div class="off-canvas-wrap" data-offcanvas="">
-                        <div class="inner-wrap">
-
-                            <nav class="tab-bar">
-                                <div class="middle tab-bar-section">
-                                    <h1 class="title">Vektorprogrammet</h1>
-                                </div>
-                                <div class="right-small">
-                                    <a class="right-off-canvas-toggle menu-icon" aria-expanded="false"><span></span></a>
-                                </div>
-                            </nav>
-
-                            <aside class="right-off-canvas-menu">
-                                <ul class="off-canvas-list">
-                                    <li><label>Om Vektor</label></li>
-                                    <li><a href="{{ path('about') }}">Om vektor</a></li>
-                                    <li><a href="{{ path('boardandteam_show') }}">Styre og team</a></li>
-                                    <li><a href="{{ path('students') }}">For studenter</a></li>
-                                    <li><a href="{{ path('schools') }}">For skoler</a></li>
-                                    <li><a href="{{ path('businesses') }}">For bedrifter</a></li>
-
-                                    <li><label>Nyheter</label></li>
-                                    <li><a href="{{ path('article') }}">Nyheter</a></li>
-
-                                    <li><label>Regioner,opptak og kontakt</label></li>
-                                    {% render controller('AppBundle:Department:getAllDepartmentsForTopbar') %}
-
-                                    {% if app.user and is_granted('ROLE_USER') %}
-                                        <li><label>Min Vektor</label></li>
-
-                                        <li><a href='{{ path('profile') }}'>Profil</a></li>
-                                        <li><a href='{{ path('members_show') }}'>Medlemmer</a></li>
-                                        <li><a href='{{ path('forum_show') }}'>Forum</a></li>
-                                        <li><a href='{{ path('gallery') }}'>Galleri</a></li>
-                                        {% if app.user and is_granted('ROLE_ADMIN') %}
-                                            <li>
-                                                <a href='{{ path('file_browser') }}'
-                                                   onclick= "
-                                                           window.open(
-                                                           '{{ path('file_browser') }}',
-                                                           'Filer',
-                                                           'width={{ filebrowser_window_width }}, height={{ filebrowser_window_height }}, left=100, top=100, location=no, menubar=no, titlebar=no, toolbar=no'
-                                                           );
-                                                           return false;
-                                                           "
-                                                        >
-                                                    <i class="fa fa-folder-open"></i>
-                                                </a>
-                                            </li>
-                                        {% endif %}
-                                        <li><a href="{{ path('logout') }}">Logg ut</a></li>
-
-                                    {% else %}
-                                        <li><label>Logg inn</label></li>
-                                        <li><a href="{{ path('login_route') }}">Logg inn</a></li>
-                                    {% endif %}
-                                </ul>
-                            </aside>
-
-                            <a class="exit-off-canvas"></a>
-
-                        </div>
-                    </div>
-                </div>
-
             </header>
+            <!-- Mobile Navigation -->
+            <div class="row">
+                <div style="margin-bottom:30px; text-align: center" class="small-12 medium-3 columns show-for-small-only"
+                     data-equalizer-watch>
+                    <a href="{{ path('home') }}">
+                        {% if "now"|date("m") == "12" %}
+                            <img src="{{ asset('images/vektor-christmas-logo.png') }}" alt="Vektor logo">
+                        {% else %}
+                            <img src="{{ asset('images/vektor.png') }}" alt="Vektor logo">
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 show-for-small-only">
+                    <nav class="top-bar" data-topbar role="navigation" data-options="back_text: Tilbake">
+                        <ul class="title-area">
+                            <li class="name">
+                                <h1 style="text-align: center;"><a href="#">Vektorprogrammet</a></h1>
+                            </li>
+                            <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+                            <li class="toggle-topbar menu-icon"><a href="#"><span>Meny</span></a></li>
+                        </ul>
+
+                        <section class="top-bar-section">
+                            <!-- Right Nav Section -->
+                            <ul class="right">
+                                <li class="has-dropdown">
+                                    <a href="{{ path('about') }}">Om vektor</a>
+                                    <ul class="dropdown">
+                                        <li><a href="{{ path('boardandteam_show') }}">Styre og team</a></li>
+                                        <li><a href="{{ path('students') }}">For studenter</a></li>
+                                        <li><a href="{{ path('schools') }}">For skoler</a></li>
+                                        <li><a href="{{ path('businesses') }}">For bedrifter</a></li>
+                                    </ul>
+                                </li>
+
+                                <li><a href="{{ path('article') }}">Nyheter</a></li>
+                                <li class="has-dropdown">
+                                    <a href="#">Opptak & Kontakt</a>
+                                    <ul class="dropdown">
+                                        {% render controller('AppBundle:Department:getAllDepartmentsForTopbar') %}
+                                    </ul>
+                                </li>
+
+                                {% if app.user and is_granted('ROLE_USER') %}
+                                    <li class="has-dropdown">
+                                        <a href='{{ path('profile') }}'>Min Vektor</a>
+                                        <ul class="dropdown">
+                                            {% if app.user and is_granted('ROLE_ADMIN') %}
+                                                <li><a href='{{ path('control_panel') }}'>Kontrollpanel</a></li>
+                                            {% endif %}
+                                            <li><a href='{{ path('profile') }}'>Profil</a></li>
+                                            <li><a href='{{ path('members_show') }}'>Medlemmer</a></li>
+                                            <li><a href='{{ path('forum_show') }}'>Forum</a></li>
+                                            <li><a href='{{ path('gallery') }}'>Galleri</a></li>
+                                            {% if app.user and is_granted('ROLE_ADMIN') %}
+                                                <li>
+                                                    <a href='{{ path('file_browser') }}'
+                                                       onclick="
+                                                               window.open(
+                                                               '{{ path('file_browser') }}',
+                                                               'Filer',
+                                                               'width={{ filebrowser_window_width }}, height={{ filebrowser_window_height }}, left=100, top=100, location=no, menubar=no, titlebar=no, toolbar=no'
+                                                               );
+                                                               return false;
+                                                               "
+                                                            >
+                                                        <i class="fa fa-folder-open"></i>
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                            <li><a href="{{ path('logout') }}">Logg ut</a></li>
+                                        </ul>
+                                    </li>
+
+                                {% else %}
+                                    <li><a href="{{ path('login_route') }}">Logg inn</a></li>
+                                {% endif %}
+                            </ul>
+                        </section>
+                    </nav>
+                </div>
+            </div>
+            <br/>
 
         {% endblock %}
 
 
 		{% block adminpanel %}
-		
-		<br>
-		
-		{% if app.user and is_granted('ROLE_ADMIN') %}
-	
-		 <div class="row">
-			<div class="small-12 medium-12 large-12 columns">
-				<div class="panel">
-
-                    <div class="button-bar">
-                        <ul class="button-group">
-                            <li><a href="{{ path('useradmin_show') }}" class="button tiny" >Brukerere</a></li>
-
-                            <li><a href="{{ path('participanthistory_show') }}" class="button tiny" >Deltakerhistorie</a></li>
-                        </ul>
-
-                        <ul class="button-group">
-                            <li><a href="{{ path('admissionadmin_show') }}" class="button tiny">Opptak</a></li>
-
-                            <li><a href="{{ path('semesteradmin_show') }}" class="button tiny">Semester</a></li>
-
-                            {% if app.user and is_granted('ROLE_SUPER_ADMIN') %}
-                                <li><a href="{{ path('interview_schema') }}" class="button tiny">Intervjuskjema</a></li>
-                            {% endif %}
-                        </ul>
-
-                        <ul class="button-group">
-                            <li><a href="{{ path('departmentadmin_show') }}" class="button tiny">Avdeling</a></li>
-
-                            <li><a href="{{ path('teamadmin_show') }}" class="button tiny">Team</a></li>
-
-                            <li><a href="{{ path('schooladmin_show') }}" class="button tiny">Skole</a></li>
-
-                            <li><a href="{{ path('substitute_show') }}" class="button tiny">Vikar</a></li>
-
-							<li><a href="{{ path('certificate_show') }}" class="button tiny">Attest</a></li>
-                        </ul>
-
-                        <ul class="button-group">
-                            <a href="#" data-dropdown="hover1" data-options="is_hover:true" class="button tiny">Statistikk</a>
-                            <ul id="hover1" class="f-dropdown" data-dropdown-content>
-                                <li><a href="{{ path('statistics_application') }}">Opptak</a></li>
-                            </ul>
-
-
-
-                            <li><a href="{{ path('articleadmin_show') }}" class="button tiny">Artikkel</a></li>
-
-
-
-                            <li><a href="{{ path('sponsors_edit') }}" class="button tiny">Sponsorer</a></li>
-                        </ul>
-
-                        <ul class="button-group">
-                            <li><a href="{{ path('surveys') }}" class="button tiny" >Undersøkelser</a></li>
-                            <li><a href="{{ path('allocate_schools') }}" class="button tiny" >Skolefordeling</a></li>
-                        </ul>
-                    </div>
-					
-				</div>
-			</div>
-		</div>
-	
-		{% endif %} 
-		
 		{% endblock %}
 		
         {% block body %}

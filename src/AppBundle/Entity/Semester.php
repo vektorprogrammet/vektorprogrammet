@@ -18,6 +18,41 @@ class Semester {
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    protected $semesterTime;
+    protected $year;
+
+    /**
+     * @return mixed
+     */
+    public function getYear()
+    {
+        return $this->year;
+    }
+
+    /**
+     * @param mixed $year
+     */
+    public function setYear($year)
+    {
+        $this->year = $year;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSemesterTime()
+    {
+        return $this->semesterTime;
+    }
+
+    /**
+     * @param mixed $semesterTime
+     */
+    public function setSemesterTime($semesterTime)
+    {
+        $this->semesterTime = $semesterTime;
+    }
 	
 	/**
      * @ORM\ManyToOne(targetEntity="Department", inversedBy="semesters")
