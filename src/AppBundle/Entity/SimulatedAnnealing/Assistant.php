@@ -16,6 +16,19 @@ class Assistant
         $this->availability = array();
     }
 
+    public function deepCopy($school = null){
+        $copy = new Assistant();
+        $copy->setName($this->name);
+        if($school !== null){
+            $copy->setAssignedSchool($school);
+        }else{
+            $copy->setAssignedSchool(clone $this->assignedSchool);
+        }
+        $copy->setAssignedDay($this->assignedDay);
+        $copy->setAvailability($this->availability);
+        return $copy;
+    }
+
     /**
      * @return mixed
      */

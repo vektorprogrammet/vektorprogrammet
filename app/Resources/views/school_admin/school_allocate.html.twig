@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'adminBase.html.twig' %}
 
 {% block body %}
     <div class="row">
@@ -98,7 +98,14 @@
                 {% endif %}
             {% endfor %}
         </div>
-        <div class="large-4 columns">{{ score }}</div>
+        {% if score > 90 %}
+            {% set color = "#007700" %}
+        {% elseif score > 75 %}
+            {% set color = "#bb6b10" %}
+        {% else %}
+            {% set color = "#770702" %}
+        {% endif %}
+        <div class="large-4 columns">Score (1-100): <span style="color: {{ color }}">{{ score|round }}</span></div>
     </div>
 
 {% endblock %}

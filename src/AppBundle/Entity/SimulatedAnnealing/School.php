@@ -27,6 +27,21 @@ class School
         return $this->name;
     }
 
+    public function deepCopy(){
+        $copy = new School($this->capacity, $this->name);
+        $copyAssistants = array();
+        foreach($this->assistants as $day => $assistant){
+            if(!array_key_exists($day, $copyAssistants)){
+                 $copyAssistants[$day]=array();
+            }
+            foreach($assistant as $ass){
+                $copyAssistants[$day][] = $ass->deepCopy($copy);
+            }
+        }
+        $copy->setAssistants($copyAssistants);
+        return $copy;
+    }
+
     /**
      * @param mixed $name
      */
@@ -41,7 +56,6 @@ class School
             $this->assistants[$day]=array();
         }
         array_push($this->assistants[$day], $assistant);
-        $this->capacity[$day]--;
     }
 
     /**
@@ -60,6 +74,12 @@ class School
         $this->assistants = $assistants;
     }
 
+    public function removeAssistant(Assistant $assistant, $day){
+        if(($key = array_search($assistant, $this->assistants[$day])) !== false) {
+            unset($this->assistants[$day][$key]);
+        }
+    }
+
     /**
      * @return mixed
      */
@@ -74,10 +94,6 @@ class School
     public function setCapacity($capacity)
     {
         $this->capacity = $capacity;
-    }
-
-    public function decrementCapacity($day){
-        $this->capacity[$day]--;
     }
 
 

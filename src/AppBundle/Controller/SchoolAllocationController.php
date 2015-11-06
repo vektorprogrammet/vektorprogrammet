@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\SimulatedAnnealing\Assistant;
+use AppBundle\Entity\SimulatedAnnealing\Node;
 use AppBundle\Entity\SimulatedAnnealing\School;
 use AppBundle\Entity\SimulatedAnnealing\Solution;
 use Doctrine\ORM\NoResultException;
@@ -64,7 +65,13 @@ class schoolAllocationController extends Controller
 
             $schools[] = $school;
         }
-        $solution = new Solution($schools, $assistants);
+        $solution = new Solution($schools);
+        $solution->initializeSolution($assistants);
+        $node = new Node($solution);
+        $neighbours = $node->generateNeighbours();
+        foreach($neighbours as $neighbour){
+            dump($neighbour->getSchools()[2]->getAssistants());
+        }
         return $this->render('school_admin/school_allocate.html.twig', array(
             'interviews' => $allInterviews,
             'allocations' => $allCurrentSchoolCapacities,

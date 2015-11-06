@@ -11,13 +11,13 @@ class Solution
      * @param mixed schools
      * @param mixed assistants
      */
-    public function __construct($schools, $assistants)
+    public function __construct($schools)
     {
+        $this->assistants = array();
         $this->schools = $schools;
-        $this->initializeSolution($assistants);
     }
 
-    private function initializeSolution($assistants){
+    public function initializeSolution($assistants){
         foreach($assistants as $assistant){
             $availabilitySorted = $assistant->getAvailability();
             arsort($availabilitySorted);
@@ -29,7 +29,7 @@ class Solution
                 if($i > 4) break; //If there is no capacity left in any school
                 $bestDay = array_keys($availabilitySorted)[$i];
                 foreach($this->schools as $school){
-                    $capacityOnBestDay = $school->getCapacity()[$bestDay];
+                    $capacityOnBestDay = $this->capacityLeftOnDay($bestDay, $school);
                     if($bestSchool === null && $capacityOnBestDay>0){
                         $bestSchool = $school;
                         continue;
@@ -52,21 +52,65 @@ class Solution
 
 
     public function evaluate(){
+        if(sizeof($this->assistants) === 0){return 0;}
         $points = 0;
         foreach($this->assistants as $assistant){
-            $points += ( 2 - $assistant->getAvailability()[$assistant->getAssignedDay()] );
+            $points += $assistant->getAvailability()[$assistant->getAssignedDay()];
         }
-        return 100/(1+$points/100);
+        return 100*$points/(2*sizeof($this->assistants));
+    }
+
+    private  function capacityLeftOnDay($day, $school){
+        return array_key_exists($day,$school->getAssistants()) ? $school->getCapacity()[$day] - sizeof($school->getAssistants()[$day]) : $school->getCapacity()[$day];
     }
 
     public function addAssistantToSchool($school, $assistant, $day){
-        $index = array_search($school, $this->schools);
+        $index = -1;
+        for($i = 0; $i < sizeof($this->schools); $i++){
+            if($school === $this->schools[$i]){
+                $index = $i;
+                break;
+            }
+        }
+        //$index = array_search($school, $this->schools);
         $school->addAssistant($assistant, $day);
         $this->schools[$index] = $school;
     }
 
+    public function moveAssistant(Assistant $assistant, School $school, $fromDay, $toDay){
+        $assistant->getAssignedSchool()->removeAssistant($assistant, $fromDay);
+        $assistant->setAssignedSchool($school);
+        $assistant->setAssignedDay($toDay);
+        $this->addAssistantToSchool($school, $assistant, $toDay);
+    }
+
     public function addSchool($school){
         $this->schools[] = $school;
+    }
+
+    public function deepCopySchools(){
+        $copy = array();
+        foreach($this->schools as $school){
+            $copy[] = $school->deepCopy();
+        }
+
+        return $copy;
+    }
+
+    public function deepCopyAssistants($schools){
+        $copy = array();
+        foreach($this->assistants as $assistant){
+            $school = $assistant->getAssignedSchool();
+            $schoolCopy = null;
+            foreach($schools as $s){
+                if($s->getName() === $school->getName()){
+                    $schoolCopy = $s;
+                    break;
+                }
+            }
+            $copy[] = $assistant->deepCopy($schoolCopy);
+        }
+        return $copy;
     }
 
     public function replaceSchool($oldSchool, $newSchool){
