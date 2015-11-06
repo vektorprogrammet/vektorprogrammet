@@ -4,8 +4,8 @@ namespace AppBundle\Entity\SimulatedAnnealing;
 class School
 {
     private $name;
-    private $assistants;
-    private $capacity;
+    private $assistants;//An associative array. Key = weekday, Value = list of assistants. "Tuesday => [assistant1, assistant2, ...]
+    private $capacity;//An associative array. Key = weekday, Value = capacity. "Wednesday" => 4.
 
     /**
      * School constructor.

@@ -14,7 +14,7 @@ use AppBundle\Entity\SchoolCapacity;
 use AppBundle\Entity\Interview;
 use AppBundle\Form\Type\SchoolCapacityType;
 
-class schoolAllocationController extends Controller
+class SchoolAllocationController extends Controller
 {
 
     public function allocateAction(Request $request, $departmentId=null){
@@ -40,6 +40,7 @@ class schoolAllocationController extends Controller
         $assistants = array();
         $schools = array();
 
+        //Use interviews to create Assistant objects for the SA-algorithm
         foreach($allInterviews as $interview) {
             $assistant = new Assistant();
             $assistant->setName($interview->getApplication()->getFirstName() . ' ' . $interview->getApplication()->getLastName());
@@ -55,6 +56,7 @@ class schoolAllocationController extends Controller
 
             $assistants[] = $assistant;
         }
+        //Use schoolCapacities to create School objects for the SA-Algorithm
         foreach($allCurrentSchoolCapacities as $sc){
             $capacity = array();
             $capacity["Monday"] = $sc->getMonday();
@@ -66,11 +68,16 @@ class schoolAllocationController extends Controller
 
             $schools[] = $school;
         }
+
+        //Create and find the initialSolution (Very fast)
         $solution = new Solution($schools);
         $solution->initializeSolution($assistants);
+
+        //Optimize the initialized solution (Very slow)
         $node = new Node($solution);
         $optimizer = new Optimizer($node, 1, 0.01);
         $bestSolution = $optimizer->optimize();
+
         return $this->render('school_admin/school_allocate.html.twig', array(
             'interviews' => $allInterviews,
             'allocations' => $allCurrentSchoolCapacities,

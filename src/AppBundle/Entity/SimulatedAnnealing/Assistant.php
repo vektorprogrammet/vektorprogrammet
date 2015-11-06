@@ -6,7 +6,7 @@ class Assistant
     private $name;
     private $assignedSchool;
     private $assignedDay;
-    private $availability;
+    private $availability; //An associative array. Key = weekday, Value = {0, 1, 2}. 0 is bad, 1 is ok, 2 is good. "Monday" => 2.
 
     /**
      * Assistant constructor.

@@ -3,8 +3,8 @@ namespace AppBundle\Entity\SimulatedAnnealing;
 
 class Solution
 {
-    private $schools;
-    private $assistants;
+    private $schools;//Array with School objects
+    private $assistants;//Array with Assistant objects
     public $initializeTime;
     public $optimizeTime;
 
@@ -24,21 +24,27 @@ class Solution
     public function initializeSolution($assistants){
         $startTime = round(microtime(true) * 1000);
         foreach($assistants as $assistant){
+            //Sort availability lists, best day first.
             $availabilitySorted = $assistant->getAvailability();
             arsort($availabilitySorted);
             $assistant->setAvailability($availabilitySorted);
+
             $i = 0;
             $bestSchool = null;
             $bestDay = null;
             while($bestSchool === null){
                 if($i > 4) break; //If there is no capacity left in any school
+
                 $bestDay = array_keys($availabilitySorted)[$i];
                 foreach($this->schools as $school){
                     $capacityOnBestDay = $this->capacityLeftOnDay($bestDay, $school);
+
+                    //If no bestSchool has been set yet and there is capacity on this school
                     if($bestSchool === null && $capacityOnBestDay>0){
                         $bestSchool = $school;
                         continue;
                     }elseif($bestSchool !== null){
+                        //Find the best school. The best school will be the school with most capacity left on the weekday that is best for the assistant.
                         $currentBestCapacityOnBestDay = $bestSchool->getCapacity()[$bestDay];
                         if($capacityOnBestDay > $currentBestCapacityOnBestDay){
                             $bestSchool = $school;
@@ -48,6 +54,8 @@ class Solution
                 $i++;
             }
             if($i > 4) break;//If there is no capacity left in any school
+
+            //Update the assistant with the bestSchool and bestDay found and add it to the assistants list
             $assistant->setAssignedSchool($bestSchool);
             $assistant->setAssignedDay($bestDay);
             $this->addAssistantToSchool($bestSchool, $assistant, $bestDay);
@@ -57,6 +65,9 @@ class Solution
     }
 
 
+    /**
+     * @return float|int in [0,100]
+     */
     public function evaluate(){
         if(sizeof($this->assistants) === 0){return 0;}
         $points = 0;
