@@ -187,6 +187,22 @@
 
                         modal.foundation("reveal", "open");
                         break;
+                    case "createUser":
+                        var modal = $("#bulkModal");
+                        var acceptBtn = $('<li><a href="#" class="button tiny">Opprett</a></li>');
+                        var cancelBtn = $('<li><a href="#" class="button tiny">Avbryt</a></li>');
+
+                        modal.find(".modalMessage").html("Vil du virkelig opprette nye brukere?");
+                        modal.find(".modalButtons").empty().append(acceptBtn).append(cancelBtn);
+
+                        acceptBtn.on("click", AppAdmin.bulkCreateUser);
+                        cancelBtn.on("click", function(event){
+                            event.preventDefault();
+                            modal.foundation("reveal", "close");
+                        });
+
+                        modal.foundation("reveal", "open");
+                        break;
                     case "deleteInterview":
                         var modal = $("#bulkModal");
                         var acceptBtn = $('<li><a href="#" class="button tiny">Slett</a></li>');
@@ -209,7 +225,6 @@
             bulkDeleteApplications: function(event) {
                 event.preventDefault();
                 var formdata = $("#bulk").serialize();
-
                 $.ajax({
                     type: 'POST',
                     url: Routing.generate('admissionadmin_delete_application_bulk'),
@@ -220,6 +235,59 @@
                         } else {
                             alert(response.cause);
                         }
+
+                    }
+                });
+
+                //Close the modal
+                $("#assignModal").foundation("reveal", "close");
+            },
+
+            bulkCreateUser: function(event) {
+                event.preventDefault();
+                var formdata = $("#bulk").serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: Routing.generate('admissionadmin_create_user_bulk'),
+                    data: formdata,
+                    success: function(response) {
+                        var unsuccessful = [];
+                        for (var aId in response) {
+                            if (response.hasOwnProperty(aId) && response[aId][0]) {
+                                var td = $("#createButton" + aId.toString()).closest("td");
+                                td.empty();
+                                td.html("Bruker opprettet");
+                            }
+                            else if(response.hasOwnProperty(aId) && !response[aId][0]){
+                                unsuccessful.push([aId,response[aId][1]]);
+                            }
+                        }
+
+                        if(unsuccessful.length > 0){
+                            var modal = $("#bulkFailModal");
+                            var cancelBtn = $('<li><a href="#" class="button tiny">Ok</a></li>');
+
+                            modal.find(".modalMessage").html("Klarte ikke å opprette bruker for følgende søknader:");
+
+
+                            modal.find(".modalItems").empty();
+                            for(var i = 0; i<unsuccessful.length; i++){
+                                var fName = AppAdmin.appTable.find("tr#"+unsuccessful[i][0].toString()).find(".fName").html();
+                                var lName = AppAdmin.appTable.find("tr#"+unsuccessful[i][0].toString()).find(".lName").html();
+                                var li = $('<li>ID: ' + unsuccessful[i][0].toString() + '<br>&nbsp;&nbsp;&nbsp;Navn: ' + fName + ' ' + lName + '<br>&nbsp;&nbsp;&nbsp;Grunn: ' + unsuccessful[i][1] + '</li>');
+                                modal.find(".modalItems").append(li);
+                            }
+
+                            modal.find(".modalButtons").empty().append(cancelBtn);
+
+                            cancelBtn.on("click", function(event){
+                                event.preventDefault();
+                                modal.foundation("reveal", "close");
+                            });
+
+                            modal.foundation("reveal", "open");
+                        }
+
 
                     }
                 });
@@ -428,6 +496,14 @@
     {# The bulk modal, used by the various bulk actions #}
     <div id="bulkModal" class="reveal-modal small" data-reveal aria-labelledby="assignFormModal" aria-hidden="true" role="dialog">
         <h2 class="modalMessage"></h2>
+        <ul class="inline-list modalButtons">
+        </ul>
+    </div>
+
+    <div id="bulkFailModal" class="reveal-modal small" data-reveal aria-labelledby="assignFormModal" aria-hidden="true" role="dialog">
+        <h2 class="modalMessage"></h2>
+        <ul class="modalItems">
+        </ul>
         <ul class="inline-list modalButtons">
         </ul>
     </div>
