@@ -70,23 +70,33 @@ class SchoolAllocationController extends Controller
         }
 
         //Create and find the initialSolution (Very fast)
-        $solution = new Solution($schools);
-        $solution->initializeSolution($assistants);
-        $solution->improveSolution();
-        //Optimize the initialized solution (Very slow)
-        $node = new Node($solution);
-        $optimizer = new Optimizer($node, 1, 0.02);
-        $bestSolution = $optimizer->optimize();
-        //$bestSolution = $solution;
+        $solution = new Solution($schools,$assistants);
+        $dcSolution = $solution->deepCopy();
+        $dcSolution->initializeSolution(true, true);
+        $dcSolution->improveSolution();
+        if($dcSolution->evaluate() === 100){
+            $solution = $dcSolution;
+            $bestSolution = $dcSolution;
+        }else{
+            $solution->initializeSolution(true, false);
+            $solution->improveSolution();
+            //Optimize the initialized solution (Very slow)
+            $node = new Node($solution);
+            $optimizer = new Optimizer($node, 0.0001, 0.0000001);
+            $bestSolution = $optimizer->optimize();
+        }
+
 
         return $this->render('school_admin/school_allocate.html.twig', array(
             'interviews' => $allInterviews,
             'allocations' => $allCurrentSchoolCapacities,
             'allocatedSchools' => $solution->getSchools(),
+            'allocatedAssistants' => $solution->getAssistants(),
             'score' => $solution->evaluate(),
             'initializeTime' => $solution->initializeTime + $solution->improveTime,
             'optimizeTime' => $bestSolution->optimizeTime,
             'optimizedAllocatedSchools' => $bestSolution->getSchools(),
+            'optimizedAllocatedAssistants' => $bestSolution->getAssistants(),
             'optimizedScore' => $bestSolution->evaluate(),
         ));
     }
@@ -123,9 +133,6 @@ class SchoolAllocationController extends Controller
 
             }
 
-
-
-            dump($schoolCapacity);
             $em = $this->getDoctrine()->getManager();
             $em->persist($schoolCapacity);
             $em->flush();

@@ -4,7 +4,7 @@ namespace AppBundle\Entity\SimulatedAnnealing;
 class School
 {
     private $name;
-    private $assistants;//An associative array. Key = weekday, Value = list of assistants. "Tuesday => [assistant1, assistant2, ...]
+    private $assistants;//An associative array. Key = weekday, Value = number of assistants. "Tuesday => 2
     private $capacity;//An associative array. Key = weekday, Value = capacity. "Wednesday" => 4.
 
     /**
@@ -51,11 +51,12 @@ class School
     }
 
 
-    public function addAssistant($assistant, $day){
+    public function addAssistant($day){
         if(!array_key_exists($day, $this->assistants)){
-            $this->assistants[$day]=array();
+            $this->assistants[$day]= 1;
+        }else{
+            $this->assistants[$day]++;
         }
-        array_push($this->assistants[$day], $assistant);
     }
 
     /**
@@ -74,9 +75,9 @@ class School
         $this->assistants = $assistants;
     }
 
-    public function removeAssistant(Assistant $assistant, $day){
-        if(($key = array_search($assistant, $this->assistants[$day])) !== false) {
-            unset($this->assistants[$day][$key]);
+    public function removeAssistant($day){
+        if(array_key_exists($day, $this->assistants) && $this->assistants[$day] > 0) {
+            $this->assistants[$day] = $this->assistants[$day] -1;
         }
     }
 

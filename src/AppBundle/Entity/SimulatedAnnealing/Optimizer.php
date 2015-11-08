@@ -28,7 +28,6 @@ class Optimizer
         $startTime = round(microtime(true) * 1000);
         $bestNode = $this->startNode;
         $currentNode = $bestNode;
-        $cnt = 0;
 
         while($this->temp > 0){
             //Return the solution if score === 100 (Perfect solution)
@@ -36,15 +35,13 @@ class Optimizer
                 $currentNode->getSolution()->optimizeTime = (round(microtime(true) * 1000)-$startTime)/1000;
                 return $currentNode->getSolution();
             }
-            $sTime = round(microtime(true) * 1000);
             $neighbours = $currentNode->generateNeighbours();
-            dump("Total time used creating Neighbours: ".$cnt += ((round(microtime(true) * 1000) - $sTime)/1000));
-
+            if(sizeof($neighbours) === 0)break;
             //The node in the neighbour list with the highest score
             $pMax = null;
             $bestScore = 0;
+
             foreach($neighbours as $n){
-                Solution::$neighbourCount++;
                 $currentScore = $n->getSolution()->evaluate();
                 if($currentScore === 100){
                     $n->getSolution()->optimizeTime = (round(microtime(true) * 1000)-$startTime)/1000;
@@ -68,16 +65,12 @@ class Optimizer
             //Larger $p means more likely to explore than exploit
             $p = min(1, exp(-$q/$this->temp));
             $x = rand(0,100)/100;
-            dump("Q: ".$q.", P: ".$p."X: ".$x);
 
             //q, p and x will make the algorithm search for new random solutions when we are at a bad node and at early iterations (temperature is still high).
             //The algorithm will search for close solutions when a good node is found and at later iterations (temperature is low).
-
             if($x > $p){
-                dump("EXPLOITING");
                 $currentNode = $pMax;//Exploiting
             }else{
-                dump("EXPLORING");
                 $currentNode = $neighbours[array_rand($neighbours,1)];//Exploring
             }
             //Decrease temperature

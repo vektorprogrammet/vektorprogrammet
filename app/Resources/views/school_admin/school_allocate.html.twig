@@ -196,17 +196,19 @@
 
                             <tbody>
                             {% for day in school.assistants|keys %}
-                                {% for assistant in school.assistants[day] %}
-                                    <tr>
-                                        {% if assistant.availability[day] == 2 %}
-                                            <td style="color: #007700">{{ assistant.name }}</td>
-                                        {% elseif assistant.availability[day] == 1 %}
-                                            <td style="color: #bb6b10">{{ assistant.name }}</td>
-                                        {% else %}
-                                            <td style="color: #770702">{{ assistant.name }}</td>
-                                        {% endif %}
-                                        <td>{{ day }}</td>
-                                    </tr>
+                                {% for assistant in allocatedAssistants %}
+                                    {% if assistant.assignedSchool == school.name and assistant.assignedDay == day %}
+                                        <tr>
+                                            {% if assistant.availability[day] == 2 %}
+                                                <td style="color: #007700">{{ assistant.name }}</td>
+                                            {% elseif assistant.availability[day] == 1 %}
+                                                <td style="color: #bb6b10">{{ assistant.name }}</td>
+                                            {% else %}
+                                                <td style="color: #770702">{{ assistant.name }}</td>
+                                            {% endif %}
+                                            <td>{{ day }}</td>
+                                        </tr>
+                                    {% endif %}
                                 {% endfor %}
                             {% endfor %}
                             </tbody>
@@ -243,17 +245,19 @@
 
                             <tbody>
                             {% for day in school.assistants|keys %}
-                                {% for assistant in school.assistants[day] %}
-                                    <tr>
-                                        {% if assistant.availability[day] == 2 %}
-                                            <td style="color: #007700">{{ assistant.name }}</td>
-                                        {% elseif assistant.availability[day] == 1 %}
-                                            <td style="color: #bb6b10">{{ assistant.name }}</td>
-                                        {% else %}
-                                            <td style="color: #770702">{{ assistant.name }}</td>
-                                        {% endif %}
-                                        <td>{{ day }}</td>
-                                    </tr>
+                                {% for assistant in optimizedAllocatedAssistants %}
+                                    {% if assistant.assignedSchool == school.name and assistant.assignedDay == day %}
+                                        <tr>
+                                            {% if assistant.availability[day] == 2 %}
+                                                <td style="color: #007700">{{ assistant.name }}</td>
+                                            {% elseif assistant.availability[day] == 1 %}
+                                                <td style="color: #bb6b10">{{ assistant.name }}</td>
+                                            {% else %}
+                                                <td style="color: #770702">{{ assistant.name }}</td>
+                                            {% endif %}
+                                            <td>{{ day }}</td>
+                                        </tr>
+                                    {% endif %}
                                 {% endfor %}
                             {% endfor %}
                             </tbody>
