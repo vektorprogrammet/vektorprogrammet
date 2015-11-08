@@ -24,7 +24,7 @@ class Solution
         $this->schools = $schools;
     }
 
-    public function initializeSolution($optimize = false)
+    public function initializeSolution($optimize = false, $sort = false)
     {
         $startTime = round(microtime(true) * 1000);
         foreach ($this->assistants as $assistant) {
@@ -56,19 +56,22 @@ class Solution
             } else {
                 //Sort availability lists, best day first.
                 $availabilitySorted = $assistant->getAvailability();
-                arsort($availabilitySorted);
+                if($sort){
+                    arsort($availabilitySorted);
+                }
                 $assistant->setAvailability($availabilitySorted);
 
                 $i = 0;
                 $bestSchool = null;
                 $bestDay = null;
+
                 while ($bestSchool === null) {
+
                     if ($i > 4) break; //If there is no capacity left in any school
 
                     $bestDay = array_keys($availabilitySorted)[$i];
                     foreach ($this->schools as $school) {
                         $capacityOnBestDay = $this->capacityLeftOnDay($bestDay, $school);
-
                         //If no bestSchool has been set yet and there is capacity on this school
                         if ($bestSchool === null && $capacityOnBestDay > 0) {
                             $bestSchool = $school;
@@ -83,7 +86,7 @@ class Solution
                     }
                     $i++;
                 }
-                if ($i > 4) break;//If there is no capacity left in any school
+                if ($i > 5) break;//If there is no capacity left in any school
 
                 //Update the assistant with the bestSchool and bestDay found and add it to the assistants list
 
@@ -229,7 +232,7 @@ class Solution
     {
         $schoolsCopy = $this->deepCopySchools();
         $assistantsCopy = $this->deepCopyAssistants($this->schools);
-        $copy = new Solution($schoolsCopy, $assistantsCopy);
+        return new Solution($schoolsCopy, $assistantsCopy);
     }
 
     public function deepCopyAssistants($schools)

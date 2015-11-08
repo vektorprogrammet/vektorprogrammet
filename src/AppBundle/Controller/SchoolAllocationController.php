@@ -71,11 +71,15 @@ class SchoolAllocationController extends Controller
 
         //Create and find the initialSolution (Very fast)
         $solution = new Solution($schools,$assistants);
-        $solution->initializeSolution();
+        //$dcSolution = $solution->deepCopy();
+        $solution->initializeSolution(true, false);
         $solution->improveSolution();
+        if($solution->evaluate() !== 100){
+            //$solution = $dcSolution;
+        }
         //Optimize the initialized solution (Very slow)
         $node = new Node($solution);
-        $optimizer = new Optimizer($node, 0.0001, 0.000001);
+        $optimizer = new Optimizer($node, 0.0001, 0.0000001);
         $bestSolution = $optimizer->optimize();
         //$bestSolution = $solution;
 

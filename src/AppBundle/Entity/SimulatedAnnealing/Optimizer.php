@@ -69,10 +69,8 @@ class Optimizer
             //q, p and x will make the algorithm search for new random solutions when we are at a bad node and at early iterations (temperature is still high).
             //The algorithm will search for close solutions when a good node is found and at later iterations (temperature is low).
             if($x > $p){
-                dump("EXPLOITING");
                 $currentNode = $pMax;//Exploiting
             }else{
-                dump("EXPLORING");
                 $currentNode = $neighbours[array_rand($neighbours,1)];//Exploring
             }
             //Decrease temperature
