@@ -59,7 +59,7 @@
 								<div class="panel callout radius">
 									<ul class="side-nav" role="navigation" title="Link List">
 										<li role="menuitem"><a href="{{ path('profile_edit', { 'id': user.id }) }}">Rediger profil</a></li>
-										<li role="menuitem"><a href="{{ path('profile_edit_photo') }}">Rediger bilde</a></li>
+										<li role="menuitem"><a href="{{ path('profile_edit_photo', {'id': user.getId()}) }}">Rediger bilde</a></li>
 										<li role="menuitem"><a href="{{ path('profile_edit_password')}}">Endre passord</a></li>
 										<li role="menuitem"><a href="#" id="certificate_request" class="requestCertificate">Send attest forespørsel</a></li>
 										
