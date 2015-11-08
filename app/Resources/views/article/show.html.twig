@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ article.title }}{% endblock %}
-{% block facebookImage %}{{ article.imageLarge }}{% endblock %}
-{% block facebookDescription %}{{ article.article|raw }}{% endblock %}
+{% block facebookImage %}{{ article.imageSmall|replace({" ": "%20"}) }}{% endblock %}
+{% block facebookDescription %}{{ article.article|raw|replace({"<p>": "", "</p>": ""})|slice(0,175) }}...{% endblock %}
 
 {% block body %}
     <p></p>
