@@ -72,18 +72,19 @@ class SchoolAllocationController extends Controller
         //Create and find the initialSolution (Very fast)
         $solution = new Solution($schools);
         $solution->initializeSolution($assistants);
-
+        $solution->improveSolution();
         //Optimize the initialized solution (Very slow)
         $node = new Node($solution);
-        $optimizer = new Optimizer($node, 1, 0.01);
+        $optimizer = new Optimizer($node, 1, 0.02);
         $bestSolution = $optimizer->optimize();
+        //$bestSolution = $solution;
 
         return $this->render('school_admin/school_allocate.html.twig', array(
             'interviews' => $allInterviews,
             'allocations' => $allCurrentSchoolCapacities,
             'allocatedSchools' => $solution->getSchools(),
             'score' => $solution->evaluate(),
-            'initializeTime' => $solution->initializeTime,
+            'initializeTime' => $solution->initializeTime + $solution->improveTime,
             'optimizeTime' => $bestSolution->optimizeTime,
             'optimizedAllocatedSchools' => $bestSolution->getSchools(),
             'optimizedScore' => $bestSolution->evaluate(),

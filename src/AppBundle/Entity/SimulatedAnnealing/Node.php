@@ -7,6 +7,7 @@ namespace AppBundle\Entity\SimulatedAnnealing;
 class Node
 {
     private $solution;
+    public static $visited;
 
     /**
      * Node constructor.
@@ -32,14 +33,17 @@ class Node
                     if($freeCapacity < 1) continue;
 
                     //Create a deep copy of the current solution
+                    $sTime = round(microtime(true) * 1000);
                     $schoolsCopy = $this->solution->deepCopySchools();
+                    dump("Deep copy school time: ".((round(microtime(true) * 1000) - $sTime)/1000));
                     $assistantsCopy = $this->solution->deepCopyAssistants($schoolsCopy);
                     $newSolution = new Solution($schoolsCopy);
                     $newSolution->setAssistants($assistantsCopy);
 
                     //Move the assistant from current school to a new school and add the new solution to the neighbour list
                     $newSolution->moveAssistant($assistantsCopy[$assistantIndex], $schoolsCopy[$schoolIndex], $assistant->getAssignedDay(), $day);
-                    $neighbours[] = new Node($newSolution);
+                    $node = new Node($newSolution);
+                    $neighbours[] = $node;
                     // TODO: Filter out bad nodes to improve efficiency
                 }
                 $schoolIndex++;
