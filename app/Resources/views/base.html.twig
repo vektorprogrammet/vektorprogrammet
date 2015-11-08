@@ -14,6 +14,11 @@
         <meta property="og:description" content="{% block facebookDescription %}Vektorprogrammet er Norges største organisasjon som jobber for å øke interessen for matematikk og realfag blant elever i grunnskolen. Vi sender realfagssterke studenter til barne- og ungdomsskoler hvor de fungerer som lærerens assistent.{% endblock %}" />
         <meta property="og:site_name" content="Vektorprogrammet" />
 
+        <!-- Color for header in mobile browsers -->
+        <meta name="theme-color" content="#6FCEEE"><!-- Chrome, Firefox OS and Opera -->
+        <meta name="msapplication-navbutton-color" content="#6FCEEE"><!-- Windows Phone -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="#6FCEEE"><!-- iOS Safari -->
+
         {% block stylesheets %}
             <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
             <link rel="stylesheet" type='text/css' href="http://fonts.googleapis.com/css?family=Lato:400,700|Londrina+Solid">
@@ -36,101 +41,6 @@
     {% block topLine %}
         <div style="width:100%;height:20px;background-color: #6FCEEE; margin-bottom:20px;"></div>
     {% endblock %}
-
-    {#
-    {% block header %}
-
-		<div class="row">
-			<div class="large-12 columns">
-					<div class="row">
-						<div class="large-12 columns">
-							<div class="contain-to-grid">
-
-							<nav class="top-bar" data-topbar role="navigation">
-								<ul class="title-area">
-									<li class="name" >
-										<h1><a href="{{ path('home') }}">Hjem</a></h1>
-									</li>
-									<!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-									<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
-								</ul>
-
-								<section class="top-bar-section">
-									<!-- Right Nav Section -->
-									<ul class="right">
-										<li class="active">
-											{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-												<a href="{{ path('logout') }}">Log out</a>
-											{% else %}
-												<a href="{{ path('login_route') }}">Login</a>
-											{% endif %}
-										</li>
-									</ul>
-
-									<!-- Left Nav Section -->
-									<ul class="left">
-
-									<li class="divider"></li>
-
-
-									<li class="has-dropdown">
-										<a href="#">Om vektor</a>
-										<ul class="dropdown">
-											<li><a href="{{ path('about') }}">Om vektor</a></li>
-											<li><a href="{{ path('boardandteam_show') }}">Styre og team</a></li>
-											<li><a href="{{ path('students') }}">For studenter</a></li>
-											<li><a href="{{ path('schools') }}">For skoler</a></li>
-											<li><a href="{{ path('businesses') }}">For bedrifter</a></li>
-										</ul>
-									</li>
-
-
-
-									<li><a href="{{ path('article') }}">Nyheter</a></li>
-
-									<li class="has-dropdown">
-										<a href="#">Regioner, opptak & kontakt</a>
-										<ul class="dropdown">
-											#}{# embedded controller to render the departments for the opptak dropdown, see department controller for the function getAllDepartmentsForTopbar #}{#
-                                            {{ render(controller(
-												'AppBundle:Department:getAllDepartmentsForTopbar'
-											)) }}
-
-
-										</ul>
-									</li>
-
-									{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-										<li><a href='{{ path('forum_show') }}'>Forum</a></li>
-										<li><a href='{{ path('members_show') }}'>Medlemmer</a></li>
-										<li><a href='{{ path('gallery') }}'>Galleri</a></li>
-										<li><a href='{{ path('profile') }}'>Profil</a></li>
-                                        <li>
-                                            <a href='{{ path('file_browser') }}'
-                                               onclick= "
-                                                       window.open(
-                                                            '{{ path('file_browser') }}',
-                                                            'Filer',
-                                                            'width={{ filebrowser_window_width }}, height={{ filebrowser_window_height }}, left=100, top=100, location=no, menubar=no, titlebar=no, toolbar=no'
-                                                       );
-                                                       return false;
-                                                       "
-                                            >
-                                                <i class="fa fa-folder-open"></i>
-                                            </a>
-                                        </li>
-									{% endif %}
-									</ul>
-								</section>
-							</nav>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		{% endblock %}
-        #}
 
         {% block newHeader %}
 
@@ -364,7 +274,7 @@
 
                 <div class="small-12 medium-6 large-3 columns">
                     <h6><b>Sponsorer:</b></h6>
-                    <ul>
+                    <ul style="display:inline-block">
                         {% for sponsor in get_sponsors() %}
                             <li><a href="{{ sponsor.url }}" target="_blank"> {{ sponsor.name  }} </a></li>
                         {% endfor %}
