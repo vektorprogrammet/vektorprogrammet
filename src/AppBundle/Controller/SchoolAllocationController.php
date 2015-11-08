@@ -71,17 +71,20 @@ class SchoolAllocationController extends Controller
 
         //Create and find the initialSolution (Very fast)
         $solution = new Solution($schools,$assistants);
-        //$dcSolution = $solution->deepCopy();
-        $solution->initializeSolution(true, false);
-        $solution->improveSolution();
-        if($solution->evaluate() !== 100){
-            //$solution = $dcSolution;
+        $dcSolution = $solution->deepCopy();
+        $dcSolution->initializeSolution(true, true);
+        $dcSolution->improveSolution();
+        if($dcSolution->evaluate() === 100){
+            $solution = $dcSolution;
+            $bestSolution = $dcSolution;
+        }else{
+            $solution->initializeSolution(true, false);
+            $solution->improveSolution();
+            //Optimize the initialized solution (Very slow)
+            $node = new Node($solution);
+            $optimizer = new Optimizer($node, 0.0001, 0.0000001);
+            $bestSolution = $optimizer->optimize();
         }
-        //Optimize the initialized solution (Very slow)
-        $node = new Node($solution);
-        $optimizer = new Optimizer($node, 0.0001, 0.0000001);
-        $bestSolution = $optimizer->optimize();
-        //$bestSolution = $solution;
 
 
         return $this->render('school_admin/school_allocate.html.twig', array(

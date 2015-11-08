@@ -36,7 +36,7 @@ class Optimizer
                 return $currentNode->getSolution();
             }
             $neighbours = $currentNode->generateNeighbours();
-
+            if(sizeof($neighbours) === 0)break;
             //The node in the neighbour list with the highest score
             $pMax = null;
             $bestScore = 0;
