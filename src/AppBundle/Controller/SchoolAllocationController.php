@@ -70,23 +70,26 @@ class SchoolAllocationController extends Controller
         }
 
         //Create and find the initialSolution (Very fast)
-        $solution = new Solution($schools);
-        $solution->initializeSolution($assistants);
+        $solution = new Solution($schools,$assistants);
+        $solution->initializeSolution();
         $solution->improveSolution();
         //Optimize the initialized solution (Very slow)
         $node = new Node($solution);
-        $optimizer = new Optimizer($node, 1, 0.02);
+        $optimizer = new Optimizer($node, 0.0001, 0.000001);
         $bestSolution = $optimizer->optimize();
         //$bestSolution = $solution;
+
 
         return $this->render('school_admin/school_allocate.html.twig', array(
             'interviews' => $allInterviews,
             'allocations' => $allCurrentSchoolCapacities,
             'allocatedSchools' => $solution->getSchools(),
+            'allocatedAssistants' => $solution->getAssistants(),
             'score' => $solution->evaluate(),
             'initializeTime' => $solution->initializeTime + $solution->improveTime,
             'optimizeTime' => $bestSolution->optimizeTime,
             'optimizedAllocatedSchools' => $bestSolution->getSchools(),
+            'optimizedAllocatedAssistants' => $bestSolution->getAssistants(),
             'optimizedScore' => $bestSolution->evaluate(),
         ));
     }
@@ -123,9 +126,6 @@ class SchoolAllocationController extends Controller
 
             }
 
-
-
-            dump($schoolCapacity);
             $em = $this->getDoctrine()->getManager();
             $em->persist($schoolCapacity);
             $em->flush();
