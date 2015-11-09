@@ -106,7 +106,6 @@ class Solution
 
     }
 
-
     public function improveSolution()
     {
         $startTime = round(microtime(true) * 1000);
@@ -156,6 +155,38 @@ class Solution
             $points += $assistant->getAvailability()[$assistant->getAssignedDay()];
         }
         return 100 * $points / (2 * sizeof($this->assistants));
+    }
+
+    public function generateNeighbours(){
+        $neighbours = array();
+        $assistantIndex = 0;
+        foreach($this->getAssistants() as $assistant){
+            $schoolIndex = 0;
+            foreach($this->getSchools() as $school){
+                foreach($school->getCapacity() as $day=>$capacity){
+                    if($capacity === 0) continue;
+                    //Check if the school has capacity for more assistants
+                    $cap = array_key_exists($day, $school->getAssistants()) ? $school->getAssistants()[$day] : 0;
+                    $freeCapacity = $capacity - $cap;
+                    if($freeCapacity < 1) continue;
+
+                    //Create a deep copy of the current solution
+                    $schoolsCopy = $this->deepCopySchools();
+                    $assistantsCopy = $this->deepCopyAssistants($schoolsCopy);
+                    $newSolution = new Solution($schoolsCopy, $assistantsCopy);
+                    //Move the assistant from current school to a new school and add the new solution to the neighbour list
+                    $newSolution->moveAssistant($assistantsCopy[$assistantIndex], $schoolsCopy[$schoolIndex]->getName(), $assistant->getAssignedDay(), $day);
+                    /*if(sizeof(Solution::$visited) > 0 && in_array($newSolution, Solution::$visited)){
+                        continue;
+                    }*/
+                    Solution::$visited++;
+                    $neighbours[] = $newSolution;
+                }
+                $schoolIndex++;
+            }
+            $assistantIndex++;
+        }
+        return $neighbours;
     }
 
     private function capacityLeftOnDay($day, $school)
