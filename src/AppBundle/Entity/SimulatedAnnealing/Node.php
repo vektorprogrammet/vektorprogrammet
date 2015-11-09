@@ -35,9 +35,12 @@ class Node
                     $schoolsCopy = $this->solution->deepCopySchools();
                     $assistantsCopy = $this->solution->deepCopyAssistants($schoolsCopy);
                     $newSolution = new Solution($schoolsCopy, $assistantsCopy);
-
                     //Move the assistant from current school to a new school and add the new solution to the neighbour list
                     $newSolution->moveAssistant($assistantsCopy[$assistantIndex], $schoolsCopy[$schoolIndex]->getName(), $assistant->getAssignedDay(), $day);
+                    /*if(sizeof(Solution::$visited) > 0 && in_array($newSolution, Solution::$visited)){
+                        continue;
+                    }*/
+                    Solution::$visited++;
                     $node = new Node($newSolution);
                     $neighbours[] = $node;
                 }

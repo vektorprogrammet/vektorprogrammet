@@ -85,6 +85,7 @@ class SchoolAllocationController extends Controller
             $optimizer = new Optimizer($node, 0.0001, 0.0000001);
             $bestSolution = $optimizer->optimize();
         }
+        $solutionsCount = Solution::$visited;
 
 
         return $this->render('school_admin/school_allocate.html.twig', array(
@@ -98,6 +99,7 @@ class SchoolAllocationController extends Controller
             'optimizedAllocatedSchools' => $bestSolution->getSchools(),
             'optimizedAllocatedAssistants' => $bestSolution->getAssistants(),
             'optimizedScore' => $bestSolution->evaluate(),
+            'differentSolutions' => $solutionsCount,
         ));
     }
 

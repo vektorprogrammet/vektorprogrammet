@@ -231,6 +231,7 @@
                 {% endif %}
                 <div class="row" style="font-size: 20px;">Score (1-100): <span
                             style="color: {{ color }}">{{ optimizedScore|round }}</span></div>
+                <div class="row">Evaluated {{ differentSolutions }} solutions</div>
                 <div class="row" style="margin-bottom:50px;">Finished in: {{ optimizeTime }}s</div>
                 {% for school in optimizedAllocatedSchools %}
                     {% if school.assistants|length > 0 %}

@@ -9,6 +9,7 @@ class Solution
     public $improveTime;
     public $optimizeTime;
     private $toBeImproved;
+    public static $visited;
 
     /**
      * Solution constructor.
@@ -100,6 +101,8 @@ class Solution
             }
         }
         $this->initializeTime = (round(microtime(true) * 1000) - $startTime) / 1000;
+        Solution::$visited = 1;
+        //Solution::$visited[] = $this;
 
     }
 
