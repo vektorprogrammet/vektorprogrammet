@@ -7,12 +7,22 @@ class Assistant
     private $assignedSchool;//Name of school
     private $assignedDay;
     private $availability; //An associative array. Key = weekday, Value = {0, 1, 2}. 0 is bad, 1 is ok, 2 is good. "Monday" => 2.
+    private $bolk1, $bolk2;
+    private $prefBolk1, $prefBolk2;
+    private $preferredSchool;
+    private $doublePosition;
 
     /**
      * Assistant constructor.
      */
     public function __construct()
     {
+        $this->bolk1 = false;
+        $this->bolk2 = false;
+        $this->prefBolk1 = false;
+        $this->prefBolk2 = false;
+        $this->doublePosition = false;
+        $this->preferredSchool = null;
         $this->availability = array();
     }
 
@@ -44,6 +54,124 @@ class Assistant
     {
         $this->name = $name;
     }
+
+    /**
+     * @return null
+     */
+    public function getPreferedSchool()
+    {
+        return $this->preferedSchool;
+    }
+
+    /**
+     * @param null $preferredSchool
+     */
+    public function setPreferedSchool($preferredSchool)
+    {
+        $this->preferredSchool = $preferredSchool;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPrefBolk1()
+    {
+        return $this->prefBolk1;
+    }
+
+    /**
+     * @param boolean $prefBolk1
+     */
+    public function setPrefBolk1($prefBolk1)
+    {
+        $this->prefBolk1 = $prefBolk1;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPrefBolk2()
+    {
+        return $this->prefBolk2;
+    }
+
+    /**
+     * @param boolean $prefBolk2
+     */
+    public function setPrefBolk2($prefBolk2)
+    {
+        $this->prefBolk2 = $prefBolk2;
+    }
+
+    /**
+     * @return null
+     */
+    public function getPreferredSchool()
+    {
+        return $this->preferredSchool;
+    }
+
+    /**
+     * @param null $preferredSchool
+     */
+    public function setPreferredSchool($preferredSchool)
+    {
+        $this->preferredSchool = $preferredSchool;
+    }
+
+
+
+    /**
+     * @return boolean
+     */
+    public function isDoublePosition()
+    {
+        return $this->doublePosition;
+    }
+
+    /**
+     * @param boolean $doublePosition
+     */
+    public function setDoublePosition($doublePosition)
+    {
+        $this->doublePosition = $doublePosition;
+    }
+
+
+
+    /**
+     * @return boolean
+     */
+    public function isBolk1()
+    {
+        return $this->bolk1;
+    }
+
+    /**
+     * @param boolean $bolk1
+     */
+    public function setBolk1($bolk1)
+    {
+        $this->bolk1 = $bolk1;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isBolk2()
+    {
+        return $this->bolk2;
+    }
+
+    /**
+     * @param boolean $bolk2
+     */
+    public function setBolk2($bolk2)
+    {
+        $this->bolk2 = $bolk2;
+    }
+
+
 
     /**
      * @return array

@@ -10,18 +10,23 @@ class Optimizer
     private $startSolution;
     private $temp;
     private $dt;
+    private $startTime;
+    private $maxTime;
 
     /**
      * Optimizer constructor.
      * @param $startSolution
      * @param $temp
      * @param $dt
+     * @param $maxTime in seconds
      */
-    public function __construct(Solution $startSolution, $temp, $dt)
+    public function __construct(Solution $startSolution, $temp, $dt, $maxTime)
     {
         $this->startSolution = $startSolution;
         $this->temp = $temp;//Set maxTemperature
         $this->dt = $dt;
+        $this->maxTime = $maxTime;
+        $this->startTime = round(microtime(true) * 1000)/1000;
     }
 
     public function optimize(){
@@ -29,7 +34,7 @@ class Optimizer
         $bestSolution = $this->startSolution;
         $currentSolution = $bestSolution;
 
-        while($this->temp > 0){
+        while($this->temp > 0 && (round(microtime(true) * 1000)/1000 - $this->startTime) < $this->maxTime){
             //Return the solution if score === 100 (Perfect solution)
             if($currentSolution->evaluate() === 100){
                 $currentSolution->optimizeTime = (round(microtime(true) * 1000)-$startTime)/1000;

@@ -69,6 +69,7 @@
                     <th>Onsdag</th>
                     <th>Torsdag</th>
                     <th>Fredag</th>
+                    <th>Bolk</th>
                 </tr>
                 </thead>
                 {% set mondayGoodCount = 0 %}
@@ -136,6 +137,19 @@
                         <td>{{ interview.interviewPractical.wednesday }}</td>
                         <td>{{ interview.interviewPractical.thursday }}</td>
                         <td>{{ interview.interviewPractical.friday }}</td>
+                        {% set bolks = "Ingen" %}
+                        {% if "Bolk 1" in interview.interviewPractical.position %}
+                            {% set bolks = "Bolk 1" %}
+                        {% endif %}
+                        {% if "Bolk 2" in interview.interviewPractical.position %}
+                            {% if bolks|length != "Ingen" %}
+                                {% set bolks = bolks ~ ", " %}
+                            {% else %}
+                                {% set bolks = "" %}
+                            {% endif %}
+                            {% set bolks = bolks ~ "Bolk 2" %}
+                        {% endif %}
+                        <td>{{ bolks }}</td>
                     </tr>
                 {% endfor %}
                 <tr>

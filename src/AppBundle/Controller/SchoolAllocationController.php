@@ -42,16 +42,36 @@ class SchoolAllocationController extends Controller
 
         //Use interviews to create Assistant objects for the SA-algorithm
         foreach($allInterviews as $interview) {
-            $assistant = new Assistant();
-            $assistant->setName($interview->getApplication()->getFirstName() . ' ' . $interview->getApplication()->getLastName());
-            $availability = array();
             $intPractical = $interview->getInterviewPractical();
+            if($intPractical->getSemester() != $currentSemester){
+                continue;
+            }
+
+            $position = $intPractical->getPosition();
+            $doublePosition = in_array("1x8", $position);
+            $prefBolk1 = in_array("Bolk 1", $position);
+            $prefBolk2 = in_array("Bolk 2", $position);
+            if($prefBolk1 && $prefBolk2){
+                $prefBolk1 = false;
+                $prefBolk2 = false;
+            }
+
+            $preferredSchool = $intPractical->getPreferredSchool();
+
+            $availability = array();
             $availabilityPoints = ["Ikke", "Ok", "Bra"];
             $availability["Monday"] = array_search($intPractical->getMonday(), $availabilityPoints);
             $availability["Tuesday"] = array_search($intPractical->getTuesday(), $availabilityPoints);
             $availability["Wednesday"] = array_search($intPractical->getWednesday(), $availabilityPoints);
             $availability["Thursday"] = array_search($intPractical->getThursday(), $availabilityPoints);
             $availability["Friday"] = array_search($intPractical->getFriday(), $availabilityPoints);
+
+            $assistant = new Assistant();
+            $assistant->setName($interview->getApplication()->getFirstName() . ' ' . $interview->getApplication()->getLastName());
+            $assistant->setPrefBolk1($prefBolk1);
+            $assistant->setPrefBolk2($prefBolk2);
+            $assistant->setDoublePosition($doublePosition);
+            $assistant->setPreferedSchool($preferredSchool);
             $assistant->setAvailability($availability);
 
             $assistants[] = $assistant;
@@ -81,10 +101,11 @@ class SchoolAllocationController extends Controller
             $solution->initializeSolution(true, false);
             $solution->improveSolution();
             //Optimize the initialized solution (Very slow)
-            $optimizer = new Optimizer($solution, 0.0001, 0.0000001);
+            $optimizer = new Optimizer($solution, 0.0001, 0.000001, 15);
             $bestSolution = $optimizer->optimize();
         }
         $solutionsCount = Solution::$visited;
+
 
 
         return $this->render('school_admin/school_allocate.html.twig', array(

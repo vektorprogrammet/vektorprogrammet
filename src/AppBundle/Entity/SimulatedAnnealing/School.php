@@ -50,6 +50,18 @@ class School
         $this->name = $name;
     }
 
+    public function hasAssistants($log = false){
+        if(sizeof($this->assistants) == 0)return false;
+        foreach($this->assistants as $day => $amount){
+            if ($log) {
+                dump($this->name . " has " . $amount . " assistants on " . $day);
+            }
+            if($amount > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public function addAssistant($day){
         if(!array_key_exists($day, $this->assistants)){

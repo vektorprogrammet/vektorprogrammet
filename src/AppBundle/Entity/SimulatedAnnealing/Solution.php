@@ -64,6 +64,7 @@ class Solution
 
                 $i = 0;
                 $bestSchool = null;
+                $bestDayCapacity = 0;
                 $bestDay = null;
 
                 while ($bestSchool === null) {
@@ -72,15 +73,19 @@ class Solution
 
                     $bestDay = array_keys($availabilitySorted)[$i];
                     foreach ($this->schools as $school) {
-                        $capacityOnBestDay = $this->capacityLeftOnDay($bestDay, $school);
+                        if($school->getCapacity()[$bestDay] == 0){
+                            $capacityOnBestDay = 0;
+                        }else{
+                            $capacityOnBestDay = $this->capacityLeftOnDay($bestDay, $school)/$school->getCapacity()[$bestDay];
+                        }
                         //If no bestSchool has been set yet and there is capacity on this school
                         if ($bestSchool === null && $capacityOnBestDay > 0) {
                             $bestSchool = $school;
+                            $bestDayCapacity = $capacityOnBestDay;
                             continue;
                         } elseif ($bestSchool !== null) {
                             //Find the best school. The best school will be the school with most capacity left on the weekday that is best for the assistant.
-                            $currentBestCapacityOnBestDay = $bestSchool->getCapacity()[$bestDay];
-                            if ($capacityOnBestDay > $currentBestCapacityOnBestDay) {
+                            if ($capacityOnBestDay > $bestDayCapacity) {
                                 $bestSchool = $school;
                             }
                         }
@@ -143,18 +148,41 @@ class Solution
     }
 
     /**
-     * @return float|int in [0,100]
+     * @return int|int in [0,100]
      */
     public function evaluate()
     {
         if (sizeof($this->assistants) === 0) {
             return 0;
         }
+        $maxPoints = 0;
         $points = 0;
         foreach ($this->assistants as $assistant) {
-            $points += $assistant->getAvailability()[$assistant->getAssignedDay()];
+            $avP = $assistant->getAvailability()[$assistant->getAssignedDay()];
+            if($avP == 2) {
+                $points += 5;
+            }elseif($avP == 1){
+                $points += 3;
+            }
+            $maxPoints+=5;
         }
-        return 100 * $points / (2 * sizeof($this->assistants));
+        foreach($this->schools as $school){
+            $maxPoints += 10;
+            if($school->hasAssistants()){
+                $points += 10;
+            }
+
+            foreach($school->getAssistants() as $amount){
+                if ($amount > 0){
+                    $maxPoints += 5;
+                    if($amount >= 2){
+                        $points += 5;
+                    }
+                }
+            }
+        }
+        if($maxPoints == 0) return 0;
+        return 100 * $points / $maxPoints;
     }
 
     public function generateNeighbours(){

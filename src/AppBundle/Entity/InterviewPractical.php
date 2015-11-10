@@ -53,6 +53,18 @@ class InterviewPractical
     protected $substitute;
 
     /**
+     * @ORM\ManyToOne(targetEntity="School")
+     * @ORM\JoinColumn(name="preferredSchool_id", referencedColumnName="id")
+     */
+    protected $preferredSchool;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Semester")
+     * @ORM\JoinColumn(name="semester_id", referencedColumnName="id")
+     */
+    protected $semester;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     protected $english;
@@ -105,6 +117,40 @@ class InterviewPractical
     {
         return $this->position;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPreferredSchool()
+    {
+        return $this->preferredSchool;
+    }
+
+    /**
+     * @param mixed $preferredSchool
+     */
+    public function setPreferredSchool($preferredSchool)
+    {
+        $this->preferredSchool = $preferredSchool;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSemester()
+    {
+        return $this->semester;
+    }
+
+    /**
+     * @param mixed $semester
+     */
+    public function setSemester($semester)
+    {
+        $this->semester = $semester;
+    }
+
+
 
     /**
      * Set monday
