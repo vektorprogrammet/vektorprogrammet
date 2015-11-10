@@ -56,7 +56,6 @@
                     Medium: ['Medium Preset','715x300'],
                     Large: ['Large Preset','1024x326']
                 };
-                console.log(allPresets[preset]);
                 featherEditor.launch({
                     tools: 'enhance',
                     forceCropPreset: allPresets[preset],
@@ -110,6 +109,7 @@
                 event.preventDefault();
                 var elem = $(this).attr('id').substr(13);
                 var new_src = $(this).val();
+                new_src = '/images' + new_src;  //fubar bugfix
                 if(new_src !== ""){
                     new_src += '?' + new Date().getTime();
                 }
@@ -153,7 +153,6 @@
                 featherEditor.showWaitIndicator();
                 var filename_split = $('#article_image'+imageID.substr(3)).val().split('/');
                 var _name  = filename_split[filename_split.length-1];
-                console.log(_name,_name.substr(0,_name.length-4));
                 $.ajax({
                     type: "POST",
                     url: "{{ path('articleadmin_saveImage') }}",
@@ -165,7 +164,7 @@
                     }),
                     success: function(response) {
                         if(response.success) {
-                            setValue(response.localURL,'article_image' + response.imageType)
+                            setValue(response.localURL,'article_image' + response.imageType);
                             featherEditor.close();
                         } else {
                             alert(response.cause);
