@@ -92,16 +92,19 @@ class SchoolAllocationController extends Controller
         //Create and find the initialSolution (Very fast)
         $solution = new Solution($schools,$assistants);
         $dcSolution = $solution->deepCopy();
+        $dcSolution->divideBolks();
         $dcSolution->initializeSolution(true, true);
         $dcSolution->improveSolution();
         if($dcSolution->evaluate() === 100){
             $solution = $dcSolution;
             $bestSolution = $dcSolution;
         }else{
+
+            $solution->divideBolks();
             $solution->initializeSolution(true, false);
             $solution->improveSolution();
             //Optimize the initialized solution (Very slow)
-            $optimizer = new Optimizer($solution, 0.0001, 0.000001, 15);
+            $optimizer = new Optimizer($solution, 0.0001, 0.000001, 100);
             $bestSolution = $optimizer->optimize();
         }
         $solutionsCount = Solution::$visited;
@@ -113,11 +116,14 @@ class SchoolAllocationController extends Controller
             'allocations' => $allCurrentSchoolCapacities,
             'allocatedSchools' => $solution->getSchools(),
             'allocatedAssistants' => $solution->getAssistants(),
+            'allocatedBolk1Assistants' => $solution->getAssistantsInBolk1(),
+            'allocatedBolk2Assistants' => $solution->getAssistantsInBolk2(),
             'score' => $solution->evaluate(),
             'initializeTime' => $solution->initializeTime + $solution->improveTime,
             'optimizeTime' => $bestSolution->optimizeTime,
             'optimizedAllocatedSchools' => $bestSolution->getSchools(),
-            'optimizedAllocatedAssistants' => $bestSolution->getAssistants(),
+            'optimizedAllocatedBolk1Assistants' => $bestSolution->getAssistantsInBolk1(),
+            'optimizedAllocatedBolk2Assistants' => $bestSolution->getAssistantsInBolk2(),
             'optimizedScore' => $bestSolution->evaluate(),
             'differentSolutions' => $solutionsCount,
         ));

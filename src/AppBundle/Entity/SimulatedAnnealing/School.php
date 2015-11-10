@@ -4,7 +4,8 @@ namespace AppBundle\Entity\SimulatedAnnealing;
 class School
 {
     private $name;
-    private $assistants;//An associative array. Key = weekday, Value = number of assistants. "Tuesday => 2
+    private $bolk1Assistants;//An associative array. Key = weekday, Value = number of assistants. "Tuesday => 2
+    private $bolk2Assistants;//An associative array. Key = weekday, Value = number of assistants. "Tuesday => 2
     private $capacity;//An associative array. Key = weekday, Value = capacity. "Wednesday" => 4.
 
     /**
@@ -14,6 +15,8 @@ class School
      */
     public function __construct($capacity, $name)
     {
+        $this->bolk1Assistants = array();
+        $this->bolk2Assistants = array();
         $this->assistants = array();
         $this->capacity = $capacity;
         $this->name = $name;
@@ -28,6 +31,7 @@ class School
     }
 
     public function deepCopy(){
+        return $this;
         $copy = new School($this->capacity, $this->name);
         $copyAssistants = array();
         foreach($this->assistants as $day => $assistant){
@@ -50,12 +54,14 @@ class School
         $this->name = $name;
     }
 
-    public function hasAssistants($log = false){
-        if(sizeof($this->assistants) == 0)return false;
-        foreach($this->assistants as $day => $amount){
-            if ($log) {
-                dump($this->name . " has " . $amount . " assistants on " . $day);
-            }
+    public function hasAssistants($bolk2 = false){
+        if(!$bolk2){
+            $assistants = $this->bolk1Assistants;
+        }else{
+            $assistants = $this->bolk2Assistants;
+        }
+        if(sizeof($assistants) == 0)return false;
+        foreach($assistants as $amount){
             if($amount > 0) {
                 return true;
             }
@@ -63,33 +69,73 @@ class School
         return false;
     }
 
-    public function addAssistant($day){
-        if(!array_key_exists($day, $this->assistants)){
-            $this->assistants[$day]= 1;
+    public function addAssistant($day, $bolk2 = false){
+        if(!$bolk2){
+            if(!array_key_exists($day, $this->bolk1Assistants)){
+                $this->bolk1Assistants[$day]= 1;
+            }else{
+                $this->bolk1Assistants[$day]++;
+            }
         }else{
-            $this->assistants[$day]++;
+            if(!array_key_exists($day, $this->bolk2Assistants)){
+                $this->bolk2Assistants[$day]= 1;
+            }else{
+                $this->bolk2Assistants[$day]++;
+            }
+        }
+    }
+
+    public function getAssistants($bolk2 = false){
+        if(!$bolk2){
+            return $this->bolk1Assistants;
+        }else{
+            return $this->bolk2Assistants;
         }
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getAssistants()
+    public function getBolk1Assistants()
     {
-        return $this->assistants;
+        return $this->bolk1Assistants;
     }
 
     /**
-     * @param mixed $assistants
+     * @param array $bolk1Assistants
      */
-    public function setAssistants($assistants)
+    public function setBolk1Assistants($bolk1Assistants)
     {
-        $this->assistants = $assistants;
+        $this->bolk1Assistants = $bolk1Assistants;
     }
 
-    public function removeAssistant($day){
-        if(array_key_exists($day, $this->assistants) && $this->assistants[$day] > 0) {
-            $this->assistants[$day] = $this->assistants[$day] -1;
+    /**
+     * @return array
+     */
+    public function getBolk2Assistants()
+    {
+        return $this->bolk2Assistants;
+    }
+
+    /**
+     * @param array $bolk2Assistants
+     */
+    public function setBolk2Assistants($bolk2Assistants)
+    {
+        $this->bolk2Assistants = $bolk2Assistants;
+    }
+
+
+
+    public function removeAssistant($day, $bolk2 = false){
+        if(!$bolk2){
+            if(array_key_exists($day, $this->bolk1Assistants) && $this->bolk1Assistants[$day] > 0) {
+                $this->bolk1Assistants[$day] = $this->bolk1Assistants[$day] - 1;
+            }
+        }else{
+            if(array_key_exists($day, $this->bolk2Assistants) && $this->bolk2Assistants[$day] > 0) {
+                $this->bolk2Assistants[$day] = $this->bolk2Assistants[$day] -1;
+            }
         }
     }
 

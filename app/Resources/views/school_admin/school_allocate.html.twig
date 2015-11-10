@@ -70,6 +70,7 @@
                     <th>Torsdag</th>
                     <th>Fredag</th>
                     <th>Bolk</th>
+                    <th>Dobbel</th>
                 </tr>
                 </thead>
                 {% set mondayGoodCount = 0 %}
@@ -150,6 +151,11 @@
                             {% set bolks = bolks ~ "Bolk 2" %}
                         {% endif %}
                         <td>{{ bolks }}</td>
+                        {% if "1x8" in interview.interviewPractical.position %}
+                            <td>Ja</td>
+                        {% else %}
+                            <td>Nei</td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
                 <tr>
@@ -197,8 +203,10 @@
                 <div class="row" style="font-size: 20px;">Score (1-100): <span
                             style="color: {{ color }}">{{ score|round }}</span></div>
                 <div class="row" style="margin-bottom:50px;">Finished in: {{ initializeTime }}s</div>
+
+                <div class="row"><h2 style="text-align: center">Bolk 1</h2></div>
                 {% for school in allocatedSchools %}
-                    {% if school.assistants|length > 0 %}
+                    {% if school.bolk1Assistants|length > 0 %}
                         <h3>{{ school.name }}</h3>
                         <table style="table-layout: fixed; width: 100%;">
                             <thead>
@@ -209,8 +217,8 @@
                             </thead>
 
                             <tbody>
-                            {% for day in school.assistants|keys %}
-                                {% for assistant in allocatedAssistants %}
+                            {% for day in school.bolk1Assistants|keys %}
+                                {% for assistant in allocatedBolk1Assistants %}
                                     {% if assistant.assignedSchool == school.name and assistant.assignedDay == day %}
                                         <tr>
                                             {% if assistant.availability[day] == 2 %}
@@ -229,6 +237,41 @@
                         </table>
                     {% endif %}
                 {% endfor %}
+
+                <div class="row"><h2 style="text-align: center">Bolk 2</h2></div>
+                {% for school in allocatedSchools %}
+                    {% if school.bolk2Assistants|length > 0 %}
+                        <h3>{{ school.name }}</h3>
+                        <table style="table-layout: fixed; width: 100%;">
+                            <thead>
+                            <tr>
+                                <th>Navn</th>
+                                <th>Dag</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for day in school.bolk2Assistants|keys %}
+                                {% for assistant in allocatedBolk2Assistants %}
+                                    {% if assistant.assignedSchool == school.name and assistant.assignedDay == day %}
+                                        <tr>
+                                            {% if assistant.availability[day] == 2 %}
+                                                <td style="color: #007700">{{ assistant.name }}</td>
+                                            {% elseif assistant.availability[day] == 1 %}
+                                                <td style="color: #bb6b10">{{ assistant.name }}</td>
+                                            {% else %}
+                                                <td style="color: #770702">{{ assistant.name }}</td>
+                                            {% endif %}
+                                            <td>{{ day }}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                {% endfor %}
+
             </div>
         </div>
 
@@ -247,8 +290,10 @@
                             style="color: {{ color }}">{{ optimizedScore|round }}</span></div>
                 <div class="row">Evaluated {{ differentSolutions }} solutions</div>
                 <div class="row" style="margin-bottom:50px;">Finished in: {{ optimizeTime }}s</div>
+
+                <div class="row"><h2 style="text-align: center">Bolk 1</h2></div>
                 {% for school in optimizedAllocatedSchools %}
-                    {% if school.assistants|length > 0 %}
+                    {% if school.bolk1Assistants|length > 0 %}
                         <h3>{{ school.name }}</h3>
                         <table style="table-layout: fixed; width: 100%;">
                             <thead>
@@ -259,8 +304,41 @@
                             </thead>
 
                             <tbody>
-                            {% for day in school.assistants|keys %}
-                                {% for assistant in optimizedAllocatedAssistants %}
+                            {% for day in school.bolk1Assistants|keys %}
+                                {% for assistant in optimizedAllocatedBolk1Assistants %}
+                                    {% if assistant.assignedSchool == school.name and assistant.assignedDay == day %}
+                                        <tr>
+                                            {% if assistant.availability[day] == 2 %}
+                                                <td style="color: #007700">{{ assistant.name }}</td>
+                                            {% elseif assistant.availability[day] == 1 %}
+                                                <td style="color: #bb6b10">{{ assistant.name }}</td>
+                                            {% else %}
+                                                <td style="color: #770702">{{ assistant.name }}</td>
+                                            {% endif %}
+                                            <td>{{ day }}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                {% endfor %}
+                <div class="row"><h2 style="text-align: center">Bolk 2</h2></div>
+                {% for school in optimizedAllocatedSchools %}
+                    {% if school.bolk2Assistants|length > 0 %}
+                        <h3>{{ school.name }}</h3>
+                        <table style="table-layout: fixed; width: 100%;">
+                            <thead>
+                            <tr>
+                                <th>Navn</th>
+                                <th>Dag</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for day in school.bolk2Assistants|keys %}
+                                {% for assistant in optimizedAllocatedBolk2Assistants %}
                                     {% if assistant.assignedSchool == school.name and assistant.assignedDay == day %}
                                         <tr>
                                             {% if assistant.availability[day] == 2 %}

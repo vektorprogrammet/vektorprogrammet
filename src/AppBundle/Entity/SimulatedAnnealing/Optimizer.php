@@ -29,7 +29,7 @@ class Optimizer
         $this->startTime = round(microtime(true) * 1000)/1000;
     }
 
-    public function optimize(){
+    public function optimize($bolk2 = false){
         $startTime = round(microtime(true) * 1000);
         $bestSolution = $this->startSolution;
         $currentSolution = $bestSolution;
@@ -80,6 +80,9 @@ class Optimizer
             }
             //Decrease temperature
             $this->temp -= $this->dt;
+        }
+        if(!$bolk2){
+            $this->optimize(true);
         }
         //Temperature === 0. The perfect solution was not found or does not exists. Return the most optimal solution found.
         $bestSolution->optimizeTime = (round(microtime(true) * 1000)-$startTime)/1000;

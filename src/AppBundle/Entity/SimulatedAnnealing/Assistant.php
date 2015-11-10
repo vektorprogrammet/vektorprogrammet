@@ -148,11 +148,12 @@ class Assistant
     }
 
     /**
-     * @param boolean $bolk1
+     *
      */
-    public function setBolk1($bolk1)
+    public function assignBolk1()
     {
-        $this->bolk1 = $bolk1;
+        $this->bolk2 = false;
+        $this->bolk1 = true;
     }
 
     /**
@@ -164,11 +165,17 @@ class Assistant
     }
 
     /**
-     * @param boolean $bolk2
+     *
      */
-    public function setBolk2($bolk2)
+    public function assignBolk2()
     {
-        $this->bolk2 = $bolk2;
+        $this->bolk1 = false;
+        $this->bolk2 = true;
+    }
+
+    public function assignBothBolks(){
+        $this->bolk2 = true;
+        $this->bolk1 = true;
     }
 
 
