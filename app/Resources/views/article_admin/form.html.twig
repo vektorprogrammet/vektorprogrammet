@@ -109,7 +109,9 @@
                 event.preventDefault();
                 var elem = $(this).attr('id').substr(13);
                 var new_src = $(this).val();
-                new_src = '/images' + new_src;  //fubar bugfix
+                if(new_src.indexOf("/images") == -1) {
+                    new_src = '/images' + new_src; //fubar bugfix
+                }
                 if(new_src !== ""){
                     new_src += '?' + new Date().getTime();
                 }
