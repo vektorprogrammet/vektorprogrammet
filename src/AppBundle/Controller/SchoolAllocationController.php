@@ -104,7 +104,7 @@ class SchoolAllocationController extends Controller
             $solution->initializeSolution(true, false);
             $solution->improveSolution();
             //Optimize the initialized solution (Very slow)
-            $optimizer = new Optimizer($solution, 0.0001, 0.000001, 100);
+            $optimizer = new Optimizer($solution, 0.0001, 0.0000001, 250);
             $bestSolution = $optimizer->optimize();
         }
         $solutionsCount = Solution::$visited;

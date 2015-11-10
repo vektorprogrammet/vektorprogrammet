@@ -41,6 +41,9 @@ class Optimizer
                 return $currentSolution;
             }
             $neighbours = $currentSolution->generateNeighbours();
+            if(sizeof($neighbours) === 0){
+                dump("INGEN NABOER");
+            }
             if(sizeof($neighbours) === 0)break;
             //The node in the neighbour list with the highest score
             $pMax = null;
