@@ -123,14 +123,14 @@ class SchoolAllocationController extends Controller
         //Create and find the initialSolution (Very fast)
         $solutionBolk1 = new Solution($schools, $assistantsInBolk1);
         $solutionBolk2 = new Solution($this->deepCopySchools($schools), $assistantsInBolk2);
-        $solutionBolk1->initializeSolution(true, false);
-        $solutionBolk2->initializeSolution(true, false);
+        $solutionBolk1->initializeSolution(true, true);
+        $solutionBolk2->initializeSolution(true, true);
         //$solutionBolk1->improveSolution();
         //$solutionBolk2->improveSolution();
         $dcSolutionBolk1 = $solutionBolk1->deepCopy();
         $dcSolutionBolk2 = $solutionBolk2->deepCopy();
 
-        $maxOptimizeTime = 3; //In seconds
+        $maxOptimizeTime = 20; //In seconds
         if($dcSolutionBolk1->evaluate() === 100){
             $solutionBolk1 = $dcSolutionBolk1;
             $bestSolutionBolk1 = $dcSolutionBolk1;
@@ -145,8 +145,6 @@ class SchoolAllocationController extends Controller
             $optimizer = new Optimizer($solutionBolk2, 0.0001, 0.0000001, $maxOptimizeTime/2);
             $bestSolutionBolk2 = $optimizer->optimize();
         }
-        dump($bestSolutionBolk1->sortSchoolsByNumberOfAssistants("Monday"));
-        //$bestSolutionBolk1->evaluate(true);
 
         $solutionsCount = Solution::$visited;
 
@@ -158,13 +156,13 @@ class SchoolAllocationController extends Controller
             'allocatedSchools' => $schools,
             'initialSolutionBolk1' => $solutionBolk1,
             'initialSolutionBolk2' => $solutionBolk2,
-            'score' => ($solutionBolk1->evaluate()+$solutionBolk2->evaluate())/2,
+            'score' => floor(($solutionBolk1->evaluate()+$solutionBolk2->evaluate())/2),
             'initializeTime' => $solutionBolk1->initializeTime + $solutionBolk1->improveTime + $solutionBolk2->initializeTime + $solutionBolk2->improveTime,
             'optimizeTime' => $bestSolutionBolk1->optimizeTime + $bestSolutionBolk2->optimizeTime,
             'optimizedAllocatedSchools' => $schools,
             'optimizedSolutionBolk1' => $bestSolutionBolk1,
             'optimizedSolutionBolk2' => $bestSolutionBolk2,
-            'optimizedScore' => ($bestSolutionBolk1->evaluate() + $bestSolutionBolk1->evaluate())/2,
+            'optimizedScore' => floor(($bestSolutionBolk1->evaluate() + $bestSolutionBolk2->evaluate())/2),
             'differentSolutions' => $solutionsCount,
         ));
     }

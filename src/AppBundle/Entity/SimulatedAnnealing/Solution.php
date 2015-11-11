@@ -67,7 +67,6 @@ class Solution
 
                 $i = 0;
                 $bestSchool = null;
-                $bestDayCapacity = 0;
                 $bestDay = null;
 
                 while ($bestSchool === null) {
@@ -75,11 +74,14 @@ class Solution
                     if ($i > 4) break; //If there is no capacity left in any school
 
                     $bestDay = array_keys($availabilitySorted)[$i];
-
-                    //TODO: Sort schools by #Assistants. Lowest first
-                    //TODO: Select first school with number of assistants on bestDay < 2
-                    //TODO: If every school has at least 2 assistant on bestDay select school that has highest capacity left on bestDay
-                    foreach ($this->schools as $school) {
+                    $schools = $this->sortSchoolsByNumberOfAssistants($bestDay);
+                    foreach ($schools as $school) {
+                        if($this->capacityLeftOnDay($bestDay, $school) > 0){
+                            $bestSchool = $school;
+                            break;
+                        }else{
+                            continue;
+                        }
                         if ($school->getCapacity()[$bestDay] == 0) {
                             $capacityOnBestDay = 0;
                         } else {
@@ -218,7 +220,6 @@ class Solution
                     //Check if the school has capacity for more assistants
                     $freeCapacity = $this->capacityLeftOnDay($day, $school);
                     if ($freeCapacity < 1) continue;
-                    if($school->totalAssistants() > $this->getSchoolByName($assistant->getAssignedSchool())->totalAssistants() ) continue;
 
                     //Create a deep copy of the current solution
                     $schoolsCopy = $this->deepCopySchools();
@@ -262,7 +263,47 @@ class Solution
             $tempSorted[$index][] = $school;
         }
         ksort($tempSorted);
-        dump($tempSorted);
+        $toBeSorted = array();
+        foreach($tempSorted as $temp){
+            foreach($temp as $school){
+                if(array_key_exists($day, $school) && $school->getAssistants()[$day] == 1){
+                    $sortedSchools[] = $school;
+                } else{
+                    $toBeSorted[] = $school;
+                }
+            }
+        }
+        $i = 0;
+        foreach ($toBeSorted as $school) {
+            if(array_key_exists($day, $school) && $school->getAssistants()[$day] == 0){
+                $sortedSchools[] = $school;
+                unset($toBeSorted[$i]);
+            }
+            $i++;
+        }
+        while(!empty($toBeSorted)){
+            $bestSchool = null;
+            $bestCapacity = 0.0;
+            $added = false;
+            foreach ($toBeSorted as $school) {
+                if(array_key_exists($day, $school) && ($this->capacityLeftOnDay($day, $school)/$school->getCapacity()[$day]) > $bestCapacity){
+                    $bestSchool = $school;
+                    $bestCapacity = $this->capacityLeftOnDay($day, $school)/$school->getCapacity()[$day];
+                    $added = true;
+                }
+            }
+            if($bestSchool !== null){
+                $sortedSchools[] = $bestSchool;
+                unset($toBeSorted[$key = array_search($toBeSorted, $bestSchool)]);
+            }elseif(!$added){
+                $keys = array_keys($toBeSorted);
+                $key = $keys[0];
+                $sortedSchools[] = $toBeSorted[$key];
+                unset($toBeSorted[$key]);
+            }
+
+        }
+        return $sortedSchools;
 
     }
 
