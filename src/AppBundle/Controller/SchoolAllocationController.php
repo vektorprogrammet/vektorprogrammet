@@ -89,24 +89,65 @@ class SchoolAllocationController extends Controller
             $schools[] = $school;
         }
 
-        //Create and find the initialSolution (Very fast)
-        $solution = new Solution($schools,$assistants);
-        $dcSolution = $solution->deepCopy();
-        $dcSolution->divideBolks();
-        $dcSolution->initializeSolution(true, true);
-        $dcSolution->improveSolution();
-        if($dcSolution->evaluate() === 100){
-            $solution = $dcSolution;
-            $bestSolution = $dcSolution;
-        }else{
-
-            $solution->divideBolks();
-            $solution->initializeSolution(true, false);
-            $solution->improveSolution();
-            //Optimize the initialized solution (Very slow)
-            $optimizer = new Optimizer($solution, 0.0001, 0.0000001, 250);
-            $bestSolution = $optimizer->optimize();
+        $assistantsInBolk1 = array();
+        $assistantsInBolk2 = array();
+        $lockedAssistants = array();
+        foreach ($assistants as $assistant) {
+            if ($assistant->isDoublePosition()) {
+                $assistantsInBolk1[] = $assistant;
+                $assistantsInBolk2[] = clone $assistant;
+                $lockedAssistants[] = $assistant;
+                $assistant->assignBothBolks();
+                continue;
+            }elseif($assistant->isPrefBolk1()){
+                $assistantsInBolk1[] = $assistant;
+                $assistant->assignBolk1();
+                continue;
+            }elseif($assistant->isPrefBolk2()){
+                $assistantsInBolk2[] = $assistant;
+                $assistant->assignBolk2();
+                continue;
+            }
         }
+        foreach ($assistants as $assistant) {
+            if($assistant->isBolk1() || $assistant->isBolk2())continue;
+            if (sizeof($assistantsInBolk1) > sizeof($assistantsInBolk2)) {
+                $assistantsInBolk2[] = $assistant;
+                $assistant->assignBolk2();
+            } else {
+                $assistantsInBolk1[] = $assistant;
+                $assistant->assignBolk1();
+            }
+        }
+
+        //Create and find the initialSolution (Very fast)
+        $solutionBolk1 = new Solution($schools, $assistantsInBolk1);
+        $solutionBolk2 = new Solution($this->deepCopySchools($schools), $assistantsInBolk2);
+        $solutionBolk1->initializeSolution(true, false);
+        $solutionBolk2->initializeSolution(true, false);
+        //$solutionBolk1->improveSolution();
+        //$solutionBolk2->improveSolution();
+        $dcSolutionBolk1 = $solutionBolk1->deepCopy();
+        $dcSolutionBolk2 = $solutionBolk2->deepCopy();
+
+        $maxOptimizeTime = 3; //In seconds
+        if($dcSolutionBolk1->evaluate() === 100){
+            $solutionBolk1 = $dcSolutionBolk1;
+            $bestSolutionBolk1 = $dcSolutionBolk1;
+        }else{
+            $optimizer = new Optimizer($solutionBolk1, 0.0001, 0.0000001, $maxOptimizeTime/2);
+            $bestSolutionBolk1 = $optimizer->optimize();
+        }
+        if($dcSolutionBolk2->evaluate() === 100){
+            $solutionBolk2 = $dcSolutionBolk2;
+            $bestSolutionBolk2 = $dcSolutionBolk2;
+        }else{
+            $optimizer = new Optimizer($solutionBolk2, 0.0001, 0.0000001, $maxOptimizeTime/2);
+            $bestSolutionBolk2 = $optimizer->optimize();
+        }
+        dump($bestSolutionBolk1->sortSchoolsByNumberOfAssistants("Monday"));
+        //$bestSolutionBolk1->evaluate(true);
+
         $solutionsCount = Solution::$visited;
 
 
@@ -114,19 +155,26 @@ class SchoolAllocationController extends Controller
         return $this->render('school_admin/school_allocate.html.twig', array(
             'interviews' => $allInterviews,
             'allocations' => $allCurrentSchoolCapacities,
-            'allocatedSchools' => $solution->getSchools(),
-            'allocatedAssistants' => $solution->getAssistants(),
-            'allocatedBolk1Assistants' => $solution->getAssistantsInBolk1(),
-            'allocatedBolk2Assistants' => $solution->getAssistantsInBolk2(),
-            'score' => $solution->evaluate(),
-            'initializeTime' => $solution->initializeTime + $solution->improveTime,
-            'optimizeTime' => $bestSolution->optimizeTime,
-            'optimizedAllocatedSchools' => $bestSolution->getSchools(),
-            'optimizedAllocatedBolk1Assistants' => $bestSolution->getAssistantsInBolk1(),
-            'optimizedAllocatedBolk2Assistants' => $bestSolution->getAssistantsInBolk2(),
-            'optimizedScore' => $bestSolution->evaluate(),
+            'allocatedSchools' => $schools,
+            'initialSolutionBolk1' => $solutionBolk1,
+            'initialSolutionBolk2' => $solutionBolk2,
+            'score' => ($solutionBolk1->evaluate()+$solutionBolk2->evaluate())/2,
+            'initializeTime' => $solutionBolk1->initializeTime + $solutionBolk1->improveTime + $solutionBolk2->initializeTime + $solutionBolk2->improveTime,
+            'optimizeTime' => $bestSolutionBolk1->optimizeTime + $bestSolutionBolk2->optimizeTime,
+            'optimizedAllocatedSchools' => $schools,
+            'optimizedSolutionBolk1' => $bestSolutionBolk1,
+            'optimizedSolutionBolk2' => $bestSolutionBolk2,
+            'optimizedScore' => ($bestSolutionBolk1->evaluate() + $bestSolutionBolk1->evaluate())/2,
             'differentSolutions' => $solutionsCount,
         ));
+    }
+
+    private function deepCopySchools($schools){
+        $copy = array();
+        foreach($schools as $school){
+            $copy[] = clone $school;
+        }
+        return $copy;
     }
 
     public function createAction(Request $request, $departmentId=null){

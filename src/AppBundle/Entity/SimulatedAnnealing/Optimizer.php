@@ -29,7 +29,7 @@ class Optimizer
         $this->startTime = round(microtime(true) * 1000)/1000;
     }
 
-    public function optimize($bolk2 = false){
+    public function optimize(){
         $startTime = round(microtime(true) * 1000);
         $bestSolution = $this->startSolution;
         $currentSolution = $bestSolution;
@@ -41,9 +41,7 @@ class Optimizer
                 return $currentSolution;
             }
             $neighbours = $currentSolution->generateNeighbours();
-            if(sizeof($neighbours) === 0){
-                dump("INGEN NABOER");
-            }
+
             if(sizeof($neighbours) === 0)break;
             //The node in the neighbour list with the highest score
             $pMax = null;
@@ -83,9 +81,6 @@ class Optimizer
             }
             //Decrease temperature
             $this->temp -= $this->dt;
-        }
-        if(!$bolk2){
-            $this->optimize(true);
         }
         //Temperature === 0. The perfect solution was not found or does not exists. Return the most optimal solution found.
         $bestSolution->optimizeTime = (round(microtime(true) * 1000)-$startTime)/1000;
