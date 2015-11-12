@@ -21,7 +21,6 @@
                     window.opener.setValue('{{ asset('') }}' + file.url.substring(file.url.indexOf("/images") +1), "{{ id }}");
                 {% else %}
                     window.opener.setValue(file.url, "{{ id }}");
-                    console.log('url: ' + file.url);
                 {% endif %}
                 window.close();
             }
