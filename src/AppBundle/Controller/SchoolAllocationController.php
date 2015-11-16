@@ -89,26 +89,28 @@ class SchoolAllocationController extends Controller
             $schools[] = $school;
         }
 
+        //Divide assistants into 'bolks'. If double position then assign to all three lists
+        //TODO: Limit number of people in one 'bolk' so that there will be equal amount of assistants in both
         $assistantsInBolk1 = array();
         $assistantsInBolk2 = array();
         $lockedAssistants = array();
+        //Assign assistants that has 'bolk' preferences
         foreach ($assistants as $assistant) {
             if ($assistant->isDoublePosition()) {
                 $assistantsInBolk1[] = $assistant;
-                $assistantsInBolk2[] = clone $assistant;
-                $lockedAssistants[] = $assistant;
+                $assistantCopy = clone $assistant;
+                $assistantsInBolk2[] = $assistantCopy;
+                $lockedAssistants[] = $assistantCopy;
                 $assistant->assignBothBolks();
-                continue;
             }elseif($assistant->isPrefBolk1()){
                 $assistantsInBolk1[] = $assistant;
                 $assistant->assignBolk1();
-                continue;
             }elseif($assistant->isPrefBolk2()){
                 $assistantsInBolk2[] = $assistant;
                 $assistant->assignBolk2();
-                continue;
             }
         }
+        //Assign assistants with no 'bolk' preference
         foreach ($assistants as $assistant) {
             if($assistant->isBolk1() || $assistant->isBolk2())continue;
             if (sizeof($assistantsInBolk1) > sizeof($assistantsInBolk2)) {
@@ -120,35 +122,32 @@ class SchoolAllocationController extends Controller
             }
         }
 
-        //Create and find the initialSolution (Very fast)
+        //Create and find the initialSolutions (Very fast)
         $solutionBolk1 = new Solution($schools, $assistantsInBolk1);
         $solutionBolk2 = new Solution($this->deepCopySchools($schools), $assistantsInBolk2);
-        $solutionBolk1->initializeSolution(true, true);
-        $solutionBolk2->initializeSolution(true, true);
+        $solutionBolk1->initializeSolution();
+        $solutionBolk2->initializeSolution();
         //$solutionBolk1->improveSolution();
         //$solutionBolk2->improveSolution();
-        $dcSolutionBolk1 = $solutionBolk1->deepCopy();
-        $dcSolutionBolk2 = $solutionBolk2->deepCopy();
 
-        $maxOptimizeTime = 20; //In seconds
-        if($dcSolutionBolk1->evaluate() === 100){
-            $solutionBolk1 = $dcSolutionBolk1;
-            $bestSolutionBolk1 = $dcSolutionBolk1;
+        $maxOptimizeTime = 60; //In seconds
+
+        //Check if the initializer found the perfect solution. If not, run the optimizer
+        if($solutionBolk1->evaluate() === 100){
+            $bestSolutionBolk1 = $solutionBolk1;
         }else{
             $optimizer = new Optimizer($solutionBolk1, 0.0001, 0.0000001, $maxOptimizeTime/2);
             $bestSolutionBolk1 = $optimizer->optimize();
         }
-        if($dcSolutionBolk2->evaluate() === 100){
-            $solutionBolk2 = $dcSolutionBolk2;
-            $bestSolutionBolk2 = $dcSolutionBolk2;
+        if($solutionBolk2->evaluate() === 100){
+            $bestSolutionBolk2 = $solutionBolk2;
         }else{
             $optimizer = new Optimizer($solutionBolk2, 0.0001, 0.0000001, $maxOptimizeTime/2);
             $bestSolutionBolk2 = $optimizer->optimize();
         }
 
+        //Total number of solutions evaluated during optimization
         $solutionsCount = Solution::$visited;
-
-
 
         return $this->render('school_admin/school_allocate.html.twig', array(
             'interviews' => $allInterviews,

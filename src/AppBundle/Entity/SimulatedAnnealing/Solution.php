@@ -27,101 +27,54 @@ class Solution
         $this->schools = $schools;
     }
 
-    public function initializeSolution($optimize = false, $sort = false)
+    public function initializeSolution()
     {
         $startTime = round(microtime(true) * 1000);
-        if (!$optimize) {
-            foreach ($this->assistants as $assistant) {
+        foreach ($this->assistants as $assistant) {
+            //Sort availability lists, best day first.
+            $availabilitySorted = $assistant->getAvailability();
+            arsort($availabilitySorted);
+            $assistant->setAvailability($availabilitySorted);
 
-                //Sort availability lists, best day first.
-                $availabilitySorted = $assistant->getAvailability();
-                //arsort($availabilitySorted);
-                $assistant->setAvailability($availabilitySorted);
-                $assigned = false;
-                foreach ($this->schools as $school) {
-                    foreach ($school->getCapacity() as $day => $cap) {
-                        if ($this->capacityLeftOnDay($day, $school) > 0) {
-                            $assistant->setAssignedSchool($school->getName());
-                            $assistant->setAssignedDay($day);
-                            $this->addAssistantToSchool($school, $day);
-                            //$this->assistants[] = $assistant;
-                            if ($assistant->getAvailability()[$day] !== 2) {
-                                $this->toBeImproved[] = $assistant;
-                            }
-                            $assigned = true;
-                            break;
-                        }
-                        if ($assigned) break;
+            $i = 0;
+            $bestSchool = null;
+            $bestDay = null;
+
+            while ($bestSchool === null) {
+
+                if ($i > 4) break; //If there is no capacity left in any school
+
+                $bestDay = array_keys($availabilitySorted)[$i];
+                $schools = $this->sortSchoolsByNumberOfAssistants($bestDay);
+                foreach ($schools as $school) {
+                    if ($this->capacityLeftOnDay($bestDay, $school) > 0) {
+                        $bestSchool = $school;
+                        break;
                     }
-                    if ($assigned) break;
                 }
+                $i++;
             }
-        } else {
-            foreach ($this->assistants as $assistant) {
-                //Sort availability lists, best day first.
-                $availabilitySorted = $assistant->getAvailability();
-                if ($sort) {
-                    arsort($availabilitySorted);
-                }
-                $assistant->setAvailability($availabilitySorted);
+            if ($i > 5) break;//If there is no capacity left in any school
 
-                $i = 0;
-                $bestSchool = null;
-                $bestDay = null;
-
-                while ($bestSchool === null) {
-
-                    if ($i > 4) break; //If there is no capacity left in any school
-
-                    $bestDay = array_keys($availabilitySorted)[$i];
-                    $schools = $this->sortSchoolsByNumberOfAssistants($bestDay);
-                    foreach ($schools as $school) {
-                        if($this->capacityLeftOnDay($bestDay, $school) > 0){
-                            $bestSchool = $school;
-                            break;
-                        }else{
-                            continue;
-                        }
-                        if ($school->getCapacity()[$bestDay] == 0) {
-                            $capacityOnBestDay = 0;
-                        } else {
-                            $capacityOnBestDay = $this->capacityLeftOnDay($bestDay, $school) / $school->getCapacity()[$bestDay];
-                        }
-                        //If no bestSchool has been set yet and there is capacity on this school
-                        if ($bestSchool === null && $capacityOnBestDay > 0) {
-                            $bestSchool = $school;
-                            $bestDayCapacity = $capacityOnBestDay;
-                            continue;
-                        } elseif ($bestSchool !== null) {
-                            //Find the best school. The best school will be the school with most capacity left on the weekday that is best for the assistant.
-                            if ($capacityOnBestDay > $bestDayCapacity) {
-                                $bestDayCapacity = $capacityOnBestDay;
-                                $bestSchool = $school;
-                            }
-                        }
-                    }
-                    $i++;
-                }
-                if ($i > 5) break;//If there is no capacity left in any school
-
-                //Update the assistant with the bestSchool and bestDay found and add it to the assistants list
-                $assistant->setAssignedSchool($bestSchool->getName());
-                $assistant->setAssignedDay($bestDay);
-                $this->addAssistantToSchool($bestSchool, $bestDay);
-                //$this->assistants[] = $assistant;
-                if ($assistant->getAvailability()[$bestDay] !== 2) {
-                    $this->toBeImproved[] = $assistant;
-                }
+            //Update the assistant with the bestSchool and bestDay found and add it to the assistants list
+            $assistant->setAssignedSchool($bestSchool->getName());
+            $assistant->setAssignedDay($bestDay);
+            $this->addAssistantToSchool($bestSchool, $bestDay);
+            //$this->assistants[] = $assistant;
+            //TODO: Add conditions to whether the assistant should be added to improveList or not
+            if ($assistant->getAvailability()[$bestDay] !== 2) {
+                $this->toBeImproved[] = $assistant;
             }
         }
+
         $this->initializeTime = (round(microtime(true) * 1000) - $startTime) / 1000;
         Solution::$visited = 1;
-        //Solution::$visited[] = $this;
 
     }
 
-    public
-    function improveSolution()
+    //TODO: Make this function check if swapping assistants yields better evaluation score rather than availability score
+    //Currently not in use
+    public function improveSolution()
     {
         $startTime = round(microtime(true) * 1000);
         $changed = true;
@@ -130,7 +83,7 @@ class Solution
             $changed = false;
             foreach ($this->toBeImproved as $assistant) {
 
-                $availabilitySorted = $assistant->getAvailability();
+                $availabilitySorted = arsort($assistant->getAvailability());
                 $currentDay = $assistant->getAssignedDay();
                 $currentScore = $availabilitySorted[$currentDay];
 
@@ -162,7 +115,7 @@ class Solution
      * @return int|int in [0,100]
      */
     public
-    function evaluate($log = false)
+    function evaluate()
     {
         //TODO: Adjust points to achieve wanted results
         if (sizeof($this->assistants) === 0) {
@@ -188,18 +141,11 @@ class Solution
             }
 
             foreach ($school->getAssistants() as $day => $amount) {
-                if ($log) {
-                    dump("School " . $school->getName() . " has " . $amount . " assistants on " . $day);
-                    dump("Points before eval: " . (String)(100 * $points / $maxPoints));
-                }
                 if ($amount > 0) {
                     $maxPoints += 200;
                     if ($amount >= 2) {
                         $points += 200;
                     }
-                }
-                if ($log) {
-                    dump("Points after eval: " . (String)(100 * $points / $maxPoints));
                 }
             }
         }
@@ -220,6 +166,9 @@ class Solution
                     //Check if the school has capacity for more assistants
                     $freeCapacity = $this->capacityLeftOnDay($day, $school);
                     if ($freeCapacity < 1) continue;
+
+                    //TODO: Figure out if this is a good idea
+                    if ($school->totalAssistants() > $this->getSchoolByName($assistant->getAssignedSchool())->totalAssistants()) continue;
 
                     //Create a deep copy of the current solution
                     $schoolsCopy = $this->deepCopySchools();
@@ -253,49 +202,50 @@ class Solution
         $school->addAssistant($day);
     }
 
-    public function sortSchoolsByNumberOfAssistants($day){
+    public function sortSchoolsByNumberOfAssistants($day)
+    {
         $sortedSchools = array();
-        $tempSorted = array();
+        $tempSorted = array();//Array with key = totalNumber of assistants on school, value = array with schools
         foreach ($this->schools as $school) {
             $index = $school->totalAssistants();
             //$index = $this->capacityLeftOnDay($day, $school);
-            if(!array_key_exists($index, $tempSorted))$tempSorted[$index] = array();
+            if (!array_key_exists($index, $tempSorted)) $tempSorted[$index] = array();
             $tempSorted[$index][] = $school;
         }
         ksort($tempSorted);
         $toBeSorted = array();
-        foreach($tempSorted as $temp){
-            foreach($temp as $school){
-                if(array_key_exists($day, $school) && $school->getAssistants()[$day] == 1){
+        foreach ($tempSorted as $temp) {
+            foreach ($temp as $school) {
+                if (array_key_exists($day, $school) && $school->getAssistants()[$day] == 1) {
                     $sortedSchools[] = $school;
-                } else{
+                } else {
                     $toBeSorted[] = $school;
                 }
             }
         }
         $i = 0;
         foreach ($toBeSorted as $school) {
-            if(array_key_exists($day, $school) && $school->getAssistants()[$day] == 0){
+            if (array_key_exists($day, $school) && $school->getAssistants()[$day] == 0) {
                 $sortedSchools[] = $school;
                 unset($toBeSorted[$i]);
             }
             $i++;
         }
-        while(!empty($toBeSorted)){
+        while (!empty($toBeSorted)) {
             $bestSchool = null;
             $bestCapacity = 0.0;
             $added = false;
             foreach ($toBeSorted as $school) {
-                if(array_key_exists($day, $school) && ($this->capacityLeftOnDay($day, $school)/$school->getCapacity()[$day]) > $bestCapacity){
+                if (array_key_exists($day, $school) && ($this->capacityLeftOnDay($day, $school) / $school->getCapacity()[$day]) > $bestCapacity) {
                     $bestSchool = $school;
-                    $bestCapacity = $this->capacityLeftOnDay($day, $school)/$school->getCapacity()[$day];
+                    $bestCapacity = $this->capacityLeftOnDay($day, $school) / $school->getCapacity()[$day];
                     $added = true;
                 }
             }
-            if($bestSchool !== null){
+            if ($bestSchool !== null) {
                 $sortedSchools[] = $bestSchool;
                 unset($toBeSorted[$key = array_search($toBeSorted, $bestSchool)]);
-            }elseif(!$added){
+            } elseif (!$added) {
                 $keys = array_keys($toBeSorted);
                 $key = $keys[0];
                 $sortedSchools[] = $toBeSorted[$key];
