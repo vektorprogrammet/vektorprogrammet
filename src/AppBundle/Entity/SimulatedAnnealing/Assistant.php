@@ -3,6 +3,8 @@ namespace AppBundle\Entity\SimulatedAnnealing;
 
 class Assistant
 {
+    static $idCounter;
+    private $id;
     private $name;
     private $assignedSchool;//Name of school
     private $assignedDay;
@@ -17,6 +19,12 @@ class Assistant
      */
     public function __construct()
     {
+        if(Assistant::$idCounter === null){
+            $this->id = 1;
+            Assistant::$idCounter = 1;
+        }else{
+            $this->id = ++Assistant::$idCounter;
+        }
         $this->bolk1 = false;
         $this->bolk2 = false;
         $this->prefBolk1 = false;
@@ -29,6 +37,24 @@ class Assistant
     public function deepCopy(){
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+
 
     /**
      * @return mixed

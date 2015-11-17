@@ -11,26 +11,40 @@ class Solution
     public $optimizeTime;
     private $toBeImproved;
     public static $visited;
+    public static $numSwaps;
 
     /**
      * Solution constructor.
      * @param mixed schools
      * @param mixed assistants
+     * @param mixed lockedAssistants
      */
-    public function __construct($schools, $assistants)
+    public function __construct($schools, $assistants, $lockedAssistants = array())
     {
         $this->initializeTime = -1;
         $this->optimizeTime = -1;
         $this->assistants = $assistants;
         $this->toBeImproved = array();
-        $this->lockedAssistants = array();
+        $this->lockedAssistants = $lockedAssistants;
         $this->schools = $schools;
     }
 
     public function initializeSolution()
     {
+        foreach($this->assistants as $assistant){
+            if($lockedAssistant = $this->isInLockedList($assistant)){
+                $school = $this->getSchoolByName($lockedAssistant->getAssignedSchool());
+                $this->addAssistantToSchool($school, $lockedAssistant->getAssignedDay());
+                $assistant->setAssignedDay($lockedAssistant->getAssignedDay());
+                $assistant->setAssignedSchool($lockedAssistant->getAssignedSchool());
+            }
+        }
+
         $startTime = round(microtime(true) * 1000);
         foreach ($this->assistants as $assistant) {
+            if($this->isInLockedList($assistant) !== null){
+                continue;
+            }
             //Sort availability lists, best day first.
             $availabilitySorted = $assistant->getAvailability();
             arsort($availabilitySorted);
@@ -60,11 +74,6 @@ class Solution
             $assistant->setAssignedSchool($bestSchool->getName());
             $assistant->setAssignedDay($bestDay);
             $this->addAssistantToSchool($bestSchool, $bestDay);
-            //$this->assistants[] = $assistant;
-            //TODO: Add conditions to whether the assistant should be added to improveList or not
-            if ($assistant->getAvailability()[$bestDay] !== 2) {
-                $this->toBeImproved[] = $assistant;
-            }
         }
 
         $this->initializeTime = (round(microtime(true) * 1000) - $startTime) / 1000;
@@ -77,35 +86,67 @@ class Solution
     public function improveSolution()
     {
         $startTime = round(microtime(true) * 1000);
+
+        //Try to swap school with other assistants
         $changed = true;
-        while ($changed && sizeof($this->toBeImproved) > 0) {
+        while ($changed) {
 
             $changed = false;
-            foreach ($this->toBeImproved as $assistant) {
-
-                $availabilitySorted = arsort($assistant->getAvailability());
-                $currentDay = $assistant->getAssignedDay();
-                $currentScore = $availabilitySorted[$currentDay];
+            foreach ($this->assistants as $assistant) {
+                if($this->isInLockedList($assistant) !== null)continue;
+                $availabilitySorted = $assistant->getAvailability();
+                arsort($availabilitySorted);
 
                 foreach ($this->schools as $school) {
+                    if ($school->getName() == $assistant->getAssignedSchool()) continue;
                     foreach ($availabilitySorted as $bestDay => $score) {
+                        if ($this->capacityLeftOnDay($bestDay, $school) == 0) {
+                            continue;
+                        }
                         if ($score == 0) break;
-                        if ($score <= $currentScore) break;
                         if (!array_key_exists($bestDay, $school->getAssistants())) continue;
+                        if (sizeof($this->getAllAssistantOnSchoolByDay($school, $bestDay)) != 1) continue;
                         foreach ($this->getAllAssistantOnSchoolByDay($school, $bestDay) as $assistantInSchool) {
+                            if($this->isInLockedList($assistantInSchool) !== null)continue;
+                            if ($this->capacityLeftOnDay($assistantInSchool->getAssignedDay(), $this->getSchoolByName($assistant->getAssignedSchool())) < 1) continue;
+                            if ($this->capacityLeftOnDay($assistant->getAssignedDay(), $this->getSchoolByName($assistantInSchool->getAssignedSchool())) < 1) continue;
+                            if ($assistantInSchool->getAssignedSchool() == $assistant->getAssignedSchool()) continue;
+                            $evalScoreBeforeSwap = $this->evaluate();
+                            $this->swapAssistantsSchools($assistantInSchool, $assistant);
+                            $evalScoreAfterSwap = $this->evaluate();
 
-                            if ($assistantInSchool->getAvailability()[$currentDay] >= $assistantInSchool->getAvailability()[$assistantInSchool->getAssignedDay()]) {
-                                $this->swampAssistants($assistantInSchool, $assistant);
-                                if ($score == 2) $this->removeFromImprove($assistant);
+                            if ($evalScoreAfterSwap > $evalScoreBeforeSwap) {
                                 $changed = true;
-                                break;
+                            } else {
+                                $this->swapAssistantsSchools($assistantInSchool, $assistant);
                             }
                         }
-                        if ($changed) break;
                     }
-                    if ($changed) break;
                 }
-                if ($changed) break;
+            }
+        }
+
+        //Try to move assistants to other schools
+        $changed = true;
+        while ($changed) {
+
+            $changed = false;
+            foreach ($this->assistants as $assistant) {
+                if($this->isInLockedList($assistant) !== null)continue;
+                foreach ($this->schools as $school) {
+                    $day = $assistant->getAssignedDay();
+                    if (!array_key_exists($day, $school->getAssistants())) continue;
+                    if ($this->capacityLeftOnDay($day, $school) == 0) continue;
+                    $oldSchool = $assistant->getAssignedSchool();
+                    $evalScoreBeforeMove = $this->evaluate();
+                    $this->moveAssistant($assistant, $school->getName(), $day, $day);
+                    $evalScoreAfterMove = $this->evaluate();
+                    if ($evalScoreAfterMove > $evalScoreBeforeMove) {
+                        $changed = true;
+                    } else {
+                        $this->moveAssistant($assistant, $oldSchool, $day, $day);
+                    }
+                }
             }
         }
         $this->improveTime = (round(microtime(true) * 1000) - $startTime) / 1000;
@@ -123,6 +164,8 @@ class Solution
         }
         $maxPoints = 0;
         $points = 0;
+
+        //Checks if you are placed on a good day
         foreach ($this->assistants as $assistant) {
             $avP = $assistant->getAvailability()[$assistant->getAssignedDay()];
             if ($avP == 2) {
@@ -134,12 +177,15 @@ class Solution
             }
             $maxPoints += 100;
         }
+
+        //Check if every school has at least one assistant
         foreach ($this->schools as $school) {
             $maxPoints += 200;
             if ($school->hasAssistants()) {
                 $points += 200;
             }
 
+            //Check if assistant is alone
             foreach ($school->getAssistants() as $day => $amount) {
                 if ($amount > 0) {
                     $maxPoints += 200;
@@ -151,6 +197,29 @@ class Solution
         }
         if ($maxPoints == 0) return 0;
         return 100 * $points / $maxPoints;
+    }
+
+    /*
+     * Checks if solution breaks any important rule
+     */
+    public function isOk()
+    {
+        if (sizeof($this->assistants) === 0) {
+            return false;
+        }
+        foreach ($this->assistants as $assistant) {
+            if ($assistant->getAvailability()[$assistant->getAssignedDay()] == 0) return false;
+        }
+        foreach ($this->schools as $school) {
+            if (!$school->hasAssistants()) {
+                return false;
+            }
+
+            foreach ($school->getAssistants() as $day => $amount) {
+                if ($amount == 1) return false;
+            }
+        }
+        return true;
     }
 
     public
@@ -187,6 +256,20 @@ class Solution
             $assistantIndex++;
         }
         return $neighbours;
+    }
+
+    public function getAssistantById($id, $assistants){
+        foreach($assistants as $assistant){
+            if($assistant->getId() == $id)return $assistant;
+        }
+        return null;
+    }
+
+    public function isInLockedList($assistant){
+        foreach($this->lockedAssistants as $lockedAssistant){
+            if($assistant->getId() == $lockedAssistant->getId())return $lockedAssistant;
+        }
+        return null;
     }
 
     public
@@ -271,7 +354,7 @@ class Solution
     }
 
     public
-    function swampAssistants(Assistant $a, Assistant $b)
+    function swapAssistants(Assistant $a, Assistant $b)
     {
         $aSchool = $a->getAssignedSchool();
         $aDay = $a->getAssignedDay();
@@ -280,7 +363,18 @@ class Solution
 
         $this->moveAssistant($a, $bSchool, $aDay, $bDay);
         $this->moveAssistant($b, $aSchool, $bDay, $aDay);
+    }
 
+    public
+    function swapAssistantsSchools(Assistant $a, Assistant $b)
+    {
+        $aSchool = $a->getAssignedSchool();
+        $aDay = $a->getAssignedDay();
+        $bSchool = $b->getAssignedSchool();
+        $bDay = $b->getAssignedDay();
+
+        $this->moveAssistant($a, $bSchool, $aDay, $aDay);
+        $this->moveAssistant($b, $aSchool, $bDay, $bDay);
     }
 
     public

@@ -39,7 +39,6 @@ class SchoolAllocationController extends Controller
 
         $assistants = array();
         $schools = array();
-
         //Use interviews to create Assistant objects for the SA-algorithm
         foreach($allInterviews as $interview) {
             $intPractical = $interview->getInterviewPractical();
@@ -73,7 +72,6 @@ class SchoolAllocationController extends Controller
             $assistant->setDoublePosition($doublePosition);
             $assistant->setPreferedSchool($preferredSchool);
             $assistant->setAvailability($availability);
-
             $assistants[] = $assistant;
         }
         //Use schoolCapacities to create School objects for the SA-Algorithm
@@ -100,7 +98,7 @@ class SchoolAllocationController extends Controller
                 $assistantsInBolk1[] = $assistant;
                 $assistantCopy = clone $assistant;
                 $assistantsInBolk2[] = $assistantCopy;
-                $lockedAssistants[] = $assistantCopy;
+                $lockedAssistants[] = $assistant;
                 $assistant->assignBothBolks();
             }elseif($assistant->isPrefBolk1()){
                 $assistantsInBolk1[] = $assistant;
@@ -124,13 +122,11 @@ class SchoolAllocationController extends Controller
 
         //Create and find the initialSolutions (Very fast)
         $solutionBolk1 = new Solution($schools, $assistantsInBolk1);
-        $solutionBolk2 = new Solution($this->deepCopySchools($schools), $assistantsInBolk2);
+        $schoolsDeepCopy = $this->deepCopySchools($schools);
         $solutionBolk1->initializeSolution();
-        $solutionBolk2->initializeSolution();
-        //$solutionBolk1->improveSolution();
-        //$solutionBolk2->improveSolution();
+        $solutionBolk1->improveSolution();
 
-        $maxOptimizeTime = 60; //In seconds
+        $maxOptimizeTime = 1; //In seconds
 
         //Check if the initializer found the perfect solution. If not, run the optimizer
         if($solutionBolk1->evaluate() === 100){
@@ -138,7 +134,13 @@ class SchoolAllocationController extends Controller
         }else{
             $optimizer = new Optimizer($solutionBolk1, 0.0001, 0.0000001, $maxOptimizeTime/2);
             $bestSolutionBolk1 = $optimizer->optimize();
+            $this->updateLockedList($bestSolutionBolk1, $lockedAssistants);
         }
+
+        $solutionBolk2 = new Solution($schoolsDeepCopy, $assistantsInBolk2, $lockedAssistants);
+        $solutionBolk2->initializeSolution();
+        $solutionBolk2->improveSolution();
+
         if($solutionBolk2->evaluate() === 100){
             $bestSolutionBolk2 = $solutionBolk2;
         }else{
@@ -172,6 +174,15 @@ class SchoolAllocationController extends Controller
             $copy[] = clone $school;
         }
         return $copy;
+    }
+
+    private function updateLockedList(Solution $solution, $lockedList){
+        foreach($lockedList as $lockedAssistant){
+            $assistant = $solution->getAssistantById($lockedAssistant->getId(), $solution->getAssistants());
+            $lockedAssistant->setAssignedSchool($assistant->getAssignedSchool());
+            $lockedAssistant->setAssignedDay($assistant->getAssignedDay());
+
+        }
     }
 
     public function createAction(Request $request, $departmentId=null){
@@ -228,7 +239,6 @@ class SchoolAllocationController extends Controller
         $form->handleRequest($request);
 
         if($form->isValid()){
-            dump("asd");
             $em = $this->getDoctrine()->getManager();
             $em->persist($capacity);
             $em->flush();

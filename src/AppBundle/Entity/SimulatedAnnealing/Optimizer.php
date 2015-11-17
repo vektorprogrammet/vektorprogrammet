@@ -36,7 +36,7 @@ class Optimizer
 
         while($this->temp > 0 && (round(microtime(true) * 1000)/1000 - $this->startTime) < $this->maxTime){
             //Return the solution if score === 100 (Perfect solution)
-            if($currentSolution->evaluate() === 100){
+            if($currentSolution->evaluate() === 100 || $currentSolution->isOk()){
                 $currentSolution->optimizeTime = (round(microtime(true) * 1000)-$startTime)/1000;
                 return $currentSolution;
             }
