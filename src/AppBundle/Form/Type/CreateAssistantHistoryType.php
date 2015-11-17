@@ -24,7 +24,7 @@ class CreateAssistantHistoryType extends AbstractType {
 				'class' => 'AppBundle:Semester',
 				'query_builder' => function(EntityRepository $er )  {
 					return $er->createQueryBuilder('s')
-						->orderBy('s.name', 'ASC')
+						->orderBy('s.semesterStartDate', 'DESC')
 						->where('s.department = ?1')
 						->setParameter(1, $this->department);
 				}
@@ -53,6 +53,14 @@ class CreateAssistantHistoryType extends AbstractType {
 						->where(':department MEMBER OF s.departments')
 						->setParameter('department', $this->department);
 				}
+			))
+			->add('bolk', 'choice', array(
+				'label' => 'Bolk',
+				'choices' => array(
+					'Bolk 1'   => 'Bolk 1',
+					'Bolk 2'   => 'Bolk 2',
+					'Bolk 1, Bolk 2'   => 'Bolk 1 og Bolk 2',
+				),
 			))
 			->add('save', 'submit', array(
 				'label' => 'Opprett',
