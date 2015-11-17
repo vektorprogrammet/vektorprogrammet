@@ -18,7 +18,7 @@
             getFileCallback: function(file) {
                 {% if relative_path %}
                     {# This is the only line changed, it adds a / prefix to the path and replaces all \ with / #}
-                    window.opener.setValue('{{ asset('') }}' + file.path.replace(/\\/g,"/"), "{{ id }}");
+                    window.opener.setValue('{{ asset('') }}' + file.url.substring(file.url.indexOf("/images") +1), "{{ id }}");
                 {% else %}
                     window.opener.setValue(file.url, "{{ id }}");
                 {% endif %}
