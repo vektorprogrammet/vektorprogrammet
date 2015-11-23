@@ -29,7 +29,7 @@
                 if (funcNum) {
                     {% if relative_path %}
                         {# This is the only line changed, it adds a / prefix to the path and replaces all \ with / #}
-                        window.opener.CKEDITOR.tools.callFunction(funcNum, '/' + file.path.replace(/\\/g,"/"));
+                        window.opener.CKEDITOR.tools.callFunction(funcNum, '/' + file.url.substring(file.url.indexOf("/images") +1));
                     {% else %}
                         window.opener.CKEDITOR.tools.callFunction(funcNum, file.url);
                     {% endif %}

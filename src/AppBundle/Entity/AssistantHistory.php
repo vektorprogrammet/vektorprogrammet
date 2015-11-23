@@ -39,7 +39,11 @@ class AssistantHistory {
      * @ORM\Column(type="string")
      */
 	protected $workdays;
-	
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $bolk;
 	
 
     /**
@@ -147,6 +151,24 @@ class AssistantHistory {
     {
         return $this->workdays;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getBolk()
+    {
+        return $this->bolk;
+    }
+
+    /**
+     * @param mixed $bolk
+     */
+    public function setBolk($bolk)
+    {
+        $this->bolk = $bolk;
+    }
+
+
 	
 	// Used for unit testing 
 	public function fromArray($data = array())
@@ -156,4 +178,6 @@ class AssistantHistory {
             $this->$method($value);
         }
     }
+
+
 }
