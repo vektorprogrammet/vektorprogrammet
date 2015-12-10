@@ -37,12 +37,134 @@ class SchoolAllocationController extends Controller
         $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
         $allInterviews = $this->getDoctrine()->getRepository('AppBundle:Interview')->findAllInterviewedInterviewsBySemester($currentSemester);
 
-        $assistants = array();
-        $schools = array();
+        $assistants = $this->generateAssistantsFromInterviews($allInterviews, $currentSemester);
+        $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
+
+        $assistantsInBolksArray = $this->assignAssistantsToBolks($assistants);
+        $assistantsInBolk1 = $assistantsInBolksArray[0];
+        $assistantsInBolk2 = $assistantsInBolksArray[1];
+        $lockedAssistants = $assistantsInBolksArray[2];
+
+        //Create and find the initialSolutions (Very fast)
+        $schoolsDeepCopy = $this->deepCopySchools($schools);
+        $solutionBolk1 = new Solution($schools, $assistantsInBolk1, true);
+
+        $maxOptimizeTime = 1; //In seconds
+
+        //Check if the initializer found the perfect solution. If not, run the optimizer
+        if($solutionBolk1->isOk()){
+            $bestSolutionBolk1 = $solutionBolk1;
+        }else{
+            $optimizer = new Optimizer($solutionBolk1, 0.0001, 0.0000001, $maxOptimizeTime/2);
+            $bestSolutionBolk1 = $optimizer->optimize();
+            $this->updateAssistantsInLockedList($bestSolutionBolk1, $lockedAssistants);
+        }
+
+        $solutionBolk2 = new Solution($schoolsDeepCopy, $assistantsInBolk2,true, $lockedAssistants);
+
+        if($solutionBolk2->isOk()){
+            $bestSolutionBolk2 = $solutionBolk2;
+        }else{
+            $optimizer = new Optimizer($solutionBolk2, 0.0001, 0.0000001, $maxOptimizeTime/2);
+            $bestSolutionBolk2 = $optimizer->optimize();
+        }
+
+        //Total number of solutions evaluated during optimization
+        $solutionsCount = Solution::$visited;
+
+        return $this->render('school_admin/school_allocate.html.twig', array(
+            'interviews' => $allInterviews,
+            'allocations' => $allCurrentSchoolCapacities,
+            'allocatedSchools' => $schools,
+            'initialSolutionBolk1' => $solutionBolk1,
+            'initialSolutionBolk2' => $solutionBolk2,
+            'score' => number_format((($solutionBolk1->evaluate()+$solutionBolk2->evaluate())/2), 1)*10,
+            'initializeTime' => $solutionBolk1->initializeTime + $solutionBolk1->improveTime + $solutionBolk2->initializeTime + $solutionBolk2->improveTime,
+            'optimizeTime' => $bestSolutionBolk1->optimizeTime + $bestSolutionBolk2->optimizeTime,
+            'optimizedAllocatedSchools' => $schools,
+            'optimizedSolutionBolk1' => $bestSolutionBolk1,
+            'optimizedSolutionBolk2' => $bestSolutionBolk2,
+            'optimizedScore' => number_format((($bestSolutionBolk1->evaluate() + $bestSolutionBolk2->evaluate())/2), 1)*10,
+            'differentSolutions' => $solutionsCount,
+        ));
+    }
+
+    private function deepCopySchools($schools){
+        $copy = array();
+        foreach($schools as $school){
+            $copy[] = clone $school;
+        }
+        return $copy;
+    }
+
+    private function updateAssistantsInLockedList(Solution $solution, $lockedList){
+        foreach($lockedList as $lockedAssistant){
+            $assistant = $solution->getAssistantById($lockedAssistant->getId(), $solution->getAssistants());
+            $lockedAssistant->setAssignedSchool($assistant->getAssignedSchool());
+            $lockedAssistant->setAssignedDay($assistant->getAssignedDay());
+
+        }
+    }
+
+    private function assignAssistantsToBolks($assistants){
+        //Divide assistants into 'bolks'. If double position then assign to all three lists
+        $assistantsInBolk1 = array();
+        $assistantsInBolk2 = array();
+        $lockedAssistants = array();
+        $totalNumberOfAssistants = sizeof($assistants);
+        //Assign assistants that has 'bolk' preferences
+        foreach ($assistants as $assistant) {
+            if ($assistant->isDoublePosition()) {
+                $assistantsInBolk1[] = $assistant;
+                $assistantCopy = clone $assistant;
+                $assistantsInBolk2[] = $assistantCopy;
+                $lockedAssistants[] = $assistant;
+                $assistant->assignBothBolks();
+            }elseif($assistant->isPrefBolk1() && sizeof($assistantsInBolk1) < $totalNumberOfAssistants/2){
+                $assistantsInBolk1[] = $assistant;
+                $assistant->assignBolk1();
+            }elseif($assistant->isPrefBolk2() && sizeof($assistantsInBolk2) < $totalNumberOfAssistants/2){
+                $assistantsInBolk2[] = $assistant;
+                $assistant->assignBolk2();
+            }
+        }
+        //Assign assistants with no 'bolk' preference
+        foreach ($assistants as $assistant) {
+            if($assistant->isBolk1() || $assistant->isBolk2())continue;
+            if (sizeof($assistantsInBolk1) > sizeof($assistantsInBolk2)) {
+                $assistantsInBolk2[] = $assistant;
+                $assistant->assignBolk2();
+            } else {
+                $assistantsInBolk1[] = $assistant;
+                $assistant->assignBolk1();
+            }
+        }
+
+        return [$assistantsInBolk1, $assistantsInBolk2, $lockedAssistants];
+    }
+
+    private function generateSchoolsFromSchoolCapacities($schoolCapacities){
+        //Use schoolCapacities to create School objects for the SA-Algorithm
+        foreach($schoolCapacities as $sc){
+            if($sc->getMonday() == 0 && $sc->getTuesday() == 0 && $sc->getWednesday() == 0 && $sc->getThursday() == 0 && $sc->getFriday() == 0) continue;
+            $capacity = array();
+            $capacity["Monday"] = $sc->getMonday();
+            $capacity["Tuesday"] = $sc->getTuesday();
+            $capacity["Wednesday"] = $sc->getWednesday();
+            $capacity["Thursday"] = $sc->getThursday();
+            $capacity["Friday"] = $sc->getFriday();
+
+            $school = new School($capacity, $sc->getSchool()->getName());
+            $schools[] = $school;
+        }
+        return $schools;
+    }
+
+    private function generateAssistantsFromInterviews($interviews, $semester){
         //Use interviews to create Assistant objects for the SA-algorithm
-        foreach($allInterviews as $interview) {
+        foreach($interviews as $interview) {
             $intPractical = $interview->getInterviewPractical();
-            if($intPractical->getSemester() != $currentSemester){
+            if($intPractical->getSemester() != $semester){
                 continue;
             }
 
@@ -56,6 +178,9 @@ class SchoolAllocationController extends Controller
             }
 
             $preferredSchool = $intPractical->getPreferredSchool();
+            if($preferredSchool !== null){
+                $preferredSchool = $preferredSchool->getName();
+            }
 
             $availability = array();
             $availabilityPoints = ["Ikke", "Ok", "Bra"];
@@ -74,115 +199,7 @@ class SchoolAllocationController extends Controller
             $assistant->setAvailability($availability);
             $assistants[] = $assistant;
         }
-        //Use schoolCapacities to create School objects for the SA-Algorithm
-        foreach($allCurrentSchoolCapacities as $sc){
-            $capacity = array();
-            $capacity["Monday"] = $sc->getMonday();
-            $capacity["Tuesday"] = $sc->getTuesday();
-            $capacity["Wednesday"] = $sc->getWednesday();
-            $capacity["Thursday"] = $sc->getThursday();
-            $capacity["Friday"] = $sc->getFriday();
-            $school = new School($capacity, $sc->getSchool()->getName());
-
-            $schools[] = $school;
-        }
-
-        //Divide assistants into 'bolks'. If double position then assign to all three lists
-        //TODO: Limit number of people in one 'bolk' so that there will be equal amount of assistants in both
-        $assistantsInBolk1 = array();
-        $assistantsInBolk2 = array();
-        $lockedAssistants = array();
-        //Assign assistants that has 'bolk' preferences
-        foreach ($assistants as $assistant) {
-            if ($assistant->isDoublePosition()) {
-                $assistantsInBolk1[] = $assistant;
-                $assistantCopy = clone $assistant;
-                $assistantsInBolk2[] = $assistantCopy;
-                $lockedAssistants[] = $assistant;
-                $assistant->assignBothBolks();
-            }elseif($assistant->isPrefBolk1()){
-                $assistantsInBolk1[] = $assistant;
-                $assistant->assignBolk1();
-            }elseif($assistant->isPrefBolk2()){
-                $assistantsInBolk2[] = $assistant;
-                $assistant->assignBolk2();
-            }
-        }
-        //Assign assistants with no 'bolk' preference
-        foreach ($assistants as $assistant) {
-            if($assistant->isBolk1() || $assistant->isBolk2())continue;
-            if (sizeof($assistantsInBolk1) > sizeof($assistantsInBolk2)) {
-                $assistantsInBolk2[] = $assistant;
-                $assistant->assignBolk2();
-            } else {
-                $assistantsInBolk1[] = $assistant;
-                $assistant->assignBolk1();
-            }
-        }
-
-        //Create and find the initialSolutions (Very fast)
-        $solutionBolk1 = new Solution($schools, $assistantsInBolk1);
-        $schoolsDeepCopy = $this->deepCopySchools($schools);
-        $solutionBolk1->initializeSolution();
-        $solutionBolk1->improveSolution();
-
-        $maxOptimizeTime = 1; //In seconds
-
-        //Check if the initializer found the perfect solution. If not, run the optimizer
-        if($solutionBolk1->evaluate() === 100){
-            $bestSolutionBolk1 = $solutionBolk1;
-        }else{
-            $optimizer = new Optimizer($solutionBolk1, 0.0001, 0.0000001, $maxOptimizeTime/2);
-            $bestSolutionBolk1 = $optimizer->optimize();
-            $this->updateLockedList($bestSolutionBolk1, $lockedAssistants);
-        }
-
-        $solutionBolk2 = new Solution($schoolsDeepCopy, $assistantsInBolk2, $lockedAssistants);
-        $solutionBolk2->initializeSolution();
-        $solutionBolk2->improveSolution();
-
-        if($solutionBolk2->evaluate() === 100){
-            $bestSolutionBolk2 = $solutionBolk2;
-        }else{
-            $optimizer = new Optimizer($solutionBolk2, 0.0001, 0.0000001, $maxOptimizeTime/2);
-            $bestSolutionBolk2 = $optimizer->optimize();
-        }
-
-        //Total number of solutions evaluated during optimization
-        $solutionsCount = Solution::$visited;
-
-        return $this->render('school_admin/school_allocate.html.twig', array(
-            'interviews' => $allInterviews,
-            'allocations' => $allCurrentSchoolCapacities,
-            'allocatedSchools' => $schools,
-            'initialSolutionBolk1' => $solutionBolk1,
-            'initialSolutionBolk2' => $solutionBolk2,
-            'score' => floor(($solutionBolk1->evaluate()+$solutionBolk2->evaluate())/2),
-            'initializeTime' => $solutionBolk1->initializeTime + $solutionBolk1->improveTime + $solutionBolk2->initializeTime + $solutionBolk2->improveTime,
-            'optimizeTime' => $bestSolutionBolk1->optimizeTime + $bestSolutionBolk2->optimizeTime,
-            'optimizedAllocatedSchools' => $schools,
-            'optimizedSolutionBolk1' => $bestSolutionBolk1,
-            'optimizedSolutionBolk2' => $bestSolutionBolk2,
-            'optimizedScore' => floor(($bestSolutionBolk1->evaluate() + $bestSolutionBolk2->evaluate())/2),
-            'differentSolutions' => $solutionsCount,
-        ));
-    }
-
-    private function deepCopySchools($schools){
-        $copy = array();
-        foreach($schools as $school){
-            $copy[] = clone $school;
-        }
-        return $copy;
-    }
-
-    private function updateLockedList(Solution $solution, $lockedList){
-        foreach($lockedList as $lockedAssistant){
-            $assistant = $solution->getAssistantById($lockedAssistant->getId(), $solution->getAssistants());
-            $lockedAssistant->setAssignedSchool($assistant->getAssignedSchool());
-            $lockedAssistant->setAssignedDay($assistant->getAssignedDay());
-
-        }
+        return $assistants;
     }
 
     public function createAction(Request $request, $departmentId=null){

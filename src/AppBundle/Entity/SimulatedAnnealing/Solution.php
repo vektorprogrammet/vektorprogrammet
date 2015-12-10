@@ -17,20 +17,26 @@ class Solution
      * Solution constructor.
      * @param mixed schools
      * @param mixed assistants
+     * @param boolean isAnewSolution
      * @param mixed lockedAssistants
      */
-    public function __construct($schools, $assistants, $lockedAssistants = array())
+    public function __construct($schools, $assistants, $isAnewSolution = false, $lockedAssistants = array())
     {
-        $this->initializeTime = -1;
-        $this->optimizeTime = -1;
+        $this->initializeTime = 0;
+        $this->optimizeTime = 0;
         $this->assistants = $assistants;
         $this->toBeImproved = array();
         $this->lockedAssistants = $lockedAssistants;
         $this->schools = $schools;
+        if($isAnewSolution){
+            $this->initializeSolution();
+            $this->improveSolution();
+        }
     }
 
     public function initializeSolution()
     {
+        //Assign assistants with double position
         foreach($this->assistants as $assistant){
             if($lockedAssistant = $this->isInLockedList($assistant)){
                 $school = $this->getSchoolByName($lockedAssistant->getAssignedSchool());
@@ -42,6 +48,7 @@ class Solution
 
         $startTime = round(microtime(true) * 1000);
         foreach ($this->assistants as $assistant) {
+            if($assistant->getAssignedSchool() !== null)continue;
             if($this->isInLockedList($assistant) !== null){
                 continue;
             }
@@ -68,7 +75,7 @@ class Solution
                 }
                 $i++;
             }
-            if ($i > 5) break;//If there is no capacity left in any school
+            if ($i > 4) break;//If there is no capacity left in any school
 
             //Update the assistant with the bestSchool and bestDay found and add it to the assistants list
             $assistant->setAssignedSchool($bestSchool->getName());
@@ -81,8 +88,6 @@ class Solution
 
     }
 
-    //TODO: Make this function check if swapping assistants yields better evaluation score rather than availability score
-    //Currently not in use
     public function improveSolution()
     {
         $startTime = round(microtime(true) * 1000);
@@ -171,7 +176,7 @@ class Solution
             if ($avP == 2) {
                 $points += 100;
             } elseif ($avP == 1) {
-                $points += 80;
+                $points += 90;
             } else {
                 $points += 0;
             }
@@ -187,10 +192,12 @@ class Solution
 
             //Check if assistant is alone
             foreach ($school->getAssistants() as $day => $amount) {
+
                 if ($amount > 0) {
-                    $maxPoints += 200;
+                    $maxPoints += 300;
                     if ($amount >= 2) {
-                        $points += 200;
+                        $points += 300;
+                    }else{
                     }
                 }
             }
@@ -240,14 +247,9 @@ class Solution
                     if ($school->totalAssistants() > $this->getSchoolByName($assistant->getAssignedSchool())->totalAssistants()) continue;
 
                     //Create a deep copy of the current solution
-                    $schoolsCopy = $this->deepCopySchools();
-                    $assistantsCopy = $this->deepCopyAssistants();
-                    $newSolution = new Solution($schoolsCopy, $assistantsCopy);
+                    $newSolution = $this->deepCopy();
                     //Move the assistant from current school to a new school and add the new solution to the neighbour list
-                    $newSolution->moveAssistant($assistantsCopy[$assistantIndex], $schoolsCopy[$schoolIndex]->getName(), $assistant->getAssignedDay(), $day);
-                    /*if(sizeof(Solution::$visited) > 0 && in_array($newSolution, Solution::$visited)){
-                        continue;
-                    }*/
+                    $newSolution->moveAssistant($newSolution->getAssistants()[$assistantIndex], $newSolution->getSchools()[$schoolIndex]->getName(), $assistant->getAssignedDay(), $day);
                     Solution::$visited++;
                     $neighbours[] = $newSolution;
                 }
@@ -273,14 +275,14 @@ class Solution
     }
 
     public
-    function capacityLeftOnDay($day, $school)
+    function capacityLeftOnDay($day, School $school)
     {
         $assistants = $school->getAssistants();
         return array_key_exists($day, $assistants) ? $school->getCapacity()[$day] - $assistants[$day] : $school->getCapacity()[$day];
     }
 
     public
-    function addAssistantToSchool($school, $day)
+    function addAssistantToSchool(School $school, $day)
     {
         $school->addAssistant($day);
     }
@@ -291,7 +293,6 @@ class Solution
         $tempSorted = array();//Array with key = totalNumber of assistants on school, value = array with schools
         foreach ($this->schools as $school) {
             $index = $school->totalAssistants();
-            //$index = $this->capacityLeftOnDay($day, $school);
             if (!array_key_exists($index, $tempSorted)) $tempSorted[$index] = array();
             $tempSorted[$index][] = $school;
         }
@@ -402,12 +403,6 @@ class Solution
     function addSchool($school)
     {
         $this->schools[] = $school;
-    }
-
-    private
-    function removeFromImprove(Assistant $assistant)
-    {
-        unset($this->toBeImproved[array_search($assistant, $this->toBeImproved)]);
     }
 
     public
