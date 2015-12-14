@@ -18,7 +18,7 @@ class PasswordResetTypeTest extends TypeTestCase {
 
         $object = new PasswordReset();
 
-        $object->fromArray($data);
+//        $object->fromArray($data);
 
         // submit the data to the form directly
         $form->submit($data);

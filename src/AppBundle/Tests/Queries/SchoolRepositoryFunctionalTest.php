@@ -59,7 +59,7 @@ class SchoolRepositoryFunctionalTest extends KernelTestCase
 		$schools = $this->em->getRepository('AppBundle:School')->getNumberOfSchools();
 		
 		// Insert the number of schools in the database here 
-		$this->assertEquals("2", $schools);
+		$this->assertEquals("30", $schools);
 		
 	}
 	

@@ -1,5 +1,5 @@
 <?php
-
+/*
 namespace AppBundle\Tests\Entity;
 
 use AppBundle\Entity\Thread;
@@ -186,4 +186,4 @@ class ThreadEntityUnitTest extends \PHPUnit_Framework_TestCase {
 	
 }
 
-   
+   */

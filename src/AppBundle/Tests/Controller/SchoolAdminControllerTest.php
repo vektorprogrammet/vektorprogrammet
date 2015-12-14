@@ -69,7 +69,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 		
 		$crawler = $client->request('GET', '/skoleadmin/avdeling/1');
 		
-		// Find a link and click it 
+		// Find a link and click it
 		$link = $crawler->selectLink('Rediger')->eq(1)->link();
 		$crawler = $client->click($link);
 		
