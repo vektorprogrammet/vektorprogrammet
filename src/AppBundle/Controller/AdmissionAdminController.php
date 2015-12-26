@@ -264,6 +264,11 @@ class AdmissionAdminController extends Controller {
      */
     public function createUnactivatedUserAction($id){
         try{
+            // Full reset of em is required for the bulk create to work
+            // http://stackoverflow.com/a/16595458
+            $container = $this->container;
+            $container->set('doctrine.orm.entity_manager', null);
+            $container->set('doctrine.orm.default_entity_manager', null);
             $em = $this->getDoctrine()->getManager();
 
             $application = $em->getRepository('AppBundle:Application')->findApplicantById($id);
@@ -359,6 +364,24 @@ class AdmissionAdminController extends Controller {
             ->setTo($email)
             ->setBody($this->renderView('new_user/create_new_user_email.txt.twig', array('newUserURL' => $this->generateURL('admissionadmin_create_new_user', array( 'id' => $createNewUserCode), true))));
         $this->get('mailer')->send($emailMessage);
+    }
+
+    public function bulkCreateUnactivatedUserAction(Request $request){
+        // Get the ids from the form
+        $applicationIds = $request->request->get('application')['id'];
+
+        $responseArray = array();
+        foreach($applicationIds as $applicationId) {
+            $res = $this->createUnactivatedUserAction($applicationId);
+            if(json_decode($res->getContent())->success){
+                $responseArray[$applicationId] = [true,''];
+            }else{
+                $responseArray[$applicationId] = [false,json_decode($res->getContent())->cause];
+            }
+        }
+
+        // Response to ajax
+        return new JsonResponse($responseArray);
     }
 
     /**

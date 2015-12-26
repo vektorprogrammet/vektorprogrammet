@@ -8,6 +8,7 @@
                     <select id="bulkSelect">
                         <option value="title">Gruppe handling</option>
                         <option value="deleteApplication">Slett søknad</option>
+                        <option value="createUser">Opprett bruker</option>
                         <option value="deleteInterview">Slett intervju</option>
                     </select>
                 </div>
@@ -23,6 +24,7 @@
     {% if applicants is defined %}
 
         {# The table containing interviewed applications #}
+        <form id="bulk" name="application">
         <table width="100%" id="application-table">
             <thead>
             <tr>
@@ -52,14 +54,13 @@
             </thead>
 
             <tbody>
-                <form id="bulk" name="application">
                 {% for a in applicants %}
                     <tr id="{{ a.id }}">
                         {% if is_granted('ROLE_HIGHEST_ADMIN') %}
                             <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}"></td>
                         {% endif %}
-                        <td>{{ a.firstName }}</td>
-                        <td>{{ a.lastName }}</td>
+                        <td class="fName">{{ a.firstName }}</td>
+                        <td class="lName">{{ a.lastName }}</td>
                         <td>{{ a.statistic.fieldOfStudy }}</td>
                         <td>{{ a.statistic.yearOfStudy }}</td>
 
@@ -111,9 +112,9 @@
                         {% endif %}
                     </tr>
                 {% endfor %}
-                </form>
             </tbody>
         </table>
+        </form>
     {% endif %}
 
 {% endblock %}

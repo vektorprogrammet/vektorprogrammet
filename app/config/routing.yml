@@ -406,6 +406,15 @@ admissionadmin_send_new_user_mail:
  options:
     expose: true
 
+admissionadmin_create_user_bulk:
+ path: /opptakadmin/opprettbruker/bulk
+ defaults: {_controller: AppBundle:AdmissionAdmin:bulkcreateUnactivatedUser }
+ requirements:
+    _method: POST
+ options:
+    expose: true
+
+
 
 ##########################################
 #              UserAdmin                 #
