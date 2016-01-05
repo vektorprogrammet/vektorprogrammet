@@ -55,7 +55,6 @@ security:
         # require ROLE_ADMIN for /admin*
 
           #ROLE_HIGHEST_ADMIN = superadmin user
-        - { path: ^/teamadmin/stilling/slett/, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/semesteradmin#, roles: ROLE_HIGHEST_ADMIN }
 
           #ROLE_SUPER_ADMIN = admin user
