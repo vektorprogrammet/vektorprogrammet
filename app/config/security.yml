@@ -55,8 +55,8 @@ security:
         # require ROLE_ADMIN for /admin*
 
           #ROLE_HIGHEST_ADMIN = superadmin user
-         - { path: ^/teamadmin/stilling/slett/, roles: ROLE_HIGHEST_ADMIN }
-         - { path: ^/semesteradmin/semester/slett/, roles: ROLE_HIGHEST_ADMIN } # Path may need revision
+        - { path: ^/teamadmin/stilling/slett/, roles: ROLE_HIGHEST_ADMIN }
+        - { path: ^/semesteradmin#, roles: ROLE_HIGHEST_ADMIN }
 
           #ROLE_SUPER_ADMIN = admin user
         - { path: ^/brukeradmin/opprett/, roles: ROLE_SUPER_ADMIN }
@@ -67,8 +67,6 @@ security:
         - { path: ^/intervju/fordel, roles: ROLE_SUPER_ADMIN }
         - { path: ^/vikar/rediger, roles: ROLE_SUPER_ADMIN }
         - { path: ^/undersokelse/slett, role: ROLE_SUPER_ADMIN }
-
-
 
           #ROLE_ADMIN = team user
         - { path: ^/opptakadmin/slett/, roles: ROLE_ADMIN }
