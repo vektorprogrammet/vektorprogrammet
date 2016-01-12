@@ -358,6 +358,11 @@ admission_contact:
  path: /opptakkontakt/{id}
  defaults: {_controller: AppBundle:Admission:contact }
 
+new_application:
+ path: /api/applicant
+ defaults: {_controller: AppBundle:Admission:newApplicant}
+ methods: [POST]
+
 
 ##########################################
 #            AdmissionAdmin              #

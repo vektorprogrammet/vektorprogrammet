@@ -88,6 +88,11 @@ class User implements AdvancedUserInterface, \Serializable {
     private $roles;
 
     /**
+     * @ORM\OneToOne(targetEntity="Interview")
+     */
+    private $interview;
+
+    /**
      * @ORM\column(type="string", nullable=true)
      */
 	private $new_user_code;
@@ -102,7 +107,7 @@ class User implements AdvancedUserInterface, \Serializable {
         $this->roles = new ArrayCollection();
 		$this->fieldOfStudy = new ArrayCollection();
 		$this->certificateRequests = new ArrayCollection();
-		$this->isActive = true;
+		$this->isActive = false;
         $this->picture_path = 'images/defaultProfile.png';
     }
 	
@@ -316,6 +321,32 @@ class User implements AdvancedUserInterface, \Serializable {
     public function removeRole(\AppBundle\Entity\Role $roles)
     {
         $this->roles->removeElement($roles);
+    }
+
+    /**
+     * Set interview
+     *
+     * @param \AppBundle\Entity\Interview $interview
+     * @return Application
+     */
+    public function setInterview(\AppBundle\Entity\Interview $interview = null)
+    {
+        // Must also set the owning side as it is the one doctrine watches
+        $interview->setApplication($this);
+
+        $this->interview = $interview;
+
+        return $this;
+    }
+
+    /**
+     * Get interview
+     *
+     * @return \AppBundle\Entity\Interview
+     */
+    public function getInterview()
+    {
+        return $this->interview;
     }
 
     /**

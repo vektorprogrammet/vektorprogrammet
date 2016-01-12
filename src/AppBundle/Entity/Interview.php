@@ -45,12 +45,6 @@ class Interview
     protected $interviewer; // Unidirectional, may turn out to be bidirectional
 
     /**
-     * @ORM\OneToOne(targetEntity="Application", inversedBy="interview")
-     * @ORM\JoinColumn(name="application_id", referencedColumnName="id")
-     */
-    protected $application;
-
-    /**
      * @ORM\OneToMany(targetEntity="InterviewAnswer", mappedBy="interview", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $interviewAnswers;
@@ -61,11 +55,6 @@ class Interview
      */
     protected $interviewScore;
 
-    /**
-     * @ORM\OneToOne(targetEntity="InterviewPractical", cascade={"persist"})
-     * @ORM\JoinColumn(name="interview_practical_id", referencedColumnName="id")
-     */
-    protected $interviewPractical;
 
     /**
      * Constructor
@@ -129,29 +118,6 @@ class Interview
     public function getInterviewer()
     {
         return $this->interviewer;
-    }
-
-    /**
-     * Set application
-     *
-     * @param \AppBundle\Entity\Application $application
-     * @return Interview
-     */
-    public function setApplication(\AppBundle\Entity\Application $application = null)
-    {
-        $this->application = $application;
-
-        return $this;
-    }
-
-    /**
-     * Get application
-     *
-     * @return \AppBundle\Entity\Application
-     */
-    public function getApplication()
-    {
-        return $this->application;
     }
 
     /**
@@ -242,29 +208,6 @@ class Interview
     public function isInterviewer(User $user = null)
     {
         return $user && $user->getId() == $this->getInterviewer()->getId();
-    }
-
-    /**
-     * Set interviewPractical
-     *
-     * @param \AppBundle\Entity\InterviewPractical $interviewPractical
-     * @return Interview
-     */
-    public function setInterviewPractical(\AppBundle\Entity\InterviewPractical $interviewPractical = null)
-    {
-        $this->interviewPractical = $interviewPractical;
-
-        return $this;
-    }
-
-    /**
-     * Get interviewPractical
-     *
-     * @return \AppBundle\Entity\InterviewPractical 
-     */
-    public function getInterviewPractical()
-    {
-        return $this->interviewPractical;
     }
 
     /**

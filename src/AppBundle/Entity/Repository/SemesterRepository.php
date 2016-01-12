@@ -54,5 +54,18 @@ class SemesterRepository extends EntityRepository {
             ->getResult();
     }
 
+    public function findSemesterWithActiveAdmissionByDepartment($departmentId){
+        $now = new \DateTime();
+        return $this->createQueryBuilder('Semester')
+            ->select('Semester')
+            ->where('Semester.department = ?1')
+            ->andWhere('Semester.admission_start_date < :now')
+            ->andWhere('Semester.admission_end_date > :now')
+            ->setParameter(1, $departmentId)
+            ->setParameter('now', $now)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
 	
 }

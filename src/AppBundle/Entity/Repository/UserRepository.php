@@ -30,7 +30,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 	}
 	
 	public function findAllActiveUsersByDepartment($department){
-	
+	    //TODO: Check if user is in the assistantHistory for this semester instead of checking active field
 		$users =  $this->getEntityManager()->createQuery("
 		
 		SELECT u

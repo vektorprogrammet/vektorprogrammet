@@ -165,7 +165,7 @@ class InterviewController extends Controller
 
                 // Get the application objects
                 $em = $this->getDoctrine()->getEntityManager();
-                $applications = $em->getRepository('AppBundle:Application')->findById($applicationIds);
+                $applications = $em->getRepository('ApplicationInfo.php')->findById($applicationIds);
 
                 // Delete the interviews
                 foreach($applications as $application) {
@@ -424,7 +424,7 @@ class InterviewController extends Controller
             // Get objects from database
             $interviewer = $em->getRepository('AppBundle:User')->findOneById($interviewerId);
             $schema = $em->getRepository('AppBundle:InterviewSchema')->findOneById($schemaId);
-            $applications = $em->getRepository('AppBundle:Application')->findById($applicationIds);
+            $applications = $em->getRepository('ApplicationInfo.php')->findById($applicationIds);
 
             // Update or create new interviews for all the given applications
             foreach($applications as $application) {

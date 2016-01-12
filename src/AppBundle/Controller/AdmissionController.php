@@ -2,6 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\ApplicationInfo;
+use AppBundle\Entity\User;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use \DateTime;
@@ -17,65 +20,54 @@ class AdmissionController extends Controller {
     public function showAction(Request $request) {
 		
 			
-		$id = $request->get('id');
+		$departmentId = $request->get('id');
 		
 		$em = $this->getDoctrine()->getManager();
 		
 		$department = $em->getRepository('AppBundle:Department')
-							->findDepartmentById($id);
+							->find($departmentId);
 		
 		$semesters = $em->getRepository('AppBundle:Semester')
-							->findAllSemestersByDepartment($id);
+							->findAllSemestersByDepartment($departmentId);
+
+		$fieldOfStudyList = $em->getRepository('AppBundle:FieldOfStudy')
+			->findByDepartment(array('department' => $departmentId), array('short_name' => 'ASC'));
 
 		$today = new DateTime("now");
 		
-		$validSemesters = array();
+		$currentSemester = null;
 
-		
 		foreach ($semesters as $semester) {
 		
 			$semesterStartDate = $semester->getAdmissionStartDate();
 			$semesterEndDate = $semester->getAdmissionEndDate();
 			
 			if ($semesterStartDate < $today && $today < $semesterEndDate) {
-				$validSemesters[] = $semester;
+				$currentSemester = $semester;
+				break;
 			}
 			
 		}
 		
-		if ( !empty($validSemesters) ) {
+		if ( !empty($currentSemester) ) {
 			
-			$application = new Application();
-			
+			$applicationInfo = new ApplicationInfo();
+			$user = new User();
+			$applicationInfo->setUser($user);
+
+			dump($applicationInfo);
+
 			$authenticated = false;
-			
+			//TODO:Add captcha to new form
 			// The Captcha should not appear if a user is authenticated, as said in the requirements 
 			if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
 				$authenticated = true;
 			}
 			
-			$form = $this->createForm(new ApplicationType($id, $today, $authenticated), $application);
-			
-			$form->handleRequest($request);
-
-			if ($form->isValid()) {
-                $application->setSubstituteCreated(0);
-				$application->setUserCreated(0);
-				$application->getStatistic()->setAccepted(0);
-				$em->persist($application);
-				$em->flush();
-
-                $request->getSession()->getFlashBag()->add('admission-notice', 'Søknaden din er registrert. Lykke til!');
-
-                return $this->redirect($this->generateUrl('admission_show_specific_department', array(
-                    'id' => $id,
-                )));
-			}
-			
 			return $this->render('admission/index.html.twig', array(
 				'department' => $department,
-				'semesters' => $validSemesters,
-				'form' => $form->createView(),
+				'semester' => $currentSemester,
+				'fieldOfStudyList' => $fieldOfStudyList,
 			));
 		}
 		else {
@@ -84,6 +76,78 @@ class AdmissionController extends Controller {
 			));
 		}
 		
+    }
+
+    /**
+     * Handle new application form post request
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function newApplicantAction(Request $request){
+        $application = array(
+            'firstName' => $request->get('firstName'),
+            'lastName' => $request->get('lastName'),
+            'email' => $request->get('email'),
+            'phone' => $request->get('phone'),
+            'gender' => $request->get('gender'),
+            'fieldOfStudy' => $request->get('fieldOfStudy'),
+            'yearOfStudy' => $request->get('yearOfStudy'),
+            'departmentId' => $request->get('department'),
+        );
+
+
+        if($this->applicationIsValid($application)){
+            $em = $this->getDoctrine()->getManager();
+
+            $userByEmail = null;
+
+            try{
+                $userByEmail = $em->getRepository('AppBundle:User')->findUserByEmail($application['email']);
+            }catch(NoResultException $e){}
+
+            $applicant = null;
+            if($userByEmail !== null){
+                $applicant = $userByEmail;
+            }else{
+                $fieldOfStudy = $em->getRepository('AppBundle:FieldOfStudy')->find($application['fieldOfStudy']);
+
+                $applicant = new User();
+                $applicant->setFirstName($application['firstName']);
+                $applicant->setLastName($application['lastName']);
+                $applicant->setEmail($application['email']);
+                $applicant->setPhone($application['phone']);
+                $applicant->setGender($application['gender']);
+                $applicant->setFieldOfStudy($fieldOfStudy);
+                $applicant->setUserName($application['email']);
+                $em->persist($applicant);
+            }
+
+            $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($application['departmentId']);
+
+            $applicationInfo = new ApplicationInfo();
+            $applicationInfo->setUser($applicant);
+            $applicationInfo->setYearOfStudy($application['yearOfStudy']);
+            $applicationInfo->setSemester($semester);
+
+            $em->persist($applicationInfo);
+            $em->flush();
+
+            $request->getSession()->getFlashBag()->add('admission-notice', 'Søknaden din er registrert. Lykke til!');
+        }else{
+            $request->getSession()->getFlashBag()->add('error-notice', 'Det her skjedd en feil. Vennligst prøv igjen.');
+        }
+
+        return $this->redirect($this->generateUrl('admission_show_specific_department', array(
+            'id' => $application['departmentId'],
+        )));
+
+    }
+
+    private function applicationIsValid($application){
+        if(strlen($application['firstName']) < 2 || strlen($application['lastName']) < 2 || strlen($application['phone']) < 8 || strlen($application['email']) < 3)return false;
+        if( !($application['gender'] === '0' || $application['gender'] === '1') )return false;
+        if(!is_numeric($application['fieldOfStudy']) || !is_numeric($application['yearOfStudy']))return false;
+        return true;
     }
 
     public function contactAction(Request $request, Department $department){

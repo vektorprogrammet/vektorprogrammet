@@ -82,7 +82,7 @@ class AdmissionAdminController extends Controller {
         $semesters =  $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
 
         // Finds the applicants for the given department filtered by interview status and semester
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Application');
+        $repository = $this->getDoctrine()->getRepository('ApplicationInfo.php');
         $yourApplicants = array();
         $interviewDistribution = array();
         switch($status) {
@@ -139,7 +139,7 @@ class AdmissionAdminController extends Controller {
 				// This deletes the given user
 				$em = $this->getDoctrine()->getEntityManager();
 				// Find the application by ID
-				$application = $this->getDoctrine()->getRepository('AppBundle:Application')->find($id);
+				$application = $this->getDoctrine()->getRepository('ApplicationInfo.php')->find($id);
 				$em->remove($application);
 				$em->flush();
 				
@@ -151,7 +151,7 @@ class AdmissionAdminController extends Controller {
 			elseif ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')){
 				
 				$em = $this->getDoctrine()->getEntityManager();
-				$application = $this->getDoctrine()->getRepository('AppBundle:Application')->find($id);
+				$application = $this->getDoctrine()->getRepository('ApplicationInfo.php')->find($id);
 				// Get the department of the application
 				$department = $application->getStatistic()->getFieldOfStudy()->getDepartment();
 				
@@ -204,7 +204,7 @@ class AdmissionAdminController extends Controller {
 
             // Get the application objects
             $em = $this->getDoctrine()->getEntityManager();
-            $applications = $em->getRepository('AppBundle:Application')->findById($applicationIds);
+            $applications = $em->getRepository('ApplicationInfo.php')->findById($applicationIds);
 
             if ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')) {
                 // Delete the applications
@@ -266,7 +266,7 @@ class AdmissionAdminController extends Controller {
         try{
             $em = $this->getDoctrine()->getManager();
 
-            $application = $em->getRepository('AppBundle:Application')->findApplicantById($id);
+            $application = $em->getRepository('ApplicationInfo.php')->findApplicantById($id);
             $role = $em->getRepository('AppBundle:Role')->findOneByName(AdmissionAdminController::NEW_USER_ROLE);
 
             // Create the hash
