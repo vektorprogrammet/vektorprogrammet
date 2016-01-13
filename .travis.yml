@@ -9,3 +9,6 @@ before_script:
   - vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
 
 script: phpunit --configuration app/phpunit.xml.dist --coverage-text
+
+notifications:
+  slack: vektorweb:KvOMl9ysaFBW53wJV3Eu56sS
