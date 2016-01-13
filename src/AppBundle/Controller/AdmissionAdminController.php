@@ -434,9 +434,9 @@ class AdmissionAdminController extends Controller {
             $em->persist($application);
             $em->flush();
 
-            $request->getSession()->getFlashBag()->add('admission-notice', 'Søknaden din er registrert. Lykke til!');
+            $request->getSession()->getFlashBag()->add('admission-notice', 'Søknaden er registrert.');
 
-            return $this->redirect($this->generateUrl('admission_show_specific_department', array(
+            return $this->redirect($this->generateUrl('register_applicant', array(
                 'id' => $department->getId(),
             )));
         }
