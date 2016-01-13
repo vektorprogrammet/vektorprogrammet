@@ -61,67 +61,50 @@ class PasswordResetController extends Controller
         //Connects with the User Entity
         $repositoryUser = $this->getDoctrine()->getRepository('AppBundle:User');
 
-        //checks if the username and email is correct
-        try{
+        //Gets the email that is typed in the text-field
+        $email = $form->get('email')->getData();
 
-            //Gets the username that is typed in the text-field
-            $username = $form->get('username')->getData();
-            //Gets the email that is typed in the text-field
-            $email = $form->get('email')->getData();
-            //Finds the user based on the username
-            $user = $repositoryUser->findUserByUsername($username);
+        //Finds the user based on the email
+        try {
+            $user = $repositoryUser->findUserByEmail($email);
 
-            //Checks if the email and username is corresponding
-            if($user == $repositoryUser->findUserByEmail($email)){
+            //Creates a random hex-string as reset code
+            $resetCode = bin2hex(openssl_random_pseudo_bytes(12));
 
-                //Creates a random hex-string as reset code
-                $resetCode = bin2hex(openssl_random_pseudo_bytes(12));
+            //Hashes the random reset code to store in the database
+            $hashedResetCode = hash('sha512', $resetCode, false);
 
-                //Hashes the random reset code to store in the database
-                $hashedResetCode = hash('sha512', $resetCode, false);
+            //creates a DateTime objekt for the table, this is to have a expiration time for the reset code
+            $time = new \DateTime();
 
-                //creates a DateTime objekt for the table, this is to have a expiration time for the reset code
-                $time = new \DateTime();
+            //Delets old resetcodes from the database
+            $repositoryPasswordReset = $this->getDoctrine()->getRepository('AppBundle:PasswordReset');
+            $repositoryPasswordReset->deletePasswordResetsByUser($user);
 
-                //Delets old resetcodes from the database
-                $repositoryPasswordReset = $this->getDoctrine()->getRepository('AppBundle:PasswordReset');
-                $repositoryPasswordReset->deletePasswordResetsByUser($user);
-
-                //Adds the info in the passwordReset entity
-                $passwordReset->setUser($user);
-                $passwordReset->setResetTime($time);
-                $passwordReset->setHashedResetCode($hashedResetCode);
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($passwordReset);
-                $em->flush();
+            //Adds the info in the passwordReset entity
+            $passwordReset->setUser($user);
+            $passwordReset->setResetTime($time);
+            $passwordReset->setHashedResetCode($hashedResetCode);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($passwordReset);
+            $em->flush();
 
 
+            //Sends a email with the url for resetting the password
+            $emailMessage = \Swift_Message::newInstance()
+                ->setSubject('Tilbakestill passord for vektorprogrammet.no')
+                ->setFrom('ikkesvar@vektorprogrammet.no')
+                ->setTo($email)
+                ->setBody($this->renderView('reset_password/new_password_email.txt.twig', array('reseturl' => 'www.vektorprogrammet.no/resetpassord/'.$resetCode.'')));
+            $this->get('mailer')->send($emailMessage);
 
-                //Sends a email with the url for resetting the password
-                $emailMessage = \Swift_Message::newInstance()
-                    ->setSubject('Tilbakestill passord for vektorprogrammet.no')
-                    ->setFrom('ikkesvar@vektorprogrammet.no')
-                    ->setTo($email)
-                    ->setBody($this->renderView('reset_password/new_password_email.txt.twig', array('reseturl' => 'www.vektorprogrammet.no/resetpassord/'.$resetCode.'')));
-                $this->get('mailer')->send($emailMessage);
-
-
-
-                //Returns true because the provided username and email was correct.
-                return true;
-
-            }else{
-                //Error message
-                $this->get('session')->getFlashBag()->add('errorMessage', '<em>Feil brukernavn eller E-post</em>');
-                return false;
-            }
-
-        }catch(\Exception $e){
+            return true;
+        }
+        catch(\Exception $e){
             //Error message
             $this->get('session')->getFlashBag()->add('errorMessage', '<em>Feil brukernavn eller E-post</em>');
             return false;
         }
-
     }
 
     /**

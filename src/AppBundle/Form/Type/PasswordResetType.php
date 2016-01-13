@@ -27,10 +27,6 @@ class PasswordResetType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', 'text', array(
-                'label' => 'Brukernavn',
-                'mapped' => false
-            ))
             ->add('email', 'text', array(
                 'label' => 'E-post',
                 'mapped' => false
