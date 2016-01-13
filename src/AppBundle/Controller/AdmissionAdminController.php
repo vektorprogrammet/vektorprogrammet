@@ -2,8 +2,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Application;
+use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Form\Type\NewUserType;
 use Doctrine\DBAL\DBALException;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -402,5 +406,43 @@ class AdmissionAdminController extends Controller {
         }catch(\Exception $e){
             return $this->redirect('/');
         }
+    }
+
+    public function createApplicationAction(Request $request){
+        $em = $this->getDoctrine()->getEntityManager();
+        $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
+        $currentSemester = null;
+        try{
+            $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department->getId());
+        }catch(NoResultException $e){
+            return $this->redirect($this->generateUrl('semesteradmin_show'));
+        }catch(NonUniqueResultException $e){
+            return $this->redirect($this->generateUrl('semesteradmin_show'));
+        }
+        $time = $currentSemester->getAdmissionStartDate();
+        $time->modify('+1 day');//Workaround to reuse ApplicationType
+
+        $application = new Application();
+        $form = $this->createForm(new ApplicationType($department->getId(), $time, true), $application);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $application->setSubstituteCreated(0);
+            $application->setUserCreated(0);
+            $application->getStatistic()->setAccepted(0);
+            $em->persist($application);
+            $em->flush();
+
+            $request->getSession()->getFlashBag()->add('admission-notice', 'Søknaden din er registrert. Lykke til!');
+
+            return $this->redirect($this->generateUrl('admission_show_specific_department', array(
+                'id' => $department->getId(),
+            )));
+        }
+        return $this->render(':admission_admin:create_application.html.twig', array(
+            'department' => $department,
+            'form' => $form->createView(),
+        ));
     }
 }

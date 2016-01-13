@@ -406,6 +406,12 @@ admissionadmin_send_new_user_mail:
  options:
     expose: true
 
+register_applicant:
+ path: /opprettsoker
+ defaults: {_controller: AppBundle:AdmissionAdmin:createApplication}
+ requirements:
+  _method: GET
+
 
 ##########################################
 #              UserAdmin                 #
