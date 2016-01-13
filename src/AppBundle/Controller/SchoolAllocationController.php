@@ -13,11 +13,12 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\SchoolCapacity;
 use AppBundle\Entity\Interview;
 use AppBundle\Form\Type\SchoolCapacityType;
+use Symfony\Component\HttpFoundation\Response;
 
 class SchoolAllocationController extends Controller
 {
 
-    public function allocateAction(Request $request, $departmentId=null){
+    public function showAction(Request $request, $departmentId=null){
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
         if(null === $departmentId){
@@ -34,6 +35,7 @@ class SchoolAllocationController extends Controller
                 break;
             }
         }
+
         $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
         $allInterviews = $this->getDoctrine()->getRepository('AppBundle:Interview')->findAllInterviewedInterviewsBySemester($currentSemester);
 
@@ -72,11 +74,12 @@ class SchoolAllocationController extends Controller
         //Total number of solutions evaluated during optimization
         $solutionsCount = Solution::$visited;
 
-        return $this->render('school_admin/school_allocate.html.twig', array(
+        return $this->render('school_admin/school_allocate_show.html.twig', array(
+            'semester' => $currentSemester,
             'interviews' => $allInterviews,
             'allocations' => $allCurrentSchoolCapacities,
             'allocatedSchools' => $schools,
-            'initialSolutionBolk1' => $solutionBolk1,
+            /*'initialSolutionBolk1' => $solutionBolk1,
             'initialSolutionBolk2' => $solutionBolk2,
             'score' => number_format((($solutionBolk1->evaluate()+$solutionBolk2->evaluate())/2), 1)*10,
             'initializeTime' => $solutionBolk1->initializeTime + $solutionBolk1->improveTime + $solutionBolk2->initializeTime + $solutionBolk2->improveTime,
@@ -85,7 +88,7 @@ class SchoolAllocationController extends Controller
             'optimizedSolutionBolk1' => $bestSolutionBolk1,
             'optimizedSolutionBolk2' => $bestSolutionBolk2,
             'optimizedScore' => number_format((($bestSolutionBolk1->evaluate() + $bestSolutionBolk2->evaluate())/2), 1)*10,
-            'differentSolutions' => $solutionsCount,
+            'differentSolutions' => $solutionsCount,*/
         ));
     }
 
@@ -145,6 +148,7 @@ class SchoolAllocationController extends Controller
 
     private function generateSchoolsFromSchoolCapacities($schoolCapacities){
         //Use schoolCapacities to create School objects for the SA-Algorithm
+        $schools = array();
         foreach($schoolCapacities as $sc){
             if($sc->getMonday() == 0 && $sc->getTuesday() == 0 && $sc->getWednesday() == 0 && $sc->getThursday() == 0 && $sc->getFriday() == 0) continue;
             $capacity = array();
@@ -162,6 +166,7 @@ class SchoolAllocationController extends Controller
 
     private function generateAssistantsFromInterviews($interviews, $semester){
         //Use interviews to create Assistant objects for the SA-algorithm
+        $assistants = array();
         foreach($interviews as $interview) {
             $intPractical = $interview->getInterviewPractical();
             if($intPractical->getSemester() != $semester){
@@ -200,6 +205,79 @@ class SchoolAllocationController extends Controller
             $assistants[] = $assistant;
         }
         return $assistants;
+    }
+
+    public function allocateAction(Request $request){
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
+
+        $allSemesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findByDepartment($departmentId);
+
+        $currentSemester = null;
+        foreach($allSemesters as $semester){
+            $now = new \DateTime();
+            if($semester->getSemesterStartDate() < $now && $semester->getSemesterEndDate() > $now){
+                $currentSemester = $semester;
+                break;
+            }
+        }
+
+        $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
+        $allInterviews = $this->getDoctrine()->getRepository('AppBundle:Interview')->findAllInterviewedInterviewsBySemester($currentSemester);
+
+        $assistants = $this->generateAssistantsFromInterviews($allInterviews, $currentSemester);
+        $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
+
+        $assistantsInBolksArray = $this->assignAssistantsToBolks($assistants);
+        $assistantsInBolk1 = $assistantsInBolksArray[0];
+        $assistantsInBolk2 = $assistantsInBolksArray[1];
+        $lockedAssistants = $assistantsInBolksArray[2];
+
+        //Create and find the initialSolutions (Very fast)
+        $schoolsDeepCopy = $this->deepCopySchools($schools);
+        $solutionBolk1 = new Solution($schools, $assistantsInBolk1, true);
+
+        $maxOptimizeTime = 1; //In seconds
+
+        //Check if the initializer found the perfect solution. If not, run the optimizer
+        if($solutionBolk1->isOk()){
+            $bestSolutionBolk1 = $solutionBolk1;
+        }else{
+            $optimizer = new Optimizer($solutionBolk1, 0.0001, 0.0000001, $maxOptimizeTime/2);
+            $bestSolutionBolk1 = $optimizer->optimize();
+            $this->updateAssistantsInLockedList($bestSolutionBolk1, $lockedAssistants);
+        }
+
+        $solutionBolk2 = new Solution($schoolsDeepCopy, $assistantsInBolk2,true, $lockedAssistants);
+
+        if($solutionBolk2->isOk()){
+            $bestSolutionBolk2 = $solutionBolk2;
+        }else{
+            $optimizer = new Optimizer($solutionBolk2, 0.0001, 0.0000001, $maxOptimizeTime/2);
+            $bestSolutionBolk2 = $optimizer->optimize();
+        }
+
+        //Total number of solutions evaluated during optimization
+        $solutionsCount = Solution::$visited;
+
+        return $this->render('school_admin/school_allocate_result.html.twig', array(
+            'initialSolutionBolk1' => $solutionBolk1,
+            'initialSolutionBolk2' => $solutionBolk2,
+            'score' => number_format((($solutionBolk1->evaluate()+$solutionBolk2->evaluate())/2), 1)*10,
+            'initializeTime' => $solutionBolk1->initializeTime + $solutionBolk1->improveTime + $solutionBolk2->initializeTime + $solutionBolk2->improveTime,
+            'optimizeTime' => $bestSolutionBolk1->optimizeTime + $bestSolutionBolk2->optimizeTime,
+            'optimizedAllocatedSchools' => $schools,
+            'optimizedSolutionBolk1' => $bestSolutionBolk1,
+            'optimizedSolutionBolk2' => $bestSolutionBolk2,
+            'optimizedScore' => number_format((($bestSolutionBolk1->evaluate() + $bestSolutionBolk2->evaluate())/2), 1)*10,
+            'differentSolutions' => $solutionsCount,
+        ));
+        $response = new Response();
+        $response->setContent(json_encode(array(
+            'name' => "Kristoffer"
+        )));
+        return $response;
     }
 
     public function createAction(Request $request, $departmentId=null){
