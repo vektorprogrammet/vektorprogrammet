@@ -36,13 +36,7 @@ class CreateUserOnApplicationType extends AbstractType {
 			->add('phone', 'text',  array(
 				'label' => 'Telefon',
 			))
-			->add('user_name', 'text',  array(
-				'label' => 'Brukernavn',
-			))
-			->add('password', 'password',  array(
-				'label' => 'Passord',
-			))
-			->add('email', 'text',  array(
+			->add('email', 'email',  array(
 				'label' => 'E-post',
 			))
 			->add('fieldOfStudy', 'entity', array(
@@ -55,10 +49,7 @@ class CreateUserOnApplicationType extends AbstractType {
 					  // Set the parameter to the department ID that the current user belongs to.
 					  ->setParameter(1, $this->departmentId);
 					}
-					))
-			 ->add('save', 'submit', array(
-				'label' => 'Opprett',
-			));
+					));
 
     }
 	

@@ -24,9 +24,8 @@ class ApplicationType extends AbstractType {
 			
 		// The fields that populare the form
         $builder
-			->add('user', 'User', array(
-				'type' => new CreateUserOnApplicationType(1),
-				'options' => array('departmentId' => $this->departmentId)
+			->add('user', new CreateUserOnApplicationType($this->departmentId), array(
+				'label' => ''
 			))
 			->add('yearOfStudy', 'choice',  array(
 				'label' => 'Årstrinn',

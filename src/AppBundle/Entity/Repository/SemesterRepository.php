@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Department;
 use Doctrine\ORM\EntityRepository;
 
 class SemesterRepository extends EntityRepository {
@@ -54,6 +55,12 @@ class SemesterRepository extends EntityRepository {
             ->getResult();
     }
 
+    /**
+     * @param $departmentId
+     * @return Department
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findSemesterWithActiveAdmissionByDepartment($departmentId){
         $now = new \DateTime();
         return $this->createQueryBuilder('Semester')

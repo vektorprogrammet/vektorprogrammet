@@ -74,7 +74,7 @@ class ApplicationInfo {
     protected $preferredGroup;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
      */
     protected $user;
 

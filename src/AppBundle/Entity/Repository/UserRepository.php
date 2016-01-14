@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -70,6 +71,12 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getSingleResult();
     }
 
+    /**
+     * @param $email
+     * @return User
+     * @throws NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findUserByEmail($email){
         return $this->createQueryBuilder('User')
             ->select('User')

@@ -31,160 +31,138 @@
                     </div>
                 </div>
             {% endfor %}
-
-            {% for flashMessage in app.session.flashbag.get('error-notice') %}
-                <div class="admission-notice">
-                    <div data-alert class="alert-box alert radius">
-                        {{ flashMessage }}
-                        <a href="#" class="close">&times;</a>
-                    </div>
-                </div>
-            {% endfor %}
         </div>
     </div>
     <div class="admissioncontainer">
         <div class="row">
             <div class="small-12 medium-12 large-12 columns">
 
-                    <h1 class="text-center"> Søk Vektorprogrammet ved {{ department.shortname }} </h1>
+                <h1 class="text-center"> Søk Vektorprogrammet ved {{ department.shortname }} </h1>
 
                 <br>
 
                 {% if semester is defined %}
 
-                    <form action="{{ path('new_application') }}" method="post">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
 
-                        <div class="row">
-                            <div class="small-12 medium-6 large-4 large-offset-2 columns">
+                    <div class="row">
+                        <div class="small-12 medium-6 large-4 large-offset-2 columns">
 
-                                <label>
-                                    Fornavn
-                                    <input type="text" name="firstName" pattern=".{2,155}" required title="Minst 2 tegn">
-                                </label>
 
+                            <div>
+                                {{ form_label(form.user.firstName) }}
+                                {{ form_errors(form.user.firstName) }}
+                                {{ form_widget(form.user.firstName) }}
                             </div>
 
-                            <div class="small-12 medium-6 large-4  end columns">
-                                <label>
-                                    Etternavn
-                                    <input type="text" name="lastName" pattern=".{2,155}" title="Minst 2 tegn" required>
-                                </label>
-
+                            <div>
+                                {{ form_label(form.user.email) }}
+                                {{ form_errors(form.user.email) }}
+                                {{ form_widget(form.user.email) }}
                             </div>
+
+
                         </div>
 
-                        <div class="row">
-                            <div class="small-12 medium-6 large-4 large-offset-2 columns">
+                        <div class="small-12 medium-6 large-4  end columns">
 
-                                <label>
-                                    E-post
-                                    <input type="email" name="email" pattern=".{3,155}" title="Maks 155 tegn" required>
-                                </label>
 
+                            <div>
+                                {{ form_label(form.user.lastName) }}
+                                {{ form_errors(form.user.lastName) }}
+                                {{ form_widget(form.user.lastName) }}
                             </div>
 
-                            <div class="small-12 medium-6 large-4  end columns">
-                                <label>
-                                    Tlf
-                                    <input type="tel" name="phone" pattern=".{8,155}" title="minst 8 tegn" required>
-                                </label>
-
+                            <div>
+                                {{ form_label(form.user.phone) }}
+                                {{ form_errors(form.user.phone) }}
+                                {{ form_widget(form.user.phone) }}
                             </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="small-6 medium-4 large-1 columns large-offset-2">
+
+
+                            <div>
+                                {{ form_label(form.user.fieldOfStudy) }}
+                                {{ form_errors(form.user.fieldOfStudy) }}
+                                {{ form_widget(form.user.fieldOfStudy) }}
+                            </div>
+
+
                         </div>
 
-                        <div class="row">
-                            <div class="small-6 medium-4 large-1 columns large-offset-2">
+                        <div class="small-6 medium-4 large-1  columns">
 
-                                <label>
-                                    Linje
-                                    <select name="fieldOfStudy">
-                                        {% for fieldOfStudy in fieldOfStudyList%}
-                                            <option value="{{ fieldOfStudy.id }}">{{ fieldOfStudy.shortName }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </label>
 
+                            <div>
+                                {{ form_label(form.yearOfStudy) }}
+                                {{ form_errors(form.yearOfStudy) }}
+                                {{ form_widget(form.yearOfStudy) }}
                             </div>
 
-                            <div class="small-6 medium-4 large-1  columns">
-                                <label>
-                                    Årstrinn
-                                    <select name="yearOfStudy">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                </label>
 
+                        </div>
+
+                        <div class="small-6 medium-4 large-2  columns">
+
+
+                            <div>
+                                {{ form_label(form.user.gender) }}
+                                {{ form_errors(form.user.gender) }}
+                                {{ form_widget(form.user.gender) }}
                             </div>
+
+
+                        </div>
+
+
+                        {# The form.captcha is only defined for unauthenticated users #}
+
+                        {% if form.captchaAdmission is defined %}
 
                             <div class="small-6 medium-4 large-2 columns">
 
-                                <label>
-                                    Kjønn
-                                    <select name="gender" id="">
-                                        <option value="0">Mann</option>
-                                        <option value="1">Dame</option>
-                                    </select>
-                                </label>
-
-                            </div>
-
-                            <div class="small-12 medium-12 large-4 columns end text-center">
-                                <h3> Søknadsfrist: </h3>
-
-                                {{  semester.admissionEndDate|date('d.m.Y') }} kl. {{  semester.admissionEndDate|date('H:i') }}
-                                </br>
-                            </div>
-
-                        </div>
-
-                        <div class="row text-center">
-
-                            <input type="hidden" value="{{ department.id }}" name="department">
-
-                            <button class="vektor-button-inverted" type="submit">Søk nå!</button>
-                            <br>
-                            <br>
-
-                            {# The form.captcha is only defined for unauthenticated users #}
-
-                            {#{% if form.captchaAdmission is defined %}
-
-                                    <div class="small-12 medium-6 large-2 large-offset-2 columns">
-
-                                        <div>
-                                            {{ form_label(form.captchaAdmission) }}
-                                            {{ form_errors(form.captchaAdmission) }}
-                                            {{ form_widget(form.captchaAdmission) }}
-                                        </div>
-
-                                    </div>
-
-                                    <div class="small-12 medium-6 large-4 text-center columns">
-
-                                        {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted'}}) }}
-
-                                    </div>
-
-                                {% else %}
-
-                                <div class="small-12 medium-6 large-4 text-center large-offset-4 columns">
-                                    {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted'}}) }}
+                                <div>
+                                    {{ form_label(form.captchaAdmission) }}
+                                    {{ form_errors(form.captchaAdmission) }}
+                                    {{ form_widget(form.captchaAdmission) }}
                                 </div>
 
-                            {% endif %}#}
+                            </div>
 
+                        {% endif %}
+                        <div class="small-6 medium-6 large-2 end columns">
+
+                            <h3> Søknadsfrist: </h3>
+
+                            {{ semester.admissionEndDate|date('d.m.Y') }}
+                            kl. {{ semester.admissionEndDate|date('H:i') }}
+                            </br>
 
                         </div>
+                    </div>
 
-                        {#{{ form_end(form) }}#}
-                    </form>
+                    <div class="row">
+                        <div class="text-center">
+                            {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted'}}) }}
+                        </div>
+                        <br>
+                    </div>
+
+
+                    {{ form_end(form) }}
 
                 {% else %}
-                    <p> Avdelingen {{ department.shortname }} har ikke en aktiv søkeperiode. </p>
+
+                    {% for d in department %}
+                        <p> Avdelingen {{ d.shortname }} har ikke en aktiv søkeperiode. </p>
+                    {% endfor %}
 
                 {% endif %}
 
