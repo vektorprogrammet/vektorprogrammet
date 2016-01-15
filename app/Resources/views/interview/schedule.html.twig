@@ -30,15 +30,15 @@
                         </thead>
                         <tbody>
                         <tr>
-                            {% set a = interview.application %}
-                            <td> {{ a.firstName }} </td>
-                            <td> {{ a.lastName }} </td>
-                            <td> {{ a.phone }} </td>
-                            <td> {{ a.email }} </td>
-                            <td> {{ a.statistic.fieldOfStudy }} </td>
-                            <td> {{ a.statistic.yearOfStudy }} </td>
+                            {% set u = interview.user %}
+                            <td> {{ u.firstName }} </td>
+                            <td> {{ u.lastName }} </td>
+                            <td> {{ u.phone }} </td>
+                            <td> {{ u.email }} </td>
+                            <td> {{ u.fieldOfStudy }} </td>
+                            <td> {{ u.interview.applicationInfo.yearOfStudy }} </td>
 
-                            {% if a.statistic.previousParticipation == 1 %}
+                            {% if u.assistantHistories|length %}
                                 <td> Ja </td>
                             {% else %}
                                 <td> Nei </td>

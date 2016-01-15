@@ -28,6 +28,6 @@ class AssignInterviewType extends AbstractType
 
     public function getName()
     {
-        return 'application';
+        return 'user';
     }
 }

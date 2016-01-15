@@ -53,50 +53,36 @@
             </thead>
 
             <tbody>
-                <form id="bulk" name="application">
+            <form id="bulk" name="application">
                 {% for a in applicants %}
                     <tr id="{{ a.id }}">
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
-                            <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}"></td>
+                            <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
+                            </td>
                         {% endif %}
-                        <td>{{ a.firstName }}</td>
-                        <td>{{ a.lastName }}</td>
-                        <td>{{ a.phone }}</td>
-                        <td>{{ a.email }}</td>
-                        <td>{{ a.statistic.fieldOfStudy }}</td>
-                        <td>{{ a.statistic.yearOfStudy }}</td>
+                        <td>{{ a.user.firstName }}</td>
+                        <td>{{ a.user.lastName }}</td>
+                        <td>{{ a.user.phone }}</td>
+                        <td>{{ a.user.email }}</td>
+                        <td>{{ a.user.fieldOfStudy }}</td>
+                        <td>{{ a.yearOfStudy }}</td>
 
-                        {% if a.statistic.previousParticipation == 1 %}
+                        {% if a.user.assistantHistories|length %}
                             <td>Ja</td>
+                            <td></td>
                         {% else %}
                             <td>Nei</td>
+                            {# Add the assign interview button, given the correct permissions #}
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <td>
+                                    <a href="#"
+                                       class="assign button tiny{{ (a.user.interview is null) ? '' : ' success' }}">
+                                        <i class="fa fa-share-alt"></i> Fordel
+                                    </a>
+                                </td>
+                            {% endif %}
                         {% endif %}
 
-                        {# Add the create user and substitue dropdown button if a user is not already created #}
-                        {% if a.userCreated == 0 %}
-                            <td>
-                                <a class="button tiny{{ (a.substituteCreated == 0) ? '' : ' secondary' }}" data-dropdown="createButton{{ a.id }}" aria-controls="createButton{{ a.id }}" aria-expanded="false"><i class="fa fa-user-plus"></i> Opprett <i class="fa fa-caret-down"></i></a>
-                                <ul id="createButton{{ a.id }}" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false">
-                                    <li class="createUser"><a href="#">Opprett bruker</a></li>
-
-                                    {# Add the create substitue option only if no substitute exists already #}
-                                    {% if a.substituteCreated == 0 %}
-                                        <li class="createSubstitute"><a href="#">Opprett vikar</a></li>
-                                    {% endif %}
-                                </ul>
-                            </td>
-                        {% else %}
-                            <td >Bruker opprettet</td>
-                        {% endif %}
-
-                        {# Add the assign interview button, given the correct permissions #}
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
-                            <td>
-                                <a href="#" class="assign button tiny{{ (a.interview is null) ? '' : ' success' }}">
-                                    <i class="fa fa-share-alt"></i> Fordel
-                                </a>
-                            </td>
-                        {% endif %}
 
                         {# Add the delete application button, given the correct permissions #}
                         {% if is_granted('ROLE_HIGHEST_ADMIN') %}
@@ -109,7 +95,7 @@
 
                     </tr>
                 {% endfor %}
-                </form>
+            </form>
             </tbody>
         </table>
 

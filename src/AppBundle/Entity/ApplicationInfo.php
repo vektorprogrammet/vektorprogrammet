@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\AdmissionRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ApplicationInfoRepository")
  * @ORM\Table(name="application_info")
  */
 class ApplicationInfo {
@@ -84,11 +84,17 @@ class ApplicationInfo {
     protected $last_edited;
 
     /**
+     * @ORM\Column(type="datetime", nullable=false)
+     */
+    protected $created;
+
+    /**
      * ApplicationInfo constructor.
      */
     public function __construct()
     {
         $this->last_edited = new \DateTime();
+        $this->created = new \DateTime();
         $this->substitute = false;
         $this->english = false;
         $this->doublePosition = false;

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\ApplicationInfo;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -309,6 +310,7 @@ class InterviewController extends Controller
             !$interview->isInterviewer($this->getUser())) {
             throw $this->createAccessDeniedException();
         }
+        dump($interview->getUser());
 
         // Set the default data for the form
         $defaultData = array(
@@ -316,7 +318,7 @@ class InterviewController extends Controller
             'message' => 'Hei, vi har satt opp et intervju for deg angående opptak til vektorprogrammet. ' .
             'Dersom tidspunktet ikke passer, venligst send svar som retur til denne eposten.',
             'from' => $interview->getInterviewer()->getEmail(),
-            'to' => $interview->getApplication()->getEmail()
+            'to' => $interview->getUser()->getEmail()
         );
 
         $form = $this->createForm(new ScheduleInterviewType, $defaultData);
@@ -364,22 +366,25 @@ class InterviewController extends Controller
      * This method is intended to be called by an Ajax request.
      *
      * @param Request $request
-     * @param Application $application
+     * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function assignAction(Request $request, Application $application)
+    public function assignAction(Request $request, $id)
     {
+        $em = $this->getDoctrine()->getManager();
+        $applicationInfo  = $em->getRepository('AppBundle:ApplicationInfo')->find($id);
+        $user = $applicationInfo->getUser();
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
         $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles(['ROLE_ADMIN']);
 
-        $form = $this->createForm(new AssignInterviewType($roles), $application);
+        $form = $this->createForm(new AssignInterviewType($roles), $user);
 
         $form->handleRequest($request);
 
         if($form->isValid()) {
-            $application->getInterview()->setInterviewed(false);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($application);
+            $user->getInterview()->setUser($user);
+            $user->getInterview()->setApplicationInfo($applicationInfo);
+            $em->persist($user);
             $em->flush();
 
             return new JsonResponse(

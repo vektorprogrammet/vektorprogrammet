@@ -88,7 +88,7 @@ class User implements AdvancedUserInterface, \Serializable {
     private $roles;
 
     /**
-     * @ORM\OneToOne(targetEntity="Interview")
+     * @ORM\OneToOne(targetEntity="Interview", cascade={"persist"})
      */
     private $interview;
 
@@ -96,12 +96,18 @@ class User implements AdvancedUserInterface, \Serializable {
      * @ORM\column(type="string", nullable=true)
      */
 	private $new_user_code;
-	
+
+    /**
+     * @ORM\OneToMany(targetEntity="AssistantHistory", mappedBy="user")
+     */
+    private $assistantHistories;
+
 	/**
      * @ORM\OneToMany(targetEntity="CertificateRequest", mappedBy="user")
      **/
 	protected $certificateRequests;
-	
+
+
 	
 	public function __construct() {
         $this->roles = new ArrayCollection();
@@ -280,10 +286,10 @@ class User implements AdvancedUserInterface, \Serializable {
     /**
      * Set fieldOfStudy
      *
-     * @param \AppBundle\Entity\FieldOfStudy $fieldOfStudy
+     * @param FieldOfStudy $fieldOfStudy
      * @return User
      */
-    public function setFieldOfStudy(\AppBundle\Entity\FieldOfStudy $fieldOfStudy = null)
+    public function setFieldOfStudy(FieldOfStudy $fieldOfStudy = null)
     {
         $this->fieldOfStudy = $fieldOfStudy;
 
@@ -293,7 +299,7 @@ class User implements AdvancedUserInterface, \Serializable {
     /**
      * Get fieldOfStudy
      *
-     * @return \AppBundle\Entity\FieldOfStudy
+     * @return FieldOfStudy
      */
     public function getFieldOfStudy()
     {
@@ -303,10 +309,10 @@ class User implements AdvancedUserInterface, \Serializable {
     /**
      * Add roles
      *
-     * @param \AppBundle\Entity\Role $roles
+     * @param Role $roles
      * @return User
      */
-    public function addRole(\AppBundle\Entity\Role $roles)
+    public function addRole(Role $roles)
     {
         $this->roles[] = $roles;
 
@@ -316,9 +322,9 @@ class User implements AdvancedUserInterface, \Serializable {
     /**
      * Remove roles
      *
-     * @param \AppBundle\Entity\Role $roles
+     * @param Role $roles
      */
-    public function removeRole(\AppBundle\Entity\Role $roles)
+    public function removeRole(Role $roles)
     {
         $this->roles->removeElement($roles);
     }
@@ -326,14 +332,11 @@ class User implements AdvancedUserInterface, \Serializable {
     /**
      * Set interview
      *
-     * @param \AppBundle\Entity\Interview $interview
+     * @param Interview $interview
      * @return Application
      */
-    public function setInterview(\AppBundle\Entity\Interview $interview = null)
+    public function setInterview(Interview $interview = null)
     {
-        // Must also set the owning side as it is the one doctrine watches
-        $interview->setApplication($this);
-
         $this->interview = $interview;
 
         return $this;
@@ -342,7 +345,7 @@ class User implements AdvancedUserInterface, \Serializable {
     /**
      * Get interview
      *
-     * @return \AppBundle\Entity\Interview
+     * @return Interview
      */
     public function getInterview()
     {
@@ -371,14 +374,36 @@ class User implements AdvancedUserInterface, \Serializable {
     {
         return $this->new_user_code;
     }
+
+    /**
+     * @return array
+     */
+    public function getAssistantHistories()
+    {
+        return $this->assistantHistories;
+    }
+
+    /**
+     * @param array $assistantHistories
+     */
+    public function setAssistantHistories($assistantHistories)
+    {
+        $this->assistantHistories = $assistantHistories;
+    }
+
+    public function addAssistantHistory(AssistantHistory $assistantHistory){
+        $this->assistantHistories[] = $assistantHistory;
+    }
+
+
 	
 	/**
      * Add certificateRequests
      *
-     * @param \AppBundle\Entity\CertificateRequest $certificateRequests
+     * @param CertificateRequest $certificateRequests
      * @return User
      */
-    public function addCertificateRequest(\AppBundle\Entity\CertificateRequest $certificateRequests)
+    public function addCertificateRequest(CertificateRequest $certificateRequests)
     {
         $this->certificateRequests[] = $certificateRequests;
 
@@ -388,9 +413,9 @@ class User implements AdvancedUserInterface, \Serializable {
     /**
      * Remove certificateRequests
      *
-     * @param \AppBundle\Entity\CertificateRequest $certificateRequests
+     * @param CertificateRequest $certificateRequests
      */
-    public function removeCertificateRequest(\AppBundle\Entity\CertificateRequest $certificateRequests)
+    public function removeCertificateRequest(CertificateRequest $certificateRequests)
     {
         $this->certificateRequests->removeElement($certificateRequests);
     }

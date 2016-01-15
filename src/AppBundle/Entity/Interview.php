@@ -55,6 +55,15 @@ class Interview
      */
     protected $interviewScore;
 
+    /**
+     * @ORM\OneToOne(targetEntity="User", cascade={"persist"})
+     */
+    protected $user;
+
+    /**
+     * @ORM\OneToOne(targetEntity="ApplicationInfo")
+     */
+    protected $applicationInfo;
 
     /**
      * Constructor
@@ -62,6 +71,7 @@ class Interview
     public function __construct()
     {
         $this->interviewAnswers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->interviewed = false;
     }
 
     /**
@@ -255,4 +265,39 @@ class Interview
     {
         return $this->conducted;
     }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return ApplicationInfo
+     */
+    public function getApplicationInfo()
+    {
+        return $this->applicationInfo;
+    }
+
+    /**
+     * @param ApplicationInfo $applicationInfo
+     */
+    public function setApplicationInfo($applicationInfo)
+    {
+        $this->applicationInfo = $applicationInfo;
+    }
+
+
+
 }
