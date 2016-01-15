@@ -12,24 +12,24 @@ use \DateTime;
 class WorkHistoryEntityUnitTest extends \PHPUnit_Framework_TestCase {
     
 	// Check whether the setStartDate function is working correctly
-	public function testSetStartDate(){
-		
-		// New datetime variable 
+	/*public function testSetStartDate(){
+
+		// New datetime variable
 		$today = new DateTime("now");
-		
+
 		// new entity
 		$wh = new WorkHistory();
-		
-		// Use the setStartDate method 
+
+		// Use the setStartDate method
 		$wh->setStartDate($today);
-		
-		// Assert the result 
+
+		// Assert the result
 		$this->assertEquals($today, $wh->getStartDate());
-		
-	}
+
+	}*/
 	
 	// Check whether the setEndDate function is working correctly
-	public function testSetEndDate(){
+/*	public function testSetEndDate(){
 		
 		// New datetime variable 
 		$today = new DateTime("now");
@@ -43,7 +43,7 @@ class WorkHistoryEntityUnitTest extends \PHPUnit_Framework_TestCase {
 		// Assert the result 
 		$this->assertEquals($today, $wh->getEndDate());
 		
-	}
+	}*/
 	
 	// Check whether the setUser function is working correctly
 	public function testSetUser(){
