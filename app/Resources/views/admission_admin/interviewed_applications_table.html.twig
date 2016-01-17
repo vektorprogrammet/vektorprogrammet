@@ -69,15 +69,15 @@
                             <td>Nei</td>
                         {% endif %}
 
-                        <td>{{ a.user.interview.interviewScore.explanatoryPower }}</td>
-                        <td>{{ a.user.interview.interviewScore.roleModel }}</td>
-                        <td>{{ a.user.interview.interviewScore.drive }}</td>
-                        <td>{{ a.user.interview.interviewScore.totalImpression }}</td>
-                        <td>{{ a.user.interview.interviewScore.sum }}</td>
+                        <td>{{ a.interview.interviewScore.explanatoryPower }}</td>
+                        <td>{{ a.interview.interviewScore.roleModel }}</td>
+                        <td>{{ a.interview.interviewScore.drive }}</td>
+                        <td>{{ a.interview.interviewScore.totalImpression }}</td>
+                        <td>{{ a.interview.interviewScore.sum }}</td>
 
                         {# Add the read interview button #}
                         <td>
-                            <a href="{{ path('interview_show', { 'id': a.user.interview.id }) }}" class="button tiny"><i class="fa fa-list-ul"></i> Les intervju</a>
+                            <a href="{{ path('interview_show', { 'id': a.interview.id }) }}" class="button tiny"><i class="fa fa-list-ul"></i> Les intervju</a>
                         </td>
 
                         {# Add the delete interview and application dropdown button, given the correct permissions #}
@@ -87,7 +87,7 @@
                                     <i class="fa fa-trash fa-lg"></i> Slett <i class="fa fa-caret-down"></i>
                                 </a>
                                 <ul id="deleteDropdown{{ a.id }}" data-dropdown-content class="f-dropdown" aria-hidden="true">
-                                    <li class="deleteInterview" id="{{ a.user.interview.id }}"><a href="#">Slett intervju</a></li>
+                                    <li class="deleteInterview" id="{{ a.interview.id }}"><a href="#">Slett intervju</a></li>
                                     <li class="deleteApplication" id="{{ a.id }}"><a href="#">Slett søknad</a></li>
                                 </ul>
                             </td>

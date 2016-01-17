@@ -25,7 +25,7 @@ class ApplicationInfoRepository extends EntityRepository {
             ->join('a.semester', 'sem')
             ->join('sem.department', 'd')
             ->join('a.user', 'u')
-            ->join('u.interview', 'i')
+            ->join('a.interview', 'i')
             ->where('i.interviewScore IS NOT NULL');
 
             if(null !== $department) {
@@ -54,7 +54,7 @@ class ApplicationInfoRepository extends EntityRepository {
             ->join('a.semester', 'sem')
             ->join('sem.department', 'd')
             ->join('a.user', 'u')
-            ->join('u.interview', 'i')
+            ->join('a.interview', 'i')
             ->where('i.interviewed = 0');
 
              if(null !== $department) {
@@ -83,7 +83,7 @@ class ApplicationInfoRepository extends EntityRepository {
             ->join('a.semester', 'sem')
             ->join('sem.department', 'd')
             ->join('a.user', 'u')
-            ->leftJoin('u.interview', 'i')
+            ->leftJoin('a.interview', 'i')
             ->where('i.interviewed = 0')
             ->orWhere('i is NULL');
 

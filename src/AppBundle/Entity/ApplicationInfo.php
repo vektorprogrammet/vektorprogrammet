@@ -95,7 +95,6 @@ class ApplicationInfo {
 
     /**
      * @ORM\OneToOne(targetEntity="Interview", cascade={"persist"})
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $interview;
 

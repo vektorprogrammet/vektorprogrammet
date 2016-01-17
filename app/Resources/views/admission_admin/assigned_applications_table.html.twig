@@ -59,23 +59,23 @@
                     <td>{{ a.user.fieldOfStudy }}</td>
                     <td>{{ a.yearOfStudy }}</td>
 
-                    {% if a.user.interview.scheduled is not null %}
-                        <td data-sort-value="{{ a.user.interview.scheduled.getTimestamp }}">
-                            {{ a.user.interview.scheduled|date("d.m.y - G:i") }}
+                    {% if a.interview.scheduled is not null %}
+                        <td data-sort-value="{{ a.interview.scheduled.getTimestamp }}">
+                            {{ a.interview.scheduled|date("d.m.y - G:i") }}
                         </td>
                     {% else %}
                         <td data-sort-value="0"></td>
                     {% endif %}
 
-                    <td>{{ a.user.interview.interviewer.firstName }} {{ a.user.interview.interviewer.lastName }}</td>
+                    <td>{{ a.interview.interviewer.firstName }} {{ a.interview.interviewer.lastName }}</td>
 
                     {# Add the buttons to book(send email) and conduct an interview, given the correct permissions #}
-                    {% if is_granted('ROLE_SUPER_ADMIN') or a.user.interview.isInterviewer(app.user) %}
+                    {% if is_granted('ROLE_SUPER_ADMIN') or a.interview.isInterviewer(app.user) %}
                         <td >
-                            <a href="{{ path('interview_schedule', { 'id': a.user.interview.id }) }}" class="button tiny"><i class="fa fa-envelope"></i> Sett opp</a>
+                            <a href="{{ path('interview_schedule', { 'id': a.id }) }}" class="button tiny"><i class="fa fa-envelope"></i> Sett opp</a>
                         </td>
                         <td>
-                            <a href="{{ path('interview_conduct', { 'id': a.user.interview.id }) }}" class="button tiny"><i class="fa fa-list-ul"></i> Intervju</a>
+                            <a href="{{ path('interview_conduct', { 'id': a.id }) }}" class="button tiny"><i class="fa fa-list-ul"></i> Intervju</a>
                         </td>
                     {% else %}
                         <td colspan="2"></td>
@@ -120,23 +120,23 @@
                     <td>{{ a.user.fieldOfStudy }}</td>
                     <td>{{ a.yearOfStudy }}</td>
 
-                        {% if a.user.interview.scheduled is not null %}
-                            <td data-sort-value="{{ a.user.interview.scheduled.getTimestamp }}">
-                            {{ a.user.interview.scheduled|date("d.m.y - G:i") }}
+                        {% if a.interview.scheduled is not null %}
+                            <td data-sort-value="{{ a.interview.scheduled.getTimestamp }}">
+                            {{ a.interview.scheduled|date("d.m.y - G:i") }}
                             </td>
                             {% else %}
                             <td data-sort-value="0"></td>
                         {% endif %}
 
-                    <td>{{ a.user.interview.interviewer.firstName }} {{ a.user.interview.interviewer.lastName }}</td>
+                    <td>{{ a.interview.interviewer.firstName }} {{ a.interview.interviewer.lastName }}</td>
 
                     {# Add the buttons to book(send email) and conduct an interview, given the correct permissions #}
-                    {% if is_granted('ROLE_SUPER_ADMIN') or a.user.interview.isInterviewer(app.user) %}
+                    {% if is_granted('ROLE_SUPER_ADMIN') or a.interview.isInterviewer(app.user) %}
                         <td >
-                            <a href="{{ path('interview_schedule', { 'id': a.user.interview.id }) }}" class="button tiny"><i class="fa fa-envelope"></i> Sett opp</a>
+                            <a href="{{ path('interview_schedule', { 'id': a.id }) }}" class="button tiny"><i class="fa fa-envelope"></i> Sett opp</a>
                         </td>
                         <td>
-                            <a href="{{ path('interview_conduct', { 'id': a.user.interview.id }) }}" class="button tiny"><i class="fa fa-list-ul"></i> Intervju</a>
+                            <a href="{{ path('interview_conduct', { 'id': a.id }) }}" class="button tiny"><i class="fa fa-list-ul"></i> Intervju</a>
                         </td>
                     {% else %}
                         <td colspan="2"></td>

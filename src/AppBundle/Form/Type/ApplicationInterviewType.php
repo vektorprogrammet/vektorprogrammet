@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ApplicationInfoPracticalType extends AbstractType
+class ApplicationInterviewType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -99,6 +99,13 @@ class ApplicationInfoPracticalType extends AbstractType
             'expanded' => true,
             'multiple' => true
         ));
+
+        $builder->add('interview', new InterviewType());
+
+        $builder->add('save', 'submit', array(
+            'label' => 'Lagre',
+        ));
+
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

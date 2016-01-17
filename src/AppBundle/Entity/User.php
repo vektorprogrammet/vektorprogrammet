@@ -325,29 +325,6 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     /**
-     * Set interview
-     *
-     * @param Interview $interview
-     * @return Application
-     */
-    public function setInterview(Interview $interview = null)
-    {
-        $this->interview = $interview;
-
-        return $this;
-    }
-
-    /**
-     * Get interview
-     *
-     * @return Interview
-     */
-    public function getInterview()
-    {
-        return $this->interview;
-    }
-
-    /**
      * Set new_user_code
      *
      * @param string $newUserCode

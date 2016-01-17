@@ -276,23 +276,4 @@ class Interview
     {
         $this->user = $user;
     }
-
-    /**
-     * @return ApplicationInfo
-     */
-    public function getApplicationInfo()
-    {
-        return $this->applicationInfo;
-    }
-
-    /**
-     * @param ApplicationInfo $applicationInfo
-     */
-    public function setApplicationInfo($applicationInfo)
-    {
-        $this->applicationInfo = $applicationInfo;
-    }
-
-
-
 }

@@ -35,7 +35,7 @@
                                 <td> {{ u.phone }} </td>
                                 <td> {{ u.email }} </td>
                                 <td> {{ u.fieldOfStudy }} </td>
-                                <td> {{ u.interview.applicationInfo.yearOfStudy }} </td>
+                                <td> {{ interview.applicationInfo.yearOfStudy }} </td>
 
                                 {% if u.assistantHistories | length %}
                                     <td> Ja </td>
@@ -175,11 +175,11 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td>{{ u.interview.interviewScore.explanatoryPower }}</td>
-                                <td>{{ u.interview.interviewScore.roleModel }}</td>
-                                <td>{{ u.interview.interviewScore.drive }}</td>
-                                <td>{{ u.interview.interviewScore.totalImpression }}</td>
-                                <td>{{ u.interview.interviewScore.sum }}</td>
+                                <td>{{ interview.interviewScore.explanatoryPower }}</td>
+                                <td>{{ interview.interviewScore.roleModel }}</td>
+                                <td>{{ interview.interviewScore.drive }}</td>
+                                <td>{{ interview.interviewScore.totalImpression }}</td>
+                                <td>{{ interview.interviewScore.sum }}</td>
                             </tr>
                             </tbody>
                         </table>

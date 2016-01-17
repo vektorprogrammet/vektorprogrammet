@@ -55,27 +55,30 @@ class AdmissionAdminController extends Controller {
         $semester = $request->query->get('semester', null);
 
         $em = $this->getDoctrine();
-        if($semester === null){
 
+        if($departmentId === null){
+            // Finds the department for the current logged in user
+            $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
+        }else{
+            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
+        }
+
+        if($semester === null){
+            try{
+                $semester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department->getId());
+            }catch(NoResultException $e){
+                return $this->render('error/no_semester.html.twig', array('department' => $department));
+            }
         }
 
         // Finds all the departments
         $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
 
-        if($departmentId === null){
-
-            // Finds the department for the current logged in user
-            $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
-
-        }else{
-
-            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
-        }
 
         // Finds the name of the chosen semester. If no semester chosen display 'Alle'
         $semesterName = 'Alle';
         if($semester !== null){
-            $semesterName = $this->getDoctrine()->getRepository('AppBundle:Semester')->findNameById($semester);
+            $semesterName = $this->getDoctrine()->getRepository('AppBundle:Semester')->findNameById($semester->getId());
         }
 
         // Find all the semesters associated with the department
@@ -89,13 +92,13 @@ class AdmissionAdminController extends Controller {
             case 'assigned':
                 $applicants = $repository->findAssignedApplicants($department,$semester);
                 foreach($applicants as $applicant){
-                    $fullName = $applicant->getUser()->getInterview()->getInterviewer()->getFirstName().' '.$applicant->getUser()->getInterview()->getInterviewer()->getLastName();
+                    $fullName = $applicant->getInterview()->getInterviewer()->getFirstName().' '.$applicant->getInterview()->getInterviewer()->getLastName();
                     if(array_key_exists($fullName,$interviewDistribution)){
                         $interviewDistribution[$fullName]++;
                     }else{
                         $interviewDistribution[$fullName] = 1;
                     }
-                    if($applicant->getUser()->getInterview()->getInterviewer() == $user){
+                    if($applicant->getInterview()->getInterviewer() == $user){
                         $applicantsAssignedToUser[] = $applicant;
                     }
                 }
@@ -140,6 +143,10 @@ class AdmissionAdminController extends Controller {
 				$em = $this->getDoctrine()->getEntityManager();
 				// Find the application by ID
 				$application = $this->getDoctrine()->getRepository('AppBundle:ApplicationInfo')->find($id);
+                if($application->getInterview() !== null){
+                    $em->remove($application->getInterview());
+                    $em->flush();
+                }
 				$em->remove($application);
 				$em->flush();
 				
@@ -206,9 +213,16 @@ class AdmissionAdminController extends Controller {
             $em = $this->getDoctrine()->getEntityManager();
             $applications = $em->getRepository('AppBundle:ApplicationInfo')->findById($applicationIds);
 
+            $message = "";
+
             if ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')) {
                 // Delete the applications
                 foreach($applications as $application) {
+                    if($application->getInterview() !== null){
+                        $message .= "Removing Interview: " + $application->getInterview()->getId();
+                        $em->remove($application->getInterview());
+                        $em->flush();
+                    }
                     $em->remove($application);
                 }
                 $em->flush();
@@ -217,7 +231,7 @@ class AdmissionAdminController extends Controller {
                 $response['success'] = true;
                 /*return new JsonResponse(array(
                         'success' => false,
-                        'applications' => $applications,
+                        'message' => $message,
                 )
                 );*/
             }
@@ -252,6 +266,7 @@ class AdmissionAdminController extends Controller {
                 'code'    => $e->getCode(),
                 'cause' => 'En exception oppstod. Vennligst kontakt IT-ansvarlig.',
                 'exeption' => $e->getTrace(),
+                'message'=>$message
                 // 'cause' => $e->getMessage(), if you want to see the exception message.
             ]);
         }

@@ -36,7 +36,8 @@
                             <td> {{ u.phone }} </td>
                             <td> {{ u.email }} </td>
                             <td> {{ u.fieldOfStudy }} </td>
-                            <td> {{ u.interview.applicationInfo.yearOfStudy }} </td>
+                            {% dump(interview) %}
+                            <td> {{ applicationInfo.yearOfStudy }} </td>
 
                             {% if u.assistantHistories|length %}
                                 <td> Ja </td>

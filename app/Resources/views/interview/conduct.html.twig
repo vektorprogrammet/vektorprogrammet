@@ -6,11 +6,11 @@
 
 {# Form themes user to modify the templates of the various form components #}
 {% form_theme form 'form/interview_layout.html.twig' %}
-{% form_theme form.applicationInfo.monday 'form/radio_grid_layout.html.twig' %}
-{% form_theme form.applicationInfo.tuesday 'form/radio_grid_layout.html.twig' %}
-{% form_theme form.applicationInfo.wednesday 'form/radio_grid_layout.html.twig' %}
-{% form_theme form.applicationInfo.thursday 'form/radio_grid_layout.html.twig' %}
-{% form_theme form.applicationInfo.friday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.monday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.tuesday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.wednesday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.thursday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.friday 'form/radio_grid_layout.html.twig' %}
 
 
 {% block body %}
@@ -42,7 +42,7 @@
                                     <td> {{ u.phone }} </td>
                                     <td> {{ u.email }} </td>
                                     <td> {{ u.fieldOfStudy }} </td>
-                                    <td> {{ interview.applicationInfo.yearOfStudy }} </td>
+                                    <td> {{ applicationInfo.yearOfStudy }} </td>
 
                                     {% if u.assistantHistories|length %}
                                         <td> Ja </td>
@@ -64,46 +64,46 @@
                 <div class="row">
                     <div class="small-12 columns">
                         <label class="question-label">Hvilke dager passer for deg?</label>
-                        {{ form_row(form.applicationInfo.monday) }}
-                        {{ form_row(form.applicationInfo.tuesday) }}
-                        {{ form_row(form.applicationInfo.wednesday) }}
-                        {{ form_row(form.applicationInfo.thursday) }}
-                        {{ form_row(form.applicationInfo.friday) }}
+                        {{ form_row(form.monday) }}
+                        {{ form_row(form.tuesday) }}
+                        {{ form_row(form.wednesday) }}
+                        {{ form_row(form.thursday) }}
+                        {{ form_row(form.friday) }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
-                        {{ form_row(form.applicationInfo.doublePosition) }}
+                        {{ form_row(form.doublePosition) }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
-                        {{ form_row(form.applicationInfo.preferredGroup) }}
+                        {{ form_row(form.preferredGroup) }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
-                        {{ form_row(form.applicationInfo.substitute) }}
+                        {{ form_row(form.substitute) }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
-                        {{ form_row(form.applicationInfo.english) }}
+                        {{ form_row(form.english) }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
-                        {{ form_row(form.applicationInfo.heardAboutFrom) }}
+                        {{ form_row(form.heardAboutFrom) }}
                     </div>
                 </div>
 
                 <h3>Intervjuspørsmål <small>{{ interview.interviewSchema.name }}</small></h3>
-                {% for interviewAnswer in form.interviewAnswers %}
+                {% for interviewAnswer in form.interview.interviewAnswers %}
                     <div class="row">
                         <div class="small-12 medium-12 large-9 columns">
                             {{ form_row(interviewAnswer.answer) }}
@@ -114,25 +114,25 @@
                 <h3>Evaluering</h3>
                 <div class="row">
                     <div class="small-12 medium-12 large-4 columns">
-                        {{ form_row(form.interviewScore.explanatoryPower) }}
+                        {{ form_row(form.interview.interviewScore.explanatoryPower) }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="small-12 medium-12 large-4 columns">
-                        {{ form_row(form.interviewScore.roleModel) }}
+                        {{ form_row(form.interview.interviewScore.roleModel) }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="small-12 medium-12 large-4 columns">
-                        {{ form_row(form.interviewScore.drive) }}
+                        {{ form_row(form.interview.interviewScore.drive) }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="small-12 medium-12 large-4 columns end">
-                        {{ form_row(form.interviewScore.totalImpression) }}
+                        {{ form_row(form.interview.interviewScore.totalImpression) }}
                     </div>
                 </div>
 
