@@ -25,6 +25,7 @@
     {% if applicants is defined %}
         <h3 class="text-center"><a class="button tiny success" href="{{ path('register_applicant') }}" style="float:left;">Ny søker</a> Alle søkere | Antall: {{ applicants|length }}</h3>
         {# The table containing new applications #}
+        <form id="bulk" name="application">
         <table width="100%" id="application-table">
             <thead>
             <tr>
@@ -52,7 +53,7 @@
             </thead>
 
             <tbody>
-                <form id="bulk" name="application">
+
                 {% for a in applicants %}
                     <tr id="{{ a.id }}">
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
@@ -108,9 +109,9 @@
 
                     </tr>
                 {% endfor %}
-                </form>
+
             </tbody>
         </table>
-
+        </form>
     {% endif %}
 {% endblock %}
