@@ -94,6 +94,12 @@ class ApplicationInfo {
     protected $heardAboutFrom;
 
     /**
+     * @ORM\OneToOne(targetEntity="Interview", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    protected $interview;
+
+    /**
      * ApplicationInfo constructor.
      */
     public function __construct()
@@ -374,6 +380,22 @@ class ApplicationInfo {
     public function getHeardAboutFrom()
     {
         return $this->heardAboutFrom;
+    }
+
+    /**
+     * @return Interview
+     */
+    public function getInterview()
+    {
+        return $this->interview;
+    }
+
+    /**
+     * @param Interview $interview
+     */
+    public function setInterview($interview)
+    {
+        $this->interview = $interview;
     }
 
 

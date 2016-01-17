@@ -253,7 +253,9 @@
             onBulkAssignFormSubmit: function(event) {
                 event.preventDefault();
                 // Serializes both the bulk checkbox form and the assign form (both have name=application)
-                var formdata = $("form[name='application']").serialize();
+                var bulkData = $("form[name='application']").serialize();
+                var userData = $("form[name='user']").serialize();
+                var formdata = bulkData + "&" + userData;
 
                 $.ajax({
                     type: "POST",

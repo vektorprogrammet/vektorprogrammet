@@ -61,11 +61,6 @@ class Interview
     protected $user;
 
     /**
-     * @ORM\OneToOne(targetEntity="ApplicationInfo")
-     */
-    protected $applicationInfo;
-
-    /**
      * Constructor
      */
     public function __construct()

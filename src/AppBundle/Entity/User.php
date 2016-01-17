@@ -88,11 +88,6 @@ class User implements AdvancedUserInterface, \Serializable {
     private $roles;
 
     /**
-     * @ORM\OneToOne(targetEntity="Interview", cascade={"persist"})
-     */
-    private $interview;
-
-    /**
      * @ORM\column(type="string", nullable=true)
      */
 	private $new_user_code;

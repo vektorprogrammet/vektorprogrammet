@@ -370,14 +370,14 @@ class InterviewController extends Controller
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
         $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles(['ROLE_ADMIN']);
 
-        $form = $this->createForm(new AssignInterviewType($roles), $user);
+        $form = $this->createForm(new AssignInterviewType($roles), $applicationInfo);
 
         $form->handleRequest($request);
 
         if($form->isValid()) {
-            $user->getInterview()->setUser($user);
-            $user->getInterview()->setApplicationInfo($applicationInfo);
-            $em->persist($user);
+            $applicationInfo->getInterview()->setUser($user);
+            $applicationInfo->getInterview()->setApplicationInfo($applicationInfo);
+            $em->persist($applicationInfo);
             $em->flush();
 
             return new JsonResponse(
@@ -413,24 +413,24 @@ class InterviewController extends Controller
 
         if($request->isMethod('POST')) {
             $em = $this->getDoctrine()->getManager();
-
             // Get the info from the form
-            $interviewerId = $request->request->get('application')['interview']['interviewer'];
-            $schemaId = $request->request->get('application')['interview']['interviewSchema'];
+            $interviewerId = $request->request->get('user')['interview']['interviewer'];
+            $schemaId = $request->request->get('user')['interview']['interviewSchema'];
             $applicationIds = $request->request->get('application')['id'];
-
             // Get objects from database
             $interviewer = $em->getRepository('AppBundle:User')->findOneById($interviewerId);
             $schema = $em->getRepository('AppBundle:InterviewSchema')->findOneById($schemaId);
-            $applications = $em->getRepository('ApplicationInfo.php')->findById($applicationIds);
+            $applications = $em->getRepository('AppBundle:ApplicationInfo')->findById($applicationIds);
 
             // Update or create new interviews for all the given applications
             foreach($applications as $application) {
-                $interview = $application->getInterview();
+                $interview = $application->getUser()->getInterview();
                 if(!$interview) {
                     $interview = new Interview();
-                    $application->setInterview($interview);
+                    $application->getUser()->setInterview($interview);
                     $interview->setInterviewed(false);
+                    $interview->setUser($application->getUser());
+                    $interview->setApplicationInfo($application);
                 }
                 $interview->setInterviewer($interviewer);
                 $interview->setInterviewSchema($schema);
@@ -438,7 +438,6 @@ class InterviewController extends Controller
             }
 
             $em->flush();
-
             return new JsonResponse(
                 array('success' => true)
             );

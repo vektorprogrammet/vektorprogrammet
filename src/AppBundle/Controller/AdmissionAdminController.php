@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
+use Zend\Json\Json;
 
 /**
  * AdmissionAdminController is the controller responsible for administrative admission actions,
@@ -48,15 +49,10 @@ class AdmissionAdminController extends Controller {
         // Get query strings for filtering applications
         $status = $request->query->get('status', 'new');
         $semester = $request->query->get('semester', null);
+
+        $em = $this->getDoctrine();
         if($semester === null){
-            $allSemesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findByDepartment($user->getFieldOfStudy()->getDepartment());
-            foreach($allSemesters as $s){
-                $now = new \DateTime;
-                if($s->getSemesterStartDate() < $now && $s->getSemesterEndDate() > $now){
-                    $semester = $s->getId();
-                    break;
-                }
-            }
+
         }
 
         // Finds all the departments
@@ -200,7 +196,7 @@ class AdmissionAdminController extends Controller {
     public function bulkDeleteApplicationAction(Request $request){
         try {
             // Get the ids from the form
-            $applicationIds = $request->request->get('application')['id'];
+           $applicationIds = $request->request->get('application')['id'];
 
             // Get the application objects
             $em = $this->getDoctrine()->getEntityManager();
@@ -215,6 +211,11 @@ class AdmissionAdminController extends Controller {
 
                 // AJAX response
                 $response['success'] = true;
+                /*return new JsonResponse(array(
+                        'success' => false,
+                        'applications' => $applications,
+                )
+                );*/
             }
             // This allows someone of a different role(lower) to delete applications/interviews if they belong to the same department.
             // This functionality is not in use, as only the highest admin should be able to delete applications/interviews.
@@ -246,6 +247,7 @@ class AdmissionAdminController extends Controller {
                 'success' => false,
                 'code'    => $e->getCode(),
                 'cause' => 'En exception oppstod. Vennligst kontakt IT-ansvarlig.',
+                'exeption' => $e->getTrace(),
                 // 'cause' => $e->getMessage(), if you want to see the exception message.
             ]);
         }
