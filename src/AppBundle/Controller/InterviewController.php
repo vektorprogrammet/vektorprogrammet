@@ -54,10 +54,6 @@ class InterviewController extends Controller
                 $interview->addInterviewAnswer($answer);
             }
 
-            // If the interview is deleted after it has been conducted, and a new is made, we need to check for score and practical in the database,
-            // which are connected to application statistics (score, practical and statistics are stored in the database even if application/interview is deleted)
-            $interview->setInterviewScore($interview->getApplication()->getStatistic()->getInterviewScore());
-            $interview->setInterviewPractical($interview->getApplication()->getStatistic()->getInterviewPractical());
         }
 
         $form = $this->createForm(new interviewType(), $interview);
@@ -66,13 +62,10 @@ class InterviewController extends Controller
         if ($form->isValid()) {
             // Set interviewed to true if the form is valid
             $interview->setInterviewed(true);
+            $interview->getApplicationInfo()->setLastEdited(new \DateTime());
 
             // Set the conducted datetime to now
             $interview->setConducted(new \DateTime());
-
-            // Link the application statistic object to the practical and score objects
-            $interview->getInterviewScore()->setApplicationStatistic($interview->getApplication()->getStatistic());
-            $interview->getInterviewPractical()->setApplicationStatistic($interview->getApplication()->getStatistic());
 
             // Persist
             $em->persist($interview);

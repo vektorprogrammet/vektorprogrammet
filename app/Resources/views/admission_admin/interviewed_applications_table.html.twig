@@ -63,11 +63,11 @@
                         <td>{{ a.user.fieldOfStudy }}</td>
                         <td>{{ a.yearOfStudy }}</td>
 
-                        {#{% if a.interview.interviewPractical.substitute == 1 %}
+                        {% if a.substitute == 1 %}
                             <td>Ja</td>
                         {% else %}
                             <td>Nei</td>
-                        {% endif %}#}
+                        {% endif %}
 
                         <td>{{ a.user.interview.interviewScore.explanatoryPower }}</td>
                         <td>{{ a.user.interview.interviewScore.roleModel }}</td>

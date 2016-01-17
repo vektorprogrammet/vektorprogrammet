@@ -13,7 +13,7 @@ class InterviewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $builder->add('interviewPractical', new InterviewPracticalType());
+        $builder->add('applicationInfo', new ApplicationInfoPracticalType());
 
         $builder->add('interviewAnswers', 'collection', array('type' => new InterviewAnswerType()));
 

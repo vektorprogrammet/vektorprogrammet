@@ -38,12 +38,6 @@ class InterviewScore
     protected $totalImpression;
 
     /**
-     * @ORM\OneToOne(targetEntity="ApplicationStatistic", inversedBy="interviewScore")
-     * @ORM\JoinColumn(name="application_statistic_id", referencedColumnName="id")
-     */
-    protected $applicationStatistic;
-
-    /**
      * Get id
      *
      * @return integer 

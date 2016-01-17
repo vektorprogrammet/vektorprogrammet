@@ -25,7 +25,8 @@ class ApplicationInfoRepository extends EntityRepository {
             ->join('a.semester', 'sem')
             ->join('sem.department', 'd')
             ->join('a.user', 'u')
-            ->where('u.interview IS NOT NULL');
+            ->join('u.interview', 'i')
+            ->where('i.interviewScore IS NOT NULL');
 
             if(null !== $department) {
                $qb->andWhere('d = :department')

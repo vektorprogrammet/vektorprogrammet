@@ -89,6 +89,11 @@ class ApplicationInfo {
     protected $created;
 
     /**
+     * @ORM\Column(type="array")
+     */
+    protected $heardAboutFrom;
+
+    /**
      * ApplicationInfo constructor.
      */
     public function __construct()
@@ -285,6 +290,94 @@ class ApplicationInfo {
     {
         $this->user = $user;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDoublePosition()
+    {
+        return $this->doublePosition;
+    }
+
+    /**
+     * @param mixed $doublePosition
+     */
+    public function setDoublePosition($doublePosition)
+    {
+        $this->doublePosition = $doublePosition;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPreferredGroup()
+    {
+        return $this->preferredGroup;
+    }
+
+    /**
+     * @param string $preferredGroup
+     */
+    public function setPreferredGroup($preferredGroup)
+    {
+        $this->preferredGroup = $preferredGroup;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastEdited()
+    {
+        return $this->last_edited;
+    }
+
+    /**
+     * @param mixed $last_edited
+     */
+    public function setLastEdited($last_edited)
+    {
+        $this->last_edited = $last_edited;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param mixed $created
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+    }
+
+    /**
+     * Set heardAboutFrom
+     *
+     * @param array $heardAboutFrom
+     */
+    public function setHeardAboutFrom($heardAboutFrom)
+    {
+        $this->heardAboutFrom = $heardAboutFrom;
+
+    }
+
+    /**
+     * Get heardAboutFrom
+     *
+     * @return array
+     */
+    public function getHeardAboutFrom()
+    {
+        return $this->heardAboutFrom;
+    }
+
+
+
 
 
 

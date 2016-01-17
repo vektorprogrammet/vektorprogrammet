@@ -112,7 +112,6 @@ class AdmissionAdminController extends Controller {
                 $status = 'new';
         }
 
-
         return $this->render('admission_admin/' . $template, array(
             'status' => $status,
             'applicants' => $applicants,
