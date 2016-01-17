@@ -289,6 +289,7 @@ class Solution
 
     public function sortSchoolsByNumberOfAssistants($day)
     {
+        dump($day);
         $sortedSchools = array();
         $tempSorted = array();//Array with key = totalNumber of assistants on school, value = array with schools
         foreach ($this->schools as $school) {
@@ -296,6 +297,12 @@ class Solution
             if (!array_key_exists($index, $tempSorted)) $tempSorted[$index] = array();
             $tempSorted[$index][] = $school;
         }
+        foreach($tempSorted as $schoolArray){
+            usort($schoolArray, function($a, $b) use ($day){
+                return $a->capacityLeftOnDay($day) > $b->capacityLeftOnDay($day);
+            });
+        }
+
         ksort($tempSorted);
         $toBeSorted = array();
         foreach ($tempSorted as $temp) {

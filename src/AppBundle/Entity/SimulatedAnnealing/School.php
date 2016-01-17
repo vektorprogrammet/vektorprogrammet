@@ -62,9 +62,9 @@ class School
 
     }
 
-    public function capacityOnDay($day){
-        if(array_key_exists($day, $this->assistants)) return $this->capacity[$day];
-        return ($this->capacity[$day] - $this->assistants[$day]);
+    public function capacityLeftOnDay($day){
+        if(array_key_exists($day, $this->assistants)) return $this->capacity[$day] - $this->assistants[$day];
+        return 0;
     }
 
     public function addAssistant($day){

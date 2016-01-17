@@ -51,7 +51,7 @@ class SchoolAllocationController extends Controller
         $schoolsDeepCopy = $this->deepCopySchools($schools);
         $solutionBolk1 = new Solution($schools, $assistantsInBolk1, true);
 
-        $maxOptimizeTime = 1; //In seconds
+        $maxOptimizeTime = 100; //In seconds
 
         //Check if the initializer found the perfect solution. If not, run the optimizer
         if($solutionBolk1->isOk()){
@@ -225,7 +225,6 @@ class SchoolAllocationController extends Controller
 
         $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
         $allInterviews = $this->getDoctrine()->getRepository('AppBundle:Interview')->findAllInterviewedInterviewsBySemester($currentSemester);
-
         $assistants = $this->generateAssistantsFromInterviews($allInterviews, $currentSemester);
         $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
 
@@ -237,8 +236,7 @@ class SchoolAllocationController extends Controller
         //Create and find the initialSolutions (Very fast)
         $schoolsDeepCopy = $this->deepCopySchools($schools);
         $solutionBolk1 = new Solution($schools, $assistantsInBolk1, true);
-
-        $maxOptimizeTime = 1; //In seconds
+        $maxOptimizeTime = 1000; //In seconds
 
         //Check if the initializer found the perfect solution. If not, run the optimizer
         if($solutionBolk1->isOk()){
