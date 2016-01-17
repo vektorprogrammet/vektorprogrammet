@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
 use Doctrine\ORM\EntityRepository;
 
 class SemesterRepository extends EntityRepository {
@@ -52,6 +54,25 @@ class SemesterRepository extends EntityRepository {
             ->distinct()
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param $departmentId
+     * @return Semester
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findCurrentSemesterByDepartment($departmentId){
+        $now = new \DateTime();
+        return $this->createQueryBuilder('Semester')
+            ->select('Semester')
+            ->where('Semester.department = ?1')
+            ->andWhere('Semester.semesterStartDate < :now')
+            ->andWhere('Semester.semesterEndDate > :now')
+            ->setParameter(1, $departmentId)
+            ->setParameter('now', $now)
+            ->getQuery()
+            ->getSingleResult();
     }
 
 	

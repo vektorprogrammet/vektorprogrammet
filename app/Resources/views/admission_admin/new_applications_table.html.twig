@@ -23,8 +23,7 @@
 
 {% block applications %}
     {% if applicants is defined %}
-
-        <h3 style="text-align: center">Alle søkere | Antall: {{ applicants|length }}</h3>
+        <h3 class="text-center"><a class="button tiny success" href="{{ path('register_applicant') }}" style="float:left;">Ny søker</a> Alle søkere | Antall: {{ applicants|length }}</h3>
         {# The table containing new applications #}
         <table width="100%" id="application-table">
             <thead>
