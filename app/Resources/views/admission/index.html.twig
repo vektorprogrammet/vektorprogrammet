@@ -268,3 +268,18 @@
         </div>
     {% endfor %}
 {% endblock %}
+{% block customScripts %}
+
+<script>
+    var $submitBtn = $('.vektor-button-inverted');
+    var $applicationForm = $('form[name="application"]');
+    $submitBtn.click(function(){
+        if($applicationForm[0].checkValidity()){
+            $submitBtn.attr("disabled", true);
+            $submitBtn.html("Sender...");
+            $applicationForm.submit();
+        }
+    });
+</script>
+
+{% endblock %}
