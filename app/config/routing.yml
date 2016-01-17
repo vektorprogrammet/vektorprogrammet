@@ -196,20 +196,28 @@ profile_edit_password:
  defaults: { _controller: AppBundle:Profile:editProfilePassword }
 
 profile_edit_photo:
-  path: /profil/rediger/profilbilde/
+  path: /profil/rediger/profilbilde/{id}
   defaults: { _controller: AppBundle:Profile:showEditProfilePhoto }
+  requirements:
+    id: \d+
 
 profile_upload_photo:
-  path: /profil/rediger/profilbilde/upload
+  path: /profil/rediger/profilbilde/upload/{id}
   defaults: { _controller: AppBundle:Profile:editProfilePhotoUpload }
+  requirements:
+    id: \d+
 
 profile_save_response_from_editor:
-  path: /profil/rediger/profilbilde/saveEditorResponse
+  path: /profil/rediger/profilbilde/saveEditorResponse/{id}
   defaults: { _controller: AppBundle:Profile:saveProfilePhotoEditorResponse }
+  requirements:
+    id: \d+
 
 profile_save_photo:
-  path: /profil/rediger/profilbilde/save
+  path: /profil/rediger/profilbilde/save/{id}
   defaults: { _controller: AppBundle:Profile:saveProfilePhoto }
+  requirements:
+    id: \d+
 
 ##########################################
 #               Members                  #
@@ -410,6 +418,12 @@ admissionadmin_send_new_user_mail:
     id: \d+
  options:
     expose: true
+
+register_applicant:
+ path: /opprettsoker
+ defaults: {_controller: AppBundle:AdmissionAdmin:createApplication}
+ requirements:
+  _method: GET|POST
 
 
 ##########################################

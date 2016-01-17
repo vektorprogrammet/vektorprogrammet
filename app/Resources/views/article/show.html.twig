@@ -2,7 +2,7 @@
 
 {% block title %}{{ article.title }}{% endblock %}
 {% block facebookImage %}{{ article.imageSmall|replace({" ": "%20"}) }}{% endblock %}
-{% block facebookDescription %}{{ article.article|raw|replace({"<p>": "", "</p>": ""})|slice(0,175) }}...{% endblock %}
+{% block facebookDescription %}{{ article.article|raw|replace({"<p>": "", "</p>": "", "<strong>": "", "</strong>": ""})|slice(0,255) }}...{% endblock %}
 
 {% block body %}
     <p></p>

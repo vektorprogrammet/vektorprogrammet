@@ -48,7 +48,7 @@
             featherEditor.showWaitIndicator();
             $.ajax({
                 type: "POST",
-                url: "{{ path('profile_save_response_from_editor') }}",
+                url: "{{ path('profile_save_response_from_editor', {'id': user.getId()}) }}",
                 data: JSON.stringify({
                     aviaryURL: newURL,
                 }),
@@ -217,7 +217,7 @@
 
                     <div class="row">
                         <div class="medium-6 columns text-center">
-                            <form action="{{ path('profile_upload_photo') }}" class="dropzone" id="dropzone"></form>
+                            <form action="{{ path('profile_upload_photo', {'id': user.getId()}) }}" class="dropzone" id="dropzone"></form>
                         </div>
                         <div class="medium-6 columns text-center bordered">
 
@@ -230,7 +230,7 @@
                         <div class="row">
                             <div class="medium-12 columns text-center">
                                 <br>
-                                <a href="{{ path('profile_save_photo') }}" class="button medium" id="editImageBtn">Lagre</a>
+                                <a href="{{ path('profile_save_photo', {'id': user.getId()}) }}" class="button medium" id="editImageBtn">Lagre</a>
                             </div>
                         </div>
 

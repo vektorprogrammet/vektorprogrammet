@@ -74,6 +74,7 @@ security:
         - { path: ^/brukeradmin/opprett, roles: ROLE_ADMIN }
         - { path: ^/profile/edit/, roles: ROLE_ADMIN }
         - { path: ^/opptakadmin, roles: ROLE_ADMIN }
+        - { path: ^/opprettsoker, roles: ROLE_ADMIN }
         - { path: ^/brukeradmin, roles: ROLE_ADMIN }
         - { path: ^/semesteradmin, roles: ROLE_ADMIN }
         - { path: ^/statistikk/, roles: ROLE_ADMIN }

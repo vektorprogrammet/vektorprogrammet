@@ -10,3 +10,4 @@ script: phpunit --configuration app/phpunit.xml.dist --coverage-text
 
 notifications:
   slack: vektorweb:KvOMl9ysaFBW53wJV3Eu56sS
+  email: false
