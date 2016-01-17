@@ -443,12 +443,17 @@ class ProfileController extends Controller {
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function editProfilePhotoUploadAction(Request $request){
+    public function editProfilePhotoUploadAction($id,Request $request){
     if ($this->get('security.context')->isGranted('ROLE_USER')) {
 
-        //Get user
-		$user = $this->get('security.context')->getToken()->getUser();
-		$id = $user->getId();
+        // Get the current user logged in or load the targeted user if editor is super_admin
+        $user = $this->get('security.context')->getToken()->getUser();
+        if($id !== $user->getId() && $this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')){
+            $user = $em = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findUserById($id);
+        }
+        else{
+            $id = $user->getId();
+        }
 
 		//Target folder for the profile photo
 		$targetFolder = $this->container->getParameter('profile_photos') . '/';
@@ -490,11 +495,16 @@ class ProfileController extends Controller {
     }
 
 
-    public function saveProfilePhotoAction(Request $request){
+    public function saveProfilePhotoAction($id, Request $request){
         if ($this->get('security.context')->isGranted('ROLE_USER')) {
-            //Get user and ID
+            // Get the current user logged in or load the targeted user if editor is super_admin
             $user = $this->get('security.context')->getToken()->getUser();
-            $id = $user->getId();
+            if($id !== $user->getId() && $this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')){
+                $user = $em = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findUserById($id);
+            }
+            else{
+                $id = $user->getId();
+            }
 
             //Target folder for the profile photo
             $targetFolder = $this->container->getParameter('profile_photos') . '/';
@@ -522,7 +532,7 @@ class ProfileController extends Controller {
             }
             else{ //No edited image or uploaded image
                 $this->addFlash('profile-notice','Har du lastet opp et bilde?');
-                return $this->redirect($this->generateUrl('profile_edit_photo'));
+                return $this->redirect($this->generateUrl('profile_edit_photo',array('id' => $id)));
             }
 
             //Remove the old version of the photo if it exists (Is this necessary?)
@@ -535,8 +545,12 @@ class ProfileController extends Controller {
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($user);
             $em->flush();
-
-            return $this->redirect($this->generateUrl('profile'));
+            if($user == $this->get('security.context')->getToken()->getUser()){
+                return $this->redirect($this->generateUrl('profile'));
+            }
+            else{
+                return $this->redirect($this->generateUrl('specific_profile',array('id' => $id )));
+            }
         }
         else {
             return $this->redirect($this->generateUrl('home'));
@@ -549,17 +563,22 @@ class ProfileController extends Controller {
      * @param Request $request
      * @return JsonResponse
      */
-    public function saveProfilePhotoEditorResponseAction(Request $request) {
+    public function saveProfilePhotoEditorResponseAction($id,Request $request) {
         if ($this->get('security.context')->isGranted('ROLE_USER')) {
+
+            // Get the current user logged in or load the targeted user if editor is super_admin
+            $user = $this->get('security.context')->getToken()->getUser();
+            if($id !== $user->getId() && $this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')){
+                $user = $em = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findUserById($id);
+            }
+            else{
+                $id = $user->getId();
+            }
 
             //Get the SDK url to the new picture
             $content = $request->getContent();
             $data = json_decode($content,true);
             $aviaryURL = $data['aviaryURL'];
-
-            // Get the user and their ID
-            $user = $this->get('security.context')->getToken()->getUser();
-            $id = $user->getId();
 
             //Get path to where the new file will be stored
             $targetFolder = $this->container->getParameter('profile_photos') . '/';
@@ -604,12 +623,16 @@ class ProfileController extends Controller {
 
 
 
-    public function showEditProfilePhotoAction(){
+    public function showEditProfilePhotoAction($id){
         if ($this->get('security.context')->isGranted('ROLE_USER')) {
-
-            // Get the current user logged in
+            // Get the current user logged in or load the targeted user if editor is super_admin
             $user = $this->get('security.context')->getToken()->getUser();
-            $id = $user->getId();
+            if($id !== $user->getId() && $this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')){
+                $user = $em = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findUserById($id);
+            }
+            else{
+                $id = $user->getId();
+            }
 
             //Remove previously uploaded and edited images, make sure we start with clean sheets
             $targetFolder = $this->container->getParameter('profile_photos') . '/';
