@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\Type\ApplicationPracticalType;
+use AppBundle\Form\Type\ExistingUserApplicationType;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +14,7 @@ use AppBundle\Entity\ApplicationStatistics;
 use AppBundle\Form\Type\ContactType;
 use AppBundle\Entity\Contact;
 use AppBundle\Entity\Department;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class AdmissionController extends Controller {
 
@@ -135,6 +138,43 @@ class AdmissionController extends Controller {
             'contactForm' => $contactForm->createView(),
             'department' => $department,
         ));
+    }
+
+    public function existingUserAdmissionAction(Request $request){
+        $user = $this->getUser();
+        if(!sizeof($user->getAssistantHistories())){
+            return $this->render(':error:no_assistanthistory.html.twig');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $department = $user->getFieldOfStudy()->getDepartment();
+        try{
+            $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department, new \DateTime());
+        }catch(NoResultException $e){
+            return $this->render(':error:no_active_admission.html.twig');
+        }
+        $applicationRepo = $em->getRepository('AppBundle:Application');
+
+        $application = $applicationRepo->findOneBy(array('user'=>$user, 'semester'=>$semester));
+        $application = $application === null ? new Application(): $application;
+        dump($application);
+
+        $form = $this->createForm(new ExistingUserApplicationType(), $application);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $application->setUser($user);
+            $application->setSemester($semester);
+            $em->persist($application);
+            $em->flush();
+        }
+
+        return $this->render(':admission:existingUser.html.twig', array(
+            'form' => $form->createView(),
+            'department' => $department,
+            'semester' => $semester,
+        ));
+
     }
 
 }
