@@ -25,7 +25,7 @@ class AdmissionRepositoryFunctionalTest extends KernelTestCase
 //    public function testFindInterviewedApplicants()
 //    {
 //        // Get the interviewed applicants for department with id 1 and semester with id 1
-//        $applications = $this->em->getRepository('ApplicationInfo.php')->findInterviewedApplicants(1,1);
+//        $applications = $this->em->getRepository('Application.php')->findInterviewedApplicants(1,1);
 //
 //        // Assert that the number of returned applications are correct (1 is the number of interviewed application fixtures)
 //        $this->assertGreaterThanOrEqual(1, count($applications));
@@ -41,7 +41,7 @@ class AdmissionRepositoryFunctionalTest extends KernelTestCase
 //    public function testFindAssignedApplicants()
 //    {
 //        // Get the assigned applicants for department with id 1 and semester with id 1
-//        $applications = $this->em->getRepository('ApplicationInfo.php')->findAssignedApplicants(1,1);
+//        $applications = $this->em->getRepository('Application.php')->findAssignedApplicants(1,1);
 //
 //        // Assert that the number of returned applications are correct (1 is the number of assigned application fixtures)
 //        $this->assertGreaterThanOrEqual(1, count($applications));
@@ -57,7 +57,7 @@ class AdmissionRepositoryFunctionalTest extends KernelTestCase
     public function testFindNewApplicants()
     {
 //        // Get the new applicants for department with id 1 and semester with id 1
-//        $applications = $this->em->getRepository('ApplicationInfo.php')->findNewApplicants(1,1);
+//        $applications = $this->em->getRepository('Application.php')->findNewApplicants(1,1);
 //
 //        // Assert that the number of returned applications are correct (4 is the number of new application fixtures)
 //        $this->assertGreaterThanOrEqual(4, count($applications));

@@ -13,7 +13,7 @@ class ApplicationType extends AbstractType {
 
 	private $authenticated;
 	private $departmentId;
-	
+
 	public function __construct($departmentId, $authenticated)
     {
 		$this->departmentId = $departmentId;
@@ -22,7 +22,7 @@ class ApplicationType extends AbstractType {
 	
     public function buildForm(FormBuilderInterface $builder, array $options){
 			
-		// The fields that populare the form
+		// The fields that populate the form
         $builder
 			->add('user', new CreateUserOnApplicationType($this->departmentId), array(
 				'label' => ''
@@ -64,7 +64,7 @@ class ApplicationType extends AbstractType {
 	public function setDefaultOptions(OptionsResolverInterface $resolver) {
 	
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\ApplicationInfo',
+            'data_class' => 'AppBundle\Entity\Application',
 			'user' => null,
         ));
 		

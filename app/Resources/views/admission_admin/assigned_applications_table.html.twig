@@ -9,8 +9,8 @@
     </div>
 {% endblock %}
 {% block applications %}
-    <h3>Intervjufordeling</h3>
     {% if interviewDistribution|length > 0 %}
+    <h3>Intervjufordeling</h3>
     <table>
         <thead>
         <tr>
@@ -28,6 +28,7 @@
         {% endfor %}
         </tbody>
     </table>
+        <hr>
     {% endif %}
     {% if yourApplicants is defined and yourApplicants|length > 0 %}
         <h3 style="text-align: center">Dine Intervjuer | Antall: {{ yourApplicants|length }}</h3>
@@ -83,14 +84,14 @@
                 </tr>
             {% endfor %}
             </tbody>
-
         </table>
+        <hr>
     {% endif %}
 
     {% if applicants is defined %}
-
+        {% if applicants|length %}
         <h3 style="text-align: center">Alle intervujer | Antall: {{ applicants|length }}</h3>
-
+        {% endif %}
         {# The table containing applications which are assiged to an interviewer but not interviewed #}
         <table width="100%" id="application-table">
 

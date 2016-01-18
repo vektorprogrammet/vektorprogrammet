@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\ApplicationInfo;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,14 +25,15 @@ class AdmissionController extends Controller {
         $department = $em->getRepository('AppBundle:Department')
             ->find($departmentId);
 
-        $semester = null;
         try{
-            $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($departmentId);
-        }catch(NoResultException $e){}
+            $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
+        }catch(NoResultException $e){
+            $semester = null;
+        }
 
         if ( $semester !== null ) {
 
-            $application = new ApplicationInfo();
+            $application = new Application();
 
             $authenticated = false;
 
@@ -60,7 +60,7 @@ class AdmissionController extends Controller {
                             $application->setUser($oldUser);
                         }else{
                             //If applicant has a user and has been an assistant before
-                            //TODO: Change this path to update the applicationInfo form
+                            //TODO: Change this path to update the application form
                             return $this->redirect($this->generateUrl('login_route'));
                         }
                     }

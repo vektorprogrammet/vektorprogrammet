@@ -48,29 +48,6 @@ class InterviewScore
     }
 
     /**
-     * Set applicationStatistic
-     *
-     * @param \AppBundle\Entity\ApplicationStatistic $applicationStatistic
-     * @return InterviewScore
-     */
-    public function setApplicationStatistic(\AppBundle\Entity\ApplicationStatistic $applicationStatistic = null)
-    {
-        $this->applicationStatistic = $applicationStatistic;
-
-        return $this;
-    }
-
-    /**
-     * Get applicationStatistic
-     *
-     * @return \AppBundle\Entity\ApplicationStatistic
-     */
-    public function getApplicationStatistic()
-    {
-        return $this->applicationStatistic;
-    }
-
-    /**
      * Set explanatoryPower
      *
      * @param integer $explanatoryPower

@@ -31,7 +31,7 @@
     <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
 
-                                <h1 class="text-center"> Registrer søker {{ department.shortname }} </h1>
+                                <h1 class="text-center"> Registrer søker {{ department.shortname }} {{ semester.name }} </h1>
 
                             <br>
 
@@ -43,15 +43,15 @@
 
 
                                         <div>
-                                            {{ form_label(form.firstname) }}
-                                            {{ form_errors(form.firstname) }}
-                                            {{ form_widget(form.firstname) }}
+                                            {{ form_label(form.user.firstName) }}
+                                            {{ form_errors(form.user.firstName) }}
+                                            {{ form_widget(form.user.firstName) }}
                                         </div>
 
                                         <div>
-                                            {{ form_label(form.email) }}
-                                            {{ form_errors(form.email) }}
-                                            {{ form_widget(form.email) }}
+                                            {{ form_label(form.user.email) }}
+                                            {{ form_errors(form.user.email) }}
+                                            {{ form_widget(form.user.email) }}
                                         </div>
 
 
@@ -61,15 +61,15 @@
 
 
                                         <div>
-                                            {{ form_label(form.lastname) }}
-                                            {{ form_errors(form.lastname) }}
-                                            {{ form_widget(form.lastname) }}
+                                            {{ form_label(form.user.lastName) }}
+                                            {{ form_errors(form.user.lastName) }}
+                                            {{ form_widget(form.user.lastName) }}
                                         </div>
 
                                         <div>
-                                            {{ form_label(form.phone) }}
-                                            {{ form_errors(form.phone) }}
-                                            {{ form_widget(form.phone) }}
+                                            {{ form_label(form.user.phone) }}
+                                            {{ form_errors(form.user.phone) }}
+                                            {{ form_widget(form.user.phone) }}
                                         </div>
 
 
@@ -81,9 +81,9 @@
 
 
                                         <div>
-                                            {{ form_label(form.statistic.fieldOfStudy) }}
-                                            {{ form_errors(form.statistic.fieldOfStudy) }}
-                                            {{ form_widget(form.statistic.fieldOfStudy) }}
+                                            {{ form_label(form.user.fieldOfStudy) }}
+                                            {{ form_errors(form.user.fieldOfStudy) }}
+                                            {{ form_widget(form.user.fieldOfStudy) }}
                                         </div>
 
 
@@ -93,45 +93,21 @@
 
 
                                         <div>
-                                            {{ form_label(form.statistic.yearOfStudy) }}
-                                            {{ form_errors(form.statistic.yearOfStudy) }}
-                                            {{ form_widget(form.statistic.yearOfStudy) }}
+                                            {{ form_label(form.yearOfStudy) }}
+                                            {{ form_errors(form.yearOfStudy) }}
+                                            {{ form_widget(form.yearOfStudy) }}
                                         </div>
 
 
                                     </div>
 
-                                    <div class="small-6 medium-4 large-2  columns">
+                                    <div class="small-6 medium-4 large-2  columns end">
 
 
                                         <div>
-                                            {{ form_label(form.statistic.gender) }}
-                                            {{ form_errors(form.statistic.gender) }}
-                                            {{ form_widget(form.statistic.gender) }}
-                                        </div>
-
-
-                                    </div>
-
-                                    <div class="small-6 medium-4 large-2 columns">
-
-
-                                        <div>
-                                            {{ form_label(form.statistic.previousParticipation) }}
-                                            {{ form_errors(form.statistic.previousParticipation) }}
-                                            {{ form_widget(form.statistic.previousParticipation) }}
-                                        </div>
-
-
-                                    </div>
-
-                                    <div class="6 medium-4 large-2 end columns">
-
-
-                                        <div>
-                                            {{ form_label(form.statistic.semester) }}
-                                            {{ form_errors(form.statistic.semester) }}
-                                            {{ form_widget(form.statistic.semester) }}
+                                            {{ form_label(form.user.gender) }}
+                                            {{ form_errors(form.user.gender) }}
+                                            {{ form_widget(form.user.gender) }}
                                         </div>
 
 

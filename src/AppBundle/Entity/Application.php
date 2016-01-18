@@ -7,9 +7,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ApplicationInfoRepository")
- * @ORM\Table(name="application_info")
+ * @ORM\Table(name="application")
  */
-class ApplicationInfo {
+class Application {
 
     /**
      * @ORM\Column(type="integer")
@@ -95,6 +95,7 @@ class ApplicationInfo {
 
     /**
      * @ORM\OneToOne(targetEntity="Interview", cascade={"persist"})
+     * @ORM\JoinColumn(name="interview_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $interview;
 

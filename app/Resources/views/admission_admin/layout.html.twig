@@ -253,9 +253,7 @@
             onBulkAssignFormSubmit: function(event) {
                 event.preventDefault();
                 // Serializes both the bulk checkbox form and the assign form (both have name=application)
-                var bulkData = $("form[name='application']").serialize();
-                var userData = $("form[name='user']").serialize();
-                var formdata = bulkData + "&" + userData;
+                var formdata = $("form[name='application']").serialize();
 
                 $.ajax({
                     type: "POST",
@@ -307,13 +305,11 @@
             <hr>
 
                 <div class="row">
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+
                     {# Contains the bulk action navigation. Bulk actions depends on interview status #}
-
-
                     <div class="small-3 columns">
                         <ul class="inline-list">
-
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
                             {# Department dropdown #}
                                 <li>
                                     <a class="button tiny" data-dropdown="autoCloseExample" aria-controls="autoCloseExample" aria-expanded="false">{{ departmentName }} <i class="fa fa-caret-down"></i></a>
@@ -328,7 +324,7 @@
 
                                     </ul>
                                 </li>
-
+                            {% endif %}
                                 {# Semester dropdown #}
                                 <li>
                                     <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown" aria-expanded="false">{{ semesterName }} <i class="fa fa-caret-down"></i></a>
@@ -345,9 +341,8 @@
                                 </li>
                         </ul>
                     </div>
-                {% endif %}
                     {# The interview status navigation #}
-                    <div class="small-5 small-offset-4 columns" style="width:380px;">
+                    <div class="small-5 columns" style="float:right">
                         <dl id="interviewStatusNav" class="sub-nav right">
                             <dt>Status:</dt>
                             <dd {{ (status == "new") ? 'class="active"' : ''  }}>
@@ -365,6 +360,7 @@
                         </dl>
                     </div>
 
+
             </div>
 
             <div class="row">
@@ -373,12 +369,12 @@
 
                 {% endblock %}
 
-                {% if not is_granted('ROLE_SUPER_ADMIN') %}
+                {#{% if not is_granted('ROLE_SUPER_ADMIN') %}
                     <div class="small-2 columns">
                         <ul class="inline-list">
-                            {# Semester dropdown #}
+                            &#123;&#35; Semester dropdown &#35;&#125;
                             <li>
-                                <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown" aria-expanded="false">Semester <i class="fa fa-caret-down"></i></a>
+                                <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown" aria-expanded="false">{{ semesterName }} <i class="fa fa-caret-down"></i></a>
                                 <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
 
                                     {% for s in semesters %}
@@ -392,7 +388,8 @@
                             </li>
                         </ul>
                     </div>
-                {% endif %}
+                {% endif %}#}
+
             </div>
 
 

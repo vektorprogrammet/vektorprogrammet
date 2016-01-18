@@ -4,6 +4,7 @@ namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 
 class SemesterRepository extends EntityRepository {
@@ -75,21 +76,33 @@ class SemesterRepository extends EntityRepository {
             ->getSingleResult();
     }
 
+    public function findLatestSemesterByDepartmentId($departmentId){
+        return $this->createQueryBuilder('Semester')
+            ->select('Semester')
+            ->where('Semester.department = :department')
+            ->setParameter('department', $departmentId)
+            ->orderBy('Semester.semesterEndDate', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
     /**
-     * @param $departmentId
+     * @param Department $department
+     * @param DateTime $time
      * @return Department
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findSemesterWithActiveAdmissionByDepartment($departmentId){
-        $now = new \DateTime();
+    public function findSemesterWithActiveAdmissionByDepartment(Department $department, DateTime $time = null){
+        if($time === null) $time = new \DateTime();
         return $this->createQueryBuilder('Semester')
             ->select('Semester')
             ->where('Semester.department = ?1')
-            ->andWhere('Semester.admission_start_date < :now')
-            ->andWhere('Semester.admission_end_date > :now')
-            ->setParameter(1, $departmentId)
-            ->setParameter('now', $now)
+            ->andWhere('Semester.admission_start_date < :time')
+            ->andWhere('Semester.admission_end_date > :time')
+            ->setParameter(1, $department)
+            ->setParameter('time', $time)
             ->getQuery()
             ->getSingleResult();
     }

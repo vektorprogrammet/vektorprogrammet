@@ -1,5 +1,7 @@
 <?php
 namespace AppBundle\Entity\Repository;
+use AppBundle\Entity\Semester;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 /**
  * InterviewRepository
@@ -23,5 +25,24 @@ class InterviewRepository extends EntityRepository
             ->setParameter('semester', $semester)
             ->getResult();
         return $interviews;
+    }
+
+    /**
+     * @param User $user
+     * @param Semester $semester
+     * @return integer
+     */
+    public function numberOfInterviewsByUserInSemester(User $user, Semester $semester){
+        $query = $this->getEntityManager()->createQuery("
+        SELECT COUNT(i)
+        FROM AppBundle:Interview i
+        JOIN AppBundle:Application a
+        WITH a.interview = i
+        WHERE i.interviewer = ?1
+        AND a.semester = ?2
+        ")
+            ->setParameter(1, $user)
+            ->setParameter(2, $semester);
+        return $query->getSingleScalarResult();
     }
 }

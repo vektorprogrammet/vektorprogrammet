@@ -129,6 +129,13 @@ class User implements AdvancedUserInterface, \Serializable {
         return $this->lastName;
     }
 
+    /**
+     * @return string
+     */
+    public function getFullName(){
+        return $this->getFirstName() . " " . $this->getLastName();
+    }
+
     function getEmail() {
         return $this->email;
     }

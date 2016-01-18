@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -153,4 +154,5 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $this->getEntityName() === $class
             || is_subclass_of($class, $this->getEntityName());
     }
+
 }

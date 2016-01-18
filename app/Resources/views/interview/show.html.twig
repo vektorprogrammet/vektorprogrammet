@@ -35,7 +35,7 @@
                                 <td> {{ u.phone }} </td>
                                 <td> {{ u.email }} </td>
                                 <td> {{ u.fieldOfStudy }} </td>
-                                <td> {{ interview.applicationInfo.yearOfStudy }} </td>
+                                <td> {{ application.yearOfStudy }} </td>
 
                                 {% if u.assistantHistories | length %}
                                     <td> Ja </td>
@@ -66,11 +66,11 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td>{{ interview.applicationInfo.monday }}</td>
-                                <td>{{ interview.applicationInfo.tuesday }}</td>
-                                <td>{{ interview.applicationInfo.wednesday }}</td>
-                                <td>{{ interview.applicationInfo.thursday }}</td>
-                                <td>{{ interview.applicationInfo.friday }}</td>
+                                <td>{{ application.monday }}</td>
+                                <td>{{ application.tuesday }}</td>
+                                <td>{{ application.wednesday }}</td>
+                                <td>{{ application.thursday }}</td>
+                                <td>{{ application.friday }}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -83,7 +83,7 @@
                             Kunne du tenke deg dobbelt stilling? Altså en gang i uka i 8 uker?
                         </label>
                         <p>
-                            {% if interview.applicationInfo.doublePosition %}
+                            {% if application.doublePosition %}
                                 Ja
                             {% else %}
                                 Nei
@@ -98,8 +98,8 @@
                             Har du et ønske om bolk?
                         </label>
                         <p>
-                            {% if interview.applicationInfo.preferredGroup %}
-                                {{ interview.applicationInfo.preferredGroup }}
+                            {% if application.preferredGroup %}
+                                {{ application.preferredGroup }}
                             {% else %}
                                 Nei
                             {% endif %}
@@ -113,7 +113,7 @@
                             Dersom du ikke får stillingen som vektorassistent, vil du da være vikar for andre som melder frafall?
                         </label>
                         <p>
-                        {%  if interview.applicationInfo.substitute == 1 %}
+                        {%  if application.substitute == 1 %}
                             Ja
                         {% else %}
                             Nei
@@ -126,7 +126,7 @@
                     <div class="small-12 medium-12 large-9 columns">
                         <label class="question-label">Er du komfortabel med engelsk?</label>
                         <p>
-                        {%  if interview.applicationInfo.english == 1 %}
+                        {%  if application.english == 1 %}
                             Ja
                         {% else %}
                             Nei
@@ -139,7 +139,7 @@
                     <div class="small-12 medium-12 large-9 columns">
                         <label class="question-label">Hvor hørte du om Vektorprogrammet?</label>
                         <p>
-                        {% for from in interview.applicationInfo.heardAboutFrom %}
+                        {% for from in application.heardAboutFrom %}
                             {{ from }}{% if not loop.last %}, {% endif %}
                         {% endfor %}
                         </p>
