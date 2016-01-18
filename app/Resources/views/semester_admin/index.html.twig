@@ -133,8 +133,10 @@
 								
 								{% if is_granted('ROLE_SUPER_ADMIN') %} 
 								
-									<td><a href="#" id="{{ s.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td>
-									
+									{% if is_granted('ROLE_HIGHEST_ADMIN') %}
+										<td><a href="#" id="{{ s.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td>
+									{% endif %}
+
 									<td>  <a href="{{ path('semesteradmin_update', { 'id': s.id }) }}" class="button tiny" >Rediger</a> </td>
 								
 								{% endif %}
