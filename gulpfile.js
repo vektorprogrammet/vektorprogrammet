@@ -8,7 +8,7 @@ var gulp = require('gulp'),
     htmlmin = require('gulp-htmlmin'),
     rename = require('gulp-rename'),
     sass = require('gulp-sass'),
-    changed = require('gulp-changed')
+    changed = require('gulp-changed');
 
 var path = {
     dist: 'www/bundles/app/',
@@ -96,7 +96,7 @@ gulp.task('watch', function () {
 });
 
 
-gulp.task('build:prod', ['stylesProd', 'scriptsProd', 'imagesProd'])
-gulp.task('build:dev', ['stylesDev', 'scriptsDev', 'imagesDev'])
+gulp.task('build:prod', ['stylesProd', 'scriptsProd', 'imagesProd']);
+gulp.task('build:dev', ['stylesDev', 'scriptsDev', 'imagesDev']);
 gulp.task('default', ['build:dev', 'watch']);
 
