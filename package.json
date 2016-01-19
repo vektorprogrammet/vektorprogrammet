@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "This is the source code for vektorprogrammets new homepage.",
   "main": " ",
-  "scripts": {
-    "postinstall": "cd src && gulp"
-  },
   "dependencies": {
   },
   "devDependencies": {
