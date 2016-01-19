@@ -15,19 +15,18 @@ var path = {
     src: 'src/AppBundle/Resources/Public/'
 };
 
-gulp.task('styles', function () {
+gulp.task('stylesProd', function () {
     var dest = path.dist + 'css/';
     gulp.src(path.src + 'scss/**/*.scss')
         .pipe(plumber())
         .pipe(changed(dest))
         .pipe(sass())
         .pipe(autoprefixer())
-        .pipe(gulp.dest(path.dist + 'css/'))
         .pipe(cssnano())
         .pipe(gulp.dest(dest))
 });
 
-gulp.task('scripts', function () {
+gulp.task('scriptsProd', function () {
     var dest = path.dist + 'js/';
     gulp.src(path.src + 'js/**/*.js')
         .pipe(plumber())
@@ -37,7 +36,7 @@ gulp.task('scripts', function () {
         .pipe(gulp.dest(dest))
 });
 
-gulp.task('images', function () {
+gulp.task('imagesProd', function () {
     var dest = path.dist + 'img/';
     gulp.src(path.src + 'img/**/*')
         .pipe(plumber())
@@ -47,6 +46,33 @@ gulp.task('images', function () {
             interlaced: true,
             optimizationLevel: 3
         }))
+        .pipe(gulp.dest(dest))
+});
+
+gulp.task('stylesDev', function () {
+    var dest = path.dist + 'css/';
+    gulp.src(path.src + 'scss/**/*.scss')
+        .pipe(plumber())
+        .pipe(changed(dest))
+        .pipe(sass())
+        .pipe(autoprefixer())
+        .pipe(gulp.dest(dest))
+});
+
+gulp.task('scriptsDev', function () {
+    var dest = path.dist + 'js/';
+    gulp.src(path.src + 'js/**/*.js')
+        .pipe(plumber())
+        .pipe(changed(dest))
+        .pipe(gulp.dest(path.dist + 'js/'))
+        .pipe(gulp.dest(dest))
+});
+
+gulp.task('imagesDev', function () {
+    var dest = path.dist + 'img/';
+    gulp.src(path.src + 'img/**/*')
+        .pipe(plumber())
+        .pipe(changed(dest))
         .pipe(gulp.dest(dest))
 });
 
@@ -62,13 +88,15 @@ gulp.task('compressImages', function(){
         .pipe(gulp.dest(dest))
 });
 
-gulp.task('build:prod', ['styles', 'scripts', 'images'])
 
 gulp.task('watch', function () {
-    gulp.watch(path.src + 'styles/**/*.scss', ['styles']);
-    gulp.watch(path.src + 'scripts/**/*.js', ['scripts']);
-    gulp.watch(path.src + 'images/*', ['images']);
+    gulp.watch(path.src + 'scss/**/*.scss', ['stylesDev']);
+    gulp.watch(path.src + 'js/**/*.js', ['scriptsDev']);
+    gulp.watch(path.src + 'images/*', ['imagesDev']);
 });
 
 
-gulp.task('default', ['build:public', 'watch']);
+gulp.task('build:prod', ['stylesProd', 'scriptsProd', 'imagesProd'])
+gulp.task('build:dev', ['stylesDev', 'scriptsDev', 'imagesDev'])
+gulp.task('default', ['build:dev', 'watch']);
+
