@@ -45,4 +45,16 @@ class InterviewRepository extends EntityRepository
             ->setParameter(2, $semester);
         return $query->getSingleScalarResult();
     }
+
+    public function findLatestInterviewByUser(User $user){
+        $query = $this->getEntityManager()->createQuery("
+        SELECT i
+        FROM AppBundle:Interview i
+        WHERE i.user = ?1
+        ORDER BY i.conducted ASC
+        ")
+            ->setParameter(1, $user)
+            ->setMaxResults(1);
+        return $query->getOneOrNullResult();
+    }
 }

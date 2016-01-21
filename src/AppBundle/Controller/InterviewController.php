@@ -95,7 +95,7 @@ class InterviewController extends Controller
         if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') &&
             !$interview->getApplication()->isSameDepartment($this->getUser())) {
             throw $this->createAccessDeniedException();
-        }
+        }elseif($this->getUser() == $application->getUser()){throw $this->createAccessDeniedException();}
 
         return $this->render('interview/show.html.twig', array('interview' => $interview, 'application' => $application));
     }

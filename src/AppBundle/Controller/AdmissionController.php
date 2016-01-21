@@ -61,10 +61,10 @@ class AdmissionController extends Controller {
                         $oldUserAssistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findBy(array('user'=>$oldUser));
                         if(empty($oldUserAssistantHistory)){
                             $application->setUser($oldUser);
+
                         }else{
                             //If applicant has a user and has been an assistant before
-                            //TODO: Change this path to update the application form
-                            return $this->redirect($this->generateUrl('login_route'));
+                            return $this->redirect($this->generateUrl('admission_existing_user'));
                         }
                     }
                 }
@@ -156,8 +156,8 @@ class AdmissionController extends Controller {
         $applicationRepo = $em->getRepository('AppBundle:Application');
 
         $application = $applicationRepo->findOneBy(array('user'=>$user, 'semester'=>$semester));
-        $application = $application === null ? new Application(): $application;
-        dump($application);
+        if($application === null) $application = new Application();
+        $lastInterview = $em->getRepository('AppBundle:Interview')->findLatestInterviewByUser($user);
 
         $form = $this->createForm(new ExistingUserApplicationType(), $application);
         $form->handleRequest($request);
@@ -165,6 +165,8 @@ class AdmissionController extends Controller {
         if ($form->isValid()) {
             $application->setUser($user);
             $application->setSemester($semester);
+            $application->setPreviousParticipation(true);
+            $application->setInterview($lastInterview);
             $em->persist($application);
             $em->flush();
         }

@@ -149,4 +149,11 @@ class InterviewScore
     {
         return $this->totalImpression;
     }
+
+    public function hideScores(){
+        $this->setDrive(0);
+        $this->setExplanatoryPower(0);
+        $this->setRoleModel(0);
+        $this->setTotalImpression(0);
+    }
 }

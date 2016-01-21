@@ -36,10 +36,15 @@
                 <th data-sort="string">Linje</th>
                 <th data-sort="int">År</th>
                 <th data-sort="string">Vikarvillig</th>
-                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Forklaringsevne">FE</span></th>
-                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Forbilde">F</span></th>
-                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Engasjement">E</span></th>
-                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Totalintrykk">T</span></th>
+                <th data-sort="string">Tidligere deltakelse</th>
+                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip"
+                                          title="Forklaringsevne">FE</span></th>
+                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Forbilde">F</span>
+                </th>
+                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Engasjement">E</span>
+                </th>
+                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip"
+                                          title="Totalintrykk">T</span></th>
                 <th data-sort="int">Sum</th>
                 <th></th>
                 <th></th>
@@ -52,11 +57,12 @@
             </thead>
 
             <tbody>
-                <form id="bulk" name="application">
+            <form id="bulk" name="application">
                 {% for a in applicants %}
                     <tr id="{{ a.id }}">
                         {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-                            <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}"></td>
+                            <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
+                            </td>
                         {% endif %}
                         <td>{{ a.user.firstName }}</td>
                         <td>{{ a.user.lastName }}</td>
@@ -64,6 +70,12 @@
                         <td>{{ a.yearOfStudy }}</td>
 
                         {% if a.substitute == 1 %}
+                            <td>Ja</td>
+                        {% else %}
+                            <td>Nei</td>
+                        {% endif %}
+
+                        {% if a.previousParticipation == 1 %}
                             <td>Ja</td>
                         {% else %}
                             <td>Nei</td>
@@ -77,24 +89,30 @@
 
                         {# Add the read interview button #}
                         <td>
-                            <a href="{{ path('interview_show', { 'id': a.id }) }}" class="button tiny"><i class="fa fa-list-ul"></i> Les intervju</a>
+                            {% if a.user != user %}
+                                <a href="{{ path('interview_show', { 'id': a.id }) }}" class="button tiny"><i
+                                            class="fa fa-list-ul"></i> Les intervju</a>
+                            {% endif %}
                         </td>
 
                         {# Add the delete interview and application dropdown button, given the correct permissions #}
                         {% if is_granted('ROLE_HIGHEST_ADMIN') %}
                             <td>
-                                <a href="#" class="button tiny alert" data-dropdown="deleteDropdown{{ a.id }}" aria-controls="deleteDropdown{{ a.id }}" aria-expanded="false" id="{{ a.id }}">
+                                <a href="#" class="button tiny alert" data-dropdown="deleteDropdown{{ a.id }}"
+                                   aria-controls="deleteDropdown{{ a.id }}" aria-expanded="false" id="{{ a.id }}">
                                     <i class="fa fa-trash fa-lg"></i> Slett <i class="fa fa-caret-down"></i>
                                 </a>
-                                <ul id="deleteDropdown{{ a.id }}" data-dropdown-content class="f-dropdown" aria-hidden="true">
-                                    <li class="deleteInterview" id="{{ a.interview.id }}"><a href="#">Slett intervju</a></li>
+                                <ul id="deleteDropdown{{ a.id }}" data-dropdown-content class="f-dropdown"
+                                    aria-hidden="true">
+                                    <li class="deleteInterview" id="{{ a.interview.id }}"><a href="#">Slett intervju</a>
+                                    </li>
                                     <li class="deleteApplication" id="{{ a.id }}"><a href="#">Slett søknad</a></li>
                                 </ul>
                             </td>
                         {% endif %}
                     </tr>
                 {% endfor %}
-                </form>
+            </form>
             </tbody>
         </table>
     {% endif %}

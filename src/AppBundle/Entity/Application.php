@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ApplicationInfoRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ApplicationRepository")
  * @ORM\Table(name="application")
  */
 class Application {
@@ -16,88 +16,93 @@ class Application {
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Semester")
      */
-    protected $semester;
+    private $semester;
 
     /**
      * @ORM\Column(type="string" , length=20)
      */
-    protected $yearOfStudy;
+    private $yearOfStudy;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $monday;
+    private $monday;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $tuesday;
+    private $tuesday;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $wednesday;
+    private $wednesday;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $thursday;
+    private $thursday;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $friday;
+    private $friday;
 
     /**
      * @ORM\Column(type="boolean", options={"default"=false})
      */
-    protected $substitute;
+    private $substitute;
 
     /**
      * @ORM\Column(type="boolean", options={"default"=false})
      */
-    protected $english;
+    private $english;
 
     /**
      * @ORM\Column(type="boolean", options={"default"=false})
      */
-    protected $doublePosition;
+    private $doublePosition;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $preferredGroup;
+    private $preferredGroup;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
      */
-    protected $user;
+    private $user;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $previousParticipation;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
      */
-    protected $last_edited;
+    private $last_edited;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
      */
-    protected $created;
+    private $created;
 
     /**
      * @ORM\Column(type="array")
      */
-    protected $heardAboutFrom;
+    private $heardAboutFrom;
 
     /**
-     * @ORM\OneToOne(targetEntity="Interview", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Interview", cascade={"persist"})
      * @ORM\JoinColumn(name="interview_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $interview;
+    private $interview;
 
     /**
      * ApplicationInfo constructor.
@@ -109,6 +114,7 @@ class Application {
         $this->substitute = false;
         $this->english = false;
         $this->doublePosition = false;
+        $this->previousParticipation = false;
     }
 
 
@@ -151,22 +157,6 @@ class Application {
     public function setYearOfStudy($yearOfStudy)
     {
         $this->yearOfStudy = $yearOfStudy;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPosition()
-    {
-        return $this->position;
-    }
-
-    /**
-     * @param mixed $position
-     */
-    public function setPosition($position)
-    {
-        $this->position = $position;
     }
 
     /**
@@ -396,6 +386,22 @@ class Application {
     public function setInterview($interview)
     {
         $this->interview = $interview;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getPreviousParticipation()
+    {
+        return $this->previousParticipation;
+    }
+
+    /**
+     * @param boolean $previousParticipation
+     */
+    public function setPreviousParticipation($previousParticipation)
+    {
+        $this->previousParticipation = $previousParticipation;
     }
 
 

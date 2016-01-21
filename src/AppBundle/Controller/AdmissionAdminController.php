@@ -111,6 +111,12 @@ class AdmissionAdminController extends Controller {
                 break;
             case 'interviewed':
                 $applicants = $repository->findInterviewedApplicants($department,$semester);
+                foreach($applicants as $applicant){
+                    if($applicant->getUser() == $user){
+                        $applicant->getInterview()->getInterviewScore()->hideScores();
+                        break;
+                    }
+                }
                 $template = 'interviewed_applications_table.html.twig';
                 break;
             default:
@@ -129,6 +135,7 @@ class AdmissionAdminController extends Controller {
             'semesterName' => $semesterName,
             'numOfApplicants' => sizeof($applicants),
             'departmentName' => $department->getShortName(),
+            'user' => $user,
         ));
     }
 
