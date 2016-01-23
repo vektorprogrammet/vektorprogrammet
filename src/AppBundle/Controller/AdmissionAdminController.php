@@ -91,7 +91,7 @@ class AdmissionAdminController extends Controller {
                 foreach($interviewedApplicants as $interviewedApplicant){
                     $numInterviews = $interviewRepo->numberOfInterviewsByUserInSemester($interviewedApplicant->getInterview()->getInterviewer(), $semester);
                     $fullName = $interviewedApplicant->getInterview()->getInterviewer()->getFullName();
-                    if(!array_key_exists($fullName,$interviewDistribution)){
+                    if(!array_key_exists($fullName,$interviewDistribution) && $numInterviews > 0){
                         $interviewDistribution[$fullName] = $numInterviews;
                     }
                 }
@@ -99,7 +99,7 @@ class AdmissionAdminController extends Controller {
                 foreach($applicants as $applicant){
                     $numInterviews = $interviewRepo->numberOfInterviewsByUserInSemester($applicant->getInterview()->getInterviewer(), $semester);
                     $fullName = $applicant->getInterview()->getInterviewer()->getFullName();
-                    if(!array_key_exists($fullName,$interviewDistribution)){
+                    if(!array_key_exists($fullName,$interviewDistribution) && $numInterviews > 0){
                         $interviewDistribution[$fullName] = $numInterviews;
                     }
                     if($applicant->getInterview()->getInterviewer() == $user){

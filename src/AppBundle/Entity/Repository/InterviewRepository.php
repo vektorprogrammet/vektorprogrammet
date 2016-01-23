@@ -40,6 +40,7 @@ class InterviewRepository extends EntityRepository
         WITH a.interview = i
         WHERE i.interviewer = ?1
         AND a.semester = ?2
+        AND a.previousParticipation = 0
         ")
             ->setParameter(1, $user)
             ->setParameter(2, $semester);

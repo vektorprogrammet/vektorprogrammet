@@ -38,7 +38,6 @@
             <div class="small-12 medium-12 large-12 columns">
 
                 <h1 class="text-center"> Søk Vektorprogrammet ved {{ department.shortname }} </h1>
-
                 <br>
 
                 {% if semester is defined %}
@@ -53,13 +52,13 @@
                             <div>
                                 {{ form_label(form.user.firstName) }}
                                 {{ form_errors(form.user.firstName) }}
-                                {{ form_widget(form.user.firstName) }}
+                                {{ form_widget(form.user.firstName, { 'attr': {'tabindex': '1'}}) }}
                             </div>
 
                             <div>
                                 {{ form_label(form.user.email) }}
                                 {{ form_errors(form.user.email) }}
-                                {{ form_widget(form.user.email) }}
+                                {{ form_widget(form.user.email, { 'attr': {'tabindex': '3'}}) }}
                             </div>
 
 
@@ -71,13 +70,13 @@
                             <div>
                                 {{ form_label(form.user.lastName) }}
                                 {{ form_errors(form.user.lastName) }}
-                                {{ form_widget(form.user.lastName) }}
+                                {{ form_widget(form.user.lastName, { 'attr': {'tabindex': '2'}}) }}
                             </div>
 
                             <div>
                                 {{ form_label(form.user.phone) }}
                                 {{ form_errors(form.user.phone) }}
-                                {{ form_widget(form.user.phone) }}
+                                {{ form_widget(form.user.phone, { 'attr': {'tabindex': '4'}}) }}
                             </div>
 
 
@@ -91,7 +90,7 @@
                             <div>
                                 {{ form_label(form.user.fieldOfStudy) }}
                                 {{ form_errors(form.user.fieldOfStudy) }}
-                                {{ form_widget(form.user.fieldOfStudy) }}
+                                {{ form_widget(form.user.fieldOfStudy, { 'attr': {'tabindex': '5'}}) }}
                             </div>
 
 
@@ -103,7 +102,7 @@
                             <div>
                                 {{ form_label(form.yearOfStudy) }}
                                 {{ form_errors(form.yearOfStudy) }}
-                                {{ form_widget(form.yearOfStudy) }}
+                                {{ form_widget(form.yearOfStudy, { 'attr': {'tabindex': '6'}}) }}
                             </div>
 
 
@@ -115,7 +114,7 @@
                             <div>
                                 {{ form_label(form.user.gender) }}
                                 {{ form_errors(form.user.gender) }}
-                                {{ form_widget(form.user.gender) }}
+                                {{ form_widget(form.user.gender, { 'attr': {'tabindex': '7'}}) }}
                             </div>
 
 
@@ -150,9 +149,11 @@
 
                     <div class="row">
                         <div class="text-center">
-                            {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted'}}) }}
+                            <br>
+                            {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted','tabindex': '8'} }) }}
+                            <br><br>
+                            <p>Gamle assistenter kan søke <a href="{{ path('admission_existing_user') }}">her</a></p>
                         </div>
-                        <br>
                     </div>
 
 
@@ -251,22 +252,18 @@
     <br/>
     <br/>
 
-    {% for d in department %}
-        {% render controller('AppBundle:Admission:contact', {'id' : d.id} ) %}
-    {% endfor %}
+    {% render controller('AppBundle:Admission:contact', {'id' : department.id} ) %}
 
     <br/>
     <br/>
-    {% for d in department %}
-        <div class="row">
-            <div class="small-12 columns">
-                <h3>Siste vektornyheter fra {{ d.shortname }}:</h3>
-            </div>
+    <div class="row">
+        <div class="small-12 columns">
+            <h3>Siste vektornyheter fra {{ department.shortname }}:</h3>
         </div>
-        <div class="row">
-            {% render controller('AppBundle:Article:showDepartmentNews', {'id' : d.id}) %}
-        </div>
-    {% endfor %}
+    </div>
+    <div class="row">
+        {% render controller('AppBundle:Article:showDepartmentNews', {'id' : department.id}) %}
+    </div>
 {% endblock %}
 {% block customScripts %}
 

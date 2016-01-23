@@ -92,6 +92,8 @@
                             {% if a.user != user %}
                                 <a href="{{ path('interview_show', { 'id': a.id }) }}" class="button tiny"><i
                                             class="fa fa-list-ul"></i> Les intervju</a>
+                                {% else %}
+                                Intervjuet er skjult
                             {% endif %}
                         </td>
 
