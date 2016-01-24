@@ -31,7 +31,7 @@
         <hr>
     {% endif %}
     {% if yourApplicants is defined and yourApplicants|length > 0 %}
-        <h3 style="text-align: center">Dine Intervjuer | Antall: {{ yourApplicants|length }}</h3>
+        <h5 class="text-center">Dine Intervjuer | Antall: {{ yourApplicants|length }}</h5>
         <table width="100%" id="application-table">
 
             <thead>
@@ -90,7 +90,7 @@
 
     {% if applicants is defined %}
         {% if applicants|length %}
-        <h3 style="text-align: center">Alle intervujer | Antall: {{ applicants|length }}</h3>
+        <h5 class="text-center">Alle intervujer | Antall: {{ applicants|length }}</h5>
         {% endif %}
         {# The table containing applications which are assiged to an interviewer but not interviewed #}
         <table width="100%" id="application-table">

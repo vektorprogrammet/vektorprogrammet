@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -25,7 +27,8 @@ class ApplicationRepository extends EntityRepository {
             ->join('a.semester', 'sem')
             ->join('sem.department', 'd')
             ->join('a.interview', 'i')
-            ->where('i.interviewScore IS NOT NULL');
+            ->where('i.interviewScore IS NOT NULL')
+            ->andWhere('a.previousParticipation = 0');
 
             if(null !== $department) {
                $qb->andWhere('d = :department')
@@ -103,8 +106,9 @@ class ApplicationRepository extends EntityRepository {
             ->join('sem.department', 'd')
             ->join('a.user', 'u')
             ->leftJoin('a.interview', 'i')
-            ->where('i.interviewed = 0')
-            ->orWhere('i is NULL');
+            ->where('a.previousParticipation = 0')
+            ->andWhere('i is NULL OR i.interviewed = 0');
+
 
             if(null !== $department) {
                 $qb->andWhere('d = :department')
@@ -117,6 +121,25 @@ class ApplicationRepository extends EntityRepository {
             }
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param Department $department
+     * @param Semester $semester
+     * @return array
+     */
+    public function findExistingApplicants(Department $department, Semester $semester){
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->join('a.semester', 'sem')
+            ->join('sem.department', 'd')
+            ->where('a.previousParticipation = 1')
+            ->andWhere('d= :department')
+            ->andWhere('sem = :semester')
+            ->setParameter('department', $department)
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getResult();
     }
 
     /* Disse brukes ikke lenger(?)

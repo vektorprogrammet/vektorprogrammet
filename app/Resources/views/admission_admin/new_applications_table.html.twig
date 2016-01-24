@@ -23,7 +23,7 @@
 
 {% block applications %}
     {% if applicants is defined %}
-        <h3 class="text-center"><a class="button tiny success" href="{{ path('register_applicant') }}" style="float:left;">Ny søker</a> Alle søkere | Antall: {{ applicants|length }}</h3>
+        <h5 class="text-center"><a class="button tiny success" href="{{ path('register_applicant') }}" style="float:left;">Ny søker</a> Nye søkere | Antall: {{ applicants|length }}</h5>
         {# The table containing new applications #}
         <table width="100%" id="application-table">
             <thead>
@@ -38,7 +38,6 @@
                 <th data-sort="string">E-post</th>
                 <th data-sort="string">Linje</th>
                 <th data-sort="int">År</th>
-                <th data-sort="string">Tidligere deltagelse</th>
                 <th></th>
 
                 {# Add header columns to match the buttons added #}
@@ -66,20 +65,14 @@
                         <td>{{ a.user.fieldOfStudy }}</td>
                         <td>{{ a.yearOfStudy }}</td>
 
-                        {% if a.previousParticipation %}
-                            <td>Ja</td>
-                            <td></td>
-                        {% else %}
-                            <td>Nei</td>
-                            {# Add the assign interview button, given the correct permissions #}
-                            {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                <td>
-                                    <a href="#"
-                                       class="assign button tiny{{ (a.interview is null) ? '' : ' success' }}">
-                                        <i class="fa fa-share-alt"></i> Fordel
-                                    </a>
-                                </td>
-                            {% endif %}
+                        {# Add the assign interview button, given the correct permissions #}
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <td>
+                                <a href="#"
+                                   class="assign button tiny{{ (a.interview is null) ? '' : ' success' }}">
+                                    <i class="fa fa-share-alt"></i> Fordel
+                                </a>
+                            </td>
                         {% endif %}
 
 
