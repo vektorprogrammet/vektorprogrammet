@@ -66,6 +66,8 @@ security:
         - { path: ^/intervju/fordel, roles: ROLE_SUPER_ADMIN }
         - { path: ^/vikar/rediger, roles: ROLE_SUPER_ADMIN }
         - { path: ^/undersokelse/slett, role: ROLE_SUPER_ADMIN }
+        - { path: ^/brukeradmin/jubileum, role: ROLE_SUPER_ADMIN }
+        - { path: ^/brukeradmin/jubileum_betalt, role: ROLE_SUPER_ADMIN }
 
 
 

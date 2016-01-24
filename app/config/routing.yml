@@ -1069,3 +1069,31 @@ sponsors_update:
 sponsors_add:	
   path: /sponsors/add
   defaults: { _controller: AppBundle:Sponsors:sponsorsAdd }
+
+##########################################
+#              Anniversary               #
+##########################################
+
+anniversary_registration:
+ path: /jubileum
+ defaults: { _controller: AppBundle:AnniversaryRegistration:show }
+
+anniversary_registration_complete:
+ path: /jubileum/melding
+ defaults: { _controller: AppBundle:AnniversaryRegistration:complete }
+
+anniversary_admin:
+ path: /brukeradmin/jubileum
+ defaults: { _controller: AppBundle:AnniversaryRegistration:admin }
+
+anniversary_paid:
+ path: /brukeradmin/jubileum/betalt
+ defaults: { _controller: AppBundle:AnniversaryRegistration:paid}
+ requirements:
+  _method: POST
+
+anniversary_remove_payment:
+ path: /brukeradmin/jubileum/slettbetaling
+ defaults: { _controller: AppBundle:AnniversaryRegistration:removePayment}
+ requirements:
+  _method: POST

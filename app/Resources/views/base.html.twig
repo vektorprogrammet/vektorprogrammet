@@ -29,6 +29,8 @@
 			<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=2" />
         {% endblock %}
 
+        {% block customStyles %}{% endblock %}
+
         {# Used by Foundation for backwards compability, and is supposed to be in the header #}
         <script src="{{ asset('bundles/app/js/vendor/modernizr.js') }}"></script>
         <style>

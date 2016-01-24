@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="no"> <![endif]-->
+<html class="no-js" lang="no">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/app.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=2"/>
+    <title>Vektorprogrammet - Jubileum</title>
+    <style>
+        body {
+            background-color: #6fceee;
+        }
+        #registrationForm{
+            margin-top:100px;
+        }
+        #contact{
+            margin-top:30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div id="registrationForm">
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+
+            <h1 class="text-center">Påmelding 5 års jubileum Vektorprogrammet</h1>
+
+            <br>
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="row">
+                <div class="small-12 medium-6 large-4 large-offset-2 columns">
+                    <div>
+                        {{ form_label(form.firstname) }}
+                        {{ form_errors(form.firstname) }}
+                        {{ form_widget(form.firstname, {'attr': {'tabIndex': 1}}) }}
+                    </div>
+
+                    <div>
+                        {{ form_label(form.email) }}
+                        {{ form_errors(form.email) }}
+                        {{ form_widget(form.email, {'attr': {'tabIndex': 3}}) }}
+                    </div>
+                </div>
+
+                <div class="small-12 medium-6 large-4  end columns">
+                    <div>
+                        {{ form_label(form.lastname) }}
+                        {{ form_errors(form.lastname) }}
+                        {{ form_widget(form.lastname, {'attr': {'tabIndex': 2}}) }}
+                    </div>
+
+                    <div>
+                        {{ form_label(form.phone) }}
+                        {{ form_errors(form.phone) }}
+                        {{ form_widget(form.phone) }}
+                    </div>
+                </div>
+
+                <div class="small-12 medium-6 large-4 large-offset-2 columns">
+                    <div>
+                        {{ form_label(form.allergies) }}
+                        {{ form_errors(form.allergies) }}
+                        {{ form_widget(form.allergies) }}
+                    </div>
+                </div>
+                <div class="small-12 medium-6 large-4 end columns">
+                    <div>
+                        <h3>Betaling</h3>
+                        <p>Pris: 350,- <br>
+                            Kontonr: 1234 56 78901 <br>
+                            Frist: 14. Februar <br>
+                            Marker betalingen med fullt navn <br>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="small-12 medium-6 large-4 text-center large-offset-4 columns">
+                    {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted'}}) }}
+                </div>
+                <br><br>
+            </div>
+
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+    <div id="contact">
+            <p>Spørsmål sendes til nestleder@vektorprogrammet.no</p>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>
+        var $submitBtn = $('.vektor-button-inverted');
+        var $applicationForm = $('form[name="anniversaryRegistration"]');
+        $submitBtn.click(function () {
+            if ($applicationForm[0].checkValidity()) {
+                $submitBtn.attr("disabled", true);
+                $submitBtn.html("Sender...");
+                $applicationForm.submit();
+            }
+        });
+    </script>
+
+</div>
+</body>

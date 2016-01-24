@@ -1,0 +1,138 @@
+{% extends 'adminBase.html.twig' %}
+{% block title %}Påmelding jubileum{% endblock %}
+{% block customScripts %}
+    <script>
+        $(document).ready(
+                $('.pay').on("click", paid),
+                $('.deletePayment').on("click", removePayment)
+        );
+        function paid(){
+            event.preventDefault();
+            var participantId = parseInt($(this).closest('tr').attr('id'));
+            var button = $(this);
+            $.ajax({
+                type: 'POST',
+                url: '/brukeradmin/jubileum/betalt',
+                cache: false,
+                data: {'participantId': participantId},
+                success: function (response) {
+                    if (response.success) {
+                        var payment = button.closest('tr').find('.not-paid');
+                        payment.html('Betalt');
+                        payment.addClass('paid');
+                        payment.removeClass('not-paid');
+                        button.addClass('alert');
+                        button.html('Slett betaling');
+                        button.on("click", removePayment)
+                    } else {
+                        alert(response.cause);
+                    }
+                }
+            });
+        }
+
+        function removePayment(){
+            event.preventDefault();
+            var participantId = parseInt($(this).closest('tr').attr('id'));
+            var button = $(this);
+            $.ajax({
+                type: 'POST',
+                url: '/brukeradmin/jubileum/slettbetaling',
+                cache: false,
+                data: {'participantId': participantId},
+                success: function (response) {
+                    if (response.success) {
+                        var payment = button.closest('tr').find('.paid');
+                        payment.html('Ikke betalt');
+                        payment.addClass('not-paid');
+                        payment.removeClass('paid');
+                        button.removeClass('alert');
+                        button.html('Registrer betaling');
+                        button.on("click", paid);
+                    } else {
+                        alert(response.cause);
+                    }
+                }
+            });
+        }
+    </script>
+{% endblock %}
+
+{% block customStyles %}
+    <style>
+        .paid {
+            color: green;
+        }
+
+        .not-paid {
+            color: red;
+        }
+
+        #application-table #allergies {
+            width: 300px;
+        }
+
+        .pay, .deletePayment {
+            width: 100%
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% if participants is defined %}
+        <div class="row">
+            <h1 class="text-center">Påmeldte jubileum 2016</h1>
+            <h4>Antall: {{ participants | length }}/70</h4>
+        </div>
+        <div class="row">
+            <div class="large-12 large-offset-0">
+
+                {# The table containing participants #}
+                <table width="100%" id="application-table">
+                    <thead>
+                    <tr>
+                        {# data-sort is used to sort the tables with stupidtable.js #}
+                        <th data-sort="string">Fornavn</th>
+                        <th data-sort="string">Etternavn</th>
+                        <th data-sort="int">Tlf</th>
+                        <th data-sort="string">E-post</th>
+                        <th data-sort="string" id="allergies">Allergier</th>
+                        <th data-sort="string">Betaling</th>
+                        <th>Registrer betaling</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for participant in participants %}
+                        <tr id="{{ participant.id }}">
+                            <td>{{ participant.firstName }}</td>
+                            <td>{{ participant.lastName }}</td>
+                            <td>{{ participant.phone }}</td>
+                            <td>{{ participant.email }}</td>
+                            <td>{{ participant.allergies }}</td>
+
+                            {% if participant.hasPaid %}
+                                <td class="paid">Betalt</td>
+                                <td>
+                                    <a href="#" class="deletePayment button tiny alert">
+                                        Slett betaling
+                                    </a>
+                                </td>
+                            {% else %}
+                                <td class="not-paid">Ikke betalt</td>
+                                <td>
+                                    <a href="#" class="pay button tiny">
+                                        Registrer betaling
+                                    </a>
+                                </td>
+                            {% endif %}
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    {% endif %}
+{% endblock %}
