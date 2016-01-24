@@ -279,4 +279,15 @@ class ApplicationRepository extends EntityRepository {
         return $numUsers;
     }
 
+    public function findAllAllocatableApplicationsBySemester(Semester $semester){
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->join('a.interview', 'i')
+            ->where('a.semester = :semester')
+            ->andWhere('a.previousParticipation = 1 OR i.interviewed = 1')
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getResult();
+    }
+
 }

@@ -2,16 +2,17 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\SimulatedAnnealing\Assistant;
-use AppBundle\Entity\SimulatedAnnealing\Node;
-use AppBundle\Entity\SimulatedAnnealing\Optimizer;
-use AppBundle\Entity\SimulatedAnnealing\School;
-use AppBundle\Entity\SimulatedAnnealing\Solution;
+use AppBundle\Entity\Application;
+use AppBundle\Entity\Semester;
+use AppBundle\SchoolAllocation\Assistant;
+use AppBundle\SchoolAllocation\Node;
+use AppBundle\SchoolAllocation\Optimizer;
+use AppBundle\SchoolAllocation\School;
+use AppBundle\SchoolAllocation\Allocation;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\SchoolCapacity;
-use AppBundle\Entity\Interview;
 use AppBundle\Form\Type\SchoolCapacityType;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -37,58 +38,27 @@ class SchoolAllocationController extends Controller
         }
 
         $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
-        $allInterviews = $this->getDoctrine()->getRepository('AppBundle:Interview')->findAllInterviewedInterviewsBySemester($currentSemester);
+//        $allInterviews = $this->getDoctrine()->getRepository('AppBundle:Interview')->findAllInterviewedInterviewsBySemester($currentSemester);
+        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsBySemester($currentSemester);
 
-        $assistants = $this->generateAssistantsFromInterviews($allInterviews, $currentSemester);
         $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
 
-        $assistantsInBolksArray = $this->assignAssistantsToBolks($assistants);
-        $assistantsInBolk1 = $assistantsInBolksArray[0];
-        $assistantsInBolk2 = $assistantsInBolksArray[1];
-        $lockedAssistants = $assistantsInBolksArray[2];
-
-        //Create and find the initialSolutions (Very fast)
-        $schoolsDeepCopy = $this->deepCopySchools($schools);
-        $solutionBolk1 = new Solution($schools, $assistantsInBolk1, true);
-
-        $maxOptimizeTime = 100; //In seconds
-
-        //Check if the initializer found the perfect solution. If not, run the optimizer
-        if($solutionBolk1->isOk()){
-            $bestSolutionBolk1 = $solutionBolk1;
-        }else{
-            $optimizer = new Optimizer($solutionBolk1, 0.0001, 0.0000001, $maxOptimizeTime/2);
-            $bestSolutionBolk1 = $optimizer->optimize();
-            $this->updateAssistantsInLockedList($bestSolutionBolk1, $lockedAssistants);
-        }
-
-        $solutionBolk2 = new Solution($schoolsDeepCopy, $assistantsInBolk2,true, $lockedAssistants);
-
-        if($solutionBolk2->isOk()){
-            $bestSolutionBolk2 = $solutionBolk2;
-        }else{
-            $optimizer = new Optimizer($solutionBolk2, 0.0001, 0.0000001, $maxOptimizeTime/2);
-            $bestSolutionBolk2 = $optimizer->optimize();
-        }
-
-        //Total number of solutions evaluated during optimization
-        $solutionsCount = Solution::$visited;
 
         return $this->render('school_admin/school_allocate_show.html.twig', array(
             'semester' => $currentSemester,
-            'interviews' => $allInterviews,
+            'applications' => $applications,
             'allocations' => $allCurrentSchoolCapacities,
             'allocatedSchools' => $schools,
-            /*'initialSolutionBolk1' => $solutionBolk1,
-            'initialSolutionBolk2' => $solutionBolk2,
-            'score' => number_format((($solutionBolk1->evaluate()+$solutionBolk2->evaluate())/2), 1)*10,
-            'initializeTime' => $solutionBolk1->initializeTime + $solutionBolk1->improveTime + $solutionBolk2->initializeTime + $solutionBolk2->improveTime,
-            'optimizeTime' => $bestSolutionBolk1->optimizeTime + $bestSolutionBolk2->optimizeTime,
+            /*'initialAllocationBolk1' => $allocationBolk1,
+            'initialAllocationBolk2' => $allocationBolk2,
+            'score' => number_format((($allocationBolk1->evaluate()+$allocationBolk2->evaluate())/2), 1)*10,
+            'initializeTime' => $allocationBolk1->initializeTime + $allocationBolk1->improveTime + $allocationBolk2->initializeTime + $allocationBolk2->improveTime,
+            'optimizeTime' => $bestAllocationBolk1->optimizeTime + $bestAllocationBolk2->optimizeTime,
             'optimizedAllocatedSchools' => $schools,
-            'optimizedSolutionBolk1' => $bestSolutionBolk1,
-            'optimizedSolutionBolk2' => $bestSolutionBolk2,
-            'optimizedScore' => number_format((($bestSolutionBolk1->evaluate() + $bestSolutionBolk2->evaluate())/2), 1)*10,
-            'differentSolutions' => $solutionsCount,*/
+            'optimizedAllocationBolk1' => $bestAllocationBolk1,
+            'optimizedAllocationBolk2' => $bestAllocationBolk2,
+            'optimizedScore' => number_format((($bestAllocationBolk1->evaluate() + $bestAllocationBolk2->evaluate())/2), 1)*10,
+            'differentAllocations' => $allocationsCount,*/
         ));
     }
 
@@ -100,9 +70,9 @@ class SchoolAllocationController extends Controller
         return $copy;
     }
 
-    private function updateAssistantsInLockedList(Solution $solution, $lockedList){
+    private function updateAssistantsInLockedList(Allocation $allocation, $lockedList){
         foreach($lockedList as $lockedAssistant){
-            $assistant = $solution->getAssistantById($lockedAssistant->getId(), $solution->getAssistants());
+            $assistant = $allocation->getAssistantById($lockedAssistant->getId(), $allocation->getAssistants());
             $lockedAssistant->setAssignedSchool($assistant->getAssignedSchool());
             $lockedAssistant->setAssignedDay($assistant->getAssignedDay());
 
@@ -164,43 +134,36 @@ class SchoolAllocationController extends Controller
         return $schools;
     }
 
-    private function generateAssistantsFromInterviews($interviews, $semester){
-        //Use interviews to create Assistant objects for the SA-algorithm
+    /**
+     * @param Application[] $applications
+     * @return Assistant[]
+     */
+    private function generateAssistantsFromApplications($applications){
+        //Use applications to create Assistant objects for the allocation algorithm
         $assistants = array();
-        foreach($interviews as $interview) {
-            $intPractical = $interview->getInterviewPractical();
-            if($intPractical->getSemester() != $semester){
-                continue;
-            }
-
-            $position = $intPractical->getPosition();
-            $doublePosition = in_array("1x8", $position);
-            $prefBolk1 = in_array("Bolk 1", $position);
-            $prefBolk2 = in_array("Bolk 2", $position);
+        foreach($applications as $application) {
+            $doublePosition = $application->getDoublePosition();
+            $preferredGroup = $application->getPreferredGroup();
+            $prefBolk1 = $preferredGroup == "Bolk 1";
+            $prefBolk2 = $preferredGroup == "Bolk 2";
             if($prefBolk1 && $prefBolk2){
                 $prefBolk1 = false;
                 $prefBolk2 = false;
             }
 
-            $preferredSchool = $intPractical->getPreferredSchool();
-            if($preferredSchool !== null){
-                $preferredSchool = $preferredSchool->getName();
-            }
-
             $availability = array();
             $availabilityPoints = ["Ikke", "Ok", "Bra"];
-            $availability["Monday"] = array_search($intPractical->getMonday(), $availabilityPoints);
-            $availability["Tuesday"] = array_search($intPractical->getTuesday(), $availabilityPoints);
-            $availability["Wednesday"] = array_search($intPractical->getWednesday(), $availabilityPoints);
-            $availability["Thursday"] = array_search($intPractical->getThursday(), $availabilityPoints);
-            $availability["Friday"] = array_search($intPractical->getFriday(), $availabilityPoints);
+            $availability["Monday"] = array_search($application->getMonday(), $availabilityPoints);
+            $availability["Tuesday"] = array_search($application->getTuesday(), $availabilityPoints);
+            $availability["Wednesday"] = array_search($application->getWednesday(), $availabilityPoints);
+            $availability["Thursday"] = array_search($application->getThursday(), $availabilityPoints);
+            $availability["Friday"] = array_search($application->getFriday(), $availabilityPoints);
 
             $assistant = new Assistant();
-            $assistant->setName($interview->getApplication()->getFirstName() . ' ' . $interview->getApplication()->getLastName());
+            $assistant->setName($application->getUser()->getFirstName() . ' ' . $application->getUser()->getLastName());
             $assistant->setPrefBolk1($prefBolk1);
             $assistant->setPrefBolk2($prefBolk2);
             $assistant->setDoublePosition($doublePosition);
-            $assistant->setPreferedSchool($preferredSchool);
             $assistant->setAvailability($availability);
             $assistants[] = $assistant;
         }
@@ -224,8 +187,8 @@ class SchoolAllocationController extends Controller
         }
 
         $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
-        $allInterviews = $this->getDoctrine()->getRepository('AppBundle:Interview')->findAllInterviewedInterviewsBySemester($currentSemester);
-        $assistants = $this->generateAssistantsFromInterviews($allInterviews, $currentSemester);
+        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsBySemester($currentSemester);
+        $assistants = $this->generateAssistantsFromApplications($applications);
         $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
 
         $assistantsInBolksArray = $this->assignAssistantsToBolks($assistants);
@@ -233,43 +196,43 @@ class SchoolAllocationController extends Controller
         $assistantsInBolk2 = $assistantsInBolksArray[1];
         $lockedAssistants = $assistantsInBolksArray[2];
 
-        //Create and find the initialSolutions (Very fast)
+        //Create and find the initialAllocations (Very fast)
         $schoolsDeepCopy = $this->deepCopySchools($schools);
-        $solutionBolk1 = new Solution($schools, $assistantsInBolk1, true);
-        $maxOptimizeTime = 1000; //In seconds
-
-        //Check if the initializer found the perfect solution. If not, run the optimizer
-        if($solutionBolk1->isOk()){
-            $bestSolutionBolk1 = $solutionBolk1;
+        $allocationBolk1 = new Allocation($schools, $assistantsInBolk1, true);
+        $maxOptimizeTime = 2; //In seconds
+        dump($allocationBolk1);
+        //Check if the initializer found the perfect allocation. If not, run the optimizer
+        if($allocationBolk1->isOk()){
+            $bestAllocationBolk1 = $allocationBolk1;
         }else{
-            $optimizer = new Optimizer($solutionBolk1, 0.0001, 0.0000001, $maxOptimizeTime/2);
-            $bestSolutionBolk1 = $optimizer->optimize();
-            $this->updateAssistantsInLockedList($bestSolutionBolk1, $lockedAssistants);
+            $optimizer = new Optimizer($allocationBolk1, 0.0001, 0.0000001, $maxOptimizeTime/2);
+            $bestAllocationBolk1 = $optimizer->optimize();
+            $this->updateAssistantsInLockedList($bestAllocationBolk1, $lockedAssistants);
         }
 
-        $solutionBolk2 = new Solution($schoolsDeepCopy, $assistantsInBolk2,true, $lockedAssistants);
+        $allocationBolk2 = new Allocation($schoolsDeepCopy, $assistantsInBolk2,true, $lockedAssistants);
 
-        if($solutionBolk2->isOk()){
-            $bestSolutionBolk2 = $solutionBolk2;
+        if($allocationBolk2->isOk()){
+            $bestAllocationBolk2 = $allocationBolk2;
         }else{
-            $optimizer = new Optimizer($solutionBolk2, 0.0001, 0.0000001, $maxOptimizeTime/2);
-            $bestSolutionBolk2 = $optimizer->optimize();
+            $optimizer = new Optimizer($allocationBolk2, 0.0001, 0.0000001, $maxOptimizeTime/2);
+            $bestAllocationBolk2 = $optimizer->optimize();
         }
 
-        //Total number of solutions evaluated during optimization
-        $solutionsCount = Solution::$visited;
+        //Total number of allocations evaluated during optimization
+        $allocationsCount = Allocation::$visited;
 
         return $this->render('school_admin/school_allocate_result.html.twig', array(
-            'initialSolutionBolk1' => $solutionBolk1,
-            'initialSolutionBolk2' => $solutionBolk2,
-            'score' => number_format((($solutionBolk1->evaluate()+$solutionBolk2->evaluate())/2), 1)*10,
-            'initializeTime' => $solutionBolk1->initializeTime + $solutionBolk1->improveTime + $solutionBolk2->initializeTime + $solutionBolk2->improveTime,
-            'optimizeTime' => $bestSolutionBolk1->optimizeTime + $bestSolutionBolk2->optimizeTime,
+            'initialAllocationBolk1' => $allocationBolk1,
+            'initialAllocationBolk2' => $allocationBolk2,
+            'score' => number_format((($allocationBolk1->evaluate()+$allocationBolk2->evaluate())/2), 1)*10,
+            'initializeTime' => $allocationBolk1->initializeTime + $allocationBolk1->improveTime + $allocationBolk2->initializeTime + $allocationBolk2->improveTime,
+            'optimizeTime' => $bestAllocationBolk1->optimizeTime + $bestAllocationBolk2->optimizeTime,
             'optimizedAllocatedSchools' => $schools,
-            'optimizedSolutionBolk1' => $bestSolutionBolk1,
-            'optimizedSolutionBolk2' => $bestSolutionBolk2,
-            'optimizedScore' => number_format((($bestSolutionBolk1->evaluate() + $bestSolutionBolk2->evaluate())/2), 1)*10,
-            'differentSolutions' => $solutionsCount,
+            'optimizedAllocationBolk1' => $bestAllocationBolk1,
+            'optimizedAllocationBolk2' => $bestAllocationBolk2,
+            'optimizedScore' => number_format((($bestAllocationBolk1->evaluate() + $bestAllocationBolk2->evaluate())/2), 1)*10,
+            'differentAllocations' => $allocationsCount,
         ));
         $response = new Response();
         $response->setContent(json_encode(array(

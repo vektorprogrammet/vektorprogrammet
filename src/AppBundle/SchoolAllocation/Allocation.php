@@ -1,7 +1,7 @@
 <?php
-namespace AppBundle\Entity\SimulatedAnnealing;
+namespace AppBundle\SchoolAllocation;
 
-class Solution
+class Allocation
 {
     private $schools;//Array with School objects
     private $assistants;//Array with Assistant objects
@@ -14,13 +14,13 @@ class Solution
     public static $numSwaps;
 
     /**
-     * Solution constructor.
-     * @param mixed schools
-     * @param mixed assistants
-     * @param boolean isAnewSolution
-     * @param mixed lockedAssistants
+     * Allocation constructor.
+     * @param School[] schools
+     * @param Assistant[] assistants
+     * @param boolean isAnewAllocation
+     * @param Assistant[] lockedAssistants
      */
-    public function __construct($schools, $assistants, $isAnewSolution = false, $lockedAssistants = array())
+    public function __construct($schools, $assistants, $isAnewAllocation = false, $lockedAssistants = array())
     {
         $this->initializeTime = 0;
         $this->optimizeTime = 0;
@@ -28,13 +28,13 @@ class Solution
         $this->toBeImproved = array();
         $this->lockedAssistants = $lockedAssistants;
         $this->schools = $schools;
-        if($isAnewSolution){
-            $this->initializeSolution();
-            $this->improveSolution();
+        if($isAnewAllocation){
+            $this->initializeAllocation();
+            $this->improveAllocation();
         }
     }
 
-    public function initializeSolution()
+    public function initializeAllocation()
     {
         //Assign assistants with double position
         foreach($this->assistants as $assistant){
@@ -84,11 +84,11 @@ class Solution
         }
 
         $this->initializeTime = (round(microtime(true) * 1000) - $startTime) / 1000;
-        Solution::$visited = 1;
+        Allocation::$visited = 1;
 
     }
 
-    public function improveSolution()
+    public function improveAllocation()
     {
         $startTime = round(microtime(true) * 1000);
 
@@ -117,13 +117,13 @@ class Solution
                             if ($this->capacityLeftOnDay($assistant->getAssignedDay(), $this->getSchoolByName($assistantInSchool->getAssignedSchool())) < 1) continue;
                             if ($assistantInSchool->getAssignedSchool() == $assistant->getAssignedSchool()) continue;
                             $evalScoreBeforeSwap = $this->evaluate();
-                            $this->swapAssistantsSchools($assistantInSchool, $assistant);
+                            $this->swapAssistants($assistantInSchool, $assistant);
                             $evalScoreAfterSwap = $this->evaluate();
 
                             if ($evalScoreAfterSwap > $evalScoreBeforeSwap) {
                                 $changed = true;
                             } else {
-                                $this->swapAssistantsSchools($assistantInSchool, $assistant);
+                                $this->swapAssistants($assistantInSchool, $assistant);
                             }
                         }
                     }
@@ -207,7 +207,7 @@ class Solution
     }
 
     /*
-     * Checks if solution breaks any important rule
+     * Checks if allocation breaks any important rule
      */
     public function isOk()
     {
@@ -246,12 +246,12 @@ class Solution
                     //TODO: Figure out if this is a good idea
                     if ($school->totalAssistants() > $this->getSchoolByName($assistant->getAssignedSchool())->totalAssistants()) continue;
 
-                    //Create a deep copy of the current solution
-                    $newSolution = $this->deepCopy();
-                    //Move the assistant from current school to a new school and add the new solution to the neighbour list
-                    $newSolution->moveAssistant($newSolution->getAssistants()[$assistantIndex], $newSolution->getSchools()[$schoolIndex]->getName(), $assistant->getAssignedDay(), $day);
-                    Solution::$visited++;
-                    $neighbours[] = $newSolution;
+                    //Create a deep copy of the current allocation
+                    $newAllocation = $this->deepCopy();
+                    //Move the assistant from current school to a new school and add the new allocation to the neighbour list
+                    $newAllocation->moveAssistant($newAllocation->getAssistants()[$assistantIndex], $newAllocation->getSchools()[$schoolIndex]->getName(), $assistant->getAssignedDay(), $day);
+                    Allocation::$visited++;
+                    $neighbours[] = $newAllocation;
                 }
                 $schoolIndex++;
             }
@@ -289,7 +289,6 @@ class Solution
 
     public function sortSchoolsByNumberOfAssistants($day)
     {
-        dump($day);
         $sortedSchools = array();
         $tempSorted = array();//Array with key = totalNumber of assistants on school, value = array with schools
         foreach ($this->schools as $school) {
@@ -374,18 +373,6 @@ class Solution
     }
 
     public
-    function swapAssistantsSchools(Assistant $a, Assistant $b)
-    {
-        $aSchool = $a->getAssignedSchool();
-        $aDay = $a->getAssignedDay();
-        $bSchool = $b->getAssignedSchool();
-        $bDay = $b->getAssignedDay();
-
-        $this->moveAssistant($a, $bSchool, $aDay, $aDay);
-        $this->moveAssistant($b, $aSchool, $bDay, $bDay);
-    }
-
-    public
     function moveAssistant(Assistant $assistant, $schoolName, $fromDay, $toDay)
     {
         $school = $this->getSchoolByName($assistant->getAssignedSchool());
@@ -428,8 +415,8 @@ class Solution
     {
         $schoolsCopy = $this->deepCopySchools();
         $assistantsCopy = $this->deepCopyAssistants();
-        $newSolution = new Solution($schoolsCopy, $assistantsCopy);
-        return $newSolution;
+        $newAllocation = new Allocation($schoolsCopy, $assistantsCopy);
+        return $newAllocation;
     }
 
     public function deepCopyAssistants()

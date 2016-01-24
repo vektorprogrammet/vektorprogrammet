@@ -1,7 +1,7 @@
 {% extends 'adminBase.html.twig' %}
 
 {% block body %}
-    <h1 style="text-align: center">Skolefordeling</h1>
+    <h1 class="text-center">Skolefordeling</h1>
     {% if semester is null %}
         <div class="row">
             <h3>Det finnes ingen aktive semestere</h3>
@@ -57,6 +57,7 @@
                         <td>{{ wednesdayCount }}</td>
                         <td>{{ thursdayCount }}</td>
                         <td>{{ fridayCount }}</td>
+                        <td></td>
                     </tr>
                     </tbody>
                 </table>
@@ -100,60 +101,60 @@
 
                     {% set totalAssistants = 0 %}
                     <tbody>
-                    {% for interview in interviews %}
+                    {% for application in applications %}
                         {% set totalAssistants = totalAssistants + 1 %}
 
-                        {% if interview.interviewPractical.monday == "Bra" %}
+                        {% if application.monday == "Bra" %}
                             {% set mondayGoodCount = mondayGoodCount + 1 %}
-                        {% elseif interview.interviewPractical.monday == "Ok" %}
+                        {% elseif application.monday == "Ok" %}
                             {% set mondayOkCount = mondayOkCount + 1 %}
                         {% else %}
                             {% set mondayBadCount = mondayBadCount + 1 %}
                         {% endif %}
 
-                        {% if interview.interviewPractical.tuesday == "Bra" %}
+                        {% if application.tuesday == "Bra" %}
                             {% set tuesdayGoodCount = tuesdayGoodCount + 1 %}
-                        {% elseif interview.interviewPractical.tuesday == "Ok" %}
+                        {% elseif application.tuesday == "Ok" %}
                             {% set tuesdayOkCount = tuesdayOkCount + 1 %}
                         {% else %}
                             {% set tuesdayBadCount = tuesdayBadCount + 1 %}
                         {% endif %}
 
-                        {% if interview.interviewPractical.wednesday == "Bra" %}
+                        {% if application.wednesday == "Bra" %}
                             {% set wednesdayGoodCount = wednesdayGoodCount + 1 %}
-                        {% elseif interview.interviewPractical.wednesday == "Ok" %}
+                        {% elseif application.wednesday == "Ok" %}
                             {% set wednesdayOkCount = wednesdayOkCount + 1 %}
                         {% else %}
                             {% set wednesdayBadCount = wednesdayBadCount + 1 %}
                         {% endif %}
 
-                        {% if interview.interviewPractical.thursday == "Bra" %}
+                        {% if application.thursday == "Bra" %}
                             {% set thursdayGoodCount = thursdayGoodCount + 1 %}
-                        {% elseif interview.interviewPractical.thursday == "Ok" %}
+                        {% elseif application.thursday == "Ok" %}
                             {% set thursdayOkCount = thursdayOkCount + 1 %}
                         {% else %}
                             {% set thursdayBadCount = thursdayBadCount + 1 %}
                         {% endif %}
 
-                        {% if interview.interviewPractical.friday == "Bra" %}
+                        {% if application.friday == "Bra" %}
                             {% set fridayGoodCount = fridayGoodCount + 1 %}
-                        {% elseif interview.interviewPractical.friday == "Ok" %}
+                        {% elseif application.friday == "Ok" %}
                             {% set fridayOkCount = fridayOkCount + 1 %}
                         {% else %}
                             {% set fridayBadCount = fridayBadCount + 1 %}
                         {% endif %}
                         <tr>
-                            <td>{{ interview.application.firstName }} {{ interview.application.lastName }}</td>
-                            <td>{{ interview.interviewPractical.monday }}</td>
-                            <td>{{ interview.interviewPractical.tuesday }}</td>
-                            <td>{{ interview.interviewPractical.wednesday }}</td>
-                            <td>{{ interview.interviewPractical.thursday }}</td>
-                            <td>{{ interview.interviewPractical.friday }}</td>
+                            <td>{{ application.user.firstName }} {{ application.user.lastName }}</td>
+                            <td>{{ application.monday }}</td>
+                            <td>{{ application.tuesday }}</td>
+                            <td>{{ application.wednesday }}</td>
+                            <td>{{ application.thursday }}</td>
+                            <td>{{ application.friday }}</td>
                             {% set bolks = "Ingen" %}
-                            {% if "Bolk 1" in interview.interviewPractical.position %}
+                            {% if "Bolk 1" in application.preferredGroup %}
                                 {% set bolks = "Bolk 1" %}
                             {% endif %}
-                            {% if "Bolk 2" in interview.interviewPractical.position %}
+                            {% if "Bolk 2" in application.preferredGroup %}
                                 {% if "Ingen" not in bolks %}
                                     {% set bolks = bolks ~ ", " %}
                                 {% else %}
@@ -162,7 +163,7 @@
                                 {% set bolks = bolks ~ "Bolk 2" %}
                             {% endif %}
                             <td>{{ bolks }}</td>
-                            {% if "1x8" in interview.interviewPractical.position %}
+                            {% if application.doublePosition %}
                                 <td>Ja</td>
                             {% else %}
                                 <td>Nei</td>

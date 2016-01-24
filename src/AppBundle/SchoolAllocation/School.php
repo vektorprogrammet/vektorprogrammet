@@ -1,5 +1,5 @@
 <?php
-namespace AppBundle\Entity\SimulatedAnnealing;
+namespace AppBundle\SchoolAllocation;
 
 class School
 {

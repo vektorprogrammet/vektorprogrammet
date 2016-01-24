@@ -19,7 +19,7 @@
 
                 <div class="row"><h2 style="text-align: center">Bolk 1</h2></div>
                 {% set total = 0 %}
-                {% for school in initialSolutionBolk1.schools %}
+                {% for school in initialAllocationBolk1.schools %}
                     {% if school.assistants|length > 0 %}
                         <h3>{{ school.name }}</h3>
                         <table style="table-layout: fixed; width: 100%;">
@@ -32,7 +32,7 @@
 
                             <tbody>
                             {% for day in school.assistants|keys %}
-                                {% for assistant in initialSolutionBolk1.assistants %}
+                                {% for assistant in initialAllocationBolk1.assistants %}
                                     {% if assistant.assignedSchool == school.name and assistant.assignedDay == day %}
                                         {% set total = total + 1 %}
                                         <tr>
@@ -56,7 +56,7 @@
 
                 <div class="row"><h2 style="text-align: center">Bolk 2</h2></div>
                 {% set total = 0 %}
-                {% for school in initialSolutionBolk2.schools %}
+                {% for school in initialAllocationBolk2.schools %}
                     {% if school.assistants|length > 0 %}
                         <h3>{{ school.name }}</h3>
                         <table style="table-layout: fixed; width: 100%;">
@@ -69,7 +69,7 @@
 
                             <tbody>
                             {% for day in school.assistants|keys %}
-                                {% for assistant in initialSolutionBolk2.assistants %}
+                                {% for assistant in initialAllocationBolk2.assistants %}
                                     {% if assistant.assignedSchool == school.name and assistant.assignedDay == day %}
                                         {% set total = total + 1 %}
                                         <tr>
@@ -106,11 +106,11 @@
                 {% endif %}
                 <div class="row" style="font-size: 20px;">Score (1-100): <span
                             style="color: {{ color }}">{{ optimizedScore|round }}</span></div>
-                <div class="row">Evaluated {{ differentSolutions }} solutions</div>
+                <div class="row">Evaluated {{ differentAllocations }} solutions</div>
                 <div class="row" style="margin-bottom:50px;">Finished in: {{ optimizeTime }}s</div>
 
                 <div class="row"><h2 style="text-align: center">Bolk 1</h2></div>
-                {% for school in optimizedSolutionBolk1.schools %}
+                {% for school in optimizedAllocationBolk1.schools %}
                     {% if school.assistants|length > 0 %}
                         <h3>{{ school.name }}</h3>
                         <table style="table-layout: fixed; width: 100%;">
@@ -123,7 +123,7 @@
 
                             <tbody>
                             {% for day in school.assistants|keys %}
-                                {% for assistant in optimizedSolutionBolk1.assistants %}
+                                {% for assistant in optimizedAllocationBolk1.assistants %}
                                     {% if assistant.assignedSchool == school.name and assistant.assignedDay == day %}
                                         <tr>
                                             {% if assistant.availability[day] == 2 %}
@@ -143,7 +143,7 @@
                     {% endif %}
                 {% endfor %}
                 <div class="row"><h2 style="text-align: center">Bolk 2</h2></div>
-                {% for school in optimizedSolutionBolk2.schools %}
+                {% for school in optimizedAllocationBolk2.schools %}
                     {% if school.assistants|length > 0 %}
                         <h3>{{ school.name }}</h3>
                         <table style="table-layout: fixed; width: 100%;">
@@ -156,7 +156,7 @@
 
                             <tbody>
                             {% for day in school.assistants|keys %}
-                                {% for assistant in optimizedSolutionBolk2.assistants %}
+                                {% for assistant in optimizedAllocationBolk2.assistants %}
                                     {% if assistant.assignedSchool == school.name and assistant.assignedDay == day %}
                                         <tr>
                                             {% if assistant.availability[day] == 2 %}
