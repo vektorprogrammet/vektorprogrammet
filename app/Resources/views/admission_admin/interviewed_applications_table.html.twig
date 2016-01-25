@@ -23,6 +23,7 @@
     {% if applicants is defined %}
 
         {# The table containing interviewed applications #}
+        <form id="bulk" name="application">
         <table width="100%" id="application-table">
             <thead>
             <tr>
@@ -52,7 +53,7 @@
             </thead>
 
             <tbody>
-                <form id="bulk" name="application">
+
                 {% for a in applicants %}
                     <tr id="{{ a.id }}">
                         {% if is_granted('ROLE_HIGHEST_ADMIN') %}
@@ -111,9 +112,10 @@
                         {% endif %}
                     </tr>
                 {% endfor %}
-                </form>
+
             </tbody>
         </table>
+        </form>
     {% endif %}
 
 {% endblock %}
