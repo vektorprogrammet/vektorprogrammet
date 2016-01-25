@@ -11,11 +11,13 @@
         body {
             background-color: #6fceee;
         }
-        #registrationForm{
-            margin-top:100px;
+
+        #registrationForm {
+            margin-top: 100px;
         }
-        #contact{
-            margin-top:30px;
+
+        #contact {
+            margin-top: 30px;
             text-align: center;
         }
     </style>
@@ -71,7 +73,7 @@
                     <div>
                         <h3>Betaling</h3>
                         <p>Pris: 350,- <br>
-                            Kontonr: 1234 56 78901 <br>
+                            Kontonr: 92353 10 9296 <br>
                             Frist: 14. Februar <br>
                             Marker betalingen med fullt navn <br>
                         </p>
@@ -92,21 +94,20 @@
         </div>
     </div>
     <div id="contact">
-            <p>Spørsmål sendes til nestleder@vektorprogrammet.no</p>
-        </div>
+        <p>Spørsmål sendes til nestleder@vektorprogrammet.no</p>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script>
-        var $submitBtn = $('.vektor-button-inverted');
-        var $applicationForm = $('form[name="anniversaryRegistration"]');
-        $submitBtn.click(function () {
-            if ($applicationForm[0].checkValidity()) {
-                $submitBtn.attr("disabled", true);
-                $submitBtn.html("Sender...");
-                $applicationForm.submit();
-            }
-        });
-    </script>
-
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>
+    var $submitBtn = $('.vektor-button-inverted');
+    var $applicationForm = $('form[name="anniversaryRegistration"]');
+    $submitBtn.click(function () {
+        if ($applicationForm[0].checkValidity()) {
+            $submitBtn.attr("disabled", true);
+            $submitBtn.html("Sender...");
+            $applicationForm.submit();
+        }
+    });
+</script>
+
 </body>

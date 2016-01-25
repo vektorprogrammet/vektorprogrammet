@@ -67,7 +67,8 @@ security:
         - { path: ^/vikar/rediger, roles: ROLE_SUPER_ADMIN }
         - { path: ^/undersokelse/slett, role: ROLE_SUPER_ADMIN }
         - { path: ^/brukeradmin/jubileum, role: ROLE_SUPER_ADMIN }
-        - { path: ^/brukeradmin/jubileum_betalt, role: ROLE_SUPER_ADMIN }
+        - { path: ^/brukeradmin/jubileum/betalt, role: ROLE_SUPER_ADMIN }
+        - { path: ^/brukeradmin/jubileum/slettbetaling, role: ROLE_SUPER_ADMIN }
 
 
 

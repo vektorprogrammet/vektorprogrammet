@@ -14,9 +14,10 @@ use Symfony\Component\HttpFoundation\Request;
 class AnniversaryRegistrationController extends Controller
 {
    public function showAction(Request $request){
+      $registrationLimit = 50;
       $em = $this->getDoctrine()->getEntityManager();
       $registrations = $em->getRepository('AppBundle:AnniversaryRegistration')->findAll();
-      if(sizeof($registrations) >= 70){
+      if(sizeof($registrations) >= $registrationLimit){
          return $this->render('anniversary_registration/registrationFull.html.twig');
       }
       $anniversaryRegistration = new AnniversaryRegistration();
@@ -26,10 +27,14 @@ class AnniversaryRegistrationController extends Controller
       $form->handleRequest($request);
 
       if($form->isValid()){
-         $em->persist($anniversaryRegistration);
-         $em->flush();
+         if(sizeof($registrations) < $registrationLimit){
+            $em->persist($anniversaryRegistration);
+            $em->flush();
+            return $this->redirect($this->generateUrl('anniversary_registration_complete'));
+         }else{
+            return $this->render('anniversary_registration/registrationFull.html.twig');
+         }
 
-         return $this->redirect($this->generateUrl('anniversary_registration_complete'));
       }
 
       return $this->render('anniversary_registration/registration.html.twig', array(
