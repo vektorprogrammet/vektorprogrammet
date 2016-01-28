@@ -40,21 +40,19 @@
                         {{ form_errors(form.firstname) }}
                         {{ form_widget(form.firstname, {'attr': {'tabIndex': 1}}) }}
                     </div>
-
-                    <div>
-                        {{ form_label(form.email) }}
-                        {{ form_errors(form.email) }}
-                        {{ form_widget(form.email, {'attr': {'tabIndex': 3}}) }}
-                    </div>
-                </div>
-
-                <div class="small-12 medium-6 large-4  end columns">
                     <div>
                         {{ form_label(form.lastname) }}
                         {{ form_errors(form.lastname) }}
                         {{ form_widget(form.lastname, {'attr': {'tabIndex': 2}}) }}
                     </div>
+                </div>
 
+                <div class="small-12 medium-6 large-4  end columns">
+                    <div>
+                        {{ form_label(form.email) }}
+                        {{ form_errors(form.email) }}
+                        {{ form_widget(form.email, {'attr': {'tabIndex': 3}}) }}
+                    </div>
                     <div>
                         {{ form_label(form.phone) }}
                         {{ form_errors(form.phone) }}
