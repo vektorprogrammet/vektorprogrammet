@@ -38,6 +38,12 @@ class InterviewScore
     protected $totalImpression;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    protected $suitableAssistant;
+
+
+    /**
      * @ORM\OneToOne(targetEntity="ApplicationStatistic", inversedBy="interviewScore")
      * @ORM\JoinColumn(name="application_statistic_id", referencedColumnName="id")
      */
@@ -162,6 +168,7 @@ class InterviewScore
      * @param integer $totalImpression
      * @return InterviewScore
      */
+
     public function setTotalImpression($totalImpression)
     {
         $this->totalImpression = $totalImpression;
@@ -178,4 +185,30 @@ class InterviewScore
     {
         return $this->totalImpression;
     }
+
+    /**
+     * Get suitableAssistant
+     *
+     * @return integer
+     */
+    public function getSuitableAssistant()
+    {
+        return $this->suitableAssistant;
+    }
+
+    /**
+     * Set suitableAssistant
+     *
+     * @param integer $suitableAssistant
+     * @return InterviewScore
+     */
+
+    public function setSuitableAssistant($suitableAssistant)
+    {
+        $this->suitableAssistant = $suitableAssistant;
+
+        return $this;
+    }
 }
+
+
