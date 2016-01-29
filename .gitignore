@@ -45,5 +45,3 @@ crashlytics-build.properties
 /www/bundles/
 /www/images/
 
-/app/SymfonyRequirements.php
-.gitignore
