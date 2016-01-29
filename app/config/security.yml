@@ -56,6 +56,7 @@ security:
 
           #ROLE_HIGHEST_ADMIN = superadmin user
         - { path: ^/semesteradmin/slett/, roles: ROLE_HIGHEST_ADMIN }
+        - { path: ^/teamadmin/stillinger#, roles: ROLE_HIGHEST_ADMIN }
 
           #ROLE_SUPER_ADMIN = admin user
         - { path: ^/brukeradmin/opprett/, roles: ROLE_SUPER_ADMIN }
