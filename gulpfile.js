@@ -81,9 +81,9 @@ gulp.task('compressImages', function(){
     gulp.src('www/images/**/*')
         .pipe(plumber())
         .pipe(imagemin({
-            progressive: true,
-            interlaced: true,
-            optimizationLevel: 3
+            progressive: false,
+            interlaced: false,
+            optimizationLevel: 1
         }))
         .pipe(gulp.dest(dest))
 });
