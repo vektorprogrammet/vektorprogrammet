@@ -16,7 +16,7 @@ class TeamAdminController extends Controller {
 	
 	public function removePositionAction(Request $request){
 		
-		if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+		if ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')) {
 		
 			$id = $request->get('id');
 			
