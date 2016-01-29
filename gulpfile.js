@@ -42,9 +42,9 @@ gulp.task('imagesProd', function () {
         .pipe(plumber())
         .pipe(changed(dest))
         .pipe(imagemin({
-            progressive: true,
-            interlaced: true,
-            optimizationLevel: 3
+            progressive: false,
+            interlaced: false,
+            optimizationLevel: 1
         }))
         .pipe(gulp.dest(dest))
 });
