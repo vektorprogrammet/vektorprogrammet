@@ -128,16 +128,8 @@
 						{% for t in teams %}
 							<tr>
 								<td width="70%"> <a href="{{ path('teamadmin_show_specific_team', { 'id': t.id }) }}"> {{ t.name }} </a> </td>
-								
-								{# Only SUPER_ADMIN should be able to edit teams #}
-								{% if is_granted('ROLE_SUPER_ADMIN') %} 
-		
-										<td><a href="{{ path('teamadmin_update', { 'id': t.id }) }}" class="button tiny" >Rediger</a></td>
-				
-										<td><a href="#" id="{{ t.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td>
-										
-								{% endif %}
-								
+								<td><a href="{{ path('teamadmin_update', { 'id': t.id }) }}" class="button tiny" >Rediger</a></td>
+								<td><a href="#" id="{{ t.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td>
 							</tr>
 							{% endfor %} 
 					</tbody>
