@@ -58,19 +58,19 @@ class SemesterRepository extends EntityRepository {
     }
 
     /**
-     * @param $departmentId
+     * @param $department
      * @return Semester
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findCurrentSemesterByDepartment($departmentId){
+    public function findCurrentSemesterByDepartment($department){
         $now = new \DateTime();
         return $this->createQueryBuilder('Semester')
             ->select('Semester')
             ->where('Semester.department = ?1')
             ->andWhere('Semester.semesterStartDate < :now')
             ->andWhere('Semester.semesterEndDate > :now')
-            ->setParameter(1, $departmentId)
+            ->setParameter(1, $department)
             ->setParameter('now', $now)
             ->getQuery()
             ->getSingleResult();

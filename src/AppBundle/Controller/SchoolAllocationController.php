@@ -11,6 +11,7 @@ use AppBundle\SchoolAllocation\School;
 use AppBundle\SchoolAllocation\Allocation;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\SchoolCapacity;
 use AppBundle\Form\Type\SchoolCapacityType;
@@ -19,27 +20,18 @@ use Symfony\Component\HttpFoundation\Response;
 class SchoolAllocationController extends Controller
 {
 
-    public function showAction(Request $request, $departmentId=null){
+    public function showAction(Request $request, $departmentId = null)
+    {
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
-        if(null === $departmentId){
+        if (null === $departmentId) {
             $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
         }
 
-        $allSemesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findByDepartment($departmentId);
+        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
 
-        $currentSemester = null;
-        foreach($allSemesters as $semester){
-            $now = new \DateTime();
-            if($semester->getSemesterStartDate() < $now && $semester->getSemesterEndDate() > $now){
-                $currentSemester = $semester;
-                break;
-            }
-        }
-
-        $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
-//        $allInterviews = $this->getDoctrine()->getRepository('AppBundle:Interview')->findAllInterviewedInterviewsBySemester($currentSemester);
         $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsBySemester($currentSemester);
+        $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
 
         $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
 
@@ -49,29 +41,21 @@ class SchoolAllocationController extends Controller
             'applications' => $applications,
             'allocations' => $allCurrentSchoolCapacities,
             'allocatedSchools' => $schools,
-            /*'initialAllocationBolk1' => $allocationBolk1,
-            'initialAllocationBolk2' => $allocationBolk2,
-            'score' => number_format((($allocationBolk1->evaluate()+$allocationBolk2->evaluate())/2), 1)*10,
-            'initializeTime' => $allocationBolk1->initializeTime + $allocationBolk1->improveTime + $allocationBolk2->initializeTime + $allocationBolk2->improveTime,
-            'optimizeTime' => $bestAllocationBolk1->optimizeTime + $bestAllocationBolk2->optimizeTime,
-            'optimizedAllocatedSchools' => $schools,
-            'optimizedAllocationBolk1' => $bestAllocationBolk1,
-            'optimizedAllocationBolk2' => $bestAllocationBolk2,
-            'optimizedScore' => number_format((($bestAllocationBolk1->evaluate() + $bestAllocationBolk2->evaluate())/2), 1)*10,
-            'differentAllocations' => $allocationsCount,*/
         ));
     }
 
-    private function deepCopySchools($schools){
+    private function deepCopySchools($schools)
+    {
         $copy = array();
-        foreach($schools as $school){
+        foreach ($schools as $school) {
             $copy[] = clone $school;
         }
         return $copy;
     }
 
-    private function updateAssistantsInLockedList(Allocation $allocation, $lockedList){
-        foreach($lockedList as $lockedAssistant){
+    private function updateAssistantsInLockedList(Allocation $allocation, $lockedList)
+    {
+        foreach ($lockedList as $lockedAssistant) {
             $assistant = $allocation->getAssistantById($lockedAssistant->getId(), $allocation->getAssistants());
             $lockedAssistant->setAssignedSchool($assistant->getAssignedSchool());
             $lockedAssistant->setAssignedDay($assistant->getAssignedDay());
@@ -79,7 +63,8 @@ class SchoolAllocationController extends Controller
         }
     }
 
-    private function assignAssistantsToBolks($assistants){
+    private function assignAssistantsToBolks($assistants)
+    {
         //Divide assistants into 'bolks'. If double position then assign to all three lists
         $assistantsInBolk1 = array();
         $assistantsInBolk2 = array();
@@ -93,17 +78,17 @@ class SchoolAllocationController extends Controller
                 $assistantsInBolk2[] = $assistantCopy;
                 $lockedAssistants[] = $assistant;
                 $assistant->assignBothBolks();
-            }elseif($assistant->isPrefBolk1() && sizeof($assistantsInBolk1) < $totalNumberOfAssistants/2){
+            } elseif ($assistant->isPrefBolk1() && sizeof($assistantsInBolk1) < $totalNumberOfAssistants / 2) {
                 $assistantsInBolk1[] = $assistant;
                 $assistant->assignBolk1();
-            }elseif($assistant->isPrefBolk2() && sizeof($assistantsInBolk2) < $totalNumberOfAssistants/2){
+            } elseif ($assistant->isPrefBolk2() && sizeof($assistantsInBolk2) < $totalNumberOfAssistants / 2) {
                 $assistantsInBolk2[] = $assistant;
                 $assistant->assignBolk2();
             }
         }
         //Assign assistants with no 'bolk' preference
         foreach ($assistants as $assistant) {
-            if($assistant->isBolk1() || $assistant->isBolk2())continue;
+            if ($assistant->isBolk1() || $assistant->isBolk2()) continue;
             if (sizeof($assistantsInBolk1) > sizeof($assistantsInBolk2)) {
                 $assistantsInBolk2[] = $assistant;
                 $assistant->assignBolk2();
@@ -116,11 +101,12 @@ class SchoolAllocationController extends Controller
         return [$assistantsInBolk1, $assistantsInBolk2, $lockedAssistants];
     }
 
-    private function generateSchoolsFromSchoolCapacities($schoolCapacities){
+    private function generateSchoolsFromSchoolCapacities($schoolCapacities)
+    {
         //Use schoolCapacities to create School objects for the SA-Algorithm
         $schools = array();
-        foreach($schoolCapacities as $sc){
-            if($sc->getMonday() == 0 && $sc->getTuesday() == 0 && $sc->getWednesday() == 0 && $sc->getThursday() == 0 && $sc->getFriday() == 0) continue;
+        foreach ($schoolCapacities as $sc) {
+            if ($sc->getMonday() == 0 && $sc->getTuesday() == 0 && $sc->getWednesday() == 0 && $sc->getThursday() == 0 && $sc->getFriday() == 0) continue;
             $capacity = array();
             $capacity["Monday"] = $sc->getMonday();
             $capacity["Tuesday"] = $sc->getTuesday();
@@ -138,15 +124,16 @@ class SchoolAllocationController extends Controller
      * @param Application[] $applications
      * @return Assistant[]
      */
-    private function generateAssistantsFromApplications($applications){
+    private function generateAssistantsFromApplications($applications)
+    {
         //Use applications to create Assistant objects for the allocation algorithm
         $assistants = array();
-        foreach($applications as $application) {
+        foreach ($applications as $application) {
             $doublePosition = $application->getDoublePosition();
             $preferredGroup = $application->getPreferredGroup();
             $prefBolk1 = $preferredGroup == "Bolk 1";
             $prefBolk2 = $preferredGroup == "Bolk 2";
-            if($prefBolk1 && $prefBolk2){
+            if ($prefBolk1 && $prefBolk2) {
                 $prefBolk1 = false;
                 $prefBolk2 = false;
             }
@@ -170,21 +157,25 @@ class SchoolAllocationController extends Controller
         return $assistants;
     }
 
-    public function allocateAction(Request $request){
+    public function getApplicationsAction(){
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
         $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
 
-        $allSemesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findByDepartment($departmentId);
+        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
 
-        $currentSemester = null;
-        foreach($allSemesters as $semester){
-            $now = new \DateTime();
-            if($semester->getSemesterStartDate() < $now && $semester->getSemesterEndDate() > $now){
-                $currentSemester = $semester;
-                break;
-            }
-        }
+        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsBySemester($currentSemester);
+
+
+    }
+
+    public function allocateAction(Request $request)
+    {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
+
+        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
 
         $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
         $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsBySemester($currentSemester);
@@ -200,22 +191,22 @@ class SchoolAllocationController extends Controller
         $schoolsDeepCopy = $this->deepCopySchools($schools);
         $allocationBolk1 = new Allocation($schools, $assistantsInBolk1, true);
         $maxOptimizeTime = 2; //In seconds
-        dump($allocationBolk1);
+
         //Check if the initializer found the perfect allocation. If not, run the optimizer
-        if($allocationBolk1->isOk()){
+        if ($allocationBolk1->isOk()) {
             $bestAllocationBolk1 = $allocationBolk1;
-        }else{
-            $optimizer = new Optimizer($allocationBolk1, 0.0001, 0.0000001, $maxOptimizeTime/2);
+        } else {
+            $optimizer = new Optimizer($allocationBolk1, 0.0001, 0.0000001, $maxOptimizeTime / 2);
             $bestAllocationBolk1 = $optimizer->optimize();
             $this->updateAssistantsInLockedList($bestAllocationBolk1, $lockedAssistants);
         }
 
-        $allocationBolk2 = new Allocation($schoolsDeepCopy, $assistantsInBolk2,true, $lockedAssistants);
+        $allocationBolk2 = new Allocation($schoolsDeepCopy, $assistantsInBolk2, true, $lockedAssistants);
 
-        if($allocationBolk2->isOk()){
+        if ($allocationBolk2->isOk()) {
             $bestAllocationBolk2 = $allocationBolk2;
-        }else{
-            $optimizer = new Optimizer($allocationBolk2, 0.0001, 0.0000001, $maxOptimizeTime/2);
+        } else {
+            $optimizer = new Optimizer($allocationBolk2, 0.0001, 0.0000001, $maxOptimizeTime / 2);
             $bestAllocationBolk2 = $optimizer->optimize();
         }
 
@@ -225,13 +216,13 @@ class SchoolAllocationController extends Controller
         return $this->render('school_admin/school_allocate_result.html.twig', array(
             'initialAllocationBolk1' => $allocationBolk1,
             'initialAllocationBolk2' => $allocationBolk2,
-            'score' => number_format((($allocationBolk1->evaluate()+$allocationBolk2->evaluate())/2), 1)*10,
+            'score' => number_format((($allocationBolk1->evaluate() + $allocationBolk2->evaluate()) / 2), 1) * 10,
             'initializeTime' => $allocationBolk1->initializeTime + $allocationBolk1->improveTime + $allocationBolk2->initializeTime + $allocationBolk2->improveTime,
             'optimizeTime' => $bestAllocationBolk1->optimizeTime + $bestAllocationBolk2->optimizeTime,
             'optimizedAllocatedSchools' => $schools,
             'optimizedAllocationBolk1' => $bestAllocationBolk1,
             'optimizedAllocationBolk2' => $bestAllocationBolk2,
-            'optimizedScore' => number_format((($bestAllocationBolk1->evaluate() + $bestAllocationBolk2->evaluate())/2), 1)*10,
+            'optimizedScore' => number_format((($bestAllocationBolk1->evaluate() + $bestAllocationBolk2->evaluate()) / 2), 1) * 10,
             'differentAllocations' => $allocationsCount,
         ));
         $response = new Response();
@@ -241,17 +232,18 @@ class SchoolAllocationController extends Controller
         return $response;
     }
 
-    public function createAction(Request $request, $departmentId=null){
+    public function createAction(Request $request, $departmentId = null)
+    {
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
-        if(null === $departmentId){
+        if (null === $departmentId) {
             $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
         }
         $allSemesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findByDepartment($departmentId);
         $currentSemester = null;
-        foreach($allSemesters as $semester){
+        foreach ($allSemesters as $semester) {
             $now = new \DateTime();
-            if($semester->getSemesterStartDate() < $now && $semester->getSemesterEndDate() > $now){
+            if ($semester->getSemesterStartDate() < $now && $semester->getSemesterEndDate() > $now) {
                 $currentSemester = $semester;
                 break;
             }
@@ -262,21 +254,21 @@ class SchoolAllocationController extends Controller
         $form = $this->createForm(new SchoolCapacityType(), $schoolCapacity);
         $form->handleRequest($request);
 
-        if($form->isValid()){
-            try{
+        if ($form->isValid()) {
+            try {
                 $exists = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySchoolAndSemester($schoolCapacity->getSchool(), $schoolCapacity->getSemester());
                 return $this->render('school_admin/school_allocate_create.html.twig', array(
                     'message' => 'Skolen eksisterer allerede',
                     'form' => $form->createView(),
                 ));
-            }catch (NoResultException $e){
+            } catch (NoResultException $e) {
 
             }
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($schoolCapacity);
             $em->flush();
-            return $this->redirect($this->generateUrl('allocate_schools'));
+            return $this->redirect($this->generateUrl('school_allocation'));
         }
 
         return $this->render('school_admin/school_allocate_create.html.twig', array(
@@ -284,7 +276,9 @@ class SchoolAllocationController extends Controller
             'form' => $form->createView(),
         ));
     }
-    public function editAction(Request $request){
+
+    public function editAction(Request $request)
+    {
         $schoolId = $request->query->get("school");
         $semesterId = $request->query->get("semester");
         $school = $this->getDoctrine()->getRepository('AppBundle:School')->find($schoolId);
@@ -294,7 +288,7 @@ class SchoolAllocationController extends Controller
         $form = $this->createForm(new SchoolCapacityType(), $capacity);
         $form->handleRequest($request);
 
-        if($form->isValid()){
+        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($capacity);
             $em->flush();
