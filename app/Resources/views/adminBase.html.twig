@@ -201,10 +201,8 @@
 {% block footer %}
 <footer>
     <div class="row">
-
         <div class="small-12 medium-6 large-3 columns">
-
-            <h6><b>Følg oss:</b></h6>
+            <h6><b>Artikkel</b></h6>
             <ul>
                 <li><a href="https://twitter.com/vektorprogram" target="_blank">  Twitter </a></li>
                 <li><a href="https://www.facebook.com/vektorprogrammet" target="_blank">  Facebook </a></li>
@@ -212,32 +210,32 @@
             </ul>
         </div>
         <div class="small-12 medium-6 large-3 columns">
-            <h6><b>Kontakt:</b></h6>
+            <h6><b>Brukere</b></h6>
             <ul>
-                <li>styret@vektorprogrammet.no</li>
-                <li>Høgskoleringen 5 </li>
-                <li>7491 Trondheim</li>
-                <li>Orgnummer: 998744814</li>
+                <li><a href="https://twitter.com/vektorprogram" target="_blank">  Twitter </a></li>
+                <li><a href="https://www.facebook.com/vektorprogrammet" target="_blank">  Facebook </a></li>
+                <li><a href="https://instagram.com/vektorprogrammet/" target="_blank">  Instagram </a></li>
             </ul>
         </div>
         <div class="small-12 medium-6 large-3 columns">
-            <h6><b>Hvor:</b></h6>
+            <h6><b>Opptak og Undersøkelse</b></h6>
             <ul>
-                {# embedded controller to render the departments  see department controller for the function getAllDepartmentsForTopbar #}
-                {{ render(controller(
-                'AppBundle:Department:getAllDepartmentsForTopbar'
-                )) }}
+                <li><a href="https://twitter.com/vektorprogram" target="_blank">  Twitter </a></li>
+                <li><a href="https://www.facebook.com/vektorprogrammet" target="_blank">  Facebook </a></li>
+                <li><a href="https://instagram.com/vektorprogrammet/" target="_blank">  Instagram </a></li>
             </ul>
         </div>
         <div class="small-12 medium-6 large-3 columns">
-            <h6><b>Sponsorer:</b></h6>
-            <ul style="display:inline-block">
-                {% for sponsor in get_sponsors() %}
-                    <li><a href="{{ sponsor.url }}" target="_blank"> {{ sponsor.name  }} </a></li>
-                {% endfor %}
-            </ul>
+            <h6><b>Diverse</b></h6>
+            <ul>
+                <li><a href="{{ path('departmentadmin_show') }}">Avdeling</a></li>
+                <li><a href="{{ path('semesteradmin_show') }}">Semester</a></li>
+                <li><a href="{{ path('schooladmin_show') }}">Skole</a></li>
+                <li><a href="{{ path('sponsors_edit') }}">Sponsorer</a></li>
+                <li><a href="{{ path('certificate_show') }}">Attest</a></li>
+			</ul>
         </div>
-    </div>
+	</div>
 </footer>
 {% endblock %}
 
