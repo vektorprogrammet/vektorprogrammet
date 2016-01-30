@@ -43,4 +43,5 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
 twig:
-    googleAnalyticsId: ~
+    globals:
+        googleAnalyticsId: ~
