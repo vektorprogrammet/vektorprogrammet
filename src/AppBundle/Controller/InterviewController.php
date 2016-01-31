@@ -79,7 +79,6 @@ class InterviewController extends Controller
 
             return $this->redirect($this->generateUrl('admissionadmin_show', array('status' => 'interviewed')));
         }
-        dump($form);
         return $this->render('interview/conduct.html.twig', array(
             'interview' => $interview,
             'form' => $form->createView()
