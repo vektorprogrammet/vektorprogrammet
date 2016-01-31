@@ -455,8 +455,11 @@ useradmin_create_user_superadmin:
  requirements:
     id: \d+
 
-
-
+useradmin_activate_user:
+ path: /aktiver/{newUserCode}
+ defaults: {_controller: AppBundle:UserAdmin:activateNewUser }
+ requirements:
+    _method: GET|POST
 
 ##########################################
 #              Semester                  #
