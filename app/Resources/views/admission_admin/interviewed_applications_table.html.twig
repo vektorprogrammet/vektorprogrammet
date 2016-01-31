@@ -77,13 +77,7 @@
                         <td>{{ a.interview.interviewScore.totalImpression }}</td>
                         <td>{{ a.interview.interviewScore.sum }}</td>
 
-                        {% if a.interview.interviewPractical.suitableAssistant == "Ja" %}
-                            <td>Ja</td>
-                        {% elseif a.interview.interviewPractical.suitableAssistant == "Kanskje" %}
-                            <td>Kanskje</td>
-                        {% else %}
-                            <td>Nei</td>
-                        {% endif %}
+                        <td>{{ a.interview.interviewPractical.suitableAssistant }}</td>
 
                         {# Add the create user and substitue dropdown button if a user is not already created #}
                         {% if a.userCreated == 0 %}

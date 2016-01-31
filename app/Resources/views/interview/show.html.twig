@@ -172,15 +172,7 @@
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
                         <label class="question-label">Passer studenten som assistent?</label>
-                        <p>
-                            {%  if interview.interviewPractical.suitableAssistant == "Ja" %}
-                                Ja
-                            {% elseif interview.interviewPractical.suitableAssistant == "Kanskje" %}
-                                Kanskje
-                            {% else %}
-                                Nei
-                            {% endif %}
-                        </p>
+                        <p>{{ interview.interviewPractical.suitableAssistant }}</p>
                     </div>
                 </div>
             </div>
