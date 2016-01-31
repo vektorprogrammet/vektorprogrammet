@@ -14,17 +14,20 @@ class InterviewScoreType extends AbstractType
 
         $builder->add('explanatoryPower', 'choice', array(
             'choices' => $choices,
-            'label' => 'Forklaringsevne'
+            'label' => 'Forklaringsevne',
+            'help' => 'Går på oppgaveløsing.'
         ));
 
         $builder->add('roleModel', 'choice', array(
             'choices' => $choices,
-            'label' => 'Forbilde for ungdomsskoleelever'
+            'label' => 'Forbilde for ungdomsskoleelever',
+            'help' => 'Kan personen inspirere til realfag? Kan personen formidle matematikk på en \'interessant\' måte. Er ikke \'typisk nerdete\'? Noen eleven kan se opp til.'
         ));
 
         $builder->add('suitability', 'choice', array(
             'choices' => $choices,
-            'label' => 'Egnethet'
+            'label' => 'Egnethet',
+            'help' => 'Oppegående, utadvendt, kontaktsøkende, initavitagende'
         ));
 
         $builder->add('suitableAssistant', 'choice', array(
