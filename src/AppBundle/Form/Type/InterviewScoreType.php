@@ -22,16 +22,21 @@ class InterviewScoreType extends AbstractType
             'label' => 'Forbilde for ungdomsskoleelever'
         ));
 
-        $builder->add('drive', 'choice', array(
+        $builder->add('suitability', 'choice', array(
             'choices' => $choices,
-            'label' => 'Engasjement'
+            'label' => 'Egnethet'
         ));
 
-        $builder->add('totalImpression', 'choice', array(
-            'choices' => $choices,
-            'label' => 'Totalintrykk'
+        $builder->add('suitableAssistant', 'choice', array(
+            'label' => 'Passer denne studenten til å være vektorassistent?',
+            'choices' => array(
+                "Ja" => "Ja",
+                "Kanskje" => "Kanskje",
+                "Nei" => "Nei"
+            ),
+            'expanded' => true,
+            'multiple' => false
         ));
-
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
