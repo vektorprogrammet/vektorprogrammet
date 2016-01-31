@@ -12,7 +12,6 @@ class InterviewPracticalType extends AbstractType
     {
         $workChoices = array(
             "Bra" => "Bra",
-            "Ok" => "Ok",
             "Ikke" => "Ikke"
         );
 
@@ -20,7 +19,6 @@ class InterviewPracticalType extends AbstractType
             'label' => 'Kunne du tenke deg dobbelt stilling? Altså en gang i uka i 8 uker, eller 2 ganger i uka i 4 uker. Har du et ønske om bolk?',
             'help' => "Info om når bolkene er. Det teller ikke negativt dersom man ikke ønsker det, viktig at intervjuobjektet skjønner dette.",
             'choices' => array(
-                "2x4" => "2 x 4",
                 "1x8" => "1 x 8",
                 "Nei" => "Nei",
                 "Bolk 1" => "Bolk 1",
@@ -70,7 +68,7 @@ class InterviewPracticalType extends AbstractType
 
         $builder->add('english', 'choice', array(
             'label' => 'Er du komfortabel med engelsk?',
-            'help' => 'Vi samarberider med den internasjonale skolen og hvis vi ikke for nok kvalifiserte utvekslingstudenter kunne du tenke deg å være på den internasjonale skolen? Det er helt lov å si nei',
+            'help' => 'Vi samarbeider med den internasjonale skolen og hvis vi ikke får nok kvalifiserte utvekslingstudenter kunne du tenke deg å være på den internasjonale skolen? Det er helt lov å si nei',
             'choices' => array(
                 0 => "Nei",
                 1 => "Ja"
@@ -84,12 +82,23 @@ class InterviewPracticalType extends AbstractType
                 'Stand' => 'Stand',
                 'Infomail/nettsida/facebook etc' => 'Infomail/nettsida/facebook etc',
                 'Bekjente' => 'Bekjente',
-                'Bekjente' => 'Bekjente i styret',
+                'Bekjente i styret' => 'Bekjente i styret',
                 'Plakater/flyers' => 'Plakater/Flyers',
                 'Linjeforeningen (f.eks fadderukene)' => 'Linjeforeningen (f.eks fadderukene)'
             ),
             'expanded' => true,
             'multiple' => true
+        ));
+
+        $builder->add('suitableAssistant', 'choice', array(
+            'label' => 'Passer denne studenten til å være vektorassistent?',
+            'choices' => array(
+                "Ja" => "Ja",
+                "Kanskje" => "Kanskje",
+                "Nei" => "Nei"
+            ),
+            'expanded' => true,
+            'multiple' => false
         ));
     }
 

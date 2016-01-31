@@ -37,10 +37,7 @@ class InterviewScore
      */
     protected $totalImpression;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    protected $suitableAssistant;
+
 
 
     /**
@@ -186,29 +183,7 @@ class InterviewScore
         return $this->totalImpression;
     }
 
-    /**
-     * Get suitableAssistant
-     *
-     * @return integer
-     */
-    public function getSuitableAssistant()
-    {
-        return $this->suitableAssistant;
-    }
 
-    /**
-     * Set suitableAssistant
-     *
-     * @param integer $suitableAssistant
-     * @return InterviewScore
-     */
-
-    public function setSuitableAssistant($suitableAssistant)
-    {
-        $this->suitableAssistant = $suitableAssistant;
-
-        return $this;
-    }
 }
 
 

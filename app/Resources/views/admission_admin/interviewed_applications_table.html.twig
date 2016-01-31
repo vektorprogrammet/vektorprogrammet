@@ -42,6 +42,7 @@
                 <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Engasjement">E</span></th>
                 <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Totalintrykk">T</span></th>
                 <th data-sort="int">Sum</th>
+                <th data-sort="string">Passende</th>
                 <th></th>
                 <th></th>
 
@@ -75,6 +76,14 @@
                         <td>{{ a.interview.interviewScore.drive }}</td>
                         <td>{{ a.interview.interviewScore.totalImpression }}</td>
                         <td>{{ a.interview.interviewScore.sum }}</td>
+
+                        {% if a.interview.interviewPractical.suitableAssistant == "Ja" %}
+                            <td>Ja</td>
+                        {% elseif a.interview.interviewPractical.suitableAssistant == "Kanskje" %}
+                            <td>Kanskje</td>
+                        {% else %}
+                            <td>Nei</td>
+                        {% endif %}
 
                         {# Add the create user and substitue dropdown button if a user is not already created #}
                         {% if a.userCreated == 0 %}

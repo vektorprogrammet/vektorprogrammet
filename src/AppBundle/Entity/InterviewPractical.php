@@ -68,6 +68,11 @@ class InterviewPractical
     protected $comment;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    protected $suitableAssistant;
+
+    /**
      * @ORM\OneToOne(targetEntity="ApplicationStatistic", inversedBy="interviewPractical")
      * @ORM\JoinColumn(name="application_statistic_id", referencedColumnName="id")
      */
@@ -334,6 +339,30 @@ class InterviewPractical
     public function getApplicationStatistic()
     {
         return $this->applicationStatistic;
+    }
+
+    /**
+     * Get suitableAssistant
+     *
+     * @return string
+     */
+    public function getSuitableAssistant()
+    {
+        return $this->suitableAssistant;
+    }
+
+    /**
+     * Set suitableAssistant
+     *
+     * @param string $suitableAssistant
+     * @return InterviewScore
+     */
+
+    public function setSuitableAssistant($suitableAssistant)
+    {
+        $this->suitableAssistant = $suitableAssistant;
+
+        return $this;
     }
 	
 	// Used for unit testing 

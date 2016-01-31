@@ -11,7 +11,6 @@ class InterviewScoreType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array_combine(range(1,6),range('1','6'));
-        $suitable = array_combine(array(1,2,3),['Ja', 'Kanskje', 'Nei']);
 
         $builder->add('explanatoryPower', 'choice', array(
             'choices' => $choices,
@@ -33,10 +32,6 @@ class InterviewScoreType extends AbstractType
             'label' => 'Totalintrykk'
         ));
 
-        $builder->add('suitableAssistant', 'choice', array(
-            'choices' => $suitable,
-            'label' => 'Passer som assistent'
-        ));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
