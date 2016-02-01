@@ -199,5 +199,43 @@
 
 {% endblock %}
 {% block footer %}
+<footer>
+    <div class="row">
+        <div class="small-12 medium-6 large-3 columns">
+            <h6><b>Artikkel</b></h6>
+            <ul>
+                <li><a href="{{ path('articleadmin_show') }}">Artikler</a></li>
+                <li><a href="{{ path('articleadmin_create') }}">Ny artikkel</a></li>
+            </ul>
+        </div>
+        <div class="small-12 medium-6 large-3 columns">
+            <h6><b>Brukere</b></h6>
+            <ul>
+                <li><a href="{{ path('useradmin_show') }}">Brukere</a></li>
+                <li><a href="{{ path('participanthistory_show') }}">Deltakerhistorikk</a></li>
+                <li><a href="{{ path('substitute_show') }}">Vikarer</a></li>
+                <li><a href="{{ path('teamadmin_show') }}">Team</a></li>
+            </ul>
+        </div>
+        <div class="small-12 medium-6 large-3 columns">
+            <h6><b>Opptak og Undersøkelse</b></h6>
+            <ul>
+                <li><a href="{{ path('admissionadmin_show') }}">Opptak</a></li>
+                <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
+                <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
+                <li><a href="{{ path('statistics_application') }}">Statistikk</a></li>
+            </ul>
+        </div>
+        <div class="small-12 medium-6 large-3 columns">
+            <h6><b>Diverse</b></h6>
+            <ul>
+                <li><a href="{{ path('departmentadmin_show') }}">Avdeling</a></li>
+                <li><a href="{{ path('semesteradmin_show') }}">Semester</a></li>
+                <li><a href="{{ path('schooladmin_show') }}">Skole</a></li>
+                <li><a href="{{ path('sponsors_edit') }}">Sponsorer</a></li>
+                <li><a href="{{ path('certificate_show') }}">Attest</a></li>
+			</ul>
+        </div>
+	</div>
+</footer>
 {% endblock %}
-
