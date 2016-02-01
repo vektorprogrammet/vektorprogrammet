@@ -67,11 +67,33 @@ class InterviewPractical
      */
     protected $comment;
 
+
+
     /**
      * @ORM\OneToOne(targetEntity="ApplicationStatistic", inversedBy="interviewPractical")
      * @ORM\JoinColumn(name="application_statistic_id", referencedColumnName="id")
      */
     protected $applicationStatistic;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $doublePosition;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $preferredGroup;
+
+    /**
+     * InterviewPractical constructor.
+     */
+    public function __construct()
+    {
+        $this->substitute = false;
+        $this->doublePosition = false;
+    }
+
 
     /**
      * Get id
@@ -343,6 +365,38 @@ class InterviewPractical
             $method = "set{$property}";
             $this->$method($value);
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDoublePosition()
+    {
+        return $this->doublePosition;
+    }
+
+    /**
+     * @param mixed $doublePosition
+     */
+    public function setDoublePosition($doublePosition)
+    {
+        $this->doublePosition = $doublePosition;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPreferredGroup()
+    {
+        return $this->preferredGroup;
+    }
+
+    /**
+     * @param mixed $preferredGroup
+     */
+    public function setPreferredGroup($preferredGroup)
+    {
+        $this->preferredGroup = $preferredGroup;
     }
 	
 }

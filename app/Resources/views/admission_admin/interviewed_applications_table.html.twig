@@ -36,12 +36,13 @@
                 <th data-sort="string">Etternavn</th>
                 <th data-sort="string">Linje</th>
                 <th data-sort="int">År</th>
-                <th data-sort="string">Vikarvillig</th>
+                <th data-sort="string">Dobbel Stilling</th>
+                <th data-sort="string">Ønsket Bolk</th>
                 <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Forklaringsevne">FE</span></th>
                 <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Forbilde">F</span></th>
-                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Engasjement">E</span></th>
-                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Totalintrykk">T</span></th>
+                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Egnethet">E</span></th>
                 <th data-sort="int">Sum</th>
+                <th data-sort="string">Passende</th>
                 <th></th>
                 <th></th>
 
@@ -64,17 +65,15 @@
                         <td>{{ a.statistic.fieldOfStudy }}</td>
                         <td>{{ a.statistic.yearOfStudy }}</td>
 
-                        {% if a.interview.interviewPractical.substitute == 1 %}
-                            <td>Ja</td>
-                        {% else %}
-                            <td>Nei</td>
-                        {% endif %}
+                        <td>{{ a.interview.interviewPractical.doublePosition ? 'Ja':'Nei' }}</td>
+                        <td>{{ a.interview.interviewPractical.preferredGroup ? a.interview.interviewPractical.preferredGroup:'Ingen' }}</td>
 
                         <td>{{ a.interview.interviewScore.explanatoryPower }}</td>
                         <td>{{ a.interview.interviewScore.roleModel }}</td>
-                        <td>{{ a.interview.interviewScore.drive }}</td>
-                        <td>{{ a.interview.interviewScore.totalImpression }}</td>
+                        <td>{{ a.interview.interviewScore.suitability }}</td>
                         <td>{{ a.interview.interviewScore.sum }}</td>
+
+                        <td>{{ a.interview.interviewScore.suitableAssistant }}</td>
 
                         {# Add the create user and substitue dropdown button if a user is not already created #}
                         {% if a.userCreated == 0 %}
