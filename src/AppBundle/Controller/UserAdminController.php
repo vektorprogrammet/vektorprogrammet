@@ -7,9 +7,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\CreateUserType;
+use AppBundle\Form\Type\NewUserType;
 
 class UserAdminController extends Controller {
-	
+
 	public function createUserSuperadminAction(request $request){
 		
 		if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
@@ -212,8 +213,65 @@ class UserAdminController extends Controller {
 		
 		// Send a respons to ajax 
 		return new JsonResponse( $response );
-		
+
 	}
-	
+
+	/**
+	 * Sets newUserCode and sends activation email to user.
+	 *
+	 * @param User user
+	 */
+	public function sendActivationEmail(User $user){
+		$em = $this->getDoctrine()->getManager();
+
+		$createNewUserCode = bin2hex(openssl_random_pseudo_bytes(16));
+		$hashedNewUserCode = hash('sha512', $createNewUserCode, false);
+		$user->setNewUserCode($hashedNewUserCode);
+		$em->persist($user);
+		$em->flush();
+
+		$emailMessage = \Swift_Message::newInstance()
+			->setSubject('Velkommen til vektorprogrammet')
+			->setFrom($this->container->getParameter('no_reply_email_user_creation'))
+			->setTo($user->getEmail())
+			->setBody($this->renderView('new_user/create_new_user_email.txt.twig', array('newUserURL' => $this->generateURL('useradmin_activate_user', array( 'newUserCode' => $createNewUserCode), true))));
+		$this->get('mailer')->send($emailMessage);
+	}
+
+	public function activateNewUserAction(Request $request, $newUserCode){
+
+		try{
+			$repositoryUser = $this->getDoctrine()->getRepository('AppBundle:User');
+			$hashedNewUserCode = hash('sha512', $newUserCode, false);
+			$user = $repositoryUser->findUserByNewUserCode($hashedNewUserCode);
+
+			$form = $this->createForm(new NewUserType(), $user);
+
+			$form->handleRequest($request);
+
+			//Checks if the form is valid
+			if ($form->isValid()) {
+				//Deletes the newUserCode, so it can only be used one time.
+				$user->setNewUserCode(null);
+
+				$user->setIsActive("1");
+
+				//Updates the database
+				$em = $this->getDoctrine()->getManager();
+				$em->persist($user);
+				$em->flush();
+
+				//renders the login page, with a feedback message so that the user knows that the new password was stored.
+				$feedback = 'Logg inn med din nye bruker';
+				return $this->render('Login/login.html.twig', array('message' => $feedback,'error' => null, 'last_username' => $user->getUsername()));
+
+			}
+			//Render reset_password twig with the form.
+			return $this->render('new_user/create_new_user.html.twig', array('form' => $form->createView(), 'firstName' => $user->getFirstName(), 'lastName' => $user->getLastName()));
+
+		}catch(\Exception $e){
+			return $this->redirect('/');
+		}
+	}
 	
 }
