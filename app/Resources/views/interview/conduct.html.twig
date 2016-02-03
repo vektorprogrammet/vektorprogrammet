@@ -150,3 +150,15 @@
         </div>
     </div>
 {% endblock %}
+{% block customScripts %}
+<script>
+    var form = $('form[name*="interview"]');
+    form.noValidate = true;
+    form.on('submit', function(event) { // listen for form submitting
+        if (!event.target.checkValidity()) {
+            event.preventDefault(); // dismiss the default functionality
+            alert('Alle feltene må fylles ut før intervjuet kan lagres'); // error message
+        }
+    }, false);
+</script>
+{% endblock %}
