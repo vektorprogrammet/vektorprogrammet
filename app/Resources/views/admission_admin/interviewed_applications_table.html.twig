@@ -1,5 +1,16 @@
 {% extends 'admission_admin/layout.html.twig' %}
-
+{% set yes=0 %}
+{% set maybe=0 %}
+{% set no=0 %}
+{% for applicant in applicants %}
+    {% if applicant.interview.interviewScore.suitableAssistant == "Ja" %}
+        {% set yes = yes +1 %}
+    {% elseif applicant.interview.interviewScore.suitableAssistant == "Kanskje" %}
+        {% set maybe = maybe +1 %}
+    {% elseif applicant.interview.interviewScore.suitableAssistant == "Nei" %}
+        {% set no = no +1 %}
+    {% endif %}
+{% endfor %}
 {% block bulkNavigation %}
     {% if is_granted('ROLE_HIGHEST_ADMIN') %}
         <div class="small-6 medium-5 large-3 columns">
@@ -16,7 +27,12 @@
                 </div>
             </div>
         </div>
+    {% else %}
+        <div class="small-6 columns"></div>
     {% endif %}
+    <div class="small-6 columns">
+        <h5 class="float-right">Ja: {{ yes }} / Kanskje: {{ maybe }} / Nei: {{ no }} / Totalt: {{ applicants | length }}</h5>
+    </div>
 {% endblock %}
 
 {% block applications %}
