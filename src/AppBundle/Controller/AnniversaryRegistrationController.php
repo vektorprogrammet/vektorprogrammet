@@ -27,6 +27,7 @@ class AnniversaryRegistrationController extends Controller
       $form->handleRequest($request);
 
       if($form->isValid()){
+         $registrations = $em->getRepository('AppBundle:AnniversaryRegistration')->findAll();
          if(sizeof($registrations) < $registrationLimit){
             $em->persist($anniversaryRegistration);
             $em->flush();
