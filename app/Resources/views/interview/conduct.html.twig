@@ -142,23 +142,11 @@
 
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
-                        {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }} <span id="error" style="color:red"></span>
+                        {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
                     </div>
                 </div>
                 {{ form_end(form) }}
             </div>
         </div>
     </div>
-{% endblock %}
-{% block customScripts %}
-<script>
-    var form = $('form[name*="interview"]');
-    form.noValidate = true;
-    form.on('submit', function(event) { // listen for form submitting
-        if (!event.target.checkValidity()) {
-            event.preventDefault(); // dismiss the default functionality
-            ('#error').html('Alle feltene må fylles ut før intervjuet kan lagres');
-        }
-    }, false);
-</script>
 {% endblock %}
