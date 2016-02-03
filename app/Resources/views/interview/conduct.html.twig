@@ -142,7 +142,7 @@
 
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
-                        {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
+                        {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }} <span id="error" style="color:red"></span>
                     </div>
                 </div>
                 {{ form_end(form) }}
@@ -157,7 +157,7 @@
     form.on('submit', function(event) { // listen for form submitting
         if (!event.target.checkValidity()) {
             event.preventDefault(); // dismiss the default functionality
-            alert('Alle feltene må fylles ut før intervjuet kan lagres'); // error message
+            ('#error').html('Alle feltene må fylles ut før intervjuet kan lagres');
         }
     }, false);
 </script>
