@@ -87,6 +87,8 @@
                                         {% endif %}
                                         <li><a href='{{ path('profile') }}'>Profil</a></li>
                                         <li><a href='{{ path('members_show') }}'>Medlemmer</a></li>
+
+                                        {#
                                         <li><a href='{{ path('forum_show') }}'>Forum</a></li>
                                         <li><a href='{{ path('gallery') }}'>Galleri</a></li>
                                         {% if app.user and is_granted('ROLE_ADMIN') %}
@@ -105,6 +107,8 @@
                                             </a>
                                         </li>
                                         {% endif %}
+                                        #}
+
                                         <li><a href="{{ path('logout') }}">Logg ut</a></li>
                                     </ul>
                                 {% else %}
