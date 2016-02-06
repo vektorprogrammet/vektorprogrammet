@@ -43,39 +43,15 @@ class InterviewScoreEntityUnitTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function testSetDrive()
-    {
-
-        $intScore = new InterviewScore();
-
-        $intScore->setDrive(3);
-
-        $this->assertEquals(3, $intScore->getDrive());
-
-    }
-
-    public function testSetTotalImpression()
-    {
-
-        $intScore = new InterviewScore();
-
-        $intScore->setTotalImpression(3);
-
-        $this->assertEquals(3, $intScore->getTotalImpression());
-
-    }
-
     public function testGetSum()
     {
 
         $intScore = new InterviewScore();
 
         $intScore->setExplanatoryPower(3);
-        $intScore->setDrive(3);
         $intScore->setRoleModel(3);
-        $intScore->setTotalImpression(3);
 
-        $this->assertEquals(12, $intScore->getSum());
+        $this->assertEquals(6, $intScore->getSum());
 
     }
 
