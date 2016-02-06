@@ -82,13 +82,8 @@
                         <label class="question-label">
                             Kunne du tenke deg dobbelt stilling? Altså en gang i uka i 8 uker?
                         </label>
-                        <p>
-                            {% if application.doublePosition %}
-                                Ja
-                            {% else %}
-                                Nei
-                            {% endif %}
-                        </p>
+                        <p>{{ application.doublePosition ? 'Ja':'Nei' }}</p>
+
                     </div>
                 </div>
 
@@ -110,21 +105,15 @@
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
                         <label class="question-label">
-                            Dersom du ikke får stillingen som vektorassistent, vil du da være vikar for andre som melder frafall?
+                            Har du et ønske om bolk?
                         </label>
-                        <p>
-                        {%  if application.substitute == 1 %}
-                            Ja
-                        {% else %}
-                            Nei
-                        {% endif %}
-                        </p>
+                        <p>{{ application.preferredGroup ? interview.interviewPractical.preferredGroup:'Ingen' }}</p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
-                        <label class="question-label">Er du komfortabel med engelsk?</label>
+                        <label class="question-label">Vi har en internasjonal skole. Har du lyst til å undervise på engelsk?</label>
                         <p>
                         {%  if application.english == 1 %}
                             Ja
@@ -168,8 +157,7 @@
                             <tr>
                                 <th>Forklaringsevne</th>
                                 <th><span data-tooltip aria-haspopup="true" class="has-tip" title="Forbilde for ungdomsskoleelever">Forbilde</span></th>
-                                <th>Engasjement</th>
-                                <th>Totalintrykk</th>
+                                <th>Egnethet</th>
                                 <th>Sum</th>
                             </tr>
                             </thead>
@@ -177,12 +165,18 @@
                             <tr>
                                 <td>{{ interview.interviewScore.explanatoryPower }}</td>
                                 <td>{{ interview.interviewScore.roleModel }}</td>
-                                <td>{{ interview.interviewScore.drive }}</td>
-                                <td>{{ interview.interviewScore.totalImpression }}</td>
+                                <td>{{ interview.interviewScore.suitability }}</td>
                                 <td>{{ interview.interviewScore.sum }}</td>
                             </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-12 medium-12 large-9 columns">
+                        <label class="question-label">Passer studenten som assistent?</label>
+                        <p>{{ interview.interviewScore.suitableAssistant }}</p>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,16 @@
 {% extends 'admission_admin/layout.html.twig' %}
-
+{% set yes=0 %}
+{% set maybe=0 %}
+{% set no=0 %}
+{% for applicant in applicants %}
+    {% if applicant.interview.interviewScore.suitableAssistant == "Ja" %}
+        {% set yes = yes +1 %}
+    {% elseif applicant.interview.interviewScore.suitableAssistant == "Kanskje" %}
+        {% set maybe = maybe +1 %}
+    {% elseif applicant.interview.interviewScore.suitableAssistant == "Nei" %}
+        {% set no = no +1 %}
+    {% endif %}
+{% endfor %}
 {% block bulkNavigation %}
     {% if is_granted('ROLE_HIGHEST_ADMIN') %}
         <div class="small-6 medium-5 large-3 columns">
@@ -16,14 +27,19 @@
                 </div>
             </div>
         </div>
+    {% else %}
+        <div class="small-6 columns"></div>
     {% endif %}
+    <div class="small-6 columns">
+        <h5 class="float-right">Ja: {{ yes }} / Kanskje: {{ maybe }} / Nei: {{ no }} / Totalt: {{ applicants | length }}</h5>
+    </div>
 {% endblock %}
 
 {% block applications %}
     {% if applicants is defined %}
-        <h5>Antall: {{ applicants|length }}</h5>
 
         {# The table containing interviewed applications #}
+        <form id="bulk" name="application">
         <table width="100%" id="application-table">
             <thead>
             <tr>
@@ -36,19 +52,15 @@
                 <th data-sort="string">Etternavn</th>
                 <th data-sort="string">Linje</th>
                 <th data-sort="int">År</th>
-                <th data-sort="string">Vikarvillig</th>
-                <th data-sort="string">Tidligere deltakelse</th>
-                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip"
-                                          title="Forklaringsevne">FE</span></th>
-                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Forbilde">F</span>
-                </th>
-                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Engasjement">E</span>
-                </th>
-                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip"
-                                          title="Totalintrykk">T</span></th>
+                <th data-sort="string">Dobbel Stilling</th>
+                <th data-sort="string">Ønsket Bolk</th>
+                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Forklaringsevne">FE</span></th>
+                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Forbilde">F</span></th>
+                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Egnethet">E</span></th>
                 <th data-sort="int">Sum</th>
-                <th>Intervju</th>
-                <th>Slett</th>
+                <th data-sort="string">Passende</th>
+                <th></th>
+                <th></th>
 
                 {# Add header columns to match the buttons added #}
                 {% if is_granted('ROLE_HIGHEST_ADMIN') %}
@@ -58,42 +70,33 @@
             </thead>
 
             <tbody>
-            <form id="bulk" name="application">
+
                 {% for a in applicants %}
                     <tr id="{{ a.id }}">
                         {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-                            <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
-                            </td>
+                            <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}"></td>
                         {% endif %}
                         <td>{{ a.user.firstName }}</td>
                         <td>{{ a.user.lastName }}</td>
                         <td>{{ a.user.fieldOfStudy }}</td>
                         <td>{{ a.yearOfStudy }}</td>
 
-                        {% if a.substitute == 1 %}
-                            <td>Ja</td>
-                        {% else %}
-                            <td>Nei</td>
-                        {% endif %}
-
-                        {% if a.previousParticipation == 1 %}
-                            <td>Ja</td>
-                        {% else %}
-                            <td>Nei</td>
-                        {% endif %}
+                        <td>{{ a.interview.interviewPractical.doublePosition ? 'Ja':'Nei' }}</td>
+                        <td>{{ a.interview.interviewPractical.preferredGroup ? a.interview.interviewPractical.preferredGroup:'Ingen' }}</td>
 
                         <td>{{ a.interview.interviewScore.explanatoryPower }}</td>
                         <td>{{ a.interview.interviewScore.roleModel }}</td>
-                        <td>{{ a.interview.interviewScore.drive }}</td>
-                        <td>{{ a.interview.interviewScore.totalImpression }}</td>
+                        <td>{{ a.interview.interviewScore.suitability }}</td>
                         <td>{{ a.interview.interviewScore.sum }}</td>
+
+                        <td>{{ a.interview.interviewScore.suitableAssistant }}</td>
 
                         {# Add the read interview button #}
                         <td>
                             {% if a.user != user %}
                                 <a href="{{ path('interview_show', { 'id': a.id }) }}" class="button tiny"><i
                                             class="fa fa-list-ul"></i> Les intervju</a>
-                                {% else %}
+                            {% else %}
                                 Intervjuet er skjult
                             {% endif %}
                         </td>
@@ -115,9 +118,10 @@
                         {% endif %}
                     </tr>
                 {% endfor %}
-            </form>
+
             </tbody>
         </table>
+        </form>
     {% endif %}
 
 {% endblock %}

@@ -39,6 +39,11 @@ class CreateInterviewType extends AbstractType
 
         $builder->add('interviewSchema', 'entity', array(
             'class' => 'AppBundle:InterviewSchema',
+            'query_builder' => function(EntityRepository $er){
+                return $er->createQueryBuilder('i')
+                    ->select('i')
+                    ->orderBy('i.id', 'DESC');
+            },
             'property' => 'name'
         ));
     }

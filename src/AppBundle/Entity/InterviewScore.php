@@ -30,12 +30,7 @@ class InterviewScore
     /**
      * @ORM\Column(type="integer")
      */
-    protected $drive;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    protected $totalImpression;
+    protected $suitability;
 
     /**
      * Get id
@@ -94,26 +89,26 @@ class InterviewScore
     }
 
     /**
-     * Set drive
+     * Set suitability
      *
-     * @param integer $drive
+     * @param integer $suitability
      * @return InterviewScore
      */
-    public function setDrive($drive)
+    public function setSuitability($suitability)
     {
-        $this->drive = $drive;
+        $this->suitability = $suitability;
 
         return $this;
     }
 
     /**
-     * Get drive
+     * Get suitability
      *
      * @return integer 
      */
-    public function getDrive()
+    public function getSuitability()
     {
-        return $this->drive;
+        return $this->suitability;
     }
 
     /**
@@ -123,31 +118,24 @@ class InterviewScore
      */
     public function getSum()
     {
-        return $this->explanatoryPower + $this->roleModel + $this->drive + $this->totalImpression;
+        return $this->explanatoryPower + $this->roleModel + $this->suitability;
 
     }
 
     /**
-     * Set totalImpression
-     *
-     * @param integer $totalImpression
-     * @return InterviewScore
+     * @return string
      */
-    public function setTotalImpression($totalImpression)
+    public function getSuitableAssistant()
     {
-        $this->totalImpression = $totalImpression;
-
-        return $this;
+        return $this->suitableAssistant;
     }
 
     /**
-     * Get totalImpression
-     *
-     * @return integer 
+     * @param string $suitableAssistant
      */
-    public function getTotalImpression()
+    public function setSuitableAssistant($suitableAssistant)
     {
-        return $this->totalImpression;
+        $this->suitableAssistant = $suitableAssistant;
     }
 
     public function hideScores(){
@@ -157,3 +145,5 @@ class InterviewScore
         $this->setTotalImpression(0);
     }
 }
+
+

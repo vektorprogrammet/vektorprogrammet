@@ -16,32 +16,24 @@ class TeamAdminController extends Controller {
 	
 	public function removePositionAction(Request $request){
 		
-		if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-		
-			$id = $request->get('id');
+		$id = $request->get('id');
 			
-			try {
+		try {
 
-				// This deletes the given position
-				$em = $this->getDoctrine()->getEntityManager();
-				$position = $this->getDoctrine()->getRepository('AppBundle:Position')->find($id);
-				$em->remove($position);
-				$em->flush();
+			// This deletes the given position
+			$em = $this->getDoctrine()->getEntityManager();
+			$position = $this->getDoctrine()->getRepository('AppBundle:Position')->find($id);
+			$em->remove($position);
+			$em->flush();
 					
-				$response['success'] = true;
-			}
-			catch (\Exception $e) {
-				// Send a response back to AJAX
-				$response['success'] = false;
-				//$response['cause'] = 'Kunne ikke slette stillingen';
-				$response['cause'] = $e->getMessage();
-				return new JsonResponse( $response );
-			}
+			$response['success'] = true;
 		}
-		else {
+		catch (\Exception $e) {
 			// Send a response back to AJAX
 			$response['success'] = false;
-			$response['cause'] = 'Du har ikke tilstrekkelige rettigheter.';
+			//$response['cause'] = 'Kunne ikke slette stillingen';
+			$response['cause'] = $e->getMessage();
+			return new JsonResponse( $response );
 		}
 		
 		// Send a respons to ajax 
