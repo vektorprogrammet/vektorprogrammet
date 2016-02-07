@@ -13,6 +13,7 @@ use AppBundle\Form\Type\ScheduleInterviewType;
 use AppBundle\Form\Type\InterviewSchemaType;
 use AppBundle\Form\Type\ApplicationInterviewType;
 use AppBundle\Form\Type\AssignInterviewType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * InterviewController is the controller responsible for interview actions,
@@ -34,6 +35,9 @@ class InterviewController extends Controller
     {
 
         $interview = $application->getInterview();
+
+        //Interview that are older than 2 weeks can not be edited
+        if(!is_null($interview->getConducted()) && date_diff($interview->getConducted(), new \DateTime())->format('%a') > 14)return new AccessDeniedException();
 
         // Only admin and above, or the assigned interviewer should be able to conduct an interview
         if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') &&

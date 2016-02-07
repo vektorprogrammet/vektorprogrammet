@@ -434,7 +434,6 @@ class AdmissionAdminController extends Controller {
     public function createApplicationAction(Request $request){
         $em = $this->getDoctrine()->getEntityManager();
         $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
-        $currentSemester = null;
         try{
             $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department->getId());
         }catch(NoResultException $e){
@@ -442,17 +441,14 @@ class AdmissionAdminController extends Controller {
         }catch(NonUniqueResultException $e){
             return $this->redirect($this->generateUrl('semesteradmin_show'));
         }
-        $time = $currentSemester->getAdmissionStartDate();
-        $time->modify('+1 day');//Workaround to reuse ApplicationType
-        $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department, $time);
 
         $application = new Application();
-        $form = $this->createForm(new ApplicationType($department->getId(), true), $application);
+        $form = $this->createForm(new ApplicationType($department, true), $application);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $application->setSemester($semester);
+            $application->setSemester($currentSemester);
             $em->persist($application);
             $em->flush();
 
@@ -464,7 +460,7 @@ class AdmissionAdminController extends Controller {
         }
         return $this->render(':admission_admin:create_application.html.twig', array(
             'department' => $department,
-            'semester' => $semester,
+            'semester' => $currentSemester,
             'form' => $form->createView(),
         ));
     }

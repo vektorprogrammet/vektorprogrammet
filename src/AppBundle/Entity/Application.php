@@ -115,6 +115,7 @@ class Application {
         $this->english = false;
         $this->doublePosition = false;
         $this->previousParticipation = false;
+        $this->english = false;
     }
 
 

@@ -104,7 +104,7 @@ class SemesterRepository extends EntityRepository {
             ->setParameter(1, $department)
             ->setParameter('time', $time)
             ->getQuery()
-            ->getSingleResult();
+            ->getOneOrNullResult();
     }
 
 

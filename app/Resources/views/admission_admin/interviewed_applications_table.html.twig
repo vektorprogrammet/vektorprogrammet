@@ -31,7 +31,7 @@
         <div class="small-6 columns"></div>
     {% endif %}
     <div class="small-6 columns">
-        <h5 class="float-right">Ja: {{ yes }} / Kanskje: {{ maybe }} / Nei: {{ no }} / Totalt: {{ applicants | length }}</h5>
+        <h6 class="float-right">Ja: {{ yes }} / Kanskje: {{ maybe }} / Nei: {{ no }} / Totalt: {{ applicants | length }}</h6>
     </div>
 {% endblock %}
 
@@ -81,8 +81,8 @@
                         <td>{{ a.user.fieldOfStudy }}</td>
                         <td>{{ a.yearOfStudy }}</td>
 
-                        <td>{{ a.interview.interviewPractical.doublePosition ? 'Ja':'Nei' }}</td>
-                        <td>{{ a.interview.interviewPractical.preferredGroup ? a.interview.interviewPractical.preferredGroup:'Ingen' }}</td>
+                        <td>{{ a.doublePosition ? 'Ja':'Nei' }}</td>
+                        <td>{{ a.preferredGroup ? a.preferredGroup:'Ingen' }}</td>
 
                         <td>{{ a.interview.interviewScore.explanatoryPower }}</td>
                         <td>{{ a.interview.interviewScore.roleModel }}</td>

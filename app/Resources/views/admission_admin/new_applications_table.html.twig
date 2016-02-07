@@ -23,7 +23,11 @@
 
 {% block applications %}
     {% if applicants is defined %}
-        <h5 class="text-center"><a class="button tiny success" href="{{ path('register_applicant') }}" style="float:left;">Ny søker</a> Nye søkere | Antall: {{ applicants|length }}</h5>
+        <div class="row">
+            <div class="small-6 columns"><a class="button tiny success float-left" href="{{ path('register_applicant') }}">Ny søker</a></div>
+            <div class="small-6 columns"><h6 class="float-right">Nye søkere | Antall: {{ applicants|length }}</h6></div>
+
+        </div>
         {# The table containing new applications #}
         <form id="bulk" name="application">
         <table width="100%" id="application-table">
@@ -65,25 +69,10 @@
                         <td>{{ a.user.fieldOfStudy }}</td>
                         <td>{{ a.yearOfStudy }}</td>
 
-                        {% if a.statistic.previousParticipation == 1 %}
+                        {% if a.previousParticipation == 1 %}
                             <td>Ja</td>
                         {% else %}
                             <td>Nei</td>
-                        {% endif %}
-
-                        {# Add the create user and substitue dropdown button if a user is not already created #}
-                        {% if a.userCreated == 0 %}
-                            <td>
-                                <a class="button tiny{{ (a.substituteCreated == 0) ? '' : ' secondary' }}" data-dropdown="createButton{{ a.id }}" aria-controls="createButton{{ a.id }}" aria-expanded="false"><i class="fa fa-user-plus"></i> Opprett <i class="fa fa-caret-down"></i></a>
-                                <ul id="createButton{{ a.id }}" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false">
-                                    <li class="createUser"><a href="#">Opprett bruker</a></li>
-
-                                    {# Add the create substitue option only if no substitute exists already #}
-                                    {% if a.substituteCreated == 0 %}
-                                        <li class="createSubstitute"><a href="#">Opprett vikar</a></li>
-                                    {% endif %}
-                                </ul>
-                            </td>
                         {% endif %}
 
                         {# Add the assign interview button, given the correct permissions #}

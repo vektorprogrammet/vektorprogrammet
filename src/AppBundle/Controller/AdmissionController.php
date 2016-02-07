@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Form\Type\ApplicationPracticalType;
-use AppBundle\Form\Type\ExistingUserApplicationType;
+use AppBundle\Form\Type\ApplicationExistingUserType;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,14 +25,10 @@ class AdmissionController extends Controller {
 
         $em = $this->getDoctrine()->getManager();
 
-        $department = $em->getRepository('AppBundle:Department')
-            ->find($departmentId);
+        $department = $em->getRepository('AppBundle:Department')->find($departmentId);
 
-        try{
-            $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
-        }catch(NoResultException $e){
-            $semester = null;
-        }
+        $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
+
 
         if ( $semester !== null ) {
 
@@ -45,27 +41,20 @@ class AdmissionController extends Controller {
                 $authenticated = true;
             }
 
-            $form = $this->createForm(new ApplicationType($departmentId, $authenticated), $application);
+            $form = $this->createForm(new ApplicationType($department, $authenticated), $application);
 
             $form->handleRequest($request);
 
             if ($form->isValid()) {
                 //Check if email belongs to an existing account and use that account
-                try{
-                    $oldUser = $em->getRepository('AppBundle:User')->findUserByEmail($application->getUser()->getEmail());
-                }catch(NoResultException $e){$oldUser = null;}
+                $oldUser = $em->getRepository('AppBundle:User')->findOneBy(array('email'=>$application->getUser()->getEmail()));
                 if($oldUser !== null){
-                    if(!$oldUser->getIsActive()){
+                    $oldUserAssistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findBy(array('user'=>$oldUser));
+                    if(empty($oldUserAssistantHistory)){
                         $application->setUser($oldUser);
                     }else{
-                        $oldUserAssistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findBy(array('user'=>$oldUser));
-                        if(empty($oldUserAssistantHistory)){
-                            $application->setUser($oldUser);
-
-                        }else{
-                            //If applicant has a user and has been an assistant before
-                            return $this->redirect($this->generateUrl('admission_existing_user'));
-                        }
+                        //If applicant has a user and has been an assistant before
+                        return $this->redirect($this->generateUrl('admission_existing_user'));
                     }
                 }
 
@@ -159,7 +148,7 @@ class AdmissionController extends Controller {
         if($application === null) $application = new Application();
         $lastInterview = $em->getRepository('AppBundle:Interview')->findLatestInterviewByUser($user);
 
-        $form = $this->createForm(new ExistingUserApplicationType(), $application);
+        $form = $this->createForm(new ApplicationExistingUserType(), $application);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

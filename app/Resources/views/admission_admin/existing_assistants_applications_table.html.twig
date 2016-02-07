@@ -16,12 +16,14 @@
                 </div>
             </div>
         </div>
+        <div class="small-6 columns">
+            <h6 class="float-right">Antall: {{ applicants|length }}</h6>
+        </div>
     {% endif %}
 {% endblock %}
 
 {% block applications %}
     {% if applicants is defined %}
-        <h5>Antall: {{ applicants|length }}</h5>
 
         {# The table containing interviewed applications #}
         <table width="100%" id="application-table">

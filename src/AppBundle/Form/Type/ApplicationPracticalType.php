@@ -12,7 +12,6 @@ class ApplicationPracticalType extends AbstractType
     {
         $workChoices = array(
             "Bra" => "Bra",
-            "Ok" => "Ok",
             "Ikke" => "Ikke"
         );
 
@@ -68,36 +67,15 @@ class ApplicationPracticalType extends AbstractType
             'expanded' => true
         ));
 
-        $builder->add('substitute', 'choice', array(
-            'label' => 'Dersom du ikke får stillingen som vektorassistent, vil du da være vikar for andre som melder frafall?',
-            'choices' => array(
-                1 => "Ja",
-                0 => "Nei"
-            ),
-        ));
-
         $builder->add('english', 'choice', array(
-            'label' => 'Er du komfortabel med engelsk?',
-            'help' => 'Vi samarberider med den internasjonale skolen og hvis vi ikke for nok kvalifiserte utvekslingstudenter kunne du tenke deg å være på den internasjonale skolen? Det er helt lov å si nei',
+            'label' => 'Vi har en internasjonal skole. Har du lyst til å undervise på engelsk?',
+            'help' => 'Det har ikke noe å si om du svarer ja eller nei på dette for om du blir tatt opp eller ikke.',
             'choices' => array(
                 0 => "Nei",
                 1 => "Ja"
             ),
-        ));
-
-        $builder->add('heardAboutFrom', 'choice', array(
-            'label' => 'Hvor hørte du om Vektorprogrammet?',
-            'choices' => array(
-                'Blesting' => 'Blesting',
-                'Stand' => 'Stand',
-                'Infomail/nettsida/facebook etc' => 'Infomail/nettsida/facebook etc',
-                'Bekjente' => 'Bekjente',
-                'Bekjente i styret' => 'Bekjente i styret',
-                'Plakater/flyers' => 'Plakater/Flyers',
-                'Linjeforeningen (f.eks fadderukene)' => 'Linjeforeningen (f.eks fadderukene)'
-            ),
             'expanded' => true,
-            'multiple' => true
+            'multiple' => false
         ));
     }
 
@@ -105,6 +83,7 @@ class ApplicationPracticalType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Application',
+            'inherit_data' => true,
         ));
     }
 

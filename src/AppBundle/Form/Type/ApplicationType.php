@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\Department;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -14,9 +15,9 @@ class ApplicationType extends AbstractType {
 	private $authenticated;
 	private $departmentId;
 
-	public function __construct($departmentId, $authenticated)
+	public function __construct(Department $department, $authenticated)
     {
-		$this->departmentId = $departmentId;
+		$this->departmentId = $department->getId();
 		$this->authenticated = $authenticated;
     }
 	

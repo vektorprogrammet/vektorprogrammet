@@ -33,6 +33,11 @@ class InterviewScore
     protected $suitability;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $suitableAssistant;
+
+    /**
      * Get id
      *
      * @return integer 
