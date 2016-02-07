@@ -11,8 +11,10 @@
             <div class="panel">
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
+                            <p class="float-right">Intervjuet kan endres 2 uker etter det er utført</p>
                         {% if (date().diff(interview.conducted)).days < 14 %}
-                            <a href="{{ path('interview_conduct', { 'id': application.id }) }}" class="button radius tiny alert float-right">Endre</a>
+                            <a href="{{ path('interview_conduct', { 'id': application.id }) }}" class="button radius tiny alert float-right clear">Endre</a>
+                        {% else %}
                         {% endif %}
                         <h1>Intervju</h1>
                         <h3>Intervjuer</h3>

@@ -33,6 +33,9 @@ class InterviewController extends Controller
      */
     public function conductAction(Request $request, Application $application)
     {
+        if($this->getUser() == $application->getUser()){
+            return $this->render('error/control_panel_error.html.twig', array('error'=>'Du kan ikke intervjue deg selv'));
+        }
 
         $interview = $application->getInterview();
 

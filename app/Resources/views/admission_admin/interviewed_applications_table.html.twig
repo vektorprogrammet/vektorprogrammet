@@ -75,12 +75,12 @@
                         {% if is_granted('ROLE_HIGHEST_ADMIN') %}
                             <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}"></td>
                         {% endif %}
-                        <td>{{ a.firstName }}</td>
-                        <td>{{ a.lastName }}</td>
+                        <td>{{ a.user.firstName }}</td>
+                        <td>{{ a.user.lastName }}</td>
 
                         <td>{{ a.doublePosition ? 'Ja':'Nei' }}</td>
                         <td>{{ a.preferredGroup ? a.preferredGroup:'Ingen' }}</td>
-                        <td>{{ a.email }}</td>
+                        <td>{{ a.user.email }}</td>
 
                         <td>{{ a.interview.interviewScore.explanatoryPower }}</td>
                         <td>{{ a.interview.interviewScore.roleModel }}</td>
