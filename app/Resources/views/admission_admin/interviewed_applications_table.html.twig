@@ -50,10 +50,9 @@
                 {# data-sort is used to sort the tables with stupidtable.js #}
                 <th data-sort="string">Fornavn</th>
                 <th data-sort="string">Etternavn</th>
-                <th data-sort="string">Linje</th>
-                <th data-sort="int">År</th>
                 <th data-sort="string">Dobbel Stilling</th>
                 <th data-sort="string">Ønsket Bolk</th>
+                <th data-sort="string">E-post</th>
                 <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Forklaringsevne">FE</span></th>
                 <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Forbilde">F</span></th>
                 <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Egnethet">E</span></th>
@@ -76,13 +75,12 @@
                         {% if is_granted('ROLE_HIGHEST_ADMIN') %}
                             <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}"></td>
                         {% endif %}
-                        <td>{{ a.user.firstName }}</td>
-                        <td>{{ a.user.lastName }}</td>
-                        <td>{{ a.user.fieldOfStudy }}</td>
-                        <td>{{ a.yearOfStudy }}</td>
+                        <td>{{ a.firstName }}</td>
+                        <td>{{ a.lastName }}</td>
 
                         <td>{{ a.doublePosition ? 'Ja':'Nei' }}</td>
                         <td>{{ a.preferredGroup ? a.preferredGroup:'Ingen' }}</td>
+                        <td>{{ a.email }}</td>
 
                         <td>{{ a.interview.interviewScore.explanatoryPower }}</td>
                         <td>{{ a.interview.interviewScore.roleModel }}</td>

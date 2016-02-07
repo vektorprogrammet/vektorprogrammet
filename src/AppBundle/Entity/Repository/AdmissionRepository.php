@@ -37,6 +37,7 @@ class AdmissionRepository extends EntityRepository {
                 $qb->andWhere('sem = :semester')
                     ->setParameter('semester', $semester);
             }
+        $qb->orderBy('a.userCreated', 'ASC');
 
         return $qb->getQuery()->getResult();
     }
