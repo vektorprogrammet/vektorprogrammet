@@ -69,12 +69,6 @@
                         <td>{{ a.user.fieldOfStudy }}</td>
                         <td>{{ a.yearOfStudy }}</td>
 
-                        {% if a.previousParticipation == 1 %}
-                            <td>Ja</td>
-                        {% else %}
-                            <td>Nei</td>
-                        {% endif %}
-
                         {# Add the assign interview button, given the correct permissions #}
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
                             <td>

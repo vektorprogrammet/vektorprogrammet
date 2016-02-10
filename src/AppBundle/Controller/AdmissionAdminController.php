@@ -84,6 +84,7 @@ class AdmissionAdminController extends Controller {
         $repository = $this->getDoctrine()->getRepository('AppBundle:Application');
         $applicantsAssignedToUser = array();
         $interviewDistribution = array();
+        /** @var Application[] $applicants */
         switch($status) {
             case 'assigned':
                 $interviewedApplicants = $repository->findInterviewedApplicants($department,$semester);
@@ -123,7 +124,8 @@ class AdmissionAdminController extends Controller {
                 $applicants = $repository->findExistingApplicants($department,$semester);
                 foreach($applicants as $applicant){
                     if($applicant->getUser() == $user){
-                        $applicant->getInterview()->getInterviewScore()->hideScores();
+                        if(!is_null($applicant->getInterview()))
+                            $applicant->getInterview()->getInterviewScore()->hideScores();
                         break;
                     }
                 }

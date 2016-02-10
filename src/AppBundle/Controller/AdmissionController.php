@@ -137,11 +137,10 @@ class AdmissionController extends Controller {
 
         $em = $this->getDoctrine()->getManager();
         $department = $user->getFieldOfStudy()->getDepartment();
-        try{
-            $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department, new \DateTime());
-        }catch(NoResultException $e){
-            return $this->render(':error:no_active_admission.html.twig');
-        }
+        $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department, new \DateTime());
+
+        if(is_null($semester))return $this->render(':error:no_active_admission.html.twig');
+
         $applicationRepo = $em->getRepository('AppBundle:Application');
 
         $application = $applicationRepo->findOneBy(array('user'=>$user, 'semester'=>$semester));
@@ -158,6 +157,8 @@ class AdmissionController extends Controller {
             $application->setInterview($lastInterview);
             $em->persist($application);
             $em->flush();
+            $request->getSession()->getFlashBag()->add('admission-notice', 'Søknaden er registrert.');
+
         }
 
         return $this->render(':admission:existingUser.html.twig', array(

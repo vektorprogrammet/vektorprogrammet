@@ -27,10 +27,8 @@
                 </div>
             </div>
         </div>
-    {% else %}
-        <div class="small-6 columns"></div>
     {% endif %}
-    <div class="small-6 columns">
+    <div class="small-12 columns">
         <h6 class="float-right">Ja: {{ yes }} / Kanskje: {{ maybe }} / Nei: {{ no }} / Totalt: {{ applicants | length }}</h6>
     </div>
 {% endblock %}
@@ -50,13 +48,11 @@
                 {# data-sort is used to sort the tables with stupidtable.js #}
                 <th data-sort="string">Fornavn</th>
                 <th data-sort="string">Etternavn</th>
+                <th data-sort="string">E-post</th>
                 <th data-sort="string">Dobbel Stilling</th>
                 <th data-sort="string">Ønsket Bolk</th>
-                <th data-sort="string">E-post</th>
-                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Forklaringsevne">FE</span></th>
-                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Forbilde">F</span></th>
-                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Egnethet">E</span></th>
-                <th data-sort="int">Sum</th>
+                <th data-sort="string">Språk</th>
+                <th data-sort="int">Poeng</th>
                 <th data-sort="string">Passende</th>
                 <th></th>
                 <th></th>
@@ -77,14 +73,12 @@
                         {% endif %}
                         <td>{{ a.user.firstName }}</td>
                         <td>{{ a.user.lastName }}</td>
+                        <td>{{ a.user.email }}</td>
 
                         <td>{{ a.doublePosition ? 'Ja':'Nei' }}</td>
                         <td>{{ a.preferredGroup ? a.preferredGroup:'Ingen' }}</td>
-                        <td>{{ a.user.email }}</td>
+                        <td>{{ a.english ? 'Engelsk':'Norsk' }}</td>
 
-                        <td>{{ a.interview.interviewScore.explanatoryPower }}</td>
-                        <td>{{ a.interview.interviewScore.roleModel }}</td>
-                        <td>{{ a.interview.interviewScore.suitability }}</td>
                         <td>{{ a.interview.interviewScore.sum }}</td>
 
                         <td>{{ a.interview.interviewScore.suitableAssistant }}</td>

@@ -4,14 +4,37 @@ namespace AppBundle\SchoolAllocation;
 class Assistant
 {
     static $idCounter;
+    /**
+     * @var int
+     */
     private $id;
+    /**
+     * @var string
+     */
     private $name;
+    /**
+     * @var string
+     */
     private $assignedSchool;//Name of school
+    /**
+     * @var string
+     */
     private $assignedDay;
+    /**
+     * @var array
+     */
     private $availability; //An associative array. Key = weekday, Value = {0, 1, 2}. 0 is bad, 1 is ok, 2 is good. "Monday" => 2.
-    private $bolk1, $bolk2;
-    private $prefBolk1, $prefBolk2;
-    private $preferredSchool;
+    /**
+     * @var int
+     */
+    private $group;
+    /**
+     * @var int
+     */
+    private $preferredGroup;
+    /**
+     * @var bool
+     */
     private $doublePosition;
 
     /**
@@ -25,21 +48,21 @@ class Assistant
         }else{
             $this->id = ++Assistant::$idCounter;
         }
-        $this->bolk1 = false;
-        $this->bolk2 = false;
-        $this->prefBolk1 = false;
-        $this->prefBolk2 = false;
+        $this->group = null;
+        $this->preferredGroup = null;
         $this->doublePosition = false;
-        $this->preferredSchool = null;
         $this->availability = array();
     }
 
-    public function deepCopy(){
-        return $this;
+    /**
+     * @return bool
+     */
+    public function isAssignedToSchool(){
+        return !is_null($this->assignedSchool);
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId()
     {
@@ -47,7 +70,7 @@ class Assistant
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      */
     public function setId($id)
     {
@@ -55,9 +78,8 @@ class Assistant
     }
 
 
-
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -65,77 +87,12 @@ class Assistant
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {
         $this->name = $name;
     }
-
-    /**
-     * @return null
-     */
-    public function getPreferedSchool()
-    {
-        return $this->preferedSchool;
-    }
-
-    /**
-     * @param null $preferredSchool
-     */
-    public function setPreferedSchool($preferredSchool)
-    {
-        $this->preferredSchool = $preferredSchool;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isPrefBolk1()
-    {
-        return $this->prefBolk1;
-    }
-
-    /**
-     * @param boolean $prefBolk1
-     */
-    public function setPrefBolk1($prefBolk1)
-    {
-        $this->prefBolk1 = $prefBolk1;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isPrefBolk2()
-    {
-        return $this->prefBolk2;
-    }
-
-    /**
-     * @param boolean $prefBolk2
-     */
-    public function setPrefBolk2($prefBolk2)
-    {
-        $this->prefBolk2 = $prefBolk2;
-    }
-
-    /**
-     * @return null
-     */
-    public function getPreferredSchool()
-    {
-        return $this->preferredSchool;
-    }
-
-    /**
-     * @param null $preferredSchool
-     */
-    public function setPreferredSchool($preferredSchool)
-    {
-        $this->preferredSchool = $preferredSchool;
-    }
-
 
 
     /**
@@ -153,49 +110,6 @@ class Assistant
     {
         $this->doublePosition = $doublePosition;
     }
-
-
-
-    /**
-     * @return boolean
-     */
-    public function isBolk1()
-    {
-        return $this->bolk1;
-    }
-
-    /**
-     *
-     */
-    public function assignBolk1()
-    {
-        $this->bolk2 = false;
-        $this->bolk1 = true;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isBolk2()
-    {
-        return $this->bolk2;
-    }
-
-    /**
-     *
-     */
-    public function assignBolk2()
-    {
-        $this->bolk1 = false;
-        $this->bolk2 = true;
-    }
-
-    public function assignBothBolks(){
-        $this->bolk2 = true;
-        $this->bolk1 = true;
-    }
-
-
 
     /**
      * @return array
@@ -231,7 +145,7 @@ class Assistant
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getAssignedDay()
     {
@@ -239,7 +153,7 @@ class Assistant
     }
 
     /**
-     * @param mixed $assignedDay
+     * @param string $assignedDay
      */
     public function setAssignedDay($assignedDay)
     {
@@ -260,6 +174,49 @@ class Assistant
     public function setAvailable($availability)
     {
         $this->availability = $availability;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPreferredGroup()
+    {
+        return $this->preferredGroup;
+    }
+
+    /**
+     * @param int $preferredGroup
+     */
+    public function setPreferredGroup($preferredGroup)
+    {
+        $this->preferredGroup = $preferredGroup;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * @param int $group
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+    }
+
+    /**
+     * @param School $school
+     * @param int $group
+     * @param string $day
+     */
+    public function assignToSchool($school, $group, $day){
+        $this->setAssignedSchool($school->getName());
+        $this->setGroup($group);
+        $this->setAssignedDay($day);
     }
 
 

@@ -16,10 +16,10 @@
                 </div>
             </div>
         </div>
-        <div class="small-6 columns">
-            <h6 class="float-right">Antall: {{ applicants|length }}</h6>
-        </div>
     {% endif %}
+    <div class="small-12 columns">
+        <h6 class="float-right">Antall: {{ applicants|length }}</h6>
+    </div>
 {% endblock %}
 
 {% block applications %}
@@ -36,20 +36,11 @@
                 {# data-sort is used to sort the tables with stupidtable.js #}
                 <th data-sort="string">Fornavn</th>
                 <th data-sort="string">Etternavn</th>
-                <th data-sort="string">Linje</th>
-                <th data-sort="int">År</th>
-                <th data-sort="string">Vikarvillig</th>
-                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip"
-                                          title="Forklaringsevne">FE</span></th>
-                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Forbilde">F</span>
-                </th>
-                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip" title="Engasjement">E</span>
-                </th>
-                <th data-sort="int"><span data-tooltip aria-haspopup="true" class="has-tip"
-                                          title="Totalintrykk">T</span></th>
-                <th data-sort="int">Sum</th>
-                <th>Intervju</th>
-                <th>Slett</th>
+                <th>E-post</th>
+                <th>Dobbel Stilling</th>
+                <th>Bolk</th>
+                <th>Språk</th>
+                <th></th>
 
                 {# Add header columns to match the buttons added #}
                 {% if is_granted('ROLE_HIGHEST_ADMIN') %}
@@ -68,42 +59,10 @@
                         {% endif %}
                         <td>{{ a.user.firstName }}</td>
                         <td>{{ a.user.lastName }}</td>
-                        <td>{{ a.user.fieldOfStudy }}</td>
-                        <td>{{ a.yearOfStudy }}</td>
-
-                        {% if a.substitute == 1 %}
-                            <td>Ja</td>
-                        {% else %}
-                            <td>Nei</td>
-                        {% endif %}
-
-                        {% if a.interview.interviewScore is defined %}
-                            <td>{{ a.interview.interviewScore.explanatoryPower }}</td>
-                            <td>{{ a.interview.interviewScore.roleModel }}</td>
-                            <td>{{ a.interview.interviewScore.drive }}</td>
-                            <td>{{ a.interview.interviewScore.totalImpression }}</td>
-                            <td>{{ a.interview.interviewScore.sum }}</td>
-                            {% else %}
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                        {% endif %}
-
-                        {# Add the read interview button #}
-                        <td>
-                            {% if a.user != user %}
-                                {% if a.interview is not null %}
-                                <a href="{{ path('interview_show', { 'id': a.id }) }}" class="button tiny"><i
-                                            class="fa fa-list-ul"></i> Les intervju</a>
-                                    {% else %}
-                                    Fant ikke intervju
-                                    {% endif %}
-                                {% else %}
-                                Intervjuet er skjult
-                            {% endif %}
-                        </td>
+                        <td>{{ a.user.email }}</td>
+                        <td>{{ a.doublePosition ? 'Dobbel':'Enkel' }}</td>
+                        <td>{{ a.preferredGroup }}</td>
+                        <td>{{ a.english ? 'Engelsk':'Norsk' }}</td>
 
                         {# Add the delete interview and application dropdown button, given the correct permissions #}
                         {% if is_granted('ROLE_HIGHEST_ADMIN') %}
