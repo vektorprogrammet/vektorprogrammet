@@ -22,7 +22,6 @@ class ParticipantHistoryController extends Controller
 		if(!is_null($semesterId)){
 			$semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterId);
 		}
-		dump($semester);
 
 		// Find all assistantHistories by department
 		$assistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findAssistantHistoriesByDepartment($department, $semester);
@@ -35,7 +34,6 @@ class ParticipantHistoryController extends Controller
 		//Finds the semester to sort by
 		$sortBySemester = $request->query->get('semester', null);
 
-	dump($semesters);
 
 		return $this->render('participant_history/index.html.twig', array(
 			'workHistories' => $workHistories,
