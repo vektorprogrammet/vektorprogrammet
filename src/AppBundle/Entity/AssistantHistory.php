@@ -44,6 +44,12 @@ class AssistantHistory {
      * @ORM\Column(type="string", nullable=true)
      */
     protected $bolk;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    protected $day;
 	
 
     /**
@@ -167,6 +173,24 @@ class AssistantHistory {
     {
         $this->bolk = $bolk;
     }
+
+    /**
+     * @return string
+     */
+    public function getDay()
+    {
+        return $this->day;
+    }
+
+    /**
+     * @param string $day
+     */
+    public function setDay($day)
+    {
+        $this->day = $day;
+    }
+
+
 
 
 	
