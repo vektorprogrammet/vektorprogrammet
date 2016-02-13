@@ -126,16 +126,14 @@ class SchoolAllocationController extends Controller
         $assistants = $this->generateAssistantsFromApplications($applications);
         $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
         $allocation = new Allocation($schools, $assistants);
-        $allocation->step();
-        dump($assistants);
-        dump($schools);
-        dump($allocation);
+        $result = $allocation->step();
+        dump($result);
 
 
         //Total number of allocations evaluated during optimization
 
         return $this->render('school_admin/school_allocate_result.html.twig', array(
-            'assistants' => $allocation->getAssistants(),
+            'assistants' => $result->getAssistants(),
         ));
     }
 
@@ -200,7 +198,7 @@ class SchoolAllocationController extends Controller
             $em->persist($capacity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('allocate_schools'));
+            return $this->redirect($this->generateUrl('school_allocation'));
         }
         return $this->render('school_admin/school_allocate_edit.html.twig', array(
             'capacity' => $capacity,

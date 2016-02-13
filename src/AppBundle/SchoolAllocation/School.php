@@ -7,10 +7,15 @@ class School
      * @var string
      */
     private $name;
+
+
     /**
+     * Group
+     *   Day
+     *     Capacity
      * @var array
      */
-    private $capacity;//An associative array. Key = weekday, Value = capacity. "Wednesday" => 4.
+    private $capacity;
 
     /**
      * School constructor.
@@ -70,6 +75,19 @@ class School
     public function setCapacity($capacity)
     {
         $this->capacity = $capacity;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFull()
+    {
+        foreach($this->capacity as $weekDayCapacity){
+            foreach($weekDayCapacity as $day => $capacityLeft){
+                if($capacityLeft > 0)return false;
+            }
+        }
+        return true;
     }
 
 

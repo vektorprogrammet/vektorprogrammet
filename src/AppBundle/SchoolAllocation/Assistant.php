@@ -215,7 +215,8 @@ class Assistant
      */
     public function assignToSchool($school, $group, $day){
         $this->setAssignedSchool($school->getName());
-        $this->setGroup($group);
+        if($this->group == 1 && $group == 2 || $this->group == 2 && $group == 1)$this->group = 3;
+        else $this->setGroup($group);
         $this->setAssignedDay($day);
     }
 
