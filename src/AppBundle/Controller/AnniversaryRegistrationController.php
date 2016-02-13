@@ -13,11 +13,11 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AnniversaryRegistrationController extends Controller
 {
+   const REGISTRATION_LIMIT = 65;
    public function showAction(Request $request){
-      $registrationLimit = 50;
       $em = $this->getDoctrine()->getEntityManager();
       $registrations = $em->getRepository('AppBundle:AnniversaryRegistration')->findAll();
-      if(sizeof($registrations) >= $registrationLimit){
+      if(sizeof($registrations) >= self::REGISTRATION_LIMIT){
          return $this->render('anniversary_registration/registrationFull.html.twig');
       }
       $anniversaryRegistration = new AnniversaryRegistration();
@@ -28,7 +28,7 @@ class AnniversaryRegistrationController extends Controller
 
       if($form->isValid()){
          $registrations = $em->getRepository('AppBundle:AnniversaryRegistration')->findAll();
-         if(sizeof($registrations) < $registrationLimit){
+         if(sizeof($registrations) < self::REGISTRATION_LIMIT){
             $em->persist($anniversaryRegistration);
             $em->flush();
             return $this->redirect($this->generateUrl('anniversary_registration_complete'));
@@ -50,7 +50,11 @@ class AnniversaryRegistrationController extends Controller
    public function adminAction(){
       $em = $this->getDoctrine()->getEntityManager();
       $participants = $em->getRepository('AppBundle:AnniversaryRegistration')->findAll();
-      return $this->render('anniversary_registration/admin.html.twig', array('participants' => $participants));
+      return $this->render('anniversary_registration/admin.html.twig', array(
+          'participants' => $participants,
+          'limit' => self::REGISTRATION_LIMIT,
+
+      ));
    }
 
    public function paidAction(Request $request){

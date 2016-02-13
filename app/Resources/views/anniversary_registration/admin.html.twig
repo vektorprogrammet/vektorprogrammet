@@ -84,7 +84,7 @@
     {% if participants is defined %}
         <div class="row">
             <h1 class="text-center">Påmeldte jubileum 2016</h1>
-            <h4>Antall: {{ participants | length }}/50</h4>
+            <h4>Antall: {{ participants | length }}/{{ limit }}</h4>
         </div>
         <div class="row">
             <div class="large-12 large-offset-0">
