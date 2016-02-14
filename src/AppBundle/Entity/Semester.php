@@ -148,19 +148,6 @@ class Semester {
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     * @return Semester
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
      * Get name
      *
      * @return string 
