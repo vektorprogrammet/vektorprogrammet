@@ -130,6 +130,7 @@
 							<th> Kontaktperson </th>
 							<th> Telefon </th>
 							<th> E-post </th>
+							<th> Språk </th>
 							
 							{# Only need this if user is SUPER_ADMIN #}
 							{% if is_granted('ROLE_SUPER_ADMIN') %} 
@@ -151,6 +152,7 @@
 								<td> {{s.contactPerson }} </td>
 								<td> {{s.phone}} </td>
 								<td> {{s.email}} </td>
+								<td> {{ s.international ? 'Internasjonal':'Norsk' }} </td>
 								
 								{# Only SUPER_ADMIN can edit #}
 								{% if is_granted('ROLE_SUPER_ADMIN') %} 
