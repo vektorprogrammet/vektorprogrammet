@@ -11,40 +11,31 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 class SemesterController extends Controller {
-	
+
 	public function updateSemesterAction(request $request){
-		
+
 		$id = $request->get('id');
 
 		$em = $this->getDoctrine()->getManager();
 		$semester = $em->getRepository('AppBundle:Semester')->find($id);
-		
-		// Get the department of the current user
-		$userDepartment = $this->get('security.context')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
-		
-		// Get the department of the semester
-		$semesterDepartment = $semester->getDepartment();
-		
-		// If it is a superadmin they can edit anything
-		if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-		
-			$form = $this->createForm(new EditSemesterType(), $semester);
-		
-			// Handle the form
-			$form->handleRequest($request);
-			
-			if ($form->isValid()) {
-				$em->persist($semester);
-				$em->flush();
-				return $this->redirect($this->generateUrl('semesteradmin_show'));
-			}
-			
-			return $this->render('semester_admin/edit_semester.html.twig', array(
-				 'form' => $form->createView(),
-				'semesterName' => $semester->getName()
-			));
-			
+
+		$form = $this->createForm(new EditSemesterType(), $semester);
+
+		// Handle the form
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+			$em->persist($semester);
+			$em->flush();
+			return $this->redirect($this->generateUrl('semesteradmin_show'));
 		}
+
+		return $this->render('semester_admin/edit_semester.html.twig', array(
+			'form' => $form->createView(),
+			'semesterName' => $semester->getName()
+		));
+
+	}
 		// If it is an admin they can only edit semesters that are from their own department
 		/*
 		************************************************************************************************************
@@ -70,12 +61,7 @@ class SemesterController extends Controller {
 			
 		}
 		*/
-		else{
-			return $this->redirect($this->generateUrl('home'));
-		}
-		
-	}
-	
+
 	public function showSemestersByDepartmentAction(request $request){
 	
 		if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {

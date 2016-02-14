@@ -62,6 +62,7 @@ security:
         - { path: ^/brukeradmin/opprett/, roles: ROLE_SUPER_ADMIN }
         - { path: ^/brukeradmin/avdeling/, roles: ROLE_SUPER_ADMIN }
         - { path: ^/opptakadmin/avdeling/, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/semesteradmin/update/, roles: ROLE_SUPER_ADMIN }
         - { path: ^/semesteradmin/avdeling/opprett/, roles: ROLE_SUPER_ADMIN }
         - { path: ^/intervju/skjema, roles: ROLE_SUPER_ADMIN }
         - { path: ^/intervju/fordel, roles: ROLE_SUPER_ADMIN }
