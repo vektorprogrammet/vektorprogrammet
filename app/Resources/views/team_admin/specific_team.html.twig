@@ -40,9 +40,16 @@
 
 	<script>
 		var $oldWorkHistories = $('#oldWorkHistories');
-		var $historyHeader = $('#oldWorkHistoriesHeader');
-		$historyHeader.on('click', function(){
+		var $oldWorkHistoriesButton = $('#oldWorkHistoriesButton');
+		$oldWorkHistoriesButton.on('click', function(){
 			$oldWorkHistories.slideToggle(400);
+			if($oldWorkHistoriesButton.html() == "Vis gamle medlemmer"){
+				$oldWorkHistoriesButton.html("Skjul gamle medlemmer");
+				$oldWorkHistoriesButton.addClass('alert').removeClass('success');
+			} else if($oldWorkHistoriesButton.html() == "Skjul gamle medlemmer"){
+				$oldWorkHistoriesButton.addClass('success').removeClass('alert');
+				$oldWorkHistoriesButton.html("Vis gamle medlemmer");
+			}
 		});
 	</script>
 
@@ -145,70 +152,72 @@
 					</tbody>
 					
 				</table>
+				<div id="oldWorkHistories">
+					<h3>Team historikk</h3>
+					<table width="100%" id="table">
 
-				<h3>Team historikk</h3>
-				<table width="100%" id="table">
+						<thead>
+						<tr>
+							<th> Fornavn</th>
+							<th> Etternavn</th>
+							<th> Stilling</th>
+							<th> Start</th>
+							<th> Slutt</th>
 
-					<thead>
-					<tr>
-						<th> Fornavn</th>
-						<th> Etternavn</th>
-						<th> Stilling</th>
-						<th> Start</th>
-						<th> Slutt</th>
+							{% if is_granted('ROLE_SUPER_ADMIN') %}
+								<th></th>
+							{% endif %}
 
-						{% if is_granted('ROLE_SUPER_ADMIN') %}
-							<th></th>
-						{% endif %}
+							{% if is_granted('ROLE_SUPER_ADMIN') %}
+								<th></th>
+							{% endif %}
 
-						{% if is_granted('ROLE_SUPER_ADMIN') %}
-							<th></th>
-						{% endif %}
-
-					</tr>
-					</thead>
+						</tr>
+						</thead>
 
 
-					<tbody>
-					{% for wh in workHistories %}
-						{% if wh.endSemester is not null and date() > wh.endSemester.semesterEndDate %}
+						<tbody>
+						{% for wh in workHistories %}
+							{% if wh.endSemester is not null and date() > wh.endSemester.semesterEndDate %}
 
-							<tr>
-								<td> {{ wh.user.firstName }} </td>
-								<td> {{ wh.user.lastName }} </td>
-								<td>
+								<tr>
+									<td> {{ wh.user.firstName }} </td>
+									<td> {{ wh.user.lastName }} </td>
+									<td>
 
-									{% if wh.position is not null %}
-										{{ wh.position.name }}
+										{% if wh.position is not null %}
+											{{ wh.position.name }}
+										{% else %}
+											Stilling er fjernet.
+										{% endif %}
+
+									</td>
+									<td> {{ wh.startSemester }} </td>
+
+									{% if wh.endSemester is null %}
+										<td>{{ wh.endSemester | default("-") }} </td>
 									{% else %}
-										Stilling er fjernet.
+										<td> {{ wh.endSemester }} </td>
 									{% endif %}
 
-								</td>
-								<td> {{ wh.startSemester }} </td>
+									{% if is_granted('ROLE_SUPER_ADMIN') %}
+										<td><a href="{{ path('teamadmin_update_workhistory', { 'id': wh.id }) }}"
+											   class="button tiny">Rediger</a></td>
+									{% endif %}
 
-								{% if wh.endSemester is null %}
-									<td>{{ wh.endSemester | default("-") }} </td>
-								{% else %}
-									<td> {{ wh.endSemester }} </td>
-								{% endif %}
+									{% if is_granted('ROLE_SUPER_ADMIN') %}
+										<td><a href="#" id="{{ wh.id }}" class="button tiny alert delete"><i
+														class="fa fa-trash-o"></i> Slett</a></td>
+									{% endif %}
 
-								{% if is_granted('ROLE_SUPER_ADMIN') %}
-									<td><a href="{{ path('teamadmin_update_workhistory', { 'id': wh.id }) }}"
-										   class="button tiny">Rediger</a></td>
-								{% endif %}
+								</tr>
+							{% endif %}
+						{% endfor %}
+						</tbody>
 
-								{% if is_granted('ROLE_SUPER_ADMIN') %}
-									<td><a href="#" id="{{ wh.id }}" class="button tiny alert delete"><i
-													class="fa fa-trash-o"></i> Slett</a></td>
-								{% endif %}
-
-							</tr>
-						{% endif %}
-					{% endfor %}
-					</tbody>
-
-				</table>
+					</table>
+				</div>
+				<button id="oldWorkHistoriesButton" class="button tiny success">Vis gamle medlemmer</button>
 
 			</div>
 		</div>
