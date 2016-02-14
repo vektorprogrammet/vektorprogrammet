@@ -188,7 +188,7 @@ class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase {
 		
 		$semester1 = new Semester();
 		
-		$semester1->setName("Semester1");
+		$semester1->setSemesterTime('Vår');
 		
 		// Use the addSemester method 
 		$department->addSemester($semester1);
