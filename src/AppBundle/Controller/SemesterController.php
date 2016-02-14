@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\Type\EditSemesterType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Semester;
@@ -27,7 +28,7 @@ class SemesterController extends Controller {
 		// If it is a superadmin they can edit anything
 		if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 		
-			$form = $this->createForm(new CreateSemesterType(), $semester);
+			$form = $this->createForm(new EditSemesterType(), $semester);
 		
 			// Handle the form
 			$form->handleRequest($request);
@@ -38,8 +39,9 @@ class SemesterController extends Controller {
 				return $this->redirect($this->generateUrl('semesteradmin_show'));
 			}
 			
-			return $this->render('semester_admin/create_semester.html.twig', array(
+			return $this->render('semester_admin/edit_semester.html.twig', array(
 				 'form' => $form->createView(),
+				'semesterName' => $semester->getName()
 			));
 			
 		}
@@ -145,9 +147,9 @@ class SemesterController extends Controller {
 				$semester->setName($semester->getSemesterTime().' '.$semester->getYear());
 				$year = $semester->getYear();
 				$startMonth = $semester->getSemesterTime() == "Vår" ? '01' : '08';
-				$endMonth = $semester->getSemesterTime() == "Vår" ? '06' : '12';
+				$endMonth = $semester->getSemesterTime() == "Vår" ? '07' : '12';
 				$semester->setSemesterStartDate(date_create($year.'-'.$startMonth.'-01 00:00:00'));
-				$semester->setSemesterEndDate(date_create($year.'-'.$endMonth.'-30 00:00:00'));
+				$semester->setSemesterEndDate(date_create($year.'-'.$endMonth.'-31 23:59:59'));
 				// If valid insert into database
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($semester);
