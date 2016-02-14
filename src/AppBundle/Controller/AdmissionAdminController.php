@@ -72,7 +72,6 @@ class AdmissionAdminController extends Controller {
         }
 
         // Finds the name of the chosen semester. If no semester chosen display 'Alle'
-        dump($semester);
         $semesterName = is_null($semester) ? 'Alle':$semester->getName();
 
         // Find all the semesters associated with the department

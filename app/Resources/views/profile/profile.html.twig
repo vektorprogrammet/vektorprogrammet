@@ -182,13 +182,13 @@
 														{% if wh.startSemester is null %}
 															Ingen startsemester valgt
 														{% else %}
-															{{ wh.startSemester }}
+															{{ wh.startSemester.name }}
 														{% endif %}
 													</td>
 
 													<td>
 														{% if wh.endSemester is not null %}
-															{{ wh.endSemester }}
+															{{ wh.endSemester.name }}
 														{% else %}
 															Fortsatt aktiv
 														{% endif %}
