@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="no"> <![endif]-->
+<html class="no-js" lang="no">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/app.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=2"/>
+    <title>Vektorprogrammet - Jubileum</title>
+    <style>
+        body {
+            background-color: #6fceee;
+        }
+
+        #registrationMessage {
+            margin-top: 150px;
+        }
+
+        #contact {
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="text-center">
+    <div id="registrationMessage">
+
+        <h1 class="text-center">Påmelding 5 års jubileum Vektorprogrammet</h1>
+        <br>
+        <h3>Påmeldingen er stengt.</h3>
+    </div>
+    <div id="contact">
+        <p>Spørsmål sendes til nestleder@vektorprogrammet.no</p>
+    </div>
+    <br><br>
+    <p>Allerede påmeldt? <a style="color:black; text-decoration: underline;" id="payment-button">Se betalingsinfo</a></p>
+    <div id="payment" style="display: none">
+        <h3>Betaling</h3>
+        <p>Pris: 350,- <br>
+            Kontonr: 9235 31 09296 <br>
+            Frist: 14. Februar <br>
+            Marker betalingen med fullt navn <br>
+        </p>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script>
+    var $payment = $('#payment');
+    $payment.hide();
+
+    var $paymentButton = $('#payment-button');
+    $paymentButton.on('click', function(){
+        $payment.slideToggle(400);
+    })
+</script>
+</body>
+</html>
