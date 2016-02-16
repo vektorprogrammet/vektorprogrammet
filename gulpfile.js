@@ -88,6 +88,11 @@ gulp.task('compressImages', function(){
         .pipe(gulp.dest(dest))
 });
 
+gulp.task('files', function(){
+    gulp.src(path.src + 'files/*')
+        .pipe(gulp.dest('www/files/'))
+});
+
 
 gulp.task('watch', function () {
     gulp.watch(path.src + 'scss/**/*.scss', ['stylesDev']);
@@ -96,7 +101,7 @@ gulp.task('watch', function () {
 });
 
 
-gulp.task('build:prod', ['stylesProd', 'scriptsProd', 'imagesProd']);
-gulp.task('build:dev', ['stylesDev', 'scriptsDev', 'imagesDev']);
+gulp.task('build:prod', ['stylesProd', 'scriptsProd', 'imagesProd', 'files']);
+gulp.task('build:dev', ['stylesDev', 'scriptsDev', 'imagesDev', 'files']);
 gulp.task('default', ['build:dev', 'watch']);
 
