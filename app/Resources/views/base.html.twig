@@ -41,7 +41,9 @@
     </head>
     <body>
     {% block topLine %}
-        <div style="width:100%;height:20px;background-color: #6FCEEE; margin-bottom:20px;"></div>
+        <div class="top-line">
+            <p>Vektorprogrammet søker nye teammedlemmer! <a href="{{ path('article_show', {'id': 21}) }}">Les mer</a></p>
+        </div>
     {% endblock %}
 
         {% block newHeader %}
