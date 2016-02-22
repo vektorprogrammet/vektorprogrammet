@@ -101,8 +101,7 @@
 							<th> Etternavn </th>
 							<th> Stilling </th>
 							<th> Start </th>
-							<th> Slutt </th>
-							
+
 							{% if is_granted('ROLE_SUPER_ADMIN') %}
 								<th> </th>
 							{% endif %}
@@ -131,12 +130,6 @@
 								
 								</td>
 								<td> {{ wh.startSemester.name }} </td>
-								
-								{% if wh.endSemester is null %}
-									<td>{{ wh.endSemester.name | default("-") }} </td>
-								{% else  %}
-									<td> {{ wh.endSemester.name }} </td>
-								{% endif %}
 								
 								{% if is_granted('ROLE_SUPER_ADMIN') %}
 									<td> <a href="{{ path('teamadmin_update_workhistory', { 'id': wh.id }) }}" class="button tiny">Rediger</a> </td>
