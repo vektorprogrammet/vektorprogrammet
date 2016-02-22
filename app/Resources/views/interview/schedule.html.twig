@@ -80,8 +80,7 @@
                 <div class="small-12 medium-8 columns">
                     {{ form_row(form.message) }}
                     {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
-                    {{ form_widget(form.saveAndSend, {'attr': {'class': 'button tiny', 'disabled': 'true'}}) }}
-                    <span style="color:red;">E-post er midlertidig ute av drift.</span>
+                    {{ form_widget(form.saveAndSend, {'attr': {'class': 'button tiny'}}) }}
                 </div>
             </div>
             {{ form_end(form) }}
