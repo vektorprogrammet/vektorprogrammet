@@ -4,9 +4,14 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
+ * @UniqueEntity(
+ *     fields={"semesterTime", "year"},
+ *     message="Dette semesteret er allerede opprettet"
+ * )
  * @ORM\Table(name="Semester")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SemesterRepository")
  */
@@ -19,42 +24,20 @@ class Semester {
      */
     protected $id;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
     protected $semesterTime;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
     protected $year;
-
-    /**
-     * @return mixed
-     */
-    public function getYear()
-    {
-        return $this->year;
-    }
-
-    /**
-     * @param mixed $year
-     */
-    public function setYear($year)
-    {
-        $this->year = $year;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSemesterTime()
-    {
-        return $this->semesterTime;
-    }
-
-    /**
-     * @param mixed $semesterTime
-     */
-    public function setSemesterTime($semesterTime)
-    {
-        $this->semesterTime = $semesterTime;
-    }
 	
 	/**
+     * @var Department
      * @ORM\ManyToOne(targetEntity="Department", inversedBy="semesters")
      */
     protected $department;
@@ -68,12 +51,7 @@ class Semester {
      * @ORM\Column(type="datetime", length=150)
      */
     protected $admission_end_date;
-	
-	/**
-     * @ORM\Column(type="string", length=250)
-     */
-    protected $name;
-	
+
 	/**
      * @ORM\Column(type="datetime", length=150)
      */
@@ -170,26 +148,13 @@ class Semester {
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     * @return Semester
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
      * Get name
      *
      * @return string 
      */
     public function getName()
     {
-        return $this->name;
+        return $this->semesterTime . " " . $this->year;
     }
 
     /**
@@ -217,7 +182,7 @@ class Semester {
 	
 	public function __toString()
 	{
-		return (string) $this->getName().' - '.$this->getDepartment(); //Fix for viewing departmentname in semesterlist.
+        return (string) $this->getName().' - '.$this->getDepartment(); //Fix for viewing departmentname in semesterlist.
 	}
 
     /**
@@ -273,5 +238,37 @@ class Semester {
             $method = "set{$property}";
             $this->$method($value);
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getYear()
+    {
+        return $this->year;
+    }
+
+    /**
+     * @param mixed $year
+     */
+    public function setYear($year)
+    {
+        $this->year = $year;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSemesterTime()
+    {
+        return $this->semesterTime;
+    }
+
+    /**
+     * @param mixed $semesterTime
+     */
+    public function setSemesterTime($semesterTime)
+    {
+        $this->semesterTime = $semesterTime;
     }
 }

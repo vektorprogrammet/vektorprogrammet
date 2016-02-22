@@ -126,7 +126,7 @@
 					<ul class="inline-list">
 						{# Semester dropdown #}
 						<li>
-							<a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown" aria-expanded="false">{% if semester != NULL %}{{ semester }}{% else %}Semester{% endif %} <i class="fa fa-caret-down"></i></a>
+							<a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown" aria-expanded="false">{% if semester != NULL %}{{ semester.name }}{% else %}Semester{% endif %} <i class="fa fa-caret-down"></i></a>
 							<ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
 
 								{% for s in semesters %}
@@ -308,10 +308,10 @@
 													Avdelingen er slettet.
 												{% endif %}
 											</td>
-											<td> {{ wh.startSemester }} </td>
+											<td> {{ wh.startSemester.name }} </td>
 
 
-											<td> {{ wh.endSemester }}</td>
+											<td> {{ wh.endSemester.name }}</td>
 
 										</tr>
 
@@ -350,10 +350,10 @@
 													Avdelingen er slettet.
 												{% endif %}
 											</td>
-											<td> {{ wh.startSemester }} </td>
+											<td> {{ wh.startSemester.name }} </td>
 
 
-											<td> {{ wh.endSemester }}</td>
+											<td> {{ wh.endSemester is null ? '-':wh.endSemester.name }}</td>
 
 										</tr>
 

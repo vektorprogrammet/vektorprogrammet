@@ -113,12 +113,12 @@
 								{% endif %}
 								
 								</td>
-								<td> {{ wh.startSemester }} </td>
+								<td> {{ wh.startSemester.name }} </td>
 								
 								{% if wh.endSemester is null %}
-									<td>{{ wh.endSemester | default("-") }} </td>
+									<td>{{ wh.endSemester.name | default("-") }} </td>
 								{% else %}
-									<td> {{ wh.endSemester }} </td>
+									<td> {{ wh.endSemester.name }} </td>
 								{% endif %}
 								
 								{% if is_granted('ROLE_SUPER_ADMIN') %}
