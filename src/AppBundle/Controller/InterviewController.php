@@ -313,7 +313,7 @@ class InterviewController extends Controller
         $defaultData = array(
             'datetime' => $interview->getScheduled(),
             'message' => 'Hei, vi har satt opp et intervju for deg angående opptak til vektorprogrammet. ' .
-            'Dersom tidspunktet ikke passer, venligst send svar som retur til denne eposten.',
+            'Vennligst gi beskjed til meg hvis tidspunktet ikke passer.',
             'from' => $interview->getInterviewer()->getEmail(),
             'to' => $interview->getApplication()->getEmail()
         );
@@ -334,20 +334,24 @@ class InterviewController extends Controller
             // Send email if the send button was clicked
             if($form->get('saveAndSend')->isClicked()) {
                 $mailer = $this->get('mailer');
-                $message = $mailer->createMessage()
+                $message = \Swift_Message::newInstance()
                     ->setSubject('Intervju for vektorprogrammet')
-                    ->setFrom($data['from'])
+                    ->setFrom('opptak@vektorprogrammet.no')
                     ->setTo($data['to'])
+                    ->setReplyTo($data['from'])
                     ->setBody(
                         $this->renderView('interview/email.html.twig',
                             array('message' => $data['message'],
-                                'datetime' => $data['datetime'])
+                                'datetime' => $data['datetime'],
+                                'fromName' => $interview->getInterviewer()->getFirstName() . " " . $interview->getInterviewer()->getLastName(),
+                                'fromMail' => $data['from'],
+                                'fromPhone' => $interview->getInterviewer()->getPhone()
+                                )
                         ),
                         'text/html'
                     );
                 $mailer->send($message);
             }
-
             return $this->redirect($this->generateUrl('admissionadmin_show', array('status' => 'assigned')));
         }
 

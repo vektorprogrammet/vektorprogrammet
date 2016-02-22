@@ -62,17 +62,18 @@ security:
         - { path: ^/brukeradmin/opprett/, roles: ROLE_SUPER_ADMIN }
         - { path: ^/brukeradmin/avdeling/, roles: ROLE_SUPER_ADMIN }
         - { path: ^/opptakadmin/avdeling/, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/semesteradmin/update/, roles: ROLE_SUPER_ADMIN }
         - { path: ^/semesteradmin/avdeling/opprett/, roles: ROLE_SUPER_ADMIN }
         - { path: ^/intervju/skjema, roles: ROLE_SUPER_ADMIN }
         - { path: ^/intervju/fordel, roles: ROLE_SUPER_ADMIN }
         - { path: ^/vikar/rediger, roles: ROLE_SUPER_ADMIN }
         - { path: ^/undersokelse/slett, role: ROLE_SUPER_ADMIN }
-        - { path: ^/brukeradmin/jubileum, role: ROLE_SUPER_ADMIN }
         - { path: ^/brukeradmin/jubileum/betalt, role: ROLE_SUPER_ADMIN }
         - { path: ^/brukeradmin/jubileum/slettbetaling, role: ROLE_SUPER_ADMIN }
         - { path: ^/teamadmin/rediger/stilling/, roles: ROLE_SUPER_ADMIN }
 
           #ROLE_ADMIN = team user
+        - { path: ^/brukeradmin/jubileum, role: ROLE_SUPER_ADMIN }
         - { path: ^/opptakadmin/slett/, roles: ROLE_ADMIN }
         - { path: ^/brukeradmin/opprett, roles: ROLE_ADMIN }
         - { path: ^/profile/edit/, roles: ROLE_ADMIN }

@@ -60,9 +60,6 @@ class SurveyController extends Controller
 
     public function createSurveyAction(Request $request)
     {
-        if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
-            throw $this->createAccessDeniedException();
-        }
         $survey = new Survey();
 
         $form = $this->createForm(new SurveyType(), $survey);
@@ -89,9 +86,6 @@ class SurveyController extends Controller
 
     public function showSurveysAction()
     {
-        if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
-            throw $this->createAccessDeniedException();
-        }
         $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findAll();
         foreach($surveys as $survey){
             $sql = "
@@ -109,10 +103,6 @@ class SurveyController extends Controller
 
     public function editSurveyAction(Request $request, Survey $survey)
     {
-        if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
-            throw $this->createAccessDeniedException();
-        }
-
         $form = $this->createForm(new SurveyType(), $survey);
         $form->handleRequest($request);
 
@@ -161,10 +151,6 @@ class SurveyController extends Controller
 
     public function resultSurveyAction(Survey $survey)
     {
-        if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
-            throw $this->createAccessDeniedException();
-        }
-
         $surveyTakenList = $this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findBySurvey($survey);
 
         //ADD SCHOOL CHART

@@ -23,17 +23,26 @@ class CreateSchoolType extends AbstractType {
 			->add('email', 'text', array(
 				'label' => 'E-post',
 			))
+			->add('international', 'choice', array(
+				'label' => 'Skolen er internasjonal',
+				'choices' => array(
+					true => 'Ja',
+					false => 'Nei'
+				),
+				'expanded' => true,
+				'multiple' => false
+			))
 			->add('save', 'submit', array(
 				'label' => 'Opprett',
 			));
     }
-	
+
 	public function setDefaultOptions(OptionsResolverInterface $resolver) {
-	
+
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\School',
         ));
-		
+
     }
 	
     public function getName() {

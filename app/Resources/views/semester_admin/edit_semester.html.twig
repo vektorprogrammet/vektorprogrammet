@@ -1,0 +1,47 @@
+{% extends 'adminBase.html.twig' %}
+
+
+{% block title %}
+	Opprett semester
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="small-12 medium-12 large-12 columns">
+
+			<h1> Endre semester {{ semesterName }} </h1>
+
+			<hr>
+
+
+			<div class="row">
+
+				<div class="small-12 medium-12 large-6 columns">
+
+					{{ form_start(form) }}
+					{{ form_widget(form) }}
+					{{ form_end(form) }}
+
+				</div>
+
+				<div class="small-12 medium-12 large-6 columns">
+					<div class="panel callout radius">
+
+						<h2> Format </h2>
+
+						<p>
+
+							Bruk formatet yyyy-MM-dd HH:mm:ss <br/>
+
+							Eksempel: 2015-10-03 10:30:00 <br/>
+
+						</p>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+{% endblock %}

@@ -51,16 +51,11 @@ class AdmissionAdminController extends Controller {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         // Get query strings for filtering applications
         $status = $request->query->get('status', 'new');
-        $semester = $request->query->get('semester', null);
-        if($semester === null){
-            $allSemesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findByDepartment($user->getFieldOfStudy()->getDepartment());
-            foreach($allSemesters as $s){
-                $now = new \DateTime;
-                if($s->getSemesterStartDate() < $now && $s->getSemesterEndDate() > $now){
-                    $semester = $s->getId();
-                    break;
-                }
-            }
+        $semesterId = $request->query->get('semester', null);
+        if($semesterId === null){
+            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($user->getFieldOfStudy()->getDepartment());
+        }else{
+            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterId);
         }
 
         // Finds all the departments
@@ -77,10 +72,7 @@ class AdmissionAdminController extends Controller {
         }
 
         // Finds the name of the chosen semester. If no semester chosen display 'Alle'
-        $semesterName = 'Alle';
-        if($semester !== null){
-            $semesterName = $this->getDoctrine()->getRepository('AppBundle:Semester')->findNameById($semester);
-        }
+        $semesterName = is_null($semester) ? 'Alle':$semester->getName();
 
         // Find all the semesters associated with the department
         $semesters =  $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);

@@ -41,13 +41,13 @@ class AssistantHistoryEntityUnitTest extends \PHPUnit_Framework_TestCase {
 		$semester = new Semester();
 		
 		// Set some random datat to the entity 
-		$semester->setName("Huehue");
-		
+		$semester->setSemesterTime('Vår');
+
 		// Set the entity to assistantHistory
 		$assistantHistory->setSemester($semester);
 		
 		// Assert the result 
-		$this->assertEquals($semester->getName(), $assistantHistory->getSemester()->getName());
+		$this->assertEquals($semester->getSemesterTime(), $assistantHistory->getSemester()->getSemesterTime());
 		
 	}
 	

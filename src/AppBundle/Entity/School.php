@@ -52,9 +52,16 @@ class School
      */
     protected $phone;
 
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    private $international;
+
     public function __construct() {
         $this->departments = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->subforums = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->international = false;
     }
 
     /**
@@ -238,4 +245,22 @@ class School
             $this->$method($value);
         }
     }
+
+    /**
+     * @return boolean
+     */
+    public function isInternational()
+    {
+        return $this->international;
+    }
+
+    /**
+     * @param boolean $international
+     */
+    public function setInternational($international)
+    {
+        $this->international = $international;
+    }
+
+
 }
