@@ -130,7 +130,6 @@ class SemesterController extends Controller {
 				// Set the department of the semester
 				$semester->setDepartment($department);
 
-				$semester->setName($semester->getSemesterTime().' '.$semester->getYear());
 				$year = $semester->getYear();
 				$startMonth = $semester->getSemesterTime() == "Vår" ? '01' : '08';
 				$endMonth = $semester->getSemesterTime() == "Vår" ? '07' : '12';
