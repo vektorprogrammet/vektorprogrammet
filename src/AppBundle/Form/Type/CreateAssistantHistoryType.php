@@ -62,6 +62,16 @@ class CreateAssistantHistoryType extends AbstractType {
 					'Bolk 1, Bolk 2'   => 'Bolk 1 og Bolk 2',
 				),
 			))
+			->add('day', 'choice', array(
+				'label' => 'Dag',
+				'choices' => array(
+					'Mandag' => 'Mandag',
+					'Tirsdag' => 'Tirsdag',
+					'Onsdag' => 'Onsdag',
+					'Torsdag' => 'Torsdag',
+					'Fredag' => 'Fredag'
+				)
+			))
 			->add('save', 'submit', array(
 				'label' => 'Opprett',
 			));

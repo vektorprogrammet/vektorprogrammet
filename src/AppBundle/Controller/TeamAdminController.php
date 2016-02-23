@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Semester;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -248,8 +249,9 @@ class TeamAdminController extends Controller {
 			$team = $this->getDoctrine()->getRepository('AppBundle:Team')->find($id);
 		
 			// Find all WorkHistory entities based on team 
-			$workHistories =  $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findByTeam($team);
-			
+			$workHistories =  $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findBy(array('team' => $team));
+			usort($workHistories, array($this, "sortWorkHistoriesByEndDate"));
+
 			// Return the view with suitable variables
 			return $this->render('team_admin/specific_team.html.twig', array(
 				'team' => $team,
@@ -283,6 +285,17 @@ class TeamAdminController extends Controller {
 		}
 			
     }
+
+	/**
+	 * @param WorkHistory $a
+	 * @param WorkHistory $b
+	 * @return bool
+	 */
+	private function sortWorkHistoriesByEndDate($a, $b){
+		if(is_null($a->getEndSemester()))return false;
+		if(is_null($b->getEndSemester()))return true;
+		return $a->getEndSemester()->getSemesterEndDate()<$b->getEndSemester()->getSemesterEndDate();
+	}
 	
 	public function updateTeamAction(request $request){
 		

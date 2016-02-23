@@ -94,7 +94,7 @@
 
 					{# Department dropdown #}
 					<li>
-						<a class="button tiny" data-dropdown="autoCloseExample" aria-controls="autoCloseExample" aria-expanded="false">Avdeling <i class="fa fa-caret-down"></i></a>
+						<a class="button tiny" data-dropdown="autoCloseExample" aria-controls="autoCloseExample" aria-expanded="false">{{ department }} <i class="fa fa-caret-down"></i></a>
 						<ul id="autoCloseExample" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
 
 							{% for d in departments %}
@@ -110,7 +110,7 @@
 
 					{# Semester dropdown #}
 					<li>
-						<a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown" aria-expanded="false">Semester <i class="fa fa-caret-down"></i></a>
+						<a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown" aria-expanded="false">{% if semester != NULL %}{{ semester }}{% else %}Semester{% endif %} <i class="fa fa-caret-down"></i></a>
 						<ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
 
 							{% for s in semesters %}
@@ -126,7 +126,7 @@
 					<ul class="inline-list">
 						{# Semester dropdown #}
 						<li>
-							<a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown" aria-expanded="false">Semester <i class="fa fa-caret-down"></i></a>
+							<a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown" aria-expanded="false">{% if semester != NULL %}{{ semester.name }}{% else %}Semester{% endif %} <i class="fa fa-caret-down"></i></a>
 							<ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
 
 								{% for s in semesters %}
@@ -138,77 +138,6 @@
 						</li>
 					</ul>
 			{% endif %}
-
-
-
-
-
-			<div class="row">
-
-				<div class="small-12 medium-12 large-12 columns">
-					<hr>
-				</div>
-				
-				<div class="small-12 medium-12 large-8 columns">
-										
-					<h3> Aktive assistenter <span style="float:right;font-size: 80%;">Antall: {{ activeHistories|length }}</span></h3>
-
-
-				</div>
-				<div class="small-12 medium-12 large-4 columns">
-
-					<input type="text" id="activeAssistantSearch" placeholder="Søk..." />
-					
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="small-12 medium-12 large-12 columns">
-
-					<hr>
-
-					<table width="100%" id="activeAssistantTable">
-
-						<thead>
-
-						<tr>
-							<th> Navn</th>
-							<th> Skole</th>
-							<th> E-post</th>
-							<th> Semester</th>
-							<th> Avdeling</th>
-						</tr>
-
-						</thead>
-
-						<tbody>
-
-						{% for ah in activeHistories %}
-
-							<tr>
-								<td> <a href='{{ path('specific_profile', { 'id': ah.user.id }) }}'>{{ ah.user.firstName }} {{ah.user.lastName }}</a></td>
-								<td>
-
-									{% if ah.school is not null %}
-										{{ ah.school.name }}
-									{% else %}
-										Skolen er slettet.
-									{% endif %}
-
-								</td>
-								<td> {{ ah.user.email }}</td>
-								<td> {{ ah.semester.name }}</td>
-								<td> {{ ah.semester.department.shortname }}</td>
-							</tr>
-
-						{% endfor %}
-
-						</tbody>
-
-					</table>
-
-				</div>
-			</div>
 
 			<div class="row">
 
@@ -246,6 +175,8 @@
 								<th> E-post</th>
 								<th> Semester</th>
 								<th> Avdeling</th>
+								<th> Bolk</th>
+								<th> Dag</th>
 							</tr>
 										
 						</thead>
@@ -268,6 +199,8 @@
 											<td> {{ ah.user.email }}</td>
 											<td> {{ ah.semester.name }}</td>
 											<td> {{ ah.semester.department.shortname }}</td>
+											<td> {{ ah.bolk }}</td>
+											<td> {{ ah.day }}</td>
 										</tr>
 									{% endif %}
 								{% endfor %}
@@ -288,6 +221,8 @@
 											<td> {{ ah.user.email }}</td>
 											<td> {{ ah.semester.name }}</td>
 											<td> {{ ah.semester.department.shortname }}</td>
+											<td> {{ ah.bolk }}</td>
+											<td> {{ ah.day }}</td>
 										</tr>
 									{% endif %}
 								{% endfor %}
@@ -373,10 +308,10 @@
 													Avdelingen er slettet.
 												{% endif %}
 											</td>
-											<td> {{ wh.startSemester }} </td>
+											<td> {{ wh.startSemester.name }} </td>
 
 
-											<td> {{ wh.endSemester }}</td>
+											<td> {{ wh.endSemester.name }}</td>
 
 										</tr>
 
@@ -415,10 +350,10 @@
 													Avdelingen er slettet.
 												{% endif %}
 											</td>
-											<td> {{ wh.startSemester }} </td>
+											<td> {{ wh.startSemester.name }} </td>
 
 
-											<td> {{ wh.endSemester }}</td>
+											<td> {{ wh.endSemester is null ? '-':wh.endSemester.name }}</td>
 
 										</tr>
 

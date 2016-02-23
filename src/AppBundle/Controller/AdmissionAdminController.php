@@ -50,7 +50,13 @@ class AdmissionAdminController extends Controller {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         // Get query strings for filtering applications
         $status = $request->query->get('status', 'new');
-        $semester = $request->query->get('semester', null);
+
+        $semesterId = $request->query->get('semester', null);
+        if($semesterId === null){
+            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($user->getFieldOfStudy()->getDepartment());
+        }else{
+            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterId);
+        }
 
         $em = $this->getDoctrine();
 
@@ -70,9 +76,8 @@ class AdmissionAdminController extends Controller {
         }else{
             $semester = $em->getRepository('AppBundle:Semester')->find($semester);
         }
-
         // Finds the name of the chosen semester. If no semester chosen display 'Alle'
-        $semesterName = $this->getDoctrine()->getRepository('AppBundle:Semester')->findNameById($semester->getId());
+        $semesterName = is_null($semester) ? 'Alle':$semester->getName();
 
         // Finds all the departments
         $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\Type\EditSemesterType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Semester;
@@ -10,39 +11,31 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 class SemesterController extends Controller {
-	
+
 	public function updateSemesterAction(request $request){
-		
+
 		$id = $request->get('id');
 
 		$em = $this->getDoctrine()->getManager();
 		$semester = $em->getRepository('AppBundle:Semester')->find($id);
-		
-		// Get the department of the current user
-		$userDepartment = $this->get('security.context')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
-		
-		// Get the department of the semester
-		$semesterDepartment = $semester->getDepartment();
-		
-		// If it is a superadmin they can edit anything
-		if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-		
-			$form = $this->createForm(new CreateSemesterType(), $semester);
-		
-			// Handle the form
-			$form->handleRequest($request);
-			
-			if ($form->isValid()) {
-				$em->persist($semester);
-				$em->flush();
-				return $this->redirect($this->generateUrl('semesteradmin_show'));
-			}
-			
-			return $this->render('semester_admin/create_semester.html.twig', array(
-				 'form' => $form->createView(),
-			));
-			
+
+		$form = $this->createForm(new EditSemesterType(), $semester);
+
+		// Handle the form
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+			$em->persist($semester);
+			$em->flush();
+			return $this->redirect($this->generateUrl('semesteradmin_show'));
 		}
+
+		return $this->render('semester_admin/edit_semester.html.twig', array(
+			'form' => $form->createView(),
+			'semesterName' => $semester->getName()
+		));
+
+	}
 		// If it is an admin they can only edit semesters that are from their own department
 		/*
 		************************************************************************************************************
@@ -68,12 +61,7 @@ class SemesterController extends Controller {
 			
 		}
 		*/
-		else{
-			return $this->redirect($this->generateUrl('home'));
-		}
-		
-	}
-	
+
 	public function showSemestersByDepartmentAction(request $request){
 	
 		if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
@@ -142,12 +130,11 @@ class SemesterController extends Controller {
 				// Set the department of the semester
 				$semester->setDepartment($department);
 
-				$semester->setName($semester->getSemesterTime().' '.$semester->getYear());
 				$year = $semester->getYear();
 				$startMonth = $semester->getSemesterTime() == "Vår" ? '01' : '08';
-				$endMonth = $semester->getSemesterTime() == "Vår" ? '06' : '12';
+				$endMonth = $semester->getSemesterTime() == "Vår" ? '07' : '12';
 				$semester->setSemesterStartDate(date_create($year.'-'.$startMonth.'-01 00:00:00'));
-				$semester->setSemesterEndDate(date_create($year.'-'.$endMonth.'-30 00:00:00'));
+				$semester->setSemesterEndDate(date_create($year.'-'.$endMonth.'-31 23:59:59'));
 				// If valid insert into database
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($semester);

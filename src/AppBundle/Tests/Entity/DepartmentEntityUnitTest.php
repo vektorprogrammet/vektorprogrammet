@@ -188,7 +188,7 @@ class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase {
 		
 		$semester1 = new Semester();
 		
-		$semester1->setName("Semester1");
+		$semester1->setSemesterTime('Vår');
 		
 		// Use the addSemester method 
 		$department->addSemester($semester1);
@@ -212,11 +212,11 @@ class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase {
 		$department = new Department();
 		
 		$semester1 = new Semester();
-		$semester1->setName("Semester1");
+		$semester1->setSemesterTime("Høst");
 		$semester2 = new Semester();
-		$semester2->setName("Semester2");
+		$semester2->setSemesterTime("Vår");
 		$semester3 = new Semester();
-		$semester3->setName("Semester3");
+		$semester3->setSemesterTime("Vår");
 		
 		// Use the addSemester method 
 		$department->addSemester($semester1);

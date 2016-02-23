@@ -130,7 +130,7 @@ class SchoolAdminController extends Controller {
 				$em = $this->getDoctrine()->getEntityManager();	
 				$em->persist($assistantHistory);
 				$em->flush();
-				return $this->redirect($this->generateUrl('schooladmin_show'));
+				return $this->redirect($this->generateUrl('schooladmin_show_users_of_department_superadmin', array('id'=>$this->getUser()->getFieldOfStudy()->getDepartment()->getId())));
 			}
 				
 			// Return the form view
@@ -150,7 +150,7 @@ class SchoolAdminController extends Controller {
 				$em = $this->getDoctrine()->getEntityManager();	
 				$em->persist($assistantHistory);
 				$em->flush();
-				return $this->redirect($this->generateUrl('schooladmin_show'));
+				return $this->redirect($this->generateUrl('schooladmin_show_users_of_department'));
 			}
 				
 			// Return the form view

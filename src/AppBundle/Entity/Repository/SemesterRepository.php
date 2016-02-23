@@ -9,14 +9,6 @@ use Doctrine\ORM\EntityRepository;
 
 class SemesterRepository extends EntityRepository {
 
-    public function findNameById($id){
-        return $this->createQueryBuilder('Semester')
-            ->select('Semester.name')
-            ->where('Semester.id = '.$id)
-            ->getQuery()
-            ->getSingleScalarResult();
-    }
-
 	public function findAllSemestersByDepartment($department){
 		
 		$semesters =  $this->getEntityManager()->createQuery("

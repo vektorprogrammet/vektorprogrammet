@@ -44,20 +44,6 @@ class SemesterEntityUnitTest extends \PHPUnit_Framework_TestCase {
 		
 	}
 	
-	// Check whether the setName function is working correctly
-	public function testSetName(){
-		
-		// new entity
-		$semester = new Semester();
-		
-		// Use the setName method 
-		$semester->setName("VÅR2015");
-		
-		// Assert the result 
-		$this->assertEquals("VÅR2015", $semester->getName());
-		
-	}
-	
 	// Check whether the setDepartment function is working correctly
 	public function testSetDepartment(){
 		

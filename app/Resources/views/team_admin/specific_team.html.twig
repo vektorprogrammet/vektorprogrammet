@@ -38,6 +38,21 @@
 
 	</script>
 
+	<script>
+		var $oldWorkHistories = $('#oldWorkHistories');
+		var $oldWorkHistoriesButton = $('#oldWorkHistoriesButton');
+		$oldWorkHistoriesButton.on('click', function(){
+			$oldWorkHistories.slideToggle(400);
+			if($oldWorkHistoriesButton.html() == "Vis gamle medlemmer"){
+				$oldWorkHistoriesButton.html("Skjul gamle medlemmer");
+				$oldWorkHistoriesButton.addClass('alert').removeClass('success');
+			} else if($oldWorkHistoriesButton.html() == "Skjul gamle medlemmer"){
+				$oldWorkHistoriesButton.addClass('success').removeClass('alert');
+				$oldWorkHistoriesButton.html("Vis gamle medlemmer");
+			}
+		});
+	</script>
+
 
 {% endblock %}
 
@@ -77,7 +92,7 @@
 					</div>	
 						
 					<hr>
-					
+					<h3>Aktive medlemmer</h3>
 					<table width="100%" id="table">
 				
 					<thead>
@@ -86,8 +101,7 @@
 							<th> Etternavn </th>
 							<th> Stilling </th>
 							<th> Start </th>
-							<th> Slutt </th>
-							
+
 							{% if is_granted('ROLE_SUPER_ADMIN') %}
 								<th> </th>
 							{% endif %}
@@ -101,7 +115,9 @@
 					
 					<tbody>
 						{% for wh in workHistories %}
-							<tr>
+							{% if wh.endSemester is null or date() < wh.endSemester.semesterEndDate  %}
+
+								<tr>
 								<td> {{ wh.user.firstName }} </td>
 								<td> {{ wh.user.lastName }} </td>
 								<td>
@@ -113,13 +129,7 @@
 								{% endif %}
 								
 								</td>
-								<td> {{ wh.startSemester }} </td>
-								
-								{% if wh.endSemester is null %}
-									<td>{{ wh.endSemester | default("-") }} </td>
-								{% else %}
-									<td> {{ wh.endSemester }} </td>
-								{% endif %}
+								<td> {{ wh.startSemester.name }} </td>
 								
 								{% if is_granted('ROLE_SUPER_ADMIN') %}
 									<td> <a href="{{ path('teamadmin_update_workhistory', { 'id': wh.id }) }}" class="button tiny">Rediger</a> </td>
@@ -129,15 +139,82 @@
 									<td><a href="#" id="{{ wh.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td>
 								{% endif %}
 								
-							</tr>	
+							</tr>
+							{% endif %}
 						{% endfor %}
 					</tbody>
 					
 				</table>
-		
+				<div id="oldWorkHistories">
+					<h3>Team historikk</h3>
+					<table width="100%" id="table">
+
+						<thead>
+						<tr>
+							<th> Fornavn</th>
+							<th> Etternavn</th>
+							<th> Stilling</th>
+							<th> Start</th>
+							<th> Slutt</th>
+
+							{% if is_granted('ROLE_SUPER_ADMIN') %}
+								<th></th>
+							{% endif %}
+
+							{% if is_granted('ROLE_SUPER_ADMIN') %}
+								<th></th>
+							{% endif %}
+
+						</tr>
+						</thead>
+
+
+						<tbody>
+						{% for wh in workHistories %}
+							{% if wh.endSemester is not null and date() > wh.endSemester.semesterEndDate %}
+
+								<tr>
+									<td> {{ wh.user.firstName }} </td>
+									<td> {{ wh.user.lastName }} </td>
+									<td>
+
+										{% if wh.position is not null %}
+											{{ wh.position.name }}
+										{% else %}
+											Stilling er fjernet.
+										{% endif %}
+
+									</td>
+									<td> {{ wh.startSemester.name }} </td>
+
+									{% if wh.endSemester is null %}
+										<td>{{ wh.endSemester.name | default("-") }} </td>
+									{% else %}
+										<td> {{ wh.endSemester.name }} </td>
+									{% endif %}
+
+									{% if is_granted('ROLE_SUPER_ADMIN') %}
+										<td><a href="{{ path('teamadmin_update_workhistory', { 'id': wh.id }) }}"
+											   class="button tiny">Rediger</a></td>
+									{% endif %}
+
+									{% if is_granted('ROLE_SUPER_ADMIN') %}
+										<td><a href="#" id="{{ wh.id }}" class="button tiny alert delete"><i
+														class="fa fa-trash-o"></i> Slett</a></td>
+									{% endif %}
+
+								</tr>
+							{% endif %}
+						{% endfor %}
+						</tbody>
+
+					</table>
+				</div>
+				<button id="oldWorkHistoriesButton" class="button tiny success">Vis gamle medlemmer</button>
+
 			</div>
 		</div>
-		
+
 		<div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true" role="dialog">
 			<h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
 			<ul class="inline-list">

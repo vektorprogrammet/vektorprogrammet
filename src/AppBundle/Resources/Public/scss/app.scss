@@ -420,6 +420,30 @@ ul.alternatives {
 .float-right{
   float:right;
 }
-.clear{
-  clear:both;
+.clear {
+  clear: both;
+}
+
+// Sponsor
+.vertical-align-image-helper{
+  display: inline-block;
+  height:100%;
+  vertical-align: middle;
+}
+.sponsor-img{
+  max-height: 150px;
+  vertical-align: middle;
+}
+
+.sponsor-column{
+  height:150px;
+}
+
+//Team specific
+#oldWorkHistoriesButton{
+  margin:30px 0;
+}
+#oldWorkHistories{
+  margin-top:30px;
+  display:none;
 }

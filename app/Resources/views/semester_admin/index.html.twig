@@ -111,8 +111,6 @@
 					<thead>
 						<tr>
 							<th> Navn </th>
-							<th> Semesterstart</th>
-							<th> Semesterslutt</th>
 							<th> Opptak start </th>
 							<th> Opptak slutt </th>
 							{% if is_granted('ROLE_SUPER_ADMIN') %} 
@@ -126,8 +124,6 @@
 						{% for s in semesters %}
 							<tr>
 								<td> {{ s.name }} </td>
-								<td> {{ s.semesterStartDate|date('Y-m-d') }} </br> Kl.   {{ s.semesterStartDate|date('H:i:s') }}</td>
-								<td> {{ s.semesterEndDate|date('Y-m-d') }} </br> Kl.   {{ s.semesterEndDate|date('H:i:s') }}</td>
 								<td> {{ s.admissionStartDate|date('Y-m-d') }} </br> Kl.   {{ s.admissionStartDate|date('H:i:s') }}</td>
 								<td> {{ s.admissionEndDate|date('Y-m-d') }}  </br> Kl.   {{ s.admissionEndDate|date('H:i:s') }}</td>
 								

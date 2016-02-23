@@ -8,14 +8,16 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=2"/>
     <title>Vektorprogrammet - Jubileum</title>
     <style>
-        body{
+        body {
             background-color: #6fceee;
         }
-        #registrationMessage{
-            margin-top:150px;
+
+        #registrationMessage {
+            margin-top: 150px;
         }
-        #contact{
-            margin-top:30px;
+
+        #contact {
+            margin-top: 30px;
             text-align: center;
         }
     </style>
@@ -31,6 +33,26 @@
     <div id="contact">
         <p>Spørsmål sendes til nestleder@vektorprogrammet.no</p>
     </div>
+    <br><br>
+    <p>Allerede påmeldt? <a style="color:black; text-decoration: underline;" id="payment-button">Se betalingsinfo</a></p>
+    <div id="payment" style="display: none">
+        <h3>Betaling</h3>
+        <p>Pris: 350,- <br>
+            Kontonr: 9235 31 09296 <br>
+            Frist: 14. Februar <br>
+            Marker betalingen med fullt navn <br>
+        </p>
+    </div>
 </div>
-</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script>
+    var $payment = $('#payment');
+    $payment.hide();
+
+    var $paymentButton = $('#payment-button');
+    $paymentButton.on('click', function(){
+        $payment.slideToggle(400);
+    })
+</script>
 </body>
+</html>
