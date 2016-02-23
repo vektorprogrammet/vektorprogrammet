@@ -56,7 +56,7 @@ class Interview
     protected $interviewScore;
 
     /**
-     * @ORM\OneToOne(targetEntity="User", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
      */
     protected $user;
 

@@ -122,13 +122,6 @@ class AdmissionAdminController extends Controller {
                 break;
             case 'existing':
                 $applicants = $repository->findExistingApplicants($department,$semester);
-                foreach($applicants as $applicant){
-                    if($applicant->getUser() == $user){
-                        if(!is_null($applicant->getInterview()))
-                            $applicant->getInterview()->getInterviewScore()->hideScores();
-                        break;
-                    }
-                }
                 $template = 'existing_assistants_applications_table.html.twig';
                 break;
             default:
