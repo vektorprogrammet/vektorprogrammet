@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\InterviewRepository")
  * @ORM\Table(name="interview")
  */
 class Interview
@@ -45,12 +45,6 @@ class Interview
     protected $interviewer; // Unidirectional, may turn out to be bidirectional
 
     /**
-     * @ORM\OneToOne(targetEntity="Application", inversedBy="interview")
-     * @ORM\JoinColumn(name="application_id", referencedColumnName="id")
-     */
-    protected $application;
-
-    /**
      * @ORM\OneToMany(targetEntity="InterviewAnswer", mappedBy="interview", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $interviewAnswers;
@@ -62,10 +56,9 @@ class Interview
     protected $interviewScore;
 
     /**
-     * @ORM\OneToOne(targetEntity="InterviewPractical", cascade={"persist"})
-     * @ORM\JoinColumn(name="interview_practical_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
      */
-    protected $interviewPractical;
+    protected $user;
 
     /**
      * Constructor
@@ -73,6 +66,7 @@ class Interview
     public function __construct()
     {
         $this->interviewAnswers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->interviewed = false;
     }
 
     /**
@@ -129,29 +123,6 @@ class Interview
     public function getInterviewer()
     {
         return $this->interviewer;
-    }
-
-    /**
-     * Set application
-     *
-     * @param \AppBundle\Entity\Application $application
-     * @return Interview
-     */
-    public function setApplication(\AppBundle\Entity\Application $application = null)
-    {
-        $this->application = $application;
-
-        return $this;
-    }
-
-    /**
-     * Get application
-     *
-     * @return \AppBundle\Entity\Application
-     */
-    public function getApplication()
-    {
-        return $this->application;
     }
 
     /**
@@ -245,29 +216,6 @@ class Interview
     }
 
     /**
-     * Set interviewPractical
-     *
-     * @param \AppBundle\Entity\InterviewPractical $interviewPractical
-     * @return Interview
-     */
-    public function setInterviewPractical(\AppBundle\Entity\InterviewPractical $interviewPractical = null)
-    {
-        $this->interviewPractical = $interviewPractical;
-
-        return $this;
-    }
-
-    /**
-     * Get interviewPractical
-     *
-     * @return \AppBundle\Entity\InterviewPractical 
-     */
-    public function getInterviewPractical()
-    {
-        return $this->interviewPractical;
-    }
-
-    /**
      * Set scheduled
      *
      * @param \DateTime $scheduled
@@ -311,5 +259,21 @@ class Interview
     public function getConducted()
     {
         return $this->conducted;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
     }
 }

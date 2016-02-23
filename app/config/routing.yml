@@ -363,6 +363,10 @@ admission_contact:
  path: /opptakkontakt/{id}
  defaults: {_controller: AppBundle:Admission:contact }
 
+admission_existing_user:
+ path: /opptak/eksisterende
+ defaults: {_controller: AppBundle:Admission:existingUserAdmission}
+
 
 ##########################################
 #            AdmissionAdmin              #
@@ -685,6 +689,25 @@ schooladmin_show_specific_school:
     _method: GET|POST
     id: \d+
 
+##########################################
+#              SchoolAllocation          #
+##########################################
+
+school_allocation:
+  path: /skole/fordeling/
+  defaults: { _controller: AppBundle:SchoolAllocation:show }
+
+allocate_edit:
+  path: /skole/fordeling/endre
+  defaults: { _controller: AppBundle:SchoolAllocation:edit }
+
+allocate_create:
+  path: /skole/fordeling/opprett
+  defaults: { _controller: AppBundle:SchoolAllocation:create }
+
+school_allocation_allocate:
+  path: /skole/fordeling/fordel
+  defaults: { _controller: AppBundle:SchoolAllocation:allocate }
 
 ##########################################
 #              Interview                 #

@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\AdmissionRepository")
- * @ORM\Table(name="Application")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ApplicationRepository")
+ * @ORM\Table(name="application")
  */
 class Application {
 
@@ -16,52 +16,111 @@ class Application {
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
-	
-	/**
-     * @ORM\Column(type="string", length=250)
+    private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Semester")
      */
-    protected $firstName;
-	
-	/**
-     * @ORM\Column(type="string", length=250)
+    private $semester;
+
+    /**
+     * @ORM\Column(type="string" , length=20)
      */
-    protected $lastName;
-	
-	/**
-     * @ORM\Column(type="string", length=250)
+    private $yearOfStudy;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
      */
-    protected $phone;
-	
-	/**
-     * @ORM\Column(type="string", length=250)
+    private $monday;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
      */
-    protected $email;
-	
-	/**
-     * @ORM\Column(type="boolean")
+    private $tuesday;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
      */
-    protected $userCreated;
+    private $wednesday;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $thursday;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $friday;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default"=false})
+     */
+    private $substitute;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default"=false})
+     */
+    private $english;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default"=false})
+     */
+    private $doublePosition;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $preferredGroup;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
+     */
+    private $user;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $substituteCreated;
-
-	/**
-     * @ORM\OneToOne(targetEntity="ApplicationStatistic", cascade={"persist"})
-     **/
-	 protected $statistic;
+    private $previousParticipation;
 
     /**
-     * @ORM\OneToOne(targetEntity="Interview", mappedBy="application", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\Column(type="datetime", nullable=false)
      */
-    protected $interview;
-	
+    private $last_edited;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=false)
+     */
+    private $created;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $heardAboutFrom;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Interview", cascade={"persist"})
+     * @ORM\JoinColumn(name="interview_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $interview;
+
+    /**
+     * ApplicationInfo constructor.
+     */
+    public function __construct()
+    {
+        $this->last_edited = new \DateTime();
+        $this->created = new \DateTime();
+        $this->substitute = false;
+        $this->english = false;
+        $this->doublePosition = false;
+        $this->previousParticipation = false;
+        $this->english = false;
+    }
+
 
     /**
      * Get id
-     *
      * @return integer 
      */
     public function getId()
@@ -70,163 +129,252 @@ class Application {
     }
 
     /**
-     * Set firstName
-     *
-     * @param string $firstName
-     * @return Application
+     * @return \AppBundle\Entity\Semester
      */
-    public function setFirstName($firstName)
+    public function getSemester()
     {
-        $this->firstName = $firstName;
-
-        return $this;
+        return $this->semester;
     }
 
     /**
-     * Get firstName
-     *
-     * @return string 
+     * @param \AppBundle\Entity\Semester $semester
      */
-    public function getFirstName()
+    public function setSemester($semester)
     {
-        return $this->firstName;
+        $this->semester = $semester;
     }
 
     /**
-     * Set lastName
-     *
-     * @param string $lastName
-     * @return Application
+     * @return mixed
      */
-    public function setLastName($lastName)
+    public function getYearOfStudy()
     {
-        $this->lastName = $lastName;
-
-        return $this;
+        return $this->yearOfStudy;
     }
 
     /**
-     * Get lastName
-     *
-     * @return string 
+     * @param mixed $yearOfStudy
      */
-    public function getLastName()
+    public function setYearOfStudy($yearOfStudy)
     {
-        return $this->lastName;
+        $this->yearOfStudy = $yearOfStudy;
     }
 
     /**
-     * Set phone
-     *
-     * @param string $phone
-     * @return Application
+     * @return mixed
      */
-    public function setPhone($phone)
+    public function getMonday()
     {
-        $this->phone = $phone;
-
-        return $this;
+        return $this->monday;
     }
 
     /**
-     * Get phone
-     *
-     * @return string 
+     * @param mixed $monday
      */
-    public function getPhone()
+    public function setMonday($monday)
     {
-        return $this->phone;
+        $this->monday = $monday;
     }
 
     /**
-     * Set email
-     *
-     * @param string $email
-     * @return Application
+     * @return mixed
      */
-    public function setEmail($email)
+    public function getTuesday()
     {
-        $this->email = $email;
-
-        return $this;
+        return $this->tuesday;
     }
 
     /**
-     * Get email
-     *
-     * @return string 
+     * @param mixed $tuesday
      */
-    public function getEmail()
+    public function setTuesday($tuesday)
     {
-        return $this->email;
+        $this->tuesday = $tuesday;
     }
 
     /**
-     * Set userCreated
-     *
-     * @param boolean $userCreated
-     * @return Application
+     * @return mixed
      */
-    public function setUserCreated($userCreated)
+    public function getWednesday()
     {
-        $this->userCreated = $userCreated;
-
-        return $this;
+        return $this->wednesday;
     }
 
     /**
-     * Get userCreated
-     *
-     * @return boolean 
+     * @param mixed $wednesday
      */
-    public function getUserCreated()
+    public function setWednesday($wednesday)
     {
-        return $this->userCreated;
+        $this->wednesday = $wednesday;
     }
 
     /**
-     * Set statistic
-     *
-     * @param \AppBundle\Entity\ApplicationStatistic $statistic
-     * @return Application
+     * @return mixed
      */
-    public function setStatistic(\AppBundle\Entity\ApplicationStatistic $statistic = null)
+    public function getThursday()
     {
-        $this->statistic = $statistic;
-
-        return $this;
+        return $this->thursday;
     }
 
     /**
-     * Get statistic
-     *
-     * @return \AppBundle\Entity\ApplicationStatistic
+     * @param mixed $thursday
      */
-    public function getStatistic()
+    public function setThursday($thursday)
     {
-        return $this->statistic;
+        $this->thursday = $thursday;
     }
 
     /**
-     * Set interview
-     *
-     * @param \AppBundle\Entity\Interview $interview
-     * @return Application
+     * @return mixed
      */
-    public function setInterview(\AppBundle\Entity\Interview $interview = null)
+    public function getFriday()
     {
-        // Must also set the owning side as it is the one doctrine watches
-        $interview->setApplication($this);
-
-        $this->interview = $interview;
-
-        return $this;
+        return $this->friday;
     }
 
     /**
-     * Get interview
+     * @param mixed $friday
+     */
+    public function setFriday($friday)
+    {
+        $this->friday = $friday;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSubstitute()
+    {
+        return $this->substitute;
+    }
+
+    /**
+     * @param mixed $substitute
+     */
+    public function setSubstitute($substitute)
+    {
+        $this->substitute = $substitute;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEnglish()
+    {
+        return $this->english;
+    }
+
+    /**
+     * @param mixed $english
+     */
+    public function setEnglish($english)
+    {
+        $this->english = $english;
+    }
+
+    /**
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param \AppBundle\Entity\User
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDoublePosition()
+    {
+        return $this->doublePosition;
+    }
+
+    /**
+     * @param mixed $doublePosition
+     */
+    public function setDoublePosition($doublePosition)
+    {
+        $this->doublePosition = $doublePosition;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPreferredGroup()
+    {
+        return $this->preferredGroup;
+    }
+
+    /**
+     * @param string $preferredGroup
+     */
+    public function setPreferredGroup($preferredGroup)
+    {
+        $this->preferredGroup = $preferredGroup;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastEdited()
+    {
+        return $this->last_edited;
+    }
+
+    /**
+     * @param mixed $last_edited
+     */
+    public function setLastEdited($last_edited)
+    {
+        $this->last_edited = $last_edited;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param mixed $created
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+    }
+
+    /**
+     * Set heardAboutFrom
      *
-     * @return \AppBundle\Entity\Interview
+     * @param array $heardAboutFrom
+     */
+    public function setHeardAboutFrom($heardAboutFrom)
+    {
+        $this->heardAboutFrom = $heardAboutFrom;
+
+    }
+
+    /**
+     * Get heardAboutFrom
+     *
+     * @return array
+     */
+    public function getHeardAboutFrom()
+    {
+        return $this->heardAboutFrom;
+    }
+
+    /**
+     * @return Interview
      */
     public function getInterview()
     {
@@ -234,36 +382,32 @@ class Application {
     }
 
     /**
-     * Does the given User belong to the same department as this Application?
-     *
-     * @param User $user
+     * @param Interview $interview
+     */
+    public function setInterview($interview)
+    {
+        $this->interview = $interview;
+    }
+
+    /**
      * @return boolean
      */
-    public function isSameDepartment(User $user = null)
+    public function getPreviousParticipation()
     {
-        return $user && $user->getFieldOfStudy()->getDepartment()->getId() == $this->getStatistic()->getSemester()->getDepartment()->getId();
+        return $this->previousParticipation;
     }
 
     /**
-     * Set substituteCreated
-     *
-     * @param boolean $substituteCreated
-     * @return Application
+     * @param boolean $previousParticipation
      */
-    public function setSubstituteCreated($substituteCreated)
+    public function setPreviousParticipation($previousParticipation)
     {
-        $this->substituteCreated = $substituteCreated;
-
-        return $this;
+        $this->previousParticipation = $previousParticipation;
     }
 
-    /**
-     * Get substituteCreated
-     *
-     * @return boolean 
-     */
-    public function getSubstituteCreated()
-    {
-        return $this->substituteCreated;
-    }
+
+
+
+
+
 }

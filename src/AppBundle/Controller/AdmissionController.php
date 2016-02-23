@@ -2,6 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\Type\ApplicationPracticalType;
+use AppBundle\Form\Type\ApplicationExistingUserType;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use \DateTime;
@@ -11,79 +14,73 @@ use AppBundle\Entity\ApplicationStatistics;
 use AppBundle\Form\Type\ContactType;
 use AppBundle\Entity\Contact;
 use AppBundle\Entity\Department;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class AdmissionController extends Controller {
 
     public function showAction(Request $request) {
-		
-			
-		$id = $request->get('id');
-		
-		$em = $this->getDoctrine()->getManager();
-		
-		$department = $em->getRepository('AppBundle:Department')
-							->findDepartmentById($id);
-		
-		$semesters = $em->getRepository('AppBundle:Semester')
-							->findAllSemestersByDepartment($id);
 
-		$today = new DateTime("now");
-		
-		$validSemesters = array();
 
-		
-		foreach ($semesters as $semester) {
-		
-			$semesterStartDate = $semester->getAdmissionStartDate();
-			$semesterEndDate = $semester->getAdmissionEndDate();
-			
-			if ($semesterStartDate < $today && $today < $semesterEndDate) {
-				$validSemesters[] = $semester;
-			}
-			
-		}
-		
-		if ( !empty($validSemesters) ) {
-			
-			$application = new Application();
-			
-			$authenticated = false;
-			
-			// The Captcha should not appear if a user is authenticated, as said in the requirements 
-			if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
-				$authenticated = true;
-			}
-			
-			$form = $this->createForm(new ApplicationType($id, $today, $authenticated), $application);
-			
-			$form->handleRequest($request);
+        $departmentId = $request->get('id');
 
-			if ($form->isValid()) {
-                $application->setSubstituteCreated(0);
-				$application->setUserCreated(0);
-				$application->getStatistic()->setAccepted(0);
-				$em->persist($application);
-				$em->flush();
+        $em = $this->getDoctrine()->getManager();
+
+        $department = $em->getRepository('AppBundle:Department')->find($departmentId);
+
+        $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
+
+
+        if ( $semester !== null ) {
+
+            $application = new Application();
+
+            $authenticated = false;
+
+            // The Captcha should not appear if a user is authenticated, as said in the requirements
+            if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+                $authenticated = true;
+            }
+
+            $form = $this->createForm(new ApplicationType($department, $authenticated), $application);
+
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                //Check if email belongs to an existing account and use that account
+                $oldUser = $em->getRepository('AppBundle:User')->findOneBy(array('email'=>$application->getUser()->getEmail()));
+                if($oldUser !== null){
+                    $oldUserAssistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findBy(array('user'=>$oldUser));
+                    if(empty($oldUserAssistantHistory)){
+                        $application->setUser($oldUser);
+                    }else{
+                        //If applicant has a user and has been an assistant before
+                        return $this->redirect($this->generateUrl('admission_existing_user'));
+                    }
+                }
+
+                $application->setSemester($semester);
+                $em->persist($application);
+                $em->flush();
 
                 $request->getSession()->getFlashBag()->add('admission-notice', 'Søknaden din er registrert. Lykke til!');
 
                 return $this->redirect($this->generateUrl('admission_show_specific_department', array(
-                    'id' => $id,
+                    'id' => $departmentId,
                 )));
-			}
-			
-			return $this->render('admission/index.html.twig', array(
-				'department' => $department,
-				'semesters' => $validSemesters,
-				'form' => $form->createView(),
-			));
-		}
-		else {
-			return $this->render('admission/index.html.twig', array(
-				'department' => $department,
-			));
-		}
-		
+            }
+
+            return $this->render('admission/index.html.twig', array(
+                'department' => $department,
+                'semester' => $semester,
+                'form' => $form->createView(),
+            ));
+        }
+        else {
+            return $this->render('admission/index.html.twig', array(
+                'department' => $department,
+            ));
+        }
+
     }
 
     public function contactAction(Request $request, Department $department){
@@ -131,5 +128,45 @@ class AdmissionController extends Controller {
             'department' => $department,
         ));
     }
-	
+
+    public function existingUserAdmissionAction(Request $request){
+        $user = $this->getUser();
+        if(!sizeof($user->getAssistantHistories())){
+            return $this->render(':error:no_assistanthistory.html.twig');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $department = $user->getFieldOfStudy()->getDepartment();
+        $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department, new \DateTime());
+
+        if(is_null($semester))return $this->render(':error:no_active_admission.html.twig');
+
+        $applicationRepo = $em->getRepository('AppBundle:Application');
+
+        $application = $applicationRepo->findOneBy(array('user'=>$user, 'semester'=>$semester));
+        if($application === null) $application = new Application();
+        $lastInterview = $em->getRepository('AppBundle:Interview')->findLatestInterviewByUser($user);
+
+        $form = $this->createForm(new ApplicationExistingUserType(), $application);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $application->setUser($user);
+            $application->setSemester($semester);
+            $application->setPreviousParticipation(true);
+            $application->setInterview($lastInterview);
+            $em->persist($application);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('admission-notice', 'Søknaden er registrert.');
+
+        }
+
+        return $this->render(':admission:existingUser.html.twig', array(
+            'form' => $form->createView(),
+            'department' => $department,
+            'semester' => $semester,
+        ));
+
+    }
+
 }

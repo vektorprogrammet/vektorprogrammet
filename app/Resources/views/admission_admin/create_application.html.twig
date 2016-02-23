@@ -29,154 +29,91 @@
         </div>
     </div>
     <div class="row">
-                    <div class="small-12 medium-12 large-12 columns">
+        <div class="small-12 medium-12 large-12 columns">
 
-                                <h1 class="text-center"> Registrer søker {{ department.shortname }} </h1>
+            <h1 class="text-center"> Registrer søker {{ department.shortname }} {{ semester.name }} </h1>
 
-                            <br>
+            <br>
 
-                                {{ form_start(form) }}
-                                {{ form_errors(form) }}
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
 
-                                <div class="row">
-                                    <div class="small-12 medium-6 large-4 large-offset-2 columns" >
+            <div class="row">
+                <div class="small-12 medium-6 large-4 large-offset-2 columns" >
 
-
-                                        <div>
-                                            {{ form_label(form.firstname) }}
-                                            {{ form_errors(form.firstname) }}
-                                            {{ form_widget(form.firstname) }}
-                                        </div>
-
-                                        <div>
-                                            {{ form_label(form.email) }}
-                                            {{ form_errors(form.email) }}
-                                            {{ form_widget(form.email) }}
-                                        </div>
-
-
-                                    </div>
-
-                                    <div class="small-12 medium-6 large-4  end columns">
-
-
-                                        <div>
-                                            {{ form_label(form.lastname) }}
-                                            {{ form_errors(form.lastname) }}
-                                            {{ form_widget(form.lastname) }}
-                                        </div>
-
-                                        <div>
-                                            {{ form_label(form.phone) }}
-                                            {{ form_errors(form.phone) }}
-                                            {{ form_widget(form.phone) }}
-                                        </div>
-
-
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="small-6 medium-4 large-1 columns large-offset-2">
-
-
-                                        <div>
-                                            {{ form_label(form.statistic.fieldOfStudy) }}
-                                            {{ form_errors(form.statistic.fieldOfStudy) }}
-                                            {{ form_widget(form.statistic.fieldOfStudy) }}
-                                        </div>
-
-
-                                    </div>
-
-                                    <div class="small-6 medium-4 large-1  columns">
-
-
-                                        <div>
-                                            {{ form_label(form.statistic.yearOfStudy) }}
-                                            {{ form_errors(form.statistic.yearOfStudy) }}
-                                            {{ form_widget(form.statistic.yearOfStudy) }}
-                                        </div>
-
-
-                                    </div>
-
-                                    <div class="small-6 medium-4 large-2  columns">
-
-
-                                        <div>
-                                            {{ form_label(form.statistic.gender) }}
-                                            {{ form_errors(form.statistic.gender) }}
-                                            {{ form_widget(form.statistic.gender) }}
-                                        </div>
-
-
-                                    </div>
-
-                                    <div class="small-6 medium-4 large-2 columns">
-
-
-                                        <div>
-                                            {{ form_label(form.statistic.previousParticipation) }}
-                                            {{ form_errors(form.statistic.previousParticipation) }}
-                                            {{ form_widget(form.statistic.previousParticipation) }}
-                                        </div>
-
-
-                                    </div>
-
-                                    <div class="6 medium-4 large-2 end columns">
-
-
-                                        <div>
-                                            {{ form_label(form.statistic.semester) }}
-                                            {{ form_errors(form.statistic.semester) }}
-                                            {{ form_widget(form.statistic.semester) }}
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-
-                                <div class="row">
-
-                                    {# The form.captcha is only defined for unauthenticated users #}
-
-                                    {% if form.captchaAdmission is defined %}
-
-                                            <div class="small-12 medium-6 large-2 large-offset-2 columns">
-
-                                                <div>
-                                                    {{ form_label(form.captchaAdmission) }}
-                                                    {{ form_errors(form.captchaAdmission) }}
-                                                    {{ form_widget(form.captchaAdmission) }}
-                                                </div>
-
-                                            </div>
-
-                                            <div class="small-12 medium-6 large-4 text-center columns">
-
-                                                {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted'}}) }}
-
-                                            </div>
-
-                                        {% else %}
-
-                                        <div class="small-12 medium-6 large-4 text-center large-offset-4 columns">
-                                            {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted'}}) }}
-                                        </div>
-
-                                    {% endif %}
-
-                                </div>
-
-                                {{ form_end(form) }}
-
-
-
-                        </div>
+                    <div>
+                        {{ form_label(form.user.firstName) }}
+                        {{ form_errors(form.user.firstName) }}
+                        {{ form_widget(form.user.firstName, { 'attr': {'tabindex': '1'}}) }}
                     </div>
 
-				</div>
+                    <div>
+                        {{ form_label(form.user.email) }}
+                        {{ form_errors(form.user.email) }}
+                        {{ form_widget(form.user.email, { 'attr': {'tabindex': '3'}}) }}
+                    </div>
+
+                </div>
+
+                <div class="small-12 medium-6 large-4  end columns">
+
+                    <div>
+                        {{ form_label(form.user.lastName) }}
+                        {{ form_errors(form.user.lastName) }}
+                        {{ form_widget(form.user.lastName, { 'attr': {'tabindex': '2'}}) }}
+                    </div>
+
+                    <div>
+                        {{ form_label(form.user.phone) }}
+                        {{ form_errors(form.user.phone) }}
+                        {{ form_widget(form.user.phone, { 'attr': {'tabindex': '4'}}) }}
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-6 medium-4 large-1 columns large-offset-2">
+
+                    <div>
+                        {{ form_label(form.user.fieldOfStudy) }}
+                        {{ form_errors(form.user.fieldOfStudy) }}
+                        {{ form_widget(form.user.fieldOfStudy, { 'attr': {'tabindex': '5'}}) }}
+                    </div>
+
+                </div>
+
+                <div class="small-6 medium-4 large-1  columns">
+
+                    <div>
+                        {{ form_label(form.yearOfStudy) }}
+                        {{ form_errors(form.yearOfStudy) }}
+                        {{ form_widget(form.yearOfStudy, { 'attr': {'tabindex': '6'}}) }}
+                    </div>
+
+                </div>
+
+                <div class="small-6 medium-4 large-2  columns end">
+
+                    <div>
+                        {{ form_label(form.user.gender) }}
+                        {{ form_errors(form.user.gender) }}
+                        {{ form_widget(form.user.gender, { 'attr': {'tabindex': '7'}}) }}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="small-12 medium-6 large-4 text-center large-offset-4 columns">
+                    {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted', 'tabindex': '8'}}) }}
+                </div>
+            </div>
+
+            {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
 {% endblock %}

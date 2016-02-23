@@ -33,15 +33,9 @@ class InterviewScore
     protected $suitability;
 
     /**
-     * @ORM\OneToOne(targetEntity="ApplicationStatistic", inversedBy="interviewScore")
-     * @ORM\JoinColumn(name="application_statistic_id", referencedColumnName="id")
-     */
-    protected $applicationStatistic;
-
-    /**
      * @ORM\Column(type="string")
      */
-    protected $suitableAssistant;
+    private $suitableAssistant;
 
     /**
      * Get id
@@ -51,29 +45,6 @@ class InterviewScore
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set applicationStatistic
-     *
-     * @param \AppBundle\Entity\ApplicationStatistic $applicationStatistic
-     * @return InterviewScore
-     */
-    public function setApplicationStatistic(\AppBundle\Entity\ApplicationStatistic $applicationStatistic = null)
-    {
-        $this->applicationStatistic = $applicationStatistic;
-
-        return $this;
-    }
-
-    /**
-     * Get applicationStatistic
-     *
-     * @return \AppBundle\Entity\ApplicationStatistic
-     */
-    public function getApplicationStatistic()
-    {
-        return $this->applicationStatistic;
     }
 
     /**
@@ -170,6 +141,13 @@ class InterviewScore
     public function setSuitableAssistant($suitableAssistant)
     {
         $this->suitableAssistant = $suitableAssistant;
+    }
+
+    public function hideScores(){
+        $this->setDrive(0);
+        $this->setExplanatoryPower(0);
+        $this->setRoleModel(0);
+        $this->setTotalImpression(0);
     }
 }
 

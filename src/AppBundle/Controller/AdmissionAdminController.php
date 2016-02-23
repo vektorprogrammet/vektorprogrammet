@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Application;
 use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Form\Type\NewUserType;
-use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -51,6 +50,7 @@ class AdmissionAdminController extends Controller {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         // Get query strings for filtering applications
         $status = $request->query->get('status', 'new');
+
         $semesterId = $request->query->get('semester', null);
         if($semesterId === null){
             $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($user->getFieldOfStudy()->getDepartment());
@@ -58,41 +58,58 @@ class AdmissionAdminController extends Controller {
             $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterId);
         }
 
-        // Finds all the departments
-        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+        $em = $this->getDoctrine();
 
         if($departmentId === null){
-
             // Finds the department for the current logged in user
             $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
-
         }else{
-
             $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
         }
 
+        if($semester === null){
+            try{
+                $semester = $em->getRepository('AppBundle:Semester')->findLatestSemesterByDepartmentId($department->getId());
+            }catch(NoResultException $e){
+                return $this->render('error/no_semester.html.twig', array('department' => $department));
+            }
+        }else{
+            $semester = $em->getRepository('AppBundle:Semester')->find($semester);
+        }
         // Finds the name of the chosen semester. If no semester chosen display 'Alle'
         $semesterName = is_null($semester) ? 'Alle':$semester->getName();
+
+        // Finds all the departments
+        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
 
         // Find all the semesters associated with the department
         $semesters =  $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
 
         // Finds the applicants for the given department filtered by interview status and semester
         $repository = $this->getDoctrine()->getRepository('AppBundle:Application');
-        $yourApplicants = array();
+        $applicantsAssignedToUser = array();
         $interviewDistribution = array();
+        /** @var Application[] $applicants */
         switch($status) {
             case 'assigned':
+                $interviewedApplicants = $repository->findInterviewedApplicants($department,$semester);
+                $interviewRepo = $this->getDoctrine()->getRepository('AppBundle:Interview');
+                foreach($interviewedApplicants as $interviewedApplicant){
+                    $numInterviews = $interviewRepo->numberOfInterviewsByUserInSemester($interviewedApplicant->getInterview()->getInterviewer(), $semester);
+                    $fullName = $interviewedApplicant->getInterview()->getInterviewer()->getFullName();
+                    if(!array_key_exists($fullName,$interviewDistribution) && $numInterviews > 0){
+                        $interviewDistribution[$fullName] = $numInterviews;
+                    }
+                }
                 $applicants = $repository->findAssignedApplicants($department,$semester);
                 foreach($applicants as $applicant){
-                    $fullName = $applicant->getInterview()->getInterviewer()->getFirstName().' '.$applicant->getInterview()->getInterviewer()->getLastName();
-                    if(array_key_exists($fullName,$interviewDistribution)){
-                        $interviewDistribution[$fullName]++;
-                    }else{
-                        $interviewDistribution[$fullName] = 1;
+                    $numInterviews = $interviewRepo->numberOfInterviewsByUserInSemester($applicant->getInterview()->getInterviewer(), $semester);
+                    $fullName = $applicant->getInterview()->getInterviewer()->getFullName();
+                    if(!array_key_exists($fullName,$interviewDistribution) && $numInterviews > 0){
+                        $interviewDistribution[$fullName] = $numInterviews;
                     }
                     if($applicant->getInterview()->getInterviewer() == $user){
-                        $yourApplicants[] = $applicant;
+                        $applicantsAssignedToUser[] = $applicant;
                     }
                 }
                 arsort($interviewDistribution);
@@ -100,7 +117,17 @@ class AdmissionAdminController extends Controller {
                 break;
             case 'interviewed':
                 $applicants = $repository->findInterviewedApplicants($department,$semester);
+                foreach($applicants as $applicant){
+                    if($applicant->getUser() == $user){
+                        $applicant->getInterview()->getInterviewScore()->hideScores();
+                        break;
+                    }
+                }
                 $template = 'interviewed_applications_table.html.twig';
+                break;
+            case 'existing':
+                $applicants = $repository->findExistingApplicants($department,$semester);
+                $template = 'existing_assistants_applications_table.html.twig';
                 break;
             default:
                 $applicants = $repository->findNewApplicants($department,$semester);
@@ -111,13 +138,14 @@ class AdmissionAdminController extends Controller {
         return $this->render('admission_admin/' . $template, array(
             'status' => $status,
             'applicants' => $applicants,
-            'yourApplicants' => $yourApplicants,
+            'yourApplicants' => $applicantsAssignedToUser,
             'interviewDistribution' => $interviewDistribution,
             'departments' => $allDepartments,
             'semesters' => $semesters,
             'semesterName' => $semesterName,
             'numOfApplicants' => sizeof($applicants),
             'departmentName' => $department->getShortName(),
+            'user' => $user,
         ));
     }
 
@@ -132,19 +160,15 @@ class AdmissionAdminController extends Controller {
 		try {
 			if ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')) {
 			
-				// This deletes the given user
-				$em = $this->getDoctrine()->getEntityManager();
-				// Find the application by ID
-				$application = $this->getDoctrine()->getRepository('AppBundle:Application')->find($id);
-				$em->remove($application);
-				$em->flush();
+				// This deletes the given application
+				$this->deleteApplicationById($id);
 				
 				// AJAX response
 				$response['success'] = true;
 			}
             // This allows someone of a different role(lower) to delete applications/interviews if they belong to the same department.
 			// This functionality is not in use, as only the highest admin should be able to delete applications/interviews.
-			elseif ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')){
+			/*elseif ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')){
 				
 				$em = $this->getDoctrine()->getEntityManager();
 				$application = $this->getDoctrine()->getRepository('AppBundle:Application')->find($id);
@@ -165,7 +189,7 @@ class AdmissionAdminController extends Controller {
 					$response['success'] = false;
 					$response['cause'] = 'Du kan ikke slette en applikasjon som ikke er fra din avdeling.';
 				}
-			}
+			}*/
 			else {
 				// Send a respons to AJAX
 				$response['success'] = false;
@@ -186,6 +210,19 @@ class AdmissionAdminController extends Controller {
 		return new JsonResponse( $response );
 	}
 
+    private function deleteApplicationById($id){
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $application = $this->getDoctrine()->getRepository('AppBundle:Application')->find($id);
+        if($application->getInterview() !== null){
+            $em->remove($application->getInterview());
+            $em->flush();
+        }
+        $em->remove($application);
+        $em->flush();
+        return true;
+    }
+
     /**
      * Deletes the applications submitted as a list of ids through a form POST request.
      * This method is intended to be called by an Ajax request.
@@ -196,25 +233,20 @@ class AdmissionAdminController extends Controller {
     public function bulkDeleteApplicationAction(Request $request){
         try {
             // Get the ids from the form
-            $applicationIds = $request->request->get('application')['id'];
-
-            // Get the application objects
-            $em = $this->getDoctrine()->getEntityManager();
-            $applications = $em->getRepository('AppBundle:Application')->findById($applicationIds);
+           $applicationIds = $request->request->get('application')['id'];
 
             if ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')) {
                 // Delete the applications
-                foreach($applications as $application) {
-                    $em->remove($application);
+                foreach($applicationIds as $applicationId) {
+                    $this->deleteApplicationById($applicationId);
                 }
-                $em->flush();
-
                 // AJAX response
                 $response['success'] = true;
+
             }
             // This allows someone of a different role(lower) to delete applications/interviews if they belong to the same department.
             // This functionality is not in use, as only the highest admin should be able to delete applications/interviews.
-            elseif ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')) {
+            /*elseif ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')) {
                 $response['success'] = true;
 
                 // Delete the applications
@@ -229,7 +261,7 @@ class AdmissionAdminController extends Controller {
                 }
 
                 $em->flush();
-            }
+            }*/
             else {
                 // Send a respons to AJAX
                 $response['success'] = false;
@@ -240,7 +272,6 @@ class AdmissionAdminController extends Controller {
             // Send a respons to AJAX
             return new JsonResponse([
                 'success' => false,
-                'code'    => $e->getCode(),
                 'cause' => 'En exception oppstod. Vennligst kontakt IT-ansvarlig.',
                 // 'cause' => $e->getMessage(), if you want to see the exception message.
             ]);
@@ -403,7 +434,6 @@ class AdmissionAdminController extends Controller {
     public function createApplicationAction(Request $request){
         $em = $this->getDoctrine()->getEntityManager();
         $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
-        $currentSemester = null;
         try{
             $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department->getId());
         }catch(NoResultException $e){
@@ -411,18 +441,14 @@ class AdmissionAdminController extends Controller {
         }catch(NonUniqueResultException $e){
             return $this->redirect($this->generateUrl('semesteradmin_show'));
         }
-        $time = $currentSemester->getAdmissionStartDate();
-        $time->modify('+1 day');//Workaround to reuse ApplicationType
 
         $application = new Application();
-        $form = $this->createForm(new ApplicationType($department->getId(), $time, true), $application);
+        $form = $this->createForm(new ApplicationType($department, true), $application);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $application->setSubstituteCreated(0);
-            $application->setUserCreated(0);
-            $application->getStatistic()->setAccepted(0);
+            $application->setSemester($currentSemester);
             $em->persist($application);
             $em->flush();
 
@@ -434,6 +460,7 @@ class AdmissionAdminController extends Controller {
         }
         return $this->render(':admission_admin:create_application.html.twig', array(
             'department' => $department,
+            'semester' => $currentSemester,
             'form' => $form->createView(),
         ));
     }

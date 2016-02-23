@@ -414,8 +414,14 @@ ul.alternatives {
   margin-right: 1rem;
 }
 
+// Utils
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+
 .float-right{
   float:right;
+}
+.clear {
+  clear: both;
 }
 
 // Sponsor
@@ -440,4 +446,68 @@ ul.alternatives {
 #oldWorkHistories{
   margin-top:30px;
   display:none;
+}
+
+// Sponsor
+.vertical-align-image-helper{
+  display: inline-block;
+  height:100%;
+  vertical-align: middle;
+}
+.sponsor-img{
+  max-height: 150px;
+  vertical-align: middle;
+}
+
+.sponsor-column{
+  height:150px;
+}
+
+//Top line
+.top-line{
+  width:100%;
+  height:20px;
+  background-color: #6FCEEE;
+  margin-bottom:20px;
+  p{
+    color:#b70000;
+    font-size: 14px;
+    text-align: center;
+    a{
+      color: #b70000;
+      text-decoration: underline;
+    }
+  }
+}
+
+//Team specific
+#oldWorkHistoriesButton{
+  margin:30px 0;
+}
+#oldWorkHistories{
+  margin-top:30px;
+  display:none;
+}
+
+//Control Panel
+.control_panel{
+  hr {
+    padding: 10px;
+  }
+
+  .control-panel-item {
+    text-align: center;
+  }
+
+  h2 {
+    padding: 20px;
+  }
+
+  .control-panel-item i {
+    color: #008CBA;
+  }
+
+  .control-panel-item i:hover {
+    color: #007095;
+  }
 }
