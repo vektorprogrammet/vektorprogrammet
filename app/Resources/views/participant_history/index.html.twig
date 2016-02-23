@@ -311,7 +311,7 @@
 											<td> {{ wh.startSemester.name }} </td>
 
 
-											<td> {{ wh.endSemester.name }}</td>
+											<td> {{ wh.endSemester is not null ? wh.endSemester.name : '' }}</td>
 
 										</tr>
 

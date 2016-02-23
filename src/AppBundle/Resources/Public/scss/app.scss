@@ -488,3 +488,26 @@ ul.alternatives {
   margin-top:30px;
   display:none;
 }
+
+//Control Panel
+.control_panel{
+  hr {
+    padding: 10px;
+  }
+
+  .control-panel-item {
+    text-align: center;
+  }
+
+  h2 {
+    padding: 20px;
+  }
+
+  .control-panel-item i {
+    color: #008CBA;
+  }
+
+  .control-panel-item i:hover {
+    color: #007095;
+  }
+}
