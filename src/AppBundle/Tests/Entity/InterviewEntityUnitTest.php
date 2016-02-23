@@ -37,18 +37,6 @@ class InterviewEntityUnitTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function testSetApplication()
-    {
-
-        $interview = new Interview();
-        $application = new Application();
-
-        $interview->setApplication($application);
-
-        $this->assertEquals($application, $interview->getApplication());
-
-    }
-
     public function testAddInterviewAnswer()
     {
 
@@ -97,18 +85,6 @@ class InterviewEntityUnitTest extends \PHPUnit_Framework_TestCase
         $interview->setInterviewed(true);
 
         $this->assertTrue($interview->getInterviewed());
-
-    }
-
-    public function testSetInterviewPractical()
-    {
-
-        $interview = new Interview();
-        $intPrac = new InterviewPractical();
-
-        $interview->setInterviewPractical($intPrac);
-
-        $this->assertEquals($intPrac, $interview->getInterviewPractical());
 
     }
 

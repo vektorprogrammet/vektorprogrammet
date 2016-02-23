@@ -9,18 +9,6 @@ use AppBundle\Entity\InterviewScore;
 class InterviewScoreEntityUnitTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testSetApplicationStatistic()
-    {
-
-        $intScore = new InterviewScore();
-        $appStat = new ApplicationStatistic();
-
-        $intScore->setApplicationStatistic($appStat);
-
-        $this->assertEquals($appStat, $intScore->getApplicationStatistic());
-
-    }
-
     public function testSetExplanatoryPower()
     {
 
