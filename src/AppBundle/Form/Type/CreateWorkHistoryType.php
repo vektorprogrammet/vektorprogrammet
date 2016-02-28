@@ -46,7 +46,7 @@ class CreateWorkHistoryType extends AbstractType {
 				'class' => 'AppBundle:Semester',
 				'query_builder' => function(EntityRepository $er ) {
 					return $er->createQueryBuilder('s')
-						->orderBy('s.name', 'ASC')
+						->orderBy('s.semesterStartDate', 'DESC')
 						->join('s.department', 'd')
 						->where('d.id = ?1')
 						->setParameter(1, $this->departmentId);
@@ -57,7 +57,7 @@ class CreateWorkHistoryType extends AbstractType {
 				'class' => 'AppBundle:Semester',
 				'query_builder' => function(EntityRepository $er ) {
 					return $er->createQueryBuilder('s')
-						->orderBy('s.name', 'ASC')
+						->orderBy('s.semesterStartDate', 'DESC')
 						->join('s.department', 'd')
 						->where('d.id = ?1')
 						->setParameter(1, $this->departmentId);

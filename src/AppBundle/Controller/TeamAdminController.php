@@ -82,83 +82,64 @@ class TeamAdminController extends Controller {
 	}
 	
 	public function showPositionsAction(Request $request){
-		
-		// Can only be view if you are a ROLE_SUPER_ADMIN
-		if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-			
-			// Find all the positions
-			$positions = $this->getDoctrine()->getRepository('AppBundle:Position')->findAll();
-			
-			// Return the view with suitable variables
-			return $this->render('team_admin/show_positions.html.twig', array(
-				'positions' => $positions,
-			));
-		}
-		else {
-			return $this->redirect($this->generateUrl('home'));
-		}
-	
+
+		// Find all the positions
+		$positions = $this->getDoctrine()->getRepository('AppBundle:Position')->findAll();
+
+		// Return the view with suitable variables
+		return $this->render('team_admin/show_positions.html.twig', array(
+			'positions' => $positions,
+		));
 	}
 
 	public function createPositionAction(Request $request){
 		
-		// Only create if it is a SUPER_ADMIN
-		if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-			// A new forum entity 
-			$position = new Position();
-			
-			// Create the form 
-			$form = $this->createForm(new CreatePositionType(), $position);
-				
-			// Handle the form 
-			$form->handleRequest($request);
-			
-			// Check if the form is valid
-			if ($form->isValid()) {
-				
-			
-				// Store the forum in the database 
-				$em = $this->getDoctrine()->getManager();
-				$em->persist($position);
-				$em->flush();
-					
-				// Redirect to the proper subforum 
-				return $this->redirect($this->generateUrl('teamadmin_show_position'));
-			}
-			
-			// Return the view
-			return $this->render('team_admin/create_position.html.twig', array(
-				'form' => $form->createView(),
-			));
+		// A new forum entity
+		$position = new Position();
+
+		// Create the form
+		$form = $this->createForm(new CreatePositionType(), $position);
+
+		// Handle the form
+		$form->handleRequest($request);
+
+		// Check if the form is valid
+		if ($form->isValid()) {
+
+
+			// Store the forum in the database
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($position);
+			$em->flush();
+
+			// Redirect to the proper subforum
+			return $this->redirect($this->generateUrl('teamadmin_show_position'));
 		}
-		else {
-			return $this->redirect($this->generateUrl('home'));
-		}	
-		
+
+		// Return the view
+		return $this->render('team_admin/create_position.html.twig', array(
+			'form' => $form->createView(),
+		));
+
 	}
 	
     public function showAction() {
 		
-		if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
-			// Finds all the departments
-			$allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
-		
-			// Finds the department for the current logged in user
-			$department= $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
-			
-			// Find teams that are connected to the department of the user
-			$teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByDepartment($department);
-			
-			// Return the view with suitable variables
-			return $this->render('team_admin/index.html.twig', array(
-				'departments' => $allDepartments,
-				'teams' => $teams,
-				'departmentName' => $department->getShortName(),
-			));
-		}
-		else {
-			return $this->redirect($this->generateUrl('home'));
-		}
+		// Finds all the departments
+		$allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+
+		// Finds the department for the current logged in user
+		$department= $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
+
+		// Find teams that are connected to the department of the user
+		$teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByDepartment($department);
+
+		// Return the view with suitable variables
+		return $this->render('team_admin/index.html.twig', array(
+			'departments' => $allDepartments,
+			'teams' => $teams,
+			'departmentName' => $department->getShortName(),
+		));
     }
 
 	public function updateWorkHistoryAction(Request $request){
@@ -244,46 +225,21 @@ class TeamAdminController extends Controller {
 		// Get the ID variable from the request
 		$id = $request->get('id');
 		
-		if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-			// Find team with the sent ID
-			$team = $this->getDoctrine()->getRepository('AppBundle:Team')->find($id);
-		
-			// Find all WorkHistory entities based on team 
-			$workHistories =  $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findBy(array('team' => $team));
-			usort($workHistories, array($this, "sortWorkHistoriesByEndDate"));
+		// Find team with the sent ID
+		$team = $this->getDoctrine()->getRepository('AppBundle:Team')->find($id);
 
-			// Return the view with suitable variables
-			return $this->render('team_admin/specific_team.html.twig', array(
-				'team' => $team,
-				'workHistories' => $workHistories,
-			));
-		}
-		elseif ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
-			// Find team with the sent ID
-			$team = $this->getDoctrine()->getRepository('AppBundle:Team')->find($id);
-		
-			// Find all WorkHistory entities based on team 
-			$workHistories =  $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findByTeam($team);
-			
-			// Finds the department for the current logged in user
-			$department= $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
-			
-			if ( $team->getDepartment() == $department) {
-				// Return the view with suitable variables
-				return $this->render('team_admin/specific_team.html.twig', array(
-					'team' => $team,
-					'workHistories' => $workHistories,
-				));
-			}
-			else {
-				return $this->redirect($this->generateUrl('home'));
-			}
-		
-		}
-		else {
-			return $this->redirect($this->generateUrl('home'));
-		}
-			
+		// Find all WorkHistory entities based on team
+		$activeWorkHistories =  $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeam($team);
+		$inActiveWorkHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findInActiveWorkHistoriesByTeam($team);
+		usort($activeWorkHistories, array($this, "sortWorkHistoriesByEndDate"));
+		usort($inActiveWorkHistories, array($this, "sortWorkHistoriesByEndDate"));
+
+		// Return the view with suitable variables
+		return $this->render('team_admin/specific_team.html.twig', array(
+			'team' => $team,
+			'activeWorkHistories' => $activeWorkHistories,
+			'inActiveWorkHistories' => $inActiveWorkHistories,
+		));
     }
 
 	/**
@@ -292,18 +248,13 @@ class TeamAdminController extends Controller {
 	 * @return bool
 	 */
 	private function sortWorkHistoriesByEndDate($a, $b){
-		if(is_null($a->getEndSemester()))return false;
-		if(is_null($b->getEndSemester()))return true;
-		return $a->getEndSemester()->getSemesterEndDate()<$b->getEndSemester()->getSemesterEndDate();
+		return $a->getStartSemester()->getSemesterStartDate()<$b->getStartSemester()->getSemesterStartDate();
 	}
 	
 	public function updateTeamAction(request $request){
 		
 		// Get the ID variable from the request
 		$id = $request->get('id');
-		
-		// Create a new Team entity
-		$team = new Team();
 		
 		$em = $this->getDoctrine()->getManager();
 		
@@ -312,32 +263,23 @@ class TeamAdminController extends Controller {
 	
 		// Find the department of the team
 		$department = $team->getDepartment();
-		
-		// Only edit if it is a SUPER_ADMIN
-		if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-			
-			// Create the form
-			$form = $this->createForm(new CreateTeamType($department), $team);
-		
-			// Handle the form
-			$form->handleRequest($request);
-			
-			if ($form->isValid()) {
-				$em->persist($team);
-				$em->flush();
-				return $this->redirect($this->generateUrl('teamadmin_show'));
-			}
-			
-			return $this->render('team_admin/create_team.html.twig', array(
-				'department' => $department,
-				 'form' => $form->createView(),
-			));
-			
+
+		// Create the form
+		$form = $this->createForm(new CreateTeamType($department), $team);
+
+		// Handle the form
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+			$em->persist($team);
+			$em->flush();
+			return $this->redirect($this->generateUrl('teamadmin_show'));
 		}
-		else{
-			return $this->redirect($this->generateUrl('home'));
-		}
-		
+
+		return $this->render('team_admin/create_team.html.twig', array(
+			'department' => $department,
+			 'form' => $form->createView(),
+		));
 	}
 
 	public function showTeamsByDepartmentAction(request $request){
