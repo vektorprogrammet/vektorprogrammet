@@ -4,7 +4,7 @@
 {% block customScripts %}
 
 	{# Easy routing with FOSJsRouting bundle #}
-	<script src="{{ asset('libs/fosjsrouting/js/router.js') }}"></script>
+	<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 	{# We need the deletetablerow.js file #}
     <script src="{{ asset('js/deleteablerow.js') }}"></script>
