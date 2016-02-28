@@ -41,7 +41,7 @@ class AssistantHistoryRepository extends EntityRepository {
 		JOIN ahistory.user user
 		WHERE ahistory.school = :school
 		AND (semester.semesterStartDate < :today
-		OR semester.semesterEndDate > :today)
+		AND semester.semesterEndDate > :today)
 		")
 			->setParameter('school', $school)
 			->setParameter('today', $today)
