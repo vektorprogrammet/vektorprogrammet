@@ -64,158 +64,152 @@
     <p></p>
 	
 	<div class="row">
-			<div class="small-12 medium-12 large-12 columns">
+		<div class="small-12 medium-12 large-12 columns">
 					
-					<h1> {{ team.name }} </h1>
-					<hr>
-					
-					<div class="row">
-			
-						<div class="small-12 medium-12 large-6 columns">
-							<ul class="inline-list">
-								
-								{% if is_granted('ROLE_SUPER_ADMIN') %} 
-									
-									<li>
-										<a href="{{ path('teamadmin_add_user_to_team', { 'id': team.id }) }}" class="button tiny">Legg til bruker</a>
-									</li>
-							
-								{% endif %}
-								
-							</ul>
-						</div>
-						
-						<div class="small-12 medium-12 large-6 columns">
-							<input type="text" id="search" placeholder="Søk..." />
-						</div>
-						
-					</div>	
-						
-					<hr>
-					<h3>Aktive medlemmer</h3>
-					<table width="100%" id="table">
-				
-					<thead>
-						<tr>
-							<th> Fornavn </th>
-							<th> Etternavn </th>
-							<th> Stilling </th>
-							<th> Start </th>
+			<h1> {{ team.name }} </h1>
+			<hr>
+
+			<div class="row">
+
+				<div class="small-12 medium-12 large-6 columns">
+					<ul class="inline-list">
+
+						{% if is_granted('ROLE_SUPER_ADMIN') %}
+
+							<li>
+								<a href="{{ path('teamadmin_add_user_to_team', { 'id': team.id }) }}" class="button tiny">Legg til bruker</a>
+							</li>
+
+						{% endif %}
+
+					</ul>
+				</div>
+
+				<div class="small-12 medium-12 large-6 columns">
+					<input type="text" id="search" placeholder="Søk..." />
+				</div>
+
+			</div>
+
+			<hr>
+			<h3>Aktive medlemmer</h3>
+			<table width="100%" id="table">
+
+				<thead>
+					<tr>
+						<th> Fornavn </th>
+						<th> Etternavn </th>
+						<th> Stilling </th>
+						<th> Start </th>
+
+						{% if is_granted('ROLE_SUPER_ADMIN') %}
+							<th> </th>
+						{% endif %}
+
+						{% if is_granted('ROLE_SUPER_ADMIN') %}
+							<th> </th>
+						{% endif %}
+
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for wh in workHistories %}
+						{% if wh.endSemester is null or date() < wh.endSemester.semesterEndDate  %}
+
+							<tr>
+							<td> {{ wh.user.firstName }} </td>
+							<td> {{ wh.user.lastName }} </td>
+							<td>
+
+							{% if wh.position is not null %}
+								{{ wh.position.name }}
+							{% else %}
+								Stilling er fjernet.
+							{% endif %}
+
+							</td>
+							<td> {{ wh.startSemester.name }} </td>
 
 							{% if is_granted('ROLE_SUPER_ADMIN') %}
-								<th> </th>
+								<td> <a href="{{ path('teamadmin_update_workhistory', { 'id': wh.id }) }}" class="button tiny">Rediger</a> </td>
 							{% endif %}
-							
+
 							{% if is_granted('ROLE_SUPER_ADMIN') %}
-								<th> </th>
+								<td><a href="#" id="{{ wh.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td>
 							{% endif %}
-							
+
 						</tr>
-					</thead>
-					
-					<tbody>
-						{% for wh in workHistories %}
-							{% if wh.endSemester is null or date() < wh.endSemester.semesterEndDate  %}
+						{% endif %}
+					{% endfor %}
+				</tbody>
 
-								<tr>
+			</table>
+			<div id="oldWorkHistories">
+				<h3>Team historikk</h3>
+				<table width="100%" id="table">
+
+					<thead>
+					<tr>
+						<th> Fornavn</th>
+						<th> Etternavn</th>
+						<th> Stilling</th>
+						<th> Start</th>
+						<th> Slutt</th>
+
+						{% if is_granted('ROLE_SUPER_ADMIN') %}
+							<th></th><th></th>
+						{% endif %}
+
+					</tr>
+					</thead>
+
+					<tbody>
+					{% for wh in workHistories %}
+						{% if wh.endSemester is not null and date() > wh.endSemester.semesterEndDate %}
+							<tr>
 								<td> {{ wh.user.firstName }} </td>
 								<td> {{ wh.user.lastName }} </td>
 								<td>
-								
-								{% if wh.position is not null %}
-									{{ wh.position.name }}
-								{% else %}
-									Stilling er fjernet.
-								{% endif %}
-								
+
+									{% if wh.position is not null %}
+										{{ wh.position.name }}
+									{% else %}
+										Stilling er fjernet.
+									{% endif %}
+
 								</td>
 								<td> {{ wh.startSemester.name }} </td>
-								
-								{% if is_granted('ROLE_SUPER_ADMIN') %}
-									<td> <a href="{{ path('teamadmin_update_workhistory', { 'id': wh.id }) }}" class="button tiny">Rediger</a> </td>
+
+								{% if wh.endSemester is null %}
+									<td>{{ wh.endSemester.name | default("-") }} </td>
+								{% else %}
+									<td> {{ wh.endSemester.name }} </td>
 								{% endif %}
-								
+
 								{% if is_granted('ROLE_SUPER_ADMIN') %}
-									<td><a href="#" id="{{ wh.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td>
+									<td><a href="{{ path('teamadmin_update_workhistory', { 'id': wh.id }) }}"
+										   class="button tiny">Rediger</a></td>
 								{% endif %}
-								
+
+								{% if is_granted('ROLE_SUPER_ADMIN') %}
+									<td><a href="#" id="{{ wh.id }}" class="button tiny alert delete"><i
+													class="fa fa-trash-o"></i> Slett</a></td>
+								{% endif %}
+
 							</tr>
-							{% endif %}
-						{% endfor %}
+						{% endif %}
+					{% endfor %}
 					</tbody>
-					
+
 				</table>
-				<div id="oldWorkHistories">
-					<h3>Team historikk</h3>
-					<table width="100%" id="table">
-
-						<thead>
-						<tr>
-							<th> Fornavn</th>
-							<th> Etternavn</th>
-							<th> Stilling</th>
-							<th> Start</th>
-							<th> Slutt</th>
-
-							{% if is_granted('ROLE_SUPER_ADMIN') %}
-								<th></th>
-							{% endif %}
-
-							{% if is_granted('ROLE_SUPER_ADMIN') %}
-								<th></th>
-							{% endif %}
-
-						</tr>
-						</thead>
-
-
-						<tbody>
-						{% for wh in workHistories %}
-							{% if wh.endSemester is not null and date() > wh.endSemester.semesterEndDate %}
-
-								<tr>
-									<td> {{ wh.user.firstName }} </td>
-									<td> {{ wh.user.lastName }} </td>
-									<td>
-
-										{% if wh.position is not null %}
-											{{ wh.position.name }}
-										{% else %}
-											Stilling er fjernet.
-										{% endif %}
-
-									</td>
-									<td> {{ wh.startSemester.name }} </td>
-
-									{% if wh.endSemester is null %}
-										<td>{{ wh.endSemester.name | default("-") }} </td>
-									{% else %}
-										<td> {{ wh.endSemester.name }} </td>
-									{% endif %}
-
-									{% if is_granted('ROLE_SUPER_ADMIN') %}
-										<td><a href="{{ path('teamadmin_update_workhistory', { 'id': wh.id }) }}"
-											   class="button tiny">Rediger</a></td>
-									{% endif %}
-
-									{% if is_granted('ROLE_SUPER_ADMIN') %}
-										<td><a href="#" id="{{ wh.id }}" class="button tiny alert delete"><i
-														class="fa fa-trash-o"></i> Slett</a></td>
-									{% endif %}
-
-								</tr>
-							{% endif %}
-						{% endfor %}
-						</tbody>
-
-					</table>
-				</div>
-				<button id="oldWorkHistoriesButton" class="button tiny success">Vis gamle medlemmer</button>
-
 			</div>
+			</div>
+			<button id="oldWorkHistoriesButton" class="button tiny success">Vis gamle medlemmer</button>
 		</div>
+	</div>
 
-		<div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true" role="dialog">
+	<div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true" role="dialog">
 			<h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
 			<ul class="inline-list">
 				<a id="modalAccept" href="#" class="button tiny">Slett</a>

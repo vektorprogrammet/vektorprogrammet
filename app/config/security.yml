@@ -55,45 +55,35 @@ security:
         # require ROLE_ADMIN for /admin*
 
           #ROLE_HIGHEST_ADMIN = superadmin user
-        - { path: ^/semesteradmin/slett/, roles: ROLE_HIGHEST_ADMIN }
-        - { path: ^/teamadmin/stilling/slett/, roles: ROLE_HIGHEST_ADMIN }
+        - { path: ^/kontrollpanel/semesteradmin/slett/, roles: ROLE_HIGHEST_ADMIN }
+        - { path: ^/kontrollpanel/teamadmin/stilling/slett/, roles: ROLE_HIGHEST_ADMIN }
 
           #ROLE_SUPER_ADMIN = admin user
-        - { path: ^/brukeradmin/opprett/, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/brukeradmin/avdeling/, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/opptakadmin/avdeling/, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/semesteradmin/update/, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/semesteradmin/avdeling/opprett/, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/intervju/skjema, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/intervju/fordel, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/vikar/rediger, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/undersokelse/slett, role: ROLE_SUPER_ADMIN }
-        - { path: ^/brukeradmin/jubileum/betalt, role: ROLE_SUPER_ADMIN }
-        - { path: ^/brukeradmin/jubileum/slettbetaling, role: ROLE_SUPER_ADMIN }
-        - { path: ^/teamadmin/rediger/stilling/, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/brukeradmin/slett, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/brukeradmin/avdeling/, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/opptakadmin/avdeling/, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/brukeradmin/jubileum, role: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/brukeradmin/jubileum/betalt, role: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/brukeradmin/jubileum/slettbetaling, role: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/semesteradmin/update, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/semesteradmin/avdeling/opprett, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/intervju/skjema, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/intervju/fordel, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/vikar/rediger, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/undersokelse/slett, role: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/teamadmin/stillinger, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/teamadmin/rediger/stilling, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/teamadmin/opprett/stilling, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/teamadmin/stilling/slett, roles: ROLE_SUPER_ADMIN }
 
           #ROLE_ADMIN = team user
-        - { path: ^/brukeradmin/jubileum, role: ROLE_SUPER_ADMIN }
-        - { path: ^/opptakadmin/slett/, roles: ROLE_ADMIN }
-        - { path: ^/brukeradmin/opprett, roles: ROLE_ADMIN }
         - { path: ^/profile/edit/, roles: ROLE_ADMIN }
-        - { path: ^/opptakadmin, roles: ROLE_ADMIN }
-        - { path: ^/opprettsoker, roles: ROLE_ADMIN }
-        - { path: ^/brukeradmin, roles: ROLE_ADMIN }
-        - { path: ^/semesteradmin, roles: ROLE_ADMIN }
-        - { path: ^/statistikk/, roles: ROLE_ADMIN }
         - { path: ^/efconnect, role: ROLE_ADMIN }
         - { path: ^/elfinder, role: ROLE_ADMIN }
-        - { path: ^/artikkeladmin, role: ROLE_ADMIN }
-        - { path: ^/vikar, role: ROLE_ADMIN }
-        - { path: ^/intervju, role: ROLE_ADMIN }
         - { path: ^/gallery_create, role: ROLE_ADMIN }
         - { path: ^/gallery_upload, role: ROLE_ADMIN }
         - { path: ^/gallery_delete_photo, role: ROLE_ADMIN }
         - { path: ^/kontrollpanel, role: ROLE_ADMIN }
-        - { path: ^/undersokelse/admin, role: ROLE_ADMIN }
-        - { path: ^/undersokelse/endre, role: ROLE_ADMIN }
-        - { path: ^/undersokelse/opprett, role: ROLE_ADMIN }
 
           #ROLE_USER = assistant user
         - { path: ^/profile, roles: ROLE_USER }
