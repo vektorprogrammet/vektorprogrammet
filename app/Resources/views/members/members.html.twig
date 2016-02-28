@@ -1,176 +1,75 @@
 {% extends 'base.html.twig' %}
 
-{% block customScripts %}
-
-	<script>
-	
-	$(document).ready(function() {
-		
-		{# -------------------------------------------- #}
-		
-		{# Get all the users as they are first presented #}
-		var rows = $("#users>tr");
-		
-		$('.departmentId').click(function(){
-			
-			{# Get the ID of the elemnt being clicked #}
-			var ID =  parseInt(this.id);
-			
-			{# Hide all teams #}
-			rows.hide();
-			
-			{# Show the interesting row(s) with id = ID #}
-			$('.'+ID).closest('tr').show();
-			
-
-		});
-		
-		{# -------------------------------------------- #}
-		
-		{# Show all departments #}
-		$('.AllDepartments').click(function(){
-			rows.show();
-		});
-		
-		{# -------------------------------------------- #}
-		
-		
-		$("#search").keyup(function(){
-		
-			_this = this;
-			
-			$.each($("#table tbody").find("tr"), function() {
-			
-				if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
-				   $(this).hide();
-				}
-				else {
-					 $(this).show();         
-				}
-			});
-			
-		}); 
-		
-	});
-
-	</script>
-
-{% endblock %}
-
 {% block title %}
 	Medlemmer
 {% endblock %}
 
 
 {% block body %}
-    <p></p>
-	
+
 	<div class="row">
         <div class="small-12 medium-12 large-12 columns">
 			
 				<div class="row">
 					<div class="small-12 medium-12 large-12 columns">
-						<dl class="sub-nav">
-							<h1>Medlemmer</h1>
-							<hr>
-						</dl>
+						<h1>Assistenter {{ department.shortName }}</h1>
 					</div>
 				</div>
-				
+
 				<div class="row">
-				
-					<div class="small-12 medium-4 large-4 columns">
-						
-							<a class="button tiny" data-dropdown="department" aria-controls="department" aria-expanded="false">Avdeling &raquo;</a>
-							<ul id="department" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
-							
-							<li> <a href="#" class="AllDepartments"> Vis alle </a></li>
-							
-							{% for d in departments %}
-								
-								<li><a href="#" class="departmentId" id={{d.id}}> {{ d.shortName }} </a></li>
-								
-							
-							{% endfor %}
-							
-
+					<div class="small-12 columns">
+						<a class="button tiny" data-dropdown="department" aria-controls="department" aria-expanded="false">Avdeling &raquo;</a>
+						<ul id="department" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
+						{% for d in departments %}
+							<li><a href="{{ path('members_show', { 'departmentId': d.id }) }}"> {{ d.shortName }} </a></li>
+						{% endfor %}
 						</ul>
-							
 					</div>
-					
-					
-					<div class="small-12 medium-4 large-4 columns">
-						
-							<div class="row collapse">
-								<div class="small-12 medium-12 large-12 columns">
-									<input type="text" id="search" placeholder="Søk..." />
-								</div>
-
-						</div>
-					</div>
-					
 				</div>
-				
-				
-				
-				
+
 				<div class="row">
 					<div class="small-12 medium-12 large-12 columns">
-							
-							<hr>
-							
-							{% if users is empty %}
-								<h1> Ops! </h1>
-								<p> Fant ikke noen med fornavnet eller etternavnet du søkte på. </p>
-							{% else%}
-							
-							<table width="100%" id="table">
-							
-								<thead>
-								
+					{% for bolk, schools in bolks %}
+						<hr>
+						<div class="row"><div class="small-12 columns">
+						<h3>{{ bolk }}</h3>
+						{% for school, days in schools %}
+							<div class="row"><div class="small-11 small-centered columns">
+							<h5>{{ school }}</h5>
+							<div class="small-12 columns">
+							{% for day, users in days %}
+
+								<table width="100%" id="table">
+									<thead>
 									<tr>
-										<th> Fornavn</th>
-										<th> Etternavn</th>
+										<th> Dag</th>
+										<th> Navn</th>
 										<th> Tlf </th>
 										<th> E-post </th>
-										<th> Linje </th>
-										<th> Avdeling</th>
-										<th> Rettighetsnivå </th>
 									</tr>
-									
-								</thead>
-								
-								<tbody id="users">
+									</thead>
 
-								{% for user in users %}
-									{% if user.fieldOfStudy is not null %}
+
+									<tbody id="users">
+									{% for user in users %}
+										{% if user.fieldOfStudy is not null %}
 										<tr class={{ user.fieldOfStudy.department.id }}>
+											<td>{{ day }}</td>
 											<td>
-												<a href='{{ path('specific_profile', { 'id': user.id }) }}'>{{ user.firstName }}</a>
+												<a href='{{ path('specific_profile', { 'id': user.id }) }}'>{{ user.firstName }} {{ user.lastName }}</a>
 											</td>
-											<td> {{ user.lastName }} </td>
 											<td> {{ user.phone }} </td>
 											<td> {{ user.email }} </td>
-											<td> {{ user.fieldOfStudy.shortname }} </td>
-											<td> {{ user.fieldOfStudy.department.shortname }} </td>
-											<td>
-
-												{% for role in user.roles %}
-													{{ role.name }}
-												{% endfor %}
-
-											</td>
 										</tr>
-									{% endif %}
-
-								{% endfor %}
-									
-								</tbody>
-								
-							</table>
-							
-							{% endif %}
-							
+										{% endif %}
+									{% endfor %}
+									</tbody>
+								</table>
+							{% endfor %}
+							</div></div></div>
+						{% endfor %}
+						</div></div>
+					{% endfor %}
 					</div>
 				</div>
 				

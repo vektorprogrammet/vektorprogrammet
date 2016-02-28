@@ -30,22 +30,22 @@ class AssistantHistoryRepository extends EntityRepository {
 	}
 
 	public function findActiveAssistantHistoriesBySchool($school){
-		
+
 		$today = new \DateTime('now');
 		$assistantHistories =  $this->getEntityManager()->createQuery("
-		
+
 		SELECT ahistory
 		FROM AppBundle:AssistantHistory ahistory
 		JOIN ahistory.school school
 		JOIN ahistory.semester semester
-		JOIN ahistory.user user 
+		JOIN ahistory.user user
 		WHERE ahistory.school = :school
-		AND semester.semesterStartDate < :today
-		AND semester.semesterEndDate > :today
+		AND (semester.semesterStartDate < :today
+		OR semester.semesterEndDate > :today)
 		")
-		->setParameter('school', $school)
-		->setParameter('today', $today)
-		->getResult();
+			->setParameter('school', $school)
+			->setParameter('today', $today)
+			->getResult();
 
 		return $assistantHistories;
 	}
