@@ -1,26 +1,8 @@
 {% extends 'adminBase.html.twig' %}
 {% block title %}Kontrollpanel{% endblock %}
 {% block body %}
-    <style>
-        hr{
-            padding:10px;
-        }
-        .control-panel-item{
-            text-align: center;
-        }
-        h2{
-            padding:20px;
-        }
-        .control-panel-item i{
-            color:#008CBA;
-        }
-        .control-panel-item i:hover{
-            color:#007095;
-        }
-    </style>
-
     <div class="row">
-        <h2>Artikkel</h2>
+        <h3 class="control-panel-h3">Artikkel</h3>
 
         <div class="small-4 medium-3 large-2 columns">
             <div class="control-panel-item">
@@ -41,11 +23,11 @@
                 </a>
             </div>
         </div>
-        <hr/>
+        <hr class="control-panel-hr"/>
     </div>
 
     <div class="row">
-        <h2>Brukere</h2>
+        <h3 class="control-panel-h3">Brukere</h3>
 
         <div class="small-4 medium-3 large-2 columns">
             <div class="control-panel-item">
@@ -105,12 +87,12 @@
                 </ul>
             </div>
         </div>
-        <hr/>
+        <hr class="control-panel-hr"/>
     </div>
 
 
     <div class="row">
-        <h2>Opptak & Undersøkelse</h2>
+        <h3 class="control-panel-h3">Opptak & Undersøkelse</h3>
 
         <div class="small-4 medium-3 large-2 columns">
             <div class="control-panel-item">
@@ -151,11 +133,11 @@
                 </a>
             </div>
         </div>
-        <hr/>
+        <hr class="control-panel-hr"/>
     </div>
 
     <div class="row">
-        <h2>Diverse</h2>
+        <h3 class="control-panel-h3">Diverse</h3>
 
         <div class="small-4 medium-3 small-4 medium-3 large-2 columns">
             <div class="control-panel-item">
@@ -206,6 +188,6 @@
                 </a>
             </div>
         </div>
-        <hr/>
+        <hr class="control-panel-hr"/>
     </div>
 {% endblock %}
