@@ -12,27 +12,16 @@
 			
 				<div class="row">
 					<div class="small-12 medium-12 large-12 columns">
-						<h1>Assistenter {{ department.shortName }}</h1>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="small-12 columns">
-						<a class="button tiny" data-dropdown="department" aria-controls="department" aria-expanded="false">Avdeling &raquo;</a>
-						<ul id="department" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
-						{% for d in departments %}
-							<li><a href="{{ path('members_show', { 'departmentId': d.id }) }}"> {{ d.shortName }} </a></li>
-						{% endfor %}
-						</ul>
+						<h1>Assistenter {{ department.shortName }}, {{ semester.name }}</h1>
 					</div>
 				</div>
 
 				<div class="row">
 					<div class="small-12 medium-12 large-12 columns">
-					{% for bolk, schools in bolks %}
+					{% for group, schools in groups %}
 						<hr>
 						<div class="row"><div class="small-12 columns">
-						<h3>{{ bolk }}</h3>
+						<h3>{{ group }}</h3>
 						{% for school, days in schools %}
 							<div class="row"><div class="small-11 small-centered columns">
 							<h5>{{ school }}</h5>
@@ -62,14 +51,14 @@
 											<td> {{ user.email }} </td>
 										</tr>
 										{% endif %}
-									{% endfor %}
+									{% endfor %}{#Users#}
 									</tbody>
 								</table>
-							{% endfor %}
+							{% endfor %}{#Days#}
 							</div></div></div>
-						{% endfor %}
+						{% endfor %}{#Schools#}
 						</div></div>
-					{% endfor %}
+					{% endfor %}{#Groups#}
 					</div>
 				</div>
 				
