@@ -11,8 +11,8 @@ var gulp = require('gulp'),
     changed = require('gulp-changed');
 
 var path = {
-    dist: 'www/bundles/app/',
-    src: 'src/AppBundle/Resources/Public/'
+    dist: 'www/',
+    src: 'app/Resources/assets/'
 };
 
 gulp.task('stylesProd', function () {
@@ -31,7 +31,6 @@ gulp.task('scriptsProd', function () {
     gulp.src(path.src + 'js/**/*.js')
         .pipe(plumber())
         .pipe(changed(dest))
-        .pipe(gulp.dest(path.dist + 'js/'))
         .pipe(uglify())
         .pipe(gulp.dest(dest))
 });
@@ -90,7 +89,14 @@ gulp.task('compressImages', function(){
 
 gulp.task('files', function(){
     gulp.src(path.src + 'files/*')
+        .pipe(changed('www/files/'))
         .pipe(gulp.dest('www/files/'))
+});
+
+gulp.task('libs', function(){
+    gulp.src(path.src + 'libs/**/*')
+        .pipe(changed('www/libs/'))
+        .pipe(gulp.dest('www/libs/'))
 });
 
 
@@ -101,7 +107,7 @@ gulp.task('watch', function () {
 });
 
 
-gulp.task('build:prod', ['stylesProd', 'scriptsProd', 'imagesProd', 'files']);
-gulp.task('build:dev', ['stylesDev', 'scriptsDev', 'imagesDev', 'files']);
+gulp.task('build:prod', ['stylesProd', 'scriptsProd', 'imagesProd', 'files', 'libs']);
+gulp.task('build:dev', ['stylesDev', 'scriptsDev', 'imagesDev', 'files', 'libs']);
 gulp.task('default', ['build:dev', 'watch']);
 
