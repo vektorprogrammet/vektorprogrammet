@@ -35,18 +35,14 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
             array('/artikkel/nmbu'),
             array('/artikkel/uio'),
             array('/artikkel/uib'),
-            array('/artikkel/10'),
-            array('/artikkel/11'),
-            array('/artikkel/12'),
-            array('/artikkel/13'),
-            array('/artikkel/14'),
-            array('/artikkel/15'),
-            array('/artikkel/16'),
-            array('/artikkel/17'),
-            array('/artikkel/18'),
-            array('/artikkel/19'),
-            array('/artikkel/20'),
-            array('/artikkel/21'),
+            array('/artikkel/1'),
+            array('/artikkel/2'),
+            array('/artikkel/3'),
+            array('/artikkel/4'),
+            array('/artikkel/5'),
+            array('/artikkel/6'),
+            array('/artikkel/7'),
+            array('/artikkel/8'),
         );
     }
 
@@ -56,8 +52,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
      */
     public function testUserPageIsSuccessful($url)
     {
-        $client = self::createClient();
-        $client = $this->logIn($client);
+        $client = $this->createLoggedInClient('ROLE_USER');
         $client->request('GET', $url);
 
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -67,16 +62,17 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
     {
         return array(
             array('/medlemmer'),
-            array('/profile'),
+//            array('/profile'),
         );
     }
 
-    private function logIn($client)
+    private function createLoggedInClient($role)
     {
+        $client = self::createClient();
         $session = $client->getContainer()->get('session');
 
         $firewall = 'secured_area';
-        $token = new UsernamePasswordToken('user', null, $firewall, array('ROLE_USER'));
+        $token = new UsernamePasswordToken('user', null, $firewall, array($role));
         $session->set('_security_'.$firewall, serialize($token));
         $session->save();
 

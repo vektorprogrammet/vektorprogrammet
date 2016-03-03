@@ -17,7 +17,12 @@ swiftmailer:
 
 doctrine:
     dbal:
-        host:     "localhost"
-        dbname:   "testdbvektor"
-        user:     "testdb"
-        password: "testdb"
+        default_connection: default
+
+        connections:
+            default:
+                driver:  pdo_sqlite
+                user:    test
+                path:    %kernel.root_dir%/sqlite.db.cache
+                #memory: true
+                charset: utf8

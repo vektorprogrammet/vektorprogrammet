@@ -106,10 +106,10 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
 
         // The interview score
         $intScore = new InterviewScore();
-        $intScore->setDrive(3);
+        $intScore->setSuitability(3);
         $intScore->setExplanatoryPower(3);
         $intScore->setRoleModel(3);
-        $intScore->setTotalImpression(3);
+        $intScore->setSuitableAssistant('Ja');
         $intScore->setApplicationStatistic($as4);
         $interview4->setInterviewScore($intScore);
 
