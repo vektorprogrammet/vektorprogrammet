@@ -8,10 +8,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
- * @UniqueEntity(
- *     fields={"semesterTime", "year"},
- *     message="Dette semesteret er allerede opprettet"
- * )
  * @ORM\Table(name="Semester")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SemesterRepository")
  */

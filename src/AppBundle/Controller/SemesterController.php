@@ -110,7 +110,6 @@ class SemesterController extends Controller {
 
 	public function SuperadminCreateSemesterAction(request $request){
 
-		if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 			$semester = new Semester();
 
 			// Get the ID parameter sent in by the request
@@ -127,6 +126,15 @@ class SemesterController extends Controller {
 			
 			// The fields of the form is checked if they contain the correct information
 			if ($form->isValid()) {
+				//Check if semester already exists
+				$existingSemester = $this->getDoctrine()->getManager()->getRepository('AppBundle:Semester')->findBy(array(
+					'department' => $department,
+					'semesterTime' => $semester->getSemesterTime(),
+					'year' => $semester->getYear()
+				));
+				//Return to semester page if semester already exists
+				if(count($existingSemester))return $this->redirect($this->generateUrl('semesteradmin_show'));
+
 				// Set the department of the semester
 				$semester->setDepartment($department);
 
@@ -146,11 +154,6 @@ class SemesterController extends Controller {
 			return $this->render('semester_admin/create_semester.html.twig', array(
 				 'form' => $form->createView(),
 			));
-		}
-		else {
-			return $this->redirect($this->generateUrl('home'));
-		}
-	
 	}
 	
 	/* This allows the ROLE_ADMIN to create semester, but it was not mentioned in the requirements that the ROLE_ADMIN should be able to create semesters.
