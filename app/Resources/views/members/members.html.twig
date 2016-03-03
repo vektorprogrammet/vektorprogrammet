@@ -12,7 +12,7 @@
 			
 				<div class="row">
 					<div class="small-12 medium-12 large-12 columns">
-						<h1>Assistenter {{ department.shortName }}, {{ semester.name }}</h1>
+						<h1>Assistenter {{ department.shortName }} {{ semester.name }}</h1>
 					</div>
 				</div>
 
@@ -26,35 +26,36 @@
 							<div class="row"><div class="small-11 small-centered columns">
 							<h5>{{ school }}</h5>
 							<div class="small-12 columns">
-							{% for day, users in days %}
-
 								<table width="100%" id="table">
 									<thead>
 									<tr>
-										<th> Dag</th>
-										<th> Navn</th>
-										<th> Tlf </th>
-										<th> E-post </th>
+										<th width="15%"> Dag</th>
+										<th width="30%"> Navn</th>
+										<th width="15%"> Tlf </th>
+										<th width="40%"> E-post </th>
 									</tr>
 									</thead>
 
 
-									<tbody id="users">
-									{% for user in users %}
-										{% if user.fieldOfStudy is not null %}
-										<tr class={{ user.fieldOfStudy.department.id }}>
-											<td>{{ day }}</td>
-											<td>
-												<a href='{{ path('specific_profile', { 'id': user.id }) }}'>{{ user.firstName }} {{ user.lastName }}</a>
-											</td>
-											<td> {{ user.phone }} </td>
-											<td> {{ user.email }} </td>
-										</tr>
-										{% endif %}
-									{% endfor %}{#Users#}
+									<tbody class="users">
+                                    {% for day, users in days %}
+
+                                        {% for user in users %}
+                                            {% if user.fieldOfStudy is not null %}
+                                            <tr class={{ user.fieldOfStudy.department.id }}>
+                                                <td>{{ day }}</td>
+                                                <td>
+                                                    <a href='{{ path('specific_profile', { 'id': user.id }) }}'>{{ user.firstName }} {{ user.lastName }}</a>
+                                                </td>
+                                                <td> {{ user.phone }} </td>
+                                                <td> {{ user.email }} </td>
+                                            </tr>
+                                            {% endif %}
+                                        {% endfor %}{#Users#}
+                                    {% endfor %}{#Days#}
 									</tbody>
 								</table>
-							{% endfor %}{#Days#}
+
 							</div></div></div>
 						{% endfor %}{#Schools#}
 						</div></div>
