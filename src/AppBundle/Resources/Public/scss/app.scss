@@ -44,7 +44,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 
 $vektor-white : #fafeff;
-$vektor-blue  : #6fceee;
+$vektor-blue  : #d2e4ee;
 $vektor-grey  : #dbdcdd;
 
 // Global
@@ -440,6 +440,15 @@ ul.alternatives {
 #oldWorkHistories{
   margin-top:30px;
   display:none;
+}
+
+//Board and Team
+.panel{
+  height:170px;
+}
+.large-3{
+  background-color: #f5f8ff;
+  border-radius: 10px;
 }
 
 //Top line
