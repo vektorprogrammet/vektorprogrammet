@@ -26,14 +26,20 @@ class ParticipantHistoryControllerTest extends WebTestCase {
 		$this->assertContains( 'NTNU', $client->getResponse()->getContent() );
 		$this->assertContains( 'Vår 2016', $client->getResponse()->getContent() );
 		$this->assertContains( '-', $client->getResponse()->getContent() );
+		$this->assertContains( 'Bolk 2', $client->getResponse()->getContent() );
+		$this->assertContains( 'Onsdag', $client->getResponse()->getContent() );
+		$this->assertContains( 'Gimse', $client->getResponse()->getContent() );
 
 		// Check the count for the different variables
-		$this->assertEquals( 1, $crawler->filter('a:contains("Petter Johansen")')->count() );
-		$this->assertEquals( 1, $crawler->filter('td:contains("petter@stud.ntnu.n")')->count() );
+		$this->assertEquals( 2, $crawler->filter('a:contains("Petter Johansen")')->count() );
+		$this->assertEquals( 2, $crawler->filter('td:contains("petter@stud.ntnu.n")')->count() );
 		$this->assertEquals( 2, $crawler->filter('td:contains("Hovedstyret")')->count() );
-		$this->assertEquals( 3, $crawler->filter('td:contains("NTNU")')->count() );
-		$this->assertEquals( 4, $crawler->filter('td:contains("Vår 2016")')->count() );
+		$this->assertEquals( 4, $crawler->filter('td:contains("NTNU")')->count() );
+		$this->assertEquals( 5, $crawler->filter('td:contains("Vår 2016")')->count() );
 		$this->assertEquals( 2, $crawler->filter('td:contains("-")')->count() );
+		$this->assertEquals( 1, $crawler->filter('td:contains("Bolk 2")')->count() );
+		$this->assertEquals( 1, $crawler->filter('td:contains("Onsdag")')->count() );
+		$this->assertEquals( 1, $crawler->filter('td:contains("Gimse")')->count() );
 
 		// Assert that we have the correct data
 		$this->assertContains( 'Ida Andreassen', $client->getResponse()->getContent() );

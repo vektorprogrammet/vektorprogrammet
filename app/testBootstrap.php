@@ -1,8 +1,8 @@
 <?php
 
-require_once '/bootstrap.php.cache';
+require_once  __DIR__ . '/bootstrap.php.cache';
 
-require_once '/AppKernel.php';
+require_once __DIR__ . '/AppKernel.php';
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -15,7 +15,7 @@ ini_set('memory_limit', '268435456');
 $application = new Application($kernel);
 $application->setAutoExit(false);
 
-deleteDatabase();
+//deleteDatabase();
 executeCommand($application, "doctrine:schema:create");
 executeCommand($application, "doctrine:fixtures:load");
 
@@ -31,7 +31,7 @@ function executeCommand($application, $command, Array $options = array()) {
 }
 
 function deleteDatabase() {
-    $folder = __DIR__ . '/cache/test';
+    $folder = __DIR__ . '/cache/test/';
     foreach(array('test.db','test.db.bk') AS $file){
         if(file_exists($folder . $file)){
             unlink($folder . $file);

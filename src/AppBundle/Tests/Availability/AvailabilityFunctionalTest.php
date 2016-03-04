@@ -112,7 +112,7 @@ class AvailabilityFunctionalTest extends WebTestCase
     public function userUrlProvider()
     {
         return array(
-            array('/medlemmer'),
+            array('/assistenter'),
             array('/profile'),
             array('/profile/1'),
         );
