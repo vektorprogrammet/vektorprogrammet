@@ -106,9 +106,9 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
 
         // The interview score
         $intScore = new InterviewScore();
-        $intScore->setSuitability(3);
-        $intScore->setExplanatoryPower(3);
-        $intScore->setRoleModel(3);
+        $intScore->setSuitability(6);
+        $intScore->setExplanatoryPower(5);
+        $intScore->setRoleModel(4);
         $intScore->setSuitableAssistant('Ja');
         $intScore->setApplicationStatistic($as4);
         $interview4->setInterviewScore($intScore);
@@ -117,14 +117,16 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $intPrac = new InterviewPractical();
         $intPrac->setMonday("Bra");
         $intPrac->setTuesday("Bra");
-        $intPrac->setWednesday("Bra");
+        $intPrac->setWednesday("Ikke");
         $intPrac->setThursday("Bra");
-        $intPrac->setFriday("Bra");
+        $intPrac->setFriday("Ikke");
         $intPrac->setComment("Test");
         $intPrac->setHeardAboutFrom("Stand");
         $intPrac->setEnglish(true);
         $intPrac->setPosition("2x2");
         $intPrac->setSubstitute(true);
+        $intPrac->setPreferredGroup('Bolk 1');
+        $intPrac->setDoublePosition(true);
         $intPrac->setApplicationStatistic($as4);
         $interview4->setInterviewPractical($intPrac);
 

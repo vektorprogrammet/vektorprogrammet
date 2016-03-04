@@ -30,6 +30,7 @@ class LoadSchoolData extends AbstractFixture implements OrderedFixtureInterface
         $school3->setContactPerson('Kari Johansen');
         $school3->setEmail('kari@mail.com');
         $school3->setPhone('22386722');
+        $school3->setInternational(true);
 		
         $manager->persist($school1);
         $manager->persist($school2);
