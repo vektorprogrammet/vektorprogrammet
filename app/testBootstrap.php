@@ -1,8 +1,8 @@
 <?php
 
-require_once '/../bootstrap.php.cache';
+require_once '/bootstrap.php.cache';
 
-require_once '/../AppKernel.php';
+require_once '/AppKernel.php';
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -31,7 +31,7 @@ function executeCommand($application, $command, Array $options = array()) {
 }
 
 function deleteDatabase() {
-    $folder = __DIR__ . '/../cache/test';
+    $folder = __DIR__ . '/cache/test';
     foreach(array('test.db','test.db.bk') AS $file){
         if(file_exists($folder . $file)){
             unlink($folder . $file);
@@ -40,9 +40,9 @@ function deleteDatabase() {
 }
 
 function backupDatabase() {
-    copy(__DIR__ . '/../cache/test/test.db', __DIR__ . '/../cache/test/test.db.bk');
+    copy(__DIR__ . '/cache/test/test.db', __DIR__ . '/cache/test/test.db.bk');
 }
 
 function restoreDatabase() {
-    copy(__DIR__ . '/../cache/test/test.db.bk', __DIR__ . '/../cache/test/test.db');
+    copy(__DIR__ . '/cache/test/test.db.bk', __DIR__ . '/cache/test/test.db');
 }
