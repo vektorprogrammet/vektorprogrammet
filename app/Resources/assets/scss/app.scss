@@ -494,7 +494,7 @@ ul.alternatives {
 }
 
 //Control Panel
-.control_panel{
+.control_panel {
   hr {
     padding: 10px;
   }
@@ -503,7 +503,7 @@ ul.alternatives {
     text-align: center;
   }
 
-  h2 {
+  h3 {
     padding: 20px;
   }
 
@@ -514,18 +514,11 @@ ul.alternatives {
   .control-panel-item i:hover {
     color: #007095;
   }
+}
 
 .admin-top-line{
   background-color: $admin-grey;
 }
-//Control Panel
-.control-panel-hr{
-  padding:10px;
-}
-.control-panel-h3{
-  padding:20px;
-}
-
 
 //Admin Base
 
