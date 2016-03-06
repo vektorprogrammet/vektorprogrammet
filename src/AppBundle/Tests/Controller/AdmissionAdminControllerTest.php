@@ -115,9 +115,9 @@ class AdmissionAdminControllerTest extends WebTestCase {
         // Assert that we only have the buttons for admin
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
-        $this->assertGreaterThan(0, $crawler->filter('a:contains("Opprett")')->count());
+        $this->assertEquals(2, $crawler->filter('a.button:contains("Opprett")')->count());
         $this->assertEquals(2, $crawler->filter('a:contains("Slett")')->count());
-        $this->assertGreaterThan(0, $crawler->filter('a:contains("Les intervju")')->count());
+        $this->assertEquals(2, $crawler->filter('a:contains("Les intervju")')->count());
 
         // Team user
         $client = static::createClient(array(), array(
@@ -137,7 +137,7 @@ class AdmissionAdminControllerTest extends WebTestCase {
         // Assert that we only have the buttons for team
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
         $this->assertEquals(4, $crawler->filter('a:contains("Semester")')->count());
-        $this->assertGreaterThan(0, $crawler->filter('a:contains("Opprett")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('a.button:contains("Opprett")')->count());
         $this->assertEquals(2, $crawler->filter('a:contains("Slett")')->count());
         $this->assertEquals(1, $crawler->filter('a:contains("Fordel")')->count());
 
@@ -170,8 +170,8 @@ class AdmissionAdminControllerTest extends WebTestCase {
         // Assert that we only have the buttons for team
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
         $this->assertEquals(4, $crawler->filter('a:contains("Semester")')->count());
-        $this->assertGreaterThan(0, $crawler->filter('a:contains("Opprett")')->count());
-        $this->assertGreaterThan(0, $crawler->filter('a:contains("Les intervju")')->count());
+        $this->assertEquals(1, $crawler->filter('a.button:contains("Opprett")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("Les intervju")')->count());
         $this->assertEquals(2, $crawler->filter('a:contains("Slett")')->count());
 
 

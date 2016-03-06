@@ -2,6 +2,9 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -37,6 +40,39 @@ class AdmissionRepository extends EntityRepository {
                 $qb->andWhere('sem = :semester')
                     ->setParameter('semester', $semester);
             }
+        $qb->orderBy('a.userCreated', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Finds all applications that have a conducted interview.
+     *
+     * @param Department $department
+     * @param Semester $semester
+     * @param User $interviewer
+     * @return array
+     */
+    public function findInterviewedApplicantsByInterviewer($department = null, $semester = null, $interviewer) {
+        $qb = $this->createQueryBuilder('a')
+            ->select('a')
+            ->join('a.statistic', 'stat')
+            ->join('stat.semester', 'sem')
+            ->join('sem.department', 'd')
+            ->join('a.interview', 'i')
+            ->where('i.interviewed = 1')
+            ->andWhere('i.interviewer = :interviewer')
+            ->setParameter('interviewer', $interviewer);
+
+        if(null !== $department) {
+            $qb->andWhere('d = :department')
+                ->setParameter('department', $department);
+        }
+
+        if(null !== $semester) {
+            $qb->andWhere('sem = :semester')
+                ->setParameter('semester', $semester);
+        }
         $qb->orderBy('a.userCreated', 'ASC');
 
         return $qb->getQuery()->getResult();

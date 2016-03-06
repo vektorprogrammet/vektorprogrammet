@@ -994,7 +994,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $this->setReference('user-3', $user3);
 		$this->setReference('user-4', $user4);
         $this->setReference('user-14', $user14);
-        $this->setReference('user-15', $user14);
+        $this->setReference('user-15', $user15);
     }
 
     public function getOrder()
