@@ -23,21 +23,14 @@
             <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
             <link rel="stylesheet" type='text/css' href="http://fonts.googleapis.com/css?family=Lato:400,700|Londrina+Solid">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-            <link rel="stylesheet" href="{{ asset('bundles/app/css/app.css') }}">
-            <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/slick/slick.css') }}"/>
-            <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/slick/slick-theme.css') }}"/>
+            <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 			<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=2" />
         {% endblock %}
 
         {% block customStyles %}{% endblock %}
 
         {# Used by Foundation for backwards compability, and is supposed to be in the header #}
-        <script src="{{ asset('bundles/app/js/vendor/modernizr.js') }}"></script>
-        <style>
-            .arrow{
-                color:#6FCEEE;
-            }
-        </style>
+        <script src="{{ asset('js/vendor/modernizr.js') }}"></script>
     </head>
     <body>
     {% block topLine %}
@@ -88,7 +81,7 @@
                                         <li><a href='{{ path('control_panel') }}'>Kontrollpanel</a></li>
                                         {% endif %}
                                         <li><a href='{{ path('profile') }}'>Profil</a></li>
-                                        <li><a href='{{ path('members_show') }}'>Medlemmer</a></li>
+                                        <li><a href='{{ path('members_show') }}'>Assistenter</a></li>
 
                                         {#
                                         <li><a href='{{ path('forum_show') }}'>Forum</a></li>
@@ -303,7 +296,7 @@
             {# jQuery and Foundation #}
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
             <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-            <script type="text/javascript" src="{{ asset('bundles/app/js/foundation.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/foundation.min.js') }}"></script>
             <script>
                 {# This has to be in all twig files, can't be overwritten #}
                 $(document).foundation();

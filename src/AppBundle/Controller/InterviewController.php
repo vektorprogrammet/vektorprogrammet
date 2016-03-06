@@ -100,7 +100,7 @@ class InterviewController extends Controller
         $interview = $application->getInterview();
         // Only accessible for admin and above, or team members belonging to the same department as the interview
         if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') &&
-            !$interview->getApplication()->isSameDepartment($this->getUser())) {
+            !$interview->isInterviewer($this->getUser())) {
             throw $this->createAccessDeniedException();
         }elseif($this->getUser() == $application->getUser()){throw $this->createAccessDeniedException();}
 
