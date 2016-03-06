@@ -93,9 +93,9 @@ class InterviewController extends Controller
      */
     public function showAction(Interview $interview)
     {
-        // Only accessible for admin and above, or team members belonging to the same department as the interview
+        // Only admin and above, or the assigned interviewer should be able to see an interview
         if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') &&
-            !$interview->getApplication()->isSameDepartment($this->getUser())) {
+            !$interview->isInterviewer($this->getUser())) {
             throw $this->createAccessDeniedException();
         }
 
@@ -151,7 +151,7 @@ class InterviewController extends Controller
      *
      * This method is intended to be called by an Ajax request.
      *
-     * @param $id
+     * @param $request
      * @return JsonResponse
      */
     public function bulkDeleteInterviewAction(Request $request){
