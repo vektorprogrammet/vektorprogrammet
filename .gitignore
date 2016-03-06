@@ -45,6 +45,8 @@ crashlytics-build.properties
 /www/bundles/
 /www/images/
 /www/files/
+/www/js/
+/www/css/app.css
 
 #npm
-node_modules
+/node_modules/

@@ -13,7 +13,7 @@ class DepartmentControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-        $crawler = $client->request('GET', '/avdelingadmin');
+        $crawler = $client->request('GET', '/kontrollpanel/avdelingadmin');
 
 		// Assert a specific 200 status code
 		$this->assertEquals( 200, $client->getResponse()->getStatusCode() );
@@ -38,7 +38,7 @@ class DepartmentControllerTest extends WebTestCase {
 			'PHP_AUTH_USER' => 'petjo',
 			'PHP_AUTH_PW'   => '1234',
 		));
-        $crawler = $client->request('GET', '/avdelingadmin');
+        $crawler = $client->request('GET', '/kontrollpanel/avdelingadmin');
 
 		// Assert a specific 200 status code
 		$this->assertEquals( 200, $client->getResponse()->getStatusCode() );
@@ -66,7 +66,7 @@ class DepartmentControllerTest extends WebTestCase {
 		$this->assertEquals( 302, $client->getResponse()->getStatusCode() );
 
 		// Assert that the response is the correct redirect
-		$this->assertTrue($client->getResponse()->isRedirect('/avdelingadmin') );
+		$this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/avdelingadmin') );
 
 		// Follow the redirect
 		$crawler = $client->followRedirect();
@@ -89,7 +89,9 @@ class DepartmentControllerTest extends WebTestCase {
 			'PHP_AUTH_USER' => 'petjo',
 			'PHP_AUTH_PW'   => '1234',
 		));
-        $crawler = $client->request('GET', '/avdelingadmin');
+        $crawler = $client->request('GET', '/kontrollpanel/avdelingadmin');
+
+		$this->assertEquals(200, $client->getResponse()->getStatusCode());
 
 		// Find a link and click it
 		$link = $crawler->selectLink('Rediger')->first()->link();
@@ -113,7 +115,7 @@ class DepartmentControllerTest extends WebTestCase {
 		$this->assertEquals( 302, $client->getResponse()->getStatusCode() );
 
 		// Assert that the response is the correct redirect
-		$this->assertTrue($client->getResponse()->isRedirect('/avdelingadmin') );
+		$this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/avdelingadmin') );
 
 		// Follow the redirect
 		$crawler = $client->followRedirect();

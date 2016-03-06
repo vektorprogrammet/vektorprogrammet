@@ -14,7 +14,7 @@ class SemesterControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/semesteradmin/avdeling/1');
+		$crawler = $client->request('GET', '/kontrollpanel/semesteradmin/avdeling/1');
 
 		// Assert that we have the correct amount of data
 		$this->assertEquals( 1, $crawler->filter('h1:contains("Semester NTNU")')->count() );
@@ -24,7 +24,7 @@ class SemesterControllerTest extends WebTestCase {
 		// Assert a specific 200 status code
 		$this->assertEquals( 200, $client->getResponse()->getStatusCode() );
 
-		$crawler = $client->request('GET', '/semesteradmin/avdeling/2');
+		$crawler = $client->request('GET', '/kontrollpanel/semesteradmin/avdeling/2');
 
 		// Assert that we have the correct amount of data
 		$this->assertEquals( 1, $crawler->filter('h1:contains("Semester HiST")')->count() );
@@ -43,7 +43,7 @@ class SemesterControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/semesteradmin/avdeling/opprett/%7Bid%5D%7D?id=1');
+		$crawler = $client->request('GET', '/kontrollpanel/semesteradmin/avdeling/opprett/%7Bid%5D%7D?id=1');
 
 		// Assert that we have the correct amount of data
 		$this->assertEquals( 1, $crawler->filter('h1:contains("Opprett semester")')->count() );
@@ -63,7 +63,7 @@ class SemesterControllerTest extends WebTestCase {
 		$this->assertEquals( 302, $client->getResponse()->getStatusCode() );
 
 		// Assert that the response is the correct redirect
-		$this->assertTrue($client->getResponse()->isRedirect('/semesteradmin') );
+		$this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/semesteradmin') );
 
         restoreDatabase();
 
@@ -77,7 +77,7 @@ class SemesterControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/semesteradmin/avdeling/1');
+		$crawler = $client->request('GET', '/kontrollpanel/semesteradmin/avdeling/1');
 
 		$this->assertEquals( 2, $crawler->filter('a:contains("Rediger")')->count() );
 
@@ -101,7 +101,7 @@ class SemesterControllerTest extends WebTestCase {
 		$this->assertEquals( 302, $client->getResponse()->getStatusCode() );
 
 		// Assert that the response is the correct redirect
-		$this->assertTrue($client->getResponse()->isRedirect('/semesteradmin') );
+		$this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/semesteradmin') );
 
 		// Follow the redirect
 		$crawler = $client->followRedirect();
@@ -128,7 +128,7 @@ class SemesterControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/semesteradmin');
+		$crawler = $client->request('GET', '/kontrollpanel/semesteradmin');
 
 		// Assert that we have the correct amount of data
 		$this->assertEquals( 1, $crawler->filter('h1:contains("Semester NTNU")')->count() );
@@ -144,10 +144,10 @@ class SemesterControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/skoleadmin/avdeling/2');
+		$crawler = $client->request('GET', '/kontrollpanel/skoleadmin/avdeling/2');
 
 		// Assert that the response is a redirect to /
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
     }
 	

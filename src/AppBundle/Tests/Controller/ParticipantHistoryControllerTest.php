@@ -12,7 +12,7 @@ class ParticipantHistoryControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-        $crawler = $client->request('GET', '/deltakerhistorikk');
+        $crawler = $client->request('GET', '/kontrollpanel/deltakerhistorikk');
 
 		// Assert that we have the correct page
 		$this->assertEquals(1, $crawler->filter('h1:contains("Deltakerhistorie")')->count());

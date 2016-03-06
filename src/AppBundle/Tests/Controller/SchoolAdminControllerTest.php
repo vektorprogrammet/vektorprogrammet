@@ -14,7 +14,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/skoleadmin/opprett/1');
+		$crawler = $client->request('GET', '/kontrollpanel/skoleadmin/opprett/1');
 
 		// Assert that we have the correct page
 		$this->assertEquals(1, $crawler->filter('h1:contains("Opprett skole")')->count());
@@ -34,7 +34,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 		$this->assertEquals( 302, $client->getResponse()->getStatusCode() );
 
 		// Assert that the response is the correct redirect
-		$this->assertTrue($client->getResponse()->isRedirect('/skoleadmin') );
+		$this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/skoleadmin') );
 
 		// ADMIN
 		$client = static::createClient(array(), array(
@@ -42,7 +42,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$client->request('GET', '/skoleadmin/opprett/1');
+		$client->request('GET', '/kontrollpanel/skoleadmin/opprett/1');
 
 		// Assert that the response is a redirect to /
 		$this->assertTrue( $client->getResponse()->isRedirect('/') );
@@ -53,10 +53,10 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$client->request('GET', '/skoleadmin/opprett/1');
+		$client->request('GET', '/kontrollpanel/skoleadmin/opprett/1');
 
 		// Assert that the response is a redirect to /
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
         restoreDatabase();
 
@@ -70,7 +70,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/skoleadmin/avdeling/1');
+		$crawler = $client->request('GET', '/kontrollpanel/skoleadmin/avdeling/1');
 
 		// Find a link and click it
 		$link = $crawler->selectLink('Rediger')->eq(1)->link();
@@ -94,7 +94,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 		$this->assertEquals( 302, $client->getResponse()->getStatusCode() );
 
 		// Assert that the response is the correct redirect
-		$this->assertTrue($client->getResponse()->isRedirect('/skoleadmin') );
+		$this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/skoleadmin') );
 
 		restoreDatabase();
 
@@ -109,7 +109,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-        $crawler = $client->request('GET', '/skoleadmin/avdeling/1');
+        $crawler = $client->request('GET', '/kontrollpanel/skoleadmin/avdeling/1');
 
 		// Assert that we have the correct amount of data
 		$this->assertEquals( 1, $crawler->filter('h1:contains("Skoler NTNU")')->count() );
@@ -120,7 +120,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 		// Assert a specific 200 status code
 		$this->assertEquals( 200, $client->getResponse()->getStatusCode() );
 
-		$crawler = $client->request('GET', '/skoleadmin/avdeling/2');
+		$crawler = $client->request('GET', '/kontrollpanel/skoleadmin/avdeling/2');
 
 		// Assert that we have the correct amount of data
 		$this->assertEquals( 1, $crawler->filter('h1:contains("Skoler HiST")')->count() );
@@ -138,7 +138,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$client->request('GET', '/skoleadmin/avdeling/2');
+		$client->request('GET', '/kontrollpanel/skoleadmin/avdeling/2');
 
 		// Assert that the response is a redirect to /
 		$this->assertTrue( $client->getResponse()->isRedirect('/') );
@@ -149,10 +149,10 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$client->request('GET', '/skoleadmin/avdeling/2');
+		$client->request('GET', '/kontrollpanel/skoleadmin/avdeling/2');
 
 		// Assert that the response is a redirect to /
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
 		restoreDatabase();
 
@@ -167,7 +167,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-        $crawler = $client->request('GET', '/skoleadmin/brukere');
+        $crawler = $client->request('GET', '/kontrollpanel/skoleadmin/brukere');
 
 		// Assert that we have the correct amount of data
 		$this->assertEquals( 1, $crawler->filter('h1:contains("Tildel skole")')->count() );
@@ -186,10 +186,10 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$client->request('GET', '/skoleadmin/brukere');
+		$client->request('GET', '/kontrollpanel/skoleadmin/brukere');
 
 		// Assert that the response is a redirect to /
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
 	}
 
@@ -201,7 +201,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-        $crawler = $client->request('GET', '/skoleadmin/avdeling/2');
+        $crawler = $client->request('GET', '/kontrollpanel/skoleadmin/avdeling/2');
 
 		// Assert that we have the correct amount of data
 		$this->assertEquals( 1, $crawler->filter('h1:contains("Skoler HiST")')->count() );
@@ -213,7 +213,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 		// Assert a specific 200 status code
 		$this->assertEquals( 200, $client->getResponse()->getStatusCode() );
 
-		$crawler = $client->request('GET', '/skoleadmin/avdeling/1');
+		$crawler = $client->request('GET', '/kontrollpanel/skoleadmin/avdeling/1');
 
 		// Assert that we have the correct amount of data
 		$this->assertEquals( 1, $crawler->filter('h1:contains("Skoler NTNU")')->count() );
@@ -230,10 +230,10 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$client->request('GET', '/skoleadmin/avdeling/2');
+		$client->request('GET', '/kontrollpanel/skoleadmin/avdeling/2');
 
 		// Assert that the response is a redirect to /
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
 
 	}
@@ -246,7 +246,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-        $crawler = $client->request('GET', '/skoleadmin/brukere/avdeling/1');
+        $crawler = $client->request('GET', '/kontrollpanel/skoleadmin/brukere/avdeling/1');
 
 		// Assert that we have the correct amount of data
 		$this->assertEquals( 1, $crawler->filter('h1:contains("Tildel skole")')->count() );
@@ -276,7 +276,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 		$this->assertEquals( 302, $client->getResponse()->getStatusCode() );
 
 		// Assert that the response is the correct redirect
-		$this->assertTrue($client->getResponse()->isRedirect('/skoleadmin/brukere/avdeling/1') );
+		$this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/skoleadmin/brukere/avdeling/1') );
 
 		// Follow the redirect
 		$client->followRedirect();
@@ -290,7 +290,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/skoleadmin/brukere/avdeling/1');
+		$crawler = $client->request('GET', '/kontrollpanel/skoleadmin/brukere/avdeling/1');
 
 		// Assert that we have the correct amount of data
 		$this->assertEquals( 1, $crawler->filter('h1:contains("Tildel skole")')->count() );
@@ -320,7 +320,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 		$this->assertEquals( 302, $client->getResponse()->getStatusCode() );
 
 		// Assert that the response is the correct redirect
-		$this->assertTrue($client->getResponse()->isRedirect('/skoleadmin/brukere/avdeling/1') );
+		$this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/skoleadmin/brukere/avdeling/1') );
 
 		// Follow the redirect
 		$client->followRedirect();
@@ -335,10 +335,10 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$client->request('GET', '/skoleadmin/brukere/avdeling/1');
+		$client->request('GET', '/kontrollpanel/skoleadmin/brukere/avdeling/1');
 
 		// Assert that the response is a redirect to /
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
 		restoreDatabase();
 
@@ -353,7 +353,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-        $crawler = $client->request('GET', '/skoleadmin');
+        $crawler = $client->request('GET', '/kontrollpanel/skoleadmin');
 
 		// Find a link and click it
 		$link = $crawler->selectLink('Selsbakk')->link();
@@ -367,7 +367,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 		// Assert a specific 200 status code
 		$this->assertEquals( 200, $client->getResponse()->getStatusCode() );
 
-		$client->request('GET', '/skole/skole/2');
+		$client->request('GET', '/kontrollpanel/skole/skole/2');
 
 		// Assert that the response status code is 2xx
 		$this->assertTrue($client->getResponse()->isSuccessful());
@@ -378,7 +378,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/skoleadmin');
+		$crawler = $client->request('GET', '/kontrollpanel/skoleadmin');
 
 		// Find a link and click it
 		$link = $crawler->selectLink('Gimse')->link();
@@ -398,10 +398,10 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$client->request('GET', '/skoleadmin');
+		$client->request('GET', '/kontrollpanel/skoleadmin');
 
 		// Assert that the response is a redirect to /
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
 	}
 
@@ -415,7 +415,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-        $crawler = $client->request('GET', '/skoleadmin');
+        $crawler = $client->request('GET', '/kontrollpanel/skoleadmin');
 
 		// Assert that we have the correct amount of data
 		$this->assertEquals( 1, $crawler->filter('h1:contains("Skoler")')->count() );
@@ -433,7 +433,7 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/skoleadmin');
+		$crawler = $client->request('GET', '/kontrollpanel/skoleadmin');
 
 		// Assert that we have the correct amount of data
 		$this->assertEquals( 1, $crawler->filter('h1:contains("Skoler")')->count() );
@@ -450,10 +450,10 @@ class SchoolAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$client->request('GET', '/skoleadmin');
+		$client->request('GET', '/kontrollpanel/skoleadmin');
 
 		// Assert that the response is a redirect to /
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
     }
 

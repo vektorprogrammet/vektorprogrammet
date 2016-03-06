@@ -14,7 +14,7 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin');
 
 		// Find a link and click it
 		$link = $crawler->selectLink('Stillinger')->eq(0)->link();
@@ -53,10 +53,10 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin/opprett/stilling');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/opprett/stilling');
 
 		// Assert that the response is a redirect
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
 		// TEAM
 		$client = static::createClient(array(), array(
@@ -64,15 +64,15 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin/opprett/stilling');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/opprett/stilling');
 
 		// Assert that the response is a redirect
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
-		$crawler = $client->request('GET', '/teamadmin/opprett/stilling');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/opprett/stilling');
 
 		// Assert that the response is a redirect
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
         restoreDatabase();
 
@@ -86,7 +86,7 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin');
 
 		// Find a link and click it
 		$link = $crawler->selectLink('Stillinger')->eq(0)->link();
@@ -172,7 +172,7 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin');
 
 		// Find a link and click it
 		$link = $crawler->selectLink('Stillinger')->eq(0)->link();
@@ -188,10 +188,10 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin/opprett/stilling');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/opprett/stilling');
 
 		// Assert that the response is a redirect
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
 		// TEAM
 		$client = static::createClient(array(), array(
@@ -199,15 +199,10 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin/stillinger');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/stillinger');
 
 		// Assert that the response is a redirect
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
-
-		$crawler = $client->request('GET', '/teamadmin/stillinger');
-
-		// Assert that the response is a redirect
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
 	}
 
@@ -221,7 +216,7 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin/avdeling/opprett/1');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/1');
 
 		// Assert that we have the correct page
 		$this->assertEquals(1, $crawler->filter('h1:contains("Opprett team")')->count());
@@ -247,10 +242,10 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin/avdeling/opprett/2');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/2');
 
 		// Assert that the response is a redirect
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
 		// TEAM
 		$client = static::createClient(array(), array(
@@ -258,12 +253,12 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin/avdeling/opprett/2');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/2');
 
 		// Assert that the response is a redirect
 		$this->assertTrue( $client->getResponse()->isRedirect('/') );
 
-		$crawler = $client->request('GET', '/teamadmin/avdeling/opprett/1');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/1');
 
 		// Assert that the response is a redirect
 		$this->assertTrue( $client->getResponse()->isRedirect('/') );
@@ -279,7 +274,7 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin');
 
 		// Find a link and click it
 		$link = $crawler->selectLink('Rediger')->eq(1)->link();
@@ -360,7 +355,7 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin/team/2');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/2');
 
 		// Find a link and click it
 		$link = $crawler->selectLink('Legg til bruker')->eq(0)->link();
@@ -384,8 +379,8 @@ class TeamAdminControllerTest extends WebTestCase {
 
 		// Assert that we have the correct page
 		$this->assertEquals(1, $crawler->filter('h1:contains("IT")')->count());
-		$this->assertEquals(2, $crawler->filter('td:contains("Medlem")')->count());
-		$this->assertEquals(2, $crawler->filter('td:contains("Vår 2016")')->count());
+		$this->assertEquals(3, $crawler->filter('td:contains("Medlem")')->count());
+		$this->assertEquals(3, $crawler->filter('td:contains("Vår 2016")')->count());
 		$this->assertEquals(1, $crawler->filter('td:contains("Petter")')->count());
 		$this->assertEquals(1, $crawler->filter('td:contains("Johansen")')->count());
 
@@ -395,10 +390,10 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin/team/leggTilBruker/3');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/leggTilBruker/3');
 
 		// Assert that the response is a redirect
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
 		// TEAM
 		$client = static::createClient(array(), array(
@@ -406,7 +401,7 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin/team/leggTilBruker/3');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/leggTilBruker/3');
 
 		// Assert that the response is a redirect
 		$this->assertTrue( $client->getResponse()->isRedirect('/') );
@@ -423,10 +418,10 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin/team/1');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/1');
 
 		// Find a link and click it
-		$link = $crawler->selectLink('Rediger')->eq(0)->link();
+		$link = $crawler->selectLink('Rediger')->eq(1)->link();
 		$crawler = $client->click($link);
 
 		// Assert that we have the correct page
@@ -504,7 +499,7 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin/avdeling/1');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/1');
 
 		// Assert that we have the correct page
 		$this->assertEquals(1, $crawler->filter('h1:contains("Team")')->count());
@@ -520,10 +515,10 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin/avdeling/1');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/1');
 
 		// Assert that the response is a redirect
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
 		// TEAM
 		$client = static::createClient(array(), array(
@@ -531,7 +526,7 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin/avdeling/1');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/1');
 
 		// Assert that the response is a redirect
 		$this->assertTrue( $client->getResponse()->isRedirect('/') );
@@ -546,7 +541,7 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin');
 
 		// Find a link and click it
 		$link = $crawler->selectLink('IT')->eq(0)->link();
@@ -561,7 +556,7 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin');
 
 		// Find a link and click it
 		$link = $crawler->selectLink('Hovedstyret')->eq(0)->link();
@@ -584,10 +579,10 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin/team/1');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/1');
 
 		// Assert that the response is a redirect
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
 		// TEAM
 		$client = static::createClient(array(), array(
@@ -595,7 +590,7 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin/team/2');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/2');
 
 		// Assert that the response is a redirect
 		$this->assertEquals(200, $client->getResponse()->getStatusCode() );
@@ -610,7 +605,7 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin');
 
 		// Check the count for the different variables
 		$this->assertEquals( 1, $crawler->filter('h1:contains("Team")')->count() );
@@ -623,10 +618,10 @@ class TeamAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/teamadmin');
+		$crawler = $client->request('GET', '/kontrollpanel/teamadmin');
 
 		// Assert that the response is a redirect
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
 
     }
 	
