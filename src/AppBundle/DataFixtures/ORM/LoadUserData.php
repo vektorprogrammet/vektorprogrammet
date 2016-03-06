@@ -31,7 +31,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user1->setPassword('1234');
         $user1->addRole($this->getReference('role-4'));
         $user1->setFieldOfStudy($this->getReference('fos-1'));
-        $user1->setPicturePath('profile.jpg');
+        $user1->setPicturePath('images/defaultProfile.png');
         $manager->persist($user1);
 
         $user2 = new User();
@@ -45,7 +45,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user2->setPassword('1234');
         $user2->addRole($this->getReference('role-1'));
         $user2->setFieldOfStudy($this->getReference('fos-2'));
-        $user2->setPicturePath('profile.jpg');
+        $user2->setPicturePath('images/defaultProfile.png');
         $manager->persist($user2);
 
         $user3 = new User();
@@ -59,12 +59,12 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user3->setPassword('1234');
         $user3->addRole($this->getReference('role-1'));
         $user3->setFieldOfStudy($this->getReference('fos-3'));
-        $user3->setPicturePath('profile.jpg');
+        $user3->setPicturePath('images/defaultProfile.png');
         $manager->persist($user3);
 		
 		$user4 = new User();
         $user4->setIsActive('1');
-        $user4->setEmail('alm@mai.com');
+        $user4->setEmail('alm@mail.com');
         $user4->setFirstName('Thomas');
         $user4->setLastName('Alm');
         $user4->setGender('0');
@@ -73,7 +73,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user4->setPassword('123');
         $user4->addRole($this->getReference('role-1'));
         $user4->setFieldOfStudy($this->getReference('fos-1'));
-        $user4->setPicturePath('profile.jpg');
+        $user4->setPicturePath('images/defaultProfile.png');
         $manager->persist($user4);
 
         $user5 = new User();
@@ -87,7 +87,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user5->setPassword('123');
         $user5->addRole($this->getReference('role-4'));
         $user5->setFieldOfStudy($this->getReference('fos-1'));
-        $user5->setPicturePath('profile.jpg');
+        $user5->setPicturePath('images/defaultProfile.png');
         $manager->persist($user5);
 
         $user6 = new User();
@@ -101,7 +101,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user6->setPassword('123');
         $user6->addRole($this->getReference('role-4'));
         $user6->setFieldOfStudy($this->getReference('fos-1'));
-        $user6->setPicturePath('profile.jpg');
+        $user6->setPicturePath('images/defaultProfile.png');
         $manager->persist($user6);
 
         $user7 = new User();
@@ -115,7 +115,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user7->setPassword('123');
         $user7->addRole($this->getReference('role-2'));
         $user7->setFieldOfStudy($this->getReference('fos-1'));
-        $user7->setPicturePath('profile.jpg');
+        $user7->setPicturePath('images/defaultProfile.png');
         $manager->persist($user7);
 
         $user8 = new User();
@@ -129,7 +129,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user8->setPassword('123');
         $user8->addRole($this->getReference('role-4'));
         $user8->setFieldOfStudy($this->getReference('fos-1'));
-        $user8->setPicturePath('profile.jpg');
+        $user8->setPicturePath('images/defaultProfile.png');
         $manager->persist($user8);
 
         $user9 = new User();
@@ -143,7 +143,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user9->setPassword('123');
         $user9->addRole($this->getReference('role-2'));
         $user9->setFieldOfStudy($this->getReference('fos-1'));
-        $user9->setPicturePath('profile.jpg');
+        $user9->setPicturePath('images/defaultProfile.png');
         $manager->persist($user9);
 
         $user10 = new User();
@@ -157,7 +157,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user10->setPassword('123');
         $user10->addRole($this->getReference('role-2'));
         $user10->setFieldOfStudy($this->getReference('fos-1'));
-        $user10->setPicturePath('profile.jpg');
+        $user10->setPicturePath('images/defaultProfile.png');
         $manager->persist($user10);
 
         $user11 = new User();
@@ -171,7 +171,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user11->setPassword('123');
         $user11->addRole($this->getReference('role-2'));
         $user11->setFieldOfStudy($this->getReference('fos-1'));
-        $user11->setPicturePath('profile.jpg');
+        $user11->setPicturePath('images/defaultProfile.png');
         $manager->persist($user11);
 
         $user12 = new User();
@@ -185,7 +185,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user12->setPassword('123');
         $user12->addRole($this->getReference('role-2'));
         $user12->setFieldOfStudy($this->getReference('fos-1'));
-        $user12->setPicturePath('profile.jpg');
+        $user12->setPicturePath('images/defaultProfile.png');
         $manager->persist($user12);
 
         $user13 = new User();
@@ -199,7 +199,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user13->setPassword('123');
         $user13->addRole($this->getReference('role-2'));
         $user13->setFieldOfStudy($this->getReference('fos-1'));
-        $user13->setPicturePath('profile.jpg');
+        $user13->setPicturePath('images/defaultProfile.png');
         $manager->persist($user13);
 
         $user = new User();
@@ -213,7 +213,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-2'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -227,7 +227,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -241,7 +241,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -255,7 +255,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -269,7 +269,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -283,7 +283,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -297,7 +297,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -311,7 +311,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-2'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -325,7 +325,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -339,7 +339,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -353,7 +353,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -367,7 +367,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -381,7 +381,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -395,7 +395,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -409,7 +409,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -423,7 +423,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -437,7 +437,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -451,7 +451,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -465,7 +465,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -479,7 +479,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -493,7 +493,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -507,7 +507,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -521,7 +521,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -535,7 +535,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -549,7 +549,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -563,7 +563,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -577,7 +577,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -591,7 +591,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -605,7 +605,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -619,7 +619,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -633,7 +633,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -647,7 +647,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -661,7 +661,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -675,7 +675,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -689,7 +689,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -703,7 +703,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-2'));
         $user->setFieldOfStudy($this->getReference('fos-4'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -717,7 +717,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-2'));
         $user->setFieldOfStudy($this->getReference('fos-4'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -731,7 +731,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-2'));
         $user->setFieldOfStudy($this->getReference('fos-4'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -745,7 +745,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-2'));
         $user->setFieldOfStudy($this->getReference('fos-4'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -759,7 +759,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-2'));
         $user->setFieldOfStudy($this->getReference('fos-5'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -773,7 +773,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-2'));
         $user->setFieldOfStudy($this->getReference('fos-5'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -787,7 +787,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-5'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -801,7 +801,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-5'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -815,7 +815,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-5'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -829,7 +829,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-5'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -843,7 +843,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-5'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -857,7 +857,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-5'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -871,7 +871,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-5'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -885,7 +885,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-5'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -899,7 +899,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-2'));
         $user->setFieldOfStudy($this->getReference('fos-3'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -913,7 +913,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-2'));
         $user->setFieldOfStudy($this->getReference('fos-3'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -927,7 +927,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
         $user->setFieldOfStudy($this->getReference('fos-3'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user14 = new User();
@@ -941,7 +941,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user14->setPassword('1234');
         $user14->addRole($this->getReference('role-3'));
         $user14->setFieldOfStudy($this->getReference('fos-1'));
-        $user14->setPicturePath('profile.jpg');
+        $user14->setPicturePath('images/defaultProfile.png');
         $manager->persist($user14);
 
         $user15 = new User();
@@ -955,7 +955,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user15->setPassword('1234');
         $user15->addRole($this->getReference('role-1'));
         $user15->setFieldOfStudy($this->getReference('fos-1'));
-        $user15->setPicturePath('profile.jpg');
+        $user15->setPicturePath('images/defaultProfile.png');
         $manager->persist($user15);
 
         $user = new User();
@@ -969,7 +969,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('1234');
         $user->addRole($this->getReference('role-2'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
         $user = new User();
@@ -983,7 +983,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPassword('1234');
         $user->addRole($this->getReference('role-4'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('profile.jpg');
+        $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
 
@@ -994,7 +994,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $this->setReference('user-3', $user3);
 		$this->setReference('user-4', $user4);
         $this->setReference('user-14', $user14);
-        $this->setReference('user-15', $user14);
+        $this->setReference('user-15', $user15);
     }
 
     public function getOrder()

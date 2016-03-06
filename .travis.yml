@@ -6,7 +6,7 @@ php:
 before_script:
   - composer install
 
-script: phpunit --configuration app/phpunit.xml.dist --coverage-text
+script: phpunit --configuration app/phpunit.xml.dist
 
 notifications:
   slack: vektorweb:KvOMl9ysaFBW53wJV3Eu56sS

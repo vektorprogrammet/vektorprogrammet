@@ -99,7 +99,12 @@ class AdmissionAdminController extends Controller {
                 $template = 'assigned_applications_table.html.twig';
                 break;
             case 'interviewed':
-                $applicants = $repository->findInterviewedApplicants($department,$semester);
+                if($this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
+                    $applicants = $repository->findInterviewedApplicants($department,$semester);
+                }else{
+                    $applicants = $repository->findInterviewedApplicantsByInterviewer($department,$semester,$user);
+                }
+
                 $template = 'interviewed_applications_table.html.twig';
                 break;
             default:
