@@ -14,7 +14,7 @@ class UserAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/brukeradmin');
+		$crawler = $client->request('GET', '/kontrollpanel/brukeradmin');
 
 		// Find a link and click it
 		$link = $crawler->selectLink('Opprett bruker')->eq(0)->link();
@@ -42,7 +42,7 @@ class UserAdminControllerTest extends WebTestCase {
 		$crawler = $client->submit($form);
 
 		// Assert that the response is the correct redirect
-		$this->assertTrue($client->getResponse()->isRedirect('/brukeradmin') );
+		$this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/brukeradmin') );
 
 		// Follow the redirect
 		$crawler = $client->followRedirect();
@@ -59,7 +59,7 @@ class UserAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/brukeradmin/opprett/2');
+		$crawler = $client->request('GET', '/kontrollpanel/brukeradmin/opprett/2');
 
 		// Assert that we have the correct page
 		$this->assertEquals(1, $crawler->filter('h1:contains("Opprett bruker")')->count());
@@ -82,7 +82,7 @@ class UserAdminControllerTest extends WebTestCase {
 		$crawler = $client->submit($form);
 
 		// Assert that the response is the correct redirect
-		$this->assertTrue($client->getResponse()->isRedirect('/brukeradmin') );
+		$this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/brukeradmin') );
 
 		// Follow the redirect
 		$crawler = $client->followRedirect();
@@ -98,7 +98,7 @@ class UserAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/brukeradmin/avdeling/1');
+		$crawler = $client->request('GET', '/kontrollpanel/brukeradmin/avdeling/1');
 
 		// Assert that we have the correct amount of data
 		$this->assertEquals( 2, $crawler->filter('h1:contains("Brukere")')->count() );
@@ -120,7 +120,7 @@ class UserAdminControllerTest extends WebTestCase {
 			'PHP_AUTH_PW'   => '1234',
 		));
 
-		$crawler = $client->request('GET', '/brukeradmin');
+		$crawler = $client->request('GET', '/kontrollpanel/brukeradmin');
 
 		// Assert that we have the correct amount of data
 		$this->assertEquals( 1, $crawler->filter('h1:contains("Brukere")')->count() );

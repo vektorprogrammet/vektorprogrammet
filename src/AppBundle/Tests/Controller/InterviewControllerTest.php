@@ -56,7 +56,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $crawler = $client->request('GET', '/intervju/conduct/3');
+        $crawler = $client->request('GET', '/kontrollpanel/intervju/conduct/3');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -76,7 +76,7 @@ class InterviewControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('td:contains("Mark")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Zuckerberg")')->count());
 
-        $crawler = $client->request('GET', '/intervju/vis/3');
+        $crawler = $client->request('GET', '/kontrollpanel/intervju/vis/3');
         $this->verifyInterview($crawler);
         restoreDatabase();
 
@@ -86,7 +86,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $crawler = $client->request('GET', '/intervju/conduct/3');
+        $crawler = $client->request('GET', '/kontrollpanel/intervju/conduct/3');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -106,7 +106,7 @@ class InterviewControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('td:contains("Mark")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Zuckerberg")')->count());
 
-        $crawler = $client->request('GET', '/intervju/vis/3');
+        $crawler = $client->request('GET', '/kontrollpanel/intervju/vis/3');
         $this->verifyInterview($crawler);
 
 
@@ -116,7 +116,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $client->request('GET', '/intervju/conduct/3');
+        $client->request('GET', '/kontrollpanel/intervju/conduct/3');
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
@@ -127,7 +127,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $client->request('GET', '/intervju/conduct/3');
+        $client->request('GET', '/kontrollpanel/intervju/conduct/3');
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
@@ -143,7 +143,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $crawler = $client->request('GET', '/intervju/vis/2');
+        $crawler = $client->request('GET', '/kontrollpanel/intervju/vis/2');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -160,7 +160,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $crawler = $client->request('GET', '/intervju/vis/1');
+        $crawler = $client->request('GET', '/kontrollpanel/intervju/vis/1');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -172,7 +172,7 @@ class InterviewControllerTest extends WebTestCase
         $this->assertEquals(2, $crawler->filter('p:contains("Test answer")')->count());
 
         //Try viewing an interview that the team user did not conduct
-        $crawler = $client->request('GET', '/intervju/vis/2');
+        $crawler = $client->request('GET', '/kontrollpanel/intervju/vis/2');
 
         // Assert that the page response status code is 403
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
@@ -183,7 +183,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $client->request('GET', '/intervju/vis/1');
+        $client->request('GET', '/kontrollpanel/intervju/vis/1');
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
@@ -194,7 +194,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $client->request('GET', '/intervju/vis/1');
+        $client->request('GET', '/kontrollpanel/intervju/vis/1');
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
@@ -208,7 +208,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $crawler = $client->request('GET', '/intervju/skjema/opprett');
+        $crawler = $client->request('GET', '/kontrollpanel/intervju/skjema/opprett');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -239,7 +239,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $client->request('GET', '/intervju/skjema/opprett');
+        $client->request('GET', '/kontrollpanel/intervju/skjema/opprett');
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
@@ -255,7 +255,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $crawler = $client->request('GET', '/intervju/skjema/1');
+        $crawler = $client->request('GET', '/kontrollpanel/intervju/skjema/1');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -286,7 +286,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $client->request('GET', '/intervju/skjema/1');
+        $client->request('GET', '/kontrollpanel/intervju/skjema/1');
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
@@ -301,7 +301,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $crawler = $client->request('GET', '/intervju/skjema');
+        $crawler = $client->request('GET', '/kontrollpanel/intervju/skjema');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -317,7 +317,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $client->request('GET', '/intervju/skjema');
+        $client->request('GET', '/kontrollpanel/intervju/skjema');
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
@@ -332,7 +332,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $crawler = $client->request('GET', '/intervju/settopp/3');
+        $crawler = $client->request('GET', '/kontrollpanel/intervju/settopp/3');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -364,7 +364,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $crawler = $client->request('GET', '/intervju/settopp/3');
+        $crawler = $client->request('GET', '/kontrollpanel/intervju/settopp/3');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -396,7 +396,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $client->request('GET', '/intervju/settopp/3');
+        $client->request('GET', '/kontrollpanel/intervju/settopp/3');
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
@@ -407,7 +407,7 @@ class InterviewControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => '1234',
         ));
 
-        $client->request('GET', '/intervju/settopp/3');
+        $client->request('GET', '/kontrollpanel/intervju/settopp/3');
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());

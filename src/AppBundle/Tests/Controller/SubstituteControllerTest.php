@@ -15,7 +15,7 @@ class SubstituteControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/vikar');
+        $crawler = $client->request('GET', '/kontrollpanel/vikar');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -36,7 +36,7 @@ class SubstituteControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/vikar');
+        $crawler = $client->request('GET', '/kontrollpanel/vikar');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -57,7 +57,7 @@ class SubstituteControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $client->request('GET', '/vikar');
+        $client->request('GET', '/kontrollpanel/vikar');
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
@@ -71,7 +71,7 @@ class SubstituteControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/vikar/1');
+        $crawler = $client->request('GET', '/kontrollpanel/vikar/1');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -92,7 +92,7 @@ class SubstituteControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/vikar/1');
+        $crawler = $client->request('GET', '/kontrollpanel/vikar/1');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -113,7 +113,7 @@ class SubstituteControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $client->request('GET', '/vikar/1');
+        $client->request('GET', '/kontrollpanel/vikar/1');
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
@@ -127,7 +127,7 @@ class SubstituteControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/vikar/rediger/1');
+        $crawler = $client->request('GET', '/kontrollpanel/vikar/rediger/1');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -158,7 +158,7 @@ class SubstituteControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $client->request('GET', '/vikar/rediger/1');
+        $client->request('GET', '/kontrollpanel/vikar/rediger/1');
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());

@@ -55,12 +55,12 @@ security:
         # require ROLE_ADMIN for /admin*
 
           #ROLE_HIGHEST_ADMIN = superadmin user
-        - { path: ^/kontrollpanel/semesteradmin/slett/, roles: ROLE_HIGHEST_ADMIN }
-        - { path: ^/kontrollpanel/teamadmin/stilling/slett/, roles: ROLE_HIGHEST_ADMIN }
+        - { path: ^/kontrollpanel/semesteradmin/slett, roles: ROLE_HIGHEST_ADMIN }
+        - { path: ^/kontrollpanel/teamadmin/stilling/slett, roles: ROLE_HIGHEST_ADMIN }
 
           #ROLE_SUPER_ADMIN = admin user
         - { path: ^/kontrollpanel/brukeradmin/slett, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/brukeradmin/avdeling/, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/brukeradmin/avdeling, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/opptakadmin/avdeling/, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/jubileum, role: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/jubileum/betalt, role: ROLE_SUPER_ADMIN }
@@ -77,7 +77,7 @@ security:
         - { path: ^/kontrollpanel/teamadmin/stilling/slett, roles: ROLE_SUPER_ADMIN }
 
           #ROLE_ADMIN = team user
-        - { path: ^/profile/edit/, roles: ROLE_ADMIN }
+        - { path: ^/profile/edit, roles: ROLE_ADMIN }
         - { path: ^/efconnect, role: ROLE_ADMIN }
         - { path: ^/elfinder, role: ROLE_ADMIN }
         - { path: ^/gallery_create, role: ROLE_ADMIN }

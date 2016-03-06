@@ -15,7 +15,7 @@ class ArticleAdminControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/artikkeladmin');
+        $crawler = $client->request('GET', '/kontrollpanel/artikkeladmin');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -35,7 +35,7 @@ class ArticleAdminControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/artikkeladmin');
+        $crawler = $client->request('GET', '/kontrollpanel/artikkeladmin');
 
         // Assert that the page response status code is 403 Access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
@@ -49,7 +49,7 @@ class ArticleAdminControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/artikkeladmin/opprett');
+        $crawler = $client->request('GET', '/kontrollpanel/artikkeladmin/opprett');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -83,7 +83,7 @@ class ArticleAdminControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $client->request('GET', '/artikkeladmin/opprett');
+        $client->request('GET', '/kontrollpanel/artikkeladmin/opprett');
 
         // Assert that the page response status code is 403 Access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
@@ -99,7 +99,7 @@ class ArticleAdminControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/artikkeladmin/rediger/1');
+        $crawler = $client->request('GET', '/kontrollpanel/artikkeladmin/rediger/1');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -128,7 +128,7 @@ class ArticleAdminControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $client->request('GET', '/artikkeladmin/rediger/1');
+        $client->request('GET', '/kontrollpanel/artikkeladmin/rediger/1');
 
         // Assert that the page response status code is 403 Access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());

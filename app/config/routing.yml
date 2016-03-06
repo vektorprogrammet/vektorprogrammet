@@ -233,12 +233,12 @@ members_show:
 ##########################################
 
 participanthistory_show:
- path:   /deltakerhistorikk
+ path:   /kontrollpanel/deltakerhistorikk
  defaults: { _controller: AppBundle:ParticipantHistory:show }
 
 
 participanthistory_show_by_department:
- path:   /deltakerhistorikk/{id}
+ path:   /kontrollpanel/deltakerhistorikk/{id}
  defaults: { _controller: AppBundle:ParticipantHistory:show }
 
 
@@ -300,25 +300,25 @@ article_filter:
 ##########################################
 
 articleadmin_show:
-  path: /artikkeladmin
+  path: /kontrollpanel/artikkeladmin
   defaults: { _controller: AppBundle:ArticleAdmin:show }
   requirements:
     _method: GET
 
 articleadmin_create:
-  path: /artikkeladmin/opprett
+  path: /kontrollpanel/artikkeladmin/opprett
   defaults: { _controller: AppBundle:ArticleAdmin:create }
   requirements:
     _method: GET|POST
 
 articleadmin_edit:
-  path: /artikkeladmin/rediger/{id}
+  path: /kontrollpanel/artikkeladmin/rediger/{id}
   defaults: { _controller: AppBundle:ArticleAdmin:edit }
   requirements:
     _method: GET|POST
 
 articleadmin_sticky:
-  path: /artikkeladmin/sticky/{id}
+  path: /kontrollpanel/artikkeladmin/sticky/{id}
   defaults: { _controller: AppBundle:ArticleAdmin:sticky }
   requirements:
     _method: GET
@@ -326,7 +326,7 @@ articleadmin_sticky:
     expose: true
 
 articleadmin_delete:
-  path: /artikkeladmin/slett/{id}
+  path: /kontrollpanel/artikkeladmin/slett/{id}
   defaults: { _controller: AppBundle:ArticleAdmin:delete }
   requirements:
     _method: GET
@@ -334,7 +334,7 @@ articleadmin_delete:
     expose: true
 
 articleadmin_crop:
-  path: /artikkeladmin/crop
+  path: /kontrollpanel/artikkeladmin/crop
   defaults: { _controller: AppBundle:ArticleAdmin:cropImage }
   requirements:
     _method: GET|POST
@@ -342,7 +342,7 @@ articleadmin_crop:
     expose: true
 
 articleadmin_saveImage:
-  path: /artikkeladmin/saveImage
+  path: /kontrollpanel/artikkeladmin/saveImage
   defaults: { _controller: AppBundle:ArticleAdmin:saveImage }
   requirements:
     _method: GET|POST
@@ -882,7 +882,7 @@ forum_edit_thread_by_id:
 ##########################################
 #ElFinder routes
 elfinder:
-    path: /elfinder/{instance}
+    path: /kontrollpanel/elfinder/{instance}
     defaults: { _controller: FMElfinderBundle:ElFinder:show, instance: default }
 ef_connect: #This one is used only internally by FMElfinderBundle? TODO: Er det riktig?
     path:  /efconnect/{instance}

@@ -121,19 +121,19 @@ class AvailabilityFunctionalTest extends WebTestCase
     public function adminUrlProvider()
     {
         return array(
-            array('/brukeradmin/opprett'),
-            array('/opptakadmin'),
-            array('/opprettsoker'),
-            array('/brukeradmin'),
-            array('/semesteradmin'),
-            array('/statistikk/opptak'),
-            array('/elfinder'),
-            array('/artikkeladmin'),
-            array('/vikar'),
-            array('/intervju/skjema'),
+            array('/kontrollpanel/brukeradmin/opprett'),
+            array('/kontrollpanel/opptakadmin'),
+            array('/kontrollpanel/opprettsoker'),
+            array('/kontrollpanel/brukeradmin'),
+            array('/kontrollpanel/semesteradmin'),
+            array('/kontrollpanel/statistikk/opptak'),
+            array('/kontrollpanel/elfinder'),
+            array('/kontrollpanel/artikkeladmin'),
+            array('/kontrollpanel/vikar'),
+            array('/kontrollpanel/intervju/skjema'),
             array('/kontrollpanel'),
-            array('/undersokelse/admin'),
-            array('/undersokelse/opprett'),
+            array('/kontrollpanel/undersokelse/admin'),
+            array('/kontrollpanel/undersokelse/opprett'),
         );
     }
 }
