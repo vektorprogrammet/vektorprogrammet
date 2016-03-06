@@ -68,6 +68,49 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $as3->setSemester($this->getReference('semester-1'));
         $application3->setStatistic($as3);
 
+        // The interview
+        $interview3 = new Interview();
+        $interview3->setInterviewed(true);
+        $interview3->setInterviewer($this->getReference('user-15'));
+        $interview3->setInterviewSchema($this->getReference('ischema-1'));
+        $interview3->setApplication($application3);
+        $application3->setInterview($interview3);
+
+        // Create answer objects for all the questions in the schema
+        foreach($interview3->getInterviewSchema()->getInterviewQuestions() as $interviewQuestion) {
+            $answer = new InterviewAnswer();
+            $answer->setAnswer("Test answer");
+            $answer->setInterview($interview3);
+            $answer->setInterviewQuestion($interviewQuestion);
+            $interview3->addInterviewAnswer($answer);
+        }
+
+        // The interview score
+        $intScore = new InterviewScore();
+        $intScore->setSuitability(6);
+        $intScore->setExplanatoryPower(5);
+        $intScore->setRoleModel(4);
+        $intScore->setSuitableAssistant('Ja');
+        $intScore->setApplicationStatistic($as3);
+        $interview3->setInterviewScore($intScore);
+
+        // The interview practical
+        $intPrac = new InterviewPractical();
+        $intPrac->setMonday("Bra");
+        $intPrac->setTuesday("Bra");
+        $intPrac->setWednesday("Ikke");
+        $intPrac->setThursday("Bra");
+        $intPrac->setFriday("Ikke");
+        $intPrac->setComment("Test");
+        $intPrac->setHeardAboutFrom("Stand");
+        $intPrac->setEnglish(true);
+        $intPrac->setPosition("2x2");
+        $intPrac->setSubstitute(true);
+        $intPrac->setPreferredGroup('Bolk 1');
+        $intPrac->setDoublePosition(true);
+        $intPrac->setApplicationStatistic($as3);
+        $interview3->setInterviewPractical($intPrac);
+
         $manager->persist($application3);
 
         // This application has a conducted interview which takes some code to set up
@@ -106,10 +149,10 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
 
         // The interview score
         $intScore = new InterviewScore();
-        $intScore->setDrive(3);
-        $intScore->setExplanatoryPower(3);
-        $intScore->setRoleModel(3);
-        $intScore->setTotalImpression(3);
+        $intScore->setSuitability(6);
+        $intScore->setExplanatoryPower(5);
+        $intScore->setRoleModel(4);
+        $intScore->setSuitableAssistant('Ja');
         $intScore->setApplicationStatistic($as4);
         $interview4->setInterviewScore($intScore);
 
@@ -117,14 +160,16 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $intPrac = new InterviewPractical();
         $intPrac->setMonday("Bra");
         $intPrac->setTuesday("Bra");
-        $intPrac->setWednesday("Bra");
+        $intPrac->setWednesday("Ikke");
         $intPrac->setThursday("Bra");
-        $intPrac->setFriday("Bra");
+        $intPrac->setFriday("Ikke");
         $intPrac->setComment("Test");
         $intPrac->setHeardAboutFrom("Stand");
         $intPrac->setEnglish(true);
         $intPrac->setPosition("2x2");
         $intPrac->setSubstitute(true);
+        $intPrac->setPreferredGroup('Bolk 1');
+        $intPrac->setDoublePosition(true);
         $intPrac->setApplicationStatistic($as4);
         $interview4->setInterviewPractical($intPrac);
 

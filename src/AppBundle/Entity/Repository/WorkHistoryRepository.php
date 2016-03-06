@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Team;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -28,6 +29,55 @@ class WorkHistoryRepository extends EntityRepository
 		AND endSemester.semesterEndDate is NULL)
 		")
 			->setParameter('today', $today)
+			->getResult();
+
+		return $workHistories;
+	}
+
+	/**
+	 * @param Team $team
+	 * @return array
+	 */
+	public function findActiveWorkHistoriesByTeam($team)
+	{
+
+		$today = new \DateTime('now');
+		$workHistories = $this->getEntityManager()->createQuery("
+		SELECT whistory
+		FROM AppBundle:WorkHistory whistory
+		JOIN whistory.startSemester startSemester
+		LEFT JOIN whistory.endSemester endSemester
+		WHERE (startSemester.semesterStartDate < :today
+		AND endSemester.semesterEndDate > :today)
+		OR (startSemester.semesterStartDate < :today
+		AND endSemester.semesterEndDate is NULL)
+		AND whistory.team = :team
+		")
+			->setParameter('today', $today)
+			->setParameter('team', $team)
+			->getResult();
+
+		return $workHistories;
+	}
+
+	/**
+	 * @param Team $team
+	 * @return array
+	 */
+	public function findInActiveWorkHistoriesByTeam($team)
+	{
+
+		$today = new \DateTime('now');
+		$workHistories = $this->getEntityManager()->createQuery("
+		SELECT whistory
+		FROM AppBundle:WorkHistory whistory
+		JOIN whistory.startSemester startSemester
+		LEFT JOIN whistory.endSemester endSemester
+		WHERE endSemester.semesterEndDate < :today
+		AND whistory.team = :team
+		")
+			->setParameter('today', $today)
+			->setParameter('team', $team)
 			->getResult();
 
 		return $workHistories;
