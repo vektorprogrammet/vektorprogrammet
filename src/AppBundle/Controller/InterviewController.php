@@ -39,9 +39,6 @@ class InterviewController extends Controller
 
         $interview = $application->getInterview();
 
-        //Interview that are older than 2 weeks can not be edited
-        if(!is_null($interview->getConducted()) && date_diff($interview->getConducted(), new \DateTime())->format('%a') > 14)return new AccessDeniedException();
-
         // Only admin and above, or the assigned interviewer should be able to conduct an interview
         if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') &&
             !$interview->isInterviewer($this->getUser())) {
@@ -98,6 +95,8 @@ class InterviewController extends Controller
     public function showAction(Application $application)
     {
         $interview = $application->getInterview();
+        if(is_null($interview))return $this->redirectToRoute('admissionadmin_show');
+
         // Only accessible for admin and above, or team members belonging to the same department as the interview
         if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') &&
             !$interview->isInterviewer($this->getUser())) {
