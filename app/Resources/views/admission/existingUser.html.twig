@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Vektorprogrammet - Opptak
+{% endblock %}
+
+{# Form themes user to modify the templates of the various form components #}
+{% form_theme form 'form/interview_layout.html.twig' %}
+{% form_theme form.applicationPractical.monday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.applicationPractical.tuesday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.applicationPractical.wednesday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.applicationPractical.thursday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.applicationPractical.friday 'form/radio_grid_layout.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 columns">
+            {% for flashMessage in app.session.flashbag.get('admission-notice') %}
+                <div class="admission-notice">
+                    <div data-alert class="alert-box success radius">
+                        {{ flashMessage }}
+                        <a href="#" class="close">&times;</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 medium-6 medium-offset-3 columns">
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <h3>Søk vektorassistent {{ department.shortName }} {{ semester.name }}</h3>
+            <div class="row">
+                <div class="small-12 columns">
+                    <div>
+                        {{ form_label(form.yearOfStudy) }}
+                        {{ form_errors(form.yearOfStudy) }}
+                        {{ form_widget(form.yearOfStudy) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    <label class="question-label">Hvilke dager passer for deg?</label>
+                    {{ form_row(form.applicationPractical.monday) }}
+                    {{ form_row(form.applicationPractical.tuesday) }}
+                    {{ form_row(form.applicationPractical.wednesday) }}
+                    {{ form_row(form.applicationPractical.thursday) }}
+                    {{ form_row(form.applicationPractical.friday) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-12 medium-12 large-12 columns">
+                    {{ form_row(form.applicationPractical.doublePosition) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-12 medium-12 large-12 columns">
+                    {{ form_row(form.applicationPractical.preferredGroup) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-12 medium-12 large-12 columns">
+                    {{ form_row(form.applicationPractical.english) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="text-center">
+                    {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted'}}) }}
+                </div>
+                <br>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block customScripts %}
+
+    <script>
+        var $submitBtn = $('.vektor-button-inverted');
+        var $applicationForm = $('form[name="application"]');
+        $submitBtn.click(function(){
+            if($applicationForm[0].checkValidity()){
+                $submitBtn.attr("disabled", true);
+                $submitBtn.html("Sender...");
+                $applicationForm.submit();
+            }
+        });
+    </script>
+
+{% endblock %}

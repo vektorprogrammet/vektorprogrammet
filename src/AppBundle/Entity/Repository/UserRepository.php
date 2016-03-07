@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Semester;
+use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -30,7 +32,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 	}
 	
 	public function findAllActiveUsersByDepartment($department){
-	
+	    //TODO: Check if user is in the assistantHistory for this semester instead of checking active field
 		$users =  $this->getEntityManager()->createQuery("
 		
 		SELECT u
@@ -70,6 +72,12 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getSingleResult();
     }
 
+    /**
+     * @param $email
+     * @return User
+     * @throws NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findUserByEmail($email){
         return $this->createQueryBuilder('User')
             ->select('User')
@@ -146,4 +154,5 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $this->getEntityName() === $class
             || is_subclass_of($class, $this->getEntityName());
     }
+
 }

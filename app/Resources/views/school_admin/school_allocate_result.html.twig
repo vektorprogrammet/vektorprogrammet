@@ -1,0 +1,59 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block body %}
+    <h1 style="text-align: center">Resultat skolefordeling</h1>
+    <div style="margin:50px auto;" class="row">
+        <div class="large-6 columns" style="border-right: 2px solid #333333;">
+            <div style="text-align:center; width:400px;margin:0 auto;">
+                <h2>Solution</h2>
+
+                <div class="row">
+                    <h2 style="text-align: center">Bolk 1</h2>
+                    {% for assistant in assistants %}
+                        {% if assistant.assignedDay and (assistant.group == 1 or assistant.doublePosition) %}
+                            <p>Navn: {{ assistant.name }} | Skole: {{ assistant.assignedSchool }} | Dag: {{ assistant.assignedDay }}</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+        <div class="large-6 columns">
+            <div style="text-align:center; width:400px;margin:0 auto;">
+                <h2>Solution</h2>
+
+                <div class="row">
+                    <h2 style="text-align: center">Bolk 2</h2>
+                    {% for assistant in assistants %}
+                        {% if assistant.assignedDay and (assistant.group == 2 or assistant.doublePosition) %}
+                            <p>Navn: {{ assistant.name }} | Skole: {{ assistant.assignedSchool }} | Dag: {{ assistant.assignedDay }}</p>
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h4>Could not find school for:</h4>
+        {% for assistant in assistants %}
+            {% if assistant.group == null %}
+                <p>{{ assistant.name }}</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="row" style="text-align: center">
+        <div class="large-6 columns">
+            <a href="{{ path('school_allocation') }}" class="button expand"><i class="fa fa-arrow-left"></i> Tilbake</a>
+        </div>
+        <div class="large-6 columns">
+            <a href="{{ path('school_allocation_allocate') }}" class="button expand success">Fordel <i class="fa fa-arrow-right"></i></a>
+        </div>
+        <br>
+        <br>
+        <hr>
+        <h4>Steg 2 av 2</h4>
+    </div>
+    <hr>
+{% endblock %}

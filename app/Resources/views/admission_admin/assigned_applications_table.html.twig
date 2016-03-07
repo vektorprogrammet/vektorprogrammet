@@ -9,8 +9,8 @@
     </div>
 {% endblock %}
 {% block applications %}
-    <h3>Intervjufordeling</h3>
     {% if interviewDistribution|length > 0 %}
+    <h3>Intervjufordeling</h3>
     <table>
         <thead>
         <tr>
@@ -28,9 +28,10 @@
         {% endfor %}
         </tbody>
     </table>
+        <hr>
     {% endif %}
     {% if yourApplicants is defined and yourApplicants|length > 0 %}
-        <h3 style="text-align: center">Dine Intervjuer | Antall: {{ yourApplicants|length }}</h3>
+        <h5 class="text-center">Dine Intervjuer | Antall: {{ yourApplicants|length }}</h5>
         <table width="100%" id="application-table">
 
             <thead>
@@ -52,12 +53,12 @@
             <tbody>
             {% for a in yourApplicants %}
                 <tr>
-                    <td>{{ a.firstName }}</td>
-                    <td>{{ a.lastName }}</td>
-                    <td>{{ a.phone }}</td>
-                    <td>{{ a.email }}</td>
-                    <td>{{ a.statistic.fieldOfStudy }}</td>
-                    <td>{{ a.statistic.yearOfStudy }}</td>
+                    <td>{{ a.user.firstName }}</td>
+                    <td>{{ a.user.lastName }}</td>
+                    <td>{{ a.user.phone }}</td>
+                    <td>{{ a.user.email }}</td>
+                    <td>{{ a.user.fieldOfStudy }}</td>
+                    <td>{{ a.yearOfStudy }}</td>
 
                     {% if a.interview.scheduled is not null %}
                         <td data-sort-value="{{ a.interview.scheduled.getTimestamp }}">
@@ -72,10 +73,10 @@
                     {# Add the buttons to book(send email) and conduct an interview, given the correct permissions #}
                     {% if is_granted('ROLE_SUPER_ADMIN') or a.interview.isInterviewer(app.user) %}
                         <td >
-                            <a href="{{ path('interview_schedule', { 'id': a.interview.id }) }}" class="button tiny"><i class="fa fa-envelope"></i> Sett opp</a>
+                            <a href="{{ path('interview_schedule', { 'id': a.id }) }}" class="button tiny"><i class="fa fa-envelope"></i> Sett opp</a>
                         </td>
                         <td>
-                            <a href="{{ path('interview_conduct', { 'id': a.interview.id }) }}" class="button tiny"><i class="fa fa-list-ul"></i> Intervju</a>
+                            <a href="{{ path('interview_conduct', { 'id': a.id }) }}" class="button tiny"><i class="fa fa-list-ul"></i> Intervju</a>
                         </td>
                     {% else %}
                         <td colspan="2"></td>
@@ -83,14 +84,14 @@
                 </tr>
             {% endfor %}
             </tbody>
-
         </table>
+        <hr>
     {% endif %}
 
     {% if applicants is defined %}
-
-        <h3 style="text-align: center">Alle intervujer | Antall: {{ applicants|length }}</h3>
-
+        {% if applicants|length %}
+        <h5 class="text-center">Alle intervujer | Antall: {{ applicants|length }}</h5>
+        {% endif %}
         {# The table containing applications which are assiged to an interviewer but not interviewed #}
         <table width="100%" id="application-table">
 
@@ -113,12 +114,12 @@
             <tbody>
             {% for a in applicants %}
                 <tr>
-                    <td>{{ a.firstName }}</td>
-                    <td>{{ a.lastName }}</td>
-                    <td>{{ a.phone }}</td>
-                    <td>{{ a.email }}</td>
-                    <td>{{ a.statistic.fieldOfStudy }}</td>
-                    <td>{{ a.statistic.yearOfStudy }}</td>
+                    <td>{{ a.user.firstName }}</td>
+                    <td>{{ a.user.lastName }}</td>
+                    <td>{{ a.user.phone }}</td>
+                    <td>{{ a.user.email }}</td>
+                    <td>{{ a.user.fieldOfStudy }}</td>
+                    <td>{{ a.yearOfStudy }}</td>
 
                         {% if a.interview.scheduled is not null %}
                             <td data-sort-value="{{ a.interview.scheduled.getTimestamp }}">
@@ -133,10 +134,10 @@
                     {# Add the buttons to book(send email) and conduct an interview, given the correct permissions #}
                     {% if is_granted('ROLE_SUPER_ADMIN') or a.interview.isInterviewer(app.user) %}
                         <td >
-                            <a href="{{ path('interview_schedule', { 'id': a.interview.id }) }}" class="button tiny"><i class="fa fa-envelope"></i> Sett opp</a>
+                            <a href="{{ path('interview_schedule', { 'id': a.id }) }}" class="button tiny"><i class="fa fa-envelope"></i> Sett opp</a>
                         </td>
                         <td>
-                            <a href="{{ path('interview_conduct', { 'id': a.interview.id }) }}" class="button tiny"><i class="fa fa-list-ul"></i> Intervju</a>
+                            <a href="{{ path('interview_conduct', { 'id': a.id }) }}" class="button tiny"><i class="fa fa-list-ul"></i> Intervju</a>
                         </td>
                     {% else %}
                         <td colspan="2"></td>

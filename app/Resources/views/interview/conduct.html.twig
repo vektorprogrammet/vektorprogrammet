@@ -6,11 +6,11 @@
 
 {# Form themes user to modify the templates of the various form components #}
 {% form_theme form 'form/interview_layout.html.twig' %}
-{% form_theme form.interviewPractical.monday 'form/radio_grid_layout.html.twig' %}
-{% form_theme form.interviewPractical.tuesday 'form/radio_grid_layout.html.twig' %}
-{% form_theme form.interviewPractical.wednesday 'form/radio_grid_layout.html.twig' %}
-{% form_theme form.interviewPractical.thursday 'form/radio_grid_layout.html.twig' %}
-{% form_theme form.interviewPractical.friday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.applicationPractical.monday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.applicationPractical.tuesday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.applicationPractical.wednesday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.applicationPractical.thursday 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.applicationPractical.friday 'form/radio_grid_layout.html.twig' %}
 
 
 {% block body %}
@@ -36,15 +36,15 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    {% set a = interview.application %}
-                                    <td> {{ a.firstName }} </td>
-                                    <td> {{ a.lastName }} </td>
-                                    <td> {{ a.phone }} </td>
-                                    <td> {{ a.email }} </td>
-                                    <td> {{ a.statistic.fieldOfStudy }} </td>
-                                    <td> {{ a.statistic.yearOfStudy }} </td>
+                                    {% set u = interview.user %}
+                                    <td> {{ u.firstName }} </td>
+                                    <td> {{ u.lastName }} </td>
+                                    <td> {{ u.phone }} </td>
+                                    <td> {{ u.email }} </td>
+                                    <td> {{ u.fieldOfStudy }} </td>
+                                    <td> {{ application.yearOfStudy }} </td>
 
-                                    {% if a.statistic.previousParticipation == 1 %}
+                                    {% if u.assistantHistories|length %}
                                         <td> Ja </td>
                                     {% else %}
                                         <td> Nei </td>
@@ -74,40 +74,40 @@
                 <div class="row">
                     <div class="small-12 columns">
                         <label class="question-label">Hvilke dager passer for deg?</label>
-                        {{ form_row(form.interviewPractical.monday) }}
-                        {{ form_row(form.interviewPractical.tuesday) }}
-                        {{ form_row(form.interviewPractical.wednesday) }}
-                        {{ form_row(form.interviewPractical.thursday) }}
-                        {{ form_row(form.interviewPractical.friday) }}
+                        {{ form_row(form.applicationPractical.monday) }}
+                        {{ form_row(form.applicationPractical.tuesday) }}
+                        {{ form_row(form.applicationPractical.wednesday) }}
+                        {{ form_row(form.applicationPractical.thursday) }}
+                        {{ form_row(form.applicationPractical.friday) }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
-                        {{ form_row(form.interviewPractical.doublePosition) }}
+                        {{ form_row(form.applicationPractical.doublePosition) }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
-                        {{ form_row(form.interviewPractical.preferredGroup) }}
+                        {{ form_row(form.applicationPractical.preferredGroup) }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
-                        {{ form_row(form.interviewPractical.english) }}
+                        {{ form_row(form.applicationPractical.english) }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
-                        {{ form_row(form.interviewPractical.heardAboutFrom) }}
+                        {{ form_row(form.heardAboutFrom) }}
                     </div>
                 </div>
 
                 <h3>Intervjuspørsmål <small>{{ interview.interviewSchema.name }}</small></h3>
-                {% for interviewAnswer in form.interviewAnswers %}
+                {% for interviewAnswer in form.interview.interviewAnswers %}
                     <div class="row">
                         <div class="small-12 medium-12 large-9 columns">
                             {{ form_row(interviewAnswer.answer) }}
@@ -118,25 +118,25 @@
                 <h3>Evaluering</h3>
                 <div class="row">
                     <div class="small-12 medium-12 large-4 columns">
-                        {{ form_row(form.interviewScore.explanatoryPower) }}
+                        {{ form_row(form.interview.interviewScore.explanatoryPower) }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="small-12 medium-12 large-4 columns">
-                        {{ form_row(form.interviewScore.roleModel) }}
+                        {{ form_row(form.interview.interviewScore.roleModel) }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="small-12 medium-12 large-4 columns">
-                        {{ form_row(form.interviewScore.suitability) }}
+                        {{ form_row(form.interview.interviewScore.suitability) }}
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
-                        {{ form_row(form.interviewScore.suitableAssistant) }}
+                    <div class="small-12 medium-12 large-4 columns end">
+                        {{ form_row(form.interview.interviewScore.suitableAssistant) }}
                     </div>
                 </div>
 

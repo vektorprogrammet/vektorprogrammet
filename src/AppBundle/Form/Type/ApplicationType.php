@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\Department;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -10,41 +11,40 @@ use AppBundle\Entity\User;
 
 class ApplicationType extends AbstractType {
 
-	private $id;
-	private $today;
+
 	private $authenticated;
-	
-	public function __construct($id, $today, $authenticated)
+	private $departmentId;
+
+	public function __construct(Department $department, $authenticated)
     {
-        $this->id = $id;
-		$this->today = $today;
+		$this->departmentId = $department->getId();
 		$this->authenticated = $authenticated;
     }
 	
     public function buildForm(FormBuilderInterface $builder, array $options){
-		
-		$user = $options['user'];
-		
-		$id = $this->id;
-		$today = $this->today;
 			
-		// The fields that populare the form
+		// The fields that populate the form
         $builder
-			->add('firstname', 'text',  array('label' => 'Fornavn'))
-            ->add('lastname', 'text',  array('label' => 'Etternavn'))
-			->add('email', 'text',  array('label' => 'E-post'))	
-			->add('phone', 'text',  array('label' => 'Tlf'))
-			->add('statistic', new ApplicationStatisticType($id, $today), array('label' => ' ') )
+			->add('user', new CreateUserOnApplicationType($this->departmentId), array(
+				'label' => ''
+			))
+			->add('yearOfStudy', 'choice',  array(
+				'label' => 'Årstrinn',
+				'choices' => array(
+					1 => '1',
+					2 => '2',
+					3 => '3',
+					4 => '4',
+					5 => '5',
+				),
+			))
             ->add('save', 'submit', array('label' => 'Søk nå!'));
 			
 			/*
 			See options for configuration here:
 			https://github.com/Gregwar/CaptchaBundle
 			*/
-			if ( $this->authenticated == true ) {
-				
-			}
-			else {
+			if ( !$this->authenticated ) {
 				$builder->add('captchaAdmission', 'captcha', array(
 					'label' => ' ',
 					'width' => 200,

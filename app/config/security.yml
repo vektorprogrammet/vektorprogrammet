@@ -88,6 +88,7 @@ security:
           #ROLE_USER = assistant user
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/assistenter, roles: ROLE_USER }
+        - { path: ^/opptak/eksisterende, roles: ROLE_USER }
 
 
 

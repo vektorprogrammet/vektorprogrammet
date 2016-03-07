@@ -19,7 +19,7 @@ class AssistantHistory {
 	protected $id;
 	
 	/**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="assistantHistories")
      **/
     protected $user;
 	

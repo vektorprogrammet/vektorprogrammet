@@ -1,193 +1,206 @@
 {% extends 'adminBase.html.twig' %}
 {% block title %}Kontrollpanel{% endblock %}
 {% block body %}
-    <div class="row">
-        <h3 class="control-panel-h3">Artikkel</h3>
+    <div class="control_panel">
+        <div class="row">
+            <h3>Artikkel</h3>
 
-        <div class="small-4 medium-3 large-2 columns">
-            <div class="control-panel-item">
-                <a href="{{ path('articleadmin_show') }}">
-                    <i class="fa fa-sticky-note fa-3x"></i>
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('articleadmin_show') }}">
+                        <i class="fa fa-sticky-note fa-3x"></i>
 
-                    <p>Artikler</p>
-                </a>
+                        <p>Artikler</p>
+                    </a>
+                </div>
             </div>
+
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('articleadmin_create') }}">
+                        <i class="fa fa-plus-square fa-3x"></i>
+
+                        <p>Ny artikkel</p>
+                    </a>
+                </div>
+            </div>
+            <hr/>
         </div>
 
-        <div class="small-4 medium-3 large-2 columns">
-            <div class="control-panel-item">
-                <a href="{{ path('articleadmin_create') }}">
-                    <i class="fa fa-plus-square fa-3x"></i>
+        <div class="row">
+            <h3>Brukere</h3>
 
-                    <p>Ny artikkel</p>
-                </a>
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('useradmin_show') }}">
+                        <i class="fa fa-users fa-3x"></i>
+
+                        <p>Brukere</p>
+                    </a>
+                </div>
             </div>
-        </div>
-        <hr class="control-panel-hr"/>
-    </div>
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('participanthistory_show') }}">
+                        <i class="fa fa-history fa-3x"></i>
 
-    <div class="row">
-        <h3 class="control-panel-h3">Brukere</h3>
-
-        <div class="small-4 medium-3 large-2 columns">
-            <div class="control-panel-item">
-                <a href="{{ path('useradmin_show') }}">
-                    <i class="fa fa-users fa-3x"></i>
-
-                    <p>Brukere</p>
-                </a>
+                        <p>Deltakerhistorikk</p>
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="small-4 medium-3 large-2 columns">
-            <div class="control-panel-item">
-                <a href="{{ path('participanthistory_show') }}">
-                    <i class="fa fa-history fa-3x"></i>
 
-                    <p>Deltakerhistorikk</p>
-                </a>
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('substitute_show') }}">
+                        <i class="fa fa-user-secret fa-3x"></i>
+
+                        <p>Vikarer</p>
+                    </a>
+                </div>
             </div>
-        </div>
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('teamadmin_show') }}">
+                        <i class="fa fa-smile-o fa-3x"></i>
 
-        <div class="small-4 medium-3 large-2 columns">
-            <div class="control-panel-item">
-                <a href="{{ path('substitute_show') }}">
-                    <i class="fa fa-user-secret fa-3x"></i>
-
-                    <p>Vikarer</p>
-                </a>
+                        <p>Team</p>
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="small-4 medium-3 large-2 columns">
-            <div class="control-panel-item">
-                <a href="{{ path('teamadmin_show') }}">
-                    <i class="fa fa-smile-o fa-3x"></i>
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a data-dropdown="superadminCreateUser" aria-controls="superadminCreateUser" aria-expanded="false">
+                        <i class="fa fa-user-plus fa-3x"></i>
 
-                    <p>Team</p>
-                </a>
+                        <p>Ny bruker</p>
+                    </a>
+                    <ul id="superadminCreateUser" class="f-dropdown mini" data-dropdown-content tabindex="-1"
+                        aria-hidden="true"
+                        aria-autoclose="false" tabindex="-1">
+
+                        {% for d in departments %}
+
+                            <li>
+                                <a href="{{ path('useradmin_create_user_superadmin', { 'id': d.id }) }}">{{ d.shortName }}</a>
+                            </li>
+
+                        {% endfor %}
+
+                    </ul>
+                </div>
             </div>
-        </div>
-        <div class="small-4 medium-3 large-2 columns">
-            <div class="control-panel-item">
-                <a data-dropdown="superadminCreateUser" aria-controls="superadminCreateUser" aria-expanded="false">
-                    <i class="fa fa-user-plus fa-3x"></i>
-
-                    <p>Ny bruker</p>
-                </a>
-                <ul id="superadminCreateUser" class="f-dropdown mini" data-dropdown-content tabindex="-1" aria-hidden="true"
-                    aria-autoclose="false" tabindex="-1">
-
-                    {% for d in departments %}
-
-                        <li>
-                            <a href="{{ path('useradmin_create_user_superadmin', { 'id': d.id }) }}">{{ d.shortName }}</a>
-                        </li>
-
-                    {% endfor %}
-
-                </ul>
-            </div>
-        </div>
-        <hr class="control-panel-hr"/>
-    </div>
-
-
-    <div class="row">
-        <h3 class="control-panel-h3">Opptak & Undersøkelse</h3>
-
-        <div class="small-4 medium-3 large-2 columns">
-            <div class="control-panel-item">
-                <a href="{{ path('admissionadmin_show') }}">
-                    <i class="fa fa-upload fa-3x"></i>
-
-                    <p>Opptak</p>
-                </a>
-            </div>
+            <hr/>
         </div>
 
-        <div class="small-4 medium-3 large-2 columns">
-            <div class="control-panel-item">
-                <a href="{{ path('interview_schema') }}">
-                    <i class="fa fa-comments fa-3x"></i>
 
-                    <p>Intervjuskjemaer</p>
-                </a>
+        <div class="row">
+            <h3>Opptak & Undersøkelse</h3>
+
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('admissionadmin_show') }}">
+                        <i class="fa fa-upload fa-3x"></i>
+
+                        <p>Opptak</p>
+                    </a>
+                </div>
             </div>
+
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('interview_schema') }}">
+                        <i class="fa fa-comments fa-3x"></i>
+
+                        <p>Intervjuskjemaer</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('surveys') }}">
+                        <i class="fa fa-comment fa-3x"></i>
+
+                        <p>Undersøkelser</p>
+                    </a>
+                </div>
+            </div>
+
+            {#<div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('statistics_application') }}">
+                        <i class="fa fa-bar-chart fa-3x"></i>
+
+                        <p>Statistikk</p>
+                    </a>
+                </div>
+            </div>#}
+
+            {#<div class="small-4 medium-3 large-2 columns">#}
+            {#<div class="control-panel-item">#}
+            {#<a href="{{ path('school_allocation') }}">#}
+            {#<i class="fa fa-building fa-3x"></i>#}
+
+            {#<p>Sexyface</p>#}
+            {#</a>#}
+            {#</div>#}
+            {#</div>#}
+            <hr/>
         </div>
 
-        <div class="small-4 medium-3 large-2 columns">
-            <div class="control-panel-item">
-                <a href="{{ path('surveys') }}">
-                    <i class="fa fa-comment fa-3x"></i>
+        <div class="row">
+            <h3>Diverse</h3>
 
-                    <p>Undersøkelser</p>
-                </a>
+            <div class="small-4 medium-3 small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('departmentadmin_show') }}">
+                        <i class="fa fa-industry fa-3x"></i>
+
+                        <p>Avdeling</p>
+                    </a>
+                </div>
             </div>
-        </div>
 
-        <div class="small-4 medium-3 large-2 columns">
-            <div class="control-panel-item">
-                <a href="{{ path('statistics_application') }}">
-                    <i class="fa fa-bar-chart fa-3x"></i>
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('semesteradmin_show') }}">
+                        <i class="fa fa-clock-o fa-3x"></i>
 
-                    <p>Statistikk</p>
-                </a>
+                        <p>Semester</p>
+                    </a>
+                </div>
             </div>
-        </div>
-        <hr class="control-panel-hr"/>
-    </div>
 
-    <div class="row">
-        <h3 class="control-panel-h3">Diverse</h3>
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('schooladmin_show') }}">
+                        <i class="fa fa-graduation-cap fa-3x"></i>
 
-        <div class="small-4 medium-3 small-4 medium-3 large-2 columns">
-            <div class="control-panel-item">
-                <a href="{{ path('departmentadmin_show') }}">
-                    <i class="fa fa-industry fa-3x"></i>
-
-                    <p>Avdeling</p>
-                </a>
+                        <p>Skole</p>
+                    </a>
+                </div>
             </div>
-        </div>
 
-        <div class="small-4 medium-3 large-2 columns">
-            <div class="control-panel-item">
-                <a href="{{ path('semesteradmin_show') }}">
-                    <i class="fa fa-clock-o fa-3x"></i>
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('sponsors_edit') }}">
+                        <i class="fa fa-money fa-3x"></i>
 
-                    <p>Semester</p>
-                </a>
+                        <p>Sponsorer</p>
+                    </a>
+                </div>
             </div>
-        </div>
 
-        <div class="small-4 medium-3 large-2 columns">
-            <div class="control-panel-item">
-                <a href="{{ path('schooladmin_show') }}">
-                    <i class="fa fa-graduation-cap fa-3x"></i>
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('certificate_show') }}">
+                        <i class="fa fa-sticky-note-o fa-3x"></i>
 
-                    <p>Skole</p>
-                </a>
+                        <p>Attest</p>
+                    </a>
+                </div>
             </div>
+            <hr/>
         </div>
-
-        <div class="small-4 medium-3 large-2 columns">
-            <div class="control-panel-item">
-                <a href="{{ path('sponsors_edit') }}">
-                    <i class="fa fa-money fa-3x"></i>
-
-                    <p>Sponsorer</p>
-                </a>
-            </div>
-        </div>
-
-        <div class="small-4 medium-3 large-2 columns">
-            <div class="control-panel-item">
-                <a href="{{ path('certificate_show') }}">
-                    <i class="fa fa-sticky-note-o fa-3x"></i>
-
-                    <p>Attest</p>
-                </a>
-            </div>
-        </div>
-        <hr class="control-panel-hr"/>
     </div>
 {% endblock %}

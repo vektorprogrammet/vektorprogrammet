@@ -1,0 +1,12 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Semesterfeil
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block body %}
+    <h4 class="text-center">Fant ingen semestere for {{ department.shortName }}. Lag et nytt <a href="{{ path('semesteradmin_show') }}">her</a></h4>
+{% endblock %}

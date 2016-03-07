@@ -19,7 +19,7 @@
             // The html table containing the applications
             appTable: $("#application-table"),
 
-            onReady: function() {
+            onReady: function () {
                 // Add sort functionality to the table containing the applications
                 AppAdmin.appTable.stupidtable();
 
@@ -61,7 +61,7 @@
                 //$("form[name='bulk']").submit(AppAdmin.onBulkSubmit);
             },
 
-            addSortArrows: function(event, data) {
+            addSortArrows: function (event, data) {
                 var th = $(this).find("th");
                 th.find(".arrow").remove();
                 var dir = $.fn.stupidtable.dir;
@@ -70,17 +70,17 @@
                 th.eq(data.column).append('<span class="arrow"> <i class="fa fa-sort-' + arrow + '"></i></span>');
             },
 
-            getAssignForm: function(event) {
+            getAssignForm: function (event) {
                 event.preventDefault();
                 var applicationId = parseInt($(this).closest('tr').attr('id'));
-                var url = Routing.generate('interview_assign', { id: applicationId });
+                var url = Routing.generate('interview_assign', {id: applicationId});
                 var modal = $("#assignModal");
 
                 $.ajax({
                     type: 'GET',
                     url: url,
                     cache: false,
-                    success: function(response) {
+                    success: function (response) {
                         modal.html(response.form);
                         modal.find("form").data("app-id", applicationId);
                         modal.find("form").submit(AppAdmin.onAssignFormSubmit);
@@ -89,17 +89,17 @@
                 });
             },
 
-            onAssignFormSubmit: function(event) {
+            onAssignFormSubmit: function (event) {
                 event.preventDefault();
                 var formdata = $(this).serialize();
                 var applicationId = $(this).data("app-id");
 
                 $.ajax({
                     type: "POST",
-                    url: Routing.generate('interview_assign', { id: applicationId }),
+                    url: Routing.generate('interview_assign', {id: applicationId}),
                     data: formdata,
-                    success: function(respone) {
-                        AppAdmin.appTable.find("tr#"+applicationId).find(".assign").addClass("success");
+                    success: function (respone) {
+                        AppAdmin.appTable.find("tr#" + applicationId).find(".assign").addClass("success");
                     }
                 });
 
@@ -107,17 +107,17 @@
                 $("#assignModal").foundation("reveal", "close");
             },
 
-            createSubstitute: function(event) {
+            createSubstitute: function (event) {
                 event.preventDefault();
                 var applicationId = parseInt($(this).closest('tr').attr('id'));
                 var button = $(this);
 
                 $.ajax({
                     type: 'GET',
-                    url: Routing.generate('substitute_create', { id: applicationId }),
+                    url: Routing.generate('substitute_create', {id: applicationId}),
                     cache: false,
-                    success: function(response) {
-                        if(response.success) {
+                    success: function (response) {
+                        if (response.success) {
                             button.closest("td").find("a").addClass("secondary");
                             button.remove();
                         } else {
@@ -127,17 +127,17 @@
                 });
             },
 
-            createUser: function(event) {
+            createUser: function (event) {
                 event.preventDefault();
                 var applicationId = parseInt($(this).closest('tr').attr('id'));
                 var td = $(this).closest("td");
 
                 $.ajax({
                     type: 'GET',
-                    url: Routing.generate('admissionadmin_send_new_user_mail', { id: applicationId }),
+                    url: Routing.generate('admissionadmin_send_new_user_mail', {id: applicationId}),
                     cache: false,
-                    success: function(response) {
-                        if(response.success) {
+                    success: function (response) {
+                        if (response.success) {
                             td.empty();
                             td.html("Bruker opprettet");
                         } else {
@@ -147,23 +147,23 @@
                 });
             },
 
-            bulkAction: function(event) {
+            bulkAction: function (event) {
                 event.preventDefault();
                 var bulkSelect = $("#bulkSelect");
                 var n = $(".bulkCheck:checked").length;
 
                 // If no checkbox is checked: do nothing
-                if(n < 1) {
+                if (n < 1) {
                     return;
                 }
 
-                switch(bulkSelect.val()) {
+                switch (bulkSelect.val()) {
                     case "assign":
                         $.ajax({
                             type: 'GET',
                             url: Routing.generate('interview_assign_bulk'),
                             cache: false,
-                            success: function(response) {
+                            success: function (response) {
                                 var modal = $("#assignModal");
                                 modal.html(response.form);
                                 modal.find("form").submit(AppAdmin.onBulkAssignFormSubmit);
@@ -180,7 +180,7 @@
                         modal.find(".modalButtons").empty().append(acceptBtn).append(cancelBtn);
 
                         acceptBtn.on("click", AppAdmin.bulkDeleteApplications);
-                        cancelBtn.on("click", function(event){
+                        cancelBtn.on("click", function (event) {
                             event.preventDefault();
                             modal.foundation("reveal", "close");
                         });
@@ -196,7 +196,7 @@
                         modal.find(".modalButtons").empty().append(acceptBtn).append(cancelBtn);
 
                         acceptBtn.on("click", AppAdmin.bulkDeleteInterviews);
-                        cancelBtn.on("click", function(event){
+                        cancelBtn.on("click", function (event) {
                             event.preventDefault();
                             modal.foundation("reveal", "close");
                         });
@@ -206,7 +206,7 @@
                 }
             },
 
-            bulkDeleteApplications: function(event) {
+            bulkDeleteApplications: function (event) {
                 event.preventDefault();
                 var formdata = $("#bulk").serialize();
 
@@ -214,8 +214,8 @@
                     type: 'POST',
                     url: Routing.generate('admissionadmin_delete_application_bulk'),
                     data: formdata,
-                    success: function(response) {
-                        if(response.success) {
+                    success: function (response) {
+                        if (response.success) {
                             $(".bulkCheck:checked").closest("tr").remove();
                         } else {
                             alert(response.cause);
@@ -228,7 +228,7 @@
                 $("#assignModal").foundation("reveal", "close");
             },
 
-            bulkDeleteInterviews: function(event) {
+            bulkDeleteInterviews: function (event) {
                 event.preventDefault();
                 var formdata = $("#bulk").serialize();
 
@@ -236,8 +236,8 @@
                     type: 'POST',
                     url: Routing.generate('interview_delete_bulk'),
                     data: formdata,
-                    success: function(response) {
-                        if(response.success) {
+                    success: function (response) {
+                        if (response.success) {
                             $(".bulkCheck:checked").closest("tr").remove();
                         } else {
                             alert(response.cause);
@@ -250,7 +250,7 @@
                 $("#assignModal").foundation("reveal", "close");
             },
 
-            onBulkAssignFormSubmit: function(event) {
+            onBulkAssignFormSubmit: function (event) {
                 event.preventDefault();
                 // Serializes both the bulk checkbox form and the assign form (both have name=application)
                 var formdata = $("form[name='application']").serialize();
@@ -259,7 +259,7 @@
                     type: "POST",
                     url: "{{ path('interview_assign_bulk') }}",
                     data: formdata,
-                    success: function(response) {
+                    success: function (response) {
                         $(".bulkCheck:checked").closest("tr").find(".assign").addClass("success");
                     }
                 });
@@ -268,13 +268,13 @@
                 $("#assignModal").foundation("reveal", "close");
             },
 
-            toggleSelectAll: function() {
-                if(this.checked) {
-                    if($(this).attr("id") == "bulkAllCheck") {
+            toggleSelectAll: function () {
+                if (this.checked) {
+                    if ($(this).attr("id") == "bulkAllCheck") {
                         $(".bulkCheck").prop("checked", true);
                     }
                 } else {
-                    if($(this).attr("id") == "bulkAllCheck") {
+                    if ($(this).attr("id") == "bulkAllCheck") {
                         $(".bulkCheck").prop("checked", false);
                     } else {
                         $('#bulkAllCheck').prop("checked", false);
@@ -304,64 +304,72 @@
 
             <hr>
 
-                <div class="row">
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
-                    {# Contains the bulk action navigation. Bulk actions depends on interview status #}
+            <div class="row">
 
-
-                    <div class="small-3 columns">
-                        <ul class="inline-list">
-
+                {# Contains the bulk action navigation. Bulk actions depends on interview status #}
+                <div class="small-3 columns">
+                    <ul class="inline-list">
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
                             {# Department dropdown #}
-                                <li>
-                                    <a class="button tiny" data-dropdown="autoCloseExample" aria-controls="autoCloseExample" aria-expanded="false">{{ departmentName }} <i class="fa fa-caret-down"></i></a>
-                                    <ul id="autoCloseExample" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
+                            <li>
+                                <a class="button tiny" data-dropdown="autoCloseExample" aria-controls="autoCloseExample"
+                                   aria-expanded="false">{{ departmentName }} <i class="fa fa-caret-down"></i></a>
+                                <ul id="autoCloseExample" class="f-dropdown" data-dropdown-content tabindex="-1"
+                                    aria-hidden="true" aria-autoclose="false" tabindex="-1">
 
-                                        {% for d in departments %}
+                                    {% for d in departments %}
 
-                                            <li><a href="{{ path('admissionadmin_filter_applications_by_department',
-                                                { 'id': d.id, 'status': status }) }}">{{ d.shortName }}</a></li>
+                                        <li><a href="{{ path('admissionadmin_filter_applications_by_department',
+                                            { 'id': d.id, 'status': status }) }}">{{ d.shortName }}</a></li>
 
-                                        {% endfor %}
+                                    {% endfor %}
 
-                                    </ul>
-                                </li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                        {# Semester dropdown #}
+                        <li>
+                            <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown"
+                               aria-expanded="false">{{ semesterName }} <i class="fa fa-caret-down"></i></a>
+                            <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1"
+                                aria-hidden="true" aria-autoclose="false" tabindex="-1">
 
-                                {# Semester dropdown #}
-                                <li>
-                                    <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown" aria-expanded="false">{{ semesterName }} <i class="fa fa-caret-down"></i></a>
-                                    <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
+                                {% for s in semesters %}
 
-                                        {% for s in semesters %}
+                                    <li><a href="{{ path(app.request.attributes.get('_route'),
+                                        app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'semester': s.id })) }}">{{ s.name }}</a>
+                                    </li>
 
-                                            <li> <a href="{{ path(app.request.attributes.get('_route'),
-                                                app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'semester': s.id })) }}">{{ s.name }}</a> </li>
+                                {% endfor %}
 
-                                        {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                {# The interview status navigation #}
+                <div class="small-7 columns" style="float:right">
+                    <dl id="interviewStatusNav" class="sub-nav right">
+                        <dt>Status:</dt>
+                        <dd {{ (status == "new") ? 'class="active"' : '' }}>
+                            <a href="{{ path(app.request.attributes.get('_route'),
+                            app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'status': 'new' })) }}">Nye</a>
+                        </dd>
+                        <dd {{ (status == "assigned") ? 'class="active"' : '' }}>
+                            <a href="{{ path(app.request.attributes.get('_route'),
+                            app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'status': 'assigned' })) }}">Fordelt</a>
+                        </dd>
+                        <dd {{ (status == "interviewed") ? 'class="active"' : '' }}>
+                            <a href="{{ path(app.request.attributes.get('_route'),
+                            app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'status': 'interviewed' })) }}">Intervjuet</a>
+                        </dd>
+                        <dd {{ (status == "existing") ? 'class="active"' : '' }}>
+                            <a href="{{ path(app.request.attributes.get('_route'),
+                            app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'status': 'existing' })) }}">Tidligere
+                                Assistenter</a>
+                        </dd>
+                    </dl>
+                </div>
 
-                                    </ul>
-                                </li>
-                        </ul>
-                    </div>
-                {% endif %}
-                    {# The interview status navigation #}
-                    <div class="small-5 small-offset-4 columns" style="width:380px;">
-                        <dl id="interviewStatusNav" class="sub-nav right">
-                            <dt>Status:</dt>
-                            <dd {{ (status == "new") ? 'class="active"' : ''  }}>
-                                <a href="{{ path(app.request.attributes.get('_route'),
-                                app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'status': 'new' })) }}">Nye</a>
-                            </dd>
-                            <dd {{ (status == "assigned") ? 'class="active"' : ''  }}>
-                                <a href="{{ path(app.request.attributes.get('_route'),
-                                app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'status': 'assigned' })) }}">Fordelt</a>
-                            </dd>
-                            <dd {{ (status == "interviewed") ? 'class="active"' : ''  }}>
-                                <a href="{{ path(app.request.attributes.get('_route'),
-                                app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'status': 'interviewed' })) }}">Intervjuet</a>
-                            </dd>
-                        </dl>
-                    </div>
 
             </div>
 
@@ -371,12 +379,12 @@
 
                 {% endblock %}
 
-                {% if not is_granted('ROLE_SUPER_ADMIN') %}
+                {#{% if not is_granted('ROLE_SUPER_ADMIN') %}
                     <div class="small-2 columns">
                         <ul class="inline-list">
-                            {# Semester dropdown #}
+                            &#123;&#35; Semester dropdown &#35;&#125;
                             <li>
-                                <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown" aria-expanded="false">Semester <i class="fa fa-caret-down"></i></a>
+                                <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown" aria-expanded="false">{{ semesterName }} <i class="fa fa-caret-down"></i></a>
                                 <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
 
                                     {% for s in semesters %}
@@ -390,21 +398,28 @@
                             </li>
                         </ul>
                     </div>
-                {% endif %}
+                {% endif %}#}
+
             </div>
 
 
             {% block yourInterviews %}{% endblock %}
 
             {# Contains an application table, depends on interview status #}
-            {% block applications %}
+            {% if applicants |length > 0 %}
+                {% block applications %}
 
-            {% endblock %}
+                {% endblock %}
+            {% else %}
+                <br>
+                <h5 class="text-center">Denne listen er tom</h5>
+            {% endif %}
         </div>
     </div>
 
     {# The confirmation modal, used to confirm application deletes #}
-    <div id="deleteAppModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true" role="dialog">
+    <div id="deleteAppModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
+         aria-hidden="true" role="dialog">
         <h2 class="modalMessage">Vil du virkelig slette søknaden?</h2>
         <ul class="inline-list modalButtons">
             <a href="#" class="button tiny accept">Slett</a>
@@ -413,7 +428,8 @@
     </div>
 
     {# The confirmation modal, used to confirm interview deletes #}
-    <div id="deleteIntModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true" role="dialog">
+    <div id="deleteIntModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
+         aria-hidden="true" role="dialog">
         <h2 class="modalMessage">Vil du virkelig slette intervjuet?</h2>
         <ul class="inline-list modalButtons">
             <a href="#" class="button tiny accept">Slett</a>
@@ -422,11 +438,13 @@
     </div>
 
     {# The assign interview modal #}
-    <div id="assignModal" class="reveal-modal tiny" data-reveal aria-labelledby="assignFormModal" aria-hidden="true" role="dialog">
+    <div id="assignModal" class="reveal-modal tiny" data-reveal aria-labelledby="assignFormModal" aria-hidden="true"
+         role="dialog">
     </div>
 
     {# The bulk modal, used by the various bulk actions #}
-    <div id="bulkModal" class="reveal-modal small" data-reveal aria-labelledby="assignFormModal" aria-hidden="true" role="dialog">
+    <div id="bulkModal" class="reveal-modal small" data-reveal aria-labelledby="assignFormModal" aria-hidden="true"
+         role="dialog">
         <h2 class="modalMessage"></h2>
         <ul class="inline-list modalButtons">
         </ul>

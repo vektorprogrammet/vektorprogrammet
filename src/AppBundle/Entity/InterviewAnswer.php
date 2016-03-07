@@ -19,7 +19,7 @@ class InterviewAnswer
 
     /**
      * @ORM\ManyToOne(targetEntity="Interview", inversedBy="interviewAnswers")
-     * @ORM\JoinColumn(name="interview_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="interview_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $interview;
 

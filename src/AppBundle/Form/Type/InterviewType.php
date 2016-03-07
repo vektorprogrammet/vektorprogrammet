@@ -13,15 +13,10 @@ class InterviewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $builder->add('interviewPractical', new InterviewPracticalType());
-
         $builder->add('interviewAnswers', 'collection', array('type' => new InterviewAnswerType()));
 
         $builder->add('interviewScore', new InterviewScoreType());
 
-        $builder->add('save', 'submit', array(
-            'label' => 'Lagre',
-        ));
     }
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {

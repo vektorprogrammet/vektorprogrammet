@@ -1,7 +1,7 @@
 {% extends 'adminBase.html.twig' %}
 
 {% block title %}
-    Intervju: {{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}
+    Intervju: {{ interview.user.firstName }} {{ interview.user.lastName }}
 {% endblock %}
 
 {% block body %}
@@ -11,6 +11,7 @@
             <div class="panel">
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
+                        <a href="{{ path('interview_conduct', { 'id': application.id }) }}" class="button radius tiny info float-right clear">Endre</a>
                         <h1>Intervju</h1>
                         <h3>Intervjuer</h3>
                         <p>{{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}</p>
@@ -29,15 +30,15 @@
                             </thead>
                             <tbody>
                             <tr>
-                                {% set a = interview.application %}
-                                <td> {{ a.firstName }} </td>
-                                <td> {{ a.lastName }} </td>
-                                <td> {{ a.phone }} </td>
-                                <td> {{ a.email }} </td>
-                                <td> {{ a.statistic.fieldOfStudy }} </td>
-                                <td> {{ a.statistic.yearOfStudy }} </td>
+                                {% set u = interview.user %}
+                                <td> {{ u.firstName }} </td>
+                                <td> {{ u.lastName }} </td>
+                                <td> {{ u.phone }} </td>
+                                <td> {{ u.email }} </td>
+                                <td> {{ u.fieldOfStudy }} </td>
+                                <td> {{ application.yearOfStudy }} </td>
 
-                                {% if a.statistic.previousParticipation == 1 %}
+                                {% if u.assistantHistories | length %}
                                     <td> Ja </td>
                                 {% else %}
                                     <td> Nei </td>
@@ -66,11 +67,11 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td>{{ interview.interviewPractical.monday }}</td>
-                                <td>{{ interview.interviewPractical.tuesday }}</td>
-                                <td>{{ interview.interviewPractical.wednesday }}</td>
-                                <td>{{ interview.interviewPractical.thursday }}</td>
-                                <td>{{ interview.interviewPractical.friday }}</td>
+                                <td>{{ application.monday }}</td>
+                                <td>{{ application.tuesday }}</td>
+                                <td>{{ application.wednesday }}</td>
+                                <td>{{ application.thursday }}</td>
+                                <td>{{ application.friday }}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -80,9 +81,10 @@
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
                         <label class="question-label">
-                            Kunne du tenke deg dobbelt stilling? Altså en gang i uka i 8 uker.
+                            Kunne du tenke deg dobbelt stilling? Altså en gang i uka i 8 uker?
                         </label>
-                        <p>{{ interview.interviewPractical.doublePosition ? 'Ja':'Nei' }}</p>
+                        <p>{{ application.doublePosition ? 'Ja':'Nei' }}</p>
+
                     </div>
                 </div>
 
@@ -91,7 +93,7 @@
                         <label class="question-label">
                             Har du et ønske om bolk?
                         </label>
-                        <p>{{ interview.interviewPractical.preferredGroup ? interview.interviewPractical.preferredGroup:'Ingen' }}</p>
+                        <p>{{ application.preferredGroup ? application.preferredGroup:'Ingen' }}</p>
                     </div>
                 </div>
 
@@ -99,7 +101,7 @@
                     <div class="small-12 medium-12 large-9 columns">
                         <label class="question-label">Vi har en internasjonal skole. Har du lyst til å undervise på engelsk?</label>
                         <p>
-                        {%  if interview.interviewPractical.english == 1 %}
+                        {%  if application.english == 1 %}
                             Ja
                         {% else %}
                             Nei
@@ -112,7 +114,7 @@
                     <div class="small-12 medium-12 large-9 columns">
                         <label class="question-label">Hvor hørte du om Vektorprogrammet?</label>
                         <p>
-                        {% for from in interview.interviewPractical.heardAboutFrom %}
+                        {% for from in application.heardAboutFrom %}
                             {{ from }}{% if not loop.last %}, {% endif %}
                         {% endfor %}
                         </p>
@@ -147,10 +149,10 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td>{{ a.interview.interviewScore.explanatoryPower }}</td>
-                                <td>{{ a.interview.interviewScore.roleModel }}</td>
-                                <td>{{ a.interview.interviewScore.suitability }}</td>
-                                <td>{{ a.interview.interviewScore.sum }}</td>
+                                <td>{{ interview.interviewScore.explanatoryPower }}</td>
+                                <td>{{ interview.interviewScore.roleModel }}</td>
+                                <td>{{ interview.interviewScore.suitability }}</td>
+                                <td>{{ interview.interviewScore.sum }}</td>
                             </tr>
                             </tbody>
                         </table>

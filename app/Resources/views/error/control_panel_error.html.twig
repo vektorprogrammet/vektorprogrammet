@@ -1,0 +1,18 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Semesterfeil
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 columns text-center">
+            <h3>Ooops. Det har oppstått en feil!</h3>
+            <h5 class=""><b>Feilmelding:</b></h5>
+            <p>{{ error }}</p>
+        </div>
+    </div>
+{% endblock %}

@@ -17,63 +17,35 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
     public function load(ObjectManager $manager)
     {
         $application1 = new Application();
-        $application1->setFirstName('Marius');
-        $application1->setLastName('Svendsen');
-        $application1->setEmail('marius@gmail.com');
-        $application1->setPhone('95321485');
-        $application1->setUserCreated(false);
-        $application1->setSubstituteCreated(false);
-        $as1 = new ApplicationStatistic();
-        $as1->setGender(0);
-        $as1->setPreviousParticipation(true);
-        $as1->setAccepted(0);
-        $as1->setYearOfStudy(1);
-        $as1->setFieldOfStudy($this->getReference('fos-1'));
-        $as1->setSemester($this->getReference('semester-1'));
-        $application1->setStatistic($as1);
+        $application1->setUser($this->getReference('user-10'));
+        $application1->setPreviousParticipation(true);
+        $application1->setYearOfStudy(1);
+        $application1->setSemester($this->getReference('semester-1'));
 
         $manager->persist($application1);
 
         $application2 = new Application();
-        $application2->setFirstName('Siri');
-        $application2->setLastName('Kristiansen');
-        $application2->setEmail('siri@kristiansen.no');
-        $application2->setPhone('95254873');
-        $application2->setUserCreated(false);
-        $application2->setSubstituteCreated(false);
-        $as2 = new ApplicationStatistic();
-        $as2->setGender(0);
-        $as2->setPreviousParticipation(true);
-        $as2->setAccepted(0);
-        $as2->setYearOfStudy(1);
-        $as2->setFieldOfStudy($this->getReference('fos-2'));
-        $as2->setSemester($this->getReference('semester-1'));
-        $application2->setStatistic($as2);
+        $application2->setUser($this->getReference('user-11'));
+        $application2->setPreviousParticipation(false);
+        $application2->setYearOfStudy(1);
+        $application2->setSemester($this->getReference('semester-1'));
 
         $manager->persist($application2);
 
         $application3 = new Application();
-        $application3->setFirstName('Leonardo');
-        $application3->setLastName('DiCaprio');
-        $application3->setEmail('leonardo@hollywood.com');
-        $application3->setPhone('95235816');
-        $application3->setUserCreated(false);
-        $application3->setSubstituteCreated(false);
-        $as3 = new ApplicationStatistic();
-        $as3->setGender(0);
-        $as3->setPreviousParticipation(true);
-        $as3->setAccepted(0);
-        $as3->setYearOfStudy(1);
-        $as3->setFieldOfStudy($this->getReference('fos-2'));
-        $as3->setSemester($this->getReference('semester-1'));
-        $application3->setStatistic($as3);
+        $application3->setUser($this->getReference('user-12'));
+        $application3->setPreviousParticipation(true);
+        $application3->setYearOfStudy(1);
+        $application3->setSemester($this->getReference('semester-1'));
+
+        $manager->persist($application3);
 
         // The interview
         $interview3 = new Interview();
         $interview3->setInterviewed(true);
-        $interview3->setInterviewer($this->getReference('user-15'));
+        $interview3->setInterviewer($this->getReference('user-2'));
         $interview3->setInterviewSchema($this->getReference('ischema-1'));
-        $interview3->setApplication($application3);
+        $interview3->setUser($this->getReference('user-12'));
         $application3->setInterview($interview3);
 
         // Create answer objects for all the questions in the schema
@@ -91,51 +63,34 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $intScore->setExplanatoryPower(5);
         $intScore->setRoleModel(4);
         $intScore->setSuitableAssistant('Ja');
-        $intScore->setApplicationStatistic($as3);
         $interview3->setInterviewScore($intScore);
 
         // The interview practical
-        $intPrac = new InterviewPractical();
-        $intPrac->setMonday("Bra");
-        $intPrac->setTuesday("Bra");
-        $intPrac->setWednesday("Ikke");
-        $intPrac->setThursday("Bra");
-        $intPrac->setFriday("Ikke");
-        $intPrac->setComment("Test");
-        $intPrac->setHeardAboutFrom("Stand");
-        $intPrac->setEnglish(true);
-        $intPrac->setPosition("2x2");
-        $intPrac->setSubstitute(true);
-        $intPrac->setPreferredGroup('Bolk 1');
-        $intPrac->setDoublePosition(true);
-        $intPrac->setApplicationStatistic($as3);
-        $interview3->setInterviewPractical($intPrac);
+        $application3->setMonday("Bra");
+        $application3->setTuesday("Bra");
+        $application3->setWednesday("Ikke");
+        $application3->setThursday("Bra");
+        $application3->setFriday("Ikke");
+        $application3->setHeardAboutFrom(array("Stand"));
+        $application3->setEnglish(true);
+        $application3->setPreferredGroup('Bolk 1');
+        $application3->setDoublePosition(true);
 
         $manager->persist($application3);
 
         // This application has a conducted interview which takes some code to set up
         $application4 = new Application();
-        $application4->setFirstName('Walter');
-        $application4->setLastName('White');
-        $application4->setEmail('walter@white.com');
-        $application4->setPhone('95254873');
-        $application4->setUserCreated(false);
-        $application4->setSubstituteCreated(false);
-        $as4 = new ApplicationStatistic();
-        $as4->setGender(0);
-        $as4->setPreviousParticipation(true);
-        $as4->setAccepted(0);
-        $as4->setYearOfStudy(1);
-        $as4->setFieldOfStudy($this->getReference('fos-1'));
-        $as4->setSemester($this->getReference('semester-1'));
-        $application4->setStatistic($as4);
+        $application4->setUser($this->getReference('user-13'));
+        $application4->setPreviousParticipation(false);
+        $application4->setYearOfStudy(1);
+        $application4->setSemester($this->getReference('semester-1'));
 
         // The interview
         $interview4 = new Interview();
         $interview4->setInterviewed(true);
         $interview4->setInterviewer($this->getReference('user-2'));
         $interview4->setInterviewSchema($this->getReference('ischema-1'));
-        $interview4->setApplication($application4);
+        $interview4->setUser($this->getReference('user-13'));
         $application4->setInterview($interview4);
 
         // Create answer objects for all the questions in the schema
@@ -153,47 +108,31 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $intScore->setExplanatoryPower(5);
         $intScore->setRoleModel(4);
         $intScore->setSuitableAssistant('Ja');
-        $intScore->setApplicationStatistic($as4);
         $interview4->setInterviewScore($intScore);
 
         // The interview practical
-        $intPrac = new InterviewPractical();
-        $intPrac->setMonday("Bra");
-        $intPrac->setTuesday("Bra");
-        $intPrac->setWednesday("Ikke");
-        $intPrac->setThursday("Bra");
-        $intPrac->setFriday("Ikke");
-        $intPrac->setComment("Test");
-        $intPrac->setHeardAboutFrom("Stand");
-        $intPrac->setEnglish(true);
-        $intPrac->setPosition("2x2");
-        $intPrac->setSubstitute(true);
-        $intPrac->setPreferredGroup('Bolk 1');
-        $intPrac->setDoublePosition(true);
-        $intPrac->setApplicationStatistic($as4);
-        $interview4->setInterviewPractical($intPrac);
+        $application4->setMonday("Bra");
+        $application4->setTuesday("Bra");
+        $application4->setWednesday("Ikke");
+        $application4->setThursday("Bra");
+        $application4->setFriday("Ikke");
+        $application4->setHeardAboutFrom(array("Stand"));
+        $application4->setEnglish(false);
+        $application4->setPreferredGroup('Bolk 1');
+        $application4->setDoublePosition(false);
 
         $manager->persist($application4);
 
         $application5 = new Application();
-        $application5->setFirstName('Mark');
-        $application5->setLastName('Zuckerberg');
-        $application5->setEmail('mark@facebook.com');
-        $application5->setPhone('95856472');
-        $application5->setUserCreated(false);
-        $application5->setSubstituteCreated(false);
-        $as5 = new ApplicationStatistic();
-        $as5->setGender(0);
-        $as5->setPreviousParticipation(true);
-        $as5->setAccepted(0);
-        $as5->setYearOfStudy(1);
-        $as5->setFieldOfStudy($this->getReference('fos-1'));
-        $as5->setSemester($this->getReference('semester-1'));
-        $application5->setStatistic($as5);
+        $application5->setUser($this->getReference('user-14'));
+        $application5->setPreviousParticipation(false);
+        $application5->setYearOfStudy(1);
+        $application5->setSemester($this->getReference('semester-1'));
         $interview5 = new Interview();
         $interview5->setInterviewed(false);
         $interview5->setInterviewer($this->getReference('user-2'));
         $interview5->setInterviewSchema($this->getReference('ischema-1'));
+        $interview5->setUser($this->getReference('user-14'));
         $application5->setInterview($interview5);
 
 
