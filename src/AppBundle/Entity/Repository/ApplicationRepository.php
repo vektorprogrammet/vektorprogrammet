@@ -79,9 +79,9 @@ class ApplicationRepository extends EntityRepository {
             ->join('a.user', 'u')
             ->join('a.interview', 'i')
             ->where('i.interviewed = 0')
-            ->andWhere('i.cancelled = 0');
+            ->andWhere('i.cancelled is NULL OR i.cancelled = 0');
 
-             if(null !== $department) {
+        if(null !== $department) {
                  $qb->andWhere('d = :department')
                      ->setParameter('department', $department);
              }
@@ -126,7 +126,7 @@ class ApplicationRepository extends EntityRepository {
             ->leftJoin('a.interview', 'i')
             ->where('a.previousParticipation = 0')
             ->andWhere('i is NULL OR i.interviewed = 0')
-            ->andWhere('i.cancelled = 0');
+            ->andWhere('i.cancelled is NULL OR i.cancelled = 0');
 
 
             if(null !== $department) {

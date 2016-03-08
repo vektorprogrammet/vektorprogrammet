@@ -16,6 +16,14 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
 {
     public function load(ObjectManager $manager)
     {
+        $application0 = new Application();
+        $application0->setUser($this->getReference('user-15'));
+        $application0->setPreviousParticipation(false);
+        $application0->setYearOfStudy(1);
+        $application0->setSemester($this->getReference('semester-1'));
+
+        $manager->persist($application0);
+
         $application1 = new Application();
         $application1->setUser($this->getReference('user-10'));
         $application1->setPreviousParticipation(true);
@@ -34,7 +42,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
 
         $application3 = new Application();
         $application3->setUser($this->getReference('user-12'));
-        $application3->setPreviousParticipation(true);
+        $application3->setPreviousParticipation(false);
         $application3->setYearOfStudy(1);
         $application3->setSemester($this->getReference('semester-1'));
 
@@ -135,8 +143,24 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $interview5->setUser($this->getReference('user-14'));
         $application5->setInterview($interview5);
 
-
         $manager->persist($application5);
+
+        $application6 = new Application();
+        $application6->setUser($this->getReference('user-8'));
+        $application6->setPreviousParticipation(false);
+        $application6->setYearOfStudy(1);
+        $application6->setSemester($this->getReference('semester-1'));
+        $interview6 = new Interview();
+        $interview6->setInterviewed(false);
+        $interview6->setInterviewer($this->getReference('user-1'));
+        $interview6->setInterviewSchema($this->getReference('ischema-1'));
+        $interview6->setUser($this->getReference('user-8'));
+        $interview6->setCancelled(true);
+        $application6->setInterview($interview6);
+
+        $manager->persist($application6);
+
+
 
         $manager->flush();
     }
