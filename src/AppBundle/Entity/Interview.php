@@ -23,6 +23,11 @@ class Interview
     protected $interviewed;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $cancelled;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $scheduled;
@@ -67,6 +72,7 @@ class Interview
     {
         $this->interviewAnswers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->interviewed = false;
+        $this->cancelled = false;
     }
 
     /**
@@ -203,6 +209,24 @@ class Interview
     {
         return $this->interviewed;
     }
+
+    /**
+     * @return boolean
+     */
+    public function getCancelled()
+    {
+        return $this->cancelled;
+    }
+
+    /**
+     * @param boolean $cancelled
+     */
+    public function setCancelled($cancelled)
+    {
+        $this->cancelled = $cancelled;
+    }
+
+
 
     /**
      * Is the given User the interviewer of this Interview?

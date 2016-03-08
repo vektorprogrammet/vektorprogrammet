@@ -89,18 +89,25 @@ class AdmissionAdminController extends Controller {
         $repository = $this->getDoctrine()->getRepository('AppBundle:Application');
         $applicantsAssignedToUser = array();
         $interviewDistribution = array();
+        $interviewDistributionLeft = array();
+        $cancelledApplicants = array();
         /** @var Application[] $applicants */
         switch($status) {
             case 'assigned':
-                $interviewedApplicants = $repository->findInterviewedApplicants($department,$semester);
                 $interviewRepo = $this->getDoctrine()->getRepository('AppBundle:Interview');
+
+                //Count completed interviews
+                $interviewedApplicants = $repository->findInterviewedApplicants($department,$semester);
                 foreach($interviewedApplicants as $interviewedApplicant){
                     $numInterviews = $interviewRepo->numberOfInterviewsByUserInSemester($interviewedApplicant->getInterview()->getInterviewer(), $semester);
                     $fullName = $interviewedApplicant->getInterview()->getInterviewer()->getFullName();
                     if(!array_key_exists($fullName,$interviewDistribution) && $numInterviews > 0){
                         $interviewDistribution[$fullName] = $numInterviews;
+                        $interviewDistributionLeft[$fullName] = 0;
                     }
                 }
+
+                //Count assigned interviews
                 $applicants = $repository->findAssignedApplicants($department,$semester);
                 foreach($applicants as $applicant){
                     $numInterviews = $interviewRepo->numberOfInterviewsByUserInSemester($applicant->getInterview()->getInterviewer(), $semester);
@@ -112,6 +119,24 @@ class AdmissionAdminController extends Controller {
                         $applicantsAssignedToUser[] = $applicant;
                     }
                 }
+
+                foreach($applicants as $applicant){
+                    $fullName = $applicant->getInterview()->getInterviewer()->getFirstName().' '.$applicant->getInterview()->getInterviewer()->getLastName();
+                    if(array_key_exists($fullName,$interviewDistribution)){
+                        $interviewDistribution[$fullName]++;
+                    }else{
+                        $interviewDistribution[$fullName] = 1;
+                    }
+                    if(array_key_exists($fullName,$interviewDistributionLeft)){
+                        $interviewDistributionLeft[$fullName]++;
+                    }else{
+                        $interviewDistributionLeft[$fullName] = 1;
+                    }
+                    if($applicant->getInterview()->getInterviewer() == $user){
+                        $yourApplicants[] = $applicant;
+                    }
+                }
+                $cancelledApplicants = $repository->findCancelledApplicants($semester);
                 arsort($interviewDistribution);
                 $template = 'assigned_applications_table.html.twig';
                 break;
@@ -140,12 +165,14 @@ class AdmissionAdminController extends Controller {
             'applicants' => $applicants,
             'yourApplicants' => $applicantsAssignedToUser,
             'interviewDistribution' => $interviewDistribution,
+            'interviewDistributionLeft' => $interviewDistributionLeft,
             'departments' => $allDepartments,
             'semesters' => $semesters,
             'semesterName' => $semesterName,
             'numOfApplicants' => sizeof($applicants),
             'departmentName' => $department->getShortName(),
             'user' => $user,
+            'cancelledApplicants' => $cancelledApplicants,
         ));
     }
 
