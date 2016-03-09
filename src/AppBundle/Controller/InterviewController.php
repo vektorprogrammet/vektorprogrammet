@@ -87,6 +87,18 @@ class InterviewController extends Controller
     }
 
     /**
+     * @param Interview $interview
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function cancelAction(Interview $interview){
+        $interview->setCancelled(true);
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($interview);
+        $manager->flush();
+        return $this->redirectToRoute('admissionadmin_show', array('status' => 'assigned'));
+    }
+
+    /**
      * Shows the given interview.
      *
      * @param Application $application

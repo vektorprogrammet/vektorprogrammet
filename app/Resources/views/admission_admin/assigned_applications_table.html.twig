@@ -10,143 +10,86 @@
 {% endblock %}
 {% block applications %}
     {% if interviewDistribution|length > 0 %}
-    <h3>Intervjufordeling</h3>
-    <table>
-        <thead>
-        <tr>
-            <th>Navn</th>
-            <th>Antall intervjuer</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        {% for interviewer in interviewDistribution|keys %}
-            <tr>
-                <td>{{ interviewer }}</td>
-                <td>{{ interviewDistribution[interviewer] }}</td>
+        <h3>Intervjufordeling</h3>
+        <table>
+            <thead>
+            <tr class="text-center">
+                <th>Navn</th>
+                <th class="text-center">Intervjuer igjen</th>
+                <th class="text-center">Totalt antall intervjuer</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+
+            <tbody>
+            {% for interviewer in interviewDistribution|keys %}
+                <tr>
+                    <td>{{ interviewer }}</td>
+                    <td class="text-center">{{ interviewDistributionLeft[interviewer] }}</td>
+                    <td class="text-center">{{ interviewDistribution[interviewer] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
         <hr>
     {% endif %}
     {% if yourApplicants is defined and yourApplicants|length > 0 %}
-        <h5 class="text-center">Dine Intervjuer | Antall: {{ yourApplicants|length }}</h5>
-        <table width="100%" id="application-table">
-
-            <thead>
-            <tr>
-                {# data-sort is used to sort the tables with stupidtable.js #}
-                <th data-sort="string">Fornavn</th>
-                <th data-sort="string">Etternavn</th>
-                <th data-sort="int">Tlf</th>
-                <th data-sort="string">E-post</th>
-                <th data-sort="string">Linje</th>
-                <th data-sort="int">År</th>
-                <th data-sort="int">Oppsatt dato</th>
-                <th data-sort="string">Intervjues av</th>
-                {# Add header columns to match the buttons added #}
-                <th colspan="2"></th>
-            </tr>
-            </thead>
-
-            <tbody>
-            {% for a in yourApplicants %}
-                <tr>
-                    <td>{{ a.user.firstName }}</td>
-                    <td>{{ a.user.lastName }}</td>
-                    <td>{{ a.user.phone }}</td>
-                    <td>{{ a.user.email }}</td>
-                    <td>{{ a.user.fieldOfStudy }}</td>
-                    <td>{{ a.yearOfStudy }}</td>
-
-                    {% if a.interview.scheduled is not null %}
-                        <td data-sort-value="{{ a.interview.scheduled.getTimestamp }}">
-                            {{ a.interview.scheduled|date("d.m.y - G:i") }}
-                        </td>
-                    {% else %}
-                        <td data-sort-value="0"></td>
-                    {% endif %}
-
-                    <td>{{ a.interview.interviewer.firstName }} {{ a.interview.interviewer.lastName }}</td>
-
-                    {# Add the buttons to book(send email) and conduct an interview, given the correct permissions #}
-                    {% if is_granted('ROLE_SUPER_ADMIN') or a.interview.isInterviewer(app.user) %}
-                        <td >
-                            <a href="{{ path('interview_schedule', { 'id': a.id }) }}" class="button tiny"><i class="fa fa-envelope"></i> Sett opp</a>
-                        </td>
-                        <td>
-                            <a href="{{ path('interview_conduct', { 'id': a.id }) }}" class="button tiny"><i class="fa fa-list-ul"></i> Intervju</a>
-                        </td>
-                    {% else %}
-                        <td colspan="2"></td>
-                    {% endif %}
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        <h5 class="">Dine Intervjuer | Antall: {{ yourApplicants|length }}</h5>
+        {% include 'admission_admin/assigned_table.html.twig' with {'applicants': yourApplicants} %}
         <hr>
     {% endif %}
-
-    {% if applicants is defined %}
-        {% if applicants|length %}
-        <h5 class="text-center">Alle intervujer | Antall: {{ applicants|length }}</h5>
-        {% endif %}
-        {# The table containing applications which are assiged to an interviewer but not interviewed #}
-        <table width="100%" id="application-table">
-
-            <thead>
-            <tr>
-                {# data-sort is used to sort the tables with stupidtable.js #}
-                <th data-sort="string">Fornavn</th>
-                <th data-sort="string">Etternavn</th>
-                <th data-sort="int">Tlf</th>
-                <th data-sort="string">E-post</th>
-                <th data-sort="string">Linje</th>
-                <th data-sort="int">År</th>
-                <th data-sort="int">Oppsatt dato</th>
-                <th data-sort="string">Intervjues av</th>
-                {# Add header columns to match the buttons added #}
-                <th colspan="2"></th>
-            </tr>
-            </thead>
-
-            <tbody>
-            {% for a in applicants %}
-                <tr>
-                    <td>{{ a.user.firstName }}</td>
-                    <td>{{ a.user.lastName }}</td>
-                    <td>{{ a.user.phone }}</td>
-                    <td>{{ a.user.email }}</td>
-                    <td>{{ a.user.fieldOfStudy }}</td>
-                    <td>{{ a.yearOfStudy }}</td>
-
-                        {% if a.interview.scheduled is not null %}
-                            <td data-sort-value="{{ a.interview.scheduled.getTimestamp }}">
-                            {{ a.interview.scheduled|date("d.m.y - G:i") }}
-                            </td>
-                            {% else %}
-                            <td data-sort-value="0"></td>
-                        {% endif %}
-
-                    <td>{{ a.interview.interviewer.firstName }} {{ a.interview.interviewer.lastName }}</td>
-
-                    {# Add the buttons to book(send email) and conduct an interview, given the correct permissions #}
-                    {% if is_granted('ROLE_SUPER_ADMIN') or a.interview.isInterviewer(app.user) %}
-                        <td >
-                            <a href="{{ path('interview_schedule', { 'id': a.id }) }}" class="button tiny"><i class="fa fa-envelope"></i> Sett opp</a>
-                        </td>
-                        <td>
-                            <a href="{{ path('interview_conduct', { 'id': a.id }) }}" class="button tiny"><i class="fa fa-list-ul"></i> Intervju</a>
-                        </td>
-                    {% else %}
-                        <td colspan="2"></td>
+    <div class="row">
+        <div class="small-12 columns">
+            <div id="allApplicantsList" class="slide-group">
+                {% if applicants is defined %}
+                    {% if applicants|length %}
+                        <h5 class="">Alle intervujer | Antall: {{ applicants|length }}</h5>
                     {% endif %}
-                </tr>
-            {% endfor %}
-            </tbody>
+                    {% include 'admission_admin/assigned_table.html.twig' with {'applicants': applicants} %}
+                {% endif %}
+            </div>
+            <button id="allApplicantsButton" class="button tiny default radius">Vis alle intervjuer ({{ applicants|length }})
+                <i class="fa fa-caret-down"></i></button>
 
-        </table>
+        </div>
+    </div>
 
-    {% endif %}
+    <br>
+
+    <div class="row">
+        <div class="small-12 columns">
+            <div id="cancelledApplicantsList" class="slide-group">
+                {% if cancelledApplicants is defined %}
+                    {% if cancelledApplicants|length %}
+                        <h5 class="">Kansellerte intervujer | Antall: {{ cancelledApplicants|length }}</h5>
+                    {% endif %}
+                    {% include 'admission_admin/assigned_table.html.twig' with {'applicants': cancelledApplicants} %}
+                {% endif %}
+            </div>
+            <button id="cancelledApplicantsButton" class="button tiny alert radius">Vis kansellerte intervjuer
+                ({{ cancelledApplicants|length }}) <i class="fa fa-caret-down"></i></button>
+        </div>
+    </div>
+    <br>
+{% endblock %}
+
+{% block customScripts %}
+    <script>
+        function setSliders(listId, buttonId) {
+            var $list = $('#' + listId);
+            var $button = $('#' + buttonId);
+            $list.attr('expanded', 'false')
+            $button.on('click', function () {
+                $list.slideToggle(400);
+                if ($list.attr('expanded') == 'false') {
+                    $button.html($button.html().replace("Vis", "Skjul").replace("down", "up"));
+                    $list.attr('expanded', 'true');
+                } else {
+                    $button.html($button.html().replace("Skjul", "Vis").replace("up", "down"));
+                    $list.attr('expanded', 'false');
+                }
+            });
+        }
+        setSliders('allApplicantsList', 'allApplicantsButton');
+        setSliders('cancelledApplicantsList', 'cancelledApplicantsButton');
+    </script>
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use Doctrine\ORM\EntityRepository;
@@ -77,9 +78,10 @@ class ApplicationRepository extends EntityRepository {
             ->join('sem.department', 'd')
             ->join('a.user', 'u')
             ->join('a.interview', 'i')
-            ->where('i.interviewed = 0');
+            ->where('i.interviewed = 0')
+            ->andWhere('i.cancelled is NULL OR i.cancelled = 0');
 
-             if(null !== $department) {
+        if(null !== $department) {
                  $qb->andWhere('d = :department')
                      ->setParameter('department', $department);
              }
@@ -90,6 +92,22 @@ class ApplicationRepository extends EntityRepository {
             }
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param Semester $semester
+     * @return Application[]
+     */
+    public function findCancelledApplicants(Semester $semester){
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->join('a.semester', 'sem')
+            ->join('a.interview', 'i')
+            ->where('sem =:semester')
+            ->andWhere('i.cancelled = 1')
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getResult();
     }
 
     /**
@@ -107,7 +125,8 @@ class ApplicationRepository extends EntityRepository {
             ->join('a.user', 'u')
             ->leftJoin('a.interview', 'i')
             ->where('a.previousParticipation = 0')
-            ->andWhere('i is NULL OR i.interviewed = 0');
+            ->andWhere('i is NULL OR i.interviewed = 0')
+            ->andWhere('i.cancelled is NULL OR i.cancelled = 0');
 
 
             if(null !== $department) {

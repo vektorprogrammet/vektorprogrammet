@@ -719,6 +719,12 @@ interview_conduct:
  requirements:
   id: \d+
 
+interview_cancel:
+ path: /kontrollpanel/intervju/cancel/{id}
+ defaults: { _controller: AppBundle:Interview:cancel }
+ requirements:
+  id: \d+
+
 interview_show:
  path: /kontrollpanel/intervju/vis/{id}
  defaults: { _controller: AppBundle:Interview:show }

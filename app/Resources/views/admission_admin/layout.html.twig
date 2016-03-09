@@ -403,17 +403,10 @@
             </div>
 
 
-            {% block yourInterviews %}{% endblock %}
-
             {# Contains an application table, depends on interview status #}
-            {% if applicants |length > 0 %}
-                {% block applications %}
+            {% block applications %}
 
-                {% endblock %}
-            {% else %}
-                <br>
-                <h5 class="text-center">Denne listen er tom</h5>
-            {% endif %}
+            {% endblock %}
         </div>
     </div>
 
