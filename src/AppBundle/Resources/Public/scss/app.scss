@@ -442,13 +442,12 @@ ul.alternatives {
   display:none;
 }
 
-//Board and Team
-.panel{
-  height:170px;
-}
-.large-3{
-  background-color: #f5f8ff;
-  border-radius: 10px;
+#teams{
+  border: 0;
+  width: 100%;
+  td{
+    text-align: center;
+  }
 }
 
 //Top line

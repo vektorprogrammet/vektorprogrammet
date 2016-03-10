@@ -6,12 +6,17 @@
 
 		$(document).ready(function() {
 
-			{# Get all the teams as they are first presented #}
+			{# Load in all teams #}
 			teams = $(".team");
+			teams.hide();
+
+			//Show Hovedstyre and IT
+			$(".Hovedstyre").show();
+			$(".IT").show();
 
 			$('.departmentId').click(function(){
 
-				{# Get the ID of the elemnt being clicked #}
+				{# Get the ID of the element being clicked #}
 				var ID =  parseInt(this.id);
 
 				{# Hide all teams #}
@@ -20,23 +25,8 @@
 				{# Show teams with id=ID and class="team" #}
 				$("#"+ID+".team").show();
 
+				});
 			});
-			{#
-			 Show all departments
-			$('.AllDepartments').click(function(){
-
-				teams.show();
-
-			});
-		#}
-
-				{# Show user's department #}
-			$('.Department').click(function(){
-
-				teams.show();
-
-			});
-		});
 
 	</script>
 
@@ -58,27 +48,24 @@
 
 			<hr>
 
-			<a class="button tiny" data-dropdown="department" aria-controls="department" aria-expanded="false">Avdeling &raquo;</a>
-			<ul id="department" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
-				<li> <a href="#" class="AllDepartments"> Vis alle </a></li>
-
+	<table id="teams">
+		<tr>
 				{% for d in Departments %}
 
-					<li><a href="#" class="departmentId" id={{d.id}}> {{ d.shortname }} </a></li>
-
+					<td><a href="#" class="departmentId button tiny" id={{d.id}}> {{ d.shortname }} </a></td>
 
 				{% endfor %}
-
-			</ul>
+		</tr>
+	</table>
 
 		</div>
 	</div>
 
 	{% for t in Teams %}
 
-		<team class="team" id={{ t.department.id }}>
+		<team class="team {{ t.name }}" id={{ t.department.id }}>
 
-			<div class="row">
+			<div class="row" >
 				<div class="small-12 medium-12 large-12 columns">
 
 					<hr>
@@ -100,7 +87,7 @@
 
 								<img src="{{ asset(wh.user.picturePath) }}"/>
 
-								<div class="panel callout radius">
+								<div class="panel callout radius" id="teampanel">
 									{% if app.user %}
 										<h4><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{wh.user}}</a></h4>
 									{% else %}
