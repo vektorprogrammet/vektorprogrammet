@@ -5,6 +5,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SchoolRepository")
@@ -21,11 +23,13 @@ class School
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $name;
 
     /**
     * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
     */
     protected $contactPerson;
 
@@ -38,6 +42,8 @@ class School
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
+     * @Assert\Email(message="Ikke gyldig e-post.")
      */
     protected $email;
 	
@@ -49,12 +55,14 @@ class School
 	
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $phone;
 
     /**
      * @var bool
      * @ORM\Column(type="boolean")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     private $international;
 
