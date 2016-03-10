@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  *
@@ -20,8 +22,15 @@ class Team {
 	
 	/**
      * @ORM\Column(type="string", length=250)
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $name;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\Email(message="Ugyldig e-post")
+     */
+    private $email;
 	
 	/**
      * @ORM\ManyToOne(targetEntity="Department", inversedBy="teams")
@@ -144,5 +153,23 @@ class Team {
             $this->$method($value);
         }
     }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+
 	
 }
