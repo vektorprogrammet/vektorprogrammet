@@ -1,6 +1,9 @@
 <?php
+
 namespace AppBundle\Controller;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 class BoardAndTeamController extends Controller
 {
 	public function showAction() {
