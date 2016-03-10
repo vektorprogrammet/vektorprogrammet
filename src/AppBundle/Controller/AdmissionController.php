@@ -41,7 +41,9 @@ class AdmissionController extends Controller {
                 $authenticated = true;
             }
 
-            $form = $this->createForm(new ApplicationType($department, $authenticated), $application);
+            $form = $this->createForm(new ApplicationType($department, $authenticated), $application, array(
+                'validation_groups' => array('admission')
+            ));
 
             $form->handleRequest($request);
 
@@ -147,7 +149,9 @@ class AdmissionController extends Controller {
         if($application === null) $application = new Application();
         $lastInterview = $em->getRepository('AppBundle:Interview')->findLatestInterviewByUser($user);
 
-        $form = $this->createForm(new ApplicationExistingUserType(), $application);
+        $form = $this->createForm(new ApplicationExistingUserType(), $application, array(
+            'validation_groups' => array('admission_existing')
+        ));
         $form->handleRequest($request);
 
         if ($form->isValid()) {

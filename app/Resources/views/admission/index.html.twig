@@ -10,6 +10,9 @@
     {% include "statictext/js_loader_for_static_texts.html.twig" %}
 {% endblock %}
 
+{% form_theme form 'form/foundation_layout.html.twig' %}
+
+
 {% block body %}
     <p></p>
     <div class="row">
@@ -51,14 +54,14 @@
 
                             <div>
                                 {{ form_label(form.user.firstName) }}
-                                {{ form_errors(form.user.firstName) }}
                                 {{ form_widget(form.user.firstName, { 'attr': {'tabindex': '1'}}) }}
+                                {{ form_errors(form.user.firstName) }}
                             </div>
 
                             <div>
                                 {{ form_label(form.user.email) }}
-                                {{ form_errors(form.user.email) }}
                                 {{ form_widget(form.user.email, { 'attr': {'tabindex': '3'}}) }}
+                                {{ form_errors(form.user.email) }}
                             </div>
 
 
@@ -69,14 +72,14 @@
 
                             <div>
                                 {{ form_label(form.user.lastName) }}
-                                {{ form_errors(form.user.lastName) }}
                                 {{ form_widget(form.user.lastName, { 'attr': {'tabindex': '2'}}) }}
+                                {{ form_errors(form.user.lastName) }}
                             </div>
 
                             <div>
                                 {{ form_label(form.user.phone) }}
-                                {{ form_errors(form.user.phone) }}
                                 {{ form_widget(form.user.phone, { 'attr': {'tabindex': '4'}}) }}
+                                {{ form_errors(form.user.phone) }}
                             </div>
 
 

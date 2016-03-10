@@ -32,22 +32,26 @@ class User implements AdvancedUserInterface, \Serializable {
 	
 	/**
      * @ORM\Column(type="string", length=45)
+     * @Assert\NotBlank(groups={"admission"}, message="Dette feltet kan ikke være tomt.")
      */
     private $lastName;
 	
 	/**
      * @ORM\Column(type="string", length=45)
+     * @Assert\NotBlank(groups={"admission"}, message="Dette feltet kan ikke være tomt.")
      */
     private $firstName;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="FieldOfStudy")
 	 * @ORM\JoinColumn(onDelete="SET NULL")
+     * @Assert\NotBlank(groups={"admission"}, message="Dette feltet kan ikke være tomt.")
      */
     private $fieldOfStudy;
 	
 	/**
      * @ORM\Column(name="gender", type="boolean")
+     * @Assert\NotBlank(groups={"admission"}, message="Dette feltet kan ikke være tomt.")
      */
     private $gender;
 	
@@ -58,6 +62,7 @@ class User implements AdvancedUserInterface, \Serializable {
 	
 	/**
      * @ORM\Column(type="string", length=45)
+     * @Assert\NotBlank(groups={"admission"}, message="Dette feltet kan ikke være tomt.")
      */
     private $phone;
 
@@ -73,6 +78,7 @@ class User implements AdvancedUserInterface, \Serializable {
 
     /**
      * @ORM\Column(type="string", length=45, unique=true)
+     * @Assert\NotBlank(groups={"admission"}, message="Dette feltet kan ikke være tomt.")
      */
     private $email;
 

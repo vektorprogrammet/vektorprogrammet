@@ -25,36 +25,37 @@ class Application {
 
     /**
      * @ORM\Column(type="string" , length=20)
+     * @Assert\NotBlank(groups={"admission", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
      */
     private $yearOfStudy;
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
      */
     private $monday;
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
      */
     private $tuesday;
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
      */
     private $wednesday;
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
      */
     private $thursday;
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
      */
     private $friday;
 
@@ -65,13 +66,13 @@ class Application {
 
     /**
      * @ORM\Column(type="boolean", options={"default"=false})
-     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
      */
     private $english;
 
     /**
      * @ORM\Column(type="boolean", options={"default"=false})
-     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
      */
     private $doublePosition;
 
@@ -82,6 +83,7 @@ class Application {
 
     /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
+     * @Assert\Valid
      */
     private $user;
 
