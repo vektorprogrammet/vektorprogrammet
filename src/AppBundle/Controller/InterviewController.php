@@ -62,7 +62,9 @@ class InterviewController extends Controller
         }
 
 //        $form = $this->createForm(new interviewType(), $interview);
-        $form = $this->createForm(new ApplicationInterviewType(), $application);
+        $form = $this->createForm(new ApplicationInterviewType(), $application, array(
+            'validation_groups' => array('interview')
+        ));
         $form->handleRequest($request);
 
         if ($form->isValid()) {

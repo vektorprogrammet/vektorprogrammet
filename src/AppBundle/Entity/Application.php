@@ -30,26 +30,31 @@ class Application {
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
      */
     private $monday;
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
      */
     private $tuesday;
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
      */
     private $wednesday;
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
      */
     private $thursday;
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
      */
     private $friday;
 
@@ -60,11 +65,13 @@ class Application {
 
     /**
      * @ORM\Column(type="boolean", options={"default"=false})
+     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
      */
     private $english;
 
     /**
      * @ORM\Column(type="boolean", options={"default"=false})
+     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
      */
     private $doublePosition;
 
@@ -101,6 +108,7 @@ class Application {
     /**
      * @ORM\ManyToOne(targetEntity="Interview", cascade={"persist"})
      * @ORM\JoinColumn(name="interview_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Assert\Valid
      */
     private $interview;
 
