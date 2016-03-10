@@ -32,26 +32,26 @@ class User implements AdvancedUserInterface, \Serializable {
 	
 	/**
      * @ORM\Column(type="string", length=45)
-     * @Assert\NotBlank(groups={"admission"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $lastName;
 	
 	/**
      * @ORM\Column(type="string", length=45)
-     * @Assert\NotBlank(groups={"admission"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $firstName;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="FieldOfStudy")
 	 * @ORM\JoinColumn(onDelete="SET NULL")
-     * @Assert\NotBlank(groups={"admission"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\Valid
      */
     private $fieldOfStudy;
 	
 	/**
      * @ORM\Column(name="gender", type="boolean")
-     * @Assert\NotBlank(groups={"admission"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $gender;
 	
@@ -62,23 +62,26 @@ class User implements AdvancedUserInterface, \Serializable {
 	
 	/**
      * @ORM\Column(type="string", length=45)
-     * @Assert\NotBlank(groups={"admission"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=45, unique=true, nullable=true)
+     * @Assert\NotBlank(groups={"create_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $user_name;
 
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
+     * @Assert\NotBlank(groups={"create_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=45, unique=true)
-     * @Assert\NotBlank(groups={"admission"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\Email(groups={"admission", "create_user"}, message="Ikke gyldig e-post.")
      */
     private $email;
 
@@ -90,6 +93,7 @@ class User implements AdvancedUserInterface, \Serializable {
 	/**
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
      * @ORM\JoinColumn(onDelete="cascade")
+     * @Assert\Valid
      */
     private $roles;
 
