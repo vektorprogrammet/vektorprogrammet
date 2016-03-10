@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -19,11 +20,13 @@ class Survey
 
     /**
      * @ORM\ManyToOne(targetEntity="Semester")
+     * @Assert\Valid
      */
     protected $semester;
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Dette feletet kan ikke være tomt.")
      */
     protected $name;
 
@@ -33,6 +36,7 @@ class Survey
      *      joinColumns={@ORM\JoinColumn(name="survey_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="question_id", referencedColumnName="id")}
      *      )
+     * @Assert\Valid
      **/
     protected $surveyQuestions;
 
