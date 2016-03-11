@@ -22,7 +22,9 @@ class UserAdminController extends Controller {
 		// This is sent to let the form know you are a superadmin
 		$admin = 'superadmin';
 
-		$form = $this->createForm(new CreateUserType($departmentId, $admin), $user );
+		$form = $this->createForm(new CreateUserType($departmentId, $admin), $user, array(
+			'validation_groups' => array('create_user')
+		));
 
 		// Handle the form
 		$form->handleRequest($request);
@@ -76,7 +78,9 @@ class UserAdminController extends Controller {
 		$admin = 'admin';
 
 		// Create the form
-		$form = $this->createForm(new CreateUserType($departmentId, $admin), $user);
+		$form = $this->createForm(new CreateUserType($departmentId, $admin), $user, array(
+			'validation_groups' => array('create_user')
+		));
 
 		// Handle the form
 		$form->handleRequest($request);

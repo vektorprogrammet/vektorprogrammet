@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\InterviewRepository")
@@ -51,12 +52,14 @@ class Interview
 
     /**
      * @ORM\OneToMany(targetEntity="InterviewAnswer", mappedBy="interview", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Assert\Valid
      */
     protected $interviewAnswers;
 
     /**
      * @ORM\OneToOne(targetEntity="InterviewScore", cascade={"persist"})
      * @ORM\JoinColumn(name="interview_score_id", referencedColumnName="id")
+     * @Assert\Valid
      */
     protected $interviewScore;
 

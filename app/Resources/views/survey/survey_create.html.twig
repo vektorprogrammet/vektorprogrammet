@@ -172,6 +172,8 @@
     </script>
 {% endblock %}
 
+{% form_theme form 'form/foundation_layout.html.twig' %}
+
 {% block body %}
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
@@ -181,10 +183,11 @@
             <hr>
 
             {{ form_start(form) }}
-            {{ form_errors(form) }}
 
             {{ form_widget(form.name) }}
+            {{ form_errors(form.name) }}
             {{ form_widget(form.semester ) }}
+            {{ form_errors(form.semester) }}
 
             <div
                     id="prototypes"

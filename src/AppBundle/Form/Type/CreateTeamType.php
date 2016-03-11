@@ -14,6 +14,10 @@ class CreateTeamType extends AbstractType {
             ->add('name', 'text', array(
 				'label' => 'Navn',
 			))
+            ->add('email', 'email', array(
+                'label' => 'E-post (valgfritt)',
+                'required' => false
+            ))
 			->add('save', 'submit', array(
 				'label' => 'Opprett',
 			));

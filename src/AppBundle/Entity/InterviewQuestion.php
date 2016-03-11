@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity
@@ -19,6 +21,7 @@ class InterviewQuestion
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Spørsmål: Dette feltet kan ikke være tomt.")
      */
     protected $question;
 
@@ -29,11 +32,13 @@ class InterviewQuestion
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $type;
 
     /**
      * @ORM\OneToMany(targetEntity="InterviewQuestionAlternative", mappedBy="interviewQuestion", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Assert\Valid
      */
     protected $alternatives;
 

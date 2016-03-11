@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -19,21 +20,25 @@ class InterviewScore
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
      */
     protected $explanatoryPower;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
      */
     protected $roleModel;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
      */
     protected $suitability;
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
      */
     private $suitableAssistant;
 

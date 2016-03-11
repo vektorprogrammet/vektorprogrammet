@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -31,6 +32,7 @@ class InterviewAnswer
 
     /**
      * @ORM\Column(type="array", nullable=true)
+     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
      */
     protected $answer;
 

@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity
@@ -19,6 +21,7 @@ class InterviewSchema
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $name;
 
@@ -28,6 +31,7 @@ class InterviewSchema
      *      joinColumns={@ORM\JoinColumn(name="schema_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="question_id", referencedColumnName="id")}
      *      )
+     * @Assert\Valid
      **/
     protected $interviewQuestions; // Unidirectional, may turn out to be bidirectional
 

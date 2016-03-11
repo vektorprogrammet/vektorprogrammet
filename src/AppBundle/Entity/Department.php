@@ -4,8 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  *
@@ -23,17 +22,21 @@ class Department {
 	
 	/**
      * @ORM\Column(type="string", length=250)
+     * @Assert\NotBlank
      */
     private $name;
 	
 	/**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank
      */
     private $short_name;
 	
 	
 	/**
      * @ORM\Column(type="string", length=250)
+     * @Assert\NotBlank
+     * @Assert\Email
      */
 	private $email;
 	
@@ -51,6 +54,7 @@ class Department {
 	
 	/**
      * @ORM\Column(type="string", length=250)
+     * @Assert\NotBlank
      */
 	protected $address;
 	
@@ -74,16 +78,6 @@ class Department {
 		$this->semesters = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->teams = new \Doctrine\Common\Collections\ArrayCollection();
     }
-	
-	public static function loadValidatorMetadata(ClassMetadata $metadata){
-
-        $metadata->addPropertyConstraint('name', new NotBlank());
-        $metadata->addPropertyConstraint('email', new Email());
-        $metadata->addPropertyConstraint('short_name', new NotBlank());
-        $metadata->addPropertyConstraint('address', new NotBlank());
-
-    }
-    
 
     /**
      * Get id

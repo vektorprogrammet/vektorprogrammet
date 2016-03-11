@@ -32,6 +32,9 @@ twig:
     globals:
        filebrowser_window_width: 1200 #The initial width of window when opened
        filebrowser_window_height: 800
+    form_themes:
+#        - 'form/foundation_layout.html.twig'
+
 
 
 # Assetic Configuration

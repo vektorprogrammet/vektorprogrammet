@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  *
@@ -37,17 +39,20 @@ class AssistantHistory {
 	
 	/**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
 	protected $workdays;
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $bolk;
 
     /**
      * @var string
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $day;
 	

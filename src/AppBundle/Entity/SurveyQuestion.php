@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity
@@ -19,8 +21,41 @@ class SurveyQuestion
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Dette feletet kan ikke være tomt.")
      */
     protected $question;
+
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Assert\NotBlank(message="Dette feletet kan ikke være tomt.")
+     */
+    protected $optional;
+
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $help;
+
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Dette feletet kan ikke være tomt.")
+     */
+    protected $type;
+
+    /**
+     * @ORM\OneToMany(targetEntity="SurveyQuestionAlternative", mappedBy="surveyQuestion", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Assert\Valid
+     */
+    protected $alternatives;
+
+    /**
+     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="surveyQuestion", cascade={"persist", "remove"})
+     **/
+    protected $answers;
+
+
 
     /**
      * @return mixed
@@ -37,32 +72,6 @@ class SurveyQuestion
     {
         $this->optional = $optional;
     }
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $optional;
-
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $help;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $type;
-
-    /**
-     * @ORM\OneToMany(targetEntity="SurveyQuestionAlternative", mappedBy="surveyQuestion", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
-    protected $alternatives;
-
-    /**
-     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="surveyQuestion", cascade={"persist", "remove"})
-     **/
-    protected $answers;
 
     /**
      * @return mixed
@@ -118,6 +127,7 @@ class SurveyQuestion
     public function __construct()
     {
         $this->alternatives = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->optional = false;
     }
 
     /**

@@ -41,10 +41,10 @@ class CreateUserType extends AbstractType {
 			->add('user_name', 'text',  array(
 				'label' => 'Brukernavn',
 			))
-			->add('Password', 'password',  array(
+			->add('password', 'password',  array(
 				'label' => 'Passord',
 			))
-			->add('Email', 'text',  array(
+			->add('email', 'text',  array(
 				'label' => 'E-post',
 			))
 			->add('fieldOfStudy', 'entity', array(
@@ -57,10 +57,7 @@ class CreateUserType extends AbstractType {
 					  // Set the parameter to the department ID that the current user belongs to.
 					  ->setParameter(1, $this->departmentId);
 					}
-					))
-			 ->add('save', 'submit', array(
-				'label' => 'Opprett',
-			));
+					));
 			
 			if ($this->admin == 'superadmin') {
 				$builder->add('role', 'choice',  array(

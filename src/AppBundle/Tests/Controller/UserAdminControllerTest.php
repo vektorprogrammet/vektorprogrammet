@@ -32,8 +32,8 @@ class UserAdminControllerTest extends WebTestCase {
 		$form['createUser[gender]']->select(0);
 		$form['createUser[phone]'] = "22288222";
 		$form['createUser[user_name]'] = "fornavn2";
-		$form['createUser[Password]'] = "1234";
-		$form['createUser[Email]'] = "fornavn2@mail.com";
+		$form['createUser[password]'] = "1234";
+		$form['createUser[email]'] = "fornavn2@mail.com";
 		$form['createUser[fieldOfStudy]']->select(1);
 		$form['createUser[role]']->select(0);
 
@@ -72,8 +72,8 @@ class UserAdminControllerTest extends WebTestCase {
 		$form['createUser[gender]']->select(0);
 		$form['createUser[phone]'] = "66688666";
 		$form['createUser[user_name]'] = "fornavn1";
-		$form['createUser[Password]'] = "1234";
-		$form['createUser[Email]'] = "fornavn1@mail.com";
+		$form['createUser[password]'] = "1234";
+		$form['createUser[email]'] = "fornavn1@mail.com";
 		$form['createUser[fieldOfStudy]']->select(3);
 		$form['createUser[role]']->select(0);
 

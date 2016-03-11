@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  *
@@ -22,16 +24,19 @@ class WorkHistory {
 	/**
      * @ORM\ManyToOne(targetEntity="User")
 	 * @ORM\JoinColumn(onDelete="SET NULL")
+     * @Assert\Valid
      **/
     protected $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="Semester")
+     * @Assert\Valid
      */
     protected $startSemester;
 
     /**
      * @ORM\ManyToOne(targetEntity="Semester")
+     * @Assert\Valid
      */
     protected $endSemester;
 
@@ -44,6 +49,7 @@ class WorkHistory {
 	/**
      * @ORM\ManyToOne(targetEntity="Position")
 	 * @ORM\JoinColumn(name="position_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Assert\Valid
      **/
 	protected $position;
 	
