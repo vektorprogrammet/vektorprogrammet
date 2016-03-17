@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use \DateTime;
 
 class SurveyType extends AbstractType
 {
@@ -16,6 +17,8 @@ class SurveyType extends AbstractType
             'class' => 'AppBundle:Semester',
             'query_builder' => function(EntityRepository $er){
                 return $er->createQueryBuilder('s')
+                    ->where('s.admission_end_date > :limit')
+                    ->setParameter('limit',new \DateTime('now -1 year'))
                     ->orderBy('s.semesterStartDate', 'DESC');
             }
         ));
