@@ -1,0 +1,169 @@
+<div class="row progressbar">
+    <div class="small-2 columns small-offset-1 step" id="step-progressbar-0">
+        <div class="ring-container">
+            <div class="outer-ring"><div class="inner-ring"></div></div>
+        </div>
+        <div class="line-container">
+            <div class="line">
+                <div class="fill"></div>
+            </div>
+        </div>
+    </div>
+    <div class="small-2 columns step" id="step-progressbar-1">
+        <div class="ring-container">
+            <div class="outer-ring"><div class="inner-ring"></div></div>
+        </div>
+        <div class="line-container">
+            <div class="line">
+                <div class="fill"></div>
+            </div>
+        </div>
+    </div>
+    <div class="small-2 columns step" id="step-progressbar-2">
+        <div class="ring-container">
+            <div class="outer-ring"><div class="inner-ring"></div></div>
+        </div>
+        <div class="line-container">
+            <div class="line">
+                <div class="fill"></div>
+            </div>
+        </div>
+    </div>
+    <div class="small-2 columns step" id="step-progressbar-3">
+        <div class="ring-container">
+            <div class="outer-ring"><div class="inner-ring"></div></div>
+        </div>
+        <div class="line-container">
+            <div class="line">
+                <div class="fill"></div>
+            </div>
+        </div>
+    </div>
+    <div class="small-2 columns end step" id="step-progressbar-4">
+        <div class="ring-container">
+            <div class="outer-ring"><div class="inner-ring"></div></div>
+        </div>
+        <div class="line-container">
+            <div class="line">
+                <div class="fill"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row step-spacing"></div>
+<div class="row">
+    <div class="small-2 columns small-offset-1 step-box {% if step < 1 %}step-active{% else %}step-completed{% endif %}">
+        <h4>Nytt semester</h4>
+        {% if step < 1 %}
+            <p><a href="{{ path('semesteradmin_show') }}">Opprett semester</a></p>
+        {% else %}
+            <p>Semesteret er underveis</p>
+        {% endif %}
+    </div>
+
+    <div class="small-2 columns step-box {% if step < 3 and step >= 1 %}step-active{% elseif step >= 3 %}step-completed{% endif %}">
+        <h4>Opptak</h4>
+        {% if step >= 1 and step < 2 %}
+            {% if timeToAdmissionStart < 24 %}
+                {% if timeToAdmissionStart == 1 %}
+                    <p>{{ timeToAdmissionStart }} time til opptaket starter!!</p>
+                {% else %}
+                    <p>{{ timeToAdmissionStart }} timer til opptaket starter!</p>
+                {% endif %}
+            {% else %}
+                {% if timeToAdmissionStart // 24 == 1 %}
+                    <p>{{ timeToAdmissionStart // 24 }} dag til opptaket starter!</p>
+                {% else %}
+                    <p>{{ timeToAdmissionStart // 24 }} dager til opptaket starter!</p>
+                {% endif %}
+            {% endif %}
+        {% elseif step >= 2 and step < 3  %}
+            {% if admissionTimeLeft < 24 %}
+                {% if admissionTimeLeft == 1 %}
+                    <p>{{ admissionTimeLeft }} time igjen</p>
+                {% else %}
+                    <p>{{ admissionTimeLeft }} timer igjen</p>
+                {% endif %}
+            {% else %}
+                {% if admissionTimeLeft // 24 == 1 %}
+                    <p>{{ admissionTimeLeft // 24 }} dag igjen</p>
+                {% else %}
+                    <p>{{ admissionTimeLeft // 24 }} dager igjen</p>
+                {% endif %}
+            {% endif %}
+            <p><a href="{{ path('admissionadmin_show') }}">Nye søkere</a></p>
+        {% else %}
+            <p>Opptaket er stengt</p>
+            {% if step >= 2 %}
+                <p>{{ totalApplicationsCount }} søkere</p>
+            {% endif %}
+            <p><a href="{{ path('admissionadmin_show') }}">Nye søkere</a></p>
+        {%  endif %}
+    </div>
+
+    <div class="small-2 columns step-box {% if step < 4 and step >= 3 %}step-active{% elseif step >= 4 %}step-completed{% endif %}">
+        <h4>Intervju</h4>
+        {% if step < 4 and step >= 3 and (totalInterviewsCount == 0)==false %}
+            <p>Intervjuet  {{ interviewedAssistantsCount }}/{{ totalInterviewsCount }}</p>
+        {% elseif step >= 4 %}
+            {{ totalInterviewsCount }} intervjuer
+        {% endif %}
+        <p><a href="{{ path('admissionadmin_show') }}">Fordel intervjuer</a></p>
+
+        <p><a href="{{ path('admissionadmin_show', {'status':'assigned'})}}">Utfør intervju</a></p>
+
+        <p><a href="{{ path('teamadmin_show') }}">Opprett team-medlem</a></p>
+    </div>
+
+    <div class="small-2 columns step-box {% if step < 5 and step >= 4 %}step-active{% elseif step >= 5 %}step-completed{% endif %}">
+        <h4>Fordel</h4>
+        {% if step >= 4 and step < 5 %}
+            {% if (totalAssistantsCount == 0)==false %}
+                <p>Fordelt {{ totalAssistantsCount }} assistenter</p>
+            {% endif %}
+        {% elseif step >= 5 %}
+            <p>{{ totalAssistantsCount }} fordelt</p>
+        {% endif %}
+        <p></p><a href="{{ path('schooladmin_show_users_of_department', {'id': app.user.fieldOfStudy.department.id}) }}">Fordel assistenter</a></p>
+    </div>
+    <div class="small-2 columns end step-box  {% if step >= 5 %} step-active {% endif %}">
+        <h4>Drift</h4>
+        <p><a href="{{ path('articleadmin_show') }}">Artikler</a></p>
+        <p><a href="{{ path('members_show') }}">Assistenter</a></p>
+        <p><a href="{{ path('surveys') }}">Undersøkelser</a></p>
+        <p><a href="{{ path('sponsors_edit') }}">Sponsorer</a></p>
+    </div>
+
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        $(function(){
+            var step = {{ step }};
+            if(step < 0){
+                return;
+            }
+            if(step > 0){
+                step -= 1;
+            }
+            var round_step = Math.floor(step);
+            var percentage = (step-round_step)*100;
+            for (i = 0; i <= 5; i++) {
+                if(i>round_step) {
+                    $("#step-progressbar-" + i + " > .line-container > .line > .fill").width("0");
+                }
+                else if(i<round_step){
+                    $("#step-progressbar-" + i + " > .line-container > .line > .fill").width("100%");
+                }
+                else{
+                    $("#step-progressbar-" + i + " > .line-container > .line > .fill").width(percentage + "%");
+                }
+                if(i<=round_step){
+                    $("#step-progressbar-" + i + " > .ring-container > .outer-ring").addClass("fill");
+                }
+            }
+        });
+    });
+</script>
+

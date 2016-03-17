@@ -1,7 +1,10 @@
 {% extends 'adminBase.html.twig' %}
 {% block title %}Kontrollpanel{% endblock %}
 {% block body %}
-    <div class="control_panel">
+    <div class="control-panel">
+
+        {{ render(controller('AppBundle:ControlPanel:showSBS')) }}
+
         <div class="row">
             <h3>Artikkel</h3>
 
