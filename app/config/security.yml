@@ -71,6 +71,7 @@ security:
         - { path: ^/kontrollpanel/intervju/fordel, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/vikar/rediger, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/undersokelse/slett, role: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/undersokelse/kopier, role: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/stillinger, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/rediger/stilling, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/opprett/stilling, roles: ROLE_SUPER_ADMIN }

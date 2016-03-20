@@ -117,4 +117,18 @@ class Survey
         return $this->id;
     }
 
+    public function __clone() {
+        $this->id = null;
+        $this->semester = null;
+        $this->surveyQuestions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->totalAnswered = 0;
+    }
+
+    public function addSurveyQuestion(\AppBundle\Entity\SurveyQuestion $surveyQuestion)
+    {
+        $this->surveyQuestions[] = $surveyQuestion;
+
+        return $this;
+    }
+
 }

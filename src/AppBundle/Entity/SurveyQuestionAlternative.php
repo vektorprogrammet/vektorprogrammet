@@ -86,4 +86,9 @@ class SurveyQuestionAlternative
     {
         return $this->surveyQuestion;
     }
+
+    public function __clone() {
+        $this->id = null;
+        $this->surveyQuestion = null;
+    }
 }

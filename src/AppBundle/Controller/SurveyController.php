@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\SurveyQuestion;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,15 +79,48 @@ class SurveyController extends Controller
         return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
     }
 
-    public function copySurvey(Request $request){
-        if(!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
-            throw $this->createAccessDeniedException();
+    public function copySurveyAction(Request $request, Survey $survey){
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $new_survey = new Survey();
+
+        // Check if user submitted a form with a survey
+        $form = $this->createForm(new SurveyType(), $new_survey);
+        $form->handleRequest($request);
+        if($form->isSubmitted()){
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($new_survey);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('surveys'));
+            }else{
+                return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
+            }
         }
+
+        // Nothing was submitted, this is the first request. Make a new copy of the requested survey
+        $new_survey = clone $survey;
+
+        $new_survey->setSemester($em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($user->getFieldOfStudy()->getDepartment()));
+        foreach($survey->getSurveyQuestions() as $q){
+            $new_q = clone $q;
+            foreach($q->getAlternatives() as $a){
+                $new_a = clone $a;
+                $new_q->addAlternative($new_a);
+                $new_a->setSurveyQuestion($new_q);
+            }
+            $new_survey->addSurveyQuestion($new_q);
+        }
+
+        $form = $this->createForm(new SurveyType(), $new_survey);
+        return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
     }
 
     public function showSurveysAction()
     {
-        $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findAll();
+        $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy([], ['id' => 'DESC']);
         foreach($surveys as $survey){
             $sql = "
                   SELECT COUNT(id)
