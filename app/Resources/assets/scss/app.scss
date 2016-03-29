@@ -499,7 +499,7 @@ ul.alternatives {
 }
 
 //Control Panel
-.control_panel {
+.control-panel {
   hr {
     padding: 10px;
   }
@@ -565,6 +565,131 @@ ul.alternatives {
           color: #ffffff;
         }
       }
+    }
+
+  }
+}
+
+
+
+// Step-by-Step
+//-------------------------------------------
+
+.control-panel{
+  hr{
+    padding:10px;
+  }
+  .control-panel-item{
+    text-align: center;
+  }
+  h2{
+    padding:20px;
+  }
+  .control-panel-item i{
+    color:#008CBA;
+  }
+  .control-panel-item i:hover{
+    color:#007095;
+  }
+
+  .step-box{
+    height:200px;
+    /*border-left: 1px solid black;
+    border-left-color: $vektor-blue;*/
+    text-align: center;
+    padding-top: 10px;
+    p {
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+  }
+  .step-active{
+    background-color: $vektor-white;
+    border: 2px solid $vektor-blue;
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.15);
+  }
+
+  .step-completed{
+    color: #b4b4cb;
+    border-left-color: #b4b4cb;
+    h4, a {
+      color: #b4b4cb;
+    }
+    a:hover {
+      color: #8989a0;
+    }
+    a {
+      text-decoration: underline;
+    }
+
+  }
+
+  .step-spacing{
+    height: 20px;
+  }
+
+
+  .progressbar{
+    $step-progress-bar-ring-size : 40px;
+    $step-progress-bar-ring-width : 12px; //Må være partall
+    $step-progress-bar-border-color : #474747;
+
+    .step{
+      height: 40px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+
+      .ring-container{
+        width: 40px;
+        display: inline-block;
+        .outer-ring{
+
+          width: $step-progress-bar-ring-size;
+          height: $step-progress-bar-ring-size;
+          border: 1px solid $step-progress-bar-border-color;
+          border-radius: $step-progress-bar-ring-size;
+          background-color: $vektor-white;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .inner-ring{
+            width: $step-progress-bar-ring-size - $step-progress-bar-ring-width;
+            height: $step-progress-bar-ring-size - $step-progress-bar-ring-width;
+            border: 1px solid $step-progress-bar-border-color;
+            border-radius: $step-progress-bar-ring-size - $step-progress-bar-ring-width;
+            background-color: $vektor-white;
+          }
+        }
+
+        .fill{
+          background-color: $vektor-blue;
+        }
+      }
+
+      .line-container{
+        width: 100%;
+        display: inline-block;
+        background-color: $vektor-white;
+        margin-left: -2px;
+        margin-right: -2px;
+        z-index: 1;
+        .line{
+          height: $step-progress-bar-ring-width;
+          width: 100%;
+          border-top: 1px solid $step-progress-bar-border-color;
+          border-bottom: 1px solid $step-progress-bar-border-color;
+
+          .fill{
+            width: 0;
+            height: 100%;
+            background-color: $vektor-blue;
+          }
+        }
+
+      }
+
     }
 
   }
