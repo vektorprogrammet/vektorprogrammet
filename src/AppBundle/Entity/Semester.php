@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="Semester")
+ * @ORM\Table(name="semester")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SemesterRepository")
  */
 class Semester {

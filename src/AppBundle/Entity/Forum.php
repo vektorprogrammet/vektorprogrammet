@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  *
- * @ORM\Table(name="Forum")
+ * @ORM\Table(name="forum")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ForumRepository")
  */
 class Forum {

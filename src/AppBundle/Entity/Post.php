@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  *
- * @ORM\Table(name="Post")
+ * @ORM\Table(name="post")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\PostRepository")
  */
 class Post {
