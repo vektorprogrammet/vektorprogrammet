@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Vektorprogrammet - Error 500 Internal Server Error
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="small-12 columns text-center">
+			<h4>Error 
+				<font size="8em">
+					{# Start fraction #}
+					<math>
+						<mrow>
+							<mfrac>
+								<mi>500</mi>
+								<mi>0</mi>
+							</mfrac>
+						</mrow>
+					</math>
+					{# End fraction #}
+				</font>
+				Internal Server Error
+			</h4>
+			<h6>Oops her gikk noe galt. Å dele med 0 gir bare tull.</h6>
+		</div>
+	</div>
+{% endblock %}
