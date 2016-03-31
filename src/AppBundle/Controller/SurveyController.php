@@ -113,7 +113,7 @@ class SurveyController extends Controller
             }
 
 
-            $surveyTaken->setSchool($em->getRepository('AppBundle:SurveyTaken')->findBy([],array('id' => 'DESC') , 1)[0]->getSchool());
+            $surveyTaken->setSchool($em->getRepository('AppBundle:SurveyTaken')->findBy(array('survey' => $survey), array('id' => 'DESC') , 1)[0]->getSchool());
 
             $form = $this->createForm(new SurveyExecuteType(), $surveyTaken);
         }
