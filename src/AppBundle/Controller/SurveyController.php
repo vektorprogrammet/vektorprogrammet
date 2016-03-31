@@ -59,6 +59,73 @@ class SurveyController extends Controller
         ));
     }
 
+    public function showAdminAction(Request $request, Survey $survey)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $surveyTaken = new SurveyTaken();
+        $surveyTaken->setSurvey($survey);
+        foreach($survey->getSurveyQuestions() as $surveyQuestion){
+            $answer = new SurveyAnswer();
+            $answer->setSurveyQuestion($surveyQuestion);
+            $answer->setSurveyTaken($surveyTaken);
+
+            $surveyTaken->addSurveyAnswer($answer);
+        }
+
+        $form = $this->createForm(new SurveyExecuteType(), $surveyTaken);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $surveyTaken->removeNullAnswers();
+            $em->persist($surveyTaken);
+            $em->flush();
+            $new_answer = true;
+            if($new_answer){
+                $this->addFlash('undersokelse-notice','Mottatt svar!');
+                //New form without previous answers
+                return $this->redirect($this->generateUrl('survey_show_admin',array('id' => $survey->getId())));
+            }
+        }
+
+        $allTakenSurveys = $em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
+        if(count($allTakenSurveys)){
+            $countAnswer = array();
+            foreach($allTakenSurveys as $takenSurvey){
+                foreach($takenSurvey->getSurveyAnswers() as $answer){
+                    if( (!($answer->getSurveyQuestion()->getType() == 'radio' || $answer->getSurveyQuestion()->getType() == 'list')) || $answer->getSurveyQuestion()->getOptional()){
+                        continue;
+                    }
+                    if(!isset($countAnswer[$answer->getSurveyQuestion()->getId()])){
+                        $countAnswer[$answer->getSurveyQuestion()->getId()] = array();
+                    }
+                    if(!isset($countAnswer[$answer->getSurveyQuestion()->getId()][$answer->getAnswer()])){
+                        $countAnswer[$answer->getSurveyQuestion()->getId()][$answer->getAnswer()] = 0;
+                    }
+                    $countAnswer[$answer->getSurveyQuestion()->getId()][$answer->getAnswer()]++;
+                }
+            }
+
+            foreach($surveyTaken->getSurveyAnswers() as $answer){
+                if( (!($answer->getSurveyQuestion()->getType() == 'radio' || $answer->getSurveyQuestion()->getType() == 'list')) || $answer->getSurveyQuestion()->getOptional()){
+                    continue;
+                }
+                $answer->setAnswer(array_keys($countAnswer[$answer->getSurveyQuestion()->getId()], max($countAnswer[$answer->getSurveyQuestion()->getId()]))[0]);
+            }
+
+
+            $surveyTaken->setSchool($em->getRepository('AppBundle:SurveyTaken')->findBy([],array('id' => 'DESC') , 1)[0]->getSchool());
+
+            $form = $this->createForm(new SurveyExecuteType(), $surveyTaken);
+        }
+
+
+        return $this->render('survey/takeSurvey.html.twig', array(
+            'form' => $form->createView(),
+
+        ));
+    }
+
+
     public function createSurveyAction(Request $request)
     {
         $survey = new Survey();

@@ -59,6 +59,13 @@ survey_show:
     _method: GET|POST
     id: \d+
 
+survey_show_admin:
+  path: /kontrollpanel/undersokelse/{id}
+  defaults: { _controller: AppBundle:Survey:showAdmin }
+  requirements:
+    _method: GET|POST
+    id: \d+
+
 survey_create:
   path: /kontrollpanel/undersokelse/opprett
   defaults: { _controller: AppBundle:Survey:createSurvey }
