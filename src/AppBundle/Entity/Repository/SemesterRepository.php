@@ -65,7 +65,7 @@ class SemesterRepository extends EntityRepository {
             ->setParameter(1, $department)
             ->setParameter('now', $now)
             ->getQuery()
-            ->getSingleResult();
+            ->getOneOrNullResult();
     }
 
     public function findLatestSemesterByDepartmentId($departmentId){

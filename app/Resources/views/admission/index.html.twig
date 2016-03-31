@@ -9,8 +9,9 @@
 {% block javascripts %}
     {% include "statictext/js_loader_for_static_texts.html.twig" %}
 {% endblock %}
-
-{% form_theme form 'form/foundation_layout.html.twig' %}
+{% if semester is defined %}
+    {% form_theme form 'form/foundation_layout.html.twig' %}
+{% endif %}
 
 
 {% block body %}
@@ -164,9 +165,7 @@
 
                 {% else %}
 
-                    {% for d in department %}
-                        <p> Avdelingen {{ d.shortname }} har ikke en aktiv søkeperiode. </p>
-                    {% endfor %}
+                    <p class="text-center"> Avdelingen {{ department.shortname }} har ikke en aktiv søkeperiode. </p>
 
                 {% endif %}
 

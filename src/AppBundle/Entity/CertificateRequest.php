@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  *
- * @ORM\Table(name="CertificateRequest")
+ * @ORM\Table(name="certificate_request")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\CertificateRequestRepository")
  */
 class CertificateRequest {

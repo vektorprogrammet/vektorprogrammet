@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  *
- * @ORM\Table(name="Thread")
+ * @ORM\Table(name="thread")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ThreadRepository")
  */
 class Thread {
