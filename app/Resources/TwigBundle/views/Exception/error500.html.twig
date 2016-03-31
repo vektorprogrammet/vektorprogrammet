@@ -6,23 +6,15 @@
 
 {% block body %}
 	<div class="row error-500">
-		<div class="small-12 columns text-center">
-			<h4>Feil! 
-				<font size="8em">
-					{# Start fraction #}
-					<math>
-						<mrow>
-							<mfrac>
-								<mi>500</mi>
-								<mi>0</mi>
-							</mfrac>
-						</mrow>
-					</math>
-					{# End fraction #}
-				</font>
-				Det har skjedd en feil på serveren.
-			</h4>
-			<h6>Oops her gikk noe galt. Å dele med 0 gir bare tull.</h6>
+		<div class="columns text-center">
+				{# Start fraction #}
+				<div style="display: inline-block">
+					<div style="border-bottom:1px solid; font-size:x-large; text-align:center;">500</div>
+					<div style="font-size:x-large; text-align:center;">0</div>
+				</div>
+				{# End fraction #}
+			<h6 style="margin: 0; padding:0">Det har skjedd en feil på serveren.</h6>
+			<h6 style="margin: 0; padding:0">Send e-post til <a href="mailto:it@vektorprogrammet">it@vektorprogrammet.no</a> hvis problemet vedvarer.</h6>
 		</div>
 	</div>
 {% endblock %}
