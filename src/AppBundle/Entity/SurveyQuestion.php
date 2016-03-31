@@ -212,4 +212,10 @@ class SurveyQuestion
     {
         return $this->alternatives;
     }
+
+    public function __clone() {
+        $this->id = null;
+        $this->alternatives = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 }
