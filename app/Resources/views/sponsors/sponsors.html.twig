@@ -1,7 +1,7 @@
 <div class="row text-center">
     <h2>Våre sponsorer og partnere</h2>
     {% for sponsor in get_sponsors() %}
-        <div class="small-4 medium-4 large-4 sponsor-column {{ loop.last? 'end':'' }} columns">
+        <div class="small-6 medium-4 large-4 sponsor-column {{ loop.last? 'end':'' }} columns">
             <a href="{{ sponsor.url }}">
                 <span class="vertical-align-image-helper"></span><img class="sponsor-img"
                                                                       src="{{ asset(sponsor.logoImagePath) }}">
