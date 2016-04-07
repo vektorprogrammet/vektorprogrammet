@@ -498,6 +498,18 @@ ul.alternatives {
   display:none;
 }
 
+#teams{
+  border: 0px;
+  width: 100%;
+  td{
+    text-align: center;
+  }
+}
+
+.teamTitle:hover{
+  background-color: rgba(111,206,238,0.3);
+}
+
 //Control Panel
 .control-panel {
   hr {
