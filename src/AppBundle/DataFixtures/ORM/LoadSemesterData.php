@@ -6,20 +6,52 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\Semester;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
+        $now = new \DateTime();
+        $isSpring = $now->format('n') <= 7;
+
         $semester1 = new Semester();
         $semester1->setSemesterTime('Vår');
-        $semester1->setYear(2016);
+        $semester1->setYear(2013);
         $semester1->setDepartment($this->getReference('dep-1'));
-        $semester1->setAdmissionStartDate(new \DateTime('2016-01-01'));
-        $semester1->setAdmissionEndDate(new \DateTime('2016-05-30'));
-        $semester1->setSemesterStartDate(new \DateTime('2016-01-01'));
-        $semester1->setSemesterEndDate(new \DateTime('2016-06-30'));
+        $semester1->setAdmissionStartDate(new \DateTime('2013-01-01'));
+        $semester1->setAdmissionEndDate(new \DateTime('2013-01-05'));
+        $semester1->setSemesterStartDate(new \DateTime('2013-01-01'));
+        $semester1->setSemesterEndDate(new \DateTime('2013-07-31'));
         $manager->persist($semester1);
+
+        $currentSemester = new Semester();
+        $currentSemester->setSemesterTime($now->format('n') <= 7 ? 'Vår' : 'Høst');
+        $currentSemester->setYear($now->format('Y'));
+        $currentSemester->setDepartment($this->getReference('dep-1'));
+        $currentSemester->setAdmissionStartDate(new \DateTime());
+        $currentSemester->setAdmissionEndDate(new \DateTime());
+        $currentSemester->setSemesterStartDate(new \DateTime());
+        $currentSemester->setSemesterEndDate(new \DateTime());
+        $currentSemester->getSemesterStartDate()->setDate($currentSemester->getYear(), $isSpring ? 0 : 8, 1);
+        $currentSemester->getSemesterEndDate()->setDate($currentSemester->getYear(), $isSpring ? 7 : 12, 31);
+        $currentSemester->getAdmissionStartDate()->modify('-1day');
+        $currentSemester->getAdmissionEndDate()->modify('+1day');
+        $manager->persist($currentSemester);
+
+        $previousSemester = new Semester();
+        $previousSemester->setSemesterTime($isSpring ? 'Høst' : 'Vår');
+        $previousSemester->setYear($isSpring ? $now->format('Y') -1 : $now->format('Y'));
+        $previousSemester->setDepartment($this->getReference('dep-1'));
+        $previousSemester->setAdmissionStartDate(new \DateTime());
+        $previousSemester->setAdmissionEndDate(new \DateTime());
+        $previousSemester->setSemesterStartDate(new \DateTime());
+        $previousSemester->setSemesterEndDate(new \DateTime());
+        $previousSemester->getSemesterStartDate()->setDate($previousSemester->getYear(), $isSpring ? 8 : 0, 1);
+        $previousSemester->getSemesterEndDate()->setDate($previousSemester->getYear(), $isSpring ? 0 : 8, 31);
+        $previousSemester->getAdmissionStartDate($previousSemester->getYear(), $isSpring ? 8 : 0, 1);
+        $previousSemester->getAdmissionEndDate($previousSemester->getYear(), $isSpring ? 8 : 0, 5);
+        $manager->persist($previousSemester);
 
         $semester2 = new Semester();
         $semester2->setSemesterTime('Vår');
@@ -28,7 +60,7 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
         $semester2->setAdmissionStartDate(new \DateTime('2015-01-01'));
         $semester2->setAdmissionEndDate(new \DateTime('2015-05-30'));
         $semester2->setSemesterStartDate(new \DateTime('2015-01-01'));
-        $semester2->setSemesterEndDate(new \DateTime('2015-06-30'));
+        $semester2->setSemesterEndDate(new \DateTime('2015-07-31'));
         $manager->persist($semester2);
 
         $semester3 = new Semester();
@@ -38,7 +70,7 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
         $semester3->setAdmissionStartDate(new \DateTime('2015-01-01'));
         $semester3->setAdmissionEndDate(new \DateTime('2015-05-30'));
         $semester3->setSemesterStartDate(new \DateTime('2015-01-01'));
-        $semester3->setSemesterEndDate(new \DateTime('2015-06-30'));
+        $semester3->setSemesterEndDate(new \DateTime('2015-07-31'));
         $manager->persist($semester3);
 
         $semester4 = new Semester();
@@ -48,7 +80,7 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
         $semester4->setAdmissionStartDate(new \DateTime('2015-01-01'));
         $semester4->setAdmissionEndDate(new \DateTime('2015-05-30'));
         $semester4->setSemesterStartDate(new \DateTime('2015-01-01'));
-        $semester4->setSemesterEndDate(new \DateTime('2015-06-30'));
+        $semester4->setSemesterEndDate(new \DateTime('2015-07-31'));
         $manager->persist($semester4);
 
         $semester5 = new Semester();
@@ -58,7 +90,7 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
         $semester5->setAdmissionStartDate(new \DateTime('2014-08-01'));
         $semester5->setAdmissionEndDate(new \DateTime('2014-12-30'));
         $semester5->setSemesterStartDate(new \DateTime('2014-08-01'));
-        $semester5->setSemesterEndDate(new \DateTime('2014-12-30'));
+        $semester5->setSemesterEndDate(new \DateTime('2014-12-31'));
         $manager->persist($semester5);
 
         $manager->flush();
@@ -68,6 +100,8 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
         $this->addReference('semester-3', $semester3);
         $this->addReference('semester-4', $semester4);
         $this->addReference('semester-5', $semester5);
+        $this->addReference('semester-current', $currentSemester);
+        $this->addReference('semester-previous', $previousSemester);
     }
 
     public function getOrder()

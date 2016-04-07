@@ -20,7 +20,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application0->setUser($this->getReference('user-15'));
         $application0->setPreviousParticipation(false);
         $application0->setYearOfStudy(1);
-        $application0->setSemester($this->getReference('semester-1'));
+        $application0->setSemester($this->getReference('semester-current'));
 
         $manager->persist($application0);
 
@@ -28,7 +28,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application1->setUser($this->getReference('user-10'));
         $application1->setPreviousParticipation(true);
         $application1->setYearOfStudy(1);
-        $application1->setSemester($this->getReference('semester-1'));
+        $application1->setSemester($this->getReference('semester-current'));
 
         $manager->persist($application1);
 
@@ -36,7 +36,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application2->setUser($this->getReference('user-11'));
         $application2->setPreviousParticipation(false);
         $application2->setYearOfStudy(1);
-        $application2->setSemester($this->getReference('semester-1'));
+        $application2->setSemester($this->getReference('semester-current'));
 
         $manager->persist($application2);
 
@@ -44,7 +44,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application3->setUser($this->getReference('user-12'));
         $application3->setPreviousParticipation(false);
         $application3->setYearOfStudy(1);
-        $application3->setSemester($this->getReference('semester-1'));
+        $application3->setSemester($this->getReference('semester-current'));
 
         $manager->persist($application3);
 
@@ -91,7 +91,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application4->setUser($this->getReference('user-13'));
         $application4->setPreviousParticipation(false);
         $application4->setYearOfStudy(1);
-        $application4->setSemester($this->getReference('semester-1'));
+        $application4->setSemester($this->getReference('semester-current'));
 
         // The interview
         $interview4 = new Interview();
@@ -135,7 +135,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application5->setUser($this->getReference('user-14'));
         $application5->setPreviousParticipation(false);
         $application5->setYearOfStudy(1);
-        $application5->setSemester($this->getReference('semester-1'));
+        $application5->setSemester($this->getReference('semester-current'));
         $interview5 = new Interview();
         $interview5->setInterviewed(false);
         $interview5->setInterviewer($this->getReference('user-2'));
@@ -149,7 +149,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application6->setUser($this->getReference('user-8'));
         $application6->setPreviousParticipation(false);
         $application6->setYearOfStudy(1);
-        $application6->setSemester($this->getReference('semester-1'));
+        $application6->setSemester($this->getReference('semester-current'));
         $interview6 = new Interview();
         $interview6->setInterviewed(false);
         $interview6->setInterviewer($this->getReference('user-1'));

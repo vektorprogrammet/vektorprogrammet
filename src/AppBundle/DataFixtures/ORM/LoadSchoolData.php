@@ -18,12 +18,14 @@ class LoadSchoolData extends AbstractFixture implements OrderedFixtureInterface
 		$school1->setContactPerson('Per Olsen');
 		$school1->setEmail('Per@mail.com');
 		$school1->setPhone('99887722');
+//        $school1->addDepartment($this->getReference('dep-1'));
 
         $school2 = new School();
         $school2->setName('Selsbakk');
 		$school2->setContactPerson('Vibeke Hansen');
 		$school2->setEmail('Vibeke@mail.com');
 		$school2->setPhone('22386722');
+//        $school2->addDepartment($this->getReference('dep-1'));
 
         $school3 = new School();
         $school3->setName('Blussuvoll');
@@ -31,7 +33,8 @@ class LoadSchoolData extends AbstractFixture implements OrderedFixtureInterface
         $school3->setEmail('kari@mail.com');
         $school3->setPhone('22386722');
         $school3->setInternational(true);
-		
+//        $school3->addDepartment($this->getReference('dep-1'));
+
         $manager->persist($school1);
         $manager->persist($school2);
         $manager->persist($school3);
