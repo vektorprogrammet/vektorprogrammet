@@ -46,6 +46,7 @@
 $vektor-white : #fafeff;
 $vektor-blue  : #6fceee;
 $vektor-grey  : #dbdcdd;
+$admin-grey: #333333;
 
 // Global
 // - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -198,6 +199,9 @@ body {
       font-size: 1.3rem;
     }
   }
+}
+.arrow{
+  color:$vektor-blue;
 }
 
 header {
@@ -414,8 +418,19 @@ ul.alternatives {
   margin-right: 1rem;
 }
 
+// Utils
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+
 .float-right{
   float:right;
+}
+.clear {
+  clear: both;
+}
+
+.slide-group{
+  margin-top: 30px;
+  display:none;
 }
 
 // Sponsor
@@ -442,6 +457,47 @@ ul.alternatives {
   display:none;
 }
 
+// Sponsor
+.vertical-align-image-helper{
+  display: inline-block;
+  height:100%;
+  vertical-align: middle;
+}
+.sponsor-img{
+  max-height: 150px;
+  vertical-align: middle;
+}
+
+.sponsor-column{
+  height:150px;
+}
+
+//Top line
+.top-line{
+  width:100%;
+  height:20px;
+  background-color: $vektor-blue;
+  margin-bottom:20px;
+  p{
+    color:#b70000;
+    font-size: 14px;
+    text-align: center;
+    a{
+      color: #b70000;
+      text-decoration: underline;
+    }
+  }
+}
+
+//Team specific
+#oldWorkHistoriesButton{
+  margin:30px 0;
+}
+#oldWorkHistories{
+  margin-top:30px;
+  display:none;
+}
+
 #teams{
   border: 0px;
   width: 100%;
@@ -454,19 +510,207 @@ ul.alternatives {
   background-color: rgba(111,206,238,0.3);
 }
 
-//Top line
-.top-line{
-  width:100%;
-  height:20px;
-  background-color: #6FCEEE;
-  margin-bottom:20px;
-  p{
-    color:#b70000;
-    font-size: 14px;
+//Control Panel
+.control-panel {
+  hr {
+    padding: 10px;
+  }
+
+  .control-panel-item {
     text-align: center;
-    a{
-      color: #b70000;
-      text-decoration: underline;
-    }
+  }
+
+  h3 {
+    padding: 20px;
+  }
+
+  .control-panel-item i {
+    color: #008CBA;
+  }
+
+  .control-panel-item i:hover {
+    color: #007095;
   }
 }
+
+.admin-top-line{
+  background-color: $admin-grey;
+}
+
+//Admin Base
+
+.control-panel-header{
+  margin-top:75px;
+  text-align: center
+}
+//Navigation Menu
+.control-menu {
+  padding-top: 17px;
+  padding-bottom: 1px;
+  background-color: #333333;
+
+  .f-dropdown.mini {
+    max-width: 100px;
+  }
+
+  .f-dropdown.very-small {
+    max-width: 150px;
+  }
+
+  > ul {
+    display: flex;
+    flex-direction: row;
+    margin-left: 0;
+    list-style-type: none;
+    > li {
+      text-align: center;
+      flex-grow: 1;
+      display: inline-block;
+      > ul > li {
+        text-align: left;
+      }
+      > a, .arrow {
+        font-weight: bold;
+        color: #dfdfdf;
+
+        &:hover{
+          color: #ffffff;
+        }
+      }
+    }
+
+  }
+}
+
+
+
+// Step-by-Step
+//-------------------------------------------
+
+.control-panel{
+  hr{
+    padding:10px;
+  }
+  .control-panel-item{
+    text-align: center;
+  }
+  h2{
+    padding:20px;
+  }
+  .control-panel-item i{
+    color:#008CBA;
+  }
+  .control-panel-item i:hover{
+    color:#007095;
+  }
+
+  .step-box{
+    height:200px;
+    /*border-left: 1px solid black;
+    border-left-color: $vektor-blue;*/
+    text-align: center;
+    padding-top: 10px;
+    p {
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+  }
+  .step-active{
+    background-color: $vektor-white;
+    border: 2px solid $vektor-blue;
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.15);
+  }
+
+  .step-completed{
+    color: #b4b4cb;
+    border-left-color: #b4b4cb;
+    h4, a {
+      color: #b4b4cb;
+    }
+    a:hover {
+      color: #8989a0;
+    }
+    a {
+      text-decoration: underline;
+    }
+
+  }
+
+  .step-spacing{
+    height: 20px;
+  }
+
+
+  .progressbar{
+    $step-progress-bar-ring-size : 40px;
+    $step-progress-bar-ring-width : 12px; //Må være partall
+    $step-progress-bar-border-color : #474747;
+
+    .step{
+      height: 40px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+
+      .ring-container{
+        width: 40px;
+        display: inline-block;
+        .outer-ring{
+
+          width: $step-progress-bar-ring-size;
+          height: $step-progress-bar-ring-size;
+          border: 1px solid $step-progress-bar-border-color;
+          border-radius: $step-progress-bar-ring-size;
+          background-color: $vektor-white;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .inner-ring{
+            width: $step-progress-bar-ring-size - $step-progress-bar-ring-width;
+            height: $step-progress-bar-ring-size - $step-progress-bar-ring-width;
+            border: 1px solid $step-progress-bar-border-color;
+            border-radius: $step-progress-bar-ring-size - $step-progress-bar-ring-width;
+            background-color: $vektor-white;
+          }
+        }
+
+        .fill{
+          background-color: $vektor-blue;
+        }
+      }
+
+      .line-container{
+        width: 100%;
+        display: inline-block;
+        background-color: $vektor-white;
+        margin-left: -2px;
+        margin-right: -2px;
+        z-index: 1;
+        .line{
+          height: $step-progress-bar-ring-width;
+          width: 100%;
+          border-top: 1px solid $step-progress-bar-border-color;
+          border-bottom: 1px solid $step-progress-bar-border-color;
+
+          .fill{
+            width: 0;
+            height: 100%;
+            background-color: $vektor-blue;
+          }
+        }
+
+      }
+
+    }
+
+  }
+}
+
+
+//500 server error
+.error-500 {
+  margin-bottom: 50px;
+  margin-top: 50px;
+}
+
