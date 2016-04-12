@@ -14,12 +14,16 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\UserRepository")
  * @UniqueEntity(
- *      fields = {"email"},
- *      message = "Denne Eposten er allerede i bruk.")
+ *      fields={"email"},
+ *      message="Denne Eposten er allerede i bruk.",
+ *      groups={"create_user"}
+ * )
  *
  * @UniqueEntity(
- *      fields = {"user_name"},
- *      message = "Dette brukernavnet er allerede i bruk.")
+ *      fields={"user_name"},
+ *      message="Dette brukernavnet er allerede i bruk.",
+ *      groups={"create_user"}
+ * )
  */
 class User implements AdvancedUserInterface, \Serializable {
 
