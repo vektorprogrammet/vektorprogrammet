@@ -69,6 +69,8 @@ class User implements AdvancedUserInterface, \Serializable {
     /**
      * @ORM\Column(type="string", length=45, unique=true, nullable=true)
      * @Assert\NotBlank(groups={"create_user"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\Unique(groups={"create_user"}, message="Brukernavnet er allerede i bruk.")
+
      */
     private $user_name;
 
@@ -82,6 +84,7 @@ class User implements AdvancedUserInterface, \Serializable {
      * @ORM\Column(type="string", length=45, unique=true)
      * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
      * @Assert\Email(groups={"admission", "create_user"}, message="Ikke gyldig e-post.")
+     * @Assert\Unique(groups={"create_user"}, message="E-posten er allerede i bruk.")
      */
     private $email;
 
