@@ -61,9 +61,6 @@
             "bower install -q",
             "gulp build:dev --silent",
             "echo Build complete"
-        ],
-        "server": [
-            "php app/console server:run --docroot=www --env=dev"
         ]
     },
     "config": {
