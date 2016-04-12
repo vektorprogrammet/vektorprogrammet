@@ -70,7 +70,6 @@ class User implements AdvancedUserInterface, \Serializable {
      * @ORM\Column(type="string", length=45, unique=true, nullable=true)
      * @Assert\NotBlank(groups={"create_user"}, message="Dette feltet kan ikke være tomt.")
      * @Assert\Unique(groups={"create_user"}, message="Brukernavnet er allerede i bruk.")
-
      */
     private $user_name;
 
