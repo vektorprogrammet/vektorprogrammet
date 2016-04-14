@@ -331,4 +331,9 @@ class SurveyController extends Controller
 
     }
 
+    public function getSurveyResultAction(Survey $survey){
+        return new JsonResponse(array('survey' => $survey, 'answers' => $this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey)));
+    }
+
+
 }

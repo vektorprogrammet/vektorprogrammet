@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="survey")
  */
-class Survey
+class Survey implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -31,6 +31,8 @@ class Survey
     protected $name;
 
     /**
+     * @var SurveyQuestion[]
+     *
      * @ORM\ManyToMany(targetEntity="SurveyQuestion", cascade={"persist"})
      * @ORM\JoinTable(name="survey_surveys_questions",
      *      joinColumns={@ORM\JoinColumn(name="survey_id", referencedColumnName="id")},
@@ -131,4 +133,20 @@ class Survey
         return $this;
     }
 
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    function jsonSerialize(){
+        $ret = array('questions' => array());
+        foreach($this->surveyQuestions as $q){
+            if(!$q->getOptional() && ($q->getType() == "radio" || $q->getType() == "list")){
+                $ret['questions'][] = $q;
+            }
+        }
+        return $ret;
+    }
 }
