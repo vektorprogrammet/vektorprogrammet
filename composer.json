@@ -55,6 +55,12 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"
+        ],
+        "build": [
+            "npm install --silent",
+            "bower install -q",
+            "gulp build:dev --silent",
+            "echo Build complete"
         ]
     },
     "config": {
