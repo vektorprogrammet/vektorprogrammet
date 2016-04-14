@@ -7,6 +7,7 @@
 
 {% block scripts %}
     {{ parent() }}
+    <!--suppress ALL -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 {% endblock %}
 
@@ -73,23 +74,26 @@
     Chart.defaults.global.animation = false;
 
     var colors = ["#F3595D", "#78C466", "#579AD6", "#FCA853", "#9F65AD", "#D07054", "#D97DB5","#737373"];
-    var surveyDataCache;
 
     $.getJSON('{{ path('survey_get_all_results', {'id': survey.id } ) }}',function(surveyData){
-        surveyDataCache = surveyData;
-        //console.log(surveyData);
+        renderFilter(surveyData);
+        var countedData = countAnswers(surveyData);
+        var chartData = generateChartData(surveyData, countedData);
+        renderCharts(surveyData, chartData);
+    });
+
+
+    function renderFilter(surveyData){
         var filterDiv = $('<div></div>');
         filterDiv.addClass('small-12 medium-12 large-12 columns');
-
-        var data = {};
         var filter = {};
         for(var i = 0; i< surveyData.survey.questions.length; i++){
             var filterList = $('<select multiple></select>');
             filterList.attr('id',surveyData.survey.questions[i].question_id.toString());
             //console.log(surveyData.survey.questions[i].alternatives);
-            data[ surveyData.survey.questions[i].question_id.toString() ] = {};
+
             for(var j = 0; j < surveyData.survey.questions[i].alternatives.length; j++){
-                data[ surveyData.survey.questions[i].question_id.toString() ][surveyData.survey.questions[i].alternatives[j]] = 0;
+
 
                 var filterOption = $('<option></option>');
                 filterOption.attr('value', surveyData.survey.questions[i].alternatives[j]);
@@ -105,10 +109,7 @@
         btn.html('Filtrer');
         btn.on('click', function(){
             var filterObjects = [];
-            //console.log('Button click');
-            //console.log(filterDiv.find('select'));
             filterDiv.find('select').each( function (){
-                //console.log(this);
                 var selectedAnswers = $(this).find(":selected");
                 if(selectedAnswers.length){
                     var filterObject = {
@@ -117,50 +118,51 @@
                     }
                     selectedAnswers.each( function(){
                         filterObject.answers.push($(this).text());
-                        //console.log($(this).text());
                     })
                     filterObjects.push(filterObject);
                 }
             })
-            //console.log(filterObjects)
             filterSurveyData(filterObjects);
         });
-
-        function filterSurveyData(filterObjects){
-            console.log(surveyDataCache)
-        }
-
         filterDiv.append(btn);
         $('#allCharts').append(filterDiv);
+    }
 
-        //console.log(data);
+    function generateChartData(surveyData, countedData){
+        var chartData = [];
+        for(var i = 0; i< surveyData.survey.questions.length; i++) {
+            var questionData = [];
+            for (var j = 0; j < surveyData.survey.questions[i].alternatives.length; j++) {
+                questionData.push({
+                    label: surveyData.survey.questions[i].alternatives[j],
+                    value: countedData[surveyData.survey.questions[i].question_id][surveyData.survey.questions[i].alternatives[j]],
+                    color: j >= colors.length ? getRandomColor() : colors[j]
+                });
+            }
+            chartData.push(questionData);
+        }
+        return chartData;
+    }
 
-
+    function countAnswers(surveyData){
+        var data = {};
+        for(var i = 0; i < surveyData.survey.questions.length; i++){
+            data[ surveyData.survey.questions[i].question_id.toString() ] = {};
+            for(var j = 0; j < surveyData.survey.questions[i].alternatives.length; j++){
+                data[ surveyData.survey.questions[i].question_id.toString() ][surveyData.survey.questions[i].alternatives[j]] = 0;
+            }
+        }
         for(var k = 0; k< surveyData.answers.length; k++){
             for(var l = 0; l < surveyData.answers[k].length; l++){
                 data[surveyData.answers[k][l].question_id][surveyData.answers[k][l].answer]++;
             }
         }
-        //console.log(data);
+        return data;
+    }
 
-    });
+    function renderCharts(surveyData, chartData){
 
-    function renderCharts(data){
-
-        for(var i = 0; i< data.survey.questions.length; i++){
-            var chartData = [];
-            var color = (360*Math.random()).toString();
-            var lower = 30;
-            var upper = 90;
-            for(var j = 0; j < data.survey.questions[i].alternatives.length; j++){
-                chartData.push({
-                    label : data.survey.questions[i].alternatives[j],
-                    value : data[data.survey.questions[i].question_id][data.survey.questions[i].alternatives[j]],
-                    //color : "hsl(" + color + ", 100%, " + (lower + (upper-lower)*j/surveyData.survey.questions[i].alternatives.length).toString() + "%)"
-                    color : j >= colors.length ? getRandomColor() : colors[j]
-                });
-            }
-
+        for(var i = 0; i< surveyData.survey.questions.length; i++){
             //console.log(chartData);
             var div = $('<div></div>');
             div.addClass('small-12 medium-12 large-12 columns');
@@ -171,12 +173,15 @@
             $('#allCharts').append(div);
 
             ctx = canvas.get(0).getContext("2d");
-            var myNewChart = new Chart(ctx).Pie(chartData);
+            var myNewChart = new Chart(ctx).Pie(chartData[i]);
 
             div.append($(myNewChart.generateLegend()));
             div.append($('<hr>'));
-
         }
+    }
+
+    function filterSurveyData(surveyData, filterObjects){
+
     }
 
 </script>
