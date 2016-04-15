@@ -279,7 +279,17 @@ class SurveyController extends Controller
     }
 
     public function getSurveyResultAction(Survey $survey){
-        return new JsonResponse(array('survey' => $survey, 'answers' => $this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey)));
+        $surveysTaken = $this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
+        $schools = [];
+        foreach($surveysTaken as $surveyTaken){
+            if(!in_array($surveyTaken->getSchool()->getName(), $schools)) $schools[] = $surveyTaken->getSchool()->getName();
+        }
+        $schoolQuestion = array('question_id' => 0, 'question_label' => 'Skole', 'alternatives' => $schools);
+        $survey_json = json_encode($survey);
+        $survey_decode = json_decode($survey_json, true);
+        $survey_decode['questions'][] = $schoolQuestion;
+
+        return new JsonResponse(array('survey' => $survey_decode, 'answers' => $this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey)));
     }
 
 

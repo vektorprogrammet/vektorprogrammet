@@ -67,6 +67,7 @@
         var colors = ["#F3595D", "#78C466", "#579AD6", "#FCA853", "#9F65AD", "#D07054", "#D97DB5", "#737373"];
 
         $.getJSON('{{ path('survey_get_all_results', {'id': survey.id } ) }}', function (surveyData) {
+            console.log(surveyData)
             renderFilter(surveyData);
             renderCharts(surveyData);
             displayTextAnswers();
@@ -172,7 +173,7 @@
                 var c = -1;
                 for (var alternative in countedData[questionId]) {
                     questionData.answers.push({
-                        label: alternative + " (" + parseInt(countedData[questionId][alternative] / total * 100) + "%)",
+                        label: alternative + " (" + Math.round(countedData[questionId][alternative] / total * 100) + "%)",
                         value: countedData[questionId][alternative],
                         color: ++c >= colors.length ? getRandomColor() : colors[c],
                     });

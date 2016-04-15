@@ -125,6 +125,8 @@ class SurveyTaken implements  \JsonSerializable
      */
     function jsonSerialize(){
         $ret = array();
+        $schoolQuestion = array('question_id' => 0, 'answer' => $this->school->getName());
+        $ret[] = $schoolQuestion;
         foreach($this->surveyAnswers as $a){
             if(!$a->getSurveyQuestion()->getOptional() && ($a->getSurveyQuestion()->getType() == "radio" || $a->getSurveyQuestion()->getType() == "list")){
                 $ret[] = $a;
