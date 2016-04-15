@@ -25,164 +25,191 @@
     </div>
 
     {% if numAnswered > 0 %}
-    <div class="row">
-        <div id="survey-data" class="large-12 columns">
-            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-            <script type="text/javascript">
-                google.load("visualization", "1", {packages: ["corechart", 'table', 'treemap', 'gauge']});
-                google.load('jquery', '1.6.0');
-            </script>
+        <div class="row">
+            <div id="survey-data" class="large-12 columns">
+                <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+                <script type="text/javascript">
+                    google.load("visualization", "1", {packages: ["corechart", 'table', 'treemap', 'gauge']});
+                    google.load('jquery', '1.6.0');
+                </script>
 
-            <div class="row" style="width: 750px; margin: 0 auto;">
-                {% for chart in diagram %}
-                    {% set index = loop.index %}
-                    <div id="{{ index }}">&nbsp;</div>
-                    <script>
-                        $(function () {
-                            {{ gchart_pie_chart(chart, index, 750, 250, attribute(question, index - 1)) }}
-                        });
-                    </script>
-                    <hr style="width: 750px;"/>
-                {% endfor %}
-
-            </div>
-            <div class="row">
-                <h3 style="text-align: center;">Tekstsvar</h3>
-                {% for key in textAnswers|keys %}
-                    <h4>{{ key }}</h4>
-                    {% for answer in textAnswers[key] %}
-                        <p>{{ loop.index }}: {{ answer }}</p>
+                <div class="row" style="width: 750px; margin: 0 auto;">
+                    {% for chart in diagram %}
+                        {% set index = loop.index %}
+                        <div id="{{ index }}">&nbsp;</div>
+                        <script>
+                            $(function () {
+                                {{ gchart_pie_chart(chart, index, 750, 250, attribute(question, index - 1)) }}
+                            });
+                        </script>
+                        <hr style="width: 750px;"/>
                     {% endfor %}
-                {% endfor %}
+
+                </div>
+                <div class="row">
+                    <h3 style="text-align: center;">Tekstsvar</h3>
+                    {% for key in textAnswers|keys %}
+                        <h4>{{ key }}</h4>
+                        {% for answer in textAnswers[key] %}
+                            <p>{{ loop.index }}: {{ answer }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
-    </div>
-        {% endif %}
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
-<script>
-    function getRandomColor() {
-        var letters = '0123456789ABCDEF'.split('');
-        var color = '#';
-        for (var i = 0; i < 6; i++ ) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
-
-    Chart.defaults.global.animation = false;
-
-    var colors = ["#F3595D", "#78C466", "#579AD6", "#FCA853", "#9F65AD", "#D07054", "#D97DB5","#737373"];
-
-    $.getJSON('{{ path('survey_get_all_results', {'id': survey.id } ) }}',function(surveyData){
-        renderFilter(surveyData);
-        var countedData = countAnswers(surveyData);
-        var chartData = generateChartData(surveyData, countedData);
-        renderCharts(surveyData, chartData);
-    });
-
-
-    function renderFilter(surveyData){
-        var filterDiv = $('<div></div>');
-        filterDiv.addClass('small-12 medium-12 large-12 columns');
-        var filter = {};
-        for(var i = 0; i< surveyData.survey.questions.length; i++){
-            var filterList = $('<select multiple></select>');
-            filterList.attr('id',surveyData.survey.questions[i].question_id.toString());
-            //console.log(surveyData.survey.questions[i].alternatives);
-
-            for(var j = 0; j < surveyData.survey.questions[i].alternatives.length; j++){
-
-
-                var filterOption = $('<option></option>');
-                filterOption.attr('value', surveyData.survey.questions[i].alternatives[j]);
-                filterOption.append(surveyData.survey.questions[i].alternatives[j]);
-                filterList.append(filterOption);
+    <script>
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF'.split('');
+            var color = '#';
+            for (var i = 0; i < 6; i++ ) {
+                color += letters[Math.floor(Math.random() * 16)];
             }
-
-            filterDiv.append(filterList);
+            return color;
         }
 
+        Chart.defaults.global.animation = false;
 
-        var btn = $('<button></button>');
-        btn.html('Filtrer');
-        btn.on('click', function(){
-            var filterObjects = [];
-            filterDiv.find('select').each( function (){
-                var selectedAnswers = $(this).find(":selected");
-                if(selectedAnswers.length){
-                    var filterObject = {
-                        question_id: $(this).attr('id'),
-                        answers: []
-                    }
-                    selectedAnswers.each( function(){
-                        filterObject.answers.push($(this).text());
-                    })
-                    filterObjects.push(filterObject);
-                }
-            })
-            filterSurveyData(filterObjects);
+        var colors = ["#F3595D", "#78C466", "#579AD6", "#FCA853", "#9F65AD", "#D07054", "#D97DB5","#737373"];
+
+        $.getJSON('{{ path('survey_get_all_results', {'id': survey.id } ) }}',function(surveyData){
+            renderSurveyResultApp(surveyData);
         });
-        filterDiv.append(btn);
-        $('#allCharts').append(filterDiv);
-    }
 
-    function generateChartData(surveyData, countedData){
-        var chartData = [];
-        for(var i = 0; i< surveyData.survey.questions.length; i++) {
-            var questionData = [];
-            for (var j = 0; j < surveyData.survey.questions[i].alternatives.length; j++) {
-                questionData.push({
-                    label: surveyData.survey.questions[i].alternatives[j],
-                    value: countedData[surveyData.survey.questions[i].question_id][surveyData.survey.questions[i].alternatives[j]],
-                    color: j >= colors.length ? getRandomColor() : colors[j]
-                });
+        function renderSurveyResultApp(surveyData){
+            $('#allCharts').empty();
+            renderFilter(surveyData);
+            var countedData = countAnswers(surveyData);
+            var chartData = generateChartData(countedData);
+            renderCharts(chartData);
+        }
+
+
+        function renderFilter(surveyData){
+            var filterDiv = $('<div></div>');
+            filterDiv.addClass('small-12 medium-12 large-12 columns');
+            var questions = surveyData.survey.questions;
+            for(var i = 0; i< questions.length; i++){
+                var question = questions[i];
+                var filterList = $('<select multiple></select>');
+                filterList.attr('id',question.question_id.toString());
+                for(var j = 0; j < question.alternatives.length; j++){
+                    var alternative = question.alternatives[j];
+                    var filterOption = $('<option></option>');
+                    filterOption.attr('value', alternative);
+                    filterOption.html(alternative);
+                    filterList.append(filterOption);
+                }
+                filterDiv.append(filterList);
             }
-            chartData.push(questionData);
-        }
-        return chartData;
-    }
 
-    function countAnswers(surveyData){
-        var data = {};
-        for(var i = 0; i < surveyData.survey.questions.length; i++){
-            data[ surveyData.survey.questions[i].question_id.toString() ] = {};
-            for(var j = 0; j < surveyData.survey.questions[i].alternatives.length; j++){
-                data[ surveyData.survey.questions[i].question_id.toString() ][surveyData.survey.questions[i].alternatives[j]] = 0;
+
+            var btn = $('<button></button>');
+            btn.html('Filtrer');
+            btn.on('click', function(){
+                var filter = {};
+                filterDiv.find('select').each( function (){
+                    var selectedAnswers = $(this).find(":selected");
+                    if(selectedAnswers.length){
+                        var questionId = $(this).attr('id').toString();
+                        filter[questionId] = []
+                        selectedAnswers.each( function(){
+                            filter[questionId].push($(this).text());
+                        })
+                    }
+                })
+                var filteredSurveyData = filterSurveyData(surveyData, filter);
+                renderSurveyResultApp(filteredSurveyData);
+            });
+            filterDiv.append(btn);
+            $('#allCharts').append(filterDiv);
+        }
+
+        function generateChartData(countedData){
+            var questionIds = Object.keys(countedData);
+            var chartData = [];
+            for(var questionId in countedData) {
+                var questionData = [];
+                var c = -1;
+                for (var alternative in countedData[questionId]) {
+                    questionData.push({
+                        label: alternative,
+                        value: countedData[questionId][alternative],
+                        color: ++c >= colors.length ? getRandomColor() : colors[c]
+                    });
+                }
+                chartData.push(questionData);
+            }
+            return chartData;
+        }
+
+        function countAnswers(surveyData){
+            var data = {};
+            var questions = surveyData.survey.questions;
+
+            // Initalize data object with count set to 0 for each alternative
+            for(var i = 0; i < questions.length; i++){
+                var questionId = questions[i].question_id.toString();
+                data[questionId] = {};
+                var alternatives = questions[i].alternatives;
+                for(var j = 0; j < alternatives.length; j++){
+                    data[questionId][alternatives[j]] = 0;
+                }
+            }
+
+            // Count occurances of different alternatives
+            var answers = surveyData.answers;
+            for(var k = 0; k< answers.length; k++){
+                for(var l = 0; l < answers[k].length; l++){
+                    data[answers[k][l].question_id][answers[k][l].answer]++;
+                }
+            }
+            return data;
+        }
+
+        function renderCharts(chartData){
+
+            for(var i = 0; i< chartData.length; i++){
+                var div = $('<div></div>');
+                div.addClass('small-12 medium-12 large-12 columns');
+                var canvas = $('<canvas/>').width(400).height(300);
+
+                div.append(canvas);
+
+                $('#allCharts').append(div);
+
+                ctx = canvas.get(0).getContext("2d");
+                var myNewChart = new Chart(ctx).Pie(chartData[i]);
+
+                div.append($(myNewChart.generateLegend()));
+                div.append($('<hr>'));
             }
         }
-        for(var k = 0; k< surveyData.answers.length; k++){
-            for(var l = 0; l < surveyData.answers[k].length; l++){
-                data[surveyData.answers[k][l].question_id][surveyData.answers[k][l].answer]++;
+
+        function filterSurveyData(surveyData, filterObject){
+            var filteredSurveyData = {};
+            var submissions = surveyData.answers;
+            var filteredSubmissions = submissions.filter(function(submission){
+                for(var i = 0; i < submission.length; i++){
+                    var answerObject = submission[i];
+                    var questionId = answerObject.question_id;
+                    if(filterObject.hasOwnProperty(questionId) && filterObject[questionId].indexOf(answerObject.answer) < 0){
+                        return false;
+                    }
+                }
+                return true;
+            })
+            var questions = surveyData.survey.questions;
+            var filteredQuestions = questions.filter(function(f){return true});
+            filteredSurveyData.answers = filteredSubmissions;
+            filteredSurveyData.survey = {
+                questions: filteredQuestions
             }
+            return filteredSurveyData;
         }
-        return data;
-    }
 
-    function renderCharts(surveyData, chartData){
-
-        for(var i = 0; i< surveyData.survey.questions.length; i++){
-            //console.log(chartData);
-            var div = $('<div></div>');
-            div.addClass('small-12 medium-12 large-12 columns');
-            var canvas = $('<canvas/>').width(400).height(300);
-
-            div.append(canvas);
-
-            $('#allCharts').append(div);
-
-            ctx = canvas.get(0).getContext("2d");
-            var myNewChart = new Chart(ctx).Pie(chartData[i]);
-
-            div.append($(myNewChart.generateLegend()));
-            div.append($('<hr>'));
-        }
-    }
-
-    function filterSurveyData(surveyData, filterObjects){
-
-    }
-
-</script>
+    </script>
 {% endblock %}
