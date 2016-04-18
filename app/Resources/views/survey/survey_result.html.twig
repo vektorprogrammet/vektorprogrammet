@@ -4,48 +4,320 @@
     Resultater {{ survey.name }} {{ survey.semester }}
 {% endblock %}
 
+{% block scripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+{% endblock %}
+
 {% block body %}
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <h1 style="text-align: center;">Resultater {{ survey.name }} {{ survey.semester }}</h1>
-            {% if numAnswered == 0 %}
-                <h4 style="text-align: center; color: #750000">Ingen har svart på undersøkelsen</h4>
-            {% endif %}
+    <header class="row">
+        <div class="small-12 columns">
+            <h3>Resultater for {{ survey.name }} {{ survey.semester }} </h3>
+            <a id="show-filter-btn" class="">Vis/skjul filter&nbsp;&nbsp;<i
+                        class="fa fa-chevron-right"></i></a>
         </div>
+    </header>
+    <div id="filter"></div>
+    <div class="row equalheight" id="charts">
+        <h1 class="text-center">Laster data... <i class="fa fa-spinner"></i></h1>
     </div>
 
-    {% if numAnswered > 0 %}
-    <div class="row">
-        <div id="survey-data" class="large-12 columns">
-            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-            <script type="text/javascript">
-                google.load("visualization", "1", {packages: ["corechart", 'table', 'treemap', 'gauge']});
-                google.load('jquery', '1.6.0');
-            </script>
-
-            <div class="row" style="width: 750px; margin: 0 auto;">
-                {% for chart in diagram %}
-                    {% set index = loop.index %}
-                    <div id="{{ index }}">&nbsp;</div>
-                    <script>
-                        $(function () {
-                            {{ gchart_pie_chart(chart, index, 750, 250, attribute(question, index - 1)) }}
-                        });
-                    </script>
-                    <hr style="width: 750px;"/>
-                {% endfor %}
-
-            </div>
-            <div class="row">
-                <h3 style="text-align: center;">Tekstsvar</h3>
-                {% for key in textAnswers|keys %}
+    {% if textAnswers %}
+        <!-- Display text answers -->
+        <div class="row" id="text-answers">
+            <h3 class="text-center">Tekstsvar</h3>
+            {% for key in textAnswers|keys %}
+                {% if textAnswers[key] %}
                     <h4>{{ key }}</h4>
                     {% for answer in textAnswers[key] %}
                         <p>{{ loop.index }}: {{ answer }}</p>
                     {% endfor %}
-                {% endfor %}
-            </div>
+                {% endif %}
+            {% endfor %}
         </div>
-    </div>
-        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        // Add event listener to Show/Hide filter button
+        (function () {
+            $('#show-filter-btn').on('click', function () {
+                var $filter = $('#filter');
+                var isHidden = $filter.css('display') === 'none';
+                var $icon = $('#show-filter-btn i');
+                if (isHidden) {
+                    $icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+                }
+                else {
+                    $icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+                }
+                $filter.slideToggle();
+            })
+        })();
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF'.split('');
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        Chart.defaults.global.animation = false;
+
+        var colors = ["#F3595D", "#78C466", "#579AD6", "#FCA853", "#9F65AD", "#D07054", "#D97DB5", "#737373"];
+
+        $.getJSON('{{ path('survey_get_all_results', {'id': survey.id } ) }}', function (surveyData) {
+            renderFilter(surveyData);
+            renderCharts(surveyData);
+            displayTextAnswers();
+            $('#show-filter-btn').show();
+        });
+
+        function displayTextAnswers() {
+            $('#text-answers').show();
+        }
+
+        function renderFilter(surveyData) {
+            // Root div
+            var filterDiv = $('<div></div>');
+            filterDiv.addClass('row');
+
+            // Create a multiple select box with alternatives for each question
+            var questions = surveyData.survey.questions;
+            for (var i = 0; i < questions.length; i++) {
+                var question = questions[i];
+                var title = $('<h6></h6>');
+                title.html(question.question_label);
+                var filterList = $('<select multiple></select>');
+                filterList.attr('id', question.question_id.toString());
+                for (var j = 0; j < question.alternatives.length; j++) {
+                    // Add alternative to the multiple select box
+                    var alternative = question.alternatives[j];
+                    var filterOption = $('<option></option>');
+                    filterOption.attr('value', alternative);
+                    filterOption.html(alternative);
+
+                    // Allow select multiple and deselect without holding CTRL
+                    filterOption.mousedown(function (e) {
+                        e.preventDefault();
+                        $(this).prop('selected', $(this).prop('selected') ? false : true);
+                        return false;
+                    });
+
+                    filterList.append(filterOption);
+                }
+                // Wrapper for the multiple select box and question text
+                var selectWrapper = $('<div></div>');
+                selectWrapper.addClass('survey-filter-wrapper small-12 medium-4 large-3 columns');
+                if (i === questions.length - 1) selectWrapper.addClass('end');
+                selectWrapper.append(title);
+                selectWrapper.append(filterList);
+                filterDiv.append(selectWrapper);
+            }
+
+            // Create filter button in a row
+            var buttonRow = $('<div></div>');
+            buttonRow.addClass('row');
+            var buttonColumn = $('<div></div>');
+            buttonColumn.addClass('small-12 columns');
+            var btn = $('<button></button>');
+            btn.html('Filtrer');
+            btn.addClass('button small')
+
+            // Filter surveyData when filter button is clicked
+            btn.on('click', function () {
+                var filter = {};
+
+                // Find all selected alternatives to be used in filtering
+                filterDiv.find('select').each(function () {
+                    var selectedAnswers = $(this).find(":selected");
+                    if (selectedAnswers.length) {
+                        var questionId = $(this).attr('id').toString();
+
+                        //Generate the filter object
+                        filter[questionId] = []
+                        selectedAnswers.each(function () {
+                            filter[questionId].push($(this).text());
+                        })
+
+                    }
+                })
+
+                // Get the filtered data and re-render the charts
+                var filteredSurveyData = filterSurveyData(surveyData, filter);
+                $('#show-filter-btn').click();
+                renderCharts(filteredSurveyData);
+            });
+
+            // Append button and filter content to the filter panel
+            buttonColumn.append(btn);
+            buttonColumn.append("&nbsp;(Tekstsvar blir ikke filtrert)");
+            buttonRow.append(buttonColumn);
+            $('#filter').append(filterDiv);
+            $('#filter').append(buttonRow);
+        }
+
+        function generateChartData(countedData) {
+            var chartData = [];
+            for (var questionId in countedData) {
+                var questionData = {
+                    questionId: questionId,
+                    answers: []
+                };
+                // Count total answered
+                var total = 0;
+                for (var alternative in countedData[questionId]) {
+                    total += countedData[questionId][alternative];
+                }
+
+                // Create data object for Chart.js
+                var c = -1;
+                for (var alternative in countedData[questionId]) {
+                    questionData.answers.push({
+                        label: alternative + " (" + Math.round(countedData[questionId][alternative] / total * 100) + "%)",
+                        value: countedData[questionId][alternative],
+                        color: ++c >= colors.length ? getRandomColor() : colors[c],
+                    });
+                }
+
+                chartData.push(questionData);
+            }
+            return chartData;
+        }
+
+        function countAnswers(surveyData) {
+            var data = {};
+            var questions = surveyData.survey.questions;
+
+            // Initialize data object with count set to 0 for each alternative
+            for (var i = 0; i < questions.length; i++) {
+                var questionId = questions[i].question_id.toString();
+                data[questionId] = {};
+                var alternatives = questions[i].alternatives;
+                for (var j = 0; j < alternatives.length; j++) {
+                    data[questionId][alternatives[j]] = 0;
+                }
+            }
+
+            // Count occurrences of different alternatives
+            var answers = surveyData.answers;
+            for (var k = 0; k < answers.length; k++) {
+                for (var l = 0; l < answers[k].length; l++) {
+                    data[answers[k][l].question_id][answers[k][l].answer]++;
+                }
+            }
+            return data;
+        }
+
+        function renderCharts(surveyData) {
+            // Clear all previous charts and loading text
+            $('#charts').empty();
+
+            // Get chartData
+            var countedData = countAnswers(surveyData);
+            var chartData = generateChartData(countedData);
+            chartData = removeUnansweredQuestions(chartData);
+
+            // Create charts
+            for (var i = 0; i < chartData.length; i++) {
+                var div = $('<div></div>');
+                div.addClass('small-12 medium-6 large-4 columns');
+
+                // The pie chart will be painted on the canvas
+                var canvas = $('<canvas width="185" height="125"><canvas/>');
+
+                // Add the question text as a title above the chart
+                div.append('<h6>' + findQuestionLabelById(surveyData, chartData[i].questionId) + '</h6>');
+
+                // Create a chart container and append the canvas
+                var chart = $('<div></div>');
+                chart.addClass('chart');
+                chart.append(canvas);
+                div.append(chart)
+
+                $('#charts').append(div);
+
+                // Paint the charts to the canvases using Chart.js
+                ctx = canvas.get(0).getContext("2d");
+                var myNewChart = new Chart(ctx).Pie(chartData[i].answers);
+
+                chart.append($(myNewChart.generateLegend()));
+            }
+
+            // Display message if there are no results matching the filtering
+            if (!chartData.length) {
+                $('#charts').append('<h4 class="no-answer">Ingen resultater matcher filteret</h4>')
+            }
+
+            // Make all chart containers equal height
+            equalheight();
+        }
+
+        function removeUnansweredQuestions(chartData) {
+            return chartData.filter(function (questionObject) {
+                var alternatives = questionObject.answers;
+                for (var i = 0; i < alternatives.length; i++) {
+                    if (alternatives[i].value) {
+                        return true;
+                    }
+                }
+                return false;
+            })
+        }
+
+        function filterSurveyData(surveyData, filterObject) {
+            var filteredSurveyData = {};
+
+            // A submission is a survey that has been submitted with answers
+            var submissions = surveyData.answers;
+
+            // Remove all submissions that doesn't match filter criteria
+            var filteredSubmissions = submissions.filter(function (submission) {
+                for (var i = 0; i < submission.length; i++) {
+                    var answerObject = submission[i];
+                    var questionId = answerObject.question_id;
+                    if (filterObject.hasOwnProperty(questionId) && filterObject[questionId].indexOf(answerObject.answer) < 0) {
+                        return false;
+                    }
+                }
+                return true;
+            })
+
+            // Create a new surveyData object with filtered submissions
+            var questions = surveyData.survey.questions;
+            filteredSurveyData.answers = filteredSubmissions;
+            filteredSurveyData.survey = {
+                questions: questions
+            }
+            return filteredSurveyData;
+        }
+
+        /**
+         * Find question label by question id
+         */
+        function findQuestionLabelById(surveyData, questionId) {
+            var questions = surveyData.survey.questions;
+            for (var i = 0; i < questions.length; i++) {
+                if (questions[i].question_id === parseInt(questionId))return questions[i].question_label;
+            }
+            return "Fant ikke spørsmål";
+        }
+
+        /**
+         * Equalizes height of .equalheight children nodes
+         */
+        function equalheight() {
+            $('.equalheight').each(function () {
+                var maxHeight = 0;
+                $(this).children().each(function () {
+                    if ($(this).height() > maxHeight)
+                        maxHeight = $(this).height();
+                });
+                $(this).children().height(maxHeight);
+            });
+        }
+    </script>
 {% endblock %}

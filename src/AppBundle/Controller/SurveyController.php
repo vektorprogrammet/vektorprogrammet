@@ -252,45 +252,17 @@ class SurveyController extends Controller
 
     public function resultSurveyAction(Survey $survey)
     {
-        $surveyTakenList = $this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findBySurvey($survey);
-
-        //ADD SCHOOL CHART
-        $schoolCompletedCount = array();
-        foreach($surveyTakenList as $surveyTaken){
-            $school = $surveyTaken->getSchool()->getName();
-            if(array_key_exists($school,$schoolCompletedCount)){
-                $schoolCompletedCount[$school]++;
-            }else {
-                $schoolCompletedCount[$school] = 1;
-            }
-        }
-
-        $chart = new DataTable();
-        $chart->addColumn('1', 'Label', 'string');
-        $chart->addColumn('2', 'Quantity', 'number');
-        $alternativeArray = array_keys($schoolCompletedCount);
-        foreach($alternativeArray as $alternative){
-            $chart->addRow([$alternative, $schoolCompletedCount[$alternative]]);
-        }
-        $diagramArray[] = $chart->toArray();
-        $questionArray[] = 'Skole';
-        //SCHOOL CHART END
-
-        $lablesArray = array();
-        $questionsArray = array();
         $textQuestionArray = array();
         $textQAarray = array();
-        $counter = 0;
 
-        //Create question charts
+        // Get all text questions
         foreach($survey->getSurveyQuestions() as $question){
-            if($question->getType()!="text"){
-                array_push($lablesArray, $question->getQuestion());
-                array_push($questionsArray, $question);
-            }else{
+            if($question->getType()=="text"){
                 $textQuestionArray[] = $question;
             }
         }
+
+        //Collect text answers
         foreach($textQuestionArray as $textQuestion){
             $questionText = $textQuestion->getQuestion();
             $textQAarray[$questionText] = array();
@@ -299,36 +271,26 @@ class SurveyController extends Controller
             }
         }
 
-        foreach($questionsArray as $question){
-            $chart = new DataTable();
-            $chart->addColumn('1', 'Label', 'string');
-            $chart->addColumn('2', 'Quantity', 'number');
-            $alternativeArray = $question->getAlternatives();
-
-            foreach($alternativeArray as $alternative){
-                $alternative = $alternative->getAlternative();
-                $num = 0;
-                foreach($question->getAnswers() as $answer){
-                    if($answer->getAnswer() == $alternative){
-                        $num++;
-                    }
-                }
-                $chart->addRow([$alternative, intval($num)]);
-            }
-
-            $diagramArray[] = $chart->toArray();
-            $questionArray[] = $lablesArray[$counter];
-            $counter++;
-
-        }
         return $this->render('survey/survey_result.html.twig', array(
             'textAnswers' => $textQAarray,
-            'numAnswered' => sizeof($surveyTakenList),
             'survey' => $survey,
-            'diagram' => $diagramArray,
-            'question' => $questionArray,
         ));
 
     }
+
+    public function getSurveyResultAction(Survey $survey){
+        $surveysTaken = $this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
+        $schools = [];
+        foreach($surveysTaken as $surveyTaken){
+            if(!in_array($surveyTaken->getSchool()->getName(), $schools)) $schools[] = $surveyTaken->getSchool()->getName();
+        }
+        $schoolQuestion = array('question_id' => 0, 'question_label' => 'Skole', 'alternatives' => $schools);
+        $survey_json = json_encode($survey);
+        $survey_decode = json_decode($survey_json, true);
+        $survey_decode['questions'][] = $schoolQuestion;
+
+        return new JsonResponse(array('survey' => $survey_decode, 'answers' => $this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey)));
+    }
+
 
 }

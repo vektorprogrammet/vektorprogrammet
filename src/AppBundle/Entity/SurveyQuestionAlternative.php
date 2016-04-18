@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="survey_question_alternative")
  */
-class SurveyQuestionAlternative
+class SurveyQuestionAlternative implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -90,5 +90,16 @@ class SurveyQuestionAlternative
     public function __clone() {
         $this->id = null;
         $this->surveyQuestion = null;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    function jsonSerialize(){
+        return $this->getAlternative();
     }
 }
