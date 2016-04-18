@@ -6,7 +6,6 @@
 
 {% block scripts %}
     {{ parent() }}
-    <!--suppress ALL -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 {% endblock %}
 
@@ -14,8 +13,8 @@
     <header class="row">
         <div class="small-12 columns">
             <h3>Resultater for {{ survey.name }} {{ survey.semester }} </h3>
-            <button id="show-filter-btn" class="button tiny">Vis/skjul filter&nbsp;&nbsp;<i
-                        class="fa fa-chevron-right"></i></button>
+            <a id="show-filter-btn" class="">Vis/skjul filter&nbsp;&nbsp;<i
+                        class="fa fa-chevron-right"></i></a>
         </div>
     </header>
     <div id="filter"></div>
@@ -23,21 +22,25 @@
         <h1 class="text-center">Laster data... <i class="fa fa-spinner"></i></h1>
     </div>
 
-    <!-- Display text answers -->
-    <div class="row" id="text-answers">
-        <h3 style="text-align: center;">Tekstsvar</h3>
-        {% for key in textAnswers|keys %}
-            <h4>{{ key }}</h4>
-            {% for answer in textAnswers[key] %}
-                <p>{{ loop.index }}: {{ answer }}</p>
+    {% if textAnswers %}
+        <!-- Display text answers -->
+        <div class="row" id="text-answers">
+            <h3 class="text-center">Tekstsvar</h3>
+            {% for key in textAnswers|keys %}
+                {% if textAnswers[key] %}
+                    <h4>{{ key }}</h4>
+                    {% for answer in textAnswers[key] %}
+                        <p>{{ loop.index }}: {{ answer }}</p>
+                    {% endfor %}
+                {% endif %}
             {% endfor %}
-        {% endfor %}
-    </div>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
     <script>
-        // Show/Hide filter panel
+        // Add event listener to Show/Hide filter button
         (function () {
             $('#show-filter-btn').on('click', function () {
                 var $filter = $('#filter');
@@ -70,6 +73,7 @@
             renderFilter(surveyData);
             renderCharts(surveyData);
             displayTextAnswers();
+            $('#show-filter-btn').show();
         });
 
         function displayTextAnswers() {
@@ -81,7 +85,7 @@
             var filterDiv = $('<div></div>');
             filterDiv.addClass('row');
 
-            // Create a multiple select box for each question
+            // Create a multiple select box with alternatives for each question
             var questions = surveyData.survey.questions;
             for (var i = 0; i < questions.length; i++) {
                 var question = questions[i];
@@ -90,13 +94,13 @@
                 var filterList = $('<select multiple></select>');
                 filterList.attr('id', question.question_id.toString());
                 for (var j = 0; j < question.alternatives.length; j++) {
-                    // Add alternative to multiple select box
+                    // Add alternative to the multiple select box
                     var alternative = question.alternatives[j];
                     var filterOption = $('<option></option>');
                     filterOption.attr('value', alternative);
                     filterOption.html(alternative);
 
-                    // Allow multiple select and deselect without CTRL
+                    // Allow select multiple and deselect without holding CTRL
                     filterOption.mousedown(function (e) {
                         e.preventDefault();
                         $(this).prop('selected', $(this).prop('selected') ? false : true);
@@ -121,6 +125,7 @@
             buttonColumn.addClass('small-12 columns');
             var btn = $('<button></button>');
             btn.html('Filtrer');
+            btn.addClass('button small')
 
             // Filter surveyData when filter button is clicked
             btn.on('click', function () {
@@ -149,13 +154,13 @@
 
             // Append button and filter content to the filter panel
             buttonColumn.append(btn);
+            buttonColumn.append("&nbsp;(Tekstsvar blir ikke filtrert)");
             buttonRow.append(buttonColumn);
             $('#filter').append(filterDiv);
             $('#filter').append(buttonRow);
         }
 
         function generateChartData(countedData) {
-            var questionIds = Object.keys(countedData);
             var chartData = [];
             for (var questionId in countedData) {
                 var questionData = {
@@ -187,7 +192,7 @@
             var data = {};
             var questions = surveyData.survey.questions;
 
-            // Initalize data object with count set to 0 for each alternative
+            // Initialize data object with count set to 0 for each alternative
             for (var i = 0; i < questions.length; i++) {
                 var questionId = questions[i].question_id.toString();
                 data[questionId] = {};
@@ -197,7 +202,7 @@
                 }
             }
 
-            // Count occurances of different alternatives
+            // Count occurrences of different alternatives
             var answers = surveyData.answers;
             for (var k = 0; k < answers.length; k++) {
                 for (var l = 0; l < answers[k].length; l++) {
@@ -224,7 +229,7 @@
                 // The pie chart will be painted on the canvas
                 var canvas = $('<canvas width="185" height="125"><canvas/>');
 
-                // Add the question text as a title over the chart
+                // Add the question text as a title above the chart
                 div.append('<h6>' + findQuestionLabelById(surveyData, chartData[i].questionId) + '</h6>');
 
                 // Create a chart container and append the canvas
@@ -242,9 +247,9 @@
                 chart.append($(myNewChart.generateLegend()));
             }
 
-            // Display message if filtering results in no rendered charts
+            // Display message if there are no results matching the filtering
             if (!chartData.length) {
-                $('#charts').append('<h4 class="no-answer">Ingen undersøkelser matcher filteret</h4>')
+                $('#charts').append('<h4 class="no-answer">Ingen resultater matcher filteret</h4>')
             }
 
             // Make all chart containers equal height
@@ -305,9 +310,9 @@
          * Equalizes height of .equalheight children nodes
          */
         function equalheight() {
-            $('.equalheight').each(function (index) {
+            $('.equalheight').each(function () {
                 var maxHeight = 0;
-                $(this).children().each(function (index) {
+                $(this).children().each(function () {
                     if ($(this).height() > maxHeight)
                         maxHeight = $(this).height();
                 });
