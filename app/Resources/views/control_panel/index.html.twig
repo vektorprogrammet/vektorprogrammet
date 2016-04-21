@@ -2,9 +2,9 @@
 {% block title %}Kontrollpanel{% endblock %}
 {% block body %}
     <div class="control-panel">
-
-        {{ render(controller('AppBundle:ControlPanel:showSBS')) }}
-
+        <div class="sbs">
+            {{ render(controller('AppBundle:ControlPanel:showSBS')) }}
+        </div>
         <div class="row">
             <h3>Artikkel</h3>
 
