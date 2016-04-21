@@ -591,6 +591,12 @@ ul.alternatives {
     color: #007095;
   }
 
+  //Hide Step-by-Step for small screens
+  @media(max-width: 785px){
+    .sbs {
+      display: none;
+    }
+  }
   .step-box {
     height: 200px;
     /*border-left: 1px solid black;
