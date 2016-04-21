@@ -57,9 +57,12 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"
         ],
         "build": [
+            "echo Starting build. This can take several minutes...",
             "npm install --silent",
             "bower install -q",
             "gulp build:dev --silent",
+            "php app/console doctrine:schema:create --env=dev",
+            "php app/console doctrine:fixtures:load --env=dev -n",
             "echo Build complete"
         ]
     },
