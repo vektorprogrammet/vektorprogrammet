@@ -94,7 +94,7 @@ class Survey implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return SurveyQuestion[]
      */
     public function getSurveyQuestions()
     {

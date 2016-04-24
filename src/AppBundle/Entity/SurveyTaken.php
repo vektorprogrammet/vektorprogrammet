@@ -20,12 +20,13 @@ class SurveyTaken implements  \JsonSerializable
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
-     * @ORM\Version
      * @var string
      */
     protected $time;
 
     /**
+     * @var School
+     *
      * @ORM\ManyToOne(targetEntity="School", cascade={"persist"})
      */
     protected $school;
@@ -49,7 +50,7 @@ class SurveyTaken implements  \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return SurveyAnswer[]
      */
     public function getSurveyAnswers()
     {
@@ -101,7 +102,7 @@ class SurveyTaken implements  \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return Survey
      */
     public function getSurvey()
     {
@@ -115,6 +116,16 @@ class SurveyTaken implements  \JsonSerializable
     {
         $this->survey = $survey;
     }
+
+    /**
+     * @param mixed $time
+     */
+    public function setTime($time)
+    {
+        $this->time = $time;
+    }
+
+
 
     /**
      * Specify data which should be serialized to JSON
