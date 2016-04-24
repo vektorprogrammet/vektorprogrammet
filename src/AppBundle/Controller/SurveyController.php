@@ -44,20 +44,7 @@ class SurveyController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            if(!$this->surveyTakenIsValid($surveyTaken)){
-                $this->addFlash('undersokelse-warning','Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
-                return $this->redirect($this->generateUrl('survey_show',array('id' => $survey->getId())));
-            }
-            $surveyTaken->setTime(new \DateTime());
-            $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($surveyTaken);
-            $em->flush();
-            $new_answer = true;
-            if($new_answer){
-                $this->addFlash('undersokelse-notice','Tusen takk for ditt svar!');
-                //New form without previous answers
-                return $this->redirect($this->generateUrl('survey_show',array('id' => $survey->getId())));
-            }
+            return $this->saveSurveyTaken($surveyTaken, 'survey_show');
         }
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView(),
@@ -94,16 +81,8 @@ class SurveyController extends Controller
 
         $form = $this->createForm(new SurveyExecuteType(), $surveyTaken);
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            $surveyTaken->removeNullAnswers();
-            $em->persist($surveyTaken);
-            $em->flush();
-            $new_answer = true;
-            if($new_answer){
-                $this->addFlash('undersokelse-notice','Mottatt svar!');
-                //New form without previous answers
-                return $this->redirect($this->generateUrl('survey_show_admin',array('id' => $survey->getId())));
-            }
+        if ($form->isSubmitted()) {
+            return $this->saveSurveyTaken($surveyTaken, 'survey_show_admin');
         }
 
         $allTakenSurveys = $em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
@@ -142,6 +121,30 @@ class SurveyController extends Controller
             'form' => $form->createView(),
 
         ));
+    }
+
+    /**
+     * @param SurveyTaken $surveyTaken
+     * @param string $surveyUrl
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    private function saveSurveyTaken($surveyTaken, $surveyUrl){
+        $survey = $surveyTaken->getSurvey();
+        if(!$this->surveyTakenIsValid($surveyTaken)){
+            $this->addFlash('undersokelse-warning','Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
+            return $this->redirect($this->generateUrl($surveyUrl,array('id' => $survey->getId())));
+        }
+        $surveyTaken->removeNullAnswers();
+        $surveyTaken->setTime(new \DateTime());
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($surveyTaken);
+        $em->flush();
+        $new_answer = true;
+        if($new_answer){
+            $this->addFlash('undersokelse-notice','Mottatt svar!');
+            //New form without previous answers
+            return $this->redirect($this->generateUrl($surveyUrl,array('id' => $survey->getId())));
+        }
     }
 
 
