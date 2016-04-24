@@ -21,14 +21,14 @@ class SurveyQuestion implements \JsonSerializable
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feletet kan ikke være tomt.")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $question;
 
 
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\NotBlank(message="Dette feletet kan ikke være tomt.")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $optional;
 
@@ -40,7 +40,7 @@ class SurveyQuestion implements \JsonSerializable
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feletet kan ikke være tomt.")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $type;
 
