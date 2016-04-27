@@ -52,10 +52,9 @@
 
                         <ul id="admissionDropDown" class="f-dropdown very-small" data-dropdown-content>
                             <li><a href="{{ path('admissionadmin_show') }}">Opptak</a></li>
+                            <li><a href="{{ path('statistics_application_by_department', {'department': app.user.fieldOfStudy.department.id}) }}">Opptaksstatistikk</a></li>
                             <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
                             <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
-                            {#<li><a href="{{ path('statistics_application') }}">Statistikk</a></li>#}
-                            {#<li><a href="{{ path('school_allocation') }}">Skolefordeling</a></li>#}
                         </ul>
                     </li>
                     <li>
@@ -123,9 +122,9 @@
                         <a href="#">Opptak & Undersøkelse</a>
                         <ul class="dropdown">
                             <li><a href="{{ path('admissionadmin_show') }}">Opptak</a></li>
+                            <li><a href="{{ path('statistics_application_by_department', {'department': app.user.fieldOfStudy.department.id}) }}">Opptaksstatistikk</a></li>
                             <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
                             <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
-                            <li><a href="{{ path('statistics_application') }}">Statistikk</a></li>
                         </ul>
                     </li>
 
@@ -170,9 +169,9 @@
             <h6><b>Opptak og Undersøkelse</b></h6>
             <ul>
                 <li><a href="{{ path('admissionadmin_show') }}">Opptak</a></li>
+                <li><a href="{{ path('statistics_application_by_department', {'department': app.user.fieldOfStudy.department.id}) }}">Opptaksstatistikk</a></li>
                 <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
                 <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
-                {#<li><a href="{{ path('statistics_application') }}">Statistikk</a></li>#}
             </ul>
         </div>
         <div class="small-12 medium-6 large-3 columns">

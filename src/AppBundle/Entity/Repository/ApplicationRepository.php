@@ -212,9 +212,15 @@ class ApplicationRepository extends EntityRepository {
             ->getSingleResult();
     }
 
-    public function NumOfApplications(){
-        return $this->createQueryBuilder('ApplicationStatistic')
-            ->select('count(ApplicationStatistic.id)')
+    /**
+     * @param Semester $semester
+     * @return int
+     */
+    public function NumOfApplications(Semester $semester){
+        return $this->createQueryBuilder('Application')
+            ->select('count(Application.id)')
+            ->where('Application.semester =:semester')
+            ->setParameter('semester', $semester)
             ->getQuery()
             ->getSingleScalarResult();
     }
@@ -237,20 +243,33 @@ class ApplicationRepository extends EntityRepository {
             ->getSingleScalarResult();
     }
 
-    public function NumOfGender($gender){
-        return $this->createQueryBuilder('ApplicationStatistic')
-            ->select('count(ApplicationStatistic.gender)')
-            ->where('ApplicationStatistic.gender = :gender')
+    /**
+     * @param Semester $semester
+     * @param int $gender
+     * @return int
+     */
+    public function numOfGender(Semester $semester, $gender){
+        return $this->createQueryBuilder('Application')
+            ->select('count(Application.id)')
+            ->join('Application.user', 'user')
+            ->where('user.gender = :gender')
+            ->andWhere('Application.semester = :semester')
             ->setParameter('gender', $gender)
+            ->setParameter('semester', $semester)
             ->getQuery()
             ->getSingleScalarResult();
     }
 
-    public function NumOfPreviousParticipation($participated){
-        return $this->createQueryBuilder('ApplicationStatistic')
-            ->select('count(ApplicationStatistic.gender)')
-            ->where('ApplicationStatistic.previousParticipation = :participated')
-            ->setParameter('participated', $participated)
+    /**
+     * @param Semester $semester
+     * @return int
+     */
+    public function numOfPreviousParticipation(Semester $semester){
+        return $this->createQueryBuilder('Application')
+            ->select('count(Application.id)')
+            ->where('Application.previousParticipation = 1')
+            ->andWhere('Application.semester = :semester')
+            ->setParameter('semester', $semester)
             ->getQuery()
             ->getSingleScalarResult();
     }
