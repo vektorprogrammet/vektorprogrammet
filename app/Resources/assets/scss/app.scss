@@ -736,8 +736,7 @@ ul.alternatives {
   display: none;
 }
 
-#charts {
-  margin-top: 100px;
+.charts{
   >div{
     h6{
       font-size: 14px;
@@ -766,7 +765,9 @@ ul.alternatives {
     margin-bottom:100px;
     color: $warning-button-bg-color;
   }
-
+}
+#charts {
+  margin-top: 100px;
 }
 #text-answers{
   display:none;

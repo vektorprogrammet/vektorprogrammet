@@ -114,5 +114,35 @@ class AssistantHistoryRepository extends EntityRepository {
 
 		return $qb->getQuery()->getResult();
 	}
+
+	/**
+	 * @param Semester $semester
+	 * @return int
+	 */
+	public function numFemale(Semester $semester){
+		return $this->createQueryBuilder('ah')
+			->select('count(ah.id)')
+			->join('ah.user', 'user')
+			->where('user.gender = 1')
+			->andWhere('ah.semester = :semester')
+			->setParameter('semester', $semester)
+			->getQuery()
+			->getSingleScalarResult();
+	}
+
+	/**
+	 * @param Semester $semester
+	 * @return int
+	 */
+	public function numMale(Semester $semester){
+		return $this->createQueryBuilder('ah')
+			->select('count(ah.id)')
+			->join('ah.user', 'user')
+			->where('user.gender = 0')
+			->andWhere('ah.semester = :semester')
+			->setParameter('semester', $semester)
+			->getQuery()
+			->getSingleScalarResult();
+	}
 	
 }

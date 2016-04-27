@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller;
 
-use SaadTazi\GChartBundle\DataTable\DataTable;
+use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class ApplicationStatisticsController extends Controller
 {
@@ -13,116 +15,82 @@ class ApplicationStatisticsController extends Controller
         return 'applicationResults'; // This must be unique
     }
 
-    public function showAction()
+    /**
+     * @param Department|null $department
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showAction(Department $department = null, Request $request)
     {
+        $semesterId = $request->get('semester');
 
-        $NUMBEROFCHARTS = 7;
-
-        $lablesArray = [
-            "Semester",
-            "Kjønn",
-            "Har vært vektorassistent tidligere",
-            "Antall tatt opp",
-            "Studieår",
-            "Studie",
-            "Avdeling"];
-
-        $repositoryApplicationStatistic = $this->getDoctrine()->getRepository('AppBundle:ApplicationStatistic');
-        $repositorySemester = $this->getDoctrine()->getRepository('AppBundle:Semester');
-        $repositoryFieldOfStudy = $this->getDoctrine()->getRepository('AppBundle:FieldOfStudy');
-        $repositoryDepartment = $this->getDoctrine()->getRepository('AppBundle:Department');
-
-        $numberOfApplications = $repositoryApplicationStatistic->NumOfApplications();
-
-
-        for ($diagramCounter = 0; $diagramCounter < $NUMBEROFCHARTS; $diagramCounter++) {
-            $chart = new DataTable();
-            $chart->addColumn('1', 'Label', 'string');
-            $chart->addColumn('2', 'Quantity', 'number');
-            $AlternativeArray = [];
-
-            if ($diagramCounter == 0) {
-                $semesterCounter = 0;
-                foreach ($repositorySemester->findAllSemesters() as $semester) {
-                    array_push($AlternativeArray, $semester->getName().' '.$semester->getDepartment()->getShortName());
-                    $alternative = $AlternativeArray[$semesterCounter];
-                    $semesterNumber = $repositoryApplicationStatistic->NumOfSemester($semester);
-
-                    $chart->addRow([$alternative, intVal($semesterNumber)]);
-                    $semesterCounter++;
-                }
-
-            } elseif ($diagramCounter == 1) {
-                $AlternativeArray = ['Gutt', 'Jente'];
-                for ($alternativeCounter = 0; $alternativeCounter < count($AlternativeArray); $alternativeCounter++) {
-                    $alternative = $AlternativeArray[$alternativeCounter];
-                    $genderNumber = $repositoryApplicationStatistic->numOfGender($alternativeCounter);
-
-                    $chart->addRow([$alternative, intval($genderNumber)]);
-                }
-            } elseif ($diagramCounter == 2) {
-                $AlternativeArray = ['Nei', 'Ja'];
-                for ($alternativeCounter = 0; $alternativeCounter < count($AlternativeArray); $alternativeCounter++) {
-                    $alternative = $AlternativeArray[$alternativeCounter];
-                    $participationNumber = $repositoryApplicationStatistic->NumOfPreviousParticipation($alternativeCounter);
-
-                    $chart->addRow([$alternative, intval($participationNumber)]);
-                }
-
-            } elseif ($diagramCounter == 3) {
-                $AlternativeArray = ['Ikke tatt opp', 'Tatt opp'];
-                for ($alternativeCounter = 0; $alternativeCounter < count($AlternativeArray); $alternativeCounter++) {
-                    $alternative = $AlternativeArray[$alternativeCounter];
-                    $acceptedNumber = $repositoryApplicationStatistic->NumOfAccepted($alternativeCounter);
-
-                    $chart->addRow([$alternative, intval($acceptedNumber)]);
-                }
-            } elseif ($diagramCounter == 4) {
-
-                $AlternativeArray = ['1', '2', '3', '4', '5'];
-                for ($alternativeCounter = 0; $alternativeCounter < count($AlternativeArray); $alternativeCounter++) {
-                    $alternative = "".$AlternativeArray[$alternativeCounter].". året";
-                    $acceptedNumber = $repositoryApplicationStatistic->NumOfYearOfStudy($alternativeCounter + 1);
-
-                    $chart->addRow([$alternative, intval($acceptedNumber)]);
-                }
-            } elseif ($diagramCounter == 5) {
-
-                $semesterCounter = 0;
-                foreach ($repositoryFieldOfStudy->findAllFieldOfStudy() as $fieldOfStudy) {
-                    array_push($AlternativeArray, $fieldOfStudy->getName());
-                    $alternative = $AlternativeArray[$semesterCounter];
-                    $fieldOfStudyNumber = $repositoryApplicationStatistic->NumOfFieldOfStudy($fieldOfStudy);
-
-                    $chart->addRow([$alternative, intVal($fieldOfStudyNumber)]);
-                    $semesterCounter++;
-                }
-
-            } else {
-                $semesterCounter = 0;
-                foreach ($repositoryDepartment->findAllDepartments() as $department) {
-                    array_push($AlternativeArray, $department->getShortName());
-                    $alternative = $AlternativeArray[$semesterCounter];
-
-                    $semesterNumber = $repositoryApplicationStatistic->NumOfDepartment($department->getId());
-
-                    $chart->addRow([$alternative, intVal($semesterNumber)]);
-                    $semesterCounter++;
-                }
-
-            }
-
-
-            $diagramArray[$diagramCounter] = $chart->toArray();
-            $questionArray[$diagramCounter] = $lablesArray[$diagramCounter];
-
+        // Set default department and semester
+        if(is_null($department))$department = $this->getUser()->getFieldOfStudy()->getDepartment();
+        if(is_null($semesterId)){
+            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findLatestSemesterByDepartmentId($department->getId());
+        }else{
+            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterId);
         }
 
+        // 404 exception if semester does not belong to department
+        if($semester->getDepartment()->getId() != $department->getId())throw $this->createNotFoundException('Denne siden finnes ikke.');
+
+        // Get all departments and semesters. Used for navigation
+        $departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
+
+        // Repositories
+        $applicationRepository = $this->getDoctrine()->getRepository('AppBundle:Application');
+        $assistantHistoryRepository = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory');
+
+        // Application data
+        $applicationCount = $applicationRepository->NumOfApplications($semester);
+        $maleCount = $applicationRepository->numOfGender($semester, 0);
+        $femaleCount = $applicationRepository->numOfGender($semester, 1);
+        $prevParticipationCount = $applicationRepository->numOfPreviousParticipation($semester);
+
+        // Count fieldOfStudy and studyYear data
+        $fieldOfStudyCount = array();
+        $studyYearCount = array();
+        $applicants = $applicationRepository->findBy(array('semester'=>$semester));
+        foreach($applicants as $applicant){
+
+            $fieldOfStudyShortName = $applicant->getUser()->getFieldOfStudy()->getShortName();
+            if(array_key_exists($fieldOfStudyShortName, $fieldOfStudyCount)) {
+                $fieldOfStudyCount[$fieldOfStudyShortName]++;
+            } else {
+                $fieldOfStudyCount[$fieldOfStudyShortName] = 1;
+            }
+
+            $studyYear = $applicant->getYearOfStudy();
+            $studyYearCount[$studyYear] = array_key_exists($studyYear, $studyYearCount) ? $studyYearCount[$studyYear] + 1 : 1;
+        }
+        ksort($fieldOfStudyCount);
+        ksort($studyYearCount);
+
+
+
+        // Accepted Application Data
+        $assistantHistories = $assistantHistoryRepository->findBy(array('semester' => $semester));
+        $cancelledInterviewsCount = count($applicationRepository->findCancelledApplicants($semester));
+        $acceptedFemaleCount = $assistantHistoryRepository->numFemale($semester);
+        $acceptedMaleCount = $assistantHistoryRepository->numMale($semester);
 
         return $this->render('statistics/statistics.html.twig', array(
-            'diagram' => $diagramArray,
-            'question' => $questionArray,
-            //'numSurveys' => $numberOfSurveys,
+            'applicationCount' => $applicationCount,
+            'maleCount' => $maleCount,
+            'femaleCount' => $femaleCount,
+            'prevParticipationCount' => $prevParticipationCount,
+            'fieldOfStudyCount' => $fieldOfStudyCount,
+            'studyYearCount' => $studyYearCount,
+            'assistantHistoriesCount' => count($assistantHistories),
+            'cancelledInterviewsCount' => $cancelledInterviewsCount,
+            'acceptedMaleCount' => $acceptedMaleCount,
+            'acceptedFemaleCount' => $acceptedFemaleCount,
+            'departments' => $departments,
+            'semesters' => $semesters,
+            'department' => $department,
+            'semester' => $semester
         ));
 
 

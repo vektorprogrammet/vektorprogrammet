@@ -114,14 +114,19 @@ survey_get_all_results:
 #             Statistics                 #
 ##########################################
 
-
-statistics_application:
- path: /kontrollpanel/statistikk/opptak
- defaults: { _controller: AppBundle:ApplicationStatistics:show }
- options:
-  expose: true
+statistics_application_by_department:
+ path: /kontrollpanel/statistikk/opptak/{department}
+ defaults: { _controller: AppBundle:ApplicationStatistics:show, semester: null }
  requirements:
-    _method: GET
+  department: \d+
+
+statistics_application_by_semester:
+ path: /kontrollpanel/statistikk/opptak/{department}/{semester}
+ defaults: { _controller: AppBundle:ApplicationStatistics:show }
+ requirements:
+  department: \d+
+  semester: \d+
+
 
 
 ##########################################
