@@ -39,6 +39,7 @@ admission:
 update_static_content:
  path: /updatestaticcontent
  defaults: {_controller: AppBundle:StaticContent:update }
+ methods: [POST]
 
 ##########################################
 #                Control Panel           #

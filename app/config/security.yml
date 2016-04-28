@@ -76,6 +76,7 @@ security:
         - { path: ^/kontrollpanel/teamadmin/rediger/stilling, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/opprett/stilling, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/stilling/slett, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/updatestaticcontent, roles: ROLE_SUPER_ADMIN }
 
           #ROLE_ADMIN = team user
         - { path: ^/profile/edit, roles: ROLE_ADMIN }
