@@ -379,8 +379,6 @@ class TeamAdminControllerTest extends WebTestCase {
 
 		// Assert that we have the correct page
 		$this->assertEquals(1, $crawler->filter('h1:contains("IT")')->count());
-		$this->assertEquals(3, $crawler->filter('td:contains("Medlem")')->count());
-		$this->assertEquals(3, $crawler->filter('td:contains("Vår 2016")')->count());
 		$this->assertEquals(1, $crawler->filter('td:contains("Petter")')->count());
 		$this->assertEquals(1, $crawler->filter('td:contains("Johansen")')->count());
 
