@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Team;
+use AppBundle\Entity\WorkHistory;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -14,97 +15,84 @@ use Doctrine\ORM\EntityRepository;
 class WorkHistoryRepository extends EntityRepository
 {
 
+	/**
+	 * @return WorkHistory[]
+	 */
 	public function findActiveWorkHistories()
 	{
 
 		$today = new \DateTime('now');
-		$workHistories = $this->getEntityManager()->createQuery("
-		SELECT whistory
-		FROM AppBundle:WorkHistory whistory
-		JOIN whistory.startSemester startSemester
-		LEFT JOIN whistory.endSemester endSemester
-		WHERE (startSemester.semesterStartDate < :today
-		AND endSemester.semesterEndDate > :today)
-		OR (startSemester.semesterStartDate < :today
-		AND endSemester.semesterEndDate is NULL)
-		")
+		return $this->createQueryBuilder('whistory')
+			->select('whistory')
+			->join('whistory.startSemester', 'startSemester')
+			->leftJoin('whistory.endSemester', 'endSemester')
+			->where('startSemester.semesterStartDate < :today')
+			->andWhere('endSemester is null or endSemester.semesterEndDate > :today')
 			->setParameter('today', $today)
+			->getQuery()
 			->getResult();
-
-		return $workHistories;
 	}
 
 	/**
 	 * @param Team $team
-	 * @return array
+	 * @return WorkHistory[]
 	 */
 	public function findActiveWorkHistoriesByTeam($team)
 	{
-
 		$today = new \DateTime('now');
-		$workHistories = $this->getEntityManager()->createQuery("
-		SELECT whistory
-		FROM AppBundle:WorkHistory whistory
-		JOIN whistory.startSemester startSemester
-		LEFT JOIN whistory.endSemester endSemester
-		WHERE (startSemester.semesterStartDate < :today
-		AND endSemester.semesterEndDate > :today)
-		OR (startSemester.semesterStartDate < :today
-		AND endSemester.semesterEndDate is NULL)
-		AND whistory.team = :team
-		")
+		return $this->createQueryBuilder('whistory')
+			->select('whistory')
+			->join('whistory.startSemester', 'startSemester')
+			->leftJoin('whistory.endSemester', 'endSemester')
+			->where('startSemester.semesterStartDate < :today')
+			->andWhere('whistory.team = :team')
+			->andWhere('endSemester is null or endSemester.semesterEndDate > :today')
 			->setParameter('today', $today)
 			->setParameter('team', $team)
+			->getQuery()
 			->getResult();
-
-		return $workHistories;
 	}
 
 	/**
 	 * @param Team $team
-	 * @return array
+	 * @return WorkHistory[]
 	 */
 	public function findInActiveWorkHistoriesByTeam($team)
 	{
 
 		$today = new \DateTime('now');
-		$workHistories = $this->getEntityManager()->createQuery("
-		SELECT whistory
-		FROM AppBundle:WorkHistory whistory
-		JOIN whistory.startSemester startSemester
-		LEFT JOIN whistory.endSemester endSemester
-		WHERE endSemester.semesterEndDate < :today
-		AND whistory.team = :team
-		")
+		return $this->createQueryBuilder('whistory')
+			->select('whistory')
+			->join('whistory.startSemester', 'startSemester')
+			->leftJoin('whistory.endSemester', 'endSemester')
+			->where('startSemester.semesterStartDate < :today')
+			->andWhere('whistory.team = :team')
+			->andWhere('endSemester.semesterEndDate < :today')
 			->setParameter('today', $today)
 			->setParameter('team', $team)
+			->getQuery()
 			->getResult();
-
-		return $workHistories;
 	}
 
+	/**
+	 * @param $user
+	 * @return WorkHistory[]
+	 */
 	public function findActiveWorkHistoriesByUser($user)
 	{
 
 		$today = new \DateTime('now');
-		$workHistories = $this->getEntityManager()->createQuery("
-		SELECT whistory
-		FROM AppBundle:WorkHistory whistory
-		JOIN whistory.startSemester startSemester
-		LEFT JOIN whistory.endSemester endSemester
-		WHERE (startSemester.semesterStartDate < :today
-		AND endSemester.semesterEndDate > :today
-		AND whistory.user = :user)
-		OR (startSemester.semesterStartDate < :today
-		AND endSemester.semesterEndDate is NULL
-		AND whistory.user = :user )
-
-		")
-			->setParameter('user', $user)
+		return $this->createQueryBuilder('whistory')
+			->select('whistory')
+			->join('whistory.startSemester', 'startSemester')
+			->leftJoin('whistory.endSemester', 'endSemester')
+			->where('startSemester.semesterStartDate < :today')
+			->andWhere('whistory.user = :user')
+			->andWhere('endSemester.semesterEndDate < :today')
 			->setParameter('today', $today)
+			->setParameter('user', $user)
+			->getQuery()
 			->getResult();
-
-		return $workHistories;
 	}
 
 	public function findWorkHistoriesByDepartment($department)
