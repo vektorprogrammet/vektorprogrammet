@@ -3,6 +3,23 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
 
+parameters:
+  # File upload parameters
+  public_uploads: "Offentlige filer"
+  private_uploads: "../Private filer"
+
+  # Gallery photos folder
+  gallery_folder: "images/Gallery photos"
+
+  # Profile photos
+  profile_photos: 'images/Profile photos'
+
+  # Logo images
+  logo_images: 'images/Logo images'
+
+  # Article images
+  article_images: 'images/article_images'
+
 framework:
     #esi:             ~
     #translator:      { fallbacks: ["%locale%"] }

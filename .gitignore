@@ -47,6 +47,7 @@ crashlytics-build.properties
 /www/files/
 /www/js/
 /www/css/app.css
+/www/libs/
 
 #npm
 /node_modules/
