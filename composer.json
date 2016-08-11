@@ -1,5 +1,5 @@
 {
-    "name": "korkekork/website",
+    "name": "vektorprogrammet/vektorprogrammet",
     "license": "proprietary",
     "type": "project",
     "autoload": {
@@ -34,6 +34,7 @@
         "liip/imagine-bundle": "1.2.6"
     },
     "require-dev": {
+        "ext-pdo_sqlite": "*",
         "sensio/generator-bundle": "~2.3"
     },
     "scripts": {
@@ -55,12 +56,6 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"
-        ],
-        "build": [
-            "npm install --silent",
-            "bower install -q",
-            "gulp build:dev --silent",
-            "echo Build complete"
         ]
     },
     "config": {

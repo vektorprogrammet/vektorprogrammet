@@ -36,6 +36,7 @@ crashlytics-build.properties
 /app/cache/*
 !app/cache/.gitkeep
 /app/config/parameters.yml
+/app/data
 /app/logs/*
 !app/logs/.gitkeep
 /app/phpunit.xml
@@ -46,6 +47,7 @@ crashlytics-build.properties
 /www/images/
 /www/files/
 /www/js/
+/www/libs/
 /www/css
 
 #npm

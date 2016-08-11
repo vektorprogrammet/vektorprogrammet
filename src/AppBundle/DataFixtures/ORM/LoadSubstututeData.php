@@ -18,7 +18,7 @@ class LoadSubstituteData extends AbstractFixture implements OrderedFixtureInterf
         $sub1->setPhone('95128535');
         $sub1->setFieldOfStudy($this->getReference('fos-1'));
         $sub1->setYearOfStudy(1);
-        $sub1->setSemester($this->getReference('semester-1'));
+        $sub1->setSemester($this->getReference('semester-current'));
         $sub1->setMonday("Bra");
         $sub1->setTuesday("Ikke");
         $sub1->setWednesday("Ikke");
@@ -34,7 +34,7 @@ class LoadSubstituteData extends AbstractFixture implements OrderedFixtureInterf
         $sub2->setPhone('45872561');
         $sub2->setYearOfStudy(2);
         $sub2->setFieldOfStudy($this->getReference('fos-1'));
-        $sub2->setSemester($this->getReference('semester-1'));
+        $sub2->setSemester($this->getReference('semester-current'));
         $sub2->setMonday("Ok");
         $sub2->setTuesday("Ikke");
         $sub2->setWednesday("Ok");
@@ -50,7 +50,7 @@ class LoadSubstituteData extends AbstractFixture implements OrderedFixtureInterf
         $sub3->setPhone('97586258');
         $sub3->setYearOfStudy(3);
         $sub3->setFieldOfStudy($this->getReference('fos-1'));
-        $sub3->setSemester($this->getReference('semester-1'));
+        $sub3->setSemester($this->getReference('semester-current'));
         $sub3->setMonday("Bra");
         $sub3->setTuesday("Bra");
         $sub3->setWednesday("Ok");
@@ -66,7 +66,7 @@ class LoadSubstituteData extends AbstractFixture implements OrderedFixtureInterf
         $sub4->setPhone('95147835');
         $sub4->setYearOfStudy(1);
         $sub4->setFieldOfStudy($this->getReference('fos-1'));
-        $sub4->setSemester($this->getReference('semester-1'));
+        $sub4->setSemester($this->getReference('semester-current'));
         $sub4->setMonday("Ikke");
         $sub4->setTuesday("Bra");
         $sub4->setWednesday("Ok");
@@ -82,7 +82,7 @@ class LoadSubstituteData extends AbstractFixture implements OrderedFixtureInterf
         $sub5->setPhone('95142536');
         $sub5->setYearOfStudy(4);
         $sub5->setFieldOfStudy($this->getReference('fos-1'));
-        $sub5->setSemester($this->getReference('semester-1'));
+        $sub5->setSemester($this->getReference('semester-current'));
         $sub5->setMonday("Bra");
         $sub5->setTuesday("Bra");
         $sub5->setWednesday("Ikke");

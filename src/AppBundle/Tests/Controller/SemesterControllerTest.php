@@ -79,14 +79,14 @@ class SemesterControllerTest extends WebTestCase {
 
 		$crawler = $client->request('GET', '/kontrollpanel/semesteradmin/avdeling/1');
 
-		$this->assertEquals( 2, $crawler->filter('a:contains("Rediger")')->count() );
+		$this->assertEquals( 4, $crawler->filter('a:contains("Rediger")')->count() );
 
 		// Find a link and click it
 		$link = $crawler->selectLink('Rediger')->eq(1)->link();
 		$crawler = $client->click($link);
 
 		// Assert that we have the correct amount of data
-		$this->assertEquals( 1, $crawler->filter('h1:contains("Endre semester Høst 2015")')->count() );
+		$this->assertEquals( 1, $crawler->filter('h1:contains("Endre semester")')->count() );
 
 		$form = $crawler->selectButton('Endre')->form();
 
