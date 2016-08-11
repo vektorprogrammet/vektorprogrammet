@@ -36,6 +36,7 @@ crashlytics-build.properties
 /app/cache/*
 !app/cache/.gitkeep
 /app/config/parameters.yml
+/app/data
 /app/logs/*
 !app/logs/.gitkeep
 /app/phpunit.xml
