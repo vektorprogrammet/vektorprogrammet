@@ -13,7 +13,11 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
     public function load(ObjectManager $manager)
     {
         $now = new \DateTime();
-        $isSpring = $now->format('n') <= 7;
+        $jan = 1;
+        $jul = 7;
+        $aug = 8;
+        $dec = 12;
+        $isSpring = $now->format('n') <= $jul;
 
         $semester1 = new Semester();
         $semester1->setSemesterTime('Vår');
@@ -33,8 +37,8 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
         $currentSemester->setAdmissionEndDate(new \DateTime());
         $currentSemester->setSemesterStartDate(new \DateTime());
         $currentSemester->setSemesterEndDate(new \DateTime());
-        $currentSemester->getSemesterStartDate()->setDate($currentSemester->getYear(), $isSpring ? 0 : 8, 1);
-        $currentSemester->getSemesterEndDate()->setDate($currentSemester->getYear(), $isSpring ? 7 : 12, 31);
+        $currentSemester->getSemesterStartDate()->setDate($currentSemester->getYear(), $isSpring ? $jan : $aug, 1);
+        $currentSemester->getSemesterEndDate()->setDate($currentSemester->getYear(), $isSpring ? $jul : $dec, 31);
         $currentSemester->getAdmissionStartDate()->modify('-1day');
         $currentSemester->getAdmissionEndDate()->modify('+1day');
         $manager->persist($currentSemester);
@@ -47,10 +51,10 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
         $previousSemester->setAdmissionEndDate(new \DateTime());
         $previousSemester->setSemesterStartDate(new \DateTime());
         $previousSemester->setSemesterEndDate(new \DateTime());
-        $previousSemester->getSemesterStartDate()->setDate($previousSemester->getYear(), $isSpring ? 8 : 0, 1);
-        $previousSemester->getSemesterEndDate()->setDate($previousSemester->getYear(), $isSpring ? 0 : 8, 31);
-        $previousSemester->getAdmissionStartDate($previousSemester->getYear(), $isSpring ? 8 : 0, 1);
-        $previousSemester->getAdmissionEndDate($previousSemester->getYear(), $isSpring ? 8 : 0, 5);
+        $previousSemester->getSemesterStartDate()->setDate($previousSemester->getYear(), $isSpring ? $aug : $jan, 1);
+        $previousSemester->getSemesterEndDate()->setDate($previousSemester->getYear(), $isSpring ? $dec : $jul, 31);
+        $previousSemester->getAdmissionStartDate()->setDate($previousSemester->getYear(), $isSpring ? $aug : $jan, 1);
+        $previousSemester->getAdmissionEndDate()->setDate($previousSemester->getYear(), $isSpring ? $aug : $jan, 5);
         $manager->persist($previousSemester);
 
         $semester2 = new Semester();
