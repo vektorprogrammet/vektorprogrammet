@@ -4,126 +4,126 @@ namespace AppBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class TeamAdminControllerTest extends WebTestCase {
-    
-	public function testCreatePosition(){
+class TeamAdminControllerTest extends WebTestCase
+{
+    public function testCreatePosition()
+    {
 
-		// ADMIN
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'petjo',
-			'PHP_AUTH_PW'   => '1234',
-		));
+        // ADMIN
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'petjo',
+            'PHP_AUTH_PW' => '1234',
+        ));
 
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin');
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin');
 
-		// Find a link and click it
-		$link = $crawler->selectLink('Stillinger')->eq(0)->link();
-		$crawler = $client->click($link);
+        // Find a link and click it
+        $link = $crawler->selectLink('Stillinger')->eq(0)->link();
+        $crawler = $client->click($link);
 
-		// Assert that we have the correct page
-		$this->assertEquals(1, $crawler->filter('h1:contains("Stillinger")')->count());
-		$this->assertEquals(1, $crawler->filter('td:contains("Leder")')->count());
+        // Assert that we have the correct page
+        $this->assertEquals(1, $crawler->filter('h1:contains("Stillinger")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Leder")')->count());
 
-		// Find a link and click it
-		$link = $crawler->selectLink('Opprett stilling')->eq(0)->link();
-		$crawler = $client->click($link);
+        // Find a link and click it
+        $link = $crawler->selectLink('Opprett stilling')->eq(0)->link();
+        $crawler = $client->click($link);
 
-		// Assert that we have the correct page
-		$this->assertEquals(1, $crawler->filter('h1:contains("Opprett stilling")')->count());
+        // Assert that we have the correct page
+        $this->assertEquals(1, $crawler->filter('h1:contains("Opprett stilling")')->count());
 
-		$form = $crawler->selectButton('Lagre')->form();
+        $form = $crawler->selectButton('Lagre')->form();
 
-		// Change the value of a field
-		$form['createPosition[name]'] = 'Nestleder1';
+        // Change the value of a field
+        $form['createPosition[name]'] = 'Nestleder1';
 
-		// submit the form
-		$crawler = $client->submit($form);
+        // submit the form
+        $crawler = $client->submit($form);
 
-		// Follow the redirect
-		$crawler = $client->followRedirect();
+        // Follow the redirect
+        $crawler = $client->followRedirect();
 
-		// Assert that we have the correct page
-		$this->assertEquals(1, $crawler->filter('h1:contains("Stillinger")')->count());
-		$this->assertEquals(1, $crawler->filter('td:contains("Leder")')->count());
-		$this->assertEquals(1, $crawler->filter('td:contains("Nestleder1")')->count());
+        // Assert that we have the correct page
+        $this->assertEquals(1, $crawler->filter('h1:contains("Stillinger")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Leder")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Nestleder1")')->count());
 
-		// USER
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'assistent',
-			'PHP_AUTH_PW'   => '1234',
-		));
+        // USER
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'assistent',
+            'PHP_AUTH_PW' => '1234',
+        ));
 
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/opprett/stilling');
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/opprett/stilling');
 
-		// Assert that the response is a redirect
-		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
+        // Assert that the response is a redirect
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-		// TEAM
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'team',
-			'PHP_AUTH_PW'   => '1234',
-		));
+        // TEAM
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'team',
+            'PHP_AUTH_PW' => '1234',
+        ));
 
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/opprett/stilling');
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/opprett/stilling');
 
-		// Assert that the response is a redirect
-		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
+        // Assert that the response is a redirect
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/opprett/stilling');
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/opprett/stilling');
 
-		// Assert that the response is a redirect
-		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
-
-        restoreDatabase();
-
-	}
-	
-	public function testEditPosition() {
-
-		// ADMIN
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'petjo',
-			'PHP_AUTH_PW'   => '1234',
-		));
-
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin');
-
-		// Find a link and click it
-		$link = $crawler->selectLink('Stillinger')->eq(0)->link();
-		$crawler = $client->click($link);
-
-		// Assert that we have the correct page
-		$this->assertEquals(1, $crawler->filter('h1:contains("Stillinger")')->count());
-		$this->assertEquals(1, $crawler->filter('td:contains("Leder")')->count());
-
-		// Find a link and click it
-		$link = $crawler->selectLink('Rediger')->eq(1)->link();
-		$crawler = $client->click($link);
-
-		// Assert that we have the correct page
-		$this->assertEquals(1, $crawler->filter('h1:contains("Opprett stilling")')->count());
-
-		$form = $crawler->selectButton('Lagre')->form();
-
-		// Change the value of a field
-		$form['createPosition[name]'] = 'Nestleder2';
-
-		// submit the form
-		$crawler = $client->submit($form);
-
-		// Follow the redirect
-		$crawler = $client->followRedirect();
-
-		// Assert that we have the correct page
-		$this->assertEquals(1, $crawler->filter('h1:contains("Stillinger")')->count());
-		$this->assertEquals(1, $crawler->filter('td:contains("Leder")')->count());
-		$this->assertEquals(1, $crawler->filter('td:contains("Nestleder2")')->count());
-		$this->assertEquals(0, $crawler->filter('td:contains("Nestleder1")')->count());
+        // Assert that the response is a redirect
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
         restoreDatabase();
-	}
-	
-	
+    }
+
+    public function testEditPosition()
+    {
+
+        // ADMIN
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'petjo',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin');
+
+        // Find a link and click it
+        $link = $crawler->selectLink('Stillinger')->eq(0)->link();
+        $crawler = $client->click($link);
+
+        // Assert that we have the correct page
+        $this->assertEquals(1, $crawler->filter('h1:contains("Stillinger")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Leder")')->count());
+
+        // Find a link and click it
+        $link = $crawler->selectLink('Rediger')->eq(1)->link();
+        $crawler = $client->click($link);
+
+        // Assert that we have the correct page
+        $this->assertEquals(1, $crawler->filter('h1:contains("Opprett stilling")')->count());
+
+        $form = $crawler->selectButton('Lagre')->form();
+
+        // Change the value of a field
+        $form['createPosition[name]'] = 'Nestleder2';
+
+        // submit the form
+        $crawler = $client->submit($form);
+
+        // Follow the redirect
+        $crawler = $client->followRedirect();
+
+        // Assert that we have the correct page
+        $this->assertEquals(1, $crawler->filter('h1:contains("Stillinger")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Leder")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Nestleder2")')->count());
+        $this->assertEquals(0, $crawler->filter('td:contains("Nestleder1")')->count());
+
+        restoreDatabase();
+    }
+
 //	public function testRemovePosition() {
 //
 //		// NOTE:
@@ -163,146 +163,146 @@ class TeamAdminControllerTest extends WebTestCase {
 //		$this->assertContains('Du har ikke tilstrekkelige rettigheter.', $client->getResponse()->getContent());
 //
 //	}
-	
-	public function testShowPositions() {
 
-		// ADMIN
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'petjo',
-			'PHP_AUTH_PW'   => '1234',
-		));
+    public function testShowPositions()
+    {
 
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin');
+        // ADMIN
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'petjo',
+            'PHP_AUTH_PW' => '1234',
+        ));
 
-		// Find a link and click it
-		$link = $crawler->selectLink('Stillinger')->eq(0)->link();
-		$crawler = $client->click($link);
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin');
 
-		// Assert that we have the correct page
-		$this->assertEquals(1, $crawler->filter('h1:contains("Stillinger")')->count());
-		$this->assertEquals(1, $crawler->filter('td:contains("Leder")')->count());
+        // Find a link and click it
+        $link = $crawler->selectLink('Stillinger')->eq(0)->link();
+        $crawler = $client->click($link);
 
-		// USER
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'assistent',
-			'PHP_AUTH_PW'   => '1234',
-		));
+        // Assert that we have the correct page
+        $this->assertEquals(1, $crawler->filter('h1:contains("Stillinger")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Leder")')->count());
 
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/opprett/stilling');
+        // USER
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'assistent',
+            'PHP_AUTH_PW' => '1234',
+        ));
 
-		// Assert that the response is a redirect
-		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/opprett/stilling');
 
-		// TEAM
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'team',
-			'PHP_AUTH_PW'   => '1234',
-		));
+        // Assert that the response is a redirect
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/stillinger');
+        // TEAM
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'team',
+            'PHP_AUTH_PW' => '1234',
+        ));
 
-		// Assert that the response is a redirect
-		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/stillinger');
 
-	}
+        // Assert that the response is a redirect
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+    }
 
-	public function testCreateTeamForDepartment() {
-
+    public function testCreateTeamForDepartment()
+    {
         restoreDatabase();
 
-		// ADMIN
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'petjo',
-			'PHP_AUTH_PW'   => '1234',
-		));
+        // ADMIN
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'petjo',
+            'PHP_AUTH_PW' => '1234',
+        ));
 
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/1');
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/1');
 
-		// Assert that we have the correct page
-		$this->assertEquals(1, $crawler->filter('h1:contains("Opprett team")')->count());
+        // Assert that we have the correct page
+        $this->assertEquals(1, $crawler->filter('h1:contains("Opprett team")')->count());
 
-		$form = $crawler->selectButton('Opprett')->form();
+        $form = $crawler->selectButton('Opprett')->form();
 
-		// Change the value of a field
-		$form['createTeam[name]'] = 'testteam1';
+        // Change the value of a field
+        $form['createTeam[name]'] = 'testteam1';
 
-		// submit the form
-		$crawler = $client->submit($form);
+        // submit the form
+        $crawler = $client->submit($form);
 
-		// Follow the redirect
-		$crawler = $client->followRedirect();
+        // Follow the redirect
+        $crawler = $client->followRedirect();
 
-		// Assert that we have the correct page
-		$this->assertEquals(1, $crawler->filter('h1:contains("Team")')->count());
-		$this->assertEquals(1, $crawler->filter('td:contains("testteam1")')->count());
+        // Assert that we have the correct page
+        $this->assertEquals(1, $crawler->filter('h1:contains("Team")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("testteam1")')->count());
 
-		// USER
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'assistent',
-			'PHP_AUTH_PW'   => '1234',
-		));
+        // USER
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'assistent',
+            'PHP_AUTH_PW' => '1234',
+        ));
 
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/2');
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/2');
 
-		// Assert that the response is a redirect
-		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
+        // Assert that the response is a redirect
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-		// TEAM
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'team',
-			'PHP_AUTH_PW'   => '1234',
-		));
+        // TEAM
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'team',
+            'PHP_AUTH_PW' => '1234',
+        ));
 
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/2');
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/2');
 
-		// Assert that the response is a redirect
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+        // Assert that the response is a redirect
+        $this->assertTrue($client->getResponse()->isRedirect('/'));
 
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/1');
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/1');
 
-		// Assert that the response is a redirect
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
-
-        restoreDatabase();
-	}
-	
-	public function testUpdateTeam() {
-
-		// ADMIN
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'petjo',
-			'PHP_AUTH_PW'   => '1234',
-		));
-
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin');
-
-		// Find a link and click it
-		$link = $crawler->selectLink('Rediger')->eq(1)->link();
-		$crawler = $client->click($link);
-
-		// Assert that we have the correct page
-		$this->assertEquals(1, $crawler->filter('h1:contains("Opprett team")')->count());
-
-		$form = $crawler->selectButton('Opprett')->form();
-
-		// Change the value of a field
-		$form['createTeam[name]'] = 'testteam2';
-
-		// submit the form
-		$crawler = $client->submit($form);
-
-		// Follow the redirect
-		$crawler = $client->followRedirect();
-
-		// Assert that we have the correct page
-		$this->assertEquals(1, $crawler->filter('h1:contains("Tea")')->count());
-		$this->assertEquals(1, $crawler->filter('td:contains("testteam2")')->count());
-		$this->assertEquals(0, $crawler->filter('td:contains("testteam1")')->count());
+        // Assert that the response is a redirect
+        $this->assertTrue($client->getResponse()->isRedirect('/'));
 
         restoreDatabase();
+    }
 
-	}
-	
+    public function testUpdateTeam()
+    {
+
+        // ADMIN
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'petjo',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin');
+
+        // Find a link and click it
+        $link = $crawler->selectLink('Rediger')->eq(1)->link();
+        $crawler = $client->click($link);
+
+        // Assert that we have the correct page
+        $this->assertEquals(1, $crawler->filter('h1:contains("Opprett team")')->count());
+
+        $form = $crawler->selectButton('Opprett')->form();
+
+        // Change the value of a field
+        $form['createTeam[name]'] = 'testteam2';
+
+        // submit the form
+        $crawler = $client->submit($form);
+
+        // Follow the redirect
+        $crawler = $client->followRedirect();
+
+        // Assert that we have the correct page
+        $this->assertEquals(1, $crawler->filter('h1:contains("Tea")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("testteam2")')->count());
+        $this->assertEquals(0, $crawler->filter('td:contains("testteam1")')->count());
+
+        restoreDatabase();
+    }
+
 //	public function testDeleteTeamById() {
 //
 //		// NOTE:
@@ -344,70 +344,68 @@ class TeamAdminControllerTest extends WebTestCase {
 //
 //
 //	}
-	
 
-	
-	public function testAddUserToTeam() {
+    public function testAddUserToTeam()
+    {
 
-		// ADMIN
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'petjo',
-			'PHP_AUTH_PW'   => '1234',
-		));
+        // ADMIN
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'petjo',
+            'PHP_AUTH_PW' => '1234',
+        ));
 
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/2');
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/2');
 
-		// Find a link and click it
-		$link = $crawler->selectLink('Legg til bruker')->eq(0)->link();
-		$crawler = $client->click($link);
+        // Find a link and click it
+        $link = $crawler->selectLink('Legg til bruker')->eq(0)->link();
+        $crawler = $client->click($link);
 
-		// Assert that we have the correct page
-		$this->assertEquals(1, $crawler->filter('h1:contains("Opprett arbeidshistorie")')->count());
+        // Assert that we have the correct page
+        $this->assertEquals(1, $crawler->filter('h1:contains("Opprett arbeidshistorie")')->count());
 
-		$form = $crawler->selectButton('Opprett')->form();
+        $form = $crawler->selectButton('Opprett')->form();
 
-		// Change the value of a field
-		$form['createWorkHistory[user]']->select(1);
-		$form['createWorkHistory[position]']->select(2);
-		$form['createWorkHistory[startSemester]']->select(1);
+        // Change the value of a field
+        $form['createWorkHistory[user]']->select(1);
+        $form['createWorkHistory[position]']->select(2);
+        $form['createWorkHistory[startSemester]']->select(1);
 
-		// submit the form
-		$crawler = $client->submit($form);
+        // submit the form
+        $crawler = $client->submit($form);
 
-		// Follow the redirect
-		$crawler = $client->followRedirect();
+        // Follow the redirect
+        $crawler = $client->followRedirect();
 
-		// Assert that we have the correct page
-		$this->assertEquals(1, $crawler->filter('h1:contains("IT")')->count());
-		$this->assertEquals(1, $crawler->filter('td:contains("Petter")')->count());
-		$this->assertEquals(1, $crawler->filter('td:contains("Johansen")')->count());
+        // Assert that we have the correct page
+        $this->assertEquals(1, $crawler->filter('h1:contains("IT")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Petter")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Johansen")')->count());
 
-		// USER
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'assistent',
-			'PHP_AUTH_PW'   => '1234',
-		));
+        // USER
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'assistent',
+            'PHP_AUTH_PW' => '1234',
+        ));
 
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/leggTilBruker/3');
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/leggTilBruker/3');
 
-		// Assert that the response is a redirect
-		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
+        // Assert that the response is a redirect
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-		// TEAM
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'team',
-			'PHP_AUTH_PW'   => '1234',
-		));
+        // TEAM
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'team',
+            'PHP_AUTH_PW' => '1234',
+        ));
 
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/leggTilBruker/3');
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/leggTilBruker/3');
 
-		// Assert that the response is a redirect
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
+        // Assert that the response is a redirect
+        $this->assertTrue($client->getResponse()->isRedirect('/'));
 
-		restoreDatabase();
+        restoreDatabase();
+    }
 
-	}
-	
 //	public function testUpdateWorkHistory() {
 //
 //		// ADMIN
@@ -447,7 +445,7 @@ class TeamAdminControllerTest extends WebTestCase {
 //
 //		restoreDatabase();
 //	}
-	
+
 //	public function testRemoveUserFromTeamById(){
 //
 //		// NOTE:
@@ -488,139 +486,135 @@ class TeamAdminControllerTest extends WebTestCase {
 //		$this->assertContains('Du har ikke tilstrekkelige rettigheter.', $client->getResponse()->getContent());
 //
 //	}
-	
-	public function testShowTeamsByDepartment() {
 
-		// ADMIN
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'petjo',
-			'PHP_AUTH_PW'   => '1234',
-		));
+    public function testShowTeamsByDepartment()
+    {
 
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/1');
+        // ADMIN
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'petjo',
+            'PHP_AUTH_PW' => '1234',
+        ));
 
-		// Assert that we have the correct page
-		$this->assertEquals(1, $crawler->filter('h1:contains("Team")')->count());
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/1');
 
+        // Assert that we have the correct page
+        $this->assertEquals(1, $crawler->filter('h1:contains("Team")')->count());
 
-		// Check the count for the different variables
-		$this->assertEquals( 1, $crawler->filter('a:contains("Hovedstyret")')->count() );
-        $this->assertEquals( 1, $crawler->filter('a:contains("IT")')->count() );
+        // Check the count for the different variables
+        $this->assertEquals(1, $crawler->filter('a:contains("Hovedstyret")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("IT")')->count());
 
-		// USER
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'assistent',
-			'PHP_AUTH_PW'   => '1234',
-		));
+        // USER
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'assistent',
+            'PHP_AUTH_PW' => '1234',
+        ));
 
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/1');
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/1');
 
-		// Assert that the response is a redirect
-		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
+        // Assert that the response is a redirect
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-		// TEAM
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'team',
-			'PHP_AUTH_PW'   => '1234',
-		));
+        // TEAM
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'team',
+            'PHP_AUTH_PW' => '1234',
+        ));
 
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/1');
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/1');
 
-		// Assert that the response is a redirect
-		$this->assertTrue( $client->getResponse()->isRedirect('/') );
-	}
-	
-	
-	public function  testShowSpecificTeam() {
-
-		// ADMIN
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'petjo',
-			'PHP_AUTH_PW'   => '1234',
-		));
-
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin');
-
-		// Find a link and click it
-		$link = $crawler->selectLink('IT')->eq(0)->link();
-		$crawler = $client->click($link);
-
-		// Assert that we have the correct page
-		$this->assertEquals(1, $crawler->filter('h1:contains("IT")')->count());
-
-		// TEAM
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'team',
-			'PHP_AUTH_PW'   => '1234',
-		));
-
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin');
-
-		// Find a link and click it
-		$link = $crawler->selectLink('Hovedstyret')->eq(0)->link();
-		$crawler = $client->click($link);
-
-		// Assert that we have the correct page
-		$this->assertEquals(1, $crawler->filter('h1:contains("Hovedstyret")')->count());
-
-
-		// Check the count for the different variables
-		$this->assertEquals( 1, $crawler->filter('td:contains("Petter")')->count() );
-        $this->assertEquals( 1, $crawler->filter('td:contains("Johansen")')->count() );
-		$this->assertEquals( 1, $crawler->filter('td:contains("Thomas")')->count() );
-        $this->assertEquals( 1, $crawler->filter('td:contains("Alm")')->count() );
-
-
-		// USER
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'assistent',
-			'PHP_AUTH_PW'   => '1234',
-		));
-
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/1');
-
-		// Assert that the response is a redirect
-		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
-
-		// TEAM
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'team',
-			'PHP_AUTH_PW'   => '1234',
-		));
-
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/2');
-
-		// Assert that the response is a redirect
-		$this->assertEquals(200, $client->getResponse()->getStatusCode() );
-
-	}
-	
-	public function testShow() {
-
-		// TEAM
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'team',
-			'PHP_AUTH_PW'   => '1234',
-		));
-
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin');
-
-		// Check the count for the different variables
-		$this->assertEquals( 1, $crawler->filter('h1:contains("Team")')->count() );
-		$this->assertEquals( 1, $crawler->filter('a:contains("Hovedstyret")')->count() );
-        $this->assertEquals( 1, $crawler->filter('a:contains("IT")')->count() );
-
-		// USER
-		$client = static::createClient(array(), array(
-			'PHP_AUTH_USER' => 'assistent',
-			'PHP_AUTH_PW'   => '1234',
-		));
-
-		$crawler = $client->request('GET', '/kontrollpanel/teamadmin');
-
-		// Assert that the response is a redirect
-		$this->assertEquals(403, $client->getResponse()->getStatusCode() );
-
+        // Assert that the response is a redirect
+        $this->assertTrue($client->getResponse()->isRedirect('/'));
     }
-	
+
+    public function testShowSpecificTeam()
+    {
+
+        // ADMIN
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'petjo',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin');
+
+        // Find a link and click it
+        $link = $crawler->selectLink('IT')->eq(0)->link();
+        $crawler = $client->click($link);
+
+        // Assert that we have the correct page
+        $this->assertEquals(1, $crawler->filter('h1:contains("IT")')->count());
+
+        // TEAM
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'team',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin');
+
+        // Find a link and click it
+        $link = $crawler->selectLink('Hovedstyret')->eq(0)->link();
+        $crawler = $client->click($link);
+
+        // Assert that we have the correct page
+        $this->assertEquals(1, $crawler->filter('h1:contains("Hovedstyret")')->count());
+
+        // Check the count for the different variables
+        $this->assertEquals(1, $crawler->filter('td:contains("Petter")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Johansen")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Thomas")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Alm")')->count());
+
+        // USER
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'assistent',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/1');
+
+        // Assert that the response is a redirect
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+
+        // TEAM
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'team',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/2');
+
+        // Assert that the response is a redirect
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
+
+    public function testShow()
+    {
+
+        // TEAM
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'team',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin');
+
+        // Check the count for the different variables
+        $this->assertEquals(1, $crawler->filter('h1:contains("Team")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("Hovedstyret")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("IT")')->count());
+
+        // USER
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'assistent',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin');
+
+        // Assert that the response is a redirect
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+    }
 }

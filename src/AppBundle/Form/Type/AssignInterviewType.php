@@ -4,7 +4,6 @@ namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class AssignInterviewType extends AbstractType
 {
@@ -12,7 +11,8 @@ class AssignInterviewType extends AbstractType
 
     protected $department;
 
-    public function __construct($roles, $department = null) {
+    public function __construct($roles, $department = null)
+    {
         $this->roles = $roles;
         $this->department = $department;
     }

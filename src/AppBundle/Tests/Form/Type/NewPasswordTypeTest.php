@@ -6,13 +6,14 @@ use AppBundle\Entity\User;
 use AppBundle\Form\Type\NewPasswordType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class NewPasswordTypeTest extends TypeTestCase {
-
+class NewPasswordTypeTest extends TypeTestCase
+{
     /**
      * @dataProvider getValidTestData
      */
-    public function testForm($data){
-//
+    public function testForm($data)
+    {
+        //
 //        $type = new NewPasswordType();
 //        $form = $this->factory->create($type);
 //
@@ -50,10 +51,9 @@ class NewPasswordTypeTest extends TypeTestCase {
             ),
             array(
                 'data' => array(
-                    'password' => null
+                    'password' => null,
                 ),
             ),
         );
     }
-
 }

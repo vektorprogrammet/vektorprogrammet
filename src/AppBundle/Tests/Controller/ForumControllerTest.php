@@ -4,10 +4,11 @@ namespace AppBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class ForumControllerTest extends WebTestCase {
-	
-	public function testShow() {
-//
+class ForumControllerTest extends WebTestCase
+{
+    public function testShow()
+    {
+        //
 //		$client = static::createClient(array(), array(
 //			'PHP_AUTH_USER' => 'petjo',
 //			'PHP_AUTH_PW'   => '1234',
@@ -75,7 +76,7 @@ class ForumControllerTest extends WebTestCase {
 //		$this->assertEquals( 1, $crawler->filter('forum:contains("Generelt")')->count() );
 //
     }
-	
+
 //	public function testEditForum() {
 //
 //		$client = static::createClient(array(), array(
@@ -130,7 +131,7 @@ class ForumControllerTest extends WebTestCase {
 //		$this->assertEquals( 200, $client->getResponse()->getStatusCode() );
 //
 //	}
-	
+
 //	public function testCreateForum() {
 //
 //		$client = static::createClient(array(), array(
@@ -182,13 +183,13 @@ class ForumControllerTest extends WebTestCase {
 //		$this->assertEquals( 200, $client->getResponse()->getStatusCode() );
 //
 //	}
-	
-	/*
-	Requires JQuery interaction, Symfony2 does not support that
-	
-	Phpunit was designed to test the PHP language, have to use another tool to test these. 
-	
-	public function testDeleteForum() {}
-	
-	*/
+
+    /*
+    Requires JQuery interaction, Symfony2 does not support that
+    
+    Phpunit was designed to test the PHP language, have to use another tool to test these. 
+    
+    public function testDeleteForum() {}
+    
+    */
 }

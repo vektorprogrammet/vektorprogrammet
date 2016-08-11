@@ -6,13 +6,14 @@ use AppBundle\Form\Type\InterviewPracticalType;
 use AppBundle\Entity\InterviewPractical;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class InterviewPracticalTest extends TypeTestCase {
-	
-	/**
+class InterviewPracticalTest extends TypeTestCase
+{
+    /**
      * @dataProvider getValidTestData
      */
-	public function testForm($data){
-//
+    public function testForm($data)
+    {
+        //
 //        $type = new InterviewPracticalType();
 //        $form = $this->factory->create($type);
 //
@@ -34,43 +35,41 @@ class InterviewPracticalTest extends TypeTestCase {
 //        }
 //
     }
-	
-	public function getValidTestData()
+
+    public function getValidTestData()
     {
         return array(
             array(
                 'data' => array(
                     'position' => '2 x 4',
-					'monday' => "bra",
-					'tuesday' => "bra",
-					'wednesday' => "Ikke",
-					'thursday' => "Ikke",
-					'friday' => "Ikke",
-					'substitute' => 0,
-					'english' => 0,
-					'heardAboutFrom' => 0, 
+                    'monday' => 'bra',
+                    'tuesday' => 'bra',
+                    'wednesday' => 'Ikke',
+                    'thursday' => 'Ikke',
+                    'friday' => 'Ikke',
+                    'substitute' => 0,
+                    'english' => 0,
+                    'heardAboutFrom' => 0,
                 ),
             ),
             array(
                 'data' => array(
-				
-				),
+
+                ),
             ),
             array(
                 'data' => array(
                     'position' => null,
-					'monday' => null,
-					'tuesday' => null,
-					'wednesday' => null,
-					'thursday' => null,
-					'friday' => null,
-					'substitute' => null,
-					'english' => null,
-					'heardAboutFrom' => null,
+                    'monday' => null,
+                    'tuesday' => null,
+                    'wednesday' => null,
+                    'thursday' => null,
+                    'friday' => null,
+                    'substitute' => null,
+                    'english' => null,
+                    'heardAboutFrom' => null,
                 ),
             ),
         );
     }
-	
 }
-       

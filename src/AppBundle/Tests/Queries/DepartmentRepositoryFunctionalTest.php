@@ -12,7 +12,7 @@ class DepartmentRepositoryFunctionalTest extends KernelTestCase
     private $em;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setUp()
     {
@@ -22,12 +22,11 @@ class DepartmentRepositoryFunctionalTest extends KernelTestCase
             ->getManager()
         ;
     }
-	
-	
-	
-	// A test to check whether the method returns an array of departments
-	public function testFindAllDepartments(){
-		
+
+    // A test to check whether the method returns an array of departments
+    public function testFindAllDepartments()
+    {
+
 //		$departments = $this->em->getRepository('AppBundle:Department')->findAllDepartments();
 //
 //		$shortNames = array("NTNU", "HiST", "UiO", "NMBU");
@@ -43,11 +42,9 @@ class DepartmentRepositoryFunctionalTest extends KernelTestCase
 //
 //
 //		}
-		
-	}
-	
-	
-	// A test to check whether the array return by the the findDepartmentById method is the correct department given a ID value 
+    }
+
+    // A test to check whether the array return by the the findDepartmentById method is the correct department given a ID value 
 //	public function testFindDepartmentById(){
 //
 //
@@ -60,11 +57,9 @@ class DepartmentRepositoryFunctionalTest extends KernelTestCase
 //		}
 //
 //	}
-	
-	
-	
+
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown()
     {
@@ -72,5 +67,3 @@ class DepartmentRepositoryFunctionalTest extends KernelTestCase
         $this->em->close();
     }
 }
-
-   

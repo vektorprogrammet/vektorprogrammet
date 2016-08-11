@@ -12,7 +12,7 @@ class ThreadRepositoryFunctionalTest extends KernelTestCase
     private $em;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setUp()
     {
@@ -22,11 +22,11 @@ class ThreadRepositoryFunctionalTest extends KernelTestCase
             ->getManager()
         ;
     }
-	
-	
-	// A check whether the thread returned by the method is the actual latest thread, and a check that the method returns the correct thread
-	public function testFindLatestThreadBySubforum(){
-		
+
+    // A check whether the thread returned by the method is the actual latest thread, and a check that the method returns the correct thread
+    public function testFindLatestThreadBySubforum()
+    {
+
 //		$threads = $this->em->getRepository('AppBundle:Thread')->findLatestThreadBySubforum(1);
 //
 //		$allThreads = $this->em->getRepository('AppBundle:Thread')->findAll();
@@ -44,11 +44,9 @@ class ThreadRepositoryFunctionalTest extends KernelTestCase
 //			$this->assertEquals(1, $thread->getSubforum()->getId());
 //
 //		}
+    }
 
-		
-	}
-	
-	// A check whether the forum returned by the method is the correct forum 
+    // A check whether the forum returned by the method is the correct forum 
 //	public function testFindLatestThreadByForum(){
 //
 //		$threads = $this->em->getRepository('AppBundle:Thread')->findLatestThreadByForum(1);
@@ -70,13 +68,9 @@ class ThreadRepositoryFunctionalTest extends KernelTestCase
 //		}
 //
 //	}
-	
 
-	
-	
-	
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown()
     {
@@ -84,5 +78,3 @@ class ThreadRepositoryFunctionalTest extends KernelTestCase
         $this->em->close();
     }
 }
-
-   

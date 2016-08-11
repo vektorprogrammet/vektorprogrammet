@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use \DateTime;
 
 class SurveyType extends AbstractType
 {
@@ -15,12 +14,12 @@ class SurveyType extends AbstractType
         $builder->add('semester', 'entity', array(
             'label' => 'Semester',
             'class' => 'AppBundle:Semester',
-            'query_builder' => function(EntityRepository $er){
+            'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('s')
                     ->where('s.admission_end_date > :limit')
-                    ->setParameter('limit',new \DateTime('now -1 year'))
+                    ->setParameter('limit', new \DateTime('now -1 year'))
                     ->orderBy('s.semesterStartDate', 'DESC');
-            }
+            },
         ));
 
         $builder->add('name', 'text', array(
@@ -30,9 +29,9 @@ class SurveyType extends AbstractType
 
         $builder->add('surveyQuestions', 'collection', array(
             'type' => new SurveyQuestionType(),
-            'allow_add'    => true,
+            'allow_add' => true,
             'allow_delete' => true,
-            'prototype_name' => '__q_prot__'
+            'prototype_name' => '__q_prot__',
         ));
 
         $builder->add('save', 'submit', array(

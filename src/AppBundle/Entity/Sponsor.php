@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Tommy
  * Date: 04.05.2015
- * Time: 16:00
+ * Time: 16:00.
  */
 
 namespace AppBundle\Entity;
@@ -14,9 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="sponsor")
  */
-class Sponsor {
-
-
+class Sponsor
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -39,11 +38,10 @@ class Sponsor {
      */
     protected $logoImagePath;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -51,9 +49,10 @@ class Sponsor {
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return Sponsor
      */
     public function setName($name)
@@ -64,9 +63,9 @@ class Sponsor {
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -74,9 +73,10 @@ class Sponsor {
     }
 
     /**
-     * Set url
+     * Set url.
      *
      * @param string $url
+     *
      * @return Sponsor
      */
     public function setUrl($url)
@@ -87,9 +87,9 @@ class Sponsor {
     }
 
     /**
-     * Get url
+     * Get url.
      *
-     * @return string 
+     * @return string
      */
     public function getUrl()
     {
@@ -97,9 +97,10 @@ class Sponsor {
     }
 
     /**
-     * Set logoImagePath
+     * Set logoImagePath.
      *
      * @param string $logoImagePath
+     *
      * @return Sponsor
      */
     public function setLogoImagePath($logoImagePath)
@@ -110,9 +111,9 @@ class Sponsor {
     }
 
     /**
-     * Get logoImagePath
+     * Get logoImagePath.
      *
-     * @return string 
+     * @return string
      */
     public function getLogoImagePath()
     {

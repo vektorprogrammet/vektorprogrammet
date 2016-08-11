@@ -10,9 +10,9 @@ class SubstituteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $workChoices = array(
-            "Bra" => "Bra",
-            "Ok" => "Ok",
-            "Ikke" => "Ikke"
+            'Bra' => 'Bra',
+            'Ok' => 'Ok',
+            'Ikke' => 'Ikke',
         );
 
         $builder
@@ -24,32 +24,32 @@ class SubstituteType extends AbstractType
         $builder->add('monday', 'choice', array(
             'label' => 'Mandag',
             'choices' => $workChoices,
-            'expanded' => true
+            'expanded' => true,
         ));
 
         $builder->add('tuesday', 'choice', array(
             'label' => 'Tirsdag',
             'choices' => $workChoices,
-            'expanded' => true
+            'expanded' => true,
         ));
 
         $builder->add('wednesday', 'choice', array(
             'label' => 'Onsdag',
             'choices' => $workChoices,
-            'expanded' => true
+            'expanded' => true,
         ));
 
         $builder->add('thursday', 'choice', array(
             'label' => 'Torsdag',
             'choices' => $workChoices,
-            'expanded' => true
+            'expanded' => true,
         ));
 
         $builder->add('friday', 'choice', array(
             'label' => 'Fredag',
             'choices' => $workChoices,
-            'expanded' => true
-        ));;
+            'expanded' => true,
+        ));
 
         $builder->add('save', 'submit', array(
             'label' => 'Lagre',

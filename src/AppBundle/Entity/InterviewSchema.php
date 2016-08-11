@@ -5,7 +5,6 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="interview_schema")
@@ -36,7 +35,7 @@ class InterviewSchema
     protected $interviewQuestions; // Unidirectional, may turn out to be bidirectional
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -44,9 +43,9 @@ class InterviewSchema
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -54,9 +53,10 @@ class InterviewSchema
     }
 
     /**
-     * Add questions
+     * Add questions.
      *
      * @param \AppBundle\Entity\InterviewQuestion $questions
+     *
      * @return InterviewSchema
      */
     public function addInterviewQuestion(\AppBundle\Entity\InterviewQuestion $questions)
@@ -67,7 +67,7 @@ class InterviewSchema
     }
 
     /**
-     * Remove questions
+     * Remove questions.
      *
      * @param \AppBundle\Entity\InterviewQuestion $questions
      */
@@ -77,9 +77,9 @@ class InterviewSchema
     }
 
     /**
-     * Get questions
+     * Get questions.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getInterviewQuestions()
     {
@@ -87,9 +87,10 @@ class InterviewSchema
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return InterviewSchema
      */
     public function setName($name)
@@ -100,9 +101,9 @@ class InterviewSchema
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {

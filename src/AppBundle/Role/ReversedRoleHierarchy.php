@@ -30,7 +30,7 @@ class ReversedRoleHierarchy extends RoleHierarchy
     }
 
     /**
-     * Helper function to get an array of strings
+     * Helper function to get an array of strings.
      *
      * @param array $roleNames An array of string role names
      *

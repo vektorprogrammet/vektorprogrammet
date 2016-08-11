@@ -7,90 +7,87 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class CreateUserType extends AbstractType {
-	
-	private $departmentId;
-	private $admin;
+class CreateUserType extends AbstractType
+{
+    private $departmentId;
+    private $admin;
 
     public function __construct($departmentId, $admin)
     {
         $this->departmentId = $departmentId;
-		$this->admin = $admin;
+        $this->admin = $admin;
     }
-	
 
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-		 
-		$builder
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
             ->add('firstName', 'text', array(
-				'label' => 'Fornavn',
-			))
+                'label' => 'Fornavn',
+            ))
             ->add('lastName', 'text', array(
-				'label' => 'Etternavn',
-			))
-			->add('gender', 'choice',  array(
-				'label' => 'Kjønn',
-				'choices' => array(
-					0 => 'Mann',
-					1 => 'Dame'
-				),
-				))
-			->add('phone', 'text',  array(
-				'label' => 'Telefon',
-			))
-			->add('user_name', 'text',  array(
-				'label' => 'Brukernavn',
-			))
-			->add('password', 'password',  array(
-				'label' => 'Passord',
-			))
-			->add('email', 'text',  array(
-				'label' => 'E-post',
-			))
-			->add('fieldOfStudy', 'entity', array(
-				'label' => 'Linje',
-				'class' => 'AppBundle:FieldOfStudy',
-				'query_builder' => function(EntityRepository $er )  {
-					return $er->createQueryBuilder('f')
-					  ->orderBy('f.short_name', 'ASC')
-					  ->where('f.department = ?1')
-					  // Set the parameter to the department ID that the current user belongs to.
-					  ->setParameter(1, $this->departmentId);
-					}
-					));
-			
-			if ($this->admin == 'superadmin') {
-				$builder->add('role', 'choice',  array(
-				'label' => 'Rolle',
-				'mapped' => false,
-				'choices' => array(
-					0 => 'Assistent',
-					1 => 'Team',
-					2 => 'Admin',
-				),
-				));
-			}
-			elseif ($this->admin == 'admin') {
-				$builder->add('role', 'choice',  array(
-				'label' => 'Rolle',
-				'mapped' => false,
-				'choices' => array(
-					0 => 'Assistent',
-				),
-				));
-			}
+                'label' => 'Etternavn',
+            ))
+            ->add('gender', 'choice',  array(
+                'label' => 'Kjønn',
+                'choices' => array(
+                    0 => 'Mann',
+                    1 => 'Dame',
+                ),
+                ))
+            ->add('phone', 'text',  array(
+                'label' => 'Telefon',
+            ))
+            ->add('user_name', 'text',  array(
+                'label' => 'Brukernavn',
+            ))
+            ->add('password', 'password',  array(
+                'label' => 'Passord',
+            ))
+            ->add('email', 'text',  array(
+                'label' => 'E-post',
+            ))
+            ->add('fieldOfStudy', 'entity', array(
+                'label' => 'Linje',
+                'class' => 'AppBundle:FieldOfStudy',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('f')
+                      ->orderBy('f.short_name', 'ASC')
+                      ->where('f.department = ?1')
+                      // Set the parameter to the department ID that the current user belongs to.
+                      ->setParameter(1, $this->departmentId);
+                    },
+                    ));
+
+        if ($this->admin == 'superadmin') {
+            $builder->add('role', 'choice',  array(
+                'label' => 'Rolle',
+                'mapped' => false,
+                'choices' => array(
+                    0 => 'Assistent',
+                    1 => 'Team',
+                    2 => 'Admin',
+                ),
+                ));
+        } elseif ($this->admin == 'admin') {
+            $builder->add('role', 'choice',  array(
+                'label' => 'Rolle',
+                'mapped' => false,
+                'choices' => array(
+                    0 => 'Assistent',
+                ),
+                ));
+        }
     }
-	
-	public function setDefaultOptions(OptionsResolverInterface $resolver) {
-	
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
         ));
-		
     }
-	
-    public function getName() {
+
+    public function getName()
+    {
         return 'createUser';
     }
-	
 }

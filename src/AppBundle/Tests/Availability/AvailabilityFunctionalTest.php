@@ -3,13 +3,12 @@
 namespace AppBundle\Tests\Availability;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class AvailabilityFunctionalTest extends WebTestCase
 {
     /**
      * @dataProvider publicUrlProvider
+     *
      * @param $url
      */
     public function testPublicPageIsSuccessful($url)
@@ -22,13 +21,14 @@ class AvailabilityFunctionalTest extends WebTestCase
 
     /**
      * @dataProvider userUrlProvider
+     *
      * @param $url
      */
     public function testUserPageIsSuccessful($url)
     {
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW'   => '1234',
+            'PHP_AUTH_PW' => '1234',
         ));
         $client->request('GET', $url);
 
@@ -37,9 +37,11 @@ class AvailabilityFunctionalTest extends WebTestCase
 
     /**
      * @dataProvider userUrlProvider
+     *
      * @param $url
      */
-    public function testUserPageIsDenied($url){
+    public function testUserPageIsDenied($url)
+    {
         //Check if anonymous users gets denied
         $client = self::createClient();
         $client->request('GET', $url);
@@ -49,13 +51,14 @@ class AvailabilityFunctionalTest extends WebTestCase
 
     /**
      * @dataProvider adminUrlProvider
+     *
      * @param $url
      */
     public function testAdminPageIsSuccessful($url)
     {
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW'   => '1234',
+            'PHP_AUTH_PW' => '1234',
         ));
         $client->request('GET', $url);
 
@@ -64,9 +67,11 @@ class AvailabilityFunctionalTest extends WebTestCase
 
     /**
      * @dataProvider adminUrlProvider
+     *
      * @param $url
      */
-    public function testAdminPageIsDenied($url){
+    public function testAdminPageIsDenied($url)
+    {
         //Check if anonymous users gets denied
         $client = self::createClient();
         $client->request('GET', $url);
@@ -76,7 +81,7 @@ class AvailabilityFunctionalTest extends WebTestCase
         //Check if assistants gets denied
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW'   => '1234',
+            'PHP_AUTH_PW' => '1234',
         ));
         $client->request('GET', $url);
 

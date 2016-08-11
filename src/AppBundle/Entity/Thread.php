@@ -5,58 +5,57 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- *
  * @ORM\Table(name="thread")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ThreadRepository")
  */
-class Thread {
-
+class Thread
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-	
-	/**
+
+    /**
      * @ORM\Column(type="string", length=250)
      */
     protected $subject;
-	
-	/**
-     * @ORM\Column(type="datetime")
-     */
-	protected $datetime;
-	
-	/**
-     * @ORM\Column(type="string", length=1500)
-     */
-	protected $text;
-	
-	/**
-     * @ORM\ManyToOne(targetEntity="Subforum", inversedBy="threads")
-     **/
-	protected $subforum;
-	
-	/**
-     * @ORM\OneToMany(targetEntity="Post", mappedBy="thread", cascade={"remove"})
-     **/
-	protected $posts;
-	
-	/**
-     * @ORM\ManyToOne(targetEntity="User")
-     **/
-	protected $user;
-	
-	public function __construct() {
-		$this->posts = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
 
     /**
-     * Get id
+     * @ORM\Column(type="datetime")
+     */
+    protected $datetime;
+
+    /**
+     * @ORM\Column(type="string", length=1500)
+     */
+    protected $text;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Subforum", inversedBy="threads")
+     **/
+    protected $subforum;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Post", mappedBy="thread", cascade={"remove"})
+     **/
+    protected $posts;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     **/
+    protected $user;
+
+    public function __construct()
+    {
+        $this->posts = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -64,9 +63,10 @@ class Thread {
     }
 
     /**
-     * Set subject
+     * Set subject.
      *
      * @param string $subject
+     *
      * @return Thread
      */
     public function setSubject($subject)
@@ -77,9 +77,9 @@ class Thread {
     }
 
     /**
-     * Get subject
+     * Get subject.
      *
-     * @return string 
+     * @return string
      */
     public function getSubject()
     {
@@ -87,9 +87,10 @@ class Thread {
     }
 
     /**
-     * Set datetime
+     * Set datetime.
      *
      * @param \DateTime $datetime
+     *
      * @return Thread
      */
     public function setDatetime($datetime)
@@ -100,9 +101,9 @@ class Thread {
     }
 
     /**
-     * Get datetime
+     * Get datetime.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDatetime()
     {
@@ -110,9 +111,10 @@ class Thread {
     }
 
     /**
-     * Set text
+     * Set text.
      *
      * @param string $text
+     *
      * @return Thread
      */
     public function setText($text)
@@ -123,9 +125,9 @@ class Thread {
     }
 
     /**
-     * Get text
+     * Get text.
      *
-     * @return string 
+     * @return string
      */
     public function getText()
     {
@@ -133,9 +135,10 @@ class Thread {
     }
 
     /**
-     * Set subforum
+     * Set subforum.
      *
      * @param \AppBundle\Entity\Subforum $subforum
+     *
      * @return Thread
      */
     public function setSubforum(\AppBundle\Entity\Subforum $subforum = null)
@@ -146,7 +149,7 @@ class Thread {
     }
 
     /**
-     * Get subforum
+     * Get subforum.
      *
      * @return \AppBundle\Entity\Subforum
      */
@@ -156,9 +159,10 @@ class Thread {
     }
 
     /**
-     * Set user
+     * Set user.
      *
      * @param \AppBundle\Entity\User $user
+     *
      * @return Thread
      */
     public function setUser(\AppBundle\Entity\User $user = null)
@@ -169,7 +173,7 @@ class Thread {
     }
 
     /**
-     * Get user
+     * Get user.
      *
      * @return \AppBundle\Entity\User
      */
@@ -179,9 +183,10 @@ class Thread {
     }
 
     /**
-     * Add posts
+     * Add posts.
      *
      * @param \AppBundle\Entity\Post $posts
+     *
      * @return Thread
      */
     public function addPost(\AppBundle\Entity\Post $posts)
@@ -192,7 +197,7 @@ class Thread {
     }
 
     /**
-     * Remove posts
+     * Remove posts.
      *
      * @param \AppBundle\Entity\Post $posts
      */
@@ -202,17 +207,17 @@ class Thread {
     }
 
     /**
-     * Get posts
+     * Get posts.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPosts()
     {
         return $this->posts;
     }
-	
-	// Used for unit testing 
-	public function fromArray($data = array())
+
+    // Used for unit testing 
+    public function fromArray($data = array())
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";

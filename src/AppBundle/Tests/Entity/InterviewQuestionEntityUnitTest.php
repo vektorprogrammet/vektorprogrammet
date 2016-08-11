@@ -5,58 +5,47 @@ namespace AppBundle\Tests\Entity;
 use AppBundle\Entity\InterviewQuestion;
 use AppBundle\Entity\InterviewQuestionAlternative;
 
-
 class InterviewQuestionEntityUnitTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testSetQuestion()
     {
-
         $intQuestion = new InterviewQuestion();
 
-        $intQuestion->setQuestion("Test?");
+        $intQuestion->setQuestion('Test?');
 
-        $this->assertEquals("Test?", $intQuestion->getQuestion());
-
+        $this->assertEquals('Test?', $intQuestion->getQuestion());
     }
 
     public function testSetHelp()
     {
-
         $intQuestion = new InterviewQuestion();
 
-        $intQuestion->setHelp("Test");
+        $intQuestion->setHelp('Test');
 
-        $this->assertEquals("Test", $intQuestion->getHelp());
-
+        $this->assertEquals('Test', $intQuestion->getHelp());
     }
 
     public function testSetType()
     {
-
         $intQuestion = new InterviewQuestion();
 
-        $intQuestion->setType("Text");
+        $intQuestion->setType('Text');
 
-        $this->assertEquals("Text", $intQuestion->getType());
-
+        $this->assertEquals('Text', $intQuestion->getType());
     }
 
     public function testAddAlternative()
     {
-
         $intQuestion = new InterviewQuestion();
         $alternative = new InterviewQuestionAlternative();
 
         $intQuestion->addAlternative($alternative);
 
         $this->assertContainsOnly($alternative, $intQuestion->getAlternatives());
-
     }
 
     public function testRemoveAlternative()
     {
-
         $intQuestion = new InterviewQuestion();
         $alternative = new InterviewQuestionAlternative();
 
@@ -67,7 +56,5 @@ class InterviewQuestionEntityUnitTest extends \PHPUnit_Framework_TestCase
         $intQuestion->removeAlternative($alternative);
 
         $this->assertNotContains($alternative, $intQuestion->getAlternatives());
-
     }
-
 }

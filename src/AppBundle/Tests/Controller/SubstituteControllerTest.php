@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SubstituteControllerTest extends WebTestCase
 {
-
     public function testShow()
     {
         // Admin user
@@ -29,7 +28,6 @@ class SubstituteControllerTest extends WebTestCase
         $this->assertGreaterThan(1, $crawler->filter('a:contains("Slett")')->count());
         $this->assertGreaterThan(0, $crawler->filter('a:contains("Rediger")')->count());
 
-
         // Team user
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'team',
@@ -49,7 +47,6 @@ class SubstituteControllerTest extends WebTestCase
         // Assert that we don't have the edit/delete buttons as team (1 delete button is the hidden modal button, so we have to check = 1)
         $this->assertEquals(1, $crawler->filter('a:contains("Slett")')->count());
         $this->assertEquals(0, $crawler->filter('a:contains("Rediger")')->count());
-
 
         // Assistant user
         $client = static::createClient(array(), array(
@@ -85,7 +82,6 @@ class SubstituteControllerTest extends WebTestCase
         $this->assertGreaterThan(1, $crawler->filter('a:contains("Slett")')->count());
         $this->assertGreaterThan(0, $crawler->filter('a:contains("Rediger")')->count());
 
-
         // Team user
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'team',
@@ -105,7 +101,6 @@ class SubstituteControllerTest extends WebTestCase
         // Assert that we don't have the edit/delete buttons as team (1 delete button is the hidden modal button, so we have to check = 1)
         $this->assertEquals(1, $crawler->filter('a:contains("Slett")')->count());
         $this->assertEquals(0, $crawler->filter('a:contains("Rediger")')->count());
-
 
         // Assistant user
         $client = static::createClient(array(), array(
@@ -139,7 +134,7 @@ class SubstituteControllerTest extends WebTestCase
         $form = $crawler->selectButton('Lagre')->form();
 
         // Fill in the form
-        $form['substitute[phone]'] = "95999999";
+        $form['substitute[phone]'] = '95999999';
 
         // Submit the form
         $client->submit($form);
@@ -150,7 +145,6 @@ class SubstituteControllerTest extends WebTestCase
         // Assert that we have the correct page with the correct info (from the submitted form)
         $this->assertEquals(1, $crawler->filter('h1:contains("Vikarer")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("95999999")')->count());
-
 
         // Team user
         $client = static::createClient(array(), array(
@@ -174,5 +168,4 @@ class SubstituteControllerTest extends WebTestCase
     public function testDelete() {}
     public function testCreate() {}
     */
-
 }

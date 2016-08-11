@@ -5,7 +5,6 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="interview_question")
@@ -43,9 +42,9 @@ class InterviewQuestion
     protected $alternatives;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -53,9 +52,10 @@ class InterviewQuestion
     }
 
     /**
-     * Set question
+     * Set question.
      *
      * @param string $question
+     *
      * @return InterviewQuestion
      */
     public function setQuestion($question)
@@ -66,16 +66,16 @@ class InterviewQuestion
     }
 
     /**
-     * Get question
+     * Get question.
      *
-     * @return string 
+     * @return string
      */
     public function getQuestion()
     {
         return $this->question;
     }
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -83,9 +83,10 @@ class InterviewQuestion
     }
 
     /**
-     * Set help
+     * Set help.
      *
      * @param string $help
+     *
      * @return InterviewQuestion
      */
     public function setHelp($help)
@@ -96,9 +97,9 @@ class InterviewQuestion
     }
 
     /**
-     * Get help
+     * Get help.
      *
-     * @return string 
+     * @return string
      */
     public function getHelp()
     {
@@ -106,9 +107,10 @@ class InterviewQuestion
     }
 
     /**
-     * Set type
+     * Set type.
      *
      * @param string $type
+     *
      * @return InterviewQuestion
      */
     public function setType($type)
@@ -119,9 +121,9 @@ class InterviewQuestion
     }
 
     /**
-     * Get type
+     * Get type.
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -129,9 +131,10 @@ class InterviewQuestion
     }
 
     /**
-     * Add alternatives
+     * Add alternatives.
      *
      * @param \AppBundle\Entity\InterviewQuestionAlternative $alternatives
+     *
      * @return InterviewQuestion
      */
     public function addAlternative(\AppBundle\Entity\InterviewQuestionAlternative $alternatives)
@@ -144,7 +147,7 @@ class InterviewQuestion
     }
 
     /**
-     * Remove alternatives
+     * Remove alternatives.
      *
      * @param \AppBundle\Entity\InterviewQuestionAlternative $alternatives
      */
@@ -156,9 +159,9 @@ class InterviewQuestion
     }
 
     /**
-     * Get alternatives
+     * Get alternatives.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAlternatives()
     {

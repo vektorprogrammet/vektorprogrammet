@@ -6,18 +6,18 @@ use AppBundle\Form\Type\CreateTeamType;
 use AppBundle\Entity\Team;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class CreateTeamTest extends TypeTestCase {
-	
-	/**
+class CreateTeamTest extends TypeTestCase
+{
+    /**
      * @dataProvider getValidTestData
      */
-	public function testForm($data){
-	
+    public function testForm($data)
+    {
         $type = new CreateTeamType();
         $form = $this->factory->create($type);
-		
-		$object = new Team();
-		
+
+        $object = new Team();
+
         $object->fromArray($data);
 
         // submit the data to the form directly
@@ -32,10 +32,9 @@ class CreateTeamTest extends TypeTestCase {
         foreach (array_keys($data) as $key) {
             $this->assertArrayHasKey($key, $children);
         }
-		
     }
-	
-	public function getValidTestData()
+
+    public function getValidTestData()
     {
         return array(
             array(
@@ -45,8 +44,8 @@ class CreateTeamTest extends TypeTestCase {
             ),
             array(
                 'data' => array(
-				
-				),
+
+                ),
             ),
             array(
                 'data' => array(
@@ -55,6 +54,4 @@ class CreateTeamTest extends TypeTestCase {
             ),
         );
     }
-	
 }
-       

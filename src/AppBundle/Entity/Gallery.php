@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Tommy
  * Date: 24.04.2015
- * Time: 01:52
+ * Time: 01:52.
  */
 
 namespace AppBundle\Entity;
@@ -14,12 +14,11 @@ use Doctrine\ORM\Mapping as ORM;
 //todo: change name to Album.php. Table name should also be changed to album.
 
 /**
- *
  * @ORM\Table(name="gallery")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\GalleryRepository")
  */
-class Gallery {
-
+class Gallery
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -53,15 +52,15 @@ class Gallery {
      **/
     protected $photos;
 
-
-    public function __construct(){
+    public function __construct()
+    {
         $this->photos = new ArrayCollection();
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -69,9 +68,10 @@ class Gallery {
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return Gallery
      */
     public function setName($name)
@@ -82,9 +82,9 @@ class Gallery {
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -92,9 +92,10 @@ class Gallery {
     }
 
     /**
-     * Set dateCreated
+     * Set dateCreated.
      *
      * @param \DateTime $dateCreated
+     *
      * @return Gallery
      */
     public function setDateCreated($dateCreated)
@@ -105,9 +106,9 @@ class Gallery {
     }
 
     /**
-     * Get dateCreated
+     * Get dateCreated.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateCreated()
     {
@@ -115,9 +116,10 @@ class Gallery {
     }
 
     /**
-     * Set createdByUser
+     * Set createdByUser.
      *
      * @param \AppBundle\Entity\User $createdByUser
+     *
      * @return Gallery
      */
     public function setCreatedByUser(\AppBundle\Entity\User $createdByUser = null)
@@ -128,9 +130,9 @@ class Gallery {
     }
 
     /**
-     * Get createdByUser
+     * Get createdByUser.
      *
-     * @return \AppBundle\Entity\User 
+     * @return \AppBundle\Entity\User
      */
     public function getCreatedByUser()
     {
@@ -138,9 +140,10 @@ class Gallery {
     }
 
     /**
-     * Add photos
+     * Add photos.
      *
      * @param \AppBundle\Entity\Photo $photos
+     *
      * @return Gallery
      */
     public function addPhoto(\AppBundle\Entity\Photo $photos)
@@ -151,7 +154,7 @@ class Gallery {
     }
 
     /**
-     * Remove photos
+     * Remove photos.
      *
      * @param \AppBundle\Entity\Photo $photos
      */
@@ -161,9 +164,9 @@ class Gallery {
     }
 
     /**
-     * Get photos
+     * Get photos.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPhotos()
     {
@@ -171,9 +174,10 @@ class Gallery {
     }
 
     /**
-     * Set private
+     * Set private.
      *
-     * @param boolean $private
+     * @param bool $private
+     *
      * @return Gallery
      */
     public function setPrivate($private)
@@ -184,9 +188,9 @@ class Gallery {
     }
 
     /**
-     * Get private
+     * Get private.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getPrivate()
     {

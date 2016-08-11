@@ -6,7 +6,6 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\StaticContent;
 
-
 class LoadStatic_contentData extends AbstractFixture
 {
     public function load(ObjectManager $manager)

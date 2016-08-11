@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\SchoolAllocation;
 
 class School
@@ -8,17 +9,18 @@ class School
      */
     private $name;
 
-
     /**
      * Group
      *   Day
-     *     Capacity
+     *     Capacity.
+     *
      * @var array
      */
     private $capacity;
 
     /**
      * School constructor.
+     *
      * @param array capacity
      * @param string name
      */
@@ -46,19 +48,22 @@ class School
 
     /**
      * @param string $day
-     * @param int $group
+     * @param int    $group
+     *
      * @return int
      */
-    public function capacityLeftOnDay($group, $day){
+    public function capacityLeftOnDay($group, $day)
+    {
         return $this->capacity[$group][$day];
     }
 
     /**
      * @param string $day
-     * @param int $group
+     * @param int    $group
      */
-    public function addAssistant($group, $day){
-        $this->capacity[$group][$day]--;
+    public function addAssistant($group, $day)
+    {
+        --$this->capacity[$group][$day];
     }
 
     /**
@@ -82,14 +87,14 @@ class School
      */
     public function isFull()
     {
-        foreach($this->capacity as $weekDayCapacity){
-            foreach($weekDayCapacity as $day => $capacityLeft){
-                if($capacityLeft > 0)return false;
+        foreach ($this->capacity as $weekDayCapacity) {
+            foreach ($weekDayCapacity as $day => $capacityLeft) {
+                if ($capacityLeft > 0) {
+                    return false;
+                }
             }
         }
+
         return true;
     }
-
-
-
 }

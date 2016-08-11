@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ApplicationStatisticsController extends Controller
 {
-
     public function getName()
     {
         return 'applicationResults'; // This must be unique
@@ -17,7 +16,8 @@ class ApplicationStatisticsController extends Controller
 
     /**
      * @param Department|null $department
-     * @param Request $request
+     * @param Request         $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Department $department = null, Request $request)
@@ -25,15 +25,19 @@ class ApplicationStatisticsController extends Controller
         $semesterId = $request->get('semester');
 
         // Set default department and semester
-        if(is_null($department))$department = $this->getUser()->getFieldOfStudy()->getDepartment();
-        if(is_null($semesterId)){
+        if (is_null($department)) {
+            $department = $this->getUser()->getFieldOfStudy()->getDepartment();
+        }
+        if (is_null($semesterId)) {
             $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findLatestSemesterByDepartmentId($department->getId());
-        }else{
+        } else {
             $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterId);
         }
 
         // 404 exception if semester does not belong to department
-        if($semester->getDepartment()->getId() != $department->getId())throw $this->createNotFoundException('Denne siden finnes ikke.');
+        if ($semester->getDepartment()->getId() != $department->getId()) {
+            throw $this->createNotFoundException('Denne siden finnes ikke.');
+        }
 
         // Get all departments and semesters. Used for navigation
         $departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
@@ -52,12 +56,11 @@ class ApplicationStatisticsController extends Controller
         // Count fieldOfStudy and studyYear data
         $fieldOfStudyCount = array();
         $studyYearCount = array();
-        $applicants = $applicationRepository->findBy(array('semester'=>$semester));
-        foreach($applicants as $applicant){
-
+        $applicants = $applicationRepository->findBy(array('semester' => $semester));
+        foreach ($applicants as $applicant) {
             $fieldOfStudyShortName = $applicant->getUser()->getFieldOfStudy()->getShortName();
-            if(array_key_exists($fieldOfStudyShortName, $fieldOfStudyCount)) {
-                $fieldOfStudyCount[$fieldOfStudyShortName]++;
+            if (array_key_exists($fieldOfStudyShortName, $fieldOfStudyCount)) {
+                ++$fieldOfStudyCount[$fieldOfStudyShortName];
             } else {
                 $fieldOfStudyCount[$fieldOfStudyShortName] = 1;
             }
@@ -67,8 +70,6 @@ class ApplicationStatisticsController extends Controller
         }
         ksort($fieldOfStudyCount);
         ksort($studyYearCount);
-
-
 
         // Accepted Application Data
         $assistantHistories = $assistantHistoryRepository->findBy(array('semester' => $semester));
@@ -90,10 +91,7 @@ class ApplicationStatisticsController extends Controller
             'departments' => $departments,
             'semesters' => $semesters,
             'department' => $department,
-            'semester' => $semester
+            'semester' => $semester,
         ));
-
-
-
     }
 }

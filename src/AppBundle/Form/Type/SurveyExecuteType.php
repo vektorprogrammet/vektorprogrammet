@@ -18,17 +18,17 @@ class SurveyExecuteType extends AbstractType
             'label' => 'School',
             'placeholder' => 'Velg Skole',
             'class' => 'AppBundle:School',
-            'query_builder' => function(EntityRepository $er) use ($department){
+            'query_builder' => function (EntityRepository $er) use ($department) {
                 return $er
-                    ->createQueryBuilder('s','d')
-                    ->from('AppBundle:School','sc')
-                    ->join('s.departments','d')
+                    ->createQueryBuilder('s', 'd')
+                    ->from('AppBundle:School', 'sc')
+                    ->join('s.departments', 'd')
                     ->where('d = :department')
                     ->orderBy('s.name', 'ASC')
-                    ->setParameter('department',$department);
-            }
+                    ->setParameter('department', $department);
+            },
         ));
-        $builder->add('surveyAnswers', 'collection', array('type' => new SurveyAnswerType()));;
+        $builder->add('surveyAnswers', 'collection', array('type' => new SurveyAnswerType()));
 
         $builder->add('save', 'submit', array(
             'label' => 'Send inn',

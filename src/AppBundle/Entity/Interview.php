@@ -69,7 +69,7 @@ class Interview
     protected $user;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -79,9 +79,9 @@ class Interview
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -89,9 +89,10 @@ class Interview
     }
 
     /**
-     * Set interviewSchema
+     * Set interviewSchema.
      *
      * @param \AppBundle\Entity\InterviewSchema $interviewSchema
+     *
      * @return Interview
      */
     public function setInterviewSchema(\AppBundle\Entity\InterviewSchema $interviewSchema = null)
@@ -102,7 +103,7 @@ class Interview
     }
 
     /**
-     * Get interviewSchema
+     * Get interviewSchema.
      *
      * @return \AppBundle\Entity\InterviewSchema
      */
@@ -112,9 +113,10 @@ class Interview
     }
 
     /**
-     * Set interviewer
+     * Set interviewer.
      *
      * @param \AppBundle\Entity\User $interviewer
+     *
      * @return Interview
      */
     public function setInterviewer(\AppBundle\Entity\User $interviewer = null)
@@ -125,7 +127,7 @@ class Interview
     }
 
     /**
-     * Get interviewer
+     * Get interviewer.
      *
      * @return \AppBundle\Entity\User
      */
@@ -135,9 +137,10 @@ class Interview
     }
 
     /**
-     * Add interviewAnswers
+     * Add interviewAnswers.
      *
      * @param \AppBundle\Entity\InterviewAnswer $interviewAnswers
+     *
      * @return Interview
      */
     public function addInterviewAnswer(\AppBundle\Entity\InterviewAnswer $interviewAnswers)
@@ -148,7 +151,7 @@ class Interview
     }
 
     /**
-     * Remove interviewAnswers
+     * Remove interviewAnswers.
      *
      * @param \AppBundle\Entity\InterviewAnswer $interviewAnswers
      */
@@ -158,9 +161,9 @@ class Interview
     }
 
     /**
-     * Get interviewAnswers
+     * Get interviewAnswers.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getInterviewAnswers()
     {
@@ -168,9 +171,10 @@ class Interview
     }
 
     /**
-     * Set interviewScore
+     * Set interviewScore.
      *
      * @param \AppBundle\Entity\InterviewScore $interviewScore
+     *
      * @return Interview
      */
     public function setInterviewScore(\AppBundle\Entity\InterviewScore $interviewScore = null)
@@ -181,7 +185,7 @@ class Interview
     }
 
     /**
-     * Get interviewScore
+     * Get interviewScore.
      *
      * @return \AppBundle\Entity\InterviewScore
      */
@@ -191,9 +195,10 @@ class Interview
     }
 
     /**
-     * Set interviewed
+     * Set interviewed.
      *
-     * @param boolean $interviewed
+     * @param bool $interviewed
+     *
      * @return Interview
      */
     public function setInterviewed($interviewed)
@@ -204,9 +209,9 @@ class Interview
     }
 
     /**
-     * Get interviewed
+     * Get interviewed.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getInterviewed()
     {
@@ -214,7 +219,7 @@ class Interview
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getCancelled()
     {
@@ -222,20 +227,19 @@ class Interview
     }
 
     /**
-     * @param boolean $cancelled
+     * @param bool $cancelled
      */
     public function setCancelled($cancelled)
     {
         $this->cancelled = $cancelled;
     }
 
-
-
     /**
      * Is the given User the interviewer of this Interview?
      *
      * @param User $user
-     * @return boolean
+     *
+     * @return bool
      */
     public function isInterviewer(User $user = null)
     {
@@ -243,9 +247,10 @@ class Interview
     }
 
     /**
-     * Set scheduled
+     * Set scheduled.
      *
      * @param \DateTime $scheduled
+     *
      * @return Interview
      */
     public function setScheduled($scheduled)
@@ -256,9 +261,9 @@ class Interview
     }
 
     /**
-     * Get scheduled
+     * Get scheduled.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getScheduled()
     {
@@ -266,9 +271,10 @@ class Interview
     }
 
     /**
-     * Set conducted
+     * Set conducted.
      *
      * @param \DateTime $conducted
+     *
      * @return Interview
      */
     public function setConducted($conducted)
@@ -279,9 +285,9 @@ class Interview
     }
 
     /**
-     * Get conducted
+     * Get conducted.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getConducted()
     {

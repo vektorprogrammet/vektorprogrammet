@@ -1,9 +1,10 @@
 <?php
+
 namespace AppBundle\SchoolAllocation;
 
 class Assistant
 {
-    static $idCounter;
+    public static $idCounter;
     /**
      * @var int
      */
@@ -42,11 +43,11 @@ class Assistant
      */
     public function __construct()
     {
-        if(Assistant::$idCounter === null){
+        if (self::$idCounter === null) {
             $this->id = 1;
-            Assistant::$idCounter = 1;
-        }else{
-            $this->id = ++Assistant::$idCounter;
+            self::$idCounter = 1;
+        } else {
+            $this->id = ++self::$idCounter;
         }
         $this->group = null;
         $this->preferredGroup = null;
@@ -57,7 +58,8 @@ class Assistant
     /**
      * @return bool
      */
-    public function isAssignedToSchool(){
+    public function isAssignedToSchool()
+    {
         return !is_null($this->assignedSchool);
     }
 
@@ -77,7 +79,6 @@ class Assistant
         $this->id = $id;
     }
 
-
     /**
      * @return string
      */
@@ -94,9 +95,8 @@ class Assistant
         $this->name = $name;
     }
 
-
     /**
-     * @return boolean
+     * @return bool
      */
     public function isDoublePosition()
     {
@@ -104,7 +104,7 @@ class Assistant
     }
 
     /**
-     * @param boolean $doublePosition
+     * @param bool $doublePosition
      */
     public function setDoublePosition($doublePosition)
     {
@@ -126,7 +126,6 @@ class Assistant
     {
         $this->availability = $availability;
     }
-
 
     /**
      * @return string
@@ -210,16 +209,17 @@ class Assistant
 
     /**
      * @param School $school
-     * @param int $group
+     * @param int    $group
      * @param string $day
      */
-    public function assignToSchool($school, $group, $day){
+    public function assignToSchool($school, $group, $day)
+    {
         $this->setAssignedSchool($school->getName());
-        if($this->group == 1 && $group == 2 || $this->group == 2 && $group == 1)$this->group = 3;
-        else $this->setGroup($group);
+        if ($this->group == 1 && $group == 2 || $this->group == 2 && $group == 1) {
+            $this->group = 3;
+        } else {
+            $this->setGroup($group);
+        }
         $this->setAssignedDay($day);
     }
-
-
-
 }

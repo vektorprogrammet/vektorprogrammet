@@ -6,18 +6,18 @@ use AppBundle\Form\Type\CreateForumType;
 use AppBundle\Entity\Forum;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class CreateForumTest extends TypeTestCase {
-	
-	/**
+class CreateForumTest extends TypeTestCase
+{
+    /**
      * @dataProvider getValidTestData
      */
-	public function testForm($data){
-	
+    public function testForm($data)
+    {
         $type = new CreateForumType();
         $form = $this->factory->create($type);
-		
-		$object = new Forum();
-		
+
+        $object = new Forum();
+
         $object->fromArray($data);
 
         // submit the data to the form directly
@@ -32,33 +32,30 @@ class CreateForumTest extends TypeTestCase {
         foreach (array_keys($data) as $key) {
             $this->assertArrayHasKey($key, $children);
         }
-		
     }
-	
-	public function getValidTestData()
+
+    public function getValidTestData()
     {
         return array(
             array(
                 'data' => array(
                     'name' => 'Spørsmål',
-					'description' => 'Her kan du stille spørsmål.',
-					'type' => 'team',
+                    'description' => 'Her kan du stille spørsmål.',
+                    'type' => 'team',
                 ),
             ),
             array(
                 'data' => array(
-				
-				),
+
+                ),
             ),
             array(
                 'data' => array(
                     'name' => null,
-					'description' => null,
-					'type' => null,
+                    'description' => null,
+                    'type' => null,
                 ),
             ),
         );
     }
-	
 }
-       

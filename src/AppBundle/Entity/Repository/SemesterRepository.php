@@ -7,26 +7,26 @@ use AppBundle\Entity\Semester;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
 
-class SemesterRepository extends EntityRepository {
-
-	public function findAllSemestersByDepartment($department){
-		
-		$semesters =  $this->getEntityManager()->createQuery("
+class SemesterRepository extends EntityRepository
+{
+    public function findAllSemestersByDepartment($department)
+    {
+        $semesters = $this->getEntityManager()->createQuery('
 		
 		SELECT s
 		FROM AppBundle:Semester s
 		WHERE s.department = :department
 		ORDER BY s.semesterStartDate DESC
 		
-		")
-		->setParameter('department', $department)
-		->getResult();
+		')
+        ->setParameter('department', $department)
+        ->getResult();
 
-		return $semesters;
-		
-	}
+        return $semesters;
+    }
 
-    public function findAllSemesterName(){
+    public function findAllSemesterName()
+    {
         return $this->createQueryBuilder('Semester')
             ->select('Semester.name')
             ->where('Semester.id = 1')
@@ -34,14 +34,16 @@ class SemesterRepository extends EntityRepository {
             ->getScalarResult();
     }
 
-    public function NumOfSemesters(){
+    public function NumOfSemesters()
+    {
         return $this->createQueryBuilder('Semester')
             ->select('count(Semester.id)')
             ->getQuery()
             ->getSingleScalarResult();
     }
 
-    public function findAllSemesters(){
+    public function findAllSemesters()
+    {
         return $this->createQueryBuilder('Semester')
             ->select('Semester')
             ->distinct()
@@ -51,12 +53,16 @@ class SemesterRepository extends EntityRepository {
 
     /**
      * @param $department
+     *
      * @return Semester
+     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findCurrentSemesterByDepartment($department){
+    public function findCurrentSemesterByDepartment($department)
+    {
         $now = new \DateTime();
+
         return $this->createQueryBuilder('Semester')
             ->select('Semester')
             ->where('Semester.department = ?1')
@@ -68,7 +74,8 @@ class SemesterRepository extends EntityRepository {
             ->getOneOrNullResult();
     }
 
-    public function findLatestSemesterByDepartmentId($departmentId){
+    public function findLatestSemesterByDepartmentId($departmentId)
+    {
         return $this->createQueryBuilder('Semester')
             ->select('Semester')
             ->where('Semester.department = :department')
@@ -81,13 +88,19 @@ class SemesterRepository extends EntityRepository {
 
     /**
      * @param Department $department
-     * @param DateTime $time
+     * @param DateTime   $time
+     *
      * @return Department
+     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findSemesterWithActiveAdmissionByDepartment(Department $department, DateTime $time = null){
-        if($time === null) $time = new \DateTime();
+    public function findSemesterWithActiveAdmissionByDepartment(Department $department, DateTime $time = null)
+    {
+        if ($time === null) {
+            $time = new \DateTime();
+        }
+
         return $this->createQueryBuilder('Semester')
             ->select('Semester')
             ->where('Semester.department = ?1')
@@ -98,6 +111,4 @@ class SemesterRepository extends EntityRepository {
             ->getQuery()
             ->getOneOrNullResult();
     }
-
-
 }

@@ -13,7 +13,8 @@ class CreateInterviewType extends AbstractType
 
     protected $department;
 
-    public function __construct($roles, $department) {
+    public function __construct($roles, $department)
+    {
         $this->roles = $roles;
         $this->department = $department;
     }
@@ -22,7 +23,7 @@ class CreateInterviewType extends AbstractType
     {
         $builder->add('interviewer', 'entity', array(
             'class' => 'AppBundle:User',
-            'query_builder' => function(EntityRepository $er) {
+            'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('u')
                     ->select('u')
                     ->join('u.roles', 'r')
@@ -34,17 +35,17 @@ class CreateInterviewType extends AbstractType
                     ->setParameter('roles', $this->roles);
                     //->setParameter('department', $this->department);
             },
-            'group_by' => 'fieldOfStudy.department.shortName'
+            'group_by' => 'fieldOfStudy.department.shortName',
         ));
 
         $builder->add('interviewSchema', 'entity', array(
             'class' => 'AppBundle:InterviewSchema',
-            'query_builder' => function(EntityRepository $er){
+            'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('i')
                     ->select('i')
                     ->orderBy('i.id', 'DESC');
             },
-            'property' => 'name'
+            'property' => 'name',
         ));
     }
 

@@ -4,9 +4,9 @@ namespace AppBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class SubforumControllerTest extends WebTestCase {
-    
-//	public function testShow() {
+class SubforumControllerTest extends WebTestCase
+{
+    //	public function testShow() {
 //
 //		//ADMIN
 //		$client = static::createClient(array(), array(
@@ -71,7 +71,7 @@ class SubforumControllerTest extends WebTestCase {
 //		$this->assertTrue( $client->getResponse()->isRedirect('/') );
 //
 //	}
-	
+
 //	public function testCreateSubforumAction() {
 //
 //		//ADMIN
@@ -134,7 +134,7 @@ class SubforumControllerTest extends WebTestCase {
 //		$this->assertTrue( $client->getResponse()->isRedirect('/') );
 //
 //	}
-	
+
 //	public function testEditSubforum(){
 //
 //		//ADMIN
@@ -203,9 +203,10 @@ class SubforumControllerTest extends WebTestCase {
 //		$this->assertTrue( $client->getResponse()->isRedirect('/') );
 //
 //	}
-	
-	public function testDeleteSubforum() {
-//
+
+    public function testDeleteSubforum()
+    {
+        //
 //		/*
 //		NOTE:
 //		Cannot test this function fully as Symfony2.6 does not support JQuery interaction
@@ -245,6 +246,5 @@ class SubforumControllerTest extends WebTestCase {
 //		$this->assertContains('Du har ikke tilstrekkelige rettigheter.', $client->getResponse()->getContent());
 //
 //
-	}
-
+    }
 }

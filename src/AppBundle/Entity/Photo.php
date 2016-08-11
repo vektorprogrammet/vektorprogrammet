@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Tommy
  * Date: 24.04.2015
- * Time: 01:47
+ * Time: 01:47.
  */
 
 namespace AppBundle\Entity;
@@ -14,8 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="photo")
  */
-class Photo {
-
+class Photo
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -55,11 +55,10 @@ class Photo {
      */
     protected $gallery;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -67,9 +66,10 @@ class Photo {
     }
 
     /**
-     * Set path
+     * Set path.
      *
      * @param string $path
+     *
      * @return Photo
      */
     public function setPath($path)
@@ -80,9 +80,9 @@ class Photo {
     }
 
     /**
-     * Get path
+     * Get path.
      *
-     * @return string 
+     * @return string
      */
     public function getPath()
     {
@@ -90,9 +90,10 @@ class Photo {
     }
 
     /**
-     * Set public
+     * Set public.
      *
-     * @param boolean $public
+     * @param bool $public
+     *
      * @return Photo
      */
     public function setPublic($public)
@@ -103,9 +104,9 @@ class Photo {
     }
 
     /**
-     * Get public
+     * Get public.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getPublic()
     {
@@ -113,9 +114,10 @@ class Photo {
     }
 
     /**
-     * Set comment
+     * Set comment.
      *
      * @param string $comment
+     *
      * @return Photo
      */
     public function setComment($comment)
@@ -126,9 +128,9 @@ class Photo {
     }
 
     /**
-     * Get comment
+     * Get comment.
      *
-     * @return string 
+     * @return string
      */
     public function getComment()
     {
@@ -136,9 +138,10 @@ class Photo {
     }
 
     /**
-     * Set added
+     * Set added.
      *
      * @param \DateTime $added
+     *
      * @return Photo
      */
     public function setAdded($added)
@@ -149,9 +152,9 @@ class Photo {
     }
 
     /**
-     * Get added
+     * Get added.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getAdded()
     {
@@ -159,9 +162,10 @@ class Photo {
     }
 
     /**
-     * Set addedByUser
+     * Set addedByUser.
      *
-     * @param integer $addedByUser
+     * @param int $addedByUser
+     *
      * @return Photo
      */
     public function setAddedByUser($addedByUser)
@@ -172,9 +176,9 @@ class Photo {
     }
 
     /**
-     * Get addedByUser
+     * Get addedByUser.
      *
-     * @return integer 
+     * @return int
      */
     public function getAddedByUser()
     {
@@ -182,9 +186,10 @@ class Photo {
     }
 
     /**
-     * Set dateAdded
+     * Set dateAdded.
      *
      * @param \DateTime $dateAdded
+     *
      * @return Photo
      */
     public function setDateAdded($dateAdded)
@@ -195,9 +200,9 @@ class Photo {
     }
 
     /**
-     * Get dateAdded
+     * Get dateAdded.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateAdded()
     {
@@ -205,9 +210,10 @@ class Photo {
     }
 
     /**
-     * Set pathToFile
+     * Set pathToFile.
      *
      * @param string $pathToFile
+     *
      * @return Photo
      */
     public function setPathToFile($pathToFile)
@@ -218,9 +224,9 @@ class Photo {
     }
 
     /**
-     * Get pathToFile
+     * Get pathToFile.
      *
-     * @return string 
+     * @return string
      */
     public function getPathToFile()
     {
@@ -228,9 +234,10 @@ class Photo {
     }
 
     /**
-     * Set gallery
+     * Set gallery.
      *
      * @param \AppBundle\Entity\Gallery $gallery
+     *
      * @return Photo
      */
     public function setGallery(\AppBundle\Entity\Gallery $gallery = null)
@@ -241,9 +248,9 @@ class Photo {
     }
 
     /**
-     * Get gallery
+     * Get gallery.
      *
-     * @return \AppBundle\Entity\Gallery 
+     * @return \AppBundle\Entity\Gallery
      */
     public function getGallery()
     {
@@ -251,9 +258,10 @@ class Photo {
     }
 
     /**
-     * Set dateTaken
+     * Set dateTaken.
      *
      * @param \DateTime $dateTaken
+     *
      * @return Photo
      */
     public function setDateTaken($dateTaken)
@@ -264,9 +272,9 @@ class Photo {
     }
 
     /**
-     * Get dateTaken
+     * Get dateTaken.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateTaken()
     {

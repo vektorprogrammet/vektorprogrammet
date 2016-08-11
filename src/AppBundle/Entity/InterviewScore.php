@@ -43,9 +43,9 @@ class InterviewScore
     private $suitableAssistant;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -53,9 +53,10 @@ class InterviewScore
     }
 
     /**
-     * Set explanatoryPower
+     * Set explanatoryPower.
      *
-     * @param integer $explanatoryPower
+     * @param int $explanatoryPower
+     *
      * @return InterviewScore
      */
     public function setExplanatoryPower($explanatoryPower)
@@ -66,9 +67,9 @@ class InterviewScore
     }
 
     /**
-     * Get explanatoryPower
+     * Get explanatoryPower.
      *
-     * @return integer 
+     * @return int
      */
     public function getExplanatoryPower()
     {
@@ -76,9 +77,10 @@ class InterviewScore
     }
 
     /**
-     * Set roleModel
+     * Set roleModel.
      *
-     * @param integer $roleModel
+     * @param int $roleModel
+     *
      * @return InterviewScore
      */
     public function setRoleModel($roleModel)
@@ -89,9 +91,9 @@ class InterviewScore
     }
 
     /**
-     * Get roleModel
+     * Get roleModel.
      *
-     * @return integer 
+     * @return int
      */
     public function getRoleModel()
     {
@@ -99,9 +101,10 @@ class InterviewScore
     }
 
     /**
-     * Set suitability
+     * Set suitability.
      *
-     * @param integer $suitability
+     * @param int $suitability
+     *
      * @return InterviewScore
      */
     public function setSuitability($suitability)
@@ -112,9 +115,9 @@ class InterviewScore
     }
 
     /**
-     * Get suitability
+     * Get suitability.
      *
-     * @return integer 
+     * @return int
      */
     public function getSuitability()
     {
@@ -122,14 +125,13 @@ class InterviewScore
     }
 
     /**
-     * Get the sum of all the scores
+     * Get the sum of all the scores.
      *
-     * @return integer
+     * @return int
      */
     public function getSum()
     {
         return $this->explanatoryPower + $this->roleModel + $this->suitability;
-
     }
 
     /**
@@ -148,12 +150,11 @@ class InterviewScore
         $this->suitableAssistant = $suitableAssistant;
     }
 
-    public function hideScores(){
+    public function hideScores()
+    {
         $this->setDrive(0);
         $this->setExplanatoryPower(0);
         $this->setRoleModel(0);
         $this->setTotalImpression(0);
     }
 }
-
-

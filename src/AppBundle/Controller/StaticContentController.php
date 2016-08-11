@@ -4,15 +4,18 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+
 //use AppBundle\Entity\StaticContent;
 
-class StaticContentController extends Controller{
-
+class StaticContentController extends Controller
+{
     /**
      * Updates the static text content in database.
+     *
      * @return Response
      */
-    public function updateAction(){
+    public function updateAction()
+    {
         $req = $this->get('request');
         $htmlId = $req->get('editorID');
         $newContent = $req->get('editabledata');
@@ -23,6 +26,7 @@ class StaticContentController extends Controller{
         $content->setHtml($newContent);
         $em->persist($content);
         $em->flush();
-        return new Response('Database updated static element ' . $htmlId . ' New content: ' .$newContent);
+
+        return new Response('Database updated static element '.$htmlId.' New content: '.$newContent);
     }
 }

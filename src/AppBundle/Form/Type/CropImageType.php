@@ -10,15 +10,15 @@ class CropImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('image','text', array(
+            ->add('image', 'text', array(
                 'label' => false,
-                'attr' => array('placeholder' => 'Klikk for å velge bilde')
+                'attr' => array('placeholder' => 'Klikk for å velge bilde'),
             ))
-            ->add('largeCropData','hidden')
-            ->add('mediumCropData','hidden')
-            ->add('smallCropData','hidden')
+            ->add('largeCropData', 'hidden')
+            ->add('mediumCropData', 'hidden')
+            ->add('smallCropData', 'hidden')
             ->add('crop', 'submit', array(
-                'label' => 'Crop & bruk'
+                'label' => 'Crop & bruk',
             ));
     }
 

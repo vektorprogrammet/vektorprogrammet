@@ -37,9 +37,9 @@ class InterviewAnswer
     protected $answer;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -47,9 +47,10 @@ class InterviewAnswer
     }
 
     /**
-     * Set answer
+     * Set answer.
      *
      * @param string $answer
+     *
      * @return InterviewAnswer
      */
     public function setAnswer($answer)
@@ -60,9 +61,9 @@ class InterviewAnswer
     }
 
     /**
-     * Get answer
+     * Get answer.
      *
-     * @return string 
+     * @return string
      */
     public function getAnswer()
     {
@@ -70,9 +71,10 @@ class InterviewAnswer
     }
 
     /**
-     * Set interview
+     * Set interview.
      *
      * @param \AppBundle\Entity\Interview $interview
+     *
      * @return InterviewAnswer
      */
     public function setInterview(\AppBundle\Entity\Interview $interview = null)
@@ -83,7 +85,7 @@ class InterviewAnswer
     }
 
     /**
-     * Get interview
+     * Get interview.
      *
      * @return \AppBundle\Entity\Interview
      */
@@ -93,9 +95,10 @@ class InterviewAnswer
     }
 
     /**
-     * Set interviewQuestion
+     * Set interviewQuestion.
      *
      * @param \AppBundle\Entity\InterviewQuestion $interviewQuestion
+     *
      * @return InterviewAnswer
      */
     public function setInterviewQuestion(\AppBundle\Entity\InterviewQuestion $interviewQuestion = null)
@@ -106,7 +109,7 @@ class InterviewAnswer
     }
 
     /**
-     * Get interviewQuestion
+     * Get interviewQuestion.
      *
      * @return \AppBundle\Entity\InterviewQuestion
      */

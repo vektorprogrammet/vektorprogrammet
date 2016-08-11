@@ -12,7 +12,7 @@ class SubstituteRepositoryFunctionalTest extends KernelTestCase
     private $em;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setUp()
     {
@@ -24,7 +24,7 @@ class SubstituteRepositoryFunctionalTest extends KernelTestCase
 
     public function testFindSubstitutes()
     {
-//        // Get the substitutes for department with id 1 and semester with id 1
+        //        // Get the substitutes for department with id 1 and semester with id 1
 //        $substitutes = $this->em->getRepository('AppBundle:Substitute')->findSubstitutes(1,1);
 //
 //        // Assert that the number of returned substitutes are correct (5 is the number of subsistute fixtures)
@@ -38,7 +38,7 @@ class SubstituteRepositoryFunctionalTest extends KernelTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown()
     {

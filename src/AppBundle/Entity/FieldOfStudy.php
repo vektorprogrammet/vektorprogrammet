@@ -5,41 +5,37 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- *
  * @ORM\Table(name="field_of_study")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\FieldOfStudyRepository")
  */
-class FieldOfStudy  {
-
+class FieldOfStudy
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-	
-	/**
+
+    /**
      * @ORM\Column(type="string", length=250)
      */
     private $name;
-	
-	/**
+
+    /**
      * @ORM\Column(type="string", length=50)
      */
     private $short_name;
-	
-	
-	/**
-	 * @ORM\ManyToOne(targetEntity="Department", inversedBy="fieldOfStudy")
-     */
-    private $department;
-	
-
 
     /**
-     * Get id
+     * @ORM\ManyToOne(targetEntity="Department", inversedBy="fieldOfStudy")
+     */
+    private $department;
+
+    /**
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -47,9 +43,10 @@ class FieldOfStudy  {
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return FieldOfStudy
      */
     public function setName($name)
@@ -60,9 +57,9 @@ class FieldOfStudy  {
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -70,9 +67,10 @@ class FieldOfStudy  {
     }
 
     /**
-     * Set short_name
+     * Set short_name.
      *
      * @param string $shortName
+     *
      * @return FieldOfStudy
      */
     public function setShortName($shortName)
@@ -83,9 +81,9 @@ class FieldOfStudy  {
     }
 
     /**
-     * Get short_name
+     * Get short_name.
      *
-     * @return string 
+     * @return string
      */
     public function getShortName()
     {
@@ -93,9 +91,10 @@ class FieldOfStudy  {
     }
 
     /**
-     * Set department
+     * Set department.
      *
      * @param \AppBundle\Entity\Department $department
+     *
      * @return FieldOfStudy
      */
     public function setDepartment(\AppBundle\Entity\Department $department = null)
@@ -106,7 +105,7 @@ class FieldOfStudy  {
     }
 
     /**
-     * Get department
+     * Get department.
      *
      * @return \AppBundle\Entity\Department
      */
@@ -114,9 +113,9 @@ class FieldOfStudy  {
     {
         return $this->department;
     }
-	
-	public function __toString()
-	{
-		return $this->getShortName();
-	}
+
+    public function __toString()
+    {
+        return $this->getShortName();
+    }
 }

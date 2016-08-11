@@ -9,10 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class NewUserType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
             ->add('user_name', 'text', array(
                 'label' => 'Brukernavn',
@@ -24,22 +22,22 @@ class NewUserType extends AbstractType
                 'invalid_message' => 'Passordene må være like',
                 'constraints' => array(new Assert\Length(array(
                     'min' => 8,
-                    'minMessage' => "Passordet må være på minst {{ limit }} tegn"
-                )))
+                    'minMessage' => 'Passordet må være på minst {{ limit }} tegn',
+                ))),
             ))
             ->add('save', 'submit', array(
-                'label' => 'Opprett bruker'));
+                'label' => 'Opprett bruker', ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver) {
-
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
         ));
-
     }
 
-    public function getName() {
+    public function getName()
+    {
         return 'createNewUser';
     }
 }

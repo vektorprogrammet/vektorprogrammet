@@ -6,18 +6,18 @@ use AppBundle\Form\Type\CreateThreadType;
 use AppBundle\Entity\Thread;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class CreateThreadTest extends TypeTestCase {
-	
-	/**
+class CreateThreadTest extends TypeTestCase
+{
+    /**
      * @dataProvider getValidTestData
      */
-	public function testForm($data){
-	
+    public function testForm($data)
+    {
         $type = new CreateThreadType();
         $form = $this->factory->create($type);
-		
-		$object = new Thread();
-		
+
+        $object = new Thread();
+
         $object->fromArray($data);
 
         // submit the data to the form directly
@@ -32,31 +32,28 @@ class CreateThreadTest extends TypeTestCase {
         foreach (array_keys($data) as $key) {
             $this->assertArrayHasKey($key, $children);
         }
-		
     }
-	
-	public function getValidTestData()
+
+    public function getValidTestData()
     {
         return array(
             array(
                 'data' => array(
                     'subject' => 'Dis be a subject',
-					'text' => 'Dis be a text',
+                    'text' => 'Dis be a text',
                 ),
             ),
             array(
                 'data' => array(
-				
-				),
+
+                ),
             ),
             array(
                 'data' => array(
                     'subject' => null,
-					'text' => null,
+                    'text' => null,
                 ),
             ),
         );
     }
-	
 }
-       

@@ -4,16 +4,16 @@ namespace AppBundle\Tests\Form\Type;
 
 use AppBundle\Form\Type\CreateAssistantHistoryType;
 use AppBundle\Entity\AssistantHistory;
-use AppBundle\Entity\Department;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class CreateAssistantHistoryTest extends TypeTestCase {
-	
-	/**
+class CreateAssistantHistoryTest extends TypeTestCase
+{
+    /**
      * @dataProvider getValidTestData
      */
-	public function testForm($data){
-//
+    public function testForm($data)
+    {
+        //
 //		 // First, mock the object to be used in the test
 //        $department= $this->getMock('\AppBundle\Entity\department');
 //
@@ -53,31 +53,29 @@ class CreateAssistantHistoryTest extends TypeTestCase {
 //        }
 //
     }
-	
-	public function getValidTestData()
+
+    public function getValidTestData()
     {
         return array(
             array(
                 'data' => array(
                     'semester' => 'test',
-					'workdays' => 'test2',
-					'school' => 'test3',
+                    'workdays' => 'test2',
+                    'school' => 'test3',
                 ),
             ),
             array(
                 'data' => array(
-				
-				),
+
+                ),
             ),
             array(
                 'data' => array(
                     'semester' => null,
-					'workdays' => null,
-					'school' => null,
+                    'workdays' => null,
+                    'school' => null,
                 ),
             ),
         );
     }
-	
 }
-       

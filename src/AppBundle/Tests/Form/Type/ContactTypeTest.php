@@ -6,13 +6,14 @@ use AppBundle\Form\Type\ContactType;
 use AppBundle\Entity\Contact;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class ContactTypeTest extends TypeTestCase {
-	
-	/**
+class ContactTypeTest extends TypeTestCase
+{
+    /**
      * @dataProvider getValidTestData
      */
-	public function testForm($data){
-//
+    public function testForm($data)
+    {
+        //
 //        $type = new ContactType();
 //        $form = $this->factory->create($type);
 //
@@ -34,33 +35,31 @@ class ContactTypeTest extends TypeTestCase {
 //        }
 //
     }
-	
-	public function getValidTestData()
+
+    public function getValidTestData()
     {
         return array(
             array(
                 'data' => array(
                     'name' => 'Per Olsen',
-					'email' => 'Per@mail.com',
-					'subject' => 'Et subject hehe',
-					'body' => 'A really long text that should fit the entire body of the contact textarea if I can only type enough letters and characters like 123 and ABC',
+                    'email' => 'Per@mail.com',
+                    'subject' => 'Et subject hehe',
+                    'body' => 'A really long text that should fit the entire body of the contact textarea if I can only type enough letters and characters like 123 and ABC',
                 ),
             ),
             array(
                 'data' => array(
-				
-				),
+
+                ),
             ),
             array(
                 'data' => array(
                     'name' => null,
-					'email' => null,
-					'subject' => null,
-					'body' => null,
+                    'email' => null,
+                    'subject' => null,
+                    'body' => null,
                 ),
             ),
         );
     }
-	
 }
-       

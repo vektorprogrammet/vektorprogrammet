@@ -6,18 +6,18 @@ use AppBundle\Form\Type\CreatePostType;
 use AppBundle\Entity\Post;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class CreatePostTest extends TypeTestCase {
-	
-	/**
+class CreatePostTest extends TypeTestCase
+{
+    /**
      * @dataProvider getValidTestData
      */
-	public function testForm($data){
-	
+    public function testForm($data)
+    {
         $type = new CreatePostType();
         $form = $this->factory->create($type);
-		
-		$object = new Post();
-		
+
+        $object = new Post();
+
         $object->fromArray($data);
 
         // submit the data to the form directly
@@ -32,31 +32,28 @@ class CreatePostTest extends TypeTestCase {
         foreach (array_keys($data) as $key) {
             $this->assertArrayHasKey($key, $children);
         }
-		
     }
-	
-	public function getValidTestData()
+
+    public function getValidTestData()
     {
         return array(
             array(
                 'data' => array(
                     'Subject' => 'A subject.',
-					'text' => 'A long text.......',
+                    'text' => 'A long text.......',
                 ),
             ),
             array(
                 'data' => array(
-				
-				),
+
+                ),
             ),
             array(
                 'data' => array(
                     'Subject' => null,
-					'text' => null,
+                    'text' => null,
                 ),
             ),
         );
     }
-	
 }
-       

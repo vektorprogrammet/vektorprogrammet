@@ -6,7 +6,6 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\Semester;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -45,7 +44,7 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
 
         $previousSemester = new Semester();
         $previousSemester->setSemesterTime($isSpring ? 'Høst' : 'Vår');
-        $previousSemester->setYear($isSpring ? $now->format('Y') -1 : $now->format('Y'));
+        $previousSemester->setYear($isSpring ? $now->format('Y') - 1 : $now->format('Y'));
         $previousSemester->setDepartment($this->getReference('dep-1'));
         $previousSemester->setAdmissionStartDate(new \DateTime());
         $previousSemester->setAdmissionEndDate(new \DateTime());

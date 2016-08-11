@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ArticleControllerTest extends WebTestCase
 {
-
     public function testShow()
     {
         $client = static::createClient();
@@ -19,7 +18,6 @@ class ArticleControllerTest extends WebTestCase
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h5:contains("VEKAS VEKTOR­ASSISTENT! MØT BEATE!")')->count());
         $this->assertEquals(1, $crawler->filter('p:contains("Filter:")')->count());
-
     }
 
     public function testShowFilter()
@@ -54,6 +52,5 @@ class ArticleControllerTest extends WebTestCase
 
         // Test that the sidebar does not include this article
         $this->assertEquals(0, $crawler->filter('p:contains("VEKTOR­PROGRAMMET TILBYR FORELDREKURS!")')->count());
-
     }
 }

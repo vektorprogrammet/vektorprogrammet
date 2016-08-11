@@ -4,15 +4,14 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="semester")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SemesterRepository")
  */
-class Semester {
-
+class Semester
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -33,42 +32,39 @@ class Semester {
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $year;
-	
-	/**
+
+    /**
      * @var Department
      * @ORM\ManyToOne(targetEntity="Department", inversedBy="semesters")
      */
     protected $department;
 
-	/**
+    /**
      * @ORM\Column(type="datetime", length=150)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $admission_start_date;
-	
-	/**
+
+    /**
      * @ORM\Column(type="datetime", length=150)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $admission_end_date;
 
-	/**
+    /**
      * @ORM\Column(type="datetime", length=150)
      */
-	protected $semesterStartDate;
-	
-	/**
-     * @ORM\Column(type="datetime", length=150)
-     */
-	protected $semesterEndDate;
-
-
-
+    protected $semesterStartDate;
 
     /**
-     * Get id
+     * @ORM\Column(type="datetime", length=150)
+     */
+    protected $semesterEndDate;
+
+    /**
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -76,9 +72,10 @@ class Semester {
     }
 
     /**
-     * Set admission_start_date
+     * Set admission_start_date.
      *
      * @param \DateTime $admissionStartDate
+     *
      * @return Semester
      */
     public function setAdmissionStartDate($admissionStartDate)
@@ -87,11 +84,12 @@ class Semester {
 
         return $this;
     }
-	
-	/**
-     * Set admission_start_date
+
+    /**
+     * Set admission_start_date.
      *
      * @param \DateTime $admissionStartDate
+     *
      * @return Semester
      */
     public function setAdmission_Start_Date($admissionStartDate)
@@ -102,9 +100,9 @@ class Semester {
     }
 
     /**
-     * Get admission_start_date
+     * Get admission_start_date.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getAdmissionStartDate()
     {
@@ -112,9 +110,10 @@ class Semester {
     }
 
     /**
-     * Set admission_end_date
+     * Set admission_end_date.
      *
      * @param \DateTime $admissionEndDate
+     *
      * @return Semester
      */
     public function setAdmissionEndDate($admissionEndDate)
@@ -123,11 +122,12 @@ class Semester {
 
         return $this;
     }
-	
-	/**
-     * Set admission_end_date
+
+    /**
+     * Set admission_end_date.
      *
      * @param \DateTime $admissionEndDate
+     *
      * @return Semester
      */
     public function setAdmission_End_Date($admissionEndDate)
@@ -138,9 +138,9 @@ class Semester {
     }
 
     /**
-     * Get admission_end_date
+     * Get admission_end_date.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getAdmissionEndDate()
     {
@@ -148,19 +148,20 @@ class Semester {
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
-        return $this->semesterTime . " " . $this->year;
+        return $this->semesterTime.' '.$this->year;
     }
 
     /**
-     * Set department
+     * Set department.
      *
      * @param \AppBundle\Entity\Department $department
+     *
      * @return Semester
      */
     public function setDepartment(\AppBundle\Entity\Department $department = null)
@@ -171,7 +172,7 @@ class Semester {
     }
 
     /**
-     * Get department
+     * Get department.
      *
      * @return \AppBundle\Entity\Department
      */
@@ -179,16 +180,17 @@ class Semester {
     {
         return $this->department;
     }
-	
-	public function __toString()
-	{
+
+    public function __toString()
+    {
         return (string) $this->getName().' - '.$this->getDepartment(); //Fix for viewing departmentname in semesterlist.
-	}
+    }
 
     /**
-     * Set semesterStartDate
+     * Set semesterStartDate.
      *
      * @param \DateTime $semesterStartDate
+     *
      * @return Semester
      */
     public function setSemesterStartDate($semesterStartDate)
@@ -199,9 +201,9 @@ class Semester {
     }
 
     /**
-     * Get semesterStartDate
+     * Get semesterStartDate.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getSemesterStartDate()
     {
@@ -209,9 +211,10 @@ class Semester {
     }
 
     /**
-     * Set semesterEndDate
+     * Set semesterEndDate.
      *
      * @param \DateTime $semesterEndDate
+     *
      * @return Semester
      */
     public function setSemesterEndDate($semesterEndDate)
@@ -222,17 +225,17 @@ class Semester {
     }
 
     /**
-     * Get semesterEndDate
+     * Get semesterEndDate.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getSemesterEndDate()
     {
         return $this->semesterEndDate;
     }
-	
-	// Used for unit testing 
-	public function fromArray($data = array())
+
+    // Used for unit testing 
+    public function fromArray($data = array())
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";

@@ -12,7 +12,7 @@ class WorkHistoryRepositoryFunctionalTest extends KernelTestCase
     private $em;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setUp()
     {
@@ -22,10 +22,11 @@ class WorkHistoryRepositoryFunctionalTest extends KernelTestCase
             ->getManager()
         ;
     }
-	
-	// A test to check whether the method finds the active work histories given the $today variable, and that the user has the same ID as the given user 
-	public function testFindActiveWorkHistoriesByUser(){
-		
+
+    // A test to check whether the method finds the active work histories given the $today variable, and that the user has the same ID as the given user 
+    public function testFindActiveWorkHistoriesByUser()
+    {
+
 //		$workhistories = $this->em->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByUser(1);
 //
 //		$today = new \DateTime('now');
@@ -35,27 +36,24 @@ class WorkHistoryRepositoryFunctionalTest extends KernelTestCase
 //			if ( !($wh->getStartSemester()->getEndDate() == null )) $this->assertGreaterThan($today, $wh->getStartSemester()->getEndDate());
 //			$this->assertEquals(1, $wh->getUser()->getId());
 //		}
-		
-	}
-	
-	// A test to check whether the method finds the active work histories given the $today variable 
-/*	public function testFindActiveWorkHistories(){
-		
-		$workhistories = $this->em->getRepository('AppBundle:WorkHistory')->findActiveWorkHistories();
-		
-		$today = new \DateTime('now');
-		
-		foreach ($workhistories as $wh){
-			$this->assertGreaterThan($wh->getStartDate(), $today);
-			if ( !($wh->getEndDate() == null )) $this->assertGreaterThan($today, $wh->getEndDate());
-		}
-		
-	}*/
-	
+    }
 
+    // A test to check whether the method finds the active work histories given the $today variable 
+/*	public function testFindActiveWorkHistories(){
+        
+        $workhistories = $this->em->getRepository('AppBundle:WorkHistory')->findActiveWorkHistories();
+        
+        $today = new \DateTime('now');
+        
+        foreach ($workhistories as $wh){
+            $this->assertGreaterThan($wh->getStartDate(), $today);
+            if ( !($wh->getEndDate() == null )) $this->assertGreaterThan($today, $wh->getEndDate());
+        }
+        
+    }*/
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown()
     {
@@ -63,5 +61,3 @@ class WorkHistoryRepositoryFunctionalTest extends KernelTestCase
         $this->em->close();
     }
 }
-
-   

@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ArticleAdminControllerTest extends WebTestCase
 {
-
     public function testShow()
     {
         // Team user
@@ -76,7 +75,6 @@ class ArticleAdminControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('h1:contains("test tittel")')->count());
         $this->assertContains('test artikkel', $client->getResponse()->getContent());
 
-
         // User
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'assistent',
@@ -121,7 +119,6 @@ class ArticleAdminControllerTest extends WebTestCase
         $this->assertContains('Endringene har blitt publisert.', $client->getResponse()->getContent());
         $this->assertEquals(1, $crawler->filter('h1:contains("Ny test tittel")')->count());
 
-
         // User
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'assistent',
@@ -145,5 +142,4 @@ class ArticleAdminControllerTest extends WebTestCase
     public function testDelete() {}
 
     */
-
 }

@@ -4,9 +4,9 @@ namespace AppBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class ThreadControllerTest extends WebTestCase {
-	
-//	public function testCreateThread() {
+class ThreadControllerTest extends WebTestCase
+{
+    //	public function testCreateThread() {
 //
 //		// ADMIN
 //		$client = static::createClient(array(), array(
@@ -93,7 +93,7 @@ class ThreadControllerTest extends WebTestCase {
 //		$this->assertEquals( 1, $crawler->filter('p:contains("textUSER1")')->count() );
 //
 //	}
-	
+
 //	public function testEditThread() {
 //
 //		// ADMIN
@@ -187,9 +187,10 @@ class ThreadControllerTest extends WebTestCase {
 //		$this->assertEquals( 0, $crawler->filter('p:contains("textUSER1")')->count() );
 //
 //	}
-	
-    public function testShowSpecificSubforumThreads() {
-//
+
+    public function testShowSpecificSubforumThreads()
+    {
+        //
 //		// ADMIN
 //		$client = static::createClient(array(), array(
 //			'PHP_AUTH_USER' => 'petjo',
@@ -261,6 +262,4 @@ class ThreadControllerTest extends WebTestCase {
 //		$this->assertEquals(1, $crawler->filter('h1:contains("Spørsmål til vektor")')->count());
 //
     }
-	
-	
 }

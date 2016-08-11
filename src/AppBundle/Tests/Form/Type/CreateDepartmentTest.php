@@ -6,18 +6,18 @@ use AppBundle\Form\Type\CreateDepartmentType;
 use AppBundle\Entity\Department;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class CreateDepartmentTest extends TypeTestCase {
-	
-	/**
+class CreateDepartmentTest extends TypeTestCase
+{
+    /**
      * @dataProvider getValidTestData
      */
-	public function testForm($data){
-	
+    public function testForm($data)
+    {
         $type = new CreateDepartmentType();
         $form = $this->factory->create($type);
-		
-		$object = new Department();
-		
+
+        $object = new Department();
+
         $object->fromArray($data);
 
         // submit the data to the form directly
@@ -32,35 +32,32 @@ class CreateDepartmentTest extends TypeTestCase {
         foreach (array_keys($data) as $key) {
             $this->assertArrayHasKey($key, $children);
         }
-		
     }
-	
-	public function getValidTestData()
+
+    public function getValidTestData()
     {
         return array(
             array(
                 'data' => array(
                     'name' => 'Universitetet i Østfold',
-					'short_name' => 'UiØ',
-					'email' => 'uiø@mail.com',
-					'address' => 'Ormvegen 12',
+                    'short_name' => 'UiØ',
+                    'email' => 'uiø@mail.com',
+                    'address' => 'Ormvegen 12',
                 ),
             ),
             array(
                 'data' => array(
-				
-				),
+
+                ),
             ),
             array(
                 'data' => array(
                     'name' => null,
-					'short_name' => null,
-					'email' => null,
-					'address' => null,
+                    'short_name' => null,
+                    'email' => null,
+                    'address' => null,
                 ),
             ),
         );
     }
-	
 }
-       

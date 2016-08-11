@@ -3,54 +3,51 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- *
  * @ORM\Table(name="forum")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ForumRepository")
  */
-class Forum {
-
+class Forum
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-	
-	/**
+
+    /**
      * @ORM\Column(type="string", length=250)
      */
     protected $name;
-	
-	/**
-     * @ORM\Column(type="string", length=250)
-     */
-	protected $description;
-	
-	/**
-     * @ORM\Column(type="string")
-     */
-	protected $type;
-	
-	/**
-     * @ORM\ManyToMany(targetEntity="Subforum", inversedBy="forums")
-     * @ORM\JoinTable(name="forum_subforum")
-	 * @ORM\JoinColumn(onDelete="cascade")
-     **/
-	protected $subforums;
-	
-	public function __construct() {
-        $this->subforums = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-	
-	
 
     /**
-     * Get id
+     * @ORM\Column(type="string", length=250)
+     */
+    protected $description;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $type;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Subforum", inversedBy="forums")
+     * @ORM\JoinTable(name="forum_subforum")
+     * @ORM\JoinColumn(onDelete="cascade")
+     **/
+    protected $subforums;
+
+    public function __construct()
+    {
+        $this->subforums = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -58,9 +55,10 @@ class Forum {
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return Forum
      */
     public function setName($name)
@@ -71,9 +69,9 @@ class Forum {
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -81,9 +79,10 @@ class Forum {
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
+     *
      * @return Forum
      */
     public function setDescription($description)
@@ -94,9 +93,9 @@ class Forum {
     }
 
     /**
-     * Get description
+     * Get description.
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -104,9 +103,10 @@ class Forum {
     }
 
     /**
-     * Add subforums
+     * Add subforums.
      *
      * @param \AppBundle\Entity\Subforum $subforums
+     *
      * @return Forum
      */
     public function addSubforum(\AppBundle\Entity\Subforum $subforums)
@@ -117,7 +117,7 @@ class Forum {
     }
 
     /**
-     * Remove subforums
+     * Remove subforums.
      *
      * @param \AppBundle\Entity\Subforum $subforums
      */
@@ -127,25 +127,25 @@ class Forum {
     }
 
     /**
-     * Get subforums
+     * Get subforums.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getSubforums()
     {
         return $this->subforums;
     }
-	
-	public function __toString(){
-		return $this->getName();
-	}
 
-
+    public function __toString()
+    {
+        return $this->getName();
+    }
 
     /**
-     * Set type
+     * Set type.
      *
      * @param string $type
+     *
      * @return Forum
      */
     public function setType($type)
@@ -156,22 +156,21 @@ class Forum {
     }
 
     /**
-     * Get type
+     * Get type.
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
         return $this->type;
     }
-	
-	// Used for unit testing 
-	public function fromArray($data = array())
+
+    // Used for unit testing 
+    public function fromArray($data = array())
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";
             $this->$method($value);
         }
     }
-	
 }

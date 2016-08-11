@@ -12,7 +12,7 @@ class LoadInterviewQuestionData extends AbstractFixture implements OrderedFixtur
     public function load(ObjectManager $manager)
     {
         $question1 = new InterviewQuestion();
-        $question1->setQuestion("Hva er din motivasjon for å søke vektorassistent?");
+        $question1->setQuestion('Hva er din motivasjon for å søke vektorassistent?');
         $question1->setType('text');
         $manager->persist($question1);
 
@@ -50,7 +50,6 @@ class LoadInterviewQuestionData extends AbstractFixture implements OrderedFixtur
         $question8->setQuestion('Kan du tenke deg å være med i organiseringen av Vektorprogrammet? Dette inneholder teamarbeid.');
         $question8->setType('text');
         $manager->persist($question8);
-
 
         $manager->flush();
 

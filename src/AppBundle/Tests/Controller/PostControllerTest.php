@@ -4,11 +4,11 @@ namespace AppBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class PostControllerTest extends WebTestCase {
-	
-
-	public function testShow() {
-//
+class PostControllerTest extends WebTestCase
+{
+    public function testShow()
+    {
+        //
 //		// Admin
 //		$client = static::createClient(array(), array(
 //			'PHP_AUTH_USER' => 'petjo',
@@ -98,7 +98,7 @@ class PostControllerTest extends WebTestCase {
 //		// Assert a specific 200 status code
 //		$this->assertEquals( 200, $client->getResponse()->getStatusCode() );
     }
-	
+
 //	public function testEditPost() {
 //
 //		// Team
@@ -156,13 +156,13 @@ class PostControllerTest extends WebTestCase {
 //
 //
 //	}
-	
-	/*
-	Requires JQuery interaction, Symfony2 does not support that
-	
-	Phpunit was designed to test the PHP language, have to use another tool to test these. 
-	
-	public function testDeletePost() {}
-	
-	*/
+
+    /*
+    Requires JQuery interaction, Symfony2 does not support that
+    
+    Phpunit was designed to test the PHP language, have to use another tool to test these. 
+    
+    public function testDeletePost() {}
+    
+    */
 }

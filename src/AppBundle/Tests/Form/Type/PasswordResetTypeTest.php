@@ -6,13 +6,14 @@ use AppBundle\Entity\PasswordReset;
 use AppBundle\Form\Type\PasswordResetType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class PasswordResetTypeTest extends TypeTestCase {
-
+class PasswordResetTypeTest extends TypeTestCase
+{
     /**
      * @dataProvider getValidTestData
      */
-    public function testForm($data){
-//
+    public function testForm($data)
+    {
+        //
 //        $type = new PasswordResetType();
 //        $form = $this->factory->create($type);
 //
@@ -57,5 +58,4 @@ class PasswordResetTypeTest extends TypeTestCase {
             ),
         );
     }
-
 }

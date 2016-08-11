@@ -5,43 +5,41 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 /**
- *
  * @ORM\Table(name="assistant_history")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\AssistantHistoryRepository")
  */
-class AssistantHistory {
-	
-	 /**
+class AssistantHistory
+{
+    /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-	protected $id;
-	
-	/**
+    protected $id;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="assistantHistories")
      **/
     protected $user;
-	
-	/**
+
+    /**
      * @ORM\ManyToOne(targetEntity="Semester")
-	 * @ORM\JoinColumn(onDelete="SET NULL")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      **/
-	protected $semester;
-	
-	/**
+    protected $semester;
+
+    /**
      * @ORM\ManyToOne(targetEntity="School")
-	 * @ORM\JoinColumn(onDelete="SET NULL")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      **/
-	protected $school;
-	
-	/**
+    protected $school;
+
+    /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
-	protected $workdays;
+    protected $workdays;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -55,12 +53,12 @@ class AssistantHistory {
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $day;
-	
 
     /**
-     * Set user
+     * Set user.
      *
      * @param \AppBundle\Entity\User $user
+     *
      * @return AssistantHistory
      */
     public function setUser(\AppBundle\Entity\User $user = null)
@@ -71,7 +69,7 @@ class AssistantHistory {
     }
 
     /**
-     * Get user
+     * Get user.
      *
      * @return \AppBundle\Entity\User
      */
@@ -81,9 +79,10 @@ class AssistantHistory {
     }
 
     /**
-     * Set semester
+     * Set semester.
      *
      * @param \AppBundle\Entity\Semester $semester
+     *
      * @return AssistantHistory
      */
     public function setSemester(\AppBundle\Entity\Semester $semester = null)
@@ -94,7 +93,7 @@ class AssistantHistory {
     }
 
     /**
-     * Get semester
+     * Get semester.
      *
      * @return \AppBundle\Entity\Semester
      */
@@ -104,9 +103,10 @@ class AssistantHistory {
     }
 
     /**
-     * Set school
+     * Set school.
      *
      * @param \AppBundle\Entity\School $school
+     *
      * @return AssistantHistory
      */
     public function setSchool(\AppBundle\Entity\School $school = null)
@@ -117,7 +117,7 @@ class AssistantHistory {
     }
 
     /**
-     * Get school
+     * Get school.
      *
      * @return \AppBundle\Entity\School
      */
@@ -127,23 +127,25 @@ class AssistantHistory {
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
         return $this->id;
     }
-	
-	public function __toString(){
-		return (string)$this->getId();
-	}
+
+    public function __toString()
+    {
+        return (string) $this->getId();
+    }
 
     /**
-     * Set workdays
+     * Set workdays.
      *
      * @param string $workdays
+     *
      * @return AssistantHistory
      */
     public function setWorkdays($workdays)
@@ -154,9 +156,9 @@ class AssistantHistory {
     }
 
     /**
-     * Get workdays
+     * Get workdays.
      *
-     * @return string 
+     * @return string
      */
     public function getWorkdays()
     {
@@ -195,18 +197,12 @@ class AssistantHistory {
         $this->day = $day;
     }
 
-
-
-
-	
-	// Used for unit testing 
-	public function fromArray($data = array())
+    // Used for unit testing 
+    public function fromArray($data = array())
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";
             $this->$method($value);
         }
     }
-
-
 }

@@ -11,26 +11,26 @@ class ScheduleInterviewType extends AbstractType
     {
         $builder
             ->add('from', 'email', array(
-                'label' => 'Avsender'
+                'label' => 'Avsender',
             ))
             ->add('to', 'email', array(
-                'label' => 'Mottaker'
+                'label' => 'Mottaker',
             ))
             ->add('datetime', 'datetime', array(
                 'label' => false,
                 'widget' => 'single_text',
                 'date_format' => 'yyyy-MM-dd  HH:mm:ss',
-                'attr' => array('placeholder' => 'yyyy-MM-dd HH:mm:ss')
+                'attr' => array('placeholder' => 'yyyy-MM-dd HH:mm:ss'),
             ))
             ->add('message', 'textarea', array(
                 'label' => 'Melding',
-                'attr' => array('rows' => '5')
+                'attr' => array('rows' => '5'),
             ))
             ->add('save', 'submit', array(
-                'label' => 'Lagre tidspunkt'
+                'label' => 'Lagre tidspunkt',
             ))
             ->add('saveAndSend', 'submit', array(
-                'label' => 'Lagre tidspunkt og send mail'
+                'label' => 'Lagre tidspunkt og send mail',
             ));
     }
 

@@ -3,37 +3,36 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\AnniversaryRegistrationRepository")
  * @ORM\Table(name="anniversary_registration")
  */
-class AnniversaryRegistration {
-
+class AnniversaryRegistration
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-	
-	/**
+
+    /**
      * @ORM\Column(type="string")
      */
     private $firstName;
-	
-	/**
+
+    /**
      * @ORM\Column(type="string")
      */
     private $lastName;
-	
-	/**
+
+    /**
      * @ORM\Column(type="string")
      */
     private $phone;
-	
-	/**
+
+    /**
      * @ORM\Column(type="string")
      */
     private $email;
@@ -56,11 +55,10 @@ class AnniversaryRegistration {
         $this->hasPaid = false;
     }
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -68,9 +66,10 @@ class AnniversaryRegistration {
     }
 
     /**
-     * Set firstName
+     * Set firstName.
      *
      * @param string $firstName
+     *
      * @return Application
      */
     public function setFirstName($firstName)
@@ -81,9 +80,9 @@ class AnniversaryRegistration {
     }
 
     /**
-     * Get firstName
+     * Get firstName.
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -91,9 +90,10 @@ class AnniversaryRegistration {
     }
 
     /**
-     * Set lastName
+     * Set lastName.
      *
      * @param string $lastName
+     *
      * @return Application
      */
     public function setLastName($lastName)
@@ -104,9 +104,9 @@ class AnniversaryRegistration {
     }
 
     /**
-     * Get lastName
+     * Get lastName.
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
@@ -114,9 +114,10 @@ class AnniversaryRegistration {
     }
 
     /**
-     * Set phone
+     * Set phone.
      *
      * @param string $phone
+     *
      * @return Application
      */
     public function setPhone($phone)
@@ -127,9 +128,9 @@ class AnniversaryRegistration {
     }
 
     /**
-     * Get phone
+     * Get phone.
      *
-     * @return string 
+     * @return string
      */
     public function getPhone()
     {
@@ -137,9 +138,10 @@ class AnniversaryRegistration {
     }
 
     /**
-     * Set email
+     * Set email.
      *
      * @param string $email
+     *
      * @return Application
      */
     public function setEmail($email)
@@ -150,9 +152,9 @@ class AnniversaryRegistration {
     }
 
     /**
-     * Get email
+     * Get email.
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -176,7 +178,7 @@ class AnniversaryRegistration {
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getHasPaid()
     {
@@ -184,13 +186,10 @@ class AnniversaryRegistration {
     }
 
     /**
-     * @param boolean $hasPaid
+     * @param bool $hasPaid
      */
     public function setHasPaid($hasPaid)
     {
         $this->hasPaid = $hasPaid;
     }
-
-
-
 }

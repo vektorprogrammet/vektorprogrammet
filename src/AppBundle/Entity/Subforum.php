@@ -3,76 +3,71 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- *
  * @ORM\Table(name="subforum")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SubforumRepository")
  */
-class Subforum {
-
+class Subforum
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-	
-	/**
+
+    /**
      * @ORM\Column(type="string")
      */
     protected $name;
-	
-	
-	// This is the owning side 
-	/**
+
+    // This is the owning side 
+    /**
      * @ORM\ManyToMany(targetEntity="School", inversedBy="subforums")
      * @ORM\JoinTable(name="school_subforum")
      **/
-	protected $schools;
-	
-	// This is the owning side 
-	/**
+    protected $schools;
+
+    // This is the owning side 
+    /**
      * @ORM\ManyToMany(targetEntity="Team", inversedBy="subforums")
      * @ORM\JoinTable(name="team_subforum")
      **/
-	protected $teams;
-	
-		
-	/**
-     * @ORM\Column(type="string")
-     */
-	protected $type;
-	
-	/**
-     * @ORM\ManyToMany(targetEntity="Forum", mappedBy="subforums")
-     **/
-	protected $forums;
-	
-	/**
-     * @ORM\OneToMany(targetEntity="Thread", mappedBy="subforum", cascade={"remove"})
-     **/
-	protected $threads;
-	
-	/**
-     * @ORM\Column(type="text", nullable=true)
-     */
-	protected $schoolDocument;
-	
-	
-	public function __construct() {
-        $this->forums = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->schools = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->threads = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->teams = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-	
+    protected $teams;
 
     /**
-     * Get id
+     * @ORM\Column(type="string")
+     */
+    protected $type;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Forum", mappedBy="subforums")
+     **/
+    protected $forums;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Thread", mappedBy="subforum", cascade={"remove"})
+     **/
+    protected $threads;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $schoolDocument;
+
+    public function __construct()
+    {
+        $this->forums = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->schools = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->threads = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->teams = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -80,9 +75,10 @@ class Subforum {
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return Subforum
      */
     public function setName($name)
@@ -93,20 +89,20 @@ class Subforum {
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
         return $this->name;
     }
 
-
     /**
-     * Add schools
+     * Add schools.
      *
      * @param \AppBundle\Entity\School $schools
+     *
      * @return Subforum
      */
     public function addSchool(\AppBundle\Entity\School $schools)
@@ -117,7 +113,7 @@ class Subforum {
     }
 
     /**
-     * Remove schools
+     * Remove schools.
      *
      * @param \AppBundle\Entity\School $schools
      */
@@ -127,9 +123,9 @@ class Subforum {
     }
 
     /**
-     * Get schools
+     * Get schools.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getSchools()
     {
@@ -137,9 +133,10 @@ class Subforum {
     }
 
     /**
-     * Add forums
+     * Add forums.
      *
      * @param \AppBundle\Entity\Forum $forums
+     *
      * @return Subforum
      */
     public function addForum(\AppBundle\Entity\Forum $forums)
@@ -150,7 +147,7 @@ class Subforum {
     }
 
     /**
-     * Remove forums
+     * Remove forums.
      *
      * @param \AppBundle\Entity\Forum $forums
      */
@@ -160,23 +157,25 @@ class Subforum {
     }
 
     /**
-     * Get forums
+     * Get forums.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getForums()
     {
         return $this->forums;
     }
-	
-	public function __toString(){
-		return $this->getName();
-	}
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
 
     /**
-     * Set schoolDocument
+     * Set schoolDocument.
      *
      * @param string $schoolDocument
+     *
      * @return Subforum
      */
     public function setSchoolDocument($schoolDocument)
@@ -187,9 +186,9 @@ class Subforum {
     }
 
     /**
-     * Get schoolDocument
+     * Get schoolDocument.
      *
-     * @return string 
+     * @return string
      */
     public function getSchoolDocument()
     {
@@ -197,9 +196,10 @@ class Subforum {
     }
 
     /**
-     * Add teams
+     * Add teams.
      *
      * @param \AppBundle\Entity\Team $teams
+     *
      * @return Subforum
      */
     public function addTeam(\AppBundle\Entity\Team $teams)
@@ -210,7 +210,7 @@ class Subforum {
     }
 
     /**
-     * Remove teams
+     * Remove teams.
      *
      * @param \AppBundle\Entity\Team $teams
      */
@@ -220,9 +220,9 @@ class Subforum {
     }
 
     /**
-     * Get teams
+     * Get teams.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getTeams()
     {
@@ -230,9 +230,10 @@ class Subforum {
     }
 
     /**
-     * Add threads
+     * Add threads.
      *
      * @param \AppBundle\Entity\Thread $threads
+     *
      * @return Subforum
      */
     public function addThread(\AppBundle\Entity\Thread $threads)
@@ -243,7 +244,7 @@ class Subforum {
     }
 
     /**
-     * Remove threads
+     * Remove threads.
      *
      * @param \AppBundle\Entity\Thread $threads
      */
@@ -253,9 +254,9 @@ class Subforum {
     }
 
     /**
-     * Get threads
+     * Get threads.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getThreads()
     {
@@ -263,9 +264,10 @@ class Subforum {
     }
 
     /**
-     * Set type
+     * Set type.
      *
      * @param string $type
+     *
      * @return Subforum
      */
     public function setType($type)
@@ -276,9 +278,9 @@ class Subforum {
     }
 
     /**
-     * Get type
+     * Get type.
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {

@@ -5,7 +5,6 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="interview_question_alternative")
@@ -32,9 +31,9 @@ class InterviewQuestionAlternative
     protected $interviewQuestion;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -42,9 +41,10 @@ class InterviewQuestionAlternative
     }
 
     /**
-     * Set alternative
+     * Set alternative.
      *
      * @param string $alternative
+     *
      * @return InterviewQuestionAlternative
      */
     public function setAlternative($alternative)
@@ -55,9 +55,9 @@ class InterviewQuestionAlternative
     }
 
     /**
-     * Get alternative
+     * Get alternative.
      *
-     * @return string 
+     * @return string
      */
     public function getAlternative()
     {
@@ -65,9 +65,10 @@ class InterviewQuestionAlternative
     }
 
     /**
-     * Set interviewQuestion
+     * Set interviewQuestion.
      *
      * @param \AppBundle\Entity\InterviewQuestion $interviewQuestion
+     *
      * @return InterviewQuestionAlternative
      */
     public function setInterviewQuestion(\AppBundle\Entity\InterviewQuestion $interviewQuestion = null)
@@ -78,9 +79,9 @@ class InterviewQuestionAlternative
     }
 
     /**
-     * Get interviewQuestion
+     * Get interviewQuestion.
      *
-     * @return \AppBundle\Entity\InterviewQuestion 
+     * @return \AppBundle\Entity\InterviewQuestion
      */
     public function getInterviewQuestion()
     {
