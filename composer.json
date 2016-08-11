@@ -56,21 +56,6 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"
-        ],
-        "build": [
-            "echo Starting build. This can take several minutes...",
-            "npm install --silent",
-            "./node_modules/.bin/bower install -q",
-            "./node_modules/.bin/gulp build:dev --silent",
-            "php app/console doctrine:schema:create --env=dev",
-            "php app/console doctrine:fixtures:load --env=dev -n",
-            "echo Build complete"
-        ],
-        "watch": [
-            "./node_modules/.bin/gulp"
-        ],
-        "start": [
-            "php app/console server:run --docroot=www"
         ]
     },
     "config": {

@@ -20,7 +20,13 @@
     "gulp-plumber": "^1.0.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./bin/phpunit --configuration app/phpunit.xml.dist",
+    "setup": "composer install && npm install && ./node_modules/.bin/bower install && ./node_modules/.bin/gulp build:dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:fixtures:load --env=dev -n",
+    "start": "php app/console server:run --docroot=www & npm run watch",
+    "watch": "./node_modules/.bin/gulp",
+    "reload-db": "php app/console doctrine:fixtures:load --env=dev",
+    "build": "./node_modules/.bin/gulp build:dev",
+    "build:prod": "./node_modules/.bin/gulp build:prod"
   },
   "repository": {
     "type": "git",
