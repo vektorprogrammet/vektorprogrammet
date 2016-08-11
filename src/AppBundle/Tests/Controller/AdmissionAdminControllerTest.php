@@ -4,14 +4,15 @@ namespace AppBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class AdmissionAdminControllerTest extends WebTestCase {
-
-    public function testShow() {
+class AdmissionAdminControllerTest extends WebTestCase
+{
+    public function testShow()
+    {
 
         // Superadmin user
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'superadmin',
-            'PHP_AUTH_PW'   => '1234',
+            'PHP_AUTH_PW' => '1234',
         ));
 
         // New applications
@@ -29,7 +30,6 @@ class AdmissionAdminControllerTest extends WebTestCase {
         $this->assertEquals(3, $crawler->filter('td>a:contains("Slett")')->count());
         $this->assertEquals(3, $crawler->filter('td>a:contains("Fordel")')->count());
 
-
         // Assigned to interview applications
         $crawler = $client->request('GET', '/kontrollpanel/opptakadmin?status=assigned');
 
@@ -44,7 +44,6 @@ class AdmissionAdminControllerTest extends WebTestCase {
         $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Sett opp")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Intervju")')->count());
-
 
         // Interviewed applications
         $crawler = $client->request('GET', '/kontrollpanel/opptakadmin?status=interviewed');
@@ -61,11 +60,10 @@ class AdmissionAdminControllerTest extends WebTestCase {
         $this->assertEquals(2, $crawler->filter('td>a.button:contains("Les intervju")')->count());
         $this->assertEquals(2, $crawler->filter('td>a.button:contains("Slett")')->count());
 
-
         // Admin user
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW'   => '1234',
+            'PHP_AUTH_PW' => '1234',
         ));
 
         // New applications
@@ -83,7 +81,6 @@ class AdmissionAdminControllerTest extends WebTestCase {
         $this->assertEquals(0, $crawler->filter('td>a:contains("Slett")')->count());
         $this->assertEquals(4, $crawler->filter('a:contains("Fordel")')->count());
 
-
         // Assigned to interview applications
         $crawler = $client->request('GET', '/kontrollpanel/opptakadmin?status=assigned');
 
@@ -98,7 +95,6 @@ class AdmissionAdminControllerTest extends WebTestCase {
         $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Sett opp")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Intervju")')->count());
-
 
         // Interviewed applications
         $crawler = $client->request('GET', '/kontrollpanel/opptakadmin?status=interviewed');
@@ -118,7 +114,7 @@ class AdmissionAdminControllerTest extends WebTestCase {
         // Team user
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW'   => '1234',
+            'PHP_AUTH_PW' => '1234',
         ));
 
         // New applications
@@ -135,7 +131,6 @@ class AdmissionAdminControllerTest extends WebTestCase {
         $this->assertEquals(0, $crawler->filter('td>a.button:contains("Slett")')->count());
         $this->assertEquals(0, $crawler->filter('td>a.button:contains("Fordel")')->count());
 
-
         // Assign to interview applications
         $crawler = $client->request('GET', '/kontrollpanel/opptakadmin?status=assigned');
 
@@ -148,7 +143,6 @@ class AdmissionAdminControllerTest extends WebTestCase {
         // Assert that we only have the buttons for team
         $this->assertEquals(0, $crawler->filter('td>a:contains("Sett opp")')->count());
         $this->assertEquals(0, $crawler->filter('td>a:contains("Intervju")')->count());
-
 
         // Interviewed applications
         $crawler = $client->request('GET', '/kontrollpanel/opptakadmin?status=interviewed');
@@ -163,11 +157,10 @@ class AdmissionAdminControllerTest extends WebTestCase {
         $this->assertEquals(2, $crawler->filter('td>a:contains("Les intervju")')->count());
         $this->assertEquals(0, $crawler->filter('td>a:contains("Slett")')->count());
 
-
         // Assistant user
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW'   => '1234',
+            'PHP_AUTH_PW' => '1234',
         ));
 
         $client->request('GET', '/kontrollpanel/opptakadmin');
@@ -176,12 +169,13 @@ class AdmissionAdminControllerTest extends WebTestCase {
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
-    public function testShowApplicationsByDepartment() {
+    public function testShowApplicationsByDepartment()
+    {
 
         // Superadmin user
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'superadmin',
-            'PHP_AUTH_PW'   => '1234',
+            'PHP_AUTH_PW' => '1234',
         ));
 
         // New applications
@@ -198,7 +192,6 @@ class AdmissionAdminControllerTest extends WebTestCase {
         $this->assertEquals(3, $crawler->filter('td>a:contains("Slett")')->count());
         $this->assertEquals(3, $crawler->filter('td>a:contains("Fordel")')->count());
 
-
         // Assigned to interview applications
         $crawler = $client->request('GET', '/kontrollpanel/opptakadmin/avdeling/1?status=assigned');
 
@@ -212,7 +205,6 @@ class AdmissionAdminControllerTest extends WebTestCase {
         $this->assertEquals(1, $crawler->filter('a.button:contains("NTNU")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Sett opp")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Intervju")')->count());
-
 
         // Interviewed applications
         $crawler = $client->request('GET', '/kontrollpanel/opptakadmin/avdeling/1?status=interviewed');
@@ -228,11 +220,10 @@ class AdmissionAdminControllerTest extends WebTestCase {
         $this->assertEquals(2, $crawler->filter('td>a:contains("Les intervju")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Slett")')->count());
 
-
         // Admin tests
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW'   => '1234',
+            'PHP_AUTH_PW' => '1234',
         ));
 
         // New applications
@@ -262,7 +253,6 @@ class AdmissionAdminControllerTest extends WebTestCase {
         $this->assertEquals(2, $crawler->filter('td>a:contains("Sett opp")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Intervju")')->count());
 
-
         // Interviewed applications
         $crawler = $client->request('GET', '/kontrollpanel/opptakadmin/avdeling/1?status=interviewed');
 
@@ -277,24 +267,23 @@ class AdmissionAdminControllerTest extends WebTestCase {
         $this->assertEquals(0, $crawler->filter('td>a:contains("Slett")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Les intervju")')->count());
 
-
         // Team user
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW'   => '1234',
+            'PHP_AUTH_PW' => '1234',
         ));
 
         $crawler = $client->request('GET', '/kontrollpanel/opptakadmin/avdeling/1');
 
         // Assert that the page response status code is 403 Access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
     }
 
-    public function testCancelInterview(){
+    public function testCancelInterview()
+    {
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW'   => '1234',
+            'PHP_AUTH_PW' => '1234',
         ));
 
         $crawler = $client->request('GET', '/kontrollpanel/opptakadmin?status=assigned');
@@ -304,7 +293,6 @@ class AdmissionAdminControllerTest extends WebTestCase {
         $crawler = $client->request('GET', '/kontrollpanel/opptakadmin?status=new');
         $this->assertEquals(0, $crawler->filter('td:contains("Ruben")')->count());
         $this->assertEquals(0, $crawler->filter('td:contains("Ravnå")')->count());
-
     }
 
     /*
@@ -325,5 +313,4 @@ class AdmissionAdminControllerTest extends WebTestCase {
     public function createNewUser() {}
 
     */
-
 }

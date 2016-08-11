@@ -3,86 +3,83 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- *
  * @ORM\Table(name="department")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\DepartmentRepository")
  */
-class Department {
-
+class Department
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-	
-	/**
+
+    /**
      * @ORM\Column(type="string", length=250)
      * @Assert\NotBlank
      */
     private $name;
-	
-	/**
+
+    /**
      * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank
      */
     private $short_name;
-	
-	
-	/**
+
+    /**
      * @ORM\Column(type="string", length=250)
      * @Assert\NotBlank
      * @Assert\Email
      */
-	private $email;
-	
-	/**
+    private $email;
+
+    /**
      * @ORM\ManyToMany(targetEntity="School", inversedBy="departments")
      * @ORM\JoinTable(name="department_school")
-	 * @ORM\JoinColumn(onDelete="cascade")
+     * @ORM\JoinColumn(onDelete="cascade")
      **/
-	protected $schools;
-	
-	/**
-	 * @ORM\OneToMany(targetEntity="FieldOfStudy", mappedBy="department", cascade={"remove"})
+    protected $schools;
+
+    /**
+     * @ORM\OneToMany(targetEntity="FieldOfStudy", mappedBy="department", cascade={"remove"})
      */
-	private $fieldOfStudy;
-	
-	/**
+    private $fieldOfStudy;
+
+    /**
      * @ORM\Column(type="string", length=250)
      * @Assert\NotBlank
      */
-	protected $address;
-	
-	/**
+    protected $address;
+
+    /**
      * @ORM\OneToMany(targetEntity="Semester", mappedBy="department",  cascade={"remove"})
      **/
     private $semesters;
-	
-	/**
+
+    /**
      * @ORM\OneToMany(targetEntity="Team", mappedBy="department", cascade={"remove"})
      **/
     private $teams;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
-		$this->schools = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->schools = new \Doctrine\Common\Collections\ArrayCollection();
         $this->fieldOfStudy = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->semesters = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->teams = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->semesters = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->teams = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -90,9 +87,10 @@ class Department {
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return Department
      */
     public function setName($name)
@@ -103,9 +101,9 @@ class Department {
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -113,9 +111,10 @@ class Department {
     }
 
     /**
-     * Set short_name
+     * Set short_name.
      *
      * @param string $shortName
+     *
      * @return Department
      */
     public function setShortName($shortName)
@@ -124,11 +123,12 @@ class Department {
 
         return $this;
     }
-	
-	/**
-     * Set short_name
+
+    /**
+     * Set short_name.
      *
      * @param string $shortName
+     *
      * @return Department
      */
     public function setShort_Name($shortName)
@@ -139,9 +139,9 @@ class Department {
     }
 
     /**
-     * Get short_name
+     * Get short_name.
      *
-     * @return string 
+     * @return string
      */
     public function getShortName()
     {
@@ -149,9 +149,10 @@ class Department {
     }
 
     /**
-     * Add fieldOfStudy
+     * Add fieldOfStudy.
      *
      * @param \AppBundle\Entity\FieldOfStudy $fieldOfStudy
+     *
      * @return Department
      */
     public function addFieldOfStudy(\AppBundle\Entity\FieldOfStudy $fieldOfStudy)
@@ -162,7 +163,7 @@ class Department {
     }
 
     /**
-     * Remove fieldOfStudy
+     * Remove fieldOfStudy.
      *
      * @param \AppBundle\Entity\FieldOfStudy $fieldOfStudy
      */
@@ -172,25 +173,25 @@ class Department {
     }
 
     /**
-     * Get fieldOfStudy
+     * Get fieldOfStudy.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getFieldOfStudy()
     {
         return $this->fieldOfStudy;
     }
-	
-	public function __toString()
-	{
-		return (string) $this->getShortName();
-	}
-	
+
+    public function __toString()
+    {
+        return (string) $this->getShortName();
+    }
 
     /**
-     * Set email
+     * Set email.
      *
      * @param string $email
+     *
      * @return Department
      */
     public function setEmail($email)
@@ -201,9 +202,9 @@ class Department {
     }
 
     /**
-     * Get email
+     * Get email.
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -211,9 +212,10 @@ class Department {
     }
 
     /**
-     * Add schools
+     * Add schools.
      *
      * @param \AppBundle\Entity\School $schools
+     *
      * @return Department
      */
     public function addSchool(\AppBundle\Entity\School $schools)
@@ -224,7 +226,7 @@ class Department {
     }
 
     /**
-     * Remove schools
+     * Remove schools.
      *
      * @param \AppBundle\Entity\School $schools
      */
@@ -234,9 +236,9 @@ class Department {
     }
 
     /**
-     * Get schools
+     * Get schools.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getSchools()
     {
@@ -244,9 +246,10 @@ class Department {
     }
 
     /**
-     * Set address
+     * Set address.
      *
      * @param string $address
+     *
      * @return Department
      */
     public function setAddress($address)
@@ -257,9 +260,9 @@ class Department {
     }
 
     /**
-     * Get address
+     * Get address.
      *
-     * @return string 
+     * @return string
      */
     public function getAddress()
     {
@@ -267,9 +270,10 @@ class Department {
     }
 
     /**
-     * Add semesters
+     * Add semesters.
      *
      * @param \AppBundle\Entity\Semester $semesters
+     *
      * @return Department
      */
     public function addSemester(\AppBundle\Entity\Semester $semesters)
@@ -280,7 +284,7 @@ class Department {
     }
 
     /**
-     * Remove semesters
+     * Remove semesters.
      *
      * @param \AppBundle\Entity\Semester $semesters
      */
@@ -290,9 +294,9 @@ class Department {
     }
 
     /**
-     * Get semesters
+     * Get semesters.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getSemesters()
     {
@@ -300,9 +304,10 @@ class Department {
     }
 
     /**
-     * Add teams
+     * Add teams.
      *
      * @param \AppBundle\Entity\Team $teams
+     *
      * @return Department
      */
     public function addTeam(\AppBundle\Entity\Team $teams)
@@ -313,7 +318,7 @@ class Department {
     }
 
     /**
-     * Remove teams
+     * Remove teams.
      *
      * @param \AppBundle\Entity\Team $teams
      */
@@ -323,24 +328,21 @@ class Department {
     }
 
     /**
-     * Get teams
+     * Get teams.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getTeams()
     {
         return $this->teams;
     }
-	
-		
-	// Used for unit testing 
-	public function fromArray($data = array())
+
+    // Used for unit testing 
+    public function fromArray($data = array())
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";
             $this->$method($value);
         }
     }
-	
-	
 }

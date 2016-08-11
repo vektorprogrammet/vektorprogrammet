@@ -2,16 +2,14 @@
 
 namespace AppBundle\Tests\Entity;
 
-
 use AppBundle\Entity\PasswordReset;
 use AppBundle\Entity\User;
 
-
-class PasswordResetEntityUnitTest extends \PHPUnit_Framework_TestCase {
-
+class PasswordResetEntityUnitTest extends \PHPUnit_Framework_TestCase
+{
     // Check whether the setUser function is working correctly
-    public function testSetUser(){
-
+    public function testSetUser()
+    {
         $passwordReset = new PasswordReset();
 
         $user = new User();
@@ -22,7 +20,8 @@ class PasswordResetEntityUnitTest extends \PHPUnit_Framework_TestCase {
     }
 
     // Check whether the setDescription function is working correctly
-    public function testSetHashedResetCode(){
+    public function testSetHashedResetCode()
+    {
 
         // new entity
         $passwordReset = new PasswordReset();
@@ -34,11 +33,11 @@ class PasswordResetEntityUnitTest extends \PHPUnit_Framework_TestCase {
 
         // Assert the result
         $this->assertEquals($resetCode, $passwordReset->getHashedResetCode());
-
     }
 
     // Check whether the setType function is working correctly
-    public function testSetResetTime(){
+    public function testSetResetTime()
+    {
 
         // new entity
         $passwordReset = new PasswordReset();
@@ -50,8 +49,5 @@ class PasswordResetEntityUnitTest extends \PHPUnit_Framework_TestCase {
 
         // Assert the result
         $this->assertEquals($time, $passwordReset->getResetTime());
-
     }
 }
-
-

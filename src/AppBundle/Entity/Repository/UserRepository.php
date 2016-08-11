@@ -12,11 +12,10 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 
 class UserRepository extends EntityRepository implements UserProviderInterface
-{	
-		
-	public function findAllUsersByDepartment($department){
-	
-		$users =  $this->getEntityManager()->createQuery("
+{
+    public function findAllUsersByDepartment($department)
+    {
+        $users = $this->getEntityManager()->createQuery('
 		
 		SELECT u
 		FROM AppBundle:User u
@@ -24,16 +23,17 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 		JOIN fos.department d
 		WHERE d.id = :department
 		
-		")
-		->setParameter('department', $department)
-		->getResult();
+		')
+        ->setParameter('department', $department)
+        ->getResult();
 
-		return $users;
-	}
-	
-	public function findAllActiveUsersByDepartment($department){
-	    //TODO: Check if user is in the assistantHistory for this semester instead of checking active field
-		$users =  $this->getEntityManager()->createQuery("
+        return $users;
+    }
+
+    public function findAllActiveUsersByDepartment($department)
+    {
+        //TODO: Check if user is in the assistantHistory for this semester instead of checking active field
+        $users = $this->getEntityManager()->createQuery('
 		
 		SELECT u
 		FROM AppBundle:User u
@@ -41,15 +41,16 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 		JOIN fos.department d
 		WHERE d.id = :department
 			AND u.isActive = :active
-		")
-		->setParameter('department', $department)
-		->setParameter('active', 1)
-		->getResult();
+		')
+        ->setParameter('department', $department)
+        ->setParameter('active', 1)
+        ->getResult();
 
-		return $users;
-	}
+        return $users;
+    }
 
-    public function findAllUsersByDepartmentAndRoles($department,$roles) {
+    public function findAllUsersByDepartmentAndRoles($department, $roles)
+    {
         return $this->createQueryBuilder('u')
             ->select('u')
             ->join('u.roles', 'r')
@@ -63,7 +64,8 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getResult();
     }
 
-    public function findUserByUsername($username){
+    public function findUserByUsername($username)
+    {
         return $this->createQueryBuilder('User')
             ->select('User')
             ->where('User.user_name = :username')
@@ -74,11 +76,14 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 
     /**
      * @param $email
+     *
      * @return User
+     *
      * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findUserByEmail($email){
+    public function findUserByEmail($email)
+    {
         return $this->createQueryBuilder('User')
             ->select('User')
             ->where('User.email = :email')
@@ -87,7 +92,8 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getSingleResult();
     }
 
-    public function findUserById($id){
+    public function findUserById($id)
+    {
         return $this->createQueryBuilder('User')
             ->select('User')
             ->where('User.id = :id')
@@ -96,7 +102,8 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getSingleResult();
     }
 
-    public function findUserByNewUserCode($id){
+    public function findUserByNewUserCode($id)
+    {
         return $this->createQueryBuilder('User')
             ->select('User')
             ->where('User.new_user_code = :id')
@@ -105,9 +112,9 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getSingleResult();
     }
 
-	/*
-	These functions are used by UserProviderInterface
-	*/
+    /*
+    These functions are used by UserProviderInterface
+    */
 
     public function loadUserByUsername($username)
     {
@@ -133,7 +140,6 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $user;
     }
 
-
     public function refreshUser(UserInterface $user)
     {
         $class = get_class($user);
@@ -154,5 +160,4 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $this->getEntityName() === $class
             || is_subclass_of($class, $this->getEntityName());
     }
-
 }

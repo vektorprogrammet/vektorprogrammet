@@ -12,8 +12,6 @@ use AppBundle\Form\Type\CropImageType;
 /**
  * ArticleAdminController is the controller responsible for the administrative article actions,
  * such as creating and deleting articles.
- *
- * @package AppBundle\Controller
  */
 class ArticleAdminController extends Controller
 {
@@ -24,6 +22,7 @@ class ArticleAdminController extends Controller
      * Shows the main page of the article administration.
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Request $request)
@@ -37,7 +36,7 @@ class ArticleAdminController extends Controller
         $pagination = $paginator->paginate(
             $articles,
             $request->query->get('page', 1),
-            ArticleAdminController::NUM_ARTICLES
+            self::NUM_ARTICLES
         );
 
         return $this->render('article_admin/index.html.twig', array(
@@ -49,6 +48,7 @@ class ArticleAdminController extends Controller
      * Shows and handles the submission of the article creation form.
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function createAction(Request $request)
@@ -85,7 +85,7 @@ class ArticleAdminController extends Controller
         return $this->render('article_admin/form.html.twig', array(
             'title' => 'Legg til en ny artikkel',
             'form' => $form->createView(),
-            'cropImageForm' => $cropImageForm->createView()
+            'cropImageForm' => $cropImageForm->createView(),
         ));
     }
 
@@ -95,6 +95,7 @@ class ArticleAdminController extends Controller
      *
      * @param Request $request
      * @param Article $article
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, Article $article)
@@ -126,7 +127,7 @@ class ArticleAdminController extends Controller
         return $this->render('article_admin/form.html.twig', array(
             'title' => 'Endre artikkel',
             'form' => $form->createView(),
-            'cropImageForm' => $cropImageForm->createView()
+            'cropImageForm' => $cropImageForm->createView(),
         ));
     }
 
@@ -135,12 +136,13 @@ class ArticleAdminController extends Controller
      * This method is intended to be called by an Ajax request.
      *
      * @param Article $article
+     *
      * @return JsonResponse
      */
     public function stickyAction(Article $article)
     {
         try {
-            if($article->getSticky()) {
+            if ($article->getSticky()) {
                 $article->setSticky(false);
                 $response['sticky'] = false;
             } else {
@@ -156,7 +158,7 @@ class ArticleAdminController extends Controller
         } catch (\Exception $e) {
             $response = ['success' => false,
                 'code' => $e->getCode(),
-                'cause' => 'Det oppstod en feil.'
+                'cause' => 'Det oppstod en feil.',
             ];
         }
 
@@ -168,6 +170,7 @@ class ArticleAdminController extends Controller
      * This method is intended to be called by an Ajax request.
      *
      * @param Article $article
+     *
      * @return JsonResponse
      */
     public function deleteAction(Article $article)
@@ -181,7 +184,7 @@ class ArticleAdminController extends Controller
         } catch (\Exception $e) {
             $response = ['success' => false,
                 'code' => $e->getCode(),
-                'cause' => 'Det oppstod en feil.'
+                'cause' => 'Det oppstod en feil.',
             ];
         }
 
@@ -189,14 +192,16 @@ class ArticleAdminController extends Controller
     }
 
     /**
-     * NOT IN USE
+     * NOT IN USE.
      *
      * This method is intended to be called by an Ajax request.
      *
      * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function cropImageAction(Request $request) {
+    public function cropImageAction(Request $request)
+    {
         $form = $this->createForm(new cropImageType());
 
         $form->handleRequest($request);
@@ -221,13 +226,12 @@ class ArticleAdminController extends Controller
                     'success' => true,
                     'imageLarge' => $imageLarge,
                     'imageMedium' => $imageMedium,
-                    'imageSmall' => $imageSmall
+                    'imageSmall' => $imageSmall,
                 ];
-
             } catch (\Exception $e) {
                 $response = ['success' => false,
                     'code' => $e->getCode(),
-                    'cause' => 'Det oppstod en feil under behandlingen av bildet. Prøv igjen eller kontakt IT ansvarlig.'
+                    'cause' => 'Det oppstod en feil under behandlingen av bildet. Prøv igjen eller kontakt IT ansvarlig.',
                 ];
             }
 
@@ -236,12 +240,12 @@ class ArticleAdminController extends Controller
 
         return new JsonResponse([
             'success' => false,
-            'cause' => 'Utfylt informasjon er ugyldig.'
+            'cause' => 'Utfylt informasjon er ugyldig.',
         ]);
     }
 
     /**
-     * NOT IN USE
+     * NOT IN USE.
      *
      * Crops an image using LiipImagineBundle. Moves the image from cache to the specified location.
      *
@@ -249,6 +253,7 @@ class ArticleAdminController extends Controller
      * @param $cropData
      * @param $request
      * @param $location
+     *
      * @return string
      */
     public function crop($image, $cropData, $request, $location)
@@ -290,25 +295,26 @@ class ArticleAdminController extends Controller
         return $location.basename($image);
     }
 
-
     /**
      * This method is intended to be called by an Ajax request.
      *
      * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function saveImageAction(Request $request) {
+    public function saveImageAction(Request $request)
+    {
 
         //Get all information from the request
         $content = $request->getContent();
-        $data = json_decode($content,true);
+        $data = json_decode($content, true);
         $aviaryURL = $data['aviaryURL'];
         $imageType = $data['imageType'];
         $cropped = $data['cropped'];
         $file_name = $data['filename'];
 
         //Remove previous postfixs from the name
-        $file_name = str_replace(array("_cropped","_edited","_small","_medium","_large"),"",$file_name);
+        $file_name = str_replace(array('_cropped', '_edited', '_small', '_medium', '_large'), '', $file_name);
 
         //Get desired location, and find correct subfolder depending on image type.
         $articleImageFolder = $this->container->getParameter('article_images');
@@ -321,12 +327,11 @@ class ArticleAdminController extends Controller
         }
 
         //Append new postfixs
-        $local_file_path = $location . $file_name;
-        if(!$cropped){
+        $local_file_path = $location.$file_name;
+        if (!$cropped) {
             $local_file_path .= '_edited';
-            $local_file_path .= ($imageType === 'All') ? '' : '_' . strtolower($imageType);
-        }
-        else{
+            $local_file_path .= ($imageType === 'All') ? '' : '_'.strtolower($imageType);
+        } else {
             $local_file_path .= '_cropped';
         }
         $local_file_path .= '.jpg';
@@ -337,18 +342,16 @@ class ArticleAdminController extends Controller
 
             $response = [
                 'success' => true,
-                'localURL' => $this->get('request')->getBasePath() . '/' . $local_file_path,
+                'localURL' => $this->get('request')->getBasePath().'/'.$local_file_path,
                 'imageType' => $imageType,
             ];
-
         } catch (\Exception $e) {
             $response = ['success' => false,
                 'code' => $e->getCode(),
-                'cause' => 'Det oppstod en feil under lagringen av bildet. Prøv igjen eller kontakt IT ansvarlig.'
+                'cause' => 'Det oppstod en feil under lagringen av bildet. Prøv igjen eller kontakt IT ansvarlig.',
             ];
         }
 
         return new JsonResponse($response);
-
     }
 }

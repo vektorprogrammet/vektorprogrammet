@@ -2,25 +2,19 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Form\Type\ApplicationPracticalType;
 use AppBundle\Form\Type\ApplicationExistingUserType;
-use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use \DateTime;
 use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Entity\Application;
-use AppBundle\Entity\ApplicationStatistics;
 use AppBundle\Form\Type\ContactType;
 use AppBundle\Entity\Contact;
 use AppBundle\Entity\Department;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class AdmissionController extends Controller {
-
-    public function showAction(Request $request) {
-
-
+class AdmissionController extends Controller
+{
+    public function showAction(Request $request)
+    {
         $departmentId = $request->get('id');
 
         $em = $this->getDoctrine()->getManager();
@@ -29,9 +23,7 @@ class AdmissionController extends Controller {
 
         $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
 
-
-        if ( $semester !== null ) {
-
+        if ($semester !== null) {
             $application = new Application();
 
             $authenticated = false;
@@ -42,19 +34,19 @@ class AdmissionController extends Controller {
             }
 
             $form = $this->createForm(new ApplicationType($department, $authenticated), $application, array(
-                'validation_groups' => array('admission')
+                'validation_groups' => array('admission'),
             ));
 
             $form->handleRequest($request);
 
             if ($form->isValid()) {
                 //Check if email belongs to an existing account and use that account
-                $oldUser = $em->getRepository('AppBundle:User')->findOneBy(array('email'=>$application->getUser()->getEmail()));
-                if($oldUser !== null){
-                    $oldUserAssistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findBy(array('user'=>$oldUser));
-                    if(empty($oldUserAssistantHistory)){
+                $oldUser = $em->getRepository('AppBundle:User')->findOneBy(array('email' => $application->getUser()->getEmail()));
+                if ($oldUser !== null) {
+                    $oldUserAssistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findBy(array('user' => $oldUser));
+                    if (empty($oldUserAssistantHistory)) {
                         $application->setUser($oldUser);
-                    }else{
+                    } else {
                         //If applicant has a user and has been an assistant before
                         return $this->redirect($this->generateUrl('admission_existing_user'));
                     }
@@ -76,22 +68,20 @@ class AdmissionController extends Controller {
                 'semester' => $semester,
                 'form' => $form->createView(),
             ));
-        }
-        else {
+        } else {
             return $this->render('admission/index.html.twig', array(
                 'department' => $department,
             ));
         }
-
     }
 
-    public function contactAction(Request $request, Department $department){
-
+    public function contactAction(Request $request, Department $department)
+    {
         $contact = new Contact();
-        $contactForm = $this->createForm(new ContactType(), $contact, array (
+        $contactForm = $this->createForm(new ContactType(), $contact, array(
             'action' => $this->generateUrl('admission_contact', array(
-                'id' => $department->getId()
-            ))
+                'id' => $department->getId(),
+            )),
         ));
 
         // Get the sender email from the parameter file
@@ -99,7 +89,7 @@ class AdmissionController extends Controller {
 
         $contactForm->handleRequest($request);
 
-        if ($contactForm->isValid()){
+        if ($contactForm->isValid()) {
             //send mail to department
             $message = \Swift_Message::newInstance()
                 ->setSubject('Nytt kontaktskjema')
@@ -131,9 +121,10 @@ class AdmissionController extends Controller {
         ));
     }
 
-    public function existingUserAdmissionAction(Request $request){
+    public function existingUserAdmissionAction(Request $request)
+    {
         $user = $this->getUser();
-        if(!sizeof($user->getAssistantHistories())){
+        if (!sizeof($user->getAssistantHistories())) {
             return $this->render(':error:no_assistanthistory.html.twig');
         }
 
@@ -141,16 +132,20 @@ class AdmissionController extends Controller {
         $department = $user->getFieldOfStudy()->getDepartment();
         $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department, new \DateTime());
 
-        if(is_null($semester))return $this->render(':error:no_active_admission.html.twig');
+        if (is_null($semester)) {
+            return $this->render(':error:no_active_admission.html.twig');
+        }
 
         $applicationRepo = $em->getRepository('AppBundle:Application');
 
-        $application = $applicationRepo->findOneBy(array('user'=>$user, 'semester'=>$semester));
-        if($application === null) $application = new Application();
+        $application = $applicationRepo->findOneBy(array('user' => $user, 'semester' => $semester));
+        if ($application === null) {
+            $application = new Application();
+        }
         $lastInterview = $em->getRepository('AppBundle:Interview')->findLatestInterviewByUser($user);
 
         $form = $this->createForm(new ApplicationExistingUserType(), $application, array(
-            'validation_groups' => array('admission_existing')
+            'validation_groups' => array('admission_existing'),
         ));
         $form->handleRequest($request);
 
@@ -162,7 +157,6 @@ class AdmissionController extends Controller {
             $em->persist($application);
             $em->flush();
             $request->getSession()->getFlashBag()->add('admission-notice', 'Søknaden er registrert.');
-
         }
 
         return $this->render(':admission:existingUser.html.twig', array(
@@ -170,7 +164,5 @@ class AdmissionController extends Controller {
             'department' => $department,
             'semester' => $semester,
         ));
-
     }
-
 }

@@ -5,7 +5,6 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="survey_question")
@@ -25,13 +24,11 @@ class SurveyQuestion implements \JsonSerializable
      */
     protected $question;
 
-
     /**
      * @ORM\Column(type="boolean")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $optional;
-
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -54,8 +51,6 @@ class SurveyQuestion implements \JsonSerializable
      * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="surveyQuestion", cascade={"persist", "remove"})
      **/
     protected $answers;
-
-
 
     /**
      * @return mixed
@@ -90,9 +85,9 @@ class SurveyQuestion implements \JsonSerializable
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -100,9 +95,10 @@ class SurveyQuestion implements \JsonSerializable
     }
 
     /**
-     * Set question
+     * Set question.
      *
      * @param string $question
+     *
      * @return SurveyQuestion
      */
     public function setQuestion($question)
@@ -113,16 +109,16 @@ class SurveyQuestion implements \JsonSerializable
     }
 
     /**
-     * Get question
+     * Get question.
      *
-     * @return string 
+     * @return string
      */
     public function getQuestion()
     {
         return $this->question;
     }
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -131,9 +127,10 @@ class SurveyQuestion implements \JsonSerializable
     }
 
     /**
-     * Set help
+     * Set help.
      *
      * @param string $help
+     *
      * @return SurveyQuestion
      */
     public function setHelp($help)
@@ -144,9 +141,9 @@ class SurveyQuestion implements \JsonSerializable
     }
 
     /**
-     * Get help
+     * Get help.
      *
-     * @return string 
+     * @return string
      */
     public function getHelp()
     {
@@ -154,9 +151,10 @@ class SurveyQuestion implements \JsonSerializable
     }
 
     /**
-     * Set type
+     * Set type.
      *
      * @param string $type
+     *
      * @return SurveyQuestion
      */
     public function setType($type)
@@ -167,9 +165,9 @@ class SurveyQuestion implements \JsonSerializable
     }
 
     /**
-     * Get type
+     * Get type.
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -177,9 +175,10 @@ class SurveyQuestion implements \JsonSerializable
     }
 
     /**
-     * Add alternatives
+     * Add alternatives.
      *
      * @param \AppBundle\Entity\SurveyQuestionAlternative $alternatives
+     *
      * @return SurveyQuestion
      */
     public function addAlternative(\AppBundle\Entity\SurveyQuestionAlternative $alternatives)
@@ -192,7 +191,7 @@ class SurveyQuestion implements \JsonSerializable
     }
 
     /**
-     * Remove alternatives
+     * Remove alternatives.
      *
      * @param \AppBundle\Entity\SurveyQuestionAlternative $alternatives
      */
@@ -204,29 +203,34 @@ class SurveyQuestion implements \JsonSerializable
     }
 
     /**
-     * Get alternatives
+     * Get alternatives.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAlternatives()
     {
         return $this->alternatives;
     }
 
-    public function __clone() {
+    public function __clone()
+    {
         $this->id = null;
         $this->alternatives = new \Doctrine\Common\Collections\ArrayCollection();
         $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Specify data which should be serialized to JSON
+     * Specify data which should be serialized to JSON.
+     *
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     *
      * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
+     *               which is a value of any type other than a resource.
+     *
      * @since 5.4.0
      */
-    function jsonSerialize(){
+    public function jsonSerialize()
+    {
         return array('question_id' => $this->id, 'question_label' => $this->question, 'alternatives' => $this->alternatives->toArray());
     }
 }

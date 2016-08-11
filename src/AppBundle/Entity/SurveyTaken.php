@@ -20,6 +20,7 @@ class SurveyTaken implements  \JsonSerializable
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
+     *
      * @var string
      */
     protected $time;
@@ -42,7 +43,7 @@ class SurveyTaken implements  \JsonSerializable
     protected $surveyAnswers;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -57,13 +58,15 @@ class SurveyTaken implements  \JsonSerializable
         return $this->surveyAnswers;
     }
 
-    public function addSurveyAnswer($answer){
+    public function addSurveyAnswer($answer)
+    {
         $this->surveyAnswers[] = $answer;
     }
 
-    public function removeNullAnswers(){
-        foreach($this->surveyAnswers as $answer){
-            if($answer->getAnswer() == null){
+    public function removeNullAnswers()
+    {
+        foreach ($this->surveyAnswers as $answer) {
+            if ($answer->getAnswer() == null) {
                 $this->surveyAnswers->removeElement($answer);
             }
         }
@@ -125,24 +128,27 @@ class SurveyTaken implements  \JsonSerializable
         $this->time = $time;
     }
 
-
-
     /**
-     * Specify data which should be serialized to JSON
+     * Specify data which should be serialized to JSON.
+     *
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     *
      * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
+     *               which is a value of any type other than a resource.
+     *
      * @since 5.4.0
      */
-    function jsonSerialize(){
+    public function jsonSerialize()
+    {
         $ret = array();
         $schoolQuestion = array('question_id' => 0, 'answer' => $this->school->getName());
         $ret[] = $schoolQuestion;
-        foreach($this->surveyAnswers as $a){
-            if(!$a->getSurveyQuestion()->getOptional() && ($a->getSurveyQuestion()->getType() == "radio" || $a->getSurveyQuestion()->getType() == "list")){
+        foreach ($this->surveyAnswers as $a) {
+            if (!$a->getSurveyQuestion()->getOptional() && ($a->getSurveyQuestion()->getType() == 'radio' || $a->getSurveyQuestion()->getType() == 'list')) {
                 $ret[] = $a;
             }
         }
+
         return $ret;
     }
 }

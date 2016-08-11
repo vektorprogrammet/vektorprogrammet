@@ -10,8 +10,6 @@ use AppBundle\Entity\Department;
 /**
  * ArticleController is the controller responsible for articles,
  * such as showing and article and the showing the news page.
- *
- * @package AppBundle\Controller
  */
 class ArticleController extends Controller
 {
@@ -31,6 +29,7 @@ class ArticleController extends Controller
      * Shows the news page.
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Request $request)
@@ -46,12 +45,12 @@ class ArticleController extends Controller
         $pagination = $paginator->paginate(
             $articles,
             $request->query->get('page', 1),
-            ArticleController::NUM_ARTICLES
+            self::NUM_ARTICLES
         );
 
         return $this->render('article/index.html.twig', array(
             'pagination' => $pagination,
-            'departments' => $departments
+            'departments' => $departments,
         ));
     }
 
@@ -60,6 +59,7 @@ class ArticleController extends Controller
      *
      * @param Request $request
      * @param $department
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showFilterAction(Request $request, $department)
@@ -75,12 +75,12 @@ class ArticleController extends Controller
         $pagination = $paginator->paginate(
             $articles,
             $request->query->get('page', 1),
-            ArticleController::NUM_ARTICLES
+            self::NUM_ARTICLES
         );
 
         return $this->render('article/index.html.twig', array(
             'pagination' => $pagination,
-            'departments' => $departments
+            'departments' => $departments,
         ));
     }
 
@@ -88,6 +88,7 @@ class ArticleController extends Controller
      * Shows the given article.
      *
      * @param Article $article
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showSpecificAction(Article $article)
@@ -99,6 +100,7 @@ class ArticleController extends Controller
      * Shows a list of the latest articles excluding the article with the given id.
      *
      * @param $excludeId
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showOtherAction($excludeId)
@@ -106,7 +108,7 @@ class ArticleController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $articles = $em->getRepository('AppBundle:Article')
-            ->findLatestArticles(ArticleController::NUM_OTHER_ARTICLES,$excludeId);
+            ->findLatestArticles(self::NUM_OTHER_ARTICLES, $excludeId);
 
         return $this->render('article/sidebar_other.html.twig', array('articles' => $articles));
     }
@@ -120,7 +122,7 @@ class ArticleController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')->findStickyAndLatestArticles(ArticleController::NUM_CAROUSEL_ARTICLES);
+        $articles = $em->getRepository('AppBundle:Article')->findStickyAndLatestArticles(self::NUM_CAROUSEL_ARTICLES);
 
         return $this->render('article/carousel.html.twig', array('articles' => $articles));
     }
@@ -130,13 +132,14 @@ class ArticleController extends Controller
      * Is used to show the news on each of the admission pages.
      *
      * @param $id
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showDepartmentNewsAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')->findLatestArticlesByDepartment($id, ArticleController::NUM_ADMISSION_ARTICLES);
+        $articles = $em->getRepository('AppBundle:Article')->findLatestArticlesByDepartment($id, self::NUM_ADMISSION_ARTICLES);
 
         return $this->render('article/department_news.html.twig', array('articles' => $articles));
     }

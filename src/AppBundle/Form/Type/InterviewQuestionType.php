@@ -26,17 +26,17 @@ class InterviewQuestionType extends AbstractType
                 'text' => 'Text',
                 'radio' => 'Multiple choice',
                 'check' => 'Checkboxes',
-                'list' => 'Velg fra liste'
+                'list' => 'Velg fra liste',
             ),
             'label' => 'Type',
         ));
 
         $builder->add('alternatives', 'collection', array(
             'type' => new InterviewQuestionAlternativeType(),
-            'allow_add'    => true,
+            'allow_add' => true,
             'allow_delete' => true,
             'prototype_name' => '__a_prot__',
-            'by_reference' => false
+            'by_reference' => false,
         ));
 
         /*

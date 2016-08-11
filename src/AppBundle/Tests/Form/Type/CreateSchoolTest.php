@@ -6,18 +6,18 @@ use AppBundle\Form\Type\CreateSchoolType;
 use AppBundle\Entity\School;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class CreateSchoolTest extends TypeTestCase {
-	
-	/**
+class CreateSchoolTest extends TypeTestCase
+{
+    /**
      * @dataProvider getValidTestData
      */
-	public function testForm($data){
-	
+    public function testForm($data)
+    {
         $type = new CreateSchoolType();
         $form = $this->factory->create($type);
-		
-		$object = new School();
-		
+
+        $object = new School();
+
         $object->fromArray($data);
 
         // submit the data to the form directly
@@ -32,35 +32,32 @@ class CreateSchoolTest extends TypeTestCase {
         foreach (array_keys($data) as $key) {
             $this->assertArrayHasKey($key, $children);
         }
-		
     }
-	
-	public function getValidTestData()
+
+    public function getValidTestData()
     {
         return array(
             array(
                 'data' => array(
                     'name' => 'test',
-					'contactPerson' => 'test2',
-					'phone' => 'test3',
-					'email' => 'test4',
+                    'contactPerson' => 'test2',
+                    'phone' => 'test3',
+                    'email' => 'test4',
                 ),
             ),
             array(
                 'data' => array(
-				
-				),
+
+                ),
             ),
             array(
                 'data' => array(
                     'name' => null,
-					'contactPerson' => null,
-					'phone' => null,
-					'email' => null,
+                    'contactPerson' => null,
+                    'phone' => null,
+                    'email' => null,
                 ),
             ),
         );
     }
-	
 }
-       

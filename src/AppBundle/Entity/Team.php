@@ -5,22 +5,20 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 /**
- *
  * @ORM\Table(name="team")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\TeamRepository")
  */
-class Team {
-
+class Team
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-	
-	/**
+
+    /**
      * @ORM\Column(type="string", length=250)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
@@ -31,33 +29,32 @@ class Team {
      * @Assert\Email(message="Ugyldig e-post")
      */
     private $email;
-	
-	/**
-     * @ORM\ManyToOne(targetEntity="Department", inversedBy="teams")
-     **/
-	protected $department;
-	
-	/**
-     * @ORM\ManyToMany(targetEntity="Subforum", mappedBy="teams")
-     **/
-	protected $subforums;
-	
-	public function __construct() {
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->subforums = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-	
-	public function __toString()
-	{
-		return (string) $this->getName();
-	}
-	
 
     /**
-     * Get id
+     * @ORM\ManyToOne(targetEntity="Department", inversedBy="teams")
+     **/
+    protected $department;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Subforum", mappedBy="teams")
+     **/
+    protected $subforums;
+
+    public function __construct()
+    {
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->subforums = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return (string) $this->getName();
+    }
+
+    /**
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -65,9 +62,10 @@ class Team {
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return Team
      */
     public function setName($name)
@@ -78,9 +76,9 @@ class Team {
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -88,9 +86,10 @@ class Team {
     }
 
     /**
-     * Set department
+     * Set department.
      *
      * @param \AppBundle\Entity\Department $department
+     *
      * @return Team
      */
     public function setDepartment(\AppBundle\Entity\Department $department = null)
@@ -101,7 +100,7 @@ class Team {
     }
 
     /**
-     * Get department
+     * Get department.
      *
      * @return \AppBundle\Entity\Department
      */
@@ -110,12 +109,11 @@ class Team {
         return $this->department;
     }
 
-
-
     /**
-     * Add subforums
+     * Add subforums.
      *
      * @param \AppBundle\Entity\Subforum $subforums
+     *
      * @return Team
      */
     public function addSubforum(\AppBundle\Entity\Subforum $subforums)
@@ -126,7 +124,7 @@ class Team {
     }
 
     /**
-     * Remove subforums
+     * Remove subforums.
      *
      * @param \AppBundle\Entity\Subforum $subforums
      */
@@ -136,17 +134,17 @@ class Team {
     }
 
     /**
-     * Get subforums
+     * Get subforums.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getSubforums()
     {
         return $this->subforums;
     }
-	
-	// Used for unit testing 
-	public function fromArray($data = array())
+
+    // Used for unit testing 
+    public function fromArray($data = array())
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";
@@ -169,7 +167,4 @@ class Team {
     {
         $this->email = $email;
     }
-
-
-	
 }

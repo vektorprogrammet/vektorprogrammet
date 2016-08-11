@@ -6,18 +6,18 @@ use AppBundle\Form\Type\CreatePositionType;
 use AppBundle\Entity\Position;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class CreatePositionTest extends TypeTestCase {
-	
-	/**
+class CreatePositionTest extends TypeTestCase
+{
+    /**
      * @dataProvider getValidTestData
      */
-	public function testForm($data){
-	
+    public function testForm($data)
+    {
         $type = new CreatePositionType();
         $form = $this->factory->create($type);
-		
-		$object = new Position();
-		
+
+        $object = new Position();
+
         $object->fromArray($data);
 
         // submit the data to the form directly
@@ -32,10 +32,9 @@ class CreatePositionTest extends TypeTestCase {
         foreach (array_keys($data) as $key) {
             $this->assertArrayHasKey($key, $children);
         }
-		
     }
-	
-	public function getValidTestData()
+
+    public function getValidTestData()
     {
         return array(
             array(
@@ -45,8 +44,8 @@ class CreatePositionTest extends TypeTestCase {
             ),
             array(
                 'data' => array(
-				
-				),
+
+                ),
             ),
             array(
                 'data' => array(
@@ -55,6 +54,4 @@ class CreatePositionTest extends TypeTestCase {
             ),
         );
     }
-	
 }
-       

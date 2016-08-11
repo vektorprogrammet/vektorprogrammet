@@ -21,13 +21,14 @@ If we only look at the variables given through the form the test will result in 
 ***************************************************************************************************************************************************************
 */
 
-class EditUserPasswordTest extends TypeTestCase {
-	
-	/**
+class EditUserPasswordTest extends TypeTestCase
+{
+    /**
      * @dataProvider getValidTestData
      */
-	public function testForm($data){
-//
+    public function testForm($data)
+    {
+        //
 //        $type = new EditUserPasswordType();
 //        $form = $this->factory->create($type);
 //
@@ -49,8 +50,8 @@ class EditUserPasswordTest extends TypeTestCase {
 //        }
 //
     }
-	
-	public function getValidTestData()
+
+    public function getValidTestData()
     {
         return array(
             array(
@@ -60,8 +61,8 @@ class EditUserPasswordTest extends TypeTestCase {
             ),
             array(
                 'data' => array(
-				
-				),
+
+                ),
             ),
             array(
                 'data' => array(
@@ -70,6 +71,4 @@ class EditUserPasswordTest extends TypeTestCase {
             ),
         );
     }
-	
 }
-       

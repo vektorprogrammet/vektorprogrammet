@@ -12,13 +12,13 @@ class LoadInterviewSchemaData extends AbstractFixture implements OrderedFixtureI
     public function load(ObjectManager $manager)
     {
         $schema1 = new InterviewSchema();
-        $schema1->setName("Intervjuskjema HiST, 2015");
+        $schema1->setName('Intervjuskjema HiST, 2015');
         $schema1->addInterviewQuestion($this->getReference('iq-1'));
         $schema1->addInterviewQuestion($this->getReference('iq-2'));
         $manager->persist($schema1);
 
         $schema2 = new InterviewSchema();
-        $schema2->setName("Intervjuskjema NTNU, 2015");
+        $schema2->setName('Intervjuskjema NTNU, 2015');
         $schema2->addInterviewQuestion($this->getReference('iq-1'));
         $schema2->addInterviewQuestion($this->getReference('iq-2'));
         $schema2->addInterviewQuestion($this->getReference('iq-3'));

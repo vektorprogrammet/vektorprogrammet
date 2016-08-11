@@ -90,9 +90,9 @@ class Article
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -100,9 +100,10 @@ class Article
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
+     *
      * @return Article
      */
     public function setTitle($title)
@@ -113,9 +114,9 @@ class Article
     }
 
     /**
-     * Get title
+     * Get title.
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -123,9 +124,10 @@ class Article
     }
 
     /**
-     * Set article
+     * Set article.
      *
      * @param string $article
+     *
      * @return Article
      */
     public function setArticle($article)
@@ -136,9 +138,9 @@ class Article
     }
 
     /**
-     * Get article
+     * Get article.
      *
-     * @return string 
+     * @return string
      */
     public function getArticle()
     {
@@ -146,9 +148,10 @@ class Article
     }
 
     /**
-     * Set imageLarge
+     * Set imageLarge.
      *
      * @param string $imageLarge
+     *
      * @return Article
      */
     public function setImageLarge($imageLarge)
@@ -159,9 +162,9 @@ class Article
     }
 
     /**
-     * Get imageLarge
+     * Get imageLarge.
      *
-     * @return string 
+     * @return string
      */
     public function getImageLarge()
     {
@@ -169,9 +172,10 @@ class Article
     }
 
     /**
-     * Set imageMedium
+     * Set imageMedium.
      *
      * @param string $imageMedium
+     *
      * @return Article
      */
     public function setImageMedium($imageMedium)
@@ -182,9 +186,9 @@ class Article
     }
 
     /**
-     * Get imageMedium
+     * Get imageMedium.
      *
-     * @return string 
+     * @return string
      */
     public function getImageMedium()
     {
@@ -192,9 +196,10 @@ class Article
     }
 
     /**
-     * Set imageSmall
+     * Set imageSmall.
      *
      * @param string $imageSmall
+     *
      * @return Article
      */
     public function setImageSmall($imageSmall)
@@ -205,9 +210,9 @@ class Article
     }
 
     /**
-     * Get imageSmall
+     * Get imageSmall.
      *
-     * @return string 
+     * @return string
      */
     public function getImageSmall()
     {
@@ -215,9 +220,10 @@ class Article
     }
 
     /**
-     * Set created
+     * Set created.
      *
      * @param \DateTime $created
+     *
      * @return Article
      */
     public function setCreated($created)
@@ -228,9 +234,9 @@ class Article
     }
 
     /**
-     * Get created
+     * Get created.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreated()
     {
@@ -238,9 +244,10 @@ class Article
     }
 
     /**
-     * Set updated
+     * Set updated.
      *
      * @param \DateTime $updated
+     *
      * @return Article
      */
     public function setUpdated($updated)
@@ -251,9 +258,9 @@ class Article
     }
 
     /**
-     * Get updated
+     * Get updated.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdated()
     {
@@ -261,9 +268,10 @@ class Article
     }
 
     /**
-     * Add departments
+     * Add departments.
      *
      * @param \AppBundle\Entity\Department $departments
+     *
      * @return Article
      */
     public function addDepartment(\AppBundle\Entity\Department $departments)
@@ -274,7 +282,7 @@ class Article
     }
 
     /**
-     * Remove departments
+     * Remove departments.
      *
      * @param \AppBundle\Entity\Department $departments
      */
@@ -284,9 +292,9 @@ class Article
     }
 
     /**
-     * Get departments
+     * Get departments.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getDepartments()
     {
@@ -294,9 +302,10 @@ class Article
     }
 
     /**
-     * Set author
+     * Set author.
      *
      * @param \AppBundle\Entity\User $author
+     *
      * @return Article
      */
     public function setAuthor(\AppBundle\Entity\User $author = null)
@@ -307,7 +316,7 @@ class Article
     }
 
     /**
-     * Get author
+     * Get author.
      *
      * @return \AppBundle\Entity\User
      */
@@ -317,9 +326,10 @@ class Article
     }
 
     /**
-     * Set sticky
+     * Set sticky.
      *
-     * @param boolean $sticky
+     * @param bool $sticky
+     *
      * @return Article
      */
     public function setSticky($sticky)
@@ -330,9 +340,9 @@ class Article
     }
 
     /**
-     * Get sticky
+     * Get sticky.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getSticky()
     {

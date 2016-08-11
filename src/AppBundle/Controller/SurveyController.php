@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\SurveyQuestion;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,28 +10,26 @@ use AppBundle\Entity\SurveyAnswer;
 use AppBundle\Entity\SurveyTaken;
 use AppBundle\Form\Type\SurveyType;
 use AppBundle\Form\Type\SurveyExecuteType;
-use SaadTazi\GChartBundle\DataTable\DataTable;
-use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * SurveyController is the controller responsible for survey actions,
  * such as showing, assigning and conducting surveys.
- *
- * @package AppBundle\Controller
  */
 class SurveyController extends Controller
 {
     /**
      * Shows the given survey.
+     *
      * @param Request $request
-     * @param Survey $survey
+     * @param Survey  $survey
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Request $request, Survey $survey)
     {
         $surveyTaken = new SurveyTaken();
         $surveyTaken->setSurvey($survey);
-        foreach($survey->getSurveyQuestions() as $surveyQuestion){
+        foreach ($survey->getSurveyQuestions() as $surveyQuestion) {
             $answer = new SurveyAnswer();
             $answer->setSurveyQuestion($surveyQuestion);
             $answer->setSurveyTaken($surveyTaken);
@@ -46,6 +43,7 @@ class SurveyController extends Controller
         if ($form->isSubmitted()) {
             return $this->saveSurveyTaken($surveyTaken, 'survey_show');
         }
+
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView(),
 
@@ -55,13 +53,17 @@ class SurveyController extends Controller
     private function surveyTakenIsValid(SurveyTaken $surveyTaken)
     {
         $school = $surveyTaken->getSchool();
-        if(is_null($school))return false;
-        $answers = $surveyTaken->getSurveyAnswers();
-        foreach($answers as $answer)
-        {
-            $question = $answer->getSurveyQuestion();
-            if(!$question->getOptional() && strlen($answer->getAnswer()) < 1)return false;
+        if (is_null($school)) {
+            return false;
         }
+        $answers = $surveyTaken->getSurveyAnswers();
+        foreach ($answers as $answer) {
+            $question = $answer->getSurveyQuestion();
+            if (!$question->getOptional() && strlen($answer->getAnswer()) < 1) {
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -71,7 +73,7 @@ class SurveyController extends Controller
 
         $surveyTaken = new SurveyTaken();
         $surveyTaken->setSurvey($survey);
-        foreach($survey->getSurveyQuestions() as $surveyQuestion){
+        foreach ($survey->getSurveyQuestions() as $surveyQuestion) {
             $answer = new SurveyAnswer();
             $answer->setSurveyQuestion($surveyQuestion);
             $answer->setSurveyTaken($surveyTaken);
@@ -86,36 +88,34 @@ class SurveyController extends Controller
         }
 
         $allTakenSurveys = $em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
-        if(count($allTakenSurveys)){
+        if (count($allTakenSurveys)) {
             $countAnswer = array();
-            foreach($allTakenSurveys as $takenSurvey){
-                foreach($takenSurvey->getSurveyAnswers() as $answer){
-                    if( (!($answer->getSurveyQuestion()->getType() == 'radio' || $answer->getSurveyQuestion()->getType() == 'list')) || $answer->getSurveyQuestion()->getOptional()){
+            foreach ($allTakenSurveys as $takenSurvey) {
+                foreach ($takenSurvey->getSurveyAnswers() as $answer) {
+                    if ((!($answer->getSurveyQuestion()->getType() == 'radio' || $answer->getSurveyQuestion()->getType() == 'list')) || $answer->getSurveyQuestion()->getOptional()) {
                         continue;
                     }
-                    if(!isset($countAnswer[$answer->getSurveyQuestion()->getId()])){
+                    if (!isset($countAnswer[$answer->getSurveyQuestion()->getId()])) {
                         $countAnswer[$answer->getSurveyQuestion()->getId()] = array();
                     }
-                    if(!isset($countAnswer[$answer->getSurveyQuestion()->getId()][$answer->getAnswer()])){
+                    if (!isset($countAnswer[$answer->getSurveyQuestion()->getId()][$answer->getAnswer()])) {
                         $countAnswer[$answer->getSurveyQuestion()->getId()][$answer->getAnswer()] = 0;
                     }
-                    $countAnswer[$answer->getSurveyQuestion()->getId()][$answer->getAnswer()]++;
+                    ++$countAnswer[$answer->getSurveyQuestion()->getId()][$answer->getAnswer()];
                 }
             }
 
-            foreach($surveyTaken->getSurveyAnswers() as $answer){
-                if( (!($answer->getSurveyQuestion()->getType() == 'radio' || $answer->getSurveyQuestion()->getType() == 'list')) || $answer->getSurveyQuestion()->getOptional()){
+            foreach ($surveyTaken->getSurveyAnswers() as $answer) {
+                if ((!($answer->getSurveyQuestion()->getType() == 'radio' || $answer->getSurveyQuestion()->getType() == 'list')) || $answer->getSurveyQuestion()->getOptional()) {
                     continue;
                 }
                 $answer->setAnswer(array_keys($countAnswer[$answer->getSurveyQuestion()->getId()], max($countAnswer[$answer->getSurveyQuestion()->getId()]))[0]);
             }
 
-
-            $surveyTaken->setSchool($em->getRepository('AppBundle:SurveyTaken')->findBy(array('survey' => $survey), array('id' => 'DESC') , 1)[0]->getSchool());
+            $surveyTaken->setSchool($em->getRepository('AppBundle:SurveyTaken')->findBy(array('survey' => $survey), array('id' => 'DESC'), 1)[0]->getSchool());
 
             $form = $this->createForm(new SurveyExecuteType(), $surveyTaken);
         }
-
 
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView(),
@@ -125,14 +125,17 @@ class SurveyController extends Controller
 
     /**
      * @param SurveyTaken $surveyTaken
-     * @param string $surveyUrl
+     * @param string      $surveyUrl
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    private function saveSurveyTaken($surveyTaken, $surveyUrl){
+    private function saveSurveyTaken($surveyTaken, $surveyUrl)
+    {
         $survey = $surveyTaken->getSurvey();
-        if(!$this->surveyTakenIsValid($surveyTaken)){
-            $this->addFlash('undersokelse-warning','Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
-            return $this->redirect($this->generateUrl($surveyUrl,array('id' => $survey->getId())));
+        if (!$this->surveyTakenIsValid($surveyTaken)) {
+            $this->addFlash('undersokelse-warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
+
+            return $this->redirect($this->generateUrl($surveyUrl, array('id' => $survey->getId())));
         }
         $surveyTaken->removeNullAnswers();
         $surveyTaken->setTime(new \DateTime());
@@ -140,13 +143,12 @@ class SurveyController extends Controller
         $em->persist($surveyTaken);
         $em->flush();
         $new_answer = true;
-        if($new_answer){
-            $this->addFlash('undersokelse-notice','Mottatt svar!');
+        if ($new_answer) {
+            $this->addFlash('undersokelse-notice', 'Mottatt svar!');
             //New form without previous answers
-            return $this->redirect($this->generateUrl($surveyUrl,array('id' => $survey->getId())));
+            return $this->redirect($this->generateUrl($surveyUrl, array('id' => $survey->getId())));
         }
     }
-
 
     public function createSurveyAction(Request $request)
     {
@@ -168,7 +170,8 @@ class SurveyController extends Controller
         return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
     }
 
-    public function copySurveyAction(Request $request, Survey $survey){
+    public function copySurveyAction(Request $request, Survey $survey)
+    {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $em = $this->getDoctrine()->getEntityManager();
 
@@ -177,14 +180,14 @@ class SurveyController extends Controller
         // Check if user submitted a form with a survey
         $form = $this->createForm(new SurveyType(), $new_survey);
         $form->handleRequest($request);
-        if($form->isSubmitted()){
+        if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($new_survey);
                 $em->flush();
 
                 return $this->redirect($this->generateUrl('surveys'));
-            }else{
+            } else {
                 return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
             }
         }
@@ -193,9 +196,9 @@ class SurveyController extends Controller
         $new_survey = clone $survey;
 
         $new_survey->setSemester($em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($user->getFieldOfStudy()->getDepartment()));
-        foreach($survey->getSurveyQuestions() as $q){
+        foreach ($survey->getSurveyQuestions() as $q) {
             $new_q = clone $q;
-            foreach($q->getAlternatives() as $a){
+            foreach ($q->getAlternatives() as $a) {
                 $new_a = clone $a;
                 $new_q->addAlternative($new_a);
                 $new_a->setSurveyQuestion($new_q);
@@ -204,16 +207,18 @@ class SurveyController extends Controller
         }
 
         $form = $this->createForm(new SurveyType(), $new_survey);
+
         return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
     }
 
     public function showSurveysAction()
     {
         $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy([], ['id' => 'DESC']);
-        foreach($surveys as $survey){
+        foreach ($surveys as $survey) {
             $totalAnswered = count($this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findBy(array('survey' => $survey)));
             $survey->setTotalAnswered($totalAnswered);
         }
+
         return $this->render('survey/surveys.html.twig', array('surveys' => $surveys));
     }
 
@@ -240,6 +245,7 @@ class SurveyController extends Controller
      * This method is intended to be called by an Ajax request.
      *
      * @param Survey $survey
+     *
      * @return JsonResponse
      */
     public function deleteSurveyAction(Survey $survey)
@@ -258,7 +264,7 @@ class SurveyController extends Controller
         } catch (\Exception $e) {
             $response = ['success' => false,
                 'code' => $e->getCode(),
-                'cause' => 'Det oppstod en feil.'
+                'cause' => 'Det oppstod en feil.',
             ];
         }
 
@@ -271,17 +277,17 @@ class SurveyController extends Controller
         $textQAarray = array();
 
         // Get all text questions
-        foreach($survey->getSurveyQuestions() as $question){
-            if($question->getType()=="text"){
+        foreach ($survey->getSurveyQuestions() as $question) {
+            if ($question->getType() == 'text') {
                 $textQuestionArray[] = $question;
             }
         }
 
         //Collect text answers
-        foreach($textQuestionArray as $textQuestion){
+        foreach ($textQuestionArray as $textQuestion) {
             $questionText = $textQuestion->getQuestion();
             $textQAarray[$questionText] = array();
-            foreach($textQuestion->getAnswers() as $answer){
+            foreach ($textQuestion->getAnswers() as $answer) {
                 $textQAarray[$questionText][] = $answer->getAnswer();
             }
         }
@@ -290,17 +296,23 @@ class SurveyController extends Controller
             'textAnswers' => $textQAarray,
             'survey' => $survey,
         ));
-
     }
 
-    public function getSurveyResultAction(Survey $survey){
+    public function getSurveyResultAction(Survey $survey)
+    {
         $surveysTaken = $this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
         $validSurveysTaken = array();
         $schools = [];
-        foreach($surveysTaken as $surveyTaken){
-            if(is_null($surveyTaken->getSchool())) continue;
-            if($this->surveyTakenIsValid($surveyTaken))$validSurveysTaken[] = $surveyTaken;
-            if(!in_array($surveyTaken->getSchool()->getName(), $schools)) $schools[] = $surveyTaken->getSchool()->getName();
+        foreach ($surveysTaken as $surveyTaken) {
+            if (is_null($surveyTaken->getSchool())) {
+                continue;
+            }
+            if ($this->surveyTakenIsValid($surveyTaken)) {
+                $validSurveysTaken[] = $surveyTaken;
+            }
+            if (!in_array($surveyTaken->getSchool()->getName(), $schools)) {
+                $schools[] = $surveyTaken->getSchool()->getName();
+            }
         }
 
         //Inject the school question into question array
@@ -311,6 +323,4 @@ class SurveyController extends Controller
 
         return new JsonResponse(array('survey' => $survey_decode, 'answers' => $validSurveysTaken));
     }
-
-
 }

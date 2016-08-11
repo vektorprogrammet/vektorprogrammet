@@ -12,11 +12,11 @@ class LoadPositionData extends AbstractFixture implements OrderedFixtureInterfac
     public function load(ObjectManager $manager)
     {
         $position1 = new Position();
-        $position1->setName("Leder");
+        $position1->setName('Leder');
         $manager->persist($position1);
 
         $position2 = new Position();
-        $position2->setName("Medlem");
+        $position2->setName('Medlem');
         $manager->persist($position2);
 
         $manager->flush();

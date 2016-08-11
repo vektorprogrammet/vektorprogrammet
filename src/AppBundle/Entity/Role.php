@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\RoleRepository")
  */
-class Role implements RoleInterface {
-
+class Role implements RoleInterface
+{
     /**
      * @ORM\Column(name="id", type="integer", length=11)
      * @ORM\Id()
@@ -35,50 +35,59 @@ class Role implements RoleInterface {
      */
     private $users;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->users = new ArrayCollection();
     }
 
     /**
      * @see RoleInterface
      */
-    public function getRole() {
+    public function getRole()
+    {
         return $this->role;
     }
 
-    function setId($id) {
+    public function setId($id)
+    {
         $this->id = $id;
     }
 
-    function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
     }
 
-    function setRole($role) {
+    public function setRole($role)
+    {
         $this->role = $role;
     }
 
-    function setUsers($users) {
+    public function setUsers($users)
+    {
         $this->users = $users;
     }
 
-    function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
-    function getUsers() {
+    public function getUsers()
+    {
         return $this->users;
     }
 
-
     /**
-     * Add users
+     * Add users.
      *
      * @param \AppBundle\Entity\User $users
+     *
      * @return Role
      */
     public function addUser(\AppBundle\Entity\User $users)
@@ -89,7 +98,7 @@ class Role implements RoleInterface {
     }
 
     /**
-     * Remove users
+     * Remove users.
      *
      * @param \AppBundle\Entity\User $users
      */

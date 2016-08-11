@@ -3,20 +3,20 @@
  * Created by PhpStorm.
  * User: Tommy
  * Date: 29.04.2015
- * Time: 17:28
+ * Time: 17:28.
  *
  * Handles file uploads by reading the Request object for files and moving them to a specified location on the
  * server file system.
  *
  * todo: Consider making this a service. http://symfony.com/doc/current/book/service_container.html
- *
  */
+
 namespace AppBundle\FileSystem;
 
 use Symfony\Component\HttpFoundation\Request;
 
-class FileUploader {
-
+class FileUploader
+{
     private $targetFolder;
     private $allowedFileTypes;
 
@@ -28,9 +28,11 @@ class FileUploader {
      *
      * @param $targetFolder
      * @param $allowedFileTypes
+     *
      * @throws \Exception
      */
-    public function __construct($targetFolder, $allowedFileTypes){
+    public function __construct($targetFolder, $allowedFileTypes)
+    {
         if (!$this->userIsAllowedToUploadFilesToFolder($targetFolder)) {
             throw new \Exception('This user can not upload files to this folder.');
         }
@@ -39,7 +41,6 @@ class FileUploader {
     }
 
     /**
-     *
      * This method will read the Request object for any files and move them to target folder.
      * For each file moved it will add to the returned associative array an entry originalFileName => uniqueFilename
      * originalFileName is the name of the file in the Request object. uniqueFilename is a filename <b>with full path</b>
@@ -53,16 +54,19 @@ class FileUploader {
      * todo: just ignore the file and move on with the rest?
      *
      * @param $request
+     *
      * @return array
+     *
      * @throws \Exception
      */
-    public function upload(Request $request){
+    public function upload(Request $request)
+    {
         //Create return array
         $returnArray = array();
-        foreach($request->files->keys() as $key){
+        foreach ($request->files->keys() as $key) {
             //todo: ugly hack, find better solution
             $curFile = $request->files->get($key);
-            if (is_array($curFile)){
+            if (is_array($curFile)) {
                 $curFile = $curFile[array_keys($curFile)[0]];
             }
 
@@ -78,13 +82,15 @@ class FileUploader {
                 //Succeeded in moving this file. Add mapping to array
                 $returnArray[$originalFileName] = $uniqueNameWithPath;
             } else {
-                throw new \Exception("Could not copy the file " . $originalFileName . " to " . $uniqueNameWithPath);
+                throw new \Exception('Could not copy the file '.$originalFileName.' to '.$uniqueNameWithPath);
             }
         }
+
         return $returnArray;
     }
 
-    public function undo(){
+    public function undo()
+    {
         //todo: implement
     }
 
@@ -93,9 +99,11 @@ class FileUploader {
      * todo: not implemented yet, is it necessary?
      *
      * @param $targetFolder
+     *
      * @return bool
      */
-    private function userIsAllowedToUploadFilesToFolder($targetFolder){
+    private function userIsAllowedToUploadFilesToFolder($targetFolder)
+    {
         return true;
     }
 }

@@ -2,16 +2,12 @@
 
 namespace AppBundle\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-
 class PasswordResetType extends AbstractType
 {
-
-
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
@@ -29,9 +25,9 @@ class PasswordResetType extends AbstractType
         $builder
             ->add('email', 'text', array(
                 'label' => 'E-post',
-                'mapped' => false
+                'mapped' => false,
             ))
             ->add('save', 'submit', array(
-                'label' => 'Reset passord'));
+                'label' => 'Reset passord', ));
     }
 }

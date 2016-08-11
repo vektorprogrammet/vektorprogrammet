@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,10 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\PasswordResetRepository")
  * @ORM\Table(name="password_reset")
  */
-
 class PasswordReset
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -26,7 +23,6 @@ class PasswordReset
      */
     protected $user;
 
-
     /**
      * @ORM\Column(type="string")
      */
@@ -37,11 +33,10 @@ class PasswordReset
      */
     protected $resetTime;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -49,9 +44,10 @@ class PasswordReset
     }
 
     /**
-     * Set hashedResetCode
+     * Set hashedResetCode.
      *
      * @param string $hashedResetCode
+     *
      * @return PasswordReset
      */
     public function setHashedResetCode($hashedResetCode)
@@ -62,9 +58,9 @@ class PasswordReset
     }
 
     /**
-     * Get hashedResetCode
+     * Get hashedResetCode.
      *
-     * @return string 
+     * @return string
      */
     public function getHashedResetCode()
     {
@@ -72,9 +68,10 @@ class PasswordReset
     }
 
     /**
-     * Set resetTime
+     * Set resetTime.
      *
      * @param \DateTime $resetTime
+     *
      * @return PasswordReset
      */
     public function setResetTime($resetTime)
@@ -85,9 +82,9 @@ class PasswordReset
     }
 
     /**
-     * Get resetTime
+     * Get resetTime.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getResetTime()
     {
@@ -95,9 +92,10 @@ class PasswordReset
     }
 
     /**
-     * Set user
+     * Set user.
      *
      * @param \AppBundle\Entity\User $user
+     *
      * @return PasswordReset
      */
     public function setUser(User $user = null)
@@ -108,7 +106,7 @@ class PasswordReset
     }
 
     /**
-     * Get user
+     * Get user.
      *
      * @return \AppBundle\Entity\User
      */
@@ -116,5 +114,4 @@ class PasswordReset
     {
         return $this->user;
     }
-	
 }

@@ -17,7 +17,7 @@ class SchoolCapacityType extends AbstractType
             ->add('school', 'entity', array(
                 'label' => 'Skole',
                 'class' => 'AppBundle:School',
-                'query_builder' => function(EntityRepository $er) use($department, $semester) {
+                'query_builder' => function (EntityRepository $er) use ($department, $semester) {
                     /*return $er->createQueryBuilder('s')
                         ->join('AppBundle:SchoolCapacity', 'osc')
                         ->join('s.departments', 'd')
@@ -40,17 +40,16 @@ class SchoolCapacityType extends AbstractType
 
                     return $oldSchools;
 
-                }
+                },
             ))
             ->add('monday', 'integer')
             ->add('tuesday', 'integer')
             ->add('wednesday', 'integer')
             ->add('thursday', 'integer')
             ->add('friday', 'integer')
-            ->add('save', 'submit',array(
+            ->add('save', 'submit', array(
                 'label' => 'Lagre',
             ));
-
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

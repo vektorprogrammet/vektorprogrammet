@@ -4,6 +4,6 @@ namespace AppBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class SubforumRepository extends EntityRepository {
-
+class SubforumRepository extends EntityRepository
+{
 }

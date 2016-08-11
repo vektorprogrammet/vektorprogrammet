@@ -1,12 +1,9 @@
 <?php
 
-
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
-
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SchoolRepository")
@@ -28,17 +25,16 @@ class School
     protected $name;
 
     /**
-    * @ORM\Column(type="string")
+     * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-    */
+     */
     protected $contactPerson;
 
     /**
      * @ORM\ManyToMany(targetEntity="Department", mappedBy="schools")
-	 * @ORM\JoinColumn(onDelete="cascade")
+     * @ORM\JoinColumn(onDelete="cascade")
      **/
     protected $departments;
-
 
     /**
      * @ORM\Column(type="string")
@@ -46,13 +42,13 @@ class School
      * @Assert\Email(message="Ikke gyldig e-post.")
      */
     protected $email;
-	
-	/**
+
+    /**
      * @ORM\ManyToMany(targetEntity="Subforum", mappedBy="schools")
-	 * @ORM\JoinColumn(onDelete="cascade")
+     * @ORM\JoinColumn(onDelete="cascade")
      **/
-	protected $subforums;
-	
+    protected $subforums;
+
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
@@ -66,16 +62,17 @@ class School
      */
     private $international;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->departments = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->subforums = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->subforums = new \Doctrine\Common\Collections\ArrayCollection();
         $this->international = false;
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -83,9 +80,10 @@ class School
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return School
      */
     public function setName($name)
@@ -96,7 +94,7 @@ class School
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -106,9 +104,10 @@ class School
     }
 
     /**
-     * Set contactPerson
+     * Set contactPerson.
      *
      * @param string $contactPerson
+     *
      * @return School
      */
     public function setContactPerson($contactPerson)
@@ -119,7 +118,7 @@ class School
     }
 
     /**
-     * Get contactPerson
+     * Get contactPerson.
      *
      * @return string
      */
@@ -129,9 +128,10 @@ class School
     }
 
     /**
-     * Add departments
+     * Add departments.
      *
      * @param \AppBundle\Entity\Department $departments
+     *
      * @return School
      */
     public function addDepartment(\AppBundle\Entity\Department $departments)
@@ -142,7 +142,7 @@ class School
     }
 
     /**
-     * Remove departments
+     * Remove departments.
      *
      * @param \AppBundle\Entity\Department $departments
      */
@@ -152,7 +152,7 @@ class School
     }
 
     /**
-     * Get departments
+     * Get departments.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -162,9 +162,10 @@ class School
     }
 
     /**
-     * Set email
+     * Set email.
      *
      * @param string $email
+     *
      * @return School
      */
     public function setEmail($email)
@@ -175,7 +176,7 @@ class School
     }
 
     /**
-     * Get email
+     * Get email.
      *
      * @return string
      */
@@ -185,9 +186,10 @@ class School
     }
 
     /**
-     * Set phone
+     * Set phone.
      *
      * @param string $phone
+     *
      * @return School
      */
     public function setPhone($phone)
@@ -198,7 +200,7 @@ class School
     }
 
     /**
-     * Get phone
+     * Get phone.
      *
      * @return string
      */
@@ -206,16 +208,17 @@ class School
     {
         return $this->phone;
     }
-	
-	public function __toString(){
-		return $this->getName();
-	}
-	
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
 
     /**
-     * Add subforums
+     * Add subforums.
      *
      * @param \AppBundle\Entity\Subforum $subforums
+     *
      * @return School
      */
     public function addSubforum(\AppBundle\Entity\Subforum $subforums)
@@ -226,7 +229,7 @@ class School
     }
 
     /**
-     * Remove subforums
+     * Remove subforums.
      *
      * @param \AppBundle\Entity\Subforum $subforums
      */
@@ -236,17 +239,17 @@ class School
     }
 
     /**
-     * Get subforums
+     * Get subforums.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getSubforums()
     {
         return $this->subforums;
     }
-	
-	// Used for unit testing 
-	public function fromArray($data = array())
+
+    // Used for unit testing 
+    public function fromArray($data = array())
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";
@@ -255,7 +258,7 @@ class School
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isInternational()
     {
@@ -263,12 +266,10 @@ class School
     }
 
     /**
-     * @param boolean $international
+     * @param bool $international
      */
     public function setInternational($international)
     {
         $this->international = $international;
     }
-
-
 }

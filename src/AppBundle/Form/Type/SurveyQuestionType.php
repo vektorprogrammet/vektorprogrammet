@@ -25,17 +25,17 @@ class SurveyQuestionType extends AbstractType
             'choices' => array(
                 'text' => 'Text',
                 'radio' => 'Multiple choice',
-                'list' => 'Velg fra liste'
+                'list' => 'Velg fra liste',
             ),
             'label' => 'Type',
         ));
 
         $builder->add('alternatives', 'collection', array(
             'type' => new SurveyQuestionAlternativeType(),
-            'allow_add'    => true,
+            'allow_add' => true,
             'allow_delete' => true,
             'prototype_name' => '__a_prot__',
-            'by_reference' => false
+            'by_reference' => false,
         ));
 
         $builder->add('optional', 'choice', array(
@@ -43,8 +43,8 @@ class SurveyQuestionType extends AbstractType
             'expanded' => 'true',
             'choices' => array(
                 '0' => 'Nei',
-                '1' => 'Ja'
-            )
+                '1' => 'Ja',
+            ),
         ));
 
         /*

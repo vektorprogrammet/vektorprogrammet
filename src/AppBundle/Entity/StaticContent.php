@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * StaticContent
+ * StaticContent.
  *
  * @ORM\Entity
  * @ORM\Table(name="static_content")
@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class StaticContent
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -36,11 +36,10 @@ class StaticContent
      */
     private $html;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -48,9 +47,10 @@ class StaticContent
     }
 
     /**
-     * Set htmlId
+     * Set htmlId.
      *
      * @param string $htmlId
+     *
      * @return Static_content
      */
     public function setHtmlId($htmlId)
@@ -61,9 +61,9 @@ class StaticContent
     }
 
     /**
-     * Get htmlId
+     * Get htmlId.
      *
-     * @return string 
+     * @return string
      */
     public function getHtmlId()
     {
@@ -71,9 +71,10 @@ class StaticContent
     }
 
     /**
-     * Set html
+     * Set html.
      *
      * @param string $html
+     *
      * @return Static_content
      */
     public function setHtml($html)
@@ -84,9 +85,9 @@ class StaticContent
     }
 
     /**
-     * Get html
+     * Get html.
      *
-     * @return string 
+     * @return string
      */
     public function getHtml()
     {

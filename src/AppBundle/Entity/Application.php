@@ -9,8 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ApplicationRepository")
  * @ORM\Table(name="application")
  */
-class Application {
-
+class Application
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -128,10 +128,10 @@ class Application {
         $this->english = false;
     }
 
-
     /**
-     * Get id
-     * @return integer 
+     * Get id.
+     *
+     * @return int
      */
     public function getId()
     {
@@ -363,18 +363,17 @@ class Application {
     }
 
     /**
-     * Set heardAboutFrom
+     * Set heardAboutFrom.
      *
      * @param array $heardAboutFrom
      */
     public function setHeardAboutFrom($heardAboutFrom)
     {
         $this->heardAboutFrom = $heardAboutFrom;
-
     }
 
     /**
-     * Get heardAboutFrom
+     * Get heardAboutFrom.
      *
      * @return array
      */
@@ -400,7 +399,7 @@ class Application {
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getPreviousParticipation()
     {
@@ -408,16 +407,10 @@ class Application {
     }
 
     /**
-     * @param boolean $previousParticipation
+     * @param bool $previousParticipation
      */
     public function setPreviousParticipation($previousParticipation)
     {
         $this->previousParticipation = $previousParticipation;
     }
-
-
-
-
-
-
 }

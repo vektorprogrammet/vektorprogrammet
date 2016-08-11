@@ -10,9 +10,8 @@ class ApplicationInterviewType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder->add('applicationPractical', new ApplicationPracticalType(), array(
-            'data_class' => 'AppBundle\Entity\Application'
+            'data_class' => 'AppBundle\Entity\Application',
         ));
 
         $builder->add('heardAboutFrom', 'choice', array(
@@ -24,10 +23,10 @@ class ApplicationInterviewType extends AbstractType
                 'Bekjente' => 'Bekjente',
                 'Bekjente i styret' => 'Bekjente i styret',
                 'Plakater/flyers' => 'Plakater/Flyers',
-                'Linjeforeningen (f.eks fadderukene)' => 'Linjeforeningen (f.eks fadderukene)'
+                'Linjeforeningen (f.eks fadderukene)' => 'Linjeforeningen (f.eks fadderukene)',
             ),
             'expanded' => true,
-            'multiple' => true
+            'multiple' => true,
         ));
 
         $builder->add('interview', new InterviewType());
@@ -35,7 +34,6 @@ class ApplicationInterviewType extends AbstractType
         $builder->add('save', 'submit', array(
             'label' => 'Lagre',
         ));
-
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

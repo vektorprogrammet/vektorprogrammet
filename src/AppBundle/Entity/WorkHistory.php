@@ -3,27 +3,24 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 /**
- *
  * @ORM\Table(name="work_history")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\WorkHistoryRepository")
  */
-class WorkHistory {
-	
-	 /**
+class WorkHistory
+{
+    /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-	protected $id;
-	
-	/**
+    protected $id;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User")
-	 * @ORM\JoinColumn(onDelete="SET NULL")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      * @Assert\Valid
      **/
     protected $user;
@@ -40,30 +37,28 @@ class WorkHistory {
      */
     protected $endSemester;
 
-	/**
+    /**
      * @ORM\ManyToOne(targetEntity="Team")
-	 * @ORM\JoinColumn(onDelete="SET NULL")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      **/
-	protected $team;
-	
-	/**
-     * @ORM\ManyToOne(targetEntity="Position")
-	 * @ORM\JoinColumn(name="position_id", referencedColumnName="id", onDelete="SET NULL")
-     * @Assert\Valid
-     **/
-	protected $position;
-	
-	
-	
-	public function __toString(){
-		return (string)$this->getId();
-	}
-	
+    protected $team;
 
     /**
-     * Get id
+     * @ORM\ManyToOne(targetEntity="Position")
+     * @ORM\JoinColumn(name="position_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Assert\Valid
+     **/
+    protected $position;
+
+    public function __toString()
+    {
+        return (string) $this->getId();
+    }
+
+    /**
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -71,9 +66,10 @@ class WorkHistory {
     }
 
     /**
-     * Set user
+     * Set user.
      *
      * @param \AppBundle\Entity\User $user
+     *
      * @return WorkHistory
      */
     public function setUser(\AppBundle\Entity\User $user = null)
@@ -84,7 +80,7 @@ class WorkHistory {
     }
 
     /**
-     * Get user
+     * Get user.
      *
      * @return \AppBundle\Entity\User
      */
@@ -94,9 +90,10 @@ class WorkHistory {
     }
 
     /**
-     * Set team
+     * Set team.
      *
      * @param \AppBundle\Entity\Team $team
+     *
      * @return WorkHistory
      */
     public function setTeam(\AppBundle\Entity\Team $team = null)
@@ -107,7 +104,7 @@ class WorkHistory {
     }
 
     /**
-     * Get team
+     * Get team.
      *
      * @return \AppBundle\Entity\Team
      */
@@ -117,9 +114,10 @@ class WorkHistory {
     }
 
     /**
-     * Set position
+     * Set position.
      *
      * @param \AppBundle\Entity\Position $position
+     *
      * @return WorkHistory
      */
     public function setPosition(\AppBundle\Entity\Position $position = null)
@@ -130,7 +128,7 @@ class WorkHistory {
     }
 
     /**
-     * Get position
+     * Get position.
      *
      * @return \AppBundle\Entity\Position
      */
@@ -140,9 +138,10 @@ class WorkHistory {
     }
 
     /**
-     * Set startSemester
+     * Set startSemester.
      *
      * @param \AppBundle\Entity\Semester $startSemester
+     *
      * @return WorkHistory
      */
     public function setStartSemester(\AppBundle\Entity\Semester $startSemester = null)
@@ -153,9 +152,9 @@ class WorkHistory {
     }
 
     /**
-     * Get startSemester
+     * Get startSemester.
      *
-     * @return \AppBundle\Entity\Semester 
+     * @return \AppBundle\Entity\Semester
      */
     public function getStartSemester()
     {
@@ -163,9 +162,10 @@ class WorkHistory {
     }
 
     /**
-     * Set endSemester
+     * Set endSemester.
      *
      * @param \AppBundle\Entity\Semester $endSemester
+     *
      * @return WorkHistory
      */
     public function setEndSemester(\AppBundle\Entity\Semester $endSemester = null)
@@ -176,9 +176,9 @@ class WorkHistory {
     }
 
     /**
-     * Get endSemester
+     * Get endSemester.
      *
-     * @return \AppBundle\Entity\Semester 
+     * @return \AppBundle\Entity\Semester
      */
     public function getEndSemester()
     {

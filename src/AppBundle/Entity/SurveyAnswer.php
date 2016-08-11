@@ -51,9 +51,9 @@ class SurveyAnswer implements \JsonSerializable
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -61,9 +61,10 @@ class SurveyAnswer implements \JsonSerializable
     }
 
     /**
-     * Set answer
+     * Set answer.
      *
      * @param string $answer
+     *
      * @return SurveyAnswer
      */
     public function setAnswer($answer)
@@ -74,9 +75,9 @@ class SurveyAnswer implements \JsonSerializable
     }
 
     /**
-     * Get answer
+     * Get answer.
      *
-     * @return string 
+     * @return string
      */
     public function getAnswer()
     {
@@ -84,9 +85,10 @@ class SurveyAnswer implements \JsonSerializable
     }
 
     /**
-     * Set surveyQuestion
+     * Set surveyQuestion.
      *
      * @param \AppBundle\Entity\SurveyQuestion $surveyQuestion
+     *
      * @return SurveyAnswer
      */
     public function setSurveyQuestion(\AppBundle\Entity\SurveyQuestion $surveyQuestion = null)
@@ -97,7 +99,7 @@ class SurveyAnswer implements \JsonSerializable
     }
 
     /**
-     * Get surveyQuestion
+     * Get surveyQuestion.
      *
      * @return \AppBundle\Entity\SurveyQuestion
      */
@@ -107,13 +109,17 @@ class SurveyAnswer implements \JsonSerializable
     }
 
     /**
-     * Specify data which should be serialized to JSON
+     * Specify data which should be serialized to JSON.
+     *
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     *
      * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
+     *               which is a value of any type other than a resource.
+     *
      * @since 5.4.0
      */
-    function jsonSerialize(){
+    public function jsonSerialize()
+    {
         return array('question_id' => $this->surveyQuestion->getId(), 'answer' => $this->answer);
     }
 }

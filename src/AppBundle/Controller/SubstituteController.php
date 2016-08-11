@@ -13,8 +13,6 @@ use AppBundle\Form\Type\SubstituteType;
 /**
  * SubstituteController is the controller responsible for substitute assistants,
  * such as showing and deleting substitutes.
- *
- * @package AppBundle\Controller
  */
 class SubstituteController extends Controller
 {
@@ -22,6 +20,7 @@ class SubstituteController extends Controller
      * Shows the substitute page for the department of the logged in user.
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Request $request)
@@ -40,12 +39,12 @@ class SubstituteController extends Controller
         $departments = $em->getRepository('AppBundle:Department')->findAllDepartments();
 
         // Find all the semesters associated with the department
-        $semesters =  $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
+        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
 
         return $this->render('substitute/index.html.twig', array(
             'substitutes' => $substitutes,
             'departments' => $departments,
-            'semesters' => $semesters
+            'semesters' => $semesters,
         ));
     }
 
@@ -53,6 +52,7 @@ class SubstituteController extends Controller
      * Shows the substitute page for the given department.
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showSubstitutesByDepartmentAction(Request $request, Department $department)
@@ -68,12 +68,12 @@ class SubstituteController extends Controller
         $departments = $em->getRepository('AppBundle:Department')->findAllDepartments();
 
         // Find all the semesters associated with the department
-        $semesters =  $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
+        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
 
         return $this->render('substitute/index.html.twig', array(
             'substitutes' => $substitutes,
             'departments' => $departments,
-            'semesters' => $semesters
+            'semesters' => $semesters,
         ));
     }
 
@@ -84,13 +84,14 @@ class SubstituteController extends Controller
      * This method is intended to be called by an Ajax request.
      *
      * @param Application $application
+     *
      * @return JsonResponse
      */
-    public function createAction(Application $application) {
+    public function createAction(Application $application)
+    {
         // Only admin or team members withing the same department as the applicant can create substitute
-        if($this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') ||
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') ||
             $application->isSameDepartment($this->getUser())) {
-
             $appStat = $application->getStatistic();
             $intPrac = $appStat->getInterviewPractical();
 
@@ -133,12 +134,13 @@ class SubstituteController extends Controller
     /**
      * Shows and handles submissions of the edit substitute form.
      *
-     * @param Request $request
+     * @param Request    $request
      * @param Substitute $substitute
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, Substitute $substitute) {
-
+    public function editAction(Request $request, Substitute $substitute)
+    {
         $form = $this->createForm(new SubstituteType(), $substitute);
 
         $form->handleRequest($request);
@@ -159,9 +161,11 @@ class SubstituteController extends Controller
      * This method is intended to be called by an Ajax request.
      *
      * @param $id
+     *
      * @return JsonResponse
      */
-    public function deleteAction($id){
+    public function deleteAction($id)
+    {
         try {
             if ($this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
 
@@ -174,18 +178,16 @@ class SubstituteController extends Controller
 
                 // AJAX response
                 $response['success'] = true;
-            }
-            else {
+            } else {
                 // Send a response to AJAX
                 $response['success'] = false;
                 $response['cause'] = 'Ikke tilstrekkelige rettigheter.';
             }
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             // Send a response to AJAX
             return new JsonResponse([
                 'success' => false,
-                'code'    => $e->getCode(),
+                'code' => $e->getCode(),
                 'cause' => 'En exception oppstod. Vennligst kontakt IT-ansvarlig.',
                 // 'cause' => $e->getMessage(), if you want to see the exception message.
             ]);

@@ -60,7 +60,6 @@ class Survey implements \JsonSerializable
         $this->totalAnswered = $totalAnswered;
     }
 
-
     /**
      * @param mixed $name
      */
@@ -102,7 +101,7 @@ class Survey implements \JsonSerializable
     }
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -110,16 +109,17 @@ class Survey implements \JsonSerializable
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
         return $this->id;
     }
 
-    public function __clone() {
+    public function __clone()
+    {
         $this->id = null;
         $this->semester = null;
         $this->surveyQuestions = new \Doctrine\Common\Collections\ArrayCollection();
@@ -134,19 +134,24 @@ class Survey implements \JsonSerializable
     }
 
     /**
-     * Specify data which should be serialized to JSON
+     * Specify data which should be serialized to JSON.
+     *
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     *
      * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
+     *               which is a value of any type other than a resource.
+     *
      * @since 5.4.0
      */
-    function jsonSerialize(){
+    public function jsonSerialize()
+    {
         $ret = array('questions' => array());
-        foreach($this->surveyQuestions as $q){
-            if(!$q->getOptional() && ($q->getType() == "radio" || $q->getType() == "list")){
+        foreach ($this->surveyQuestions as $q) {
+            if (!$q->getOptional() && ($q->getType() == 'radio' || $q->getType() == 'list')) {
                 $ret['questions'][] = $q;
             }
         }
+
         return $ret;
     }
 }

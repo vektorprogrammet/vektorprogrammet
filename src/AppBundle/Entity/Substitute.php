@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SubstituteRepository")
@@ -79,9 +78,9 @@ class Substitute
     protected $friday;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -89,9 +88,10 @@ class Substitute
     }
 
     /**
-     * Set firstName
+     * Set firstName.
      *
      * @param string $firstName
+     *
      * @return Substitute
      */
     public function setFirstName($firstName)
@@ -102,9 +102,9 @@ class Substitute
     }
 
     /**
-     * Get firstName
+     * Get firstName.
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -112,9 +112,10 @@ class Substitute
     }
 
     /**
-     * Set lastName
+     * Set lastName.
      *
      * @param string $lastName
+     *
      * @return Substitute
      */
     public function setLastName($lastName)
@@ -125,9 +126,9 @@ class Substitute
     }
 
     /**
-     * Get lastName
+     * Get lastName.
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
@@ -135,9 +136,10 @@ class Substitute
     }
 
     /**
-     * Set phone
+     * Set phone.
      *
      * @param string $phone
+     *
      * @return Substitute
      */
     public function setPhone($phone)
@@ -148,9 +150,9 @@ class Substitute
     }
 
     /**
-     * Get phone
+     * Get phone.
      *
-     * @return string 
+     * @return string
      */
     public function getPhone()
     {
@@ -158,9 +160,10 @@ class Substitute
     }
 
     /**
-     * Set email
+     * Set email.
      *
      * @param string $email
+     *
      * @return Substitute
      */
     public function setEmail($email)
@@ -171,9 +174,9 @@ class Substitute
     }
 
     /**
-     * Get email
+     * Get email.
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -181,9 +184,10 @@ class Substitute
     }
 
     /**
-     * Set yearOfStudy
+     * Set yearOfStudy.
      *
      * @param string $yearOfStudy
+     *
      * @return Substitute
      */
     public function setYearOfStudy($yearOfStudy)
@@ -194,9 +198,9 @@ class Substitute
     }
 
     /**
-     * Get yearOfStudy
+     * Get yearOfStudy.
      *
-     * @return string 
+     * @return string
      */
     public function getYearOfStudy()
     {
@@ -204,9 +208,10 @@ class Substitute
     }
 
     /**
-     * Set monday
+     * Set monday.
      *
      * @param string $monday
+     *
      * @return Substitute
      */
     public function setMonday($monday)
@@ -217,9 +222,9 @@ class Substitute
     }
 
     /**
-     * Get monday
+     * Get monday.
      *
-     * @return string 
+     * @return string
      */
     public function getMonday()
     {
@@ -227,9 +232,10 @@ class Substitute
     }
 
     /**
-     * Set tuesday
+     * Set tuesday.
      *
      * @param string $tuesday
+     *
      * @return Substitute
      */
     public function setTuesday($tuesday)
@@ -240,9 +246,9 @@ class Substitute
     }
 
     /**
-     * Get tuesday
+     * Get tuesday.
      *
-     * @return string 
+     * @return string
      */
     public function getTuesday()
     {
@@ -250,9 +256,10 @@ class Substitute
     }
 
     /**
-     * Set wednesday
+     * Set wednesday.
      *
      * @param string $wednesday
+     *
      * @return Substitute
      */
     public function setWednesday($wednesday)
@@ -263,9 +270,9 @@ class Substitute
     }
 
     /**
-     * Get wednesday
+     * Get wednesday.
      *
-     * @return string 
+     * @return string
      */
     public function getWednesday()
     {
@@ -273,9 +280,10 @@ class Substitute
     }
 
     /**
-     * Set thursday
+     * Set thursday.
      *
      * @param string $thursday
+     *
      * @return Substitute
      */
     public function setThursday($thursday)
@@ -286,9 +294,9 @@ class Substitute
     }
 
     /**
-     * Get thursday
+     * Get thursday.
      *
-     * @return string 
+     * @return string
      */
     public function getThursday()
     {
@@ -296,9 +304,10 @@ class Substitute
     }
 
     /**
-     * Set friday
+     * Set friday.
      *
      * @param string $friday
+     *
      * @return Substitute
      */
     public function setFriday($friday)
@@ -309,9 +318,9 @@ class Substitute
     }
 
     /**
-     * Get friday
+     * Get friday.
      *
-     * @return string 
+     * @return string
      */
     public function getFriday()
     {
@@ -319,9 +328,10 @@ class Substitute
     }
 
     /**
-     * Set fieldOfStudy
+     * Set fieldOfStudy.
      *
      * @param \AppBundle\Entity\FieldOfStudy $fieldOfStudy
+     *
      * @return Substitute
      */
     public function setFieldOfStudy(\AppBundle\Entity\FieldOfStudy $fieldOfStudy = null)
@@ -332,9 +342,9 @@ class Substitute
     }
 
     /**
-     * Get fieldOfStudy
+     * Get fieldOfStudy.
      *
-     * @return \AppBundle\Entity\FieldOfStudy 
+     * @return \AppBundle\Entity\FieldOfStudy
      */
     public function getFieldOfStudy()
     {
@@ -342,9 +352,10 @@ class Substitute
     }
 
     /**
-     * Set semester
+     * Set semester.
      *
      * @param \AppBundle\Entity\Semester $semester
+     *
      * @return Substitute
      */
     public function setSemester(\AppBundle\Entity\Semester $semester = null)
@@ -355,14 +366,12 @@ class Substitute
     }
 
     /**
-     * Get semester
+     * Get semester.
      *
-     * @return \AppBundle\Entity\Semester 
+     * @return \AppBundle\Entity\Semester
      */
     public function getSemester()
     {
         return $this->semester;
     }
-	
-
 }

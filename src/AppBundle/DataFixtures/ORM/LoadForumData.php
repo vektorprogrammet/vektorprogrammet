@@ -1,13 +1,11 @@
 <?php
 
-
 namespace AppBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\Forum;
-
 
 class LoadForumData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -16,7 +14,7 @@ class LoadForumData extends AbstractFixture implements OrderedFixtureInterface
         $forum1 = new Forum();
         $forum1->setName('Skoler');
         $forum1->setDescription('Diskusjon for de ulike ungdommskolene');
-        $forum1->setType("school");
+        $forum1->setType('school');
 
         $manager->persist($forum1);
 

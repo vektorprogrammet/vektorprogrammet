@@ -1,13 +1,15 @@
 <?php
+
 namespace AppBundle\SchoolAllocation;
 
 class Allocation
 {
     private $schools;//Array with School objects
     private $assistants;//Array with Assistant objects
-    static $count;
+    public static $count;
     /**
      * Allocation constructor.
+     *
      * @param School[] schools
      * @param Assistant[] assistants
      */
@@ -17,88 +19,111 @@ class Allocation
         $this->schools = $schools;
     }
 
-
     public function step()
     {
-        if(Allocation::$count == 0)Allocation::$count = 1;
-        else Allocation::$count++;
+        if (self::$count == 0) {
+            self::$count = 1;
+        } else {
+            ++self::$count;
+        }
 
-        if($this->isOptimalSolution())return $this;
+        if ($this->isOptimalSolution()) {
+            return $this;
+        }
 
         foreach ($this->assistants as $assistant) {
-            if ($assistant->isAssignedToSchool()) continue;//Assistant has been assigned a school
+            if ($assistant->isAssignedToSchool()) {
+                continue;
+            }//Assistant has been assigned a school
             $availability = $assistant->getAvailability();
             arsort($availability);
             foreach ($availability as $day => $isAvailable) {
-                if (!$isAvailable) break;//When there is no schools with capacity on available day
+                if (!$isAvailable) {
+                    break;
+                }//When there is no schools with capacity on available day
                 foreach ($this->schools as $school) {
                     if ($assistant->isDoublePosition()) {
-                        if($school->getCapacity()[1][$day] > 0 && $school->getCapacity()[2][$day] > 0){//There is capacity left in both group 1 and group 2
+                        if ($school->getCapacity()[1][$day] > 0 && $school->getCapacity()[2][$day] > 0) {
+                            //There is capacity left in both group 1 and group 2
 //                            dump("FOUND SCHOOL! for " . $assistant->getName() . ", School: " . $school->getName() . ", Group: Both");
                             $assistantsCopy = $this->copyAssistants();
                             $schoolsCopy = $this->copySchools();
-                            $allocationCopy = new Allocation($schoolsCopy, $assistantsCopy);
+                            $allocationCopy = new self($schoolsCopy, $assistantsCopy);
                             $allocationCopy->assignAssistantToSchool($allocationCopy->findAssistantByName($assistant->getName()), $allocationCopy->findSchoolByName($school->getName()), 1, $day);
                             $allocationCopy->assignAssistantToSchool($allocationCopy->findAssistantByName($assistant->getName()), $allocationCopy->findSchoolByName($school->getName()), 2, $day);
                             $allocationCopySolution = $allocationCopy->step();
-                            if(!is_null($allocationCopySolution)) return $allocationCopySolution;
+                            if (!is_null($allocationCopySolution)) {
+                                return $allocationCopySolution;
+                            }
                         }
                     } else {
-
-                        for ($group = 1; $group <= 2; $group++) {
-                            if ($group == 1 && $assistant->getPreferredGroup() == 2 || $group == 2 && $assistant->getPreferredGroup() == 1) continue;//Don't assign assistant to other than the preferred group
+                        for ($group = 1; $group <= 2; ++$group) {
+                            if ($group == 1 && $assistant->getPreferredGroup() == 2 || $group == 2 && $assistant->getPreferredGroup() == 1) {
+                                continue;
+                            }//Don't assign assistant to other than the preferred group
                             $capacity = $school->getCapacity()[$group];
 
                             if ($capacity[$day] > 0) {
-//                                dump("FOUND SCHOOL! for " . $assistant->getName() . ", School: " . $school->getName() . ", Group: " . $group);
+                                //                                dump("FOUND SCHOOL! for " . $assistant->getName() . ", School: " . $school->getName() . ", Group: " . $group);
                                 $assistantsCopy = $this->copyAssistants();
                                 $schoolsCopy = $this->copySchools();
-                                $allocationCopy = new Allocation($schoolsCopy, $assistantsCopy);
+                                $allocationCopy = new self($schoolsCopy, $assistantsCopy);
                                 $allocationCopy->assignAssistantToSchool($allocationCopy->findAssistantByName($assistant->getName()), $allocationCopy->findSchoolByName($school->getName()), $group, $day);
                                 $allocationCopySolution = $allocationCopy->step();
-                                if(!is_null($allocationCopySolution)) return $allocationCopySolution;
+                                if (!is_null($allocationCopySolution)) {
+                                    return $allocationCopySolution;
+                                }
                             }
                         }
-
                     }
                 }
             }
         }
-        return null;//No solution found
+
+        return;//No solution found
     }
 
     /**
      * @return bool
      */
-    private function isOptimalSolution(){
+    private function isOptimalSolution()
+    {
         return $this->schoolsFull() || $this->allAssistantsAssigned();
     }
 
     /**
      * @return bool
      */
-    private function schoolsFull(){
-        foreach($this->schools as $school){
-            if(!$school->isFull())return false;
+    private function schoolsFull()
+    {
+        foreach ($this->schools as $school) {
+            if (!$school->isFull()) {
+                return false;
+            }
         }
+
         return true;
     }
 
     /**
      * @return bool
      */
-    private function allAssistantsAssigned(){
-        foreach($this->assistants as $assistant){
-            if(!$assistant->isAssignedToSchool()) return false;
+    private function allAssistantsAssigned()
+    {
+        foreach ($this->assistants as $assistant) {
+            if (!$assistant->isAssignedToSchool()) {
+                return false;
+            }
         }
+
         return true;
     }
 
     /**
      * @param Assistant $assistant
-     * @param School $school
-     * @param int $group
-     * @param string $day
+     * @param School    $school
+     * @param int       $group
+     * @param string    $day
      */
     public function assignAssistantToSchool($assistant, $school, $group, $day)
     {
@@ -112,9 +137,10 @@ class Allocation
     private function copyAssistants()
     {
         $assistantsCopy = array();
-        foreach($this->assistants as $assistant){
+        foreach ($this->assistants as $assistant) {
             $assistantsCopy[] = clone $assistant;
         }
+
         return $assistantsCopy;
     }
 
@@ -124,36 +150,44 @@ class Allocation
     private function copySchools()
     {
         $schoolsCopy = array();
-        foreach($this->schools as $school){
+        foreach ($this->schools as $school) {
             $schoolsCopy[] = clone $school;
         }
+
         return $schoolsCopy;
     }
 
     /**
      * @param string $name
+     *
      * @return Assistant|null
      */
     public function findAssistantByName($name)
     {
-        foreach($this->assistants as $assistant){
-            if($assistant->getName() == $name)return $assistant;
+        foreach ($this->assistants as $assistant) {
+            if ($assistant->getName() == $name) {
+                return $assistant;
+            }
         }
-        return null;
+
+        return;
     }
 
     /**
      * @param string $name
+     *
      * @return School|null
      */
     public function findSchoolByName($name)
     {
-        foreach($this->schools as $school){
-            if($school->getName() == $name)return $school;
+        foreach ($this->schools as $school) {
+            if ($school->getName() == $name) {
+                return $school;
+            }
         }
-        return null;
-    }
 
+        return;
+    }
 
     /**
      * @return School[]
@@ -186,8 +220,4 @@ class Allocation
     {
         $this->assistants = $assistants;
     }
-
-
-
-
 }

@@ -12,7 +12,7 @@ class ArticleRepositoryFunctionalTest extends KernelTestCase
     private $em;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setUp()
     {
@@ -68,7 +68,7 @@ class ArticleRepositoryFunctionalTest extends KernelTestCase
 
     public function testFindAllArticles()
     {
-//        // This repository method returns a query builder (used by a paginator).
+        //        // This repository method returns a query builder (used by a paginator).
 //        $articles = $this->em->getRepository('AppBundle:Article')->findAllArticles()->getQuery()->getResult();
 //
 //        // Assert that the number of returned articles are correct (8 is the number of article fixtures)
@@ -92,7 +92,7 @@ class ArticleRepositoryFunctionalTest extends KernelTestCase
 //    }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown()
     {

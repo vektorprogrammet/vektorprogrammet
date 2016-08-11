@@ -5,11 +5,10 @@ namespace AppBundle\Tests\Entity;
 use AppBundle\Entity\Photo;
 use AppBundle\Entity\User;
 
-class PhotoEntityUnitTest extends \PHPUnit_Framework_TestCase {
-
-
-    public function testSetDateAdded(){
-
+class PhotoEntityUnitTest extends \PHPUnit_Framework_TestCase
+{
+    public function testSetDateAdded()
+    {
         $photo = new Photo();
         $date = new \DateTime();
 
@@ -18,8 +17,8 @@ class PhotoEntityUnitTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($date, $photo->getDateAdded());
     }
 
-    public function testSetDateTaken(){
-
+    public function testSetDateTaken()
+    {
         $photo = new Photo();
         $date = new \DateTime();
 
@@ -28,8 +27,8 @@ class PhotoEntityUnitTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($date, $photo->getDateTaken());
     }
 
-    public function testSetAddedByUser(){
-
+    public function testSetAddedByUser()
+    {
         $photo = new Photo();
         $user = new User();
 
@@ -38,26 +37,26 @@ class PhotoEntityUnitTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($user, $photo->getAddedByUser());
     }
 
-    public function testSetComment(){
-
+    public function testSetComment()
+    {
         $photo = new Photo();
 
-        $photo->setComment("This is a photo comment");
+        $photo->setComment('This is a photo comment');
 
-        $this->assertEquals("This is a photo comment", $photo->getComment());
+        $this->assertEquals('This is a photo comment', $photo->getComment());
     }
 
-    public function testSetPathToFile(){
-
+    public function testSetPathToFile()
+    {
         $photo = new Photo();
 
-        $photo->setPathToFile("/pictures/picture");
+        $photo->setPathToFile('/pictures/picture');
 
-        $this->assertEquals("/pictures/picture", $photo->getPathToFile());
+        $this->assertEquals('/pictures/picture', $photo->getPathToFile());
     }
 
-    public function testSetGallery(){
-
+    public function testSetGallery()
+    {
         $photo = new Photo();
         $gallery = new \AppBundle\Entity\Gallery();
 
@@ -66,5 +65,3 @@ class PhotoEntityUnitTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($gallery, $photo->getGallery());
     }
 }
-
-

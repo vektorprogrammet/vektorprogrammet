@@ -17,7 +17,7 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
         $ah1->setSemester($this->getReference('semester-current'));
         $ah1->setWorkdays(4);
         $ah1->setBolk('Bolk 2');
-        $ah1->setDay("Onsdag");
+        $ah1->setDay('Onsdag');
         $manager->persist($ah1);
 
         $ah2 = new AssistantHistory();
@@ -26,7 +26,7 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
         $ah2->setSemester($this->getReference('semester-current'));
         $ah2->setWorkdays(8);
         $ah2->setBolk('Bolk 1, Bolk 2');
-        $ah2->setDay("Mandag");
+        $ah2->setDay('Mandag');
         $manager->persist($ah2);
 
         $ah3 = new AssistantHistory();
@@ -35,12 +35,11 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
         $ah3->setSemester($this->getReference('semester-1'));
         $ah3->setWorkdays(4);
         $ah3->setBolk('Bolk 1');
-        $ah3->setDay("Fredag");
+        $ah3->setDay('Fredag');
         $manager->persist($ah3);
         $manager->flush();
 
         $this->addReference('ah-1', $ah1);
-
     }
 
     public function getOrder()

@@ -4,10 +4,11 @@ namespace AppBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class CertificateControllerTest extends WebTestCase {
-
-    public function testShow() {
-//
+class CertificateControllerTest extends WebTestCase
+{
+    public function testShow()
+    {
+        //
 //        $client = static::createClient(array(), array(
 //			'PHP_AUTH_USER' => 'petjo',
 //			'PHP_AUTH_PW'   => '1234',
@@ -30,15 +31,14 @@ class CertificateControllerTest extends WebTestCase {
 //		$this->assertEquals( 200, $client->getResponse()->getStatusCode() );
 //
     }
-	
-	/*
-	Requires JQuery interaction, Symfony2 does not support that
-	
-	Phpunit was designed to test the PHP language, have to use another tool to test these. 
-	
-	public function testDeleteAction() {}
-	public function testRequestAction() {}
-	
-	*/
-	
+
+    /*
+    Requires JQuery interaction, Symfony2 does not support that
+    
+    Phpunit was designed to test the PHP language, have to use another tool to test these. 
+    
+    public function testDeleteAction() {}
+    public function testRequestAction() {}
+    
+    */
 }

@@ -12,7 +12,7 @@ class SemesterRepositoryFunctionalTest extends KernelTestCase
     private $em;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setUp()
     {
@@ -22,20 +22,20 @@ class SemesterRepositoryFunctionalTest extends KernelTestCase
             ->getManager()
         ;
     }
-	
-	// A test to check whether the method returns an array of semesters that belong to the given department 
-	public function testFindAllSemestersByDepartment(){
-		
+
+    // A test to check whether the method returns an array of semesters that belong to the given department 
+    public function testFindAllSemestersByDepartment()
+    {
+
 //		$semesters = $this->em->getRepository('AppBundle:Semester')->findAllSemestersByDepartment(1);
 //
 //		foreach ($semesters as $s){
 //			$this->assertEquals(1, $s->getDepartment()->getId());
 //		}
-		
-	}
-	
+    }
+
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown()
     {
@@ -43,5 +43,3 @@ class SemesterRepositoryFunctionalTest extends KernelTestCase
         $this->em->close();
     }
 }
-
-   

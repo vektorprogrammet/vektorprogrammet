@@ -5,7 +5,7 @@ namespace AppBundle\Tests\Form\Type;
 use AppBundle\Form\Type\CreateSemesterType;
 use AppBundle\Entity\Semester;
 use Symfony\Component\Form\Test\TypeTestCase;
-use \DateTime;
+use DateTime;
 
 /*
 ***************************************************************************************************************************************************************
@@ -22,13 +22,14 @@ If we only look at the variables given through the form the test will result in 
 ***************************************************************************************************************************************************************
 */
 
-class CreateSemesterTest extends TypeTestCase {
-	
-	/**
+class CreateSemesterTest extends TypeTestCase
+{
+    /**
      * @dataProvider getValidTestData
      */
-	public function testForm($data){
-//
+    public function testForm($data)
+    {
+        //
 //        $type = new CreateSemesterType();
 //        $form = $this->factory->create($type);
 //
@@ -51,40 +52,37 @@ class CreateSemesterTest extends TypeTestCase {
 //
     }
 
-	public function getValidTestData()
+    public function getValidTestData()
     {
-		
-		$semesterStart = new DateTime('2032-08-02 10:00:00');
-		$semesterEnd = new DateTime('2032-12-02 10:00:00');
-		$admissionStart = new DateTime('2032-08-01 10:00:00');
-		$admissionEnd = new DateTime('2032-09-01 10:00:00');
-		
+        $semesterStart = new DateTime('2032-08-02 10:00:00');
+        $semesterEnd = new DateTime('2032-12-02 10:00:00');
+        $admissionStart = new DateTime('2032-08-01 10:00:00');
+        $admissionEnd = new DateTime('2032-09-01 10:00:00');
+
         return array(
             array(
                 'data' => array(
                     'name' => 'VAR2032',
-					'semesterStartDate' => $semesterStart,
-					'semesterEndDate' => $semesterEnd,
-					'admission_start_date' => $admissionStart,
-					'admission_end_date' => $admissionEnd,
+                    'semesterStartDate' => $semesterStart,
+                    'semesterEndDate' => $semesterEnd,
+                    'admission_start_date' => $admissionStart,
+                    'admission_end_date' => $admissionEnd,
                 ),
             ),
             array(
                 'data' => array(
-				
-				),
+
+                ),
             ),
             array(
                 'data' => array(
                     'name' => null,
-					'semesterStartDate' => null,
-					'semesterEndDate' => null,
-					'admission_start_date' => null,
-					'admission_end_date' => null,
+                    'semesterStartDate' => null,
+                    'semesterEndDate' => null,
+                    'admission_start_date' => null,
+                    'admission_end_date' => null,
                 ),
             ),
         );
     }
-	
 }
-       

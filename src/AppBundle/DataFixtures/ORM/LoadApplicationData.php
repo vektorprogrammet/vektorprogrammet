@@ -4,13 +4,11 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Interview;
 use AppBundle\Entity\InterviewAnswer;
-use AppBundle\Entity\InterviewPractical;
 use AppBundle\Entity\InterviewScore;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\Application;
-use AppBundle\Entity\ApplicationStatistic;
 
 class LoadApplicationData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -57,9 +55,9 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application3->setInterview($interview3);
 
         // Create answer objects for all the questions in the schema
-        foreach($interview3->getInterviewSchema()->getInterviewQuestions() as $interviewQuestion) {
+        foreach ($interview3->getInterviewSchema()->getInterviewQuestions() as $interviewQuestion) {
             $answer = new InterviewAnswer();
-            $answer->setAnswer("Test answer");
+            $answer->setAnswer('Test answer');
             $answer->setInterview($interview3);
             $answer->setInterviewQuestion($interviewQuestion);
             $interview3->addInterviewAnswer($answer);
@@ -74,12 +72,12 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $interview3->setInterviewScore($intScore);
 
         // The interview practical
-        $application3->setMonday("Bra");
-        $application3->setTuesday("Bra");
-        $application3->setWednesday("Ikke");
-        $application3->setThursday("Bra");
-        $application3->setFriday("Ikke");
-        $application3->setHeardAboutFrom(array("Stand"));
+        $application3->setMonday('Bra');
+        $application3->setTuesday('Bra');
+        $application3->setWednesday('Ikke');
+        $application3->setThursday('Bra');
+        $application3->setFriday('Ikke');
+        $application3->setHeardAboutFrom(array('Stand'));
         $application3->setEnglish(true);
         $application3->setPreferredGroup('Bolk 1');
         $application3->setDoublePosition(true);
@@ -102,9 +100,9 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application4->setInterview($interview4);
 
         // Create answer objects for all the questions in the schema
-        foreach($interview4->getInterviewSchema()->getInterviewQuestions() as $interviewQuestion) {
+        foreach ($interview4->getInterviewSchema()->getInterviewQuestions() as $interviewQuestion) {
             $answer = new InterviewAnswer();
-            $answer->setAnswer("Test answer");
+            $answer->setAnswer('Test answer');
             $answer->setInterview($interview4);
             $answer->setInterviewQuestion($interviewQuestion);
             $interview4->addInterviewAnswer($answer);
@@ -119,12 +117,12 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $interview4->setInterviewScore($intScore);
 
         // The interview practical
-        $application4->setMonday("Bra");
-        $application4->setTuesday("Bra");
-        $application4->setWednesday("Ikke");
-        $application4->setThursday("Bra");
-        $application4->setFriday("Ikke");
-        $application4->setHeardAboutFrom(array("Stand"));
+        $application4->setMonday('Bra');
+        $application4->setTuesday('Bra');
+        $application4->setWednesday('Ikke');
+        $application4->setThursday('Bra');
+        $application4->setFriday('Ikke');
+        $application4->setHeardAboutFrom(array('Stand'));
         $application4->setEnglish(false);
         $application4->setPreferredGroup('Bolk 1');
         $application4->setDoublePosition(false);
@@ -159,8 +157,6 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application6->setInterview($interview6);
 
         $manager->persist($application6);
-
-
 
         $manager->flush();
     }

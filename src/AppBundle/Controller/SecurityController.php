@@ -4,10 +4,10 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class SecurityController extends Controller {
-
-    public function loginAction() {
-        
+class SecurityController extends Controller
+{
+    public function loginAction()
+    {
         $authenticationUtils = $this->get('security.authentication_utils');
 
         // get the login error if there is one
@@ -25,8 +25,7 @@ class SecurityController extends Controller {
         );
     }
 
-    public function loginCheckAction() {
-        
+    public function loginCheckAction()
+    {
     }
-
 }

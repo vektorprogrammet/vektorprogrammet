@@ -5,50 +5,47 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- *
  * @ORM\Table(name="post")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\PostRepository")
  */
-class Post {
-
+class Post
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-	
-	/**
+
+    /**
      * @ORM\Column(type="string", length=250)
      */
     protected $subject;
-	
-	/**
-     * @ORM\Column(type="datetime")
-     */
-	protected $datetime;
-	
-	/**
-     * @ORM\Column(type="string", length=1500)
-     */
-	protected $text;
-	
-	/**
-     * @ORM\ManyToOne(targetEntity="Thread", inversedBy="posts"))
-     **/
-	protected $thread;
-	
-	/**
-     * @ORM\ManyToOne(targetEntity="User")
-     **/
-	protected $user;
-
-
 
     /**
-     * Get id
+     * @ORM\Column(type="datetime")
+     */
+    protected $datetime;
+
+    /**
+     * @ORM\Column(type="string", length=1500)
+     */
+    protected $text;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Thread", inversedBy="posts"))
+     **/
+    protected $thread;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     **/
+    protected $user;
+
+    /**
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -56,9 +53,10 @@ class Post {
     }
 
     /**
-     * Set subject
+     * Set subject.
      *
      * @param string $subject
+     *
      * @return Post
      */
     public function setSubject($subject)
@@ -69,9 +67,9 @@ class Post {
     }
 
     /**
-     * Get subject
+     * Get subject.
      *
-     * @return string 
+     * @return string
      */
     public function getSubject()
     {
@@ -79,9 +77,10 @@ class Post {
     }
 
     /**
-     * Set datetime
+     * Set datetime.
      *
      * @param \DateTime $datetime
+     *
      * @return Post
      */
     public function setDatetime($datetime)
@@ -92,9 +91,9 @@ class Post {
     }
 
     /**
-     * Get datetime
+     * Get datetime.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDatetime()
     {
@@ -102,9 +101,10 @@ class Post {
     }
 
     /**
-     * Set text
+     * Set text.
      *
      * @param string $text
+     *
      * @return Post
      */
     public function setText($text)
@@ -115,9 +115,9 @@ class Post {
     }
 
     /**
-     * Get text
+     * Get text.
      *
-     * @return string 
+     * @return string
      */
     public function getText()
     {
@@ -125,9 +125,10 @@ class Post {
     }
 
     /**
-     * Set thread
+     * Set thread.
      *
      * @param \AppBundle\Entity\Thread $thread
+     *
      * @return Post
      */
     public function setThread(\AppBundle\Entity\Thread $thread = null)
@@ -138,7 +139,7 @@ class Post {
     }
 
     /**
-     * Get thread
+     * Get thread.
      *
      * @return \AppBundle\Entity\Thread
      */
@@ -148,9 +149,10 @@ class Post {
     }
 
     /**
-     * Set user
+     * Set user.
      *
      * @param \AppBundle\Entity\User $user
+     *
      * @return Post
      */
     public function setUser(\AppBundle\Entity\User $user = null)
@@ -161,7 +163,7 @@ class Post {
     }
 
     /**
-     * Get user
+     * Get user.
      *
      * @return \AppBundle\Entity\User
      */
@@ -169,9 +171,9 @@ class Post {
     {
         return $this->user;
     }
-	
-	// Used for unit testing 
-	public function fromArray($data = array())
+
+    // Used for unit testing 
+    public function fromArray($data = array())
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";

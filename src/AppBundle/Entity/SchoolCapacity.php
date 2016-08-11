@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SchoolCapacityRepository")
@@ -11,10 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\HasLifecycleCallbacks
  */
 class SchoolCapacity
-
-
 {
-
     /**
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="School")
@@ -54,7 +50,6 @@ class SchoolCapacity
      */
     protected $friday;
 
-
     /**
      * SchoolCapacity constructor.
      */
@@ -67,11 +62,10 @@ class SchoolCapacity
         $this->friday = 0;
     }
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -189,7 +183,4 @@ class SchoolCapacity
     {
         $this->semester = $semester;
     }
-
-
-
 }

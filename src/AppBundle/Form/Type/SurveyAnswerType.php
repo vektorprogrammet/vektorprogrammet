@@ -10,7 +10,6 @@ use Symfony\Component\Form\FormEvents;
 
 class SurveyAnswerType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
@@ -19,36 +18,36 @@ class SurveyAnswerType extends AbstractType
             $surveyAnswer = $event->getData();
             $form = $event->getForm();
             // Add different form fields depending on the type of the survey question
-            switch($surveyAnswer->getSurveyQuestion()->getType()) {
-                case "list": // This creates a dropdown list if the type is list
+            switch ($surveyAnswer->getSurveyQuestion()->getType()) {
+                case 'list': // This creates a dropdown list if the type is list
                     $choices = $this->createChoices($surveyAnswer);
 
                     $ansOptions = array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'placeholder' => 'Velg',
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
-                        'choices' => $choices
+                        'choices' => $choices,
                     );
-                    if($surveyAnswer->getSurveyQuestion()->getOptional() == true){
-                        $ansOptions["required"] = false;
+                    if ($surveyAnswer->getSurveyQuestion()->getOptional() == true) {
+                        $ansOptions['required'] = false;
                     }
                     $form->add('answer', 'choice', $ansOptions);
 
                     break;
-                case "radio": // This creates a set of radio buttons if the type is radio
+                case 'radio': // This creates a set of radio buttons if the type is radio
                     $choices = $this->createChoices($surveyAnswer);
                     $ansOptions = array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $choices,
-                        'expanded' => true
+                        'expanded' => true,
                     );
-                    if($surveyAnswer->getSurveyQuestion()->getOptional() == true){
-                        $ansOptions["required"] = false;
+                    if ($surveyAnswer->getSurveyQuestion()->getOptional() == true) {
+                        $ansOptions['required'] = false;
                     }
-                    $form->add('answer', 'choice',$ansOptions );
+                    $form->add('answer', 'choice', $ansOptions);
                     break;
-                case "check": // This creates a set of checkboxes if the type is check
+                case 'check': // This creates a set of checkboxes if the type is check
                     $choices = $this->createChoices($surveyAnswer);
 
                     $ansOptions = array(
@@ -56,54 +55,40 @@ class SurveyAnswerType extends AbstractType
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $choices,
                         'expanded' => true,
-                        'multiple' => true
+                        'multiple' => true,
                     );
-                    if($surveyAnswer->getSurveyQuestion()->getOptional() == true){
-                        $ansOptions["required"] = false;
+                    if ($surveyAnswer->getSurveyQuestion()->getOptional() == true) {
+                        $ansOptions['required'] = false;
                     }
 
                     $form->add('answer', 'choice', $ansOptions);
                     break;
                 default: // This creates a textarea if the type is text (default)
-                    $type = "text";
+                    $type = 'text';
 
                     $ansOptions = array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
-                        'help' => $surveyAnswer->getSurveyQuestion()->getHelp()
+                        'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                     );
-                    if($surveyAnswer->getSurveyQuestion()->getOptional() == true){
-                        $ansOptions["required"] = false;
+                    if ($surveyAnswer->getSurveyQuestion()->getOptional() == true) {
+                        $ansOptions['required'] = false;
                     }
 
-                    $form->add('answer', 'textarea',$ansOptions );
+                    $form->add('answer', 'textarea', $ansOptions);
             }
         });
 
         // If the user supplied a new value to a choice field, this new value must be added as one of the choices
         // in order for the form to validate, as values other than the specified choices are not allowed.
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use (&$surveyAnswer) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use (&$surveyAnswer) {
             $form = $event->getForm();
 
             // This is the data submitted in the form
             $data = $event->getData();
 
             // Remove and then add the form fields with the new choices.
-            switch($surveyAnswer->getSurveyQuestion()->getType()) {
-                case "list":
-                    $choices = $this->createChoices($surveyAnswer);
-
-                    // Add the new value to the choice array
-                    $choices[$data['answer']] = $data['answer'];
-
-                    $form->remove('answer');
-                    $form->add('answer', 'choice', array(
-                        'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
-                        'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
-                        'choices' => $choices
-                    ));
-
-                    break;
-                case "radio":
+            switch ($surveyAnswer->getSurveyQuestion()->getType()) {
+                case 'list':
                     $choices = $this->createChoices($surveyAnswer);
 
                     // Add the new value to the choice array
@@ -114,15 +99,29 @@ class SurveyAnswerType extends AbstractType
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $choices,
-                        'expanded' => true
+                    ));
+
+                    break;
+                case 'radio':
+                    $choices = $this->createChoices($surveyAnswer);
+
+                    // Add the new value to the choice array
+                    $choices[$data['answer']] = $data['answer'];
+
+                    $form->remove('answer');
+                    $form->add('answer', 'choice', array(
+                        'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
+                        'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
+                        'choices' => $choices,
+                        'expanded' => true,
                     ));
                     break;
-                case "check":
+                case 'check':
                     $choices = $this->createChoices($surveyAnswer);
 
                     // Add the new value to the choice array
                     // The data from the form is an array (because it's checkboxes) in this case
-                    $answers = array_combine($data['answer'],$data['answer']);
+                    $answers = array_combine($data['answer'], $data['answer']);
                     $newChoices = array_merge($choices, $answers);
 
                     $form->remove('answer');
@@ -131,7 +130,7 @@ class SurveyAnswerType extends AbstractType
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $newChoices,
                         'expanded' => true,
-                        'multiple' => true
+                        'multiple' => true,
                     ));
                     break;
             }
@@ -143,12 +142,14 @@ class SurveyAnswerType extends AbstractType
      * The key and the value are the same.
      *
      * @param $surveyAnswer
+     *
      * @return array
      */
-    public function createChoices($surveyAnswer) {
+    public function createChoices($surveyAnswer)
+    {
         $alternatives = $surveyAnswer->getSurveyQuestion()->getAlternatives();
 
-        $values = array_map(function($a) { return $a->getAlternative(); }, $alternatives->getValues());
+        $values = array_map(function ($a) { return $a->getAlternative(); }, $alternatives->getValues());
 
         return array_combine($values, $values);
     }

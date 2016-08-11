@@ -6,33 +6,32 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class CreateTeamType extends AbstractType {
-
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-		 
-		$builder
+class CreateTeamType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
             ->add('name', 'text', array(
-				'label' => 'Navn',
-			))
+                'label' => 'Navn',
+            ))
             ->add('email', 'email', array(
                 'label' => 'E-post (valgfritt)',
-                'required' => false
+                'required' => false,
             ))
-			->add('save', 'submit', array(
-				'label' => 'Opprett',
-			));
+            ->add('save', 'submit', array(
+                'label' => 'Opprett',
+            ));
     }
-	
-	public function setDefaultOptions(OptionsResolverInterface $resolver) {
-	
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Team',
         ));
-		
     }
-	
-    public function getName() {
+
+    public function getName()
+    {
         return 'createTeam';
     }
-	
 }

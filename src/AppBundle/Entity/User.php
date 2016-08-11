@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * AppBundle\Entity\User
+ * AppBundle\Entity\User.
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\UserRepository")
@@ -25,46 +25,46 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *      groups={"create_user"}
  * )
  */
-class User implements AdvancedUserInterface, \Serializable {
-
+class User implements AdvancedUserInterface, \Serializable
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-	
-	/**
+
+    /**
      * @ORM\Column(type="string", length=45)
      * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $lastName;
-	
-	/**
+
+    /**
      * @ORM\Column(type="string", length=45)
      * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $firstName;
-	
-	/**
-	 * @ORM\ManyToOne(targetEntity="FieldOfStudy")
-	 * @ORM\JoinColumn(onDelete="SET NULL")
+
+    /**
+     * @ORM\ManyToOne(targetEntity="FieldOfStudy")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      * @Assert\Valid
      */
     private $fieldOfStudy;
-	
-	/**
+
+    /**
      * @ORM\Column(name="gender", type="boolean")
      * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $gender;
-	
-	/**
+
+    /**
      * @ORM\Column(type="string", length=45)
      */
     private $picture_path;
-	
-	/**
+
+    /**
      * @ORM\Column(type="string", length=45)
      * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
      */
@@ -93,8 +93,8 @@ class User implements AdvancedUserInterface, \Serializable {
      * @ORM\Column(name="is_active", type="boolean")
      */
     private $isActive;
-	
-	/**
+
+    /**
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
      * @ORM\JoinColumn(onDelete="cascade")
      * @Assert\Valid
@@ -104,97 +104,108 @@ class User implements AdvancedUserInterface, \Serializable {
     /**
      * @ORM\column(type="string", nullable=true)
      */
-	private $new_user_code;
+    private $new_user_code;
 
     /**
      * @ORM\OneToMany(targetEntity="AssistantHistory", mappedBy="user")
      */
     private $assistantHistories;
 
-	/**
+    /**
      * @ORM\OneToMany(targetEntity="CertificateRequest", mappedBy="user")
      **/
-	protected $certificateRequests;
+    protected $certificateRequests;
 
-
-	
-	public function __construct() {
+    public function __construct()
+    {
         $this->roles = new ArrayCollection();
-		$this->fieldOfStudy = new ArrayCollection();
-		$this->certificateRequests = new ArrayCollection();
-		$this->isActive = false;
+        $this->fieldOfStudy = new ArrayCollection();
+        $this->certificateRequests = new ArrayCollection();
+        $this->isActive = false;
         $this->picture_path = 'images/defaultProfile.png';
     }
-	
 
-    function getId() {
+    public function getId()
+    {
         return $this->id;
     }
-	
-	public function getGender() {
+
+    public function getGender()
+    {
         return $this->gender;
     }
-	
-	public function getFirstName() {
+
+    public function getFirstName()
+    {
         return $this->firstName;
     }
 
-	public function getLastName() {
+    public function getLastName()
+    {
         return $this->lastName;
     }
 
     /**
      * @return string
      */
-    public function getFullName(){
-        return $this->getFirstName() . " " . $this->getLastName();
+    public function getFullName()
+    {
+        return $this->getFirstName().' '.$this->getLastName();
     }
 
-    function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
 
-    function getIsActive() {
+    public function getIsActive()
+    {
         return $this->isActive;
     }
 
-    function setId($id) {
+    public function setId($id)
+    {
         $this->id = $id;
     }
 
-    function setPassword($password) {
+    public function setPassword($password)
+    {
         $this->password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
     }
-	
-	/**
-     * @inheritDoc
+
+    /**
+     * {@inheritdoc}
      */
-    public function getPassword() {
+    public function getPassword()
+    {
         return $this->password;
     }
 
-    function setEmail($email) {
+    public function setEmail($email)
+    {
         $this->email = $email;
     }
 
-    function setIsActive($isActive) {
+    public function setIsActive($isActive)
+    {
         $this->isActive = $isActive;
     }
 
-    function setRoles($roles) {
+    public function setRoles($roles)
+    {
         $this->roles = $roles;
     }
-	
-    
 
-    public function getRoles() {
+    public function getRoles()
+    {
         return $this->roles->toArray();
     }
 
     /**
-     * Set lastName
+     * Set lastName.
      *
      * @param string $lastName
+     *
      * @return User
      */
     public function setLastName($lastName)
@@ -205,9 +216,10 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     /**
-     * Set firstName
+     * Set firstName.
      *
      * @param string $firstName
+     *
      * @return User
      */
     public function setFirstName($firstName)
@@ -218,9 +230,10 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     /**
-     * Set gender
+     * Set gender.
      *
      * @param string $gender
+     *
      * @return User
      */
     public function setGender($gender)
@@ -231,9 +244,10 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     /**
-     * Set picture_path
+     * Set picture_path.
      *
      * @param string $picturePath
+     *
      * @return User
      */
     public function setPicturePath($picturePath)
@@ -244,9 +258,9 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     /**
-     * Get picture_path
+     * Get picture_path.
      *
-     * @return string 
+     * @return string
      */
     public function getPicturePath()
     {
@@ -254,9 +268,10 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     /**
-     * Set phone
+     * Set phone.
      *
      * @param string $phone
+     *
      * @return User
      */
     public function setPhone($phone)
@@ -267,9 +282,9 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     /**
-     * Get phone
+     * Get phone.
      *
-     * @return string 
+     * @return string
      */
     public function getPhone()
     {
@@ -277,9 +292,10 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     /**
-     * Set user_name
+     * Set user_name.
      *
      * @param string $userName
+     *
      * @return User
      */
     public function setUserName($userName)
@@ -290,9 +306,9 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     /**
-     * Get user_name
+     * Get user_name.
      *
-     * @return string 
+     * @return string
      */
     public function getUserName()
     {
@@ -300,9 +316,10 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     /**
-     * Set fieldOfStudy
+     * Set fieldOfStudy.
      *
      * @param FieldOfStudy $fieldOfStudy
+     *
      * @return User
      */
     public function setFieldOfStudy(FieldOfStudy $fieldOfStudy = null)
@@ -313,7 +330,7 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     /**
-     * Get fieldOfStudy
+     * Get fieldOfStudy.
      *
      * @return FieldOfStudy
      */
@@ -323,9 +340,10 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     /**
-     * Add roles
+     * Add roles.
      *
      * @param Role $roles
+     *
      * @return User
      */
     public function addRole(Role $roles)
@@ -336,7 +354,7 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     /**
-     * Remove roles
+     * Remove roles.
      *
      * @param Role $roles
      */
@@ -346,9 +364,10 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     /**
-     * Set new_user_code
+     * Set new_user_code.
      *
      * @param string $newUserCode
+     *
      * @return User
      */
     public function setNewUserCode($newUserCode)
@@ -359,9 +378,9 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     /**
-     * Get new_user_code
+     * Get new_user_code.
      *
-     * @return string 
+     * @return string
      */
     public function getNewUserCode()
     {
@@ -384,16 +403,16 @@ class User implements AdvancedUserInterface, \Serializable {
         $this->assistantHistories = $assistantHistories;
     }
 
-    public function addAssistantHistory(AssistantHistory $assistantHistory){
+    public function addAssistantHistory(AssistantHistory $assistantHistory)
+    {
         $this->assistantHistories[] = $assistantHistory;
     }
 
-
-	
-	/**
-     * Add certificateRequests
+    /**
+     * Add certificateRequests.
      *
      * @param CertificateRequest $certificateRequests
+     *
      * @return User
      */
     public function addCertificateRequest(CertificateRequest $certificateRequests)
@@ -404,7 +423,7 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     /**
-     * Remove certificateRequests
+     * Remove certificateRequests.
      *
      * @param CertificateRequest $certificateRequests
      */
@@ -414,55 +433,56 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     /**
-     * Get certificateRequests
+     * Get certificateRequests.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getCertificateRequests()
     {
         return $this->certificateRequests;
     }
-	
-	// Used for unit testing 
-	public function fromArray($data = array())
+
+    // Used for unit testing 
+    public function fromArray($data = array())
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";
             $this->$method($value);
         }
     }
-		
-	// toString method used to display the user in twig files 
-	public function __toString()
-	{	
-		$firstName = $this->getFirstName();
-		$lastName = $this->getLastName();
-		$email = $this->getEmail();
-		return "$firstName $lastName";
-	}
 
-	
-	/*
-	
-	You may or may not need the code below depending on the algorithm you chose to hash and salt passwords with.
-	The methods below are taken from the login guide on Symfony.com, which can be found here:
-	http://symfony.com/doc/current/cookbook/security/form_login_setup.html
-	http://symfony.com/doc/current/cookbook/security/entity_provider.html
-	
-	
-	*/
-	
-	/**
-     * @inheritDoc
+    // toString method used to display the user in twig files 
+    public function __toString()
+    {
+        $firstName = $this->getFirstName();
+        $lastName = $this->getLastName();
+        $email = $this->getEmail();
+
+        return "$firstName $lastName";
+    }
+
+    /*
+    
+    You may or may not need the code below depending on the algorithm you chose to hash and salt passwords with.
+    The methods below are taken from the login guide on Symfony.com, which can be found here:
+    http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    http://symfony.com/doc/current/cookbook/security/entity_provider.html
+    
+    
+    */
+
+    /**
+     * {@inheritdoc}
      */
-    public function eraseCredentials() {
-        
+    public function eraseCredentials()
+    {
     }
 
     /**
      * @see \Serializable::serialize()
      */
-    public function serialize() {
+    public function serialize()
+    {
         return serialize(array(
             $this->id,
             $this->user_name,
@@ -475,8 +495,9 @@ class User implements AdvancedUserInterface, \Serializable {
     /**
      * @see \Serializable::unserialize(
      */
-    public function unserialize($serialized) {
-        list (
+    public function unserialize($serialized)
+    {
+        list(
                 $this->id,
                 $this->user_name,
                 $this->password,
@@ -485,31 +506,33 @@ class User implements AdvancedUserInterface, \Serializable {
                 ) = unserialize($serialized);
     }
 
-    public function isAccountNonExpired() {
+    public function isAccountNonExpired()
+    {
         return true;
     }
 
-    public function isAccountNonLocked() {
+    public function isAccountNonLocked()
+    {
         return true;
     }
 
-    public function isCredentialsNonExpired() {
+    public function isCredentialsNonExpired()
+    {
         return true;
     }
 
-    public function isEnabled() {
+    public function isEnabled()
+    {
         return $this->isActive;
     }
-	
-	/**
-     * @inheritDoc
+
+    /**
+     * {@inheritdoc}
      */
-    public function getSalt() {
+    public function getSalt()
+    {
         // you *may* need a real salt depending on your encoder
         // see section on salt below
-        return null;
+        return;
     }
-	
-
-    
 }

@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Tommy
  * Date: 04.05.2015
- * Time: 18:28
+ * Time: 18:28.
  */
 
 namespace AppBundle\Controller;
@@ -15,9 +15,10 @@ use AppBundle\Form\Type\SponsorType;
 use AppBundle\FileSystem\FileUploader;
 use AppBundle\Entity\Sponsor;
 
-class SponsorsController extends Controller{
-
-    public function sponsorsEditAction(Request $request){
+class SponsorsController extends Controller
+{
+    public function sponsorsEditAction(Request $request)
+    {
         //Get all the sponsors from the database
         $sponsors = $this->getDoctrine()
             ->getRepository('AppBundle:Sponsor')
@@ -36,19 +37,20 @@ class SponsorsController extends Controller{
         return $this->render('sponsors/sponsors_edit.html.twig', array('forms' => $forms, 'logos' => $logos)); //todo: shouldn't I use AppBundle:somehting::something?
     }
 
-    public function sponsorsUpdateAction(Request $request, $id){
+    public function sponsorsUpdateAction(Request $request, $id)
+    {
         //Get the Sponsor object from the database
         $sponsor = $this->getDoctrine()->getRepository('AppBundle:Sponsor')
             ->find($id);
         //Get the entity manager
         $em = $this->getDoctrine()->getEntityManager();
-        if (array_key_exists('delete', $request->request->get('sponsor'))){ //Delete the sponsor object from the database
+        if (array_key_exists('delete', $request->request->get('sponsor'))) { //Delete the sponsor object from the database
             $em->remove($sponsor);
         } else { //Update the sponsor object in the database
             //Empty file-field in the form is allowed
             if ($request->files->get('sponsor')['logoImagePath'] != null) {
                 //First move the logo image file to its folder
-                $targetFolder = $this->container->getParameter('logo_images') . '/';
+                $targetFolder = $this->container->getParameter('logo_images').'/';
                 //Create a FileUploader with target folder and allowed file types as parameters
                 $uploader = new FileUploader($targetFolder, ['image/gif', 'image/jpeg', 'image/png']);
                 //Move the file to target folder
@@ -68,15 +70,17 @@ class SponsorsController extends Controller{
             $em->persist($sponsor);
         }
         $em->flush();
+
         return $this->redirectToRoute('sponsors_edit');
     }
 
-    public function sponsorsAddAction(){
+    public function sponsorsAddAction()
+    {
         $sponsor = new Sponsor();
         $em = $this->getDoctrine()->getEntityManager();
         $em->persist($sponsor);
         $em->flush();
+
         return $this->redirectToRoute('sponsors_edit');
     }
-
 }

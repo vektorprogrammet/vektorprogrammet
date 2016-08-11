@@ -12,7 +12,7 @@ class PostRepositoryFunctionalTest extends KernelTestCase
     private $em;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setUp()
     {
@@ -22,11 +22,11 @@ class PostRepositoryFunctionalTest extends KernelTestCase
             ->getManager()
         ;
     }
-	
-	
-	// A check whether the post returned by the method is the actual latest post, and a check that the method returns the correct post
-	public function testFindLatestPostBySubforum(){
-		
+
+    // A check whether the post returned by the method is the actual latest post, and a check that the method returns the correct post
+    public function testFindLatestPostBySubforum()
+    {
+
 //		$posts = $this->em->getRepository('AppBundle:Post')->findLatestPostBySubforum(1);
 //
 //		$allPosts= $this->em->getRepository('AppBundle:Post')->findAll();
@@ -44,13 +44,12 @@ class PostRepositoryFunctionalTest extends KernelTestCase
 //			$this->assertEquals(1, $post->getThread()->getSubforum()->getId());
 //
 //		}
+    }
 
-		
-	}
-	
-	// A check whether the forum returned by the method is the correct forum 
-	public function testFindLatestPostByForum(){
-		
+    // A check whether the forum returned by the method is the correct forum 
+    public function testFindLatestPostByForum()
+    {
+
 //		$posts = $this->em->getRepository('AppBundle:Post')->findLatestPostByForum(1);
 //
 //		foreach ($posts as $post){
@@ -68,15 +67,10 @@ class PostRepositoryFunctionalTest extends KernelTestCase
 //			$this->assertEquals(1, $tempForum);
 //
 //		}
-	
-	}
-	
+    }
 
-	
-	
-	
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown()
     {
@@ -84,5 +78,3 @@ class PostRepositoryFunctionalTest extends KernelTestCase
         $this->em->close();
     }
 }
-
-   
