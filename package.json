@@ -26,7 +26,9 @@
     "watch": "./node_modules/.bin/gulp",
     "reload-db": "php app/console doctrine:fixtures:load --env=dev",
     "build": "./node_modules/.bin/gulp build:dev",
-    "build:prod": "./node_modules/.bin/gulp build:prod"
+    "build:prod": "./node_modules/.bin/gulp build:prod",
+    "code-style": "./bin/php-cs-fixer fix src/ --dry-run --diff -vv",
+    "code-style:fix": "./bin/php-cs-fixer fix src/ -vv"
   },
   "repository": {
     "type": "git",

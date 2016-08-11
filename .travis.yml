@@ -6,7 +6,9 @@ php:
 before_script:
   - composer install
 
-script: phpunit --configuration app/phpunit.xml.dist
+script:
+  - ./bin/php-cs-fixer fix src/ --dry-run --diff -vv
+  - phpunit --configuration app/phpunit.xml.dist
 
 notifications:
   slack: vektorweb:KvOMl9ysaFBW53wJV3Eu56sS

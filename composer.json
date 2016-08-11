@@ -35,7 +35,8 @@
     },
     "require-dev": {
         "ext-pdo_sqlite": "*",
-        "sensio/generator-bundle": "~2.3"
+        "sensio/generator-bundle": "~2.3",
+        "fabpot/php-cs-fixer": "^1.11"
     },
     "scripts": {
         "post-root-package-install": [
@@ -56,6 +57,9 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"
+        ],
+        "code-style": [
+            "./bin/php-cs-fixer fix src/ --dry-run --diff -vv"
         ]
     },
     "config": {
