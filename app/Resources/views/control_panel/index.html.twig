@@ -2,9 +2,9 @@
 {% block title %}Kontrollpanel{% endblock %}
 {% block body %}
     <div class="control-panel">
-
-        {{ render(controller('AppBundle:ControlPanel:showSBS')) }}
-
+        <div class="sbs">
+            {{ render(controller('AppBundle:ControlPanel:showSBS')) }}
+        </div>
         <div class="row">
             <h3>Artikkel</h3>
 
@@ -111,6 +111,16 @@
 
             <div class="small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">
+                    <a href="{{ path('statistics_application_by_department', {'department': app.user.fieldOfStudy.department.id}) }}">
+                        <i class="fa fa-bar-chart fa-3x"></i>
+
+                        <p>Opptaksstatistikk</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
                     <a href="{{ path('interview_schema') }}">
                         <i class="fa fa-comments fa-3x"></i>
 
@@ -128,16 +138,6 @@
                     </a>
                 </div>
             </div>
-
-            {#<div class="small-4 medium-3 large-2 columns">
-                <div class="control-panel-item">
-                    <a href="{{ path('statistics_application') }}">
-                        <i class="fa fa-bar-chart fa-3x"></i>
-
-                        <p>Statistikk</p>
-                    </a>
-                </div>
-            </div>#}
 
             {#<div class="small-4 medium-3 large-2 columns">#}
             {#<div class="control-panel-item">#}

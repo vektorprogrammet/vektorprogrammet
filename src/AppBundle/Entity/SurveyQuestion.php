@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="survey_question")
  */
-class SurveyQuestion
+class SurveyQuestion implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -21,14 +21,14 @@ class SurveyQuestion
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feletet kan ikke være tomt.")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $question;
 
 
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\NotBlank(message="Dette feletet kan ikke være tomt.")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $optional;
 
@@ -40,7 +40,7 @@ class SurveyQuestion
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feletet kan ikke være tomt.")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $type;
 
@@ -217,5 +217,16 @@ class SurveyQuestion
         $this->id = null;
         $this->alternatives = new \Doctrine\Common\Collections\ArrayCollection();
         $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    function jsonSerialize(){
+        return array('question_id' => $this->id, 'question_label' => $this->question, 'alternatives' => $this->alternatives->toArray());
     }
 }

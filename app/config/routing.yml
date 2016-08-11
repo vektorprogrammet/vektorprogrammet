@@ -39,6 +39,7 @@ admission:
 update_static_content:
  path: /updatestaticcontent
  defaults: {_controller: AppBundle:StaticContent:update }
+ methods: [POST]
 
 ##########################################
 #                Control Panel           #
@@ -102,19 +103,31 @@ survey_results:
  requirements:
   id: \d+
 
+survey_get_all_results:
+ path: /kontrollpanel/api/undersokelse/resultat/{id}
+ defaults: { _controller: AppBundle:Survey:getSurveyResult }
+ requirements:
+  id: \d+
+
+
 
 ##########################################
 #             Statistics                 #
 ##########################################
 
-
-statistics_application:
- path: /kontrollpanel/statistikk/opptak
- defaults: { _controller: AppBundle:ApplicationStatistics:show }
- options:
-  expose: true
+statistics_application_by_department:
+ path: /kontrollpanel/statistikk/opptak/{department}
+ defaults: { _controller: AppBundle:ApplicationStatistics:show, semester: null }
  requirements:
-    _method: GET
+  department: \d+
+
+statistics_application_by_semester:
+ path: /kontrollpanel/statistikk/opptak/{department}/{semester}
+ defaults: { _controller: AppBundle:ApplicationStatistics:show }
+ requirements:
+  department: \d+
+  semester: \d+
+
 
 
 ##########################################

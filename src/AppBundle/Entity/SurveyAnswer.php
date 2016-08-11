@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="survey_answer")
  */
-class SurveyAnswer
+class SurveyAnswer implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -104,5 +104,16 @@ class SurveyAnswer
     public function getSurveyQuestion()
     {
         return $this->surveyQuestion;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    function jsonSerialize(){
+        return array('question_id' => $this->surveyQuestion->getId(), 'answer' => $this->answer);
     }
 }
