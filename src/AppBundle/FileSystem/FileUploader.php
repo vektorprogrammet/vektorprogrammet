@@ -72,8 +72,9 @@ class FileUploader
 
             //Original file name:
             $originalFileName = $curFile->getClientOriginalName();
+            $fileExt = $curFile->guessExtension();
             //Create a unique name
-            $uniqueNameWithPath = uniqid($this->targetFolder, $originalFileName);
+            $uniqueNameWithPath = uniqid($this->targetFolder, $originalFileName).'.'.$fileExt;
              //Try to move the file to its target folder
             if (move_uploaded_file(
                 $curFile->getPathName(),
