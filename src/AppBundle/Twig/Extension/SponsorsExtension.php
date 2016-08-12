@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Tommy
- * Date: 05.05.2015
- * Time: 01:10.
- */
 
 namespace AppBundle\Twig\Extension;
 

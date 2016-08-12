@@ -1,13 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Tommy
- * Date: 17.03.2015
- * Time: 08:16.
- *
- * Read this for documentaion:
- * http://cristian-radulescu.ro/article/doctrine-entities-in-twig-templates.html
- */
 
 namespace AppBundle\Twig\Extension;
 

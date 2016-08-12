@@ -1,4 +1,9 @@
 <?php
+
+namespace AppBundle\FileSystem;
+
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * Created by PhpStorm.
  * User: Tommy
@@ -10,11 +15,6 @@
  *
  * todo: Consider making this a service. http://symfony.com/doc/current/book/service_container.html
  */
-
-namespace AppBundle\FileSystem;
-
-use Symfony\Component\HttpFoundation\Request;
-
 class FileUploader
 {
     private $targetFolder;
