@@ -15,7 +15,7 @@ ini_set('memory_limit', '268435456');
 $application = new Application($kernel);
 $application->setAutoExit(false);
 
-//deleteDatabase();
+deleteDatabase();
 executeCommand($application, "doctrine:schema:create");
 executeCommand($application, "doctrine:fixtures:load");
 

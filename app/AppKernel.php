@@ -21,7 +21,6 @@ class AppKernel extends Kernel
 			new Gregwar\CaptchaBundle\GregwarCaptchaBundle(),
 			new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-            new SaadTazi\GChartBundle\SaadTaziGChartBundle(),
             new FM\ElfinderBundle\FMElfinderBundle(),
 			new Ps\PdfBundle\PsPdfBundle(), // https://github.com/psliwa/PdfBundle
             new SimpleThings\FormExtraBundle\SimpleThingsFormExtraBundle(),
