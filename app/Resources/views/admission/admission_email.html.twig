@@ -1,0 +1,25 @@
+{% set user = application.user %}
+Søknad mottatt {{ "now" | date("d.m.y H:i") }} på www.vektorprogrammet.no.
+
+---
+
+Hei, {{ user.firstName }}.
+Takk for din søknad til stilling som vektorassistent!
+
+Vi vil kontakte deg på denne e-postadressen innen et par dager etter søknadsfristen for å sette opp et obligatorisk intervju.
+Vi gleder oss til å møte deg!
+
+---
+
+Her er søknaden vi har mottatt, om noe skulle være feil må du ta kontakt med oss:
+Navn: {{ user.firstName }} {{ user.lastName }}
+E-post: {{ user.email }}
+Telefon: {{ user.phone }}
+Linje: {{ user.fieldOfStudy.name }} ({{ user.fieldOfStudy.shortName }})
+År: {{ application.yearOfStudy }}
+Kjønn: {{ user.gender == 1 ? 'Dame' : 'Mann' }}
+
+---
+
+Mvh. Vektorprogrammet
+rekruttering@vektorprogrammet.no
