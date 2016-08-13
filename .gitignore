@@ -45,9 +45,10 @@ crashlytics-build.properties
 /vendor/
 /www/bundles/
 /www/images/
+/www/fonts/
 /www/files/
 /www/js/
-/www/libs/
+/www/vendor/
 /www/css
 
 #npm
