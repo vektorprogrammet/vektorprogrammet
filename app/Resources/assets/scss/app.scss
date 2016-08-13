@@ -1,6 +1,8 @@
-@import "../bower_components/foundation/scss/normalize";
+@import "../../../../node_modules/foundation-sites/scss/normalize";
 @import "settings";
-@import "../bower_components/foundation/scss/foundation";
+@import "../../../../node_modules/foundation-sites/scss/foundation";
+@import "../../../../node_modules/font-awesome/scss/font-awesome";
+@import "partials/fonts";
 @import "partials/typography";
 
 // Or selectively include components
@@ -210,10 +212,11 @@ header {
   @include grid-row;
 
   nav {
-    position: absolute;
-    bottom: rem-calc(7);
-    right: $column-gutter / 2;
-
+    float:right;
+    margin-top: 88px;
+    @media screen and (max-width: 874px) {
+      margin-top:10px;
+    }
     > ul {
       list-style-type: none;
       margin: 0;
@@ -229,7 +232,7 @@ header {
         }
 
         // Large screens
-        @media only screen and (min-width: 64.063em) {
+        @media only screen and (min-width: 64.563em) {
           margin-left: rem-calc(30);
         }
       }

@@ -100,8 +100,8 @@ swiftmailer:
     spool:     { type: memory }
 
 ivory_ck_editor:
-    base_path: "scripts/ckeditor/"
-    js_path: "scripts/ckeditor/ckeditor.js"
+    base_path: "vendor/ckeditor/"
+    js_path: "vendor/ckeditor/ckeditor.js"
     default_config: default
     configs:
         default:

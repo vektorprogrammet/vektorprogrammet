@@ -1,16 +1,8 @@
 {% extends 'adminBase.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link  href="{{ asset('scripts/cropper/dist/cropper.min.css') }}" rel="stylesheet">
-    <link  href="{{ asset('css/jquery.guillotine.css') }}" rel="stylesheet">
-{% endblock %}
-
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('scripts/cropper/dist/cropper.min.js') }}"></script>
-    <script src="{{ asset('scripts/jquery.guillotine.min.js') }}"></script>
-    <script src="{{ asset('scripts/optionbox.js') }}"></script>
+    <script src="{{ asset('js/optionbox.js') }}"></script>
     <!-- Load Aviary widget code -->
     <script type="text/javascript" src="http://feather.aviary.com/imaging/v2/editor.js"></script>
 
