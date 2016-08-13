@@ -250,6 +250,12 @@ footer {
 
 }
 
+.admin-footer {
+  .row {
+    border-top: solid 3px $admin-grey;
+  }
+}
+
 // Home
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 .banner-heading {
