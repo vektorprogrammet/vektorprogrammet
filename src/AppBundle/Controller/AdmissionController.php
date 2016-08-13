@@ -56,7 +56,17 @@ class AdmissionController extends Controller
                 $em->persist($application);
                 $em->flush();
 
-                $request->getSession()->getFlashBag()->add('admission-notice', 'Søknaden din er registrert. Lykke til!');
+                // Send a confirmation email with a copy of the application
+                $emailMessage = \Swift_Message::newInstance()
+                    ->setSubject('Søknad - Vektorassistent')
+                    ->setFrom('rekruttering@vektorprogrammet.no')
+                    ->setTo($application->getUser()->getEmail())
+                    ->setBody($this->renderView('admission/admission_email.html.twig', array('application' => $application)));
+                $this->get('mailer')->send($emailMessage);
+
+                $request->getSession()->getFlashBag()->add('admission-notice',
+                    'Søknaden din er registrert. En kvittering har blitt sendt til '.
+                    $application->getUser()->getEmail().'. Lykke til!');
 
                 return $this->redirect($this->generateUrl('admission_show_specific_department', array(
                     'id' => $departmentId,
@@ -154,9 +164,21 @@ class AdmissionController extends Controller
             $application->setSemester($semester);
             $application->setPreviousParticipation(true);
             $application->setInterview($lastInterview);
+
             $em->persist($application);
             $em->flush();
-            $request->getSession()->getFlashBag()->add('admission-notice', 'Søknaden er registrert.');
+
+            // Send a confirmation email with a copy of the application
+            $emailMessage = \Swift_Message::newInstance()
+                ->setSubject('Søknad - Vektorassistent')
+                ->setFrom('rekruttering@vektorprogrammet.no')
+                ->setTo($application->getUser()->getEmail())
+                ->setBody($this->renderView('admission/admission_existing_email.html.twig', array('application' => $application)));
+            $this->get('mailer')->send($emailMessage);
+
+            $request->getSession()->getFlashBag()->add('admission-notice',
+                'Søknaden din er registrert. En kvittering har blitt sendt til '.
+                $application->getUser()->getEmail().'. Lykke til!');
         }
 
         return $this->render(':admission:existingUser.html.twig', array(

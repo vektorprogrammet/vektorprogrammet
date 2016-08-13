@@ -90,7 +90,7 @@ class SemesterRepository extends EntityRepository
      * @param Department $department
      * @param DateTime   $time
      *
-     * @return Department
+     * @return Semester
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException

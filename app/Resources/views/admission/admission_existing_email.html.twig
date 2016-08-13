@@ -1,0 +1,35 @@
+{% set user = application.user %}
+Søknad mottatt {{ "now" | date("d.m.y H:i") }} på www.vektorprogrammet.no.
+
+---
+
+Hei, {{ user.firstName }}.
+Takk for din søknad til stilling som vektorassistent!
+
+Vi vil kontakte deg på denne e-postadressen noen dager etter søknadsfristen med informasjon om hvilken skole du har blitt plassert på.
+
+---
+
+Her er søknaden vi har mottatt, om noe skulle være feil må du ta kontakt med oss:
+Navn: {{ user.firstName }} {{ user.lastName }}
+E-post: {{ user.email }}
+Telefon: {{ user.phone }}
+Linje: {{ user.fieldOfStudy.name }} ({{ user.fieldOfStudy.shortName }})
+År: {{ application.yearOfStudy }}
+Kjønn: {{ user.gender == 1 ? 'Dame' : 'Mann' }}
+
+Dobbel stilling: {{ application.doublePosition ? 'Ja' : 'Nei' }}
+Ønsket bolk: {{ application.preferredGroup ? application.preferredGroup : 'Ingen' }}
+Ønsker internasjonal skole: {{ application.english ? 'Ja' : 'Nei' }}
+
+Dager som passer
+Mandag: {{ application.monday }}
+Tirsdag: {{ application.tuesday }}
+Onsdag: {{ application.wednesday }}
+Torsdag: {{ application.thursday }}
+Fredag: {{ application.friday }}
+
+---
+
+Mvh. Vektorprogrammet
+rekruttering@vektorprogrammet.no
