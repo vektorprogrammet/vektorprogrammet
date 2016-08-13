@@ -4,6 +4,8 @@
 @import "../../../../node_modules/font-awesome/scss/font-awesome";
 @import "partials/fonts";
 @import "partials/typography";
+@import "modules/well";
+@import "modules/colors";
 
 // Or selectively include components
 // @import
@@ -42,14 +44,6 @@
 //   "foundation/components/type",
 //   "foundation/components/offcanvas",
 //   "foundation/components/visibility";
-
-// Colors
-// - - - - - - - - - - - - - - - - - - - - - - - - -
-
-$vektor-white: #fafeff;
-$vektor-blue: #6fceee;
-$vektor-grey: #dbdcdd;
-$admin-grey: #333333;
 
 // Global
 // - - - - - - - - - - - - - - - - - - - - - - - - -
