@@ -10,6 +10,10 @@ fos_js_routing:
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
 
+github_webook:
+  path: /webhook/github
+  defaults: { _controller: AppBundle:GitHub:deploy }
+
 ##########################################
 #             Static pages               #
 ##########################################
