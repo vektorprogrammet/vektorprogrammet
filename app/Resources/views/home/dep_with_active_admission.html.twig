@@ -1,0 +1,14 @@
+{% if departments %}
+    <div class="admission-well">
+        <h2>Opptak</h2>
+        <h4>Følgende avdelinger søker nå nye vektorassistenter:</h4>
+        <h5>
+            {% for department in departments %}
+                <li>&bull;<a href="{{ path('admission_show_specific_department', {'id': department.id}) }}">
+                        {{ department.shortName }}</a>
+                </li>
+            {% endfor %}
+        </h5>
+        <p>(klikk for å søke)</p>
+    </div>
+{% endif %}

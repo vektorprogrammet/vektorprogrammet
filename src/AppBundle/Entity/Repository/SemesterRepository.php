@@ -111,4 +111,18 @@ class SemesterRepository extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * @return Semester[]
+     */
+    public function findSemestersWithActiveAdmission()
+    {
+        return $this->createQueryBuilder('Semester')
+            ->select('Semester')
+            ->where('Semester.admission_start_date < :time')
+            ->andWhere('Semester.admission_end_date > :time')
+            ->setParameter('time', new \DateTime())
+            ->getQuery()
+            ->getResult();
+    }
 }
