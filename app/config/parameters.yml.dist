@@ -27,7 +27,6 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     # Webhook from GitHub to automatically deploy on push to master
-    github_webook_secret: secret
 
 twig:
     globals:
