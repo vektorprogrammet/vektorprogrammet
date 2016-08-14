@@ -26,14 +26,15 @@
   },
   "scripts": {
     "test": "./bin/phpunit --configuration app/phpunit.xml.dist",
-    "setup": "composer install && npm install && ./node_modules/.bin/gulp build:dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:fixtures:load --env=dev -n",
+    "setup": "php ./composer.phar install && npm install && ./node_modules/.bin/gulp build:dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:fixtures:load --env=dev -n",
     "start": "php app/console server:run --docroot=www & npm run watch",
     "watch": "./node_modules/.bin/gulp",
     "reload-db": "php app/console doctrine:fixtures:load --env=dev",
     "build": "./node_modules/.bin/gulp build:dev",
     "build:prod": "./node_modules/.bin/gulp build:prod",
     "code-style": "./bin/php-cs-fixer fix src/ --dry-run --diff -vv",
-    "code-style:fix": "./bin/php-cs-fixer fix src/ -vv"
+    "code-style:fix": "./bin/php-cs-fixer fix src/ -vv",
+    "cs": "npm run code-style:fix"
   },
   "repository": {
     "type": "git",
