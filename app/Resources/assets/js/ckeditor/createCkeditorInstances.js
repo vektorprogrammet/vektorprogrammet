@@ -12,7 +12,7 @@ function createCkeditorInstances(){
     $("div.editable").each(	function() {
         $(this).attr('contenteditable', 'true');
         $(this).ckeditor({
-                customConfig: "../../js/ckeditor_static_text_config.js"
+                customConfig: "./ckeditor_static_text_config.js"
         }
         );
     });
