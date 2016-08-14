@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class GitHubController extends Controller
 {
+    private $repositoryName = 'vektorprogrammet/vektorprogrammet';
+
     public function deployAction(Request $request)
     {
         // Check if request is from GitHub
@@ -18,15 +20,18 @@ class GitHubController extends Controller
 
         // Get data
         $payload = json_decode($request->getContent(), true);
+
+        $repositoryNameExists = array_key_exists('repository', $payload) && array_key_exists('full_name', $payload['repository']);
+        $isCorrectRepository = $repositoryNameExists && $payload['repository']['full_name'] === $this->repositoryName;
         $isMaster = array_key_exists('ref', $payload) && $payload['ref'] === 'refs/heads/master';
 
         // Execute deploy script if there is a push to master
-        if ($isMaster) {
+        if ($isCorrectRepository && $isMaster) {
             shell_exec($this->getParameter('kernel.root_dir').'/../deploy.sh');
 
             return new JsonResponse(['status' => 'Deployed']);
         } else {
-            return new JsonResponse(['status' => 'Not a master push']);
+            return new JsonResponse(['status' => 'Not a master push to '.$this->repositoryName]);
         }
     }
 
