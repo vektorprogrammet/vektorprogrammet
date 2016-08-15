@@ -16,8 +16,7 @@ class ApplicationPracticalType extends AbstractType
         );
 
         $builder->add('doublePosition', 'choice', array(
-            'label' => 'Kunne du tenke deg dobbelt stilling? Altså en gang i uka i 8 uker?',
-            'help' => 'Info om når bolkene er. Det teller ikke negativt dersom man ikke ønsker det, viktig at intervjuobjektet skjønner dette.',
+            'label' => 'Kunne du tenke deg dobbel stilling? Altså en gang i uka i 8 uker?',
             'choices' => array(
                 0 => 'Nei',
                 1 => 'Ja',
@@ -69,7 +68,6 @@ class ApplicationPracticalType extends AbstractType
 
         $builder->add('english', 'choice', array(
             'label' => 'Vi har en internasjonal skole. Har du lyst til å undervise på engelsk?',
-            'help' => 'Det har ikke noe å si om du svarer ja eller nei på dette for om du blir tatt opp eller ikke.',
             'choices' => array(
                 0 => 'Nei',
                 1 => 'Ja',
