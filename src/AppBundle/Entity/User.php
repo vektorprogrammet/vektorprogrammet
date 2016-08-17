@@ -456,7 +456,6 @@ class User implements AdvancedUserInterface, \Serializable
     {
         $firstName = $this->getFirstName();
         $lastName = $this->getLastName();
-        $email = $this->getEmail();
 
         return "$firstName $lastName";
     }

@@ -40,12 +40,17 @@ class AdmissionController extends Controller
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                //Check if email belongs to an existing account and use that account
-                $oldUser = $em->getRepository('AppBundle:User')->findOneBy(array('email' => $application->getUser()->getEmail()));
-                if ($oldUser !== null) {
-                    $oldUserAssistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findBy(array('user' => $oldUser));
-                    if (empty($oldUserAssistantHistory)) {
-                        $application->setUser($oldUser);
+                $user = $this->getUser();
+
+                if (is_null($user)) {
+                    //Check if email belongs to an existing account and use that account
+                    $user = $em->getRepository('AppBundle:User')->findOneBy(array('email' => $application->getUser()->getEmail()));
+                }
+                if ($user !== null) {
+                    // User is logged in, or a user is registered with the email
+                    $userAssistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findBy(array('user' => $user));
+                    if (empty($userAssistantHistory)) {
+                        $application->setUser($user);
                     } else {
                         //If applicant has a user and has been an assistant before
                         return $this->redirect($this->generateUrl('admission_existing_user'));
@@ -185,6 +190,7 @@ class AdmissionController extends Controller
             'form' => $form->createView(),
             'department' => $department,
             'semester' => $semester,
+            'user' => $user,
         ));
     }
 }
