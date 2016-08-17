@@ -16,7 +16,7 @@
                 {% endif %}
 
                 {% if message is defined %}
-                    <p>{{ message }}</p>
+                    <p>{{ message|raw }}</p>
                 {% endif %}
 
                 <form action="{{ path('login_check') }}" method="post">
@@ -29,8 +29,10 @@
                     {#
                         If you want to control the URL the user
                         is redirected to on success (more details below)
-                        <input type="hidden" name="_target_path" value="/account" />
                     #}
+                    {% if redirect_path is defined %}
+                        <input type="hidden" name="_target_path" value="{{ redirect_path }}" />
+                    {% endif %}
 
                     <button type="submit">login</button>
 
