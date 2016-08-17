@@ -276,6 +276,10 @@ login_route:
  path:   /login
  defaults: { _controller: AppBundle:Security:login }
 
+login_redirect:
+  path: /login/redirect
+  defaults: { _controller: AppBundle:Security:loginRedirect }
+
 login_check:
  path:   /login_check
  defaults: { _controller: AppBundle:Security:loginCheck }
