@@ -90,7 +90,10 @@ class PasswordResetController extends Controller
                 ->setSubject('Tilbakestill passord for vektorprogrammet.no')
                 ->setFrom('ikkesvar@vektorprogrammet.no')
                 ->setTo($email)
-                ->setBody($this->renderView('reset_password/new_password_email.txt.twig', array('reseturl' => 'www.vektorprogrammet.no/resetpassord/'.$resetCode.'')));
+                ->setBody($this->renderView('reset_password/new_password_email.txt.twig', array(
+                    'resetCode' => $resetCode,
+                    'user' => $user,
+                )));
             $this->get('mailer')->send($emailMessage);
 
             return true;
