@@ -32,6 +32,7 @@
             {{ form_errors(form) }}
 
             <h3>Søk vektorassistent {{ department.shortName }} {{ semester.name }}</h3>
+            <h6>Søknadsskjema for {{ user }} (Ikke deg? <a href="{{ path('logout') }}">Logg ut</a>)</h6>
             <div class="row">
                 <div class="small-12 columns">
                     <div>
