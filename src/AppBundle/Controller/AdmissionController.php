@@ -140,8 +140,22 @@ class AdmissionController extends Controller
     public function existingUserAdmissionAction(Request $request)
     {
         $user = $this->getUser();
-        if (!sizeof($user->getAssistantHistories())) {
-            return $this->render(':error:no_assistanthistory.html.twig');
+
+        if (!$user) {
+            $message = '<b>Gamle assistenter må logge inn for å søke.</b> Bruk «<a href="/resetpassord">Glemt passord</a>» om du ikke husker brukernavn/passord 
+            eller ikke har fått bruker (bruk samme e-postadresse som du søkte vektorassistent med). 
+            Kontakt <span class="text-primary">webansvarlig@vektorprogrammet.no</span> hvis du ikke har blitt registrert i systemet vårt.';
+
+            $authenticationUtils = $this->get('security.authentication_utils');
+
+            return $this->render('login/login.html.twig', array(
+                    'last_username' => null,
+                    'error' => $authenticationUtils->getLastAuthenticationError(),
+                    'message' => $message,
+                    'redirect_path' => $this->generateUrl('admission_existing_user'),
+                ));
+        } elseif (!count($user->getAssistantHistories())) {
+            return $this->render('error/no_assistanthistory.html.twig', array('user' => $user));
         }
 
         $em = $this->getDoctrine()->getManager();
