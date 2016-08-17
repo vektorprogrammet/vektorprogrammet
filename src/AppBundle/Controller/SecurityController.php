@@ -25,6 +25,15 @@ class SecurityController extends Controller
         );
     }
 
+    public function loginRedirectAction()
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('control_panel');
+        } else {
+            return $this->redirectToRoute('profile');
+        }
+    }
+
     public function loginCheckAction()
     {
     }
