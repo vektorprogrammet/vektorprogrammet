@@ -28,11 +28,11 @@
         "knplabs/knp-paginator-bundle": "~2.4",
         "helios-ag/fm-elfinder-bundle": "~3",
 		"psliwa/pdf-bundle": "~1.0",
-        "phpunit/phpunit": "4.6.*",
         "simplethings/form-extra-bundle": "1.1.*",
         "liip/imagine-bundle": "1.2.6"
     },
     "require-dev": {
+        "phpunit/phpunit": "4.6.*",
         "ext-pdo_sqlite": "*",
         "sensio/generator-bundle": "~2.3",
         "friendsofphp/php-cs-fixer": "^1.11"
