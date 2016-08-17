@@ -216,7 +216,7 @@ class UserAdminController extends Controller
 
         $emailMessage = \Swift_Message::newInstance()
             ->setSubject('Velkommen til vektorprogrammet')
-            ->setFrom($this->container->getParameter('no_reply_email_user_creation'))
+            ->setFrom(array($this->container->getParameter('no_reply_email_user_creation') => 'Vektorprogrammet'))
             ->setTo($user->getEmail())
             ->setBody($this->renderView('new_user/create_new_user_email.txt.twig', array('newUserURL' => $this->generateURL('useradmin_activate_user', array('newUserCode' => $createNewUserCode), true))));
         $this->get('mailer')->send($emailMessage);

@@ -363,7 +363,7 @@ class InterviewController extends Controller
                 $mailer = $this->get('mailer');
                 $message = \Swift_Message::newInstance()
                     ->setSubject('Intervju for vektorprogrammet')
-                    ->setFrom('opptak@vektorprogrammet.no')
+                    ->setFrom(array('opptak@vektorprogrammet.no' => 'Vektorprogrammet'))
                     ->setTo($data['to'])
                     ->setReplyTo($data['from'])
                     ->setBody(
