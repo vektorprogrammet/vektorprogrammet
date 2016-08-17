@@ -64,7 +64,7 @@ class AdmissionController extends Controller
                 // Send a confirmation email with a copy of the application
                 $emailMessage = \Swift_Message::newInstance()
                     ->setSubject('Søknad - Vektorassistent')
-                    ->setFrom('rekruttering@vektorprogrammet.no')
+                    ->setFrom(array('rekruttering@vektorprogrammet.no' => 'Vektorprogrammet'))
                     ->setTo($application->getUser()->getEmail())
                     ->setBody($this->renderView('admission/admission_email.html.twig', array('application' => $application)));
                 $this->get('mailer')->send($emailMessage);
@@ -100,7 +100,7 @@ class AdmissionController extends Controller
         ));
 
         // Get the sender email from the parameter file
-        $fromEmail = $this->container->getParameter('no_reply_email_contact_form');
+        $fromEmail = array($this->container->getParameter('no_reply_email_contact_form') => 'Kontaktskjema Vektorprogrammet');
 
         $contactForm->handleRequest($request);
 
@@ -109,6 +109,7 @@ class AdmissionController extends Controller
             $message = \Swift_Message::newInstance()
                 ->setSubject('Nytt kontaktskjema')
                 ->setFrom($fromEmail)
+                ->setReplyTo($contact->getEmail())
                 ->setTo($department->getEmail())
                 ->setBody($this->renderView('admission/contactEmail.txt.twig', array('contact' => $contact)));
             $this->get('mailer')->send($message);
@@ -176,7 +177,7 @@ class AdmissionController extends Controller
             // Send a confirmation email with a copy of the application
             $emailMessage = \Swift_Message::newInstance()
                 ->setSubject('Søknad - Vektorassistent')
-                ->setFrom('rekruttering@vektorprogrammet.no')
+                ->setFrom(array('rekruttering@vektorprogrammet.no' => 'Vektorprogrammet'))
                 ->setTo($application->getUser()->getEmail())
                 ->setBody($this->renderView('admission/admission_existing_email.html.twig', array('application' => $application)));
             $this->get('mailer')->send($emailMessage);

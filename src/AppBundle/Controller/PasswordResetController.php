@@ -88,7 +88,7 @@ class PasswordResetController extends Controller
             //Sends a email with the url for resetting the password
             $emailMessage = \Swift_Message::newInstance()
                 ->setSubject('Tilbakestill passord for vektorprogrammet.no')
-                ->setFrom('ikkesvar@vektorprogrammet.no')
+                ->setFrom(array('ikkesvar@vektorprogrammet.no' => 'Vektorprogrammet'))
                 ->setTo($email)
                 ->setBody($this->renderView('reset_password/new_password_email.txt.twig', array(
                     'resetCode' => $resetCode,
