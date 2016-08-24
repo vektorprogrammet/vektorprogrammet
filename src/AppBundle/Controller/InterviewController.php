@@ -45,8 +45,10 @@ class InterviewController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+        $isNewInterview = !$interview->getInterviewed();
+
         // If the interview has not yet been conducted, create up to date answer objects for all questions in schema
-        if (!$interview->getInterviewed()) {
+        if ($isNewInterview) {
             foreach ($interview->getInterviewSchema()->getInterviewQuestions() as $interviewQuestion) {
                 // Create a new answer object for the question
                 $answer = new InterviewAnswer();
@@ -75,6 +77,20 @@ class InterviewController extends Controller
             // Persist
             $em->persist($interview);
             $em->flush();
+
+            if ($isNewInterview) {
+                // Send email to the interviewee with a summary of the interview
+                $emailMessage = \Swift_Message::newInstance()
+                    ->setSubject('Vektorprogrammet intervju')
+                    ->setFrom(array('rekruttering@vektorprogrammet.no' => 'Vektorprogrammet'))
+                    ->setTo($application->getUser()->getEmail())
+                    ->setReplyTo($this->getUser()->getEmail())
+                    ->setBody($this->renderView('interview/interview_summary_email.html.twig', array(
+                        'application' => $application,
+                        'interviewer' => $this->getUser(),
+                    )));
+                $this->get('mailer')->send($emailMessage);
+            }
 
             return $this->redirect($this->generateUrl('admissionadmin_show', array('status' => 'interviewed')));
         }
