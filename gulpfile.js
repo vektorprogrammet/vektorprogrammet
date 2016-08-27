@@ -35,8 +35,8 @@ gulp.task('scriptsProd', ['scriptsVendor'], function () {
 });
 
 gulp.task('imagesProd', function () {
-    var dest = path.dist + 'img/';
-    gulp.src(path.src + 'img/**/*')
+    var dest = path.dist + 'images/';
+    gulp.src(path.src + 'images/**/*')
         .pipe(plumber())
         .pipe(changed(dest))
         .pipe(imagemin({
@@ -77,8 +77,8 @@ gulp.task('scriptsVendor', function () {
 });
 
 gulp.task('imagesDev', function () {
-    var dest = path.dist + 'img/';
-    gulp.src(path.src + 'img/**/*')
+    var dest = path.dist + 'images/';
+    gulp.src(path.src + 'images/**/*')
         .pipe(plumber())
         .pipe(changed(dest))
         .pipe(gulp.dest(dest))
