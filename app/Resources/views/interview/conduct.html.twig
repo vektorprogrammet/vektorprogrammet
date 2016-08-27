@@ -146,6 +146,15 @@
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
                         {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
+                        {% if not interview.interviewed %}
+                            <div class="row">
+                                <div class="medium-6 columns">
+                                    <br>
+                                    <span class="text-alert">Obs!</span> Et sammendrag med praktisk informasjon (ikke intervjuspørsmål eller evaluering)
+                                    fra dette intervjuet vil bli sendt på e-post til {{ u.firstName }}.
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
                 {{ form_end(form) }}

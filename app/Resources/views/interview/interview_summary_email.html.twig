@@ -1,0 +1,29 @@
+{% set user = application.user %}
+Takk for at du deltok på intervju med Vektorprogrammet!
+
+Her er et sammendrag av informasjonen vi har notert oss, vennligst ta kontakt hvis noe er feil:
+
+Navn: {{ user.firstName }} {{ user.lastName }}
+E-post: {{ user.email }}
+Telefon: {{ user.phone }}
+Linje: {{ user.fieldOfStudy.name }} ({{ user.fieldOfStudy.shortName }})
+År: {{ application.yearOfStudy }}
+Kjønn: {{ user.gender == 1 ? 'Dame' : 'Mann' }}
+
+Dager som passer
+Mandag: {{ application.monday }}
+Tirsdag: {{ application.tuesday }}
+Onsdag: {{ application.wednesday }}
+Torsdag: {{ application.thursday }}
+Fredag: {{ application.friday }}
+
+Dobbel stilling: {{ application.doublePosition ? 'Ja' : 'Nei' }}
+{% if application.preferredGroup %}
+Ønsket bolk: {{ application.preferredGroup }}
+{% endif %}
+Ønsker internasjonal skole: {{ application.english ? 'Ja' : 'Nei' }}
+
+Mvh.
+{{ interviewer }}
+{{ interviewer.email }}
+vektorprogrammet.no
