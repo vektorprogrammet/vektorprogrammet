@@ -27,6 +27,11 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application1->setPreviousParticipation(true);
         $application1->setYearOfStudy(1);
         $application1->setSemester($this->getReference('semester-current'));
+        $application1->setMonday('Bra');
+        $application1->setTuesday('Bra');
+        $application1->setWednesday('Ikke');
+        $application1->setThursday('Ikke');
+        $application1->setFriday('Bra');
 
         $manager->persist($application1);
 
