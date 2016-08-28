@@ -125,11 +125,6 @@ class AdmissionAdminController extends Controller
 
                 foreach ($applicants as $applicant) {
                     $fullName = $applicant->getInterview()->getInterviewer()->getFirstName().' '.$applicant->getInterview()->getInterviewer()->getLastName();
-                    if (array_key_exists($fullName, $interviewDistribution)) {
-                        ++$interviewDistribution[$fullName];
-                    } else {
-                        $interviewDistribution[$fullName] = 1;
-                    }
                     if (array_key_exists($fullName, $interviewDistributionLeft)) {
                         ++$interviewDistributionLeft[$fullName];
                     } else {
