@@ -2,45 +2,50 @@
 
 {% block customScripts %}
 
-	<script>
+    <script>
 
-		$(document).ready(function() {
+        $(document).ready(function() {
 
-			{# Get all the teams as they are first presented #}
-			teams = $(".team");
+            {# Load in all teams #}
+            teams = $(".team");
+            teams.hide();
+            $(".mainTeam").hide();
 
-			$('.departmentId').click(function(){
+            $("h3").click(function(){
+                var ID = this.id;
+                if($("."+ID).is(":visible") == true 	){
+                    $("."+ID).hide();
+                }
+                else{
+                    $("."+ID).show();
+                }
+            });
 
-				{# Get the ID of the elemnt being clicked #}
-				var ID =  parseInt(this.id);
+            $('.departmentId').click(function(){
 
-				{# Hide all teams #}
-				teams.hide();
+                {# Get the ID of the element being clicked #}
+                var ID =  parseInt(this.id);
 
-				{# Show teams with id=ID and class="team" #}
-				$("#"+ID+".team").show();
+                {# Hide all teams #}
+                teams.hide();
+                $(".mainTeam").hide();
 
-			});
+                {# Show teams with id=ID and class="team" #}
+                $("#"+ID+".team").show();
 
-			{# Show all departments #}
-			$('.AllDepartments').click(function(){
+            });
+        });
 
-				teams.show();
-
-			});
-
-		});
-
-	</script>
+    </script>
 
 
 {% endblock %}
 
 {% block title %}
-	Styret og team
+    Styret og team
 {% endblock %}
-	
-	
+
+
 {% block body %}
 	<p></p>
 
@@ -49,34 +54,94 @@
 
 			<h1> Styret og team </h1>
 
-			<hr>
 
-			<a class="button tiny" data-dropdown="department" aria-controls="department" aria-expanded="false">Avdeling &raquo;</a>
-			<ul id="department" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
-				<li> <a href="#" class="AllDepartments"> Vis alle </a></li>
 
-				{% for d in Departments %}
+	{% for t in Teams %}
+		{% if t.name == "Hovedstyre" or t.name == "IT" %}
+		<team id={{ t.department.id }}>
 
-					<li><a href="#" class="departmentId" id={{d.id}}> {{ d.shortname }} </a></li>
+			<div class="row" >
+				<div class="small-12 medium-12 large-12 columns">
 
+					<hr>
+
+						<h3 class="teamTitle" id={{ t.name }}> {{ t.name }} </h3>
+
+				</div>
+
+				{% set count = 0 %}
+				{% for wh in WorkHistories %}
+
+					{% if wh.team is not null %}
+						{% if wh.team.id == t.id %}
+							{% if count%4 == 0 %}
+								<div class="row {{ t.name }} mainTeam" id={{ t.name }}>
+							{% endif %}
+
+							<div class="small-12 medium-12 large-3 columns left">
+
+								<img src="{{ asset(wh.user.picturePath) }}"/>
+
+								<div class="panel callout radius">
+									{% if app.user %}
+										<h4><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{wh.user}}</a></h4>
+									{% else %}
+										<h4> {{wh.user}}  </h4>
+									{% endif %}
+									<p>
+										{% if wh.position is not null %}
+											{{ wh.position.name }}<br/>
+										{% endif %}
+										<a href="mailto:{{ wh.user.email }}">E-post</a><br/>
+										{{ wh.user.phone|slice(0,3) }} {{ wh.user.phone|slice(3,2) }} {{ wh.user.phone|slice(5,3) }} <br/>
+									</p>
+								</div>
+
+							</div>
+
+							{% if count%4 == 3 %}
+								</div>
+							{% endif %}
+							{% set count = count + 1 %}
+						{% endif %}
+					{% endif %}
 
 				{% endfor %}
+				{% if count%4 != 0 %}
+			</div>
+			{% endif %}
+				</team>
+			</div>
 
-			</ul>
+
+{% endif %}
+	{% endfor %}
+
+
+	<table id="teams">
+		<tr>
+				{% for d in Departments %}
+
+					<td><a href="#" class="departmentId button tiny" id={{d.id}}> {{ d.shortname }} </a></td>
+
+				{% endfor %}
+		</tr>
+	</table>
 
 		</div>
 	</div>
 
 	{% for t in Teams %}
+		{% if t.name != "Hovedstyre" and t.name != "IT" %}
+		<team class="team {{ t.name }}" id={{ t.department.id }}>
 
-		<team class="team" id={{ t.department.id }}>
-
-			<div class="row">
+			<div class="row" >
 				<div class="small-12 medium-12 large-12 columns">
 
 					<hr>
 
-					<h3> {{ t.department.shortName }}: {{ t.name }} </h3>
+					<h3> {{ t.department.shortName}}: {{ t.name }} </h3>
+
 
 				</div>
 
@@ -125,7 +190,7 @@
 			</div>
 
 		</team>
-
+		{% endif %}
 	{% endfor %}
 
 
