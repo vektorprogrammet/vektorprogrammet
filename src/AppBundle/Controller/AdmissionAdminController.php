@@ -495,4 +495,15 @@ class AdmissionAdminController extends Controller
             'form' => $form->createView(),
         ));
     }
+
+    public function showApplicationAction(Application $application)
+    {
+        if (!$application->getPreviousParticipation()) {
+            throw $this->createNotFoundException('Søknaden finnes ikke');
+        }
+
+        return $this->render('admission_admin/application.html.twig', array(
+            'application' => $application,
+        ));
+    }
 }

@@ -63,6 +63,11 @@
                         <td>{{ a.doublePosition ? 'Dobbel':'Enkel' }}</td>
                         <td>{{ a.preferredGroup }}</td>
                         <td>{{ a.english ? 'Engelsk':'Norsk' }}</td>
+                        <td><a class="button tiny" href="{{ path('admissionadmin_show_application', {'id': a.id}) }}">
+                                <i class="fa fa-list-ul"></i>
+                                Les søknad
+                            </a>
+                        </td>
 
                         {# Add the delete interview and application dropdown button, given the correct permissions #}
                         {% if is_granted('ROLE_HIGHEST_ADMIN') %}
