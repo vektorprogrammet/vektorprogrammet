@@ -27,8 +27,8 @@
   "scripts": {
     "test": "./bin/phpunit --configuration app/phpunit.xml.dist",
     "test:win": ".\\bin\\phpunit --configuration app/phpunit.xml.dist",
-    "setup": "php ./composer.phar install && npm install && ./node_modules/.bin/gulp build:dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:fixtures:load --env=dev -n",
-    "setup:win": "php .\\composer.phar install && npm install && .\\node_modules\\.bin\\gulp build:dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:fixtures:load --env=dev -n",
+    "setup": "php ./composer.phar install -n && npm install && ./node_modules/.bin/gulp build:dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:fixtures:load --env=dev -n",
+    "setup:win": "php .\\composer.phar install -n && npm install && .\\node_modules\\.bin\\gulp build:dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:fixtures:load --env=dev -n",
     "start": "php app/console server:run --docroot=www & npm run watch",
     "watch": "gulp",
     "reload-db": "php app/console doctrine:fixtures:load --env=dev",
