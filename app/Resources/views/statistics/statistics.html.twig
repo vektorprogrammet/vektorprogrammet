@@ -102,7 +102,7 @@
                     label: 'Gamle' + ' ({{ (prevParticipationCount/applicationCount*100)|round }} %)',
                     value: {{ prevParticipationCount }},
                     color: getColor(1)
-                },
+                }
 
             ];
             var fieldOfStudyData = [
@@ -138,14 +138,16 @@
                     label: 'Kansellerte intervjuer' + ' ({{ (cancelledInterviewsCount/applicationCount*100)|round }} %)',
                     value: {{ cancelledInterviewsCount }},
                     color: getColor(3)
-                },
+                }
             ];
 
-            renderChart(fieldOfStudyData, 'Studie', $('#applicationCharts'), false);
-            renderChart(studyYearData, 'Stuideår', $('#applicationCharts'), true);
-            renderChart(genderData, 'Kjønn', $('#applicationCharts'), true);
-            renderChart(applicantsData, 'Nye/Gamle Søkere', $('#applicationCharts'), true);
-            renderChart(admissionData, 'Opptak', $('#admissionCharts'), true);
+            var $applicationCharts = $('#applicationCharts');
+            var $admissionCharts = $('#admissionCharts');
+            renderChart(fieldOfStudyData, 'Studie', $applicationCharts, false);
+            renderChart(studyYearData, 'Stuideår', $applicationCharts, true);
+            renderChart(genderData, 'Kjønn', $applicationCharts, true);
+            renderChart(applicantsData, 'Nye/Gamle Søkere', $applicationCharts, true);
+            renderChart(admissionData, 'Opptak', $admissionCharts, true);
             {% endif %}
 
             {% if assistantHistoriesCount %}
@@ -162,7 +164,7 @@
                 }
             ];
 
-            renderChart(acceptedGenderData, 'Kjønn', $('#admissionCharts'), true);
+            renderChart(acceptedGenderData, 'Kjønn', $admissionCharts, true);
             {% endif %}
 
             function renderChart(data, label, chartRoot, legend) {
@@ -179,7 +181,7 @@
                 var chart = $('<div></div>');
                 chart.addClass('chart');
                 chart.append(canvas);
-                div.append(chart)
+                div.append(chart);
 
                 chartRoot.append(div);
 
@@ -195,7 +197,7 @@
             /**
              * Equalizes height of .equalheight children nodes
              */
-            (function () {
+            $(document).ready(function() {
                 $('.equalheight').each(function () {
                     var maxHeight = 0;
                     $(this).children().each(function () {
@@ -204,8 +206,7 @@
                     });
                     $(this).children().height(maxHeight);
                 });
-            })();
-
+            })
 
         })
 
