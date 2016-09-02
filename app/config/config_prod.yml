@@ -29,7 +29,7 @@ monolog:
             handler: swift
         swift:
             type:       swift_mailer
-            from_email: 'mail.vektorprogrammet@gmail.com'
+            from_email: 'vektorprogrammet@vektorprogrammet.no'
             to_email:   'webansvarlig@vektorprogrammet.no'
             subject:    An Error Occurred on vektorprogrammet.no!
             level:      debug
