@@ -1,7 +1,8 @@
 #!/bin/sh
 log=app/logs/deploy.log
-cd $(dirname "$0")
 echo "Starting deploy" >>$log
+/var/backups/vektorprogrammet/backup >>$log 2>&1
+cd $(dirname "$0")
 date >>$log
 git pull origin master >>$log 2>&1
 SYMFONY_ENV=prod php ./composer.phar install --no-dev --optimize-autoloader >>$log 2>&1
