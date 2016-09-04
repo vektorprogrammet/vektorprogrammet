@@ -539,6 +539,9 @@ semesteradmin_delete_semester_by_id:
 ##########################################
 #               Team                     #
 ##########################################
+team_page:
+  path: /team/{id}
+  defaults: {_controller: AppBundle:Team:show}
 
 teamadmin_show:
  path: /kontrollpanel/teamadmin

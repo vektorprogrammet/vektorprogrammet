@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    <div class="row">
+        <div class="small-12 columns">
+            <h1>{{ team.name }}</h1>
+            <hr>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="large-8 columns">
+            {{ team.description|replace({'<script>': 'Sorry, not hackz here! ', '</script>': ''})|raw }}
+        </div>
+        <div class="large-4 columns">
+            <h4>Medlemmer</h4>
+            {% set count = 0 %}
+            {% for wh in workHistories %}
+
+                {% if wh.team is not null %}
+                    {% if wh.team.id == team.id %}
+                        {% if count%4 == 0 %}
+                            <div class="row">
+                        {% endif %}
+
+                        <div class="small-12 medium-12 large-6 columns left">
+
+                            <img src="{{ asset(wh.user.picturePath) }}"/>
+
+                            <div class="panel callout radius">
+                                {% if app.user %}
+                                    <span><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{wh.user}}</a></span>
+                                {% else %}
+                                    <p> {{wh.user}}  </p>
+                                {% endif %}
+                                <span>
+                                    {% if wh.position is not null %}
+                                        {{ wh.position.name }}<br/>
+                                    {% endif %}
+                                    <a href="mailto:{{ wh.user.email }}">E-post</a><br/>
+                                    {{ wh.user.phone|slice(0,3) }} {{ wh.user.phone|slice(3,2) }} {{ wh.user.phone|slice(5,3) }} <br/>
+                                </span>
+                            </div>
+
+                        </div>
+
+                        {% if count%4 == 3 %}
+                            </div>
+                        {% endif %}
+                        {% set count = count + 1 %}
+                    {% endif %}
+                {% endif %}
+
+            {% endfor %}
+            {% if count%4 != 0 %}
+        </div>
+        {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

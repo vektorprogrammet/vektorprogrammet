@@ -2,131 +2,88 @@
 
 {% block customScripts %}
 
-	<script>
+    <script>
 
-		$(document).ready(function() {
+        $(document).ready(function () {
 
-			{# Get all the teams as they are first presented #}
-			teams = $(".team");
+            {# Get all the teams as they are first presented #}
+            teams = $(".team");
 
-			$('.departmentId').click(function(){
+            $('.departmentId').click(function () {
 
-				{# Get the ID of the elemnt being clicked #}
-				var ID =  parseInt(this.id);
+                {# Get the ID of the elemnt being clicked #}
+                var ID = parseInt(this.id);
 
-				{# Hide all teams #}
-				teams.hide();
+                {# Hide all teams #}
+                teams.hide();
 
-				{# Show teams with id=ID and class="team" #}
-				$("#"+ID+".team").show();
+                {# Show teams with id=ID and class="team" #}
+                $("#" + ID + ".team").show();
 
-			});
+            });
 
-			{# Show all departments #}
-			$('.AllDepartments').click(function(){
+            {# Show all departments #}
+            $('.AllDepartments').click(function () {
 
-				teams.show();
+                teams.show();
 
-			});
+            });
 
-		});
+        });
 
-	</script>
+    </script>
 
 
 {% endblock %}
 
 {% block title %}
-	Styret og team
+    Styret og team
 {% endblock %}
 	
 	
 {% block body %}
-	<p></p>
+    <p></p>
 
-	<div class="row">
-		<div class="small-12 medium-12 large-12 columns">
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
 
-			<h1> Styret og team </h1>
+            <h1> Styret og team </h1>
 
-			<hr>
+            <hr>
 
-			<a class="button tiny" data-dropdown="department" aria-controls="department" aria-expanded="false">Avdeling &raquo;</a>
-			<ul id="department" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
-				<li> <a href="#" class="AllDepartments"> Vis alle </a></li>
+        </div>
+    </div>
 
-				{% for d in Departments %}
+    {% for department in departments %}
+        <div class="row">
+            <div class="small-12 columns">
+                <h3>{{ department.shortName }}</h3>
+            </div>
+        </div>
+        {% for team in department.teams %}
 
-					<li><a href="#" class="departmentId" id={{d.id}}> {{ d.shortname }} </a></li>
+            <team class="team" id={{ team.department.id }}>
 
+                <div class="row">
+                    <div class="small-12 medium-12 large-12 columns">
 
-				{% endfor %}
+                        <h5 class="teamLink"><a href="{{ path('team_page', {'id': team.id}) }}">{{ team.name }}</a></h5>
+                        <div class="teamDescription">
+                            {% if team.shortDescription is not null %}
+                                &nbsp;{{ team.shortDescription }}
+                                <br>
+                                <br>
+                            {% endif %}
+                        </div>
+                    </div>
 
-			</ul>
+                </div>
 
-		</div>
-	</div>
+            </team>
 
-	{% for t in Teams %}
+        {% endfor %}
+    {% endfor %}
 
-		<team class="team" id={{ t.department.id }}>
-
-			<div class="row">
-				<div class="small-12 medium-12 large-12 columns">
-
-					<hr>
-
-					<h3> {{ t.department.shortName }}: {{ t.name }} </h3>
-
-				</div>
-
-				{% set count = 0 %}
-				{% for wh in WorkHistories %}
-
-					{% if wh.team is not null %}
-						{% if wh.team.id == t.id %}
-							{% if count%4 == 0 %}
-								<div class="row">
-							{% endif %}
-
-							<div class="small-12 medium-12 large-3 columns left">
-
-								<img src="{{ asset(wh.user.picturePath) }}"/>
-
-								<div class="panel callout radius">
-									{% if app.user %}
-										<h4><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{wh.user}}</a></h4>
-									{% else %}
-										<h4> {{wh.user}}  </h4>
-									{% endif %}
-									<p>
-										{% if wh.position is not null %}
-											{{ wh.position.name }}<br/>
-										{% endif %}
-										<a href="mailto:{{ wh.user.email }}">E-post</a><br/>
-										{{ wh.user.phone|slice(0,3) }} {{ wh.user.phone|slice(3,2) }} {{ wh.user.phone|slice(5,3) }} <br/>
-									</p>
-								</div>
-
-							</div>
-
-							{% if count%4 == 3 %}
-								</div>
-							{% endif %}
-							{% set count = count + 1 %}
-						{% endif %}
-					{% endif %}
-
-				{% endfor %}
-				{% if count%4 != 0 %}
-			</div>
-			{% endif %}
-
-			</div>
-
-		</team>
-
-	{% endfor %}
 
 
 

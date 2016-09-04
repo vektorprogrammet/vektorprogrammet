@@ -21,6 +21,36 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         $team2->setName('IT');
         $manager->persist($team2);
 
+        $team2 = new Team();
+        $team2->setDepartment($this->getReference('dep-2'));
+        $team2->setName('Samarbeidskoordinatorer');
+        $manager->persist($team2);
+
+        $team2 = new Team();
+        $team2->setDepartment($this->getReference('dep-2'));
+        $team2->setName('Sponsor');
+        $manager->persist($team2);
+
+        $team2 = new Team();
+        $team2->setDepartment($this->getReference('dep-2'));
+        $team2->setName('Rekruttering');
+        $manager->persist($team2);
+
+        $team2 = new Team();
+        $team2->setDepartment($this->getReference('dep-3'));
+        $team2->setName('Samarbeidskoordinatorer');
+        $manager->persist($team2);
+
+        $team2 = new Team();
+        $team2->setDepartment($this->getReference('dep-3'));
+        $team2->setName('IT');
+        $manager->persist($team2);
+
+        $team2 = new Team();
+        $team2->setDepartment($this->getReference('dep-4'));
+        $team2->setName('TEAMET');
+        $manager->persist($team2);
+
         $manager->flush();
 
         $this->addReference('team-1', $team1);

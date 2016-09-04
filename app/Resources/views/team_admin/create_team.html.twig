@@ -11,19 +11,23 @@
 	
 	<div class="row">
 			<div class="small-12 medium-12 large-12 columns">
+				{% if isUpdate is not defined %}
+					{% set isUpdate = false %}
+				{% endif %}
+					<h1> {{ isUpdate ? 'Oppdater' : 'Opprett' }} team </h1>
 					
-					<h1> Opprett team </h1>
-					
-					<p> Oppretter team for avdeling {{ department.shortname }} </p>
+					<p> {{ isUpdate ? 'Oppdaterer' : 'Oppretter' }} team for avdeling {{ department.shortname }} </p>
 					
 					<hr>
 					
 						<div class="row">
 							<div class="small-12 medium-12 large-12 columns">
 									
-									{{ form_start(form) }}
-									{{ form_widget(form) }}
-									{{ form_end(form) }}
+								{{ form_start(form) }}
+								{{ form_widget(form) }}
+								<br>
+								<button class="button large">Lagre</button>
+								{{ form_end(form) }}
 									
 							</div>
 						</div>
