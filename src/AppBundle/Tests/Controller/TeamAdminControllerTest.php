@@ -221,7 +221,7 @@ class TeamAdminControllerTest extends WebTestCase
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Opprett team")')->count());
 
-        $form = $crawler->selectButton('Opprett')->form();
+        $form = $crawler->selectButton('Lagre')->form();
 
         // Change the value of a field
         $form['createTeam[name]'] = 'testteam1';
@@ -282,9 +282,9 @@ class TeamAdminControllerTest extends WebTestCase
         $crawler = $client->click($link);
 
         // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opprett team")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Oppdater team")')->count());
 
-        $form = $crawler->selectButton('Opprett')->form();
+        $form = $crawler->selectButton('Lagre')->form();
 
         // Change the value of a field
         $form['createTeam[name]'] = 'testteam2';
@@ -564,8 +564,8 @@ class TeamAdminControllerTest extends WebTestCase
         // Check the count for the different variables
         $this->assertEquals(1, $crawler->filter('td:contains("Petter")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Johansen")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Thomas")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Alm")')->count());
+        $this->assertEquals(2, $crawler->filter('td:contains("Thomas")')->count());
+        $this->assertEquals(2, $crawler->filter('td:contains("Alm")')->count());
 
         // USER
         $client = static::createClient(array(), array(

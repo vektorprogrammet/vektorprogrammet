@@ -18,6 +18,27 @@ class LoadWorkHistoryData extends AbstractFixture implements OrderedFixtureInter
         $wh->setPosition($this->getReference('position-1'));
         $manager->persist($wh);
 
+        $wh = new WorkHistory();
+        $wh->setTeam($this->getReference('team-1'));
+        $wh->setUser($this->getReference('user-2'));
+        $wh->setStartSemester($this->getReference('semester-1'));
+        $wh->setPosition($this->getReference('position-2'));
+        $manager->persist($wh);
+
+        $wh = new WorkHistory();
+        $wh->setTeam($this->getReference('team-1'));
+        $wh->setUser($this->getReference('user-3'));
+        $wh->setStartSemester($this->getReference('semester-1'));
+        $wh->setPosition($this->getReference('position-1'));
+        $manager->persist($wh);
+
+        $wh = new WorkHistory();
+        $wh->setTeam($this->getReference('team-1'));
+        $wh->setUser($this->getReference('user-4'));
+        $wh->setStartSemester($this->getReference('semester-1'));
+        $wh->setPosition($this->getReference('position-1'));
+        $manager->persist($wh);
+
         $wh2 = new WorkHistory();
         $wh2->setTeam($this->getReference('team-2'));
         $wh2->setUser($this->getReference('user-2'));

@@ -4,6 +4,7 @@
     <div class="row">
         <div class="small-12 columns">
             <h1>{{ team.name }}</h1>
+            <p class="team-short-description">{{ team.shortDescription }}</p>
             <hr>
         </div>
     </div>
@@ -11,52 +12,40 @@
 
 
     <div class="row">
-        <div class="large-8 columns">
+        <div class="large-7 columns team-description-column">
             {{ team.description|replace({'<script>': 'Sorry, not hackz here! ', '</script>': ''})|raw }}
         </div>
-        <div class="large-4 columns">
+        <div class="large-5 columns">
             <h4>Medlemmer</h4>
-            {% set count = 0 %}
-            {% for wh in workHistories %}
 
-                {% if wh.team is not null %}
-                    {% if wh.team.id == team.id %}
-                        {% if count%4 == 0 %}
-                            <div class="row">
-                        {% endif %}
+                <table>
+                    {% for wh in workHistories %}
 
-                        <div class="small-12 medium-12 large-6 columns left">
-
-                            <img src="{{ asset(wh.user.picturePath) }}"/>
-
-                            <div class="panel callout radius">
+                        <tr>
+                            <td width="100">
+                                <img width="50" src="{{ asset(wh.user.picturePath) }}"/>
+                            </td>
+                            <td>
                                 {% if app.user %}
-                                    <span><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{wh.user}}</a></span>
+                                    <span><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{ wh.user }}</a></span>
                                 {% else %}
-                                    <p> {{wh.user}}  </p>
+                                    <p> {{ wh.user }}  </p>
                                 {% endif %}
-                                <span>
-                                    {% if wh.position is not null %}
-                                        {{ wh.position.name }}<br/>
-                                    {% endif %}
-                                    <a href="mailto:{{ wh.user.email }}">E-post</a><br/>
-                                    {{ wh.user.phone|slice(0,3) }} {{ wh.user.phone|slice(3,2) }} {{ wh.user.phone|slice(5,3) }} <br/>
-                                </span>
-                            </div>
+                            </td>
+                            <td>
+                                {% if wh.position is not null %}
+                                    {{ wh.position.name }}<br/>
+                                {% endif %}
+                            </td>
+                            <td width="60">
+                                <a href="mailto:{{ wh.user.email }}">E-post</a><br/>
+                            </td>
 
-                        </div>
+                        </tr>
 
-                        {% if count%4 == 3 %}
-                            </div>
-                        {% endif %}
-                        {% set count = count + 1 %}
-                    {% endif %}
-                {% endif %}
+                    {% endfor %}
+                </table>
 
-            {% endfor %}
-            {% if count%4 != 0 %}
-        </div>
-        {% endif %}
         </div>
     </div>
 

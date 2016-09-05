@@ -57,7 +57,7 @@
     {% for department in departments %}
         <div class="row">
             <div class="small-12 columns">
-                <h3 style="margin-bottom: 0em">{{ department.shortName }}</h3>
+                <h3 class="no-bottom-margin">{{ department.shortName }}</h3>
             </div>
         </div>
         {% for team in department.teams %}
@@ -67,8 +67,8 @@
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
 
-                        <h5 class="teamLink" style="padding-left:18px; margin-top: 0em;"><a href="{{ path('team_page', {'id': team.id}) }}">{{ team.name }}</a></h5>
-                        <div class="teamDescription" style="padding-left:36px;">
+                        <h5 class="teamLink"><a href="{{ path('team_page', {'id': team.id}) }}">{{ team.name }}</a></h5>
+                        <div class="team-short-description">
                             {% if team.shortDescription is not null %}
                                 {{ team.shortDescription }}
                             {% endif %}
