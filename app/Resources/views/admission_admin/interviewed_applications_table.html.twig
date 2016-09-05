@@ -79,19 +79,21 @@
                         <td>{{ a.preferredGroup ? a.preferredGroup:'Ingen' }}</td>
                         <td>{{ a.english ? 'Engelsk':'Norsk' }}</td>
 
-                        <td>{{ a.interview.interviewScore.sum }}</td>
 
-                        <td>{{ a.interview.interviewScore.suitableAssistant }}</td>
 
                         {# Add the read interview button #}
-                        <td>
                             {% if a.user != user %}
+                            <td>{{ a.interview.interviewScore.sum }}</td>
+                            <td>{{ a.interview.interviewScore.suitableAssistant }}</td>
+                            <td>
                                 <a href="{{ path('interview_show', { 'id': a.id }) }}" class="button tiny"><i
                                             class="fa fa-list-ul"></i> Les intervju</a>
+                            </td>
                             {% else %}
-                                Intervjuet er skjult
+                                <td colspan="3">
+                                    <span class="text-alert">Intervjuet er skjult</span>
+                                </td>
                             {% endif %}
-                        </td>
 
                         {# Add the delete interview and application dropdown button, given the correct permissions #}
                         {% if is_granted('ROLE_HIGHEST_ADMIN') %}

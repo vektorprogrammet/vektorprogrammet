@@ -152,9 +152,8 @@ class InterviewScore
 
     public function hideScores()
     {
-        $this->setDrive(0);
         $this->setExplanatoryPower(0);
         $this->setRoleModel(0);
-        $this->setTotalImpression(0);
+        $this->setSuitability(0);
     }
 }
