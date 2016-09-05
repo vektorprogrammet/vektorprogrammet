@@ -68,11 +68,9 @@
                     <div class="small-12 medium-12 large-12 columns">
 
                         <h5 class="teamLink"><a href="{{ path('team_page', {'id': team.id}) }}">{{ team.name }}</a></h5>
-                        <div class="teamDescription">
+                        <div class="teamDescription" style="padding-left:1em;">
                             {% if team.shortDescription is not null %}
-                                &nbsp;{{ team.shortDescription }}
-                                <br>
-                                <br>
+                                {{ team.shortDescription }}
                             {% endif %}
                         </div>
                     </div>
@@ -82,6 +80,7 @@
             </team>
 
         {% endfor %}
+        <br>
     {% endfor %}
 
 
