@@ -281,6 +281,7 @@ class TeamAdminController extends Controller
         return $this->render('team_admin/create_team.html.twig', array(
             'department' => $department,
              'form' => $form->createView(),
+            'isUpdate' => true,
         ));
     }
 
@@ -311,7 +312,7 @@ class TeamAdminController extends Controller
         }
     }
 
-    public function createTeamForDepartmentAction(request $request)
+    public function createTeamForDepartmentAction(Request $request)
     {
         if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
             // Find the id variable sent by the request

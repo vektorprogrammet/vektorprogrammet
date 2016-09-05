@@ -18,8 +18,18 @@ class CreateTeamType extends AbstractType
                 'label' => 'E-post (valgfritt)',
                 'required' => false,
             ))
-            ->add('save', 'submit', array(
-                'label' => 'Opprett',
+            ->add('shortDescription', 'text', array(
+                'label' => 'Kort beskrivelse (maks 255 tegn. Valgfritt)',
+                'required' => false,
+            ))
+            ->add('description', 'ckeditor', array(
+                'required' => false,
+                'config' => array(
+                    'height' => 500,
+                    'filebrowserBrowseRoute' => 'elfinder',
+                    'filebrowserBrowseRouteParameters' => array('instance' => 'article_editor'), ),
+                'label' => 'Beskrivelse (valgfritt)',
+                'attr' => array('class' => 'hide'), // Graceful loading, hides the textarea that is replaced by ckeditor
             ));
     }
 
