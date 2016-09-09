@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<!--[if IE 9]><html class="lt-ie10" lang="no" > <![endif]-->
+<html class="no-js" lang="no">
+<head>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+</head>
+<body>
+<div class="container">
+   {# <div class="row">
+        <div class="small-12 columns">
+            <div class="small-3 columns right">
+                <div class="address">
+                    <p>
+
+                        Vektorprogrammet  <br/>
+                        NT-fakultetet, NTNU <br/>
+                        Høgskoleringen 5 <br/>
+                        7491 Trondheim <br/>
+                        Organisasjonsnummer: 998 744 814 <br/>
+
+                        {{ today|date ('d/m/y') }}, Trondheim <br/>
+
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>#}
+    <div class="row" style="margin-bottom: 50px">
+        <div class="small-12 columns" style="text-align: center">
+            <h2 style="margin-top: 150px">Attest</h2>
+        </div>
+    </div>
+
+     <div class="row">
+         <div class="small-12 columns">
+             <p style="font-weight: bold">{{ user }} har vært deltagende i Vektorprogrammet under vårsemesteret 2016.</p>
+         </div>
+     </div>
+
+     <div class="row">
+         <div class="small-12 columns">
+            {% if assistantHistory is not empty %}
+             <p>I sitt arbeid for det frivillighetsbaserte Vektorprogrammet har {{ user }} deltatt
+                 som assistent i undervisningen ved en ungdomsskole i Trondheim. Dette innebærer
+                 fire fulle skoledager der man støtter læreren i matematikkundervisningen.
+                 Arbeidsoppgavene varierer fra undervisning i mindre grupper til oppgaveløsning med
+                 elevene.
+             </p>
+
+                <h4>Assistent historie</h4>
+                <table style="table-layout: fixed; width:100%;">
+                    <tr>
+                        <th>Skole</th>
+                        <th>Dager</th>
+                        <th>Semester</th>
+                        <th>Start</th>
+                        <th>Slutt</th>
+                    </tr>
+                    {% for as in assistantHistory %}
+                        {% if as.semester is not null and as.school is not null %}
+                            <tr>
+                                <td>{{ as.getSchool.getName }}</td>
+                                <td>{{ as.workdays }}</td>
+                                <td>{{ as.getSemester.name }}</td>
+                                <td>{{ as.getSemester.semesterStartdate|date ('d/m/y') }}</td>
+                                <td>{{ as.getSemester.semesterEndDate|date ('d/m/y') }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td>Semesteret og/eller skolen har blitt slettet.</td>
+                                <td>Semesteret og/eller skolen har blitt slettet.</td>
+                            </tr>
+                        {% endif %}
+
+                    {% endfor %}
+                </table>
+
+             {% endif %}
+             {% if workHistory is not empty %}
+                <p>Insert workhistorytext here</p>
+                <p>
+                     <h4>Team historie</h4>
+                     <table style="width:100%; table-layout: fixed;">
+                         <tr>
+                             <th>Team</th>
+                             <th>Stilling</th>
+                             <th>Start</th>
+                             <th>Slutt</th>
+                         </tr>
+                         {% for wh in workHistory %}
+                             <tr>
+                                 <td>
+                                     {% if wh.team is not null %}
+                                         {{ wh.team.name }}
+                                     {% else %}
+                                         Teamet er slettet
+                                     {% endif %}
+                                 </td>
+
+                                 <td>
+                                     {% if wh.position is not null %}
+                                         {{ wh.position.name }}
+                                     {% else %}
+                                         Stillingen er fjernet
+                                     {% endif %}
+                                 </td>
+
+                                 <td>
+                                     {% if wh.startSemester is null %}
+                                         Ingen startsemester valgt
+                                     {% else %}
+                                         {{ wh.startSemester.name }}
+                                     {% endif %}
+                                 </td>
+
+                                 <td>
+                                     {% if wh.endSemester is not null %}
+                                         {{ wh.endSemester.name }}
+                                     {% else %}
+                                         Fortsatt aktiv
+                                     {% endif %}
+                                 </td>
+                             </tr>
+
+                        {% endfor %}
+                    </table>
+                </p>
+             {% endif %}
+         </div>
+     </div>
+
+
+     <div class="row" style="margin-bottom: 100px">
+         <div class="small-12 columns">
+            <p style="font-weight: bold">På vegne av Vektorprogrammet.</p>
+         </div>
+     </div>
+
+    <div class="row">
+        <div class="small-12 columns left">
+            {#<img src="{{ asset('insert signaturepicture') }}" alt="">#}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 columns">
+            <p style="font-weight: bold">{{ app.user }}</p>
+            <p>Insert title here, Vektorprogrammet</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-3 columns left">
+            <img src="{{ asset('images/vektor.png') }}" alt="">
+        </div>
+        <div class="small-3 columns right">
+            <div class="address">
+                <p>
+
+                    Vektorprogrammet  <br/>
+                    NT-fakultetet, NTNU <br/>
+                    Høgskoleringen 5 <br/>
+                    7491 Trondheim <br/>
+                    Organisasjonsnummer: 998 744 814 <br/>
+
+                    {{ today|date ('d/m/y') }}, Trondheim <br/>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+
+
+
+
+
+</html>

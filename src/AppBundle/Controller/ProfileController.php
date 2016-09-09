@@ -264,9 +264,7 @@ class ProfileController extends Controller
         return new JsonResponse($response);
     }
 
-    /**
-     * @Pdf()
-     */
+
     public function downloadCertificateAction(Request $request)
     {
 
@@ -300,20 +298,16 @@ class ProfileController extends Controller
             // Find the work history of the user
             $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
 
-            $facade = $this->get('ps_pdf.facade');
             $response = new Response();
 
-            $this->render('profile/download_certificate.pdf.twig', array(
+            return $this->render('certificate/certificate.html.twig', array(
                 'user' => $user,
                 'today' => $today,
                 'assistantHistory' => $assistantHistory,
                 'workHistory' => $workHistory,
-            ), $response);
+            ));
 
-            $xml = $response->getContent();
-            $content = $facade->render($xml);
 
-            return new Response($content, 200, array('content-type' => 'application/pdf'));
         } else {
             return $this->redirect($this->generateUrl('home'));
         }
