@@ -14,12 +14,16 @@ use AppBundle\Entity\Department;
 class AdmissionController extends Controller
 {
     public function showAction(Request $request)
-    {
-        $departmentId = $request->get('id');
-
+    {   
         $em = $this->getDoctrine()->getManager();
+        if ($request->get('id')){
+            $departmentId = $request->get('id');
+            $department = $em->getRepository('AppBundle:Department')->find($departmentId);
+        }else{
+            $department= $em->getRepository('AppBundle:Department')->findDepartmentByShortName($request->get('short_name'));
+            $departmentId = $department->getId();
 
-        $department = $em->getRepository('AppBundle:Department')->find($departmentId);
+        }
 
         $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
 
