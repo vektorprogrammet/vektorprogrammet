@@ -16,19 +16,16 @@ class AdmissionController extends Controller
     public function showAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $departmentId = $request->get('id');
-        $departmentShortName = $request->get('short_name');
-        if ($departmentId) {
-            $departmentId = $request->get('id');
-            $department = $em->getRepository('AppBundle:Department')->find($departmentId);
+        $departmentIdQuery = $request->get('id');
+        $departmentShortNameQuery = $request->get('short_name');
+        if ($departmentIdQuery) {
+            $department = $em->getRepository('AppBundle:Department')->find($departmentIdQuery);
         } else {
-            $department = $em->getRepository('AppBundle:Department')->findDepartmentByShortName($departmentShortName);
+            $department = $em->getRepository('AppBundle:Department')->findDepartmentByShortName($departmentShortNameQuery);
             if ($department == null) {
-                throw $this->createNotFoundException('Could not find department '.$departmentShortName);
+                throw $this->createNotFoundException('Could not find department '.$departmentShortNameQuery);
             }
-            $departmentId = $department->getId();
         }
-
         $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
 
         if ($semester !== null) {
@@ -82,7 +79,7 @@ class AdmissionController extends Controller
                     $application->getUser()->getEmail().'. Lykke til!');
 
                 return $this->redirect($this->generateUrl('admission_show_specific_department', array(
-                    'id' => $departmentId,
+                    'id' => $department->getId(),
                 )));
             }
 
