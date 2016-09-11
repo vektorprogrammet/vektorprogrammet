@@ -39,9 +39,10 @@ class DepartmentRepository extends EntityRepository
         ')
         ->setParameter('short_name', $short_name)
         ->getResult();
-        if(count($departments) <= 0) {
+        if (count($departments) <= 0) {
             return false;
         }
+
         return $departments[0];
     }
 
