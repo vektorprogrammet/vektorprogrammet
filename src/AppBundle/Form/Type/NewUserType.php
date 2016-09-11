@@ -22,7 +22,9 @@ class NewUserType extends AbstractType
                 'invalid_message' => 'Passordene må være like',
                 'constraints' => array(new Assert\Length(array(
                     'min' => 8,
+                    'max' => 64,
                     'minMessage' => 'Passordet må være på minst {{ limit }} tegn',
+                    'groups' => array('username'),
                 ))),
             ))
             ->add('save', 'submit', array(

@@ -50,11 +50,16 @@ class UserAdminController extends Controller
                 $user->addRole($role);
             }
 
+            $userRegistration = $this->get('app.user.registration');
+            $newUserCode = $userRegistration->setNewUserCode($user);
+
             // Persist the user
             $em = $this->getDoctrine()->getManager();
-            $user->setIsActive(1);
             $em->persist($user);
             $em->flush();
+
+            $emailMessage = $userRegistration->createActivationEmail($user, $newUserCode);
+            $this->get('mailer')->send($emailMessage);
 
             return $this->redirect($this->generateUrl('useradmin_show'));
         }
@@ -202,23 +207,20 @@ class UserAdminController extends Controller
     /**
      * Sets newUserCode and sends activation email to user.
      *
-     * @param User user
+     * @param User $user
+     *
+     * @internal param User $User
      */
     public function sendActivationEmail(User $user)
     {
-        $em = $this->getDoctrine()->getManager();
+        $userRegistration = $this->get('app.user.registration');
+        $newUserCode = $userRegistration->setNewUserCode($user);
 
-        $createNewUserCode = bin2hex(openssl_random_pseudo_bytes(16));
-        $hashedNewUserCode = hash('sha512', $createNewUserCode, false);
-        $user->setNewUserCode($hashedNewUserCode);
+        $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
 
-        $emailMessage = \Swift_Message::newInstance()
-            ->setSubject('Velkommen til vektorprogrammet')
-            ->setFrom(array($this->container->getParameter('no_reply_email_user_creation') => 'Vektorprogrammet'))
-            ->setTo($user->getEmail())
-            ->setBody($this->renderView('new_user/create_new_user_email.txt.twig', array('newUserURL' => $this->generateURL('useradmin_activate_user', array('newUserCode' => $createNewUserCode), true))));
+        $emailMessage = $userRegistration->createActivationEmail($user, $newUserCode);
         $this->get('mailer')->send($emailMessage);
     }
 

@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="small-12 medium-12 large-12 columns">
+
+    {% if assistantHistory is not empty %}
+
+        <h3>Assistenthistorikk</h3>
+        <table style="table-layout: fixed; width:100%;">
+            <tr>
+                <th>Skole</th>
+                <th>Semester</th>
+            </tr>
+            {% for as in assistantHistory %}
+                {% if as.semester is not null and as.school is not null %}
+                    <tr>
+                        <td>
+                            {% if as.school is null %}
+                                skolen har blitt slettet
+                            {% else %}
+                                {{ as.getSchool.getName }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if as.semester is null %}
+                                semesteret har blitt slettet
+                            {% else %}
+                                {{ as.getSemester.getName }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+
+            {% endfor %}
+        </table>
+    {% endif %}
+
+</div>
+</div>

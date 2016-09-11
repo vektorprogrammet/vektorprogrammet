@@ -22,7 +22,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(
  *      fields={"user_name"},
  *      message="Dette brukernavnet er allerede i bruk.",
- *      groups={"create_user"}
+ *      groups={"create_user", "username"}
  * )
  */
 class User implements AdvancedUserInterface, \Serializable
@@ -72,13 +72,12 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=45, unique=true, nullable=true)
-     * @Assert\NotBlank(groups={"create_user"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"username"}, message="Dette feltet kan ikke være tomt.")
      */
     private $user_name;
 
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
-     * @Assert\NotBlank(groups={"create_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $password;
 

@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="small-12 medium-12 large-12 columns">
+
+        {% if workHistory is not empty %}
+
+            <h3>Teamhistorikk</h3>
+            <table style="width:100%; table-layout: fixed;">
+                <tr>
+                    <th>Team</th>
+                    <th>Stilling</th>
+                    <th>Start</th>
+                    <th>Slutt</th>
+                </tr>
+                {% for wh in workHistory %}
+                    <tr>
+                        <td>
+                            {% if wh.team is not null %}
+                                {{ wh.team.name }}
+                            {% else %}
+                                Teamet er slettet
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if wh.position is not null %}
+                                {{ wh.position.name }}
+                            {% else %}
+                                Stillingen er fjernet
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if wh.startSemester is null %}
+                                Ingen startsemester valgt
+                            {% else %}
+                                {{ wh.startSemester.name }}
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if wh.endSemester is not null %}
+                                {{ wh.endSemester.name }}
+                            {% else %}
+                                Fortsatt aktiv
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                {% endfor %}
+            </table>
+
+        {% endif %}
+
+    </div>
+</div>
