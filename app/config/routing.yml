@@ -151,6 +151,10 @@ profile:
  path:   /profile
  defaults: { _controller: AppBundle:Profile:show }
 
+profile_activate_with_user_code:
+  path: /bruker/aktiver/{newUserCode}
+  defaults: {_controller: AppBundle:Profile:activateNewUser }
+
 profile_activate_user:
  path:   /profile/aktiv/{id}
  defaults: { _controller: AppBundle:Profile:activateUser }
@@ -496,11 +500,6 @@ useradmin_create_user_superadmin:
  requirements:
     id: \d+
 
-useradmin_activate_user:
- path: /kontrollpanel/aktiver/{newUserCode}
- defaults: {_controller: AppBundle:UserAdmin:activateNewUser }
- requirements:
-    _method: GET|POST
 
 ##########################################
 #              Semester                  #

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Fant ingen assistenthistorie
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block body %}
+    <br>
+    <br>
+    <br>
+    <h4 class="text-center">{{ title }} </h4>
+    {% if message is defined %}
+        <p class="text-center">{{ message }}</p>
+    {% endif %}
+    <br>
+{% endblock %}
