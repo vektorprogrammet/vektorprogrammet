@@ -29,10 +29,6 @@ class AdmissionController extends Controller
             $departmentId = $department->getId();
         }
 
-        $em = $this->getDoctrine()->getManager();
-
-        $department = $em->getRepository('AppBundle:Department')->find($departmentId);
-
         $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
 
         if ($semester !== null) {
