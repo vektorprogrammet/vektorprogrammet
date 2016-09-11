@@ -131,7 +131,7 @@ class SchoolAdminController extends Controller
             } else { // Send new user code for user to create user name and password
 
                 // Send new user code only if assistant history is added to current semester
-                if ($assistantHistory->getSemester() == $currentSemester) {
+                if ($assistantHistory->getSemester() == $currentSemester && $user->getNewUserCode() == null) {
                     $userRegistration = $this->get('app.user.registration');
                     $newUserCode = $userRegistration->setNewUserCode($user);
 
