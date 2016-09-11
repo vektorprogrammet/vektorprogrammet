@@ -23,7 +23,7 @@ class AdmissionController extends Controller
             $department = $em->getRepository('AppBundle:Department')->find($departmentId);
         } else {
             $department = $em->getRepository('AppBundle:Department')->findDepartmentByShortName($departmentShortName);
-            if ($department == false) {
+            if ($department == null) {
                 throw $this->createNotFoundException('Could not find department '.$departmentShortName);
             }
             $departmentId = $department->getId();
