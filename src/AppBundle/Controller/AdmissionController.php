@@ -18,7 +18,7 @@ class AdmissionController extends Controller
         $em = $this->getDoctrine()->getManager();
         $departmentId = $request->get('id');
         $departmentShortName = $request->get('short_name');
-        if ($departmentID) {
+        if ($departmentId) {
             $departmentId = $request->get('id');
             $department = $em->getRepository('AppBundle:Department')->find($departmentId);
         } else {
