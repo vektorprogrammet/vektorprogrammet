@@ -5,30 +5,53 @@
     <div style="margin:50px auto;" class="row">
         <div class="large-6 columns" style="border-right: 2px solid #333333;">
             <div style="text-align:center; width:400px;margin:0 auto;">
-                <h2>Solution</h2>
-
                 <div class="row">
                     <h2 style="text-align: center">Bolk 1</h2>
-                    {% for assistant in assistants %}
-                        {% if assistant.assignedDay and (assistant.group == 1 or assistant.doublePosition) %}
-                            <p>Navn: {{ assistant.name }} | Skole: {{ assistant.assignedSchool }} | Dag: {{ assistant.assignedDay }}</p>
-                        {% endif %}
+                    {% for school, days in schools %}
+                        <h3 class="text-alert"><b>{{ school }}</b></h3>
+                        {% for day, assistants in days %}
+                            <h4>{{ day }}</h4>
+                            {% for assistant in assistants if assistant.group != 2 %}
+                                <p>({{ assistant.score }})({{ assistant.suitability }})<span style="{{ assistant.doublePosition ? 'color:blue' }}">{{ assistant.name }}</span> |
+                                    {% for da, av in assistant.availability if av > 0%}
+                                        {{ loop.first ? '': ', ' }}<span style="{{ da == day ? 'color:green' }}">{{ da }}</span>
+                                    {% endfor %}
+                                </p>
+                            {% endfor %}
+                        {% endfor %}
+                        <hr>
                     {% endfor %}
+                    {#{% for assistant in assistants %}#}
+                        {#{% if assistant.assignedDay and (assistant.group == 1 or assistant.doublePosition) %}#}
+                        {#{% endif %}#}
+                    {#{% endfor %}#}
                 </div>
 
             </div>
         </div>
         <div class="large-6 columns">
             <div style="text-align:center; width:400px;margin:0 auto;">
-                <h2>Solution</h2>
-
                 <div class="row">
                     <h2 style="text-align: center">Bolk 2</h2>
-                    {% for assistant in assistants %}
-                        {% if assistant.assignedDay and (assistant.group == 2 or assistant.doublePosition) %}
-                            <p>Navn: {{ assistant.name }} | Skole: {{ assistant.assignedSchool }} | Dag: {{ assistant.assignedDay }}</p>
-                        {% endif %}
+                    {% for school, days in schools %}
+                        <h3 class="text-alert"><b>{{ school }}</b></h3>
+                        {% for day, assistants in days %}
+                            <h4>{{ day }}</h4>
+                            {% for assistant in assistants if assistant.group != 1 %}
+                                <p>({{ assistant.score }})({{ assistant.suitability }})<span style="{{ assistant.doublePosition ? 'color:blue' }}">{{ assistant.name }}</span> |
+                                    {% for da, av in assistant.availability if av > 0%}
+                                    {{ loop.first ? '': ', ' }}<span style="{{ da == day ? 'color:green' }}">{{ da }}</span>
+                                    {% endfor %}
+                                </p>
+                            {% endfor %}
+                        {% endfor %}
+                        <hr>
                     {% endfor %}
+                    {#{% for assistant in assistants %}#}
+                        {#{% if assistant.assignedDay and (assistant.group == 2 or assistant.doublePosition) %}#}
+                            {#<p>Navn: {{ assistant.name }} | Skole: {{ assistant.assignedSchool }} | Dag: {{ assistant.assignedDay }}</p>#}
+                        {#{% endif %}#}
+                    {#{% endfor %}#}
 
                 </div>
 
@@ -39,7 +62,12 @@
         <h4>Could not find school for:</h4>
         {% for assistant in assistants %}
             {% if assistant.group == null %}
-                <p>{{ assistant.name }}</p>
+                <p>({{ assistant.score }}) ({{ assistant.suitability }}) <span style="{{ assistant.doublePosition ? 'color:blue' }}">{{ assistant.name }}</span> |
+                    {% for da, av in assistant.availability if av > 0%}
+                        {{ loop.first ? '': ', ' }}{{ da }}
+                    {% endfor %}
+                     | {{ assistant.preferredGroup > 0 ? assistant.preferredGroup }}
+                </p>
             {% endif %}
         {% endfor %}
     </div>

@@ -1,0 +1,14 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 columns">
+            {{ form_start(form) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.showOnAdmissionPage) }}
+            <button class="button medium">Lagre</button>
+            <br><br>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

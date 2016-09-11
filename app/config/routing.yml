@@ -1162,3 +1162,27 @@ anniversary_remove_payment:
  defaults: { _controller: AppBundle:AnniversaryRegistration:removePayment}
  requirements:
   _method: POST
+
+##########################################
+#              Newsletter                #
+##########################################
+
+newsletter_create:
+  path: /kontrollpanel/nyhetsbrev/opprett
+  defaults: { _controller: AppBundle:Newsletter:create }
+
+newsletter_edit:
+  path: /kontrollpanel/nyhetsbrev/opprett/{id}
+  defaults: { _controller: AppBundle:Newsletter:create }
+  requirements:
+    id: \d+
+
+newsletter_show_all:
+  path: /kontrollpanel/nyhetsbrev
+  defaults: { _controller: AppBundle:Newsletter:showAllNewsletters }
+
+newsletter_show_subscribe:
+  path: /nyhetsbrev/{id}
+  defaults: { _controller: AppBundle:Newsletter:showSubscribe }
+  requirements:
+    id: \d+

@@ -1,0 +1,27 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 columns">
+            <h1>{{ department.shortName }} sine nyhetsbrev</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 columns">
+            <table>
+                <tr>
+                    <th>Navn</th>
+                    <th>Abonnenter</th>
+                </tr>
+                {% for newsletter in newsletters %}
+                    <tr>
+                        <td>{{ newsletter.name }}</td>
+                        {#{{ dump(newsletter.subscribers) }}#}
+                        {#<td>{{ newsletter.subscribers|length }}</td>#}
+                        <td><a href="{{ path('newsletter_edit', { 'id': newsletter.id }) }}">Rediger</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
