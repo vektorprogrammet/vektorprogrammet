@@ -30,7 +30,8 @@ class DepartmentRepository extends EntityRepository
         return $departments;
     }
 
-    public function findDepartmentByShortName($short_name){
+    public function findDepartmentByShortName($short_name)
+    {
         $departments = $this->getEntityManager()->createQuery('
             SELECT d
             FROM AppBundle:Department d
@@ -38,7 +39,7 @@ class DepartmentRepository extends EntityRepository
         ')
         ->setParameter('short_name', $short_name)
         ->getResult();
-        if(count($departments)<=0){
+        if(count($departments) <= 0) {
             return false;
         }
         return $departments[0];
