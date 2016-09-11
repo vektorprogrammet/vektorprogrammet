@@ -387,6 +387,13 @@ admission_show_specific_department:
  requirements:
     id: \d+
 
+admission_show_specific_department_by_name:
+ path: /avdeling/{short_name}
+ defaults: {_controller: AppBundle:Admission:show }
+ requirements:
+    id: \w+
+
+
 admission_contact:
  path: /opptakkontakt/{id}
  defaults: {_controller: AppBundle:Admission:contact }
