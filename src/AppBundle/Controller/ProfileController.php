@@ -140,7 +140,7 @@ class ProfileController extends Controller
             //renders the login page, with a feedback message so that the user knows that the new password was stored.
             $feedback = 'Logg inn med din nye bruker';
 
-            return $this->render('Login/login.html.twig', array('message' => $feedback, 'error' => null, 'last_username' => $user->getUsername()));
+            return $this->render('login/login.html.twig', array('message' => $feedback, 'error' => null, 'last_username' => $user->getUsername()));
         }
         //Render reset_password twig with the form.
         return $this->render('new_user/create_new_user.html.twig', array('form' => $form->createView(), 'firstName' => $user->getFirstName(), 'lastName' => $user->getLastName()));
