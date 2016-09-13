@@ -34,7 +34,7 @@ class Subscriber
     private $timestamp;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Newsletter")
+     * @ORM\ManyToOne(targetEntity="Newsletter", inversedBy="subscribers")
      */
     private $newsletter;
 

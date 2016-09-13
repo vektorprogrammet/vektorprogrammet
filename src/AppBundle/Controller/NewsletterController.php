@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Department;
 use AppBundle\Entity\Newsletter;
 use AppBundle\Entity\Subscriber;
 use AppBundle\Form\SubscribeToNewsletterType;
@@ -29,7 +30,7 @@ class NewsletterController extends Controller
             $manager->persist($newsletter);
             $manager->flush();
 
-            return $this->redirectToRoute('control_panel');
+            return $this->redirectToRoute('newsletter_show_all');
         }
 
         return $this->render('newsletter/create_newsletter.html.twig', array(
@@ -48,7 +49,7 @@ class NewsletterController extends Controller
         ));
     }
     
-    public function showSubscribeAction(Request $request, Newsletter $newsletter){
+    public function showSubscribePageAction(Request $request, Newsletter $newsletter){
         $subscriber = new Subscriber();
         
         $form = $this->createForm(new SubscribeToNewsletterType(), $subscriber);
@@ -71,5 +72,43 @@ class NewsletterController extends Controller
             'newsletter' => $newsletter,
             'form' => $form->createView()
         ));
+    }
+
+    public function showSubscribeAction(Department $department)
+    {
+        $newsletters = $this->getDoctrine()->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
+        dump($newsletters);
+
+        return $this->render('', array(
+            'newsletters' => $newsletters
+        ));
+    }
+    
+    public function showSubscribersAction(Newsletter $newsletter)
+    {
+        return $this->render('newsletter/show_subscribers.html.twig', array(
+            'newsletter' => $newsletter
+        ));
+    }
+    
+    public function deleteAction(Newsletter $newsletter)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $manager->remove($newsletter);
+        $manager->flush();
+        
+        return $this->redirectToRoute('newsletter_show_all');
+    }
+
+    public function adminUnsubscribeAction(Subscriber $subscriber)
+    {
+        $newsletterId = $subscriber->getNewsletter()->getId();
+
+        $manager = $this->getDoctrine()->getManager();
+        $manager->remove($subscriber);
+        $manager->flush();
+
+        return $this->redirectToRoute('newsletter_show_subscribers', array('id' => $newsletterId));
+
     }
 }

@@ -167,6 +167,7 @@
 
                     <p class="text-center"> Avdelingen {{ department.shortname }} har ikke en aktiv søkeperiode. </p>
 
+                    {#{% render controller('AppBundle:Newsletter:showSubscribe', {'id' : department.id} ) %}#}
                 {% endif %}
 
 

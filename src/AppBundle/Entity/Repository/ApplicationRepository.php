@@ -21,7 +21,7 @@ class ApplicationRepository extends EntityRepository
      * @param null $department
      * @param null $semester
      *
-     * @return array
+     * @return Application[]
      */
     public function findInterviewedApplicants($department = null, $semester = null)
     {
@@ -46,6 +46,11 @@ class ApplicationRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @param null $department
+     * @param null $semester
+     * @return Application[]
+     */
     public function findPreviousApplicants($department = null, $semester = null)
     {
         $qb = $this->createQueryBuilder('a')
@@ -340,6 +345,10 @@ class ApplicationRepository extends EntityRepository
         return $numUsers;
     }
 
+    /**
+     * @param Semester $semester
+     * @return Application[]
+     */
     public function findAllAllocatableApplicationsBySemester(Semester $semester)
     {
         return $this->createQueryBuilder('a')

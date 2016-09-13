@@ -1,0 +1,31 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 columns">
+            <h2>Abonnenter til {{ newsletter.name }}</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 columns">
+            <table>
+                <tr>
+                    <th>Navn</th>
+                    <th>E-post</th>
+                    <th></th>
+                </tr>
+                {% for subscriber in newsletter.subscribers %}
+                    <tr>
+                        <td>{{ subscriber.name }}</td>
+                        <td>{{ subscriber.email }}</td>
+                        <td>
+                            <form method="POST" action="{{ path('newsletter_admin_unsubscribe', {id: subscriber.id}) }}">
+                                <button class="tiny button alert">Slett</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

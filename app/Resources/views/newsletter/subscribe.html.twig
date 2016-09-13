@@ -22,6 +22,29 @@
             display: flex;
             justify-content: center;
         }
+        .flash-notice{
+            text-align: center;
+            width: 80%;
+            margin: 0px auto;
+            padding-top: 20px;
+            padding-bottom: 5px;
+            background-color: #62df7c;
+            border: 1px solid #696969;
+            border-radius: 4px;
+            margin-bottom: 50px;
+        }
+
+        .flash-error{
+            text-align: center;
+            width: 80%;
+            margin: 0px auto;
+            padding-top: 20px;
+            padding-bottom: 5px;
+            background-color: #df5248;
+            border: 1px solid #696969;
+            border-radius: 4px;
+            margin-bottom: 50px;
+        }
     </style>
 
 </head>
@@ -29,7 +52,7 @@
 <body>
 
 <div class="formSurvey">
-
+    <br>
     {% for flashMessage in app.session.flashbag.get('success') %}
         <div class="flash-notice">
             <h4>{{ flashMessage }}</h4>

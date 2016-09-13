@@ -41,9 +41,9 @@ class Newsletter
     private $letters;
 
     /**
-     * @var Subscriber
+     * @var Subscriber[]
      * 
-     * @ORM\OneToMany(targetEntity="Subscriber", mappedBy="subscribers")
+     * @ORM\OneToMany(targetEntity="Subscriber", mappedBy="newsletter")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $subscribers;

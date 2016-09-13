@@ -8,18 +8,39 @@
     </div>
     <div class="row">
         <div class="small-12 columns">
+            <a class="tiny button success" href="{{ path('newsletter_create') }}">Opprett nytt nyhetsbrev <i class="fa fa-plus"></i></a>
+        </div>
+        <br><br>
+    </div>
+    <div class="row">
+        <div class="small-12 columns">
             <table>
                 <tr>
                     <th>Navn</th>
                     <th>Abonnenter</th>
+                    <th colspan="3"></th>
+                    <th>Vis på påmeldingsside</th>
                 </tr>
                 {% for newsletter in newsletters %}
                     <tr>
-                        <td>{{ newsletter.name }}</td>
-                        {#{{ dump(newsletter.subscribers) }}#}
-                        {#<td>{{ newsletter.subscribers|length }}</td>#}
-                        <td><a href="{{ path('newsletter_edit', { 'id': newsletter.id }) }}">Rediger</a></td>
-                    </tr>
+                        <td><a href="{{ path('newsletter_show_subscribers', {id: newsletter.id}) }}">{{ newsletter.name }}</a></td>
+                        <td>{{ newsletter.subscribers|length }}</td>
+                        <td><a class="tiny button" href="{{ path('newsletter_show_subscribe', {id: newsletter.id}) }}">Påmedlingsskjema</a></td>
+                        <td>
+                            <a href="{{ path('newsletter_edit', { 'id': newsletter.id }) }}" class="button tiny">
+                                <i class="fa fa-pencil-square-o"></i> Rediger
+                            </a>
+                        </td>
+
+                        <td>
+                            <form method="POST" action="{{ path('newsletter_delete', { 'id': newsletter.id }) }}" onsubmit="confirm('Er du sikker?')">
+                                <button type="submit" class="tiny button alert"><i class="fa fa-trash"></i> Slett</button>
+                            </form>
+                        <td>
+                        <td>
+                            TODO: Blå knapp hvis ikke på påmeldingsside. Grønn knapp hvis vises på påmeldingsside
+                        </td>
+
                 {% endfor %}
             </table>
         </div>

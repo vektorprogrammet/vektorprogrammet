@@ -1177,12 +1177,32 @@ newsletter_edit:
   requirements:
     id: \d+
 
+newsletter_delete:
+  path: /kontrollpanel/nyhetsbrev/slett/{id}
+  defaults: { _controller: AppBundle:Newsletter:delete }
+  requirements:
+    id: \d+
+  methods: [POST]
+
 newsletter_show_all:
   path: /kontrollpanel/nyhetsbrev
   defaults: { _controller: AppBundle:Newsletter:showAllNewsletters }
 
+newsletter_show_subscribers:
+  path: /kontrollpanel/nyhetsbrev/{id}
+  defaults: { _controller: AppBundle:Newsletter:showSubscribers }
+  requirements:
+    id: \d+
+
+newsletter_admin_unsubscribe:
+  path: /kontrollpanel/nyhetsbrev/unsubscribe/{id}
+  defaults: { _controller: AppBundle:Newsletter:adminUnsubscribe }
+  requirements:
+    id: \d+
+  methods: [POST]
+
 newsletter_show_subscribe:
   path: /nyhetsbrev/{id}
-  defaults: { _controller: AppBundle:Newsletter:showSubscribe }
+  defaults: { _controller: AppBundle:Newsletter:showSubscribePage }
   requirements:
     id: \d+
