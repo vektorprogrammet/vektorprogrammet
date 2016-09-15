@@ -11,3 +11,11 @@
 
 ### Start server on http://localhost:8000
 `npm start`
+
+## Users
+| Username   | Password |        Role        |
+| ---------- |:--------:|:------------------:|
+| assistent  |   1234   |      ROLE_USER     |
+| team       |   1234   |     ROLE_ADMIN     |
+| admin      |   1234   |  ROLE_SUPER_ADMIN  |
+| superadmin |   1234   | ROLE_HIGHEST_ADMIN |
