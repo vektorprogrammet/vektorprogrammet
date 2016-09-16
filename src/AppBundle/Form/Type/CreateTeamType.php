@@ -28,7 +28,7 @@ class CreateTeamType extends AbstractType
                     'height' => 500,
                     'filebrowserBrowseRoute' => 'elfinder',
                     'filebrowserBrowseRouteParameters' => array('instance' => 'article_editor'), ),
-                'label' => 'Beskrivelse (valgfritt)',
+                'label' => 'Lang beskrivelse (valgfritt)',
                 'attr' => array('class' => 'hide'), // Graceful loading, hides the textarea that is replaced by ckeditor
             ));
     }
