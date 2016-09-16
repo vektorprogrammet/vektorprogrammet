@@ -21,9 +21,17 @@
 | superadmin |   1234   | ROLE_HIGHEST_ADMIN |
 
 
-### Automatic code style fixing
+## Code style
 
-#### UNIX/LINUX:
+### Check style
+##### UNIX/LINUX:
+`npm run -s code-style`
+##### Windows:
+`npm run -s code-style:win`
+
+### Fix style
+
+##### UNIX/LINUX:
 `npm run -s cs`
-#### Windows:
+##### Windows:
 `npm run -s cs:win`
