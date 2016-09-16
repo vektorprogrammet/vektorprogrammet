@@ -36,3 +36,11 @@ Code style should follow a certain set of rules. Make sure your code adheres to 
 `npm run -s cs`
 ##### Windows:
 `npm run -s cs:win`
+
+## Testing
+Tests should be run before opening a PR.
+##### UNIX/LINUX:
+`npm run test:win`
+##### Windows:
+`npm run test`
+
