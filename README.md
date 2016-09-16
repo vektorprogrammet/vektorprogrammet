@@ -23,7 +23,6 @@
 
 ## Code style
 Code style should follow a certain set of rules. Make sure your code adheres to these rules before opening a PR. 
-
 ### Check style
 ##### UNIX/LINUX:
 `npm run -s code-style`
@@ -31,7 +30,6 @@ Code style should follow a certain set of rules. Make sure your code adheres to 
 `npm run -s code-style:win`
 
 ### Fix style
-
 ##### UNIX/LINUX:
 `npm run -s cs`
 ##### Windows:
@@ -43,4 +41,17 @@ Tests should be run before opening a PR.
 `npm run test:win`
 ##### Windows:
 `npm run test`
+
+## Database
+### Reload database
+`npm run reload-db`
+### Build static files
+When adding new images or other non-code files, you can run
+
+`npm run build`
+
+so that the files are put in the correct places. (this is automatically done when doing `npm start`)
+
+### Add new entities to the database
+`php app/console doctrine:schema:update --force`
 
