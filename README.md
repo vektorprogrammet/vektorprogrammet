@@ -21,7 +21,7 @@
 | superadmin |   1234   | ROLE_HIGHEST_ADMIN |
 
 
-### Run code style checks
+### Automatic code style fixing
 
 #### UNIX/LINUX:
 `npm run -s cs`
