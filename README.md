@@ -22,6 +22,7 @@
 
 
 ## Code style
+Code style should follow a certain set of rules. Make sure your code adheres to these rules before opening a PR. 
 
 ### Check style
 ##### UNIX/LINUX:
