@@ -19,3 +19,11 @@
 | team       |   1234   |     ROLE_ADMIN     |
 | admin      |   1234   |  ROLE_SUPER_ADMIN  |
 | superadmin |   1234   | ROLE_HIGHEST_ADMIN |
+
+
+### Run code style checks
+
+#### UNIX/LINUX:
+`npm run -s cs`
+#### Windows:
+`npm run -s cs:win`
