@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Form\Type\SponsorType;
 use AppBundle\FileSystem\FileUploader;
 use AppBundle\Entity\Sponsor;
@@ -49,7 +48,6 @@ class SponsorsController extends Controller
                 $uploader = new FileUploader($targetFolder, ['image/gif', 'image/jpeg', 'image/png']);
                 //Move the file to target folder
                 $result = $uploader->upload($request);
-                //return new Response(var_dump($result));
                 //Get the path of the image file as now on the server:  todo: now assumes only one image is contained in the request, as it should be.
                 $path = $result[array_keys($result)[0]]; //todo: duplicated code this line and those above it. see editProfilePhotoAction in ProfileController
                 $sponsor->setLogoImagePath($path);
