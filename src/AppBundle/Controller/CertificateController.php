@@ -26,6 +26,7 @@ class CertificateController extends Controller
         }
     }
 
+
     public function deleteAction(Request $request)
     {
 

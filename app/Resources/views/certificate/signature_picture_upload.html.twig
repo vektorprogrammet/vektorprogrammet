@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="small-12 columns">
+            <h1>Last opp signatur</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <br>
+            <button class="button large">Lagre</button>
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+    {#<div class="row">
+        <div class="medium-12 columns text-center">
+            <br>
+            <a href="{{ path('profile_save_photo', {'id': user.getId()}) }}" class="button medium" id="editImageBtn">Lagre</a>
+        </div>
+    </div>#}
+{% endblock %}

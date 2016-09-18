@@ -1106,11 +1106,11 @@ substitute_delete:
 #                Certificate              #
 ##########################################
 certificate_show:
-   path: /attest
+   path: /kontrollpanel/attest
    defaults: { _controller: AppBundle:Certificate:show }
 
 certificate_delete_by_id:	
-  path: /attest/slett/{id}
+  path: /kontrollpanel/attest/slett/{id}
   defaults: { _controller: AppBundle:Certificate:delete }
   requirements:
     _method: GET|POST
@@ -1118,12 +1118,17 @@ certificate_delete_by_id:
     expose: true
 
 certificate_request:
-  path: /attest/forespør
+  path: /kontrollpanel/attest/forespør
   defaults: { _controller: AppBundle:Certificate:request }
   requirements:
     _method: GET|POST
   options:
     expose: true
+
+certificate_signature_picture_upload:
+  path: /kontrollpanel/attest/signatur
+  defaults: {_controller: AppBundle:Signature:show}
+
 
 ##########################################	
 #                Sponsors                #
