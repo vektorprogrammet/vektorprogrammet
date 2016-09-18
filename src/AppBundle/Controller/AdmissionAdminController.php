@@ -377,7 +377,6 @@ class AdmissionAdminController extends Controller
             $em->flush();
 
             //Sends a email with the url for resetting the password
-            //echo('127.0.0.1:8000/opprettbruker/'.$createNewUserCode.'');
 
             $this->sendNewUserEmail($createNewUserCode, $user->getEmail());
 

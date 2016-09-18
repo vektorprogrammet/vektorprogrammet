@@ -30,7 +30,6 @@ class TeamAdminController extends Controller
         } catch (\Exception $e) {
             // Send a response back to AJAX
             $response['success'] = false;
-            //$response['cause'] = 'Kunne ikke slette stillingen';
             $response['cause'] = $e->getMessage();
 
             return new JsonResponse($response);

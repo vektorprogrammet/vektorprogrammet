@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use SaadTazi\GChartBundle\DataTable\DataTable;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class SurveyResultsController extends Controller
@@ -13,12 +12,8 @@ class SurveyResultsController extends Controller
     }
     public function showAction()
     {
-        //return $this->showPupilAction();
-        //return $this->showTeacherAction();
         return $this->render('survey/survey_results.html.twig');
     }
-
-    //public $filterArray = array();
 
     public function showPupilAction($filter = null)
     {

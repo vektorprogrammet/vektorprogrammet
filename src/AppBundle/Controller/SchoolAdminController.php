@@ -360,7 +360,6 @@ class SchoolAdminController extends Controller
         } catch (\Exception $e) {
             // Send a response back to AJAX
             $response['success'] = false;
-            //$response['cause'] = 'Kunne ikke slette skolen. ';
             $response['cause'] = $e->getMessage();
 
             return new JsonResponse($response);
@@ -397,7 +396,6 @@ class SchoolAdminController extends Controller
             // Send a response back to AJAX
             $response['success'] = false;
             $response['cause'] = 'Kunne ikke slette assistent historien. ';
-            //$response['cause'] = $e->getMessage();
             return new JsonResponse($response);
         }
         // Send a respons to ajax 
