@@ -21,14 +21,20 @@
 					<hr>
 					
 						<div class="row">
-							<div class="small-12 medium-12 large-12 columns">
-									
-								{{ form_start(form) }}
-								{{ form_widget(form) }}
-								<br>
-								<button class="button large">Lagre</button>
-								{{ form_end(form) }}
-									
+                            <div class="small-12 medium-12 large-12 columns">
+
+                                {{ form_start(form) }}
+                                {{ form_row(form.name) }}
+                                {{ form_row(form.email) }}
+                                <label>Kort beskrivelse (<span id="shortDescription_length"></span> tegn igjen. Valgfritt){{ form_row(form.shortDescription) }}</label>
+
+                                {{ form_row(form.description) }}
+                                <br>
+                                <button class="button large">Lagre</button>
+                                <br><br>
+
+                                {{ form_end(form) }}
+
 							</div>
 						</div>
 						
@@ -41,5 +47,26 @@
 {% endblock %}
 
 {% block javascripts %}
+
+   <script>
+       var shortDescriptionInput = document.getElementById('createTeam_shortDescription');
+       var shortDescriptionLength = document.getElementById('shortDescription_length');
+
+    function updateShortDescriptionLength(){
+        var charactersLeft = (255 - shortDescriptionInput.value.length);
+        shortDescriptionLength.innerHTML = charactersLeft;
+        if (charactersLeft <= 0) {
+            shortDescriptionLength.style.color = 'red';
+        } else {
+            shortDescriptionLength.style.color = 'black';
+        }
+    }
+
+    shortDescriptionInput.addEventListener('keyup', updateShortDescriptionLength, false);
+
+    updateShortDescriptionLength()
+
+
+       </script>
 
 {% endblock %}
