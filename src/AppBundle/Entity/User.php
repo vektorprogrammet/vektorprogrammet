@@ -65,6 +65,11 @@ class User implements AdvancedUserInterface, \Serializable
     private $picture_path;
 
     /**
+     * @ORM\Column(type="string", length=45, nullable=true)
+     */
+    private $signature_picture_path;
+
+    /**
      * @ORM\Column(type="string", length=45)
      * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
      */
