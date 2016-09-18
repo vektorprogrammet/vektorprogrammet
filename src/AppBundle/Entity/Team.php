@@ -47,7 +47,7 @@ class Team
 
     /**
      * @ORM\Column(type="string", nullable=true, name="short_description")
-     * @Assert\Length(maxMessage="Maks 255 tegn", max="255")
+     * @Assert\Length(maxMessage="Maks 125 Tegn", max="125")
      */
     private $shortDescription;
 
