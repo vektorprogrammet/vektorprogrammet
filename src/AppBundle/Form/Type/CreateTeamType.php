@@ -20,7 +20,7 @@ class CreateTeamType extends AbstractType
             ))
             ->add('shortDescription', 'text', array(
                 'label' => ' ',
-                'max_length' => 255,
+                'max_length' => 125,
                 'required' => false,
             ))
             ->add('description', 'ckeditor', array(

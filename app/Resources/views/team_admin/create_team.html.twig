@@ -51,9 +51,8 @@
    <script>
        var shortDescriptionInput = document.getElementById('createTeam_shortDescription');
        var shortDescriptionLength = document.getElementById('shortDescription_length');
-
     function updateShortDescriptionLength(){
-        var charactersLeft = (255 - shortDescriptionInput.value.length);
+        var charactersLeft = (125 - shortDescriptionInput.value.length);
         shortDescriptionLength.innerHTML = charactersLeft;
         if (charactersLeft <= 0) {
             shortDescriptionLength.style.color = 'red';
@@ -61,12 +60,8 @@
             shortDescriptionLength.style.color = 'black';
         }
     }
-
     shortDescriptionInput.addEventListener('keyup', updateShortDescriptionLength, false);
-
     updateShortDescriptionLength()
-
-
        </script>
 
 {% endblock %}
