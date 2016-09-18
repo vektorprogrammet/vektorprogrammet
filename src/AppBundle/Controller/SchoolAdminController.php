@@ -396,6 +396,7 @@ class SchoolAdminController extends Controller
             // Send a response back to AJAX
             $response['success'] = false;
             $response['cause'] = 'Kunne ikke slette assistent historien. ';
+
             return new JsonResponse($response);
         }
         // Send a respons to ajax 
