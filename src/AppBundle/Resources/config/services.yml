@@ -7,3 +7,6 @@ services:
 #   class: AppBundle\Form\Type\ArticleType
 #    arguments:
 #            - { name: form.type, alias: article }
+  app.user.registration:
+    class: AppBundle\UserRegistration\UserRegistration
+    arguments: ['@twig']

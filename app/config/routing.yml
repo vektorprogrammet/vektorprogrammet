@@ -151,6 +151,10 @@ profile:
  path:   /profile
  defaults: { _controller: AppBundle:Profile:show }
 
+profile_activate_with_user_code:
+  path: /bruker/aktiver/{newUserCode}
+  defaults: {_controller: AppBundle:Profile:activateNewUser }
+
 profile_activate_user:
  path:   /profile/aktiv/{id}
  defaults: { _controller: AppBundle:Profile:activateUser }
@@ -387,6 +391,13 @@ admission_show_specific_department:
  requirements:
     id: \d+
 
+admission_show_specific_department_by_name:
+ path: /avdeling/{short_name}
+ defaults: {_controller: AppBundle:Admission:show }
+ requirements:
+    id: \w+
+
+
 admission_contact:
  path: /opptakkontakt/{id}
  defaults: {_controller: AppBundle:Admission:contact }
@@ -489,11 +500,6 @@ useradmin_create_user_superadmin:
  requirements:
     id: \d+
 
-useradmin_activate_user:
- path: /kontrollpanel/aktiver/{newUserCode}
- defaults: {_controller: AppBundle:UserAdmin:activateNewUser }
- requirements:
-    _method: GET|POST
 
 ##########################################
 #              Semester                  #

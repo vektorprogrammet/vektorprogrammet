@@ -1,41 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block customScripts %}
-
-    <script>
-
-        $(document).ready(function () {
-
-            {# Get all the teams as they are first presented #}
-            teams = $(".team");
-
-            $('.departmentId').click(function () {
-
-                {# Get the ID of the elemnt being clicked #}
-                var ID = parseInt(this.id);
-
-                {# Hide all teams #}
-                teams.hide();
-
-                {# Show teams with id=ID and class="team" #}
-                $("#" + ID + ".team").show();
-
-            });
-
-            {# Show all departments #}
-            $('.AllDepartments').click(function () {
-
-                teams.show();
-
-            });
-
-        });
-
-    </script>
-
-
-{% endblock %}
-
 {% block title %}
     Styret og team
 {% endblock %}
@@ -46,42 +10,37 @@
 
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-
             <h1> Styret og team </h1>
-
             <hr>
-
         </div>
     </div>
 
-    {% for department in departments %}
-        <div class="row">
-            <div class="small-12 columns">
-                <h3 class="no-bottom-margin">{{ department.shortName }}</h3>
-            </div>
+    <div class="row">
+        <div class="small-12 columns">
+            <h3 class="no-bottom-margin"></h3>
         </div>
-        {% for team in department.teams %}
+    </div>
 
-            <team class="team" id={{ team.department.id }}>
-
-                <div class="row">
-                    <div class="small-12 medium-12 large-12 columns">
-
-                        <h5 class="teamLink"><a href="{{ path('team_page', {'id': team.id}) }}">{{ team.name }}</a></h5>
-                        <div class="team-short-description">
-                            {% if team.shortDescription is not null %}
-                                {{ team.shortDescription }}
-                            {% endif %}
-                        </div>
-                    </div>
-
-                </div>
-
-            </team>
-
-        {% endfor %}
-        <br>
-    {% endfor %}
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <table>
+                {% for department in departments %}
+                    <tr>
+                        <th colspan="2">
+                            <h3>{{ department.shortName }}</h3>
+                        </th>
+                    </tr>
+                    {% for team in department.teams %}
+                        <tr>
+                            <td><h6><a href="{{ path('team_page', {'id': team.id}) }}">{{ team.name }}</a></h6></td>
+                            <td><span class="team-short-description">{{ team.shortDescription }}</span></td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <br>
 
 
 

@@ -102,6 +102,13 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getSingleResult();
     }
 
+    /**
+     * @param $id
+     *
+     * @return User
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findUserByNewUserCode($id)
     {
         return $this->createQueryBuilder('User')
@@ -109,7 +116,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->where('User.new_user_code = :id')
             ->setParameter('id', $id)
             ->getQuery()
-            ->getSingleResult();
+            ->getOneOrNullResult();
     }
 
     /*

@@ -7,15 +7,15 @@
 
 {% block customScripts %}
 
-	{# Easy routing with FOSJsRouting bundle #}
-	<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    {# Easy routing with FOSJsRouting bundle #}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-	{# We need the deletetablerow.js file #}
+    {# We need the deletetablerow.js file #}
     <script src="{{ asset('js/genericAjax.js') }}"></script>
-	
-	<script>
-	
-	$(document).ready(function() {
+
+    <script>
+
+        $(document).ready(function () {
             $('.requestCertificate').genericAjax({
                 confirmation: {
                     modal: $('#confirmModal'),
@@ -24,199 +24,59 @@
                 }
             });
         });
-		
 
-	</script>
+
+    </script>
 
 
 {% endblock %}
 
 {% block body %}
-    <p></p>
-	
+    <br>
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-				
+        <div class="large-4 medium-12 small-12 columns">
 
-					<div class="row">
-						<div class="large-4 medium-12 small-12 columns">
+            {% include 'profile/profile_picture.html.twig' %}
 
-								<div class="panel callout radius">
-									<div class="row">
-                                        <div class="large-12 medium-12 small-12 columns">
-                                            {# Get the picture saved for the user and display it #}
-                                             <img src="{{ asset(user.picturePath) }}" />
-										</div>
+            <div class="panel callout radius">
+                <ul class="side-nav" role="navigation" title="Link List">
+                    <li role="menuitem"><a href="{{ path('profile_edit', { 'id': user.id }) }}">Rediger profil</a></li>
+                    <li role="menuitem"><a href="{{ path('profile_edit_photo', {'id': user.getId()}) }}">Rediger
+                            bilde</a></li>
+                    <li role="menuitem"><a href="{{ path('profile_edit_password') }}">Endre passord</a></li>
+                    {#<li role="menuitem"><a href="#" id="certificate_request" class="requestCertificate">Send attest
+                            forespørsel</a></li>#}
 
-									</div>
-                                    <div class="row">
-                                        <h3>
-                                            {{ user.firstName }} {{ user.lastName }}
-                                        </h3>
-                                    </div>
-								</div>
-								
-								<div class="panel callout radius">
-									<ul class="side-nav" role="navigation" title="Link List">
-										<li role="menuitem"><a href="{{ path('profile_edit', { 'id': user.id }) }}">Rediger profil</a></li>
-										<li role="menuitem"><a href="{{ path('profile_edit_photo', {'id': user.getId()}) }}">Rediger bilde</a></li>
-										<li role="menuitem"><a href="{{ path('profile_edit_password')}}">Endre passord</a></li>
-										<li role="menuitem"><a href="#" id="certificate_request" class="requestCertificate">Send attest forespørsel</a></li>
-										
-										{% if is_granted('ROLE_SUPER_ADMIN') %}
-											<li role="menuitem"><a href="{{ path('profile_certificate', { id: user.id} )}}">Last ned attest</a></li>
-										{% endif %}
-										
-									</ul>
-								</div>
-								
-								<div class="panel callout radius">
-									<h6> Telefon: {{ user.phone|slice(0,3) }} {{ user.phone|slice(3,2) }} {{ user.phone|slice(5,3) }}</h6>
-									<h6> E-post: {{ user.email }}</h6>
-								</div>	
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <li role="menuitem"><a href="{{ path('profile_certificate', { id: user.id} ) }}">Last ned
+                                attest</a></li>
+                    {% endif %}
 
-								
-								
-						</div> 
-						
-						
-						
-						<div class="large-8 columns">
-							<div class="row">
-								
-								
-									<div class="small-12 medium-12 large-12 columns">
-										
-											<h2> {{ user.firstName }} {{ user.lastName }} </h2>
-											<h6 class="subheader">
-												{{ user.fieldOfStudy.department }} - {{ user.fieldOfStudy }}
-												
-												{% for r in roles %}
-													- {{ r.name }}
-												{% endfor %}
-												
-											</h6> 
-											
-										<hr>
-										
-									</div>
-								
-									<div class="small-12 medium-12 large-12 columns">
-										
-										{% if activeSchools is not empty %}
-										
-											<h3>Aktive skoler</h3>
-											{% for s in activeSchools %}
-													
-												<a href="{{ path('schooladmin_show_specific_school', { 'id': s.id }) }}">{{s.name}}</a> <br>
-												
-											{% endfor %}
-											
-											<hr>
-										
-										{% endif %}
-											
-									</div>
-								
-								
-									<div class="small-12 medium-12 large-12 columns">
-										
-										{% if assistantHistory is not empty %}
-										
-											<h3>Assistent historie</h3>
-											<table style="table-layout: fixed; width:100%;">
-												<tr>
-													<th>Skole</th>
-													<th>Semester</th>
-												</tr>
-											{% for as in assistantHistory %}
-												{% if as.semester is not null and as.school is not null %}
-												<tr>
-													<td>{{ as.getSchool.getName }}</td>
-													<td>{{ as.getSemester.getName }}</td>
-												</tr>
-												{% else %}
-													<tr>
-														<td>Semesteret og/eller skolen har blitt slettet.</td>
-														<td>Semesteret og/eller skolen har blitt slettet.</td>
-													</tr>
-												{% endif %}
-											
-											{% endfor %}
-											</table>
-										{% endif %}
-										
-									</div>
-								
-									<div class="small-12 medium-12 large-12 columns">
-										
-										{% if workHistory is not empty %}
-										
-											<h3>Team historie</h3>
-												<table style="width:100%; table-layout: fixed;">
-													<tr>
-														<th>Team</th>
-														<th>Stilling</th>
-														<th>Start</th>
-														<th>Slutt</th>
-													</tr>
-											{% for wh in workHistory %}
-												<tr>
-													<td>
-												{% if wh.team is not null %}
-													{{ wh.team.name }}
-												{% else %}
-													Teamet er slettet
-												{% endif %}
-													</td>
+                </ul>
+            </div>
 
-													<td>
-												{% if wh.position is not null %}
-													{{ wh.position.name }}
-												{% else %}
-													Stillingen er fjernet
-												{% endif %}
-													</td>
+            {% include 'profile/contact_info.html.twig' %}
 
-													<td>
-														{% if wh.startSemester is null %}
-															Ingen startsemester valgt
-														{% else %}
-															{{ wh.startSemester.name }}
-														{% endif %}
-													</td>
 
-													<td>
-														{% if wh.endSemester is not null %}
-															{{ wh.endSemester.name }}
-														{% else %}
-															Fortsatt aktiv
-														{% endif %}
-													</td>
-												</tr>
-												
-											{% endfor %}
-													</table>
-											
-										{% endif %}
+        </div>
 
-									</div>
-									
-							</div>
-						</div>
-											
-				
-			
+        <div class="large-8 columns">
+            {% include 'profile/profile_header.html.twig' %}
+
+            {% include 'profile/assistant_history.html.twig' %}
+
+            {% include 'profile/team_history.html.twig' %}
+
         </div>
     </div>
+
+    <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
+         aria-hidden="true" role="dialog">
+        <h2 id="modalMessage">Er du sikker på at du vil utføre handlingen?</h2>
+        <ul class="inline-list">
+            <a id="modalAccept" href="#" class="button tiny">Ja</a>
+            <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
+        </ul>
     </div>
-	
-	<div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true" role="dialog">
-			<h2 id="modalMessage">Er du sikker på at du vil utføre handlingen?</h2>
-			<ul class="inline-list">
-				<a id="modalAccept" href="#" class="button tiny">Ja</a>
-				<a id="modalCancel" href="#" class="button tiny">Avbryt</a>
-			</ul>
-		</div>
-	
+
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\Type\NewUserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\EditUserType;
@@ -94,6 +95,55 @@ class ProfileController extends Controller
 
         // Send a respons to ajax 
         return new JsonResponse($response);
+    }
+
+    public function activateNewUserAction(Request $request, $newUserCode)
+    {
+        $repositoryUser = $this->getDoctrine()->getRepository('AppBundle:User');
+        $hashedNewUserCode = hash('sha512', $newUserCode, false);
+        $user = $repositoryUser->findUserByNewUserCode($hashedNewUserCode);
+
+        if ($user == null) {
+            return $this->render('error/error_message.html.twig', array(
+                'title' => 'Koden er ugyldig',
+                'message' => 'Ugyldig kode eller brukeren er allerede opprettet',
+            ));
+        }
+        if ($user->getUserName() == null) {
+            // Set default username to email
+            $user->setUserName($user->getEmail());
+        }
+
+        $form = $this->createForm(new NewUserType(), $user, array(
+            'validation_groups' => array('username'),
+        ));
+
+        $form->handleRequest($request);
+
+        //Checks if the form is valid
+        if ($form->isValid()) {
+            //Deletes the newUserCode, so it can only be used one time.
+            $user->setNewUserCode(null);
+
+            $user->setIsActive('1');
+
+            if (count($user->getRoles()) == 0) {
+                $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findOneBy(array('role' => 'ROLE_USER'));
+                $user->addRole($role);
+            }
+
+            //Updates the database
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            //renders the login page, with a feedback message so that the user knows that the new password was stored.
+            $feedback = 'Logg inn med din nye bruker';
+
+            return $this->render('login/login.html.twig', array('message' => $feedback, 'error' => null, 'last_username' => $user->getUsername()));
+        }
+        //Render reset_password twig with the form.
+        return $this->render('new_user/create_new_user.html.twig', array('form' => $form->createView(), 'firstName' => $user->getFirstName(), 'lastName' => $user->getLastName()));
     }
 
     public function promoteToTeamMemberAction(Request $request)
