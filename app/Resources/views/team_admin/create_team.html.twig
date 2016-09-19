@@ -30,7 +30,10 @@
 
                                 {{ form_row(form.description) }}
                                 <br>
-                                <button class="button large">Lagre</button>
+                                <div class="small-8  columns">
+                                    {{ form_widget(form.preview, {'attr': {'class': 'button tiny', 'formtarget': '_blank'}}) }}
+                                    <button class="button tiny success">Lagre</button>
+                                </div>
                                 <br><br>
 
                                 {{ form_end(form) }}

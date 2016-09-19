@@ -23,6 +23,9 @@ class CreateTeamType extends AbstractType
                 'max_length' => 125,
                 'required' => false,
             ))
+            ->add('preview', 'submit', array(
+                'label' => 'Forhåndsvis',
+            ))
             ->add('description', 'ckeditor', array(
                 'required' => false,
                 'config' => array(
