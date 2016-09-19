@@ -271,15 +271,14 @@ class TeamAdminController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
-            // Set the teams department to the department sent in by the request
-            $team->setDepartment($department);
             $em = $this->getDoctrine()->getManager();
             //Don't persist if the preview button was clicked
             if (false === $form->get('preview')->isClicked()) {
                 // Persist the team to the database
                 $em->persist($team);
                 $em->flush();
+
+                return $this->redirect($this->generateUrl('teamadmin_show'));
             }
             $workHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeam($team);
             // Render the teampage as a preview
