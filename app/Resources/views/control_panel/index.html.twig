@@ -173,6 +173,17 @@
                     </a>
                 </div>
             </div>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <div class="small-4 medium-3 large-2 columns">
+                    <div class="control-panel-item">
+                        <a href="{{ path('show_field_of_studies') }}">
+                            <i class="fa fa-bars fa-3x"></i>
+
+                            <p>Linjer</p>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
 
             <div class="small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">

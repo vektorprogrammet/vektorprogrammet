@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Department;
+use AppBundle\Entity\FieldOfStudy;
 use Doctrine\ORM\EntityRepository;
 
 class FieldOfStudyRepository extends EntityRepository
@@ -30,6 +32,21 @@ class FieldOfStudyRepository extends EntityRepository
         return $this->createQueryBuilder('FieldOfStudy')
             ->select('FieldOfStudy')
             ->distinct()
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return FieldOfStudy[]
+     */
+    public function findByDepartment(Department $department)
+    {
+        return $this->createQueryBuilder('fieldOfStudy')
+            ->select('fieldOfStudy')
+            ->where('fieldOfStudy.department = :department')
+            ->setParameter('department', $department)
             ->getQuery()
             ->getResult();
     }
