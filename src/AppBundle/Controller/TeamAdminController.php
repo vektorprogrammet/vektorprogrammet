@@ -271,10 +271,23 @@ class TeamAdminController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em->persist($team);
-            $em->flush();
 
-            return $this->redirect($this->generateUrl('teamadmin_show'));
+            // Set the teams department to the department sent in by the request
+            $team->setDepartment($department);
+            $em = $this->getDoctrine()->getManager();
+            //Don't persist if the preview button was clicked
+            if(false === $form->get('preview')->isClicked()) {
+                // Persist the team to the database
+                $em->persist($team);
+                $em->flush();
+                return $this->redirect($this->generateUrl('teamadmin_show'));
+            }
+            $workHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeam($team);
+            // Render the teampage as a preview
+            return $this->render('team/team_page.html.twig', array(
+                'team' => $team,
+                'workHistories' => $workHistories,
+                ));
         }
 
         return $this->render('team_admin/create_team.html.twig', array(
@@ -333,13 +346,19 @@ class TeamAdminController extends Controller
 
                 // Set the teams department to the department sent in by the request
                 $team->setDepartment($department);
-
-                // Persist the team to the database
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($team);
-                $em->flush();
-
-                return $this->redirect($this->generateUrl('teamadmin_show'));
+                //Don't persist if the preview button was clicked
+                if(false === $form->get('preview')->isClicked()) {
+                    // Persist the team to the database
+                    $em->persist($team);
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('teamadmin_show'));
+                }
+                // Render the teampage as a preview
+                return $this->render('team/team_page.html.twig', array(
+                    'team' => $team,
+                    'workHistories' => [],
+                ));
             }
 
             return $this->render('team_admin/create_team.html.twig', array(
