@@ -27,7 +27,7 @@ class Signature
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      */
-    private $signature_path;
+    private $signaturePath;
 
     /**
      * @ORM\Column(type="string", length=45)
@@ -44,15 +44,15 @@ class Signature
      */
     public function getSignaturePath()
     {
-        return $this->signature_path;
+        return $this->signaturePath;
     }
 
     /**
-     * @param mixed $signature_path
+     * @param mixed $signaturePath
      */
-    public function setSignaturePath($signature_path)
+    public function setSignaturePath($signaturePath)
     {
-        $this->signature_path = $signature_path;
+        $this->signaturePath = $signaturePath;
     }
 
     /**

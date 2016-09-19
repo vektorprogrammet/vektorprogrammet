@@ -9,17 +9,62 @@
         <div class="small-12 medium-12 large-12 columns">
 
             {{ form_start(form) }}
-            {{ form_widget(form) }}
+            <div class="row">
+                <div class="small-8 columns">
+                    {{ form_row(form.description)}}
+                </div>
+            </div>
+            {#<label for="form_signature_path">Age</label>#}
+            <div class="row">
+                <div class="small-2 columns">
+                    <div class="hide">
+                        {{ form_row(form.signature_path)}}
+                    </div>
+                    <button type="button" class="button medium" id="choose_picture">
+                        Velg bilde
+                    </button>
+                </div>
+                <div class="small-4 columns">
+                    <div class="{{ signature.signaturePath is not null ? '' : 'hide' }}">
+                        <img src="{{ asset(signature.signaturePath) }}" height="60px" id="signature_picture">
+                    </div>
+                </div>
+            </div>
             <br>
             <button class="button large">Lagre</button>
             {{ form_end(form) }}
 
         </div>
     </div>
-    {#<div class="row">
-        <div class="medium-12 columns text-center">
-            <br>
-            <a href="{{ path('profile_save_photo', {'id': user.getId()}) }}" class="button medium" id="editImageBtn">Lagre</a>
-        </div>
-    </div>#}
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        var uploadButton = $('#choose_picture');
+        uploadButton.click(function(){
+            var realUploadButton = $('#create_signature_signature_path');
+            realUploadButton.click();
+        })
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#signature_picture').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#create_signature_signature_path").change(function(){
+            $('#signature_picture').parent().removeClass('hide');
+            readURL(this);
+        });
+
+
+    </script>
+
 {% endblock %}
