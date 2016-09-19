@@ -54,7 +54,6 @@ class CertificateController extends Controller
         } catch (\Exception $e) {
             // Send a response back to AJAX
             $response['success'] = false;
-            //$response['cause'] = 'Kunne ikke slette forumet.';
             $response['cause'] = $e->getMessage(); // if you want to see the exception message. 
 
             return new JsonResponse($response);

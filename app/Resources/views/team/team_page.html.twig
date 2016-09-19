@@ -1,10 +1,16 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ team.name }} - Vektorprogrammet
+{% endblock %}
+
+
 {% block body %}
 
     <div class="row">
         <div class="small-12 columns">
             <h1>{{ team.name }}</h1>
-            <p class="team-short-description">{{ team.shortDescription }}</p>
+            <p class="team-short-description">{{ team.shortDescription }} <br> {{ team.email }}</p>
             <hr>
         </div>
     </div>

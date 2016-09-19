@@ -192,7 +192,7 @@ class ProfileController extends Controller
         } catch (\Exception $e) {
             // Send a response back to AJAX
             $response['success'] = false;
-            //$response['cause'] = 'Kunne ikke endre rettighetene.';
+
             $response['cause'] = $e->getMessage(); // if you want to see the exception message. 
 
             return new JsonResponse($response);
@@ -248,7 +248,7 @@ class ProfileController extends Controller
         } catch (\Exception $e) {
             // Send a response back to AJAX
             $response['success'] = false;
-            //$response['cause'] = 'Kunne ikke endre rettighetene.';
+
             $response['cause'] = $e->getMessage(); // if you want to see the exception message. 
 
             return new JsonResponse($response);
@@ -304,8 +304,7 @@ class ProfileController extends Controller
         } catch (\Exception $e) {
             // Send a response back to AJAX
             $response['success'] = false;
-            //$response['cause'] = 'Kunne ikke endre rettighetene.';
-            $response['cause'] = $e->getMessage(); // if you want to see the exception message. 
+            $response['cause'] = $e->getMessage(); // if you want to see the exception message.
 
             return new JsonResponse($response);
         }

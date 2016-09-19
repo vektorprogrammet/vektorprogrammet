@@ -19,7 +19,8 @@ class CreateTeamType extends AbstractType
                 'required' => false,
             ))
             ->add('shortDescription', 'text', array(
-                'label' => 'Kort beskrivelse (maks 255 tegn. Valgfritt)',
+                'label' => ' ',
+                'max_length' => 125,
                 'required' => false,
             ))
             ->add('description', 'ckeditor', array(
