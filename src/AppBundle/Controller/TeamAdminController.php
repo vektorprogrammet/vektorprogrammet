@@ -280,8 +280,6 @@ class TeamAdminController extends Controller
                 // Persist the team to the database
                 $em->persist($team);
                 $em->flush();
-
-                return $this->redirect($this->generateUrl('teamadmin_show'));
             }
             $workHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeam($team);
             // Render the teampage as a preview
