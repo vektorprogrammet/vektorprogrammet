@@ -164,6 +164,7 @@ class AdmissionAdminController extends Controller
             'yourApplicants' => $applicantsAssignedToUser,
             'interviewDistribution' => $interviewDistribution,
             'interviewDistributionLeft' => $interviewDistributionLeft,
+            'department' => $department,
             'departments' => $allDepartments,
             'semesters' => $semesters,
             'semesterName' => $semesterName,
@@ -464,7 +465,7 @@ class AdmissionAdminController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
         try {
-            $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department->getId());
+            $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
         } catch (NoResultException $e) {
             return $this->redirect($this->generateUrl('semesteradmin_show'));
         } catch (NonUniqueResultException $e) {
@@ -477,9 +478,21 @@ class AdmissionAdminController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $user = $em->getRepository('AppBundle:User')->findOneBy(array('email' => $application->getUser()->getEmail()));
+            if ($user !== null) {
+                $application->setUser($user);
+            }
             $application->setSemester($currentSemester);
             $em->persist($application);
             $em->flush();
+
+            // Send a confirmation email with a copy of the application
+            $emailMessage = \Swift_Message::newInstance()
+                ->setSubject('Søknad - Vektorassistent')
+                ->setFrom(array($department->getEmail() => 'Vektorprogrammet'))
+                ->setTo($application->getUser()->getEmail())
+                ->setBody($this->renderView('admission/admission_email.html.twig', array('application' => $application)));
+            $this->get('mailer')->send($emailMessage);
 
             $request->getSession()->getFlashBag()->add('admission-notice', 'Søknaden er registrert.');
 
