@@ -6,6 +6,7 @@ use AppBundle\Entity\FieldOfStudy;
 use AppBundle\Form\FieldOfStudyType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class FieldOfStudyController extends Controller
 {
@@ -25,6 +26,11 @@ class FieldOfStudyController extends Controller
         if ($fieldOfStudy === null) {
             $fieldOfStudy = new FieldOfStudy();
             $isEdit = false;
+        } else {
+            // Check if user is trying to edit FOS from department other than his own
+            if ($fieldOfStudy->getDepartment() !== $this->getUser()->getFieldOfStudy()->getDepartment()) {
+                throw new AccessDeniedException();
+            }
         }
         $form = $this->createForm(FieldOfStudyType::class, $fieldOfStudy);
         $form->handleRequest($request);
