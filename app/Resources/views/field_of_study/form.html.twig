@@ -1,0 +1,17 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 medium-8 large-6 columns">
+            {% if isEdit %}
+                <h2>Endre {{ fieldOfStudy.shortName }}</h2>
+            {% else %}
+                <h2>Opprett ny linje</h2>
+            {% endif %}
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button>Lagre</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
