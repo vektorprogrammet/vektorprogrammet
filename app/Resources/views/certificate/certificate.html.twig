@@ -129,7 +129,7 @@
      </div>
 
 
-     <div class="row" style="margin-bottom: 100px">
+     <div class="row" style="">
          <div class="small-12 columns">
             <p style="font-weight: bold">På vegne av Vektorprogrammet.</p>
          </div>
@@ -137,14 +137,14 @@
 
     <div class="row">
         <div class="small-12 columns left">
-            {#<img src="{{ asset('insert signaturepicture') }}" alt="">#}
+            <img src="{{ asset(signature.signaturePath) }}" style="height: 150px; witdh: 200px; margin-bottom: 10px">
         </div>
     </div>
 
     <div class="row">
         <div class="small-12 columns">
             <p style="font-weight: bold">{{ app.user }}</p>
-            <p>Insert title here, Vektorprogrammet</p>
+            <p>{{ signature.description }}</p>
         </div>
     </div>
 

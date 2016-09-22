@@ -25,6 +25,7 @@ class AppKernel extends Kernel
 			new Ps\PdfBundle\PsPdfBundle(), // https://github.com/psliwa/PdfBundle
             new SimpleThings\FormExtraBundle\SimpleThingsFormExtraBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
+            new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

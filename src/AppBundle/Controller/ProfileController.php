@@ -347,14 +347,26 @@ class ProfileController extends Controller
             // Find the work history of the user
             $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
 
-            $response = new Response();
+            $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($this->getUser());
 
-            return $this->render('certificate/certificate.html.twig', array(
+
+            $html = $this->renderView('certificate/certificate.html.twig', array(
                 'user' => $user,
                 'today' => $today,
                 'assistantHistory' => $assistantHistory,
                 'workHistory' => $workHistory,
+                'signature' => $signature
             ));
+            return new Response(
+                $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+                200,
+                array(
+                 'Content-Type' => 'application.pdf',
+                 'Content-Disposition' => 'attachment; filename="attest.pdf"'
+                )
+            );
+
+
 
 
         } else {
