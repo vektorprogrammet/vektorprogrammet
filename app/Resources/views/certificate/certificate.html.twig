@@ -7,28 +7,9 @@
 </head>
 <body>
 <div class="container">
-   {# <div class="row">
-        <div class="small-12 columns">
-            <div class="small-3 columns right">
-                <div class="address">
-                    <p>
-
-                        Vektorprogrammet  <br/>
-                        NT-fakultetet, NTNU <br/>
-                        Høgskoleringen 5 <br/>
-                        7491 Trondheim <br/>
-                        Organisasjonsnummer: 998 744 814 <br/>
-
-                        {{ today|date ('d/m/y') }}, Trondheim <br/>
-
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>#}
     <div class="row" style="margin-bottom: 50px">
         <div class="small-12 columns" style="text-align: center">
-            <h2>Attest</h2>
+            <h2>Attest - Vektorprogrammet</h2>
         </div>
     </div>
 
@@ -48,7 +29,7 @@
                  elevene.
              </p>
 
-                <h4>Assistent historie</h4>
+                <h4>Assistentoversikt</h4>
                 <table style="table-layout: fixed; width:100%;">
                     <tr>
                         <th>Skole</th>
@@ -79,7 +60,7 @@
              {% endif %}
              {% if workHistory is not empty %}
                 <p>
-                     <h4>Team historie</h4>
+                     <h4>Team oversikt</h4>
                      <table style="width:100%; table-layout: fixed;">
                          <tr>
                              <th>Team</th>
@@ -138,7 +119,7 @@
 
     <div class="row">
         <div class="small-12 columns left">
-            <img src="{{ base_dir ~ asset(signature.signaturePath) }}" style="height: 150px; witdh: 200px; margin-bottom: 10px">
+            <img src="{{ base_dir ~ asset(signature.signaturePath) }}" style="max-height: 100px; max-width: 300px; margin-bottom: 10px">
         </div>
     </div>
 
