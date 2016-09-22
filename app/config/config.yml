@@ -137,7 +137,7 @@ gregwar_captcha: ~
 knp_snappy:
     pdf:
         enabled:    true
-        binary:     "\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"" #for Windows users
+        binary:     %kernel.root_dir%/../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64
         options:    []
     image:
         enabled:    true

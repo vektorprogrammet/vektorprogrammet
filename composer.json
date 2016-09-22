@@ -30,7 +30,8 @@
 		"psliwa/pdf-bundle": "~1.0",
         "simplethings/form-extra-bundle": "1.1.*",
         "liip/imagine-bundle": "1.2.6",
-        "knplabs/knp-snappy-bundle": "~1.4"
+        "knplabs/knp-snappy-bundle": "~1.4",
+        "h4cc/wkhtmltopdf-amd64": "^0.12.3"
     },
     "require-dev": {
         "phpunit/phpunit": "4.6.*",
