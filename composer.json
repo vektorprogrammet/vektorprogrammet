@@ -29,7 +29,8 @@
         "helios-ag/fm-elfinder-bundle": "~3",
         "simplethings/form-extra-bundle": "1.1.*",
         "liip/imagine-bundle": "1.2.6",
-        "tfox/mpdf-port-bundle": "^1.3"
+        "tfox/mpdf-port-bundle": "^1.3",
+        "doctrine/doctrine-migrations-bundle": "^1.2"
     },
     "require-dev": {
         "phpunit/phpunit": "4.6.*",
