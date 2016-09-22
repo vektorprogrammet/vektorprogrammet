@@ -1,53 +1,10 @@
 {% extends 'adminBase.html.twig' %}
 
-{% block customScripts %}
-
-	{# Easy routing with FOSJsRouting bundle #}
-	<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-	{# We need the deletetablerow.js file #}
-    <script src="{{ asset('js/deleteablerow.js') }}"></script>
-	
-	<script>
-	
-	$(document).ready(function() {
-            $('.delete').deleteablerow('certificate_delete_by_id', {
-                confirmation: {
-                    modal: $('#confirmModal'),
-                    acceptButton: $('#modalAccept'),
-                    cancelButton: $('#modalCancel')
-                }
-            });
-        });
-		
-		$("#search").keyup(function(){
-		
-			_this = this;
-			
-			$.each($("#table tbody").find("tr"), function() {
-			
-				if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
-				   $(this).hide();
-				}
-				else {
-					 $(this).show();         
-				}
-			});
-			
-		}); 
-
-	</script>
-
-
-{% endblock %}
-
 {% block title %}
 	Attester
 {% endblock %}
 
 {% block body %}
-    <p></p>
-	
 	<div class="row">
 		<div class="small-12 medium-12 large-12 columns">
 			
@@ -56,54 +13,13 @@
 			<hr>
 				
 			<div class="row">
-				
-				<div class="small-8 columns">
-					
-					<input type="text" id="search" placeholder="Søk..." />
-					
-				</div>
-
 				<div class="small-4 columns">
-					<a href="{{ path('certificate_signature_picture_upload') }}" class="button tiny"> Last opp signaturbilde</a>
+					<a href="{{ path('certificate_signature_picture_upload') }}" class="button tiny"> Last opp signatur</a>
 				</div>
 				
 			</div>
 					
-					<hr>
-				
-					<table width="100%" id="table">
-				
-					<thead>
-						<tr>
-							<th> Navn </th>
-							<th> Avdeling </th>
-							<th> </th>
-						</tr>
-					</thead>
-					
-					<tbody>
-						{% for cr in certificateRequests %}
-							<tr>
-								<td width="70%"> <a href='{{ path('specific_profile', { 'id': cr.user.id }) }}'> {{ cr.user }} </a> </td>
-								<td> {{ cr.user.fieldofstudy.department.shortname }} </td>
-								<td><a href="#" id="{{cr.id}}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td>
-							</tr>
-						{% endfor %}
-					</tbody>
-					
-				</table>
-		
-		
-			</div>
 		</div>
-		
-		
-		<div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true" role="dialog">
-			<h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
-			<ul class="inline-list">
-				<a id="modalAccept" href="#" class="button tiny">Slett</a>
-				<a id="modalCancel" href="#" class="button tiny">Avbryt</a>
-			</ul>
-		</div>
-	
+	</div>
+
 {% endblock %}

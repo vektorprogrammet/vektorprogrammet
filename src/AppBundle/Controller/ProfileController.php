@@ -317,16 +317,6 @@ class ProfileController extends Controller
     public function downloadCertificateAction(Request $request)
     {
 
-        /*
-        This method uses the bundle found here: https://github.com/psliwa/PdfBundle/blob/master/Controller/ExampleController.php
-        
-        It takes the twig file (download_certificate.pdf.twig) and converts it to a downloadable PDF. Follow the link to read more about configuration
-        and how it works. 
-        
-        Here is an example controller: https://github.com/psliwa/PdfBundle/blob/master/Controller/ExampleController.php
-        
-        */
-
         // Get the variable sent by the URL
         $id = $request->get('id');
 
@@ -349,6 +339,10 @@ class ProfileController extends Controller
 
             $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($this->getUser());
 
+            if ($signature === null){
+                return $this->redirectToRoute('certificate_signature_picture_upload');
+            }
+
 
             $html = $this->renderView('certificate/certificate.html.twig', array(
                 'user' => $user,
@@ -358,17 +352,8 @@ class ProfileController extends Controller
                 'signature' => $signature,
                 'base_dir' => $this->get('kernel')->getRootDir() . '/../www' . $request->getBasePath()
             ));
-            return new Response(
-                $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
-                200,
-                array(
-                 'Content-Type' => 'application.pdf',
-                 'Content-Disposition' => 'attachment; filename="attest.pdf"'
-                )
-            );
-
-
-
+            $mpdfService = $this->get('tfox.mpdfport');
+            return $mpdfService->generatePdfResponse($html);;
 
         } else {
             return $this->redirect($this->generateUrl('home'));

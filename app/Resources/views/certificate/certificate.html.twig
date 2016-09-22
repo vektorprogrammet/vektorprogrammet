@@ -1,162 +1,178 @@
 <!DOCTYPE html>
-<!--[if IE 9]><html class="lt-ie10" lang="no" > <![endif]-->
+<!--[if IE 9]>
+<html class="lt-ie10" lang="no"> <![endif]-->
 <html class="no-js" lang="no">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ base_dir ~ asset('css/app.css') }}">
+    <style>
+        .container {
+            padding-left: 40px;
+            padding-right: 40px;
+            height: 100%;
+            padding-top: 50px;
+        }
+        .bottom{
+            position: absolute;
+            bottom:0;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-    <div class="row" style="margin-bottom: 50px">
-        <div class="small-12 columns" style="text-align: center">
-            <h2>Attest - Vektorprogrammet</h2>
-        </div>
-    </div>
+    <div class="flex-container">
 
-     <div class="row">
-         <div class="small-12 columns">
-             <p style="font-weight: bold">{{ user }} har vært deltagende i Vektorprogrammet under vårsemesteret 2016.</p>
-         </div>
-     </div>
+        <div class="top">
 
-     <div class="row">
-         <div class="small-12 columns">
-            {% if assistantHistory is not empty %}
-             <p>I sitt arbeid for det frivillighetsbaserte Vektorprogrammet har {{ user }} deltatt
-                 som assistent i undervisningen ved en ungdomsskole i Trondheim. Dette innebærer
-                 fire fulle skoledager der man støtter læreren i matematikkundervisningen.
-                 Arbeidsoppgavene varierer fra undervisning i mindre grupper til oppgaveløsning med
-                 elevene.
-             </p>
+            <div class="row" style="margin-bottom: 50px">
+                <div class="small-12 columns" style="text-align: center">
+                    <h2>Attest - Vektorprogrammet</h2>
+                </div>
+            </div>
 
-                <h4>Assistentoversikt</h4>
-                <table style="table-layout: fixed; width:100%;">
-                    <tr>
-                        <th>Skole</th>
-                        <th>Dager</th>
-                        <th>Semester</th>
-                        <th>Start</th>
-                        <th>Slutt</th>
-                    </tr>
-                    {% for as in assistantHistory %}
-                        {% if as.semester is not null and as.school is not null %}
+            <div class="row">
+                <div class="small-12 columns">
+                    <p style="font-weight: bold">{{ user }} har vært deltagende i Vektorprogrammet som
+                        vektorassistent.</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-1 columns">
+                    {% if assistantHistory is not empty %}
+                        <p>I sitt arbeid for det frivillighetsbaserte Vektorprogrammet har {{ user }} deltatt
+                            som assistent i undervisningen ved en ungdomsskole i Trondheim. Dette innebærer
+                            minst fire fulle skoledager der man støtter læreren i matematikkundervisningen.
+                            Arbeidsoppgavene varierer fra undervisning i mindre grupper til oppgaveløsning med
+                            elevene.
+                        </p>
+                        <br>
+                        <h3>Assistentoversikt</h3>
+                        <table style="width:60%;">
                             <tr>
-                                <td>{{ as.getSchool.getName }}</td>
-                                <td>{{ as.workdays }}</td>
-                                <td>{{ as.getSemester.name }}</td>
-                                <td>{{ as.getSemester.semesterStartdate|date ('d/m/y') }}</td>
-                                <td>{{ as.getSemester.semesterEndDate|date ('d/m/y') }}</td>
+                                <th style="width:120px;">Skole</th>
+                                <th style="width:100px;">Semester</th>
+                                <th style="text-align: center; width:100px;">Antall Dager</th>
                             </tr>
-                        {% else %}
-                            <tr>
-                                <td>Semesteret og/eller skolen har blitt slettet.</td>
-                                <td>Semesteret og/eller skolen har blitt slettet.</td>
-                            </tr>
-                        {% endif %}
+                            {% for as in assistantHistory %}
+                                {% if as.semester is not null and as.school is not null %}
+                                    <tr>
+                                        <td>{{ as.getSchool.getName }}</td>
+                                        <td>{{ as.getSemester.name }}</td>
+                                        <td style="text-align: center">{{ as.workdays }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td>Semesteret og/eller skolen har blitt slettet.</td>
+                                        <td>Semesteret og/eller skolen har blitt slettet.</td>
+                                    </tr>
+                                {% endif %}
 
-                    {% endfor %}
-                </table>
+                            {% endfor %}
+                        </table>
 
-             {% endif %}
-             {% if workHistory is not empty %}
-                <p>
-                     <h4>Team oversikt</h4>
-                     <table style="width:100%; table-layout: fixed;">
-                         <tr>
-                             <th>Team</th>
-                             <th>Stilling</th>
-                             <th>Start</th>
-                             <th>Slutt</th>
-                         </tr>
-                         {% for wh in workHistory %}
-                             <tr>
-                                 <td>
-                                     {% if wh.team is not null %}
-                                         {{ wh.team.name }}
-                                     {% else %}
-                                         Teamet er slettet
-                                     {% endif %}
-                                 </td>
+                    {% endif %}
+                    {#{% if workHistory is not empty %}
+                       <p>
+                            <h4>Team oversikt</h4>
+                            <table style="width:100%; table-layout: fixed;">
+                                <tr>
+                                    <th>Team</th>
+                                    <th>Stilling</th>
+                                    <th>Start</th>
+                                    <th>Slutt</th>
+                                </tr>
+                                {% for wh in workHistory %}
+                                    <tr>
+                                        <td>
+                                            {% if wh.team is not null %}
+                                                {{ wh.team.name }}
+                                            {% else %}
+                                                Teamet er slettet
+                                            {% endif %}
+                                        </td>
 
-                                 <td>
-                                     {% if wh.position is not null %}
-                                         {{ wh.position.name }}
-                                     {% else %}
-                                         Stillingen er fjernet
-                                     {% endif %}
-                                 </td>
+                                        <td>
+                                            {% if wh.position is not null %}
+                                                {{ wh.position.name }}
+                                            {% else %}
+                                                Stillingen er fjernet
+                                            {% endif %}
+                                        </td>
 
-                                 <td>
-                                     {% if wh.startSemester is null %}
-                                         Ingen startsemester valgt
-                                     {% else %}
-                                         {{ wh.startSemester.name }}
-                                     {% endif %}
-                                 </td>
+                                        <td>
+                                            {% if wh.startSemester is null %}
+                                                Ingen startsemester valgt
+                                            {% else %}
+                                                {{ wh.startSemester.name }}
+                                            {% endif %}
+                                        </td>
 
-                                 <td>
-                                     {% if wh.endSemester is not null %}
-                                         {{ wh.endSemester.name }}
-                                     {% else %}
-                                         Fortsatt aktiv
-                                     {% endif %}
-                                 </td>
-                             </tr>
+                                        <td>
+                                            {% if wh.endSemester is not null %}
+                                                {{ wh.endSemester.name }}
+                                            {% else %}
+                                                Fortsatt aktiv
+                                            {% endif %}
+                                        </td>
+                                    </tr>
 
-                        {% endfor %}
-                    </table>
-                </p>
-             {% endif %}
-         </div>
-     </div>
-
-
-     <div class="row" style="">
-         <div class="small-12 columns">
-            <p style="font-weight: bold">På vegne av Vektorprogrammet.</p>
-         </div>
-     </div>
-
-    <div class="row">
-        <div class="small-12 columns left">
-            <img src="{{ base_dir ~ asset(signature.signaturePath) }}" style="max-height: 100px; max-width: 300px; margin-bottom: 10px">
+                               {% endfor %}
+                           </table>
+                       </p>
+                    {% endif %}#}
+                </div>
+            </div>
+            <br>
+            <br>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="small-12 columns">
-            <p style="font-weight: bold">{{ app.user }}</p>
-            <p>{{ signature.description }}</p>
-        </div>
-    </div>
+        <div class="bottom">
 
-    <div class="row">
-        <div class="small-5 columns left">
-            <img src="{{ base_dir ~ asset('images/vektor.png') }}" alt="">
-        </div>
-        <div class="small-3 columns right">
-            <div class="address">
-                <p>
+            <div class="row" style="">
+                <div class="small-12 columns">
+                    <p style="font-weight: bold">På vegne av Vektorprogrammet.</p>
+                </div>
+            </div>
 
-                    Vektorprogrammet  <br/>
+            <div class="row">
+                <div class="small-12 columns left">
+                    <img src="{{ base_dir ~ asset(signature.signaturePath) }}"
+                         style="max-height: 75px; max-width: 300px; margin-bottom: 10px; border-bottom:1px solid gray">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-12 columns">
+                    <p style="font-weight: bold">{{ app.user }}</p>
+                    <p>{{ signature.description }}</p>
+                </div>
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <hr>
+            <br>
+            <br>
+            <div class="row">
+                <img src="{{ base_dir ~ asset('images/vektor.png') }}" alt="" style="float:right; margin-left: 20px; margin-top: -8px">
+                <div class="address" style="text-align: left; font-size: 14px; margin-left: 14px;">
+
+                    Vektorprogrammet <br/>
                     NT-fakultetet, NTNU <br/>
                     Høgskoleringen 5 <br/>
                     7491 Trondheim <br/>
                     Organisasjonsnummer: 998 744 814 <br/>
 
-                    {{ today|date ('d/m/y') }}, Trondheim <br/>
+                    {{ today|date ('d/m-y') }}, Trondheim <br/>
 
-                </p>
+                </div>
             </div>
         </div>
     </div>
 </div>
 </body>
-
-
-
-
-
 
 
 </html>

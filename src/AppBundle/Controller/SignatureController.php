@@ -14,16 +14,19 @@ class SignatureController extends Controller
     {
 
         $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($this->getUser());
-        $oldPath = $signature->getSignaturePath();
-        dump($signature);
+        $oldPath = "";
         if ($signature === null) {
             $signature = new Signature();
+        } else {
+            $oldPath = $signature->getSignaturePath();
         }
 
         $form = $this->createForm(new CreateSignatureType(), $signature);
         $form->handleRequest($request);
+
     if ($form->isSubmitted() && $form->isValid()){
         $isImageUpload = $request->files->get('create_signature')['signature_path'] !== null;
+
         if ($isImageUpload) {
             //First move the signature image file to its folder
             $targetFolder = $this->container->getParameter('signature_images') . '/';
@@ -32,20 +35,17 @@ class SignatureController extends Controller
             //Move the file to target folder
     
             $result = $uploader->upload($request);
-            //return new Response(var_dump($result));
-            //Get the path of the image file as now on the server:  todo: now assumes only one image is contained in the request, as it should be.
-            dump($result);
             $path = $result[array_keys($result)[0]]; //todo: duplicated code this line and those above it. see editProfilePhotoAction in ProfileController
             $signature->setSignaturePath($path);
         } else {
             $signature->setSignaturePath($oldPath);
         }
+
         $signature->setUser($this->getUser());
         $manager = $this->getDoctrine()->getManager();
         $manager->persist($signature);
         $manager->flush();
     }
-        dump($signature);
 
         return $this->render('certificate/signature_picture_upload.html.twig', array(
             'form' => $form->createView(),
