@@ -2,7 +2,7 @@
 <!--[if IE 9]><html class="lt-ie10" lang="no" > <![endif]-->
 <html class="no-js" lang="no">
 <head>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ base_dir ~ asset('css/app.css') }}">
 </head>
 <body>
 <div class="container">
@@ -137,7 +137,7 @@
 
     <div class="row">
         <div class="small-12 columns left">
-            <img src="{{ asset(signature.signaturePath) }}" style="height: 150px; witdh: 200px; margin-bottom: 10px">
+            <img src="{{ base_dir ~ asset(signature.signaturePath) }}" style="height: 150px; witdh: 200px; margin-bottom: 10px">
         </div>
     </div>
 
@@ -149,8 +149,8 @@
     </div>
 
     <div class="row">
-        <div class="small-3 columns left">
-            <img src="{{ asset('images/vektor.png') }}" alt="">
+        <div class="small-5 columns left">
+            <img src="{{ base_dir ~ asset('images/vektor.png') }}" alt="">
         </div>
         <div class="small-3 columns right">
             <div class="address">

@@ -355,7 +355,8 @@ class ProfileController extends Controller
                 'today' => $today,
                 'assistantHistory' => $assistantHistory,
                 'workHistory' => $workHistory,
-                'signature' => $signature
+                'signature' => $signature,
+                'base_dir' => $this->get('kernel')->getRootDir() . '/../www' . $request->getBasePath()
             ));
             return new Response(
                 $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
