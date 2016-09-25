@@ -183,7 +183,7 @@
         <div class="small-12 medium-12 large-12 columns">
             {% for d in department %}
                 <div class="{{ element_editable() }}" id={{ 'admission' ~ d.shortname }}>
-                    {{ get_content('admission' ~ d.shortname) | raw }}
+                    {{ get_content('admission' ~ d.shortname)|safe_html }}
                 </div>
             {% endfor %}
         </div>
