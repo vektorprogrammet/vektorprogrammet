@@ -1213,6 +1213,14 @@ newsletter_show_subscribe:
   requirements:
     id: \d+
 
+newsletter_toggle_visable:
+  path: /kontrollpanel/nyhetsbrev/toggle/{id}
+  defaults: {_controller: AppBundle:Newsletter:showOnAdmissionPage}
+  requirements:
+    id: \d+
+  methods: [POST]
+
+
 ##########################################
 #              Field of study            #
 ##########################################

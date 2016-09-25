@@ -76,11 +76,11 @@ class NewsletterController extends Controller
 
     public function showSubscribeAction(Department $department)
     {
-        $newsletters = $this->getDoctrine()->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
-        dump($newsletters);
+        $newsletter = $this->getDoctrine()->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
+        dump($newsletter);
 
         return $this->render('', array(
-            'newsletters' => $newsletters
+            'newsletters' => $newsletter
         ));
     }
     
@@ -110,5 +110,26 @@ class NewsletterController extends Controller
 
         return $this->redirectToRoute('newsletter_show_subscribers', array('id' => $newsletterId));
 
+    }
+
+    public function showOnAdmissionPageAction(Newsletter $newsletter)
+    {
+        $isVisible = $newsletter->isShowOnAdmissionPage();
+        $newsletter->setShowOnAdmissionPage(!$isVisible);
+        $manager = $this->getDoctrine()->getManager();
+
+        if ($isVisible === false){
+            $currentVisible = $manager->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($newsletter->getDepartment());
+            if ($currentVisible !== null)
+            {
+                $currentVisible->setShowOnAdmissionPage(false);
+                $manager->persist($currentVisible);
+            }
+        }
+
+        $manager->persist($newsletter);
+        $manager->flush();
+
+        return $this->redirectToRoute('newsletter_show_all');
     }
 }

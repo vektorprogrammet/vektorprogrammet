@@ -10,7 +10,7 @@ class NewsletterRepository extends EntityRepository
 {
     /**
      * @param Department $department
-     * @return Newsletter[]
+     * @return Newsletter
      */
     public function findCheckedByDepartment(Department $department)
     {
@@ -20,6 +20,7 @@ class NewsletterRepository extends EntityRepository
             ->andWhere('newsletter.department = :department')
             ->setParameter('department', $department)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
     }
+
 }
