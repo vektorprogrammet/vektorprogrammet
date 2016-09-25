@@ -20,7 +20,7 @@
                                 <img src="{{ asset(pagination|first.imageLarge) }}" />
                             </a>
                             <h4><a href="{{ path('article_show', { 'id': pagination|first.id }) }}">
-                                    {{ pagination|first.title|raw }}</a></h4>
+                                    {{ pagination|first.title|safe_html }}</a></h4>
                         </div>
                     </div>
                     {% set columns = ['medium-7 large-7', 'medium-5 large-5'] %}
@@ -34,7 +34,7 @@
                                         <noscript><img src="{{ asset(cycle(images, loop.parent.loop.index0+loop.index0)) }}"></noscript>
                                     </a>
                                     <h5><a href="{{ path('article_show', { 'id': column.id }) }}">
-                                            {{ column.title|raw }}</a></h5>
+                                            {{ column.title|safe_html }}</a></h5>
                                 </div>
                             {% endfor %}
                         </div>

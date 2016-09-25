@@ -3,6 +3,6 @@
         <a href="{{ path('article_show', { 'id': article.id }) }}">
             <img src="{{ asset(article.imageSmall) }}">
         </a>
-        <a href="{{ path('article_show', { 'id': article.id }) }}">{{ article.title|raw }}</a>
+        <a href="{{ path('article_show', { 'id': article.id }) }}">{{ article.title|safe_html }}</a>
     </div>
 {% endfor %}

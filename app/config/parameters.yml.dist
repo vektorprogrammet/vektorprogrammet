@@ -24,7 +24,7 @@ parameters:
     no_reply_email_contact_form: ~
 
     # A secret key that's used to generate certain security-related tokens
-    secret:            ThisTokenIsNotSoSecretChangeIt
+    secret:            CreateASuperDuperSecretHere
 
     # Webhook from GitHub to automatically deploy on push to master
 

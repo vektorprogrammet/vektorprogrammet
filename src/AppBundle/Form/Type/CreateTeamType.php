@@ -19,8 +19,12 @@ class CreateTeamType extends AbstractType
                 'required' => false,
             ))
             ->add('shortDescription', 'text', array(
-                'label' => 'Kort beskrivelse (maks 255 tegn. Valgfritt)',
+                'label' => ' ',
+                'max_length' => 125,
                 'required' => false,
+            ))
+            ->add('preview', 'submit', array(
+                'label' => 'Forhåndsvis',
             ))
             ->add('description', 'ckeditor', array(
                 'required' => false,
@@ -28,7 +32,7 @@ class CreateTeamType extends AbstractType
                     'height' => 500,
                     'filebrowserBrowseRoute' => 'elfinder',
                     'filebrowserBrowseRouteParameters' => array('instance' => 'article_editor'), ),
-                'label' => 'Beskrivelse (valgfritt)',
+                'label' => 'Lang beskrivelse (valgfritt)',
                 'attr' => array('class' => 'hide'), // Graceful loading, hides the textarea that is replaced by ckeditor
             ));
     }

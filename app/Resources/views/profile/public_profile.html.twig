@@ -33,193 +33,77 @@
 {% endblock %}
 
 {% block body %}
-    <p></p>
+    <br>
 
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="large-4 small-12 columns">
 
-            <div class="row">
-                <div class="large-4 small-12 columns">
+            {% include 'profile/profile_picture.html.twig' %}
 
-                    {# Get the picture saved for the user and display it #}
-                    <img src="{{ asset(user.picturePath) }}"/>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <div class="panel callout radius">
+                    <h3> Admin </h3>
+                    <ul class="side-nav" role="navigation" title="Link List">
+                        <li role="menuitem"><a href="{{ path('profile_edit_admin', { 'id': user.id }) }}">Rediger
+                                profil</a></li>
+                        <li role="menuitem"><a href="{{ path('profile_edit_photo', {'id': user.getId()}) }}">Rediger
+                                bilde</a></li>
+                        <li role="menuitem"><a href="{{ path('profile_certificate', { id: user.id} ) }}">Last
+                                ned attest</a></li>
 
-                    <div class="panel callout radius">
-                        <h3>
-                            {{ user.firstName }} {{ user.lastName }}
-                        </h3>
-
-                    </div>
-
-                    {% if is_granted('ROLE_SUPER_ADMIN') %}
-                        <div class="panel callout radius">
-                            <h3> Admin </h3>
-                            <ul class="side-nav" role="navigation" title="Link List">
-                                <li role="menuitem"><a href="{{ path('profile_edit_admin', { 'id': user.id }) }}">Rediger
-                                        profil</a></li>
-                                <li role="menuitem"><a href="{{ path('profile_edit_photo', {'id': user.getId()}) }}">Rediger
-                                        bilde</a></li>
-                                <li role="menuitem"><a href="{{ path('profile_certificate', { id: user.id} ) }}">Last
-                                        ned attest</a></li>
-
-                                <li role="menuitem">
-                                    <a data-dropdown="drop1" aria-controls="drop1" aria-expanded="false">Rediger
-                                        rettighetsnivå</a>
-                                    <ul id="drop1" class="f-dropdown" data-dropdown-content aria-hidden="true"
-                                        tabindex="-1">
-                                        <li><a href="#" name={{ user.id }} class="assistent"
-                                               id="profile_promote_user_to_assistent"> Assistent </a></li>
-                                        <li><a href="#" name={{ user.id }} class="team"
-                                               id="profile_promote_user_to_team"> Team medlem </a></li>
-                                        <li><a href="#" name={{ user.id }} class="admin"
-                                               id="profile_promote_user_to_admin"> Admin </a></li>
-                                    </ul>
-                                </li>
-
-                                <li role="menuitem">
-                                    <a data-dropdown="drop2" aria-controls="drop2" aria-expanded="false">Rediger
-                                        aktivitetsnivå</a>
-                                    <ul id="drop2" class="f-dropdown" data-dropdown-content aria-hidden="true"
-                                        tabindex="-1">
-                                        <li><a href="#" name={{ user.id }} class="active" id="profile_activate_user">
-                                                Aktiver bruker </a></li>
-                                        <li><a href="#" name={{ user.id }} class="deactive"
-                                               id="profile_deactivate_user"> Deaktiver bruker </a></li>
-                                    </ul>
-                                </li>
-
+                        <li role="menuitem">
+                            <a data-dropdown="drop1" aria-controls="drop1" aria-expanded="false">Rediger
+                                rettighetsnivå</a>
+                            <ul id="drop1" class="f-dropdown" data-dropdown-content aria-hidden="true"
+                                tabindex="-1">
+                                <li><a href="#" name={{ user.id }} class="assistent"
+                                       id="profile_promote_user_to_assistent"> Assistent </a></li>
+                                <li><a href="#" name={{ user.id }} class="team"
+                                       id="profile_promote_user_to_team"> Team medlem </a></li>
+                                <li><a href="#" name={{ user.id }} class="admin"
+                                       id="profile_promote_user_to_admin"> Admin </a></li>
                             </ul>
-                        </div>
+                        </li>
 
-                        <div class="panel callout radius">
+                        <li role="menuitem">
+                            <a data-dropdown="drop2" aria-controls="drop2" aria-expanded="false">Rediger
+                                aktivitetsnivå</a>
+                            <ul id="drop2" class="f-dropdown" data-dropdown-content aria-hidden="true"
+                                tabindex="-1">
+                                <li><a href="#" name={{ user.id }} class="active" id="profile_activate_user">
+                                        Aktiver bruker </a></li>
+                                <li><a href="#" name={{ user.id }} class="deactive"
+                                       id="profile_deactivate_user"> Deaktiver bruker </a></li>
+                            </ul>
+                        </li>
 
-                            <h3> Brukerstatus </h3>
+                    </ul>
+                </div>
 
-                            {% if user.isActive == 1 %}
-                                <p> Brukeren er aktiv </p>
-                            {% else %}
-                                <p> Brukeren er inaktiv </p>
-                            {% endif %}
+                <div class="panel callout radius">
 
-                        </div>
+                    <h3> Brukerstatus </h3>
 
+                    {% if user.isActive == 1 %}
+                        <p> Brukeren er aktiv </p>
+                    {% else %}
+                        <p> Brukeren er inaktiv </p>
                     {% endif %}
 
-                    <div class="panel callout radius">
-                        <h6>
-                            Telefon: {{ user.phone|slice(0,3) }} {{ user.phone|slice(3,2) }} {{ user.phone|slice(5,3) }}</h6>
-                        <h6> E-post: {{ user.email }}</h6>
-                    </div>
-
                 </div>
 
+            {% endif %}
 
-                <div class="large-8 columns">
-                    <div class="row">
+            {% include 'profile/contact_info.html.twig' %}
 
-                        <div class="small-12 medium-12 large-12 columns">
+        </div>
 
-                            <h2> {{ user.firstName }} {{ user.lastName }} </h2>
-                            <h6 class="subheader">
+        <div class="large-8 columns">
+            {% include 'profile/profile_header.html.twig' %}
 
-                                {{ user.fieldOfStudy.department }} - {{ user.fieldOfStudy }}
+            {% include 'profile/assistant_history.html.twig' %}
 
-                                {% for r in roles %}
-                                    - {{ r.name }}
-                                {% endfor %}
-
-                            </h6>
-
-                            <hr>
-
-                        </div>
-
-                        <div class="small-12 medium-12 large-12 columns">
-
-                            {% if assistantHistory is not empty %}
-
-                                <h3>Assistent historie</h3>
-                                <table style="table-layout: fixed; width:100%;">
-                                    <tr>
-                                        <th>Skole</th>
-                                        <th>Semester</th>
-                                    </tr>
-                                    {% for as in assistantHistory %}
-                                        {% if as.semester is not null and as.school is not null %}
-                                            <tr>
-                                                <td>{{ as.getSchool.getName }}</td>
-                                                <td>{{ as.getSemester.getName }}</td>
-                                            </tr>
-                                        {% else %}
-                                            <tr>
-                                                <td>Semesteret og/eller skolen har blitt slettet.</td>
-                                                <td>Semesteret og/eller skolen har blitt slettet.</td>
-                                            </tr>
-                                        {% endif %}
-
-                                    {% endfor %}
-                                </table>
-                            {% endif %}
-
-                        </div>
-
-                        <div class="small-12 medium-12 large-12 columns">
-
-                            {% if workHistory is not empty %}
-
-                                <h3>Team historie</h3>
-                                <table style="width:100%; table-layout: fixed;">
-                                    <tr>
-                                        <th>Team</th>
-                                        <th>Stilling</th>
-                                        <th>Start</th>
-                                        <th>Slutt</th>
-                                    </tr>
-                                    {% for wh in workHistory %}
-                                        <tr>
-                                            <td>
-                                                {% if wh.team is not null %}
-                                                    {{ wh.team.name }}
-                                                {% else %}
-                                                    Teamet er slettet
-                                                {% endif %}
-                                            </td>
-
-                                            <td>
-                                                {% if wh.position is not null %}
-                                                    {{ wh.position.name }}
-                                                {% else %}
-                                                    Stillingen er fjernet
-                                                {% endif %}
-                                            </td>
-
-                                            <td>
-                                                {% if wh.startSemester is null %}
-                                                    Ingen startsemester valgt
-                                                {% else %}
-                                                    {{ wh.startSemester.name }}
-                                                {% endif %}
-                                            </td>
-
-                                            <td>
-                                                {% if wh.endSemester is not null %}
-                                                    {{ wh.endSemester.name }}
-                                                {% else %}
-                                                    Fortsatt aktiv
-                                                {% endif %}
-                                            </td>
-                                        </tr>
-
-                                    {% endfor %}
-                                </table>
-
-                            {% endif %}
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            {% include 'profile/team_history.html.twig' %}
         </div>
     </div>
 

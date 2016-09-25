@@ -1,0 +1,25 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 columns">
+            <h2>Linjer {{ department.shortName }}</h2>
+            <a class="button tiny success" href="{{ path('create_field_of_study') }}">Ny linje <i class="fa fa-plus"></i></a>
+            <br><br>
+            <table>
+                <tr>
+                    <th>Navn</th>
+                    <th>Forkortelse</th>
+                    <th></th>
+                </tr>
+                {% for fieldOfStudy in fieldOfStudies %}
+                    <tr>
+                        <td>{{ fieldOfStudy.name }}</td>
+                        <td>{{ fieldOfStudy.shortName }}</td>
+                        <td><a href="{{ path('edit_field_of_study', {id: fieldOfStudy.id}) }}">Endre</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

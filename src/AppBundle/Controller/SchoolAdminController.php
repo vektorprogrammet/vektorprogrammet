@@ -9,6 +9,7 @@ use AppBundle\Form\Type\CreateSchoolType;
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Form\Type\CreateAssistantHistoryType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class SchoolAdminController extends Controller
 {
@@ -92,7 +93,6 @@ class SchoolAdminController extends Controller
 
     public function delegateSchoolToUserAction(Request $request)
     {
-
         // Find the ID variable sent by the request
         $id = $request->get('id');
 
@@ -101,6 +101,12 @@ class SchoolAdminController extends Controller
 
         // Find department of the user 
         $department = $user->getFieldOfStudy()->getDepartment();
+
+        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
+
+        if (!($this->isGranted('ROLE_SUPER_ADMIN') || ($this->isGranted('ROLE_ADMIN') && $department == $this->getUser()->getFieldOfStudy()->getDepartment()))) {
+            throw new AccessDeniedException();
+        }
 
         // A new assistant history entity
         $assistantHistory = new AssistantHistory();
@@ -111,50 +117,40 @@ class SchoolAdminController extends Controller
         // Handle the form
         $form->handleRequest($request);
 
-        // Only superadmin can delegate schools to users to any department
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-            // Check if the form is valid
-            if ($form->isValid()) {
+        // Check if the form is valid
+        if ($form->isValid()) {
 
-                // Set the user of the assistant history
-                $assistantHistory->setUser($user);
+            // Set the user of the assistant history
+            $assistantHistory->setUser($user);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($assistantHistory);
 
-                // Persist it to the database
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($assistantHistory);
-                $em->flush();
+            // Check if user already has user name and password
+            if ($user->getUserName() != null && $user->getPassword() != null) {
+                $user->setIsActive(true);
+            } else { // Send new user code for user to create user name and password
 
-                return $this->redirect($this->generateUrl('schooladmin_show_users_of_department_superadmin', array('id' => $this->getUser()->getFieldOfStudy()->getDepartment()->getId())));
+                // Send new user code only if assistant history is added to current semester
+                if ($assistantHistory->getSemester() == $currentSemester && $user->getNewUserCode() == null) {
+                    $userRegistration = $this->get('app.user.registration');
+                    $newUserCode = $userRegistration->setNewUserCode($user);
+
+                    $em->persist($user);
+
+                    $emailMessage = $userRegistration->createActivationEmail($user, $newUserCode);
+                    $this->get('mailer')->send($emailMessage);
+                }
             }
 
-            // Return the form view
-            return $this->render('school_admin/create_assistant_history.html.twig', array(
-                 'form' => $form->createView(),
-            ));
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('schooladmin_show_users_of_department'));
         }
-        // ROLE_ADMIN can delegate schools to their own department
-        elseif ($this->get('security.context')->isGranted('ROLE_ADMIN') && $department == $this->get('security.context')->getToken()->getUser()->getFieldOfStudy()->getDepartment()) {
-            // Check if the form is valid
-            if ($form->isValid()) {
 
-                // Set the user of the assistant history
-                $assistantHistory->setUser($user);
-
-                // Persist it to the database
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($assistantHistory);
-                $em->flush();
-
-                return $this->redirect($this->generateUrl('schooladmin_show_users_of_department'));
-            }
-
-            // Return the form view
-            return $this->render('school_admin/create_assistant_history.html.twig', array(
-                 'form' => $form->createView(),
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
-        }
+        // Return the form view
+        return $this->render('school_admin/create_assistant_history.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
     public function showUsersByDepartmentSuperadminAction(Request $request)
@@ -287,7 +283,7 @@ class SchoolAdminController extends Controller
 
             // Return the form view
             return $this->render('school_admin/create_school.html.twig', array(
-                 'form' => $form->createView(),
+                'form' => $form->createView(),
             ));
         } else {
             // If access denied return view 
@@ -330,7 +326,7 @@ class SchoolAdminController extends Controller
 
             // Render the view
             return $this->render('school_admin/create_school.html.twig', array(
-                 'form' => $form->createView(),
+                'form' => $form->createView(),
             ));
         } else {
             return $this->redirect($this->generateUrl('home'));
@@ -364,7 +360,6 @@ class SchoolAdminController extends Controller
         } catch (\Exception $e) {
             // Send a response back to AJAX
             $response['success'] = false;
-            //$response['cause'] = 'Kunne ikke slette skolen. ';
             $response['cause'] = $e->getMessage();
 
             return new JsonResponse($response);
@@ -401,7 +396,7 @@ class SchoolAdminController extends Controller
             // Send a response back to AJAX
             $response['success'] = false;
             $response['cause'] = 'Kunne ikke slette assistent historien. ';
-            //$response['cause'] = $e->getMessage();
+
             return new JsonResponse($response);
         }
         // Send a respons to ajax 

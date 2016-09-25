@@ -269,9 +269,6 @@ class SchoolAdminControllerTest extends WebTestCase
         // Assert a specific 302 status code
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
 
-        // Assert that the response is the correct redirect
-        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/skoleadmin/brukere/avdeling/1'));
-
         // Follow the redirect
         $client->followRedirect();
 
@@ -312,9 +309,6 @@ class SchoolAdminControllerTest extends WebTestCase
 
         // Assert a specific 302 status code
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-
-        // Assert that the response is the correct redirect
-        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/skoleadmin/brukere/avdeling/1'));
 
         // Follow the redirect
         $client->followRedirect();

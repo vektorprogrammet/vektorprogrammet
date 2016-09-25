@@ -6,7 +6,7 @@
             <div class="row collapse">
                 <div class="small-9 columns">
                     <select id="bulkSelect">
-                        <option value="title">Gruppe handling</option>
+                        <option value="title">Gruppehandling</option>
                         <option value="assign">Fordel intervju</option>
                         {% if is_granted('ROLE_HIGHEST_ADMIN') %}
                             <option value="deleteApplication">Slett søknad</option>
@@ -24,7 +24,12 @@
 {% block applications %}
     {% if applicants is defined %}
         <div class="row">
-            <div class="small-6 columns"><a class="button tiny success float-left" href="{{ path('register_applicant') }}">Ny søker</a></div>
+            <div class="small-6 columns">
+                {% if app.user.fieldOfStudy.department == department %}
+                    <a class="button tiny success float-left" href="{{ path('register_applicant') }}">Ny søker</a>
+                {% endif %}
+                &nbsp;
+            </div>
             <div class="small-6 columns"><h6 class="float-right">Nye søkere | Antall: {{ applicants|length }}</h6></div>
 
         </div>

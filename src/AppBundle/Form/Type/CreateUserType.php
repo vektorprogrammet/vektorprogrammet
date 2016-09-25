@@ -37,12 +37,6 @@ class CreateUserType extends AbstractType
             ->add('phone', 'text',  array(
                 'label' => 'Telefon',
             ))
-            ->add('user_name', 'text',  array(
-                'label' => 'Brukernavn',
-            ))
-            ->add('password', 'password',  array(
-                'label' => 'Passord',
-            ))
             ->add('email', 'text',  array(
                 'label' => 'E-post',
             ))

@@ -1,5 +1,9 @@
-Gratulerer med å ha blitt tatt opp som vektorassistent dette semester!
+Hei, {{ name }}!
 
-Følg denne linken for å opprette en bruker på vektorprogrammet.no
+En admin hos vektorprorammet.no har opprettet en bruker for deg.
+Vennligst følg denne linken for å fullføre registreringen:
 
-{{ newUserURL }}
+{{ url('profile_activate_with_user_code', {'newUserCode': newUserCode}) }}
+
+Mvh
+Vektorprogrammet
