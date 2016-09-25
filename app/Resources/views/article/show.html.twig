@@ -2,7 +2,7 @@
 
 {% block title %}{{ article.title }}{% endblock %}
 {% block facebookImage %}{{ article.imageSmall|replace({" ": "%20"}) }}{% endblock %}
-{% block facebookDescription %}{{ article.article|raw|replace({"<p>": "", "</p>": "", "<strong>": "", "</strong>": ""})|slice(0,255) }}...{% endblock %}
+{% block facebookDescription %}{{ article.article|safe_html|replace({"<p>": "", "</p>": "", "<strong>": "", "</strong>": ""})|slice(0,255) }}...{% endblock %}
 
 {% block body %}
     <p></p>
@@ -33,7 +33,7 @@
         </div>
         <div class="row">
             <div class="small-12 medium-12 large-12 columns">
-                <h1>{{ article.title|raw }}</h1>
+                <h1>{{ article.title|safe_html }}</h1>
             </div>
         </div>
         <div class="row">
@@ -45,7 +45,7 @@
                 </div>
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
-                        {{ article.article|raw }}
+                        {{ article.article|safe_html }}
                     </div>
                 </div>
             </div>

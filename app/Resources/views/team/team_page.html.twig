@@ -4,6 +4,11 @@
     {{ team.name }} - Vektorprogrammet
 {% endblock %}
 
+{% block facebookDescription %}
+    {{ team.shortDescription }}
+{% endblock %}
+
+
 
 {% block body %}
 
@@ -19,7 +24,7 @@
 
     <div class="row">
         <div class="large-7 columns team-description-column">
-            {{ team.description|replace({'<script>': 'Sorry, not hackz here! ', '</script>': ''})|raw }}
+            {{ team.description|safe_html }}
         </div>
         <div class="large-5 columns">
             <h4>Medlemmer</h4>

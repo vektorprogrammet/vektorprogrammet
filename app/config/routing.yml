@@ -1173,3 +1173,15 @@ anniversary_remove_payment:
  defaults: { _controller: AppBundle:AnniversaryRegistration:removePayment}
  requirements:
   _method: POST
+
+create_field_of_study:
+  path: /kontrollpanel/linje
+  defaults: { _controller: AppBundle:FieldOfStudy:edit }
+
+edit_field_of_study:
+  path: /kontrollpanel/linje/{id}
+  defaults: { _controller: AppBundle:FieldOfStudy:edit }
+
+show_field_of_studies:
+  path: /kontrollpanel/linjer
+  defaults: {_controller: AppBundle:FieldOfStudy:show }

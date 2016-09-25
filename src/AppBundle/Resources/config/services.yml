@@ -10,3 +10,8 @@ services:
   app.user.registration:
     class: AppBundle\UserRegistration\UserRegistration
     arguments: ['@twig']
+  app.safe_html_extension:
+    class: AppBundle\Twig\Extension\SafeHtmlExtension
+    public: false
+    tags:
+      - { name: twig.extension }
