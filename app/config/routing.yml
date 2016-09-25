@@ -755,6 +755,10 @@ school_allocation_processing:
   path: /skole/fordeling/processing
   defaults: { _controller: AppBundle:SchoolAllocationProcessing:index }
 
+school_allocation_allocationMain:
+  path: /skole/fordeling/allokering
+  defaults: { _controller: AppBundle:SchoolAllocationMain:index }
+
 ##########################################
 #              Interview                 #
 ##########################################
