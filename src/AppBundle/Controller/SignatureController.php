@@ -49,6 +49,8 @@ class SignatureController extends Controller
         $manager = $this->getDoctrine()->getManager();
         $manager->persist($signature);
         $manager->flush();
+
+        $this->addFlash('success', 'Signaturen ble lagret');
     }
 
         return $this->render('certificate/signature_picture_upload.html.twig', array(
