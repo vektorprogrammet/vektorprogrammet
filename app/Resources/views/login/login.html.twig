@@ -16,7 +16,7 @@
                 {% endif %}
 
                 {% if message is defined %}
-                    <p>{{ message|raw }}</p>
+                    <p>{{ message|safe_html }}</p>
                 {% endif %}
 
                 <form action="{{ path('login_check') }}" method="post">

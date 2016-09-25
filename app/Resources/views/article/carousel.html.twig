@@ -11,7 +11,7 @@
     <h4 class="hide-for-small-only">Nyheter:</h4>
     {% for article in articles %}
         <div id="news-carousel-text-{{ loop.index0 }}" {% if loop.index0 != 0 %}style="display: none"{% endif %}>
-            <h1 class="article-heading">{{ article.title|raw }}</h1>
+            <h1 class="article-heading">{{ article.title|safe_html }}</h1>
             <a href="{{ path('article_show', { 'id': article.id }) }}" class="vektor-button tiny">Les mer</a>
         </div>
     {% else %}
