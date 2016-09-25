@@ -22,9 +22,10 @@ class AppKernel extends Kernel
 			new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new FM\ElfinderBundle\FMElfinderBundle(),
-			new Ps\PdfBundle\PsPdfBundle(), // https://github.com/psliwa/PdfBundle
             new SimpleThings\FormExtraBundle\SimpleThingsFormExtraBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
+            new TFox\MpdfPortBundle\TFoxMpdfPortBundle(),
+            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -14,7 +14,7 @@ class MembersControllerTest extends WebTestCase
         ));
 
         $crawler = $client->request('GET', '/assistenter');
-//
+
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 

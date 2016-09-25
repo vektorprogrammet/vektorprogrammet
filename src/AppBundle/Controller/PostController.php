@@ -24,17 +24,17 @@ class PostController extends Controller
         // Create a new post entity
         $post = new Post();
 
-        // Only SUPER_ADMIN can edit all threads 
+        // Only SUPER_ADMIN can edit all threads
         if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 
-            // Find a post by the ID sent in by the request 
+            // Find a post by the ID sent in by the request
             $post = $em->getRepository('AppBundle:Post')->find($id);
         } elseif ($this->get('security.context')->isGranted('ROLE_USER')) {
 
-            // Find the current user 
+            // Find the current user
             $user = $this->get('security.context')->getToken()->getUser();
 
-            // Find a post by the ID sent in by the request 
+            // Find a post by the ID sent in by the request
             $post = $em->getRepository('AppBundle:Post')->find($id);
 
             // Check if the current user is the one who made the post
@@ -51,9 +51,9 @@ class PostController extends Controller
         // Handle the form
         $form->handleRequest($request);
 
-        // Check if the form is valid 
+        // Check if the form is valid
         if ($form->isValid()) {
-            // Persist the changes 
+            // Persist the changes
             $em->persist($post);
             $em->flush();
 
@@ -69,7 +69,7 @@ class PostController extends Controller
     public function deletePostAction(Request $request)
     {
 
-        // Get the ID sen by the request 
+        // Get the ID sen by the request
         $id = $request->get('id');
 
         $em = $this->getDoctrine()->getEntityManager();
@@ -81,16 +81,16 @@ class PostController extends Controller
             // Only SUPER_ADMIN can delete all post
             if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 
-                // Find the post with the given ID 
+                // Find the post with the given ID
                 $post = $this->getDoctrine()->getRepository('AppBundle:Post')->find($id);
             }
-            // Users can only delete their own posts 
+            // Users can only delete their own posts
             elseif ($this->get('security.context')->isGranted('ROLE_USER')) {
 
-                // Find the current user 
+                // Find the current user
                 $user = $this->get('security.context')->getToken()->getUser();
 
-                // Find the post with the given ID 
+                // Find the post with the given ID
                 $post = $this->getDoctrine()->getRepository('AppBundle:Post')->find($id);
 
                 // Check if the current user is the one who made the post
@@ -113,12 +113,12 @@ class PostController extends Controller
             // Send a response back to AJAX
             $response['success'] = false;
             $response['cause'] = 'Kunne ikke slette innlegget.';
-            //$response['cause'] = $e->getMessage(); // if you want to see the exception message. 
+            //$response['cause'] = $e->getMessage(); // if you want to see the exception message.
 
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 
@@ -126,7 +126,7 @@ class PostController extends Controller
     public function showSpecificThreadAction(Request $request)
     {
 
-        // Get the variable sent by the request 
+        // Get the variable sent by the request
         $id = $request->get('id');
 
         // We need the forumId becuase the relation between forum and subforums are many-to-many
@@ -142,7 +142,7 @@ class PostController extends Controller
             // Find all the posts associated with the thread
             $posts = $this->getDoctrine()->getRepository('AppBundle:Post')->findByThread($thread);
 
-            // Find a forum with the given ID 
+            // Find a forum with the given ID
             $forum = $this->getDoctrine()->getRepository('AppBundle:Forum')->find($forumId);
         }
         // ROLE_ADMIN can see all general and school threads, but only team threads that are associated with the teams the user is associated with
@@ -151,25 +151,25 @@ class PostController extends Controller
             // Find the thread entity
             $thread = $this->getDoctrine()->getRepository('AppBundle:Thread')->findOneById($id);
 
-            // Find a forum with the given ID 
+            // Find a forum with the given ID
             $forum = $this->getDoctrine()->getRepository('AppBundle:Forum')->find($forumId);
 
-            // Find the current user 
+            // Find the current user
             $user = $this->get('security.context')->getToken()->getUser();
 
-            // Find all the active work histories of the user 
+            // Find all the active work histories of the user
             $activeWorkHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByUser($user);
 
-            // Find the subforum of the thread 
+            // Find the subforum of the thread
             $subforum = $thread->getSubforum();
 
-            // Boolean to keep track if the user is visting a subforum that he/she is allowed to visit 
+            // Boolean to keep track if the user is visting a subforum that he/she is allowed to visit
             $valid = false;
 
             // If the subforum of the thread is not general or school we have to check if the user is associated with this subforum
             if (!($subforum->getType() == 'school' || $subforum->getType() == 'general')) {
 
-                // Check each active work histories 
+                // Check each active work histories
                 foreach ($activeWorkHistories as $awh) {
 
                     // Find the teams associated with the subforum
@@ -201,26 +201,26 @@ class PostController extends Controller
             // Find the thread entity
             $thread = $this->getDoctrine()->getRepository('AppBundle:Thread')->findOneById($id);
 
-            // Find a forum with the given ID 
+            // Find a forum with the given ID
             $forum = $this->getDoctrine()->getRepository('AppBundle:Forum')->find($forumId);
 
-            // Find the current user 
+            // Find the current user
             $user = $this->get('security.context')->getToken()->getUser();
 
-            // Find all the active assistant histories of the user 
+            // Find all the active assistant histories of the user
             $activeAssistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesByUser($user);
 
-            // Find the subforum of the thread 
+            // Find the subforum of the thread
             $subforum = $thread->getSubforum();
 
-            // Boolean to keep track if the user is visting a subforum that he/she is allowed to visit 
+            // Boolean to keep track if the user is visting a subforum that he/she is allowed to visit
             $valid = false;
 
             if ($subforum->getType() == 'general') {
                 $valid = true;
             } else {
 
-                // Check each active assistant histories 
+                // Check each active assistant histories
                 foreach ($activeAssistantHistories as $ash) {
 
                     // Find the schools associated with the subforum
@@ -250,10 +250,10 @@ class PostController extends Controller
         // Create a new post entity
         $post = new Post();
 
-        // Create the form 
+        // Create the form
         $form = $this->createForm(new CreatePostType(), $post);
 
-        // Handle the form 
+        // Handle the form
         $form->handleRequest($request);
 
         // Check if the form is valid

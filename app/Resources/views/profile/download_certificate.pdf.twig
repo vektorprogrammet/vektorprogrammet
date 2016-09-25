@@ -1,10 +1,12 @@
+<link rel="stylesheet type="text/css" href="{{ asset(css/app.css) }}">
 
 {% block body %}
 
     <pdf>
 	
 		<dynamic-page>
-		
+
+		<div class="small-2">
 			{{ today|date ('d/m/y') }} - Kl. {{ today|date ('H:i:s') }}
 			
 			
@@ -24,10 +26,10 @@
 				</p>
 				
 			</div>
-			
+		</div>
 			<h1> Attest </h1>
 			
-			<strong>{{user }} har vært deltagende i Vektorprogrammet. </strong>
+			<strong>{{ user }} har vært deltagende i Vektorprogrammet. </strong>
 			
 			<p>
 			
@@ -39,9 +41,7 @@
 			
 			<p>
 					
-					{% if assistantHistory is empty %}
-						<strong>{{ user }} har ikke jobbet som assistent for vektorprogrammet. </strong> <br/>
-					{% else %}
+					{% if assistantHistory is not empty %}
 						<strong>{{ user }} har jobbet som assistent for vektorprogrammet i følgende tidsperioder: </strong> <br/>
 					{% endif %}
 					
@@ -73,32 +73,56 @@
 			
 			<p>
 					
-					{% if workHistory is empty %}
-						<strong>{{ user }} har ikke jobbet som team medlem for vektorprogrammet. </strong> <br/>
-					{% else %}
+					{% if workHistory is not empty %}
 						<strong>{{ user }} har jobbet som team medlem for vektorprogrammet i følgende tidsperioder: </strong> <br/>
 					{% endif %}
-					
+
+				<h3>Team historie</h3>
+				<table style="width:100%; table-layout: fixed;">
+					<tr>
+						<th>Team</th>
+						<th>Stilling</th>
+						<th>Start</th>
+						<th>Slutt</th>
+					</tr>
 					{% for wh in workHistory %}
-						
-						Medlem av
-						{% if wh.team is not null %}
-							{{wh.team.name }},
-						{% else %}
-							 <strong>Teamet er slettet</strong>, 
-						{% endif %}
-						som 
-						
-						{% if wh.position is not null %}
-							{{wh.position.name }}, 
-						{% else %}
-							Stillingen er slettet, 
-						{% endif %}
-						fra {{ wh.startDate|date ('d/m/y') }} til {{ wh.endDate|date ('d/m/y') }}
-						<br/>
-						
+						<tr>
+							<td>
+								{% if wh.team is not null %}
+									{{ wh.team.name }}
+								{% else %}
+									Teamet er slettet
+								{% endif %}
+							</td>
+
+							<td>
+								{% if wh.position is not null %}
+									{{ wh.position.name }}
+								{% else %}
+									Stillingen er fjernet
+								{% endif %}
+							</td>
+
+							<td>
+								{% if wh.startSemester is null %}
+									Ingen startsemester valgt
+								{% else %}
+									{{ wh.startSemester.name }}
+								{% endif %}
+							</td>
+
+							<td>
+								{% if wh.endSemester is not null %}
+									{{ wh.endSemester.name }}
+								{% else %}
+									Fortsatt aktiv
+								{% endif %}
+							</td>
+						</tr>
+
 					{% endfor %}
-					
+				</table>
+
 					
 			
 			</p>
@@ -112,7 +136,7 @@
 			<p>
 				___________________________________________________<br/>
 				
-				Marte Saghagen <br/>
+				{{ app.user }} <br/>
 				Rekrutteringsansvarlig, Vektorprogrammet <br/>
 				
 			</p>

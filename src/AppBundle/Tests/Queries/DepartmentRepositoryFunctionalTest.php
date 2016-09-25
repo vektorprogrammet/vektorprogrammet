@@ -28,34 +28,32 @@ class DepartmentRepositoryFunctionalTest extends KernelTestCase
     {
 
 //		$departments = $this->em->getRepository('AppBundle:Department')->findAllDepartments();
-//
+
 //		$shortNames = array("NTNU", "HiST", "UiO", "NMBU");
-//
+
 //		foreach ($departments as $d){
-//
+
 //			foreach ($shortNames as $name){
 //				if ($name == $d->getShortName()) {
 //					$this->assertEquals($name, $d->getShortName());
 //					unset($shortNames[$name]);
 //				}
 //			}
-//
-//
+
 //		}
     }
 
-    // A test to check whether the array return by the the findDepartmentById method is the correct department given a ID value 
+    // A test to check whether the array return by the the findDepartmentById method is the correct department given a ID value
 //	public function testFindDepartmentById(){
-//
-//
+
 //		$departments = $this->em->getRepository('AppBundle:Department')->findDepartmentById(1);
-//
+
 //		foreach ($departments as $department) {
-//
+
 //			$this->assertEquals(1, $department->getId());
-//
+
 //		}
-//
+
 //	}
 
     /**

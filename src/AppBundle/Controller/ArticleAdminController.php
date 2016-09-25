@@ -213,10 +213,10 @@ class ArticleAdminController extends Controller
             $mediumCropData = json_decode($data['mediumCropData'], true);
             $smallCropData = json_decode($data['smallCropData'], true);
 
-            # The article image folder
+            // The article image folder
             $articleImageFolder = $this->container->getParameter('article_images');
 
-            # Crop image to the three sizes used by the website and return their urls
+            // Crop image to the three sizes used by the website and return their urls
             try {
                 $imageLarge = $this->crop($image, $largeCropData, $request, $articleImageFolder.'/large/');
                 $imageMedium = $this->crop($image, $mediumCropData, $request, $articleImageFolder.'/medium/');
@@ -258,38 +258,38 @@ class ArticleAdminController extends Controller
      */
     public function crop($image, $cropData, $request, $location)
     {
-        # Check if the location folder exists, if not create it
+        // Check if the location folder exists, if not create it
         if (!file_exists($location)) {
             mkdir($location, 0777, true);
         }
 
-        # The filter
+        // The filter
         $filter = 'article_crop';
 
-        # The cache folder
+        // The cache folder
         $cache = 'media/cache/';
 
         $container = $this->container;
 
-        # The controller service
+        // The controller service
         $imagemanagerResponse = $container->get('liip_imagine.controller');
 
-        # The filter configuration service
+        // The filter configuration service
         $filterConfig = $container->get('liip_imagine.filter.configuration');
 
-        # Get the filter settings
+        // Get the filter settings
         $config = $filterConfig->get($filter);
 
-        # Update filter settings
+        // Update filter settings
         $config['filters']['relative_resize']['scale'] = $cropData['scale'];
         $config['filters']['crop']['size'] = array($cropData['w'], $cropData['h']);
         $config['filters']['crop']['start'] = array($cropData['x'], $cropData['y']);
         $filterConfig->set($filter, $config);
 
-        # Apply the filter
+        // Apply the filter
         $imagemanagerResponse->filterAction($request, $image, $filter);
 
-        # Move the img from temp
+        // Move the img from temp
         rename($cache.$filter.$image, $location.basename($image));
 
         return $location.basename($image);

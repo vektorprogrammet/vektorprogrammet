@@ -15,10 +15,10 @@ class SchoolEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $school = new School();
 
-        // Use the setName method 
+        // Use the setName method
         $school->setName('Heggen');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('Heggen', $school->getName());
     }
 
@@ -29,10 +29,10 @@ class SchoolEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $school = new School();
 
-        // Use the setContactPerson method 
+        // Use the setContactPerson method
         $school->setContactPerson('Vibeke');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('Vibeke', $school->getContactPerson());
     }
 
@@ -43,14 +43,14 @@ class SchoolEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $school = new School();
 
-        // dummy entity 
+        // dummy entity
         $department1 = new Department();
         $department1->setName('NTNU');
 
-        // Use the addDepartment method 
+        // Use the addDepartment method
         $school->addDepartment($department1);
 
-        // Departments are stored in an array 
+        // Departments are stored in an array
         $departments = $school->getDepartments();
 
         // Loop through the array and check for matches
@@ -76,7 +76,7 @@ class SchoolEntityUnitTest extends \PHPUnit_Framework_TestCase
         $department3 = new Department();
         $department3->setName('Department3');
 
-        // Use the addDepartment method 
+        // Use the addDepartment method
         $school->addDepartment($department1);
         $school->addDepartment($department2);
         $school->addDepartment($department3);
@@ -84,12 +84,12 @@ class SchoolEntityUnitTest extends \PHPUnit_Framework_TestCase
         // Remove $department1
         $school->removeDepartment($department1);
 
-        // Departments are stored in an array 
+        // Departments are stored in an array
         $departments = $school->getDepartments();
 
         // Loop through the array
         foreach ($departments as $d) {
-            // Assert the result 
+            // Assert the result
             $this->assertNotEquals($department1, $d);
         }
     }
@@ -101,10 +101,10 @@ class SchoolEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $school = new School();
 
-        // Use the setEmail method 
+        // Use the setEmail method
         $school->setEmail('Heggen@vgs.com');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('Heggen@vgs.com', $school->getEmail());
     }
 
@@ -115,10 +115,10 @@ class SchoolEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $school = new School();
 
-        // Use the setPhone method 
+        // Use the setPhone method
         $school->setPhone('12312312');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('12312312', $school->getPhone());
     }
 
@@ -129,14 +129,14 @@ class SchoolEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $school = new School();
 
-        // dummy entity 
+        // dummy entity
         $subforum1 = new Subforum();
         $subforum1->setName('NTNU');
 
-        // Use the addSubforum method 
+        // Use the addSubforum method
         $school->addSubforum($subforum1);
 
-        // Subforums are stored in an array 
+        // Subforums are stored in an array
         $subforums = $school->getSubforums();
 
         // Loop through the array and check for matches
@@ -162,7 +162,7 @@ class SchoolEntityUnitTest extends \PHPUnit_Framework_TestCase
         $subforum3 = new Subforum();
         $subforum3->setName('Subforum3');
 
-        // Use the addSubforum method 
+        // Use the addSubforum method
         $school->addSubforum($subforum1);
         $school->addSubforum($subforum2);
         $school->addSubforum($subforum3);
@@ -170,12 +170,12 @@ class SchoolEntityUnitTest extends \PHPUnit_Framework_TestCase
         // Remove $subforum1
         $school->removeSubforum($subforum1);
 
-        // Subforums are stored in an array 
+        // Subforums are stored in an array
         $subforums = $school->getSubforums();
 
         // Loop through the array
         foreach ($subforums as $subforum) {
-            // Assert the result 
+            // Assert the result
             $this->assertNotEquals($subforum1, $subforum);
         }
     }

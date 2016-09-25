@@ -109,35 +109,35 @@ class ProfileControllerTest extends WebTestCase
     }
 
     /* Did not manage to get this one working since it was a repeated password field
-    I couldn't figure out how to reach the fields in the code written below 
-    
+    I couldn't figure out how to reach the fields in the code written below
+
     public function testEditProfilePasswordAction() {
-        
+
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'petjo',
             'PHP_AUTH_PW'   => '1234',
         ));
         $crawler = $client->request('GET', '/profil/rediger/passord/');
-        
-        // Assert that we have the correct page 
+
+        // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains(" Redigerer passord ")')->count());
-        
-        // Assert that we have the correct user 
+
+        // Assert that we have the correct user
         $this->assertEquals(1, $crawler->filter('p:contains("Petter Johansen")')->count());
-        
-        
+
+
         // Fill in the form and submit it
         $form = $crawler->selectButton('Lagre')->form(array(
             'editUserPassword[password][first_name]'  => '1234',            <--- Didn't work
-            'editUserPassword[password]'  => '1234',                             <--- Didn't work either, so I didn't manage to insert any new data 
+            'editUserPassword[password]'  => '1234',                             <--- Didn't work either, so I didn't manage to insert any new data
         ));
-        
+
         // submit the form
         $crawler = $client->submit($form);
-        
-        // Follow the redirect 
+
+        // Follow the redirect
         $crawler = $client->followRedirect();
-    
+
     }
     */
 
@@ -191,54 +191,54 @@ class ProfileControllerTest extends WebTestCase
     }
 
 //	public function testDownloadCertificateAction() {
-//
+
 //		$client = static::createClient(array(), array(
 //			'PHP_AUTH_USER' => 'petjo',
 //			'PHP_AUTH_PW'   => '1234',
 //		));
 //        $crawler = $client->request('GET', '/profile');
-//
+
 //		// Find the link called "Last ned attest"
 //		$link = $crawler->filter('a:contains("Last ned attest")')->first()->link();
-//
+
 //		// Click the link
 //		$crawler = $client->click($link);
-//
+
 //		// Assert a specific 200 status code
 //		$this->assertEquals( 200, $client->getResponse()->getStatusCode() );
-//
+
 //		// Assert that we have the correct certificate
 //		$this->assertContains( 'Petter Johansen', $client->getResponse()->getContent() );
 //		$this->assertContains( 'Attest', $client->getResponse()->getContent() );
 //		$this->assertContains( 'Petter Johansen har ikke jobbet som assistent for vektorprogrammet. ', $client->getResponse()->getContent() );
-//
+
 //		// Assert that the "Content-Type" header is "application/pdf"
 //		$this->assertTrue( $client->getResponse()->headers->contains(
 //			'Content-Type',
 //			'application/pdf'
 //		));
-//
+
 //	}
 
     /*
     Requires JQuery interaction, Symfony2 does not support that
-    
-    Phpunit was designed to test the PHP language, have to use another tool to test these. 
-    
+
+    Phpunit was designed to test the PHP language, have to use another tool to test these.
+
     public function testPromoteToAdminAction() {}
     public function testPromoteToAssistentAction() {}
     public function testPromoteToTeamMemberAction() {}
     public function testActivateUserAction() {}
     public function testDeactivateUserAction() {}
-    
+
     */
 
     /*
-    The people that made the methods below must write their own functional tests 
+    The people that made the methods below must write their own functional tests
     Missing:
-    
+
     public function testEditProfilePhotoAction() {}
     public function testShowEditProfilePhotoAction() {}
-    
+
     */
 }

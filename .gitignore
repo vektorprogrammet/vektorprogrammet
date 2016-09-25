@@ -43,6 +43,7 @@ crashlytics-build.properties
 /bin/
 /composer.phar
 /vendor/
+/signatures/
 /www/bundles/
 /www/images/
 /www/fonts/
