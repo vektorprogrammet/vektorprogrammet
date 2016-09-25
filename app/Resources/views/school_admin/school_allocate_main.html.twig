@@ -1,5 +1,14 @@
 {% extends 'adminBase.html.twig' %}
 
 {% block body %}
-
+    <h1 class="text-center">Denne siden skal inneholde allokeringsappen</h1>
+    <div class="row">
+        <div class="large-12">
+        </div>
+        <table>
+            {% for application in applications %}
+                <tr><td>{{ application.user.firstName }} {{ application.user.lastName }}</td></tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}
