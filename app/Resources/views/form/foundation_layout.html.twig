@@ -80,7 +80,7 @@
             '{{ year }}': '<div class="large-4 columns">' ~ form_widget(form.year) ~ '</div>',
             '{{ month }}': '<div class="large-4 columns">' ~ form_widget(form.month) ~ '</div>',
             '{{ day }}': '<div class="large-4 columns">' ~ form_widget(form.day) ~ '</div>',
-        })|raw -}}
+        })|safe_html -}}
         {% if datetime is not defined or not datetime %}
             </div>
         {% endif %}
@@ -252,7 +252,7 @@
     {% set label = name|humanize %}
 {% endif %}
     <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
-        {{ widget|raw }}
+        {{ widget|safe_html }}
         {{ label|trans({}, translation_domain) }}
     </label>
 {%- endblock checkbox_radio_label %}
