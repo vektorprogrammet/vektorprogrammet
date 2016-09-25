@@ -16,7 +16,7 @@ class Assistant
     /**
      * @var string
      */
-    private $assignedSchool;//Name of school
+    private $assignedSchool; //Name of school
     /**
      * @var string
      */

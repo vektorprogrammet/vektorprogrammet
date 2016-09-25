@@ -13,27 +13,26 @@ class NewPasswordTypeTest extends TypeTestCase
      */
     public function testForm($data)
     {
-        //
+
 //        $type = new NewPasswordType();
 //        $form = $this->factory->create($type);
-//
+
 //        $object = new User();
-//
+
 //        $object->fromArray($data);
-//
+
 //        // submit the data to the form directly
 //        $form->submit($data);
-//
+
 //        $this->assertTrue($form->isSynchronized());
 //        $this->assertEquals($object, $form->getData());
-//
+
 //        $view = $form->createView();
 //        $children = $view->children;
-//
+
 //        foreach (array_keys($data) as $key) {
 //            $this->assertArrayHasKey($key, $children);
 //        }
-//
     }
 
     public function getValidTestData()

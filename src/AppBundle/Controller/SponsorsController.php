@@ -29,7 +29,7 @@ class SponsorsController extends Controller
 
         return $this->render('sponsors/sponsors_edit.html.twig', array(
             'forms' => $forms,
-            'logos' => $logos
+            'logos' => $logos,
         )); //todo: shouldn't I use AppBundle:somehting::something?
     }
 

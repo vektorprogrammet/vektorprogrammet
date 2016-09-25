@@ -14,10 +14,10 @@ class FieldOfStudyEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $fos = new FieldOfStudy();
 
-        // Use the setName method 
+        // Use the setName method
         $fos->setName('BITx2');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('BITx2', $fos->getName());
     }
 
@@ -28,10 +28,10 @@ class FieldOfStudyEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $fos = new FieldOfStudy();
 
-        // Use the setShortName method 
+        // Use the setShortName method
         $fos->setShortName('BIT');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('BIT', $fos->getShortName());
     }
 
@@ -42,14 +42,14 @@ class FieldOfStudyEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $fos = new FieldOfStudy();
 
-        // A new test department entity 
+        // A new test department entity
         $department = new Department();
         $department->setName('NTNU');
 
-        // Use the setDepartment method 
+        // Use the setDepartment method
         $fos->setDepartment($department);
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals($department, $fos->getDepartment());
     }
 }

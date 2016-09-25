@@ -4,7 +4,6 @@ namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CreateSignatureType extends AbstractType
 {
@@ -14,12 +13,10 @@ class CreateSignatureType extends AbstractType
             ->add('description', 'text', array(
                 'label' => 'Beskrivelse (Feks. Leder, Vektorprogrammet)',
             ))
-            ->add('signature_path','file', array(
+            ->add('signature_path', 'file', array(
                 'required' => false,
                 'data_class' => null,
-                'label' => 'Signaturbilde'
+                'label' => 'Signaturbilde',
             ));
     }
-
-
 }

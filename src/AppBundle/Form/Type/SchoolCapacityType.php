@@ -39,7 +39,6 @@ class SchoolCapacityType extends AbstractType
                         ->setParameter('department', $department);*/
 
                     return $oldSchools;
-
                 },
             ))
             ->add('monday', 'integer')

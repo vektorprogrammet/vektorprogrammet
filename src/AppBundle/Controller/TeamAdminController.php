@@ -35,7 +35,7 @@ class TeamAdminController extends Controller
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 
@@ -53,7 +53,7 @@ class TeamAdminController extends Controller
 
             $em = $this->getDoctrine()->getManager();
 
-            // Find a position by the ID sent in by the request 
+            // Find a position by the ID sent in by the request
             $position = $em->getRepository('AppBundle:Position')->find($id);
 
             // Create the form
@@ -258,7 +258,7 @@ class TeamAdminController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        // Find a team by the ID sent in by the request 
+        // Find a team by the ID sent in by the request
         $team = $em->getRepository('AppBundle:Team')->find($id);
 
         // Find the department of the team
@@ -396,7 +396,7 @@ class TeamAdminController extends Controller
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 
@@ -427,7 +427,7 @@ class TeamAdminController extends Controller
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 }

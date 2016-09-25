@@ -56,7 +56,7 @@ class AdmissionRepository extends EntityRepository
      *
      * @return array
      */
-    public function findInterviewedApplicantsByInterviewer($department = null, $semester = null, $interviewer)
+    public function findInterviewedApplicantsByInterviewer($department, $semester, $interviewer)
     {
         $qb = $this->createQueryBuilder('a')
             ->select('a')

@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: ArntErik
  * Date: 18.09.2016
- * Time: 17.13
+ * Time: 17.13.
  */
 
 namespace AppBundle\Entity;
@@ -16,7 +16,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Signature
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -86,8 +85,4 @@ class Signature
     {
         $this->user = $user;
     }
-
-
-
-
 }

@@ -152,10 +152,10 @@ class SemesterControllerTest extends WebTestCase
 
     /*
     Requires JQuery interaction, Symfony2 does not support that
-    
-    Phpunit was designed to test the PHP language, have to use another tool to test these. 
-    
+
+    Phpunit was designed to test the PHP language, have to use another tool to test these.
+
     public function testDeleteSemesterById() {}
-    
+
     */
 }

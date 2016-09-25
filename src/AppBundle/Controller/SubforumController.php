@@ -25,7 +25,7 @@ class SubforumController extends Controller
 
             $em = $this->getDoctrine()->getManager();
 
-            // Find a forum by the ID sent in by the request 
+            // Find a forum by the ID sent in by the request
             $subforum = $em->getRepository('AppBundle:Subforum')->find($id);
 
             // Create the form
@@ -34,9 +34,9 @@ class SubforumController extends Controller
             // Handle the form
             $form->handleRequest($request);
 
-            // Check if the form is valid 
+            // Check if the form is valid
             if ($form->isValid()) {
-                // Persist the changes 
+                // Persist the changes
                 $em->persist($subforum);
                 $em->flush();
 
@@ -55,7 +55,7 @@ class SubforumController extends Controller
     public function deleteSubforumAction(Request $request)
     {
 
-        // Get the ID sen by the request 
+        // Get the ID sen by the request
         $id = $request->get('id');
 
         try {
@@ -80,35 +80,35 @@ class SubforumController extends Controller
             // Send a response back to AJAX
             $response['success'] = false;
             //$response['cause'] = 'Kunne ikke slette subforumet.';
-            $response['cause'] = $e->getMessage(); // if you want to see the exception message. 
+            $response['cause'] = $e->getMessage(); // if you want to see the exception message.
 
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 
-    // Creates a subforum 
+    // Creates a subforum
     public function createSubforumAction(Request $request)
     {
 
-        // Only ROLE_SUPER_ADMIN can create new subforums 
+        // Only ROLE_SUPER_ADMIN can create new subforums
         if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 
-            // A new forum entity 
+            // A new forum entity
             $subforum = new Subforum();
 
-            // Create the form 
+            // Create the form
             $form = $this->createForm(new CreateSubforumType(), $subforum);
 
-            // Handle the form 
+            // Handle the form
             $form->handleRequest($request);
 
             // Check if the form is valid
             if ($form->isValid()) {
 
-                // Check whether the checkbox was checked or not 
+                // Check whether the checkbox was checked or not
                 if ($form['type']->getData() == 'general') {
 
                     // Find all general forums
@@ -124,7 +124,7 @@ class SubforumController extends Controller
                 // List of schools
                 $schools = array();
 
-                // List of teams 
+                // List of teams
                 $teams = array();
 
                 // Add schools to the schools list
@@ -159,12 +159,12 @@ class SubforumController extends Controller
                     }
                 }
 
-                // Store the forum in the database 
+                // Store the forum in the database
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($subforum);
                 $em->flush();
 
-                // Redirect to the proper subforum 
+                // Redirect to the proper subforum
                 return $this->redirect($this->generateUrl('forum_show'));
             }
 
@@ -196,18 +196,18 @@ class SubforumController extends Controller
 
             foreach ($validSubforums as $subforum) {
 
-                // Initate variables 
+                // Initate variables
                 $post = null;
                 $thread = null;
 
-                // Find the latest post for the given subforum 
+                // Find the latest post for the given subforum
                 $latestPost = $this->getDoctrine()->getRepository('AppBundle:Post')->findLatestPostBySubforum($subforum);
 
-                // Find the latest thread for the given subforum 
+                // Find the latest thread for the given subforum
                 $latestThread = $this->getDoctrine()->getRepository('AppBundle:Thread')->findLatestThreadBySubforum($subforum);
 
                 // The methods findLatestThreadBySubforum and findLatestPostBySubforum returns an array
-                // We have to loop through the array even if it just a single element in it 
+                // We have to loop through the array even if it just a single element in it
 
                 foreach ($latestPost as $lp) {
                     $post = $lp;
@@ -216,37 +216,37 @@ class SubforumController extends Controller
                     $thread = $lt;
                 }
 
-                // Check if both are null, this means there are no threads and posts 
+                // Check if both are null, this means there are no threads and posts
                 if (!($post == null) || !($thread == null)) {
                     // Check whether post has a higher or equal value to the thread datetime, and both the latestPost and latestThread is not empty
                     if ((!($thread == null)) && (!($post == null))) {
                         if ($post->getDateTime() >= $thread->getDateTime()) {
-                            // Add post to the array 
+                            // Add post to the array
                             $latestActivity[$subforum->getId()] = $post;
                         }
                     }
                     // Check whether thread has a higher or equal value to the post datetime, and both the latestPost and latestThread is not empty
                     if ((!($thread == null)) && (!($post == null))) {
                         if ($post->getDateTime() <= $thread->getDateTime() && (!($thread == null)) && (!($post == null))) {
-                            // Add thread to the array 
+                            // Add thread to the array
                             $latestActivity[$subforum->getId()] = $thread;
                         }
                     }
                     // If the latestPost array is empty, we add the thread
                     elseif (($post == null) && (!($thread == null))) {
-                        // Add thread to the array 
+                        // Add thread to the array
                         $latestActivity[$subforum->getId()] = $thread;
                     }
                     // If the latestThread array is empty, we add the post
                     elseif (($thread == null) && (!($post == null))) {
-                        // Add post to the array 
+                        // Add post to the array
                         $latestActivity[$subforum->getId()] = $post;
                     }
                 }
             }
         } elseif ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
 
-            // Find the current user 
+            // Find the current user
             $user = $this->get('security.context')->getToken()->getUser();
 
             // Find the forum by ID, sent by the request
@@ -255,24 +255,24 @@ class SubforumController extends Controller
             // Find all the subforums of the given forum
             $allSubforums = $forum->getSubforums();
 
-            // Find all the active work histories of the user 
+            // Find all the active work histories of the user
             $activeWorkHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByUser($user);
 
-            // empty array, should contain the subforums the user is allowed to access 
+            // empty array, should contain the subforums the user is allowed to access
             $validSubforums = array();
 
-            // Loop through all the subforums 
+            // Loop through all the subforums
             foreach ($allSubforums as $sf) {
-                // Check if the subforum is general 
+                // Check if the subforum is general
                 if ($sf->getType() == 'general' || $sf->getType() == 'school') {
                     $validSubforums[] = $sf;
                 }
             }
 
-            // Check each active work histories 
+            // Check each active work histories
             foreach ($activeWorkHistories as $awh) {
 
-                // Loop through all the subforums 
+                // Loop through all the subforums
                 foreach ($allSubforums as $sf) {
 
                     // Find the teams associated with the subforum
@@ -295,18 +295,18 @@ class SubforumController extends Controller
 
             foreach ($validSubforums as $subforum) {
 
-                // Initate variables 
+                // Initate variables
                 $post = null;
                 $thread = null;
 
-                // Find the latest post for the given subforum 
+                // Find the latest post for the given subforum
                 $latestPost = $this->getDoctrine()->getRepository('AppBundle:Post')->findLatestPostBySubforum($subforum);
 
-                // Find the latest thread for the given subforum 
+                // Find the latest thread for the given subforum
                 $latestThread = $this->getDoctrine()->getRepository('AppBundle:Thread')->findLatestThreadBySubforum($subforum);
 
                 // The methods findLatestThreadBySubforum and findLatestPostBySubforum returns an array
-                // We have to loop through the array even if it just a single element in it 
+                // We have to loop through the array even if it just a single element in it
 
                 foreach ($latestPost as $lp) {
                     $post = $lp;
@@ -315,36 +315,36 @@ class SubforumController extends Controller
                     $thread = $lt;
                 }
 
-                // Check if both are null, this means there are no threads and posts 
+                // Check if both are null, this means there are no threads and posts
                 if (!($post == null) || !($thread == null)) {
                     // Check whether post has a higher or equal value to the thread datetime, and both the latestPost and latestThread is not empty
                     if ((!($thread == null)) && (!($post == null))) {
                         if ($post->getDateTime() >= $thread->getDateTime()) {
-                            // Add post to the array 
+                            // Add post to the array
                             $latestActivity[$subforum->getId()] = $post;
                         }
                     }
                     // Check whether thread has a higher or equal value to the post datetime, and both the latestPost and latestThread is not empty
                     if ((!($thread == null)) && (!($post == null))) {
                         if ($post->getDateTime() <= $thread->getDateTime() && (!($thread == null)) && (!($post == null))) {
-                            // Add thread to the array 
+                            // Add thread to the array
                             $latestActivity[$subforum->getId()] = $thread;
                         }
                     }
                     // If the latestPost array is empty, we add the thread
                     elseif (($post == null) && (!($thread == null))) {
-                        // Add thread to the array 
+                        // Add thread to the array
                         $latestActivity[$subforum->getId()] = $thread;
                     }
                     // If the latestThread array is empty, we add the post
                     elseif (($thread == null) && (!($post == null))) {
-                        // Add post to the array 
+                        // Add post to the array
                         $latestActivity[$subforum->getId()] = $post;
                     }
                 }
             }
 
-            // If a valid subforum does not exist the user is in the wrong forum, which he/she should not have access to. 
+            // If a valid subforum does not exist the user is in the wrong forum, which he/she should not have access to.
 
             // Keep track if the user is in a valid forum
             $valid = false;
@@ -355,7 +355,7 @@ class SubforumController extends Controller
                 // Loop through each subforum of this specific forum with a ID given by the request
                 foreach ($allSubforums as $asf) {
 
-                    // If a match exist we set the forum to be valid 
+                    // If a match exist we set the forum to be valid
                     if ($vsf == $asf) {
                         $valid = true;
                     }
@@ -367,7 +367,7 @@ class SubforumController extends Controller
             }
         } elseif ($this->get('security.context')->isGranted('ROLE_USER')) {
 
-            // Find the current user 
+            // Find the current user
             $user = $this->get('security.context')->getToken()->getUser();
 
             // Find the forum by ID, sent by the request
@@ -376,24 +376,24 @@ class SubforumController extends Controller
             // Find all the subforums of the given forum
             $allSubforums = $forum->getSubforums();
 
-            // Find all the active assistant histories of the user 
+            // Find all the active assistant histories of the user
             $activeAssistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesByUser($user);
 
-            // empty array, should contain the subforums the user is allowed to access 
+            // empty array, should contain the subforums the user is allowed to access
             $validSubforums = array();
 
-            // Loop through all the subforums 
+            // Loop through all the subforums
             foreach ($allSubforums as $sf) {
-                // Check if the subforum is general 
+                // Check if the subforum is general
                 if ($sf->getType() == 'general') {
                     $validSubforums[] = $sf;
                 }
             }
 
-            // Check each active assistant histories 
+            // Check each active assistant histories
             foreach ($activeAssistantHistories as $ash) {
 
-                // Loop through all the subforums 
+                // Loop through all the subforums
                 foreach ($allSubforums as $sf) {
 
                     // Find the schools associated with the subforum
@@ -415,18 +415,18 @@ class SubforumController extends Controller
 
             foreach ($validSubforums as $subforum) {
 
-                // Initate variables 
+                // Initate variables
                 $post = null;
                 $thread = null;
 
-                // Find the latest post for the given subforum 
+                // Find the latest post for the given subforum
                 $latestPost = $this->getDoctrine()->getRepository('AppBundle:Post')->findLatestPostBySubforum($subforum);
 
-                // Find the latest thread for the given subforum 
+                // Find the latest thread for the given subforum
                 $latestThread = $this->getDoctrine()->getRepository('AppBundle:Thread')->findLatestThreadBySubforum($subforum);
 
                 // The methods findLatestThreadBySubforum and findLatestPostBySubforum returns an array
-                // We have to loop through the array even if it just a single element in it 
+                // We have to loop through the array even if it just a single element in it
 
                 foreach ($latestPost as $lp) {
                     $post = $lp;
@@ -435,36 +435,36 @@ class SubforumController extends Controller
                     $thread = $lt;
                 }
 
-                // Check if both are null, this means there are no threads and posts 
+                // Check if both are null, this means there are no threads and posts
                 if (!($post == null) || !($thread == null)) {
                     // Check whether post has a higher or equal value to the thread datetime, and both the latestPost and latestThread is not empty
                     if ((!($thread == null)) && (!($post == null))) {
                         if ($post->getDateTime() >= $thread->getDateTime()) {
-                            // Add post to the array 
+                            // Add post to the array
                             $latestActivity[$subforum->getId()] = $post;
                         }
                     }
                     // Check whether thread has a higher or equal value to the post datetime, and both the latestPost and latestThread is not empty
                     if ((!($thread == null)) && (!($post == null))) {
                         if ($post->getDateTime() <= $thread->getDateTime() && (!($thread == null)) && (!($post == null))) {
-                            // Add thread to the array 
+                            // Add thread to the array
                             $latestActivity[$subforum->getId()] = $thread;
                         }
                     }
                     // If the latestPost array is empty, we add the thread
                     elseif (($post == null) && (!($thread == null))) {
-                        // Add thread to the array 
+                        // Add thread to the array
                         $latestActivity[$subforum->getId()] = $thread;
                     }
                     // If the latestThread array is empty, we add the post
                     elseif (($thread == null) && (!($post == null))) {
-                        // Add post to the array 
+                        // Add post to the array
                         $latestActivity[$subforum->getId()] = $post;
                     }
                 }
             }
 
-            // If a valid subforum does not exist the user is in the wrong forum, which he/she should not have access to. 
+            // If a valid subforum does not exist the user is in the wrong forum, which he/she should not have access to.
 
             // Keep track if the user is in a valid forum
             $valid = false;
@@ -475,7 +475,7 @@ class SubforumController extends Controller
                 // Loop through each subforum of this specific forum with a ID given by the request
                 foreach ($allSubforums as $asf) {
 
-                    // If a match exist we set the forum to be valid 
+                    // If a match exist we set the forum to be valid
                     if ($vsf == $asf) {
                         $valid = true;
                     }

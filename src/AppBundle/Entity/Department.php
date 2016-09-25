@@ -337,7 +337,7 @@ class Department
         return $this->teams;
     }
 
-    // Used for unit testing 
+    // Used for unit testing
     public function fromArray($data = array())
     {
         foreach ($data as $property => $value) {

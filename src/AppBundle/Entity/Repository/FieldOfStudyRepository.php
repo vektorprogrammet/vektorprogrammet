@@ -18,10 +18,10 @@ class FieldOfStudyRepository extends EntityRepository
                     FROM Field_of_study F
                     WHERE short_name = :short_name
                     ');
-        
+
         $stmt->bindValue('short_name', $short_name);
         $stmt->execute();
-        
+
         return $stmt->fetchAll();
     }
 <<<<<<< Updated upstream

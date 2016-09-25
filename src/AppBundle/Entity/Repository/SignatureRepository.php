@@ -16,18 +16,16 @@ class SignatureRepository extends EntityRepository
 {
     /**
      * @param User $user
+     *
      * @return Signature
      */
     public function findByUser(User $user)
     {
-
         return $this->createQueryBuilder('signature')
             ->select('signature')
             ->where('signature.user = :user')
             ->setParameter('user', $user)
             ->getQuery()
             ->getOneOrNullResult();
-
     }
-
 }

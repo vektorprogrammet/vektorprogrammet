@@ -9,7 +9,6 @@ use AppBundle\Form\Type\EditUserType;
 use AppBundle\Form\Type\EditUserAdminType;
 use AppBundle\Form\Type\EditUserPasswordType;
 use Symfony\Component\HttpFoundation\Response;
-use Ps\PdfBundle\Annotation\Pdf;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use DateTime;
 
@@ -18,17 +17,17 @@ class ProfileController extends Controller
     public function deactivateUserAction(Request $request)
     {
 
-        // Get the ID sent by the request 
+        // Get the ID sent by the request
         $id = $request->get('id');
 
         try {
             // Only SUPER_ADMIN can activate users
             if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 
-                // Find the given user 
+                // Find the given user
                 $em = $this->getDoctrine()->getEntityManager();
 
-                // Find the user with the given ID 
+                // Find the user with the given ID
                 $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
 
                 // set user active level
@@ -47,29 +46,29 @@ class ProfileController extends Controller
             // Send a response back to AJAX
             $response['success'] = false;
             $response['cause'] = 'Kunne ikke endre rettighetene.';
-            //$response['cause'] = $e->getMessage(); // if you want to see the exception message. 
+            //$response['cause'] = $e->getMessage(); // if you want to see the exception message.
 
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 
     public function activateUserAction(Request $request)
     {
 
-        // Get the ID sent by the request 
+        // Get the ID sent by the request
         $id = $request->get('id');
 
         try {
             // Only SUPER_ADMIN can activate users
             if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 
-                // Find the given user 
+                // Find the given user
                 $em = $this->getDoctrine()->getEntityManager();
 
-                // Find the user with the given ID 
+                // Find the user with the given ID
                 $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
 
                 // set user active level
@@ -88,12 +87,12 @@ class ProfileController extends Controller
             // Send a response back to AJAX
             $response['success'] = false;
             $response['cause'] = 'Kunne ikke endre rettighetene.';
-            //$response['cause'] = $e->getMessage(); // if you want to see the exception message. 
+            //$response['cause'] = $e->getMessage(); // if you want to see the exception message.
 
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 
@@ -149,14 +148,14 @@ class ProfileController extends Controller
     public function promoteToTeamMemberAction(Request $request)
     {
 
-        // Get the ID sent by the request 
+        // Get the ID sent by the request
         $id = $request->get('id');
 
         try {
-            // Only SUPER_ADMIN can edit roles 
+            // Only SUPER_ADMIN can edit roles
             if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 
-                // Find the given user 
+                // Find the given user
                 $em = $this->getDoctrine()->getEntityManager();
                 $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
 
@@ -174,10 +173,10 @@ class ProfileController extends Controller
 
                 // We have to add both the role and the user to eachother due to many-to-many relations
 
-                // Add the user to the adminrole 
+                // Add the user to the adminrole
                 $adminRole->addUser($user);
 
-                // Add the adminrole to the user 
+                // Add the adminrole to the user
                 $user->addRole($adminRole);
 
                 $em->flush();
@@ -193,26 +192,26 @@ class ProfileController extends Controller
             // Send a response back to AJAX
             $response['success'] = false;
 
-            $response['cause'] = $e->getMessage(); // if you want to see the exception message. 
+            $response['cause'] = $e->getMessage(); // if you want to see the exception message.
 
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 
     public function promoteToAssistentAction(Request $request)
     {
 
-        // Get the ID sent by the request 
+        // Get the ID sent by the request
         $id = $request->get('id');
 
         try {
-            // Only SUPER_ADMIN can edit roles 
+            // Only SUPER_ADMIN can edit roles
             if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 
-                // Find the given user 
+                // Find the given user
                 $em = $this->getDoctrine()->getEntityManager();
                 $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
 
@@ -249,26 +248,26 @@ class ProfileController extends Controller
             // Send a response back to AJAX
             $response['success'] = false;
 
-            $response['cause'] = $e->getMessage(); // if you want to see the exception message. 
+            $response['cause'] = $e->getMessage(); // if you want to see the exception message.
 
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 
     public function promoteToAdminAction(Request $request)
     {
 
-        // Get the ID sent by the request 
+        // Get the ID sent by the request
         $id = $request->get('id');
 
         try {
-            // Only SUPER_ADMIN can edit roles 
+            // Only SUPER_ADMIN can edit roles
             if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 
-                // Find the given user 
+                // Find the given user
                 $em = $this->getDoctrine()->getEntityManager();
                 $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
 
@@ -309,10 +308,9 @@ class ProfileController extends Controller
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
-
 
     public function downloadCertificateAction(Request $request)
     {
@@ -320,15 +318,15 @@ class ProfileController extends Controller
         // Get the variable sent by the URL
         $id = $request->get('id');
 
-        // Only ROLE_SUPER_ADMIN can create certificates 
+        // Only ROLE_SUPER_ADMIN can create certificates
         if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 
-            // Find the current time 
+            // Find the current time
             $today = new DateTime('now');
 
             $em = $this->getDoctrine()->getEntityManager();
 
-            // Find the user that is associated with the ID sent by the URL request 
+            // Find the user that is associated with the ID sent by the URL request
             $user = $em->getRepository('AppBundle:User')->find($id);
 
             // Fetch the assistant history of the user
@@ -339,10 +337,9 @@ class ProfileController extends Controller
 
             $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($this->getUser());
 
-            if ($signature === null){
+            if ($signature === null) {
                 return $this->redirectToRoute('certificate_signature_picture_upload');
             }
-
 
             $html = $this->renderView('certificate/certificate.html.twig', array(
                 'user' => $user,
@@ -350,11 +347,11 @@ class ProfileController extends Controller
                 'assistantHistory' => $assistantHistory,
                 'workHistory' => $workHistory,
                 'signature' => $signature,
-                'base_dir' => $this->get('kernel')->getRootDir() . '/../www' . $request->getBasePath()
+                'base_dir' => $this->get('kernel')->getRootDir().'/../www'.$request->getBasePath(),
             ));
             $mpdfService = $this->get('tfox.mpdfport');
-            return $mpdfService->generatePdfResponse($html);;
 
+            return $mpdfService->generatePdfResponse($html);
         } else {
             return $this->redirect($this->generateUrl('home'));
         }
@@ -426,7 +423,7 @@ class ProfileController extends Controller
     public function editProfileInformationAdminAction(Request $request)
     {
         if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-            // Get the ID sent by the request 
+            // Get the ID sent by the request
             $id = $this->getRequest()->get('id');
 
             // Find a user by the ID sent by the request

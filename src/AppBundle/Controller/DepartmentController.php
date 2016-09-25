@@ -94,12 +94,12 @@ class DepartmentController extends Controller
             // Send a response back to AJAX
             $response['success'] = false;
             $response['cause'] = 'Kunne ikke slette avdelingen.';
-            //$response['cause'] = $e->getMessage(); // if you want to see the exception message. 
+            //$response['cause'] = $e->getMessage(); // if you want to see the exception message.
 
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 
@@ -114,7 +114,7 @@ class DepartmentController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        // Find a department by the ID sent in by the request 
+        // Find a department by the ID sent in by the request
         $department = $em->getRepository('AppBundle:Department')->find($id);
 
         // Only edit if it is a SUPER_ADMIN
