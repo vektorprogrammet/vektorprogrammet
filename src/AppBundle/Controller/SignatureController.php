@@ -6,7 +6,10 @@ use AppBundle\Entity\Signature;
 use AppBundle\FileSystem\FileUploader;
 use AppBundle\Form\Type\CreateSignatureType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class SignatureController extends Controller
 {
@@ -36,7 +39,8 @@ class SignatureController extends Controller
     
             $result = $uploader->upload($request);
             $path = $result[array_keys($result)[0]]; //todo: duplicated code this line and those above it. see editProfilePhotoAction in ProfileController
-            $signature->setSignaturePath($path);
+            $fileName = substr($path, strrpos($path, '/') + 1);
+            $signature->setSignaturePath('signatures/'.$fileName);
         } else {
             $signature->setSignaturePath($oldPath);
         }
@@ -51,5 +55,24 @@ class SignatureController extends Controller
             'form' => $form->createView(),
             'signature' => $signature
         ));
+    }
+    
+    public function showSignatureImageAction($imageName)
+    {
+        $user = $this->getUser();
+        
+        $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($user);
+        if ($signature === null) {
+            throw new NotFoundHttpException('Signature not found');
+        }
+        
+        $signatureImagePath = $signature->getSignaturePath();
+        $signatureFileName = substr($signatureImagePath, strrpos($signatureImagePath, '/') + 1);
+        if ($imageName !== $signatureFileName) {
+            // Users can only view their own signatures
+            throw new AccessDeniedException();
+        }
+
+        return new BinaryFileResponse($this->container->getParameter('signature_images').'/'.$signatureFileName);
     }
 }

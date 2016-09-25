@@ -19,7 +19,7 @@ parameters:
   logo_images: 'images/Logo images'
 
   #Signature images
-  signature_images: 'images/signatures'
+  signature_images: '../signatures'
 
   # Article images
   article_images: 'images/article_images'

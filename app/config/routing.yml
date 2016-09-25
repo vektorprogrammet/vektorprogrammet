@@ -1129,6 +1129,10 @@ certificate_signature_picture_upload:
   path: /kontrollpanel/attest/signatur
   defaults: {_controller: AppBundle:Signature:show}
 
+signature_image_show:
+  path: /signatures/{imageName}
+  defaults: { _controller: AppBundle:Signature:showSignatureImage }
+
 
 ##########################################	
 #                Sponsors                #

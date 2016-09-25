@@ -25,7 +25,7 @@ class Signature
     protected $id;
 
     /**
-     * @ORM\Column(name="signature_path" type="string", length=45, nullable=true)
+     * @ORM\Column(name="signature_path", type="string", length=45, nullable=true)
      */
     private $signaturePath;
 
