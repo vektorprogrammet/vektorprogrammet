@@ -15,13 +15,22 @@
     <div class="row">
         <div class="small-12 columns">
             <h1>{{ team.name }}</h1>
-            <p class="team-short-description">{{ team.shortDescription }} <br> {{ team.email }}</p>
-            <hr>
         </div>
     </div>
 
-
-
+    <div class="row">
+        <div class="small-8 columns">
+            <p class="team-short-description">{{ team.shortDescription }} <br> {{ team.email }}</p>
+        </div>
+        <div class="small-4 columns">
+            <a href="{{ path('certificate_signature_picture_upload') }}"  class="button tiny" > Søk {{ team.name }}</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 columns">
+            <hr>
+        </div>
+    </div>
     <div class="row">
         <div class="large-7 columns team-description-column">
             {{ team.description|safe_html }}

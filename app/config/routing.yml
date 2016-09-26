@@ -549,6 +549,10 @@ team_page:
   path: /team/{id}
   defaults: {_controller: AppBundle:Team:show}
 
+team_application:
+  path: /team/application/{id}
+  defaults: {_controller: AppBundle:TeamApplication:show}
+
 teamadmin_show:
  path: /kontrollpanel/teamadmin
  defaults: {_controller: AppBundle:TeamAdmin:show }

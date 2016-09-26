@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{%  block body %}
+    <div class="row">
+        <div class="small-12 colums">
+            <h1>Søk {{ team.name }}</h1>
+        </div>
+
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="small-8 columns">
+                {{ form_row(form.applicationText)}}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
