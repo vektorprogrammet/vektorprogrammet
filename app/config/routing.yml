@@ -151,6 +151,10 @@ profile:
  path:   /profile
  defaults: { _controller: AppBundle:Profile:show }
 
+profile_activate_with_user_code:
+  path: /bruker/aktiver/{newUserCode}
+  defaults: {_controller: AppBundle:Profile:activateNewUser }
+
 profile_activate_user:
  path:   /profile/aktiv/{id}
  defaults: { _controller: AppBundle:Profile:activateUser }
@@ -387,6 +391,13 @@ admission_show_specific_department:
  requirements:
     id: \d+
 
+admission_show_specific_department_by_name:
+ path: /avdeling/{short_name}
+ defaults: {_controller: AppBundle:Admission:show }
+ requirements:
+    id: \w+
+
+
 admission_contact:
  path: /opptakkontakt/{id}
  defaults: {_controller: AppBundle:Admission:contact }
@@ -489,11 +500,6 @@ useradmin_create_user_superadmin:
  requirements:
     id: \d+
 
-useradmin_activate_user:
- path: /kontrollpanel/aktiver/{newUserCode}
- defaults: {_controller: AppBundle:UserAdmin:activateNewUser }
- requirements:
-    _method: GET|POST
 
 ##########################################
 #              Semester                  #
@@ -539,6 +545,9 @@ semesteradmin_delete_semester_by_id:
 ##########################################
 #               Team                     #
 ##########################################
+team_page:
+  path: /team/{id}
+  defaults: {_controller: AppBundle:Team:show}
 
 teamadmin_show:
  path: /kontrollpanel/teamadmin
@@ -1097,11 +1106,11 @@ substitute_delete:
 #                Certificate              #
 ##########################################
 certificate_show:
-   path: /attest
+   path: /kontrollpanel/attest
    defaults: { _controller: AppBundle:Certificate:show }
 
 certificate_delete_by_id:	
-  path: /attest/slett/{id}
+  path: /kontrollpanel/attest/slett/{id}
   defaults: { _controller: AppBundle:Certificate:delete }
   requirements:
     _method: GET|POST
@@ -1109,12 +1118,21 @@ certificate_delete_by_id:
     expose: true
 
 certificate_request:
-  path: /attest/forespør
+  path: /kontrollpanel/attest/forespør
   defaults: { _controller: AppBundle:Certificate:request }
   requirements:
     _method: GET|POST
   options:
     expose: true
+
+certificate_signature_picture_upload:
+  path: /kontrollpanel/attest/signatur
+  defaults: {_controller: AppBundle:Signature:show}
+
+signature_image_show:
+  path: /signatures/{imageName}
+  defaults: { _controller: AppBundle:Signature:showSignatureImage }
+
 
 ##########################################	
 #                Sponsors                #
@@ -1159,3 +1177,15 @@ anniversary_remove_payment:
  defaults: { _controller: AppBundle:AnniversaryRegistration:removePayment}
  requirements:
   _method: POST
+
+create_field_of_study:
+  path: /kontrollpanel/linje
+  defaults: { _controller: AppBundle:FieldOfStudy:edit }
+
+edit_field_of_study:
+  path: /kontrollpanel/linje/{id}
+  defaults: { _controller: AppBundle:FieldOfStudy:edit }
+
+show_field_of_studies:
+  path: /kontrollpanel/linjer
+  defaults: {_controller: AppBundle:FieldOfStudy:show }

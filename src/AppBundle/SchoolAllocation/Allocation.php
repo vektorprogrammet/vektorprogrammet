@@ -4,8 +4,8 @@ namespace AppBundle\SchoolAllocation;
 
 class Allocation
 {
-    private $schools;//Array with School objects
-    private $assistants;//Array with Assistant objects
+    private $schools; //Array with School objects
+    private $assistants; //Array with Assistant objects
     public static $count;
     /**
      * Allocation constructor.
@@ -80,7 +80,7 @@ class Allocation
             }
         }
 
-        return;//No solution found
+        return; //No solution found
     }
 
     /**

@@ -16,10 +16,10 @@ class PostEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $post = new Post();
 
-        // Use the setSubject method 
+        // Use the setSubject method
         $post->setSubject('One subject');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('One subject', $post->getSubject());
     }
 
@@ -32,10 +32,10 @@ class PostEntityUnitTest extends \PHPUnit_Framework_TestCase
 
         $datetime = new DateTime('now');
 
-        // Use the setDatetime method 
+        // Use the setDatetime method
         $post->setDatetime($datetime);
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals($datetime, $post->getDatetime());
     }
 
@@ -46,10 +46,10 @@ class PostEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $post = new Post();
 
-        // Use the setText method 
+        // Use the setText method
         $post->setText('One text');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('One text', $post->getText());
     }
 
@@ -60,14 +60,14 @@ class PostEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $post = new Post();
 
-        // dummy entity 
+        // dummy entity
         $thread = new Thread();
         $thread->setSubject('hehe');
 
-        // Use the setThread method 
+        // Use the setThread method
         $post->setThread($thread);
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals($thread, $post->getThread());
     }
 
@@ -78,14 +78,14 @@ class PostEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $post = new Post();
 
-        // dummy entity 
+        // dummy entity
         $user = new User();
         $user->setFirstName('Ole');
 
-        // Use the setUser method 
+        // Use the setUser method
         $post->setUser($user);
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals($user, $post->getUser());
     }
 }

@@ -37,12 +37,6 @@ class CreateUserType extends AbstractType
             ->add('phone', 'text',  array(
                 'label' => 'Telefon',
             ))
-            ->add('user_name', 'text',  array(
-                'label' => 'Brukernavn',
-            ))
-            ->add('password', 'password',  array(
-                'label' => 'Passord',
-            ))
             ->add('email', 'text',  array(
                 'label' => 'E-post',
             ))
@@ -55,7 +49,7 @@ class CreateUserType extends AbstractType
                       ->where('f.department = ?1')
                       // Set the parameter to the department ID that the current user belongs to.
                       ->setParameter(1, $this->departmentId);
-                    },
+                },
                     ));
 
         if ($this->admin == 'superadmin') {

@@ -63,7 +63,7 @@ class Position
         return $this->name;
     }
 
-    // Used for unit testing 
+    // Used for unit testing
     public function fromArray($data = array())
     {
         foreach ($data as $property => $value) {

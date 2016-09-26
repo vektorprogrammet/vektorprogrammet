@@ -30,13 +30,12 @@ class TeamAdminController extends Controller
         } catch (\Exception $e) {
             // Send a response back to AJAX
             $response['success'] = false;
-            //$response['cause'] = 'Kunne ikke slette stillingen';
             $response['cause'] = $e->getMessage();
 
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 
@@ -54,7 +53,7 @@ class TeamAdminController extends Controller
 
             $em = $this->getDoctrine()->getManager();
 
-            // Find a position by the ID sent in by the request 
+            // Find a position by the ID sent in by the request
             $position = $em->getRepository('AppBundle:Position')->find($id);
 
             // Create the form
@@ -259,7 +258,7 @@ class TeamAdminController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        // Find a team by the ID sent in by the request 
+        // Find a team by the ID sent in by the request
         $team = $em->getRepository('AppBundle:Team')->find($id);
 
         // Find the department of the team
@@ -272,15 +271,27 @@ class TeamAdminController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em->persist($team);
-            $em->flush();
+            $em = $this->getDoctrine()->getManager();
+            //Don't persist if the preview button was clicked
+            if (false === $form->get('preview')->isClicked()) {
+                // Persist the team to the database
+                $em->persist($team);
+                $em->flush();
 
-            return $this->redirect($this->generateUrl('teamadmin_show'));
+                return $this->redirect($this->generateUrl('teamadmin_show'));
+            }
+            $workHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeam($team);
+            // Render the teampage as a preview
+            return $this->render('team/team_page.html.twig', array(
+                'team' => $team,
+                'workHistories' => $workHistories,
+                ));
         }
 
         return $this->render('team_admin/create_team.html.twig', array(
             'department' => $department,
              'form' => $form->createView(),
+            'isUpdate' => true,
         ));
     }
 
@@ -311,7 +322,7 @@ class TeamAdminController extends Controller
         }
     }
 
-    public function createTeamForDepartmentAction(request $request)
+    public function createTeamForDepartmentAction(Request $request)
     {
         if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
             // Find the id variable sent by the request
@@ -333,13 +344,20 @@ class TeamAdminController extends Controller
 
                 // Set the teams department to the department sent in by the request
                 $team->setDepartment($department);
-
-                // Persist the team to the database
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($team);
-                $em->flush();
+                //Don't persist if the preview button was clicked
+                if (false === $form->get('preview')->isClicked()) {
+                    // Persist the team to the database
+                    $em->persist($team);
+                    $em->flush();
 
-                return $this->redirect($this->generateUrl('teamadmin_show'));
+                    return $this->redirect($this->generateUrl('teamadmin_show'));
+                }
+                // Render the teampage as a preview
+                return $this->render('team/team_page.html.twig', array(
+                    'team' => $team,
+                    'workHistories' => [],
+                ));
             }
 
             return $this->render('team_admin/create_team.html.twig', array(
@@ -378,7 +396,7 @@ class TeamAdminController extends Controller
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 
@@ -409,7 +427,7 @@ class TeamAdminController extends Controller
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 }

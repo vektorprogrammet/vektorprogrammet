@@ -50,11 +50,16 @@ class UserAdminController extends Controller
                 $user->addRole($role);
             }
 
+            $userRegistration = $this->get('app.user.registration');
+            $newUserCode = $userRegistration->setNewUserCode($user);
+
             // Persist the user
             $em = $this->getDoctrine()->getManager();
-            $user->setIsActive(1);
             $em->persist($user);
             $em->flush();
+
+            $emailMessage = $userRegistration->createActivationEmail($user, $newUserCode);
+            $this->get('mailer')->send($emailMessage);
 
             return $this->redirect($this->generateUrl('useradmin_show'));
         }
@@ -164,7 +169,7 @@ class UserAdminController extends Controller
             // You have to check for admin rights here to prevent admins from deleting users that are not in their department
             elseif ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
                 $em = $this->getDoctrine()->getEntityManager();
-                // Find a user by a given ID 
+                // Find a user by a given ID
                 $userToBeDeleted = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
                 // Find the department of the user that is being deleted
                 $department = $userToBeDeleted->getFieldOfStudy()->getDepartment();
@@ -191,34 +196,31 @@ class UserAdminController extends Controller
                 'success' => false,
                 'code' => $e->getCode(),
                 'cause' => 'Det er ikke mulig å slette brukeren. Vennligst kontakt IT-ansvarlig.',
-                // 'cause' => $e->getMessage(), if you want to see the exception message. 
+                // 'cause' => $e->getMessage(), if you want to see the exception message.
             ]);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 
     /**
      * Sets newUserCode and sends activation email to user.
      *
-     * @param User user
+     * @param User $user
+     *
+     * @internal param User $User
      */
     public function sendActivationEmail(User $user)
     {
-        $em = $this->getDoctrine()->getManager();
+        $userRegistration = $this->get('app.user.registration');
+        $newUserCode = $userRegistration->setNewUserCode($user);
 
-        $createNewUserCode = bin2hex(openssl_random_pseudo_bytes(16));
-        $hashedNewUserCode = hash('sha512', $createNewUserCode, false);
-        $user->setNewUserCode($hashedNewUserCode);
+        $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
 
-        $emailMessage = \Swift_Message::newInstance()
-            ->setSubject('Velkommen til vektorprogrammet')
-            ->setFrom(array($this->container->getParameter('no_reply_email_user_creation') => 'Vektorprogrammet'))
-            ->setTo($user->getEmail())
-            ->setBody($this->renderView('new_user/create_new_user_email.txt.twig', array('newUserURL' => $this->generateURL('useradmin_activate_user', array('newUserCode' => $createNewUserCode), true))));
+        $emailMessage = $userRegistration->createActivationEmail($user, $newUserCode);
         $this->get('mailer')->send($emailMessage);
     }
 

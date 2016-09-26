@@ -28,11 +28,11 @@ class ThreadRepositoryFunctionalTest extends KernelTestCase
     {
 
 //		$threads = $this->em->getRepository('AppBundle:Thread')->findLatestThreadBySubforum(1);
-//
+
 //		$allThreads = $this->em->getRepository('AppBundle:Thread')->findAll();
-//
+
 //		foreach ($threads as $thread){
-//
+
 //			foreach ($allThreads as $oneThread){
 //				// Does oneThread belong to the same subfourm?
 //				if ($oneThread->getSubforum()->getId() == 1) {
@@ -40,33 +40,33 @@ class ThreadRepositoryFunctionalTest extends KernelTestCase
 //					$this->assertGreaterThanOrEqual($oneThread->getDateTime(), $thread->getDateTime());
 //				}
 //			}
-//
+
 //			$this->assertEquals(1, $thread->getSubforum()->getId());
-//
+
 //		}
     }
 
-    // A check whether the forum returned by the method is the correct forum 
+    // A check whether the forum returned by the method is the correct forum
 //	public function testFindLatestThreadByForum(){
-//
+
 //		$threads = $this->em->getRepository('AppBundle:Thread')->findLatestThreadByForum(1);
-//
+
 //		foreach ($threads as $thread){
-//
+
 //			$forums = $thread->getSubforum()->getForums();
-//
+
 //			foreach ($forums as $forum){
-//
+
 //				if ($forum->getId() == 1 ){
 //					$tempForum = $forum;
 //				}
-//
+
 //			}
-//
+
 //			$this->assertEquals(1, $tempForum);
-//
+
 //		}
-//
+
 //	}
 
     /**

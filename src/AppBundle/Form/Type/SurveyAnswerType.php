@@ -149,7 +149,9 @@ class SurveyAnswerType extends AbstractType
     {
         $alternatives = $surveyAnswer->getSurveyQuestion()->getAlternatives();
 
-        $values = array_map(function ($a) { return $a->getAlternative(); }, $alternatives->getValues());
+        $values = array_map(function ($a) {
+            return $a->getAlternative();
+        }, $alternatives->getValues());
 
         return array_combine($values, $values);
     }

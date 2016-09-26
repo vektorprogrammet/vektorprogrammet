@@ -6,6 +6,7 @@
 @import "partials/typography";
 @import "modules/well";
 @import "modules/colors";
+@import "modules/team.scss";
 
 // Or selectively include components
 // @import
@@ -251,6 +252,7 @@ footer {
 }
 
 .admin-footer {
+  padding-top: 10px;
   .row {
     border-top: solid 3px $admin-grey;
   }
@@ -779,4 +781,8 @@ ul.alternatives {
 
 [class*="column"] + [class*="column"]:last-child {
   float: left;
+}
+
+.hide {
+  display: none;
 }

@@ -14,10 +14,10 @@ class RoleEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $role = new Role();
 
-        // Use the setName method 
+        // Use the setName method
         $role->setId(1);
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals(1, $role->getId());
     }
 
@@ -28,10 +28,10 @@ class RoleEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $role = new Role();
 
-        // Use the setName method 
+        // Use the setName method
         $role->setName('Admin');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('Admin', $role->getName());
     }
 
@@ -42,10 +42,10 @@ class RoleEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $role = new Role();
 
-        // Use the setRole method 
+        // Use the setRole method
         $role->setRole('ROLE_ADMIN');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('ROLE_ADMIN', $role->getRole());
     }
 
@@ -67,10 +67,10 @@ class RoleEntityUnitTest extends \PHPUnit_Framework_TestCase
         // Create a array with the users
         $userList = array($user1, $user2, $user3);
 
-        // set the array as users of the role 
+        // set the array as users of the role
         $role->setUsers($userList);
 
-        // Users are stored in an array 
+        // Users are stored in an array
         $users = $role->getUsers();
 
         // Loop through the array and check for matches
@@ -95,10 +95,10 @@ class RoleEntityUnitTest extends \PHPUnit_Framework_TestCase
         $user1 = new User();
         $user1->setFirstName('Per');
 
-        // Use the addUser method 
+        // Use the addUser method
         $role->addUser($user1);
 
-        // Users are stored in an array 
+        // Users are stored in an array
         $users = $role->getUsers();
 
         // Loop through the array and check for matches
@@ -124,7 +124,7 @@ class RoleEntityUnitTest extends \PHPUnit_Framework_TestCase
         $user3 = new User();
         $user3->setFirstName('Ole');
 
-        // Use the addUser method 
+        // Use the addUser method
         $role->addUser($user1);
         $role->addUser($user2);
         $role->addUser($user3);
@@ -132,12 +132,12 @@ class RoleEntityUnitTest extends \PHPUnit_Framework_TestCase
         // Remove $user1
         $role->removeUser($user1);
 
-        // Teams are stored in an array 
+        // Teams are stored in an array
         $users = $role->getUsers();
 
         // Loop through the array
         foreach ($users as $user) {
-            // Assert the result 
+            // Assert the result
             $this->assertNotEquals($user1, $user);
         }
     }

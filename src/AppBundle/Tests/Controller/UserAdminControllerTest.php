@@ -31,8 +31,6 @@ class UserAdminControllerTest extends WebTestCase
         $form['createUser[lastName]'] = 'etternavn2';
         $form['createUser[gender]']->select(0);
         $form['createUser[phone]'] = '22288222';
-        $form['createUser[user_name]'] = 'fornavn2';
-        $form['createUser[password]'] = '1234';
         $form['createUser[email]'] = 'fornavn2@mail.com';
         $form['createUser[fieldOfStudy]']->select(1);
         $form['createUser[role]']->select(0);
@@ -70,8 +68,6 @@ class UserAdminControllerTest extends WebTestCase
         $form['createUser[lastName]'] = 'etternavn1';
         $form['createUser[gender]']->select(0);
         $form['createUser[phone]'] = '66688666';
-        $form['createUser[user_name]'] = 'fornavn1';
-        $form['createUser[password]'] = '1234';
         $form['createUser[email]'] = 'fornavn1@mail.com';
         $form['createUser[fieldOfStudy]']->select(3);
         $form['createUser[role]']->select(0);
@@ -134,10 +130,10 @@ class UserAdminControllerTest extends WebTestCase
 
     /*
     Requires JQuery interaction, Symfony2 does not support that
-    
-    Phpunit was designed to test the PHP language, have to use another tool to test these. 
-    
+
+    Phpunit was designed to test the PHP language, have to use another tool to test these.
+
     public function testDeleteUserById() {}
-    
+
     */
 }

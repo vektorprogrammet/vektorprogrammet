@@ -13,10 +13,10 @@ class PositionEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $position = new Position();
 
-        // Use the setName method 
+        // Use the setName method
         $position->setName('Leder');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('Leder', $position->getName());
     }
 }

@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ team.name }} - Vektorprogrammet
+{% endblock %}
+
+{% block facebookDescription %}
+    {{ team.shortDescription }}
+{% endblock %}
+
+
+
+{% block body %}
+
+    <div class="row">
+        <div class="small-12 columns">
+            <h1>{{ team.name }}</h1>
+            <p class="team-short-description">{{ team.shortDescription }} <br> {{ team.email }}</p>
+            <hr>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="large-7 columns team-description-column">
+            {{ team.description|safe_html }}
+        </div>
+        <div class="large-5 columns">
+            <h4>Medlemmer</h4>
+
+                <table>
+                    {% for wh in workHistories %}
+
+                        <tr>
+                            <td width="100">
+                                <img width="50" src="{{ asset(wh.user.picturePath) }}"/>
+                            </td>
+                            <td>
+                                {% if app.user %}
+                                    <span><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{ wh.user }}</a></span>
+                                {% else %}
+                                    <p> {{ wh.user }}  </p>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if wh.position is not null %}
+                                    {{ wh.position.name }}<br/>
+                                {% endif %}
+                            </td>
+                            <td width="60">
+                                <a href="mailto:{{ wh.user.email }}">E-post</a><br/>
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+                </table>
+
+        </div>
+    </div>
+
+{% endblock %}

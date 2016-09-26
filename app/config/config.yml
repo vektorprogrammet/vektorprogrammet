@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: "@AppBundle/Resources/config/services.yml" }
 
 parameters:
   # File upload parameters
@@ -16,6 +17,9 @@ parameters:
 
   # Logo images
   logo_images: 'images/Logo images'
+
+  #Signature images
+  signature_images: '../signatures'
 
   # Article images
   article_images: 'images/article_images'
@@ -112,21 +116,6 @@ ivory_ck_editor:
             toolbar: basic
         standard_config:
             toolbar: standard
-
-# See https://github.com/psliwa/PdfBundle for more details 
-ps_pdf:
-    nodes_file: ~
-    fonts_file: ~
-    complex_attributes_file: ~
-    colors_file: ~
-    use_cache_in_stylesheet: ~
-    cache:
-      type: ~
-      options: ~
-    markdown_stylesheet_filepath: ~
-    markdown_document_template_filepath: ~
-    document_parser_type: ~
-
 
 gregwar_captcha: ~
 

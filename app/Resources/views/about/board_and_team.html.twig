@@ -1,132 +1,47 @@
 npm{% extends 'base.html.twig' %}
 
-{% block customScripts %}
-
-	<script>
-
-		$(document).ready(function() {
-
-			{# Get all the teams as they are first presented #}
-			teams = $(".team");
-
-			$('.departmentId').click(function(){
-
-				{# Get the ID of the elemnt being clicked #}
-				var ID =  parseInt(this.id);
-
-				{# Hide all teams #}
-				teams.hide();
-
-				{# Show teams with id=ID and class="team" #}
-				$("#"+ID+".team").show();
-
-			});
-
-			{# Show all departments #}
-			$('.AllDepartments').click(function(){
-
-				teams.show();
-
-			});
-
-		});
-
-	</script>
-
-
-{% endblock %}
-
 {% block title %}
-	Styret og team
+    Styret og team
 {% endblock %}
 	
 	
 {% block body %}
-	<p></p>
+    <p></p>
 
-	<div class="row">
-		<div class="small-12 medium-12 large-12 columns">
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <h1> Styret og team </h1>
+            <hr>
+        </div>
+    </div>
 
-			<h1> Styret og team </h1>
+    <div class="row">
+        <div class="small-12 columns">
+            <h3 class="no-bottom-margin"></h3>
+        </div>
+    </div>
 
-			<hr>
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <table>
+                {% for department in departments %}
+                    <tr>
+                        <th colspan="2">
+                            <h3>{{ department.shortName }}</h3>
+                        </th>
+                    </tr>
+                    {% for team in department.teams %}
+                        <tr>
+                            <td><h6><a href="{{ path('team_page', {'id': team.id}) }}">{{ team.name }}</a></h6></td>
+                            <td><span class="team-short-description">{{ team.shortDescription }}</span></td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <br>
 
-			<a class="button tiny" data-dropdown="department" aria-controls="department" aria-expanded="false">Avdeling &raquo;</a>
-			<ul id="department" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
-				<li> <a href="#" class="AllDepartments"> Vis alle </a></li>
-
-				{% for d in Departments %}
-
-					<li><a href="#" class="departmentId" id={{d.id}}> {{ d.shortname }} </a></li>
-
-
-				{% endfor %}
-
-			</ul>
-
-		</div>
-	</div>
-
-	{% for t in Teams %}
-
-		<team class="team" id={{ t.department.id }}>
-
-			<div class="row">
-				<div class="small-12 medium-12 large-12 columns">
-
-					<hr>
-
-					<h3> {{ t.department.shortName }}: {{ t.name }} </h3>
-
-				</div>
-
-				{% set count = 0 %}
-				{% for wh in WorkHistories %}
-
-					{% if wh.team is not null %}
-						{% if wh.team.id == t.id %}
-							{% if count%4 == 0 %}
-								<div class="row">
-							{% endif %}
-
-							<div class="small-12 medium-12 large-3 columns left">
-
-								<img src="{{ asset(wh.user.picturePath) }}"/>
-
-								<div class="panel callout radius">
-									{% if app.user %}
-										<h4><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{wh.user}}</a></h4>
-									{% else %}
-										<h4> {{wh.user}}  </h4>
-									{% endif %}
-									<p>
-										{% if wh.position is not null %}
-											{{ wh.position.name }}<br/>
-										{% endif %}
-										<a href="mailto:{{ wh.user.email }}">E-post</a><br/>
-										{{ wh.user.phone|slice(0,3) }} {{ wh.user.phone|slice(3,2) }} {{ wh.user.phone|slice(5,3) }} <br/>
-									</p>
-								</div>
-
-							</div>
-
-							{% if count%4 == 3 %}
-								</div>
-							{% endif %}
-							{% set count = count + 1 %}
-						{% endif %}
-					{% endif %}
-
-				{% endfor %}
-				{% if count%4 != 0 %}
-			</div>
-			{% endif %}
-
-			</div>
-
-		</team>
-
-	{% endfor %}
 
 
 

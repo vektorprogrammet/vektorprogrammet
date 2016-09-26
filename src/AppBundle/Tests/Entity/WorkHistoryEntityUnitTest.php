@@ -29,19 +29,19 @@ class WorkHistoryEntityUnitTest extends \PHPUnit_Framework_TestCase
 
     // Check whether the setEndDate function is working correctly
 /*	public function testSetEndDate(){
-        
-        // New datetime variable 
+
+        // New datetime variable
         $today = new DateTime("now");
-        
+
         // new entity
         $wh = new WorkHistory();
-        
-        // Use the setStartDate method 
+
+        // Use the setStartDate method
         $wh->setEndDate($today);
-        
-        // Assert the result 
+
+        // Assert the result
         $this->assertEquals($today, $wh->getEndDate());
-        
+
     }*/
 
     // Check whether the setUser function is working correctly
@@ -55,10 +55,10 @@ class WorkHistoryEntityUnitTest extends \PHPUnit_Framework_TestCase
         $user = new User();
         $user->setFirstName('Per');
 
-        // Use the setUser method 
+        // Use the setUser method
         $wh->setUser($user);
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals($user, $wh->getUser());
     }
 
@@ -73,10 +73,10 @@ class WorkHistoryEntityUnitTest extends \PHPUnit_Framework_TestCase
         $team = new Team();
         $team->setName('Hovedstyret');
 
-        // Use the setTeam method 
+        // Use the setTeam method
         $wh->setTeam($team);
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals($team, $wh->getTeam());
     }
 
@@ -91,10 +91,10 @@ class WorkHistoryEntityUnitTest extends \PHPUnit_Framework_TestCase
         $position = new Position();
         $position->setName('Superleder');
 
-        // Use the setPosition method 
+        // Use the setPosition method
         $wh->setPosition($position);
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals($position, $wh->getPosition());
     }
 }

@@ -89,7 +89,7 @@
                 <tbody>
                 {% for a in pagination %}
                     <tr id="{{ a.id }}">
-                        <td>{{ a.title|raw }}</td>
+                        <td>{{ a.title|safe_html }}</td>
                         <td>{{ a.updated|date("d.m.y - G:i") }}</td>
                         <td>{{ a.author.firstName }} {{ a.author.lastName }}</td>
 

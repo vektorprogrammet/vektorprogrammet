@@ -1,0 +1,23 @@
+@import "colors";
+
+.teamLink{
+
+    margin-bottom: 0;
+    padding-left:18px;
+    margin-top: 0em;
+}
+.teamLink + .team-short-description{
+    padding-left:36px;
+}
+
+.team-short-description{
+    color: $grey;
+}
+
+.team-description-column{
+    word-wrap: break-word;
+}
+
+.no-bottom-margin{
+    margin-bottom: 0em;
+}
