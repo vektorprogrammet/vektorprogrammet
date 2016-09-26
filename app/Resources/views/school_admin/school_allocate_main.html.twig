@@ -6,9 +6,22 @@
         <div class="large-12">
         </div>
         <table>
+            <tr>
+                <th>Navn</th>
+                <th>Skole</th>
+                <th>Ukedag</th>
+                <th>Bolk</th>
+            </tr>
             {% for application in applications %}
-                <tr><td>{{ application.user.firstName }} {{ application.user.lastName }}</td></tr>
+                <tr>
+                    <td>{{ application.user.firstName }} {{ application.user.lastName }}</td>
+                    <td><select name="isAttending" id="isAttending"></select></td>
+                    <td><select name="isAttending" id="isAttending"></select></td>
+                    <td><select name="isAttending" id="isAttending"></select></td>
+                </tr>
             {% endfor %}
         </table>
     </div>
+
+
 {% endblock %}
