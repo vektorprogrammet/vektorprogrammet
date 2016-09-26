@@ -15,7 +15,11 @@
             {% for application in applications %}
                 <tr>
                     <td>{{ application.user.firstName }} {{ application.user.lastName }}</td>
-                    <td><select name="isAttending" id="isAttending"></select></td>
+                    <td><select name="isAttending" id="isAttending">
+                            {% for school in allocations %}
+                                <option value="school">{{ school.school.name }}</option>
+                            {% endfor %}
+                        </select></td>
                     <td><select name="isAttending" id="isAttending"></select></td>
                     <td><select name="isAttending" id="isAttending"></select></td>
                 </tr>
