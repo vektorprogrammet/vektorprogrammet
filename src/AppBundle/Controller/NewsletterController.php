@@ -132,4 +132,34 @@ class NewsletterController extends Controller
 
         return $this->redirectToRoute('newsletter_show_all');
     }
+
+    public function subscribeFormAction(Request $request, Department $department)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $newsletter = $manager->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
+
+        $subscriber = new Subscriber();
+
+        $form = $this->createForm(new SubscribeToNewsletterType(), $subscriber);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $subscriber->setNewsletter($newsletter);
+
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($subscriber);
+            $manager->flush();
+
+            $this->addFlash('success', $subscriber->getEmail() . ' ble registrert');
+
+            return $this->redirectToRoute('admission_show_specific_department', array('id' => $department->getId()));
+        }
+
+        return $this->render('newsletter/subscribe_form.html.twig', array(
+            'newsletter' => $newsletter,
+            'form' => $form->createView()
+        ));
+
+    }
 }

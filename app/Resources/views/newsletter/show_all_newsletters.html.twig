@@ -41,15 +41,12 @@
                             <form method="POST" action="{{ path('newsletter_toggle_visable', {'id' : newsletter.id}) }}">
                                 <button type="submit"
                                         {% if newsletter.showOnAdmissionPage %}
-                                            class="tiny button success"> Vises på side
+                                            class="tiny button success"> Aktiv
                                          {% else %}
-                                            class="tiny button"> Vis på side
+                                            class="tiny button"> Aktiver
                                         {% endif %}
                                     <i class="fa"></i> </button>
                             </form>
-                        </td>
-                        <td>
-                            TODO: Blå knapp hvis ikke på påmeldingsside. Grønn knapp hvis vises på påmeldingsside
                         </td>
 
                 {% endfor %}

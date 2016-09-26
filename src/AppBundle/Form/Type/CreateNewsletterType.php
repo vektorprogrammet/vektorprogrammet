@@ -13,10 +13,6 @@ class CreateNewsletterType extends AbstractType
         $builder
             ->add('name', 'text', array(
                 'label' => 'Navn på nyhetsbrev'
-            ))
-            ->add('showOnAdmissionPage', 'checkbox', array(
-                'label' => 'Vis på opptakssiden',
-                'required' => false
             ));
     }
 
