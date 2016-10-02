@@ -8,20 +8,24 @@
         <table class="allocation_table">
             <tr>
                 <th>Navn</th>
-                <th>Skole</th>
                 <th>Ukedag</th>
+                <th>Skole</th>
                 <th>Bolk</th>
             </tr>
             {% for application in applications %}
                 <tr>
+                    {# Navn #}
                     <td>{{ application.user.firstName }} {{ application.user.lastName }}</td>
-                    <td><select name="isAttending" class="isAttending">
+                    {# Ukedag #}
+                    <td><select class="isAttending"></select></td>
+                    {# Skole #}
+                    <td><select class="isAttending">
                             {% for school in allocations %}
                                 <option value="school">{{ school.school.name }}</option>
                             {% endfor %}
                         </select></td>
-                    <td><select name="isAttending" class="isAttending"></select></td>
-                    <td><select name="isAttending" class="isAttending"></select></td>
+                    {# Skole #}
+                    <td><select class="isAttending"></select></td>
                 </tr>
             {% endfor %}
         </table>
