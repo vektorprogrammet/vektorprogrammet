@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
  * @ORM\Table(name="team_application")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\TeamApplicationRepository")
  */
 class TeamApplication
 {
@@ -25,7 +25,7 @@ class TeamApplication
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=45, unique=true)
+     * @ORM\Column(type="string", length=45)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      * @Assert\Email(message="Ikke gyldig e-post.")
      */
@@ -37,9 +37,13 @@ class TeamApplication
     private $applicationText;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Team")
+     */
+    private $team;
+
+    /**
      * @return mixed
      */
-
     public function getId()
     {
         return $this->id;
@@ -99,6 +103,23 @@ class TeamApplication
     public function setApplicationText($applicationText)
     {
         $this->applicationText = $applicationText;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getTeam()
+    {
+        return $this->team;
+    }
+
+    /**
+     * @param mixed $team
+     */
+    public function setTeam($team)
+    {
+        $this->team = $team;
     }
 
 }

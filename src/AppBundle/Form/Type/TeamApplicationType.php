@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,14 +12,15 @@ class TeamApplicationType extends AbstractType
     {
         $builder
 
-            ->add('name', 'file', array(
+            ->add('name', 'text', array(
                 'label' => 'Navn',
             ))
-            ->add('email', 'file', array(
+            ->add('email', 'email', array(
                 'label' => 'Email',
             ))
-            ->add('applicationText', 'text', array(
+            ->add('applicationText', 'textarea', array(
                 'label' => 'Søknadstekst',
+                'attr' => array('rows' => 10),
             ));
     }
 

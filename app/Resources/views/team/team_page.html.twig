@@ -23,7 +23,7 @@
             <p class="team-short-description">{{ team.shortDescription }} <br> {{ team.email }}</p>
         </div>
         <div class="small-4 columns">
-            <a href="{{ path('certificate_signature_picture_upload') }}"  class="button tiny" > Søk {{ team.name }}</a>
+            <a href="{{ path('team_application',{id:team.id}) }}"  class="button tiny" > Søk {{ team.name }}</a>
         </div>
     </div>
     <div class="row">

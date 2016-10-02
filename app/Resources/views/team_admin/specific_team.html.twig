@@ -79,6 +79,9 @@
 							<li>
 								<a href="{{ path('teamadmin_add_user_to_team', { 'id': team.id }) }}" class="button tiny">Legg til bruker</a>
 							</li>
+							<li>
+								<a href="{{ path('team_application_show_all', { 'id': team.id }) }}" class="button tiny">Se søkere</a>
+							</li>
 
 						{% endif %}
 

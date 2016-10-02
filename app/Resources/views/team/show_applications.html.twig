@@ -1,0 +1,24 @@
+{% extends 'adminBase.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="small-12 columns">
+            <h3>Søknader til {{ team.name }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 columns">
+    <table>
+        {% for application in applications %}
+        <tr>
+            <td>
+                <a href="{{ path('team_application_show',{id:application.id}) }}">{{ application.name }}</a>
+            </td>
+            <td>
+                {{ application.email }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    </div>
+{% endblock %}

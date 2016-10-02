@@ -8,7 +8,10 @@
         {{ form_start(form) }}
         <div class="row">
             <div class="small-8 columns">
+                {{ form_row(form.name)}}
+                {{ form_row(form.email)}}
                 {{ form_row(form.applicationText)}}
+                <button>Send</button>
             </div>
         </div>
         {{ form_end(form) }}
