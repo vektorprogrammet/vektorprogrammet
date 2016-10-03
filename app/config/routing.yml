@@ -736,28 +736,33 @@ schooladmin_show_specific_school:
 ##########################################
 
 school_allocation:
-  path: /skole/fordeling/
+  path: /kontrollpanel/skole/fordeling/
   defaults: { _controller: AppBundle:SchoolAllocation:show }
 
 allocate_edit:
-  path: /skole/fordeling/endre
+  path: /kontrollpanel/skole/fordeling/endre
   defaults: { _controller: AppBundle:SchoolAllocation:edit }
 
 allocate_create:
-  path: /skole/fordeling/opprett
+  path: /kontrollpanel/skole/fordeling/opprett
   defaults: { _controller: AppBundle:SchoolAllocation:create }
 
 school_allocation_allocate:
-  path: /skole/fordeling/fordel
+  path: /kontrollpanel/skole/fordeling/fordel
   defaults: { _controller: AppBundle:SchoolAllocation:allocate }
 
 school_allocation_processing:
-  path: /skole/fordeling/processing
+  path: /kontrollpanel/skole/fordeling/processing
   defaults: { _controller: AppBundle:SchoolAllocationProcessing:index }
 
 school_allocation_allocationMain:
-  path: /skole/fordeling/allokering
+  path: /kontrollpanel/skole/fordeling/allokering
   defaults: { _controller: AppBundle:SchoolAllocationMain:show }
+
+school_allocation_api_assistants:
+  path: /kontrollpanel/api/assistants
+  defaults: { _controller: AppBundle:SchoolAllocationAPI:getAssistants }
+  methods: [GET]
 
 ##########################################
 #              Interview                 #
