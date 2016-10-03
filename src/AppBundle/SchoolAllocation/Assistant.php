@@ -2,7 +2,7 @@
 
 namespace AppBundle\SchoolAllocation;
 
-class Assistant
+class Assistant implements \JsonSerializable
 {
     public static $idCounter;
     /**
@@ -221,5 +221,18 @@ class Assistant
             $this->setGroup($group);
         }
         $this->setAssignedDay($day);
+    }
+
+    public function jsonSerialize()
+    {
+        return array(
+            'group' => $this->group,
+            'name' => $this->name,
+            'assignedSchool' => $this->assignedSchool,
+            'assignedDay' => $this->assignedDay,
+            'availability' => $this->availability,
+            'preferredGroup' => $this->preferredGroup,
+            'doublePosition' => $this->doublePosition
+        );
     }
 }
