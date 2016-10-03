@@ -182,7 +182,6 @@ class TeamAdminController extends Controller
 
             // Find the team with the given ID
             $team = $this->getDoctrine()->getRepository('AppBundle:Team')->find($id);
-
             // Find the department of the team
             $department = $team->getDepartment();
 
@@ -270,7 +269,7 @@ class TeamAdminController extends Controller
         // Handle the form
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             //Don't persist if the preview button was clicked
             if (false === $form->get('preview')->isClicked()) {

@@ -8,6 +8,7 @@ use AppBundle\Entity\TeamApplication;
 use AppBundle\Form\Type\TeamApplicationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class TeamApplicationController extends Controller
 {
@@ -26,14 +27,20 @@ class TeamApplicationController extends Controller
 
     public function showAction(Team $team, Request $request)
     {
+        if (!$team->getAcceptApplication()) {
+            throw new AccessDeniedException();
+        }
         $teamApplication = new TeamApplication();
         $form = $this->createForm(new TeamApplicationType(), $teamApplication);
         $form->handleRequest($request);
-        if ($form->isValid() && $form->isSubmitted()){
+
+        if ($form->isValid() && $form->isSubmitted() && $team->getAcceptApplication()){
             $teamApplication->setTeam($team);
+
             $manager=$this->getDoctrine()->getManager();
             $manager->persist($teamApplication);
             $manager->flush();
+
             $emailMessage=\Swift_Message::newInstance()
                 ->setSubject('Ny søker til '.$team->getName())
                 ->setFrom(array('vektorprogrammet@vektorprogrammet.no'=>'Vektorprogrammet'))

@@ -21,7 +21,8 @@ class TeamApplicationType extends AbstractType
             ->add('applicationText', 'textarea', array(
                 'label' => 'Søknadstekst',
                 'attr' => array('rows' => 10),
-            ));
+            ))
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -23,7 +23,9 @@
             <p class="team-short-description">{{ team.shortDescription }} <br> {{ team.email }}</p>
         </div>
         <div class="small-4 columns">
-            <a href="{{ path('team_application',{id:team.id}) }}"  class="button tiny" > Søk {{ team.name }}</a>
+            {% if team.acceptApplication %}
+                <a href="{{ path('team_application',{id:team.id}) }}"  class="button tiny" > Søk {{ team.name }}</a>
+            {% endif %}
         </div>
     </div>
     <div class="row">
