@@ -986,6 +986,20 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
+        $user20 = new User();
+        $user20->setIsActive('1');
+        $user20->setEmail('jan-per-gustavio@gmail.com');
+        $user20->setFirstName('Jan-Per-Gustavio');
+        $user20->setLastName('Tacopedia');
+        $user20->setGender('0');
+        $user20->setPhone('81549300');
+        $user20->setUserName('JanPerGustavio');
+        $user20->setPassword('1234');
+        $user20->addRole($this->getReference('role-2'));
+        $user20->setFieldOfStudy($this->getReference('fos-3'));
+        $user20->setPicturePath('images/defaultProfile.png');
+        $manager->persist($user20);
+
         $manager->flush();
 
         $this->setReference('user-1', $user1);
@@ -1000,6 +1014,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $this->setReference('user-13', $user13);
         $this->setReference('user-14', $user14);
         $this->setReference('user-15', $user15);
+        $this->setReference('user-20', $user20);
     }
 
     public function getOrder()
