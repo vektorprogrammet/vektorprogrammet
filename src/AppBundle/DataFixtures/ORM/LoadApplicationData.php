@@ -163,14 +163,13 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
 
         $manager->persist($application6);
 
-
         /* Person 20: Jan-Per-Gustavio */
         $application20 = new Application();
         $application20->setUser($this->getReference('user-20'));
         $application20->setPreviousParticipation(false);
         $application20->setYearOfStudy(1);
         $application20->setSemester($this->getReference('semester-current'));
-        
+
         $application20->setMonday('Ikke');
         $application20->setTuesday('Ikke');
         $application20->setWednesday('Ikke');
@@ -180,7 +179,6 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application20->setEnglish(true);
         $application20->setPreferredGroup('Bolk 1');
         $application20->setDoublePosition(true);
-
 
         $interview20 = new Interview();
         $interview20->setInterviewed(true);
@@ -206,11 +204,10 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $intScore->setSuitableAssistant('Ja');
         $interview20->setInterviewScore($intScore);
         $application20->setInterview($interview20);
-        
+
         $manager->persist($application20);
 
         $manager->flush();
-        
     }
 
     public function getOrder()

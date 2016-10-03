@@ -23,6 +23,7 @@ class SchoolAllocationAPIController extends Controller
         $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsBySemester($currentSemester);
 
         $assistants = $this->getAssistantAvailableDays($applications);
+
         return new JsonResponse(json_encode($assistants));
     }
 
@@ -55,6 +56,7 @@ class SchoolAllocationAPIController extends Controller
             $assistant->setAvailability($availability);
             $assistants[] = $assistant;
         }
+
         return $assistants;
     }
 }

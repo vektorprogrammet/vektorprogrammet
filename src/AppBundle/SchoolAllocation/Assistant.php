@@ -232,7 +232,7 @@ class Assistant implements \JsonSerializable
             'assignedDay' => $this->assignedDay,
             'availability' => $this->availability,
             'preferredGroup' => $this->preferredGroup,
-            'doublePosition' => $this->doublePosition
+            'doublePosition' => $this->doublePosition,
         );
     }
 }

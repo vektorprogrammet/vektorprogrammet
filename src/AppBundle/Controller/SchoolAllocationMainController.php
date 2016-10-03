@@ -64,6 +64,7 @@ class SchoolAllocationMainController extends Controller
             $assistant->setAvailability($availability);
             $assistants[] = $assistant;
         }
+
         return $assistants;
     }
 }
