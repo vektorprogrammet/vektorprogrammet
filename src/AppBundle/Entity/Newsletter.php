@@ -135,7 +135,7 @@ class Newsletter
     }
 
     /**
-     * @return Subscriber
+     * @return Subscriber[]
      */
     public function getSubscribers()
     {

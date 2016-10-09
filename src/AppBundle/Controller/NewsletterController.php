@@ -10,7 +10,6 @@ use AppBundle\Form\CreateLetterType;
 use AppBundle\Form\SubscribeToNewsletterType;
 use AppBundle\Form\Type\CreateNewsletterType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Bundle\SwiftmailerBundle\Command\SendEmailCommand;
 use Symfony\Component\HttpFoundation\Request;
 
 class NewsletterController extends Controller
@@ -174,8 +173,16 @@ class NewsletterController extends Controller
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-
-
+            foreach ($newsletter->getSubscribers() as $subscriber){
+                $message = \Swift_Message::newInstance()
+                    ->setSubject($letter->getTitle())
+                    ->setFrom(array(
+                        $newsletter->getDepartment()->getEmail()=>'Vektorprogrammet'
+                    ))
+                    ->setTo($subscriber->getEmail())
+                    ->setBody($letter->getContent());
+                $this->get('mailer')->send($message);
+            }
 
             return $this->render('newsletter/letter_sent_message.html.twig', array('letter' => $letter));
         }
