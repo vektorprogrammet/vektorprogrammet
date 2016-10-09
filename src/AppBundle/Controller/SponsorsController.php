@@ -27,7 +27,10 @@ class SponsorsController extends Controller
             $logos[] = $sponsor->getLogoImagePath();
         }
 
-        return $this->render('sponsors/sponsors_edit.html.twig', array('forms' => $forms, 'logos' => $logos)); //todo: shouldn't I use AppBundle:somehting::something?
+        return $this->render('sponsors/sponsors_edit.html.twig', array(
+            'forms' => $forms,
+            'logos' => $logos,
+        )); //todo: shouldn't I use AppBundle:somehting::something?
     }
 
     public function sponsorsUpdateAction(Request $request, $id)

@@ -66,7 +66,7 @@ class Contact
         $metadata->addPropertyConstraint('body', new Length(array('min' => 5)));
     }
 
-    // Used for unit testing the forms 
+    // Used for unit testing the forms
     public function fromArray($data = array())
     {
         foreach ($data as $property => $value) {

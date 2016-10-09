@@ -21,7 +21,7 @@ class Optimizer
     public function __construct(Allocation $startAllocation, $temp, $dt, $maxTime)
     {
         $this->startAllocation = $startAllocation;
-        $this->temp = $temp;//Set maxTemperature
+        $this->temp = $temp; //Set maxTemperature
         $this->dt = $dt;
         $this->maxTime = $maxTime;
         $this->startTime = round(microtime(true) * 1000) / 1000;
@@ -78,9 +78,9 @@ class Optimizer
             //q, p and x will make the algorithm search for new random Allocations when we are at a bad node and at early iterations (temperature is still high).
             //The algorithm will search for close Allocations when a good node is found and at later iterations (temperature is low).
             if ($x > $p) {
-                $currentAllocation = $pMax;//Exploiting
+                $currentAllocation = $pMax; //Exploiting
             } else {
-                $currentAllocation = $neighbours[array_rand($neighbours, 1)];//Exploring
+                $currentAllocation = $neighbours[array_rand($neighbours, 1)]; //Exploring
             }
             //Decrease temperature
             $this->temp -= $this->dt;

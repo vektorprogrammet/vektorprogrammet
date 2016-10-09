@@ -197,20 +197,20 @@ class AdmissionAdminController extends Controller
             // This allows someone of a different role(lower) to delete applications/interviews if they belong to the same department.
             // This functionality is not in use, as only the highest admin should be able to delete applications/interviews.
             /*elseif ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')){
-                
+
                 $em = $this->getDoctrine()->getEntityManager();
                 $application = $this->getDoctrine()->getRepository('AppBundle:Application')->find($id);
                 // Get the department of the application
                 $department = $application->getStatistic()->getFieldOfStudy()->getDepartment();
-                
+
                 // Is the admin from the same department as the application?
                 if ($this->get('security.context')->getToken()->getUser()->getFieldOfStudy()->getDepartment() === $department){
-                    
+
                     $em->remove($application);
                     $em->flush();
                     // Send a respons to AJAX
                     $response['success'] = true;
-                
+
                 }
                 else {
                     // Send a respons to AJAX

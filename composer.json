@@ -27,9 +27,10 @@
         "friendsofsymfony/jsrouting-bundle": "~1.5",
         "knplabs/knp-paginator-bundle": "~2.4",
         "helios-ag/fm-elfinder-bundle": "~3",
-		"psliwa/pdf-bundle": "~1.0",
         "simplethings/form-extra-bundle": "1.1.*",
-        "liip/imagine-bundle": "1.2.6"
+        "liip/imagine-bundle": "1.2.6",
+        "tfox/mpdf-port-bundle": "^1.3",
+        "doctrine/doctrine-migrations-bundle": "^1.2"
     },
     "require-dev": {
         "phpunit/phpunit": "4.6.*",

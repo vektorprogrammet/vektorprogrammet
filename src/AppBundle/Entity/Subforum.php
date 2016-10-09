@@ -22,14 +22,14 @@ class Subforum
      */
     protected $name;
 
-    // This is the owning side 
+    // This is the owning side
     /**
      * @ORM\ManyToMany(targetEntity="School", inversedBy="subforums")
      * @ORM\JoinTable(name="school_subforum")
      **/
     protected $schools;
 
-    // This is the owning side 
+    // This is the owning side
     /**
      * @ORM\ManyToMany(targetEntity="Team", inversedBy="subforums")
      * @ORM\JoinTable(name="team_subforum")

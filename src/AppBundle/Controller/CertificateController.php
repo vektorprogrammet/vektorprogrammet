@@ -12,10 +12,10 @@ class CertificateController extends Controller
     public function showAction()
     {
 
-        // Only ROLE_SUPER_ADMIN can view this 
+        // Only ROLE_SUPER_ADMIN can view this
         if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 
-            // Finds all the the certificate requests 
+            // Finds all the the certificate requests
             $certificateRequests = $this->getDoctrine()->getRepository('AppBundle:CertificateRequest')->findAll();
 
             return $this->render('certificate/index.html.twig', array(
@@ -29,7 +29,7 @@ class CertificateController extends Controller
     public function deleteAction(Request $request)
     {
 
-        // Get the ID sent by the request 
+        // Get the ID sent by the request
         $id = $request->get('id');
 
         try {
@@ -53,19 +53,19 @@ class CertificateController extends Controller
         } catch (\Exception $e) {
             // Send a response back to AJAX
             $response['success'] = false;
-            $response['cause'] = $e->getMessage(); // if you want to see the exception message. 
+            $response['cause'] = $e->getMessage(); // if you want to see the exception message.
 
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 
     public function requestAction(Request $request)
     {
 
-        // Get the ID sent by the request 
+        // Get the ID sent by the request
         $id = $request->get('id');
 
         try {
@@ -75,16 +75,16 @@ class CertificateController extends Controller
                 // This deletes the given forum
                 $em = $this->getDoctrine()->getEntityManager();
 
-                // A new certificate entity 
+                // A new certificate entity
                 $certificate = new CertificateRequest();
 
-                // Find the user that sent the request 
+                // Find the user that sent the request
                 $user = $this->get('security.context')->getToken()->getUser();
 
                 // Add the user to the certificate
                 $certificate->setUser($user);
 
-                // Store it in the database 
+                // Store it in the database
                 $em->persist($certificate);
                 $em->flush();
 
@@ -99,12 +99,12 @@ class CertificateController extends Controller
             // Send a response back to AJAX
             $response['success'] = false;
             $response['cause'] = 'Kunne ikke lage en ny forespørsel.';
-            //$response['cause'] = $e->getMessage(); // if you want to see the exception message. 
+            //$response['cause'] = $e->getMessage(); // if you want to see the exception message.
 
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 }

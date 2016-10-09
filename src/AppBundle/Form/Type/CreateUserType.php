@@ -49,7 +49,7 @@ class CreateUserType extends AbstractType
                       ->where('f.department = ?1')
                       // Set the parameter to the department ID that the current user belongs to.
                       ->setParameter(1, $this->departmentId);
-                    },
+                },
                     ));
 
         if ($this->admin == 'superadmin') {

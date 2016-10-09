@@ -14,7 +14,7 @@ class ThreadController extends Controller
     public function deleteThreadAction(Request $request)
     {
 
-        // Get the ID sen by the request 
+        // Get the ID sen by the request
         $id = $request->get('id');
 
         $em = $this->getDoctrine()->getEntityManager();
@@ -26,14 +26,14 @@ class ThreadController extends Controller
             // Only SUPER_ADMIN can delete forums
             if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 
-                // Find the thread with the given ID 
+                // Find the thread with the given ID
                 $thread = $this->getDoctrine()->getRepository('AppBundle:Thread')->find($id);
             } elseif ($this->get('security.context')->isGranted('ROLE_USER')) {
 
-                // Find the current user 
+                // Find the current user
                 $user = $this->get('security.context')->getToken()->getUser();
 
-                // Find the thread with the given ID 
+                // Find the thread with the given ID
                 $thread = $this->getDoctrine()->getRepository('AppBundle:Thread')->find($id);
 
                 // Check if the current user is the one who made the thread
@@ -56,12 +56,12 @@ class ThreadController extends Controller
             // Send a response back to AJAX
             $response['success'] = false;
             $response['cause'] = 'Kunne ikke slette traaden.';
-            //$response['cause'] = $e->getMessage(); // if you want to see the exception message. 
+            //$response['cause'] = $e->getMessage(); // if you want to see the exception message.
 
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 
@@ -77,17 +77,17 @@ class ThreadController extends Controller
         // Create a new thread entity
         $thread = new Thread();
 
-        // Only SUPER_ADMIN can edit all threads 
+        // Only SUPER_ADMIN can edit all threads
         if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 
-            // Find a thread by the ID sent in by the request 
+            // Find a thread by the ID sent in by the request
             $thread = $em->getRepository('AppBundle:Thread')->find($id);
         } elseif ($this->get('security.context')->isGranted('ROLE_USER')) {
 
-            // Find the current user 
+            // Find the current user
             $user = $this->get('security.context')->getToken()->getUser();
 
-            // Find a thread by the ID sent in by the request 
+            // Find a thread by the ID sent in by the request
             $thread = $em->getRepository('AppBundle:Thread')->find($id);
 
             // Check if the current user is the one who made the thread
@@ -105,9 +105,9 @@ class ThreadController extends Controller
         // Handle the form
         $form->handleRequest($request);
 
-        // Check if the form is valid 
+        // Check if the form is valid
         if ($form->isValid()) {
-            // Persist the changes 
+            // Persist the changes
             $em->persist($thread);
             $em->flush();
 
@@ -120,11 +120,11 @@ class ThreadController extends Controller
         ));
     }
 
-    // Shows the threads of a specific subforum 
+    // Shows the threads of a specific subforum
     public function showSpecificSubforumThreadsAction(Request $request)
     {
 
-        // Get the variable sent by the request 
+        // Get the variable sent by the request
         $id = $request->get('id');
         // We need the forumId becuase the relation between forum and subforums are many-to-many
         // To navigate back to the correct subforum, we have to keep track of the forumId
@@ -139,30 +139,30 @@ class ThreadController extends Controller
             // Find the threads that are associated with the subforum
             $threads = $this->getDoctrine()->getRepository('AppBundle:Thread')->findBySubforum($subforum);
 
-            // Find a forum with the given ID 
+            // Find a forum with the given ID
             $forum = $this->getDoctrine()->getRepository('AppBundle:Forum')->find($forumId);
         } elseif ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
 
             // Find the subforum object associated with the ID
             $subforum = $this->getDoctrine()->getRepository('AppBundle:Subforum')->findOneById($id);
 
-            // Find the current user 
+            // Find the current user
             $user = $this->get('security.context')->getToken()->getUser();
 
-            // Find a forum with the given ID 
+            // Find a forum with the given ID
             $forum = $this->getDoctrine()->getRepository('AppBundle:Forum')->find($forumId);
 
-            // Find all the active work histories of the user 
+            // Find all the active work histories of the user
             $activeWorkHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByUser($user);
 
-            // Boolean to keep track if the user is in a valid subforum 
+            // Boolean to keep track if the user is in a valid subforum
             $valid = false;
 
             if ($subforum->getType() == 'school' || $subforum->getType() == 'general') {
                 $valid = true;
             } else {
 
-                // Check each active assistant histories 
+                // Check each active assistant histories
                 foreach ($activeWorkHistories as $awh) {
 
                     // Get the teams associated with the subforum
@@ -188,22 +188,22 @@ class ThreadController extends Controller
             // Find the subforum object associated with the ID
             $subforum = $this->getDoctrine()->getRepository('AppBundle:Subforum')->findOneById($id);
 
-            // Find the current user 
+            // Find the current user
             $user = $this->get('security.context')->getToken()->getUser();
 
-            // Find a forum with the given ID 
+            // Find a forum with the given ID
             $forum = $this->getDoctrine()->getRepository('AppBundle:Forum')->find($forumId);
 
-            // Find all the active assistant histories of the user 
+            // Find all the active assistant histories of the user
             $activeAssistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesByUser($user);
 
-            // Boolean to keep track if the user is in a valid subforum 
+            // Boolean to keep track if the user is in a valid subforum
             $valid = false;
 
             if ($subforum->getType() == 'general') {
                 $valid = true;
             } else {
-                // Check each active assistant histories 
+                // Check each active assistant histories
                 foreach ($activeAssistantHistories as $ash) {
 
                     // Get the schools associated with the subforum
@@ -240,7 +240,7 @@ class ThreadController extends Controller
     public function createThreadAction(Request $request)
     {
 
-        // Get the variable sent by the request 
+        // Get the variable sent by the request
         $id = $request->get('id');
 
         // Only ROLE_SUPER_ADMIN can make threads for every subforum
@@ -249,7 +249,7 @@ class ThreadController extends Controller
             // Create a new post entity
             $thread = new Thread();
 
-            // Find the subforum with the given ID sent by the request 
+            // Find the subforum with the given ID sent by the request
             $subforum = $this->getDoctrine()->getRepository('AppBundle:Subforum')->findOneById($id);
         }
         // ROLE_ADMIN can only make threads in team forums they are associated with, but all school forums
@@ -258,19 +258,19 @@ class ThreadController extends Controller
             // Create a new post entity
             $thread = new Thread();
 
-            // Find the subforum with the given ID sent by the request 
+            // Find the subforum with the given ID sent by the request
             $subforum = $this->getDoctrine()->getRepository('AppBundle:Subforum')->findOneById($id);
 
-            // Find the current user 
+            // Find the current user
             $user = $this->get('security.context')->getToken()->getUser();
 
-            // Find all the active work histories of the user 
+            // Find all the active work histories of the user
             $activeWorkHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByUser($user);
 
-            // Boolean to keep track if the user is in a valid subforum 
+            // Boolean to keep track if the user is in a valid subforum
             $valid = false;
 
-            // Check each active assistant histories 
+            // Check each active assistant histories
             foreach ($activeWorkHistories as $awh) {
 
                 // Check if the subforum is a geneal one
@@ -293,29 +293,29 @@ class ThreadController extends Controller
                 return $this->redirect($this->generateUrl('home'));
             }
         }
-        // ROLE_USER can only make threads in forums they are associated with 
+        // ROLE_USER can only make threads in forums they are associated with
         elseif ($this->container->get('security.context')->isGranted('ROLE_USER')) {
 
             // Create a new post entity
             $thread = new Thread();
 
-            // Find the subforum with the given ID sent by the request 
+            // Find the subforum with the given ID sent by the request
             $subforum = $this->getDoctrine()->getRepository('AppBundle:Subforum')->findOneById($id);
 
-            // Find the current user 
+            // Find the current user
             $user = $this->get('security.context')->getToken()->getUser();
 
-            // Find all the active assistant histories of the user 
+            // Find all the active assistant histories of the user
             $activeAssistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesByUser($user);
 
-            // Boolean to keep track if the user is in a valid subforum 
+            // Boolean to keep track if the user is in a valid subforum
             $valid = false;
 
             if ($subforum->getType() == 'general') {
                 $valid = true;
             }
 
-            // Check each active assistant histories 
+            // Check each active assistant histories
             foreach ($activeAssistantHistories as $ash) {
 
                 // Get the schools associated with the subforum
@@ -336,10 +336,10 @@ class ThreadController extends Controller
             return $this->redirect($this->generateUrl('home'));
         }
 
-        // Create the form 
+        // Create the form
         $form = $this->createForm(new CreateThreadType(), $thread);
 
-        // Handle the form 
+        // Handle the form
         $form->handleRequest($request);
 
         // Check if the form is valid
@@ -360,7 +360,7 @@ class ThreadController extends Controller
             $em->persist($thread);
             $em->flush();
 
-            // Redirect to the proper subforum 
+            // Redirect to the proper subforum
             return $this->redirect($this->generateUrl('forum_show_specific_thread_by_id', array('id' => $thread->getId(), 'forumId' => $request->get('forumId'))));
         }
 

@@ -18,10 +18,10 @@ class CertificateRequestEntityUnitTest extends \PHPUnit_Framework_TestCase
         $user = new User();
         $user->setFirstName('Thomas');
 
-        // Use the setUser method 
+        // Use the setUser method
         $cr->setUser($user);
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals($user, $cr->getUser());
     }
 }

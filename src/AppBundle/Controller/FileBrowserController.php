@@ -16,7 +16,7 @@ class FileBrowserController extends Controller
      */
     public function browseAction()
     {
-        #TODO: sjekk at user virkelig er admin, ikke bra nok å sjekke kun i twig
+        //TODO: sjekk at user virkelig er admin, ikke bra nok å sjekke kun i twig
         $response = $this->forward('FMElfinderBundle:ElFinder:show', array(
            'instance' => 'admin_access',
         ));

@@ -782,3 +782,7 @@ ul.alternatives {
 [class*="column"] + [class*="column"]:last-child {
   float: left;
 }
+
+.hide {
+  display: none;
+}

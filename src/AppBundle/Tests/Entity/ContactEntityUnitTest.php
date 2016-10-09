@@ -13,10 +13,10 @@ class ContactEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new assistantHistory entity
         $contact = new Contact();
 
-        // Use the setName method 
+        // Use the setName method
         $contact->setName('Grete');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('Grete', $contact->getName());
     }
 
@@ -27,10 +27,10 @@ class ContactEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new assistantHistory entity
         $contact = new Contact();
 
-        // Use the setEmail method 
+        // Use the setEmail method
         $contact->setEmail('Grete@mail.com');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('Grete@mail.com', $contact->getEmail());
     }
 
@@ -41,10 +41,10 @@ class ContactEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new assistantHistory entity
         $contact = new Contact();
 
-        // Use the setSubject method 
+        // Use the setSubject method
         $contact->setSubject('asdf');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('asdf', $contact->getSubject());
     }
 
@@ -55,10 +55,10 @@ class ContactEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new assistantHistory entity
         $contact = new Contact();
 
-        // Use the setBody method 
+        // Use the setBody method
         $contact->setBody('This is a long dummy text that is suppose to be somewhat long and somewhat short');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('This is a long dummy text that is suppose to be somewhat long and somewhat short', $contact->getBody());
     }
 }
