@@ -3,11 +3,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
+use AppBundle\Entity\Letter;
 use AppBundle\Entity\Newsletter;
 use AppBundle\Entity\Subscriber;
+use AppBundle\Form\CreateLetterType;
 use AppBundle\Form\SubscribeToNewsletterType;
 use AppBundle\Form\Type\CreateNewsletterType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\SwiftmailerBundle\Command\SendEmailCommand;
 use Symfony\Component\HttpFoundation\Request;
 
 class NewsletterController extends Controller
@@ -160,6 +163,23 @@ class NewsletterController extends Controller
             'newsletter' => $newsletter,
             'form' => $form->createView()
         ));
+
+    }
+    public function createLetterAction(Newsletter $newsletter, Request $request)
+    {
+        $letter = new Letter();
+        $letter->setNewsletter($newsletter);
+        $form = $this->createForm(new CreateLetterType(), $letter);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+
+
+
+            return $this->render('newsletter/letter_sent_message.html.twig', array('letter' => $letter));
+        }
+        return $this->render('newsletter/create_letter.html.twig', array('form'=>$form->createView()));
 
     }
 }

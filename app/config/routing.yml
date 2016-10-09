@@ -1213,12 +1213,19 @@ newsletter_show_subscribe:
   requirements:
     id: \d+
 
-newsletter_toggle_visable:
+newsletter_toggle_visible:
   path: /kontrollpanel/nyhetsbrev/toggle/{id}
   defaults: {_controller: AppBundle:Newsletter:showOnAdmissionPage}
   requirements:
     id: \d+
   methods: [POST]
+
+newsletter_send_letter:
+  path: /kontrollpanel/nyhetsbrev/send/{id}
+  defaults: { _controller: AppBundle:Newsletter:createLetter }
+  requirements:
+    id: \d+
+  methods: [GET|POST]
 
 
 ##########################################

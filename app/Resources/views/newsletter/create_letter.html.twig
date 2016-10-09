@@ -1,0 +1,20 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 columns">
+            <h2>Opprett brev</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 columns">
+            {{ form_start(form) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.content) }}
+
+            <button class="button medium">Send</button>
+            <br><br>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

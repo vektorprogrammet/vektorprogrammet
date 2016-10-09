@@ -18,13 +18,13 @@
                 <tr>
                     <th>Navn</th>
                     <th>Abonnenter</th>
-                    <th colspan="3"></th>
+                    <th colspan="4"></th>
                     <th>Vis på påmeldingsside</th>
                 </tr>
                 {% for newsletter in newsletters %}
                     <tr>
                         <td><a href="{{ path('newsletter_show_subscribers', {id: newsletter.id}) }}">{{ newsletter.name }}</a></td>
-                        <td>{{ newsletter.subscribers|length }}</td>
+                        <td><a href="{{ path('newsletter_show_subscribers', {id: newsletter.id}) }}">{{ newsletter.subscribers|length }}</a></td>
                         <td><a class="tiny button" href="{{ path('newsletter_show_subscribe', {id: newsletter.id}) }}">Påmedlingsskjema</a></td>
                         <td>
                             <a href="{{ path('newsletter_edit', { 'id': newsletter.id }) }}" class="button tiny">
@@ -33,12 +33,13 @@
                         </td>
 
                         <td>
-                            <form method="POST" action="{{ path('newsletter_delete', { 'id': newsletter.id }) }}" onsubmit="confirm('Er du sikker?')">
+                            <form method="POST" action="{{ path('newsletter_delete', { 'id': newsletter.id }) }}" onsubmit="return confirm('Er du sikker?')">
                                 <button type="submit" class="tiny button alert"><i class="fa fa-trash"></i> Slett</button>
                             </form>
                         </td>
+                        <td><a class="tiny button" href="{{ path('newsletter_send_letter', {'id': newsletter.id}) }}">Lag e-post</a></td>
                         <td>
-                            <form method="POST" action="{{ path('newsletter_toggle_visable', {'id' : newsletter.id}) }}">
+                            <form method="POST" action="{{ path('newsletter_toggle_visible', {'id' : newsletter.id}) }}">
                                 <button type="submit"
                                         {% if newsletter.showOnAdmissionPage %}
                                             class="tiny button success"> Aktiv

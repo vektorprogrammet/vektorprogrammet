@@ -19,7 +19,7 @@
                         <td>{{ subscriber.name }}</td>
                         <td>{{ subscriber.email }}</td>
                         <td>
-                            <form method="POST" action="{{ path('newsletter_admin_unsubscribe', {id: subscriber.id}) }}">
+                            <form method="POST" action="{{ path('newsletter_admin_unsubscribe', {id: subscriber.id}) }}" onsubmit="return confirm('Er du sikker')">
                                 <button class="tiny button alert">Slett</button>
                             </form>
                         </td>

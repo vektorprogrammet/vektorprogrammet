@@ -17,7 +17,6 @@ class Letter
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
     /**
      * @ORM\Column(type="string")
      */
