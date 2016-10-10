@@ -16,7 +16,7 @@ class TeamApplicationControllerTest extends WebTestCase
         $link = $crawler->selectLink('Søk Hovedstyret')->eq(0)->link();
         $crawler = $client->click($link);
 
-        //Assert that we have the correct page (Spør Kristoffer om contains, må det være hele innholdet?)
+        //Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Søk Hovedstyret")')->count());
         //Form checks?
 
@@ -25,7 +25,7 @@ class TeamApplicationControllerTest extends WebTestCase
     public function testShowAllApplications(){
         // ADMIN
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo', // Skal det stå admin her?
+            'PHP_AUTH_USER' => 'admin',
             'PHP_AUTH_PW' => '1234',
         ));
 
@@ -46,7 +46,7 @@ class TeamApplicationControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/kontrollpanel/team/applications/1');
 
-        // Assert that the response is a redirect
+        // Assert that the response is access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
         // TEAM
@@ -57,25 +57,37 @@ class TeamApplicationControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/kontrollpanel/team/applications/1');
 
-        // Assert that the response is a redirect
+        // Assert that the response is access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
+
+        // TEAM user in team 1
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'userInTeam1',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $client->request('GET', '/kontrollpanel/team/applications/1');
+
+        // Assert that the response is access denied
+        $this->assertNotEquals(403, $client->getResponse()->getStatusCode()); // Should be something better than notEquals
+
     }
 
     public function testShow(){
 
         // ADMIN
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo', // Skal det stå admin her?
+            'PHP_AUTH_USER' => 'admin',
             'PHP_AUTH_PW' => '1234',
         ));
 
         $crawler = $client->request('GET', '/kontrollpanel/team/applications/1');
 
-        // Find a link and click it (Sjekk hva som skal stå for søknad nr 1)
-        $link = $crawler->selectLink('Søknad nr 1')->eq(0)->link();
+        // Find a link and click it
+        $link = $crawler->selectLink('Arnt Erik')->eq(0)->link();
         $crawler = $client->click($link);
 
-        //Assert that we have the correct page (Spør Kristoffer om contains, må det være hele innholdet?)
+        //Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h3:contains("Søknad til Hovedstyret fra ")')->count());
 
         // USER
@@ -86,7 +98,7 @@ class TeamApplicationControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/kontrollpanel/team/application/1');
 
-        // Assert that the response is a redirect
+        // Assert that the response is access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
         // TEAM
@@ -97,8 +109,103 @@ class TeamApplicationControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/kontrollpanel/team/application/1');
 
-        // Assert that the response is a redirect
+        // Assert that the response is access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
+        // TEAM user in team 1
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'userInTeam1',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $client->request('GET', '/kontrollpanel/team/application/1');
+
+        // Assert that the response is access denied
+        $this->assertNotEquals(403, $client->getResponse()->getStatusCode()); // Should be something better than notEquals
+
+
+
+
     }
+
+    public function testAcceptApplication(){
+        $clientAnonymous = static::createClient();
+
+        $crawler = $clientAnonymous->request('GET', '/team/1');
+        $this->assertTrue($clientAnonymous->getResponse()->isSuccessful());
+
+        // Find a link
+        $this->assertGreaterThan(0,$crawler->selectLink('Søk Hovedstyret')->count());
+
+        // Admin
+        $clientAdmin = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'admin',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $clientAdmin->request('GET', '/kontrollpanel/teamadmin/update/1');
+
+        $this->assertTrue($clientAdmin->getResponse()->isSuccessful());
+
+        $submitButton = $crawler->selectButton('Lagre');
+        $form = $submitButton->form();
+        $form['createTeam[acceptApplication]']->untick();
+        $clientAdmin->submit($form);
+
+        $crawler = $clientAnonymous->request('GET', '/team/1');
+        $this->assertTrue($clientAnonymous->getResponse()->isSuccessful());
+
+        // Assert that the link is gone
+        $this->assertEquals(0, $crawler->selectLink('Søk Hovedstyret')->count());
+        restoreDatabase();
+
+
+
+
+
+    }
+
+    public function testCreateApplication(){
+
+        // Admin
+        $clientAdmin = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'admin',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $clientAdmin->request('GET', '/kontrollpanel/team/applications/1');
+        $this->assertTrue($clientAdmin->getResponse()->isSuccessful());
+
+        $applicationsBefore = $crawler->filter('tr')->count();
+
+        // Submit an application
+        // User
+        $clientAnonymous = static::createClient();
+
+        $crawler = $clientAnonymous->request('GET', '/team/application/1');
+        $this->assertTrue($clientAnonymous->getResponse()->isSuccessful());
+
+        $submitButton = $crawler->selectButton('Send');
+        $form = $submitButton->form();
+
+        $form['app_bundle_team_application_type[name]'] = 'Sondre';
+        $form['app_bundle_team_application_type[email]'] = 'sondre@vektorprogrammet.no';
+        $form['app_bundle_team_application_type[applicationText]'] = 'Jeg vil bli nestleder! Pls.';
+        $clientAnonymous->submit($form);
+
+        $crawler = $clientAdmin->request('GET', '/kontrollpanel/team/applications/1');
+        $this->assertTrue($clientAdmin->getResponse()->isSuccessful());
+
+        $applicationsAfter = $crawler->filter('tr')->count();
+
+        $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
+        restoreDatabase();
+
+    }
+
+    public function testDeleteApplication(){
+        //TODO: Implement a test for deleting an application. Look at testCreateApplication.
+    }
+
+
 }
