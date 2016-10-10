@@ -5,6 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\SchoolAllocation\Assistant;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use AppBundle\SchoolAllocation\School;
+use AppBundle\SchoolAllocation\Allocation;
 
 class SchoolAllocationAPIController extends Controller
 {
@@ -25,6 +27,99 @@ class SchoolAllocationAPIController extends Controller
         $assistants = $this->getAssistantAvailableDays($applications);
 
         return new JsonResponse(json_encode($assistants));
+    }
+
+    /**
+     * @param Application[] $applications
+     *
+     * @return Assistant[]
+     */
+    private function generateAssistantsFromApplications($applications)
+    {
+        //Use applications to create Assistant objects for the allocation algorithm
+        $assistants = array();
+        foreach ($applications as $application) {
+            $doublePosition = $application->getDoublePosition();
+            $preferredGroup = null;
+            if ($application->getPreferredGroup() == 'Bolk 1') {
+                $preferredGroup = 1;
+            } elseif ($application->getPreferredGroup() == 'Bolk 2') {
+                $preferredGroup = 2;
+            }
+            if ($doublePosition) {
+                $preferredGroup = null;
+            }
+
+            $availability = array();
+            $availabilityPoints = ['Ikke', 'Bra'];
+            $availability['Monday'] = array_search($application->getMonday(), $availabilityPoints);
+            $availability['Tuesday'] = array_search($application->getTuesday(), $availabilityPoints);
+            $availability['Wednesday'] = array_search($application->getWednesday(), $availabilityPoints);
+            $availability['Thursday'] = array_search($application->getThursday(), $availabilityPoints);
+            $availability['Friday'] = array_search($application->getFriday(), $availabilityPoints);
+
+            $assistant = new Assistant();
+            $assistant->setName($application->getUser()->getFirstName().' '.$application->getUser()->getLastName());
+            $assistant->setDoublePosition($doublePosition);
+            $assistant->setPreferredGroup($preferredGroup);
+            $assistant->setAvailability($availability);
+            $assistants[] = $assistant;
+        }
+
+        return $assistants;
+    }
+
+    private function generateSchoolsFromSchoolCapacities($schoolCapacities)
+    {
+        //Use schoolCapacities to create School objects for the SA-Algorithm
+        $schools = array();
+        foreach ($schoolCapacities as $sc) {
+            if ($sc->getMonday() == 0 && $sc->getTuesday() == 0 && $sc->getWednesday() == 0 && $sc->getThursday() == 0 && $sc->getFriday() == 0) {
+                continue;
+            }
+            $capacityDays = array();
+            $capacityDays['Monday'] = $sc->getMonday();
+            $capacityDays['Tuesday'] = $sc->getTuesday();
+            $capacityDays['Wednesday'] = $sc->getWednesday();
+            $capacityDays['Thursday'] = $sc->getThursday();
+            $capacityDays['Friday'] = $sc->getFriday();
+
+            $capacity = array();
+            $capacity[1] = $capacityDays;
+            $capacity[2] = $capacityDays;
+
+            $school = new School($capacity, $sc->getSchool()->getName());
+            $schools[] = $school;
+        }
+
+        return $schools;
+    }
+
+    public function getAllocatedAssistantsAction()
+    {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
+
+        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
+
+        $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
+        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsBySemester($currentSemester);
+        $assistants = $this->generateAssistantsFromApplications($applications);
+        dump($assistants);
+        $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
+        dump($schools);
+        $allocation = new Allocation($schools, $assistants);
+        $result = $allocation->step();
+        dump($result);
+
+        //Total number of allocations evaluated during optimization
+
+        /*return $this->render('school_admin/school_allocate_result.html.twig', array(
+            'assistants' => $result->getAssistants(),
+        ));*/
+
+        return new JsonResponse(json_encode($result->getAssistants()));
     }
 
     private function getAssistantAvailableDays($applications)
