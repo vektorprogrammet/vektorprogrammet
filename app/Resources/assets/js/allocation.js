@@ -4,3 +4,6 @@
 $.get("/kontrollpanel/api/assistants", function (data) {
     console.log(data);
 })
+$.get("/kontrollpanel/api/allocated_assistants", function (data) {
+    console.log(data);
+})
