@@ -80,7 +80,7 @@ class Allocation
             }
         }
 
-        return;//No solution found
+        return $this;//No solution found
     }
 
     /**
