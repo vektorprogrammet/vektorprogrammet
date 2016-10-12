@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity\Repository;
 
-use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use Doctrine\ORM\EntityRepository;
 
