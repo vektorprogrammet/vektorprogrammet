@@ -6,7 +6,6 @@ use AppBundle\Entity\Department;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use AppBundle\Entity\User;
 
 class ApplicationType extends AbstractType
 {
