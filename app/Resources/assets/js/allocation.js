@@ -4,44 +4,31 @@
 $.get("/kontrollpanel/api/assistants", function (data) {
     console.log(data);
 })
+
+function getAvailableDays(assistant) {
+    var select = $('select')
+
+    // TODO: Add available days to select
+
+    return select
+}
 $.get("/kontrollpanel/api/allocated_assistants", function (data) {
     console.log(data);
 
-    //var row = $("tr");
-    //var col = $("td");
-    //var select = $("select");
-    //var option =
-
     //Adding a row in allocation_table for each assistant
     var assistants = JSON.parse(data);
-    for (var assistant in assistants) {
+    for (var i in assistants) {
+        var assistant = assistants[i];
+        var name = assistant.name;
         $('.allocation_table')
-            .append($('<tr>')
+            .append($('<tr>').attr('id', name)
                 .append($('<td>')
-                    .text(assistants[assistant].name)
+                    .text(name)
                 )
-                .append($('<td>')
-                    .append($('<select>').addClass('allocation_select')
-                        .append($('<option>')
-
-                        )
-                    )
-                )
-                .append($('<td>')
-                    .append($('<select>').addClass('allocation_select')
-                        .append($('<option>')
-
-                        )
-                    )
-                )
-                .append($('<td>')
-                    .append($('<select>').addClass('allocation_select')
-                        .append($('<option>')
-
-                        )
-                    )
+                .append($('td')
+                    .append(getAvailableDays(assistant))
                 )
             );
     }
 
-})
+});
