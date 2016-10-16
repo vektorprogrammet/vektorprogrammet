@@ -7,17 +7,41 @@ $.get("/kontrollpanel/api/assistants", function (data) {
 $.get("/kontrollpanel/api/allocated_assistants", function (data) {
     console.log(data);
 
-    var row = $("tr");
-    var col = $("td");
-    var select = $("select");
-    var option =
+    //var row = $("tr");
+    //var col = $("td");
+    //var select = $("select");
+    //var option =
 
+    //Adding a row in allocation_table for each assistant
     var assistants = JSON.parse(data);
-    for (var assistant in assistants);
-        $(/*class/id/tag*/).append(assistants[assistant].name);
+    for (var assistant in assistants) {
+        $('.allocation_table')
+            .append($('<tr>')
+                .append($('<td>')
+                    .text(assistants[assistant].name)
+                )
+                .append($('<td>')
+                    .append($('<select>').addClass('allocation_select')
+                        .append($('<option>')
+
+                        )
+                    )
+                )
+                .append($('<td>')
+                    .append($('<select>').addClass('allocation_select')
+                        .append($('<option>')
+
+                        )
+                    )
+                )
+                .append($('<td>')
+                    .append($('<select>').addClass('allocation_select')
+                        .append($('<option>')
+
+                        )
+                    )
+                )
+            );
     }
-
-
-
 
 })
