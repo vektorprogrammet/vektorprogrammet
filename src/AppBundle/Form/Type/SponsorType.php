@@ -4,7 +4,6 @@ namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 class SponsorType extends AbstractType
 {
