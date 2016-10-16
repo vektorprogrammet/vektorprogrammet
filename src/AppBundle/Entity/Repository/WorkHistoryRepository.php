@@ -91,7 +91,7 @@ class WorkHistoryRepository extends EntityRepository
             ->leftJoin('whistory.endSemester', 'endSemester')
             ->where('startSemester.semesterStartDate < :today')
             ->andWhere('whistory.user = :user')
-            ->andWhere('endSemester.semesterEndDate < :today')
+            ->andWhere('endSemester.semesterEndDate > :today OR endSemester.semesterEndDate is NULL')
             ->setParameter('today', $today)
             ->setParameter('user', $user)
             ->getQuery()

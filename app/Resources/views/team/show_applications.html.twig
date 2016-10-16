@@ -16,6 +16,14 @@
             <td>
                 {{ application.email }}
             </td>
+            <td>
+                <form action="{{ path('team_application_delete',{id:application.id}) }}" method="POST" onsubmit="confirm('Er du sikker?')">
+                    <button type="submit" class="button tiny alert">
+                        <i class="fa fa-trash"></i> Slett
+                    </button>
+                </form>
+
+            </td>
         </tr>
         {% endfor %}
     </table>

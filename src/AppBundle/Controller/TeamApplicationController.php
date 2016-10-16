@@ -25,10 +25,20 @@ class TeamApplicationController extends Controller
         ));
     }
 
+    public function deleteTeamApplicationByIdAction(TeamApplication $teamApplication)
+    {
+        $manager = $this->getDoctrine()->getEntityManager();
+
+        $manager->remove($teamApplication);
+        $manager->flush();
+
+        return $this->redirect($this->generateUrl('AppBundle:TeamApplication:show_applications.html.twig'));
+    }
+
     public function showAction(Team $team, Request $request)
     {
         if (!$team->getAcceptApplication()) {
-            throw new AccessDeniedException();
+            throw new AccessDeniedException;
         }
         $teamApplication = new TeamApplication();
         $form = $this->createForm(new TeamApplicationType(), $teamApplication);
