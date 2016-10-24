@@ -7,7 +7,8 @@ $.get("/kontrollpanel/api/assistants", function (data) {
 })
 
 function getAvailableDays(assistant) {
-    var select = $('<select>');
+    // NOTE: The select id is not unique if two people have the same name.
+    var select = $('<select>').attr('id', assistant['name']);
     var availability = assistant['availability'];
     for (var i in availability) {
         if (availability[i]) {
@@ -29,9 +30,11 @@ $.get("/kontrollpanel/api/allocated_assistants", function (data) {
         var name = assistant.name;
         $('.allocation_table')
             .append($('<tr>')
+                // One column for name
                 .append($('<td>')
                     .text(name)
                 )
+                // One column for day selection
                 .append($('<td>')
                     .append(getAvailableDays(assistant))
                 )
