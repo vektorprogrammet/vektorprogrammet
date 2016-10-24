@@ -161,8 +161,6 @@ class TeamApplicationControllerTest extends WebTestCase
 
 
 
-
-
     }
 
     public function testCreateApplication(){
@@ -204,8 +202,34 @@ class TeamApplicationControllerTest extends WebTestCase
     }
 
     public function testDeleteApplication(){
-        //TODO: Implement a test for deleting an application. Look at testCreateApplication.
-    }
+        // Admin
+        $clientAdmin = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'admin',
+            'PHP_AUTH_PW' => '1234',
+        ));
 
+        $crawler = $clientAdmin->request('GET', '/kontrollpanel/team/applications/1');
+        $this->assertTrue($clientAdmin->getResponse()->isSuccessful());
+
+        $applicationsBefore = $crawler->filter('tr')->count();
+
+        // Delete an application
+
+        $crawler = $clientAdmin->request('GET', '/kontrollpanel/team/applications/1');
+
+        // Find a link and click it (Sjekk hva som skal stå for søknad nr 1)
+        $deleteButton = $crawler->selectButton('Slett')->first();
+        $form = $deleteButton->form();
+        $clientAdmin->submit($form);
+
+        $crawler = $clientAdmin->request('GET', '/kontrollpanel/team/applications/1');
+        $this->assertTrue($clientAdmin->getResponse()->isSuccessful());
+
+
+        $applicationsAfter = $crawler->filter('tr')->count();
+
+        $this->assertEquals($applicationsBefore - 1, $applicationsAfter);
+        restoreDatabase();
+    }
 
 }

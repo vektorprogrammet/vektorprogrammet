@@ -69,6 +69,19 @@
                 </table>
 
         </div>
+
     </div>
+    <div class="row">
+        <div class="small-4 columns">
+            {% if team.acceptApplication %}
+                <a href="{{ path('team_application',{id:team.id}) }}"  class="button tiny" > Søk {{ team.name }}</a>
+                <br>
+                <br>
+            {% endif %}
+
+        </div>
+    </div>
+
+
 
 {% endblock %}

@@ -13,12 +13,14 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class TeamApplicationController extends Controller
 {
     public function showApplicationAction(TeamApplication $application){
+        //TODO: Se om bruker er med i teamet eller er superadmin
         return $this->render('team/show_application.html.twig',array(
             'application'=>$application
         ));
     }
     public function showAllApplicationsAction(Team $team){
         $applications = $this->getDoctrine()->getRepository('AppBundle:TeamApplication')->findByTeam($team);
+        //TODO: Se om bruker er med i teamet eller er superadmin
         return $this->render('team/show_applications.html.twig',array(
             'applications'=>$applications,
             'team'=>$team
@@ -32,7 +34,14 @@ class TeamApplicationController extends Controller
         $manager->remove($teamApplication);
         $manager->flush();
 
-        return $this->redirect($this->generateUrl('AppBundle:TeamApplication:show_applications.html.twig'));
+        /*
+        return $this->render('team/show_applications.html.twig',array(
+            'applications'=>$applications,
+            'team'=>$team
+        ));
+        */
+
+        return $this->redirectToRoute('team_application_show_all',array('id'=>$teamApplication->getTeam()->getId()));
     }
 
     public function showAction(Team $team, Request $request)
@@ -51,20 +60,29 @@ class TeamApplicationController extends Controller
             $manager->persist($teamApplication);
             $manager->flush();
 
-            $emailMessage=\Swift_Message::newInstance()
-                ->setSubject('Ny søker til '.$team->getName())
-                ->setFrom(array('vektorprogrammet@vektorprogrammet.no'=>'Vektorprogrammet'))
-                ->setReplyTo($teamApplication->getEmail())
-                ->setTo($team->getEmail())
-                ->setBody($this->renderView('team/application_email.html.twig',array(
-                    'application' => $teamApplication
-                )));
-            $this->get('mailer')->send($emailMessage);
+            if ($team->getEmail() !== null) {
+                $emailMessage = \Swift_Message::newInstance()
+                    ->setSubject('Ny søker til ' . $team->getName())
+                    ->setFrom(array('vektorprogrammet@vektorprogrammet.no' => 'Vektorprogrammet'))
+                    ->setReplyTo($teamApplication->getEmail())
+                    ->setTo($team->getEmail())
+                    ->setBody($this->renderView('team/application_email.html.twig', array(
+                        'application' => $teamApplication
+                    )));
+                $this->get('mailer')->send($emailMessage);
+
+                $email = $team->getEmail();
+
+            }else{
+                $email = $team->getDepartment()->getEmail();
+
+            }
+
 
             $receipt=\Swift_Message::newInstance()
                 ->setSubject('Søknad til '.$team->getName().' mottatt')
-                ->setFrom(array($team->getEmail()=>$team->getName()))
-                ->setReplyTo($team->getEmail())
+                ->setFrom(array($email=>$team->getName()))
+                ->setReplyTo($email)
                 ->setTo($teamApplication->getEmail())
                 ->setBody($this->renderView('team/receipt.html.twig',array(
                     'team' => $team
