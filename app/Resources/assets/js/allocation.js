@@ -3,13 +3,20 @@
  */
 $.get("/kontrollpanel/api/assistants", function (data) {
     console.log(data);
+
 })
 
 function getAvailableDays(assistant) {
-    var select = $('select')
-
-    // TODO: Add available days to select
-
+    var select = $('<select>');
+    var availability = assistant['availability'];
+    for (var i in availability) {
+        if (availability[i]) {
+            select.append($('<option>', {
+                value: i,
+                text: i
+            }));
+        }
+    }
     return select
 }
 $.get("/kontrollpanel/api/allocated_assistants", function (data) {
@@ -21,11 +28,11 @@ $.get("/kontrollpanel/api/allocated_assistants", function (data) {
         var assistant = assistants[i];
         var name = assistant.name;
         $('.allocation_table')
-            .append($('<tr>').attr('id', name)
+            .append($('<tr>')
                 .append($('<td>')
                     .text(name)
                 )
-                .append($('td')
+                .append($('<td>')
                     .append(getAvailableDays(assistant))
                 )
             );
