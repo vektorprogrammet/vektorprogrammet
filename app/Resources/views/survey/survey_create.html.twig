@@ -91,6 +91,7 @@
                 IntSchema.addQuestionDeleteButton(newPanel);
                 var alternativeButton = IntSchema.addAlternativeAddButton(newPanel);
                 alternativeButton.hide();
+                IntSchema.addOrderButtons(newPanel);
 
                 IntSchema.questions.append(newRow);
 
@@ -164,8 +165,28 @@
                 } else {
                     alternativeButton.show();
                 }
+            },
+
+            addOrderButtons: function(panel) {
+                var upButton = $('<button class="button tiny secondary">Opp&nbsp;<i class="fa fa-arrow-up"/></button>');
+                var downButton = $('<button class="button tiny secondary">Ned&nbsp;<i class="fa fa-arrow-down"/></button>');
+
+                upButton.on('click', function(e) {
+                    e.preventDefault();
+                    panel.closest('.row').insertBefore(panel.closest('.row').prev('.row'));
+                });
+                downButton.on('click', function(e) {
+                    e.preventDefault();
+                    panel.closest('.row').insertAfter(panel.closest('.row').next('.row'));
+                });
+
+                panel.append(upButton);
+                panel.append(downButton);
+
+                return upButton;
             }
         };
+        console.log(IntSchema.questions.children());
 
         $(document).ready(IntSchema.onReady);
 
