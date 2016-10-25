@@ -40,6 +40,18 @@ function generateSchoolSelect(assistant) {
 }
 
 
+function generateGroupSelect(assistant) {
+    var name = assistant['name'];
+    var spaceless_name = string_remove_space(name);
+    var select = $('<select>');
+    select.addClass("allocation_select");
+    select.append($('<option>', {value: "Bolk 1", text: "Bolk 1"}));
+    select.append($('<option>', {value: "Bolk 2", text: "Bolk 2"}));
+    select.append($('<option>', {value: "Dobbel", text: "Dobbel"}));
+    return select;
+}
+
+
 $.get("/kontrollpanel/api/allocated_assistants", function (data) {
     //Adding a row in allocation_table for each assistant
     var assistants = JSON.parse(data);
@@ -59,6 +71,10 @@ $.get("/kontrollpanel/api/allocated_assistants", function (data) {
                 // One column for school selection
                 .append($('<td>')
                     .append(generateSchoolSelect(assistant))
+                )
+                // One column for group selection
+                .append($('<td>')
+                    .append(generateGroupSelect(assistant))
                 )
             );
     }
