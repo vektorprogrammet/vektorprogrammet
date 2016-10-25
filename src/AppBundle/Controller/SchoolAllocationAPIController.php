@@ -103,7 +103,23 @@ class SchoolAllocationAPIController extends Controller
         $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
         $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
 
-        return new JsonResponse(json_encode($schools));
+        // Array for fast lookup on school availability by days
+        $school_availability = array(
+            'Monday' => array(),
+            'Tuesday' => array(),
+            'Wednesday' => array(),
+            'Thursday' => array(),
+            'Friday' => array(),
+        );
+        foreach ($schools as $school) {
+            foreach ($school->getCapacity()[1] as $day => $is_avail) {
+                if ($is_avail) {
+                    $school_availability[$day][] = $school->getName();
+                }
+            }
+        }
+
+        return new JsonResponse(json_encode($school_availability));
     }
 
     public function getAllocatedAssistantsAction()
