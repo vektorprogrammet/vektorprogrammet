@@ -57,8 +57,8 @@ class AdmissionAdminControllerTest extends WebTestCase
         // Assert that we have the correct buttons for superadmin
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
-        $this->assertEquals(2, $crawler->filter('td>a.button:contains("Les intervju")')->count());
-        $this->assertEquals(2, $crawler->filter('td>a.button:contains("Slett")')->count());
+        $this->assertEquals(3, $crawler->filter('td>a.button:contains("Les intervju")')->count());
+        $this->assertEquals(3, $crawler->filter('td>a.button:contains("Slett")')->count());
 
         // Admin user
         $client = static::createClient(array(), array(
@@ -109,7 +109,7 @@ class AdmissionAdminControllerTest extends WebTestCase
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
         $this->assertEquals(0, $crawler->filter('td>a.button.tiny:contains("Slett")')->count());
-        $this->assertEquals(2, $crawler->filter('td>a.button.tiny:contains("Les intervju")')->count());
+        $this->assertEquals(3, $crawler->filter('td>a.button.tiny:contains("Les intervju")')->count());
 
         // Team user
         $client = static::createClient(array(), array(
@@ -154,7 +154,7 @@ class AdmissionAdminControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
 
         // Assert that we only have the buttons for team
-        $this->assertEquals(2, $crawler->filter('td>a:contains("Les intervju")')->count());
+        $this->assertEquals(3, $crawler->filter('td>a:contains("Les intervju")')->count());
         $this->assertEquals(0, $crawler->filter('td>a:contains("Slett")')->count());
 
         // Assistant user
@@ -217,8 +217,8 @@ class AdmissionAdminControllerTest extends WebTestCase
 
         // Assert that we have the correct buttons for superadmin
         $this->assertEquals(1, $crawler->filter('a.button:contains("NTNU")')->count());
-        $this->assertEquals(2, $crawler->filter('td>a:contains("Les intervju")')->count());
-        $this->assertEquals(2, $crawler->filter('td>a:contains("Slett")')->count());
+        $this->assertEquals(3, $crawler->filter('td>a:contains("Les intervju")')->count());
+        $this->assertEquals(3, $crawler->filter('td>a:contains("Slett")')->count());
 
         // Admin tests
         $client = static::createClient(array(), array(
@@ -265,7 +265,7 @@ class AdmissionAdminControllerTest extends WebTestCase
         // Assert that we only have the buttons for admin
         $this->assertEquals(1, $crawler->filter('a.button:contains("NTNU")')->count());
         $this->assertEquals(0, $crawler->filter('td>a:contains("Slett")')->count());
-        $this->assertEquals(2, $crawler->filter('td>a:contains("Les intervju")')->count());
+        $this->assertEquals(3, $crawler->filter('td>a:contains("Les intervju")')->count());
 
         // Team user
         $client = static::createClient(array(), array(
