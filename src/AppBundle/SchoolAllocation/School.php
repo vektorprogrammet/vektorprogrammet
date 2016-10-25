@@ -2,7 +2,7 @@
 
 namespace AppBundle\SchoolAllocation;
 
-class School
+class School implements \JsonSerializable
 {
     /**
      * @var string
@@ -96,5 +96,16 @@ class School
         }
 
         return true;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            'name' => $this->name,
+            'capacity' => $this->capacity,
+        );
     }
 }
