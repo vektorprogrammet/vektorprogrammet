@@ -18,6 +18,9 @@ function getAvailableDays(assistant) {
             }));
         }
     }
+    select.change(function () {
+        updateAvailableSchools(select.val())
+    })
     return select
 }
 $.get("/kontrollpanel/api/allocated_assistants", function (data) {
@@ -38,5 +41,15 @@ $.get("/kontrollpanel/api/allocated_assistants", function (data) {
                 )
             );
     }
-
 });
+
+$.get("/kontrollpanel/api/schools_and_days", function (data) {
+    var schools = JSON.parse(data);
+    console.log(schools);
+});
+/*
+* Update the select options based on the chosen day
+* */
+function updateAvailableSchools(day) {
+
+}
