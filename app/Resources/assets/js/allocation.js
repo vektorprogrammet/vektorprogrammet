@@ -2,13 +2,13 @@
  * Created by jorgenvalstad on 03.10.2016.
  */
 $.get("/kontrollpanel/api/assistants", function (data) {
-    console.log(data);
 
 })
 
 function getAvailableDays(assistant) {
     // NOTE: The select id is not unique if two people have the same name.
-    var select = $('<select>').attr('id', assistant['name']);
+    var spaceless_name = assistant['name'].split(' ').join('');
+    var select = $('<select>').attr('id', spaceless_name);
     var availability = assistant['availability'];
     for (var i in availability) {
         if (availability[i]) {
@@ -21,8 +21,6 @@ function getAvailableDays(assistant) {
     return select
 }
 $.get("/kontrollpanel/api/allocated_assistants", function (data) {
-    console.log(data);
-
     //Adding a row in allocation_table for each assistant
     var assistants = JSON.parse(data);
     for (var i in assistants) {
