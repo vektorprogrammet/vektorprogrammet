@@ -148,8 +148,22 @@
                 var aIndex = alternatives.data('a-index');
                 var qIndex = alternatives.data('q-index');
 
+                var upButton = $('<button class="button tiny secondary">Opp&nbsp;<i class="fa fa-arrow-up"/></button>');
+                var downButton = $('<button class="button tiny secondary">Ned&nbsp;<i class="fa fa-arrow-down"/></button>');
+
+                upButton.on('click', function(e) {
+                    e.preventDefault();
+                    upButton.closest('.row').insertBefore(upButton.closest('.row').prev('.row'));
+                });
+                downButton.on('click', function(e) {
+                    e.preventDefault();
+                    downButton.closest('.row').insertAfter(downButton.closest('.row').next('.row'));
+                });
+
                 var newAlternative = $(IntSchema.aPrototype.replace(/__a_prot__/g, aIndex).replace(/__q_prot__/g, qIndex));
 
+                newAlternative.append(upButton);
+                newAlternative.append(downButton);
                 alternatives.data("a-index", aIndex + 1);
                 alternatives.append(newAlternative);
 
@@ -186,7 +200,6 @@
                 return upButton;
             }
         };
-        console.log(IntSchema.questions.children());
 
         $(document).ready(IntSchema.onReady);
 
