@@ -95,7 +95,8 @@ class SchoolAllocationAPIController extends Controller
         return $schools;
     }
 
-    public function generateSchoolsFromSchoolCapacitiesAction() {
+    public function generateSchoolsFromSchoolCapacitiesAction()
+    {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
         $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
