@@ -81,6 +81,7 @@ class ArticleRepository extends EntityRepository
         $qb = $this->createQueryBuilder('a')
             ->select('a')
             ->where('a.created > :date')
+            ->orWhere('a.sticky = 1')
             ->addOrderBy('a.sticky', 'DESC')
             ->addOrderBy('a.created', 'DESC')
             ->setParameter('date', $d);
