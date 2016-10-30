@@ -10,4 +10,8 @@ class AboutVektorController extends Controller
     {
         return $this->render('about/about_vektor.html.twig');
     }
+
+    public function showFAQAction(){
+        return $this->render('about/faq.html.twig');
+    }
 }

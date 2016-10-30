@@ -34,6 +34,10 @@ about:
  path: /omvektor
  defaults: { _controller: AppBundle:AboutVektor:show }
 
+faq:
+ path: /faq
+ defaults: {_controller: AppBundle:AboutVektor:showFAQ}
+
 admission:
  path: /opptak
  defaults: { _controller: AppBundle:Admission:show }
