@@ -549,6 +549,26 @@ team_page:
   path: /team/{id}
   defaults: {_controller: AppBundle:Team:show}
 
+team_application:
+  path: /team/application/{id}
+  defaults: {_controller: AppBundle:TeamApplication:show}
+
+team_application_show:
+  path: /kontrollpanel/team/application/{id}
+  defaults: {_controller: AppBundle:TeamApplication:showApplication}
+
+team_application_show_all:
+  path: /kontrollpanel/team/applications/{id}
+  defaults: {_controller: AppBundle:TeamApplication:showAllApplications}
+  requirements:
+      id: \d+
+
+team_application_delete:
+  path: /kontrollpanel/team/applications/slett/{id}
+  defaults: {_controller: AppBundle:TeamApplication:deleteTeamApplicationById}
+  requirements:
+      id: \d+
+
 teamadmin_show:
  path: /kontrollpanel/teamadmin
  defaults: {_controller: AppBundle:TeamAdmin:show }
