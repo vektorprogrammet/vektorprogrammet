@@ -77,11 +77,11 @@ $.get("/kontrollpanel/api/allocated_assistants", function (data) {
                     .append(generateGroupSelect(assistant))
                 )
             );
-    }
-});
 
-$.get("/kontrollpanel/api/schools_and_days", function (data) {
-    school_availability = JSON.parse(data);
+        // Initialize the school selector
+        var day_select = $("#".concat(string_remove_space(name)));
+        updateAvailableSchools(day_select.val(), name);
+    }
 });
 /*
 * Update the select options based on the chosen day
