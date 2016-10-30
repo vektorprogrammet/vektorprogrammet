@@ -39,18 +39,33 @@ function generateSchoolSelect(assistant) {
     return select;
 }
 
-
+/*
+Generate group selector based on the assistant's preference
+ */
 function generateGroupSelect(assistant) {
     var name = assistant['name'];
     var spaceless_name = string_remove_space(name);
     var select = $('<select>');
     select.addClass("allocation_select");
-    select.append($('<option>', {value: "Bolk 1", text: "Bolk 1"}));
-    select.append($('<option>', {value: "Bolk 2", text: "Bolk 2"}));
-    select.append($('<option>', {value: "Dobbel", text: "Dobbel"}));
+    var preferredGroup = assistant['preferredGroup'];
+    if (!assistant['doublePosition']) {
+        switch (preferredGroup) {
+            case null:
+                select.append($('<option>', {value: "Bolk 1", text: "Bolk 1"}));
+                select.append($('<option>', {value: "Bolk 2", text: "Bolk 2"}));
+                break;
+            case 1:
+                select.append($('<option>', {value: "Bolk 1", text: "Bolk 1"}));
+                break;
+            case 2:
+                select.append($('<option>', {value: "Bolk 2", text: "Bolk 2"}));
+                break;
+        }
+    } else {
+        select.append($('<option>', {value: "Dobbel", text: "Dobbel"}));
+    }
     return select;
 }
-
 
 $.get("/kontrollpanel/api/schools_and_days", function (data) {
     school_availability = JSON.parse(data);
@@ -107,8 +122,8 @@ function updateAvailableSchools(day, assistant_name) {
             text: school_availability[day][i]
         }));
     }
-
 }
+
 /*
 * Remove space from string
 * */
