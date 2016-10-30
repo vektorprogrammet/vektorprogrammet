@@ -74,10 +74,16 @@ class ArticleRepository extends EntityRepository
      */
     public function findStickyAndLatestArticles($limit = null)
     {
+        // Get news that are newer than 30 days
+        $d = new \DateTime();
+        $d->modify('-30days');
+
         $qb = $this->createQueryBuilder('a')
             ->select('a')
+            ->where('a.created > :date')
             ->addOrderBy('a.sticky', 'DESC')
-            ->addOrderBy('a.created', 'DESC');
+            ->addOrderBy('a.created', 'DESC')
+            ->setParameter('date', $d);
 
         if (false === is_null($limit)) {
             $qb->setMaxResults($limit);
