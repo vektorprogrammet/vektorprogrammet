@@ -33,6 +33,5 @@ class AboutVektorControllerTest extends WebTestCase
 
         // Assert that we have the correct amount of data
         $this->assertEquals(1, $crawler->filter('h1:contains("Ofte stilte spørsmål")')->count());
-
     }
 }
