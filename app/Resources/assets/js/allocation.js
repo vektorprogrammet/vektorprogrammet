@@ -105,6 +105,14 @@ function generateAllocationTable() {
             // Initialize the school selector
             var day_select = $("#".concat(string_remove_space(name)));
             updateAvailableSchools(day_select.val(), name);
+            var school_select = $("#".concat(string_remove_space(name).concat("SchoolSelect")));
+            // Set the school and day that the algorithm chose
+            if(assistant.assignedDay != null) {
+                day_select.val(assistant.assignedDay);
+            }
+            if(assistant.assignedSchool != null) {
+                school_select.val(assistant.assignedSchool);
+            }
         }
     });
 }
