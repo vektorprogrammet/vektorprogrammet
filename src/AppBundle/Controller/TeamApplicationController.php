@@ -8,19 +8,28 @@ use AppBundle\Entity\TeamApplication;
 use AppBundle\Form\Type\TeamApplicationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class TeamApplicationController extends Controller
 {
     public function showApplicationAction(TeamApplication $application){
-        //TODO: Se om bruker er med i teamet eller er superadmin
+        $user = $this->getUser();
+        $activeUserHistoriesInTeam = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeamAndUser($application->getTeam(), $user);
+        if (empty($activeUserHistoriesInTeam) and !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
+            throw new AccessDeniedHttpException();
+        }
         return $this->render('team/show_application.html.twig',array(
             'application'=>$application
         ));
     }
     public function showAllApplicationsAction(Team $team){
         $applications = $this->getDoctrine()->getRepository('AppBundle:TeamApplication')->findByTeam($team);
-        //TODO: Se om bruker er med i teamet eller er superadmin
+        $user = $this->getUser();
+        $activeUserHistoriesInTeam = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeamAndUser($team, $user);
+        if (empty($activeUserHistoriesInTeam) and !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
+            throw new AccessDeniedHttpException();
+        }
         return $this->render('team/show_applications.html.twig',array(
             'applications'=>$applications,
             'team'=>$team

@@ -296,6 +296,7 @@ class InterviewController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showSchemasAction()
+
     {
         $schemas = $this->getDoctrine()->getRepository('AppBundle:InterviewSchema')->findAll();
 
