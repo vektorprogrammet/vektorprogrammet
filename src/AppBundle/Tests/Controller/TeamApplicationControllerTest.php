@@ -6,8 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TeamApplicationControllerTest extends WebTestCase
 {
-    public function testShowApplication(){
-
+    public function testShowApplication()
+    {
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/team/1');
@@ -19,10 +19,10 @@ class TeamApplicationControllerTest extends WebTestCase
         //Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Søk Hovedstyret")')->count());
         //Form checks?
-
     }
 
-    public function testShowAllApplications(){
+    public function testShowAllApplications()
+    {
         // ADMIN
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'admin',
@@ -70,10 +70,10 @@ class TeamApplicationControllerTest extends WebTestCase
 
         // Assert that the response is access denied
         $this->assertNotEquals(403, $client->getResponse()->getStatusCode()); // Should be something better than notEquals
-
     }
 
-    public function testShow(){
+    public function testShow()
+    {
 
         // ADMIN
         $client = static::createClient(array(), array(
@@ -122,20 +122,17 @@ class TeamApplicationControllerTest extends WebTestCase
 
         // Assert that the response is access denied
         $this->assertNotEquals(403, $client->getResponse()->getStatusCode()); // Should be something better than notEquals
-
-
-
-
     }
 
-    public function testAcceptApplication(){
+    public function testAcceptApplication()
+    {
         $clientAnonymous = static::createClient();
 
         $crawler = $clientAnonymous->request('GET', '/team/1');
         $this->assertTrue($clientAnonymous->getResponse()->isSuccessful());
 
         // Find a link
-        $this->assertGreaterThan(0,$crawler->selectLink('Søk Hovedstyret')->count());
+        $this->assertGreaterThan(0, $crawler->selectLink('Søk Hovedstyret')->count());
 
         // Admin
         $clientAdmin = static::createClient(array(), array(
@@ -158,12 +155,10 @@ class TeamApplicationControllerTest extends WebTestCase
         // Assert that the link is gone
         $this->assertEquals(0, $crawler->selectLink('Søk Hovedstyret')->count());
         restoreDatabase();
-
-
-
     }
 
-    public function testCreateApplication(){
+    public function testCreateApplication()
+    {
 
         // Admin
         $clientAdmin = static::createClient(array(), array(
@@ -198,10 +193,10 @@ class TeamApplicationControllerTest extends WebTestCase
 
         $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
         restoreDatabase();
-
     }
 
-    public function testDeleteApplication(){
+    public function testDeleteApplication()
+    {
         // Admin
         $clientAdmin = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'admin',
@@ -225,11 +220,9 @@ class TeamApplicationControllerTest extends WebTestCase
         $crawler = $clientAdmin->request('GET', '/kontrollpanel/team/applications/1');
         $this->assertTrue($clientAdmin->getResponse()->isSuccessful());
 
-
         $applicationsAfter = $crawler->filter('tr')->count();
 
         $this->assertEquals($applicationsBefore - 1, $applicationsAfter);
         restoreDatabase();
     }
-
 }

@@ -72,7 +72,6 @@ class Team
         $this->acceptApplication = $acceptApplication;
     }
 
-
     public function __construct()
     {
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();

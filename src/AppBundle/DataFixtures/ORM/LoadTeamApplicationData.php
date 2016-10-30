@@ -19,7 +19,6 @@ class LoadTeamApplicationData extends AbstractFixture implements OrderedFixtureI
         $manager->persist($teamApplication1);
 
         $manager->flush();
-
     }
 
     public function getOrder()

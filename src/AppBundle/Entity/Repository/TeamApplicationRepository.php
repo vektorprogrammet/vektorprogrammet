@@ -2,11 +2,8 @@
 
 namespace AppBundle\Entity\Repository;
 
-use AppBundle\Entity\Department;
-use AppBundle\Entity\Semester;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamApplication;
-use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -18,14 +15,16 @@ use Doctrine\ORM\EntityRepository;
 class TeamApplicationRepository extends EntityRepository
 {
     /**
-     * @param Team $team
-     * @return TeamApplication[]
-     */
-public function findByTeam(Team $team){
+ * @param Team $team
+ *
+ * @return TeamApplication[]
+ */
+public function findByTeam(Team $team)
+{
     return $this->createQueryBuilder('teamApplication')
         ->select('teamApplication')
         ->where('teamApplication.team = :team')
-        ->setParameter('team',$team)
+        ->setParameter('team', $team)
         ->getQuery()
         ->getResult();
 }

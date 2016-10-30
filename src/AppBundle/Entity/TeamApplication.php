@@ -105,7 +105,6 @@ class TeamApplication
         $this->applicationText = $applicationText;
     }
 
-
     /**
      * @return mixed
      */
@@ -121,5 +120,4 @@ class TeamApplication
     {
         $this->team = $team;
     }
-
 }

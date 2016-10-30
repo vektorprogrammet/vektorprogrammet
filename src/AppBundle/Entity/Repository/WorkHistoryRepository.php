@@ -58,6 +58,7 @@ class WorkHistoryRepository extends EntityRepository
     /**
      * @param $team
      * @param $user
+     *
      * @return array
      */
     public function findActiveWorkHistoriesByTeamAndUser(Team $team, User $user)

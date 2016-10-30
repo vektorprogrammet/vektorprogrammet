@@ -231,16 +231,13 @@ class TeamAdminController extends Controller
         usort($inActiveWorkHistories, array($this, 'sortWorkHistoriesByEndDate'));
 
         $user = $this->getUser();
-        dump($user);
         $currentUserWorkHistory = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByUser($user);
         $isUserInTeam = false;
-        dump($currentUserWorkHistory);
-        foreach ($currentUserWorkHistory as $wh){
+        foreach ($currentUserWorkHistory as $wh) {
             if (in_array($wh, $activeWorkHistories)) {
                 $isUserInTeam = true;
             }
         }
-        dump($isUserInTeam);
 
         // Return the view with suitable variables
         return $this->render('team_admin/specific_team.html.twig', array(
