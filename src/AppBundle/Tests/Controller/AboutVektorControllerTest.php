@@ -24,4 +24,15 @@ class AboutVektorControllerTest extends WebTestCase
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
+
+    public function testShowFaq()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/faq');
+
+        // Assert that we have the correct amount of data
+        $this->assertEquals(1, $crawler->filter('h1:contains("Ofte stilte spørsmål")')->count());
+
+    }
 }
