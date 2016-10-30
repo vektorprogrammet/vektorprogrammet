@@ -52,37 +52,48 @@ function generateGroupSelect(assistant) {
 }
 
 
-$.get("/kontrollpanel/api/allocated_assistants", function (data) {
-    //Adding a row in allocation_table for each assistant
-    var assistants = JSON.parse(data);
-    for (var i in assistants) {
-        var assistant = assistants[i];
-        var name = assistant.name;
-        $('.allocation_table')
-            .append($('<tr>')
-                // One column for name
-                .append($('<td>')
-                    .text(name)
-                )
-                // One column for day selection
-                .append($('<td>')
-                    .append(getAvailableDays(assistant))
-                )
-                // One column for school selection
-                .append($('<td>')
-                    .append(generateSchoolSelect(assistant))
-                )
-                // One column for group selection
-                .append($('<td>')
-                    .append(generateGroupSelect(assistant))
-                )
-            );
-
-        // Initialize the school selector
-        var day_select = $("#".concat(string_remove_space(name)));
-        updateAvailableSchools(day_select.val(), name);
-    }
+$.get("/kontrollpanel/api/schools_and_days", function (data) {
+    school_availability = JSON.parse(data);
+    generateAllocationTable();
 });
+
+/*
+Generate the allocation table
+ */
+function generateAllocationTable() {
+    $.get("/kontrollpanel/api/allocated_assistants", function (data) {
+        //Adding a row in allocation_table for each assistant
+        var assistants = JSON.parse(data);
+        for (var i in assistants) {
+            var assistant = assistants[i];
+            var name = assistant.name;
+            $('.allocation_table')
+                .append($('<tr>')
+                    // One column for name
+                        .append($('<td>')
+                            .text(name)
+                        )
+                        // One column for day selection
+                        .append($('<td>')
+                            .append(getAvailableDays(assistant))
+                        )
+                        // One column for school selection
+                        .append($('<td>')
+                            .append(generateSchoolSelect(assistant))
+                        )
+                        // One column for group selection
+                        .append($('<td>')
+                            .append(generateGroupSelect(assistant))
+                        )
+                );
+
+            // Initialize the school selector
+            var day_select = $("#".concat(string_remove_space(name)));
+            updateAvailableSchools(day_select.val(), name);
+        }
+    });
+}
+
 /*
 * Update the select options based on the chosen day
 * */
