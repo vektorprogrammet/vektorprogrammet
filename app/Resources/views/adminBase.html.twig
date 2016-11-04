@@ -60,7 +60,9 @@
                             <li>
                                 <a href="{{ path('statistics_application_by_department', {'department': app.user.fieldOfStudy.department.id}) }}">Opptaksstatistikk</a>
                             </li>
-                            <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
+                            {% endif %}
                             <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
                         </ul>
                     </li>
@@ -136,7 +138,9 @@
                             <li>
                                 <a href="{{ path('statistics_application_by_department', {'department': app.user.fieldOfStudy.department.id}) }}">Opptaksstatistikk</a>
                             </li>
-                            <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
+                            {% endif %}
                             <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
                         </ul>
                     </li>
@@ -185,7 +189,9 @@
                     <li>
                         <a href="{{ path('statistics_application_by_department', {'department': app.user.fieldOfStudy.department.id}) }}">Opptaksstatistikk</a>
                     </li>
-                    <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
+                    {% endif %}
                     <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
                 </ul>
             </div>
