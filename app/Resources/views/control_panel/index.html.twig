@@ -119,15 +119,17 @@
                 </div>
             </div>
 
-            <div class="small-4 medium-3 large-2 columns">
-                <div class="control-panel-item">
-                    <a href="{{ path('interview_schema') }}">
-                        <i class="fa fa-comments fa-3x"></i>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <div class="small-4 medium-3 large-2 columns">
+                    <div class="control-panel-item">
+                        <a href="{{ path('interview_schema') }}">
+                            <i class="fa fa-comments fa-3x"></i>
 
-                        <p>Intervjuskjemaer</p>
-                    </a>
+                            <p>Intervjuskjemaer</p>
+                        </a>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
 
             <div class="small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">
