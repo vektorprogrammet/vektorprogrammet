@@ -108,7 +108,7 @@ function generateAllocationTable() {
             var school_select = $("#".concat(string_remove_space(name).concat("SchoolSelect")));
             // Set the school and day that the algorithm chose
             if(assistant.assignedDay != null) {
-                day_select.val(assistant.assignedDay);
+                day_select.val(norwegian_day(assistant.assignedDay));
             }
             if(assistant.assignedSchool != null) {
                 school_select.val(assistant.assignedSchool);
@@ -137,4 +137,18 @@ function updateAvailableSchools(day, assistant_name) {
 * */
 function string_remove_space(str) {
     return str.split(' ').join('');
+}
+
+
+/*
+Convert english day to norwegian day
+ */
+function norwegian_day(english_day) {
+    switch (english_day) {
+        case "Monday":    return "Mandag";
+        case "Tuesday":   return "Tirsdag";
+        case "Wednesday": return "Onsdag";
+        case "Thursday":  return "Torsdag";
+        case "Friday":    return "Fredag";
+    }
 }

@@ -106,16 +106,24 @@ class SchoolAllocationAPIController extends Controller
 
         // Array for fast lookup on school availability by days
         $school_availability = array(
-            'Monday' => array(),
-            'Tuesday' => array(),
-            'Wednesday' => array(),
-            'Thursday' => array(),
-            'Friday' => array(),
+            'Mandag' => array(),
+            'Tirsdag' => array(),
+            'Onsdag' => array(),
+            'Torsdag' => array(),
+            'Fredag' => array(),
         );
         foreach ($schools as $school) {
             foreach ($school->getCapacity()[1] as $day => $is_avail) {
                 if ($is_avail) {
-                    $school_availability[$day][] = $school->getName();
+                    $norwegian_day = '';
+                    switch ($day) {
+                        case 'Monday':    $norwegian_day = 'Mandag';  break;
+                        case 'Tuesday':   $norwegian_day = 'Tirsdag'; break;
+                        case 'Wednesday': $norwegian_day = 'Onsdag';  break;
+                        case 'Thursday':  $norwegian_day = 'Torsdag'; break;
+                        case 'Friday':    $norwegian_day = 'Fredag';  break;
+                    }
+                    $school_availability[$norwegian_day][] = $school->getName();
                 }
             }
         }
@@ -145,12 +153,9 @@ class SchoolAllocationAPIController extends Controller
         $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
         $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsBySemester($currentSemester);
         $assistants = $this->generateAssistantsFromApplications($applications);
-        dump($assistants);
         $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
-        dump($schools);
         $allocation = new Allocation($schools, $assistants);
         $result = $allocation->step();
-        dump($result);
 
         //Total number of allocations evaluated during optimization
 
@@ -158,7 +163,23 @@ class SchoolAllocationAPIController extends Controller
             'assistants' => $result->getAssistants(),
         ));*/
 
-        return new JsonResponse(json_encode($result->getAssistants()));
+        $allocated_assistants = $result->getAssistants();
+        foreach ($allocated_assistants as $assistant) {
+            $availability = $assistant->getAvailability();
+            foreach ($availability as $day => $avail) {
+                switch ($day) {
+                    case 'Monday': $availability['Mandag'] = $avail; break;
+                    case 'Tuesday': $availability['Tirsdag'] = $avail; break;
+                    case 'Wednesday': $availability['Onsdag'] = $avail; break;
+                    case 'Thursday': $availability['Torsdag'] = $avail; break;
+                    case 'Friday': $availability['Fredag'] = $avail; break;
+                }
+                unset($availability[$day]);
+            }
+            $assistant->setAvailability($availability);
+        }
+
+        return new JsonResponse(json_encode($allocated_assistants));
     }
 
     private function getAssistantAvailableDays($applications)
