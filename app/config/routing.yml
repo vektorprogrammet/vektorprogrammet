@@ -774,6 +774,11 @@ school_allocation_api_schools_and_days:
   defaults: { _controller: AppBundle:SchoolAllocationAPI:generateSchoolsFromSchoolCapacities }
   methods: [GET]
 
+school_allocation_api_schools:
+  path: /kontrollpanel/api/schools
+  defaults: { _controller: AppBundle:SchoolAllocationAPI:generateAllSchools }
+  methods: [GET]
+
 ##########################################
 #              Interview                 #
 ##########################################

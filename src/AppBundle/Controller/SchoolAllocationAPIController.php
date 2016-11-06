@@ -95,6 +95,7 @@ class SchoolAllocationAPIController extends Controller
         return $schools;
     }
 
+    // FIX: Change the name of this function to reflect what it does
     public function generateSchoolsFromSchoolCapacitiesAction()
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
@@ -120,6 +121,17 @@ class SchoolAllocationAPIController extends Controller
         }
 
         return new JsonResponse(json_encode($school_availability));
+    }
+
+    public function generateAllSchoolsAction()
+    {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
+        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
+        $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
+        $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
+
+        return new JsonResponse(json_encode($schools));
     }
 
     public function getAllocatedAssistantsAction()
