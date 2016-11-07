@@ -28,9 +28,43 @@ class Sponsor
     protected $url;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $size;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $logoImagePath;
+
+    /**
+     * Sponsor constructor.
+     * @param $size
+     */
+    public function __construct()
+    {
+        $this->size = 'medium';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    /**
+     * @param mixed $size
+     */
+    public function setSize($size)
+    {
+        $this->size = $size;
+    }
+
+
+
+
 
     /**
      * Get id.

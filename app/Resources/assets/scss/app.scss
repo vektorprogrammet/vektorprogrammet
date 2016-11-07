@@ -445,10 +445,9 @@ ul.alternatives {
 .sponsor-img {
   max-height: 150px;
   vertical-align: middle;
-}
+  .small{
 
-.sponsor-column {
-  height: 150px;
+  }
 }
 
 //Team specific
@@ -468,10 +467,22 @@ ul.alternatives {
   vertical-align: middle;
 }
 
-.sponsor-img {
-  max-height: 150px;
+.sponsor-img-small {
   vertical-align: middle;
+  height: 25%;
+  width: auto;
 }
+.sponsor-img-medium{
+  vertical-align: middle;
+  height: 50%;
+  width: auto;
+}
+.sponsor-img-large{
+  vertical-align: middle;
+  height: 90%;
+  width: auto;
+}
+
 
 .sponsor-column {
   height: 150px;

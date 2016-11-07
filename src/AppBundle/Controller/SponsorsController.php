@@ -61,6 +61,10 @@ class SponsorsController extends Controller
             //Get the sponsor's url
             $url = $request->request->get('sponsor')['url'];
             $sponsor->setUrl($url);
+            //Get the sponsor size
+            $size = $request->request->get('sponsor')['size'];
+            $sponsor->setSize($size);
+
             //Save to database
             $em->persist($sponsor);
         }

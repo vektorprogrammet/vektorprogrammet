@@ -20,6 +20,7 @@ class SponsorsExtension extends \Twig_Extension
     {
         return array(
             'get_sponsors' => new \Twig_Function_Method($this, 'getSponsors'),
+            'get_sponsors_by_size' => new \Twig_Function_method($this, 'getSponsorsBySize'),
         );
     }
 
@@ -29,6 +30,19 @@ class SponsorsExtension extends \Twig_Extension
             ->getEntityManager()
             ->getRepository('AppBundle:Sponsor')
             ->findAll();
+        if (!$sponsors) {
+            return 'No sponsors :-(';
+        }
+
+        return $sponsors;
+    }
+
+    public function getSponsorsBySize($size)
+    {
+        $sponsors = $this->doctrine
+            ->getEntityManager()
+            ->getRepository('AppBundle:Sponsor')
+            ->findBy(array('size' => $size));
         if (!$sponsors) {
             return 'No sponsors :-(';
         }
