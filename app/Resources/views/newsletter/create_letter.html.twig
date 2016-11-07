@@ -12,7 +12,8 @@
             {{ form_row(form.title) }}
             {{ form_row(form.content) }}
 
-            <button class="button medium">Send</button>
+            <button class="button medium alert">Send</button>
+            {{ form_widget(form.preview, {'attr': {'class': 'button', 'formtarget': '_blank'}}) }}
             <br><br>
             {{ form_end(form) }}
         </div>

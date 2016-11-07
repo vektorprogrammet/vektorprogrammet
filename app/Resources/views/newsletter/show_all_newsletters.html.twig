@@ -8,7 +8,7 @@
     </div>
     <div class="row">
         <div class="small-12 columns">
-            <a class="tiny button success" href="{{ path('newsletter_create') }}">Opprett nytt nyhetsbrev <i class="fa fa-plus"></i></a>
+            <a class="tiny button success" href="{{ path('newsletter_create') }}">Opprett nytt nyhetsbrev  <i class="fa fa-plus"></i></a>
         </div>
         <br><br>
     </div>
@@ -18,37 +18,27 @@
                 <tr>
                     <th>Navn</th>
                     <th>Abonnenter</th>
-                    <th colspan="4"></th>
+                    <th colspan="2"></th>
                     <th>Vis på påmeldingsside</th>
                 </tr>
                 {% for newsletter in newsletters %}
                     <tr>
                         <td><a href="{{ path('newsletter_show_subscribers', {id: newsletter.id}) }}">{{ newsletter.name }}</a></td>
                         <td><a href="{{ path('newsletter_show_subscribers', {id: newsletter.id}) }}">{{ newsletter.subscribers|length }}</a></td>
-                        <td><a class="tiny button" href="{{ path('newsletter_show_subscribe', {id: newsletter.id}) }}">Påmedlingsskjema</a></td>
-                        <td>
-                            <a href="{{ path('newsletter_edit', { 'id': newsletter.id }) }}" class="button tiny">
-                                <i class="fa fa-pencil-square-o"></i> Rediger
-                            </a>
-                        </td>
-
-                        <td>
-                            <form method="POST" action="{{ path('newsletter_delete', { 'id': newsletter.id }) }}" onsubmit="return confirm('Er du sikker?')">
-                                <button type="submit" class="tiny button alert"><i class="fa fa-trash"></i> Slett</button>
-                            </form>
-                        </td>
                         <td><a class="tiny button" href="{{ path('newsletter_send_letter', {'id': newsletter.id}) }}">Lag e-post</a></td>
+                        <td><a class="tiny button" href="{{ path('newsletter_show_letters', {'id':newsletter.id}) }}">Sendte brev</a></td>
                         <td>
                             <form method="POST" action="{{ path('newsletter_toggle_visible', {'id' : newsletter.id}) }}">
                                 <button type="submit"
                                         {% if newsletter.showOnAdmissionPage %}
-                                            class="tiny button success"> Aktiv
-                                         {% else %}
-                                            class="tiny button"> Aktiver
-                                        {% endif %}
+                                        class="tiny button success"> Aktiv
+                                    {% else %}
+                                        class="tiny button"> Aktiver
+                                    {% endif %}
                                     <i class="fa"></i> </button>
                             </form>
                         </td>
+
 
                 {% endfor %}
             </table>

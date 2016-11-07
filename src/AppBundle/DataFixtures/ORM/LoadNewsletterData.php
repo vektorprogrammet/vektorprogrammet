@@ -21,10 +21,17 @@ class LoadNewsletterData extends AbstractFixture implements OrderedFixtureInterf
         $newsletter2->setDepartment($this->getReference('dep-1'));
         $manager->persist($newsletter2);
 
+        $newsletter3 = new Newsletter();
+        $newsletter3->setName('Testliste');
+        $newsletter3->setDepartment($this->getReference('dep-3'));
+        $newsletter3->setShowOnAdmissionPage(true);
+        $manager->persist($newsletter3);
+
         $manager->flush();
 
         $this->addReference('newsletter-interesseliste', $newsletter);
         $this->addReference('newsletter-testliste', $newsletter2);
+        $this->addReference('newsletterNMBU-testliste', $newsletter3);
     }
 
     public function getOrder()

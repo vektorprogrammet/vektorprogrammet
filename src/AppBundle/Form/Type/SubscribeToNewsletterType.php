@@ -1,34 +1,33 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CreateLetterType extends AbstractType
+class SubscribeToNewsletterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', 'text', array(
-                'label'=>'Emne'
+            ->add('name', 'text', array(
+                'label' => 'Navn'
             ))
-            ->add('content', 'textarea', array(
-                'label'=>'Innhold'
+            ->add('email', 'email', array(
+                'label' => 'E-post'
             ));
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Letter',
+            'data_class' => 'AppBundle\Entity\Subscriber',
         ));
     }
 
     public function getName()
     {
-        return 'app_bundle_create_letter_type';
+        return 'app_bundle_subscribe_to_newsletter_type';
     }
 }

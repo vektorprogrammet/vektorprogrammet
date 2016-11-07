@@ -35,7 +35,7 @@ class Newsletter
     /**
      * @var Letter
      * 
-     * @ORM\OneToMany(targetEntity="Letter", mappedBy="letters")
+     * @ORM\OneToMany(targetEntity="Letter", mappedBy="newsletter")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $letters;

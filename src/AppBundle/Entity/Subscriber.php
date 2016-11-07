@@ -4,10 +4,15 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SubscriberRepository")
  * @ORM\Table(name="subscriber")
+ *
+ * @UniqueEntity(
+ *      fields={"unsubscribeCode"}
+ * )
  */
 class Subscriber
 {
@@ -37,6 +42,11 @@ class Subscriber
      * @ORM\ManyToOne(targetEntity="Newsletter", inversedBy="subscribers")
      */
     private $newsletter;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $unsubscribeCode;
 
     /**
      * Constructor.
@@ -118,5 +128,19 @@ class Subscriber
     public function setNewsletter($newsletter)
     {
         $this->newsletter = $newsletter;
+    }
+    /**
+     * @param mixed
+     */
+    public function getUnsubscribeCode()
+    {
+        return $this->unsubscribeCode;
+    }
+    /**
+     * @param mixed $unsubscribeCode
+     */
+    public function setUnsubscribeCode($unsubscribeCode)
+    {
+        $this->unsubscribeCode = $unsubscribeCode;
     }
 }

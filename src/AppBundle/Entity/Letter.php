@@ -23,6 +23,11 @@ class Letter
     private $title;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $recipientCount;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $timestamp;
@@ -33,7 +38,7 @@ class Letter
     private $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Newsletter")
+     * @ORM\ManyToOne(targetEntity="Newsletter", inversedBy="letters")
      */
     private $newsletter;
 
@@ -118,4 +123,21 @@ class Letter
     {
         $this->newsletter = $newsletter;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getRecipientCount()
+    {
+        return $this->recipientCount;
+    }
+
+    /**
+     * @param mixed $recipientCount
+     */
+    public function setRecipientCount($recipientCount)
+    {
+        $this->recipientCount = $recipientCount;
+    }
+
 }

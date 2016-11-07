@@ -1236,6 +1236,23 @@ newsletter_send_letter:
     id: \d+
   methods: [GET|POST]
 
+newsletter_show_letters:
+   path: /kontrollpanel/nyhetsbrev/brev/{id}
+   defaults: { _controller: AppBundle:Newsletter:showLetters }
+   requirements:
+     id: \d+
+
+newsletter_show_letter_content:
+   path: /kontrollpanel/nyhetsbrev/brev/vis/{id}
+   defaults: { _controller: AppBundle:Newsletter:showLetterContent }
+   requirements:
+     id: \d+
+
+unsubscribe_newsletter:
+    path: /nyhetsbrev/meldav/{unsubscribeCode}
+    defaults: { _controller: AppBundle:Newsletter:unsubscribeNewsletter }
+    requirements:
+      code: \w+
 
 ##########################################
 #              Field of study            #
