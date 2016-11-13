@@ -32,6 +32,7 @@ class ControlPanelController extends Controller
         $totalApplicationsCount = 0;
         $admissionTimeLeft = 0;
         $timeToAdmissionStart = 0;
+        $positionsCount = 0;
 
         if (!is_null($semester)) {
             $applicationRepository = $this->getDoctrine()->getRepository('AppBundle:Application');
@@ -43,6 +44,14 @@ class ControlPanelController extends Controller
             $step = $this->determineCurrentStep($semester, $interviewedAssistantsCount, $assignedInterviewsCount, $totalAssistantsCount);
 
             $totalApplicationsCount = count($this->getDoctrine()->getRepository('AppBundle:Application')->findBy(array('semester' => $semester)));
+            $assistantHistories = $assistantHistoryRepository->findAssistantHistoriesByDepartment($department, $semester);
+
+            $positionsCount = $totalAssistantsCount;
+            foreach ($assistantHistories as $assistant) {
+                if ($assistant->getBolk() === 'Bolk 1, Bolk 2') {
+                    ++$positionsCount;
+                }
+            }
 
             if ($step >= 1 && $step < 2) {
                 $timeToAdmissionStart = intval(ceil(($semester->getAdmissionStartDate()->getTimestamp() - (new \DateTime())->getTimestamp()) / 3600));
@@ -61,6 +70,7 @@ class ControlPanelController extends Controller
             'totalApplicationsCount' => $totalApplicationsCount,
             'admissionTimeLeft' => $admissionTimeLeft,
             'timeToAdmissionStart' => $timeToAdmissionStart,
+            'positionsCount' => $positionsCount,
         ));
     }
 
