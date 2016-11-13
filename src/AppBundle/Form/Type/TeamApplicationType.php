@@ -18,8 +18,25 @@ class TeamApplicationType extends AbstractType
             ->add('email', 'email', array(
                 'label' => 'Email',
             ))
-            ->add('applicationText', 'textarea', array(
-                'label' => 'Søknadstekst',
+            ->add('yearOfStudy', 'choice', array(
+                'label' => 'Studieår',
+                'choices' => array(
+                    '1. klasse' => '1. klasse',
+                    '2. klasse' => '2. klasse',
+                    '3. klasse' => '3. klasse',
+                    '4. klasse' => '4. klasse',
+                    '5. klasse' => '5. klasse',
+                ),
+            ))
+            ->add('fieldOfStudy', 'text', array(
+                'label' => 'Linje',
+            ))
+            ->add('motivationText', 'textarea', array(
+                'label' => 'Skriv kort om din motivasjon for vervet',
+                'attr' => array('rows' => 4),
+            ))
+            ->add('biography', 'textarea', array(
+                'label' => 'Skriv litt om deg selv',
                 'attr' => array('rows' => 10),
             ))
             ;

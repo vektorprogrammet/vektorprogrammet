@@ -32,9 +32,28 @@ class TeamApplication
     private $email;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=45)
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
-    private $applicationText;
+    private $fieldOfStudy;
+
+    /**
+     * @ORM\Column(type="string", length=45)
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
+     */
+    private $yearOfStudy;
+
+    /**
+     * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
+     */
+    private $motivationText;
+
+    /**
+     * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
+     */
+    private $biography;
 
     /**
      * @ORM\ManyToOne(targetEntity="Team")
@@ -119,5 +138,69 @@ class TeamApplication
     public function setTeam($team)
     {
         $this->team = $team;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFieldOfStudy()
+    {
+        return $this->fieldOfStudy;
+    }
+
+    /**
+     * @param mixed $fieldOfStudy
+     */
+    public function setFieldOfStudy($fieldOfStudy)
+    {
+        $this->fieldOfStudy = $fieldOfStudy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMotivationText()
+    {
+        return $this->motivationText;
+    }
+
+    /**
+     * @param mixed $motivationText
+     */
+    public function setMotivationText($motivationText)
+    {
+        $this->motivationText = $motivationText;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBiography()
+    {
+        return $this->biography;
+    }
+
+    /**
+     * @param mixed $biography
+     */
+    public function setBiography($biography)
+    {
+        $this->biography = $biography;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getYearOfStudy()
+    {
+        return $this->yearOfStudy;
+    }
+
+    /**
+     * @param mixed $yearOfStudy
+     */
+    public function setYearOfStudy($yearOfStudy)
+    {
+        $this->yearOfStudy = $yearOfStudy;
     }
 }
