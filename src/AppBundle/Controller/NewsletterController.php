@@ -148,10 +148,13 @@ class NewsletterController extends Controller
         $subscriber = new Subscriber();
 
         $form = $this->createForm(new SubscribeToNewsletterType(), $subscriber);
+        dump($subscriber);
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+            dump($subscriber);
+            $subscriber->setUnsubscribeCode('asd');
             $subscriber->setNewsletter($newsletter);
 
             $manager = $this->getDoctrine()->getManager();

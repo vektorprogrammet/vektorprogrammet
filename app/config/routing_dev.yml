@@ -16,3 +16,9 @@ _errors:
 
 _main:
     resource: routing.yml
+
+test_newsletter:
+  path: /nl/{id}
+  defaults: { _controller: AppBundle:Newsletter:subscribeForm }
+  requirements:
+   id: \d+
