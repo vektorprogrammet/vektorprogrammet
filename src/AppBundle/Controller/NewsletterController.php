@@ -163,7 +163,7 @@ class NewsletterController extends Controller
             $manager->persist($subscriber);
             $manager->flush();
 
-            $this->addFlash('success', $subscriber->getEmail() . ' ble registrert');
+            $this->addFlash('admission-notice', 'Takk for at du meldte deg på '.$newsletter->getName().'! '. $subscriber->getEmail() . ' ble registrert');
 
             return $this->redirectToRoute('admission_show_specific_department', array('id' => $department->getId()));
         }
