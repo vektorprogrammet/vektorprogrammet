@@ -215,4 +215,10 @@
         <br>
         <hr>
     {% endif %}
+    {% for application in applications %}
+        {% set user = application.user %}
+        {{ user.firstName }} {{ user.lastName }}, {{ application.monday }}, {{ application.tuesday }}, {{ application.wednesday }}, {{ application.thursday }}, {{ application.friday }},
+        {{ application.preferredGroup ? application.preferredGroup : 'Ingen' }}, {{ application.doublePosition ? 'Ja' : 'Nei' }}
+            <br>
+    {% endfor %}
 {% endblock %}

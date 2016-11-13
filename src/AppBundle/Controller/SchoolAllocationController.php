@@ -25,19 +25,35 @@ class SchoolAllocationController extends Controller
 
         $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
 
-        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsBySemester($currentSemester);
+        $previousApplications = $this->getDoctrine()->getRepository('AppBundle:Application')->findPreviousApplicants($departmentId, $currentSemester);
+        $interviewedApplications = $this->getDoctrine()->getRepository('AppBundle:Application')->findInterviewedApplicants($departmentId, $currentSemester);
         $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
 
+        $filteredApplications = array();
+
+        foreach ($interviewedApplications as $application) {
+            if ($application->getInterview() != null) {
+                $interviewScore = $application->getInterview()->getInterviewScore();
+                if ($interviewScore != null && $interviewScore->getSuitableAssistant() == 'Kanskje') {
+                    $filteredApplications[] = $application;
+                }
+            }
+        }
         $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
 
         return $this->render('school_admin/school_allocate_show.html.twig', array(
             'semester' => $currentSemester,
-            'applications' => $applications,
+            'applications' => array_merge($filteredApplications),
             'allocations' => $allCurrentSchoolCapacities,
             'allocatedSchools' => $schools,
         ));
     }
 
+    /**
+     * @param $schoolCapacities
+     *
+     * @return School[]
+     */
     private function generateSchoolsFromSchoolCapacities($schoolCapacities)
     {
         //Use schoolCapacities to create School objects for the SA-Algorithm
@@ -75,6 +91,7 @@ class SchoolAllocationController extends Controller
         $assistants = array();
         foreach ($applications as $application) {
             $doublePosition = $application->getDoublePosition();
+            $previousParticipation = $application->getPreviousParticipation();
             $preferredGroup = null;
             if ($application->getPreferredGroup() == 'Bolk 1') {
                 $preferredGroup = 1;
@@ -98,6 +115,23 @@ class SchoolAllocationController extends Controller
             $assistant->setDoublePosition($doublePosition);
             $assistant->setPreferredGroup($preferredGroup);
             $assistant->setAvailability($availability);
+            $assistant->setPreviousParticipation($previousParticipation);
+            $suitability = 'Ja';
+            if ($previousParticipation) {
+                $assistant->setScore(20);
+            } else {
+                $score = 0;
+                $interview = $application->getInterview();
+                if ($interview != null) {
+                    $intScore = $interview->getInterviewScore();
+                    if ($intScore != null) {
+                        $score = $intScore->getSum();
+                        $suitability = $intScore->getSuitableAssistant();
+                    }
+                }
+                $assistant->setScore($score);
+            }
+            $assistant->setSuitability($suitability);
             $assistants[] = $assistant;
         }
 
@@ -124,17 +158,49 @@ class SchoolAllocationController extends Controller
         $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
 
         $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
-        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsBySemester($currentSemester);
+//        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsBySemester($currentSemester);
+        $previousApplications = $this->getDoctrine()->getRepository('AppBundle:Application')->findPreviousApplicants($departmentId, $currentSemester);
+        $interviewedApplications = $this->getDoctrine()->getRepository('AppBundle:Application')->findInterviewedApplicants($departmentId, $currentSemester);
+
+        $filteredApplications = array();
+
+        foreach ($interviewedApplications as $application) {
+            if ($application->getInterview() != null) {
+                $interviewScore = $application->getInterview()->getInterviewScore();
+                if ($interviewScore != null && $interviewScore->getSuitableAssistant() == 'Ja') {
+                    $filteredApplications[] = $application;
+                }
+            }
+        }
+        $applications = array_merge($previousApplications, $filteredApplications);
         $assistants = $this->generateAssistantsFromApplications($applications);
         $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
         $allocation = new Allocation($schools, $assistants);
         $result = $allocation->step();
-        dump($result);
+        $schools2 = array();
+
+        foreach ($result->getAssistants() as $assistant) {
+            $sc = $assistant->getAssignedSchool();
+            $day = $assistant->getAssignedDay();
+            if ($day == null) {
+                continue;
+            }
+
+            if (!key_exists($sc, $schools2)) {
+                $schools2[$sc] = array();
+            }
+
+            if (!key_exists($day, $schools2[$sc])) {
+                $schools2[$sc][$day] = array();
+            }
+            $schools2[$sc][$day][] = $assistant;
+        }
 
         //Total number of allocations evaluated during optimization
 
         return $this->render('school_admin/school_allocate_result.html.twig', array(
             'assistants' => $result->getAssistants(),
+            'schools' => $schools2,
         ));
     }
 

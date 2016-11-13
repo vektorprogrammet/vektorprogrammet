@@ -19,6 +19,9 @@ class Allocation
         $this->schools = $schools;
     }
 
+    /**
+     * @return $this|void
+     */
     public function step()
     {
         if (self::$count == 0) {

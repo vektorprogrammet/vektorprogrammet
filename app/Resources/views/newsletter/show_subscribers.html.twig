@@ -1,0 +1,56 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 columns">
+            <h2>Abonnenter til {{ newsletter.name }}</h2>
+        </div>
+    </div>
+    {% if  is_granted('ROLE_SUPER_ADMIN')%}
+    <div class="row">
+        <div class="small-12 columns">
+            <table>
+                 <td>
+                     <a href="{{ path('newsletter_edit', { 'id': newsletter.id }) }}" class="button tiny">
+                          <i class="fa fa-pencil-square-o"></i> Rediger nyhetsbrevet
+                      </a>
+                </td>
+                <td>
+                    <form method="POST" action="{{ path('newsletter_delete', { 'id': newsletter.id }) }}" onsubmit="return confirm('Er du sikker?')">
+                       <button type="submit" class="tiny button alert"><i class="fa fa-trash"></i> Slett nyhetsbrevet</button>
+                    </form>
+                </td>
+                <td>
+                    <a href="{{ path('newsletter_show_subscribe', { 'id': newsletter.id }) }}" class="button tiny">Påmeldingsside</a>
+                </td>
+            </table>
+        </div>
+        <br><br>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="small-12 columns">
+            <table>
+                <tr>
+                    <th>Navn</th>
+                    <th>E-post</th>
+                    <th></th>
+                </tr>
+                {% for subscriber in newsletter.subscribers %}
+                    <tr>
+                        <td>{{ subscriber.name }}</td>
+                        <td>{{ subscriber.email }}</td>
+                        <td>
+                            {% if  is_granted('ROLE_SUPER_ADMIN')%}
+                            <form method="POST" action="{{ path('newsletter_admin_unsubscribe', {id: subscriber.id}) }}" onsubmit="return confirm('Er du sikker?')">
+                                <button class="tiny button alert"><i class="fa fa-trash"></i>Slett</button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1202,6 +1202,94 @@ anniversary_remove_payment:
  requirements:
   _method: POST
 
+##########################################
+#              Newsletter                #
+##########################################
+
+newsletter_create:
+  path: /kontrollpanel/nyhetsbrev/opprett
+  defaults: { _controller: AppBundle:Newsletter:create }
+
+newsletter_edit:
+  path: /kontrollpanel/nyhetsbrev/opprett/{id}
+  defaults: { _controller: AppBundle:Newsletter:create }
+  requirements:
+    id: \d+
+
+newsletter_delete:
+  path: /kontrollpanel/nyhetsbrev/slett/{id}
+  defaults: { _controller: AppBundle:Newsletter:delete }
+  requirements:
+    id: \d+
+  methods: [POST]
+
+newsletter_show_all:
+  path: /kontrollpanel/nyhetsbrev
+  defaults: { _controller: AppBundle:Newsletter:showAllNewsletters }
+
+newsletter_show_subscribers:
+  path: /kontrollpanel/nyhetsbrev/{id}
+  defaults: { _controller: AppBundle:Newsletter:showSubscribers }
+  requirements:
+    id: \d+
+
+newsletter_subscribe:
+  path: /subscribe/{id}
+  defaults: { _controller: AppBundle:Newsletter:subscribeForm }
+  requirements:
+   id: \d+
+
+newsletter_admin_unsubscribe:
+  path: /kontrollpanel/nyhetsbrev/unsubscribe/{id}
+  defaults: { _controller: AppBundle:Newsletter:adminUnsubscribe }
+  requirements:
+    id: \d+
+  methods: [POST]
+
+newsletter_show_subscribe:
+  path: /nyhetsbrev/{id}
+  defaults: { _controller: AppBundle:Newsletter:showSubscribePage }
+  requirements:
+    id: \d+
+
+newsletter_toggle_visible:
+  path: /kontrollpanel/nyhetsbrev/toggle/{id}
+  defaults: {_controller: AppBundle:Newsletter:showOnAdmissionPage}
+  requirements:
+    id: \d+
+  methods: [POST]
+
+newsletter_send_letter:
+  path: /kontrollpanel/nyhetsbrev/send/{id}
+  defaults: { _controller: AppBundle:Newsletter:createLetter }
+  requirements:
+    id: \d+
+  methods: [GET|POST]
+
+newsletter_show_letters:
+   path: /kontrollpanel/nyhetsbrev/brev/{id}
+   defaults: { _controller: AppBundle:Newsletter:showLetters }
+   requirements:
+     id: \d+
+
+newsletter_show_letter_content:
+   path: /kontrollpanel/nyhetsbrev/brev/vis/{id}
+   defaults: { _controller: AppBundle:Newsletter:showLetterContent }
+   requirements:
+     id: \d+
+
+unsubscribe_newsletter:
+    path: /nyhetsbrev/meldav/{unsubscribeCode}
+    defaults: { _controller: AppBundle:Newsletter:unsubscribeNewsletter }
+    requirements:
+      code: \w+
+
+##########################################
+#              Field of study            #
+##########################################
+
+
+
 create_field_of_study:
   path: /kontrollpanel/linje
   defaults: { _controller: AppBundle:FieldOfStudy:edit }
