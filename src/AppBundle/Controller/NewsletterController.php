@@ -56,7 +56,6 @@ class NewsletterController extends Controller
 
     public function showSubscribePageAction(Request $request, Newsletter $newsletter){
         $subscriber = new Subscriber();
-        $unsubscribeCode = bin2hex(openssl_random_pseudo_bytes(12));
 
         $form = $this->createForm(new SubscribeToNewsletterType(), $subscriber);
 
@@ -64,7 +63,6 @@ class NewsletterController extends Controller
 
         if($form->isSubmitted() && $form->isValid()){
             $subscriber->setNewsletter($newsletter);
-            $subscriber->setUnsubscribeCode($unsubscribeCode);
 
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($subscriber);
@@ -152,11 +150,12 @@ class NewsletterController extends Controller
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+            dump('heisann');
             $subscriber->setNewsletter($newsletter);
-
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($subscriber);
             $manager->flush();
+
 
             $this->addFlash('success', $subscriber->getEmail() . ' ble registrert');
 

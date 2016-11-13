@@ -54,6 +54,7 @@ class Subscriber
     public function __construct()
     {
         $this->timestamp = new \DateTime();
+        $this->unsubscribeCode = bin2hex(openssl_random_pseudo_bytes(12));
     }
 
     /**
