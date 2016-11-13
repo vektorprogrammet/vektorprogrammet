@@ -155,18 +155,11 @@ class NewsletterControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->selectButton('Aktiv')->count());
         $this->assertEquals('Aktiver', $allButtons->eq(0)->html());
         $this->assertEquals('Aktiv', $allButtons->eq(1)->html());
+        restoreDatabase();
     }
 
-    public function testSubscribe()
+    public function testSubscribeOnAdmissionPage()
     {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'nmbu',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/3');
-        dump($crawler->filter('tr')->count());
-
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/opptak/avdeling/3');
@@ -188,13 +181,46 @@ class NewsletterControllerTest extends WebTestCase
         ));
 
         $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/3');
-        dump($crawler->filter('tr')->count());
 
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $this->assertEquals(1, $crawler->filter('td:contains("Karl")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("user@user.com")')->count());
+        restoreDatabase();
+
+    }
+
+    public function testSubscribePage()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/nyhetsbrev/3');
+
+        // Assert a specific 200 status code
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $button = $crawler->selectButton('Registrer');
+
+        $form = $button->form();
+
+        $form['app_bundle_subscribe_to_newsletter_type[name]'] = 'Karl';
+        $form['app_bundle_subscribe_to_newsletter_type[email]'] = 'user@user.com';
+
+        $client->submit($form);
+
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'nmbu',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/3');
+
+        // Assert a specific 200 status code
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $this->assertEquals(1, $crawler->filter('td:contains("Karl")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("user@user.com")')->count());
+        restoreDatabase();
 
     }
 
@@ -206,11 +232,16 @@ class NewsletterControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/1');
 
+        $deleteButtonsBefore = $crawler->selectButton('Slett')->count();
+
         $activateButtons = $crawler->selectButton('Slett');
-        $form = $activateButtons->eq(0)->form();
+        $form = $activateButtons->eq(1)->form();
         $client->submit($form);
         $crawler = $client->followRedirect();
-        $this->assertEquals(0, $crawler->selectButton('Slett')->count());
+        $deleteButtonsAfter = $crawler->selectButton('Slett')->count();
+
+        $this->assertEquals($deleteButtonsAfter, $deleteButtonsBefore - 1);
+        restoreDatabase();
 
     }
 }
