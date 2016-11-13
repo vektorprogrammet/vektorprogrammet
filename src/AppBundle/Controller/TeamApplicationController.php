@@ -21,7 +21,7 @@ class TeamApplicationController extends Controller
             throw new AccessDeniedHttpException();
         }
 
-        return $this->render('team/show_application.html.twig', array(
+        return $this->render('team_admin/show_application.html.twig', array(
             'application' => $application,
         ));
     }
@@ -34,7 +34,7 @@ class TeamApplicationController extends Controller
             throw new AccessDeniedHttpException();
         }
 
-        return $this->render('team/show_applications.html.twig', array(
+        return $this->render('team_admin/show_applications.html.twig', array(
             'applications' => $applications,
             'team' => $team,
         ));

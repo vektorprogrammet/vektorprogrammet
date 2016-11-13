@@ -183,7 +183,10 @@ class TeamApplicationControllerTest extends WebTestCase
 
         $form['app_bundle_team_application_type[name]'] = 'Sondre';
         $form['app_bundle_team_application_type[email]'] = 'sondre@vektorprogrammet.no';
-        $form['app_bundle_team_application_type[applicationText]'] = 'Jeg vil bli nestleder! Pls.';
+        $form['app_bundle_team_application_type[yearOfStudy]'] = '3. klasse';
+        $form['app_bundle_team_application_type[fieldOfStudy]'] = 'MTTK';
+        $form['app_bundle_team_application_type[motivationText]'] = 'Jeg vil bli nestleder! Pls.';
+        $form['app_bundle_team_application_type[biography]'] = 'Made in Bergen.';
         $clientAnonymous->submit($form);
 
         $crawler = $clientAdmin->request('GET', '/kontrollpanel/team/applications/1');
