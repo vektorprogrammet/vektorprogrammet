@@ -33,7 +33,7 @@ class SponsorType extends AbstractType
                 'choices' => array(
                     'small' => 'Liten',
                     'medium' => 'Medium',
-                    'large' => 'Stor'
+                    'large' => 'Stor',
                 ),
                 'multiple' => false,
                 'expanded' => true,

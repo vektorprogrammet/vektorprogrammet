@@ -469,18 +469,18 @@ ul.alternatives {
 
 .sponsor-img-small {
   vertical-align: middle;
-  height: 25%;
-  width: auto;
+  max-height: 25%;
+  max-width: 200px;
 }
 .sponsor-img-medium{
   vertical-align: middle;
-  height: 50%;
-  width: auto;
+  max-height: 50%;
+  max-width: 300px;
 }
 .sponsor-img-large{
   vertical-align: middle;
-  height: 90%;
-  width: auto;
+  max-height: 90%;
+  max-width: 400px;
 }
 
 

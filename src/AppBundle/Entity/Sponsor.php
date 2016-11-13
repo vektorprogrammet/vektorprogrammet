@@ -39,6 +39,7 @@ class Sponsor
 
     /**
      * Sponsor constructor.
+     *
      * @param $size
      */
     public function __construct()
@@ -61,10 +62,6 @@ class Sponsor
     {
         $this->size = $size;
     }
-
-
-
-
 
     /**
      * Get id.
