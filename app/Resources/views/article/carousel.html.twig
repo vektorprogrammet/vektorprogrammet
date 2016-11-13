@@ -1,20 +1,22 @@
-<div class="small-12 medium-8 medium-push-4 columns">
-        <div class="news-carousel">
-            {% for article in articles %}
-                <div><img src="{{ asset(article.imageMedium) }}" /></div>
-            {% else %}
-                <div><h3>Ingen nyheter</h3></div>
-            {% endfor %}
-        </div>
+{% if articles|length %}
+    <div class="small-12 medium-8 medium-push-4 columns">
+            <div class="news-carousel">
+                {% for article in articles %}
+                    <div><img src="{{ asset(article.imageMedium) }}" /></div>
+                {% else %}
+                    <div><h3>Ingen nyheter</h3></div>
+                {% endfor %}
+            </div>
+    </div>
+    <div class="news-carousel-text small-12 medium-4 medium-pull-8 columns">
+        <h4 class="hide-for-small-only">Nyheter:</h4>
+        {% for article in articles %}
+            <div id="news-carousel-text-{{ loop.index0 }}" {% if loop.index0 != 0 %}style="display: none"{% endif %}>
+                <h1 class="article-heading">{{ article.title|safe_html }}</h1>
+                <a href="{{ path('article_show', { 'id': article.id }) }}" class="vektor-button tiny">Les mer</a>
+            </div>
+        {% else %}
+            <div><h3>Ingen nyheter</h3></div>
+        {% endfor %}
 </div>
-<div class="news-carousel-text small-12 medium-4 medium-pull-8 columns">
-    <h4 class="hide-for-small-only">Nyheter:</h4>
-    {% for article in articles %}
-        <div id="news-carousel-text-{{ loop.index0 }}" {% if loop.index0 != 0 %}style="display: none"{% endif %}>
-            <h1 class="article-heading">{{ article.title|safe_html }}</h1>
-            <a href="{{ path('article_show', { 'id': article.id }) }}" class="vektor-button tiny">Les mer</a>
-        </div>
-    {% else %}
-        <div><h3>Ingen nyheter</h3></div>
-    {% endfor %}
-</div>
+{% endif %}

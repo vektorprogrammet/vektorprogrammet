@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Team;
+use AppBundle\Entity\User;
 use AppBundle\Entity\WorkHistory;
 use Doctrine\ORM\EntityRepository;
 
@@ -55,6 +56,31 @@ class WorkHistoryRepository extends EntityRepository
     }
 
     /**
+     * @param $team
+     * @param $user
+     *
+     * @return array
+     */
+    public function findActiveWorkHistoriesByTeamAndUser(Team $team, User $user)
+    {
+        $today = new \DateTime('now');
+
+        return $this->createQueryBuilder('whistory')
+            ->select('whistory')
+            ->join('whistory.startSemester', 'startSemester')
+            ->leftJoin('whistory.endSemester', 'endSemester')
+            ->where('startSemester.semesterStartDate < :today')
+            ->andWhere('whistory.team = :team')
+            ->andWhere('endSemester is null or endSemester.semesterEndDate > :today')
+            ->andWhere('whistory.user = :user')
+            ->setParameter('today', $today)
+            ->setParameter('team', $team)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * @param Team $team
      *
      * @return WorkHistory[]
@@ -91,7 +117,7 @@ class WorkHistoryRepository extends EntityRepository
             ->leftJoin('whistory.endSemester', 'endSemester')
             ->where('startSemester.semesterStartDate < :today')
             ->andWhere('whistory.user = :user')
-            ->andWhere('endSemester.semesterEndDate < :today')
+            ->andWhere('endSemester.semesterEndDate > :today OR endSemester.semesterEndDate is NULL')
             ->setParameter('today', $today)
             ->setParameter('user', $user)
             ->getQuery()

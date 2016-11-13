@@ -76,6 +76,12 @@ class ApplicationStatisticsController extends Controller
         $cancelledInterviewsCount = count($applicationRepository->findCancelledApplicants($semester));
         $acceptedFemaleCount = $assistantHistoryRepository->numFemale($semester);
         $acceptedMaleCount = $assistantHistoryRepository->numMale($semester);
+        $positionsCount = count($assistantHistories);
+        foreach ($assistantHistories as $assistant) {
+            if ($assistant->getBolk() === 'Bolk 1, Bolk 2') {
+                ++$positionsCount;
+            }
+        }
 
         return $this->render('statistics/statistics.html.twig', array(
             'applicationCount' => $applicationCount,
@@ -92,6 +98,7 @@ class ApplicationStatisticsController extends Controller
             'semesters' => $semesters,
             'department' => $department,
             'semester' => $semester,
+            'positionsCount' => $positionsCount,
         ));
     }
 }

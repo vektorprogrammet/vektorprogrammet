@@ -1,0 +1,65 @@
+{% extends 'adminBase.html.twig'%}
+{% block body %}
+    <div class="row">
+        <div class="small-12 columns">
+            <h3>Søknad til {{ application.team.name }} fra {{ application.name }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 columns">
+            <table>
+                <tr>
+                    <td>
+                        <b>Navn</b>
+                    </td>
+                    <td>
+                        {{ application.name }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Epost</b>
+                    </td>
+                    <td>
+                        {{ application.email }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Studieår</b>
+                    </td>
+                    <td>
+                        {{ application.yearOfStudy }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Linje</b>
+                    </td>
+                    <td>
+                        {{ application.fieldOfStudy }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Motivasjon</b>
+                    </td>
+                    <td>
+                        {{ application.motivationText|replace({'\n':'<br>'})|safe_html }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Om søkeren</b>
+                    </td>
+                    <td>
+                        {{ application.biography|replace({'\n':'<br>'})|safe_html }}
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+
+
+{% endblock %}

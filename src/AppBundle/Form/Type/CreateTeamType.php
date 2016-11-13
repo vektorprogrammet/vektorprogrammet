@@ -26,6 +26,10 @@ class CreateTeamType extends AbstractType
             ->add('preview', 'submit', array(
                 'label' => 'Forhåndsvis',
             ))
+            ->add('acceptApplication', 'checkbox', array(
+                'label' => 'Ta i mot søknader?',
+                'required' => false,
+            ))
             ->add('description', 'ckeditor', array(
                 'required' => false,
                 'config' => array(

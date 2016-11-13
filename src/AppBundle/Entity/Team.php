@@ -51,6 +51,27 @@ class Team
      */
     private $shortDescription;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $acceptApplication;
+
+    /**
+     * @return mixed
+     */
+    public function getAcceptApplication()
+    {
+        return $this->acceptApplication;
+    }
+
+    /**
+     * @param mixed $acceptApplication
+     */
+    public function setAcceptApplication($acceptApplication)
+    {
+        $this->acceptApplication = $acceptApplication;
+    }
+
     public function __construct()
     {
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
