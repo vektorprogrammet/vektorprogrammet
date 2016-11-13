@@ -12,7 +12,7 @@ class CreateLetterType extends AbstractType
     {
         $builder
             ->add('title', 'text', array(
-                'label'=>'Emne'
+                'label' => 'Emne',
             ))
             ->add('preview', 'submit', array(
                 'label' => 'Forhåndsvis',
@@ -26,7 +26,6 @@ class CreateLetterType extends AbstractType
                 'label' => 'Innhold',
                 'attr' => array('class' => 'hide'), // Graceful loading, hides the textarea that is replaced by ckeditor
             ));
-
     }
 
     public function configureOptions(OptionsResolver $resolver)

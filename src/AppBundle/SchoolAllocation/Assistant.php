@@ -223,7 +223,7 @@ class Assistant
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isPreviousParticipation()
     {
@@ -231,7 +231,7 @@ class Assistant
     }
 
     /**
-     * @param boolean $previousParticipation
+     * @param bool $previousParticipation
      */
     public function setPreviousParticipation($previousParticipation)
     {

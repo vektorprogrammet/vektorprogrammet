@@ -49,6 +49,7 @@ class ApplicationRepository extends EntityRepository
     /**
      * @param null $department
      * @param null $semester
+     *
      * @return Application[]
      */
     public function findPreviousApplicants($department = null, $semester = null)
@@ -347,6 +348,7 @@ class ApplicationRepository extends EntityRepository
 
     /**
      * @param Semester $semester
+     *
      * @return Application[]
      */
     public function findAllAllocatableApplicationsBySemester(Semester $semester)

@@ -31,13 +31,12 @@ class SchoolAllocationController extends Controller
 
         $filteredApplications = array();
 
-        foreach($interviewedApplications as $application){
-            if($application->getInterview() != null){
-              $interviewScore = $application->getInterview()->getInterviewScore();
-                if($interviewScore != null && $interviewScore->getSuitableAssistant() == 'Kanskje'){
+        foreach ($interviewedApplications as $application) {
+            if ($application->getInterview() != null) {
+                $interviewScore = $application->getInterview()->getInterviewScore();
+                if ($interviewScore != null && $interviewScore->getSuitableAssistant() == 'Kanskje') {
                     $filteredApplications[] = $application;
                 }
-
             }
         }
         $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
@@ -52,6 +51,7 @@ class SchoolAllocationController extends Controller
 
     /**
      * @param $schoolCapacities
+     *
      * @return School[]
      */
     private function generateSchoolsFromSchoolCapacities($schoolCapacities)
@@ -117,14 +117,14 @@ class SchoolAllocationController extends Controller
             $assistant->setAvailability($availability);
             $assistant->setPreviousParticipation($previousParticipation);
             $suitability = 'Ja';
-            if($previousParticipation){
+            if ($previousParticipation) {
                 $assistant->setScore(20);
-            }else{
+            } else {
                 $score = 0;
                 $interview = $application->getInterview();
-                if($interview != null){
+                if ($interview != null) {
                     $intScore = $interview->getInterviewScore();
-                    if($intScore != null){
+                    if ($intScore != null) {
                         $score = $intScore->getSum();
                         $suitability = $intScore->getSuitableAssistant();
                     }
@@ -164,13 +164,12 @@ class SchoolAllocationController extends Controller
 
         $filteredApplications = array();
 
-        foreach($interviewedApplications as $application){
-            if($application->getInterview() != null){
+        foreach ($interviewedApplications as $application) {
+            if ($application->getInterview() != null) {
                 $interviewScore = $application->getInterview()->getInterviewScore();
-                if($interviewScore != null && $interviewScore->getSuitableAssistant() == 'Ja'){
+                if ($interviewScore != null && $interviewScore->getSuitableAssistant() == 'Ja') {
                     $filteredApplications[] = $application;
                 }
-
             }
         }
         $applications = array_merge($previousApplications, $filteredApplications);
@@ -180,16 +179,18 @@ class SchoolAllocationController extends Controller
         $result = $allocation->step();
         $schools2 = array();
 
-        foreach ($result->getAssistants() as $assistant){
+        foreach ($result->getAssistants() as $assistant) {
             $sc = $assistant->getAssignedSchool();
             $day = $assistant->getAssignedDay();
-            if($day == null)continue;
+            if ($day == null) {
+                continue;
+            }
 
-            if(!key_exists($sc, $schools2)){
+            if (!key_exists($sc, $schools2)) {
                 $schools2[$sc] = array();
             }
 
-            if(!key_exists($day, $schools2[$sc])){
+            if (!key_exists($day, $schools2[$sc])) {
                 $schools2[$sc][$day] = array();
             }
             $schools2[$sc][$day][] = $assistant;

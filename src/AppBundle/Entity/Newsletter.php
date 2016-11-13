@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity;
 
-use Symfony\Component\Security\Core\Role\RoleInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -27,14 +26,14 @@ class Newsletter
 
     /**
      * @var Department
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="Department")
      */
     private $department;
 
     /**
      * @var Letter
-     * 
+     *
      * @ORM\OneToMany(targetEntity="Letter", mappedBy="newsletter")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
@@ -42,7 +41,7 @@ class Newsletter
 
     /**
      * @var Subscriber[]
-     * 
+     *
      * @ORM\OneToMany(targetEntity="Subscriber", mappedBy="newsletter")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
@@ -50,7 +49,7 @@ class Newsletter
 
     /**
      * @var bool
-     * 
+     *
      * @ORM\Column(type="boolean")
      */
     private $showOnAdmissionPage;
@@ -159,7 +158,7 @@ class Newsletter
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isShowOnAdmissionPage()
     {
@@ -167,7 +166,7 @@ class Newsletter
     }
 
     /**
-     * @param boolean $showOnAdmissionPage
+     * @param bool $showOnAdmissionPage
      */
     public function setShowOnAdmissionPage($showOnAdmissionPage)
     {
