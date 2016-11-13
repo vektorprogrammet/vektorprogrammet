@@ -27,6 +27,7 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $sponsor->setName('Samarbeidsforum');
         $sponsor->setLogoImagePath('/images/Logo images/55c861b289bcb2.31450842');
         $sponsor->setUrl('http://www.ntnu.no/nt/sf');
+        $sponsor->setSize('medium');
         $manager->persist($sponsor);
 
         $sponsor = new Sponsor();

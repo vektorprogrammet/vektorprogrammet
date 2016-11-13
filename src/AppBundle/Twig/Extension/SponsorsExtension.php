@@ -44,7 +44,7 @@ class SponsorsExtension extends \Twig_Extension
             ->getRepository('AppBundle:Sponsor')
             ->findBy(array('size' => $size));
         if (!$sponsors) {
-            return 'No sponsors :-(';
+            return [];
         }
 
         return $sponsors;
