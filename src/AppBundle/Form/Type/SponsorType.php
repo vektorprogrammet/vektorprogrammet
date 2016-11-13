@@ -27,6 +27,17 @@ class SponsorType extends AbstractType
             ->add('url', 'text', array(
                 'label' => 'Sponsors hjemmeside',
             ))
+            ->add('size', 'choice', array(
+                'required' => true,
+                'label' => 'Størrelse',
+                'choices' => array(
+                    'small' => 'Liten',
+                    'medium' => 'Medium',
+                    'large' => 'Stor',
+                ),
+                'multiple' => false,
+                'expanded' => true,
+            ))
             ->add('logoImagePath', 'file', array(
                 'required' => false,
                 'data_class' => null,
