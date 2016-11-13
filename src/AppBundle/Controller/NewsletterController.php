@@ -145,7 +145,11 @@ class NewsletterController extends Controller
 
         $subscriber = new Subscriber();
 
-        $form = $this->createForm(new SubscribeToNewsletterType(), $subscriber);
+        $form = $this->createForm(new SubscribeToNewsletterType(), $subscriber, array(
+            'action' => $this->generateUrl('newsletter_subscribe', array(
+                'id' => $newsletter->getId(),
+            )),
+        ));
 
         $form->handleRequest($request);
 

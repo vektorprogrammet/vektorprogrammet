@@ -1209,6 +1209,12 @@ newsletter_show_subscribers:
   requirements:
     id: \d+
 
+newsletter_subscribe:
+  path: /subscribe/{id}
+  defaults: { _controller: AppBundle:Newsletter:subscribeForm }
+  requirements:
+   id: \d+
+
 newsletter_admin_unsubscribe:
   path: /kontrollpanel/nyhetsbrev/unsubscribe/{id}
   defaults: { _controller: AppBundle:Newsletter:adminUnsubscribe }
