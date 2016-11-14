@@ -5,6 +5,7 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Entity\Interview;
 use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\InterviewScore;
+use AppBundle\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -207,11 +208,62 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
 
         $manager->persist($application20);
 
+        for ($i = 0; $i < 100; $i++) {
+            $user = $this->getReference('allocation-user-'.$i);
+            $this->createAllocationApplication($user, $manager);
+        }
+
         $manager->flush();
     }
 
     public function getOrder()
     {
         return 5;
+    }
+
+    private function createAllocationApplication(User $user, $manager) {
+        $application = new Application();
+        $application->setUser($user);
+        $application->setPreviousParticipation(mt_rand(0, 100) < 10 ? true : false);
+        $application->setYearOfStudy(1);
+        $application->setSemester($this->getReference('semester-current'));
+        $randomArr = array(true, false, false, false, false);
+        shuffle($randomArr);
+        $application->setMonday($randomArr[0] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
+        $application->setTuesday($randomArr[1] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
+        $application->setWednesday($randomArr[2] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
+        $application->setThursday($randomArr[3] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
+        $application->setFriday($randomArr[4] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
+        $application->setHeardAboutFrom(array('Stand'));
+        $application->setEnglish(mt_rand(0, 100) < 10 ? true : false);
+        $application->setPreferredGroup(mt_rand(0, 100) < 50 ? 'Bolk 1' : 'Bolk 2');
+        $application->setDoublePosition(mt_rand(0, 100) < 10 ? true : false);
+
+        $interview = new Interview();
+        $interview->setInterviewed(true);
+        $interview->setInterviewer($this->getReference('user-2'));
+        $interview->setInterviewSchema($this->getReference('ischema-1'));
+        $interview->setUser($user);
+        $interview->setCancelled(false);
+
+        // Create answer objects for all the questions in the schema
+        foreach ($interview->getInterviewSchema()->getInterviewQuestions() as $interviewQuestion) {
+            $answer = new InterviewAnswer();
+            $answer->setAnswer('Test answer');
+            $answer->setInterview($interview);
+            $answer->setInterviewQuestion($interviewQuestion);
+            $interview->addInterviewAnswer($answer);
+        }
+
+        // The interview score
+        $intScore = new InterviewScore();
+        $intScore->setSuitability(mt_rand(4, 6));
+        $intScore->setExplanatoryPower(mt_rand(4, 6));
+        $intScore->setRoleModel(mt_rand(4, 6));
+        $intScore->setSuitableAssistant('Ja');
+        $interview->setInterviewScore($intScore);
+        $application->setInterview($interview);
+
+        $manager->persist($application);
     }
 }
