@@ -111,22 +111,6 @@ class TeamApplication
     /**
      * @return mixed
      */
-    public function getApplicationText()
-    {
-        return $this->applicationText;
-    }
-
-    /**
-     * @param mixed $applicationText
-     */
-    public function setApplicationText($applicationText)
-    {
-        $this->applicationText = $applicationText;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getTeam()
     {
         return $this->team;
