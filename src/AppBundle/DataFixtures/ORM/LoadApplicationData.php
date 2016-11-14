@@ -208,7 +208,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
 
         $manager->persist($application20);
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 100; ++$i) {
             $user = $this->getReference('allocation-user-'.$i);
             $this->createAllocationApplication($user, $manager);
         }
@@ -221,7 +221,8 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         return 5;
     }
 
-    private function createAllocationApplication(User $user, $manager) {
+    private function createAllocationApplication(User $user, $manager)
+    {
         $application = new Application();
         $application->setUser($user);
         $application->setPreviousParticipation(mt_rand(0, 100) < 10 ? true : false);

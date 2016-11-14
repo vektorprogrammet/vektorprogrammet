@@ -1028,7 +1028,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user20->setPicturePath('images/defaultProfile.png');
         $manager->persist($user20);
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 100; ++$i) {
             $user = new User();
             $user->setIsActive('0');
             $user->setEmail('allocation-user-'.$i.'@mail.com');

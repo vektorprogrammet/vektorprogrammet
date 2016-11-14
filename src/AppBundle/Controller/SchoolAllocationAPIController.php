@@ -117,11 +117,11 @@ class SchoolAllocationAPIController extends Controller
                 if ($is_avail) {
                     $norwegian_day = '';
                     switch ($day) {
-                        case 'Monday':    $norwegian_day = 'Mandag';  break;
+                        case 'Monday':    $norwegian_day = 'Mandag'; break;
                         case 'Tuesday':   $norwegian_day = 'Tirsdag'; break;
-                        case 'Wednesday': $norwegian_day = 'Onsdag';  break;
+                        case 'Wednesday': $norwegian_day = 'Onsdag'; break;
                         case 'Thursday':  $norwegian_day = 'Torsdag'; break;
-                        case 'Friday':    $norwegian_day = 'Fredag';  break;
+                        case 'Friday':    $norwegian_day = 'Fredag'; break;
                     }
                     $school_availability[$norwegian_day][] = $school->getName();
                 }
