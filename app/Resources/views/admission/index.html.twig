@@ -1,9 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {% for d in department %}
-        Opptak {{ d.shortname }}
-    {% endfor %}
+    Opptak {{ department.shortname }}
 {% endblock %}
 
 {% block javascripts %}
