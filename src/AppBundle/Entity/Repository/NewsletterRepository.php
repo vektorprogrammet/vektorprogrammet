@@ -10,6 +10,7 @@ class NewsletterRepository extends EntityRepository
 {
     /**
      * @param Department $department
+     *
      * @return Newsletter
      */
     public function findCheckedByDepartment(Department $department)
@@ -22,5 +23,4 @@ class NewsletterRepository extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
-
 }

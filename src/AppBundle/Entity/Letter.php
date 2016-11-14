@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\LetterRepository")
@@ -47,7 +46,6 @@ class Letter
      */
     public function __construct()
     {
-        
     }
 
     /**
@@ -139,5 +137,4 @@ class Letter
     {
         $this->recipientCount = $recipientCount;
     }
-
 }

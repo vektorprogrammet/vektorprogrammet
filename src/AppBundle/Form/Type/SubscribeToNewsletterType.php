@@ -12,10 +12,10 @@ class SubscribeToNewsletterType extends AbstractType
     {
         $builder
             ->add('name', 'text', array(
-                'label' => 'Navn'
+                'label' => 'Navn',
             ))
             ->add('email', 'email', array(
-                'label' => 'E-post'
+                'label' => 'E-post',
             ));
     }
 

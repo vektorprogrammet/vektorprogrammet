@@ -19,7 +19,7 @@ class NewsletterController extends Controller
     {
         $department = $this->getUser()->getFieldOfStudy()->getDepartment();
 
-        if($newsletter == null){
+        if ($newsletter == null) {
             $newsletter = new Newsletter();
             $newsletter->setDepartment($department);
         }
@@ -28,7 +28,7 @@ class NewsletterController extends Controller
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($newsletter);
             $manager->flush();
@@ -37,7 +37,7 @@ class NewsletterController extends Controller
         }
 
         return $this->render('newsletter/create_newsletter.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ));
     }
 
@@ -45,37 +45,38 @@ class NewsletterController extends Controller
     {
         $department = $this->getUser()->getFieldOfStudy()->getDepartment();
         $newsletters = $this->getDoctrine()->getRepository('AppBundle:Newsletter')->findBy(array(
-            'department' => $department
+            'department' => $department,
         ));
 
         return $this->render('newsletter/show_all_newsletters.html.twig', array(
             'newsletters' => $newsletters,
-            'department' => $department
+            'department' => $department,
         ));
     }
 
-    public function showSubscribePageAction(Request $request, Newsletter $newsletter){
+    public function showSubscribePageAction(Request $request, Newsletter $newsletter)
+    {
         $subscriber = new Subscriber();
 
         $form = $this->createForm(new SubscribeToNewsletterType(), $subscriber);
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $subscriber->setNewsletter($newsletter);
 
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($subscriber);
             $manager->flush();
 
-            $this->addFlash('success', $subscriber->getEmail() . ' ble registrert');
+            $this->addFlash('success', $subscriber->getEmail().' ble registrert');
 
             return $this->redirectToRoute('newsletter_show_subscribe', array('id' => $newsletter->getId()));
         }
 
         return $this->render('newsletter/subscribe.html.twig', array(
             'newsletter' => $newsletter,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ));
     }
 
@@ -85,14 +86,14 @@ class NewsletterController extends Controller
         dump($newsletter);
 
         return $this->render('', array(
-            'newsletters' => $newsletter
+            'newsletters' => $newsletter,
         ));
     }
 
     public function showSubscribersAction(Newsletter $newsletter)
     {
         return $this->render('newsletter/show_subscribers.html.twig', array(
-            'newsletter' => $newsletter
+            'newsletter' => $newsletter,
         ));
     }
 
@@ -114,7 +115,6 @@ class NewsletterController extends Controller
         $manager->flush();
 
         return $this->redirectToRoute('newsletter_show_subscribers', array('id' => $newsletterId));
-
     }
 
     public function showOnAdmissionPageAction(Newsletter $newsletter)
@@ -123,10 +123,9 @@ class NewsletterController extends Controller
         $newsletter->setShowOnAdmissionPage(!$isVisible);
         $manager = $this->getDoctrine()->getManager();
 
-        if ($isVisible === false){
+        if ($isVisible === false) {
             $currentVisible = $manager->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($newsletter->getDepartment());
-            if ($currentVisible !== null)
-            {
+            if ($currentVisible !== null) {
                 $currentVisible->setShowOnAdmissionPage(false);
                 $manager->persist($currentVisible);
             }
@@ -157,22 +156,21 @@ class NewsletterController extends Controller
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $subscriber->setNewsletter($newsletter);
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($subscriber);
             $manager->flush();
 
-            $this->addFlash('success', $subscriber->getEmail() . ' ble registrert');
+            $this->addFlash('admission-notice', 'Takk for at du meldte deg på '.$newsletter->getName().'! '.$subscriber->getEmail().' ble registrert');
 
             return $this->redirectToRoute('admission_show_specific_department', array('id' => $department->getId()));
         }
 
         return $this->render('newsletter/subscribe_form.html.twig', array(
             'newsletter' => $newsletter,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ));
-
     }
     public function createLetterAction(Newsletter $newsletter, Request $request)
     {
@@ -182,7 +180,7 @@ class NewsletterController extends Controller
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             if (true === $form->get('preview')->isClicked()) {
                 return $this->render(
                    'newsletter/mail_template.html.twig',
@@ -190,7 +188,7 @@ class NewsletterController extends Controller
                        'name' => '"NAVN NAVNESEN"',
                        'department' => $newsletter->getDepartment()->getShortName(),
                        'content' => $letter->getContent(),
-                       'unsubscribeCode' => '1234'
+                       'unsubscribeCode' => '1234',
                    )
                );
             }
@@ -198,14 +196,13 @@ class NewsletterController extends Controller
             $letter->setRecipientCount(count($newsletter->getSubscribers()));
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($letter);
-              $manager->flush();
+            $manager->flush();
 
-            foreach ($newsletter->getSubscribers() as $subscriber){
-
+            foreach ($newsletter->getSubscribers() as $subscriber) {
                 $message = \Swift_Message::newInstance()
                     ->setSubject($letter->getTitle())
                     ->setFrom(array(
-                        $newsletter->getDepartment()->getEmail()=>'Vektorprogrammet'
+                        $newsletter->getDepartment()->getEmail() => 'Vektorprogrammet',
                     ))
                     ->setTo($subscriber->getEmail())
                     ->setBody(
@@ -216,7 +213,7 @@ class NewsletterController extends Controller
                                 'name' => $subscriber->getName(),
                                 'department' => $newsletter->getDepartment()->getShortName(),
                                 'content' => $letter->getContent(),
-                                'unsubscribeCode' =>$subscriber->getUnsubscribeCode()
+                                'unsubscribeCode' => $subscriber->getUnsubscribeCode(),
                             )
                         ),
                         'text/html'
@@ -230,8 +227,8 @@ class NewsletterController extends Controller
                 'letter' => $letter,
             ));
         }
-        return $this->render('newsletter/create_letter.html.twig', array('form'=>$form->createView()));
 
+        return $this->render('newsletter/create_letter.html.twig', array('form' => $form->createView()));
     }
     public function showLettersAction(Newsletter $newsletter)
     {
@@ -250,21 +247,17 @@ class NewsletterController extends Controller
         $subscriber = $this->getDoctrine()->getRepository('AppBundle:Subscriber')->findOneBy(array(
             'unsubscribeCode' => $unsubscribeCode,
         ));
-        if ($subscriber === null)
-        {
+        if ($subscriber === null) {
             throw new NotFoundHttpException();
         }
         $manager = $this->getDoctrine()->getManager();
         $manager->remove($subscriber);
         $manager->flush();
+
         return $this->render('newsletter/unsubscribe.html.twig', array(
             'email' => $subscriber->getEmail(),
             'name' => $subscriber->getName(),
             'newsletter' => $subscriber->getNewsletter(),
         ));
-
     }
-
-
-
 }

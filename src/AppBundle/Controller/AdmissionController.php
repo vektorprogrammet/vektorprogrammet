@@ -18,14 +18,16 @@ class AdmissionController extends Controller
         $em = $this->getDoctrine()->getManager();
         $departmentIdQuery = $request->get('id');
         $departmentShortNameQuery = $request->get('short_name');
-        if ($departmentIdQuery) {
+
+        if ($departmentIdQuery !== null) {
             $department = $em->getRepository('AppBundle:Department')->find($departmentIdQuery);
         } else {
             $department = $em->getRepository('AppBundle:Department')->findDepartmentByShortName($departmentShortNameQuery);
-            if ($department == null) {
-                throw $this->createNotFoundException('Could not find department '.$departmentShortNameQuery);
-            }
         }
+        if ($department === null) {
+            throw $this->createNotFoundException('Department not found');
+        }
+
         $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
 
         if ($semester !== null) {

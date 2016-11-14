@@ -1,0 +1,32 @@
+{% extends 'adminBase.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="small-12 columns">
+            <h3>Søknader til {{ team.name }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 columns">
+    <table>
+        {% for application in applications %}
+        <tr>
+            <td>
+                <a href="{{ path('team_application_show',{id:application.id}) }}">{{ application.name }}</a>
+            </td>
+            <td>
+                {{ application.email }}
+            </td>
+            <td>
+                <form action="{{ path('team_application_delete',{id:application.id}) }}" method="POST" onsubmit="confirm('Er du sikker?')">
+                    <button type="submit" class="button tiny alert">
+                        <i class="fa fa-trash"></i> Slett
+                    </button>
+                </form>
+
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    </div>
+{% endblock %}

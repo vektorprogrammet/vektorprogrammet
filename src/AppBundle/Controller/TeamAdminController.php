@@ -182,7 +182,6 @@ class TeamAdminController extends Controller
 
             // Find the team with the given ID
             $team = $this->getDoctrine()->getRepository('AppBundle:Team')->find($id);
-
             // Find the department of the team
             $department = $team->getDepartment();
 
@@ -231,11 +230,21 @@ class TeamAdminController extends Controller
         usort($activeWorkHistories, array($this, 'sortWorkHistoriesByEndDate'));
         usort($inActiveWorkHistories, array($this, 'sortWorkHistoriesByEndDate'));
 
+        $user = $this->getUser();
+        $currentUserWorkHistory = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByUser($user);
+        $isUserInTeam = false;
+        foreach ($currentUserWorkHistory as $wh) {
+            if (in_array($wh, $activeWorkHistories)) {
+                $isUserInTeam = true;
+            }
+        }
+
         // Return the view with suitable variables
         return $this->render('team_admin/specific_team.html.twig', array(
             'team' => $team,
             'activeWorkHistories' => $activeWorkHistories,
             'inActiveWorkHistories' => $inActiveWorkHistories,
+            'isUserInTeam' => $isUserInTeam,
         ));
     }
 
@@ -270,7 +279,7 @@ class TeamAdminController extends Controller
         // Handle the form
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             //Don't persist if the preview button was clicked
             if (false === $form->get('preview')->isClicked()) {

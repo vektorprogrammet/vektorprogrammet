@@ -17,7 +17,6 @@ class NewsletterControllerTest extends WebTestCase
 
         // Assert that we have the correct amount of data
         $this->assertEquals(0, $crawler->filter('p:contains("Du kan melde deg på ")')->count());
-
     }
 
     public function testShowWithoutActiveAdmission()
@@ -32,7 +31,6 @@ class NewsletterControllerTest extends WebTestCase
         // Assert that we have the correct amount of data
         $this->assertEquals(0, $crawler->filter('p:contains("Du kan melde deg på ")')->count());
         $this->assertEquals(1, $crawler->filter('h4:contains("har ikke aktiv søkeperiode")')->count());
-
     }
 
     public function testShowWithActiveNewsletter()
@@ -188,7 +186,6 @@ class NewsletterControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('td:contains("Karl")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("user@user.com")')->count());
         restoreDatabase();
-
     }
 
     public function testSubscribePage()
@@ -221,10 +218,10 @@ class NewsletterControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('td:contains("Karl")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("user@user.com")')->count());
         restoreDatabase();
-
     }
 
-    public function testDeleteSubscriber(){
+    public function testDeleteSubscriber()
+    {
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'admin',
             'PHP_AUTH_PW' => '1234',
@@ -242,6 +239,5 @@ class NewsletterControllerTest extends WebTestCase
 
         $this->assertEquals($deleteButtonsAfter, $deleteButtonsBefore - 1);
         restoreDatabase();
-
     }
 }
