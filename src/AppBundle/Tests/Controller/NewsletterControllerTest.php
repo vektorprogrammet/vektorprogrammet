@@ -236,7 +236,7 @@ class NewsletterControllerTest extends WebTestCase
         $form['app_bundle_subscribe_to_newsletter_type[email]'] = 'user@user.com';
 
         $client->submit($form);
-        
+
         $crawler = $client->request('GET', '/nyhetsbrev/3');
 
         // Assert a specific 200 status code

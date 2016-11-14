@@ -9,11 +9,13 @@ use Doctrine\ORM\EntityRepository;
 class SubscriberRepository extends EntityRepository
 {
     /**
-     * @param string $email
+     * @param string     $email
      * @param Newsletter $newsletter
+     *
      * @return Subscriber[]
      */
-    public function findByEmailAndNewsletter(string $email, Newsletter $newsletter) {
+    public function findByEmailAndNewsletter(string $email, Newsletter $newsletter)
+    {
         return $this->createQueryBuilder('subscriber')
             ->select('subscriber')
             ->where('subscriber.email = :email')

@@ -65,7 +65,7 @@ class NewsletterController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $alreadySubscribed = count($this->getDoctrine()->getRepository('AppBundle:Subscriber')->
                 findByEmailAndNewsletter($subscriber->getEmail(),  $newsletter)) > 0;
-            
+
             if (!$alreadySubscribed) {
                 $subscriber->setNewsletter($newsletter);
 
