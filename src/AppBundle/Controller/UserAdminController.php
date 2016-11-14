@@ -169,7 +169,7 @@ class UserAdminController extends Controller
             // You have to check for admin rights here to prevent admins from deleting users that are not in their department
             elseif ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
                 $em = $this->getDoctrine()->getEntityManager();
-                // Find a user by a given ID 
+                // Find a user by a given ID
                 $userToBeDeleted = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
                 // Find the department of the user that is being deleted
                 $department = $userToBeDeleted->getFieldOfStudy()->getDepartment();
@@ -196,11 +196,11 @@ class UserAdminController extends Controller
                 'success' => false,
                 'code' => $e->getCode(),
                 'cause' => 'Det er ikke mulig å slette brukeren. Vennligst kontakt IT-ansvarlig.',
-                // 'cause' => $e->getMessage(), if you want to see the exception message. 
+                // 'cause' => $e->getMessage(), if you want to see the exception message.
             ]);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 

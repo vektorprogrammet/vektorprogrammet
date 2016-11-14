@@ -28,7 +28,7 @@ class SchoolAdminController extends Controller
         // Get the current user
         $user = $this->get('security.context')->getToken()->getUser();
 
-        // Boolean value 
+        // Boolean value
         $valid = 0;
 
         if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
@@ -38,7 +38,7 @@ class SchoolAdminController extends Controller
             // find the department of the user
             $userDepartment = $this->get('security.context')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
 
-            // Find the schools associated with the department 
+            // Find the schools associated with the department
             $schools = $this->getDoctrine()->getRepository('AppBundle:School')->findSchoolsByDepartment($userDepartment);
 
             foreach ($schools as $school1) {
@@ -99,7 +99,7 @@ class SchoolAdminController extends Controller
         // Find the user with the ID as sent by the request
         $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
 
-        // Find department of the user 
+        // Find department of the user
         $department = $user->getFieldOfStudy()->getDepartment();
 
         $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
@@ -190,7 +190,7 @@ class SchoolAdminController extends Controller
             // Find the department of the user
             $department = $user->getFieldOfStudy()->getDepartment();
 
-            // Find all the users of the department that are active 
+            // Find all the users of the department that are active
             $users = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersByDepartment($department);
 
             // Return the view with suitable variables
@@ -286,7 +286,7 @@ class SchoolAdminController extends Controller
                 'form' => $form->createView(),
             ));
         } else {
-            // If access denied return view 
+            // If access denied return view
             return $this->redirect($this->generateUrl('home'));
         }
     }
@@ -300,7 +300,7 @@ class SchoolAdminController extends Controller
             // Find the department with a ID equal to the ID variable sent by the request
             $department = $this->getDoctrine()->getRepository('AppBundle:Department')->findOneById($id);
 
-            // New school entity 
+            // New school entity
             $school = new School();
 
             // Create the form
@@ -360,12 +360,11 @@ class SchoolAdminController extends Controller
         } catch (\Exception $e) {
             // Send a response back to AJAX
             $response['success'] = false;
-            //$response['cause'] = 'Kunne ikke slette skolen. ';
             $response['cause'] = $e->getMessage();
 
             return new JsonResponse($response);
         }
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 
@@ -397,10 +396,10 @@ class SchoolAdminController extends Controller
             // Send a response back to AJAX
             $response['success'] = false;
             $response['cause'] = 'Kunne ikke slette assistent historien. ';
-            //$response['cause'] = $e->getMessage();
+
             return new JsonResponse($response);
         }
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 }

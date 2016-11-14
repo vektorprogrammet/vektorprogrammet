@@ -1,0 +1,81 @@
+{% extends 'adminBase.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="small-12 columns">
+            <h1>Last opp signatur</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div data-alert class="alert-box success radius">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="small-8 columns">
+                    {{ form_row(form.description)}}
+                </div>
+            </div>
+            {#<label for="form_signature_path">Age</label>#}
+            <div class="row">
+                <div class="small-2 columns">
+                    <div class="hide">
+                        {{ form_row(form.signature_path)}}
+                    </div>
+                    <button type="button" class="button tiny" id="choose_picture">
+                        Velg bilde
+                    </button>
+                </div>
+                <div class="small-4 columns">
+                    <div class="{{ signature.signaturePath is not null ? '' : 'hide' }}">
+                        <img src="{{ asset(signature.signaturePath) }}" height="60px" id="signature_picture">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <button class="button tiny success">Lagre</button>
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        var uploadButton = $('#choose_picture');
+        uploadButton.click(function(){
+            var realUploadButton = $('#create_signature_signature_path');
+            realUploadButton.click();
+        })
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#signature_picture').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#create_signature_signature_path").change(function(){
+            $('#signature_picture').parent().removeClass('hide');
+            readURL(this);
+        });
+
+
+    </script>
+
+    <script>
+        setTimeout(function(){
+            $('.alert-box').fadeOut(800);
+        }, 1500)
+    </script>
+
+{% endblock %}

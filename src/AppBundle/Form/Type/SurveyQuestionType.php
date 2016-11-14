@@ -46,19 +46,6 @@ class SurveyQuestionType extends AbstractType
                 '1' => 'Ja',
             ),
         ));
-
-        /*
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-            $iq = $event->getData();
-            $form = $event->getForm();
-
-            $id =  null === $iq ? 0 : $iq->id;
-
-            $form->add('question', 'text', array(
-                'label' => $id,
-                'attr' => array('placeholder' => 'Fyll inn nytt spørsmål'),
-            ));
-        });*/
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

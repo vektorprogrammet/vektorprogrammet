@@ -31,7 +31,7 @@ class CreateWorkHistoryType extends AbstractType
                       ->andWhere('fos.department = d')
                       ->andWhere('d = ?1')
                       ->setParameter(1, $this->departmentId);
-                    },
+                },
             ))
             ->add('position', 'entity', array(
                 'label' => 'Stilling',
@@ -39,7 +39,7 @@ class CreateWorkHistoryType extends AbstractType
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('p')
                       ->orderBy('p.name', 'ASC');
-                    },
+                },
             ))
             ->add('startSemester', 'entity', array(
                 'label' => 'Start semester',

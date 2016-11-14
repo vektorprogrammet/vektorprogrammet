@@ -30,13 +30,12 @@ class TeamAdminController extends Controller
         } catch (\Exception $e) {
             // Send a response back to AJAX
             $response['success'] = false;
-            //$response['cause'] = 'Kunne ikke slette stillingen';
             $response['cause'] = $e->getMessage();
 
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 
@@ -54,7 +53,7 @@ class TeamAdminController extends Controller
 
             $em = $this->getDoctrine()->getManager();
 
-            // Find a position by the ID sent in by the request 
+            // Find a position by the ID sent in by the request
             $position = $em->getRepository('AppBundle:Position')->find($id);
 
             // Create the form
@@ -183,7 +182,6 @@ class TeamAdminController extends Controller
 
             // Find the team with the given ID
             $team = $this->getDoctrine()->getRepository('AppBundle:Team')->find($id);
-
             // Find the department of the team
             $department = $team->getDepartment();
 
@@ -232,11 +230,21 @@ class TeamAdminController extends Controller
         usort($activeWorkHistories, array($this, 'sortWorkHistoriesByEndDate'));
         usort($inActiveWorkHistories, array($this, 'sortWorkHistoriesByEndDate'));
 
+        $user = $this->getUser();
+        $currentUserWorkHistory = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByUser($user);
+        $isUserInTeam = false;
+        foreach ($currentUserWorkHistory as $wh) {
+            if (in_array($wh, $activeWorkHistories)) {
+                $isUserInTeam = true;
+            }
+        }
+
         // Return the view with suitable variables
         return $this->render('team_admin/specific_team.html.twig', array(
             'team' => $team,
             'activeWorkHistories' => $activeWorkHistories,
             'inActiveWorkHistories' => $inActiveWorkHistories,
+            'isUserInTeam' => $isUserInTeam,
         ));
     }
 
@@ -259,7 +267,7 @@ class TeamAdminController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        // Find a team by the ID sent in by the request 
+        // Find a team by the ID sent in by the request
         $team = $em->getRepository('AppBundle:Team')->find($id);
 
         // Find the department of the team
@@ -271,11 +279,22 @@ class TeamAdminController extends Controller
         // Handle the form
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $em->persist($team);
-            $em->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            //Don't persist if the preview button was clicked
+            if (false === $form->get('preview')->isClicked()) {
+                // Persist the team to the database
+                $em->persist($team);
+                $em->flush();
 
-            return $this->redirect($this->generateUrl('teamadmin_show'));
+                return $this->redirect($this->generateUrl('teamadmin_show'));
+            }
+            $workHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeam($team);
+            // Render the teampage as a preview
+            return $this->render('team/team_page.html.twig', array(
+                'team' => $team,
+                'workHistories' => $workHistories,
+                ));
         }
 
         return $this->render('team_admin/create_team.html.twig', array(
@@ -334,13 +353,20 @@ class TeamAdminController extends Controller
 
                 // Set the teams department to the department sent in by the request
                 $team->setDepartment($department);
-
-                // Persist the team to the database
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($team);
-                $em->flush();
+                //Don't persist if the preview button was clicked
+                if (false === $form->get('preview')->isClicked()) {
+                    // Persist the team to the database
+                    $em->persist($team);
+                    $em->flush();
 
-                return $this->redirect($this->generateUrl('teamadmin_show'));
+                    return $this->redirect($this->generateUrl('teamadmin_show'));
+                }
+                // Render the teampage as a preview
+                return $this->render('team/team_page.html.twig', array(
+                    'team' => $team,
+                    'workHistories' => [],
+                ));
             }
 
             return $this->render('team_admin/create_team.html.twig', array(
@@ -379,7 +405,7 @@ class TeamAdminController extends Controller
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 
@@ -410,7 +436,7 @@ class TeamAdminController extends Controller
             return new JsonResponse($response);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 }

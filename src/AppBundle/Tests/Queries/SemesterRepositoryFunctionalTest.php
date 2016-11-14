@@ -23,12 +23,12 @@ class SemesterRepositoryFunctionalTest extends KernelTestCase
         ;
     }
 
-    // A test to check whether the method returns an array of semesters that belong to the given department 
+    // A test to check whether the method returns an array of semesters that belong to the given department
     public function testFindAllSemestersByDepartment()
     {
 
 //		$semesters = $this->em->getRepository('AppBundle:Semester')->findAllSemestersByDepartment(1);
-//
+
 //		foreach ($semesters as $s){
 //			$this->assertEquals(1, $s->getDepartment()->getId());
 //		}

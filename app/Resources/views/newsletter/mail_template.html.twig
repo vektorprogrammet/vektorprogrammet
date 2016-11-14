@@ -1,0 +1,11 @@
+<h3>Hei {{ name }}!</h3>
+
+{{ content|replace({'src="/images': 'src="https://vektorprogrammet.no/images'})|safe_html }}
+
+<br>
+<br>
+<p>Hilsen Vektorprogrammet, {{ department }}</p>
+
+<img src="{{ app.request.getSchemeAndHttpHost() ~ asset('images/vektor.png') }}">
+<br>
+<i>Hvis du ikke ønsker å motta flere nyhetsbrev kan du klikke <a href="{{ app.request.getSchemeAndHttpHost() ~ path('unsubscribe_newsletter', {'unsubscribeCode':unsubscribeCode})}}">her</a> for å melde deg av.</i>

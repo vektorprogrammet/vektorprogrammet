@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+   Unsubscribe
+{% endblock %}
+
+{% block body %}
+    <p></p>
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+
+
+            <div class="row">
+                <div class="small-12 medium-8 medium-offset-2 large-6 large-offset-3 columns">
+
+                    <h4>Det er trist å la deg gå, {{ name }}. </h4>
+                    <p>Vi har nå meldt av {{ email }} fra nyhetsbrevet "{{ newsletter.name }}".</p>
+                    <p>Angrer du? Meld deg på igjen <a href="{{ path('newsletter_show_subscribe', {'id':newsletter.id})}}">her</a></p>
+
+                    </br>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

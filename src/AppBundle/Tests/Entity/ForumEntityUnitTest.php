@@ -14,10 +14,10 @@ class ForumEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $forum = new Forum();
 
-        // Use the setName method 
+        // Use the setName method
         $forum->setName('Generelt');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('Generelt', $forum->getName());
     }
 
@@ -28,10 +28,10 @@ class ForumEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $forum = new Forum();
 
-        // Use the setDescription method 
+        // Use the setDescription method
         $forum->setDescription('Generelt er et forum for alle.');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('Generelt er et forum for alle.', $forum->getDescription());
     }
 
@@ -42,10 +42,10 @@ class ForumEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $forum = new Forum();
 
-        // Use the setType method 
+        // Use the setType method
         $forum->setType('team');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('team', $forum->getType());
     }
 
@@ -60,10 +60,10 @@ class ForumEntityUnitTest extends \PHPUnit_Framework_TestCase
 
         $subforum1->setName('Subforum1');
 
-        // Use the addSubforum method 
+        // Use the addSubforum method
         $forum->addSubforum($subforum1);
 
-        // Subforums are stored in an array 
+        // Subforums are stored in an array
         $subforums = $forum->getSubforums();
 
         // Loop through the array and check for matches
@@ -89,7 +89,7 @@ class ForumEntityUnitTest extends \PHPUnit_Framework_TestCase
         $subforum3 = new Subforum();
         $subforum3->setName('Subforum3');
 
-        // Use the addSubforum method 
+        // Use the addSubforum method
         $forum->addSubforum($subforum1);
         $forum->addSubforum($subforum2);
         $forum->addSubforum($subforum3);
@@ -97,12 +97,12 @@ class ForumEntityUnitTest extends \PHPUnit_Framework_TestCase
         // Remove $subforum1
         $forum->removeSubforum($subforum1);
 
-        // Subforums are stored in an array 
+        // Subforums are stored in an array
         $subforums = $forum->getSubforums();
 
         // Loop through the array
         foreach ($subforums as $subforum) {
-            // Assert the result 
+            // Assert the result
             $this->assertNotEquals($subforum1, $subforum);
         }
     }

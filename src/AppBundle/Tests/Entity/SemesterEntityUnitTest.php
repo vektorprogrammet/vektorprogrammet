@@ -12,16 +12,16 @@ class SemesterEntityUnitTest extends \PHPUnit_Framework_TestCase
     public function testSetAdmissionStartDate()
     {
 
-        // New datetime variable 
+        // New datetime variable
         $today = new DateTime('now');
 
         // new entity
         $semester = new Semester();
 
-        // Use the setAdmissionStartDate method 
+        // Use the setAdmissionStartDate method
         $semester->setAdmissionStartDate($today);
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals($today, $semester->getAdmissionStartDate());
     }
 
@@ -29,16 +29,16 @@ class SemesterEntityUnitTest extends \PHPUnit_Framework_TestCase
     public function testSetAdmissionEndDate()
     {
 
-        // New datetime variable 
+        // New datetime variable
         $today = new DateTime('now');
 
         // new entity
         $semester = new Semester();
 
-        // Use the setAdmissionEndDate method 
+        // Use the setAdmissionEndDate method
         $semester->setAdmissionEndDate($today);
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals($today, $semester->getAdmissionEndDate());
     }
 
@@ -53,10 +53,10 @@ class SemesterEntityUnitTest extends \PHPUnit_Framework_TestCase
         $department = new Department();
         $department->setName('NTNU');
 
-        // Use the setDepartment method 
+        // Use the setDepartment method
         $semester->setDepartment($department);
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals($department, $semester->getDepartment());
     }
 
@@ -64,16 +64,16 @@ class SemesterEntityUnitTest extends \PHPUnit_Framework_TestCase
     public function testSetSemesterStartDate()
     {
 
-        // New datetime variable 
+        // New datetime variable
         $today = new DateTime('now');
 
         // new entity
         $semester = new Semester();
 
-        // Use the setSemesterStartDate method 
+        // Use the setSemesterStartDate method
         $semester->setSemesterStartDate($today);
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals($today, $semester->getSemesterStartDate());
     }
 
@@ -81,16 +81,16 @@ class SemesterEntityUnitTest extends \PHPUnit_Framework_TestCase
     public function testSetSemesterEndDate()
     {
 
-        // New datetime variable 
+        // New datetime variable
         $today = new DateTime('now');
 
         // new entity
         $semester = new Semester();
 
-        // Use the setSemesterEndDate method 
+        // Use the setSemesterEndDate method
         $semester->setSemesterEndDate($today);
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals($today, $semester->getSemesterEndDate());
     }
 }

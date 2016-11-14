@@ -28,6 +28,7 @@ class LoadStatic_contentData extends AbstractFixture
             'schoolinfo' => '<h1>For skoler</h1><p>kunne drive Vektorprogrammet er det helt essensielt med samarbeidsavtaler med skoler...</p>',
             'contactinfo' => '<h1>Kontakt</h1><strong>Generelle henvendelser rettes til:</strong><p>studenter@vektorprogrammet.no</p>',
             'studentinfo' => '<h1>For studenter</h1><p>kunne drive Vektorprogrammet er det helt essensielt med samarbeidsavtaler med skoler...</p>',
+            'faq' => '<h1>Ofte stilte spørsmål</h1>',
         );
         foreach ($elements as $html_id => $content) {
             $staticElement = new StaticContent();

@@ -16,7 +16,7 @@ class Assistant implements \JsonSerializable
     /**
      * @var string
      */
-    private $assignedSchool;//Name of school
+    private $assignedSchool; //Name of school
     /**
      * @var string
      */
@@ -37,6 +37,21 @@ class Assistant implements \JsonSerializable
      * @var bool
      */
     private $doublePosition;
+
+    /**
+     * @var bool
+     */
+    private $previousParticipation;
+
+    /**
+     * @var int
+     */
+    private $score;
+
+    /**
+     * @var string
+     */
+    private $suitability;
 
     /**
      * Assistant constructor.
@@ -205,6 +220,54 @@ class Assistant implements \JsonSerializable
     public function setGroup($group)
     {
         $this->group = $group;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPreviousParticipation()
+    {
+        return $this->previousParticipation;
+    }
+
+    /**
+     * @param bool $previousParticipation
+     */
+    public function setPreviousParticipation($previousParticipation)
+    {
+        $this->previousParticipation = $previousParticipation;
+    }
+
+    /**
+     * @return int
+     */
+    public function getScore()
+    {
+        return $this->score;
+    }
+
+    /**
+     * @param int $score
+     */
+    public function setScore($score)
+    {
+        $this->score = $score;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSuitability()
+    {
+        return $this->suitability;
+    }
+
+    /**
+     * @param string $suitability
+     */
+    public function setSuitability($suitability)
+    {
+        $this->suitability = $suitability;
     }
 
     /**

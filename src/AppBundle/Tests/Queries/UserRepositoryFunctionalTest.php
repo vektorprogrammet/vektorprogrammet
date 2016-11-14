@@ -26,27 +26,27 @@ class UserRepositoryFunctionalTest extends KernelTestCase
     // A test to check whether the method finds all users of a given department
 //	public function testFindAllUsersByDepartment(){
 //		$users = $this->em->getRepository('AppBundle:User')->findAllUsersByDepartment(1);
-//
+
 //		foreach ($users as $user ){
 //			$this->assertEquals(1, $user->getFieldOfStudy()->getDepartment()->getId());
 //		}
-//
+
 //	}
 
-    // A test to check whether the method finds all users of a given department, and that the user is active 
+    // A test to check whether the method finds all users of a given department, and that the user is active
 //	public function testFindAllActiveUsersByDepartment(){
 //		$users = $this->em->getRepository('AppBundle:User')->findAllActiveUsersByDepartment(1);
-//
+
 //		foreach ($users as $user ){
 //			$this->assertEquals(1, $user->getFieldOfStudy()->getDepartment()->getId());
 //			$this->assertEquals(1, $user->getIsActive());
 //		}
-//
+
 //	}
 
     /* ????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
-    The person who wrote this method should write a test here. 
-    
+    The person who wrote this method should write a test here.
+
     public function testFindAllUsersByDepartmentAndRoles(){
         $user = $this->em->getRepository('AppBundle:User')->findAllUsersByDepartmentAndRoles(?????);
     }
@@ -64,7 +64,7 @@ class UserRepositoryFunctionalTest extends KernelTestCase
 //        $this->assertEquals("petter@stud.ntnu.no", $user->getEmail());
 //    }
 
-    // A test to check if the repository finds the correct user given a ID integer 
+    // A test to check if the repository finds the correct user given a ID integer
     public function testFindUserById()
     {
         //        $user = $this->em->getRepository('AppBundle:User')->findUserById(1);

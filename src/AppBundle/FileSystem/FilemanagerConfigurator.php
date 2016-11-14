@@ -64,7 +64,7 @@ function copy_assets($source, $target, $file_types)
     echo 'copy_asset('.$source.', '.$target.', '.$file_types.')';
     foreach (scandir($source) as $file) {
         //echo "loop:" . $file . "\n";
-        if ($file == '.'  ||  $file == '..') {
+        if ($file == '.' || $file == '..') {
             continue;
         }
         if (!is_dir($source.'/'.$file)) {
@@ -103,7 +103,7 @@ function file_count($source, $file_types)
 {
     $counter = 0;
     foreach (scandir($source) as $file) {
-        if ($file == '.'  ||  $file == '..') {
+        if ($file == '.' || $file == '..') {
             continue;
         }
         if (!is_dir($source.'/'.$file)) {

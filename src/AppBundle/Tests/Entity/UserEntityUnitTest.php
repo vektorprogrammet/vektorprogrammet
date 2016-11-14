@@ -8,22 +8,22 @@ use AppBundle\Entity\FieldOfStudy;
 
 class UserEntityUnitTest extends \PHPUnit_Framework_TestCase
 {
-    /* Did not manage to get this working 
+    /* Did not manage to get this working
     // Check whether the setPassword function is working correctly
     public function testSetPassword(){
-        
+
         // new entity
         $user = new User();
-        
+
         // dummy password
         $password = password_hash("test", PASSWORD_BCRYPT, array('cost' => 12));
-        
-        // Use the setPassword method 
+
+        // Use the setPassword method
         $user->setPassword("test");
-        
-        // Assert the result 
+
+        // Assert the result
         $this->assertEquals($password, $user->getPassword());
-        
+
     }
     */
 
@@ -34,10 +34,10 @@ class UserEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $user = new User();
 
-        // Use the setEmail method 
+        // Use the setEmail method
         $user->setEmail('per@mail.com');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('per@mail.com', $user->getEmail());
     }
 
@@ -48,19 +48,19 @@ class UserEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $user = new User();
 
-        // Use the setIsActive method 
+        // Use the setIsActive method
         $user->setIsActive(1);
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals(1, $user->getIsActive());
     }
 
     /*
     // Check whether the setRoles function is working correctly
     public function testSetRoles(){
-        
-        
-        
+
+
+
     }
     */
 
@@ -71,10 +71,10 @@ class UserEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $user = new User();
 
-        // Use the setLastName method 
+        // Use the setLastName method
         $user->setLastName('olsen');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('olsen', $user->getLastName());
     }
 
@@ -85,10 +85,10 @@ class UserEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $user = new User();
 
-        // Use the setFirstname method 
+        // Use the setFirstname method
         $user->setFirstname('olsen');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('olsen', $user->getFirstname());
     }
 
@@ -99,10 +99,10 @@ class UserEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $user = new User();
 
-        // Use the setGender method 
+        // Use the setGender method
         $user->setGender('0');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('0', $user->getGender());
     }
 
@@ -113,10 +113,10 @@ class UserEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $user = new User();
 
-        // Use the setPicturePath method 
+        // Use the setPicturePath method
         $user->setPicturePath('olsen.jpg');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('olsen.jpg', $user->getPicturePath());
     }
 
@@ -127,10 +127,10 @@ class UserEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $user = new User();
 
-        // Use the setPhone method 
+        // Use the setPhone method
         $user->setPhone('12312312');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('12312312', $user->getPhone());
     }
 
@@ -141,10 +141,10 @@ class UserEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $user = new User();
 
-        // Use the setUser_name method 
+        // Use the setUser_name method
         $user->setUserName('petjo123');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('petjo123', $user->getUserName());
     }
 
@@ -159,10 +159,10 @@ class UserEntityUnitTest extends \PHPUnit_Framework_TestCase
         $fos = new FieldOfStudy();
         $fos->setName('BIT');
 
-        // Use the setUser_name method 
+        // Use the setUser_name method
         $user->setFieldOfStudy($fos);
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals($fos, $user->getFieldOfStudy());
     }
 
@@ -173,14 +173,14 @@ class UserEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $user = new User();
 
-        // New dummy entity 
+        // New dummy entity
         $role1 = new Role();
         $role1->setName('role1');
 
-        // Use the addRole method 
+        // Use the addRole method
         $user->addRole($role1);
 
-        // Roles is stored in an array 
+        // Roles is stored in an array
         $roles = $user->getRoles();
 
         // Loop through the array and check for matches
@@ -199,10 +199,10 @@ class UserEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $user = new User();
 
-        // Use the setNewUserCode method 
+        // Use the setNewUserCode method
         $user->setNewUserCode('secret');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('secret', $user->getNewUserCode());
     }
 }

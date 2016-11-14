@@ -441,7 +441,7 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->certificateRequests;
     }
 
-    // Used for unit testing 
+    // Used for unit testing
     public function fromArray($data = array())
     {
         foreach ($data as $property => $value) {
@@ -450,7 +450,7 @@ class User implements AdvancedUserInterface, \Serializable
         }
     }
 
-    // toString method used to display the user in twig files 
+    // toString method used to display the user in twig files
     public function __toString()
     {
         $firstName = $this->getFirstName();
@@ -460,13 +460,13 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /*
-    
+
     You may or may not need the code below depending on the algorithm you chose to hash and salt passwords with.
     The methods below are taken from the login guide on Symfony.com, which can be found here:
     http://symfony.com/doc/current/cookbook/security/form_login_setup.html
     http://symfony.com/doc/current/cookbook/security/entity_provider.html
-    
-    
+
+
     */
 
     /**

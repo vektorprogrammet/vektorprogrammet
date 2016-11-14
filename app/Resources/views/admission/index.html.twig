@@ -1,9 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {% for d in department %}
-        Opptak {{ d.shortname }}
-    {% endfor %}
+    Opptak {{ department.shortname }}
 {% endblock %}
 
 {% block javascripts %}
@@ -35,16 +33,18 @@
                     </div>
                 </div>
             {% endfor %}
+
         </div>
     </div>
     <div class="admissioncontainer">
         <div class="row">
             <div class="small-12 medium-12 large-12 columns">
 
-                <h1 class="text-center"> Søk Vektorprogrammet ved {{ department.shortname }} </h1>
-                <br>
+
 
                 {% if semester is defined %}
+                    <h1 class="text-center"> Søk Vektorprogrammet ved {{ department.shortname }} </h1>
+                    <br>
 
                     {{ form_start(form) }}
                     {{ form_errors(form) }}
@@ -164,9 +164,10 @@
                     {{ form_end(form) }}
 
                 {% else %}
+                    <br>
+                    <h4 class="text-center text-alert "> Avdelingen {{ department.shortname }} har ikke aktiv søkeperiode. </h4>
 
-                    <p class="text-center"> Avdelingen {{ department.shortname }} har ikke en aktiv søkeperiode. </p>
-
+                    {% render controller('AppBundle:Newsletter:subscribeForm', {'id' : department.id} ) %}
                 {% endif %}
 
 
@@ -183,7 +184,7 @@
         <div class="small-12 medium-12 large-12 columns">
             {% for d in department %}
                 <div class="{{ element_editable() }}" id={{ 'admission' ~ d.shortname }}>
-                    {{ get_content('admission' ~ d.shortname) | raw }}
+                    {{ get_content('admission' ~ d.shortname)|safe_html }}
                 </div>
             {% endfor %}
         </div>

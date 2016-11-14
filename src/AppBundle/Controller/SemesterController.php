@@ -40,24 +40,24 @@ class SemesterController extends Controller
         ************************************************************************************************************
         ***** Enabe this if you want ROLE_ADMIN to be able to edit semesters from their own department  *****
         ************************************************************************************************************
-        
+
         elseif ( ($this->get('security.context')->isGranted('ROLE_ADMIN')) && ($userDepartment == $semesterDepartment) ){
-            
+
             $form = $this->createForm(new CreateSemesterType(), $semester);
-        
+
             // Handle the form
             $form->handleRequest($request);
-            
+
             if ($form->isValid()) {
                 $em->persist($semester);
                 $em->flush();
                 return $this->redirect($this->generateUrl('semesteradmin_show'));
             }
-            
+
             return $this->render('semester_admin/create_semester.html.twig', array(
                  'form' => $form->createView(),
             ));
-            
+
         }
         */
 
@@ -159,19 +159,19 @@ class SemesterController extends Controller
 
     /* This allows the ROLE_ADMIN to create semester, but it was not mentioned in the requirements that the ROLE_ADMIN should be able to create semesters.
     public function createSemesterAction(request $request){
-        
+
         if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
             $semester = new Semester();
-            
+
             // Get the department of the current user
             $department = $this->get('security.context')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
-            
+
             // Create the form
             $form = $this->createForm(new CreateSemesterType($department), $semester);
-            
+
             // Handle the form
             $form->handleRequest($request);
-            
+
             // The fields of the form is checked if they contain the correct information
             if ($form->isValid()) {
                 // Set the department of the semester
@@ -182,7 +182,7 @@ class SemesterController extends Controller
                 $em->flush();
                 return $this->redirect($this->generateUrl('semesteradmin_show'));
             }
-            
+
             // Render the view
             return $this->render('semester_admin/create_semester.html.twig', array(
                  'form' => $form->createView(),
@@ -191,7 +191,7 @@ class SemesterController extends Controller
         else {
             return $this->redirect($this->generateUrl('home'));
         }
-    
+
     }
     */
 
@@ -212,23 +212,23 @@ class SemesterController extends Controller
             }
             // You have to check for admin rights here to prevent admins from deleting smesters that are not in their department
             /*
-            Enable this if you want ROLE_ADMIN to be able to delete semesters from their department 
+            Enable this if you want ROLE_ADMIN to be able to delete semesters from their department
             elseif ($this->get('security.context')->isGranted('ROLE_ADMIN')){
-                
+
                 $em = $this->getDoctrine()->getEntityManager();
-                // Find a semester by a given ID 
+                // Find a semester by a given ID
                 $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($id);
                 // Find the department of the semester that is being deleted
                 $department = $semester->getDepartment();
-                
+
                 // Is the admin from the same department as the semester he is trying to delete?
                 if ($this->get('security.context')->getToken()->getUser()->getFieldOfStudy()->getDepartment() === $department){
-                    
+
                     $em->remove($semester);
                     $em->flush();
                     // Send a response back to AJAX
                     $response['success'] = true;
-                
+
                 }
                 else {
                     // Send a response back to AJAX
@@ -248,11 +248,11 @@ class SemesterController extends Controller
                 'success' => false,
                 'code' => $e->getCode(),
                 'cause' => 'Det er ikke mulig å slette semesteret. Vennligst kontakt IT-ansvarlig.',
-                // 'cause' => $e->getMessage(), if you want to see the exception message. 
+                // 'cause' => $e->getMessage(), if you want to see the exception message.
             ]);
         }
 
-        // Send a respons to ajax 
+        // Send a respons to ajax
         return new JsonResponse($response);
     }
 }

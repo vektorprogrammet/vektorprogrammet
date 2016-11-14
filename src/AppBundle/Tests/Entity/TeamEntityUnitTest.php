@@ -15,10 +15,10 @@ class TeamEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $team = new Team();
 
-        // Use the setName method 
+        // Use the setName method
         $team->setName('Hovedstyret');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('Hovedstyret', $team->getName());
     }
 
@@ -33,10 +33,10 @@ class TeamEntityUnitTest extends \PHPUnit_Framework_TestCase
         $department = new Department();
         $department->setName('NTNU');
 
-        // Use the setDepartment method 
+        // Use the setDepartment method
         $team->setDepartment($department);
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals($department, $team->getDepartment());
     }
 
@@ -47,14 +47,14 @@ class TeamEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $team = new Team();
 
-        // New dummy entity 
+        // New dummy entity
         $subforum1 = new Subforum();
         $subforum1->setName('subforum1');
 
-        // Use the addSubforum method 
+        // Use the addSubforum method
         $team->addSubforum($subforum1);
 
-        // Subforums is stored in an array 
+        // Subforums is stored in an array
         $subforums = $team->getSubforums();
 
         // Loop through the array and check for matches
@@ -73,7 +73,7 @@ class TeamEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $team = new Team();
 
-        // New dummy entity 
+        // New dummy entity
         $subforum1 = new Subforum();
         $subforum1->setName('subforum1');
         $subforum2 = new Subforum();
@@ -81,20 +81,20 @@ class TeamEntityUnitTest extends \PHPUnit_Framework_TestCase
         $subforum3 = new Subforum();
         $subforum3->setName('subforum3');
 
-        // Use the addSubforum method 
+        // Use the addSubforum method
         $team->addSubforum($subforum1);
         $team->addSubforum($subforum2);
         $team->addSubforum($subforum3);
 
-        // Remove $subforum1 from department 
+        // Remove $subforum1 from department
         $team->removeSubforum($subforum1);
 
-        // subforums is stored in an array 
+        // subforums is stored in an array
         $subforums = $team->getSubforums();
 
         // Loop through the array
         foreach ($subforums as $subforum) {
-            // Assert the result 
+            // Assert the result
             $this->assertNotEquals($subforum1, $subforum);
         }
     }

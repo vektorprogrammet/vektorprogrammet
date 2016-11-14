@@ -47,9 +47,30 @@ class Team
 
     /**
      * @ORM\Column(type="string", nullable=true, name="short_description")
-     * @Assert\Length(maxMessage="Maks 255 tegn", max="255")
+     * @Assert\Length(maxMessage="Maks 125 Tegn", max="125")
      */
     private $shortDescription;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $acceptApplication;
+
+    /**
+     * @return mixed
+     */
+    public function getAcceptApplication()
+    {
+        return $this->acceptApplication;
+    }
+
+    /**
+     * @param mixed $acceptApplication
+     */
+    public function setAcceptApplication($acceptApplication)
+    {
+        $this->acceptApplication = $acceptApplication;
+    }
 
     public function __construct()
     {
@@ -154,7 +175,7 @@ class Team
         return $this->subforums;
     }
 
-    // Used for unit testing 
+    // Used for unit testing
     public function fromArray($data = array())
     {
         foreach ($data as $property => $value) {

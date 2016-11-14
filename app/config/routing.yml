@@ -34,6 +34,10 @@ about:
  path: /omvektor
  defaults: { _controller: AppBundle:AboutVektor:show }
 
+faq:
+ path: /faq
+ defaults: {_controller: AppBundle:AboutVektor:showFAQ}
+
 admission:
  path: /opptak
  defaults: { _controller: AppBundle:Admission:show }
@@ -548,6 +552,26 @@ semesteradmin_delete_semester_by_id:
 team_page:
   path: /team/{id}
   defaults: {_controller: AppBundle:Team:show}
+
+team_application:
+  path: /team/application/{id}
+  defaults: {_controller: AppBundle:TeamApplication:show}
+
+team_application_show:
+  path: /kontrollpanel/team/application/{id}
+  defaults: {_controller: AppBundle:TeamApplication:showApplication}
+
+team_application_show_all:
+  path: /kontrollpanel/team/applications/{id}
+  defaults: {_controller: AppBundle:TeamApplication:showAllApplications}
+  requirements:
+      id: \d+
+
+team_application_delete:
+  path: /kontrollpanel/team/applications/slett/{id}
+  defaults: {_controller: AppBundle:TeamApplication:deleteTeamApplicationById}
+  requirements:
+      id: \d+
 
 teamadmin_show:
  path: /kontrollpanel/teamadmin
@@ -1134,11 +1158,11 @@ substitute_delete:
 #                Certificate              #
 ##########################################
 certificate_show:
-   path: /attest
+   path: /kontrollpanel/attest
    defaults: { _controller: AppBundle:Certificate:show }
 
 certificate_delete_by_id:	
-  path: /attest/slett/{id}
+  path: /kontrollpanel/attest/slett/{id}
   defaults: { _controller: AppBundle:Certificate:delete }
   requirements:
     _method: GET|POST
@@ -1146,12 +1170,21 @@ certificate_delete_by_id:
     expose: true
 
 certificate_request:
-  path: /attest/forespør
+  path: /kontrollpanel/attest/forespør
   defaults: { _controller: AppBundle:Certificate:request }
   requirements:
     _method: GET|POST
   options:
     expose: true
+
+certificate_signature_picture_upload:
+  path: /kontrollpanel/attest/signatur
+  defaults: {_controller: AppBundle:Signature:show}
+
+signature_image_show:
+  path: /signatures/{imageName}
+  defaults: { _controller: AppBundle:Signature:showSignatureImage }
+
 
 ##########################################	
 #                Sponsors                #
@@ -1196,3 +1229,103 @@ anniversary_remove_payment:
  defaults: { _controller: AppBundle:AnniversaryRegistration:removePayment}
  requirements:
   _method: POST
+
+##########################################
+#              Newsletter                #
+##########################################
+
+newsletter_create:
+  path: /kontrollpanel/nyhetsbrev/opprett
+  defaults: { _controller: AppBundle:Newsletter:create }
+
+newsletter_edit:
+  path: /kontrollpanel/nyhetsbrev/opprett/{id}
+  defaults: { _controller: AppBundle:Newsletter:create }
+  requirements:
+    id: \d+
+
+newsletter_delete:
+  path: /kontrollpanel/nyhetsbrev/slett/{id}
+  defaults: { _controller: AppBundle:Newsletter:delete }
+  requirements:
+    id: \d+
+  methods: [POST]
+
+newsletter_show_all:
+  path: /kontrollpanel/nyhetsbrev
+  defaults: { _controller: AppBundle:Newsletter:showAllNewsletters }
+
+newsletter_show_subscribers:
+  path: /kontrollpanel/nyhetsbrev/{id}
+  defaults: { _controller: AppBundle:Newsletter:showSubscribers }
+  requirements:
+    id: \d+
+
+newsletter_subscribe:
+  path: /subscribe/{id}
+  defaults: { _controller: AppBundle:Newsletter:subscribeForm }
+  requirements:
+   id: \d+
+
+newsletter_admin_unsubscribe:
+  path: /kontrollpanel/nyhetsbrev/unsubscribe/{id}
+  defaults: { _controller: AppBundle:Newsletter:adminUnsubscribe }
+  requirements:
+    id: \d+
+  methods: [POST]
+
+newsletter_show_subscribe:
+  path: /nyhetsbrev/{id}
+  defaults: { _controller: AppBundle:Newsletter:showSubscribePage }
+  requirements:
+    id: \d+
+
+newsletter_toggle_visible:
+  path: /kontrollpanel/nyhetsbrev/toggle/{id}
+  defaults: {_controller: AppBundle:Newsletter:showOnAdmissionPage}
+  requirements:
+    id: \d+
+  methods: [POST]
+
+newsletter_send_letter:
+  path: /kontrollpanel/nyhetsbrev/send/{id}
+  defaults: { _controller: AppBundle:Newsletter:createLetter }
+  requirements:
+    id: \d+
+  methods: [GET|POST]
+
+newsletter_show_letters:
+   path: /kontrollpanel/nyhetsbrev/brev/{id}
+   defaults: { _controller: AppBundle:Newsletter:showLetters }
+   requirements:
+     id: \d+
+
+newsletter_show_letter_content:
+   path: /kontrollpanel/nyhetsbrev/brev/vis/{id}
+   defaults: { _controller: AppBundle:Newsletter:showLetterContent }
+   requirements:
+     id: \d+
+
+unsubscribe_newsletter:
+    path: /nyhetsbrev/meldav/{unsubscribeCode}
+    defaults: { _controller: AppBundle:Newsletter:unsubscribeNewsletter }
+    requirements:
+      code: \w+
+
+##########################################
+#              Field of study            #
+##########################################
+
+
+
+create_field_of_study:
+  path: /kontrollpanel/linje
+  defaults: { _controller: AppBundle:FieldOfStudy:edit }
+
+edit_field_of_study:
+  path: /kontrollpanel/linje/{id}
+  defaults: { _controller: AppBundle:FieldOfStudy:edit }
+
+show_field_of_studies:
+  path: /kontrollpanel/linjer
+  defaults: {_controller: AppBundle:FieldOfStudy:show }

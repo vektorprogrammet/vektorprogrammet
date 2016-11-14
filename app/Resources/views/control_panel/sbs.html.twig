@@ -67,7 +67,7 @@
         {% if step < 4 and step >= 3 and (totalInterviewsCount == 0)==false %}
             <p>Intervjuet  {{ interviewedAssistantsCount }}/{{ totalInterviewsCount }}</p>
         {% elseif step >= 4 %}
-            {{ totalInterviewsCount }} intervjuer
+            <p><a href="{{ path('admissionadmin_show', {'status':'interviewed'})}}">{{ totalInterviewsCount }} intervjuer</a></p>
         {% endif %}
         <p><a href="{{ path('admissionadmin_show') }}">Fordel intervjuer</a></p>
 
@@ -83,7 +83,8 @@
                 <p>Fordelt {{ totalAssistantsCount }} assistenter</p>
             {% endif %}
         {% elseif step >= 5 %}
-            <p>{{ totalAssistantsCount }} fordelt</p>
+            <p>{{ totalAssistantsCount }} assistenter</p>
+            <p>{{ positionsCount }} stillinger</p>
         {% endif %}
         <p></p><a href="{{ path('schooladmin_show_users_of_department', {'id': app.user.fieldOfStudy.department.id}) }}">Fordel assistenter</a></p>
     </div>

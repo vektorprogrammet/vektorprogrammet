@@ -253,6 +253,7 @@ footer {
 }
 
 .admin-footer {
+  padding-top: 10px;
   .row {
     border-top: solid 3px $admin-grey;
   }
@@ -445,10 +446,9 @@ ul.alternatives {
 .sponsor-img {
   max-height: 150px;
   vertical-align: middle;
-}
+  .small{
 
-.sponsor-column {
-  height: 150px;
+  }
 }
 
 //Team specific
@@ -468,10 +468,22 @@ ul.alternatives {
   vertical-align: middle;
 }
 
-.sponsor-img {
-  max-height: 150px;
+.sponsor-img-small {
   vertical-align: middle;
+  max-height: 25%;
+  max-width: 200px;
 }
+.sponsor-img-medium{
+  vertical-align: middle;
+  max-height: 50%;
+  max-width: 300px;
+}
+.sponsor-img-large{
+  vertical-align: middle;
+  max-height: 90%;
+  max-width: 400px;
+}
+
 
 .sponsor-column {
   height: 150px;
@@ -781,4 +793,8 @@ ul.alternatives {
 
 [class*="column"] + [class*="column"]:last-child {
   float: left;
+}
+
+.hide {
+  display: none;
 }

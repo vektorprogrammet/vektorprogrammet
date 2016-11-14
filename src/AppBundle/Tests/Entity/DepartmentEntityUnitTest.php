@@ -17,10 +17,10 @@ class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $department = new Department();
 
-        // Use the setName method 
+        // Use the setName method
         $department->setName('NTNUx2');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('NTNUx2', $department->getName());
     }
 
@@ -31,10 +31,10 @@ class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $department = new Department();
 
-        // Use the setShortName method 
+        // Use the setShortName method
         $department->setShortName('NTNU');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('NTNU', $department->getShortName());
     }
 
@@ -49,10 +49,10 @@ class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase
 
         $fos->setName('Test');
 
-        // Use the addFieldOfStudy method 
+        // Use the addFieldOfStudy method
         $department->addFieldOfStudy($fos);
 
-        // Field of studies is stored in an array 
+        // Field of studies is stored in an array
         $fieldOfStudies = $department->getFieldOfStudy();
 
         // Loop through the array and check for matches
@@ -78,20 +78,20 @@ class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase
         $fos3 = new FieldOfStudy();
         $fos3->setName('fos3');
 
-        // Use the addFieldOfStudy method 
+        // Use the addFieldOfStudy method
         $department->addFieldOfStudy($fos1);
         $department->addFieldOfStudy($fos2);
         $department->addFieldOfStudy($fos3);
 
-        // Remove $fos1 from department 
+        // Remove $fos1 from department
         $department->removeFieldOfStudy($fos1);
 
-        // Field of studies is stored in an array 
+        // Field of studies is stored in an array
         $fieldOfStudies = $department->getFieldOfStudy();
 
         // Loop through the array
         foreach ($fieldOfStudies as $study) {
-            // Assert the result 
+            // Assert the result
             $this->assertNotEquals($fos1, $study);
         }
     }
@@ -103,10 +103,10 @@ class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $department = new Department();
 
-        // Use the setEmail method 
+        // Use the setEmail method
         $department->setEmail('NTNU@mail.com');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('NTNU@mail.com', $department->getEmail());
     }
 
@@ -121,10 +121,10 @@ class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase
 
         $school1->setName('Skole1');
 
-        // Use the addSchool method 
+        // Use the addSchool method
         $department->addSchool($school1);
 
-        // Schools are stored in an array 
+        // Schools are stored in an array
         $schools = $department->getSchools();
 
         // Loop through the array and check for matches
@@ -150,20 +150,20 @@ class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase
         $school3 = new School();
         $school3->setName('school3');
 
-        // Use the addSchool method 
+        // Use the addSchool method
         $department->addSchool($school1);
         $department->addSchool($school2);
         $department->addSchool($school3);
 
-        // Remove $school1 from department 
+        // Remove $school1 from department
         $department->removeSchool($school1);
 
-        // Schools are stored in an array 
+        // Schools are stored in an array
         $schools = $department->getSchools();
 
         // Loop through the array
         foreach ($schools as $school) {
-            // Assert the result 
+            // Assert the result
             $this->assertNotEquals($school1, $school);
         }
     }
@@ -175,10 +175,10 @@ class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase
         // new entity
         $department = new Department();
 
-        // Use the setAddress  method 
+        // Use the setAddress  method
         $department->setAddress('Storgata 12');
 
-        // Assert the result 
+        // Assert the result
         $this->assertEquals('Storgata 12', $department->getAddress());
     }
 
@@ -193,10 +193,10 @@ class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase
 
         $semester1->setSemesterTime('Vår');
 
-        // Use the addSemester method 
+        // Use the addSemester method
         $department->addSemester($semester1);
 
-        // Semesters are stored in an array 
+        // Semesters are stored in an array
         $semesters = $department->getSemesters();
 
         // Loop through the array and check for matches
@@ -222,20 +222,20 @@ class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase
         $semester3 = new Semester();
         $semester3->setSemesterTime('Vår');
 
-        // Use the addSemester method 
+        // Use the addSemester method
         $department->addSemester($semester1);
         $department->addSemester($semester2);
         $department->addSemester($semester3);
 
-        // Remove $semester1 from department 
+        // Remove $semester1 from department
         $department->removeSemester($semester1);
 
-        // Semesters are stored in an array 
+        // Semesters are stored in an array
         $semesters = $department->getSemesters();
 
         // Loop through the array
         foreach ($semesters as $semester) {
-            // Assert the result 
+            // Assert the result
             $this->assertNotEquals($semester1, $semester);
         }
     }
@@ -251,10 +251,10 @@ class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase
 
         $team1->setName('Team1');
 
-        // Use the addTeam method 
+        // Use the addTeam method
         $department->addTeam($team1);
 
-        // Teams are stored in an array 
+        // Teams are stored in an array
         $teams = $department->getTeams();
 
         // Loop through the array and check for matches
@@ -280,20 +280,20 @@ class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase
         $team3 = new Team();
         $team3->setName('Team3');
 
-        // Use the addTeam method 
+        // Use the addTeam method
         $department->addTeam($team1);
         $department->addTeam($team2);
         $department->addTeam($team3);
 
-        // Remove $team1 from department 
+        // Remove $team1 from department
         $department->removeTeam($team1);
 
-        // Teams are stored in an array 
+        // Teams are stored in an array
         $teams = $department->getTeams();
 
         // Loop through the array
         foreach ($teams as $team) {
-            // Assert the result 
+            // Assert the result
             $this->assertNotEquals($team1, $team);
         }
     }
