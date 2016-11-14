@@ -220,6 +220,51 @@ class NewsletterControllerTest extends WebTestCase
         restoreDatabase();
     }
 
+    public function testSubscribeMultipleIdenticalEmail()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/nyhetsbrev/3');
+
+        // Assert a specific 200 status code
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $button = $crawler->selectButton('Registrer');
+
+        $form = $button->form();
+
+        $form['app_bundle_subscribe_to_newsletter_type[name]'] = 'Karl';
+        $form['app_bundle_subscribe_to_newsletter_type[email]'] = 'user@user.com';
+
+        $client->submit($form);
+        
+        $crawler = $client->request('GET', '/nyhetsbrev/3');
+
+        // Assert a specific 200 status code
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $button = $crawler->selectButton('Registrer');
+
+        $form = $button->form();
+
+        $form['app_bundle_subscribe_to_newsletter_type[name]'] = 'Karl';
+        $form['app_bundle_subscribe_to_newsletter_type[email]'] = 'user@user.com';
+
+        $client->submit($form);
+
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'nmbu',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/3');
+
+        // Assert a specific 200 status code
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $this->assertEquals(1, $crawler->filter('td:contains("Karl")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("user@user.com")')->count());
+        restoreDatabase();
+    }
+
     public function testDeleteSubscriber()
     {
         $client = static::createClient(array(), array(

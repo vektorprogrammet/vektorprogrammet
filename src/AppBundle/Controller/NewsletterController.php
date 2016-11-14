@@ -63,11 +63,16 @@ class NewsletterController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $subscriber->setNewsletter($newsletter);
+            $alreadySubscribed = count($this->getDoctrine()->getRepository('AppBundle:Subscriber')->
+                findByEmailAndNewsletter($subscriber->getEmail(),  $newsletter)) > 0;
+            
+            if (!$alreadySubscribed) {
+                $subscriber->setNewsletter($newsletter);
 
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($subscriber);
-            $manager->flush();
+                $manager = $this->getDoctrine()->getManager();
+                $manager->persist($subscriber);
+                $manager->flush();
+            }
 
             $this->addFlash('success', $subscriber->getEmail().' ble registrert');
 
@@ -83,7 +88,6 @@ class NewsletterController extends Controller
     public function showSubscribeAction(Department $department)
     {
         $newsletter = $this->getDoctrine()->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
-        dump($newsletter);
 
         return $this->render('', array(
             'newsletters' => $newsletter,
@@ -157,10 +161,13 @@ class NewsletterController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $subscriber->setNewsletter($newsletter);
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($subscriber);
-            $manager->flush();
+            $alreadySubscribed = count($manager->getRepository('AppBundle:Subscriber')->findByEmailAndNewsletter($subscriber->getEmail(), $newsletter)) > 0;
+            if (!$alreadySubscribed) {
+                $subscriber->setNewsletter($newsletter);
+                $manager = $this->getDoctrine()->getManager();
+                $manager->persist($subscriber);
+                $manager->flush();
+            }
 
             $this->addFlash('admission-notice', 'Takk for at du meldte deg på '.$newsletter->getName().'! '.$subscriber->getEmail().' ble registrert');
 
