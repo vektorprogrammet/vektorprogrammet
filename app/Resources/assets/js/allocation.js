@@ -6,52 +6,9 @@ var schools = [];
 var assistants = [];
 getSchoolsAndAssistants();
 
-/*
- * Remove space from string
- * */
-function string_remove_space(str) {
-    return str.split(' ').join('');
-}
-
-/*
- Convert english day to norwegian day
- */
-function norwegian_day(english_day) {
-    switch (english_day) {
-        case "Monday":
-            return "Mandag";
-        case "Tuesday":
-            return "Tirsdag";
-        case "Wednesday":
-            return "Onsdag";
-        case "Thursday":
-            return "Torsdag";
-        case "Friday":
-            return "Fredag";
-    }
-}
-
-function generateAllocationTable() {
-    //Adding a row in allocation_table for each assistant
-    $('.allocation_table tbody').empty();
-    assistants.forEach(function (assistant) {
-        $('.allocation_table').append(assistant.getTableRow());
-
-        // Initialize the school selector
-        var day_select = $("#".concat(string_remove_space(name)));
-        // updateAvailableSchools(day_select.val(), name);
-        assistant.updateAvailableSchools();
-        var school_select = $("#".concat(string_remove_space(name).concat("SchoolSelect")));
-        // Set the school and day that the algorithm chose
-        if (assistant.assignedDay != null) {
-            day_select.val(norwegian_day(assistant.assignedDay));
-        }
-        if (assistant.assignedSchool != null) {
-            school_select.val(assistant.assignedSchool);
-        }
-    });
-}
-
+///////////////////////////////
+////        Classes        ////
+///////////////////////////////
 function Assistant(assistantData) {
     this.name = assistantData.name;
     this.group = assistantData.group;
@@ -149,6 +106,17 @@ function Assistant(assistantData) {
         return $('#' + string_remove_space(this.name).concat("GroupSelect")).val();
     };
 
+    this.setAssignedSchool = function (school) {
+        var prevSchool = this.assignedSchool;
+        this.assignedSchool = school;
+        if (prevSchool !== null) {
+            prevSchool.updateCapacityLeft();
+        }
+        if (school !== null) {
+            school.updateCapacityLeft();
+        }
+    };
+
     this.updateAvailableSchools = function () {
         var availableSchools = getAvailableSchoolsByDay(this.getSelectedGroup(), this.getSelectedDay());
         // Don't re-render if available schools did not change. Updating the DOM is very expensive.
@@ -178,17 +146,6 @@ function Assistant(assistantData) {
             updateAllAvailableSchools();
         }, this))
     };
-
-    this.setAssignedSchool = function (school) {
-        var prevSchool = this.assignedSchool;
-        this.assignedSchool = school;
-        if(prevSchool !== null) {
-            prevSchool.updateCapacityLeft();
-        }
-        if(school !== null) {
-            school.updateCapacityLeft();
-        }
-    }
 }
 
 function School(schoolData) {
@@ -230,10 +187,9 @@ function School(schoolData) {
     }
 }
 
-function getSchoolsAndAssistants() {
-    getSchools();
-}
-
+///////////////////////////////
+////          API          ////
+///////////////////////////////
 function getSchools() {
     $.get("/kontrollpanel/api/schools", function (data) {
         JSON.parse(data).forEach(function (s) {
@@ -252,6 +208,13 @@ function getAssistants() {
     });
 }
 
+function getSchoolsAndAssistants() {
+    getSchools();
+}
+
+///////////////////////////////
+////       Selectors       ////
+///////////////////////////////
 function getAvailableSchoolsByDay(group, day) {
     var availableSchools = [];
     schools.forEach(function (school) {
@@ -272,6 +235,30 @@ function getSchoolByName(name) {
     return null;
 }
 
+///////////////////////////////
+////   Helper functions    ////
+///////////////////////////////
+function generateAllocationTable() {
+    //Adding a row in allocation_table for each assistant
+    $('.allocation_table tbody').empty();
+    assistants.forEach(function (assistant) {
+        $('.allocation_table').append(assistant.getTableRow());
+
+        // Initialize the school selector
+        var day_select = $("#".concat(string_remove_space(name)));
+        // updateAvailableSchools(day_select.val(), name);
+        assistant.updateAvailableSchools();
+        var school_select = $("#".concat(string_remove_space(name).concat("SchoolSelect")));
+        // Set the school and day that the algorithm chose
+        if (assistant.assignedDay != null) {
+            day_select.val(norwegian_day(assistant.assignedDay));
+        }
+        if (assistant.assignedSchool != null) {
+            school_select.val(assistant.assignedSchool);
+        }
+    });
+}
+
 function updateAllAvailableSchools() {
     assistants.forEach(function (assistant) {
         if (assistant.assignedSchool === null) {
@@ -280,8 +267,36 @@ function updateAllAvailableSchools() {
     })
 }
 
-function schoolListsAreIdentical (schools1, schools2) {
-    if (schools1 === null && schools2 === null){
+///////////////////////////////
+////         Utils         ////
+///////////////////////////////
+/*
+ * Remove space from string
+ * */
+function string_remove_space(str) {
+    return str.split(' ').join('');
+}
+
+/*
+ Convert english day to norwegian day
+ */
+function norwegian_day(english_day) {
+    switch (english_day) {
+        case "Monday":
+            return "Mandag";
+        case "Tuesday":
+            return "Tirsdag";
+        case "Wednesday":
+            return "Onsdag";
+        case "Thursday":
+            return "Torsdag";
+        case "Friday":
+            return "Fredag";
+    }
+}
+
+function schoolListsAreIdentical(schools1, schools2) {
+    if (schools1 === null && schools2 === null) {
         return true;
     }
     if (schools1 === null || schools2 === null) {
