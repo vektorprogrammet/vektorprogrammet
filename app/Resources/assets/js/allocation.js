@@ -52,7 +52,7 @@ function Assistant(assistantData) {
             }
         }
         select.change($.proxy(function () {
-            this.setAssignedSchool(null);
+            this.assignedSchool = null;
             this.resetAvailableSchools(getAvailableSchoolsByDay(this.getSelectedGroup(), this.getSelectedDay()));
             updateAllAvailableSchools();
         }, this));
@@ -91,7 +91,7 @@ function Assistant(assistantData) {
             select.append($('<option>', {value: "Bolk 2", text: "Bolk 2"}));
         }
         select.change($.proxy(function () {
-            this.setAssignedSchool(null);
+            this.assignedSchool = null;
             this.resetAvailableSchools();
             updateAllAvailableSchools();
         }, this));
@@ -104,17 +104,6 @@ function Assistant(assistantData) {
 
     this.getSelectedGroup = function () {
         return $('#' + string_remove_space(this.name).concat("GroupSelect")).val();
-    };
-
-    this.setAssignedSchool = function (school) {
-        var prevSchool = this.assignedSchool;
-        this.assignedSchool = school;
-        if (prevSchool !== null) {
-            prevSchool.updateCapacityLeft();
-        }
-        if (school !== null) {
-            school.updateCapacityLeft();
-        }
     };
 
     this.updateAvailableSchools = function () {
@@ -142,7 +131,7 @@ function Assistant(assistantData) {
             select.append(option);
         }, this);
         select.change($.proxy(function () {
-            this.setAssignedSchool(getSchoolByName(select.val()));
+            this.assignedSchool = getSchoolByName(select.val());
             updateAllAvailableSchools();
         }, this))
     };
@@ -151,24 +140,12 @@ function Assistant(assistantData) {
 function School(schoolData) {
     this.name = schoolData.name;
     this.capacity = schoolData.capacity;
-    this.capacityLeft = JSON.parse(JSON.stringify(schoolData.capacity));
 
     this.hasCapacityLeftOnDay = function (group, day) {
-        switch (group) {
-            case 'Bolk 1':
-                return this.capacityLeft['1'][day] > 0;
-            case 'Bolk 2':
-                return this.capacityLeft['2'][day] > 0;
-            case 'Dobbel':
-                return this.capacityLeft['1'][day] > 0 && this.capacityLeft['2'][day] > 0;
-        }
-        return false;
-    };
-
-    this.updateCapacityLeft = function () {
         var cl = JSON.parse(JSON.stringify(this.capacity));
         assistants.forEach(function (assistant) {
-            if (assistant.assignedSchool !== null && assistant.assignedSchool.name === this.name) {
+            if (assistant.assignedSchool !== null &&
+              assistant.assignedSchool.name === this.name) {
                 switch (assistant.getSelectedGroup()) {
                     case 'Bolk 1':
                         cl['1'][assistant.getSelectedDay()] -= 1;
@@ -183,8 +160,16 @@ function School(schoolData) {
                 }
             }
         }, this);
-        this.capacityLeft = cl;
-    }
+        switch (group) {
+            case 'Bolk 1':
+                return cl['1'][day] > 0;
+            case 'Bolk 2':
+                return cl['2'][day] > 0;
+            case 'Dobbel':
+                return cl['1'][day] > 0 && cl['2'][day] > 0;
+        }
+        return false;
+    };
 }
 
 ///////////////////////////////
