@@ -4,7 +4,7 @@
 
 var schools = [];
 var assistants = [];
-getSchools();
+getSchoolsAndAssistants();
 
 /*
  * Remove space from string
@@ -33,6 +33,7 @@ function norwegian_day(english_day) {
 
 function generateAllocationTable() {
     //Adding a row in allocation_table for each assistant
+    $('.allocation_table tbody').empty();
     assistants.forEach(function (assistant) {
         $('.allocation_table').append(assistant.getTableRow());
 
@@ -51,33 +52,15 @@ function generateAllocationTable() {
     });
 }
 
-function getSchools() {
-    $.get("/kontrollpanel/api/schools", function (data) {
-        JSON.parse(data).forEach(function (s) {
-            schools.push(new School(s));
-        });
-        getAssistants();
-    });
-}
-
-function getAssistants() {
-    $.get("/kontrollpanel/api/assistants", function (data) {
-        JSON.parse(data).forEach(function (a) {
-            assistants.push(new Assistant(a));
-        });
-        generateAllocationTable();
-    });
-}
-
 function Assistant(assistantData) {
     this.name = assistantData.name;
     this.group = assistantData.group;
     this.doublePosition = assistantData.doublePosition;
     this.preferredGroup = assistantData.preferredGroup;
-    this.assignedSchool = null;
+    this.assignedSchool = getSchoolByName(assistantData.assignedSchool);
     this.assignedDay = assistantData.assignedDay;
     this.availability = assistantData.availability;
-    this.selectedDay = '';
+    this.availableSchools = null;
 
     this.getTableRow = function () {
         return $('<tr>')
@@ -112,12 +95,8 @@ function Assistant(assistantData) {
             }
         }
         select.change($.proxy(function () {
-            var prevSchool = this.assignedSchool;
-            this.assignedSchool = null;
-            if(prevSchool !== null) {
-                prevSchool.updateCapacityLeft();
-            }
-            this.selectedDay = select.val();
+            this.setAssignedSchool(null);
+            this.resetAvailableSchools(getAvailableSchoolsByDay(this.getSelectedGroup(), this.getSelectedDay()));
             updateAllAvailableSchools();
         }, this));
         select.addClass("allocation_select");
@@ -155,7 +134,9 @@ function Assistant(assistantData) {
             select.append($('<option>', {value: "Bolk 2", text: "Bolk 2"}));
         }
         select.change($.proxy(function () {
-            this.updateAvailableSchools();
+            this.setAssignedSchool(null);
+            this.resetAvailableSchools();
+            updateAllAvailableSchools();
         }, this));
         return select;
     };
@@ -170,13 +151,22 @@ function Assistant(assistantData) {
 
     this.updateAvailableSchools = function () {
         var availableSchools = getAvailableSchoolsByDay(this.getSelectedGroup(), this.getSelectedDay());
+        // Don't re-render if available schools did not change. Updating the DOM is very expensive.
+        if (!schoolListsAreIdentical(this.availableSchools, availableSchools)) {
+            this.resetAvailableSchools();
+        }
+    };
+
+    this.resetAvailableSchools = function () {
+        this.availableSchools = getAvailableSchoolsByDay(this.getSelectedGroup(), this.getSelectedDay());
+
         var spaceless_name = string_remove_space(this.name);
         var school_select_id = spaceless_name.concat("SchoolSelect");
         var select = $('#' + school_select_id);
         select.empty();
         var option = $('<option>', {value: '', text: 'Velg skole'});
         select.append(option);
-        availableSchools.forEach(function (school) {
+        this.availableSchools.forEach(function (school) {
             var option = $('<option>', {value: school.name, text: school.name});
             if (this.assignedSchool !== null && this.assignedSchool.name === school.name) {
                 option.attr('selected', true)
@@ -184,18 +174,21 @@ function Assistant(assistantData) {
             select.append(option);
         }, this);
         select.change($.proxy(function () {
-            var school = getSchoolByName(select.val());
-            var prevSchool = this.assignedSchool;
-            this.assignedSchool = school;
-            if (prevSchool !== null) {
-                prevSchool.updateCapacityLeft();
-            }
-            if (school !== null) {
-                school.updateCapacityLeft();
-            }
+            this.setAssignedSchool(getSchoolByName(select.val()));
             updateAllAvailableSchools();
         }, this))
     };
+
+    this.setAssignedSchool = function (school) {
+        var prevSchool = this.assignedSchool;
+        this.assignedSchool = school;
+        if(prevSchool !== null) {
+            prevSchool.updateCapacityLeft();
+        }
+        if(school !== null) {
+            school.updateCapacityLeft();
+        }
+    }
 }
 
 function School(schoolData) {
@@ -237,6 +230,28 @@ function School(schoolData) {
     }
 }
 
+function getSchoolsAndAssistants() {
+    getSchools();
+}
+
+function getSchools() {
+    $.get("/kontrollpanel/api/schools", function (data) {
+        JSON.parse(data).forEach(function (s) {
+            schools.push(new School(s));
+        });
+        getAssistants();
+    });
+}
+
+function getAssistants() {
+    $.get("/kontrollpanel/api/assistants", function (data) {
+        JSON.parse(data).forEach(function (a) {
+            assistants.push(new Assistant(a));
+        });
+        generateAllocationTable();
+    });
+}
+
 function getAvailableSchoolsByDay(group, day) {
     var availableSchools = [];
     schools.forEach(function (school) {
@@ -263,4 +278,31 @@ function updateAllAvailableSchools() {
             assistant.updateAvailableSchools();
         }
     })
+}
+
+function schoolListsAreIdentical (schools1, schools2) {
+    if (schools1 === null && schools2 === null){
+        return true;
+    }
+    if (schools1 === null || schools2 === null) {
+        return false;
+    }
+    if (schools1.length !== schools2.length) {
+        return false;
+    }
+    for (var i = 0; i < schools1.length; i++) {
+        var id1 = schools1[i];
+        var schools2ContainsSchool1 = false;
+        for (var j = 0; j < schools2.length; j++) {
+            var id2 = schools2[j];
+            if (id1 === id2) {
+                schools2ContainsSchool1 = true;
+                break;
+            }
+        }
+        if (!schools2ContainsSchool1) {
+            return false;
+        }
+    }
+    return true;
 }
