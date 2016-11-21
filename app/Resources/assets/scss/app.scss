@@ -469,12 +469,14 @@ ul.alternatives {
 
 .sponsor-img-small {
   vertical-align: middle;
-  max-height: 25%;
+
   @media screen and (max-width: 900px){
     max-width: 100%;
+    max-height: 50%;
   }
   @media screen and (min-width: 900px){
     max-width: 200px;
+    max-height: 25%;
   }
 }
 .sponsor-img-medium{
