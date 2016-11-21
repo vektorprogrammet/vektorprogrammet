@@ -469,18 +469,36 @@ ul.alternatives {
 
 .sponsor-img-small {
   vertical-align: middle;
-  max-height: 25%;
-  max-width: 200px;
+
+  @media screen and (max-width: 900px){
+    max-width: 100%;
+    max-height: 50%;
+  }
+  @media screen and (min-width: 900px){
+    max-width: 200px;
+    max-height: 25%;
+  }
 }
 .sponsor-img-medium{
   vertical-align: middle;
   max-height: 50%;
-  max-width: 300px;
+  @media screen and (max-width: 1000px){
+    max-width: 100%;
+  }
+  @media screen and (min-width: 1000px){
+    max-width: 300px;
+  }
+;
 }
 .sponsor-img-large{
   vertical-align: middle;
   max-height: 90%;
-  max-width: 400px;
+  @media screen and (max-width: 1000px){
+    max-width: 100%;
+  }
+  @media screen and (min-width: 1000px){
+    max-width: 400px;
+  }
 }
 
 
