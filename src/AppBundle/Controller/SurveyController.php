@@ -138,6 +138,7 @@ class SurveyController extends Controller
             return $this->redirect($this->generateUrl($surveyUrl, array('id' => $survey->getId())));
         }
         $surveyTaken->removeNullAnswers();
+        $surveyTaken->removeEmojis();
         $surveyTaken->setTime(new \DateTime());
         $em = $this->getDoctrine()->getManager();
         $em->persist($surveyTaken);
