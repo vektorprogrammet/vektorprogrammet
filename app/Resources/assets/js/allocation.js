@@ -141,34 +141,24 @@ function School(schoolData) {
     this.name = schoolData.name;
     this.capacity = schoolData.capacity;
 
-    this.hasCapacityLeftOnDay = function (group, day) {
-        var cl = JSON.parse(JSON.stringify(this.capacity));
+    this.capacityLeftOnDay = function (group, day) {
+        var groupId = group === 'Bolk 1' ? '1' : '2';
+        var capacityLeft = this.capacity[groupId][day];
         assistants.forEach(function (assistant) {
             if (assistant.assignedSchool !== null &&
-              assistant.assignedSchool.name === this.name) {
-                switch (assistant.getSelectedGroup()) {
-                    case 'Bolk 1':
-                        cl['1'][assistant.getSelectedDay()] -= 1;
-                        break;
-                    case 'Bolk 2':
-                        cl['2'][assistant.getSelectedDay()] -= 1;
-                        break;
-                    case 'Dobbel':
-                        cl['1'][assistant.getSelectedDay()] -= 1;
-                        cl['2'][assistant.getSelectedDay()] -= 1;
-                        break;
-                }
+                assistant.assignedSchool.name === this.name &&
+                assistant.group === group) {
+                capacityLeft--;
             }
         }, this);
-        switch (group) {
-            case 'Bolk 1':
-                return cl['1'][day] > 0;
-            case 'Bolk 2':
-                return cl['2'][day] > 0;
-            case 'Dobbel':
-                return cl['1'][day] > 0 && cl['2'][day] > 0;
+        return capacityLeft;
+    };
+
+    this.hasCapacityLeftOnDay = function (group, day) {
+        if (group === 'Dobbel') {
+            return this.capacityLeftOnDay('Bolk 1', day) > 0 && this.capacityLeftOnDay('Bolk 2', day) > 0;
         }
-        return false;
+        return this.capacityLeftOnDay(group, day) > 0;
     };
 }
 
