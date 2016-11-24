@@ -17,6 +17,16 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $department1->setEmail('NTNU@mail.com');
         $department1->addSchool($this->getReference('school-1'));
         $department1->addSchool($this->getReference('school-2'));
+        $department1->addSchool($this->getReference('school-00'));
+        $department1->addSchool($this->getReference('school-01'));
+        $department1->addSchool($this->getReference('school-02'));
+        $department1->addSchool($this->getReference('school-03'));
+        $department1->addSchool($this->getReference('school-04'));
+        $department1->addSchool($this->getReference('school-05'));
+        $department1->addSchool($this->getReference('school-06'));
+        $department1->addSchool($this->getReference('school-07'));
+        $department1->addSchool($this->getReference('school-08'));
+        $department1->addSchool($this->getReference('school-09'));
         $department1->setAddress('Høgskoleringen 5 7491 Trondheim');
         $manager->persist($department1);
 
