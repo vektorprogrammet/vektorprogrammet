@@ -253,7 +253,7 @@ function generateSchoolOverview() {
                     if (assistantCount === 0 || assistantCount % 2 === 1) {
                         color = 'text-warning'
                     }
-                    p.append('<span class=' + color + '>' + day + ': ' + (cap - capLeft) + '/' + cap + '</span>' + ', ');
+                    p.append('<span class=' + color + '>' + norwegian_day(day) + ': ' + (cap - capLeft) + '/' + cap + '</span>' + ', ');
                 }
             });
             schoolList.append(p);
