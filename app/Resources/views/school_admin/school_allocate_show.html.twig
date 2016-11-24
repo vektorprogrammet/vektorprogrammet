@@ -77,8 +77,7 @@
                         <th>Onsdag</th>
                         <th>Torsdag</th>
                         <th>Fredag</th>
-                        <th>Bolk</th>
-                        <th>Dobbel</th>
+                        <th>Pref. Bolk</th>
                     </tr>
                     </thead>
                     {% set mondayGoodCount = 0 %}
@@ -150,24 +149,16 @@
                             <td>{{ application.wednesday }}</td>
                             <td>{{ application.thursday }}</td>
                             <td>{{ application.friday }}</td>
-                            {% set bolks = "Ingen" %}
-                            {% if "Bolk 1" in application.preferredGroup %}
-                                {% set bolks = "Bolk 1" %}
-                            {% endif %}
-                            {% if "Bolk 2" in application.preferredGroup %}
-                                {% if "Ingen" not in bolks %}
-                                    {% set bolks = bolks ~ ", " %}
-                                {% else %}
-                                    {% set bolks = "" %}
-                                {% endif %}
-                                {% set bolks = bolks ~ "Bolk 2" %}
-                            {% endif %}
-                            <td>{{ bolks }}</td>
+                            {% set group = "Ingen" %}
                             {% if application.doublePosition %}
-                                <td>Ja</td>
+                                {% set group = 'Dobbel' %}
                             {% else %}
-                                <td>Nei</td>
+                                {% set group = application.preferredGroup %}
+                                {% if application.preferredGroup|length == 0 %}
+                                    {% set group = 'Begge' %}
+                                {% endif %}
                             {% endif %}
+                            <td>{{ group }}</td>
                         </tr>
                     {% endfor %}
                     <tr>
@@ -215,10 +206,4 @@
         <br>
         <hr>
     {% endif %}
-    {% for application in applications %}
-        {% set user = application.user %}
-        {{ user.firstName }} {{ user.lastName }}, {{ application.monday }}, {{ application.tuesday }}, {{ application.wednesday }}, {{ application.thursday }}, {{ application.friday }},
-        {{ application.preferredGroup ? application.preferredGroup : 'Ingen' }}, {{ application.doublePosition ? 'Ja' : 'Nei' }}
-            <br>
-    {% endfor %}
 {% endblock %}
