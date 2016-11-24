@@ -7,28 +7,38 @@
 {% block body %}
     <h1 class="text-center">Denne siden skal inneholde allokeringsappen</h1>
     <div class="row">
-        <div class="large-12">
+        <div class="small-12 medium-6 columns">
+            <h3 class="text-center">Skoler</h3>
+            <div id="schools">Laster skoler...</div>
         </div>
-        <table class="allocation_table">
-            <thead>
-            <tr>
-                <th>Navn</th>
-                <th>Ukedag</th>
-                <th>Bolk</th>
-                <th>Skole</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td colspan="4" class="text-center">
-                    <h4>Laster assistenter...</h4>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <button class="button medium">Bekreft</button>
-        <button class="button medium">Tilbakestill</button>
-        <button class="button medium">Tilbake</button>
+        <div class="small-12 medium-6 columns">
+            <h3 class="text-center">Assistenter</h3>
+            <table class="allocation_table">
+                <thead>
+                <tr>
+                    <th>Navn</th>
+                    <th>Ukedag</th>
+                    <th>Bolk</th>
+                    <th>Skole</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td colspan="4" class="text-center">
+                        <h4>Laster assistenter...</h4>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="small-12 columns">
+            <button class="button medium">Bekreft</button>
+            <button class="button medium">Tilbakestill</button>
+            <button class="button medium">Tilbake</button>
+        </div>
     </div>
 
 
