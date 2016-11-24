@@ -143,11 +143,12 @@ function School(schoolData) {
 
     this.capacityLeftOnDay = function (group, day) {
         var groupId = group === 'Bolk 1' ? '1' : '2';
-        var capacityLeft = this.capacity[groupId][day];
+        var capacityLeft = JSON.parse(JSON.stringify(this.capacity[groupId][day]));
         assistants.forEach(function (assistant) {
             if (assistant.assignedSchool !== null &&
                 assistant.assignedSchool.name === this.name &&
-                assistant.group === group) {
+                assistant.getSelectedDay() === day &&
+                (assistant.getSelectedGroup() === group || assistant.getSelectedGroup() === 'Dobbel')) {
                 capacityLeft--;
             }
         }, this);
@@ -180,6 +181,7 @@ function getAssistants() {
             assistants.push(new Assistant(a));
         });
         generateAllocationTable();
+        generateSchoolOverview();
     });
 }
 
@@ -234,12 +236,39 @@ function generateAllocationTable() {
     });
 }
 
+function generateSchoolOverview() {
+    var schoolList = $('#schools');
+    schoolList.empty();
+    ['1', '2'].forEach(function (group) {
+        schoolList.append('<h4>Bolk ' + group + '</h4>');
+        schools.forEach(function (school) {
+            var p = $('<p>');
+            p.append(' ' + school.name + ': ');
+            ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].forEach(function (day) {
+                var cap = school.capacity[group][day];
+                var capLeft = school.capacityLeftOnDay('Bolk ' + group, day);
+                var assistantCount = (cap - capLeft);
+                if (cap > 0) {
+                    var color = 'text-success';
+                    if (assistantCount === 0 || assistantCount % 2 === 1) {
+                        color = 'text-warning'
+                    }
+                    p.append('<span class=' + color + '>' + day + ': ' + (cap - capLeft) + '/' + cap + '</span>' + ', ');
+                }
+            });
+            schoolList.append(p);
+        })
+    });
+
+}
+
 function updateAllAvailableSchools() {
     assistants.forEach(function (assistant) {
         if (assistant.assignedSchool === null) {
             assistant.updateAvailableSchools();
         }
-    })
+    });
+    generateSchoolOverview();
 }
 
 ///////////////////////////////
