@@ -34,7 +34,7 @@ class SchoolAllocationController extends Controller
         foreach ($interviewedApplications as $application) {
             if ($application->getInterview() != null) {
                 $interviewScore = $application->getInterview()->getInterviewScore();
-                if ($interviewScore != null && $interviewScore->getSuitableAssistant() == 'Kanskje') {
+                if ($interviewScore != null && ($interviewScore->getSuitableAssistant() == 'Kanskje' || $interviewScore->getSuitableAssistant() == 'Ja')) {
                     $filteredApplications[] = $application;
                 }
             }
@@ -43,7 +43,7 @@ class SchoolAllocationController extends Controller
 
         return $this->render('school_admin/school_allocate_show.html.twig', array(
             'semester' => $currentSemester,
-            'applications' => array_merge($filteredApplications),
+            'applications' => array_merge($filteredApplications, $previousApplications),
             'allocations' => $allCurrentSchoolCapacities,
             'allocatedSchools' => $schools,
         ));
