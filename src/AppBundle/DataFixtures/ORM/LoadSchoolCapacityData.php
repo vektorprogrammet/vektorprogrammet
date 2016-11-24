@@ -11,7 +11,7 @@ class LoadSchoolCapacityData extends AbstractFixture implements OrderedFixtureIn
 {
     public function load(ObjectManager $manager)
     {
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $randomArr = array(true, false, false, false, false);
             shuffle($randomArr);
             $schoolCapacity = new SchoolCapacity();
