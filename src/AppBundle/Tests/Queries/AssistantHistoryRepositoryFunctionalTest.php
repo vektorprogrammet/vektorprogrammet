@@ -19,8 +19,7 @@ class AssistantHistoryRepositoryFunctionalTest extends KernelTestCase
         self::bootKernel();
         $this->em = static::$kernel->getContainer()
             ->get('doctrine')
-            ->getManager()
-        ;
+            ->getManager();
     }
 
     // Checking whether the method returns the active assistant histories for a given user, but also given the $today variable

@@ -26,7 +26,7 @@ class ApplicationType extends AbstractType
             ->add('user', new CreateUserOnApplicationType($this->departmentId), array(
                 'label' => '',
             ))
-            ->add('yearOfStudy', 'choice',  array(
+            ->add('yearOfStudy', 'choice', array(
                 'label' => 'Årstrinn',
                 'choices' => array(
                     1 => '1',
@@ -38,22 +38,22 @@ class ApplicationType extends AbstractType
             ))
             ->add('save', 'submit', array('label' => 'Søk nå!'));
 
-            /*
-            See options for configuration here:
-            https://github.com/Gregwar/CaptchaBundle
-            */
-            if (!$this->authenticated) {
-                $builder->add('captchaAdmission', 'captcha', array(
-                    'label' => ' ',
-                    'width' => 200,
-                    'height' => 50,
-                    'length' => 5,
-                    'quality' => 200,
-                    'keep_value' => true,
-                    'distortion' => false,
-                    'background_color' => [111, 206, 238],
-                ));
-            }
+        /*
+        See options for configuration here:
+        https://github.com/Gregwar/CaptchaBundle
+        */
+        if (!$this->authenticated) {
+            $builder->add('captchaAdmission', 'captcha', array(
+                'label' => ' ',
+                'width' => 200,
+                'height' => 50,
+                'length' => 5,
+                'quality' => 200,
+                'keep_value' => true,
+                'distortion' => false,
+                'background_color' => [111, 206, 238],
+            ));
+        }
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

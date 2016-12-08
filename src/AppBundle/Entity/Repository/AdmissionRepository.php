@@ -35,12 +35,12 @@ class AdmissionRepository extends EntityRepository
 
         if (null !== $department) {
             $qb->andWhere('d = :department')
-                   ->setParameter('department', $department);
+                ->setParameter('department', $department);
         }
 
         if (null !== $semester) {
             $qb->andWhere('sem = :semester')
-                    ->setParameter('semester', $semester);
+                ->setParameter('semester', $semester);
         }
         $qb->orderBy('a.userCreated', 'ASC');
 
@@ -102,12 +102,12 @@ class AdmissionRepository extends EntityRepository
 
         if (null !== $department) {
             $qb->andWhere('d = :department')
-                     ->setParameter('department', $department);
+                ->setParameter('department', $department);
         }
 
         if (null !== $semester) {
             $qb->andWhere('sem = :semester')
-                    ->setParameter('semester', $semester);
+                ->setParameter('semester', $semester);
         }
 
         return $qb->getQuery()->getResult();
@@ -134,12 +134,12 @@ class AdmissionRepository extends EntityRepository
 
         if (null !== $department) {
             $qb->andWhere('d = :department')
-                    ->setParameter('department', $department);
+                ->setParameter('department', $department);
         }
 
         if (null !== $semester) {
             $qb->andWhere('sem = :semester')
-                    ->setParameter('semester', $semester);
+                ->setParameter('semester', $semester);
         }
 
         return $qb->getQuery()->getResult();

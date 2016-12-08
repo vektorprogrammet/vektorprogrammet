@@ -39,11 +39,13 @@
 
             {# Add the buttons to book(send email) and conduct an interview, given the correct permissions #}
             {% if is_granted('ROLE_SUPER_ADMIN') or a.interview.isInterviewer(app.user) %}
-                <td >
-                    <a href="{{ path('interview_schedule', { 'id': a.id }) }}" class="button tiny"><i class="fa fa-envelope"></i> Sett opp</a>
+                <td>
+                    <a href="{{ path('interview_schedule', { 'id': a.id }) }}" class="button tiny"><i
+                                class="fa fa-envelope"></i> Sett opp</a>
                 </td>
                 <td>
-                    <a href="{{ path('interview_conduct', { 'id': a.id }) }}" class="button tiny"><i class="fa fa-list-ul"></i> Intervju</a>
+                    <a href="{{ path('interview_conduct', { 'id': a.id }) }}" class="button tiny"><i
+                                class="fa fa-list-ul"></i> Intervju</a>
                 </td>
             {% else %}
                 <td colspan="2"></td>

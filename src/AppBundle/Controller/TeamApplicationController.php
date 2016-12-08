@@ -23,6 +23,7 @@ class TeamApplicationController extends Controller
             'application' => $application,
         ));
     }
+
     public function showAllApplicationsAction(Team $team)
     {
         $applications = $this->getDoctrine()->getRepository('AppBundle:TeamApplication')->findByTeam($team);
@@ -44,13 +45,6 @@ class TeamApplicationController extends Controller
 
         $manager->remove($teamApplication);
         $manager->flush();
-
-        /*
-        return $this->render('team/show_applications.html.twig',array(
-            'applications'=>$applications,
-            'team'=>$team
-        ));
-        */
 
         return $this->redirectToRoute('team_application_show_all', array('id' => $teamApplication->getTeam()->getId()));
     }
@@ -103,6 +97,6 @@ class TeamApplicationController extends Controller
         return $this->render('team/team_application.html.twig', array(
             'team' => $team,
             'form' => $form->createView(),
-    ));
+        ));
     }
 }

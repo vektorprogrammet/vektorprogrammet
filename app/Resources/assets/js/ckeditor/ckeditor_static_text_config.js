@@ -11,7 +11,6 @@
 
 
 CKEDITOR.editorConfig = function(config){
-    // todo: Change the skin to match foundation
     config.skin = 'bootstrapck';
 
     // The toolbar groups arrangement
@@ -40,7 +39,7 @@ CKEDITOR.editorConfig = function(config){
     //http://ckeditor.com/forums/CKEditor/Complete-list-of-toolbar-items
     config.removeButtons = 'Underline,Subscript,Superscript,Anchor,Table,SpecialChar,HorizontalRule';
 
-    // Set the most common block elements. todo: what is this?
+    // Set the most common block elements.
     config.format_tags = 'p;h1;h2;h3;pre';
 
     //Enable plugins
@@ -54,6 +53,5 @@ CKEDITOR.editorConfig = function(config){
 
     //Sets ElFinder as the filebrowser to open when looking for image files to add
     config.filebrowserImageBrowseUrl = "elfinder";
-    //todo: in ckeditor.html.twig I replaced "\" with "/" in  getFileCallback : function(file)... some browser can NOT read url's with backslashes...
 
 }; 

@@ -858,7 +858,7 @@ interview_schedule:
 elfinder:
     path: /kontrollpanel/elfinder/{instance}
     defaults: { _controller: FMElfinderBundle:ElFinder:show, instance: default }
-ef_connect: #This one is used only internally by FMElfinderBundle? TODO: Er det riktig?
+ef_connect: #This one is used only internally by FMElfinderBundle?
     path:  /efconnect/{instance}
     defaults: { _controller: FMElfinderBundle:ElFinder:load, instance: default }
 
@@ -974,34 +974,6 @@ sponsors_update:
 sponsors_add:	
   path: /kontrollpanel/sponsors/add
   defaults: { _controller: AppBundle:Sponsors:sponsorsAdd }
-
-##########################################
-#              Anniversary               #
-##########################################
-
-anniversary_registration:
- path: /jubileum
- defaults: { _controller: AppBundle:AnniversaryRegistration:show }
-
-anniversary_registration_complete:
- path: /jubileum/melding
- defaults: { _controller: AppBundle:AnniversaryRegistration:complete }
-
-anniversary_admin:
- path: /brukeradmin/jubileum
- defaults: { _controller: AppBundle:AnniversaryRegistration:admin }
-
-anniversary_paid:
- path: /brukeradmin/jubileum/betalt
- defaults: { _controller: AppBundle:AnniversaryRegistration:paid}
- requirements:
-  _method: POST
-
-anniversary_remove_payment:
- path: /brukeradmin/jubileum/slettbetaling
- defaults: { _controller: AppBundle:AnniversaryRegistration:removePayment}
- requirements:
-  _method: POST
 
 ##########################################
 #              Newsletter                #

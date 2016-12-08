@@ -7,7 +7,7 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
-    app.twig_extension: #todo: change name
+    app.twig_extension:
         class: AppBundle\Twig\Extension\StaticContentExtension
         arguments:
               doctrine: "@doctrine"

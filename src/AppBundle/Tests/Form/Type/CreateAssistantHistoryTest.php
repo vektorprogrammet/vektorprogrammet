@@ -63,9 +63,7 @@ class CreateAssistantHistoryTest extends TypeTestCase
                 ),
             ),
             array(
-                'data' => array(
-
-                ),
+                'data' => array(),
             ),
             array(
                 'data' => array(

@@ -14,9 +14,7 @@ class CreatePositionType extends AbstractType
             ->add('name', 'text', array(
                 'label' => 'Navn',
             ))
-            ->add('Lagre', 'submit', array(
-
-            ));
+            ->add('Lagre', 'submit', array());
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

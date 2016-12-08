@@ -11,9 +11,10 @@
 
 {%- block form_row -%}
     <div class="left radio-grid">
-        {% if not valid %}<div class="error">{% endif %}
-        {{- form_label(form) -}}
-        {% if not valid %}</div>{% endif %}
+        {% if not valid %}
+        <div class="error">{% endif %}
+            {{- form_label(form) -}}
+            {% if not valid %}</div>{% endif %}
         {{- form_errors(form) -}}
         {{- form_widget(form) -}}
     </div>

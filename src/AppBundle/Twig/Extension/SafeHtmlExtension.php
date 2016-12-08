@@ -5,6 +5,7 @@ namespace AppBundle\Twig\Extension;
 class SafeHtmlExtension extends \Twig_Extension
 {
     private $blacklistedTags = ['script', 'iframe'];
+
     public function getFilters()
     {
         return array(
@@ -13,6 +14,7 @@ class SafeHtmlExtension extends \Twig_Extension
             )),
         );
     }
+
     public function htmlFilter($html)
     {
         foreach ($this->blacklistedTags as $tag) {
@@ -22,6 +24,7 @@ class SafeHtmlExtension extends \Twig_Extension
 
         return $html;
     }
+
     public function getName()
     {
         return 'safe_html_extension';

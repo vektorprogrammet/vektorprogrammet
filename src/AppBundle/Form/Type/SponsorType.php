@@ -19,7 +19,7 @@ class SponsorType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->setAction($this->router->generate('sponsors_update', array('id' => $this->id))) //todo: http://stackoverflow.com/questions/19816061/how-do-i-generate-a-url-when-not-in-a-controller
+            ->setAction($this->router->generate('sponsors_update', array('id' => $this->id)))
             ->setMethod('POST')
             ->add('name', 'text', array(
                 'label' => 'Sponsornavn',

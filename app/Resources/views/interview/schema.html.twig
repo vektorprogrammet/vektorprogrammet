@@ -33,7 +33,7 @@
             // The prototype for a question
             qPrototype: $("#prototypes").data("prototype-q"),
 
-            onReady: function() {
+            onReady: function () {
                 // Set up the questions that are already in the database (add buttons etc)
                 IntSchema.questions.find(".panel").each(IntSchema.setUp);
 
@@ -44,7 +44,7 @@
                 IntSchema.addQuestionButton.on("click", IntSchema.addQuestion);
             },
 
-            setUp: function(i) {
+            setUp: function (i) {
                 var alternatives = $(this).find(".alternatives");
                 var rows = alternatives.find(".row");
                 var type = $(this).find("select");
@@ -58,16 +58,16 @@
 
                 IntSchema.toggleAlternatives(type, alternatives, alternativeButton);
 
-                type.on("change", function() {
+                type.on("change", function () {
                     IntSchema.toggleAlternatives(type, alternatives, alternativeButton);
                 });
 
-                rows.each(function() {
+                rows.each(function () {
                     IntSchema.addAlternativeDeleteButton($(this));
                 });
             },
 
-            addQuestion: function(event) {
+            addQuestion: function (event) {
                 event.preventDefault();
 
                 var qIndex = IntSchema.questions.data("q-index");
@@ -96,14 +96,14 @@
 
                 var type = newQuestion.find("select");
 
-                type.on("change", function() {
+                type.on("change", function () {
                     IntSchema.toggleAlternatives(type, newAlternatives, alternativeButton);
                 });
 
                 IntSchema.questions.data("q-index", qIndex + 1);
             },
 
-            addQuestionDeleteButton: function(panel) {
+            addQuestionDeleteButton: function (panel) {
                 var deleteButton = $('<a href="#" class="button tiny alert right"><i class="fa fa-trash-o fa-lg"></i></a>');
                 var column = $("<div></div>").addClass("small-3 medium-2 large-1 columns");
                 var row = panel.find(".row").first();
@@ -111,13 +111,13 @@
                 row.append(column);
                 column.append(deleteButton);
 
-                deleteButton.on('click', function(event) {
+                deleteButton.on('click', function (event) {
                     event.preventDefault();
                     panel.remove();
                 });
             },
 
-            addAlternativeAddButton: function(panel) {
+            addAlternativeAddButton: function (panel) {
                 var alternativeButton = $('<a href="#" class="button tiny"><i class="fa fa-plus"></i> Alternativ</a>');
                 var alternatives = panel.find(".alternatives");
                 var buttons = panel.find(".buttons");
@@ -129,18 +129,18 @@
                 return alternativeButton;
             },
 
-            addAlternativeDeleteButton: function(alternative) {
+            addAlternativeDeleteButton: function (alternative) {
                 var deleteButton = $('<i class="fa fa-times"></i>');
 
                 alternative.append($('<div class="small-1 columns"></div>').append(deleteButton));
 
-                deleteButton.on('click', function(event) {
+                deleteButton.on('click', function (event) {
                     event.preventDefault();
                     alternative.remove();
                 });
             },
 
-            addAlternative: function(event) {
+            addAlternative: function (event) {
                 event.preventDefault();
                 var alternatives = event.data;
 
@@ -155,11 +155,11 @@
                 IntSchema.addAlternativeDeleteButton(newAlternative);
             },
 
-            toggleAlternatives: function(select, alternatives, alternativeButton) {
-                if(select.val() == "text") {
+            toggleAlternatives: function (select, alternatives, alternativeButton) {
+                if (select.val() == "text") {
                     alternatives.empty();
                     alternativeButton.hide();
-                } else if(select.val() == "radio") {
+                } else if (select.val() == "radio") {
                     alternativeButton.show();
                 } else {
                     alternativeButton.show();
@@ -185,12 +185,12 @@
             {{ form_errors(form.name) }}
 
             <div
-                id="prototypes"
-                data-prototype-a="{{ form_row(form.interviewQuestions.vars.prototype.children['alternatives'].vars.prototype.alternative) | e }}"
-                data-prototype-q="{{ form_row(form.interviewQuestions.vars.prototype.question) | e }}
+                    id="prototypes"
+                    data-prototype-a="{{ form_row(form.interviewQuestions.vars.prototype.children['alternatives'].vars.prototype.alternative) | e }}"
+                    data-prototype-q="{{ form_row(form.interviewQuestions.vars.prototype.question) | e }}
                 {{ form_row(form.interviewQuestions.vars.prototype.help) | e }}
                 {{ form_row(form.interviewQuestions.vars.prototype.type) | e }}"
-                >
+            >
             </div>
 
             <div id="questions">

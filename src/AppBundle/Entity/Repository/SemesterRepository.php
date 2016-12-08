@@ -19,8 +19,8 @@ class SemesterRepository extends EntityRepository
 		ORDER BY s.semesterStartDate DESC
 		
 		')
-        ->setParameter('department', $department)
-        ->getResult();
+            ->setParameter('department', $department)
+            ->getResult();
 
         return $semesters;
     }

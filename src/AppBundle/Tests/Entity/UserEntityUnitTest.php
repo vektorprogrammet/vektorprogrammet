@@ -41,28 +41,19 @@ class UserEntityUnitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('per@mail.com', $user->getEmail());
     }
 
-    // Check whether the setIsActive function is working correctly
-    public function testSetIsActive()
+    // Check whether the setActive function is working correctly
+    public function testsetActive()
     {
 
         // new entity
         $user = new User();
 
-        // Use the setIsActive method
-        $user->setIsActive(1);
+        // Use the setActive method
+        $user->setActive(1);
 
         // Assert the result
-        $this->assertEquals(1, $user->getIsActive());
+        $this->assertEquals(1, $user->isActive());
     }
-
-    /*
-    // Check whether the setRoles function is working correctly
-    public function testSetRoles(){
-
-
-
-    }
-    */
 
     // Check whether the setLastName function is working correctly
     public function testSetLastName()

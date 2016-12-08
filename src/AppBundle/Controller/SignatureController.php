@@ -31,14 +31,14 @@ class SignatureController extends Controller
 
             if ($isImageUpload) {
                 //First move the signature image file to its folder
-            $targetFolder = $this->container->getParameter('signature_images').'/';
-            //Create a FileUploader with target folder and allowed file types as parameters
-            $uploader = new FileUploader($targetFolder, ['image/gif', 'image/jpeg', 'image/png']);
-            //Move the file to target folder
+                $targetFolder = $this->container->getParameter('signature_images').'/';
+                //Create a FileUploader with target folder and allowed file types as parameters
+                $uploader = new FileUploader($targetFolder);
+                //Move the file to target folder
 
-            $result = $uploader->upload($request);
-                $path = $result[array_keys($result)[0]]; //todo: duplicated code this line and those above it. see editProfilePhotoAction in ProfileController
-            $fileName = substr($path, strrpos($path, '/') + 1);
+                $result = $uploader->upload($request);
+                $path = $result[array_keys($result)[0]];
+                $fileName = substr($path, strrpos($path, '/') + 1);
                 $signature->setSignaturePath('signatures/'.$fileName);
             } else {
                 $signature->setSignaturePath($oldPath);

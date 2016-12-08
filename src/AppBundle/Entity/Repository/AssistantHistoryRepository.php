@@ -22,9 +22,9 @@ class AssistantHistoryRepository extends EntityRepository
 		AND semester.semesterStartDate < :today
 		AND semester.semesterEndDate > :today
 		')
-        ->setParameter('user', $user)
-        ->setParameter('today', $today)
-        ->getResult();
+            ->setParameter('user', $user)
+            ->setParameter('today', $today)
+            ->getResult();
 
         return $assistantHistories;
     }
@@ -63,8 +63,8 @@ class AssistantHistoryRepository extends EntityRepository
 		WHERE semester.semesterStartDate < :today
 		AND semester.semesterEndDate > :today
 		')
-        ->setParameter('today', $today)
-        ->getResult();
+            ->setParameter('today', $today)
+            ->getResult();
 
         return $assistantHistories;
     }
@@ -83,9 +83,9 @@ class AssistantHistoryRepository extends EntityRepository
 		AND (semester.semesterStartDate > :today
 		OR semester.semesterEndDate < :today)
 		')
-        ->setParameter('school', $school)
-        ->setParameter('today', $today)
-        ->getResult();
+            ->setParameter('school', $school)
+            ->setParameter('today', $today)
+            ->getResult();
 
         return $assistantHistories;
     }

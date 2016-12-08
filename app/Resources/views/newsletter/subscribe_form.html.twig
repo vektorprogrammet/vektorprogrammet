@@ -1,18 +1,18 @@
 {% if newsletter is not null %}
 
-<div class="row">
-      <div class="small-12 medium-8 large-6 large-offset-3 medium-offset-2 columns">
+    <div class="row">
+        <div class="small-12 medium-8 large-6 large-offset-3 medium-offset-2 columns">
             <div class="admission-well text-dark-grey">
-            <p>Du kan melde deg på <b>{{ newsletter.name }}</b> her:</p>
-            {{ form_start(form) }}
-            {{ form_row(form.name) }}
-            {{ form_row(form.email) }}
-            <button>Registrer</button>
+                <p>Du kan melde deg på <b>{{ newsletter.name }}</b> her:</p>
+                {{ form_start(form) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.email) }}
+                <button>Registrer</button>
 
-            {{ form_end(form) }}
+                {{ form_end(form) }}
             </div>
-      </div>
-</div>
+        </div>
+    </div>
 
 {% else %}
     <br>

@@ -131,7 +131,7 @@ class AvailabilityFunctionalTest extends WebTestCase
             array('/kontrollpanel/opprettsoker'),
             array('/kontrollpanel/brukeradmin'),
             array('/kontrollpanel/semesteradmin'),
-//            array('/kontrollpanel/statistikk/opptak'), TODO: Uncomment this when statistics page is fixed
+            array('/kontrollpanel/statistikk/opptak/1'),
             array('/kontrollpanel/elfinder'),
             array('/kontrollpanel/artikkeladmin'),
             array('/kontrollpanel/vikar'),

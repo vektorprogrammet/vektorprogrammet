@@ -21,14 +21,14 @@
     <article>
         <div class="row">
             <div class="small-12 medium-12 large-12 columns">
-                <img src="{{ asset(article.imageLarge) }}" style="width:100%;" />
+                <img src="{{ asset(article.imageLarge) }}" style="width:100%;"/>
             </div>
         </div>
         <div class="row">
             <div class="small-12 medium-12 large-12 columns">
                 <p class="for-department">Vektornyheter for
-                {% for department in article.departments %}
-                {{ department.shortName }}{% if not loop.last %}, {% endif %}{% else %}alle{% endfor %}:</p>
+                    {% for department in article.departments %}
+                    {{ department.shortName }}{% if not loop.last %}, {% endif %}{% else %}alle{% endfor %}:</p>
             </div>
         </div>
         <div class="row">
@@ -40,7 +40,9 @@
             <div class="small-12 medium-8 large-8 columns">
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
-                        <p class="byline"><strong>Skrevet av:</strong> {{ article.author.firstName }} {{ article.author.lastName }}. Publisert: {{ article.created|date("d.m.y — G:i") }}</p>
+                        <p class="byline"><strong>Skrevet
+                                av:</strong> {{ article.author.firstName }} {{ article.author.lastName }}.
+                            Publisert: {{ article.created|date("d.m.y — G:i") }}</p>
                     </div>
                 </div>
                 <div class="row">

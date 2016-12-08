@@ -62,12 +62,8 @@ class CertificateController extends Controller
         return new JsonResponse($response);
     }
 
-    public function requestAction(Request $request)
+    public function requestAction()
     {
-
-        // Get the ID sent by the request
-        $id = $request->get('id');
-
         try {
             if ($this->get('security.context')->isGranted('ROLE_USER')) {
                 $em = $this->getDoctrine()->getEntityManager();

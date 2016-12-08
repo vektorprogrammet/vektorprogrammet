@@ -1,278 +1,297 @@
 <!DOCTYPE html>
-<!--[if IE 9]><html class="lt-ie10" lang="no" > <![endif]-->
+<!--[if IE 9]>
+<html class="lt-ie10" lang="no"> <![endif]-->
 <html class="no-js" lang="no">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}Vektorprogrammet{% endblock %}</title>
-        <meta property="og:type" content="website" />
-        {% if app.request.attributes.get('_route') is not null %}
-            <meta property="og:url" content="http://vektorprogrammet.no/{{ path(app.request.attributes.get('_route'),
-            app.request.attributes.get('_route_params')) }}" />
-        {% endif %}
-        <meta property="og:title" content="{{ block('title') }}"/>
-        <meta property="og:image" content="http://vektorprogrammet.no{% block facebookImage %}{{ asset('images/vektor_stor.png') }}{% endblock %}" />
-        <meta property="og:description" content="{% block facebookDescription %}Vektorprogrammet er Norges største organisasjon som jobber for å øke interessen for matematikk og realfag blant elever i grunnskolen. Vi sender realfagssterke studenter til barne- og ungdomsskoler hvor de fungerer som lærerens assistent.{% endblock %}" />
-        <meta property="og:site_name" content="Vektorprogrammet" />
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Vektorprogrammet{% endblock %}</title>
+    <meta property="og:type" content="website"/>
+    {% if app.request.attributes.get('_route') is not null %}
+        <meta property="og:url" content="http://vektorprogrammet.no/{{ path(app.request.attributes.get('_route'),
+        app.request.attributes.get('_route_params')) }}"/>
+    {% endif %}
+    <meta property="og:title" content="{{ block('title') }}"/>
+    <meta property="og:image"
+          content="http://vektorprogrammet.no{% block facebookImage %}{{ asset('images/vektor_stor.png') }}{% endblock %}"/>
+    <meta property="og:description"
+          content="{% block facebookDescription %}Vektorprogrammet er Norges største organisasjon som jobber for å øke interessen for matematikk og realfag blant elever i grunnskolen. Vi sender realfagssterke studenter til barne- og ungdomsskoler hvor de fungerer som lærerens assistent.{% endblock %}"/>
+    <meta property="og:site_name" content="Vektorprogrammet"/>
 
-        <!-- Color for header in mobile browsers -->
-        <meta name="theme-color" content="#6FCEEE"><!-- Chrome, Firefox OS and Opera -->
-        <meta name="msapplication-navbutton-color" content="#6FCEEE"><!-- Windows Phone -->
-        <meta name="apple-mobile-web-app-status-bar-style" content="#6FCEEE"><!-- iOS Safari -->
+    <!-- Color for header in mobile browsers -->
+    <meta name="theme-color" content="#6FCEEE"><!-- Chrome, Firefox OS and Opera -->
+    <meta name="msapplication-navbutton-color" content="#6FCEEE"><!-- Windows Phone -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="#6FCEEE"><!-- iOS Safari -->
 
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=2" />
-        {% block stylesheets %}{% endblock %}
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=2"/>
+    {% block stylesheets %}{% endblock %}
 
-        {% block customStyles %}{% endblock %}
+    {% block customStyles %}{% endblock %}
 
-    </head>
-    <body>
-    {% block topLine %}
-        <div class="top-line">
-            {# <p>Vektorprogrammet NTNU søker nye teammedlemmer! <a href="{{ path('article_show', {'id': 21}) }}">Les mer</a></p> #}
-        </div>
-    {% endblock %}
+</head>
+<body>
+{% block topLine %}
+    <div class="top-line">
+        {# <p>Vektorprogrammet NTNU søker nye teammedlemmer! <a href="{{ path('article_show', {'id': 21}) }}">Les mer</a></p> #}
+    </div>
+{% endblock %}
 
-        {% block newHeader %}
+{% block newHeader %}
 
-            <header class="row">
-                <div class="small-12 medium-12 columns hide-for-small-only">
-                    <a href="{{ path('home') }}">
-                        {% if "now"|date("m") == "12" %}
-                            <img src="{{ asset('images/vektor-christmas-logo.png') }}" alt="Vektor logo">
-                        {% else %}
-                            <img src="{{ asset('images/vektor.png') }}" alt="Vektor logo">
-                        {% endif %}
-                    </a>
-                    <nav class="main-navigation">
-                        <ul>
-                            <li>
-                                <a href="#" data-dropdown="aboutDropdown" aria-controls="aboutDropdown" aria-expanded="false" class="vektor-button" data-options="is_hover:true; hover_timeout:200">Om Vektor <i class="fa fa-chevron-down arrow"></i></a>
-                                <ul id="aboutDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
-                                    <li><a href="{{ path('about') }}">Om vektor</a></li>
-                                    <li><a href="{{ path('faq') }}">FAQ</a></li>
-                                    <li><a href="{{ path('boardandteam_show') }}">Styre og team</a></li>
-                                    <li><a href="{{ path('students') }}">For studenter</a></li>
-                                    <li><a href="{{ path('schools') }}">For skoler</a></li>
-                                    <li><a href="{{ path('businesses') }}">For bedrifter</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="{{ path('article') }}" class="vektor-button">Nyheter</a>
-                            </li>
-                            <li>
-                                <a href="#" data-dropdown="regionDropdown" aria-controls="regionDropdown" aria-expanded="false" class="vektor-button" data-options="is_hover:true; hover_timeout:200">Opptak & kontakt <i class="fa fa-chevron-down arrow"></i></a>
-                                <ul id="regionDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
-                                    {% render controller('AppBundle:Department:getAllDepartmentsForTopbar') %}
-                                </ul>
-                            </li>
-                            <li>
-                                {% if app.user and is_granted('ROLE_USER') %}
-                                    <a href="#" data-dropdown="myVektorDropdown" aria-controls="myVektorDropdown" aria-expanded="false" class="vektor-button" data-options="is_hover:true; hover_timeout:200">Min Vektor <i class="fa fa-chevron-down arrow"></i></a>
-                                    <ul id="myVektorDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
-                                        {% if app.user and is_granted('ROLE_ADMIN') %}
-                                            <li><a href='{{ path('control_panel') }}'>Kontrollpanel</a></li>
-                                        {% endif %}
-                                        <li><a href='{{ path('profile') }}'>Profil</a></li>
-                                        <li><a href='{{ path('members_show') }}'>Assistenter</a></li>
-                                        <li><a href="{{ path('logout') }}">Logg ut</a></li>
-                                    </ul>
-                                {% else %}
-                                    <a href="#" data-dropdown="loginDropdown" aria-controls="loginDropdown" aria-expanded="false" class="vektor-button">Logg inn</a>
-                                    <div id="loginDropdown" data-dropdown-content class="small f-dropdown content" aria-autoclose="false" aria-hidden="true" tabindex="-1">
-                                        <form action="{{ path('login_check') }}" method="post">
-                                            {#<label for="username">Brukernavn:</label>#}
-                                            <input type="text" id="username" name="_username" placeholder="Brukernavn"/>
-
-                                            {#<label for="password">Passord:</label>#}
-                                            <input type="password" id="password" name="_password" placeholder="Passord"/>
-
-                                            <ul class="inline-list">
-                                                <li>
-                                                    <button type="submit" class="tiny">Slipp meg inn!</button>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ path('reset_password')}}">Glemt passord?</a>
-                                                </li>
-                                            </ul>
-
-                                        </form>
-                                    </div>
-                                {% endif %}
-                            </li>
+    <header class="row">
+        <div class="small-12 medium-12 columns hide-for-small-only">
+            <a href="{{ path('home') }}">
+                {% if "now"|date("m") == "12" %}
+                    <img src="{{ asset('images/vektor-christmas-logo.png') }}" alt="Vektor logo">
+                {% else %}
+                    <img src="{{ asset('images/vektor.png') }}" alt="Vektor logo">
+                {% endif %}
+            </a>
+            <nav class="main-navigation">
+                <ul>
+                    <li>
+                        <a href="#" data-dropdown="aboutDropdown" aria-controls="aboutDropdown" aria-expanded="false"
+                           class="vektor-button" data-options="is_hover:true; hover_timeout:200">Om Vektor <i
+                                    class="fa fa-chevron-down arrow"></i></a>
+                        <ul id="aboutDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
+                            <li><a href="{{ path('about') }}">Om vektor</a></li>
+                            <li><a href="{{ path('faq') }}">FAQ</a></li>
+                            <li><a href="{{ path('boardandteam_show') }}">Styre og team</a></li>
+                            <li><a href="{{ path('students') }}">For studenter</a></li>
+                            <li><a href="{{ path('schools') }}">For skoler</a></li>
+                            <li><a href="{{ path('businesses') }}">For bedrifter</a></li>
                         </ul>
-                    </nav>
-
-                </div>
-                {#<div class="medium-9 columns hide-for-small-only">#}
-                    {##}
-                {#</div>#}
-
-            </header>
-            <!-- Mobile Navigation -->
-            <div class="row">
-                <div style="margin-bottom:30px; text-align: center" class="small-12 medium-3 columns show-for-small-only"
-                     data-equalizer-watch>
-                    <a href="{{ path('home') }}">
-                        {% if "now"|date("m") == "12" %}
-                            <img src="{{ asset('images/vektor-christmas-logo.png') }}" alt="Vektor logo">
-                        {% else %}
-                            <img src="{{ asset('images/vektor.png') }}" alt="Vektor logo">
-                        {% endif %}
-                    </a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="small-12 show-for-small-only">
-                    <nav class="top-bar" data-topbar role="navigation" data-options="back_text: Tilbake">
-                        <ul class="title-area">
-                            <li class="name">
-                                <h1 style="text-align: center;"><a href="#">Vektorprogrammet</a></h1>
-                            </li>
-                            <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-                            <li class="toggle-topbar menu-icon"><a href="#"><span>Meny</span></a></li>
+                    </li>
+                    <li>
+                        <a href="{{ path('article') }}" class="vektor-button">Nyheter</a>
+                    </li>
+                    <li>
+                        <a href="#" data-dropdown="regionDropdown" aria-controls="regionDropdown" aria-expanded="false"
+                           class="vektor-button" data-options="is_hover:true; hover_timeout:200">Opptak & kontakt <i
+                                    class="fa fa-chevron-down arrow"></i></a>
+                        <ul id="regionDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
+                            {% render controller('AppBundle:Department:getAllDepartmentsForTopbar') %}
                         </ul>
-
-                        <section class="top-bar-section">
-                            <!-- Right Nav Section -->
-                            <ul class="right">
-                                <li class="has-dropdown">
-                                    <a href="{{ path('about') }}">Om vektor</a>
-                                    <ul class="dropdown">
-                                        <li><a href="{{ path('boardandteam_show') }}">Styre og team</a></li>
-                                        <li><a href="{{ path('students') }}">For studenter</a></li>
-                                        <li><a href="{{ path('schools') }}">For skoler</a></li>
-                                        <li><a href="{{ path('businesses') }}">For bedrifter</a></li>
-                                    </ul>
-                                </li>
-
-                                <li><a href="{{ path('article') }}">Nyheter</a></li>
-                                <li class="has-dropdown">
-                                    <a href="#">Opptak & Kontakt</a>
-                                    <ul class="dropdown">
-                                        {% render controller('AppBundle:Department:getAllDepartmentsForTopbar') %}
-                                    </ul>
-                                </li>
-
-                                {% if app.user and is_granted('ROLE_USER') %}
-                                    <li class="has-dropdown">
-                                        <a href='{{ path('profile') }}'>Min Vektor</a>
-                                        <ul class="dropdown">
-                                            {% if app.user and is_granted('ROLE_ADMIN') %}
-                                                <li><a href='{{ path('control_panel') }}'>Kontrollpanel</a></li>
-                                            {% endif %}
-                                            <li><a href='{{ path('profile') }}'>Profil</a></li>
-                                            <li><a href='{{ path('members_show') }}'>Medlemmer</a></li>
-                                            <li><a href="{{ path('logout') }}">Logg ut</a></li>
-                                        </ul>
-                                    </li>
-
-                                {% else %}
-                                    <li><a href="{{ path('login_route') }}">Logg inn</a></li>
+                    </li>
+                    <li>
+                        {% if app.user and is_granted('ROLE_USER') %}
+                            <a href="#" data-dropdown="myVektorDropdown" aria-controls="myVektorDropdown"
+                               aria-expanded="false" class="vektor-button"
+                               data-options="is_hover:true; hover_timeout:200">Min Vektor <i
+                                        class="fa fa-chevron-down arrow"></i></a>
+                            <ul id="myVektorDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
+                                {% if app.user and is_granted('ROLE_ADMIN') %}
+                                    <li><a href='{{ path('control_panel') }}'>Kontrollpanel</a></li>
                                 {% endif %}
+                                <li><a href='{{ path('profile') }}'>Profil</a></li>
+                                <li><a href='{{ path('members_show') }}'>Assistenter</a></li>
+                                <li><a href="{{ path('logout') }}">Logg ut</a></li>
                             </ul>
-                        </section>
-                    </nav>
-                </div>
+                        {% else %}
+                            <a href="#" data-dropdown="loginDropdown" aria-controls="loginDropdown"
+                               aria-expanded="false" class="vektor-button">Logg inn</a>
+                            <div id="loginDropdown" data-dropdown-content class="small f-dropdown content"
+                                 aria-autoclose="false" aria-hidden="true" tabindex="-1">
+                                <form action="{{ path('login_check') }}" method="post">
+                                    {#<label for="username">Brukernavn:</label>#}
+                                    <input type="text" id="username" name="_username" placeholder="Brukernavn"/>
+
+                                    {#<label for="password">Passord:</label>#}
+                                    <input type="password" id="password" name="_password" placeholder="Passord"/>
+
+                                    <ul class="inline-list">
+                                        <li>
+                                            <button type="submit" class="tiny">Slipp meg inn!</button>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('reset_password') }}">Glemt passord?</a>
+                                        </li>
+                                    </ul>
+
+                                </form>
+                            </div>
+                        {% endif %}
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+        {#<div class="medium-9 columns hide-for-small-only">#}
+        {##}
+        {#</div>#}
+
+    </header>
+    <!-- Mobile Navigation -->
+    <div class="row">
+        <div style="margin-bottom:30px; text-align: center" class="small-12 medium-3 columns show-for-small-only"
+             data-equalizer-watch>
+            <a href="{{ path('home') }}">
+                {% if "now"|date("m") == "12" %}
+                    <img src="{{ asset('images/vektor-christmas-logo.png') }}" alt="Vektor logo">
+                {% else %}
+                    <img src="{{ asset('images/vektor.png') }}" alt="Vektor logo">
+                {% endif %}
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 show-for-small-only">
+            <nav class="top-bar" data-topbar role="navigation" data-options="back_text: Tilbake">
+                <ul class="title-area">
+                    <li class="name">
+                        <h1 style="text-align: center;"><a href="#">Vektorprogrammet</a></h1>
+                    </li>
+                    <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+                    <li class="toggle-topbar menu-icon"><a href="#"><span>Meny</span></a></li>
+                </ul>
+
+                <section class="top-bar-section">
+                    <!-- Right Nav Section -->
+                    <ul class="right">
+                        <li class="has-dropdown">
+                            <a href="{{ path('about') }}">Om vektor</a>
+                            <ul class="dropdown">
+                                <li><a href="{{ path('boardandteam_show') }}">Styre og team</a></li>
+                                <li><a href="{{ path('students') }}">For studenter</a></li>
+                                <li><a href="{{ path('schools') }}">For skoler</a></li>
+                                <li><a href="{{ path('businesses') }}">For bedrifter</a></li>
+                            </ul>
+                        </li>
+
+                        <li><a href="{{ path('article') }}">Nyheter</a></li>
+                        <li class="has-dropdown">
+                            <a href="#">Opptak & Kontakt</a>
+                            <ul class="dropdown">
+                                {% render controller('AppBundle:Department:getAllDepartmentsForTopbar') %}
+                            </ul>
+                        </li>
+
+                        {% if app.user and is_granted('ROLE_USER') %}
+                            <li class="has-dropdown">
+                                <a href='{{ path('profile') }}'>Min Vektor</a>
+                                <ul class="dropdown">
+                                    {% if app.user and is_granted('ROLE_ADMIN') %}
+                                        <li><a href='{{ path('control_panel') }}'>Kontrollpanel</a></li>
+                                    {% endif %}
+                                    <li><a href='{{ path('profile') }}'>Profil</a></li>
+                                    <li><a href='{{ path('members_show') }}'>Medlemmer</a></li>
+                                    <li><a href="{{ path('logout') }}">Logg ut</a></li>
+                                </ul>
+                            </li>
+
+                        {% else %}
+                            <li><a href="{{ path('login_route') }}">Logg inn</a></li>
+                        {% endif %}
+                    </ul>
+                </section>
+            </nav>
+        </div>
+    </div>
+    <br/>
+
+{% endblock %}
+
+
+{% block adminpanel %}
+{% endblock %}
+
+{% block body %}
+    <p>
+        This is a test
+    </p>
+{% endblock %}
+
+
+{% block footer %}
+
+
+    <footer>
+        <div class="row">
+
+            <div class="small-12 medium-6 large-3 columns">
+
+                <h6><b>Følg oss:</b></h6>
+                <ul>
+
+                    <li><a href="https://twitter.com/vektorprogram" target="_blank"> Twitter </a></li>
+                    <li><a href="https://www.facebook.com/vektorprogrammet" target="_blank"> Facebook </a></li>
+                    <li><a href="https://instagram.com/vektorprogrammet/" target="_blank"> Instagram </a></li>
+                </ul>
+
             </div>
-            <br/>
-
-        {% endblock %}
 
 
-		{% block adminpanel %}
-		{% endblock %}
-		
-        {% block body %}
-            <p>
-                This is a test
-            </p>
-        {% endblock %}
+            <div class="small-12 medium-6 large-3 columns">
+                <h6><b>Kontakt:</b></h6>
+                <ul>
+                    <li>styret@vektorprogrammet.no</li>
+                    <li>Høgskoleringen 5</li>
+                    <li>7491 Trondheim</li>
+                    <li>Orgnummer: 998744814</li>
+                    <li><br></li>
+                    <li><a href="/files/kompendium.pdf">Last ned kompendium</a></li>
+                </ul>
+            </div>
 
-	
-		{% block footer %}
-
-		
-		<footer>
-            <div class="row">
-
-                <div class="small-12 medium-6 large-3 columns">
-
-                    <h6><b>Følg oss:</b></h6>
-                    <ul>
-
-                        <li><a href="https://twitter.com/vektorprogram" target="_blank">  Twitter </a></li>
-                        <li><a href="https://www.facebook.com/vektorprogrammet" target="_blank">  Facebook </a></li>
-                        <li><a href="https://instagram.com/vektorprogrammet/" target="_blank">  Instagram </a></li>
-                    </ul>
-
-                </div>
-
-
-                <div class="small-12 medium-6 large-3 columns">
-                    <h6><b>Kontakt:</b></h6>
-                    <ul>
-                        <li>styret@vektorprogrammet.no</li>
-                        <li>Høgskoleringen 5 </li>
-                        <li>7491 Trondheim</li>
-                        <li>Orgnummer: 998744814</li>
-                        <li><br></li>
-                        <li><a href="/files/kompendium.pdf">Last ned kompendium</a></li>
-                    </ul>
-                </div>
-
-                <div class="small-12 medium-6 large-3 columns">
-                    <h6><b>Hvor:</b></h6>
-                    <ul>
-                        {# embedded controller to render the departments  see department controller for the function getAllDepartmentsForTopbar #}
-                        {{ render(controller(
-                        'AppBundle:Department:getAllDepartmentsForTopbar'
-                        )) }}
-                    </ul>
-                </div>
-
-
-                <div class="small-12 medium-6 large-3 columns">
-                    <h6><b>Sponsorer:</b></h6>
-                    <ul style="display:inline-block">
-                        {% for sponsor in get_sponsors() %}
-                            <li><a href="{{ sponsor.url }}" target="_blank"> {{ sponsor.name  }} </a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-
+            <div class="small-12 medium-6 large-3 columns">
+                <h6><b>Hvor:</b></h6>
+                <ul>
+                    {# embedded controller to render the departments  see department controller for the function getAllDepartmentsForTopbar #}
+                    {{ render(controller(
+                    'AppBundle:Department:getAllDepartmentsForTopbar'
+                    )) }}
+                </ul>
             </div>
 
 
-        </footer>
+            <div class="small-12 medium-6 large-3 columns">
+                <h6><b>Sponsorer:</b></h6>
+                <ul style="display:inline-block">
+                    {% for sponsor in get_sponsors() %}
+                        <li><a href="{{ sponsor.url }}" target="_blank"> {{ sponsor.name }} </a></li>
+                    {% endfor %}
+                </ul>
+            </div>
 
-		
-		{% endblock %}
+        </div>
 
-            <script src="{{ asset('js/vendor.js') }}"></script>
-            <script>
-                {# This has to be in all twig files, can't be overwritten #}
-                $(document).foundation();
-            </script>
 
-            <script>
-                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    </footer>
 
-                ga('create', '{{ googleAnalyticsId }}', 'auto');
-                ga('send', 'pageview');
 
-            </script>
-        {% block scripts %}{% endblock %}
+{% endblock %}
 
-        {% block customScripts %}{% endblock %}
+<script src="{{ asset('js/vendor.js') }}"></script>
+<script>
+    {# This has to be in all twig files, can't be overwritten #}
+    $(document).foundation();
+</script>
 
-        {% block javascripts %}
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-        {% endblock %}
-	   
-    </body>
+    ga('create', '{{ googleAnalyticsId }}', 'auto');
+    ga('send', 'pageview');
+
+</script>
+{% block scripts %}{% endblock %}
+
+{% block customScripts %}{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
+
+</body>
 </html>

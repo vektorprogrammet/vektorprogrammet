@@ -50,7 +50,7 @@ class DepartmentController extends Controller
             }
 
             return $this->render('department_admin/create_department.html.twig', array(
-                 'form' => $form->createView(),
+                'form' => $form->createView(),
             ));
         } else {
             return $this->redirect($this->generateUrl('home'));
@@ -135,7 +135,7 @@ class DepartmentController extends Controller
 
             return $this->render('department_admin/create_department.html.twig', array(
                 'department' => $department,
-                 'form' => $form->createView(),
+                'form' => $form->createView(),
             ));
         } else {
             return $this->redirect($this->generateUrl('departmentadmin_show'));

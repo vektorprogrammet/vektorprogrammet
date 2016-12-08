@@ -31,8 +31,8 @@ class SchoolRepository extends EntityRepository
 		JOIN s.departments d		
 		WHERE d = :department
 		')
-        ->setParameter('department', $department)
-        ->getResult();
+            ->setParameter('department', $department)
+            ->getResult();
 
         return $schools;
     }

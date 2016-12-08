@@ -5,28 +5,28 @@
 {% endblock %}
 
 {% block body %}
-{#
- <table> {# Was unable to force preview of logo to be placed right of form with row class=columns...why?
-{% for form in forms %}
-    <tr border="1">
-        <td>
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-            {{ form_end(form) }}
-        </td>
-        <td>
-            Nåværende logo:<br>
-            <img src="{{ asset(logos[loop.index0] ) }}" height="60px">
-        </td>
-    </tr>
-{% endfor %}
-</table>
+    {#
+     <table> {# Was unable to force preview of logo to be placed right of form with row class=columns...why?
+    {% for form in forms %}
+        <tr border="1">
+            <td>
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </td>
+            <td>
+                Nåværende logo:<br>
+                <img src="{{ asset(logos[loop.index0] ) }}" height="60px">
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
 
-{# Place a button for adding a new sponsor
-<hr>
-<form action="{{ path('sponsors_add') }}">
-    <input type="submit" value="Legg til sponsor">
-</form> #}
+    {# Place a button for adding a new sponsor
+    <hr>
+    <form action="{{ path('sponsors_add') }}">
+        <input type="submit" value="Legg til sponsor">
+    </form> #}
     {% for form in forms %}
         <div class="row">
             {{ form_start(form) }}
@@ -59,13 +59,13 @@
                 </div>
             </div>
 
-             {# Logo #}
+            {# Logo #}
             <div class="small-3 medium-3 large-3 columns">
                 <div class="row">
                     Nåværende logo
                 </div>
                 <div class="row">
-                   <img src="{{ asset(logos[loop.index0] ) }}" height="60px">
+                    <img src="{{ asset(logos[loop.index0] ) }}" height="60px">
                 </div>
                 <div class="row">
                     {{ form_widget(form.logoImagePath, {'attr': {'value': 'Last opp ny logo'}}) }}

@@ -21,7 +21,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     public function load(ObjectManager $manager)
     {
         $user1 = new User();
-        $user1->setIsActive('1');
+        $user1->setActive('1');
         $user1->setEmail('petter@stud.ntnu.no');
         $user1->setFirstName('Petter');
         $user1->setLastName('Johansen');
@@ -35,7 +35,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user1);
 
         $user2 = new User();
-        $user2->setIsActive('1');
+        $user2->setActive('1');
         $user2->setEmail('ida@stud.ntnu.no');
         $user2->setFirstName('Ida');
         $user2->setLastName('Andreassen');
@@ -49,7 +49,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user2);
 
         $user3 = new User();
-        $user3->setIsActive('1');
+        $user3->setActive('1');
         $user3->setEmail('kristoffer@stud.ntnu.no');
         $user3->setFirstName('Kristoffer');
         $user3->setLastName('Bø');
@@ -63,7 +63,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user3);
 
         $user4 = new User();
-        $user4->setIsActive('1');
+        $user4->setActive('1');
         $user4->setEmail('alm@mail.com');
         $user4->setFirstName('Thomas');
         $user4->setLastName('Alm');
@@ -77,7 +77,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user4);
 
         $user5 = new User();
-        $user5->setIsActive('1');
+        $user5->setActive('1');
         $user5->setEmail('a@b.c');
         $user5->setFirstName('Reidun');
         $user5->setLastName('Persdatter Ødegaard');
@@ -91,7 +91,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user5);
 
         $user6 = new User();
-        $user6->setIsActive('1');
+        $user6->setActive('1');
         $user6->setEmail('b@b.c');
         $user6->setFirstName('Siri');
         $user6->setLastName('Brenna Eskeland');
@@ -105,7 +105,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user6);
 
         $user7 = new User();
-        $user7->setIsActive('1');
+        $user7->setActive('1');
         $user7->setEmail('c@b.c');
         $user7->setFirstName('Eirik');
         $user7->setLastName('Myrvoll-Nilsen');
@@ -119,7 +119,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user7);
 
         $user8 = new User();
-        $user8->setIsActive('1');
+        $user8->setActive('1');
         $user8->setEmail('d@b.c');
         $user8->setFirstName('Ruben');
         $user8->setLastName('Ravnå');
@@ -133,7 +133,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user8);
 
         $user9 = new User();
-        $user9->setIsActive('1');
+        $user9->setActive('1');
         $user9->setEmail('e@b.c');
         $user9->setFirstName('Liv');
         $user9->setLastName('Rasdal Håland');
@@ -147,7 +147,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user9);
 
         $user10 = new User();
-        $user10->setIsActive('1');
+        $user10->setActive('1');
         $user10->setEmail('f@b.c');
         $user10->setFirstName('Johannes');
         $user10->setLastName('Bogen');
@@ -161,7 +161,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user10);
 
         $user11 = new User();
-        $user11->setIsActive('1');
+        $user11->setActive('1');
         $user11->setEmail('g@b.c');
         $user11->setFirstName('Cecilie');
         $user11->setLastName('Teisberg');
@@ -175,7 +175,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user11);
 
         $user12 = new User();
-        $user12->setIsActive('1');
+        $user12->setActive('1');
         $user12->setEmail('h@b.c');
         $user12->setFirstName('Håkon');
         $user12->setLastName('Nøstvik');
@@ -189,7 +189,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user12);
 
         $user13 = new User();
-        $user13->setIsActive('1');
+        $user13->setActive('1');
         $user13->setEmail('i@b.c');
         $user13->setFirstName('Maulisha');
         $user13->setLastName('Thavarajan');
@@ -203,7 +203,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user13);
 
         $userInTeam1 = new User();
-        $userInTeam1->setIsActive('1');
+        $userInTeam1->setActive('1');
         $userInTeam1->setEmail('sortland@mail.com');
         $userInTeam1->setFirstName('Sondre');
         $userInTeam1->setLastName('Sortland');
@@ -217,7 +217,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($userInTeam1);
 
         /*$user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('j@b.c');
         $user->setFirstName('Marte');
         $user->setLastName('Saghagen');
@@ -231,7 +231,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('k@b.c');
         $user->setFirstName('Angela');
         $user->setLastName('Maiken Johnsen');
@@ -245,7 +245,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('l@b.c');
         $user->setFirstName('Ingrid');
         $user->setLastName('Seip Domben');
@@ -259,7 +259,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('m@b.c');
         $user->setFirstName('Bjørnar');
         $user->setLastName('Askeland Flatøe');
@@ -273,7 +273,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('n@b.c');
         $user->setFirstName('Stig-Martin');
         $user->setLastName('Liavåg');
@@ -287,7 +287,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('o@b.c');
         $user->setFirstName('Rune');
         $user->setLastName('Nordmo');
@@ -301,7 +301,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('p@b.c');
         $user->setFirstName('Christopher');
         $user->setLastName('Schwartz Kvarme');
@@ -315,7 +315,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('q@b.c');
         $user->setFirstName('Anna');
         $user->setLastName('Madeleine Goldsack');
@@ -329,7 +329,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('r@b.c');
         $user->setFirstName('Anna');
         $user->setLastName('Kristine Auråen');
@@ -343,7 +343,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('s@b.c');
         $user->setFirstName('Hilde');
         $user->setLastName('Schjerven Magnø');
@@ -357,7 +357,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('t@b.c');
         $user->setFirstName('Henrik');
         $user->setLastName('Finsrud');
@@ -371,7 +371,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('u@b.c');
         $user->setFirstName('Aleksander');
         $user->setLastName('Tryggan');
@@ -385,7 +385,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('v@b.c');
         $user->setFirstName('Thinius');
         $user->setLastName('Alexander Rosé');
@@ -399,7 +399,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('w@b.c');
         $user->setFirstName('Petter');
         $user->setLastName('B Markussen');
@@ -413,7 +413,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('x@b.c');
         $user->setFirstName('Christian');
         $user->setLastName('Due Lind');
@@ -427,7 +427,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('y@b.c');
         $user->setFirstName('Silje');
         $user->setLastName('Sekkingstad Hauge');
@@ -441,7 +441,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('z@b.c');
         $user->setFirstName('Karoline');
         $user->setLastName('Aasen Nilsen');
@@ -455,7 +455,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('aa@b.c');
         $user->setFirstName('Hanne');
         $user->setLastName('Høie Grøttum');
@@ -469,7 +469,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('ab@b.c');
         $user->setFirstName('Øivind');
         $user->setLastName('Mathias Gitmark');
@@ -483,7 +483,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('ac@b.c');
         $user->setFirstName('Vilde');
         $user->setLastName('Aasvær Sømnes');
@@ -497,7 +497,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('ad@b.c');
         $user->setFirstName('Per Ivar');
         $user->setLastName('Hoff');
@@ -511,7 +511,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('ae@b.c');
         $user->setFirstName('Sigrid');
         $user->setLastName('Baardsdatter Kleveland');
@@ -525,7 +525,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('af@b.c');
         $user->setFirstName('Simen');
         $user->setLastName('Svagård');
@@ -539,7 +539,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('ag@b.c');
         $user->setFirstName('Martine');
         $user->setLastName('Rønneberg');
@@ -553,7 +553,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('ah@b.c');
         $user->setFirstName('Vida');
         $user->setLastName('Mortensen Gråberg');
@@ -567,7 +567,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('ai@b.c');
         $user->setFirstName('Filip Emil');
         $user->setLastName('Schjerven');
@@ -581,7 +581,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('aj@b.c');
         $user->setFirstName('Harald');
         $user->setLastName('Blehr ');
@@ -595,7 +595,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('ak@b.c');
         $user->setFirstName('Audun');
         $user->setLastName('Mathias Øvstebø');
@@ -609,7 +609,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('al@b.c');
         $user->setFirstName('Kristoffer');
         $user->setLastName('Berg');
@@ -623,7 +623,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('am@b.c');
         $user->setFirstName('Ingvild');
         $user->setLastName('Grøtte Bostrøm');
@@ -637,7 +637,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('an@b.c');
         $user->setFirstName('Polina');
         $user->setLastName('Pires Ferreira');
@@ -651,7 +651,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('ao@b.c');
         $user->setFirstName('Håvard');
         $user->setLastName('Kjellmo Arnestad');
@@ -665,7 +665,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('ap@b.c');
         $user->setFirstName('Lisa');
         $user->setLastName('Sletten');
@@ -679,7 +679,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('aq@b.c');
         $user->setFirstName('Heidi Elisabeth');
         $user->setLastName('Sando');
@@ -693,7 +693,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('ar@b.c');
         $user->setFirstName('Maren');
         $user->setLastName('Dekov');
@@ -707,7 +707,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('as@b.c');
         $user->setFirstName('Mina');
         $user->setLastName('Rahimzaie');
@@ -721,7 +721,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('at@b.c');
         $user->setFirstName('Maren Anna');
         $user->setLastName('Brandsrud');
@@ -735,7 +735,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('au@b.c');
         $user->setFirstName('Simen');
         $user->setLastName('Rønnekleiv Eriksen');
@@ -749,7 +749,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('av@b.c');
         $user->setFirstName('Yen-Nhi');
         $user->setLastName('Doan');
@@ -763,7 +763,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('aw@b.c');
         $user->setFirstName('Vilde');
         $user->setLastName('Strøm');
@@ -777,7 +777,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('ax@b.c');
         $user->setFirstName('Camilla');
         $user->setLastName('Restrup Strand');
@@ -791,7 +791,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('ay@b.c');
         $user->setFirstName('Jonathan');
         $user->setLastName('Stang');
@@ -805,7 +805,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('az@b.c');
         $user->setFirstName('Ingrid');
         $user->setLastName('Meland');
@@ -819,7 +819,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('aaa@b.c');
         $user->setFirstName('Fredrik');
         $user->setLastName('Vegstein');
@@ -833,7 +833,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('aab@b.c');
         $user->setFirstName('Kristian');
         $user->setLastName('Tuv');
@@ -847,7 +847,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('aac@b.c');
         $user->setFirstName('Hans Petter');
         $user->setLastName('Harveg');
@@ -861,7 +861,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('aad@b.c');
         $user->setFirstName('Daniel');
         $user->setLastName('Joly');
@@ -875,7 +875,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('aae@b.c');
         $user->setFirstName('Sigrid');
         $user->setLastName('Da Costa');
@@ -889,7 +889,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);*/
 
         $user10 = new User();
-        $user10->setIsActive('1');
+        $user10->setActive('1');
         $user10->setEmail('aaf@b.c');
         $user10->setFirstName('Kamilla');
         $user10->setLastName('Plaszko');
@@ -903,7 +903,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user10);
 
         $user11 = new User();
-        $user11->setIsActive('1');
+        $user11->setActive('1');
         $user11->setEmail('aag@b.c');
         $user11->setFirstName('Vuk');
         $user11->setLastName('Krivokapic');
@@ -917,7 +917,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user11);
 
         $user12 = new User();
-        $user12->setIsActive('1');
+        $user12->setActive('1');
         $user12->setEmail('aah@b.c');
         $user12->setFirstName('Markus');
         $user12->setLastName('Gundersen');
@@ -931,7 +931,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user12);
 
         $user13 = new User();
-        $user13->setIsActive('1');
+        $user13->setActive('1');
         $user13->setEmail('aai@b.c');
         $user13->setFirstName('Erik');
         $user13->setLastName('Trondsen ');
@@ -945,7 +945,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user13);
 
         $user14 = new User();
-        $user14->setIsActive('1');
+        $user14->setActive('1');
         $user14->setEmail('assistant@gmail.com');
         $user14->setFirstName('Assistent');
         $user14->setLastName('Johansen');
@@ -959,7 +959,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user14);
 
         $user15 = new User();
-        $user15->setIsActive('1');
+        $user15->setActive('1');
         $user15->setEmail('team@gmail.com');
         $user15->setFirstName('Team');
         $user15->setLastName('Johansen');
@@ -973,7 +973,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user15);
 
         $user16 = new User();
-        $user16->setIsActive('1');
+        $user16->setActive('1');
         $user16->setEmail('nmbu@admin.no');
         $user16->setFirstName('Muhammed');
         $user16->setLastName('Thavarajan');
@@ -987,7 +987,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user16);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('admin@gmail.com');
         $user->setFirstName('Admin');
         $user->setLastName('Johansen');
@@ -1001,7 +1001,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user = new User();
-        $user->setIsActive('1');
+        $user->setActive('1');
         $user->setEmail('superadmin@gmail.com');
         $user->setFirstName('Superadmin');
         $user->setLastName('Johansen');
