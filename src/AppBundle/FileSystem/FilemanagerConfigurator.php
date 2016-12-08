@@ -13,6 +13,8 @@
  */
 
 //Some constants
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+
 define('TWIG_FOLDERS', 'app/Resources/views');
 define('WEB_ASSETS_FOLDER', 'bundles');
 
@@ -24,7 +26,7 @@ define('ELFINDER_TWIG_FILE', 'elfinder.html.twig');
 //Check if WEB_ASSETS_FOLDER exists. If not exit, this script is not meant to do anything else than configure elfinder.
 //It assumes everything else is in place
 if (!file_exists('web/'.WEB_ASSETS_FOLDER)) {
-    exit('FilemanagerConfigurator.php: Could not find WEB_ASSETS_FOLDER. Exiting script.');
+    throw new FileNotFoundException('FilemanagerConfigurator.php: Could not find WEB_ASSETS_FOLDER. Exiting script.');
 }
 
 //Check if target twig folder exists, if not create the folder.
