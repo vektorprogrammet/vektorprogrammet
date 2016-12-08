@@ -97,7 +97,7 @@ class SurveyResultsController extends Controller
             } elseif ($diagramCounter == 2) {
                 $ALTERNATIVEARRAY = ['5. Klasse', '6. Klasse', '7. Klasse', '8. Klasse', '9. Klasse', '10. Klasse'];
                 $NUMBEROFALTERNATIVES = 6;
-            } elseif ($diagramCounter == 3 or $diagramCounter == 4) {
+            } elseif ($diagramCounter == 3 || $diagramCounter == 4) {
                 $ALTERNATIVEARRAY = ['Ja', 'Nei'];
                 $NUMBEROFALTERNATIVES = 2;
             } else {

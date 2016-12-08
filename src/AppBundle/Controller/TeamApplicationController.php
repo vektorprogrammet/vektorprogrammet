@@ -17,7 +17,7 @@ class TeamApplicationController extends Controller
     {
         $user = $this->getUser();
         $activeUserHistoriesInTeam = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeamAndUser($application->getTeam(), $user);
-        if (empty($activeUserHistoriesInTeam) and !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+        if (empty($activeUserHistoriesInTeam) && !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             throw new AccessDeniedHttpException();
         }
 
@@ -30,7 +30,7 @@ class TeamApplicationController extends Controller
         $applications = $this->getDoctrine()->getRepository('AppBundle:TeamApplication')->findByTeam($team);
         $user = $this->getUser();
         $activeUserHistoriesInTeam = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeamAndUser($team, $user);
-        if (empty($activeUserHistoriesInTeam) and !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+        if (empty($activeUserHistoriesInTeam) && !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             throw new AccessDeniedHttpException();
         }
 

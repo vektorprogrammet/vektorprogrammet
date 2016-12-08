@@ -22,7 +22,7 @@ class GalleryRepository extends EntityRepository
         //create the query
         $query = $this->createQueryBuilder('g')->select('g');
 
-        if ($securityContext->isGranted('ROLE_ADMIN') or
+        if ($securityContext->isGranted('ROLE_ADMIN') ||
             $securityContext->isGranted('ROLE_SUPER_ADMIN')
         ) {
             //Admin- and team-users can see every album. No need to change anything in the query.
