@@ -105,7 +105,7 @@ class ProfileControllerTest extends WebTestCase
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     /* Did not manage to get this one working since it was a repeated password field
@@ -187,7 +187,7 @@ class ProfileControllerTest extends WebTestCase
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
 //	public function testDownloadCertificateAction() {

@@ -154,7 +154,7 @@ class TeamApplicationControllerTest extends WebTestCase
 
         // Assert that the link is gone
         $this->assertEquals(0, $crawler->selectLink('Søk Hovedstyret')->count());
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testCreateApplication()
@@ -195,7 +195,7 @@ class TeamApplicationControllerTest extends WebTestCase
         $applicationsAfter = $crawler->filter('tr')->count();
 
         $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testDeleteApplication()
@@ -226,6 +226,6 @@ class TeamApplicationControllerTest extends WebTestCase
         $applicationsAfter = $crawler->filter('tr')->count();
 
         $this->assertEquals($applicationsBefore - 1, $applicationsAfter);
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 }

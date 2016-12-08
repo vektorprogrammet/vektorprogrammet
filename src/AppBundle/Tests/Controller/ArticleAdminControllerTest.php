@@ -86,7 +86,7 @@ class ArticleAdminControllerTest extends WebTestCase
         // Assert that the page response status code is 403 Access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testEdit()
@@ -130,7 +130,7 @@ class ArticleAdminControllerTest extends WebTestCase
         // Assert that the page response status code is 403 Access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     /*

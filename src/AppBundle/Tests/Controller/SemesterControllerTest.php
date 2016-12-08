@@ -66,7 +66,7 @@ class SemesterControllerTest extends WebTestCase
         // Assert that the response is the correct redirect
         $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/semesteradmin'));
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testUpdateSemester()
@@ -116,7 +116,7 @@ class SemesterControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('td:contains("2015-09-02")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("10:40:00")')->count());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testShow()

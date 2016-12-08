@@ -75,7 +75,7 @@ class TeamAdminControllerTest extends WebTestCase
         // Assert that the response is a redirect
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testEditPosition()
@@ -121,7 +121,7 @@ class TeamAdminControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('td:contains("Nestleder2")')->count());
         $this->assertEquals(0, $crawler->filter('td:contains("Nestleder1")')->count());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
 //	public function testRemovePosition() {
@@ -208,7 +208,7 @@ class TeamAdminControllerTest extends WebTestCase
 
     public function testCreateTeamForDepartment()
     {
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
 
         // ADMIN
         $client = static::createClient(array(), array(
@@ -263,7 +263,7 @@ class TeamAdminControllerTest extends WebTestCase
         // Assert that the response is a redirect
         $this->assertTrue($client->getResponse()->isRedirect('/'));
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testUpdateTeam()
@@ -300,7 +300,7 @@ class TeamAdminControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('td:contains("testteam2")')->count());
         $this->assertEquals(0, $crawler->filter('td:contains("testteam1")')->count());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
 //	public function testDeleteTeamById() {
@@ -401,7 +401,7 @@ class TeamAdminControllerTest extends WebTestCase
         // Assert that the response is a redirect
         $this->assertTrue($client->getResponse()->isRedirect('/'));
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
 //	public function testUpdateWorkHistory() {
@@ -441,7 +441,7 @@ class TeamAdminControllerTest extends WebTestCase
 //		$this->assertEquals(0, $crawler->filter('td:contains("Johansen")')->count());
 //		$this->assertEquals(1, $crawler->filter('td:contains("Høst 2015")')->count());
 
-//		restoreDatabase();
+//		\TestDataManager::restoreDatabase();
 //	}
 
 //	public function testRemoveUserFromTeamById(){

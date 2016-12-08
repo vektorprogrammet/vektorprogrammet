@@ -59,7 +59,7 @@ class SchoolAdminControllerTest extends WebTestCase
         // Assert that the response is a redirect to /
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testUpdateSchool()
@@ -97,7 +97,7 @@ class SchoolAdminControllerTest extends WebTestCase
         // Assert that the response is the correct redirect
         $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/skoleadmin'));
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testShowSchoolsByDepartment()
@@ -154,7 +154,7 @@ class SchoolAdminControllerTest extends WebTestCase
         // Assert that the response is a redirect to /
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testShowUsersByDepartment()
@@ -327,7 +327,7 @@ class SchoolAdminControllerTest extends WebTestCase
         // Assert that the response is a redirect to /
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testShowSpecificSchool()
