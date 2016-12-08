@@ -78,8 +78,8 @@ class GalleryController extends Controller
      */
     public function deleteAlbumAction($album_id)
     {
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN') or
-            ($this->get('security.context')->isGranted('ROLE_ADMIN') and $this->currentUserCreatedAlbum($album_id))
+        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN') ||
+            ($this->get('security.context')->isGranted('ROLE_ADMIN') && $this->currentUserCreatedAlbum($album_id))
         ) {
             $album = $this->getDoctrine()
                         ->getRepository('AppBundle:Gallery')
