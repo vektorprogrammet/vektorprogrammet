@@ -6,10 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class SurveyResultsController extends Controller
 {
-    public function getName()
-    {
-        return 'surveyResults'; // This must be unique
-    }
     public function showAction()
     {
         return $this->render('survey/survey_results.html.twig');

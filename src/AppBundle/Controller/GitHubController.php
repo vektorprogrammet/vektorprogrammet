@@ -35,7 +35,7 @@ class GitHubController extends Controller
         }
     }
 
-    public function ipIsFromGitHub($ip)
+    private function ipIsFromGitHub($ip)
     {
         // Use curl to create a GET request to the GitHub api
         $ch = curl_init();
@@ -63,7 +63,7 @@ class GitHubController extends Controller
         return false;
     }
 
-    public function cidr_match($ip, $range)
+    private function cidr_match($ip, $range)
     {
         list($subnet, $bits) = explode('/', $range);
         $ip = ip2long($ip);

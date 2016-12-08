@@ -256,7 +256,7 @@ class ArticleAdminController extends Controller
      *
      * @return string
      */
-    public function crop($image, $cropData, $request, $location)
+    private function crop($image, $cropData, $request, $location)
     {
         // Check if the location folder exists, if not create it
         if (!file_exists($location)) {

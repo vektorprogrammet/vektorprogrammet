@@ -204,26 +204,6 @@ class UserAdminController extends Controller
         return new JsonResponse($response);
     }
 
-    /**
-     * Sets newUserCode and sends activation email to user.
-     *
-     * @param User $user
-     *
-     * @internal param User $User
-     */
-    public function sendActivationEmail(User $user)
-    {
-        $userRegistration = $this->get('app.user.registration');
-        $newUserCode = $userRegistration->setNewUserCode($user);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
-
-        $emailMessage = $userRegistration->createActivationEmail($user, $newUserCode);
-        $this->get('mailer')->send($emailMessage);
-    }
-
     public function activateNewUserAction(Request $request, $newUserCode)
     {
         try {

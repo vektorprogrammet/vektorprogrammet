@@ -51,7 +51,7 @@ class PasswordResetController extends Controller
  * The function sends a url to the user where the user can reset the password
  */
     //Creates a resetpassword-Entity and sends a reset url by Email to the user.
-    public function createResetPasswordEntity($form, $passwordReset)
+    private function createResetPasswordEntity($form, $passwordReset)
     {
 
         //Connects with the User Entity

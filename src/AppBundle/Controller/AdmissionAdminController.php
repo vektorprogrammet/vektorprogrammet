@@ -48,7 +48,7 @@ class AdmissionAdminController extends Controller
         return $this->renderApplicants($request, $id);
     }
 
-    public function renderApplicants(Request $request, $departmentId = null)
+    private function renderApplicants(Request $request, $departmentId = null)
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         // Get query strings for filtering applications
@@ -402,12 +402,10 @@ class AdmissionAdminController extends Controller
     }
 
     /**
-     * TODO: FIll in description.
-     *
      * @param $createNewUserCode
      * @param $email
      */
-    public function sendNewUserEmail($createNewUserCode, $email)
+    private function sendNewUserEmail($createNewUserCode, $email)
     {
         $emailMessage = \Swift_Message::newInstance()
             ->setSubject('Opprett bruker på vektorprogrammet.no')
