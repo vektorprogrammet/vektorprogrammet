@@ -30,7 +30,7 @@ class ProfileController extends Controller
                 $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
 
                 // set user active level
-                $user->setIsActive(0);
+                $user->setActive(0);
 
                 $em->flush();
 
@@ -71,7 +71,7 @@ class ProfileController extends Controller
                 $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
 
                 // set user active level
-                $user->setIsActive(1);
+                $user->setActive(1);
 
                 $em->flush();
 
@@ -123,7 +123,7 @@ class ProfileController extends Controller
             //Deletes the newUserCode, so it can only be used one time.
             $user->setNewUserCode(null);
 
-            $user->setIsActive('1');
+            $user->setActive('1');
 
             if (count($user->getRoles()) == 0) {
                 $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findOneBy(array('role' => 'ROLE_USER'));

@@ -218,7 +218,7 @@ class UserAdminController extends Controller
                 //Deletes the newUserCode, so it can only be used one time.
                 $user->setNewUserCode(null);
 
-                $user->setIsActive('1');
+                $user->setActive('1');
 
                 //Updates the database
                 $em = $this->getDoctrine()->getManager();

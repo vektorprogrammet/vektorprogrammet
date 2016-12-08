@@ -157,7 +157,7 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->email;
     }
 
-    public function getIsActive()
+    public function isActive()
     {
         return $this->isActive;
     }
@@ -185,7 +185,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->email = $email;
     }
 
-    public function setIsActive($isActive)
+    public function setActive($isActive)
     {
         $this->isActive = $isActive;
     }

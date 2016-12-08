@@ -127,7 +127,7 @@ class SchoolAdminController extends Controller
 
             // Check if user already has user name and password
             if ($user->getUserName() != null && $user->getPassword() != null) {
-                $user->setIsActive(true);
+                $user->setActive(true);
             } else { // Send new user code for user to create user name and password
 
                 // Send new user code only if assistant history is added to current semester

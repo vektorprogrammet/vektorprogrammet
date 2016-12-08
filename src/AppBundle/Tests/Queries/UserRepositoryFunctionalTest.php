@@ -38,7 +38,7 @@ class UserRepositoryFunctionalTest extends KernelTestCase
 
 //		foreach ($users as $user ){
 //			$this->assertEquals(1, $user->getFieldOfStudy()->getDepartment()->getId());
-//			$this->assertEquals(1, $user->getIsActive());
+//			$this->assertEquals(1, $user->isActive());
 //		}
 
 //	}

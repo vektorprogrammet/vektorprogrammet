@@ -356,7 +356,7 @@ class AdmissionAdminController extends Controller
             $user->setUserName($new_username);
             $user->setPassword($new_username);
 
-            $user->setIsActive('0');
+            $user->setActive('0');
             $user->setNewUserCode($hashedNewUserCode);
 
             // Give the new user the default role
@@ -433,7 +433,7 @@ class AdmissionAdminController extends Controller
                 //Deletes the newUserCode, so it can only be used one time.
                 $user->setNewUserCode(null);
 
-                $user->setIsActive('1');
+                $user->setActive('1');
 
                 //Updates the database
                 $em = $this->getDoctrine()->getManager();
