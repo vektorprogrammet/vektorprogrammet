@@ -33,10 +33,10 @@ class CertificateController extends Controller
         $id = $request->get('id');
 
         try {
-            // Only SUPER_ADMIN can delete forums
+            // Only SUPER_ADMIN can delete certificates
             if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
 
-                // This deletes the given forum
+                // This deletes the given certificate
                 $em = $this->getDoctrine()->getEntityManager();
                 $certificate = $this->getDoctrine()->getRepository('AppBundle:CertificateRequest')->find($id);
 
@@ -69,10 +69,7 @@ class CertificateController extends Controller
         $id = $request->get('id');
 
         try {
-            // Only SUPER_ADMIN can delete forums
             if ($this->get('security.context')->isGranted('ROLE_USER')) {
-
-                // This deletes the given forum
                 $em = $this->getDoctrine()->getEntityManager();
 
                 // A new certificate entity

@@ -91,8 +91,6 @@ class TeamAdminController extends Controller
 
     public function createPositionAction(Request $request)
     {
-
-        // A new forum entity
         $position = new Position();
 
         // Create the form
@@ -103,13 +101,10 @@ class TeamAdminController extends Controller
 
         // Check if the form is valid
         if ($form->isValid()) {
-
-            // Store the forum in the database
             $em = $this->getDoctrine()->getManager();
             $em->persist($position);
             $em->flush();
 
-            // Redirect to the proper subforum
             return $this->redirect($this->generateUrl('teamadmin_show_position'));
         }
 
