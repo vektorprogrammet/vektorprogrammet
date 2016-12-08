@@ -9,9 +9,6 @@ parameters:
   public_uploads: "Offentlige filer"
   private_uploads: "../Private filer"
 
-  # Gallery photos folder
-  gallery_folder: "images/Gallery photos"
-
   # Profile photos
   profile_photos: 'images/Profile photos'
 
