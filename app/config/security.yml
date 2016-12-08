@@ -87,9 +87,6 @@ security:
         - { path: ^/profile/edit, roles: ROLE_ADMIN }
         - { path: ^/efconnect, role: ROLE_ADMIN }
         - { path: ^/elfinder, role: ROLE_ADMIN }
-        - { path: ^/gallery_create, role: ROLE_ADMIN }
-        - { path: ^/gallery_upload, role: ROLE_ADMIN }
-        - { path: ^/gallery_delete_photo, role: ROLE_ADMIN }
         - { path: ^/kontrollpanel, role: ROLE_ADMIN }
 
           #ROLE_USER = assistant user

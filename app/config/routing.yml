@@ -318,7 +318,7 @@ article:
     _method: GET
 
 article_show:
-  path: /artikkel/{id} #TODO: Change to slug
+  path: /artikkel/{id}
   defaults: { _controller: AppBundle:Article:showSpecific }
   requirements:
     _method: GET
@@ -989,7 +989,7 @@ file_browser:
    defaults: { _controller: AppBundle:FileBrowser:browse }
 
 
-#Use when loading for example image files in website TODO: DISABLE THIS
+#Use when loading for example image files in website
 #uploads_folder_serve:
 #   path: /Offentlige filer/{file_path}
 #   defaults: { _controller: AppBundle:FileBrowser:fileStream }
@@ -1002,81 +1002,10 @@ file_browser:
   # defaults: { _controller: AppBundle:FileBrowser:showPublicFiles }
 
 ##########################################
-#                Gallery                 #
-##########################################
-#todo: Some paths here are not in use anymore
-#todo: there is a bad mix of the words "gallery" and "album". A gallery is a collection of albums. In most cases when you
-#      read "gallery", "album" is the actual concept referred to here and elsewhere.
-
-# A quick-fix for a problem with the link back to album when editing a album.
-gallery_photos_xtra:
-    path: /gallery/album/{album_id}
-    defaults: { _controller: AppBundle:Gallery:photosGet }
-
-#Same type of fix as above
-edit_album_xtra:
-     path: /gallery/edit_album/{album_id}
-     defaults: { _controller: AppBundle:Gallery:editAlbum }
-
-#Take a guess...
-gallery_delete_album_xtra:
-    path: /gallery/gallery_delete_album/{album_id}
-    defaults: { _controller: AppBundle:Gallery:deleteAlbum }
-
-#Path to the main gallery page. id is the id of album to show at load
-gallery:
-   path: /gallery/{id}
-   defaults: { _controller: AppBundle:Gallery:show, id: -1 }
-
-gallery_upload:
-     path: /gallery_upload
-     defaults: { _controller: AppBundle:Gallery:upload }
-
-#todo: may delete check before i do it
-gallery_upload_form:
-     path: /gallery_upload_form/{album_id}
-     defaults: { _controller: AppBundle:Gallery:showUploadForm }
-
-# Returns form for editing an album
-edit_album:
-     path: /edit_album/{album_id}
-     defaults: { _controller: AppBundle:Gallery:editAlbum }
-
-
-gallery_create:
-    path: /gallery_create
-    defaults: { _controller: AppBundle:Gallery:createGallery }
-
-#Returns, in JSON format, a list of all the albums in the database that the requesting user is allowed to see.
-gallery_galleries:
-    path: /galleries
-    defaults: { _controller: AppBundle:Gallery:galleriesListGet }
-
-gallery_photos:
-    path: /album/{album_id}
-    defaults: { _controller: AppBundle:Gallery:photosGet }
-
-gallery_delete_album:
-   path: /gallery_delete_album/{album_id}
-   defaults: { _controller: AppBundle:Gallery:deleteAlbum }
-
-gallery_delete_photo: #todo: slett denne?
-    path: /gallery_delete_photo/{photo_id}
-    defaults: { _controller: AppBundle:Gallery:deletePhoto }
-
-gallery_edit_photo:
-   path: /gallery_edit_photo/{photo_id}
-   defaults: { _controller: AppBundle:Gallery:editPhoto }
-
-
-##########################################
 #                File uploader           #
 ##########################################
 file_uploader:
     path: /file_upload/  #Fix this
-#photo:
-#    path: ../Gallery photos/
-
 
 ###########################################
 #                 File system             #
@@ -1088,13 +1017,6 @@ public_files:
    defaults: { _controller: AppBundle:FileBrowser:fileStream }
    requirements:
      file_path: .+
-
-#todo: Is this path in use now?
-#profile_photos:
-#   path: /Profile photos/{file_path}
-#   defaults: { _controller: AppBundle:FileBrowser:fileStream }
-#   requirements:
-#     file_path: .+
 
 ##########################################
 #                Subsitute               #
