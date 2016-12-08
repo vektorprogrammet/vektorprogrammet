@@ -44,7 +44,7 @@ class UserAdminControllerTest extends WebTestCase
         // Follow the redirect
         $crawler = $client->followRedirect();
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testCreateUserSuperadmin()
@@ -81,7 +81,7 @@ class UserAdminControllerTest extends WebTestCase
         // Follow the redirect
         $crawler = $client->followRedirect();
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testShowUsersByDepartment()

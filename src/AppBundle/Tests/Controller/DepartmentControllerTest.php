@@ -78,7 +78,7 @@ class DepartmentControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('a:contains("Heggen")')->count());
         $this->assertEquals(2, $crawler->filter('td:contains("Hgn")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Hgn@mail.com")')->count());
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testUpdateDepartment()
@@ -130,7 +130,7 @@ class DepartmentControllerTest extends WebTestCase
 
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     /*
