@@ -160,8 +160,7 @@ class PasswordResetController extends Controller
 
                     return $this->render('Login/login.html.twig', array('message' => $feedback, 'error' => null, 'last_username' => $user->getUsername()));
                 }
-            }
-            //If the reset code is more than 1 day old, it shall not work.
+            } //If the reset code is more than 1 day old, it shall not work.
             else {
                 //Deletes the resetcode
                 $repositoryPasswordReset->deletePasswordResetByHashedResetCode($hashedResetCode);

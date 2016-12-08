@@ -19,7 +19,7 @@
             // The html table containing the substitute assistants
             subTable: $("#substitute-table"),
 
-            onReady: function() {
+            onReady: function () {
                 // Add sort functionality to the table containing the substitute assistants
                 Substitute.subTable.stupidtable();
 
@@ -36,7 +36,7 @@
                 });
             },
 
-            addSortArrows: function(event, data) {
+            addSortArrows: function (event, data) {
                 var th = $(this).find("th");
                 th.find(".arrow").remove();
                 var dir = $.fn.stupidtable.dir;
@@ -72,12 +72,16 @@
 
                         {# Departments dropdown #}
                         <li>
-                            <a class="button tiny" data-dropdown="autoCloseExample" aria-controls="autoCloseExample" aria-expanded="false">Avdeling <i class="fa fa-caret-down"></i></a>
-                            <ul id="autoCloseExample" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
+                            <a class="button tiny" data-dropdown="autoCloseExample" aria-controls="autoCloseExample"
+                               aria-expanded="false">Avdeling <i class="fa fa-caret-down"></i></a>
+                            <ul id="autoCloseExample" class="f-dropdown" data-dropdown-content tabindex="-1"
+                                aria-hidden="true" aria-autoclose="false" tabindex="-1">
 
                                 {% for d in departments %}
 
-                                    <li><a href="{{ path('substitute_show_by_department', { 'id': d.id }) }}">{{ d.shortName }}</a></li>
+                                    <li>
+                                        <a href="{{ path('substitute_show_by_department', { 'id': d.id }) }}">{{ d.shortName }}</a>
+                                    </li>
 
                                 {% endfor %}
 
@@ -86,13 +90,16 @@
 
                         {# Semester dropdown #}
                         <li>
-                            <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown" aria-expanded="false">Semester <i class="fa fa-caret-down"></i></a>
-                            <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
+                            <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown"
+                               aria-expanded="false">Semester <i class="fa fa-caret-down"></i></a>
+                            <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1"
+                                aria-hidden="true" aria-autoclose="false" tabindex="-1">
 
                                 {% for s in semesters %}
 
-                                    <li> <a href="{{ path(app.request.attributes.get('_route'),
-                                        app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'semester': s.id })) }}">{{ s.name }}</a> </li>
+                                    <li><a href="{{ path(app.request.attributes.get('_route'),
+                                        app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'semester': s.id })) }}">{{ s.name }}</a>
+                                    </li>
 
                                 {% endfor %}
 
@@ -105,27 +112,32 @@
 
             {# The table containing new applications #}
             <table width="100%" id="substitute-table">
-            <thead>
-            <tr>
-                {# data-sort is used to sort the tables with stupidtable.js #}
-                <th data-sort="string">Fornavn</th>
-                <th data-sort="string">Etternavn</th>
-                <th data-sort="int">Tlf</th>
-                <th data-sort="string">E-post</th>
-                <th data-sort="string">Linje</th>
-                <th data-sort="int">År</th>
-                <th data-sort="string"><span data-tooltip aria-haspopup="true" class="has-tip" title="Mandag">M</span></th>
-                <th data-sort="string"><span data-tooltip aria-haspopup="true" class="has-tip" title="Tirdag">T</span></th>
-                <th data-sort="string"><span data-tooltip aria-haspopup="true" class="has-tip" title="Onsdag">O</span></th>
-                <th data-sort="string"><span data-tooltip aria-haspopup="true" class="has-tip" title="Torsdag">T</span></th>
-                <th data-sort="string"><span data-tooltip aria-haspopup="true" class="has-tip" title="Fredag">F</span></th>
-                {% if is_granted('ROLE_SUPER_ADMIN') %}
-                    <th colspan="2"></th>
-                {% endif %}
-            </tr>
-            </thead>
+                <thead>
+                <tr>
+                    {# data-sort is used to sort the tables with stupidtable.js #}
+                    <th data-sort="string">Fornavn</th>
+                    <th data-sort="string">Etternavn</th>
+                    <th data-sort="int">Tlf</th>
+                    <th data-sort="string">E-post</th>
+                    <th data-sort="string">Linje</th>
+                    <th data-sort="int">År</th>
+                    <th data-sort="string"><span data-tooltip aria-haspopup="true" class="has-tip"
+                                                 title="Mandag">M</span></th>
+                    <th data-sort="string"><span data-tooltip aria-haspopup="true" class="has-tip"
+                                                 title="Tirdag">T</span></th>
+                    <th data-sort="string"><span data-tooltip aria-haspopup="true" class="has-tip"
+                                                 title="Onsdag">O</span></th>
+                    <th data-sort="string"><span data-tooltip aria-haspopup="true" class="has-tip"
+                                                 title="Torsdag">T</span></th>
+                    <th data-sort="string"><span data-tooltip aria-haspopup="true" class="has-tip"
+                                                 title="Fredag">F</span></th>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <th colspan="2"></th>
+                    {% endif %}
+                </tr>
+                </thead>
 
-            <tbody>
+                <tbody>
                 {% for s in substitutes %}
                     <tr id="{{ s.id }}">
                         <td>{{ s.firstName }}</td>
@@ -153,14 +165,15 @@
                         {% endif %}
                     </tr>
                 {% endfor %}
-            </tbody>
+                </tbody>
             </table>
 
         </div>
     </div>
 
     {# The confirmation modal, used to confirm substitute deletes #}
-    <div id="deleteModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true" role="dialog">
+    <div id="deleteModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true"
+         role="dialog">
         <h2 id="modalMessage">Vil du virkelig slette vikaren?</h2>
         <ul class="inline-list">
             <a href="#" class="button tiny accept">Slett</a>

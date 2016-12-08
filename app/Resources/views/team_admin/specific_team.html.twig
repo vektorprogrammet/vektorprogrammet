@@ -2,15 +2,15 @@
 
 {% block customScripts %}
 
-	{# Easy routing with FOSJsRouting bundle #}
-	<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    {# Easy routing with FOSJsRouting bundle #}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-	{# We need the deletetablerow.js file #}
+    {# We need the deletetablerow.js file #}
     <script src="{{ asset('js/deleteablerow.js') }}"></script>
-	
-	<script>
-	
-	$(document).ready(function() {
+
+    <script>
+
+        $(document).ready(function () {
             $('.delete').deleteablerow('teamadmin_remove_user_from_team_by_id', {
                 confirmation: {
                     modal: $('#confirmModal'),
@@ -19,100 +19,103 @@
                 }
             });
         });
-		
-		$("#search").keyup(function(){
-		
-			_this = this;
-			
-			$.each($("#table tbody").find("tr"), function() {
-			
-				if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
-				   $(this).hide();
-				}
-				else {
-					 $(this).show();         
-				}
-			});
-			
-		}); 
 
-	</script>
+        $("#search").keyup(function () {
 
-	<script>
-		var $oldWorkHistories = $('#oldWorkHistories');
-		var $oldWorkHistoriesButton = $('#oldWorkHistoriesButton');
-		$oldWorkHistoriesButton.on('click', function(){
-			$oldWorkHistories.slideToggle(400);
-			if($oldWorkHistoriesButton.html() == "Vis gamle medlemmer"){
-				$oldWorkHistoriesButton.html("Skjul gamle medlemmer");
-				$oldWorkHistoriesButton.addClass('alert').removeClass('success');
-			} else if($oldWorkHistoriesButton.html() == "Skjul gamle medlemmer"){
-				$oldWorkHistoriesButton.addClass('success').removeClass('alert');
-				$oldWorkHistoriesButton.html("Vis gamle medlemmer");
-			}
-		});
-	</script>
+            _this = this;
+
+            $.each($("#table tbody").find("tr"), function () {
+
+                if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
+                    $(this).hide();
+                }
+                else {
+                    $(this).show();
+                }
+            });
+
+        });
+
+    </script>
+
+    <script>
+        var $oldWorkHistories = $('#oldWorkHistories');
+        var $oldWorkHistoriesButton = $('#oldWorkHistoriesButton');
+        $oldWorkHistoriesButton.on('click', function () {
+            $oldWorkHistories.slideToggle(400);
+            if ($oldWorkHistoriesButton.html() == "Vis gamle medlemmer") {
+                $oldWorkHistoriesButton.html("Skjul gamle medlemmer");
+                $oldWorkHistoriesButton.addClass('alert').removeClass('success');
+            } else if ($oldWorkHistoriesButton.html() == "Skjul gamle medlemmer") {
+                $oldWorkHistoriesButton.addClass('success').removeClass('alert');
+                $oldWorkHistoriesButton.html("Vis gamle medlemmer");
+            }
+        });
+    </script>
 
 
 {% endblock %}
 
 {% block title %}
-	Team: {{ team.name }}
+    Team: {{ team.name }}
 {% endblock %}
 
 {% block body %}
     <p></p>
-	
-	<div class="row">
-		<div class="small-12 medium-12 large-12 columns">
-					
-			<h1> {{ team.name }} </h1>
-			<hr>
 
-			<div class="row">
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
 
-				<div class="small-12 medium-12 large-6 columns">
-					<ul class="inline-list">
+            <h1> {{ team.name }} </h1>
+            <hr>
 
-						{% if is_granted('ROLE_SUPER_ADMIN') or isUserInTeam %}
+            <div class="row">
 
-							<li>
-								<a href="{{ path('teamadmin_add_user_to_team', { 'id': team.id }) }}" class="button tiny">Legg til bruker</a>
-							</li>
-							<li>
-								<a href="{{ path('team_application_show_all', { 'id': team.id }) }}" class="button tiny">Se søkere</a>
-							</li>
+                <div class="small-12 medium-12 large-6 columns">
+                    <ul class="inline-list">
 
-						{% endif %}
+                        {% if is_granted('ROLE_SUPER_ADMIN') or isUserInTeam %}
 
-					</ul>
-				</div>
+                            <li>
+                                <a href="{{ path('teamadmin_add_user_to_team', { 'id': team.id }) }}"
+                                   class="button tiny">Legg til bruker</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('team_application_show_all', { 'id': team.id }) }}"
+                                   class="button tiny">Se søkere</a>
+                            </li>
 
-				<div class="small-12 medium-12 large-6 columns">
-					<input type="text" id="search" placeholder="Søk..." />
-				</div>
+                        {% endif %}
 
-			</div>
+                    </ul>
+                </div>
 
-			<hr>
+                <div class="small-12 medium-12 large-6 columns">
+                    <input type="text" id="search" placeholder="Søk..."/>
+                </div>
 
-			<h3>Aktive medlemmer</h3>
-			{% include 'team_admin/work_history_table.html.twig' with {'workHistories' : activeWorkHistories} %}
+            </div>
 
-			<div id="oldWorkHistories">
-				<h3>Team historikk</h3>
-				{% include 'team_admin/work_history_table.html.twig' with {'workHistories' : inActiveWorkHistories} %}
-			</div>
-			<button id="oldWorkHistoriesButton" class="button tiny success">Vis gamle medlemmer</button>
-		</div>
-	</div>
+            <hr>
 
-	<div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true" role="dialog">
-			<h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
-			<ul class="inline-list">
-				<a id="modalAccept" href="#" class="button tiny">Slett</a>
-				<a id="modalCancel" href="#" class="button tiny">Avbryt</a>
-			</ul>
-		</div>
+            <h3>Aktive medlemmer</h3>
+            {% include 'team_admin/work_history_table.html.twig' with {'workHistories' : activeWorkHistories} %}
+
+            <div id="oldWorkHistories">
+                <h3>Team historikk</h3>
+                {% include 'team_admin/work_history_table.html.twig' with {'workHistories' : inActiveWorkHistories} %}
+            </div>
+            <button id="oldWorkHistoriesButton" class="button tiny success">Vis gamle medlemmer</button>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
+         aria-hidden="true" role="dialog">
+        <h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
+        <ul class="inline-list">
+            <a id="modalAccept" href="#" class="button tiny">Slett</a>
+            <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
+        </ul>
+    </div>
 
 {% endblock %}

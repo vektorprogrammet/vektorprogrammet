@@ -29,7 +29,8 @@
         </div>
     {% endif %}
     <div class="small-12 columns">
-        <h6 class="float-right">Ja: {{ yes }} / Kanskje: {{ maybe }} / Nei: {{ no }} / Totalt: {{ applicants | length }}</h6>
+        <h6 class="float-right">Ja: {{ yes }} / Kanskje: {{ maybe }} / Nei: {{ no }} /
+            Totalt: {{ applicants | length }}</h6>
     </div>
 {% endblock %}
 
@@ -38,38 +39,39 @@
 
         {# The table containing interviewed applications #}
         <form id="bulk" name="application">
-        <table width="100%" id="application-table">
-            <thead>
-            <tr>
-                {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-                    <th><input type="checkbox" id="bulkAllCheck"></th>
-                {% endif %}
+            <table width="100%" id="application-table">
+                <thead>
+                <tr>
+                    {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                        <th><input type="checkbox" id="bulkAllCheck"></th>
+                    {% endif %}
 
-                {# data-sort is used to sort the tables with stupidtable.js #}
-                <th data-sort="string">Fornavn</th>
-                <th data-sort="string">Etternavn</th>
-                <th data-sort="string">E-post</th>
-                <th data-sort="string">Dobbel Stilling</th>
-                <th data-sort="string">Ønsket Bolk</th>
-                <th data-sort="string">Språk</th>
-                <th data-sort="int">Poeng</th>
-                <th data-sort="string">Passende</th>
-                <th></th>
-                <th></th>
-
-                {# Add header columns to match the buttons added #}
-                {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                    {# data-sort is used to sort the tables with stupidtable.js #}
+                    <th data-sort="string">Fornavn</th>
+                    <th data-sort="string">Etternavn</th>
+                    <th data-sort="string">E-post</th>
+                    <th data-sort="string">Dobbel Stilling</th>
+                    <th data-sort="string">Ønsket Bolk</th>
+                    <th data-sort="string">Språk</th>
+                    <th data-sort="int">Poeng</th>
+                    <th data-sort="string">Passende</th>
                     <th></th>
-                {% endif %}
-            </tr>
-            </thead>
+                    <th></th>
 
-            <tbody>
+                    {# Add header columns to match the buttons added #}
+                    {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                        <th></th>
+                    {% endif %}
+                </tr>
+                </thead>
+
+                <tbody>
 
                 {% for a in applicants %}
                     <tr id="{{ a.id }}">
                         {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-                            <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}"></td>
+                            <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
+                            </td>
                         {% endif %}
                         <td>{{ a.user.firstName }}</td>
                         <td>{{ a.user.lastName }}</td>
@@ -80,20 +82,19 @@
                         <td>{{ a.english ? 'Engelsk':'Norsk' }}</td>
 
 
-
                         {# Add the read interview button #}
-                            {% if a.user != user %}
+                        {% if a.user != user %}
                             <td>{{ a.interview.interviewScore.sum }}</td>
                             <td>{{ a.interview.interviewScore.suitableAssistant }}</td>
                             <td>
                                 <a href="{{ path('interview_show', { 'id': a.id }) }}" class="button tiny"><i
                                             class="fa fa-list-ul"></i> Les intervju</a>
                             </td>
-                            {% else %}
-                                <td colspan="3">
-                                    <span class="text-alert">Intervjuet er skjult</span>
-                                </td>
-                            {% endif %}
+                        {% else %}
+                            <td colspan="3">
+                                <span class="text-alert">Intervjuet er skjult</span>
+                            </td>
+                        {% endif %}
 
                         {# Add the delete interview and application dropdown button, given the correct permissions #}
                         {% if is_granted('ROLE_HIGHEST_ADMIN') %}
@@ -113,8 +114,8 @@
                     </tr>
                 {% endfor %}
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
         </form>
     {% endif %}
 

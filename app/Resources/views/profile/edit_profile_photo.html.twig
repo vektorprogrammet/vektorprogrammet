@@ -17,8 +17,8 @@
             apiKey: '4a1caf097b3d48e9b917e9f1bc430ad3',
             fileFormat: 'jpg',
             cropPresetsStrict: true,
-            onSave: function(imageID, newURL) {
-                saveImgToFile(imageID,newURL);
+            onSave: function (imageID, newURL) {
+                saveImgToFile(imageID, newURL);
 
             }
         });
@@ -26,21 +26,21 @@
         //Launch the editor
         function launchEditor(event) {
             event.preventDefault();
-            if($("#profileImgHidden").attr('src') !== ''){
+            if ($("#profileImgHidden").attr('src') !== '') {
                 featherEditor.launch({
-                    forceCropPreset: ['Profile Preset','400x400'],
+                    forceCropPreset: ['Profile Preset', '400x400'],
                     image: 'profileImgHidden'
                 });
             }
-            else{
+            else {
                 alert('Last opp et bilde!');
             }
             return true;
         }
 
-        function onReady(){
+        function onReady() {
             // Bind editBtn to editor
-            $('#editImageBtn').on('click',launchEditor);
+            $('#editImageBtn').on('click', launchEditor);
         }
 
         //Sends json request to server with the new image URL
@@ -52,10 +52,10 @@
                 data: JSON.stringify({
                     aviaryURL: newURL,
                 }),
-                success: function(response) {
-                    if(response.success) {
-                        $("#profileImg").attr('src',response.localURL);
-                        $("#profileImgHidden").attr('src',response.localURL);
+                success: function (response) {
+                    if (response.success) {
+                        $("#profileImg").attr('src', response.localURL);
+                        $("#profileImgHidden").attr('src', response.localURL);
                         featherEditor.close();
                     } else {
                         alert(response.cause);
@@ -66,13 +66,13 @@
         }
 
         //If the user click the edit Button
-        function editBtnClick(event){
+        function editBtnClick(event) {
             event.preventDefault();
             var elem = $(this).attr('id').substr(7);
-            if($('#article_image' + elem).val() !== ''){
+            if ($('#article_image' + elem).val() !== '') {
                 Article.launchEditor(elem);
             }
-            else{
+            else {
                 alert('Du må velge et bilde!')
             }
         }
@@ -84,21 +84,21 @@
             dictDefaultMessage: "Slipp bildet her<br>(eller trykk for &aring velge)",
             createImageThumbnails: false,
             acceptedFiles: ".jpg,.jpeg",
-            complete: function(file) {
-                    this.removeFile(file);
-                },
-            init: function() {
-                this.on("success", function(file,response) {
-                    $("#profileImg").attr('src',response.url + '?' + new Date().getTime());
-                    $("#profileImgHidden").attr('src',response.url + '?' + new Date().getTime());
+            complete: function (file) {
+                this.removeFile(file);
+            },
+            init: function () {
+                this.on("success", function (file, response) {
+                    $("#profileImg").attr('src', response.url + '?' + new Date().getTime());
+                    $("#profileImgHidden").attr('src', response.url + '?' + new Date().getTime());
                 });
             }
         };
 
-        $( document ).ready(function() {
+        $(document).ready(function () {
             onReady();
         });
-        </script>
+    </script>
 
     <style>
 
@@ -106,7 +106,7 @@
             position: relative;
             border-radius: 5px;
             color: #686868;
-            font-size:24px;
+            font-size: 24px;
             font-weight: bold;
             text-align: center;
             width: 300px;
@@ -115,7 +115,7 @@
             margin-top: 20px;
             height: 300px;
             background-color: #E5F2FA;
-            border:4px dashed #6fceee;
+            border: 4px dashed #6fceee;
         }
 
         #dropzone div {
@@ -153,27 +153,27 @@
             border: 10px solid #444;
         }
 
-        .dz-file-preview{
+        .dz-file-preview {
             display: none;
         }
 
-        .bordered{
-            border-left:1px solid #aaaaaa;
+        .bordered {
+            border-left: 1px solid #aaaaaa;
         }
 
-        #profileImg{
+        #profileImg {
             width: 300px;
             height: 300px;
             margin: 0px auto;
         }
 
-        #profileImg{
+        #profileImg {
             width: 300px;
             height: 300px;
             margin: 0px auto;
         }
 
-        #profileImgHidden{
+        #profileImgHidden {
             display: none;
             float: left;
         }
@@ -184,7 +184,7 @@
 {% endblock %}
 
 {% block body %}
-    <img id="profileImgHidden" src="{{ path }}" />
+    <img id="profileImgHidden" src="{{ path }}"/>
     <p></p>
 
     <div class="row">
@@ -200,7 +200,8 @@
                     </p>
 
                     <p>
-                        <b>NB:</b> Du finner svart/hvitt filter ved å klikke på "Effects"->"Classic"->"B&W" inne i redigeringsprogrammet.
+                        <b>NB:</b> Du finner svart/hvitt filter ved å klikke på "Effects"->"Classic"->"B&W" inne i
+                        redigeringsprogrammet.
                     </p>
 
                     <hr>
@@ -217,11 +218,12 @@
 
                     <div class="row">
                         <div class="medium-6 columns text-center">
-                            <form action="{{ path('profile_upload_photo', {'id': user.getId()}) }}" class="dropzone" id="dropzone"></form>
+                            <form action="{{ path('profile_upload_photo', {'id': user.getId()}) }}" class="dropzone"
+                                  id="dropzone"></form>
                         </div>
                         <div class="medium-6 columns text-center bordered">
 
-                            <img id="profileImg" src="{{ path }}" />
+                            <img id="profileImg" src="{{ path }}"/>
                             <div class="row">
                                 <br>
                                 <a href="#" class="button small" id="editImageBtn">Rediger bilde</a>
@@ -230,7 +232,8 @@
                         <div class="row">
                             <div class="medium-12 columns text-center">
                                 <br>
-                                <a href="{{ path('profile_save_photo', {'id': user.getId()}) }}" class="button medium" id="editImageBtn">Lagre</a>
+                                <a href="{{ path('profile_save_photo', {'id': user.getId()}) }}" class="button medium"
+                                   id="editImageBtn">Lagre</a>
                             </div>
                         </div>
 

@@ -74,6 +74,7 @@ class InterviewQuestion
     {
         return $this->question;
     }
+
     /**
      * Constructor.
      */

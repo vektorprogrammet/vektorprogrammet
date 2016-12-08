@@ -43,8 +43,7 @@ class UserAdminController extends Controller
             } elseif ($role == 2) {
                 $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findOneByRole('ROLE_SUPER_ADMIN');
                 $user->addRole($role);
-            }
-            // In case something unexpected happens set default to ROLE_USER
+            } // In case something unexpected happens set default to ROLE_USER
             else {
                 $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findOneByRole('ROLE_USER');
                 $user->addRole($role);
@@ -66,7 +65,7 @@ class UserAdminController extends Controller
 
         // Render the view
         return $this->render('user_admin/create_user.html.twig', array(
-             'form' => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -105,7 +104,7 @@ class UserAdminController extends Controller
 
         // Render the view
         return $this->render('user_admin/create_user.html.twig', array(
-             'form' => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -165,8 +164,7 @@ class UserAdminController extends Controller
                 $em->flush();
 
                 $response['success'] = true;
-            }
-            // You have to check for admin rights here to prevent admins from deleting users that are not in their department
+            } // You have to check for admin rights here to prevent admins from deleting users that are not in their department
             elseif ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
                 $em = $this->getDoctrine()->getEntityManager();
                 // Find a user by a given ID

@@ -14,6 +14,7 @@ class InterviewType extends AbstractType
 
         $builder->add('interviewScore', new InterviewScoreType());
     }
+
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(

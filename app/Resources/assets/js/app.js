@@ -7,7 +7,7 @@ $(document).foundation();
  * Documentation: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
  */
 if (!Array.prototype.filter) {
-    Array.prototype.filter = function(fun/*, thisArg*/) {
+    Array.prototype.filter = function (fun/*, thisArg*/) {
         'use strict';
 
         if (this === void 0 || this === null) {
@@ -41,7 +41,7 @@ if (!Array.prototype.filter) {
  */
 if (!Array.prototype.map) {
 
-    Array.prototype.map = function(callback, thisArg) {
+    Array.prototype.map = function (callback, thisArg) {
         var T, A, k;
 
         if (this == null) {

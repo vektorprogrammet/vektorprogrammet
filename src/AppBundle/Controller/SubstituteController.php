@@ -91,7 +91,8 @@ class SubstituteController extends Controller
     {
         // Only admin or team members withing the same department as the applicant can create substitute
         if ($this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') ||
-            $application->isSameDepartment($this->getUser())) {
+            $application->isSameDepartment($this->getUser())
+        ) {
             $appStat = $application->getStatistic();
             $intPrac = $appStat->getInterviewPractical();
 

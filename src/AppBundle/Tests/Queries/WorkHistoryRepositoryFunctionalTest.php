@@ -19,8 +19,7 @@ class WorkHistoryRepositoryFunctionalTest extends KernelTestCase
         self::bootKernel();
         $this->em = static::$kernel->getContainer()
             ->get('doctrine')
-            ->getManager()
-        ;
+            ->getManager();
     }
 
     // A test to check whether the method finds the active work histories given the $today variable, and that the user has the same ID as the given user
@@ -39,18 +38,18 @@ class WorkHistoryRepositoryFunctionalTest extends KernelTestCase
     }
 
     // A test to check whether the method finds the active work histories given the $today variable
-/*	public function testFindActiveWorkHistories(){
+    /*	public function testFindActiveWorkHistories(){
 
-        $workhistories = $this->em->getRepository('AppBundle:WorkHistory')->findActiveWorkHistories();
+            $workhistories = $this->em->getRepository('AppBundle:WorkHistory')->findActiveWorkHistories();
 
-        $today = new \DateTime('now');
+            $today = new \DateTime('now');
 
-        foreach ($workhistories as $wh){
-            $this->assertGreaterThan($wh->getStartDate(), $today);
-            if ( !($wh->getEndDate() == null )) $this->assertGreaterThan($today, $wh->getEndDate());
-        }
+            foreach ($workhistories as $wh){
+                $this->assertGreaterThan($wh->getStartDate(), $today);
+                if ( !($wh->getEndDate() == null )) $this->assertGreaterThan($today, $wh->getEndDate());
+            }
 
-    }*/
+        }*/
 
     /**
      * {@inheritdoc}

@@ -51,7 +51,6 @@ class InterviewAnswerType extends AbstractType
                     ));
                     break;
                 default: // This creates a textarea if the type is text (default)
-                    $type = 'text';
                     $form->add('answer', 'textarea', array(
                         'label' => $interviewAnswer->getInterviewQuestion()->getQuestion(),
                         'help' => $interviewAnswer->getInterviewQuestion()->getHelp(),

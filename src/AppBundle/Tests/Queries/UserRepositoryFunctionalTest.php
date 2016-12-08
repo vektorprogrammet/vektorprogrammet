@@ -19,8 +19,7 @@ class UserRepositoryFunctionalTest extends KernelTestCase
         self::bootKernel();
         $this->em = static::$kernel->getContainer()
             ->get('doctrine')
-            ->getManager()
-        ;
+            ->getManager();
     }
 
     // A test to check whether the method finds all users of a given department

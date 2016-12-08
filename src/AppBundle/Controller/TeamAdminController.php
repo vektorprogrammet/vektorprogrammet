@@ -70,7 +70,7 @@ class TeamAdminController extends Controller
             }
 
             return $this->render('team_admin/create_position.html.twig', array(
-                 'form' => $form->createView(),
+                'form' => $form->createView(),
             ));
         } else {
             return $this->redirect($this->generateUrl('home'));
@@ -289,12 +289,12 @@ class TeamAdminController extends Controller
             return $this->render('team/team_page.html.twig', array(
                 'team' => $team,
                 'workHistories' => $workHistories,
-                ));
+            ));
         }
 
         return $this->render('team_admin/create_team.html.twig', array(
             'department' => $department,
-             'form' => $form->createView(),
+            'form' => $form->createView(),
             'isUpdate' => true,
         ));
     }
@@ -365,8 +365,8 @@ class TeamAdminController extends Controller
             }
 
             return $this->render('team_admin/create_team.html.twig', array(
-                 'form' => $form->createView(),
-                 'department' => $department,
+                'form' => $form->createView(),
+                'department' => $department,
             ));
         } else {
             return $this->redirect($this->generateUrl('home'));

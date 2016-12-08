@@ -11,7 +11,8 @@
             <div class="panel">
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
-                        <a href="{{ path('interview_conduct', { 'id': application.id }) }}" class="button radius tiny info float-right clear">Endre</a>
+                        <a href="{{ path('interview_conduct', { 'id': application.id }) }}"
+                           class="button radius tiny info float-right clear">Endre</a>
                         <h1>Intervju</h1>
                         <h3>Intervjuer</h3>
                         <p>{{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}</p>
@@ -39,9 +40,9 @@
                                 <td> {{ application.yearOfStudy }} </td>
 
                                 {% if u.assistantHistories | length %}
-                                    <td> Ja </td>
+                                    <td> Ja</td>
                                 {% else %}
-                                    <td> Nei </td>
+                                    <td> Nei</td>
                                 {% endif %}
                             </tr>
                             </tbody>
@@ -99,13 +100,14 @@
 
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
-                        <label class="question-label">Vi har en internasjonal skole. Har du lyst til å undervise på engelsk?</label>
+                        <label class="question-label">Vi har en internasjonal skole. Har du lyst til å undervise på
+                            engelsk?</label>
                         <p>
-                        {%  if application.english == 1 %}
-                            Ja
-                        {% else %}
-                            Nei
-                        {% endif %}
+                            {% if application.english == 1 %}
+                                Ja
+                            {% else %}
+                                Nei
+                            {% endif %}
                         </p>
                     </div>
                 </div>
@@ -114,9 +116,9 @@
                     <div class="small-12 medium-12 large-9 columns">
                         <label class="question-label">Hvor hørte du om Vektorprogrammet?</label>
                         <p>
-                        {% for from in application.heardAboutFrom %}
-                            {{ from }}{% if not loop.last %}, {% endif %}
-                        {% endfor %}
+                            {% for from in application.heardAboutFrom %}
+                                {{ from }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
                         </p>
                     </div>
                 </div>
@@ -126,11 +128,11 @@
                 {% for interviewAnswer in interview.interviewAnswers %}
                     <label class="question-label">{{ interviewAnswer.interviewQuestion.question }}</label>
                     <p>
-                    {% for answer in interviewAnswer.answer %}
-                        {{ answer }}{% if not loop.last %}, {% endif %}
-                    {% else %}
-                        {{ interviewAnswer.answer }}
-                    {% endfor %}
+                        {% for answer in interviewAnswer.answer %}
+                            {{ answer }}{% if not loop.last %}, {% endif %}
+                        {% else %}
+                            {{ interviewAnswer.answer }}
+                        {% endfor %}
                     </p>
                 {% endfor %}
 
@@ -142,7 +144,8 @@
                             <thead>
                             <tr>
                                 <th>Forklaringsevne</th>
-                                <th><span data-tooltip aria-haspopup="true" class="has-tip" title="Forbilde for ungdomsskoleelever">Forbilde</span></th>
+                                <th><span data-tooltip aria-haspopup="true" class="has-tip"
+                                          title="Forbilde for ungdomsskoleelever">Forbilde</span></th>
                                 <th>Egnethet</th>
                                 <th>Sum</th>
                             </tr>

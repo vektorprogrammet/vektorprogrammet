@@ -11,31 +11,31 @@
     {% include "FMElfinderBundle:Elfinder:helper/assets_js.html.twig" %}
 {% endif %}
 <script type="text/javascript" charset="utf-8">
-    $().ready(function() {
+    $().ready(function () {
         var $f = $('.elfinder').elfinder({
-            url : '{{path('ef_connect', { 'instance': instance } )}}',
-            lang : '{{locale}}',
-            getFileCallback: function(file) {
+            url: '{{ path('ef_connect', { 'instance': instance } ) }}',
+            lang: '{{ locale }}',
+            getFileCallback: function (file) {
                 {% if relative_path %}
-                    {# This is the only line changed, it adds a / prefix to the path and replaces all \ with / #}
-                    window.opener.setValue('{{ asset('') }}' + file.url.substring(file.url.indexOf("/images") +1), "{{ id }}");
+                {# This is the only line changed, it adds a / prefix to the path and replaces all \ with / #}
+                window.opener.setValue('{{ asset('') }}' + file.url.substring(file.url.indexOf("/images") + 1), "{{ id }}");
                 {% else %}
-                    window.opener.setValue(file.url, "{{ id }}");
+                window.opener.setValue(file.url, "{{ id }}");
                 {% endif %}
                 window.close();
             }
         });
 
 
-    {% if fullscreen %}
-    var $window = $(window);
-    $window.resize(function(){
-        var $win_height = $window.height();
-        if( $f.height() != $win_height ){
-            $f.height($win_height).resize();
-        }
-    });
-    {% endif %}
+        {% if fullscreen %}
+        var $window = $(window);
+        $window.resize(function () {
+            var $win_height = $window.height();
+            if ($f.height() != $win_height) {
+                $f.height($win_height).resize();
+            }
+        });
+        {% endif %}
     });
 </script>
 <div class="elfinder"></div>

@@ -27,17 +27,17 @@ class CreateUserType extends AbstractType
             ->add('lastName', 'text', array(
                 'label' => 'Etternavn',
             ))
-            ->add('gender', 'choice',  array(
+            ->add('gender', 'choice', array(
                 'label' => 'Kjønn',
                 'choices' => array(
                     0 => 'Mann',
                     1 => 'Dame',
                 ),
-                ))
-            ->add('phone', 'text',  array(
+            ))
+            ->add('phone', 'text', array(
                 'label' => 'Telefon',
             ))
-            ->add('email', 'text',  array(
+            ->add('email', 'text', array(
                 'label' => 'E-post',
             ))
             ->add('fieldOfStudy', 'entity', array(
@@ -45,15 +45,15 @@ class CreateUserType extends AbstractType
                 'class' => 'AppBundle:FieldOfStudy',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('f')
-                      ->orderBy('f.short_name', 'ASC')
-                      ->where('f.department = ?1')
-                      // Set the parameter to the department ID that the current user belongs to.
-                      ->setParameter(1, $this->departmentId);
+                        ->orderBy('f.short_name', 'ASC')
+                        ->where('f.department = ?1')
+                        // Set the parameter to the department ID that the current user belongs to.
+                        ->setParameter(1, $this->departmentId);
                 },
-                    ));
+            ));
 
         if ($this->admin == 'superadmin') {
-            $builder->add('role', 'choice',  array(
+            $builder->add('role', 'choice', array(
                 'label' => 'Rolle',
                 'mapped' => false,
                 'choices' => array(
@@ -61,15 +61,15 @@ class CreateUserType extends AbstractType
                     1 => 'Team',
                     2 => 'Admin',
                 ),
-                ));
+            ));
         } elseif ($this->admin == 'admin') {
-            $builder->add('role', 'choice',  array(
+            $builder->add('role', 'choice', array(
                 'label' => 'Rolle',
                 'mapped' => false,
                 'choices' => array(
                     0 => 'Assistent',
                 ),
-                ));
+            ));
         }
     }
 

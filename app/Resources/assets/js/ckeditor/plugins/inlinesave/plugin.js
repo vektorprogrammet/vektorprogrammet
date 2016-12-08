@@ -17,7 +17,6 @@ CKEDITOR.plugins.add( 'inlinesave',{
 							data: { editabledata: data, editorID: dataID }
 						})
                          .success(function(){
-                              //todo: make the button flash or something
                              alert("Endringene er lagret.");
                          })
                          .fail(function (jqXHR, textStatus, errorThrown) {

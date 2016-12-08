@@ -21,10 +21,10 @@ class ContactType extends AbstractType
             'attr' => array('placeholder' => 'Emne'), ));
         $builder->add('body', 'textarea', array(
             'label' => false,
-             'attr' => array(
+            'attr' => array(
                 'cols' => '5',
                 'rows' => '9',
-                 'placeholder' => 'Melding',
+                'placeholder' => 'Melding',
             ),
         ));
         $builder->add('submit', 'submit', array('label' => 'Send melding'));

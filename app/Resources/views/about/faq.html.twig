@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Om vektor
+    Om vektor
 {% endblock %}
 
 {% block javascripts %}
@@ -9,11 +9,11 @@
 {% endblock %}
 
 {% block body %}
-	<div class="row">
-		<div class="small-12 medium-12 large-12 columns">
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
             <div class="{{ element_editable() }}" id="faq">
                 {{ get_content('faq') | raw }}
             </div>
-		</div>
-	</div>
+        </div>
+    </div>
 {% endblock %}

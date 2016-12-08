@@ -28,21 +28,21 @@ class WorkHistoryEntityUnitTest extends \PHPUnit_Framework_TestCase
     }*/
 
     // Check whether the setEndDate function is working correctly
-/*	public function testSetEndDate(){
+    /*	public function testSetEndDate(){
 
-        // New datetime variable
-        $today = new DateTime("now");
+            // New datetime variable
+            $today = new DateTime("now");
 
-        // new entity
-        $wh = new WorkHistory();
+            // new entity
+            $wh = new WorkHistory();
 
-        // Use the setStartDate method
-        $wh->setEndDate($today);
+            // Use the setStartDate method
+            $wh->setEndDate($today);
 
-        // Assert the result
-        $this->assertEquals($today, $wh->getEndDate());
+            // Assert the result
+            $this->assertEquals($today, $wh->getEndDate());
 
-    }*/
+        }*/
 
     // Check whether the setUser function is working correctly
     public function testSetUser()

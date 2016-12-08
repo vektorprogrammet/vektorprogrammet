@@ -30,7 +30,6 @@ class ArticleControllerTest extends WebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // Assert that we have the correct page
-//        $this->assertEquals(1, $crawler->filter('h4:contains("VEKAS VEKTOR­ASSISTENT! MØT SIRI!")')->count()); TODO: Fix this
         $this->assertEquals(1, $crawler->filter('p:contains("Filter:")')->count());
         $this->assertEquals(1, $crawler->filter('a.department-filter-active:contains("NTNU")')->count());
     }

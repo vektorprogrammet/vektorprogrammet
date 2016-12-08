@@ -39,7 +39,8 @@ class InterviewController extends Controller
 
         // Only admin and above, or the assigned interviewer should be able to conduct an interview
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') &&
-            !$interview->isInterviewer($this->getUser())) {
+            !$interview->isInterviewer($this->getUser())
+        ) {
             throw $this->createAccessDeniedException();
         }
 
@@ -132,7 +133,8 @@ class InterviewController extends Controller
 
         // Only accessible for admin and above, or team members belonging to the same department as the interview
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') &&
-            !$interview->isInterviewer($this->getUser())) {
+            !$interview->isInterviewer($this->getUser())
+        ) {
             throw $this->createAccessDeniedException();
         } elseif ($this->getUser() == $application->getUser()) {
             throw $this->createAccessDeniedException();
@@ -347,7 +349,8 @@ class InterviewController extends Controller
         $interview = $application->getInterview();
         // Only admin and above, or the assigned interviewer should be able to book an interview
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') &&
-            !$interview->isInterviewer($this->getUser())) {
+            !$interview->isInterviewer($this->getUser())
+        ) {
             throw $this->createAccessDeniedException();
         }
 
@@ -355,7 +358,7 @@ class InterviewController extends Controller
         $defaultData = array(
             'datetime' => $interview->getScheduled(),
             'message' => 'Hei, vi har satt opp et intervju for deg angående opptak til vektorprogrammet. '.
-            'Vennligst gi beskjed til meg hvis tidspunktet ikke passer.',
+                'Vennligst gi beskjed til meg hvis tidspunktet ikke passer.',
             'from' => $interview->getInterviewer()->getEmail(),
             'to' => $interview->getUser()->getEmail(),
         );
@@ -388,7 +391,7 @@ class InterviewController extends Controller
                                 'fromName' => $interview->getInterviewer()->getFirstName().' '.$interview->getInterviewer()->getLastName(),
                                 'fromMail' => $data['from'],
                                 'fromPhone' => $interview->getInterviewer()->getPhone(),
-                                )
+                            )
                         ),
                         'text/html'
                     );

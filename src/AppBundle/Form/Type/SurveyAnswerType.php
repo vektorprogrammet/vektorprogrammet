@@ -64,8 +64,6 @@ class SurveyAnswerType extends AbstractType
                     $form->add('answer', 'choice', $ansOptions);
                     break;
                 default: // This creates a textarea if the type is text (default)
-                    $type = 'text';
-
                     $ansOptions = array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),

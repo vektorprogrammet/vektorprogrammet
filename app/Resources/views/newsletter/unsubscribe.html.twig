@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-   Unsubscribe
+    Unsubscribe
 {% endblock %}
 
 {% block body %}
@@ -16,7 +16,8 @@
 
                     <h4>Det er trist å la deg gå, {{ name }}. </h4>
                     <p>Vi har nå meldt av {{ email }} fra nyhetsbrevet "{{ newsletter.name }}".</p>
-                    <p>Angrer du? Meld deg på igjen <a href="{{ path('newsletter_show_subscribe', {'id':newsletter.id})}}">her</a></p>
+                    <p>Angrer du? Meld deg på igjen <a
+                                href="{{ path('newsletter_show_subscribe', {'id':newsletter.id}) }}">her</a></p>
 
                     </br>
                 </div>

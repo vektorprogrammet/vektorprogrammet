@@ -39,7 +39,6 @@
             <div class="small-12 medium-12 large-12 columns">
 
 
-
                 {% if semester is defined %}
                     <h1 class="text-center"> Søk Vektorprogrammet ved {{ department.shortname }} </h1>
                     <br>
@@ -49,103 +48,72 @@
 
                     <div class="row">
                         <div class="small-12 medium-6 large-4 large-offset-2 columns">
-
-
                             <div>
                                 {{ form_label(form.user.firstName) }}
                                 {{ form_widget(form.user.firstName, { 'attr': {'tabindex': '1'}}) }}
                                 {{ form_errors(form.user.firstName) }}
                             </div>
-
                             <div>
                                 {{ form_label(form.user.email) }}
                                 {{ form_widget(form.user.email, { 'attr': {'tabindex': '3'}}) }}
                                 {{ form_errors(form.user.email) }}
                             </div>
-
-
                         </div>
 
                         <div class="small-12 medium-6 large-4  end columns">
-
-
                             <div>
                                 {{ form_label(form.user.lastName) }}
                                 {{ form_widget(form.user.lastName, { 'attr': {'tabindex': '2'}}) }}
                                 {{ form_errors(form.user.lastName) }}
                             </div>
-
                             <div>
                                 {{ form_label(form.user.phone) }}
                                 {{ form_widget(form.user.phone, { 'attr': {'tabindex': '4'}}) }}
                                 {{ form_errors(form.user.phone) }}
                             </div>
-
-
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="small-6 medium-4 large-1 columns large-offset-2">
-
-
                             <div>
                                 {{ form_label(form.user.fieldOfStudy) }}
                                 {{ form_errors(form.user.fieldOfStudy) }}
                                 {{ form_widget(form.user.fieldOfStudy, { 'attr': {'tabindex': '5'}}) }}
                             </div>
-
-
                         </div>
-
                         <div class="small-6 medium-4 large-1  columns">
-
-
                             <div>
                                 {{ form_label(form.yearOfStudy) }}
                                 {{ form_errors(form.yearOfStudy) }}
                                 {{ form_widget(form.yearOfStudy, { 'attr': {'tabindex': '6'}}) }}
                             </div>
-
-
                         </div>
-
                         <div class="small-6 medium-4 large-2  columns">
-
-
                             <div>
                                 {{ form_label(form.user.gender) }}
                                 {{ form_errors(form.user.gender) }}
                                 {{ form_widget(form.user.gender, { 'attr': {'tabindex': '7'}}) }}
                             </div>
-
-
                         </div>
-
 
                         {# The form.captcha is only defined for unauthenticated users #}
 
                         {% if form.captchaAdmission is defined %}
 
                             <div class="small-6 medium-4 large-2 columns">
-
                                 <div>
                                     {{ form_label(form.captchaAdmission) }}
                                     {{ form_errors(form.captchaAdmission) }}
                                     {{ form_widget(form.captchaAdmission) }}
                                 </div>
-
                             </div>
-
                         {% endif %}
                         <div class="small-6 medium-6 large-2 end columns">
-
                             <h3> Søknadsfrist: </h3>
-
                             {{ semester.admissionEndDate|date('d.m.Y') }}
                             kl. {{ semester.admissionEndDate|date('H:i') }}
                             </br>
-
                         </div>
                     </div>
 
@@ -154,16 +122,17 @@
                             <br>
                             {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted','tabindex': '8'} }) }}
                             <br><br>
-                            <p class="text-alert">Gamle assistenter kan søke <a href="{{ path('admission_existing_user') }}">her</a></p>
+                            <p class="text-alert">Gamle assistenter kan søke <a
+                                        href="{{ path('admission_existing_user') }}">her</a></p>
                         </div>
                     </div>
-
-
                     {{ form_end(form) }}
 
                 {% else %}
                     <br>
-                    <h4 class="text-center text-alert "> Avdelingen {{ department.shortname }} har ikke aktiv søkeperiode. </h4>
+                    <h4 class="text-center text-alert ">
+                        Avdelingen {{ department.shortname }} har ikke aktiv søkeperiode.
+                    </h4>
 
                     {% render controller('AppBundle:Newsletter:subscribeForm', {'id' : department.id} ) %}
                 {% endif %}
@@ -267,23 +236,23 @@
 {% endblock %}
 {% block customScripts %}
 
-<script>
-    var $submitBtn = $('.vektor-button-inverted');
-    var $applicationForm = $('form[name="application"]');
-    $submitBtn.click(function(){
-        if($applicationForm[0].checkValidity()){
-            $submitBtn.attr("disabled", true);
-            $submitBtn.html("Sender...");
-            $applicationForm.submit();
-        }
-    });
+    <script>
+        var $submitBtn = $('.vektor-button-inverted');
+        var $applicationForm = $('form[name="application"]');
+        $submitBtn.click(function () {
+            if ($applicationForm[0].checkValidity()) {
+                $submitBtn.attr("disabled", true);
+                $submitBtn.html("Sender...");
+                $applicationForm.submit();
+            }
+        });
 
-    setTimeout(function () {
-        $(".admission-notice").fadeOut(1000);
-    }, 4000);
-    setTimeout(function () {
-        $(".contact-notice").fadeOut(1000);
-    }, 4000);
-</script>
+        setTimeout(function () {
+            $(".admission-notice").fadeOut(1000);
+        }, 4000);
+        setTimeout(function () {
+            $(".contact-notice").fadeOut(1000);
+        }, 4000);
+    </script>
 
 {% endblock %}

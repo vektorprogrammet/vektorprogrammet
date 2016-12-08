@@ -20,7 +20,6 @@ class StaticContentController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         $content = $em->getRepository('AppBundle:StaticContent')
             ->findOneByHtmlId($htmlId);
-        //TODO: handle if not found
         $content->setHtml($newContent);
         $em->persist($content);
         $em->flush();
