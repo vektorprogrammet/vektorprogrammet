@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class GitHubController extends Controller
 {
@@ -15,7 +16,7 @@ class GitHubController extends Controller
         // Check if request is from GitHub
         $ipIsFromGitHub = $this->ipIsFromGitHub($request->getClientIp());
         if (!$ipIsFromGitHub) {
-            die('Ip is not from GitHub');
+            throw new AccessDeniedException('Ip is not from GitHub');
         }
 
         // Get data
@@ -55,7 +56,7 @@ class GitHubController extends Controller
 
         // Check if ip from request is from GitHub
         foreach ($ipRanges as $range) {
-            if ($this->cidr_match($ip, $range)) {
+            if ($this->cidrMatch($ip, $range)) {
                 return true;
             }
         }
@@ -63,7 +64,7 @@ class GitHubController extends Controller
         return false;
     }
 
-    private function cidr_match($ip, $range)
+    private function cidrMatch($ip, $range)
     {
         list($subnet, $bits) = explode('/', $range);
         $ip = ip2long($ip);
