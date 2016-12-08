@@ -11,12 +11,14 @@
             <table>
                 <tr>
                     <th>Emne</th>
-                    <th>Dato, tid</th> 
+                    <th>Dato, tid</th>
                     <th>Antall mottakere</th>
                 </tr>
                 {% for letter in newsletter.letters %}
                     <tr>
-                        <td><a href="{{ path('newsletter_show_letter_content', {'id':letter.id})}}">{{ letter.title }}</a></td>
+                        <td>
+                            <a href="{{ path('newsletter_show_letter_content', {'id':letter.id}) }}">{{ letter.title }}</a>
+                        </td>
                         <td>{{ letter.timestamp|date('d.m.Y, H:i') }}</td>
                         <td>{{ letter.recipientCount }}</td>
                     </tr>

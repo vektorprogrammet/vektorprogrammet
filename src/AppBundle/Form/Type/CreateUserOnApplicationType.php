@@ -25,17 +25,17 @@ class CreateUserOnApplicationType extends AbstractType
             ->add('lastName', 'text', array(
                 'label' => 'Etternavn',
             ))
-            ->add('gender', 'choice',  array(
+            ->add('gender', 'choice', array(
                 'label' => 'Kjønn',
                 'choices' => array(
                     0 => 'Mann',
                     1 => 'Dame',
                 ),
-                ))
-            ->add('phone', 'text',  array(
+            ))
+            ->add('phone', 'text', array(
                 'label' => 'Telefon',
             ))
-            ->add('email', 'email',  array(
+            ->add('email', 'email', array(
                 'label' => 'E-post',
             ))
             ->add('fieldOfStudy', 'entity', array(
@@ -43,12 +43,12 @@ class CreateUserOnApplicationType extends AbstractType
                 'class' => 'AppBundle:FieldOfStudy',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('f')
-                      ->orderBy('f.short_name', 'ASC')
-                      ->where('f.department = ?1')
-                      // Set the parameter to the department ID that the current user belongs to.
-                      ->setParameter(1, $this->departmentId);
+                        ->orderBy('f.short_name', 'ASC')
+                        ->where('f.department = ?1')
+                        // Set the parameter to the department ID that the current user belongs to.
+                        ->setParameter(1, $this->departmentId);
                 },
-                    ));
+            ));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

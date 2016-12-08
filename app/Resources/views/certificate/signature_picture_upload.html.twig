@@ -16,14 +16,14 @@
             {{ form_start(form) }}
             <div class="row">
                 <div class="small-8 columns">
-                    {{ form_row(form.description)}}
+                    {{ form_row(form.description) }}
                 </div>
             </div>
             {#<label for="form_signature_path">Age</label>#}
             <div class="row">
                 <div class="small-2 columns">
                     <div class="hide">
-                        {{ form_row(form.signature_path)}}
+                        {{ form_row(form.signature_path) }}
                     </div>
                     <button type="button" class="button tiny" id="choose_picture">
                         Velg bilde
@@ -47,7 +47,7 @@
 
     <script>
         var uploadButton = $('#choose_picture');
-        uploadButton.click(function(){
+        uploadButton.click(function () {
             var realUploadButton = $('#create_signature_signature_path');
             realUploadButton.click();
         })
@@ -64,7 +64,7 @@
             }
         }
 
-        $("#create_signature_signature_path").change(function(){
+        $("#create_signature_signature_path").change(function () {
             $('#signature_picture').parent().removeClass('hide');
             readURL(this);
         });
@@ -73,7 +73,7 @@
     </script>
 
     <script>
-        setTimeout(function(){
+        setTimeout(function () {
             $('.alert-box').fadeOut(800);
         }, 1500)
     </script>

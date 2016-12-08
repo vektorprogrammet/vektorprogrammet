@@ -35,12 +35,12 @@ class ApplicationRepository extends EntityRepository
 
         if (null !== $department) {
             $qb->andWhere('d = :department')
-                   ->setParameter('department', $department);
+                ->setParameter('department', $department);
         }
 
         if (null !== $semester) {
             $qb->andWhere('sem = :semester')
-                    ->setParameter('semester', $semester);
+                ->setParameter('semester', $semester);
         }
 
         return $qb->getQuery()->getResult();
@@ -94,12 +94,12 @@ class ApplicationRepository extends EntityRepository
 
         if (null !== $department) {
             $qb->andWhere('d = :department')
-                     ->setParameter('department', $department);
+                ->setParameter('department', $department);
         }
 
         if (null !== $semester) {
             $qb->andWhere('sem = :semester')
-                    ->setParameter('semester', $semester);
+                ->setParameter('semester', $semester);
         }
 
         return $qb->getQuery()->getResult();
@@ -145,12 +145,12 @@ class ApplicationRepository extends EntityRepository
 
         if (null !== $department) {
             $qb->andWhere('d = :department')
-                    ->setParameter('department', $department);
+                ->setParameter('department', $department);
         }
 
         if (null !== $semester) {
             $qb->andWhere('sem = :semester')
-                    ->setParameter('semester', $semester);
+                ->setParameter('semester', $semester);
         }
 
         return $qb->getQuery()->getResult();

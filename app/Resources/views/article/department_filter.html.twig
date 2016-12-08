@@ -7,7 +7,9 @@
         {% else %}
             {% set active = '' %}
         {% endif %}
-        <p><a href="{{ path('article_filter', { 'department': department.shortName|lower }) }}" {{ active }}>{{ department.shortName }}</a></p>
+        <p>
+            <a href="{{ path('article_filter', { 'department': department.shortName|lower }) }}" {{ active }}>{{ department.shortName }}</a>
+        </p>
     {% else %}
         <p>Ingen avdelinger</p>
     {% endfor %}

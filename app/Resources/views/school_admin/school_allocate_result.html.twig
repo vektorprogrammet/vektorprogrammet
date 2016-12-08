@@ -12,9 +12,12 @@
                         {% for day, assistants in days %}
                             <h4>{{ day }}</h4>
                             {% for assistant in assistants if assistant.group != 2 %}
-                                <p>({{ assistant.score }})({{ assistant.suitability }})<span style="{{ assistant.doublePosition ? 'color:blue' }}">{{ assistant.name }}</span> |
-                                    {% for da, av in assistant.availability if av > 0%}
-                                        {{ loop.first ? '': ', ' }}<span style="{{ da == day ? 'color:green' }}">{{ da }}</span>
+                                <p>({{ assistant.score }})({{ assistant.suitability }})<span
+                                            style="{{ assistant.doublePosition ? 'color:blue' }}">{{ assistant.name }}</span>
+                                    |
+                                    {% for da, av in assistant.availability if av > 0 %}
+                                        {{ loop.first ? '': ', ' }}<span
+                                        style="{{ da == day ? 'color:green' }}">{{ da }}</span>
                                     {% endfor %}
                                 </p>
                             {% endfor %}
@@ -22,8 +25,8 @@
                         <hr>
                     {% endfor %}
                     {#{% for assistant in assistants %}#}
-                        {#{% if assistant.assignedDay and (assistant.group == 1 or assistant.doublePosition) %}#}
-                        {#{% endif %}#}
+                    {#{% if assistant.assignedDay and (assistant.group == 1 or assistant.doublePosition) %}#}
+                    {#{% endif %}#}
                     {#{% endfor %}#}
                 </div>
 
@@ -38,9 +41,12 @@
                         {% for day, assistants in days %}
                             <h4>{{ day }}</h4>
                             {% for assistant in assistants if assistant.group != 1 %}
-                                <p>({{ assistant.score }})({{ assistant.suitability }})<span style="{{ assistant.doublePosition ? 'color:blue' }}">{{ assistant.name }}</span> |
-                                    {% for da, av in assistant.availability if av > 0%}
-                                    {{ loop.first ? '': ', ' }}<span style="{{ da == day ? 'color:green' }}">{{ da }}</span>
+                                <p>({{ assistant.score }})({{ assistant.suitability }})<span
+                                            style="{{ assistant.doublePosition ? 'color:blue' }}">{{ assistant.name }}</span>
+                                    |
+                                    {% for da, av in assistant.availability if av > 0 %}
+                                        {{ loop.first ? '': ', ' }}<span
+                                        style="{{ da == day ? 'color:green' }}">{{ da }}</span>
                                     {% endfor %}
                                 </p>
                             {% endfor %}
@@ -48,9 +54,9 @@
                         <hr>
                     {% endfor %}
                     {#{% for assistant in assistants %}#}
-                        {#{% if assistant.assignedDay and (assistant.group == 2 or assistant.doublePosition) %}#}
-                            {#<p>Navn: {{ assistant.name }} | Skole: {{ assistant.assignedSchool }} | Dag: {{ assistant.assignedDay }}</p>#}
-                        {#{% endif %}#}
+                    {#{% if assistant.assignedDay and (assistant.group == 2 or assistant.doublePosition) %}#}
+                    {#<p>Navn: {{ assistant.name }} | Skole: {{ assistant.assignedSchool }} | Dag: {{ assistant.assignedDay }}</p>#}
+                    {#{% endif %}#}
                     {#{% endfor %}#}
 
                 </div>
@@ -62,11 +68,12 @@
         <h4>Could not find school for:</h4>
         {% for assistant in assistants %}
             {% if assistant.group == null %}
-                <p>({{ assistant.score }}) ({{ assistant.suitability }}) <span style="{{ assistant.doublePosition ? 'color:blue' }}">{{ assistant.name }}</span> |
-                    {% for da, av in assistant.availability if av > 0%}
+                <p>({{ assistant.score }}) ({{ assistant.suitability }}) <span
+                            style="{{ assistant.doublePosition ? 'color:blue' }}">{{ assistant.name }}</span> |
+                    {% for da, av in assistant.availability if av > 0 %}
                         {{ loop.first ? '': ', ' }}{{ da }}
                     {% endfor %}
-                     | {{ assistant.preferredGroup > 0 ? assistant.preferredGroup }}
+                    | {{ assistant.preferredGroup > 0 ? assistant.preferredGroup }}
                 </p>
             {% endif %}
         {% endfor %}
@@ -76,7 +83,8 @@
             <a href="{{ path('school_allocation') }}" class="button expand"><i class="fa fa-arrow-left"></i> Tilbake</a>
         </div>
         <div class="large-6 columns">
-            <a href="{{ path('school_allocation_allocate') }}" class="button expand success">Fordel <i class="fa fa-arrow-right"></i></a>
+            <a href="{{ path('school_allocation_allocate') }}" class="button expand success">Fordel <i
+                        class="fa fa-arrow-right"></i></a>
         </div>
         <br>
         <br>

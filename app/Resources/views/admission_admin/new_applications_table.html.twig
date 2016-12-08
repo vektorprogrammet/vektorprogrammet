@@ -35,37 +35,38 @@
         </div>
         {# The table containing new applications #}
         <form id="bulk" name="application">
-        <table width="100%" id="application-table">
-            <thead>
-            <tr>
-                {% if is_granted('ROLE_SUPER_ADMIN') %}
-                    <th><input type="checkbox" id="bulkAllCheck"></th>
-                {% endif %}
-                {# data-sort is used to sort the tables with stupidtable.js #}
-                <th data-sort="string">Fornavn</th>
-                <th data-sort="string">Etternavn</th>
-                <th data-sort="int">Tlf</th>
-                <th data-sort="string">E-post</th>
-                <th data-sort="string">Linje</th>
-                <th data-sort="int">År</th>
-                <th></th>
-
-                {# Add header columns to match the buttons added #}
-                {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <table width="100%" id="application-table">
+                <thead>
+                <tr>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <th><input type="checkbox" id="bulkAllCheck"></th>
+                    {% endif %}
+                    {# data-sort is used to sort the tables with stupidtable.js #}
+                    <th data-sort="string">Fornavn</th>
+                    <th data-sort="string">Etternavn</th>
+                    <th data-sort="int">Tlf</th>
+                    <th data-sort="string">E-post</th>
+                    <th data-sort="string">Linje</th>
+                    <th data-sort="int">År</th>
                     <th></th>
-                {% endif %}
-                {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-                    <th></th>
-                {% endif %}
-            </tr>
-            </thead>
 
-            <tbody>
+                    {# Add header columns to match the buttons added #}
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <th></th>
+                    {% endif %}
+                    {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                        <th></th>
+                    {% endif %}
+                </tr>
+                </thead>
+
+                <tbody>
 
                 {% for a in applicants %}
                     <tr id="{{ a.id }}">
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
-                            <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}"></td>
+                            <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
+                            </td>
                         {% endif %}
                         <td>{{ a.user.firstName }}</td>
                         <td>{{ a.user.lastName }}</td>
@@ -95,8 +96,8 @@
                     </tr>
                 {% endfor %}
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
         </form>
     {% endif %}
 {% endblock %}

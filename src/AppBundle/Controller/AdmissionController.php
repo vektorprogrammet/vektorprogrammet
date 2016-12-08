@@ -156,11 +156,11 @@ class AdmissionController extends Controller
             $authenticationUtils = $this->get('security.authentication_utils');
 
             return $this->render('login/login.html.twig', array(
-                    'last_username' => null,
-                    'error' => $authenticationUtils->getLastAuthenticationError(),
-                    'message' => $message,
-                    'redirect_path' => $this->generateUrl('admission_existing_user'),
-                ));
+                'last_username' => null,
+                'error' => $authenticationUtils->getLastAuthenticationError(),
+                'message' => $message,
+                'redirect_path' => $this->generateUrl('admission_existing_user'),
+            ));
         } elseif (!count($user->getAssistantHistories())) {
             return $this->render('error/no_assistanthistory.html.twig', array('user' => $user));
         }

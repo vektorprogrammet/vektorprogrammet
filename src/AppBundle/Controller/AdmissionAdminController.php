@@ -130,9 +130,6 @@ class AdmissionAdminController extends Controller
                     } else {
                         $interviewDistributionLeft[$fullName] = 1;
                     }
-                    if ($applicant->getInterview()->getInterviewer() == $user) {
-                        $yourApplicants[] = $applicant;
-                    }
                 }
                 $cancelledApplicants = $repository->findCancelledApplicants($semester);
                 arsort($interviewDistribution);
@@ -264,7 +261,7 @@ class AdmissionAdminController extends Controller
     {
         try {
             // Get the ids from the form
-           $applicationIds = $request->request->get('application')['id'];
+            $applicationIds = $request->request->get('application')['id'];
 
             if ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')) {
                 // Delete the applications
@@ -313,7 +310,6 @@ class AdmissionAdminController extends Controller
     /**
      * Creates an unactivated user for the given application.
      * This method is intended to be called by an Ajax request.
-     * TODO: FIll in description.
      *
      * @param $id
      *
@@ -416,8 +412,6 @@ class AdmissionAdminController extends Controller
     }
 
     /**
-     * TODO: FIll in description.
-     *
      * @param Request $request
      * @param $id
      *

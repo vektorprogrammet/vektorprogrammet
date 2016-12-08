@@ -11,7 +11,6 @@ class TeamApplicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-
             ->add('name', 'text', array(
                 'label' => 'Navn',
             ))
@@ -38,8 +37,7 @@ class TeamApplicationType extends AbstractType
             ->add('biography', 'textarea', array(
                 'label' => 'Skriv litt om deg selv',
                 'attr' => array('rows' => 10),
-            ))
-            ;
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

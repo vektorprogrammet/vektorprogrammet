@@ -235,7 +235,6 @@ liip_imagine:
     resolvers:
        default:
           web_path: ~
-
     filter_sets:
         cache: ~
         article_crop:

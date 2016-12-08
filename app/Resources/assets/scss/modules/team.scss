@@ -1,23 +1,24 @@
 @import "colors";
 
-.teamLink{
+.teamLink {
 
-    margin-bottom: 0;
-    padding-left:18px;
-    margin-top: 0em;
-}
-.teamLink + .team-short-description{
-    padding-left:36px;
+  margin-bottom: 0;
+  padding-left: 18px;
+  margin-top: 0em;
 }
 
-.team-short-description{
-    color: $grey;
+.teamLink + .team-short-description {
+  padding-left: 36px;
 }
 
-.team-description-column{
-    word-wrap: break-word;
+.team-short-description {
+  color: $grey;
 }
 
-.no-bottom-margin{
-    margin-bottom: 0em;
+.team-description-column {
+  word-wrap: break-word;
+}
+
+.no-bottom-margin {
+  margin-bottom: 0em;
 }

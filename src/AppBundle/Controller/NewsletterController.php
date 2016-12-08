@@ -64,7 +64,7 @@ class NewsletterController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $alreadySubscribed = count($this->getDoctrine()->getRepository('AppBundle:Subscriber')->
-                findByEmailAndNewsletter($subscriber->getEmail(),  $newsletter)) > 0;
+                findByEmailAndNewsletter($subscriber->getEmail(), $newsletter)) > 0;
 
             if (!$alreadySubscribed) {
                 $subscriber->setNewsletter($newsletter);
@@ -179,6 +179,7 @@ class NewsletterController extends Controller
             'form' => $form->createView(),
         ));
     }
+
     public function createLetterAction(Newsletter $newsletter, Request $request)
     {
         $letter = new Letter();
@@ -190,14 +191,14 @@ class NewsletterController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             if (true === $form->get('preview')->isClicked()) {
                 return $this->render(
-                   'newsletter/mail_template.html.twig',
-                   array(
-                       'name' => '"NAVN NAVNESEN"',
-                       'department' => $newsletter->getDepartment()->getShortName(),
-                       'content' => $letter->getContent(),
-                       'unsubscribeCode' => '1234',
-                   )
-               );
+                    'newsletter/mail_template.html.twig',
+                    array(
+                        'name' => '"NAVN NAVNESEN"',
+                        'department' => $newsletter->getDepartment()->getShortName(),
+                        'content' => $letter->getContent(),
+                        'unsubscribeCode' => '1234',
+                    )
+                );
             }
             $letter->setTimestamp(new \DateTime());
             $letter->setRecipientCount(count($newsletter->getSubscribers()));
@@ -237,18 +238,21 @@ class NewsletterController extends Controller
 
         return $this->render('newsletter/create_letter.html.twig', array('form' => $form->createView()));
     }
+
     public function showLettersAction(Newsletter $newsletter)
     {
         return $this->render('newsletter/show_letters.html.twig', array(
             'newsletter' => $newsletter,
         ));
     }
+
     public function showLetterContentAction(Letter $letter)
     {
         return $this->render('newsletter/show_letter_content.html.twig', array(
             'letter' => $letter,
         ));
     }
+
     public function unsubscribeNewsletterAction($unsubscribeCode)
     {
         $subscriber = $this->getDoctrine()->getRepository('AppBundle:Subscriber')->findOneBy(array(

@@ -16,9 +16,8 @@ class FileBrowserController extends Controller
      */
     public function browseAction()
     {
-        //TODO: sjekk at user virkelig er admin, ikke bra nok å sjekke kun i twig
         $response = $this->forward('FMElfinderBundle:ElFinder:show', array(
-           'instance' => 'admin_access',
+            'instance' => 'admin_access',
         ));
 
         return $response;
@@ -36,7 +35,6 @@ class FileBrowserController extends Controller
     public function fileStreamAction(Request $request)
     {
         $prefix = substr($request->getPathInfo(), 1); //removes leading '/'
-        //todo: is there a better solution than the following 2 lines?
         //Had some trouble with paths. Differenet behaviours on different systems...
         $prefix = str_replace('%20', ' ', $prefix); //Must replace the %20 that blank space is replaced with in the request
         $prefix = str_replace('%5C', '%2F', $prefix); //Must replace the %5C that / is replaced with in the request (in some browsers only?)
@@ -71,7 +69,7 @@ class FileBrowserController extends Controller
         //Make an array without directories included.
         $filesWithoutFolders = array();
         foreach ($files as $file) {
-            if (!is_dir($file)) { //todo: didnt work....why?
+            if (!is_dir($file)) {
                 $filesWithoutFolders[] = $file;
             }
         }

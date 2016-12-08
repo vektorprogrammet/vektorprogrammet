@@ -129,6 +129,7 @@ class Subscriber
     {
         $this->newsletter = $newsletter;
     }
+
     /**
      * @param mixed
      */
@@ -136,6 +137,7 @@ class Subscriber
     {
         return $this->unsubscribeCode;
     }
+
     /**
      * @param mixed $unsubscribeCode
      */

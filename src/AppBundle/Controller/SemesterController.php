@@ -35,31 +35,31 @@ class SemesterController extends Controller
             'semesterName' => $semester->getName(),
         ));
     }
-        // If it is an admin they can only edit semesters that are from their own department
-        /*
-        ************************************************************************************************************
-        ***** Enabe this if you want ROLE_ADMIN to be able to edit semesters from their own department  *****
-        ************************************************************************************************************
+    // If it is an admin they can only edit semesters that are from their own department
+    /*
+    ************************************************************************************************************
+    ***** Enabe this if you want ROLE_ADMIN to be able to edit semesters from their own department  *****
+    ************************************************************************************************************
 
-        elseif ( ($this->get('security.context')->isGranted('ROLE_ADMIN')) && ($userDepartment == $semesterDepartment) ){
+    elseif ( ($this->get('security.context')->isGranted('ROLE_ADMIN')) && ($userDepartment == $semesterDepartment) ){
 
-            $form = $this->createForm(new CreateSemesterType(), $semester);
+        $form = $this->createForm(new CreateSemesterType(), $semester);
 
-            // Handle the form
-            $form->handleRequest($request);
+        // Handle the form
+        $form->handleRequest($request);
 
-            if ($form->isValid()) {
-                $em->persist($semester);
-                $em->flush();
-                return $this->redirect($this->generateUrl('semesteradmin_show'));
-            }
-
-            return $this->render('semester_admin/create_semester.html.twig', array(
-                 'form' => $form->createView(),
-            ));
-
+        if ($form->isValid()) {
+            $em->persist($semester);
+            $em->flush();
+            return $this->redirect($this->generateUrl('semesteradmin_show'));
         }
-        */
+
+        return $this->render('semester_admin/create_semester.html.twig', array(
+             'form' => $form->createView(),
+        ));
+
+    }
+    */
 
     public function showSemestersByDepartmentAction(request $request)
     {
@@ -110,51 +110,51 @@ class SemesterController extends Controller
     {
         $semester = new Semester();
 
-            // Get the ID parameter sent in by the request
-            $departmentId = $request->get('id');
+        // Get the ID parameter sent in by the request
+        $departmentId = $request->get('id');
 
-            // Find the department where ID matches departmentId
-            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
+        // Find the department where ID matches departmentId
+        $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
 
-            // Create the form
-            $form = $this->createForm(new CreateSemesterType(), $semester);
+        // Create the form
+        $form = $this->createForm(new CreateSemesterType(), $semester);
 
-            // Handle the form
-            $form->handleRequest($request);
+        // Handle the form
+        $form->handleRequest($request);
 
-            // The fields of the form is checked if they contain the correct information
-            if ($form->isValid()) {
-                //Check if semester already exists
-                $existingSemester = $this->getDoctrine()->getManager()->getRepository('AppBundle:Semester')->findBy(array(
-                    'department' => $department,
-                    'semesterTime' => $semester->getSemesterTime(),
-                    'year' => $semester->getYear(),
-                ));
-                //Return to semester page if semester already exists
-                if (count($existingSemester)) {
-                    return $this->redirect($this->generateUrl('semesteradmin_show'));
-                }
-
-                // Set the department of the semester
-                $semester->setDepartment($department);
-
-                $year = $semester->getYear();
-                $startMonth = $semester->getSemesterTime() == 'Vår' ? '01' : '08';
-                $endMonth = $semester->getSemesterTime() == 'Vår' ? '07' : '12';
-                $semester->setSemesterStartDate(date_create($year.'-'.$startMonth.'-01 00:00:00'));
-                $semester->setSemesterEndDate(date_create($year.'-'.$endMonth.'-31 23:59:59'));
-                // If valid insert into database
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($semester);
-                $em->flush();
-
+        // The fields of the form is checked if they contain the correct information
+        if ($form->isValid()) {
+            //Check if semester already exists
+            $existingSemester = $this->getDoctrine()->getManager()->getRepository('AppBundle:Semester')->findBy(array(
+                'department' => $department,
+                'semesterTime' => $semester->getSemesterTime(),
+                'year' => $semester->getYear(),
+            ));
+            //Return to semester page if semester already exists
+            if (count($existingSemester)) {
                 return $this->redirect($this->generateUrl('semesteradmin_show'));
             }
 
-            // Render the view
-            return $this->render('semester_admin/create_semester.html.twig', array(
-                 'form' => $form->createView(),
-            ));
+            // Set the department of the semester
+            $semester->setDepartment($department);
+
+            $year = $semester->getYear();
+            $startMonth = $semester->getSemesterTime() == 'Vår' ? '01' : '08';
+            $endMonth = $semester->getSemesterTime() == 'Vår' ? '07' : '12';
+            $semester->setSemesterStartDate(date_create($year.'-'.$startMonth.'-01 00:00:00'));
+            $semester->setSemesterEndDate(date_create($year.'-'.$endMonth.'-31 23:59:59'));
+            // If valid insert into database
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($semester);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('semesteradmin_show'));
+        }
+
+        // Render the view
+        return $this->render('semester_admin/create_semester.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
     /* This allows the ROLE_ADMIN to create semester, but it was not mentioned in the requirements that the ROLE_ADMIN should be able to create semesters.

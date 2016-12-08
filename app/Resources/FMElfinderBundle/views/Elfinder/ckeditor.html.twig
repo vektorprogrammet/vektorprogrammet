@@ -13,25 +13,25 @@
 {% endif %}
 <script type="text/javascript" charset="utf-8">
     function getUrlParam(paramName) {
-        var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
-        var match = window.location.search.match(reParam) ;
+        var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i');
+        var match = window.location.search.match(reParam);
 
-        return (match && match.length > 1) ? match[1] : '' ;
+        return (match && match.length > 1) ? match[1] : '';
     }
-    $().ready(function() {
+    $().ready(function () {
         var funcNum = getUrlParam('CKEditorFuncNum');
         var mode = getUrlParam('mode');
 
         var f = $('.elfinder').elfinder({
-            url : '{{path('ef_connect', {'instance': instance })}}'+'?mode='+mode,
-            lang : '{{locale}}',
-            getFileCallback : function(file) {
+            url: '{{ path('ef_connect', {'instance': instance }) }}' + '?mode=' + mode,
+            lang: '{{ locale }}',
+            getFileCallback: function (file) {
                 if (funcNum) {
                     {% if relative_path %}
-                        {# This is the only line changed, it adds a / prefix to the path and replaces all \ with / #}
-                        window.opener.CKEDITOR.tools.callFunction(funcNum, '/' + file.url.substring(file.url.indexOf("/images") +1));
+                    {# This is the only line changed, it adds a / prefix to the path and replaces all \ with / #}
+                    window.opener.CKEDITOR.tools.callFunction(funcNum, '/' + file.url.substring(file.url.indexOf("/images") + 1));
                     {% else %}
-                        window.opener.CKEDITOR.tools.callFunction(funcNum, file.url);
+                    window.opener.CKEDITOR.tools.callFunction(funcNum, file.url);
                     {% endif %}
                     window.close();
                 }
@@ -39,11 +39,11 @@
         });
 
         {% if fullscreen %}
-        $(window).resize(function(){
+        $(window).resize(function () {
             var h = $(window).height();
             var $ef = $('.elfinder');
-            if($ef.height() != h - 20){
-                $ef.height(h -20).resize();
+            if ($ef.height() != h - 20) {
+                $ef.height(h - 20).resize();
             }
         });
         {% endif %}

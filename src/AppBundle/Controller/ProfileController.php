@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\EditUserType;
 use AppBundle\Form\Type\EditUserAdminType;
 use AppBundle\Form\Type\EditUserPasswordType;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use DateTime;
 
@@ -469,45 +468,44 @@ class ProfileController extends Controller
     {
         if ($this->get('security.context')->isGranted('ROLE_USER')) {
 
-        // Get the current user logged in or load the targeted user if editor is super_admin
-        $user = $this->get('security.context')->getToken()->getUser();
+            // Get the current user logged in or load the targeted user if editor is super_admin
+            $user = $this->get('security.context')->getToken()->getUser();
             if ($id !== $user->getId() && $this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-                $user = $em = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findUserById($id);
             } else {
                 $id = $user->getId();
             }
 
-        //Target folder for the profile photo
-        $targetFolder = $this->container->getParameter('profile_photos').'/';
-        //Get filetype
-        $extension = explode('.', $request->files->get('img')->getClientOriginalName());
+            //Target folder for the profile photo
+            $targetFolder = $this->container->getParameter('profile_photos').'/';
+            //Get filetype
+            $extension = explode('.', $request->files->get('img')->getClientOriginalName());
             $extension = $extension[count($extension) - 1];
 
-        //Remove previously uploaded photos
-        if (file_exists($targetFolder.$id.'_temp.jpg')) {
-            unlink($targetFolder.$id.'_temp.jpg');
-        } elseif (file_exists($targetFolder.$id.'_temp.jpeg')) {
-            unlink($targetFolder.$id.'_temp.jpeg');
-        }
+            //Remove previously uploaded photos
+            if (file_exists($targetFolder.$id.'_temp.jpg')) {
+                unlink($targetFolder.$id.'_temp.jpg');
+            } elseif (file_exists($targetFolder.$id.'_temp.jpeg')) {
+                unlink($targetFolder.$id.'_temp.jpeg');
+            }
 
             try {
                 //Move the file to new temporary location
-            $request->files->get('img')->move($targetFolder, $id.'_temp.'.$extension);
+                $request->files->get('img')->move($targetFolder, $id.'_temp.'.$extension);
 
-            //Return the new URL
-            $response = ['success' => true,
-                'url' => $url = $this->container->get('templating.helper.assets')->getUrl($targetFolder.$id.'_temp.'.$extension),
-            ];
+                //Return the new URL
+                $response = ['success' => true,
+                    'url' => $this->container->get('templating.helper.assets')->getUrl($targetFolder.$id.'_temp.'.$extension),
+                ];
             } catch (\Exception $e) {
                 $response = ['success' => false,
-                'code' => $e->getCode(),
-                'cause' => 'Det oppstod en feil under lagringen av bildet. Prøv igjen eller kontakt IT ansvarlig.',
-            ];
+                    'code' => $e->getCode(),
+                    'cause' => 'Det oppstod en feil under lagringen av bildet. Prøv igjen eller kontakt IT ansvarlig.',
+                ];
             }
         } else {
             $response = ['success' => false,
-            'cause' => 'Du har ikke rettigheter til dette!',
-        ];
+                'cause' => 'Du har ikke rettigheter til dette!',
+            ];
         }
 
         return new JsonResponse($response);
@@ -587,7 +585,6 @@ class ProfileController extends Controller
             // Get the current user logged in or load the targeted user if editor is super_admin
             $user = $this->get('security.context')->getToken()->getUser();
             if ($id !== $user->getId() && $this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-                $user = $em = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findUserById($id);
             } else {
                 $id = $user->getId();
             }
@@ -638,7 +635,7 @@ class ProfileController extends Controller
             // Get the current user logged in or load the targeted user if editor is super_admin
             $user = $this->get('security.context')->getToken()->getUser();
             if ($id !== $user->getId() && $this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-                $user = $em = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findUserById($id);
+                $user = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findUserById($id);
             } else {
                 $id = $user->getId();
             }
