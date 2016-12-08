@@ -274,9 +274,4 @@ class SchoolAllocationController extends Controller
             'form' => $form->createView(),
         ));
     }
-
-    public function getName()
-    {
-        return 'SchoolAllocation'; // This must be unique
-    }
 }

@@ -74,7 +74,7 @@ class ControlPanelController extends Controller
         ));
     }
 
-    public function determineCurrentStep(Semester $semester, $interviewedAssistantsCount, $assignedInterviewsCount, $totalAssistantsCount)
+    private function determineCurrentStep(Semester $semester, $interviewedAssistantsCount, $assignedInterviewsCount, $totalAssistantsCount)
     {
         $today = new DateTime('now');
 

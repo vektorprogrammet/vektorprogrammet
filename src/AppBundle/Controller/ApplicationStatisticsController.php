@@ -9,11 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ApplicationStatisticsController extends Controller
 {
-    public function getName()
-    {
-        return 'applicationResults'; // This must be unique
-    }
-
     /**
      * @param Department|null $department
      * @param Request         $request
