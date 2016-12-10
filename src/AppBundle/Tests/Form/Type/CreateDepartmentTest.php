@@ -40,7 +40,7 @@ class CreateDepartmentTest extends TypeTestCase
             array(
                 'data' => array(
                     'name' => 'Universitetet i Østfold',
-                    'short_name' => 'UiØ',
+                    'shortName' => 'UiØ',
                     'email' => 'uiø@mail.com',
                     'address' => 'Ormvegen 12',
                 ),
@@ -51,7 +51,7 @@ class CreateDepartmentTest extends TypeTestCase
             array(
                 'data' => array(
                     'name' => null,
-                    'short_name' => null,
+                    'shortName' => null,
                     'email' => null,
                     'address' => null,
                 ),

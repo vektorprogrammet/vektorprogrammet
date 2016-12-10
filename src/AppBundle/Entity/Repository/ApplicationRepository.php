@@ -235,7 +235,7 @@ class ApplicationRepository extends EntityRepository
      *
      * @return int
      */
-    public function NumOfApplications(Semester $semester)
+    public function numOfApplications(Semester $semester)
     {
         return $this->createQueryBuilder('Application')
             ->select('count(Application.id)')
@@ -245,7 +245,7 @@ class ApplicationRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function NumOfSemesters()
+    public function numOfSemesters()
     {
         return $this->createQueryBuilder('ApplicationStatistic')
             ->select('count(ApplicationStatistic.semester)')
@@ -254,7 +254,7 @@ class ApplicationRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function NumOfSemester($semester)
+    public function numOfSemester($semester)
     {
         return $this->createQueryBuilder('ApplicationStatistic')
             ->select('count(ApplicationStatistic.semester)')
@@ -299,7 +299,7 @@ class ApplicationRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function NumOfAccepted($accepted)
+    public function numOfAccepted($accepted)
     {
         return $this->createQueryBuilder('ApplicationStatistic')
             ->select('count(ApplicationStatistic.accepted)')
@@ -309,7 +309,7 @@ class ApplicationRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function NumOfYearOfStudy($yearOfStudy)
+    public function numOfYearOfStudy($yearOfStudy)
     {
         return $this->createQueryBuilder('ApplicationStatistic')
             ->select('count(ApplicationStatistic.yearOfStudy)')
@@ -319,7 +319,7 @@ class ApplicationRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function NumOfFieldOfStudy($fieldOfStudy)
+    public function numOfFieldOfStudy($fieldOfStudy)
     {
         return $this->createQueryBuilder('ApplicationStatistic')
             ->select('count(ApplicationStatistic.fieldOfStudy)')
@@ -329,7 +329,7 @@ class ApplicationRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function NumOfDepartment($department)
+    public function numOfDepartment($department)
     {
         $numUsers = $this->getEntityManager()->createQuery('
 

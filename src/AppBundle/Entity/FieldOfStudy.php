@@ -23,9 +23,9 @@ class FieldOfStudy
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(name="short_name", type="string", length=50)
      */
-    private $short_name;
+    private $shortName;
 
     /**
      * @ORM\ManyToOne(targetEntity="Department", inversedBy="fieldOfStudy")
@@ -67,7 +67,7 @@ class FieldOfStudy
     }
 
     /**
-     * Set short_name.
+     * Set shortName.
      *
      * @param string $shortName
      *
@@ -75,19 +75,19 @@ class FieldOfStudy
      */
     public function setShortName($shortName)
     {
-        $this->short_name = $shortName;
+        $this->shortName = $shortName;
 
         return $this;
     }
 
     /**
-     * Get short_name.
+     * Get shortName.
      *
      * @return string
      */
     public function getShortName()
     {
-        return $this->short_name;
+        return $this->shortName;
     }
 
     /**

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SemesterController extends Controller
 {
-    public function updateSemesterAction(request $request)
+    public function updateSemesterAction(Request $request)
     {
         $id = $request->get('id');
 
@@ -35,33 +35,8 @@ class SemesterController extends Controller
             'semesterName' => $semester->getName(),
         ));
     }
-    // If it is an admin they can only edit semesters that are from their own department
-    /*
-    ************************************************************************************************************
-    ***** Enabe this if you want ROLE_ADMIN to be able to edit semesters from their own department  *****
-    ************************************************************************************************************
 
-    elseif ( ($this->get('security.context')->isGranted('ROLE_ADMIN')) && ($userDepartment == $semesterDepartment) ){
-
-        $form = $this->createForm(new CreateSemesterType(), $semester);
-
-        // Handle the form
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em->persist($semester);
-            $em->flush();
-            return $this->redirect($this->generateUrl('semesteradmin_show'));
-        }
-
-        return $this->render('semester_admin/create_semester.html.twig', array(
-             'form' => $form->createView(),
-        ));
-
-    }
-    */
-
-    public function showSemestersByDepartmentAction(request $request)
+    public function showSemestersByDepartmentAction(Request $request)
     {
         if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
             // Find the department
@@ -106,7 +81,7 @@ class SemesterController extends Controller
         }
     }
 
-    public function SuperadminCreateSemesterAction(request $request)
+    public function superadminCreateSemesterAction(Request $request)
     {
         $semester = new Semester();
 

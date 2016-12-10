@@ -42,7 +42,7 @@ class ApplicationStatisticsController extends Controller
         $assistantHistoryRepository = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory');
 
         // Application data
-        $applicationCount = $applicationRepository->NumOfApplications($semester);
+        $applicationCount = $applicationRepository->numOfApplications($semester);
         $maleCount = $applicationRepository->numOfGender($semester, 0);
         $femaleCount = $applicationRepository->numOfGender($semester, 1);
         $prevParticipationCount = $applicationRepository->numOfPreviousParticipation($semester);

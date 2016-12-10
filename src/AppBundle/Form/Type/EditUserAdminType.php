@@ -36,7 +36,7 @@ class EditUserAdminType extends AbstractType
                 'class' => 'AppBundle:FieldOfStudy',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('f')
-                        ->orderBy('f.short_name', 'ASC')
+                        ->orderBy('f.shortName', 'ASC')
                         ->where('f.department = ?1')
                         // Set the parameter to the department ID that the current user belongs to.
                         ->setParameter(1, $this->departmentId);
