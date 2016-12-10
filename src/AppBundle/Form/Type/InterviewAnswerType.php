@@ -2,6 +2,8 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\InterviewAnswer;
+use AppBundle\Entity\InterviewQuestionAlternative;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -121,15 +123,15 @@ class InterviewAnswerType extends AbstractType
      * Creates a key value array of alternatives from a Doctrine collection of QuestionAlternatives.
      * The key and the value are the same.
      *
-     * @param $interviewAnswer
+     * @param InterviewAnswer $interviewAnswer
      *
      * @return array
      */
-    public function createChoices($interviewAnswer)
+    public function createChoices(InterviewAnswer $interviewAnswer)
     {
         $alternatives = $interviewAnswer->getInterviewQuestion()->getAlternatives();
 
-        $values = array_map(function ($a) {
+        $values = array_map(function (InterviewQuestionAlternative $a) {
             return $a->getAlternative();
         }, $alternatives->getValues());
 
