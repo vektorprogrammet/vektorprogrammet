@@ -275,7 +275,7 @@ class Assistant
      * @param int    $group
      * @param string $day
      */
-    public function assignToSchool($school, $group, $day)
+    public function assignToSchool(School $school, $group, $day)
     {
         $this->setAssignedSchool($school->getName());
         if ($this->group == 1 && $group == 2 || $this->group == 2 && $group == 1) {

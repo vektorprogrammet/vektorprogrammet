@@ -2,6 +2,8 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\SurveyAnswer;
+use AppBundle\Entity\SurveyQuestionAlternative;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -139,15 +141,15 @@ class SurveyAnswerType extends AbstractType
      * Creates a key value array of alternatives from a Doctrine collection of QuestionAlternatives.
      * The key and the value are the same.
      *
-     * @param $surveyAnswer
+     * @param SurveyAnswer $surveyAnswer
      *
      * @return array
      */
-    public function createChoices($surveyAnswer)
+    public function createChoices(SurveyAnswer $surveyAnswer)
     {
         $alternatives = $surveyAnswer->getSurveyQuestion()->getAlternatives();
 
-        $values = array_map(function ($a) {
+        $values = array_map(function (SurveyQuestionAlternative $a) {
             return $a->getAlternative();
         }, $alternatives->getValues());
 

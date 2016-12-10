@@ -127,7 +127,7 @@ class Allocation
      * @param int       $group
      * @param string    $day
      */
-    public function assignAssistantToSchool($assistant, $school, $group, $day)
+    public function assignAssistantToSchool(Assistant $assistant, School $school, $group, $day)
     {
         $assistant->assignToSchool($school, $group, $day);
         $school->addAssistant($group, $day);
