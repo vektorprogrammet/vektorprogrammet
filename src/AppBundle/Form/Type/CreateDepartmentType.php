@@ -14,7 +14,7 @@ class CreateDepartmentType extends AbstractType
             ->add('name', 'text', array(
                 'label' => 'Navn',
             ))
-            ->add('short_name', 'text', array(
+            ->add('shortName', 'text', array(
                 'label' => 'Forkortet navn',
             ))
             ->add('email', 'text', array(

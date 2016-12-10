@@ -121,7 +121,7 @@ class ArticleRepository extends EntityRepository
             ->select('a')
             ->addOrderBy('a.created', 'DESC')
             ->leftJoin('a.departments', 'd')
-            ->where('d.short_name IN (:department_sns)')
+            ->where('d.shortName IN (:department_sns)')
             ->orWhere('SIZE(a.departments) = 0')
             ->setParameter('department_sns', $departments);
     }

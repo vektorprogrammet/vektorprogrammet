@@ -34,7 +34,7 @@ class SemesterRepository extends EntityRepository
             ->getScalarResult();
     }
 
-    public function NumOfSemesters()
+    public function numOfSemesters()
     {
         return $this->createQueryBuilder('Semester')
             ->select('count(Semester.id)')

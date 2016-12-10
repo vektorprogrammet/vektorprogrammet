@@ -25,10 +25,10 @@ class Department
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(name="short_name", type="string", length=50)
      * @Assert\NotBlank
      */
-    private $short_name;
+    private $shortName;
 
     /**
      * @ORM\Column(type="string", length=250)
@@ -111,7 +111,7 @@ class Department
     }
 
     /**
-     * Set short_name.
+     * Set shortName.
      *
      * @param string $shortName
      *
@@ -119,33 +119,19 @@ class Department
      */
     public function setShortName($shortName)
     {
-        $this->short_name = $shortName;
+        $this->shortName = $shortName;
 
         return $this;
     }
 
     /**
-     * Set short_name.
-     *
-     * @param string $shortName
-     *
-     * @return Department
-     */
-    public function setShort_Name($shortName)
-    {
-        $this->short_name = $shortName;
-
-        return $this;
-    }
-
-    /**
-     * Get short_name.
+     * Get shortName.
      *
      * @return string
      */
     public function getShortName()
     {
-        return $this->short_name;
+        return $this->shortName;
     }
 
     /**

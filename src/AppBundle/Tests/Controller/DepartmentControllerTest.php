@@ -53,7 +53,7 @@ class DepartmentControllerTest extends WebTestCase
 
         // Change the value of a field
         $form['createDepartment[name]'] = 'Heggen';
-        $form['createDepartment[short_name]'] = 'Hgn';
+        $form['createDepartment[shortName]'] = 'Hgn';
         $form['createDepartment[email]'] = 'Hgn@mail.com';
         $form['createDepartment[address]'] = 'Storgata 9';
 
@@ -102,7 +102,7 @@ class DepartmentControllerTest extends WebTestCase
 
         // Change the value of a field
         $form['createDepartment[name]'] = 'Norges teknisk-naturvitenskapelige universitet2';
-        $form['createDepartment[short_name]'] = 'NTNU2';
+        $form['createDepartment[shortName]'] = 'NTNU2';
         $form['createDepartment[email]'] = 'NTNU@mail.com2';
         $form['createDepartment[address]'] = 'Storgata 1';
 
