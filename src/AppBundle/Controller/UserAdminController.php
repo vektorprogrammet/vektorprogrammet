@@ -11,7 +11,7 @@ use AppBundle\Form\Type\NewUserType;
 
 class UserAdminController extends Controller
 {
-    public function createUserSuperadminAction(request $request)
+    public function createUserSuperadminAction(Request $request)
     {
 
         // The the department ID parameter sent by the request

@@ -10,7 +10,6 @@ use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\User;
 
 /**
  * AdmissionAdminController is the controller responsible for administrative admission actions,
@@ -190,32 +189,7 @@ class AdmissionAdminController extends Controller
 
                 // AJAX response
                 $response['success'] = true;
-            }
-            // This allows someone of a different role(lower) to delete applications/interviews if they belong to the same department.
-            // This functionality is not in use, as only the highest admin should be able to delete applications/interviews.
-            /*elseif ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')){
-
-                $em = $this->getDoctrine()->getEntityManager();
-                $application = $this->getDoctrine()->getRepository('AppBundle:Application')->find($id);
-                // Get the department of the application
-                $department = $application->getStatistic()->getFieldOfStudy()->getDepartment();
-
-                // Is the admin from the same department as the application?
-                if ($this->get('security.context')->getToken()->getUser()->getFieldOfStudy()->getDepartment() === $department){
-
-                    $em->remove($application);
-                    $em->flush();
-                    // Send a respons to AJAX
-                    $response['success'] = true;
-
-                }
-                else {
-                    // Send a respons to AJAX
-                    $response['success'] = false;
-                    $response['cause'] = 'Du kan ikke slette en applikasjon som ikke er fra din avdeling.';
-                }
-            }*/
-            else {
+            } else {
                 // Send a respons to AJAX
                 $response['success'] = false;
                 $response['cause'] = 'Ikke tilstrekkelige rettigheter.';
@@ -270,26 +244,7 @@ class AdmissionAdminController extends Controller
                 }
                 // AJAX response
                 $response['success'] = true;
-            }
-            // This allows someone of a different role(lower) to delete applications/interviews if they belong to the same department.
-            // This functionality is not in use, as only the highest admin should be able to delete applications/interviews.
-            /*elseif ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')) {
-                $response['success'] = true;
-
-                // Delete the applications
-                foreach($applications as $application) {
-                    $department = $application->getStatistic()->getFieldOfStudy()->getDepartment();
-                    if($this->getUser()->getFieldOfStudy()->getDepartment() === $department) {
-                        $em->remove($application);
-                    } else {
-                        $response['success'] = false;
-                        $response['cause'] = 'Ikke tilstrekkelige rettigheter til å slette en eller flere av søknadene (utenfor din avdeling).';
-                    }
-                }
-
-                $em->flush();
-            }*/
-            else {
+            } else {
                 // Send a respons to AJAX
                 $response['success'] = false;
                 $response['cause'] = 'Ikke tilstrekkelige rettigheter.';
@@ -305,110 +260,6 @@ class AdmissionAdminController extends Controller
 
         // Response to ajax
         return new JsonResponse($response);
-    }
-
-    /**
-     * Creates an unactivated user for the given application.
-     * This method is intended to be called by an Ajax request.
-     *
-     * @param $id
-     *
-     * @return JsonResponse
-     */
-    public function createUnactivatedUserAction($id)
-    {
-        try {
-            $em = $this->getDoctrine()->getManager();
-
-            $application = $em->getRepository('AppBundle:Application')->findApplicantById($id);
-            $role = $em->getRepository('AppBundle:Role')->findOneByName(self::NEW_USER_ROLE);
-
-            // Create the hash
-            $createNewUserCode = bin2hex(openssl_random_pseudo_bytes(16));
-            $hashedNewUserCode = hash('sha512', $createNewUserCode, false);
-
-            // Copy information from the given application to a new user
-            $user = new User();
-            $user->setLastName($application->getLastName());
-            $user->setFirstName($application->getFirstName());
-            $user->setGender($application->getStatistic()->getGender());
-            $user->setPhone($application->getPhone());
-            $user->setFieldOfStudy($application->getStatistic()->getFieldOfStudy());
-            $user->setEmail($application->getEmail());
-
-            // Create Username from email, and make sure it's unique
-            $new_username = explode('@', $application->getEmail())[0];
-            $user_rep = $em->getRepository('AppBundle:User');
-            $violator = $user_rep->findOneBy(
-                array('user_name' => $new_username)
-            );
-            $postfix = 0;
-            while ($violator) {
-                ++$postfix;
-                $violator = $user_rep->findOneBy(
-                    array('user_name' => ($new_username.$postfix))
-                );
-            }
-            if ($postfix) {
-                $new_username = $new_username.$postfix;
-            }
-
-            $user->setUserName($new_username);
-            $user->setPassword($new_username);
-
-            $user->setActive('0');
-            $user->setNewUserCode($hashedNewUserCode);
-
-            // Give the new user the default role
-            $user->addRole($role);
-
-            // Update the application
-            $application->setUserCreated(true);
-
-            // Update application statistic
-            $application->getStatistic()->setAccepted(true);
-
-            // Persist
-            $em->persist($application);
-            $em->persist($user);
-            $em->flush();
-
-            //Sends a email with the url for resetting the password
-
-            $this->sendNewUserEmail($createNewUserCode, $user->getEmail());
-
-            return new JsonResponse([
-                'success' => true,
-            ]);
-        } catch (\Exception $e) {
-            // If it is a integrity violation constraint (i.e a user with the email already exists)
-            if ($e->getPrevious()) { //If the error occurred when sending email, $e->getPrevious() will be null
-                if ($e->getPrevious()->getCode() == 23000) {
-                    $message = 'En bruker med denne E-posten eksisterer allerede.';
-                }
-            } else {
-                $message = 'En feil oppstod. Kontakt IT ansvarlig.';
-            }
-
-            return new JsonResponse([
-                'success' => false,
-                'cause' => $message,
-            ]);
-        }
-    }
-
-    /**
-     * @param $createNewUserCode
-     * @param $email
-     */
-    private function sendNewUserEmail($createNewUserCode, $email)
-    {
-        $emailMessage = \Swift_Message::newInstance()
-            ->setSubject('Opprett bruker på vektorprogrammet.no')
-            ->setFrom($this->container->getParameter('no_reply_email_user_creation'))
-            ->setTo($email)
-            ->setBody($this->renderView('new_user/create_new_user_email.txt.twig', array('newUserURL' => $this->generateURL('admissionadmin_create_new_user', array('id' => $createNewUserCode), true))));
-        $this->get('mailer')->send($emailMessage);
     }
 
     /**

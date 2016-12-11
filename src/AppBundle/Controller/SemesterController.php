@@ -132,45 +132,7 @@ class SemesterController extends Controller
         ));
     }
 
-    /* This allows the ROLE_ADMIN to create semester, but it was not mentioned in the requirements that the ROLE_ADMIN should be able to create semesters.
-    public function createSemesterAction(request $request){
-
-        if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
-            $semester = new Semester();
-
-            // Get the department of the current user
-            $department = $this->get('security.context')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
-
-            // Create the form
-            $form = $this->createForm(new CreateSemesterType($department), $semester);
-
-            // Handle the form
-            $form->handleRequest($request);
-
-            // The fields of the form is checked if they contain the correct information
-            if ($form->isValid()) {
-                // Set the department of the semester
-                $semester->setDepartment($department);
-                // If valid insert into database
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($semester);
-                $em->flush();
-                return $this->redirect($this->generateUrl('semesteradmin_show'));
-            }
-
-            // Render the view
-            return $this->render('semester_admin/create_semester.html.twig', array(
-                 'form' => $form->createView(),
-            ));
-        }
-        else {
-            return $this->redirect($this->generateUrl('home'));
-        }
-
-    }
-    */
-
-    public function deleteSemesterByIdAction(request $request)
+    public function deleteSemesterByIdAction(Request $request)
     {
         $id = $request->get('id');
 
@@ -184,35 +146,7 @@ class SemesterController extends Controller
                 $em->flush();
 
                 $response['success'] = true;
-            }
-            // You have to check for admin rights here to prevent admins from deleting smesters that are not in their department
-            /*
-            Enable this if you want ROLE_ADMIN to be able to delete semesters from their department
-            elseif ($this->get('security.context')->isGranted('ROLE_ADMIN')){
-
-                $em = $this->getDoctrine()->getEntityManager();
-                // Find a semester by a given ID
-                $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($id);
-                // Find the department of the semester that is being deleted
-                $department = $semester->getDepartment();
-
-                // Is the admin from the same department as the semester he is trying to delete?
-                if ($this->get('security.context')->getToken()->getUser()->getFieldOfStudy()->getDepartment() === $department){
-
-                    $em->remove($semester);
-                    $em->flush();
-                    // Send a response back to AJAX
-                    $response['success'] = true;
-
-                }
-                else {
-                    // Send a response back to AJAX
-                    $response['success'] = false;
-                    $response['cause'] = 'Du kan ikke slette et semester som ikke er fra din avdeling.';
-                }
-            }
-            */
-            else {
+            } else {
                 // Send a response back to AJAX
                 $response['success'] = false;
                 $response['cause'] = 'Ikke tilstrekkelige rettigheter.';

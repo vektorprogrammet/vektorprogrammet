@@ -34,23 +34,27 @@ class PasswordResetController extends Controller
         if ($form->isValid()) {
             //Creates a resetpassword-Entity and sends a reset url by Email to the user. if the username and email is correct
             if ($this->createResetPasswordEntity($form, $passwordReset)) {
-                return $this->render('reset_password/confirmation.html.twig');
+                return $this->redirectToRoute('reset_password_confirmation');
             }
         }
         //Render reset_password twig with the form.
         return $this->render('reset_password/reset_password.html.twig', array('form' => $form->createView()));
     }
 
-/**
- * @param $form
- * @param $passwordReset
- *
- * @return bool
- *
- * Creates a resetPassword field in the resetPassword entity, with a reset code, date and the user who want to reset the password.
- * The function sends a url to the user where the user can reset the password
- */
-    //Creates a resetpassword-Entity and sends a reset url by Email to the user.
+    public function showConfirmationAction()
+    {
+        return $this->render('reset_password/confirmation.html.twig');
+    }
+
+    /**
+     * @param $form
+     * @param $passwordReset
+     *
+     * @return bool
+     *
+     * Creates a resetPassword field in the resetPassword entity, with a reset code, date and the user who want to reset the password.
+     * The function sends a url to the user where the user can reset the password
+     */
     private function createResetPasswordEntity($form, $passwordReset)
     {
 

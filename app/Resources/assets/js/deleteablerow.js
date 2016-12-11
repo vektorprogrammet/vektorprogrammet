@@ -65,7 +65,7 @@
             var entityId = parseInt(button.id);
 
             $.ajax({
-                type: 'GET',
+                type: 'POST',
                 url: Routing.generate(route, {id: entityId}),
                 cache: false,
                 success: function (response) {
