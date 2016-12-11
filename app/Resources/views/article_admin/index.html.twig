@@ -34,7 +34,7 @@
                 var button = $(this);
 
                 $.ajax({
-                    type: 'GET',
+                    type: 'POST',
                     url: Routing.generate("articleadmin_sticky", {id: entityId}),
                     cache: false,
                     success: function (response) {

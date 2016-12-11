@@ -162,8 +162,8 @@ profile_activate_with_user_code:
 profile_activate_user:
  path:   /profile/aktiv/{id}
  defaults: { _controller: AppBundle:Profile:activateUser }
+ methods: [POST]
  requirements:
-    _method: GET
     id: \d+
  options:
     expose: true
@@ -171,8 +171,8 @@ profile_activate_user:
 profile_deactivate_user:
  path:   /profile/deaktiv/{id}
  defaults: { _controller: AppBundle:Profile:deactivateUser }
+ methods: [POST]
  requirements:
-    _method: GET
     id: \d+
  options:
     expose: true
@@ -180,8 +180,8 @@ profile_deactivate_user:
 profile_promote_user_to_assistent:
  path:   /profile/rolle/assistent/bruker/{id}
  defaults: { _controller: AppBundle:Profile:promoteToAssistent }
+ methods: [POST]
  requirements:
-    _method: GET
     id: \d+
  options:
     expose: true
@@ -189,8 +189,8 @@ profile_promote_user_to_assistent:
 profile_promote_user_to_team:
  path:   /profile/rolle/team/bruker/{id}
  defaults: { _controller: AppBundle:Profile:promoteToTeamMember }
+ methods: [POST]
  requirements:
-    _method: GET
     id: \d+
  options:
     expose: true
@@ -198,8 +198,8 @@ profile_promote_user_to_team:
 profile_promote_user_to_admin:
  path:   /profile/rolle/admin/bruker/{id}
  defaults: { _controller: AppBundle:Profile:promoteToAdmin }
+ methods: [POST]
  requirements:
-    _method: GET
     id: \d+
  options:
     expose: true
@@ -307,6 +307,11 @@ reset_password:
   requirements:
     _method: GET|POST
 
+reset_password_confirmation:
+    path: /resetsendt
+    defaults: { _controller: AppBundle:PasswordReset:showConfirmation }
+    methods: [GET]
+
 ##########################################
 #               Article                  #
 ##########################################
@@ -356,16 +361,14 @@ articleadmin_edit:
 articleadmin_sticky:
   path: /kontrollpanel/artikkeladmin/sticky/{id}
   defaults: { _controller: AppBundle:ArticleAdmin:sticky }
-  requirements:
-    _method: GET
+  methods: [POST]
   options:
     expose: true
 
 articleadmin_delete:
   path: /kontrollpanel/artikkeladmin/slett/{id}
   defaults: { _controller: AppBundle:ArticleAdmin:delete }
-  requirements:
-    _method: GET
+  methods: [POST]
   options:
     expose: true
 
@@ -454,15 +457,6 @@ admissionadmin_create_new_user:
  requirements:
     _method: GET|POST
 
-admissionadmin_send_new_user_mail:
- path: /kontrollpanel/opptakadmin/opprettbruker/{id}
- defaults: {_controller: AppBundle:AdmissionAdmin:createUnactivatedUser }
- requirements:
-    _method: GET
-    id: \d+
- options:
-    expose: true
-
 register_applicant:
  path: /kontrollpanel/opprettsoker
  defaults: {_controller: AppBundle:AdmissionAdmin:createApplication}
@@ -488,8 +482,8 @@ useradmin_filter_users_by_department:
 useradmin_delete_user_by_id:
  path: /kontrollpanel/brukeradmin/slett/{id}
  defaults: {_controller: AppBundle:UserAdmin:deleteUserById }
+ methods: [POST]
  requirements:
-    _method: GET
     id: \d+
  options:
     expose: true
@@ -535,8 +529,8 @@ semesteradmin_filter_semesters_by_department:
 semesteradmin_delete_semester_by_id:
  path: /kontrollpanel/semesteradmin/slett/{id}
  defaults: {_controller: AppBundle:Semester:deleteSemesterById }
+ methods: [POST]
  requirements:
-    _method: GET
     id: \d+
  options:
     expose: true
@@ -609,8 +603,8 @@ teamadmin_update_workhistory:
 teamadmin_remove_user_from_team_by_id:
  path: /kontrollpanel/teamadmin/team/slett/bruker/{id}
  defaults: {_controller: AppBundle:TeamAdmin:removeUserFromTeamById }
+ methods: [POST]
  requirements:
-    _method: GET
     id: \d+
  options:
     expose: true
@@ -663,8 +657,8 @@ departmentadmin_create_department:
 departmentadmin_delete_department_by_id:
  path: /kontrollpanel/avdelingadmin/slett/{id}
  defaults: {_controller: AppBundle:Department:deleteDepartmentById }
+ methods: [POST]
  requirements:
-    _method: GET
     id: \d+
  options:
     expose: true
@@ -708,8 +702,8 @@ schooladmin_update:
 schooladmin_delete_school_by_id:
  path: /kontrollpanel/skoleadmin/slett/{id}
  defaults: {_controller: AppBundle:SchoolAdmin:deleteSchoolById }
+ methods: [POST]
  requirements:
-    _method: GET
     id: \d+
  options:
     expose: true
@@ -717,8 +711,8 @@ schooladmin_delete_school_by_id:
 schooladmin_remove_user_from_school_by_id:
  path: /kontrollpanel/skoleadmin/skole/slett/{id}
  defaults: {_controller: AppBundle:SchoolAdmin:removeUserFromSchoolById }
+ methods: [POST]
  requirements:
-    _method: GET
     id: \d+
  options:
     expose: true

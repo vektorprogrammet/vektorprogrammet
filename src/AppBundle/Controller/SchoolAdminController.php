@@ -333,7 +333,7 @@ class SchoolAdminController extends Controller
         }
     }
 
-    public function deleteSchoolByIdAction(request $request)
+    public function deleteSchoolByIdAction(Request $request)
     {
 
         // Get the ID variable sent by the request

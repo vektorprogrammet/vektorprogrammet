@@ -69,7 +69,7 @@ class DepartmentController extends Controller
         ));
     }
 
-    public function deleteDepartmentByIdAction(request $request)
+    public function deleteDepartmentByIdAction(Request $request)
     {
         $id = $request->get('id');
 
