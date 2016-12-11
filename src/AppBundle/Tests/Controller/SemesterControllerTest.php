@@ -54,8 +54,8 @@ class SemesterControllerTest extends WebTestCase
         // Change the value of a field
         $form['createSemester[semesterTime]']->select('Vår');
         $form['createSemester[year]']->select('2017');
-        $form['createSemester[admission_start_date]'] = '2017-01-04 10:30:00 ';
-        $form['createSemester[admission_end_date]'] = '2017-02-02 10:30:00 ';
+        $form['createSemester[admissionStartDate]'] = '2017-01-04 10:30:00 ';
+        $form['createSemester[admissionEndDate]'] = '2017-02-02 10:30:00 ';
 
         // submit the form
         $client->submit($form);
@@ -92,8 +92,8 @@ class SemesterControllerTest extends WebTestCase
         $form = $crawler->selectButton('Endre')->form();
 
         // Change the value of a field
-        $form['createSemester[admission_start_date]'] = '2015-08-04 10:30:00 ';
-        $form['createSemester[admission_end_date]'] = '2015-09-02 10:40:00 ';
+        $form['createSemester[admissionStartDate]'] = '2015-08-04 10:30:00 ';
+        $form['createSemester[admissionEndDate]'] = '2015-09-02 10:40:00 ';
 
         // submit the form
         $client->submit($form);

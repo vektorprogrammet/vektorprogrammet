@@ -101,13 +101,13 @@ class ProfileController extends Controller
         $hashedNewUserCode = hash('sha512', $newUserCode, false);
         $user = $repositoryUser->findUserByNewUserCode($hashedNewUserCode);
 
-        if ($user == null) {
+        if ($user === null) {
             return $this->render('error/error_message.html.twig', array(
                 'title' => 'Koden er ugyldig',
                 'message' => 'Ugyldig kode eller brukeren er allerede opprettet',
             ));
         }
-        if ($user->getUserName() == null) {
+        if ($user->getUserName() === null) {
             // Set default username to email
             $user->setUserName($user->getEmail());
         }

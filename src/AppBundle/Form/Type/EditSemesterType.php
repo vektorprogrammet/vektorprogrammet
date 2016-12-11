@@ -11,7 +11,7 @@ class EditSemesterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('admission_start_date', 'datetime', array(
+            ->add('admissionStartDate', 'datetime', array(
                 'label' => 'Opptak starttidspunkt',
                 'widget' => 'single_text',
                 'date_format' => 'yyyy-MM-dd  HH:mm:ss',
@@ -19,7 +19,7 @@ class EditSemesterType extends AbstractType
                     'placeholder' => 'yyyy-MM-dd HH:mm:ss',
                 ),
             ))
-            ->add('admission_end_date', 'datetime', array(
+            ->add('admissionEndDate', 'datetime', array(
                 'label' => 'Opptak sluttidspunkt',
                 'widget' => 'single_text',
                 'date_format' => 'yyyy-MM-dd  HH:mm:ss',

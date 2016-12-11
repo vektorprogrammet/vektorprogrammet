@@ -19,7 +19,7 @@ class NewsletterController extends Controller
     {
         $department = $this->getUser()->getFieldOfStudy()->getDepartment();
 
-        if ($newsletter == null) {
+        if ($newsletter === null) {
             $newsletter = new Newsletter();
             $newsletter->setDepartment($department);
         }

@@ -126,12 +126,12 @@ class SchoolAdminController extends Controller
             $em->persist($assistantHistory);
 
             // Check if user already has user name and password
-            if ($user->getUserName() != null && $user->getPassword() != null) {
+            if ($user->getUserName() !== null && $user->getPassword() !== null) {
                 $user->setActive(true);
             } else { // Send new user code for user to create user name and password
 
                 // Send new user code only if assistant history is added to current semester
-                if ($assistantHistory->getSemester() == $currentSemester && $user->getNewUserCode() == null) {
+                if ($assistantHistory->getSemester() === $currentSemester && $user->getNewUserCode() === null) {
                     $userRegistration = $this->get('app.user.registration');
                     $newUserCode = $userRegistration->setNewUserCode($user);
 

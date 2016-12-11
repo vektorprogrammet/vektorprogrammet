@@ -66,7 +66,7 @@ class SurveyTaken implements \JsonSerializable
     public function removeNullAnswers()
     {
         foreach ($this->surveyAnswers as $answer) {
-            if ($answer->getAnswer() == null) {
+            if ($answer->getAnswer() === null) {
                 $this->surveyAnswers->removeElement($answer);
             }
         }

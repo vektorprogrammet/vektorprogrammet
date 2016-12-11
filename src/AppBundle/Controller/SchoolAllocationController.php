@@ -30,9 +30,9 @@ class SchoolAllocationController extends Controller
         $filteredApplications = array();
 
         foreach ($interviewedApplications as $application) {
-            if ($application->getInterview() != null) {
+            if ($application->getInterview() !== null) {
                 $interviewScore = $application->getInterview()->getInterviewScore();
-                if ($interviewScore != null && $interviewScore->getSuitableAssistant() == 'Kanskje') {
+                if ($interviewScore !== null && $interviewScore->getSuitableAssistant() == 'Kanskje') {
                     $filteredApplications[] = $application;
                 }
             }
@@ -120,9 +120,9 @@ class SchoolAllocationController extends Controller
             } else {
                 $score = 0;
                 $interview = $application->getInterview();
-                if ($interview != null) {
+                if ($interview !== null) {
                     $intScore = $interview->getInterviewScore();
-                    if ($intScore != null) {
+                    if ($intScore !== null) {
                         $score = $intScore->getSum();
                         $suitability = $intScore->getSuitableAssistant();
                     }
@@ -151,9 +151,9 @@ class SchoolAllocationController extends Controller
         $filteredApplications = array();
 
         foreach ($interviewedApplications as $application) {
-            if ($application->getInterview() != null) {
+            if ($application->getInterview() !== null) {
                 $interviewScore = $application->getInterview()->getInterviewScore();
-                if ($interviewScore != null && $interviewScore->getSuitableAssistant() == 'Ja') {
+                if ($interviewScore !== null && $interviewScore->getSuitableAssistant() === 'Ja') {
                     $filteredApplications[] = $application;
                 }
             }
@@ -168,7 +168,7 @@ class SchoolAllocationController extends Controller
         foreach ($result->getAssistants() as $assistant) {
             $sc = $assistant->getAssignedSchool();
             $day = $assistant->getAssignedDay();
-            if ($day == null) {
+            if ($day === null) {
                 continue;
             }
 
