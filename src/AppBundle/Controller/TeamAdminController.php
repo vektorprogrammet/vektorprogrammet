@@ -404,7 +404,7 @@ class TeamAdminController extends Controller
         return new JsonResponse($response);
     }
 
-    public function deleteTeamByIdAction(request $request)
+    public function deleteTeamByIdAction(Request $request)
     {
         $id = $request->get('id');
 

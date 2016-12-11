@@ -36,5 +36,6 @@ class SecurityController extends Controller
 
     public function loginCheckAction()
     {
+        return $this->redirectToRoute('home');
     }
 }

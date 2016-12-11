@@ -7,6 +7,7 @@ use AppBundle\Entity\TeamApplication;
 use AppBundle\Form\Type\TeamApplicationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class TeamApplicationController extends Controller
@@ -52,7 +53,7 @@ class TeamApplicationController extends Controller
     public function showAction(Team $team, Request $request)
     {
         if (!$team->getAcceptApplication()) {
-            throw new AccessDeniedException();
+            throw new NotFoundHttpException();
         }
         $teamApplication = new TeamApplication();
         $form = $this->createForm(new TeamApplicationType(), $teamApplication);
@@ -91,7 +92,9 @@ class TeamApplicationController extends Controller
                 )));
             $this->get('mailer')->send($receipt);
 
-            return $this->render('team/confirmation.html.twig');
+            $this->addFlash('success', 'Søknaden er mottatt.');
+
+            return $this->redirectToRoute('team_application',  array('id' => $team->getId()));
         }
 
         return $this->render('team/team_application.html.twig', array(
