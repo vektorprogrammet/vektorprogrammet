@@ -64,8 +64,8 @@ class CreateSemesterTest extends TypeTestCase
                     'name' => 'VAR2032',
                     'semesterStartDate' => $semesterStart,
                     'semesterEndDate' => $semesterEnd,
-                    'admission_start_date' => $admissionStart,
-                    'admission_end_date' => $admissionEnd,
+                    'admissionStardDate' => $admissionStart,
+                    'admissionEndDate' => $admissionEnd,
                 ),
             ),
             array(
@@ -76,8 +76,8 @@ class CreateSemesterTest extends TypeTestCase
                     'name' => null,
                     'semesterStartDate' => null,
                     'semesterEndDate' => null,
-                    'admission_start_date' => null,
-                    'admission_end_date' => null,
+                    'admissionStartDate' => null,
+                    'admissionEndDate' => null,
                 ),
             ),
         );

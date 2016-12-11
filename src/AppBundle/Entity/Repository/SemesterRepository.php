@@ -104,8 +104,8 @@ class SemesterRepository extends EntityRepository
         return $this->createQueryBuilder('Semester')
             ->select('Semester')
             ->where('Semester.department = ?1')
-            ->andWhere('Semester.admission_start_date < :time')
-            ->andWhere('Semester.admission_end_date > :time')
+            ->andWhere('Semester.admissionStartDate < :time')
+            ->andWhere('Semester.admissionEndDate > :time')
             ->setParameter(1, $department)
             ->setParameter('time', $time)
             ->getQuery()
@@ -119,8 +119,8 @@ class SemesterRepository extends EntityRepository
     {
         return $this->createQueryBuilder('Semester')
             ->select('Semester')
-            ->where('Semester.admission_start_date < :time')
-            ->andWhere('Semester.admission_end_date > :time')
+            ->where('Semester.admissionStartDate < :time')
+            ->andWhere('Semester.admissionEndDate > :time')
             ->setParameter('time', new \DateTime())
             ->getQuery()
             ->getResult();

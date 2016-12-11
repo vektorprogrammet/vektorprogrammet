@@ -44,7 +44,7 @@ class SponsorsController extends Controller
             $em->remove($sponsor);
         } else { //Update the sponsor object in the database
             //Empty file-field in the form is allowed
-            if ($request->files->get('sponsor')['logoImagePath'] != null) {
+            if ($request->files->get('sponsor')['logoImagePath'] !== null) {
                 //First move the logo image file to its folder
                 $targetFolder = $this->container->getParameter('logo_images').'/';
                 //Create a FileUploader with target folder and allowed file types as parameters

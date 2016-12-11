@@ -16,7 +16,7 @@ class SurveyType extends AbstractType
             'class' => 'AppBundle:Semester',
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('s')
-                    ->where('s.admission_end_date > :limit')
+                    ->where('s.admissionEndDate > :limit')
                     ->setParameter('limit', new \DateTime('now -1 year'))
                     ->orderBy('s.semesterStartDate', 'DESC');
             },
