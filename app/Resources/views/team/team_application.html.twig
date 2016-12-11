@@ -1,6 +1,11 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div class="row">
+        <div class="small-12 columns">
+            {% include 'common/flash.html.twig' %}
+        </div>
+    </div>
+    <div class="row">
         <div class="small-12 colums">
             <h1>Søk {{ team.name }}</h1>
         </div>

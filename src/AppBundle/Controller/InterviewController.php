@@ -416,7 +416,7 @@ class InterviewController extends Controller
      * @param Request $request
      * @param $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return JsonResponse
      */
     public function assignAction(Request $request, $id)
     {

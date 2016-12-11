@@ -21,8 +21,9 @@
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
                         {% if interview.cancelled == 0 %}
-                            <a href="{{ path('interview_cancel', {'id' : interview.id}) }}"
-                               class="button alert tiny radius float-right">Ikke møtt</a>
+                            <form action="{{ path('interview_cancel', {'id' : interview.id}) }}" method="POST">
+                                <button class="button alert tiny radius float-right" type="submit">Ikke møtt</button>
+                            </form>
                         {% endif %}
                         <h1>Intervju</h1>
                         <h3>Kandidat</h3>

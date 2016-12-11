@@ -265,10 +265,27 @@ class NewsletterController extends Controller
         $manager->remove($subscriber);
         $manager->flush();
 
-        return $this->render('newsletter/unsubscribe.html.twig', array(
+        return $this->redirectToRoute('unsubscribe_newsletter_confirmation', array(
             'email' => $subscriber->getEmail(),
-            'name' => $subscriber->getName(),
-            'newsletter' => $subscriber->getNewsletter(),
+            'newsletter' => $subscriber->getNewsletter()->getId(),
+        ));
+    }
+
+    public function unsubscribeNewsletterConfirmationAction(Request $request)
+    {
+        $email = $request->query->get('email');
+        $newsletterId = $request->query->get('newsletter');
+        if ($email === null || $newsletterId === null) {
+            throw new NotFoundHttpException();
+        }
+        $newsletter = $this->getDoctrine()->getRepository('AppBundle:Newsletter')->find($newsletterId);
+        if ($newsletter === null) {
+            throw new NotFoundHttpException();
+        }
+
+        return $this->render('newsletter/unsubscribe.html.twig', array(
+            'email' => $email,
+            'newsletter' => $newsletter,
         ));
     }
 }

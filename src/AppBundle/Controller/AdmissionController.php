@@ -205,7 +205,9 @@ class AdmissionController extends Controller
 
             $request->getSession()->getFlashBag()->add('admission-notice',
                 'Søknaden din er registrert. En kvittering har blitt sendt til '.
-                $application->getUser()->getEmail().'. Lykke til!');
+                $application->getUser()->getEmail().'.');
+
+            return $this->redirectToRoute('admission_existing_user');
         }
 
         return $this->render(':admission:existingUser.html.twig', array(
