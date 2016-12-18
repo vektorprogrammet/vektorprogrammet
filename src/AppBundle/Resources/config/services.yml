@@ -1,12 +1,4 @@
 services:
-#    app.example:
-#        class: AppBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
-
-#  app.form.type.article:
-#   class: AppBundle\Form\Type\ArticleType
-#    arguments:
-#            - { name: form.type, alias: article }
   app.user.registration:
     class: AppBundle\UserRegistration\UserRegistration
     arguments: ['@twig']
@@ -15,3 +7,19 @@ services:
     public: false
     tags:
       - { name: twig.extension }
+  app.department_extension:
+    class: AppBundle\Twig\Extension\DepartmentExtension
+    arguments: ['@doctrine.orm.default_entity_manager']
+    tags:
+      - { name: twig.extension }
+  app.semester_extension:
+    class: AppBundle\Twig\Extension\SemesterExtension
+    arguments: ['@doctrine.orm.default_entity_manager']
+    tags:
+      - { name: twig.extension }
+  application.data:
+    class: AppBundle\Service\ApplicationData
+    arguments: ['@doctrine.orm.default_entity_manager', '@security.token_storage']
+  assistant_history.data:
+      class: AppBundle\Service\AssistantHistoryData
+      arguments: ['@doctrine.orm.default_entity_manager', '@security.token_storage']

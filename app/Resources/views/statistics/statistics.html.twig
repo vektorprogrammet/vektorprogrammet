@@ -20,7 +20,7 @@
                     <ul id="autoCloseExample" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true"
                         aria-autoclose="false" tabindex="-1">
 
-                        {% for d in departments %}
+                        {% for d in get_departments() %}
 
                             <li><a href="{{ path('statistics_application_by_department',
                                 { 'department': d.id }) }}">{{ d.shortName }}</a></li>
@@ -40,7 +40,7 @@
                     <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true"
                         aria-autoclose="false" tabindex="-1">
 
-                        {% for s in semesters %}
+                        {% for s in get_semesters(department) %}
 
                             <li><a href="{{ path('statistics_application_by_semester',
                                 { 'department': s.department.id, 'semester': s.id }) }}">{{ s.name }}</a></li>
@@ -50,24 +50,24 @@
                 </li>
             </ul>
         </div>
-        {% if applicationCount %}
+        {% if applicationData.count %}
             <header class="small-12 columns">
                 <h3>Søkerstatistikk</h3>
-                <h6>Antall søkere: {{ applicationCount }}</h6>
+                <h6>Antall søkere: {{ applicationData.count }}</h6>
             </header>
             <div class="small-12 columns equalheight charts" id="applicationCharts">
             </div>
         {% endif %}
-        {% if assistantHistoriesCount %}
+        {% if assistantHistoryData.count %}
             <header class="small-12 columns">
                 <h3>Opptaksstatistikk</h3>
-                <h6>Antall assistenter: {{ assistantHistoriesCount }}</h6>
-                <h6>Antall stillinger: {{ positionsCount }}</h6>
+                <h6>Antall assistenter: {{ assistantHistoryData.assistantHistoryCount }}</h6>
+                <h6>Antall stillinger: {{ assistantHistoryData.positionsCount }}</h6>
             </header>
             <div class="small-12 columns equalheight charts" id="admissionCharts">
             </div>
         {% endif %}
-        {% if assistantHistoriesCount == 0 and applicationCount == 0 %}
+        {% if assistantHistoryData.count == 0 and applicationData.count == 0 %}
             <div class="col-xs-12 columns">
                 <h4>Ingen data dette semesteret</h4>
             </div>
@@ -80,65 +80,65 @@
         }
         document.addEventListener('DOMContentLoaded', function () {
             Chart.defaults.global.animation = false;
-            {% if applicationCount %}
+            {% if applicationData.count %}
             var genderData = [
                 {
-                    label: 'Gutt' + ' ({{ (maleCount/applicationCount*100)|round }} %)',
-                    value: {{ maleCount }},
+                    label: 'Gutt' + ' ({{ (applicationData.maleCount/applicationData.count*100)|round }} %)',
+                    value: {{ applicationData.maleCount }},
                     color: getColor(0)
                 },
                 {
-                    label: 'Jente' + ' ({{ (femaleCount/applicationCount*100)|round }} %)',
-                    value: {{ femaleCount }},
+                    label: 'Jente' + ' ({{ (applicationData.femaleCount/applicationData.count*100)|round }} %)',
+                    value: {{ applicationData.femaleCount }},
                     color: getColor(4)
                 }
 
             ];
             var applicantsData = [
                 {
-                    label: 'Nye' + ' ({{ ((applicationCount-prevParticipationCount)/applicationCount*100)|round }} %)',
-                    value: {{ applicationCount-prevParticipationCount }},
+                    label: 'Nye' + ' ({{ ((applicationData.count- applicationData.previousParticipationCount)/applicationData.count*100)|round }} %)',
+                    value: {{ applicationData.count-applicationData.previousParticipationCount }},
                     color: getColor(0)
                 },
                 {
-                    label: 'Gamle' + ' ({{ (prevParticipationCount/applicationCount*100)|round }} %)',
-                    value: {{ prevParticipationCount }},
+                    label: 'Gamle' + ' ({{ (applicationData.previousParticipationCount/applicationData.count*100)|round }} %)',
+                    value: {{ applicationData.previousParticipationCount }},
                     color: getColor(1)
                 }
 
             ];
             var fieldOfStudyData = [
-                {% for fieldOfStudy in fieldOfStudyCount|keys %}
+                {% for fieldOfStudy in applicationData.fieldsOfStudyCounts|keys %}
                 {
-                    label: '{{ fieldOfStudy }}' + ' ({{ (fieldOfStudyCount[fieldOfStudy]/applicationCount*100)|round }} %)',
-                    value: {{ fieldOfStudyCount[fieldOfStudy] }},
+                    label: '{{ fieldOfStudy }}' + ' ({{ (applicationData.fieldsOfStudyCounts[fieldOfStudy]/applicationData.count*100)|round }} %)',
+                    value: {{ applicationData.fieldsOfStudyCounts[fieldOfStudy] }},
                     color: getColor({{ loop.index0 }})
                 },
                 {% endfor %}
             ];
             var studyYearData = [
-                {% for studyYear in studyYearCount|keys %}
+                {% for studyYear in applicationData.studyYearCounts|keys %}
                 {
-                    label: '{{ studyYear }}. år' + ' ({{ (studyYearCount[studyYear]/applicationCount*100)|round }} %)',
-                    value: {{ studyYearCount[studyYear] }},
+                    label: '{{ studyYear }}. år' + ' ({{ (applicationData.studyYearCounts[studyYear]/applicationData.count*100)|round }} %)',
+                    value: {{ applicationData.studyYearCounts[studyYear] }},
                     color: getColor({{ loop.index0 }})
                 },
                 {% endfor %}
             ];
             var admissionData = [
                 {
-                    label: 'Tatt opp' + ' ({{ (assistantHistoriesCount/applicationCount*100)|round }} %)',
-                    value: {{ assistantHistoriesCount }},
+                    label: 'Tatt opp' + ' ({{ (assistantHistoryData.count/applicationData.count*100)|round }} %)',
+                    value: {{ assistantHistoryData.count }},
                     color: getColor(0)
                 },
                 {
-                    label: 'Ikke tatt opp' + ' ({{ ((applicationCount-assistantHistoriesCount-cancelledInterviewsCount)/applicationCount*100)|round }} %)',
-                    value: {{ applicationCount-assistantHistoriesCount-cancelledInterviewsCount }},
+                    label: 'Ikke tatt opp' + ' ({{ ((applicationData.count-assistantHistoryData.count-applicationData.cancelledInterviewsCount)/applicationData.count*100)|round }} %)',
+                    value: {{ applicationData.count-assistantHistoryData.count-applicationData.cancelledInterviewsCount }},
                     color: getColor(4)
                 },
                 {
-                    label: 'Kansellerte intervjuer' + ' ({{ (cancelledInterviewsCount/applicationCount*100)|round }} %)',
-                    value: {{ cancelledInterviewsCount }},
+                    label: 'Kansellerte intervjuer' + ' ({{ (applicationData.cancelledInterviewsCount/applicationData.count*100)|round }} %)',
+                    value: {{ applicationData.cancelledInterviewsCount }},
                     color: getColor(3)
                 }
             ];
@@ -152,16 +152,16 @@
             renderChart(admissionData, 'Opptak', $admissionCharts, true);
             {% endif %}
 
-            {% if assistantHistoriesCount %}
+            {% if assistantHistoryData.count %}
             var acceptedGenderData = [
                 {
-                    label: 'Gutt' + ' ({{ (acceptedMaleCount/assistantHistoriesCount*100)|round }} %)',
-                    value: {{ acceptedMaleCount }},
+                    label: 'Gutt' + ' ({{ (assistantHistoryData.maleCount/assistantHistoryData.count*100)|round }} %)',
+                    value: {{ assistantHistoryData.maleCount }},
                     color: getColor(0)
                 },
                 {
-                    label: 'Jente' + ' ({{ (acceptedFemaleCount/assistantHistoriesCount*100)|round }} %)',
-                    value: {{ acceptedFemaleCount }},
+                    label: 'Jente' + ' ({{ (assistantHistoryData.femaleCount/assistantHistoryData.count*100)|round }} %)',
+                    value: {{ assistantHistoryData.femaleCount }},
                     color: getColor(4)
                 }
             ];

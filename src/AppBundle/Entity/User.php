@@ -129,6 +129,14 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->id;
     }
 
+    /**
+     * @return Department
+     */
+    public function getDepartment(): Department
+    {
+        return $this->getFieldOfStudy()->getDepartment();
+    }
+
     public function getGender()
     {
         return $this->gender;

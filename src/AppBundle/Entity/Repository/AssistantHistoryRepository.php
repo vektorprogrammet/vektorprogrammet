@@ -8,6 +8,21 @@ use Doctrine\ORM\EntityRepository;
 
 class AssistantHistoryRepository extends EntityRepository
 {
+    /**
+     * @param Semester $semester
+     *
+     * @return AssistantHistory[]
+     */
+    public function findBySemester(Semester $semester): array
+    {
+        return $this->createQueryBuilder('assistantHistory')
+            ->select('assistantHistory')
+            ->where('assistantHistory.semester = :semester')
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findActiveAssistantHistoriesByUser($user)
     {
         $today = new \DateTime('now');

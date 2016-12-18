@@ -33,66 +33,16 @@ class ApplicationStatisticsController extends Controller
             throw $this->createNotFoundException('Denne siden finnes ikke.');
         }
 
-        // Get all departments and semesters. Used for navigation
-        $departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
-        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
-
-        // Repositories
-        $applicationRepository = $this->getDoctrine()->getRepository('AppBundle:Application');
-        $assistantHistoryRepository = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory');
-
-        // Application data
-        $applicationCount = $applicationRepository->numOfApplications($semester);
-        $maleCount = $applicationRepository->numOfGender($semester, 0);
-        $femaleCount = $applicationRepository->numOfGender($semester, 1);
-        $prevParticipationCount = $applicationRepository->numOfPreviousParticipation($semester);
-
-        // Count fieldOfStudy and studyYear data
-        $fieldOfStudyCount = array();
-        $studyYearCount = array();
-        $applicants = $applicationRepository->findBy(array('semester' => $semester));
-        foreach ($applicants as $applicant) {
-            $fieldOfStudyShortName = $applicant->getUser()->getFieldOfStudy()->getShortName();
-            if (array_key_exists($fieldOfStudyShortName, $fieldOfStudyCount)) {
-                ++$fieldOfStudyCount[$fieldOfStudyShortName];
-            } else {
-                $fieldOfStudyCount[$fieldOfStudyShortName] = 1;
-            }
-
-            $studyYear = $applicant->getYearOfStudy();
-            $studyYearCount[$studyYear] = array_key_exists($studyYear, $studyYearCount) ? $studyYearCount[$studyYear] + 1 : 1;
-        }
-        ksort($fieldOfStudyCount);
-        ksort($studyYearCount);
-
-        // Accepted Application Data
-        $assistantHistories = $assistantHistoryRepository->findBy(array('semester' => $semester));
-        $cancelledInterviewsCount = count($applicationRepository->findCancelledApplicants($semester));
-        $acceptedFemaleCount = $assistantHistoryRepository->numFemale($semester);
-        $acceptedMaleCount = $assistantHistoryRepository->numMale($semester);
-        $positionsCount = count($assistantHistories);
-        foreach ($assistantHistories as $assistant) {
-            if ($assistant->getBolk() === 'Bolk 1, Bolk 2') {
-                ++$positionsCount;
-            }
-        }
+        $applicationData = $this->get('application.data');
+        $applicationData->setSemester($semester);
+        $assistantHistoryData = $this->get('assistant_history.data');
+        $assistantHistoryData->setSemester($semester);
 
         return $this->render('statistics/statistics.html.twig', array(
-            'applicationCount' => $applicationCount,
-            'maleCount' => $maleCount,
-            'femaleCount' => $femaleCount,
-            'prevParticipationCount' => $prevParticipationCount,
-            'fieldOfStudyCount' => $fieldOfStudyCount,
-            'studyYearCount' => $studyYearCount,
-            'assistantHistoriesCount' => count($assistantHistories),
-            'cancelledInterviewsCount' => $cancelledInterviewsCount,
-            'acceptedMaleCount' => $acceptedMaleCount,
-            'acceptedFemaleCount' => $acceptedFemaleCount,
-            'departments' => $departments,
-            'semesters' => $semesters,
+            'applicationData' => $applicationData,
+            'assistantHistoryData' => $assistantHistoryData,
             'department' => $department,
             'semester' => $semester,
-            'positionsCount' => $positionsCount,
         ));
     }
 }
