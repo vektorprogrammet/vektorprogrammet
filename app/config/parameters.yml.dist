@@ -26,6 +26,8 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            CreateASuperDuperSecretHere
 
+    session.name: VPSESSID
+
     # Webhook from GitHub to automatically deploy on push to master
 
 twig:
