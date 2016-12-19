@@ -159,4 +159,20 @@ class SurveyTaken implements \JsonSerializable
             $answer->setAnswer($answerNoEmojis);
         }
     }
+
+    public function isValid(): bool
+    {
+        if ($this->school === null) {
+            return false;
+        }
+
+        foreach ($this->getSurveyAnswers() as $answer) {
+            $question = $answer->getSurveyQuestion();
+            if (!$question->getOptional() && strlen($answer->getAnswer()) < 1) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
