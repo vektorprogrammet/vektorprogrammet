@@ -154,4 +154,45 @@ class Survey implements \JsonSerializable
 
         return $ret;
     }
+
+    public function getTextAnswerResults(): array
+    {
+        $textQuestionArray = array();
+        $textQAarray = array();
+
+        // Get all text questions
+        foreach ($this->getSurveyQuestions() as $question) {
+            if ($question->getType() == 'text') {
+                $textQuestionArray[] = $question;
+            }
+        }
+
+        //Collect text answers
+        foreach ($textQuestionArray as $textQuestion) {
+            $questionText = $textQuestion->getQuestion();
+            $textQAarray[$questionText] = array();
+            foreach ($textQuestion->getAnswers() as $answer) {
+                $textQAarray[$questionText][] = $answer->getAnswer();
+            }
+        }
+
+        return $textQAarray;
+    }
+
+    public function copy(): Survey
+    {
+        $surveyClone = clone $this;
+
+        foreach ($this->getSurveyQuestions() as $question) {
+            $questionClone = clone $question;
+            foreach ($question->getAlternatives() as $alternative) {
+                $alternativeClone = clone $alternative;
+                $questionClone->addAlternative($alternativeClone);
+                $alternativeClone->setSurveyQuestion($questionClone);
+            }
+            $surveyClone->addSurveyQuestion($questionClone);
+        }
+
+        return $surveyClone;
+    }
 }
