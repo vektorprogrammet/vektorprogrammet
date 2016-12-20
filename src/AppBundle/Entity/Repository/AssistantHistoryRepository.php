@@ -4,10 +4,26 @@ namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\Semester;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
 class AssistantHistoryRepository extends EntityRepository
 {
+    /**
+     * @param User $user
+     *
+     * @return AssistantHistory[]
+     */
+    public function findByUser(User $user): array
+    {
+        return $this->createQueryBuilder('assistantHistory')
+            ->select('assistantHistory')
+            ->where('assistantHistory.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
     /**
      * @param Semester $semester
      *

@@ -316,7 +316,9 @@ class AdmissionAdminController extends Controller
         }
 
         $application = new Application();
-        $form = $this->createForm(new ApplicationType($department, true), $application);
+        $form = $this->createForm(ApplicationType::class, $application, array(
+            'departmentId' => $department->getId(),
+        ));
 
         $form->handleRequest($request);
 

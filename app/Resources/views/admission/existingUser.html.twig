@@ -19,7 +19,6 @@
                 <div class="admission-notice">
                     <div data-alert class="alert-box success radius">
                         {{ flashMessage }}
-                        <a href="#" class="close">&times;</a>
                     </div>
                 </div>
             {% endfor %}
@@ -95,6 +94,9 @@
                 $applicationForm.submit();
             }
         });
+        setTimeout(function () {
+            $(".admission-notice").fadeOut(1000);
+        }, 5000);
     </script>
 
 {% endblock %}
