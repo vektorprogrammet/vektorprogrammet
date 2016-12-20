@@ -39,7 +39,7 @@
             <div class="small-12 medium-12 large-12 columns">
 
 
-                {% if semester is defined %}
+                {% if semester is defined and semester is not null %}
                     <h1 class="text-center"> Søk Vektorprogrammet ved {{ department.shortname }} </h1>
                     <br>
 
@@ -105,7 +105,7 @@
                                 <div>
                                     {{ form_label(form.captchaAdmission) }}
                                     {{ form_errors(form.captchaAdmission) }}
-                                    {{ form_widget(form.captchaAdmission) }}
+                                    {{ form_widget(form.captchaAdmission, { 'attr': {'tabindex': '8'}}) }}
                                 </div>
                             </div>
                         {% endif %}
@@ -120,7 +120,7 @@
                     <div class="row">
                         <div class="text-center">
                             <br>
-                            {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted','tabindex': '8'} }) }}
+                            {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted','tabindex': '9'} }) }}
                             <br><br>
                             <p class="text-alert">Gamle assistenter kan søke <a
                                         href="{{ path('admission_existing_user') }}">her</a></p>

@@ -402,6 +402,11 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->assistantHistories;
     }
 
+    public function hasBeenAssistant(): bool
+    {
+        return count($this->assistantHistories) > 0;
+    }
+
     /**
      * @param array $assistantHistories
      */

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationExistingUserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,86 +16,43 @@ class AdmissionController extends Controller
 {
     public function showAction(Request $request)
     {
+        $admissionManager = $this->get('app.application_admission');
+        $department = $admissionManager->getDepartment($request);
+        $user = $this->getUser();
+
         $em = $this->getDoctrine()->getManager();
-        $departmentIdQuery = $request->get('id');
-        $departmentShortNameQuery = $request->get('shortName');
-
-        if ($departmentIdQuery !== null) {
-            $department = $em->getRepository('AppBundle:Department')->find($departmentIdQuery);
-        } else {
-            $department = $em->getRepository('AppBundle:Department')->findDepartmentByShortName($departmentShortNameQuery);
-        }
-        if ($department === null) {
-            throw $this->createNotFoundException('Department not found');
-        }
-
         $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
 
-        if ($semester !== null) {
-            $application = new Application();
+        $application = new Application();
 
-            $authenticated = false;
+        $form = $this->createForm(ApplicationType::class, $application, array(
+            'validation_groups' => array('admission'),
+            'departmentId' => $department->getId(),
+        ));
 
-            // The Captcha should not appear if a user is authenticated, as said in the requirements
-            if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
-                $authenticated = true;
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $admissionManager->setCorrectUser($application, $user);
+
+            if ($application->getUser()->hasBeenAssistant()) {
+                return $this->redirectToRoute('admission_existing_user');
             }
 
-            $form = $this->createForm(new ApplicationType($department, $authenticated), $application, array(
-                'validation_groups' => array('admission'),
-            ));
+            $application->setSemester($semester);
+            $em->persist($application);
+            $em->flush();
 
-            $form->handleRequest($request);
+            $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
 
-            if ($form->isValid()) {
-                $user = $this->getUser();
-
-                if (is_null($user)) {
-                    //Check if email belongs to an existing account and use that account
-                    $user = $em->getRepository('AppBundle:User')->findOneBy(array('email' => $application->getUser()->getEmail()));
-                }
-                if ($user !== null) {
-                    // User is logged in, or a user is registered with the email
-                    $userAssistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findBy(array('user' => $user));
-                    if (empty($userAssistantHistory)) {
-                        $application->setUser($user);
-                    } else {
-                        //If applicant has a user and has been an assistant before
-                        return $this->redirect($this->generateUrl('admission_existing_user'));
-                    }
-                }
-
-                $application->setSemester($semester);
-                $em->persist($application);
-                $em->flush();
-
-                // Send a confirmation email with a copy of the application
-                $emailMessage = \Swift_Message::newInstance()
-                    ->setSubject('Søknad - Vektorassistent')
-                    ->setFrom(array('rekruttering@vektorprogrammet.no' => 'Vektorprogrammet'))
-                    ->setTo($application->getUser()->getEmail())
-                    ->setBody($this->renderView('admission/admission_email.html.twig', array('application' => $application)));
-                $this->get('mailer')->send($emailMessage);
-
-                $request->getSession()->getFlashBag()->add('admission-notice',
-                    'Søknaden din er registrert. En kvittering har blitt sendt til '.
-                    $application->getUser()->getEmail().'. Lykke til!');
-
-                return $this->redirect($this->generateUrl('admission_show_specific_department', array(
-                    'id' => $department->getId(),
-                )));
-            }
-
-            return $this->render('admission/index.html.twig', array(
-                'department' => $department,
-                'semester' => $semester,
-                'form' => $form->createView(),
-            ));
-        } else {
-            return $this->render('admission/index.html.twig', array(
-                'department' => $department,
-            ));
+            return $this->redirectToRoute('admission_show_specific_department', array('id' => $department->getId()));
         }
+
+        return $this->render('admission/index.html.twig', array(
+            'department' => $department,
+            'semester' => $semester,
+            'form' => $form->createView(),
+        ));
     }
 
     public function contactAction(Request $request, Department $department)
@@ -147,39 +105,14 @@ class AdmissionController extends Controller
     public function existingUserAdmissionAction(Request $request)
     {
         $user = $this->getUser();
-
-        if (!$user) {
-            $message = '<b>Gamle assistenter må logge inn for å søke.</b> Bruk «<a href="/resetpassord">Glemt passord</a>» om du ikke husker brukernavn/passord 
-            eller ikke har fått bruker (bruk samme e-postadresse som du søkte vektorassistent med). 
-            Kontakt <span class="text-primary">webansvarlig@vektorprogrammet.no</span> hvis du ikke har blitt registrert i systemet vårt.';
-
-            $authenticationUtils = $this->get('security.authentication_utils');
-
-            return $this->render('login/login.html.twig', array(
-                'last_username' => null,
-                'error' => $authenticationUtils->getLastAuthenticationError(),
-                'message' => $message,
-                'redirect_path' => $this->generateUrl('admission_existing_user'),
-            ));
-        } elseif (!count($user->getAssistantHistories())) {
-            return $this->render('error/no_assistanthistory.html.twig', array('user' => $user));
-        }
-
         $em = $this->getDoctrine()->getManager();
-        $department = $user->getFieldOfStudy()->getDepartment();
-        $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department, new \DateTime());
+        $admissionManager = $this->get('app.application_admission');
 
-        if (is_null($semester)) {
-            return $this->render(':error:no_active_admission.html.twig');
+        if ($res = $admissionManager->renderErrorPage($user)) {
+            return $res;
         }
 
-        $applicationRepo = $em->getRepository('AppBundle:Application');
-
-        $application = $applicationRepo->findOneBy(array('user' => $user, 'semester' => $semester));
-        if ($application === null) {
-            $application = new Application();
-        }
-        $lastInterview = $em->getRepository('AppBundle:Interview')->findLatestInterviewByUser($user);
+        $application = $admissionManager->createApplicationForExistingAssistant($user);
 
         $form = $this->createForm(new ApplicationExistingUserType(), $application, array(
             'validation_groups' => array('admission_existing'),
@@ -187,32 +120,19 @@ class AdmissionController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $application->setUser($user);
-            $application->setSemester($semester);
-            $application->setPreviousParticipation(true);
-            $application->setInterview($lastInterview);
-
             $em->persist($application);
             $em->flush();
 
-            // Send a confirmation email with a copy of the application
-            $emailMessage = \Swift_Message::newInstance()
-                ->setSubject('Søknad - Vektorassistent')
-                ->setFrom(array('rekruttering@vektorprogrammet.no' => 'Vektorprogrammet'))
-                ->setTo($application->getUser()->getEmail())
-                ->setBody($this->renderView('admission/admission_existing_email.html.twig', array('application' => $application)));
-            $this->get('mailer')->send($emailMessage);
-
-            $request->getSession()->getFlashBag()->add('admission-notice',
-                'Søknaden din er registrert. En kvittering har blitt sendt til '.
-                $application->getUser()->getEmail().'.');
+            $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
 
             return $this->redirectToRoute('admission_existing_user');
         }
 
+        $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($user->getDepartment());
+
         return $this->render(':admission:existingUser.html.twig', array(
             'form' => $form->createView(),
-            'department' => $department,
+            'department' => $user->getDepartment(),
             'semester' => $semester,
             'user' => $user,
         ));

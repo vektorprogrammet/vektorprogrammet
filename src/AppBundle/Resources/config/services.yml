@@ -2,27 +2,47 @@ services:
   app.user.registration:
     class: AppBundle\UserRegistration\UserRegistration
     arguments: ['@twig']
+
   app.safe_html_extension:
     class: AppBundle\Twig\Extension\SafeHtmlExtension
     public: false
     tags:
       - { name: twig.extension }
+
   app.department_extension:
     class: AppBundle\Twig\Extension\DepartmentExtension
     arguments: ['@doctrine.orm.default_entity_manager']
     tags:
       - { name: twig.extension }
+
   app.semester_extension:
     class: AppBundle\Twig\Extension\SemesterExtension
     arguments: ['@doctrine.orm.default_entity_manager']
     tags:
       - { name: twig.extension }
+
+  app.application_subscriber:
+    class: AppBundle\EventSubscriber\ApplicationSubscriber
+    arguments: ['@mailer', '@twig', '@session', '@logger']
+    tags:
+      - { name: kernel.event_subscriber }
+
+  security.login:
+    class: AppBundle\Service\LoginManager
+    arguments: ['@twig', '@security.authentication_utils', '@router']
+
   application.data:
     class: AppBundle\Service\ApplicationData
     arguments: ['@doctrine.orm.default_entity_manager', '@security.token_storage']
+
+  app.application_admission:
+    class: AppBundle\Service\ApplicationAdmission
+    arguments: ['@doctrine.orm.default_entity_manager', '@twig', '@security.login']
+
   assistant_history.data:
       class: AppBundle\Service\AssistantHistoryData
       arguments: ['@doctrine.orm.default_entity_manager', '@security.token_storage']
+
   survey.manager:
         class: AppBundle\Service\SurveyManager
         arguments: ['@doctrine.orm.default_entity_manager', '@form.factory']

@@ -5,6 +5,7 @@ namespace AppBundle\Entity\Repository;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -15,6 +16,26 @@ use Doctrine\ORM\EntityRepository;
  */
 class ApplicationRepository extends EntityRepository
 {
+    /**
+     * @param User     $user
+     * @param Semester $semester
+     *
+     * @return Application
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findByUserInSemester(User $user, Semester $semester): Application
+    {
+        return $this->createQueryBuilder('application')
+            ->select('application')
+            ->where('application.user = :user')
+            ->andWhere('application.semester = :semester')
+            ->setParameter('user', $user)
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     /**
      * Finds all applications that have a conducted interview.
      *
