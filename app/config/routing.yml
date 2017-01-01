@@ -771,7 +771,7 @@ schooladmin_remove_user_from_school_by_id:
 schooladmin_show_users_of_department_superadmin:
  path: /kontrollpanel/skoleadmin/brukere/avdeling/{id}
  defaults: {_controller: AppBundle:SchoolAdmin:showUsersByDepartmentSuperadmin }
- methods: [GET, POST]
+ methods: [GET]
  requirements:
     id: \d+
 
