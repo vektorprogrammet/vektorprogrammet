@@ -25,7 +25,6 @@ class ParticipantHistoryControllerTest extends WebTestCase
         $this->assertContains('petter@stud.ntnu.no', $client->getResponse()->getContent());
         $this->assertContains('Hovedstyret', $client->getResponse()->getContent());
         $this->assertContains('NTNU', $client->getResponse()->getContent());
-        $this->assertContains('Vår 2016', $client->getResponse()->getContent());
         $this->assertContains('-', $client->getResponse()->getContent());
         $this->assertContains('Bolk 2', $client->getResponse()->getContent());
         $this->assertContains('Onsdag', $client->getResponse()->getContent());
