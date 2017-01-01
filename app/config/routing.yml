@@ -760,8 +760,8 @@ schooladmin_delete_school_by_id:
     expose: true
 
 schooladmin_remove_user_from_school_by_id:
- path: /kontrollpanel/skoleadmin/skole/slett/{id}
- defaults: {_controller: AppBundle:SchoolAdmin:removeUserFromSchoolById }
+ path: /kontrollpanel/skoleadmin/historikk/slett/{id}
+ defaults: {_controller: AppBundle:SchoolAdmin:removeUserFromSchool }
  methods: [POST]
  requirements:
     id: \d+

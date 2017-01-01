@@ -57,6 +57,7 @@ security:
           #ROLE_HIGHEST_ADMIN = superadmin user
         - { path: ^/kontrollpanel/semesteradmin/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/stilling/slett, roles: ROLE_HIGHEST_ADMIN }
+        - { path: ^/kontrollpanel/skoleadmin/slett, roles: ROLE_HIGHEST_ADMIN }
 
           #ROLE_SUPER_ADMIN = admin user
         - { path: ^/kontrollpanel/brukeradmin/slett, roles: ROLE_SUPER_ADMIN }
@@ -67,6 +68,11 @@ security:
         - { path: ^/kontrollpanel/brukeradmin/jubileum/slettbetaling, role: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/semesteradmin/update, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/semesteradmin/avdeling/opprett, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/skoleadmin/avdeling, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/skoleadmin/oppdater, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/skoleadmin/opprett, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/skoleadmin/brukere/avdeling, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/skoleadmin/historikk/slett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/intervju/skjema, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/intervju/fordel, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/vikar/rediger, roles: ROLE_SUPER_ADMIN }

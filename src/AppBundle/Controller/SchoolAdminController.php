@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Department;
 use AppBundle\Entity\User;
 use AppBundle\Event\AssistantHistoryCreatedEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,245 +67,154 @@ class SchoolAdminController extends Controller
         ));
     }
 
-    public function showUsersByDepartmentSuperadminAction(Request $request)
+    public function showUsersByDepartmentSuperadminAction(Department $department)
     {
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-            // Find the ID variable sent by the request
-            $id = $request->get('id');
+        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
 
-            // Finds all the departments
-            $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+        $users = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersByDepartment($department);
 
-            // Find the department with the ID sent by the request
-            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($id);
-
-            // Find all the users of the department that are active
-            $users = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersByDepartment($department);
-
-            // Return the view with suitable variables
-            return $this->render('school_admin/all_users.html.twig', array(
-                'departments' => $allDepartments,
-                'users' => $users,
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
-        }
+        // Return the view with suitable variables
+        return $this->render('school_admin/all_users.html.twig', array(
+            'departments' => $allDepartments,
+            'users' => $users,
+        ));
     }
 
-    public function showUsersByDepartmentAction(Request $request)
+    public function showUsersByDepartmentAction()
     {
-        if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
-            // Get the current user
-            $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->getUser();
 
-            // Finds all the departments
-            $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+        // Finds all the departments
+        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
 
-            // Find the department of the user
-            $department = $user->getFieldOfStudy()->getDepartment();
+        // Find the department of the user
+        $department = $user->getFieldOfStudy()->getDepartment();
 
-            // Find all the users of the department that are active
-            $users = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersByDepartment($department);
+        // Find all the users of the department that are active
+        $users = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersByDepartment($department);
 
-            // Return the view with suitable variables
-            return $this->render('school_admin/all_users.html.twig', array(
-                'departments' => $allDepartments,
-                'users' => $users,
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
-        }
+        // Return the view with suitable variables
+        return $this->render('school_admin/all_users.html.twig', array(
+            'departments' => $allDepartments,
+            'users' => $users,
+        ));
     }
 
     public function showAction()
     {
-        if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
-            // Finds all the departments
-            $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+        // Finds all the departments
+        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
 
-            // Finds the department for the current logged in user
-            $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
+        // Finds the department for the current logged in user
+        $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
 
-            // Find schools that are connected to the department of the user
-            $schools = $this->getDoctrine()->getRepository('AppBundle:School')->findSchoolsByDepartment($department);
+        // Find schools that are connected to the department of the user
+        $schools = $this->getDoctrine()->getRepository('AppBundle:School')->findSchoolsByDepartment($department);
 
-            // Return the view with suitable variables
-            return $this->render('school_admin/index.html.twig', array(
-                'departments' => $allDepartments,
-                'schools' => $schools,
-                'departmentName' => $department->getShortName(),
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
-        }
+        // Return the view with suitable variables
+        return $this->render('school_admin/index.html.twig', array(
+            'departments' => $allDepartments,
+            'schools' => $schools,
+            'departmentName' => $department->getShortName(),
+        ));
     }
 
-    public function showSchoolsByDepartmentAction(request $request)
+    public function showSchoolsByDepartmentAction(Department $department)
     {
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-            // Find the ID variable sent by the request
-            $id = $request->get('id');
+        // Finds all the departments
+        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
 
-            // Finds all the departments
-            $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+        // Finds the schools for the given department
+        $schools = $this->getDoctrine()->getRepository('AppBundle:School')->findSchoolsByDepartment($department);
 
-            // Find the department with the ID sent by the request
-            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->findOneById($id);
-
-            // Finds the schools for the given department
-            $schools = $this->getDoctrine()->getRepository('AppBundle:School')->findSchoolsByDepartment($department);
-
-            // Renders the view with the variables
-            return $this->render('school_admin/index.html.twig', array(
-                'departments' => $allDepartments,
-                'schools' => $schools,
-                'departmentName' => $department->getShortName(),
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
-        }
+        // Renders the view with the variables
+        return $this->render('school_admin/index.html.twig', array(
+            'departments' => $allDepartments,
+            'schools' => $schools,
+            'departmentName' => $department->getShortName(),
+        ));
     }
 
-    public function updateSchoolAction(request $request)
+    public function updateSchoolAction(Request $request, School $school)
     {
+        // Create the formType
+        $form = $this->createForm(new CreateSchoolType(), $school);
 
-        // If it is a superadmin they can edit schools
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-            // Get the ID variable from the request
-            $id = $request->get('id');
+        // Handle the form
+        $form->handleRequest($request);
 
-            // New school entity
-            $school = new School();
-
-            // Set the new school entity to a school entity with the ID from the request
+        // Check if the form is valid
+        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $school = $em->getRepository('AppBundle:School')->find($id);
+            $em->persist($school);
+            $em->flush();
 
-            // Create the formType
-            $form = $this->createForm(new CreateSchoolType(), $school);
-
-            // Handle the form
-            $form->handleRequest($request);
-
-            // Check if the form is valid
-            if ($form->isValid()) {
-                $em->persist($school);
-                $em->flush();
-
-                return $this->redirect($this->generateUrl('schooladmin_show'));
-            }
-
-            // Return the form view
-            return $this->render('school_admin/create_school.html.twig', array(
-                'form' => $form->createView(),
-            ));
-        } else {
-            // If access denied return view
-            return $this->redirect($this->generateUrl('home'));
+            return $this->redirect($this->generateUrl('schooladmin_show'));
         }
+
+        // Return the form view
+        return $this->render('school_admin/create_school.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
-    public function createSchoolForDepartmentAction(request $request)
+    public function createSchoolForDepartmentAction(Request $request, Department $department)
     {
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-            // Get the ID variable sent by request
-            $id = $request->get('id');
+        $school = new School();
 
-            // Find the department with a ID equal to the ID variable sent by the request
-            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->findOneById($id);
+        $form = $this->createForm(new CreateSchoolType(), $school);
 
-            // New school entity
-            $school = new School();
+        $form->handleRequest($request);
 
-            // Create the form
-            $form = $this->createForm(new CreateSchoolType(), $school);
+        if ($form->isValid()) {
+            // Set the department of the school
+            $school->addDepartment($department);
+            // If valid insert into database
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($school);
+            $em->flush();
 
-            // Handle the form
-            $form->handleRequest($request);
-
-            // The fields of the form is checked if they contain the correct information
-            if ($form->isValid()) {
-                // Since it is a bidirectional relationship we have to add school to department and department to school
-                // Set the school of the department
-                $department->addSchool($school);
-                // Set the department of the school
-                $school->addDepartment($department);
-                // If valid insert into database
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($school);
-                $em->flush();
-
-                return $this->redirect($this->generateUrl('schooladmin_show'));
-            }
-
-            // Render the view
-            return $this->render('school_admin/create_school.html.twig', array(
-                'form' => $form->createView(),
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
+            return $this->redirect($this->generateUrl('schooladmin_show'));
         }
+
+        // Render the view
+        return $this->render('school_admin/create_school.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
-    public function deleteSchoolByIdAction(Request $request)
+    public function deleteSchoolByIdAction(School $school)
     {
-
-        // Get the ID variable sent by the request
-        $id = $request->get('id');
-
         try {
+            // This deletes the given school
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($school);
+            $em->flush();
 
-            // Only the SUPER_ADMIN role can delete schools
-            if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-
-                // This deletes the given school
-                $em = $this->getDoctrine()->getEntityManager();
-                $school = $this->getDoctrine()->getRepository('AppBundle:School')->find($id);
-                $em->remove($school);
-                $em->flush();
-
-                // a response back to AJAX
-                $response['success'] = true;
-            } else {
-                // Send a response back to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Ikke tilstrekkelige rettigheter.';
-            }
+            // a response back to AJAX
+            $response['success'] = true;
         } catch (\Exception $e) {
             // Send a response back to AJAX
             $response['success'] = false;
-            $response['cause'] = $e->getMessage();
+            $response['cause'] = 'Kunne ikke slette skolen. ';
 
             return new JsonResponse($response);
         }
-        // Send a respons to ajax
+        // Send a response to ajax
         return new JsonResponse($response);
     }
 
-    public function removeUserFromSchoolByIdAction(Request $request)
+    public function removeUserFromSchoolAction(AssistantHistory $assistantHistory)
     {
 
-        // Get the ID variable sent by the request
-        $id = $request->get('id');
-
         try {
+            // This deletes the assistant history
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($assistantHistory);
+            $em->flush();
 
-            // Only the SUPER_ADMIN role can delete schools
-            if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-
-                // This deletes the assistant history
-                $em = $this->getDoctrine()->getEntityManager();
-                $assistantHistory = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->find($id);
-                $em->remove($assistantHistory);
-                $em->flush();
-
-                // a response back to AJAX
-                $response['success'] = true;
-            } else {
-                // Send a response back to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Ikke tilstrekkelige rettigheter.';
-            }
+            // a response back to AJAX
+            $response['success'] = true;
         } catch (\Exception $e) {
             // Send a response back to AJAX
             $response['success'] = false;

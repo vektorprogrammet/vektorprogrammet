@@ -174,8 +174,8 @@
                                    class="button tiny">Rediger</a></td>
                         {% endif %}
 
-                        {# Only SUPER_ADMIN can delete #}
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        {# Only HIGHEST_ADMIN can delete #}
+                        {% if is_granted('ROLE_HIGHEST_ADMIN') %}
                             <td><a href="#" id="{{ s.id }}" class="button tiny alert delete"><i
                                             class="fa fa-trash-o"></i> Slett</a></td>
                         {% endif %}
