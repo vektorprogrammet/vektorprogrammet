@@ -790,7 +790,7 @@ schooladmin_delegate_school_to_user:
     id: \d+
 
 schooladmin_show_specific_school:
- path: /kontrollpanel/skole/skole/{id}
+ path: /kontrollpanel/skole/{id}
  defaults: {_controller: AppBundle:SchoolAdmin:showSpecificSchool }
  methods: [GET]
  requirements:

@@ -60,7 +60,11 @@ class AssistantHistoryRepository extends EntityRepository
         return $assistantHistories;
     }
 
-    public function findActiveAssistantHistoriesBySchool($school)
+    /**
+     * @param $school
+     * @return AssistantHistory[]
+     */
+    public function findActiveAssistantHistoriesBySchool($school): array
     {
         $today = new \DateTime('now');
         $assistantHistories = $this->getEntityManager()->createQuery('

@@ -6,22 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 class SchoolRepository extends EntityRepository
 {
-    /*
-    public function schoolByName($id){
-        $stmt = $this->getEntityManager()
-            ->getConnection()
-            ->prepare('
-                    SELECT *
-                    FROM School S
-                    WHERE id = :id
-                    ');
 
-        $stmt->bindValue('id', $id);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
-    }
-    */
     public function findSchoolsByDepartment($department)
     {
         $schools = $this->getEntityManager()->createQuery('

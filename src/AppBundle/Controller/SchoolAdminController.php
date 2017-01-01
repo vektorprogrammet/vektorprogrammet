@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\School;
@@ -13,92 +14,27 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class SchoolAdminController extends Controller
 {
-    public function showSpecificSchoolAction(Request $request)
+    public function showSpecificSchoolAction(School $school)
     {
-
-        // Find the ID variable sent by the request
-        $id = $request->get('id');
-
-        // Find school with the request ID variable
-        $school = $this->getDoctrine()->getRepository('AppBundle:School')->find($id);
-
-        // Find active assistant histories by school
-        $activeAssistantHistory = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesBySchool($school);
-
-        // Get the current user
-        $user = $this->get('security.context')->getToken()->getUser();
-
-        // Boolean value
-        $valid = 0;
-
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-            // Do nothing
-        } elseif ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
-
-            // find the department of the user
-            $userDepartment = $this->get('security.context')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
-
-            // Find the schools associated with the department
-            $schools = $this->getDoctrine()->getRepository('AppBundle:School')->findSchoolsByDepartment($userDepartment);
-
-            foreach ($schools as $school1) {
-                if ($school1 == $school) {
-                    $valid = 1;
-                }
-            }
-
-            if ($valid == 1) {
-                // do nothing
-            } else {
-                return $this->redirect($this->generateUrl('home'));
-            }
-        }
-        // You only want to run this for ROLE_USER, nothing higher in the ranks
-        // This prevents users from viewing active members of schools they are not a part of
-        elseif (($this->get('security.context')->isGranted('ROLE_USER'))) {
-            foreach ($activeAssistantHistory as $as) {
-                if ($user == $as->getUser()) {
-                    $valid = 1;
-                }
-            }
-            if ($valid == 1) {
-                // do nothing
-            } else {
-                return $this->redirect($this->generateUrl('home'));
-            }
-        } else {
-            return $this->redirect($this->generateUrl('home'));
+        // This prevents admins to see other departments' schools
+        if (!$this->isGranted('ROLE_SUPER_ADMIN') &&
+            !$school->belongsToDepartment($this->getUser()->getDepartment())
+        ) {
+            throw $this->createAccessDeniedException();
         }
 
-        if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
-            // Find inactive assistant histories by school
-            $inactiveAssistantHistory = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findInactiveAssistantHistoriesBySchool($school);
+        $inactiveAssistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findInactiveAssistantHistoriesBySchool($school);
+        $activeAssistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesBySchool($school);
 
-            // Return the view with suitable variables
-            return $this->render('school_admin/specific_school.html.twig', array(
-                'activeAssistantHistory' => $activeAssistantHistory,
-                'inactiveAssistantHistory' => $inactiveAssistantHistory,
-                'school' => $school,
-            ));
-        } elseif ($this->get('security.context')->isGranted('ROLE_USER')) {
-            // Return the view with suitable variables
-            return $this->render('school_admin/specific_school.html.twig', array(
-                'activeAssistantHistory' => $activeAssistantHistory,
-                'school' => $school,
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
-        }
+        return $this->render('school_admin/specific_school.html.twig', array(
+            'activeAssistantHistories' => $activeAssistantHistories,
+            'inactiveAssistantHistories' => $inactiveAssistantHistories,
+            'school' => $school,
+        ));
     }
 
-    public function delegateSchoolToUserAction(Request $request)
+    public function delegateSchoolToUserAction(Request $request, User $user)
     {
-        // Find the ID variable sent by the request
-        $id = $request->get('id');
-
-        // Find the user with the ID as sent by the request
-        $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
-
         // Find department of the user
         $department = $user->getFieldOfStudy()->getDepartment();
 

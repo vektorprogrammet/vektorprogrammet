@@ -42,49 +42,57 @@
 
             <hr>
 
-            <h3> Aktive personer </h3>
+            {% if not activeAssistantHistories %}
+                <div class="alert-box radius warning">
+                    Det finnes ingen aktive assistenter på denne skolen.
+                </div>
+            {% else %}
+                <h3> Aktive assistenter </h3>
 
-            <table width="100%">
+                <table width="100%">
 
-                <thead>
-                <tr>
-                    <th> Fornavn</th>
-                    <th> Etternavn</th>
-                    <th> Skole</th>
-                    <th> Semester</th>
-                    <th></th>
-                </tr>
-                </thead>
-
-                <tbody>
-                {% for as in activeAssistantHistory %}
+                    <thead>
                     <tr>
-                        <td> {{ as.user.firstName }} </td>
-                        <td> {{ as.user.lastName }} </td>
-                        <td> {{ as.school.name }} </td>
-                        <td> {{ as.semester.name }} </td>
-
-                        {# Only ROLE_SUPER_ADMIN or higher should be able to delete teams #}
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
-                            <td><a href="#" id="{{ as.id }}" class="button tiny alert delete"><i
-                                            class="fa fa-trash-o"></i> Slett</a></td>
-                        {% endif %}
-
+                        <th> Fornavn</th>
+                        <th> Etternavn</th>
+                        <th> Skole</th>
+                        <th> Semester</th>
+                        <th></th>
                     </tr>
-                {% endfor %}
-                </tbody>
+                    </thead>
 
-            </table>
+                    <tbody>
+                    {% for as in activeAssistantHistories %}
+                        <tr>
+                            <td> {{ as.user.firstName }} </td>
+                            <td> {{ as.user.lastName }} </td>
+                            <td> {{ as.school.name }} </td>
+                            <td> {{ as.semester.name }} </td>
+
+                            {# Only ROLE_SUPER_ADMIN or higher should be able to delete teams #}
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <td><a href="#" id="{{ as.id }}" class="button tiny alert delete"><i
+                                                class="fa fa-trash-o"></i> Slett</a></td>
+                            {% endif %}
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+
+            {% endif %}
+
 
             <br>
 
-            {% if inactiveAssistantHistory is defined %}
+            {% if inactiveAssistantHistories %}
 
                 {% if is_granted('ROLE_ADMIN') %}
 
                     <hr>
 
-                    <h3> Inaktive personer </h3>
+                    <h3> Tidligere assistenter </h3>
 
                     <table width="100%">
 
@@ -100,7 +108,7 @@
                         </thead>
 
                         <tbody>
-                        {% for as in inactiveAssistantHistory %}
+                        {% for as in inactiveAssistantHistories %}
                             <tr>
                                 <td> {{ as.user.firstName }} </td>
                                 <td> {{ as.user.lastName }} </td>

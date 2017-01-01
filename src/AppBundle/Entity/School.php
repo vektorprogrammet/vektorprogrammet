@@ -231,4 +231,19 @@ class School
     {
         $this->international = $international;
     }
+
+    /**
+     * @param Department $department
+     * @return bool
+     */
+    public function belongsToDepartment(Department $department): bool
+    {
+        foreach ($this->departments as $dep) {
+            if ($dep === $department) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 }
