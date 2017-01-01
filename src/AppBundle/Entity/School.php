@@ -234,6 +234,7 @@ class School
 
     /**
      * @param Department $department
+     *
      * @return bool
      */
     public function belongsToDepartment(Department $department): bool
@@ -243,7 +244,7 @@ class School
                 return true;
             }
         }
-        
+
         return false;
     }
 }

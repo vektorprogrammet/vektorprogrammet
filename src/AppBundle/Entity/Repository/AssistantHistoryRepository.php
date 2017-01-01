@@ -62,6 +62,7 @@ class AssistantHistoryRepository extends EntityRepository
 
     /**
      * @param $school
+     *
      * @return AssistantHistory[]
      */
     public function findActiveAssistantHistoriesBySchool($school): array

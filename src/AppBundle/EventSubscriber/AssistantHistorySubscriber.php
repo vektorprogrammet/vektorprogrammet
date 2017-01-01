@@ -19,9 +19,9 @@ class AssistantHistorySubscriber implements EventSubscriberInterface
     /**
      * ApplicationAdmissionSubscriber constructor.
      *
-     * @param Session $session
-     * @param Logger $logger
-     * @param EntityManager $em
+     * @param Session          $session
+     * @param Logger           $logger
+     * @param EntityManager    $em
      * @param UserRegistration $userRegistrationService
      */
     public function __construct(Session $session, Logger $logger, EntityManager $em, UserRegistration $userRegistrationService)
@@ -52,7 +52,7 @@ class AssistantHistorySubscriber implements EventSubscriberInterface
     {
         $assistantHistory = $event->getAssistantHistory();
         $user = $assistantHistory->getUser();
-        
+
         // Check if user already has user name and password
         if ($user->getUserName() !== null && $user->getPassword() !== null) {
             $user->setActive(true);
@@ -61,13 +61,12 @@ class AssistantHistorySubscriber implements EventSubscriberInterface
         } else { // Send new user code for user to create user name and password
             $currentSemester = $this->em->getRepository('AppBundle:Semester')
                 ->findCurrentSemesterByDepartment($user->getDepartment());
-            
+
             // Send new user code only if assistant history is added to current semester
             if ($assistantHistory->getSemester() === $currentSemester && $user->getNewUserCode() === null) {
                 $this->userRegistrationService->sendActivationCode($user);
             }
         }
-
     }
 
     public function addFlashMessage(AssistantHistoryCreatedEvent $event)

@@ -50,7 +50,6 @@ class SchoolAdminController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $assistantHistory->setUser($user);
             $em = $this->getDoctrine()->getManager();
             $em->persist($assistantHistory);
@@ -206,7 +205,6 @@ class SchoolAdminController extends Controller
 
     public function removeUserFromSchoolAction(AssistantHistory $assistantHistory)
     {
-
         try {
             // This deletes the assistant history
             $em = $this->getDoctrine()->getManager();

@@ -17,9 +17,9 @@ class UserRegistration
      * UserRegistration constructor.
      *
      * @param \Twig_Environment $twig
-     * @param EntityManager $em
-     * @param \Swift_Mailer $mailer
-     * @param Logger $logger
+     * @param EntityManager     $em
+     * @param \Swift_Mailer     $mailer
+     * @param Logger            $logger
      */
     public function __construct(\Twig_Environment $twig, EntityManager $em, \Swift_Mailer $mailer, Logger $logger)
     {
@@ -53,16 +53,16 @@ class UserRegistration
 
         return $emailMessage;
     }
-    
+
     public function sendActivationCode(User $user)
     {
         $newUserCode = $this->setNewUserCode($user);
-        
+
         $this->em->persist($user);
         $this->em->flush();
-        
+
         $this->mailer->send($this->createActivationEmail($user, $newUserCode));
-        
+
         $this->logger->info("Activation email sent to {$user} at {$user->getEmail()}");
     }
 }

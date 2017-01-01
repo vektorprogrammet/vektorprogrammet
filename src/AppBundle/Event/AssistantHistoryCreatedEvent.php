@@ -8,11 +8,12 @@ use Symfony\Component\EventDispatcher\Event;
 class AssistantHistoryCreatedEvent extends Event
 {
     const NAME = 'assistant_history.created';
-    
+
     private $assistantHistory;
 
     /**
      * ApplicationAdmissionEvent constructor.
+     *
      * @param AssistantHistory $assistantHistory
      */
     public function __construct(AssistantHistory $assistantHistory)
@@ -27,5 +28,4 @@ class AssistantHistoryCreatedEvent extends Event
     {
         return $this->assistantHistory;
     }
-
 }
