@@ -19,7 +19,7 @@ class SemesterControllerTest extends WebTestCase
 
         // Assert that we have the correct amount of data
         $this->assertEquals(1, $crawler->filter('h1:contains("Semester NTNU")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Vår 2016")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Vår 2013")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Høst 2015")')->count());
 
         // Assert a specific 200 status code
@@ -132,7 +132,7 @@ class SemesterControllerTest extends WebTestCase
 
         // Assert that we have the correct amount of data
         $this->assertEquals(1, $crawler->filter('h1:contains("Semester NTNU")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Vår 2016")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Vår 2013")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Høst 2015")')->count());
 
         // Assert a specific 200 status code
