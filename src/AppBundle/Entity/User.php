@@ -466,10 +466,7 @@ class User implements AdvancedUserInterface, \Serializable
     // toString method used to display the user in twig files
     public function __toString()
     {
-        $firstName = $this->getFirstName();
-        $lastName = $this->getLastName();
-
-        return "$firstName $lastName";
+        return "{$this->getFirstName()} {$this->getLastName()}";
     }
 
     /*

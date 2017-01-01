@@ -1,7 +1,7 @@
 services:
   app.user.registration:
-    class: AppBundle\UserRegistration\UserRegistration
-    arguments: ['@twig']
+    class: AppBundle\Service\UserRegistration
+    arguments: ['@twig', '@doctrine.orm.default_entity_manager', '@mailer', '@logger']
 
   app.safe_html_extension:
     class: AppBundle\Twig\Extension\SafeHtmlExtension
@@ -24,6 +24,12 @@ services:
   app.application_subscriber:
     class: AppBundle\EventSubscriber\ApplicationSubscriber
     arguments: ['@mailer', '@twig', '@session', '@logger']
+    tags:
+      - { name: kernel.event_subscriber }
+
+  app.assistant_history_subscriber:
+    class: AppBundle\EventSubscriber\AssistantHistorySubscriber
+    arguments: ['@session', '@logger', '@doctrine.orm.default_entity_manager', '@app.user.registration']
     tags:
       - { name: kernel.event_subscriber }
 

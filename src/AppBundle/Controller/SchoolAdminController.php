@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Event\AssistantHistoryCreatedEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\School;
@@ -10,7 +11,6 @@ use AppBundle\Form\Type\CreateSchoolType;
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Form\Type\CreateAssistantHistoryType;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class SchoolAdminController extends Controller
 {
@@ -35,50 +35,27 @@ class SchoolAdminController extends Controller
 
     public function delegateSchoolToUserAction(Request $request, User $user)
     {
-        // Find department of the user
-        $department = $user->getFieldOfStudy()->getDepartment();
+        $department = $user->getDepartment();
 
-        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
-
-        if (!($this->isGranted('ROLE_SUPER_ADMIN') || ($this->isGranted('ROLE_ADMIN') && $department == $this->getUser()->getFieldOfStudy()->getDepartment()))) {
-            throw new AccessDeniedException();
+        // Deny access if not super admin and trying to delegate user in other department
+        if (!$this->isGranted('ROLE_SUPER_ADMIN') && $department !== $this->getUser()->getDepartment()) {
+            throw $this->createAccessDeniedException();
         }
 
-        // A new assistant history entity
         $assistantHistory = new AssistantHistory();
 
-        // Create the formType
         $form = $this->createForm(new CreateAssistantHistoryType($department), $assistantHistory);
 
-        // Handle the form
         $form->handleRequest($request);
 
-        // Check if the form is valid
         if ($form->isValid()) {
 
-            // Set the user of the assistant history
             $assistantHistory->setUser($user);
             $em = $this->getDoctrine()->getManager();
             $em->persist($assistantHistory);
-
-            // Check if user already has user name and password
-            if ($user->getUserName() !== null && $user->getPassword() !== null) {
-                $user->setActive(true);
-            } else { // Send new user code for user to create user name and password
-
-                // Send new user code only if assistant history is added to current semester
-                if ($assistantHistory->getSemester() === $currentSemester && $user->getNewUserCode() === null) {
-                    $userRegistration = $this->get('app.user.registration');
-                    $newUserCode = $userRegistration->setNewUserCode($user);
-
-                    $em->persist($user);
-
-                    $emailMessage = $userRegistration->createActivationEmail($user, $newUserCode);
-                    $this->get('mailer')->send($emailMessage);
-                }
-            }
-
             $em->flush();
+
+            $this->get('event_dispatcher')->dispatch(AssistantHistoryCreatedEvent::NAME, new AssistantHistoryCreatedEvent($assistantHistory));
 
             return $this->redirect($this->generateUrl('schooladmin_show_users_of_department'));
         }
