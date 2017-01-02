@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\User;
 use AppBundle\Form\Type\NewUserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,85 +14,47 @@ use DateTime;
 
 class ProfileController extends Controller
 {
-    public function deactivateUserAction(Request $request)
+    public function deactivateUserAction(User $user)
     {
-
-        // Get the ID sent by the request
-        $id = $request->get('id');
-
         try {
-            // Only SUPER_ADMIN can activate users
-            if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+            // set user active level
+            $user->setActive(0);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
 
-                // Find the given user
-                $em = $this->getDoctrine()->getEntityManager();
-
-                // Find the user with the given ID
-                $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
-
-                // set user active level
-                $user->setActive(0);
-
-                $em->flush();
-
-                // Send a response back to AJAX
-                $response['success'] = true;
-            } else {
-                // Send a response back to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Du har ikke tilstrekkelige rettigheter.';
-            }
+            // Send a response back to AJAX
+            $response['success'] = true;
         } catch (\Exception $e) {
             // Send a response back to AJAX
             $response['success'] = false;
             $response['cause'] = 'Kunne ikke endre rettighetene.';
-            //$response['cause'] = $e->getMessage(); // if you want to see the exception message.
-
-            return new JsonResponse($response);
         }
 
-        // Send a respons to ajax
+        // Send a response to ajax
         return new JsonResponse($response);
     }
 
-    public function activateUserAction(Request $request)
+    public function activateUserAction(User $user)
     {
 
-        // Get the ID sent by the request
-        $id = $request->get('id');
-
         try {
-            // Only SUPER_ADMIN can activate users
-            if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+            // set user active level
+            $user->setActive(1);
 
-                // Find the given user
-                $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
 
-                // Find the user with the given ID
-                $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
-
-                // set user active level
-                $user->setActive(1);
-
-                $em->flush();
-
-                // Send a response back to AJAX
-                $response['success'] = true;
-            } else {
-                // Send a response back to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Du har ikke tilstrekkelige rettigheter.';
-            }
+            // Send a response back to AJAX
+            $response['success'] = true;
         } catch (\Exception $e) {
             // Send a response back to AJAX
             $response['success'] = false;
             $response['cause'] = 'Kunne ikke endre rettighetene.';
-            //$response['cause'] = $e->getMessage(); // if you want to see the exception message.
-
-            return new JsonResponse($response);
         }
 
-        // Send a respons to ajax
+        // Send a response to ajax
         return new JsonResponse($response);
     }
 
