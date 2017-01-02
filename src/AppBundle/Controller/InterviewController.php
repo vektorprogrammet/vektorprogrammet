@@ -194,20 +194,12 @@ class InterviewController extends Controller
     {
         $interview = $application->getInterview();
         // Only admin and above, or the assigned interviewer should be able to book an interview
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') &&
-            !$interview->isInterviewer($this->getUser())
-        ) {
+        if (!$this->get('app.interview.manager')->loggedInUserCanSeeInterview($interview)) {
             throw $this->createAccessDeniedException();
         }
 
         // Set the default data for the form
-        $defaultData = array(
-            'datetime' => $interview->getScheduled(),
-            'message' => 'Hei, vi har satt opp et intervju for deg angående opptak til vektorprogrammet. '.
-                'Vennligst gi beskjed til meg hvis tidspunktet ikke passer.',
-            'from' => $interview->getInterviewer()->getEmail(),
-            'to' => $interview->getUser()->getEmail(),
-        );
+        $defaultData = $this->get('app.interview.manager')->getDefaultScheduleFormData($interview);
 
         $form = $this->createForm(new ScheduleInterviewType(), $defaultData);
 
@@ -224,24 +216,7 @@ class InterviewController extends Controller
 
             // Send email if the send button was clicked
             if ($form->get('saveAndSend')->isClicked()) {
-                $mailer = $this->get('mailer');
-                $message = \Swift_Message::newInstance()
-                    ->setSubject('Intervju for vektorprogrammet')
-                    ->setFrom(array('opptak@vektorprogrammet.no' => 'Vektorprogrammet'))
-                    ->setTo($data['to'])
-                    ->setReplyTo($data['from'])
-                    ->setBody(
-                        $this->renderView('interview/email.html.twig',
-                            array('message' => $data['message'],
-                                'datetime' => $data['datetime'],
-                                'fromName' => $interview->getInterviewer()->getFirstName().' '.$interview->getInterviewer()->getLastName(),
-                                'fromMail' => $data['from'],
-                                'fromPhone' => $interview->getInterviewer()->getPhone(),
-                            )
-                        ),
-                        'text/html'
-                    );
-                $mailer->send($message);
+                $this->get('app.interview.manager')->sendScheduleEmail($interview, $data);
             }
 
             return $this->redirect($this->generateUrl('admissionadmin_show', array('status' => 'assigned')));
@@ -270,7 +245,7 @@ class InterviewController extends Controller
         $application = $em->getRepository('AppBundle:Application')->find($id);
         $user = $application->getUser();
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
-        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles(['ROLE_ADMIN']);
+        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([RoleManager::ROLE_TEAM_MEMBER]);
 
         $form = $this->createForm(new AssignInterviewType($roles), $application);
 

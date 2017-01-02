@@ -14,17 +14,23 @@ class InterviewManager
 {
     private $tokenStorage;
     private $authorizationChecker;
+    private $mailer;
+    private $twig;
 
     /**
      * InterviewManager constructor.
      *
      * @param TokenStorage                  $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param \Swift_Mailer                 $mailer
+     * @param \Twig_Environment             $twig
      */
-    public function __construct(TokenStorage $tokenStorage, AuthorizationCheckerInterface $authorizationChecker)
+    public function __construct(TokenStorage $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, \Swift_Mailer $mailer, \Twig_Environment $twig)
     {
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
+        $this->mailer = $mailer;
+        $this->twig = $twig;
     }
 
     public function prepareInterview(Application $application)
@@ -82,5 +88,41 @@ class InterviewManager
         $interview->setInterviewed(false);
         $interview->setUser($application->getUser());
         $interview->setInterviewer($interviewer);
+    }
+
+    public function sendScheduleEmail(Interview $interview, array $data)
+    {
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Intervju for vektorprogrammet')
+            ->setFrom(array('opptak@vektorprogrammet.no' => 'Vektorprogrammet'))
+            ->setTo($data['to'])
+            ->setReplyTo($data['from'])
+            ->setBody(
+                $this->twig->render('interview/email.html.twig',
+                    array('message' => $data['message'],
+                        'datetime' => $data['datetime'],
+                        'fromName' => $interview->getInterviewer()->getFirstName().' '.$interview->getInterviewer()->getLastName(),
+                        'fromMail' => $data['from'],
+                        'fromPhone' => $interview->getInterviewer()->getPhone(),
+                    )
+                ),
+                'text/html'
+            );
+        $this->mailer->send($message);
+    }
+
+    public function getDefaultScheduleFormData(Interview $interview): array
+    {
+        $message = "Hei, {$interview->getUser()->getFirstName()}!
+         
+Vi har satt opp et intervju for deg angående opptak til vektorprogrammet. 
+Vennligst gi beskjed til meg hvis tidspunktet ikke passer.";
+
+        return array(
+            'datetime' => $interview->getScheduled(),
+            'message' => $message,
+            'from' => $interview->getInterviewer()->getEmail(),
+            'to' => $interview->getUser()->getEmail(),
+        );
     }
 }
