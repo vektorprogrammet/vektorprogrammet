@@ -20,11 +20,11 @@ class ApplicationRepository extends EntityRepository
      * @param User     $user
      * @param Semester $semester
      *
-     * @return Application
+     * @return Application|null
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findByUserInSemester(User $user, Semester $semester): Application
+    public function findByUserInSemester(User $user, Semester $semester)
     {
         return $this->createQueryBuilder('application')
             ->select('application')
