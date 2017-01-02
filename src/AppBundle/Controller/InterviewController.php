@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Event\InterviewConductedEvent;
+use AppBundle\Service\RoleManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -309,48 +310,38 @@ class InterviewController extends Controller
     public function bulkAssignAction(Request $request)
     {
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
-        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles(['ROLE_ADMIN']);
+        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([RoleManager::ROLE_TEAM_MEMBER]);
         $form = $this->createForm(new AssignInterviewType($roles));
 
         if ($request->isMethod('POST')) {
             $em = $this->getDoctrine()->getManager();
             // Get the info from the form
-            $interviewerId = $request->request->get('application')['interview']['interviewer'];
-            $schemaId = $request->request->get('application')['interview']['interviewSchema'];
-            $applicationIds = $request->request->get('application')['id'];
+            $data = $request->request->get('application');
             // Get objects from database
-            $interviewer = $em->getRepository('AppBundle:User')->findOneById($interviewerId);
-            $schema = $em->getRepository('AppBundle:InterviewSchema')->findOneById($schemaId);
-            $applications = $em->getRepository('AppBundle:Application')->findById($applicationIds);
+            $interviewer = $em->getRepository('AppBundle:User')->findOneBy(array('id' => $data['interview']['interviewer']));
+            $schema = $em->getRepository('AppBundle:InterviewSchema')->findOneBy(array('id' => $data['interview']['interviewSchema']));
+            $applications = $em->getRepository('AppBundle:Application')->findBy(array('id' => $data['id']));
 
             // Update or create new interviews for all the given applications
             foreach ($applications as $application) {
-                $interview = $application->getInterview();
-                if (!$interview) {
-                    $interview = new Interview();
-                    $application->setInterview($interview);
-                }
-                $interview->setInterviewed(false);
-                $interview->setUser($application->getUser());
-                $interview->setInterviewer($interviewer);
-                $interview->setInterviewSchema($schema);
+                $this->get('app.interview.manager')->assignInterviewerToApplication($interviewer, $application);
+
+                $application->getInterview()->setInterviewSchema($schema);
                 $em->persist($application);
             }
 
             $em->flush();
 
-            return new JsonResponse(
-                array('success' => true,
-                    'request' => $request->request->all(), )
-            );
+            return new JsonResponse(array(
+                'success' => true,
+                'request' => $request->request->all(),
+            ));
         }
 
-        return new JsonResponse(
-            array(
-                'form' => $this->renderView('interview/assign_interview_form.html.twig', array(
+        return new JsonResponse(array(
+            'form' => $this->renderView('interview/assign_interview_form.html.twig', array(
                     'form' => $form->createView(),
                 )),
-            )
-        );
+        ));
     }
 }

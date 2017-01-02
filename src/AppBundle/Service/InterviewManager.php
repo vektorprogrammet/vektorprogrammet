@@ -5,6 +5,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Interview;
 use AppBundle\Entity\InterviewAnswer;
+use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -69,5 +70,17 @@ class InterviewManager
             // Add the answer object to the interview
             $interview->addInterviewAnswer($answer);
         }
+    }
+
+    public function assignInterviewerToApplication(User $interviewer, Application $application)
+    {
+        $interview = $application->getInterview();
+        if (!$interview) {
+            $interview = new Interview();
+            $application->setInterview($interview);
+        }
+        $interview->setInterviewed(false);
+        $interview->setUser($application->getUser());
+        $interview->setInterviewer($interviewer);
     }
 }
