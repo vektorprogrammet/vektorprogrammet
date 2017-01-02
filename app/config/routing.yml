@@ -829,24 +829,24 @@ interview_show:
 
 interview_schema:
  path: /kontrollpanel/intervju/skjema
- defaults: { _controller: AppBundle:Interview:showSchemas }
+ defaults: { _controller: AppBundle:InterviewSchema:showSchemas }
  methods: [GET]
 
 interview_schema_create:
  path: /kontrollpanel/intervju/skjema/opprett
- defaults: { _controller: AppBundle:Interview:createSchema }
+ defaults: { _controller: AppBundle:InterviewSchema:createSchema }
  methods: [GET, POST]
 
 interview_schema_edit:
  path: /kontrollpanel/intervju/skjema/{id}
- defaults: { _controller: AppBundle:Interview:editSchema }
+ defaults: { _controller: AppBundle:InterviewSchema:editSchema }
  methods: [GET, POST]
  requirements:
   id: \d+
 
 interview_schema_delete:
  path: /kontrollpanel/intervju/skjema/slett/{id}
- defaults: { _controller: AppBundle:Interview:deleteSchema }
+ defaults: { _controller: AppBundle:InterviewSchema:deleteSchema }
  methods: [POST]
  requirements:
   id: \d+
