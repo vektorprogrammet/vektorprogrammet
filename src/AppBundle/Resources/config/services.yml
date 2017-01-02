@@ -10,6 +10,10 @@ services:
     class: AppBundle\Service\InterviewManager
     arguments: ['@security.token_storage', '@security.authorization_checker', '@mailer', '@twig']
 
+  app.assistants.data:
+    class: AppBundle\Service\AssistantsData
+    arguments: ['@doctrine.orm.default_entity_manager']
+
   app.safe_html_extension:
     class: AppBundle\Twig\Extension\SafeHtmlExtension
     public: false

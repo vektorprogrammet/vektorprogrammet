@@ -22,7 +22,7 @@
                         <hr>
                         <div class="row">
                             <div class="small-12 columns">
-                                <h3>{{ group }}</h3>
+                                <h3>{{ schools ? group : null }}</h3>
                                 {% for school, days in schools %}
                                     <div class="row">
                                         <div class="small-11 small-centered columns">
