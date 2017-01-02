@@ -231,7 +231,10 @@ class UserAdminController extends Controller
                 return $this->render('Login/login.html.twig', array('message' => $feedback, 'error' => null, 'last_username' => $user->getUsername()));
             }
             //Render reset_password twig with the form.
-            return $this->render('new_user/create_new_user.html.twig', array('form' => $form->createView(), 'firstName' => $user->getFirstName(), 'lastName' => $user->getLastName()));
+            return $this->render('new_user/create_new_user.html.twig', array(
+                'form' => $form->createView(),
+                'user' => $user,
+            ));
         } catch (\Exception $e) {
             return $this->redirect('/');
         }

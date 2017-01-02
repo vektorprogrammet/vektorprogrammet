@@ -60,19 +60,13 @@ class ProfileController extends Controller
 
     public function activateNewUserAction(Request $request, $newUserCode)
     {
-        $repositoryUser = $this->getDoctrine()->getRepository('AppBundle:User');
-        $hashedNewUserCode = hash('sha512', $newUserCode, false);
-        $user = $repositoryUser->findUserByNewUserCode($hashedNewUserCode);
+        $user = $this->get('app.user.registration')->activateUserByNewUserCode($newUserCode);
 
         if ($user === null) {
             return $this->render('error/error_message.html.twig', array(
                 'title' => 'Koden er ugyldig',
                 'message' => 'Ugyldig kode eller brukeren er allerede opprettet',
             ));
-        }
-        if ($user->getUserName() === null) {
-            // Set default username to email
-            $user->setUserName($user->getEmail());
         }
 
         $form = $this->createForm(new NewUserType(), $user, array(
@@ -81,27 +75,18 @@ class ProfileController extends Controller
 
         $form->handleRequest($request);
 
-        //Checks if the form is valid
         if ($form->isValid()) {
-            //Deletes the newUserCode, so it can only be used one time.
-            $user->setNewUserCode(null);
-
-            $user->setActive('1');
-
-            if (count($user->getRoles()) == 0) {
-                $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findOneBy(array('role' => 'ROLE_USER'));
-                $user->addRole($role);
-            }
-
-            //Updates the database
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
 
             return $this->redirectToRoute('login_route');
         }
-        //Render reset_password twig with the form.
-        return $this->render('new_user/create_new_user.html.twig', array('form' => $form->createView(), 'firstName' => $user->getFirstName(), 'lastName' => $user->getLastName()));
+
+        return $this->render('new_user/create_new_user.html.twig', array(
+            'form' => $form->createView(),
+            'user' => $user,
+        ));
     }
 
     public function promoteToTeamMemberAction(Request $request)

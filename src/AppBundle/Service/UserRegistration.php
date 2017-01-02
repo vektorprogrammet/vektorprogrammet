@@ -65,4 +65,29 @@ class UserRegistration
 
         $this->logger->info("Activation email sent to {$user} at {$user->getEmail()}");
     }
+    
+    public function activateUserByNewUserCode(string $newUserCode): User
+    {
+        $hashedNewUserCode = hash('sha512', $newUserCode, false);
+        $user = $this->em->getRepository('AppBundle:User')->findUserByNewUserCode($hashedNewUserCode);
+        if ($user === null) {
+            return null;
+        }
+
+        if ($user->getUserName() === null) {
+            // Set default username to email
+            $user->setUserName($user->getEmail());
+        }
+
+        $user->setNewUserCode(null);
+
+        $user->setActive('1');
+
+        if (count($user->getRoles()) === 0) {
+            $role = $this->em->getRepository('AppBundle:Role')->findOneBy(array('role' => 'ROLE_USER'));
+            $user->addRole($role);
+        }
+
+        return $user;
+    }
 }
