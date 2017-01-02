@@ -236,28 +236,28 @@ profile_edit_password:
 
 profile_edit_photo:
   path: /profil/rediger/profilbilde/{id}
-  defaults: { _controller: AppBundle:Profile:showEditProfilePhoto }
+  defaults: { _controller: AppBundle:ProfilePhoto:showEditProfilePhoto }
   methods: [GET, POST]
   requirements:
     id: \d+
 
 profile_upload_photo:
   path: /profil/rediger/profilbilde/upload/{id}
-  defaults: { _controller: AppBundle:Profile:editProfilePhotoUpload }
+  defaults: { _controller: AppBundle:ProfilePhoto:editProfilePhotoUpload }
   methods: [POST]
   requirements:
     id: \d+
 
 profile_save_response_from_editor:
   path: /profil/rediger/profilbilde/saveEditorResponse/{id}
-  defaults: { _controller: AppBundle:Profile:saveProfilePhotoEditorResponse }
+  defaults: { _controller: AppBundle:ProfilePhoto:saveProfilePhotoEditorResponse }
   methods: [POST]
   requirements:
     id: \d+
 
 profile_save_photo:
   path: /profil/rediger/profilbilde/save/{id}
-  defaults: { _controller: AppBundle:Profile:saveProfilePhoto }
+  defaults: { _controller: AppBundle:ProfilePhoto:saveProfilePhoto }
   methods: [GET, POST]
   requirements:
     id: \d+

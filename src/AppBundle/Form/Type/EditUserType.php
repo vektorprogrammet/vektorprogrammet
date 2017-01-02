@@ -10,11 +10,11 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class EditUserType extends AbstractType
 {
     private $department;
-    
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->department = $options['department'];
-        
+
         $builder
             ->add('user_name', 'text', array(
                 'label' => 'Brukernavn',
@@ -51,7 +51,7 @@ class EditUserType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
-            'department' => 'AppBundle\Entity\Department'
+            'department' => 'AppBundle\Entity\Department',
         ));
     }
 

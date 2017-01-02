@@ -15,9 +15,9 @@ use Doctrine\ORM\EntityRepository;
  */
 class WorkHistoryRepository extends EntityRepository
 {
-
     /**
      * @param User $user
+     *
      * @return WorkHistory[]
      */
     public function findByUser(User $user): array
