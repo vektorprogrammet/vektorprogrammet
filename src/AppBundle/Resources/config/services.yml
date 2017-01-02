@@ -14,6 +14,10 @@ services:
     class: AppBundle\Service\AssistantsData
     arguments: ['@doctrine.orm.default_entity_manager']
 
+  app.sbs_data:
+    class: AppBundle\Service\SbsData
+    arguments: ['@doctrine.orm.default_entity_manager', '@security.token_storage']
+
   app.safe_html_extension:
     class: AppBundle\Twig\Extension\SafeHtmlExtension
     public: false
