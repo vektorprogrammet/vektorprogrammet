@@ -13,6 +13,49 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class ProfileController extends Controller
 {
+    public function showAction()
+    {
+        // Get the user currently signed in
+        $user = $this->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+
+        // Fetch the assistant history of the user
+        $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
+
+        // Find the work history of the user
+        $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
+
+        // Render the view
+        return $this->render('profile/profile.html.twig', array(
+            'user' => $user,
+            'assistantHistory' => $assistantHistory,
+            'workHistory' => $workHistory,
+        ));
+    }
+
+    public function showSpecificProfileAction(User $user)
+    {
+        // If the user clicks their own public profile redirect them to their own profile site
+        if ($user === $this->getUser()) {
+            return $this->redirectToRoute('profile');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        // Fetch the assistant history of the user
+        $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
+
+        // Find the work history of the user
+        $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
+
+        return $this->render('profile/public_profile.html.twig', array(
+            'user' => $user,
+            'assistantHistory' => $assistantHistory,
+            'workHistory' => $workHistory,
+        ));
+    }
+
     public function deactivateUserAction(User $user)
     {
         try {
@@ -212,94 +255,5 @@ class ProfileController extends Controller
             'form' => $form->createView(),
             'user' => $user,
         ));
-    }
-
-    public function showSpecificProfileAction(Request $request)
-    {
-        if ($this->get('security.context')->isGranted('ROLE_USER')) {
-            // Get the ID variable sent by the request
-            $id = $this->getRequest()->get('id');
-
-            $em = $this->getDoctrine()->getEntityManager();
-
-            // Find the user with the ID equal to $id
-            $user = $em->getRepository('AppBundle:User')->find($id);
-
-            // Get the role of the user
-            $roles = $user->getRoles();
-
-            // Fetch the assistant history of the user
-            $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
-
-            // Find the work history of the user
-            $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
-
-            // If the user clicks their own public profile redirect them to their own profile site
-            if ($user == $this->get('security.context')->getToken()->getUser()) {
-                return $this->redirect($this->generateUrl('profile'));
-            } else {
-                return $this->render('profile/public_profile.html.twig', array(
-                    'user' => $user,
-                    'assistantHistory' => $assistantHistory,
-                    'workHistory' => $workHistory,
-                    'roles' => $roles,
-                ));
-            }
-        } else {
-            return $this->redirect($this->generateUrl('home'));
-        }
-    }
-
-    public function showAction()
-    {
-        if ($this->get('security.context')->isGranted('ROLE_USER')) {
-            // Get the user currently signed in
-            $user = $this->get('security.context')->getToken()->getUser();
-
-            // Get the ID of the user logged in
-            $id = $user->getId();
-
-            $em = $this->getDoctrine()->getEntityManager();
-
-            // Get the role of the user
-            $roles = $user->getRoles();
-
-            // Fetch the user object with the user ID from database
-            $user = $em->getRepository('AppBundle:User')->find($id);
-
-            // Fetch the assistant history of the user
-            $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
-
-            // A array with all the active schools
-            $activeSchools = array();
-
-            // Find the work history of the user
-            $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
-
-            // Find any active assistant histories.. We use these to create a link on the profile page to the schools
-            foreach ($assistantHistory as $as) {
-
-                // Get the school of the assistant history
-                $school = $as->getSchool();
-
-                // Find active assistant histories
-                $activeAssistantHistory = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesBySchool($school);
-
-                if (in_array($as, $activeAssistantHistory)) {
-                    $activeSchools[] = $school;
-                }
-            }
-
-            // Render the view
-            return $this->render('profile/profile.html.twig', array(
-                'user' => $user,
-                'assistantHistory' => $assistantHistory,
-                'activeSchools' => $activeSchools,
-                'workHistory' => $workHistory,
-                'roles' => $roles,
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
-        }
     }
 }

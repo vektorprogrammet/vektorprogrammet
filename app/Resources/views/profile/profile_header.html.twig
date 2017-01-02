@@ -6,7 +6,7 @@
 
             {{ user.fieldOfStudy.department }} - {{ user.fieldOfStudy }}
 
-            {% for r in roles %}
+            {% for r in user.roles %}
                 - {{ r.name }}
             {% endfor %}
 
