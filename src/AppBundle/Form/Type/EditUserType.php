@@ -9,15 +9,12 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EditUserType extends AbstractType
 {
-    private $departmentId;
-
-    public function __construct($departmentId)
-    {
-        $this->departmentId = $departmentId;
-    }
-
+    private $department;
+    
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->department = $options['department'];
+        
         $builder
             ->add('user_name', 'text', array(
                 'label' => 'Brukernavn',
@@ -42,7 +39,7 @@ class EditUserType extends AbstractType
                         ->orderBy('f.shortName', 'ASC')
                         ->where('f.department = ?1')
                         // Set the parameter to the department ID that the current user belongs to.
-                        ->setParameter(1, $this->departmentId);
+                        ->setParameter(1, $this->department);
                 },
             ))
             ->add('save', 'submit', array(
@@ -54,6 +51,7 @@ class EditUserType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
+            'department' => 'AppBundle\Entity\Department'
         ));
     }
 

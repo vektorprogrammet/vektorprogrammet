@@ -88,9 +88,11 @@ security:
         - { path: ^/kontrollpanel/nyhetsbrev/send, roles: ROLE_SUPER_ADMIN }
         - { path: ^/updatestaticcontent, roles: ROLE_SUPER_ADMIN }
         - { path: ^/signatures, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/profile/attest, roles: ROLE_SUPER_ADMIN }
         - { path: ^/profile/aktiv, roles: ROLE_SUPER_ADMIN }
         - { path: ^/profile/deaktiv, roles: ROLE_SUPER_ADMIN }
         - { path: ^/profile/rolle/endre, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/profil/rediger/, roles: ROLE_SUPER_ADMIN }
 
           #ROLE_ADMIN = team user
         - { path: ^/profile/edit, roles: ROLE_ADMIN }

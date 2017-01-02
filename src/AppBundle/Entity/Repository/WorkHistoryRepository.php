@@ -15,6 +15,20 @@ use Doctrine\ORM\EntityRepository;
  */
 class WorkHistoryRepository extends EntityRepository
 {
+
+    /**
+     * @param User $user
+     * @return WorkHistory[]
+     */
+    public function findByUser(User $user): array
+    {
+        return $this->createQueryBuilder('work_history')
+            ->select('work_history')
+            ->where('work_history.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
     /**
      * @return WorkHistory[]
      */

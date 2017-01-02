@@ -7,10 +7,8 @@ use AppBundle\Form\Type\NewUserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\EditUserType;
-use AppBundle\Form\Type\EditUserAdminType;
 use AppBundle\Form\Type\EditUserPasswordType;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use DateTime;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class ProfileController extends Controller
@@ -69,7 +67,7 @@ class ProfileController extends Controller
             ));
         }
 
-        $form = $this->createForm(new NewUserType(), $user, array(
+        $form = $this->createForm(NewUserType::class, $user, array(
             'validation_groups' => array('username'),
         ));
 
@@ -119,148 +117,101 @@ class ProfileController extends Controller
         return new JsonResponse($response);
     }
 
-    public function downloadCertificateAction(Request $request)
+    public function downloadCertificateAction(Request $request, User $user)
     {
+        $em = $this->getDoctrine()->getManager();
 
-        // Get the variable sent by the URL
-        $id = $request->get('id');
+        // Fetch the assistant history of the user
+        $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
 
-        // Only ROLE_SUPER_ADMIN can create certificates
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+        // Find the work history of the user
+        $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
 
-            // Find the current time
-            $today = new DateTime('now');
+        $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($this->getUser());
 
-            $em = $this->getDoctrine()->getEntityManager();
-
-            // Find the user that is associated with the ID sent by the URL request
-            $user = $em->getRepository('AppBundle:User')->find($id);
-
-            // Fetch the assistant history of the user
-            $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
-
-            // Find the work history of the user
-            $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
-
-            $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($this->getUser());
-
-            if ($signature === null) {
-                return $this->redirectToRoute('certificate_signature_picture_upload');
-            }
-
-            $html = $this->renderView('certificate/certificate.html.twig', array(
-                'user' => $user,
-                'today' => $today,
-                'assistantHistory' => $assistantHistory,
-                'workHistory' => $workHistory,
-                'signature' => $signature,
-                'base_dir' => $this->get('kernel')->getRootDir().'/../www'.$request->getBasePath(),
-            ));
-            $mpdfService = $this->get('tfox.mpdfport');
-
-            return $mpdfService->generatePdfResponse($html);
-        } else {
-            return $this->redirect($this->generateUrl('home'));
+        if ($signature === null) {
+            return $this->redirectToRoute('certificate_signature_picture_upload');
         }
+
+        $html = $this->renderView('certificate/certificate.html.twig', array(
+            'user' => $user,
+            'assistantHistory' => $assistantHistory,
+            'workHistory' => $workHistory,
+            'signature' => $signature,
+            'base_dir' => $this->get('kernel')->getRootDir().'/../www'.$request->getBasePath(),
+        ));
+        $mpdfService = $this->get('tfox.mpdfport');
+
+        return $mpdfService->generatePdfResponse($html);
     }
 
     public function editProfileInformationAction(Request $request)
     {
-        if ($this->get('security.context')->isGranted('ROLE_USER')) {
-            // Get the current user logged in
-            $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->getUser();
 
-            // Get the department of the user
-            $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
+        $form = $this->createForm(EditUserType::class, $user, array(
+            'department' => $user->getDepartment(),
+        ));
 
-            // Create a new formType with the needed variables
-            $form = $this->createForm(new EditUserType($departmentId), $user);
+        $form->handleRequest($request);
 
-            // Handle the form
-            $form->handleRequest($request);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
 
-            // Check if the fields of the form is valid
-            if ($form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
-
-                return $this->redirect($this->generateUrl('profile'));
-            }
-
-            return $this->render('profile/edit_profile.html.twig', array(
-                'form' => $form->createView(),
-                'user' => $user,
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
+            return $this->redirect($this->generateUrl('profile'));
         }
+
+        return $this->render('profile/edit_profile.html.twig', array(
+            'form' => $form->createView(),
+            'user' => $user,
+        ));
     }
 
     public function editProfilePasswordAction(Request $request)
     {
-        if ($this->get('security.context')->isGranted('ROLE_USER')) {
-            // Get the current user logged in
-            $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->getUser();
 
-            // Create a new formType with the needed variables
-            $form = $this->createForm(new EditUserPasswordType(), $user);
+        $form = $this->createForm(EditUserPasswordType::class, $user);
 
-            // Handle the form
-            $form->handleRequest($request);
+        $form->handleRequest($request);
 
-            // Check if the fields of the form is valid
-            if ($form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
 
-                return $this->redirect($this->generateUrl('profile'));
-            }
-
-            return $this->render('profile/edit_profile_password.html.twig', array(
-                'form' => $form->createView(),
-                'user' => $user,
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
+            return $this->redirect($this->generateUrl('profile'));
         }
+
+        return $this->render('profile/edit_profile_password.html.twig', array(
+            'form' => $form->createView(),
+            'user' => $user,
+        ));
     }
 
-    public function editProfileInformationAdminAction(Request $request)
+    public function editProfileInformationAdminAction(Request $request, User $user)
     {
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-            // Get the ID sent by the request
-            $id = $this->getRequest()->get('id');
+        $form = $this->createForm(EditUserType::class, $user, array(
+            'department' => $user->getDepartment()
+        ));
 
-            // Find a user by the ID sent by the request
-            $em = $this->getDoctrine()->getEntityManager();
-            $user = $em->getRepository('AppBundle:User')->find($id);
+        // Handle the form
+        $form->handleRequest($request);
 
-            // Get the department of the user
-            $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
 
-            // Create a new formType with the needed variables
-            $form = $this->createForm(new EditUserAdminType($departmentId), $user);
-
-            // Handle the form
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
-
-                return $this->redirect($this->generateUrl('specific_profile', array('id' => $id)));
-            }
-
-            return $this->render('profile/edit_profile_admin.html.twig', array(
-                'form' => $form->createView(),
-                'user' => $user,
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
+            return $this->redirect($this->generateUrl('specific_profile', array('id' => $user->getId())));
         }
+
+        return $this->render('profile/edit_profile_admin.html.twig', array(
+            'form' => $form->createView(),
+            'user' => $user,
+        ));
     }
 
     /**
