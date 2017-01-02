@@ -208,11 +208,6 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->roles->toArray();
     }
 
-    public function isGranted($role)
-    {
-        return in_array($role, $this->getRoles());
-    }
-
     /**
      * Set lastName.
      *

@@ -8,7 +8,6 @@ use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class InterviewManager
 {
@@ -33,20 +32,6 @@ class InterviewManager
         $this->twig = $twig;
     }
 
-    public function prepareInterview(Application $application)
-    {
-        $interview = $application->getInterview();
-
-        // Only admin and above, or the assigned interviewer should be able to conduct an interview
-        if (!$this->loggedInUserCanSeeInterview($interview)) {
-            throw new AccessDeniedException();
-        }
-
-        $this->initializeInterviewAnswers($interview);
-
-        return $interview;
-    }
-
     /**
      * Only team leader and above, or the assigned interviewer should be able to see the interview.
      *
@@ -63,8 +48,10 @@ class InterviewManager
 
     public function initializeInterviewAnswers(Interview $interview)
     {
+        $interview->setConducted(new \DateTime());
+
         if ($interview->getInterviewed()) {
-            return;
+            return $interview;
         }
 
         foreach ($interview->getInterviewSchema()->getInterviewQuestions() as $interviewQuestion) {
@@ -76,6 +63,8 @@ class InterviewManager
             // Add the answer object to the interview
             $interview->addInterviewAnswer($answer);
         }
+
+        return $interview;
     }
 
     public function assignInterviewerToApplication(User $interviewer, Application $application)
