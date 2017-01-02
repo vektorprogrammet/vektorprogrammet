@@ -280,6 +280,7 @@ class Interview
     public function setConducted($conducted)
     {
         $this->conducted = $conducted;
+        $this->interviewed = true;
 
         return $this;
     }

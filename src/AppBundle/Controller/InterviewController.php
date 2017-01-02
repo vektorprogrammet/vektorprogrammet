@@ -2,15 +2,14 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Event\InterviewConductedEvent;
+use AppBundle\Service\RoleManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Interview;
-use AppBundle\Entity\InterviewAnswer;
-use AppBundle\Entity\InterviewSchema;
 use AppBundle\Entity\Application;
 use AppBundle\Form\Type\ScheduleInterviewType;
-use AppBundle\Form\Type\InterviewSchemaType;
 use AppBundle\Form\Type\ApplicationInterviewType;
 use AppBundle\Form\Type\AssignInterviewType;
 
@@ -31,34 +30,16 @@ class InterviewController extends Controller
      */
     public function conductAction(Request $request, Application $application)
     {
-        if ($this->getUser() == $application->getUser()) {
+        if ($this->getUser() === $application->getUser()) {
             return $this->render('error/control_panel_error.html.twig', array('error' => 'Du kan ikke intervjue deg selv'));
         }
 
-        $interview = $application->getInterview();
+        // If the interview has not yet been conducted, create up to date answer objects for all questions in schema
+        $interview = $this->get('app.interview.manager')->initializeInterviewAnswers($application->getInterview());
 
         // Only admin and above, or the assigned interviewer should be able to conduct an interview
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') &&
-            !$interview->isInterviewer($this->getUser())
-        ) {
+        if (!$this->get('app.interview.manager')->loggedInUserCanSeeInterview($interview)) {
             throw $this->createAccessDeniedException();
-        }
-
-        $em = $this->getDoctrine()->getManager();
-
-        $isNewInterview = !$interview->getInterviewed();
-
-        // If the interview has not yet been conducted, create up to date answer objects for all questions in schema
-        if ($isNewInterview) {
-            foreach ($interview->getInterviewSchema()->getInterviewQuestions() as $interviewQuestion) {
-                // Create a new answer object for the question
-                $answer = new InterviewAnswer();
-                $answer->setInterview($interview);
-                $answer->setInterviewQuestion($interviewQuestion);
-
-                // Add the answer object to the interview
-                $interview->addInterviewAnswer($answer);
-            }
         }
 
         $form = $this->createForm(new ApplicationInterviewType(), $application, array(
@@ -67,36 +48,20 @@ class InterviewController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            // Set interviewed to true if the form is valid
-            $interview->setInterviewed(true);
-            $application->setLastEdited(new \DateTime());
+            $isNewInterview = !$interview->getInterviewed();
 
-            // Set the conducted datetime to now
-            $interview->setConducted(new \DateTime());
-
-            // Persist
+            $em = $this->getDoctrine()->getManager();
             $em->persist($interview);
             $em->flush();
 
             if ($isNewInterview) {
-                // Send email to the interviewee with a summary of the interview
-                $emailMessage = \Swift_Message::newInstance()
-                    ->setSubject('Vektorprogrammet intervju')
-                    ->setFrom(array('rekruttering@vektorprogrammet.no' => 'Vektorprogrammet'))
-                    ->setTo($application->getUser()->getEmail())
-                    ->setReplyTo($this->getUser()->getEmail())
-                    ->setBody($this->renderView('interview/interview_summary_email.html.twig', array(
-                        'application' => $application,
-                        'interviewer' => $this->getUser(),
-                    )));
-                $this->get('mailer')->send($emailMessage);
+                $this->get('event_dispatcher')->dispatch(InterviewConductedEvent::NAME, new InterviewConductedEvent($application));
             }
 
             return $this->redirect($this->generateUrl('admissionadmin_show', array('status' => 'interviewed')));
         }
 
         return $this->render('interview/conduct.html.twig', array(
-            'interview' => $interview,
             'application' => $application,
             'form' => $form->createView(),
         ));
@@ -126,17 +91,14 @@ class InterviewController extends Controller
      */
     public function showAction(Application $application)
     {
-        $interview = $application->getInterview();
-        if (is_null($interview)) {
+        if (null === $interview = $application->getInterview()) {
             return $this->redirectToRoute('admissionadmin_show');
         }
 
         // Only accessible for admin and above, or team members belonging to the same department as the interview
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') &&
-            !$interview->isInterviewer($this->getUser())
+        if (!$this->get('app.interview.manager')->loggedInUserCanSeeInterview($interview) ||
+            $this->getUser() == $application->getUser()
         ) {
-            throw $this->createAccessDeniedException();
-        } elseif ($this->getUser() == $application->getUser()) {
             throw $this->createAccessDeniedException();
         }
 
@@ -147,42 +109,35 @@ class InterviewController extends Controller
      * Deletes the given interview.
      * This method is intended to be called by an Ajax request.
      *
-     * @param $id
+     * @param Interview $interview
      *
      * @return JsonResponse
+     *
+     * @internal param $id
      */
-    public function deleteInterviewAction($id)
+    public function deleteInterviewAction(Interview $interview)
     {
         try {
-            // Only the highest user role should be able to delete an interview
-            if ($this->get('security.authorization_checker')->isGranted('ROLE_HIGHEST_ADMIN')) {
-                $em = $this->getDoctrine()->getManager();
-                // Find the interview by ID
-                $interview = $em->getRepository('AppBundle:Interview')->find($id);
 
-                // Delete the interview
-                $em->remove($interview);
-                $em->flush();
+            // Delete the interview
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($interview);
+            $em->flush();
 
-                // AJAX response
-                $response['success'] = true;
-            } else {
-                // Send a respons to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Ikke tilstrekkelige rettigheter.';
-            }
+            // AJAX response
+            $response['success'] = true;
+
+            return new JsonResponse(array(
+                'success' => true,
+            ));
         } catch (\Exception $e) {
-            // Send a respons to AJAX
+            // Send a response to AJAX
             return new JsonResponse([
                 'success' => false,
                 'code' => $e->getCode(),
-                'cause' => 'En exception oppstod. Vennligst kontakt IT-ansvarlig.',
-                // 'cause' => $e->getMessage(), if you want to see the exception message.
+                'cause' => 'En feil oppstod. Vennligst kontakt IT-ansvarlig.',
             ]);
         }
-
-        // Response to ajax
-        return new JsonResponse($response);
     }
 
     /**
@@ -199,140 +154,33 @@ class InterviewController extends Controller
     {
         try {
             // Only the highest user role should be able to delete an interview
-            if ($this->get('security.authorization_checker')->isGranted('ROLE_HIGHEST_ADMIN')) {
+            // Get the ids from the form
+            $applicationIds = $request->request->get('application')['id'];
 
-                // Get the ids from the form
-                $applicationIds = $request->request->get('application')['id'];
+            // Get the application objects
+            $em = $this->getDoctrine()->getManager();
+            $applications = $em->getRepository('AppBundle:Application')->findBy(array('id' => $applicationIds));
 
-                // Get the application objects
-                $em = $this->getDoctrine()->getEntityManager();
-                $applications = $em->getRepository('AppBundle:Application')->findById($applicationIds);
-
-                // Delete the interviews
-                foreach ($applications as $application) {
-                    $interview = $application->getInterview();
-                    if ($interview) {
-                        $em->remove($interview);
-                    }
+            // Delete the interviews
+            foreach ($applications as $application) {
+                $interview = $application->getInterview();
+                if ($interview) {
+                    $em->remove($interview);
                 }
-                $em->flush();
-
-                // AJAX response
-                $response['success'] = true;
-            } else {
-                // Send a respons to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Ikke tilstrekkelige rettigheter.';
             }
+            $em->flush();
+
+            // AJAX response
+            return new JsonResponse(array(
+                'success' => true,
+            ));
         } catch (\Exception $e) {
-            // Send a respons to AJAX
+            // Send a response to AJAX
             return new JsonResponse([
                 'success' => false,
                 'cause' => 'En exception oppstod. Vennligst kontakt IT-ansvarlig.',
-                // 'cause' => $e->getMessage(), if you want to see the exception message.
             ]);
         }
-
-        // Response to ajax
-        return new JsonResponse($response);
-    }
-
-    /**
-     * Shows and handles the submission of the create interview schema form.
-     * Uses the same form as the edit action.
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function createSchemaAction(Request $request)
-    {
-        $schema = new InterviewSchema();
-
-        $form = $this->createForm(new InterviewSchemaType(), $schema);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($schema);
-            $em->flush();
-
-            // Need some form of redirect. Will cause wrong database entries if the form is rendered again
-            // after a valid submit, without remaking the form with up to date question objects from the database.
-            return $this->redirect($this->generateUrl('interview_schema'));
-        }
-
-        return $this->render('interview/schema.html.twig', array('form' => $form->createView()));
-    }
-
-    /**
-     * Shows and handles the submission of the edit interview schema form.
-     * Uses the same form as the create action.
-     *
-     * @param Request         $request
-     * @param InterviewSchema $schema
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function editSchemaAction(Request $request, InterviewSchema $schema)
-    {
-        $form = $this->createForm(new InterviewSchemaType(), $schema);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($schema);
-            $em->flush();
-
-            // Need some form of redirect. Will cause wrong database entries if the form is rendered again
-            // after a valid submit, without remaking the form with up to date question objects from the database.
-            return $this->redirect($this->generateUrl('interview_schema'));
-        }
-
-        return $this->render('interview/schema.html.twig', array('form' => $form->createView()));
-    }
-
-    /**
-     * Shows the interview schemas page.
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function showSchemasAction()
-    {
-        $schemas = $this->getDoctrine()->getRepository('AppBundle:InterviewSchema')->findAll();
-
-        return $this->render('interview/schemas.html.twig', array('schemas' => $schemas));
-    }
-
-    /**
-     * Deletes the given interview schema.
-     * This method is intended to be called by an Ajax request.
-     *
-     * @param InterviewSchema $schema
-     *
-     * @return JsonResponse
-     */
-    public function deleteSchemaAction(InterviewSchema $schema)
-    {
-        try {
-            if ($this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
-                $em = $this->getDoctrine()->getManager();
-                $em->remove($schema);
-                $em->flush();
-
-                $response['success'] = true;
-            } else {
-                $response['success'] = false;
-                $response['cause'] = 'Ikke tilstrekkelig rettigheter';
-            }
-        } catch (\Exception $e) {
-            $response = ['success' => false,
-                'code' => $e->getCode(),
-                'cause' => 'Det oppstod en feil.',
-            ];
-        }
-
-        return new JsonResponse($response);
     }
 
     /**
@@ -348,20 +196,12 @@ class InterviewController extends Controller
     {
         $interview = $application->getInterview();
         // Only admin and above, or the assigned interviewer should be able to book an interview
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') &&
-            !$interview->isInterviewer($this->getUser())
-        ) {
+        if (!$this->get('app.interview.manager')->loggedInUserCanSeeInterview($interview)) {
             throw $this->createAccessDeniedException();
         }
 
         // Set the default data for the form
-        $defaultData = array(
-            'datetime' => $interview->getScheduled(),
-            'message' => 'Hei, vi har satt opp et intervju for deg angående opptak til vektorprogrammet. '.
-                'Vennligst gi beskjed til meg hvis tidspunktet ikke passer.',
-            'from' => $interview->getInterviewer()->getEmail(),
-            'to' => $interview->getUser()->getEmail(),
-        );
+        $defaultData = $this->get('app.interview.manager')->getDefaultScheduleFormData($interview);
 
         $form = $this->createForm(new ScheduleInterviewType(), $defaultData);
 
@@ -378,24 +218,7 @@ class InterviewController extends Controller
 
             // Send email if the send button was clicked
             if ($form->get('saveAndSend')->isClicked()) {
-                $mailer = $this->get('mailer');
-                $message = \Swift_Message::newInstance()
-                    ->setSubject('Intervju for vektorprogrammet')
-                    ->setFrom(array('opptak@vektorprogrammet.no' => 'Vektorprogrammet'))
-                    ->setTo($data['to'])
-                    ->setReplyTo($data['from'])
-                    ->setBody(
-                        $this->renderView('interview/email.html.twig',
-                            array('message' => $data['message'],
-                                'datetime' => $data['datetime'],
-                                'fromName' => $interview->getInterviewer()->getFirstName().' '.$interview->getInterviewer()->getLastName(),
-                                'fromMail' => $data['from'],
-                                'fromPhone' => $interview->getInterviewer()->getPhone(),
-                            )
-                        ),
-                        'text/html'
-                    );
-                $mailer->send($message);
+                $this->get('app.interview.manager')->sendScheduleEmail($interview, $data);
             }
 
             return $this->redirect($this->generateUrl('admissionadmin_show', array('status' => 'assigned')));
@@ -424,7 +247,7 @@ class InterviewController extends Controller
         $application = $em->getRepository('AppBundle:Application')->find($id);
         $user = $application->getUser();
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
-        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles(['ROLE_ADMIN']);
+        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([RoleManager::ROLE_TEAM_MEMBER]);
 
         $form = $this->createForm(new AssignInterviewType($roles), $application);
 
@@ -464,48 +287,38 @@ class InterviewController extends Controller
     public function bulkAssignAction(Request $request)
     {
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
-        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles(['ROLE_ADMIN']);
+        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([RoleManager::ROLE_TEAM_MEMBER]);
         $form = $this->createForm(new AssignInterviewType($roles));
 
         if ($request->isMethod('POST')) {
             $em = $this->getDoctrine()->getManager();
             // Get the info from the form
-            $interviewerId = $request->request->get('application')['interview']['interviewer'];
-            $schemaId = $request->request->get('application')['interview']['interviewSchema'];
-            $applicationIds = $request->request->get('application')['id'];
+            $data = $request->request->get('application');
             // Get objects from database
-            $interviewer = $em->getRepository('AppBundle:User')->findOneById($interviewerId);
-            $schema = $em->getRepository('AppBundle:InterviewSchema')->findOneById($schemaId);
-            $applications = $em->getRepository('AppBundle:Application')->findById($applicationIds);
+            $interviewer = $em->getRepository('AppBundle:User')->findOneBy(array('id' => $data['interview']['interviewer']));
+            $schema = $em->getRepository('AppBundle:InterviewSchema')->findOneBy(array('id' => $data['interview']['interviewSchema']));
+            $applications = $em->getRepository('AppBundle:Application')->findBy(array('id' => $data['id']));
 
             // Update or create new interviews for all the given applications
             foreach ($applications as $application) {
-                $interview = $application->getInterview();
-                if (!$interview) {
-                    $interview = new Interview();
-                    $application->setInterview($interview);
-                }
-                $interview->setInterviewed(false);
-                $interview->setUser($application->getUser());
-                $interview->setInterviewer($interviewer);
-                $interview->setInterviewSchema($schema);
+                $this->get('app.interview.manager')->assignInterviewerToApplication($interviewer, $application);
+
+                $application->getInterview()->setInterviewSchema($schema);
                 $em->persist($application);
             }
 
             $em->flush();
 
-            return new JsonResponse(
-                array('success' => true,
-                    'request' => $request->request->all(), )
-            );
+            return new JsonResponse(array(
+                'success' => true,
+                'request' => $request->request->all(),
+            ));
         }
 
-        return new JsonResponse(
-            array(
-                'form' => $this->renderView('interview/assign_interview_form.html.twig', array(
+        return new JsonResponse(array(
+            'form' => $this->renderView('interview/assign_interview_form.html.twig', array(
                     'form' => $form->createView(),
                 )),
-            )
-        );
+        ));
     }
 }

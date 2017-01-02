@@ -24,13 +24,31 @@
 {% block applications %}
     {% if applicants is defined %}
         <div class="row">
-            <div class="small-6 columns">
-                {% if app.user.fieldOfStudy.department == department %}
-                    <a class="button tiny success float-left" href="{{ path('register_applicant') }}">Ny søker</a>
+            <div class="small-3 columns">
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <div class="row collapse">
+                        <div class="small-9 columns">
+                            <select id="bulkSelect">
+                                <option value="title">Gruppehandling</option>
+                                <option value="assign">Fordel intervju</option>
+                                {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                                    <option value="deleteApplication">Slett søknad</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="small-3 columns">
+                            <a href="#" id="bulkAction" class="button postfix">Utfør</a>
+                        </div>
+                    </div>
                 {% endif %}
-                &nbsp;
             </div>
-            <div class="small-6 columns"><h6 class="float-right">Nye søkere | Antall: {{ applicants|length }}</h6></div>
+            <div class="small-9 columns">
+                {% if app.user.fieldOfStudy.department == department %}
+                    <a class="button tiny success float-right" href="{{ path('register_applicant') }}">
+                        Ny søker <i class="fa fa-plus"></i>
+                    </a>
+                {% endif %}
+            </div>
 
         </div>
         {# The table containing new applications #}

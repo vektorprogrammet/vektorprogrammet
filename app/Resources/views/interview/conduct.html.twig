@@ -20,8 +20,8 @@
             <div class="panel">
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
-                        {% if interview.cancelled == 0 %}
-                            <form action="{{ path('interview_cancel', {'id' : interview.id}) }}" method="POST">
+                        {% if not application.interview.cancelled %}
+                            <form action="{{ path('interview_cancel', {'id' : application.interview.id}) }}" method="POST">
                                 <button class="button alert tiny radius float-right" type="submit">Ikke møtt</button>
                             </form>
                         {% endif %}
@@ -41,7 +41,7 @@
                             </thead>
                             <tbody>
                             <tr>
-                                {% set u = interview.user %}
+                                {% set u = application.user %}
                                 <td> {{ u.firstName }} </td>
                                 <td> {{ u.lastName }} </td>
                                 <td> {{ u.phone }} </td>
@@ -58,7 +58,7 @@
                             </tbody>
                         </table>
                         <h3>Intervjuet av</h3>
-                        <p>{{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}</p>
+                        <p>{{ application.interview.interviewer }}</p>
                     </div>
                 </div>
                 {{ form_start(form) }}
@@ -116,7 +116,7 @@
                 </div>
 
                 <h3>Intervjuspørsmål
-                    <small>{{ interview.interviewSchema.name }}</small>
+                    <small>{{ application.interview.interviewSchema.name }}</small>
                 </h3>
                 {% for interviewAnswer in form.interview.interviewAnswers %}
                     <div class="row">
@@ -154,7 +154,7 @@
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
                         {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
-                        {% if not interview.interviewed %}
+                        {% if not application.interview.interviewed %}
                             <div class="row">
                                 <div class="medium-6 columns">
                                     <br>
