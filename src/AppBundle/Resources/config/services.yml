@@ -8,6 +8,7 @@ services:
 
   app.interview.manager:
     class: AppBundle\Service\InterviewManager
+    arguments: ['@security.token_storage', '@security.authorization_checker']
 
   app.safe_html_extension:
     class: AppBundle\Twig\Extension\SafeHtmlExtension

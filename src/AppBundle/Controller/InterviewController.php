@@ -33,19 +33,9 @@ class InterviewController extends Controller
             return $this->render('error/control_panel_error.html.twig', array('error' => 'Du kan ikke intervjue deg selv'));
         }
 
-        $interview = $application->getInterview();
-
-        // Only admin and above, or the assigned interviewer should be able to conduct an interview
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') && !$interview->isInterviewer($this->getUser())) {
-            throw $this->createAccessDeniedException();
-        }
-
-        $isNewInterview = !$interview->getInterviewed();
+        $interview = $this->get('app.interview.manager')->prepareInterview($application);
 
         // If the interview has not yet been conducted, create up to date answer objects for all questions in schema
-        if ($isNewInterview) {
-            $this->get('app.interview.manager')->initializeInterviewAnswers($interview);
-        }
 
         $form = $this->createForm(new ApplicationInterviewType(), $application, array(
             'validation_groups' => array('interview'),
@@ -53,6 +43,7 @@ class InterviewController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $isNewInterview = !$interview->getInterviewed();
             $interview->setConducted(new \DateTime());
 
             $em = $this->getDoctrine()->getManager();
