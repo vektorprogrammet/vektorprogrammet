@@ -71,11 +71,11 @@ class ProfileControllerTest extends WebTestCase
         $form = $crawler->selectButton('Lagre')->form();
 
         // Change the value of a field
-        $form['editUserAdmin[firstName]'] = 'Thomas';
-        $form['editUserAdmin[lastName]'] = 'Alm';
-        $form['editUserAdmin[phone]'] = '99912399';
-        $form['editUserAdmin[email]'] = 'alm@mail.com';
-        $form['editUserAdmin[fieldOfStudy]']->select(2);
+        $form['editUser[firstName]'] = 'Thomas';
+        $form['editUser[lastName]'] = 'Alm';
+        $form['editUser[phone]'] = '99912399';
+        $form['editUser[email]'] = 'alm@mail.com';
+        $form['editUser[fieldOfStudy]']->select(2);
 
         // submit the form
         $client->submit($form);
