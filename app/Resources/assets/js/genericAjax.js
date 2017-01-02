@@ -59,17 +59,16 @@
         function requestAjax(button) {
 
             // The route is the button id
-            var route = button.id;
-            alert(route);
+            var role = button.id;
             // the entityId is the name of the button
             var id = parseInt(button.name);
 
             $.ajax({
                 type: 'POST',
-                url: Routing.generate(route, {id: id}),
+                url: Routing.generate('profile_change_role', {id: id}),
+                data: {role: role},
                 cache: false,
                 success: function (response) {
-
 
                     if (response.success) {
                         alert("Endringene ble lagret.");
