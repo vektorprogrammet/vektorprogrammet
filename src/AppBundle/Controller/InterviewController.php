@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Interview;
-use AppBundle\Entity\InterviewSchema;
 use AppBundle\Entity\Application;
 use AppBundle\Form\Type\ScheduleInterviewType;
 use AppBundle\Form\Type\ApplicationInterviewType;
