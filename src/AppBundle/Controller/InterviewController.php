@@ -88,17 +88,14 @@ class InterviewController extends Controller
      */
     public function showAction(Application $application)
     {
-        $interview = $application->getInterview();
-        if (is_null($interview)) {
+        if (null === $interview = $application->getInterview()) {
             return $this->redirectToRoute('admissionadmin_show');
         }
 
         // Only accessible for admin and above, or team members belonging to the same department as the interview
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') &&
-            !$interview->isInterviewer($this->getUser())
+        if (!$this->get('app.interview.manager')->loggedInUserCanSeeInterview($interview) ||
+            $this->getUser() == $application->getUser()
         ) {
-            throw $this->createAccessDeniedException();
-        } elseif ($this->getUser() == $application->getUser()) {
             throw $this->createAccessDeniedException();
         }
 
@@ -109,42 +106,35 @@ class InterviewController extends Controller
      * Deletes the given interview.
      * This method is intended to be called by an Ajax request.
      *
-     * @param $id
+     * @param Interview $interview
      *
      * @return JsonResponse
+     *
+     * @internal param $id
      */
-    public function deleteInterviewAction($id)
+    public function deleteInterviewAction(Interview $interview)
     {
         try {
-            // Only the highest user role should be able to delete an interview
-            if ($this->get('security.authorization_checker')->isGranted('ROLE_HIGHEST_ADMIN')) {
-                $em = $this->getDoctrine()->getManager();
-                // Find the interview by ID
-                $interview = $em->getRepository('AppBundle:Interview')->find($id);
 
-                // Delete the interview
-                $em->remove($interview);
-                $em->flush();
+            // Delete the interview
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($interview);
+            $em->flush();
 
-                // AJAX response
-                $response['success'] = true;
-            } else {
-                // Send a respons to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Ikke tilstrekkelige rettigheter.';
-            }
+            // AJAX response
+            $response['success'] = true;
+
+            return new JsonResponse(array(
+                'success' => true,
+            ));
         } catch (\Exception $e) {
-            // Send a respons to AJAX
+            // Send a response to AJAX
             return new JsonResponse([
                 'success' => false,
                 'code' => $e->getCode(),
-                'cause' => 'En exception oppstod. Vennligst kontakt IT-ansvarlig.',
-                // 'cause' => $e->getMessage(), if you want to see the exception message.
+                'cause' => 'En feil oppstod. Vennligst kontakt IT-ansvarlig.',
             ]);
         }
-
-        // Response to ajax
-        return new JsonResponse($response);
     }
 
     /**
@@ -161,42 +151,33 @@ class InterviewController extends Controller
     {
         try {
             // Only the highest user role should be able to delete an interview
-            if ($this->get('security.authorization_checker')->isGranted('ROLE_HIGHEST_ADMIN')) {
+            // Get the ids from the form
+            $applicationIds = $request->request->get('application')['id'];
 
-                // Get the ids from the form
-                $applicationIds = $request->request->get('application')['id'];
+            // Get the application objects
+            $em = $this->getDoctrine()->getManager();
+            $applications = $em->getRepository('AppBundle:Application')->findBy(array('id' => $applicationIds));
 
-                // Get the application objects
-                $em = $this->getDoctrine()->getEntityManager();
-                $applications = $em->getRepository('AppBundle:Application')->findById($applicationIds);
-
-                // Delete the interviews
-                foreach ($applications as $application) {
-                    $interview = $application->getInterview();
-                    if ($interview) {
-                        $em->remove($interview);
-                    }
+            // Delete the interviews
+            foreach ($applications as $application) {
+                $interview = $application->getInterview();
+                if ($interview) {
+                    $em->remove($interview);
                 }
-                $em->flush();
-
-                // AJAX response
-                $response['success'] = true;
-            } else {
-                // Send a respons to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Ikke tilstrekkelige rettigheter.';
             }
+            $em->flush();
+
+            // AJAX response
+            return new JsonResponse(array(
+                'success' => true,
+            ));
         } catch (\Exception $e) {
-            // Send a respons to AJAX
+            // Send a response to AJAX
             return new JsonResponse([
                 'success' => false,
                 'cause' => 'En exception oppstod. Vennligst kontakt IT-ansvarlig.',
-                // 'cause' => $e->getMessage(), if you want to see the exception message.
             ]);
         }
-
-        // Response to ajax
-        return new JsonResponse($response);
     }
 
     /**

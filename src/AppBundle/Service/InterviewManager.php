@@ -29,16 +29,29 @@ class InterviewManager
     public function prepareInterview(Application $application)
     {
         $interview = $application->getInterview();
-        $user = $this->tokenStorage->getToken()->getUser();
 
         // Only admin and above, or the assigned interviewer should be able to conduct an interview
-        if (!$this->authorizationChecker->isGranted(RoleManager::ROLE_TEAM_LEADER) && !$interview->isInterviewer($user)) {
+        if (!$this->loggedInUserCanSeeInterview($interview)) {
             throw new AccessDeniedException();
         }
 
         $this->initializeInterviewAnswers($interview);
 
         return $interview;
+    }
+
+    /**
+     * Only team leader and above, or the assigned interviewer should be able to see the interview.
+     *
+     * @param Interview $interview
+     *
+     * @return bool
+     */
+    public function loggedInUserCanSeeInterview(Interview $interview): bool
+    {
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        return $this->authorizationChecker->isGranted(RoleManager::ROLE_TEAM_LEADER) || $interview->isInterviewer($user);
     }
 
     public function initializeInterviewAnswers(Interview $interview)
