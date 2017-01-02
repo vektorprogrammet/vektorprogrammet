@@ -11,6 +11,7 @@ use AppBundle\Form\Type\EditUserAdminType;
 use AppBundle\Form\Type\EditUserPasswordType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use DateTime;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class ProfileController extends Controller
 {
@@ -37,7 +38,6 @@ class ProfileController extends Controller
 
     public function activateUserAction(User $user)
     {
-
         try {
             // set user active level
             $user->setActive(1);
@@ -89,170 +89,33 @@ class ProfileController extends Controller
         ));
     }
 
-    public function promoteToTeamMemberAction(Request $request)
+    public function changeRoleAction(Request $request, User $user)
     {
+        $response = array();
 
-        // Get the ID sent by the request
-        $id = $request->get('id');
+        $roleManager = $this->get('app.roles');
+        $roleName = $roleManager->mapAliasToRole($request->request->get('role'));
 
-        try {
-            // Only SUPER_ADMIN can edit roles
-            if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-
-                // Find the given user
-                $em = $this->getDoctrine()->getEntityManager();
-                $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
-
-                // Find all roles
-                $roles = $this->getDoctrine()->getRepository('AppBundle:Role')->findAll();
-
-                // Remove all the roles from the user
-                foreach ($roles as $role) {
-                    $user->removeRole($role);
-                    $role->removeUser($user);
-                }
-
-                // Find the admin role
-                $adminRole = $this->getDoctrine()->getRepository('AppBundle:Role')->findOneByRole('ROLE_ADMIN');
-
-                // We have to add both the role and the user to eachother due to many-to-many relations
-
-                // Add the user to the adminrole
-                $adminRole->addUser($user);
-
-                // Add the adminrole to the user
-                $user->addRole($adminRole);
-
-                $em->flush();
-
-                // Send a response back to AJAX
-                $response['success'] = true;
-            } else {
-                // Send a response back to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Du har ikke tilstrekkelige rettigheter.';
-            }
-        } catch (\Exception $e) {
-            // Send a response back to AJAX
-            $response['success'] = false;
-
-            $response['cause'] = $e->getMessage(); // if you want to see the exception message.
-
-            return new JsonResponse($response);
+        if (!$roleManager->canChangeToRole($roleName)) {
+            throw new BadRequestHttpException();
         }
 
-        // Send a respons to ajax
-        return new JsonResponse($response);
-    }
-
-    public function promoteToAssistentAction(Request $request)
-    {
-
-        // Get the ID sent by the request
-        $id = $request->get('id');
-
         try {
-            // Only SUPER_ADMIN can edit roles
-            if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+            $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findByRoleName($roleName);
+            $user->setRoles(array($role));
 
-                // Find the given user
-                $em = $this->getDoctrine()->getEntityManager();
-                $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
 
-                // Find all roles
-                $roles = $this->getDoctrine()->getRepository('AppBundle:Role')->findAll();
-
-                // Remove all the roles from the user
-                foreach ($roles as $role) {
-                    $user->removeRole($role);
-                    $role->removeUser($user);
-                }
-
-                // Find the assistent role
-                $assistentRole = $this->getDoctrine()->getRepository('AppBundle:Role')->findOneByRole('ROLE_USER');
-
-                // We have to add both the role and the user to eachother due to many-to-many relations
-
-                // Add the user to the role
-                $assistentRole->addUser($user);
-
-                // Add the role to the user
-                $user->addRole($assistentRole);
-
-                $em->flush();
-
-                // Send a response back to AJAX
-                $response['success'] = true;
-            } else {
-                // Send a response back to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Du har ikke tilstrekkelige rettigheter.';
-            }
+            $response['success'] = true;
         } catch (\Exception $e) {
-            // Send a response back to AJAX
             $response['success'] = false;
 
-            $response['cause'] = $e->getMessage(); // if you want to see the exception message.
-
-            return new JsonResponse($response);
+            $response['cause'] = 'Kunne ikke endre rettighetsnivå'; // if you want to see the exception message.
         }
 
-        // Send a respons to ajax
-        return new JsonResponse($response);
-    }
-
-    public function promoteToAdminAction(Request $request)
-    {
-
-        // Get the ID sent by the request
-        $id = $request->get('id');
-
-        try {
-            // Only SUPER_ADMIN can edit roles
-            if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-
-                // Find the given user
-                $em = $this->getDoctrine()->getEntityManager();
-                $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
-
-                // Find all roles
-                $roles = $this->getDoctrine()->getRepository('AppBundle:Role')->findAll();
-
-                // Remove all the roles from the user
-                foreach ($roles as $role) {
-                    $user->removeRole($role);
-                    $role->removeUser($user);
-                }
-
-                // Find the assistent role
-                $assistentRole = $this->getDoctrine()->getRepository('AppBundle:Role')->findOneByRole('ROLE_SUPER_ADMIN');
-
-                // We have to add both the role and the user to eachother due to many-to-many relations
-
-                // Add the user to the role
-                $assistentRole->addUser($user);
-
-                // Add the role to the user
-                $user->addRole($assistentRole);
-
-                $em->flush();
-
-                // Send a response back to AJAX
-                $response['success'] = true;
-            } else {
-                // Send a response back to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Du har ikke tilstrekkelige rettigheter.';
-            }
-        } catch (\Exception $e) {
-            // Send a response back to AJAX
-            $response['success'] = false;
-            $response['cause'] = $e->getMessage(); // if you want to see the exception message.
-
-            return new JsonResponse($response);
-        }
-
-        // Send a respons to ajax
+        // Send a response to ajax
         return new JsonResponse($response);
     }
 

@@ -65,7 +65,7 @@ class UserRegistration
 
         $this->logger->info("Activation email sent to {$user} at {$user->getEmail()}");
     }
-    
+
     public function activateUserByNewUserCode(string $newUserCode): User
     {
         $hashedNewUserCode = hash('sha512', $newUserCode, false);

@@ -198,27 +198,9 @@ profile_deactivate_user:
  options:
     expose: true
 
-profile_promote_user_to_assistent:
- path:   /profile/rolle/assistent/bruker/{id}
- defaults: { _controller: AppBundle:Profile:promoteToAssistent }
- methods: [POST]
- requirements:
-    id: \d+
- options:
-    expose: true
-
-profile_promote_user_to_team:
- path:   /profile/rolle/team/bruker/{id}
- defaults: { _controller: AppBundle:Profile:promoteToTeamMember }
- methods: [POST]
- requirements:
-    id: \d+
- options:
-    expose: true
-
-profile_promote_user_to_admin:
- path:   /profile/rolle/admin/bruker/{id}
- defaults: { _controller: AppBundle:Profile:promoteToAdmin }
+profile_change_role:
+ path:   /profile/rolle/endre/{id}
+ defaults: { _controller: AppBundle:Profile:changeRole }
  methods: [POST]
  requirements:
     id: \d+

@@ -3,6 +3,9 @@ services:
     class: AppBundle\Service\UserRegistration
     arguments: ['@twig', '@doctrine.orm.default_entity_manager', '@mailer', '@logger']
 
+  app.roles:
+    class: AppBundle\Service\RoleManager
+
   app.safe_html_extension:
     class: AppBundle\Twig\Extension\SafeHtmlExtension
     public: false
