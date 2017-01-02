@@ -2,15 +2,14 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Event\InterviewConductedEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Interview;
-use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\InterviewSchema;
 use AppBundle\Entity\Application;
 use AppBundle\Form\Type\ScheduleInterviewType;
-use AppBundle\Form\Type\InterviewSchemaType;
 use AppBundle\Form\Type\ApplicationInterviewType;
 use AppBundle\Form\Type\AssignInterviewType;
 
@@ -38,27 +37,15 @@ class InterviewController extends Controller
         $interview = $application->getInterview();
 
         // Only admin and above, or the assigned interviewer should be able to conduct an interview
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') &&
-            !$interview->isInterviewer($this->getUser())
-        ) {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') && !$interview->isInterviewer($this->getUser())) {
             throw $this->createAccessDeniedException();
         }
-
-        $em = $this->getDoctrine()->getManager();
 
         $isNewInterview = !$interview->getInterviewed();
 
         // If the interview has not yet been conducted, create up to date answer objects for all questions in schema
         if ($isNewInterview) {
-            foreach ($interview->getInterviewSchema()->getInterviewQuestions() as $interviewQuestion) {
-                // Create a new answer object for the question
-                $answer = new InterviewAnswer();
-                $answer->setInterview($interview);
-                $answer->setInterviewQuestion($interviewQuestion);
-
-                // Add the answer object to the interview
-                $interview->addInterviewAnswer($answer);
-            }
+            $this->get('app.interview.manager')->initializeInterviewAnswers($interview);
         }
 
         $form = $this->createForm(new ApplicationInterviewType(), $application, array(
@@ -67,29 +54,14 @@ class InterviewController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            // Set interviewed to true if the form is valid
-            $interview->setInterviewed(true);
-            $application->setLastEdited(new \DateTime());
-
-            // Set the conducted datetime to now
             $interview->setConducted(new \DateTime());
 
-            // Persist
+            $em = $this->getDoctrine()->getManager();
             $em->persist($interview);
             $em->flush();
 
             if ($isNewInterview) {
-                // Send email to the interviewee with a summary of the interview
-                $emailMessage = \Swift_Message::newInstance()
-                    ->setSubject('Vektorprogrammet intervju')
-                    ->setFrom(array('rekruttering@vektorprogrammet.no' => 'Vektorprogrammet'))
-                    ->setTo($application->getUser()->getEmail())
-                    ->setReplyTo($this->getUser()->getEmail())
-                    ->setBody($this->renderView('interview/interview_summary_email.html.twig', array(
-                        'application' => $application,
-                        'interviewer' => $this->getUser(),
-                    )));
-                $this->get('mailer')->send($emailMessage);
+                $this->get('event_dispatcher')->dispatch(InterviewConductedEvent::NAME, new InterviewConductedEvent($application));
             }
 
             return $this->redirect($this->generateUrl('admissionadmin_show', array('status' => 'interviewed')));

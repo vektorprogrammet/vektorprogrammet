@@ -5,14 +5,8 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Interview;
-use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\InterviewSchema;
-use AppBundle\Entity\Application;
-use AppBundle\Form\Type\ScheduleInterviewType;
 use AppBundle\Form\Type\InterviewSchemaType;
-use AppBundle\Form\Type\ApplicationInterviewType;
-use AppBundle\Form\Type\AssignInterviewType;
 
 /**
  * InterviewController is the controller responsible for interview actions,

@@ -6,6 +6,9 @@ services:
   app.roles:
     class: AppBundle\Service\RoleManager
 
+  app.interview.manager:
+    class: AppBundle\Service\InterviewManager
+
   app.safe_html_extension:
     class: AppBundle\Twig\Extension\SafeHtmlExtension
     public: false
@@ -35,6 +38,12 @@ services:
     arguments: ['@session', '@logger', '@doctrine.orm.default_entity_manager', '@app.user.registration']
     tags:
       - { name: kernel.event_subscriber }
+
+  app.interview_subscriber:
+      class: AppBundle\EventSubscriber\InterviewSubscriber
+      arguments: ['@mailer', '@twig', '@session', '@logger', '@security.token_storage']
+      tags:
+        - { name: kernel.event_subscriber }
 
   security.login:
     class: AppBundle\Service\LoginManager
