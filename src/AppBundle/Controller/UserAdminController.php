@@ -2,29 +2,27 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Department;
+use AppBundle\Service\RoleManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\CreateUserType;
 use AppBundle\Form\Type\NewUserType;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class UserAdminController extends Controller
 {
-    public function createUserSuperadminAction(Request $request)
+    public function createUserSuperadminAction(Request $request, Department $department)
     {
-
-        // The the department ID parameter sent by the request
-        $departmentId = $request->get('id');
-
         // Create the user object
         $user = new User();
 
-        // This is sent to let the form know you are a superadmin
-        $admin = 'superadmin';
-
-        $form = $this->createForm(new CreateUserType($departmentId, $admin), $user, array(
+        $form = $this->createForm(CreateUserType::class, $user, array(
             'validation_groups' => array('create_user'),
+            'department' => $department,
+            'user_role' => RoleManager::ROLE_TEAM_LEADER,
         ));
 
         // Handle the form
@@ -32,33 +30,20 @@ class UserAdminController extends Controller
 
         // The fields of the form is checked if they contain the correct information
         if ($form->isValid()) {
-            $role = $form->get('role')->getData();
-
-            if ($role == 0) {
-                $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findOneByRole('ROLE_USER');
-                $user->addRole($role);
-            } elseif ($role == 1) {
-                $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findOneByRole('ROLE_ADMIN');
-                $user->addRole($role);
-            } elseif ($role == 2) {
-                $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findOneByRole('ROLE_SUPER_ADMIN');
-                $user->addRole($role);
-            } // In case something unexpected happens set default to ROLE_USER
-            else {
-                $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findOneByRole('ROLE_USER');
-                $user->addRole($role);
+            $roleAlias = $form->get('role')->getData();
+            if (!$this->get('app.roles')->isValidRole($roleAlias)) {
+                throw new BadRequestHttpException();
             }
 
-            $userRegistration = $this->get('app.user.registration');
-            $newUserCode = $userRegistration->setNewUserCode($user);
+            $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findByRoleName($this->get('app.roles')->mapAliasToRole($roleAlias));
+            $user->addRole($role);
 
             // Persist the user
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
 
-            $emailMessage = $userRegistration->createActivationEmail($user, $newUserCode);
-            $this->get('mailer')->send($emailMessage);
+            $this->get('app.user.registration')->sendActivationCode($user);
 
             return $this->redirect($this->generateUrl('useradmin_show'));
         }
