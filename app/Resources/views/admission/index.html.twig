@@ -134,10 +134,8 @@
                         Avdelingen {{ department.shortname }} har ikke aktiv søkeperiode.
                     </h4>
 
-                    {% render controller('AppBundle:Newsletter:subscribeForm', {'id' : department.id} ) %}
+                    {% render controller('AppBundle:Subscriber:subscribeForm', {'id' : department.id} ) %}
                 {% endif %}
-
-
             </div>
         </div>
 

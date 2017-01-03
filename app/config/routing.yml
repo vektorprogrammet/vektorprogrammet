@@ -1062,28 +1062,28 @@ newsletter_show_all:
 
 newsletter_show_subscribers:
   path: /kontrollpanel/nyhetsbrev/{id}
-  defaults: { _controller: AppBundle:Newsletter:showSubscribers }
+  defaults: { _controller: AppBundle:Subscriber:showSubscribers }
   methods: [GET]
   requirements:
     id: \d+
 
 newsletter_subscribe:
   path: /subscribe/{id}
-  defaults: { _controller: AppBundle:Newsletter:subscribeForm }
+  defaults: { _controller: AppBundle:Subscriber:subscribeForm }
   methods: [GET, POST]
   requirements:
    id: \d+
 
 newsletter_admin_unsubscribe:
   path: /kontrollpanel/nyhetsbrev/unsubscribe/{id}
-  defaults: { _controller: AppBundle:Newsletter:adminUnsubscribe }
+  defaults: { _controller: AppBundle:Subscriber:adminUnsubscribe }
   methods: [POST]
   requirements:
     id: \d+
 
 newsletter_show_subscribe:
   path: /nyhetsbrev/{id}
-  defaults: { _controller: AppBundle:Newsletter:showSubscribePage }
+  defaults: { _controller: AppBundle:Subscriber:showSubscribePage }
   methods: [GET, POST]
   requirements:
     id: \d+
@@ -1118,14 +1118,14 @@ newsletter_show_letter_content:
 
 unsubscribe_newsletter:
     path: /nyhetsbrev/meldav/{unsubscribeCode}
-    defaults: { _controller: AppBundle:Newsletter:unsubscribeNewsletter }
+    defaults: { _controller: AppBundle:Subscriber:unsubscribeNewsletter }
     methods: [GET, POST]
     requirements:
       code: \w+
 
 unsubscribe_newsletter_confirmation:
     path: /nyhetsbrev/avmeldt
-    defaults: { _controller: AppBundle:Newsletter:unsubscribeNewsletterConfirmation }
+    defaults: { _controller: AppBundle:Subscriber:unsubscribeNewsletterConfirmation }
     methods: [GET]
     requirements:
       code: \w+
