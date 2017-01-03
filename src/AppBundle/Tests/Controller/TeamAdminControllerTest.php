@@ -244,7 +244,7 @@ class TeamAdminControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/2');
 
-        // Assert that the response is a redirect
+        // Assert that the request is denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
         // TEAM
@@ -255,13 +255,13 @@ class TeamAdminControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/2');
 
-        // Assert that the response is a redirect
-        $this->assertTrue($client->getResponse()->isRedirect('/'));
+        // Assert that the request is denied
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
         $crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/1');
 
         // Assert that the response is a redirect
-        $this->assertTrue($client->getResponse()->isRedirect('/'));
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
         \TestDataManager::restoreDatabase();
     }
@@ -385,7 +385,7 @@ class TeamAdminControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/leggTilBruker/3');
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/nytt_medlem/3');
 
         // Assert that the response is a redirect
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
@@ -396,10 +396,10 @@ class TeamAdminControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/leggTilBruker/3');
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/nytt_medlem/3');
 
         // Assert that the response is a redirect
-        $this->assertTrue($client->getResponse()->isRedirect('/'));
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
         \TestDataManager::restoreDatabase();
     }
@@ -522,7 +522,7 @@ class TeamAdminControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/1');
 
         // Assert that the response is a redirect
-        $this->assertTrue($client->getResponse()->isRedirect('/'));
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testShowSpecificTeam()

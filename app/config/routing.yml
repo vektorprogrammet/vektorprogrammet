@@ -592,22 +592,22 @@ teamadmin_show:
 
 teamadmin_create_position:
  path: /kontrollpanel/teamadmin/opprett/stilling
- defaults: {_controller: AppBundle:TeamAdmin:createPosition }
+ defaults: {_controller: AppBundle:Position:editPosition }
  methods: [GET, POST]
 
 teamadmin_edit_position:
  path: /kontrollpanel/teamadmin/rediger/stilling/{id}
- defaults: {_controller: AppBundle:TeamAdmin:editPosition }
+ defaults: {_controller: AppBundle:Position:editPosition }
  methods: [GET, POST]
 
 teamadmin_show_position:
  path: /kontrollpanel/teamadmin/stillinger
- defaults: {_controller: AppBundle:TeamAdmin:showPositions }
+ defaults: {_controller: AppBundle:Position:showPositions }
  methods: [GET]
 
 teamadmin_remove_position:
  path: /kontrollpanel/teamadmin/stilling/slett/{id}
- defaults: {_controller: AppBundle:TeamAdmin:removePosition }
+ defaults: {_controller: AppBundle:Position:removePosition }
  methods: [POST]
  requirements:
     id: \d+
@@ -636,7 +636,7 @@ teamadmin_remove_user_from_team_by_id:
     expose: true
 
 teamadmin_add_user_to_team:
- path: /kontrollpanel/teamadmin/team/leggTilBruker/{id}
+ path: /kontrollpanel/teamadmin/team/nytt_medlem/{id}
  defaults: {_controller: AppBundle:TeamAdmin:addUserToTeam }
  methods: [GET, POST]
  requirements:
