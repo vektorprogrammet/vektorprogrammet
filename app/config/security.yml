@@ -64,7 +64,6 @@ security:
           #ROLE_SUPER_ADMIN = admin user
         - { path: ^/kontrollpanel/brukeradmin/slett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/avdeling, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/opptakadmin/avdeling/, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/jubileum, role: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/jubileum/betalt, role: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/jubileum/slettbetaling, role: ROLE_SUPER_ADMIN }

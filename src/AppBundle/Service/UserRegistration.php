@@ -66,9 +66,14 @@ class UserRegistration
         $this->logger->info("Activation email sent to {$user} at {$user->getEmail()}");
     }
 
+    public function getHashedCode(string $newUserCode): string
+    {
+        return hash('sha512', $newUserCode, false);
+    }
+
     public function activateUserByNewUserCode(string $newUserCode): User
     {
-        $hashedNewUserCode = hash('sha512', $newUserCode, false);
+        $hashedNewUserCode = $this->getHashedCode($newUserCode);
         $user = $this->em->getRepository('AppBundle:User')->findUserByNewUserCode($hashedNewUserCode);
         if ($user === null) {
             return null;
@@ -84,7 +89,7 @@ class UserRegistration
         $user->setActive('1');
 
         if (count($user->getRoles()) === 0) {
-            $role = $this->em->getRepository('AppBundle:Role')->findOneBy(array('role' => 'ROLE_USER'));
+            $role = $this->em->getRepository('AppBundle:Role')->findByRoleName(RoleManager::ROLE_ASSISTANT);
             $user->addRole($role);
         }
 

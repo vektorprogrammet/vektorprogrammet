@@ -97,7 +97,7 @@
                                     {% for d in departments %}
 
                                         <li>
-                                            <a href="{{ path('useradmin_create_user_superadmin', { 'id': d.id }) }}">{{ d.shortName }}</a>
+                                            <a href="{{ path('useradmin_create_user', { 'id': d.id }) }}">{{ d.shortName }}</a>
                                         </li>
 
                                     {% endfor %}
