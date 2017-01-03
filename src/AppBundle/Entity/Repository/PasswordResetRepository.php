@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\PasswordReset;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -13,6 +14,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class PasswordResetRepository extends EntityRepository
 {
+    public function findByUser(User $user)
+    {
+        return $this->createQueryBuilder('password_reset')
+            ->select('password_reset')
+            ->where('password_reset.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
     public function findUserByResetcode($hashedResetCode)
     {
         return $this->createQueryBuilder('PasswordReset')

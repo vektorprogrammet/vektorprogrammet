@@ -14,15 +14,21 @@ use Doctrine\ORM\EntityManager;
 class PasswordManager
 {
     private $em;
+    private $mailer;
+    private $twig;
 
     /**
      * PasswordManager constructor.
      *
-     * @param EntityManager $em
+     * @param EntityManager     $em
+     * @param \Swift_Mailer     $mailer
+     * @param \Twig_Environment $twig
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, \Swift_Mailer $mailer, \Twig_Environment $twig)
     {
         $this->em = $em;
+        $this->mailer = $mailer;
+        $this->twig = $twig;
     }
 
     public function generateRandomResetCode(): string
@@ -65,5 +71,44 @@ class PasswordManager
         $hashedResetCode = $this->hashCode($resetCode);
 
         return $this->em->getRepository('AppBundle:PasswordReset')->findPasswordResetByHashedResetCode($hashedResetCode);
+    }
+
+    public function createResetPasswordEntity(string $email): PasswordReset
+    {
+        $passwordReset = new PasswordReset();
+
+        //Finds the user based on the email
+        $user = $this->em->getRepository('AppBundle:User')->findUserByEmail($email);
+
+        if ($user === null) {
+            return null;
+        }
+
+        //Creates a random hex-string as reset code
+        $resetCode = $this->generateRandomResetCode();
+
+        //Hashes the random reset code to store in the database
+        $hashedResetCode = $this->hashCode($resetCode);
+
+        //Adds the info in the passwordReset entity
+        $passwordReset->setUser($user);
+        $passwordReset->setResetCode($resetCode);
+        $passwordReset->setHashedResetCode($hashedResetCode);
+
+        return $passwordReset;
+    }
+
+    public function sendResetCode(PasswordReset $passwordReset)
+    {
+        //Sends a email with the url for resetting the password
+        $emailMessage = \Swift_Message::newInstance()
+            ->setSubject('Tilbakestill passord for vektorprogrammet.no')
+            ->setFrom(array('ikkesvar@vektorprogrammet.no' => 'Vektorprogrammet'))
+            ->setTo($passwordReset->getUser()->getEmail())
+            ->setBody($this->twig->render('reset_password/new_password_email.txt.twig', array(
+                'resetCode' => $passwordReset->getResetCode(),
+                'user' => $passwordReset->getUser(),
+            )));
+        $this->mailer->send($emailMessage);
     }
 }

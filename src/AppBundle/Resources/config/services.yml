@@ -17,7 +17,7 @@ services:
 
   app.password_manager:
       class: AppBundle\Service\PasswordManager
-      arguments: ['@doctrine.orm.default_entity_manager']
+      arguments: ['@doctrine.orm.default_entity_manager', '@mailer', '@twig']
 
   app.assistants.data:
     class: AppBundle\Service\AssistantsData
