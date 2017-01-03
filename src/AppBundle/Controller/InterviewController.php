@@ -125,8 +125,6 @@ class InterviewController extends Controller
             $em->flush();
 
             // AJAX response
-            $response['success'] = true;
-
             return new JsonResponse(array(
                 'success' => true,
             ));
