@@ -72,10 +72,10 @@ class SubscriberController extends Controller
 
     public function subscribeFormAction(Request $request, Department $department)
     {
-        $manager = $this->getDoctrine()->getManager();
-        $newsletter = $manager->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
+        $em = $this->getDoctrine()->getManager();
+        $newsletter = $em->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
 
-        $subscriber = new Subscriber();
+        $subscriber = new Subscriber($newsletter);
 
         if ($newsletter !== null) {
             $form = $this->createForm(new SubscribeToNewsletterType(), $subscriber, array(
@@ -90,12 +90,11 @@ class SubscriberController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $alreadySubscribed = count($manager->getRepository('AppBundle:Subscriber')->findByEmailAndNewsletter($subscriber->getEmail(), $newsletter)) > 0;
+            $alreadySubscribed = count($em->getRepository('AppBundle:Subscriber')->findByEmailAndNewsletter($subscriber->getEmail(), $newsletter)) > 0;
             if (!$alreadySubscribed) {
-                $subscriber->setNewsletter($newsletter);
-                $manager = $this->getDoctrine()->getManager();
-                $manager->persist($subscriber);
-                $manager->flush();
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($subscriber);
+                $em->flush();
             }
 
             $this->addFlash('admission-notice', 'Takk for at du meldte deg på '.$newsletter->getName().'! '.$subscriber->getEmail().' ble registrert');

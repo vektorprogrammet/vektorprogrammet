@@ -25,9 +25,9 @@ class NewsletterController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($newsletter);
-            $manager->flush();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($newsletter);
+            $em->flush();
 
             return $this->redirectToRoute('newsletter_show_all');
         }
@@ -81,54 +81,26 @@ class NewsletterController extends Controller
 
     public function createLetterAction(Newsletter $newsletter, Request $request)
     {
-        $letter = new Letter();
-        $letter->setNewsletter($newsletter);
+        $letter = new Letter($newsletter);
         $form = $this->createForm(new CreateLetterType(), $letter);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (true === $form->get('preview')->isClicked()) {
-                return $this->render(
-                    'newsletter/mail_template.html.twig',
-                    array(
-                        'name' => '"NAVN NAVNESEN"',
-                        'department' => $newsletter->getDepartment()->getShortName(),
-                        'content' => $letter->getContent(),
-                        'unsubscribeCode' => '1234',
-                    )
-                );
+            if ($form->get('preview')->isClicked()) {
+                return $this->render('newsletter/mail_template.html.twig', array(
+                    'name' => '"NAVN NAVNESEN"',
+                    'department' => $newsletter->getDepartment()->getShortName(),
+                    'content' => $letter->getContent(),
+                    'unsubscribeCode' => '1234',
+                ));
             }
-            $letter->setTimestamp(new \DateTime());
             $letter->setRecipientCount(count($newsletter->getSubscribers()));
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($letter);
             $manager->flush();
 
-            foreach ($newsletter->getSubscribers() as $subscriber) {
-                $message = \Swift_Message::newInstance()
-                    ->setSubject($letter->getTitle())
-                    ->setFrom(array(
-                        $newsletter->getDepartment()->getEmail() => 'Vektorprogrammet',
-                    ))
-                    ->setTo($subscriber->getEmail())
-                    ->setBody(
-                        $this->renderView(
-
-                            'newsletter/mail_template.html.twig',
-                            array(
-                                'name' => $subscriber->getName(),
-                                'department' => $newsletter->getDepartment()->getShortName(),
-                                'content' => $letter->getContent(),
-                                'unsubscribeCode' => $subscriber->getUnsubscribeCode(),
-                            )
-                        ),
-                        'text/html'
-                    )
-                    ->setContentType('text/html');
-
-                $this->get('mailer')->send($message);
-            }
+            $this->get('app.newsletter.manager')->send($letter);
 
             return $this->render('newsletter/letter_sent_message.html.twig', array(
                 'letter' => $letter,
