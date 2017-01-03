@@ -2,6 +2,8 @@
 
 namespace AppBundle\Service;
 
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
 class RoleManager
 {
     const ROLE_ASSISTANT = 'ROLE_USER';
@@ -16,8 +18,14 @@ class RoleManager
 
     private $roles = array();
     private $aliases = array();
+    private $authorizationChecker;
 
-    public function __construct()
+    /**
+     * RoleManager constructor.
+     *
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     */
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->roles = array(
             $this::ROLE_ASSISTANT,
@@ -31,6 +39,7 @@ class RoleManager
             $this::ROLE_ALIAS_TEAM_LEADER,
             $this::ROLE_ALIAS_ADMIN,
         );
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     public function isValidRole(string $role): bool
@@ -58,5 +67,22 @@ class RoleManager
         }
 
         return '';
+    }
+
+    public function loggedInUserCanCreateUserWithRole(string $role): bool
+    {
+        if (!$this->isValidRole($role)) {
+            return false;
+        }
+
+        $role = $this->mapAliasToRole($role);
+
+        // Can't create admins
+        // Only team leaders and admins can create users with higher permissions than ROLE_ASSISTANT
+        return
+            $role !== self::ROLE_ADMIN &&
+            !(!$this->authorizationChecker->isGranted(self::ROLE_TEAM_LEADER) &&
+                $role !== self::ROLE_ASSISTANT)
+        ;
     }
 }

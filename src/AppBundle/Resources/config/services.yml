@@ -5,6 +5,7 @@ services:
 
   app.roles:
     class: AppBundle\Service\RoleManager
+    arguments: ['@security.authorization_checker']
 
   app.interview.manager:
     class: AppBundle\Service\InterviewManager

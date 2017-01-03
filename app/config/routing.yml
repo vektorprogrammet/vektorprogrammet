@@ -501,17 +501,11 @@ useradmin_delete_user_by_id:
     expose: true
 
 useradmin_create_user:
- path: /kontrollpanel/brukeradmin/opprett
- defaults: {_controller: AppBundle:UserAdmin:createUser }
- methods: [GET, POST]
-
-useradmin_create_user_superadmin:
  path: /kontrollpanel/brukeradmin/opprett/{id}
- defaults: {_controller: AppBundle:UserAdmin:createUserSuperadmin }
+ defaults: {_controller: AppBundle:UserAdmin:createUser, id: null }
  methods: [GET, POST]
  requirements:
     id: \d+
-
 
 ##########################################
 #              Semester                  #

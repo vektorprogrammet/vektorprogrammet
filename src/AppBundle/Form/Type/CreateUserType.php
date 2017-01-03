@@ -2,24 +2,22 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Service\RoleManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateUserType extends AbstractType
 {
-    private $departmentId;
-    private $admin;
-
-    public function __construct($departmentId, $admin)
-    {
-        $this->departmentId = $departmentId;
-        $this->admin = $admin;
-    }
+    private $department;
+    private $userRole;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->department = $options['department'];
+        $this->userRole = $options['user_role'];
+
         $builder
             ->add('firstName', 'text', array(
                 'label' => 'Fornavn',
@@ -48,35 +46,37 @@ class CreateUserType extends AbstractType
                         ->orderBy('f.shortName', 'ASC')
                         ->where('f.department = ?1')
                         // Set the parameter to the department ID that the current user belongs to.
-                        ->setParameter(1, $this->departmentId);
+                        ->setParameter(1, $this->department);
                 },
             ));
 
-        if ($this->admin == 'superadmin') {
+        if ($this->userRole === RoleManager::ROLE_TEAM_LEADER) {
             $builder->add('role', 'choice', array(
                 'label' => 'Rolle',
                 'mapped' => false,
                 'choices' => array(
-                    0 => 'Assistent',
-                    1 => 'Team',
-                    2 => 'Admin',
+                    RoleManager::ROLE_ALIAS_ASSISTANT => 'Assistent',
+                    RoleManager::ROLE_ALIAS_TEAM_MEMBER => 'Teammedlem',
+                    RoleManager::ROLE_ALIAS_TEAM_LEADER => 'Teamleder',
                 ),
             ));
-        } elseif ($this->admin == 'admin') {
+        } elseif ($this->userRole === RoleManager::ROLE_TEAM_MEMBER) {
             $builder->add('role', 'choice', array(
                 'label' => 'Rolle',
                 'mapped' => false,
                 'choices' => array(
-                    0 => 'Assistent',
+                    RoleManager::ROLE_ALIAS_ASSISTANT => 'Assistent',
                 ),
             ));
         }
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
+            'department' => 'AppBundle\Entity\Department',
+            'user_role' => RoleManager::ROLE_TEAM_MEMBER,
         ));
     }
 
