@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\PasswordReset;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -15,13 +16,21 @@ class PasswordResetRepository extends EntityRepository
     public function findUserByResetcode($hashedResetCode)
     {
         return $this->createQueryBuilder('PasswordReset')
-            ->select('IDENTITY(PasswordReset.user)')
+            ->select('PasswordReset.user')
             ->where('PasswordReset.hashedResetCode = :hashedResetCode')
             ->setParameter('hashedResetCode', $hashedResetCode)
             ->getQuery()
             ->getSingleResult();
     }
 
+    /**
+     * @param $hashedResetCode
+     *
+     * @return PasswordReset
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findPasswordResetByHashedResetCode($hashedResetCode)
     {
         return $this->createQueryBuilder('PasswordReset')
@@ -29,7 +38,7 @@ class PasswordResetRepository extends EntityRepository
             ->where('PasswordReset.hashedResetCode = :hashedResetCode')
             ->setParameter('hashedResetCode', $hashedResetCode)
             ->getQuery()
-            ->getSingleResult();
+            ->getOneOrNullResult();
     }
 
     public function deletePasswordResetByHashedResetCode($hashedResetCode)

@@ -314,9 +314,11 @@ logout:
  methods: [GET]
 
 forgot_password:
-  path: /resetpassord/{id}
+  path: /resetpassord/{resetCode}
   defaults: { _controller: AppBundle:PasswordReset:resetPassword }
   methods: [GET, POST]
+  requirements:
+    resetCode: \w+
 
 reset_password:
   path: /resetpassord

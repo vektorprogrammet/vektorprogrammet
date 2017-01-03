@@ -77,7 +77,6 @@ class UserRepository extends EntityRepository implements UserProviderInterface
      *
      * @return User
      *
-     * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findUserByEmail($email)
@@ -87,7 +86,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->where('User.email = :email')
             ->setParameter('email', $email)
             ->getQuery()
-            ->getSingleResult();
+            ->getOneOrNullResult();
     }
 
     public function findUserById($id)
