@@ -43,9 +43,13 @@ class Letter
 
     /**
      * Constructor.
+     *
+     * @param Newsletter $newsletter
      */
-    public function __construct()
+    public function __construct(Newsletter $newsletter = null)
     {
+        $this->setNewsletter($newsletter);
+        $this->setTimestamp(new \DateTime());
     }
 
     /**
@@ -107,7 +111,7 @@ class Letter
     }
 
     /**
-     * @return mixed
+     * @return Newsletter
      */
     public function getNewsletter()
     {
