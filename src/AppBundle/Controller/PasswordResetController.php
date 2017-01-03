@@ -22,13 +22,13 @@ class PasswordResetController extends Controller
     public function showAction(Request $request)
     {
         //Creates new PasswordResetType Form
-        $form = $this->createForm(new PasswordResetType());
+        $form = $this->createForm(PasswordResetType::class);
 
         $form->handleRequest($request);
 
         //Checks if the form is valid
         if ($form->isValid()) {
-            $passwordReset = $this->get('app.password_manager')->createResetPasswordEntity($form->get('email')->getData());
+            $passwordReset = $this->get('app.password_manager')->createPasswordResetEntity($form->get('email')->getData());
 
             if ($passwordReset === null) {
                 $this->get('session')->getFlashBag()->add('errorMessage', '<em>Det finnes ingen brukere med denne e-postadressen</em>');
@@ -89,10 +89,7 @@ class PasswordResetController extends Controller
             $em->persist($user);
             $em->flush();
 
-            //renders the login page, with a feedback message so that the user knows that the new password was stored.
-            $feedback = 'Logg inn med ditt nye passord';
-
-            return $this->render('login/login.html.twig', array('message' => $feedback, 'error' => null, 'last_username' => $user->getUsername()));
+            return $this->redirectToRoute('login_route');
         }
 
         return $this->render('reset_password/new_password.html.twig', array(
