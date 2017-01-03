@@ -636,7 +636,7 @@ teamadmin_remove_user_from_team_by_id:
     expose: true
 
 teamadmin_add_user_to_team:
- path: /kontrollpanel/teamadmin/team/leggTilBruker/{id}
+ path: /kontrollpanel/teamadmin/team/nytt_medlem/{id}
  defaults: {_controller: AppBundle:TeamAdmin:addUserToTeam }
  methods: [GET, POST]
  requirements:

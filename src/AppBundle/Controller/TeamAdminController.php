@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Department;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,12 +15,11 @@ class TeamAdminController extends Controller
 {
     public function showAction()
     {
-
         // Finds all the departments
         $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
 
         // Finds the department for the current logged in user
-        $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
+        $department = $this->getUser()->getDepartment();
 
         // Find teams that are connected to the department of the user
         $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByDepartment($department);
@@ -32,15 +32,8 @@ class TeamAdminController extends Controller
         ));
     }
 
-    public function updateWorkHistoryAction(Request $request)
+    public function updateWorkHistoryAction(Request $request, WorkHistory $workHistory)
     {
-
-        // Find the id variable sent by the request
-        $id = $request->get('id');
-
-        // Create find a WorkHistory entity with the ID given by the request
-        $workHistory = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->find($id);
-
         // Find the department of the team
         $department = $workHistory->getTeam()->getDepartment();
 
@@ -49,33 +42,23 @@ class TeamAdminController extends Controller
 
         // Handle the form
         $form->handleRequest($request);
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-            if ($form->isValid()) {
-                // Persist the team to the database
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($workHistory);
-                $em->flush();
+        if ($form->isValid()) {
+            // Persist the team to the database
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($workHistory);
+            $em->flush();
 
-                return $this->redirect($this->generateUrl('teamadmin_show_specific_team', array('id' => $workHistory->getTeam()->getId())));
-            }
+            return $this->redirect($this->generateUrl('teamadmin_show_specific_team', array('id' => $workHistory->getTeam()->getId())));
+        }
 
-            return $this->render('team_admin/create_work_history.html.twig', array(
+        return $this->render('team_admin/create_work_history.html.twig', array(
                 'form' => $form->createView(),
             ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
-        }
     }
 
-    public function addUserToTeamAction(Request $request)
+    public function addUserToTeamAction(Request $request, Team $team)
     {
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-            // Find the id variable sent by the request
-            $id = $request->get('id');
-
-            // Find the team with the given ID
-            $team = $this->getDoctrine()->getRepository('AppBundle:Team')->find($id);
-            // Find the department of the team
+        // Find the department of the team
             $department = $team->getDepartment();
 
             // Create a new WorkHistory entity
@@ -87,36 +70,26 @@ class TeamAdminController extends Controller
             // Handle the form
             $form->handleRequest($request);
 
-            if ($form->isValid()) {
+        if ($form->isValid()) {
 
                 //set the team of the department
                 $workHistory->setTeam($team);
 
                 // Persist the team to the database
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($workHistory);
-                $em->flush();
+            $em->persist($workHistory);
+            $em->flush();
 
-                return $this->redirect($this->generateUrl('teamadmin_show_specific_team', array('id' => $id)));
-            }
+            return $this->redirect($this->generateUrl('teamadmin_show_specific_team', array('id' => $team->getId())));
+        }
 
-            return $this->render('team_admin/create_work_history.html.twig', array(
+        return $this->render('team_admin/create_work_history.html.twig', array(
                 'form' => $form->createView(),
             ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
-        }
     }
 
-    public function showSpecificTeamAction(Request $request)
+    public function showSpecificTeamAction(Team $team)
     {
-
-        // Get the ID variable from the request
-        $id = $request->get('id');
-
-        // Find team with the sent ID
-        $team = $this->getDoctrine()->getRepository('AppBundle:Team')->find($id);
-
         // Find all WorkHistory entities based on team
         $activeWorkHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeam($team);
         $inActiveWorkHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findInActiveWorkHistoriesByTeam($team);
@@ -152,17 +125,8 @@ class TeamAdminController extends Controller
         return $a->getStartSemester()->getSemesterStartDate() < $b->getStartSemester()->getSemesterStartDate();
     }
 
-    public function updateTeamAction(request $request)
+    public function updateTeamAction(Request $request, Team $team)
     {
-
-        // Get the ID variable from the request
-        $id = $request->get('id');
-
-        $em = $this->getDoctrine()->getManager();
-
-        // Find a team by the ID sent in by the request
-        $team = $em->getRepository('AppBundle:Team')->find($id);
-
         // Find the department of the team
         $department = $team->getDepartment();
 
@@ -173,10 +137,10 @@ class TeamAdminController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             //Don't persist if the preview button was clicked
-            if (false === $form->get('preview')->isClicked()) {
+            if (!$form->get('preview')->isClicked()) {
                 // Persist the team to the database
+                $em = $this->getDoctrine()->getManager();
                 $em->persist($team);
                 $em->flush();
 
@@ -197,139 +161,96 @@ class TeamAdminController extends Controller
         ));
     }
 
-    public function showTeamsByDepartmentAction(request $request)
+    public function showTeamsByDepartmentAction(Department $department)
     {
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-            // Find the id variable sent by the request
-            $id = $request->get('id');
+        // Finds all the departments
+        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
 
-            // Finds all the departments
-            $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+        // Find teams that are connected to the department of the department ID sent in by the request
+        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByDepartment($department);
 
-            // Find the department for the given ID
-            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->findOneById($id);
-
-            // Find teams that are connected to the department of the department ID sent in by the request
-            $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByDepartment($department);
-
-            // Return the view with suitable variables
-            return $this->render('team_admin/index.html.twig', array(
-                'departments' => $allDepartments,
-                'userDepartment' => $department,
-                'teams' => $teams,
-                'departmentName' => $department->getShortName(),
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
-        }
+        // Return the view with suitable variables
+        return $this->render('team_admin/index.html.twig', array(
+            'departments' => $allDepartments,
+            'userDepartment' => $department,
+            'teams' => $teams,
+            'departmentName' => $department->getShortName(),
+        ));
     }
 
-    public function createTeamForDepartmentAction(Request $request)
+    public function createTeamForDepartmentAction(Request $request, Department $department)
     {
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-            // Find the id variable sent by the request
-            $id = $request->get('id');
+        // Create a new Team entity
+        $team = new Team();
 
-            // Find the department for the given ID
-            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->findOneById($id);
+        // Create a new formType with the needed variables
+        $form = $this->createForm(new CreateTeamType($department), $team);
 
-            // Create a new Team entity
-            $team = new Team();
+        // Handle the form
+        $form->handleRequest($request);
 
-            // Create a new formType with the needed variables
-            $form = $this->createForm(new CreateTeamType($department), $team);
-
-            // Handle the form
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-
-                // Set the teams department to the department sent in by the request
-                $team->setDepartment($department);
+        if ($form->isValid()) {
+            // Set the teams department to the department sent in by the request
+            $team->setDepartment($department);
+            //Don't persist if the preview button was clicked
+            if (!$form->get('preview')->isClicked()) {
+                // Persist the team to the database
                 $em = $this->getDoctrine()->getManager();
-                //Don't persist if the preview button was clicked
-                if (false === $form->get('preview')->isClicked()) {
-                    // Persist the team to the database
-                    $em->persist($team);
-                    $em->flush();
+                $em->persist($team);
+                $em->flush();
 
-                    return $this->redirect($this->generateUrl('teamadmin_show'));
-                }
-                // Render the teampage as a preview
-                return $this->render('team/team_page.html.twig', array(
-                    'team' => $team,
-                    'workHistories' => [],
-                ));
+                return $this->redirect($this->generateUrl('teamadmin_show'));
             }
-
-            return $this->render('team_admin/create_team.html.twig', array(
-                'form' => $form->createView(),
-                'department' => $department,
+            // Render the teampage as a preview
+            return $this->render('team/team_page.html.twig', array(
+                'team' => $team,
+                'workHistories' => [],
             ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
+        }
+
+        return $this->render('team_admin/create_team.html.twig', array(
+            'form' => $form->createView(),
+            'department' => $department,
+        ));
+    }
+
+    public function removeUserFromTeamByIdAction(WorkHistory $workHistory)
+    {
+        try {
+            // This deletes the given work history
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($workHistory);
+            $em->flush();
+
+            return new JsonResponse(array(
+                'success' => true,
+            ));
+        } catch (\Exception $e) {
+            // Send a response back to AJAX
+            return new JsonResponse(array(
+                'success' => true,
+                'cause' => $e->getMessage(),
+            ));
         }
     }
 
-    public function removeUserFromTeamByIdAction(Request $request)
+    public function deleteTeamByIdAction(Team $team)
     {
-        $id = $request->get('id');
-
         try {
-            if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+            // This deletes the given team
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($team);
+            $em->flush();
 
-                // This deletes the given work history
-                $em = $this->getDoctrine()->getEntityManager();
-                $workHistory = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->find($id);
-                $em->remove($workHistory);
-                $em->flush();
-
-                $response['success'] = true;
-            } else {
-                // Send a response back to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Du har ikke tilstrekkelige rettigheter.';
-            }
+            return new JsonResponse(array(
+                'success' => true,
+            ));
         } catch (\Exception $e) {
             // Send a response back to AJAX
-            $response['success'] = false;
-            $response['cause'] = 'Kunne ikke slette team historien';
-
-            return new JsonResponse($response);
+            return new JsonResponse(array(
+                'success' => true,
+                'cause' => $e->getMessage(),
+            ));
         }
-
-        // Send a respons to ajax
-        return new JsonResponse($response);
-    }
-
-    public function deleteTeamByIdAction(Request $request)
-    {
-        $id = $request->get('id');
-
-        try {
-            if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-
-                // This deletes the given team
-                $em = $this->getDoctrine()->getEntityManager();
-                $team = $this->getDoctrine()->getRepository('AppBundle:Team')->find($id);
-                $em->remove($team);
-                $em->flush();
-
-                $response['success'] = true;
-            } else {
-                // Send a response back to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Du har ikke tilstrekkelige rettigheter.';
-            }
-        } catch (\Exception $e) {
-            // Send a response back to AJAX
-            $response['success'] = false;
-            $response['cause'] = 'Kunne ikke slette team';
-
-            return new JsonResponse($response);
-        }
-
-        // Send a respons to ajax
-        return new JsonResponse($response);
     }
 }
