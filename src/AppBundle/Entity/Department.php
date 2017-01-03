@@ -66,6 +66,12 @@ class Department
     private $teams;
 
     /**
+     * @ORM\Column(type="string", length=250, nullable=true)
+     * @Assert\NotBlank
+     */
+    private $city;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -321,6 +327,22 @@ class Department
     public function getTeams()
     {
         return $this->teams;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param mixed $city
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
     }
 
     // Used for unit testing

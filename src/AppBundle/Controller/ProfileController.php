@@ -170,7 +170,11 @@ class ProfileController extends Controller
         // Find the work history of the user
         $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
 
+        // Find the signature of the user creating the certificate
         $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($this->getUser());
+
+        // Find department
+        $department = $this->getUser()->getDepartment();
 
         if ($signature === null) {
             return $this->redirectToRoute('certificate_signature_picture_upload');
@@ -181,6 +185,7 @@ class ProfileController extends Controller
             'assistantHistory' => $assistantHistory,
             'workHistory' => $workHistory,
             'signature' => $signature,
+            'department' => $department,
             'base_dir' => $this->get('kernel')->getRootDir().'/../www'.$request->getBasePath(),
         ));
         $mpdfService = $this->get('tfox.mpdfport');
