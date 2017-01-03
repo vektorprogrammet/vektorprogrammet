@@ -34,6 +34,19 @@ class PasswordReset
     protected $resetTime;
 
     /**
+     * @var string
+     */
+    private $resetCode;
+
+    /**
+     * PasswordReset constructor.
+     */
+    public function __construct()
+    {
+        $this->setResetTime(new \DateTime());
+    }
+
+    /**
      * Get id.
      *
      * @return int
@@ -113,5 +126,21 @@ class PasswordReset
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResetCode()
+    {
+        return $this->resetCode;
+    }
+
+    /**
+     * @param string $resetCode
+     */
+    public function setResetCode($resetCode)
+    {
+        $this->resetCode = $resetCode;
     }
 }
