@@ -267,8 +267,8 @@ profile_save_photo:
 ##########################################
 
 members_show:
- path:   /assistenter/{departmentId}
- defaults: { _controller: AppBundle:Members:show, departmentId: null }
+ path:   /assistenter
+ defaults: { _controller: AppBundle:Members:show }
  methods: [GET]
 
 

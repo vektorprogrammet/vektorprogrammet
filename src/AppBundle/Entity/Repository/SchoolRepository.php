@@ -2,10 +2,16 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\School;
 use Doctrine\ORM\EntityRepository;
 
 class SchoolRepository extends EntityRepository
 {
+    /**
+     * @param $department
+     *
+     * @return School[]
+     */
     public function findSchoolsByDepartment($department)
     {
         $schools = $this->getEntityManager()->createQuery('
