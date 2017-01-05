@@ -330,7 +330,7 @@ class Department
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCity()
     {
@@ -338,7 +338,7 @@ class Department
     }
 
     /**
-     * @param mixed $city
+     * @param string $city
      */
     public function setCity($city)
     {
