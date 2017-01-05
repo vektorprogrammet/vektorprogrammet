@@ -509,6 +509,23 @@ useradmin_create_user:
  requirements:
     id: \d+
 
+
+##########################################
+#              Receit                  #
+##########################################
+receitps_show:
+  path: /kontrollpanel/utlegg
+  defaults: {_controller: AppBundle:Receipt:show }
+  methods: [GET]
+
+receipt_create:
+  path: /opprett
+  defaults: {_controller: AppBundle:Receipt:create }
+  methods: [GET]
+  requirements:
+      id: \d+
+
+
 ##########################################
 #              Semester                  #
 ##########################################

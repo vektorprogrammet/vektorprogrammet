@@ -164,8 +164,7 @@
         </div>
 
         <div class="row">
-            <h3>Diverse</h3>
-
+            <h3>Skole</h3>
             <div class="small-4 medium-3 small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('departmentadmin_show') }}">
@@ -185,6 +184,7 @@
                     </a>
                 </div>
             </div>
+
             {% if is_granted('ROLE_SUPER_ADMIN') %}
                 <div class="small-4 medium-3 large-2 columns">
                     <div class="control-panel-item">
@@ -207,12 +207,30 @@
                 </div>
             </div>
 
+
+
+            <hr/>
+        </div>
+
+        <div class="row">
+            <h3>Diverse</h3>
+
             <div class="small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('sponsors_edit') }}">
                         <i class="fa fa-money fa-3x"></i>
 
                         <p>Sponsorer</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('receitps_show') }}">
+                        <i class="fa fa-usd fa-3x"></i>
+
+                        <p>Utlegg</p>
                     </a>
                 </div>
             </div>
