@@ -511,7 +511,7 @@ useradmin_create_user:
 
 
 ##########################################
-#              Receit                  #
+#              Receipt                  #
 ##########################################
 receitps_show:
   path: /kontrollpanel/utlegg
@@ -519,7 +519,7 @@ receitps_show:
   methods: [GET]
 
 receipt_create:
-  path: /opprett
+  path: /utlegg
   defaults: {_controller: AppBundle:Receipt:create }
   methods: [GET]
   requirements:

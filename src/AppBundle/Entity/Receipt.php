@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ReceiptRepository")
  * @ORM\Table(name="receipt")
- * @ORM\HasLifecycleCallbacks
  */
 class Receipt
 {
@@ -20,7 +19,7 @@ class Receipt
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="User", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
      */
     protected $user;
 
@@ -40,12 +39,12 @@ class Receipt
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="double")
      */
     private $sum;
 
     /**
-     * @return mixed
+     * @return \AppBundle\Entity\User
      */
     public function getUser()
     {
@@ -53,7 +52,7 @@ class Receipt
     }
 
     /**
-     * @param mixed $user
+     * @param \AppBundle\Entity\User $user
      */
     public function setUser($user)
     {
@@ -61,7 +60,7 @@ class Receipt
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getSubmitDate()
     {
@@ -69,7 +68,7 @@ class Receipt
     }
 
     /**
-     * @param mixed $submitDate
+     * @param \DateTime $submitDate
      */
     public function setSubmitDate($submitDate)
     {
@@ -77,7 +76,7 @@ class Receipt
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getId()
     {
@@ -85,7 +84,7 @@ class Receipt
     }
 
     /**
-     * @param mixed $id
+     * @param integer $id
      */
     public function setId($id)
     {
@@ -93,7 +92,7 @@ class Receipt
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getReceiptPath()
     {
@@ -101,7 +100,7 @@ class Receipt
     }
 
     /**
-     * @param mixed $receiptPath
+     * @param string $receiptPath
      */
     public function setReceiptPath($receiptPath)
     {
@@ -109,7 +108,7 @@ class Receipt
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getDescription()
     {
@@ -117,7 +116,7 @@ class Receipt
     }
 
     /**
-     * @param mixed $description
+     * @param string $description
      */
     public function setDescription($description)
     {
@@ -125,7 +124,7 @@ class Receipt
     }
 
     /**
-     * @return mixed
+     * @return double
      */
     public function getSum()
     {
@@ -133,7 +132,7 @@ class Receipt
     }
 
     /**
-     * @param mixed $sum
+     * @param double $sum
      */
     public function setSum($sum)
     {
