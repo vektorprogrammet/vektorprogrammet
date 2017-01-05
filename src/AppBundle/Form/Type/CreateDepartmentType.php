@@ -23,6 +23,9 @@ class CreateDepartmentType extends AbstractType
             ->add('address', 'text', array(
                 'label' => 'Adresse:',
             ))
+            ->add('city', 'text', array(
+                'label' => 'By',
+            ))
             ->add('save', 'submit', array(
                 'label' => 'Opprett',
             ));

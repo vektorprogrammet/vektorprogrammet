@@ -56,6 +56,7 @@ class DepartmentControllerTest extends WebTestCase
         $form['createDepartment[shortName]'] = 'Hgn';
         $form['createDepartment[email]'] = 'Hgn@mail.com';
         $form['createDepartment[address]'] = 'Storgata 9';
+        $form['createDepartment[city]'] = 'Trondheim';
 
         // submit the form
         $crawler = $client->submit($form);
