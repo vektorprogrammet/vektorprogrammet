@@ -31,7 +31,7 @@ class Receipt
     /**
      * @ORM\Column(name="receipt_path", type="string", length=45, nullable=true)
      */
-    private $receiptPath;
+    private $picturePath;
 
     /**
      * @ORM\Column(type="string")
