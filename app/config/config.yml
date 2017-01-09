@@ -97,12 +97,23 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: "%mailer_transport%"
-    host:      "%mailer_host%"
-    username:  "%mailer_user%"
-    password:  "%mailer_password%"
-    port:      "%mailer_port%"
-    spool:     { type: memory }
+    default_mailer: standard_mailer
+    mailers:
+        standard_mailer:
+            transport: "%mailer_transport%"
+            host:      "%mailer_host%"
+            username:  "%mailer_user%"
+            password:  "%mailer_password%"
+            port:      "%mailer_port%"
+            spool:     { type: memory }
+        mailgun:
+            transport: "smtp"
+            host:      "%mailgun_hostname%"
+            username:  "%mailgun_login%"
+            password:  "%mailgun_password%"
+            port:      "587"
+            spool:     { type: memory }
+
 
 ivory_ck_editor:
     base_path: "vendor/ckeditor/"
