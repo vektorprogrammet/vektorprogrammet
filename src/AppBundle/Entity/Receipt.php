@@ -16,20 +16,20 @@ class Receipt
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
      */
-    protected $user;
+    private $user;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    protected $submitDate;
+    private $submitDate;
 
     /**
-     * @ORM\Column(name="receipt_path", type="string", length=45, nullable=true)
+     * @ORM\Column(name="picture_path", type="string", length=45, nullable=true)
      */
     private $picturePath;
 
@@ -39,9 +39,14 @@ class Receipt
     private $description;
 
     /**
-     * @ORM\Column(type="double")
+     * @ORM\Column(type="float")
      */
     private $sum;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isActive;
 
     /**
      * @return \AppBundle\Entity\User
@@ -94,18 +99,20 @@ class Receipt
     /**
      * @return string
      */
-    public function getReceiptPath()
+    public function getPicturePath()
     {
-        return $this->receiptPath;
+        return $this->picturePath;
     }
 
     /**
-     * @param string $receiptPath
+     * @param string $picturePath
      */
-    public function setReceiptPath($receiptPath)
+    public function setPicturePath($picturePath)
     {
-        $this->receiptPath = $receiptPath;
+        $this->picturePath = $picturePath;
     }
+
+
 
     /**
      * @return string
@@ -124,7 +131,7 @@ class Receipt
     }
 
     /**
-     * @return double
+     * @return float
      */
     public function getSum()
     {
@@ -132,12 +139,29 @@ class Receipt
     }
 
     /**
-     * @param double $sum
+     * @param float $sum
      */
     public function setSum($sum)
     {
         $this->sum = $sum;
     }
+
+    /**
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param boolean $isActive
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+    }
+
 
 
 

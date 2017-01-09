@@ -18,6 +18,11 @@ class ReceiptType extends AbstractType
                 'label' => 'Sum',
                 'currency' => 'NOK',
 
-            ));
+            ))
+            ->add('picturePath', 'file', array(
+                'required' => false,
+                'data_class' => null,
+                'label' => 'Last opp kvittering',
+                ));
     }
 }

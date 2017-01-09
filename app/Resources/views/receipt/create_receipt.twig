@@ -11,22 +11,179 @@
     </div>
 
     <div class="row">
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        {{ form_end(form) }}
+        <div class="small-12 medium-12 large-12 columns">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div data-alert class="alert-box success radius">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="small-8 columns">
+                    {{ form_row(form.description) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-3 columns">
+                    {{ form_row(form.sum) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-2 columns">
+                    <div class="hide">
+                        {{ form_row(form.picturePath) }}
+                    </div>
+                    <button type="button" class="button tiny" id="choose_picture">
+                        Velg bilde
+                    </button>
+                </div>
+                <div class="small-4 columns">
+                    <div class="{{ receipt.picturePath is not null ? '' : 'hide' }}">
+                        <img src="{{ asset(receipt.picturePath) }}" height="60px" id="receipt_picture">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <button class="button tiny success">Lagre</button>
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div class="small-12 medium-12 large-12 columns">
+            <hr>
+        </div>
+
+        <div class="small-12 medium-12 large-8 columns">
+
+            <h3> Aktive utlegg </h3>
+
+        </div>
+
     </div>
 
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            <h3>Aktive utlegg</h3>
+
             <hr>
+
+            <table width="100%" id="activeReceiptsTable">
+
+                <thead>
+
+                <tr>
+                    <th> Beskrivelse</th>
+                    <th> Sum</th>
+                    <th> Dato</th>
+                </tr>
+
+                </thead>
+
+                <tbody>
+                {% for _receipt in old_receipts %}
+                    {% if _receipt.isActive %}
+                        <tr>
+                            <td> {{ _receipt.description }} </td>
+                            <td> {{ _receipt.sum }} </td>
+                            <td> {{ _receipt.submitDate }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+    {{ dump(old_receipts)}}
+    <div class="row">
+
+        <div class="small-12 medium-12 large-12 columns">
+            <hr>
+        </div>
+
+        <div class="small-12 medium-12 large-8 columns">
+
+            <h3> Eldre utlegg</h3>
+
         </div>
     </div>
 
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            <h3>Eldre utlegg</h3>
+
             <hr>
+
+            <table width="100%" id="activeReceiptsTable">
+
+                <thead>
+
+                <tr>
+                    <th> Beskrivelse</th>
+                    <th> Sum</th>
+                    <th> Dato</th>
+                </tr>
+
+                </thead>
+
+                <tbody>
+                {% for _receipt in old_receipts %}
+                    {% if _receipt.isActive %}
+                        <tr>
+                            <td> {{ _receipt.description }} </td>
+                            <td> {{ _receipt.sum }} </td>
+                            <td> {{ _receipt.submitDate }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+
+            </table>
+
         </div>
     </div>
 {% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        var uploadButton = $('#choose_picture');
+        uploadButton.click(function () {
+            var realUploadButton = $('#receipt_picturePath');
+            realUploadButton.click();
+        })
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#receipt_picture').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#receipt_picturePath").change(function () {
+            $('#receipt_picture').parent().removeClass('hide');
+            readURL(this);
+        });
+
+
+    </script>
+
+    <script>
+        setTimeout(function () {
+            $('.alert-box').fadeOut(800);
+        }, 1500)
+    </script>
+
+{% endblock %}
+

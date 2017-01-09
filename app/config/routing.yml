@@ -521,9 +521,7 @@ receitps_show:
 receipt_create:
   path: /utlegg
   defaults: {_controller: AppBundle:Receipt:create }
-  methods: [GET]
-  requirements:
-      id: \d+
+  methods: [GET, POST]
 
 
 ##########################################
