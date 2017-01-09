@@ -15,7 +15,9 @@ parameters:
     mailer_user:       ~
     mailer_password:   ~
 
+    mailgun_transport: smtp
     mailgun_hostname: smtp.mailgun.org
+    mailgun_port: 587
     mailgun_login: ~
     mailgun_password: ~
 

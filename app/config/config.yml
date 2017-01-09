@@ -107,11 +107,11 @@ swiftmailer:
             port:      "%mailer_port%"
             spool:     { type: memory }
         mailgun:
-            transport: "smtp"
+            transport: "%mailgun_transport%"
             host:      "%mailgun_hostname%"
             username:  "%mailgun_login%"
             password:  "%mailgun_password%"
-            port:      "587"
+            port:      "%mailgun_port%"
             spool:     { type: memory }
 
 
