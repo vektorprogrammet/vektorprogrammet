@@ -4,6 +4,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
@@ -16,8 +17,10 @@ class ApplicationData
     public function __construct(EntityManager $em, TokenStorage $ts)
     {
         $this->applicationRepository = $em->getRepository('AppBundle:Application');
-        $department = $ts->getToken()->getUser()->getDepartment();
-        $this->semester = $em->getRepository('AppBundle:Semester')->findLatestSemesterByDepartmentId($department->getId());
+        if ($ts->getToken()->getUser() instanceof User) {
+            $department = $ts->getToken()->getUser()->getDepartment();
+            $this->semester = $em->getRepository('AppBundle:Semester')->findLatestSemesterByDepartmentId($department->getId());
+        }
         $this->em = $em;
     }
 
