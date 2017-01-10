@@ -22,8 +22,8 @@ class ReceiptController extends Controller
     public function createAction(Request $request)
     {
         $receipt = new Receipt();
-        $old_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByUser($this->getUser());
-
+        $active_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findActiveByUser($this->getUser());
+        $inactive_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findInactiveByUser($this->getUser());
 
         $form = $this->createForm(new ReceiptType(), $receipt);
         $form->handleRequest($request);
@@ -32,7 +32,8 @@ class ReceiptController extends Controller
         return $this->render('receipt/create_receipt.twig', array(
             'form' => $form->createView(),
             'receipt' => $receipt,
-            'old_receipts' => $old_receipts,
+            'active_receipts' => $active_receipts,
+            'inactive_receipts' => $inactive_receipts,
         ));
     }
 }

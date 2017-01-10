@@ -6,7 +6,6 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\Receipt;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
 {

@@ -65,43 +65,17 @@
             <h3> Aktive utlegg </h3>
 
         </div>
-
     </div>
-
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
 
             <hr>
 
-            <table width="100%" id="activeReceiptsTable">
-
-                <thead>
-
-                <tr>
-                    <th> Beskrivelse</th>
-                    <th> Sum</th>
-                    <th> Dato</th>
-                </tr>
-
-                </thead>
-
-                <tbody>
-                {% for _receipt in old_receipts %}
-                    {% if _receipt.isActive %}
-                        <tr>
-                            <td> {{ _receipt.description }} </td>
-                            <td> {{ _receipt.sum }} </td>
-                            <td> {{ _receipt.submitDate }}</td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-
-            </table>
+            {% include 'receipt/receipts_table.html.twig' with {'receipts': 'active_receipts'} %}
 
         </div>
     </div>
-    {{ dump(old_receipts)}}
+
     <div class="row">
 
         <div class="small-12 medium-12 large-12 columns">
@@ -120,31 +94,7 @@
 
             <hr>
 
-            <table width="100%" id="activeReceiptsTable">
-
-                <thead>
-
-                <tr>
-                    <th> Beskrivelse</th>
-                    <th> Sum</th>
-                    <th> Dato</th>
-                </tr>
-
-                </thead>
-
-                <tbody>
-                {% for _receipt in old_receipts %}
-                    {% if _receipt.isActive %}
-                        <tr>
-                            <td> {{ _receipt.description }} </td>
-                            <td> {{ _receipt.sum }} </td>
-                            <td> {{ _receipt.submitDate }}</td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-
-            </table>
+            {% include 'receipt/receipts_table.html.twig' with {'receipts': 'inactive_receipts'} %}
 
         </div>
     </div>

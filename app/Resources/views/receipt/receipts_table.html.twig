@@ -1,0 +1,23 @@
+<table width="100%" id="activeReceiptsTable">
+
+    <thead>
+
+    <tr>
+        <th> Beskrivelse</th>
+        <th> Sum</th>
+        <th> Dato</th>
+    </tr>
+
+    </thead>
+
+    <tbody>
+    {% for receipt in receipts if receipt.isActive %}
+            <tr>
+                <td> {{ receipt.description }} </td>
+                <td> {{ receipt.sum|number_format(2, ',', '.') }},- </td>
+                <td> {{ receipt.submitDate|date('Y-m-d') }}</td>
+            </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
