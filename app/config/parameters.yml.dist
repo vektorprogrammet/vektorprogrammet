@@ -15,11 +15,11 @@ parameters:
     mailer_user:       ~
     mailer_password:   ~
 
-    mailgun_transport: smtp
-    mailgun_hostname: smtp.mailgun.org
-    mailgun_port: 587
-    mailgun_login: ~
-    mailgun_password: ~
+    newsletter_transport: smtp
+    newsletter_hostname: ~
+    newsletter_port: ~
+    newsletter_username: ~
+    newsletter_password: ~
 
     locale:            en
 
