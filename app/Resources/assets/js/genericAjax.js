@@ -72,7 +72,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: Routing.generate('profile_deactivate_user', {id: id}),
+                url: Routing.generate(pathName, {id: id}),
                 data: {role: role},
                 cache: false,
                 success: function (response) {
