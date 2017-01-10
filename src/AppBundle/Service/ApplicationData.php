@@ -17,7 +17,7 @@ class ApplicationData
     public function __construct(EntityManager $em, TokenStorage $ts)
     {
         $this->applicationRepository = $em->getRepository('AppBundle:Application');
-        if ($ts->getToken()->getUser() instanceof User) {
+        if ($ts->getToken() !== null && $ts->getToken()->getUser() instanceof User) {
             $department = $ts->getToken()->getUser()->getDepartment();
             $this->semester = $em->getRepository('AppBundle:Semester')->findLatestSemesterByDepartmentId($department->getId());
         }
