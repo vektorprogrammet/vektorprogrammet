@@ -53,6 +53,12 @@ services:
     tags:
       - { name: twig.extension }
 
+  app.exception_subscriber:
+    class: AppBundle\EventSubscriber\ExceptionSubscriber
+    arguments: ['@app.logger']
+    tags:
+      - { name: kernel.event_subscriber }
+
   app.application_subscriber:
     class: AppBundle\EventSubscriber\ApplicationSubscriber
     arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data']
