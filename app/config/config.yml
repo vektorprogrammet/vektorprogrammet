@@ -5,6 +5,10 @@ imports:
     - { resource: "@AppBundle/Resources/config/services.yml" }
 
 parameters:
+  slack.notification_channel: '#notifications'
+  slack.log_channel: '#website_logs'
+  slack.disable_delivery: true
+
   # File upload parameters
   public_uploads: "Offentlige filer"
   private_uploads: "../Private filer"
@@ -254,3 +258,9 @@ liip_imagine:
             filters:
                 relative_resize: { scale: 2.5 }
                 crop: { start: [10, 20], size: [120, 90] }
+
+nexy_slack:
+    guzzle_service: guzzle.slack
+    endpoint: "%slack_endpoint%"
+    username: 'vektorbot'
+    icon: ':ghost:'

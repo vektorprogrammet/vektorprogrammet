@@ -49,12 +49,10 @@ class ApplicationAdmission
         return $application;
     }
 
-    public function setCorrectUser(Application $application, User $user = null)
+    public function setCorrectUser(Application $application)
     {
-        if ($user === null) {
-            //Check if email belongs to an existing account and use that account
-            $user = $this->em->getRepository('AppBundle:User')->findOneBy(array('email' => $application->getUser()->getEmail()));
-        }
+        //Check if email belongs to an existing account and use that account
+        $user = $this->em->getRepository('AppBundle:User')->findOneBy(array('email' => $application->getUser()->getEmail()));
         if ($user !== null) {
             $application->setUser($user);
         }

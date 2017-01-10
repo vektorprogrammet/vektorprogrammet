@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new Liip\ImagineBundle\LiipImagineBundle(),
             new TFox\MpdfPortBundle\TFoxMpdfPortBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new Nexy\SlackBundle\NexySlackBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

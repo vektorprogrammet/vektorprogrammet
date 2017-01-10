@@ -3,7 +3,10 @@
 namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\ApplicationCreatedEvent;
+use AppBundle\Service\ApplicationData;
+use AppBundle\Service\SlackMessenger;
 use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -13,6 +16,8 @@ class ApplicationSubscriber implements EventSubscriberInterface
     private $twig;
     private $session;
     private $logger;
+    private $slackMessenger;
+    private $applicationData;
 
     /**
      * ApplicationAdmissionSubscriber constructor.
@@ -20,14 +25,18 @@ class ApplicationSubscriber implements EventSubscriberInterface
      * @param \Swift_Mailer     $mailer
      * @param \Twig_Environment $twig
      * @param Session           $session
-     * @param Logger            $logger
+     * @param LoggerInterface   $logger
+     * @param SlackMessenger    $slackMessenger
+     * @param ApplicationData   $applicationData
      */
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Session $session, Logger $logger)
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, SlackMessenger $slackMessenger, ApplicationData $applicationData)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->session = $session;
         $this->logger = $logger;
+        $this->slackMessenger = $slackMessenger;
+        $this->applicationData = $applicationData;
     }
 
     /**
@@ -79,6 +88,12 @@ class ApplicationSubscriber implements EventSubscriberInterface
     {
         $application = $event->getApplication();
 
-        $this->logger->info("New application from {$application->getUser()} registered");
+        $user = $application->getUser();
+
+        $this->logger->info("New application from {$user} registered");
+
+        $this->applicationData->setDepartment($user->getDepartment());
+
+        $this->slackMessenger->notify("{$user->getDepartment()->getShortName()}: Ny søker: {$user}. Det er nå {$this->applicationData->getApplicationCount()} søkere!");
     }
 }

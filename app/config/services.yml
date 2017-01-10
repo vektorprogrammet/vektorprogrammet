@@ -25,3 +25,8 @@ services:
     app.reversed_role_hierarchy:
         class: AppBundle\Role\ReversedRoleHierarchy
         arguments: ["%security.role_hierarchy.roles%"]
+
+    guzzle.slack:
+        class: GuzzleHttp\Client
+        arguments:
+            - { timeout: 5 }
