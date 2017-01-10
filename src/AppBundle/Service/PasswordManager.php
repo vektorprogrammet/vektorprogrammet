@@ -73,7 +73,7 @@ class PasswordManager
         return $this->em->getRepository('AppBundle:PasswordReset')->findPasswordResetByHashedResetCode($hashedResetCode);
     }
 
-    public function createPasswordResetEntity(string $email): PasswordReset
+    public function createPasswordResetEntity(string $email)
     {
         $passwordReset = new PasswordReset();
 
