@@ -13,7 +13,7 @@ services:
 
   app.newsletter.manager:
       class: AppBundle\Service\NewsletterManager
-      arguments: ['@mailer', '@twig']
+      arguments: ['@swiftmailer.mailer.newsletter', '@twig']
 
   app.password_manager:
       class: AppBundle\Service\PasswordManager

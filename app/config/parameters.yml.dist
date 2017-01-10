@@ -15,6 +15,12 @@ parameters:
     mailer_user:       ~
     mailer_password:   ~
 
+    newsletter_transport: smtp
+    newsletter_hostname: ~
+    newsletter_port: ~
+    newsletter_username: ~
+    newsletter_password: ~
+
     locale:            en
 
     # Sender email for user creation mails
