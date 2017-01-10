@@ -18,7 +18,6 @@ class AdmissionController extends Controller
     {
         $admissionManager = $this->get('app.application_admission');
         $department = $admissionManager->getDepartment($request);
-        $user = $this->getUser();
 
         $em = $this->getDoctrine()->getManager();
         $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
@@ -33,7 +32,7 @@ class AdmissionController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $admissionManager->setCorrectUser($application, $user);
+            $admissionManager->setCorrectUser($application);
 
             if ($application->getUser()->hasBeenAssistant()) {
                 return $this->redirectToRoute('admission_existing_user');

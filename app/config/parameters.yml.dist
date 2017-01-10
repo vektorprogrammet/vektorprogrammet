@@ -21,6 +21,8 @@ parameters:
     newsletter_username: ~
     newsletter_password: ~
 
+    slack_endpoint: 'https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX'
+
     locale:            en
 
     # Sender email for user creation mails

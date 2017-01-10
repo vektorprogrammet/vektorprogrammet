@@ -1,4 +1,12 @@
 services:
+  app.logger:
+    class: AppBundle\Service\LogService
+    arguments: ['@logger', '@app.slack_messenger']
+
+  app.slack_messenger:
+    class: AppBundle\Service\SlackMessenger
+    arguments: ['@nexy_slack.client', '%slack.notification_channel%', '%slack.log_channel%', '%slack.disable_delivery%', '@logger']
+
   app.user.registration:
     class: AppBundle\Service\UserRegistration
     arguments: ['@twig', '@doctrine.orm.default_entity_manager', '@mailer', '@logger']
@@ -47,7 +55,7 @@ services:
 
   app.application_subscriber:
     class: AppBundle\EventSubscriber\ApplicationSubscriber
-    arguments: ['@mailer', '@twig', '@session', '@logger']
+    arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data']
     tags:
       - { name: kernel.event_subscriber }
 
