@@ -34,7 +34,7 @@ class Newsletter
     /**
      * @var Letter
      *
-     * @ORM\OneToMany(targetEntity="Letter", mappedBy="newsletter")
+     * @ORM\OneToMany(targetEntity="Letter", mappedBy="newsletter", cascade={"remove"})
      * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $letters;
@@ -42,7 +42,7 @@ class Newsletter
     /**
      * @var Subscriber[]
      *
-     * @ORM\OneToMany(targetEntity="Subscriber", mappedBy="newsletter")
+     * @ORM\OneToMany(targetEntity="Subscriber", mappedBy="newsletter", cascade={"remove"})
      * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $subscribers;
