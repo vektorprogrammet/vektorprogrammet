@@ -48,8 +48,6 @@ class InterviewManager
 
     public function initializeInterviewAnswers(Interview $interview)
     {
-        $interview->setConducted(new \DateTime());
-
         if ($interview->getInterviewed()) {
             return $interview;
         }

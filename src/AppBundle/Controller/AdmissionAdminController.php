@@ -54,24 +54,24 @@ class AdmissionAdminController extends Controller
         // Get query strings for filtering applications
         $status = $request->query->get('status', 'new');
 
+        if ($departmentId === null) {
+            // Finds the department for the current logged in user
+            $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
+        } else {
+            if (!$this->isGranted(RoleManager::ROLE_TEAM_LEADER) && $user->getDepartment()->getId() !== (int) $departmentId) {
+                throw $this->createAccessDeniedException();
+            }
+            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
+        }
+
         $semesterId = $request->query->get('semester', null);
         if ($semesterId === null) {
-            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($user->getFieldOfStudy()->getDepartment());
+            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
         } else {
             $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterId);
         }
 
         $em = $this->getDoctrine();
-
-        if ($departmentId === null) {
-            // Finds the department for the current logged in user
-            $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
-        } else {
-            if (!$this->isGranted(RoleManager::ROLE_TEAM_LEADER)) {
-                throw $this->createAccessDeniedException();
-            }
-            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
-        }
 
         if ($semester === null) {
             try {

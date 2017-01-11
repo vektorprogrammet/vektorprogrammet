@@ -5,10 +5,10 @@ namespace AppBundle\EventSubscriber;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Service\ApplicationData;
 use AppBundle\Service\SlackMessenger;
-use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\RouterInterface;
 
 class ApplicationSubscriber implements EventSubscriberInterface
 {
@@ -18,6 +18,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
     private $logger;
     private $slackMessenger;
     private $applicationData;
+    private $router;
 
     /**
      * ApplicationAdmissionSubscriber constructor.
@@ -28,8 +29,9 @@ class ApplicationSubscriber implements EventSubscriberInterface
      * @param LoggerInterface   $logger
      * @param SlackMessenger    $slackMessenger
      * @param ApplicationData   $applicationData
+     * @param RouterInterface   $router
      */
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, SlackMessenger $slackMessenger, ApplicationData $applicationData)
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, SlackMessenger $slackMessenger, ApplicationData $applicationData, RouterInterface $router)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
@@ -37,6 +39,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
         $this->logger = $logger;
         $this->slackMessenger = $slackMessenger;
         $this->applicationData = $applicationData;
+        $this->router = $router;
     }
 
     /**
@@ -92,8 +95,11 @@ class ApplicationSubscriber implements EventSubscriberInterface
 
         $this->logger->info("New application from {$user} registered");
 
-        $this->applicationData->setDepartment($user->getDepartment());
+        $department = $user->getDepartment();
 
-        $this->slackMessenger->notify("{$user->getDepartment()->getShortName()}: Ny søker: {$user}. Det er nå {$this->applicationData->getApplicationCount()} søkere!");
+        $this->applicationData->setDepartment($department);
+
+        $this->slackMessenger->notify("$department: Ny søknad fra *$user* registrert. $department har nå *{$this->applicationData->getApplicationCount()}* søkere: "
+            .$this->router->generate('admissionadmin_filter_applications_by_department', array('id' => $department->getId()), RouterInterface::ABSOLUTE_URL));
     }
 }

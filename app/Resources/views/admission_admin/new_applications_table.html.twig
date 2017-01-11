@@ -43,7 +43,7 @@
                 {% endif %}
             </div>
             <div class="small-9 columns">
-                {% if app.user.fieldOfStudy.department == department %}
+                {% if app.user.fieldOfStudy.department == department and is_granted('ROLE_SUPER_ADMIN') %}
                     <a class="button tiny success float-right" href="{{ path('register_applicant') }}">
                         Ny søker <i class="fa fa-plus"></i>
                     </a>

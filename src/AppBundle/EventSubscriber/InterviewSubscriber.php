@@ -3,9 +3,12 @@
 namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\InterviewConductedEvent;
-use Monolog\Logger;
+use AppBundle\Service\SlackMessenger;
+use Psr\Log\LoggerInterface;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class InterviewSubscriber implements EventSubscriberInterface
@@ -15,6 +18,8 @@ class InterviewSubscriber implements EventSubscriberInterface
     private $session;
     private $logger;
     private $tokenStorage;
+    private $slackMessenger;
+    private $router;
 
     /**
      * ApplicationAdmissionSubscriber constructor.
@@ -22,16 +27,20 @@ class InterviewSubscriber implements EventSubscriberInterface
      * @param \Swift_Mailer     $mailer
      * @param \Twig_Environment $twig
      * @param Session           $session
-     * @param Logger            $logger
+     * @param LoggerInterface   $logger
      * @param TokenStorage      $tokenStorage
+     * @param SlackMessenger    $slackMessenger
+     * @param RouterInterface   $router
      */
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Session $session, Logger $logger, TokenStorage $tokenStorage)
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, TokenStorage $tokenStorage, SlackMessenger $slackMessenger, RouterInterface $router)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->session = $session;
         $this->logger = $logger;
         $this->tokenStorage = $tokenStorage;
+        $this->slackMessenger = $slackMessenger;
+        $this->router = $router;
     }
 
     /**
@@ -82,6 +91,13 @@ class InterviewSubscriber implements EventSubscriberInterface
     {
         $application = $event->getApplication();
 
-        $this->logger->info("New interview with {$application->getUser()} registered");
+        $interviewee = $application->getUser();
+
+        $interviewer = $application->getInterview()->getInterviewer();
+
+        $this->logger->info("New interview with $interviewee registered");
+
+        $this->slackMessenger->notify("{$interviewer->getDepartment()}: *$interviewer* har fullført et intervju med *$interviewee*. Les hele intervjuet her: "
+            .$this->router->generate('interview_show', array('id' => $application->getId()), Router::ABSOLUTE_URL));
     }
 }
