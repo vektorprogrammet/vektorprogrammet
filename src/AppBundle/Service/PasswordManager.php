@@ -10,12 +10,14 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\PasswordReset;
 use Doctrine\ORM\EntityManager;
+use Psr\Log\LoggerInterface;
 
 class PasswordManager
 {
     private $em;
     private $mailer;
     private $twig;
+    private $logger;
 
     /**
      * PasswordManager constructor.
@@ -23,12 +25,14 @@ class PasswordManager
      * @param EntityManager     $em
      * @param \Swift_Mailer     $mailer
      * @param \Twig_Environment $twig
+     * @param LoggerInterface   $logger
      */
-    public function __construct(EntityManager $em, \Swift_Mailer $mailer, \Twig_Environment $twig)
+    public function __construct(EntityManager $em, \Swift_Mailer $mailer, \Twig_Environment $twig, LoggerInterface $logger)
     {
         $this->em = $em;
         $this->mailer = $mailer;
         $this->twig = $twig;
+        $this->logger = $logger;
     }
 
     public function generateRandomResetCode(): string
@@ -110,5 +114,7 @@ class PasswordManager
                 'user' => $passwordReset->getUser(),
             )));
         $this->mailer->send($emailMessage);
+
+        $this->logger->info("Password reset code sent to {$passwordReset->getUser()->getEmail()}");
     }
 }

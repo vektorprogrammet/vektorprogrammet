@@ -29,6 +29,7 @@ class PasswordResetController extends Controller
         //Checks if the form is valid
         if ($form->isValid()) {
             $passwordReset = $this->get('app.password_manager')->createPasswordResetEntity($form->get('email')->getData());
+            $this->get('app.logger')->info("{$passwordReset->getUser()} requested a password reset");
 
             if ($passwordReset === null) {
                 $this->get('session')->getFlashBag()->add('errorMessage', '<em>Det finnes ingen brukere med denne e-postadressen</em>');
@@ -88,6 +89,8 @@ class PasswordResetController extends Controller
             $em->remove($passwordReset);
             $em->persist($user);
             $em->flush();
+
+            $this->get('app.logger')->info("{$passwordReset->getUser()}'s password was successfully reset'");
 
             return $this->redirectToRoute('login_route');
         }
