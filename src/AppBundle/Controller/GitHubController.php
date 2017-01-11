@@ -28,7 +28,10 @@ class GitHubController extends Controller
 
         // Execute deploy script if there is a push to master
         if ($isCorrectRepository && $isMaster) {
+            $this->get('app.logger')->info('New commit on master branch detected');
+            $this->get('app.logger')->info('Starting to deploy changes from master branch...');
             shell_exec($this->getParameter('kernel.root_dir').'/../deploy.sh');
+            $this->get('app.logger')->info('Deploy complete');
 
             return new JsonResponse(['status' => 'Deployed']);
         } else {
