@@ -263,4 +263,4 @@ nexy_slack:
     guzzle_service: guzzle.slack
     endpoint: "%slack_endpoint%"
     username: 'vektorbot'
-    icon: ':ghost:'
+    icon: ':robot_face:'
