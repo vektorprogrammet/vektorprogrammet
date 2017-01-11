@@ -73,7 +73,7 @@ services:
 
   app.interview_subscriber:
       class: AppBundle\EventSubscriber\InterviewSubscriber
-      arguments: ['@mailer', '@twig', '@session', '@logger', '@security.token_storage']
+      arguments: ['@mailer', '@twig', '@session', '@app.logger', '@security.token_storage', '@app.slack_messenger', '@router']
       tags:
         - { name: kernel.event_subscriber }
 

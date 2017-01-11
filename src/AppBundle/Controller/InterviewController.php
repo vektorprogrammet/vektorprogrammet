@@ -49,6 +49,7 @@ class InterviewController extends Controller
 
         if ($form->isValid()) {
             $isNewInterview = !$interview->getInterviewed();
+            $interview->setConducted(new \DateTime());
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($interview);
