@@ -2,7 +2,7 @@ imports:
     - { resource: config.yml }
 
 parameters:
-    slack.disable_delivery: false
+    slack.disable_delivery: true
 
 framework:
     router:
