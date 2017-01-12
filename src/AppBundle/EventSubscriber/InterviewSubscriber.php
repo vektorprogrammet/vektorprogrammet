@@ -3,13 +3,11 @@
 namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\InterviewConductedEvent;
-use AppBundle\Service\SlackMessenger;
+use AppBundle\Service\InterviewNotificationManager;
+use AppBundle\Service\SbsData;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class InterviewSubscriber implements EventSubscriberInterface
 {
@@ -17,30 +15,27 @@ class InterviewSubscriber implements EventSubscriberInterface
     private $twig;
     private $session;
     private $logger;
-    private $tokenStorage;
-    private $slackMessenger;
-    private $router;
+    private $sbsData;
+    private $notificationManager;
 
     /**
      * ApplicationAdmissionSubscriber constructor.
      *
-     * @param \Swift_Mailer     $mailer
-     * @param \Twig_Environment $twig
-     * @param Session           $session
-     * @param LoggerInterface   $logger
-     * @param TokenStorage      $tokenStorage
-     * @param SlackMessenger    $slackMessenger
-     * @param RouterInterface   $router
+     * @param \Swift_Mailer                $mailer
+     * @param \Twig_Environment            $twig
+     * @param Session                      $session
+     * @param LoggerInterface              $logger
+     * @param SbsData                      $sbsData
+     * @param InterviewNotificationManager $notificationManager
      */
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, TokenStorage $tokenStorage, SlackMessenger $slackMessenger, RouterInterface $router)
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, SbsData $sbsData, InterviewNotificationManager $notificationManager)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->session = $session;
         $this->logger = $logger;
-        $this->tokenStorage = $tokenStorage;
-        $this->slackMessenger = $slackMessenger;
-        $this->router = $router;
+        $this->sbsData = $sbsData;
+        $this->notificationManager = $notificationManager;
     }
 
     /**
@@ -62,8 +57,7 @@ class InterviewSubscriber implements EventSubscriberInterface
     public function sendInterviewReceipt(InterviewConductedEvent $event)
     {
         $application = $event->getApplication();
-
-        $interviewer = $this->tokenStorage->getToken()->getUser();
+        $interviewer = $application->getInterview()->getInterviewer();
 
         // Send email to the interviewee with a summary of the interview
         $emailMessage = \Swift_Message::newInstance()
@@ -93,11 +87,14 @@ class InterviewSubscriber implements EventSubscriberInterface
 
         $interviewee = $application->getUser();
 
-        $interviewer = $application->getInterview()->getInterviewer();
+        $department = $interviewee->getDepartment();
 
-        $this->logger->info("New interview with $interviewee registered");
+        $this->logger->info("$department: New interview with $interviewee registered");
 
-        $this->slackMessenger->notify("{$interviewer->getDepartment()}: *$interviewer* har fullført et intervju med *$interviewee*. Les hele intervjuet her: "
-            .$this->router->generate('interview_show', array('id' => $application->getId()), Router::ABSOLUTE_URL));
+        $this->notificationManager->sendNewApplicationNotification($application);
+
+        if ($this->sbsData->applicantsNotYetInterviewedCount() <= 0 && $this->sbsData->getStep() >= 4) {
+            $this->notificationManager->sendInterviewsCompletedNotification($department);
+        }
     }
 }

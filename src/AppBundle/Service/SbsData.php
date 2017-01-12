@@ -1,107 +1,41 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: kristoffer
- * Date: 02.01.17
- * Time: 23:33.
- */
 
 namespace AppBundle\Service;
 
 use AppBundle\Entity\Semester;
-use DateTime;
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class SbsData
+class SbsData extends ApplicationData
 {
-    private $step;
-    private $interviewedAssistantsCount;
-    private $assignedInterviewsCount;
-    private $totalAssistantsCount;
-    private $totalApplicationsCount;
-    private $admissionTimeLeft;
-    private $timeToAdmissionStart;
-    private $positionsCount;
-
-    private $em;
-    private $tokenStorage;
-
-    /**
-     * SbsData constructor.
-     *
-     * @param EntityManager         $em
-     * @param TokenStorageInterface $tokenStorage
-     */
-    public function __construct(EntityManager $em, TokenStorageInterface $tokenStorage)
+    public function getTotalApplicationsCount(): int
     {
-        $this->step = 0;
-        $this->interviewedAssistantsCount = 0;
-        $this->assignedInterviewsCount = 0;
-        $this->totalAssistantsCount = 0;
-        $this->totalApplicationsCount = 0;
-        $this->admissionTimeLeft = 0;
-        $this->timeToAdmissionStart = 0;
-        $this->positionsCount = 0;
-
-        $this->em = $em;
-        $this->tokenStorage = $tokenStorage;
-        $this->updateData();
+        return $this->getApplicationCount();
+    }
+    public function getStep(): float
+    {
+        return $this->determineCurrentStep($this->getSemester(), $this->getInterviewedAssistantsCount(), $this->getAssignedInterviewsCount(), $this->getTotalAssistantsCount());
     }
 
-    public function updateData()
+    public function getAdmissionTimeLeft(): int
     {
-        $department = $this->tokenStorage->getToken()->getUser()->getDepartment();
-        $semester = $this->em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
-
-        if ($semester === null) {
-            return;
-        }
-
-        $applicationRepo = $this->em->getRepository('AppBundle:Application');
-        $assistantHistoryRepo = $this->em->getRepository('AppBundle:AssistantHistory');
-
-        $this->interviewedAssistantsCount = count($applicationRepo->findInterviewedApplicants($department, $semester));
-        $this->assignedInterviewsCount = count($applicationRepo->findAssignedApplicants($department, $semester));
-        $this->totalApplicationsCount = count($applicationRepo->findBy(array('semester' => $semester)));
-
-        $this->totalAssistantsCount = count($assistantHistoryRepo->findAssistantHistoriesByDepartment($department, $semester));
-        $assistantHistories = $assistantHistoryRepo->findAssistantHistoriesByDepartment($department, $semester);
-
-        $this->positionsCount = $this->countPositions($assistantHistories, $this->totalAssistantsCount);
-
-        $this->step = $this->determineCurrentStep($semester, $this->interviewedAssistantsCount, $this->assignedInterviewsCount, $this->totalAssistantsCount);
-
-        if ($this->step >= 1 && $this->step < 2) {
-            $this->timeToAdmissionStart = intval(ceil(($semester->getAdmissionStartDate()->getTimestamp() - (new \DateTime())->getTimestamp()) / 3600));
-        } elseif ($this->step >= 2 && $this->step < 3) {
-            $this->admissionTimeLeft = intval(ceil(($semester->getAdmissionEndDate()->getTimestamp() - (new \DateTime())->getTimestamp()) / 3600));
-        }
+        return intval(ceil(($this->getSemester()->getAdmissionEndDate()->getTimestamp() - (new \DateTime())->getTimestamp()) / 3600));
     }
 
-    private function countPositions(array $assistantHistories, int $totalAssistantsCount): int
+    public function getTimeToAdmissionStart(): int
     {
-        $positionsCount = $totalAssistantsCount;
-        foreach ($assistantHistories as $assistant) {
-            if ($assistant->getBolk() === 'Bolk 1, Bolk 2') {
-                ++$positionsCount;
-            }
-        }
-
-        return $positionsCount;
+        return intval(ceil(($this->getSemester()->getAdmissionStartDate()->getTimestamp() - (new \DateTime())->getTimestamp()) / 3600));
     }
 
-    private function determineCurrentStep(Semester $semester, $interviewedAssistantsCount, $assignedInterviewsCount, $totalAssistantsCount): int
+    private function determineCurrentStep(Semester $semester, $interviewedAssistantsCount, $assignedInterviewsCount, $totalAssistantsCount): float
     {
-        $today = new DateTime('now');
+        $today = new \DateTime();
 
-        // Step 1 Before Admission
-        if ($today < $semester->getAdmissionStartDate() && $today > $semester->getSemesterStartDate()) {
+        // Step 1 Wait for admission to start
+        if ($this->admissionHasNotStartedYet($semester)) {
             return 1 + ($today->format('U') - $semester->getSemesterStartDate()->format('U')) / ($semester->getAdmissionStartDate()->format('U') - $semester->getSemesterStartDate()->format('U'));
         }
 
         // Step 2 Admission has started
-        if ($today < $semester->getAdmissionEndDate() && $today > $semester->getAdmissionStartDate()) {
+        if ($this->admissionIsOngoing($semester)) {
             return 2 + ($today->format('U') - $semester->getAdmissionStartDate()->format('U')) / ($semester->getAdmissionEndDate()->format('U') - $semester->getAdmissionStartDate()->format('U'));
         }
 
@@ -121,7 +55,7 @@ class SbsData
         }
 
         // Step 5 Operating phase
-        if ($today < $semester->getSemesterEndDate() && $today > $semester->getAdmissionEndDate()) {
+        if ($this->admissionHasEnded($semester)) {
             return 5 + ($today->format('U') - $semester->getAdmissionEndDate()->format('U')) / ($semester->getSemesterEndDate()->format('U') - $semester->getAdmissionEndDate()->format('U'));
         }
 
@@ -129,75 +63,24 @@ class SbsData
         return -1;
     }
 
-    /**
-     * @return int
-     */
-    public function getStep(): int
+    private function admissionHasNotStartedYet(Semester $semester): bool
     {
-        return $this->step;
+        $today = new \DateTime();
+
+        return $today > $semester->getSemesterStartDate() && $today < $semester->getAdmissionStartDate();
     }
 
-    /**
-     * @return int
-     */
-    public function getInterviewedAssistantsCount(): int
+    private function admissionIsOngoing(Semester $semester): bool
     {
-        return $this->interviewedAssistantsCount;
+        $today = new \DateTime();
+
+        return $today > $semester->getAdmissionStartDate() && $today < $semester->getAdmissionEndDate();
     }
 
-    /**
-     * @return int
-     */
-    public function getAssignedInterviewsCount(): int
+    private function admissionHasEnded(Semester $semester): bool
     {
-        return $this->assignedInterviewsCount;
-    }
+        $today = new \DateTime();
 
-    /**
-     * @return int
-     */
-    public function getTotalAssistantsCount(): int
-    {
-        return $this->totalAssistantsCount;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTotalApplicationsCount(): int
-    {
-        return $this->totalApplicationsCount;
-    }
-
-    /**
-     * @return int
-     */
-    public function getAdmissionTimeLeft(): int
-    {
-        return $this->admissionTimeLeft;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTimeToAdmissionStart(): int
-    {
-        return $this->timeToAdmissionStart;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPositionsCount(): int
-    {
-        return $this->positionsCount;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTotalInterviewsCount(): int
-    {
-        return $this->assignedInterviewsCount + $this->interviewedAssistantsCount;
+        return $today < $semester->getSemesterEndDate() && $today > $semester->getAdmissionEndDate();
     }
 }
