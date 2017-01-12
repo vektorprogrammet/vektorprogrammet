@@ -90,7 +90,7 @@ class PasswordResetController extends Controller
             $em->persist($user);
             $em->flush();
 
-            $this->get('app.logger')->info("{$passwordReset->getUser()}'s password was successfully reset'");
+            $this->get('app.logger')->info("{$passwordReset->getUser()} successfully created a new password from the reset link");
 
             return $this->redirectToRoute('login_route');
         }
