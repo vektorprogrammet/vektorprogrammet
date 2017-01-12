@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\AssistantHistory;
+use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
@@ -127,8 +128,8 @@ class AssistantHistoryRepository extends EntityRepository
     }
 
     /**
-     * @param int      $department
-     * @param Semester $semester
+     * @param Department $department
+     * @param Semester   $semester
      *
      * @return AssistantHistory[]
      */

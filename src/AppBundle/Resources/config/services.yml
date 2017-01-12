@@ -27,13 +27,17 @@ services:
       class: AppBundle\Service\PasswordManager
       arguments: ['@doctrine.orm.default_entity_manager', '@mailer', '@twig', '@app.logger']
 
+  app.interview_notification_manager:
+      class: AppBundle\Service\InterviewNotificationManager
+      arguments: ['@app.slack_messenger', '@application.data', '@router']
+
   app.assistants.data:
     class: AppBundle\Service\AssistantsData
     arguments: ['@doctrine.orm.default_entity_manager']
 
   app.sbs_data:
     class: AppBundle\Service\SbsData
-    arguments: ['@doctrine.orm.default_entity_manager', '@security.token_storage']
+    parent: application.data
 
   app.safe_html_extension:
     class: AppBundle\Twig\Extension\SafeHtmlExtension
@@ -73,7 +77,7 @@ services:
 
   app.interview_subscriber:
       class: AppBundle\EventSubscriber\InterviewSubscriber
-      arguments: ['@mailer', '@twig', '@session', '@app.logger', '@security.token_storage', '@app.slack_messenger', '@router']
+      arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.sbs_data', '@app.interview_notification_manager']
       tags:
         - { name: kernel.event_subscriber }
 
@@ -83,7 +87,7 @@ services:
 
   application.data:
     class: AppBundle\Service\ApplicationData
-    arguments: ['@doctrine.orm.default_entity_manager', '@security.token_storage']
+    arguments: ['@doctrine.orm.entity_manager', '@security.token_storage']
 
   app.application_admission:
     class: AppBundle\Service\ApplicationAdmission
