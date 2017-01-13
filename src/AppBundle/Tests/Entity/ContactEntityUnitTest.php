@@ -2,7 +2,7 @@
 
 namespace AppBundle\Tests\Entity;
 
-use AppBundle\Entity\Contact;
+use AppBundle\Entity\SupportTicket;
 
 class ContactEntityUnitTest extends \PHPUnit_Framework_TestCase
 {
@@ -11,7 +11,7 @@ class ContactEntityUnitTest extends \PHPUnit_Framework_TestCase
     {
 
         // new assistantHistory entity
-        $contact = new Contact();
+        $contact = new SupportTicket();
 
         // Use the setName method
         $contact->setName('Grete');
@@ -25,7 +25,7 @@ class ContactEntityUnitTest extends \PHPUnit_Framework_TestCase
     {
 
         // new assistantHistory entity
-        $contact = new Contact();
+        $contact = new SupportTicket();
 
         // Use the setEmail method
         $contact->setEmail('Grete@mail.com');
@@ -39,7 +39,7 @@ class ContactEntityUnitTest extends \PHPUnit_Framework_TestCase
     {
 
         // new assistantHistory entity
-        $contact = new Contact();
+        $contact = new SupportTicket();
 
         // Use the setSubject method
         $contact->setSubject('asdf');
@@ -53,7 +53,7 @@ class ContactEntityUnitTest extends \PHPUnit_Framework_TestCase
     {
 
         // new assistantHistory entity
-        $contact = new Contact();
+        $contact = new SupportTicket();
 
         // Use the setBody method
         $contact->setBody('This is a long dummy text that is suppose to be somewhat long and somewhat short');

@@ -31,6 +31,8 @@ parameters:
     # Sender email for contact form mails
     no_reply_email_contact_form: ~
 
+    default_from_email: post@vektorprogrammet.no
+
     # A secret key that's used to generate certain security-related tokens
     secret:            CreateASuperDuperSecretHere
 
