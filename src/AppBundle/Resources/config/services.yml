@@ -3,6 +3,10 @@ services:
     class: AppBundle\Service\LogService
     arguments: ['@logger', '@app.slack_messenger']
 
+  app.email_sender:
+    class: AppBundle\Service\EmailSender
+    arguments: ['@mailer', '@twig', '@app.logger', '%default_from_email%']
+
   app.slack_messenger:
     class: AppBundle\Service\SlackMessenger
     arguments: ['@nexy_slack.client', '%slack.notification_channel%', '%slack.log_channel%', '%slack.disable_delivery%', '@logger']
@@ -78,6 +82,12 @@ services:
   app.interview_subscriber:
       class: AppBundle\EventSubscriber\InterviewSubscriber
       arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.sbs_data', '@app.interview_notification_manager']
+      tags:
+        - { name: kernel.event_subscriber }
+
+  app.support_ticket_subscriber:
+      class: AppBundle\EventSubscriber\SupportTicketSubscriber
+      arguments: ['@app.email_sender', '@app.slack_messenger', '@session', '@app.logger']
       tags:
         - { name: kernel.event_subscriber }
 

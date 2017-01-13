@@ -2,14 +2,15 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\SupportTicket;
 use AppBundle\Event\ApplicationCreatedEvent;
+use AppBundle\Event\SupportTicketCreatedEvent;
 use AppBundle\Form\Type\ApplicationExistingUserType;
+use AppBundle\Form\Type\SupportTicketType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Entity\Application;
-use AppBundle\Form\Type\ContactType;
-use AppBundle\Entity\Contact;
 use AppBundle\Entity\Department;
 
 class AdmissionController extends Controller
@@ -56,40 +57,19 @@ class AdmissionController extends Controller
 
     public function contactAction(Request $request, Department $department)
     {
-        $contact = new Contact();
-        $contactForm = $this->createForm(new ContactType(), $contact, array(
+        $supportTicket = new SupportTicket();
+        $supportTicket->setDepartment($department);
+        $contactForm = $this->createForm(new SupportTicketType(), $supportTicket, array(
             'action' => $this->generateUrl('admission_contact', array(
                 'id' => $department->getId(),
             )),
         ));
 
-        // Get the sender email from the parameter file
-        $fromEmail = array($this->container->getParameter('no_reply_email_contact_form') => 'Kontaktskjema Vektorprogrammet');
-
         $contactForm->handleRequest($request);
 
         if ($contactForm->isValid()) {
-            //send mail to department
-            $message = \Swift_Message::newInstance()
-                ->setSubject('Nytt kontaktskjema')
-                ->setFrom($fromEmail)
-                ->setReplyTo($contact->getEmail())
-                ->setTo($department->getEmail())
-                ->setBody($this->renderView('admission/contactEmail.txt.twig', array('contact' => $contact)));
-            $this->get('mailer')->send($message);
+            $this->get('event_dispatcher')->dispatch(SupportTicketCreatedEvent::NAME, new SupportTicketCreatedEvent($supportTicket));
 
-            //send receipt mail back to sender
-            $receipt = \Swift_Message::newInstance()
-                ->setSubject('Kvittering for kontaktskjema')
-                ->setFrom($fromEmail)
-                ->setTo($contact->getEmail())
-                ->setBody($this->renderView('admission/receiptEmail.txt.twig', array('contact' => $contact)));
-            $this->get('mailer')->send($receipt);
-
-            //popup text after completion
-            $request->getSession()->getFlashBag()->add('contact-notice', 'Kontaktforespørsel sendt, takk for henvendelsen!');
-
-            //redirect to avoid re-posting the form
             return $this->redirect($this->generateUrl('admission_show_specific_department', array(
                 'id' => $department->getId(),
             )));

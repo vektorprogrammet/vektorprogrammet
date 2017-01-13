@@ -7,15 +7,17 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 
-class Contact
+class SupportTicket
 {
-    protected $name;
+    private $name;
 
-    protected $email;
+    private $email;
 
-    protected $subject;
+    private $subject;
 
-    protected $body;
+    private $body;
+
+    private $department;
 
     public function getName()
     {
@@ -73,5 +75,21 @@ class Contact
             $method = "set{$property}";
             $this->$method($value);
         }
+    }
+
+    /**
+     * @return Department
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param Department $department
+     */
+    public function setDepartment(Department $department)
+    {
+        $this->department = $department;
     }
 }
