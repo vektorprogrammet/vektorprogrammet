@@ -86,10 +86,6 @@
 
             {% if is_granted('ROLE_SUPER_ADMIN') %}
 
-
-
-
-
                 <ul class="inline-list">
 
                     {# Department dropdown #}
@@ -188,6 +184,7 @@
                             <th> Avdeling</th>
                             <th> Bolk</th>
                             <th> Dag</th>
+                            <th></th>
                         </tr>
 
                         </thead>
@@ -214,6 +211,17 @@
                                         <td> {{ ah.semester.department.shortname }}</td>
                                         <td> {{ ah.bolk }}</td>
                                         <td> {{ ah.day }}</td>
+                                        <td>
+                                            {% if is_granted('ROLE_HIGHEST_ADMIN') or (is_granted('ROLE_SUPER_ADMIN') and app.user.department == department) %}
+                                                <form
+                                                        action="{{ path('assistant_history_delete', {id: ah.id}) }}"
+                                                        method="POST"
+                                                        onsubmit="return confirm('Er du sikker på at du vil slette {{ ah.user }} fra {{ ah.school.name }} {{ ah.semester.name }}?')"
+                                                >
+                                                    <button type="submit" class="button tiny alert"><i class="fa fa-trash"></i></button>
+                                                </form>
+                                            {% endif %}
+                                        </td>
                                     </tr>
                                 {% endif %}
                             {% endfor %}
@@ -238,6 +246,17 @@
                                         <td> {{ ah.semester.department.shortname }}</td>
                                         <td> {{ ah.bolk }}</td>
                                         <td> {{ ah.day }}</td>
+                                        <td>
+                                            {% if is_granted('ROLE_HIGHEST_ADMIN') or (is_granted('ROLE_SUPER_ADMIN') and app.user.department == department) %}
+                                                <form
+                                                        action="{{ path('assistant_history_delete', {id: ah.id}) }}"
+                                                        method="POST"
+                                                        onsubmit="return confirm('Er du sikker på at du vil slette {{ ah.user }} fra {{ ah.school.name }} {{ ah.semester.name }}?')"
+                                                >
+                                                    <button type="submit" class="button tiny alert"><i class="fa fa-trash"></i></button>
+                                                </form>
+                                            {% endif %}
+                                        </td>
                                     </tr>
                                 {% endif %}
                             {% endfor %}

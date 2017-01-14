@@ -37,6 +37,16 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
         $ah3->setBolk('Bolk 1');
         $ah3->setDay('Fredag');
         $manager->persist($ah3);
+
+        $ah4 = new AssistantHistory();
+        $ah4->setUser($this->getReference('user-3'));
+        $ah4->setSchool($this->getReference('school-3'));
+        $ah4->setSemester($this->getReference('semester-2'));
+        $ah4->setWorkdays(4);
+        $ah4->setBolk('Bolk 1');
+        $ah4->setDay('Fredag');
+        $manager->persist($ah4);
+
         $manager->flush();
 
         $this->addReference('ah-1', $ah1);
