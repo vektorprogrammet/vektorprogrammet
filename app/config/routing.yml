@@ -287,6 +287,10 @@ participanthistory_show_by_department:
  defaults: { _controller: AppBundle:ParticipantHistory:show }
  methods: [GET]
 
+assistant_history_delete:
+ path: /kontrollpanel/deltakerhistorikk/slett/{id}
+ defaults: { _controller: AppBundle:AssistantHistory:delete }
+ methods: [POST]
 
 
 
