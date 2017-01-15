@@ -220,7 +220,7 @@ specific_profile:
   id: \d+
 
 profile_edit_admin:
- path:   /profil/rediger/{id}
+ path:   /kontrollpanel/profil/rediger/{id}
  defaults: { _controller: AppBundle:Profile:editProfileInformationAdmin }
  methods: [GET, POST]
 

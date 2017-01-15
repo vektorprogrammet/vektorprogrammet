@@ -60,7 +60,7 @@ class ProfileControllerTest extends WebTestCase
             'PHP_AUTH_USER' => 'petjo',
             'PHP_AUTH_PW' => '1234',
         ));
-        $crawler = $client->request('GET', '/profil/rediger/4');
+        $crawler = $client->request('GET', '/kontrollpanel/profil/rediger/4');
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains(" Redigerer profil ")')->count());
