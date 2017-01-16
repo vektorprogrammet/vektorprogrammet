@@ -25,4 +25,20 @@ class TeamRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param Department $department
+     *
+     * @return Team[]
+     */
+    public function findByOpenApplicationAndDepartment(Department $department): array
+    {
+        return $this->createQueryBuilder('team')
+            ->select('team')
+            ->where('team.department = :department')
+            ->andWhere('team.acceptApplication = true')
+            ->setParameter('department', $department)
+            ->getQuery()
+            ->getResult();
+    }
 }
