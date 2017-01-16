@@ -359,8 +359,11 @@ article {
   color: $vektor-white;
   width: 100%;
 
-  h1, h3, label {
+  h1, h3, h4, label {
     color: $vektor-white;
+  }
+  .team-link {
+    margin-bottom: 10px
   }
 }
 

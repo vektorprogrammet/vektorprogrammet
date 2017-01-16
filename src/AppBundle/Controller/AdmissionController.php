@@ -23,6 +23,8 @@ class AdmissionController extends Controller
         $em = $this->getDoctrine()->getManager();
         $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
 
+        $teams = $em->getRepository('AppBundle:Team')->findByOpenApplicationAndDepartment($department);
+
         $application = new Application();
 
         $form = $this->createForm(ApplicationType::class, $application, array(
@@ -51,6 +53,7 @@ class AdmissionController extends Controller
         return $this->render('admission/index.html.twig', array(
             'department' => $department,
             'semester' => $semester,
+            'teams' => $teams,
             'form' => $form->createView(),
         ));
     }

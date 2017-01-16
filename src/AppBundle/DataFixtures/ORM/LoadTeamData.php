@@ -53,8 +53,44 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         $team2 = new Team();
         $team2->setDepartment($this->getReference('dep-1'));
         $team2->setName('IT');
-        $team2->setShortDescription('Det er vi som driver med IT.');
+        $team2->setShortDescription('Det er vi som driver med ID');
+        $team2->setAcceptApplication(true);
         $manager->persist($team2);
+
+        $team3 = new Team();
+        $team3->setDepartment($this->getReference('dep-1'));
+        $team3->setName('Rekruttering');
+        $team3->setShortDescription('Rekruttering');
+        $team3->setAcceptApplication(true);
+        $manager->persist($team3);
+
+        $team4 = new Team();
+        $team4->setDepartment($this->getReference('dep-1'));
+        $team4->setName('Sponsor');
+        $team4->setShortDescription('Sponsor');
+        $team4->setAcceptApplication(true);
+        $manager->persist($team4);
+
+        $team5 = new Team();
+        $team5->setDepartment($this->getReference('dep-1'));
+        $team5->setName('Evaluering');
+        $team5->setShortDescription('Evaluering');
+        $team5->setAcceptApplication(true);
+        $manager->persist($team5);
+
+        $team6 = new Team();
+        $team6->setDepartment($this->getReference('dep-1'));
+        $team6->setName('Eksport');
+        $team6->setShortDescription('Eksport');
+        $team6->setAcceptApplication(true);
+        $manager->persist($team6);
+
+        $team7 = new Team();
+        $team7->setDepartment($this->getReference('dep-1'));
+        $team7->setName('Skolekoordinering');
+        $team7->setShortDescription('Skolekoordinering');
+        $team7->setAcceptApplication(true);
+        $manager->persist($team7);
 
         $team2 = new Team();
         $team2->setDepartment($this->getReference('dep-2'));
