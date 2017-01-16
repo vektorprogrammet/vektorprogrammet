@@ -71,6 +71,11 @@ class User implements AdvancedUserInterface, \Serializable
     private $phone;
 
     /**
+     * @ORM\Column(type="string", length=45)
+     */
+    private $account_number;
+
+    /**
      * @ORM\Column(type="string", length=45, unique=true, nullable=true)
      * @Assert\NotBlank(groups={"username"}, message="Dette feltet kan ikke være tomt.")
      */
@@ -296,6 +301,22 @@ class User implements AdvancedUserInterface, \Serializable
     public function getPhone()
     {
         return $this->phone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccountNumber()
+    {
+        return $this->account_number;
+    }
+
+    /**
+     * @param string $account_number
+     */
+    public function setAccountNumber($account_number)
+    {
+        $this->account_number = $account_number;
     }
 
     /**
