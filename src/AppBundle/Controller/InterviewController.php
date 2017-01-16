@@ -49,17 +49,25 @@ class InterviewController extends Controller
 
         if ($form->isValid()) {
             $isNewInterview = !$interview->getInterviewed();
-            $interview->setConducted(new \DateTime());
+            $interview->setCancelled(false);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($interview);
             $em->flush();
+            if ($isNewInterview && $form->get('saveAndSend')->isClicked()) {
+                $interview->setInterviewed(true);
+                $em->persist($interview);
+                $em->flush();
 
-            if ($isNewInterview) {
                 $this->get('event_dispatcher')->dispatch(InterviewConductedEvent::NAME, new InterviewConductedEvent($application));
-            }
 
-            return $this->redirect($this->generateUrl('admissionadmin_show', array('status' => 'interviewed')));
+                return $this->redirectToRoute('admissionadmin_show', array('status' => 'interviewed'));
+            }
+            if ($isNewInterview) {
+                return $this->redirectToRoute('admissionadmin_show', array('status' => 'assigned'));
+            } else {
+                return $this->redirectToRoute('admissionadmin_show', array('status' => 'interviewed'));
+            }
         }
 
         return $this->render('interview/conduct.html.twig', array(

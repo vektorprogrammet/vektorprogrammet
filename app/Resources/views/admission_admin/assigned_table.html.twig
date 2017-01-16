@@ -44,8 +44,8 @@
                                 class="fa fa-envelope"></i> Sett opp</a>
                 </td>
                 <td>
-                    <a href="{{ path('interview_conduct', { 'id': a.id }) }}" class="button tiny"><i
-                                class="fa fa-list-ul"></i> Intervju</a>
+                    <a href="{{ path('interview_conduct', { 'id': a.id }) }}" class="button tiny {{ a.interview.isDraft ? 'warning' }}"><i
+                                class="fa fa-list-ul"></i> {{ a.interview.isDraft ? 'Kladd' : 'Intervju' }}</a>
                 </td>
             {% else %}
                 <td colspan="2"></td>

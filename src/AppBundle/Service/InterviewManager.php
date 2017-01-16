@@ -48,7 +48,7 @@ class InterviewManager
 
     public function initializeInterviewAnswers(Interview $interview)
     {
-        if ($interview->getInterviewed()) {
+        if ($interview->getInterviewed() || count($interview->getInterviewAnswers()) > 0) {
             return $interview;
         }
 
