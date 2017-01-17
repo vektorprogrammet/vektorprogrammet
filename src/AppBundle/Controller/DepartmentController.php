@@ -59,7 +59,7 @@ class DepartmentController extends Controller
 
     public function getAllDepartmentsForTopbarAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         // Find all departments
         $departments = $em->getRepository('AppBundle:Department')->findAll();
