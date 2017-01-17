@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Application;
 use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Form\Type\NewUserType;
-use AppBundle\Service\RoleManager;
+use AppBundle\Role\Roles;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -58,7 +58,7 @@ class AdmissionAdminController extends Controller
             // Finds the department for the current logged in user
             $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
         } else {
-            if (!$this->isGranted(RoleManager::ROLE_TEAM_LEADER) && $user->getDepartment()->getId() !== (int) $departmentId) {
+            if (!$this->isGranted(Roles::TEAM_LEADER) && $user->getDepartment()->getId() !== (int) $departmentId) {
                 throw $this->createAccessDeniedException();
             }
             $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);

@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Event\InterviewConductedEvent;
-use AppBundle\Service\RoleManager;
+use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -254,7 +254,7 @@ class InterviewController extends Controller
         $application = $em->getRepository('AppBundle:Application')->find($id);
         $user = $application->getUser();
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
-        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([RoleManager::ROLE_TEAM_MEMBER]);
+        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([Roles::TEAM_MEMBER]);
 
         $form = $this->createForm(new AssignInterviewType($roles), $application);
 
@@ -294,7 +294,7 @@ class InterviewController extends Controller
     public function bulkAssignAction(Request $request)
     {
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
-        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([RoleManager::ROLE_TEAM_MEMBER]);
+        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([Roles::TEAM_MEMBER]);
         $form = $this->createForm(new AssignInterviewType($roles));
 
         if ($request->isMethod('POST')) {

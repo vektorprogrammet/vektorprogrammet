@@ -3,6 +3,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\User;
+use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
 
@@ -89,7 +90,7 @@ class UserRegistration
         $user->setActive('1');
 
         if (count($user->getRoles()) === 0) {
-            $role = $this->em->getRepository('AppBundle:Role')->findByRoleName(RoleManager::ROLE_ASSISTANT);
+            $role = $this->em->getRepository('AppBundle:Role')->findByRoleName(Roles::ASSISTANT);
             $user->addRole($role);
         }
 

@@ -2,7 +2,7 @@
 
 namespace AppBundle\Form\Type;
 
-use AppBundle\Service\RoleManager;
+use AppBundle\Role\Roles;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
@@ -50,22 +50,22 @@ class CreateUserType extends AbstractType
                 },
             ));
 
-        if ($this->userRole === RoleManager::ROLE_TEAM_LEADER) {
+        if ($this->userRole === Roles::TEAM_LEADER) {
             $builder->add('role', 'choice', array(
                 'label' => 'Rolle',
                 'mapped' => false,
                 'choices' => array(
-                    RoleManager::ROLE_ALIAS_ASSISTANT => 'Assistent',
-                    RoleManager::ROLE_ALIAS_TEAM_MEMBER => 'Teammedlem',
-                    RoleManager::ROLE_ALIAS_TEAM_LEADER => 'Teamleder',
+                    Roles::ALIAS_ASSISTANT => 'Assistent',
+                    Roles::ALIAS_TEAM_MEMBER => 'Teammedlem',
+                    Roles::ALIAS_TEAM_LEADER => 'Teamleder',
                 ),
             ));
-        } elseif ($this->userRole === RoleManager::ROLE_TEAM_MEMBER) {
+        } elseif ($this->userRole === Roles::TEAM_MEMBER) {
             $builder->add('role', 'choice', array(
                 'label' => 'Rolle',
                 'mapped' => false,
                 'choices' => array(
-                    RoleManager::ROLE_ALIAS_ASSISTANT => 'Assistent',
+                    Roles::ALIAS_ASSISTANT => 'Assistent',
                 ),
             ));
         }
@@ -76,7 +76,7 @@ class CreateUserType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
             'department' => 'AppBundle\Entity\Department',
-            'user_role' => RoleManager::ROLE_TEAM_MEMBER,
+            'user_role' => Roles::TEAM_MEMBER,
         ));
     }
 
