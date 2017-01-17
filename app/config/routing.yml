@@ -414,6 +414,13 @@ admission_show_specific_department:
  requirements:
     id: \d+
 
+admission_show_by_short_name:
+ path: /opptak/{shortName}
+ defaults: {_controller: AppBundle:Admission:show }
+ methods: [GET, POST]
+ requirements:
+    id: \w+
+
 admission_show_specific_department_by_name:
  path: /avdeling/{shortName}
  defaults: {_controller: AppBundle:Admission:show }
