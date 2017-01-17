@@ -3,14 +3,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\AssistantHistory;
-use AppBundle\Service\RoleManager;
+use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class AssistantHistoryController extends Controller
 {
     public function deleteAction(AssistantHistory $assistantHistory)
     {
-        if (!$this->isGranted(RoleManager::ROLE_ADMIN) && $assistantHistory->getUser()->getDepartment() !== $this->getUser()->getDepartment()) {
+        if (!$this->isGranted(Roles::ADMIN) && $assistantHistory->getUser()->getDepartment() !== $this->getUser()->getDepartment()) {
             $this->createAccessDeniedException();
         }
 

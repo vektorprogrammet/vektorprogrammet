@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
-use AppBundle\Service\RoleManager;
+use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +16,7 @@ class UserAdminController extends Controller
 {
     public function createUserAction(Request $request, Department $department = null)
     {
-        if (!$this->isGranted(RoleManager::ROLE_TEAM_LEADER) || $department === null) {
+        if (!$this->isGranted(Roles::TEAM_LEADER) || $department === null) {
             $department = $this->getUser()->getDepartment();
         }
 
@@ -26,7 +26,7 @@ class UserAdminController extends Controller
         $form = $this->createForm(CreateUserType::class, $user, array(
             'validation_groups' => array('create_user'),
             'department' => $department,
-            'user_role' => $this->isGranted(RoleManager::ROLE_TEAM_LEADER) ? RoleManager::ROLE_TEAM_LEADER : RoleManager::ROLE_TEAM_MEMBER,
+            'user_role' => $this->isGranted(Roles::TEAM_LEADER) ? Roles::TEAM_LEADER : Roles::TEAM_MEMBER,
         ));
 
         // Handle the form
@@ -93,7 +93,7 @@ class UserAdminController extends Controller
     public function deleteUserByIdAction(User $user)
     {
         // If Non-ROLE_HIGHEST_ADMIN try to delete user in other department
-        if (!$this->isGranted(RoleManager::ROLE_ADMIN) && $user->getDepartment() !== $this->getUser()->getDepartment) {
+        if (!$this->isGranted(Roles::ADMIN) && $user->getDepartment() !== $this->getUser()->getDepartment) {
             throw new BadRequestHttpException();
         }
         try {
