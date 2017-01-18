@@ -71,7 +71,7 @@ class User implements AdvancedUserInterface, \Serializable
     private $phone;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="string", length=45, nullable=true)
      */
     private $account_number;
 
