@@ -24,13 +24,13 @@ class CreateWorkHistoryType extends AbstractType
                 'class' => 'AppBundle:User',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')
-                      ->orderBy('u.firstName', 'ASC')
-                      ->Join('u.fieldOfStudy', 'fos')
-                      ->Join('fos.department', 'd')
-                      ->where('u.fieldOfStudy = fos.id')
-                      ->andWhere('fos.department = d')
-                      ->andWhere('d = ?1')
-                      ->setParameter(1, $this->departmentId);
+                        ->orderBy('u.firstName', 'ASC')
+                        ->Join('u.fieldOfStudy', 'fos')
+                        ->Join('fos.department', 'd')
+                        ->where('u.fieldOfStudy = fos.id')
+                        ->andWhere('fos.department = d')
+                        ->andWhere('d = ?1')
+                        ->setParameter(1, $this->departmentId);
                 },
             ))
             ->add('position', 'entity', array(
@@ -38,7 +38,7 @@ class CreateWorkHistoryType extends AbstractType
                 'class' => 'AppBundle:Position',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('p')
-                      ->orderBy('p.name', 'ASC');
+                        ->orderBy('p.name', 'ASC');
                 },
             ))
             ->add('startSemester', 'entity', array(

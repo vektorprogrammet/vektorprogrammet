@@ -20,43 +20,45 @@
             <div class="panel">
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
-                        {% if interview.cancelled == 0 %}
-                            <a href="{{ path('interview_cancel', {'id' : interview.id}) }}" class="button alert tiny radius float-right">Ikke møtt</a>
+                        {% if not application.interview.cancelled %}
+                            <form action="{{ path('interview_cancel', {'id' : application.interview.id}) }}" method="POST">
+                                <button class="button alert tiny radius float-right" type="submit">Kansellér intervju</button>
+                            </form>
                         {% endif %}
                         <h1>Intervju</h1>
                         <h3>Kandidat</h3>
                         <table width="100%">
                             <thead>
-                                <tr>
-                                    <th> Fornavn</th>
-                                    <th> Etternavn</th>
-                                    <th> Tlf </th>
-                                    <th> E-post </th>
-                                    <th> Linje </th>
-                                    <th> År </th>
-                                    <th> Tidligere deltagelse </th>
-                                </tr>
+                            <tr>
+                                <th> Fornavn</th>
+                                <th> Etternavn</th>
+                                <th> Tlf</th>
+                                <th> E-post</th>
+                                <th> Linje</th>
+                                <th> År</th>
+                                <th> Tidligere deltagelse</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    {% set u = interview.user %}
-                                    <td> {{ u.firstName }} </td>
-                                    <td> {{ u.lastName }} </td>
-                                    <td> {{ u.phone }} </td>
-                                    <td> {{ u.email }} </td>
-                                    <td> {{ u.fieldOfStudy }} </td>
-                                    <td> {{ application.yearOfStudy }} </td>
+                            <tr>
+                                {% set u = application.user %}
+                                <td> {{ u.firstName }} </td>
+                                <td> {{ u.lastName }} </td>
+                                <td> {{ u.phone }} </td>
+                                <td> {{ u.email }} </td>
+                                <td> {{ u.fieldOfStudy }} </td>
+                                <td> {{ application.yearOfStudy }} </td>
 
-                                    {% if u.assistantHistories|length %}
-                                        <td> Ja </td>
-                                    {% else %}
-                                        <td> Nei </td>
-                                    {% endif %}
-                                </tr>
+                                {% if u.assistantHistories|length %}
+                                    <td> Ja</td>
+                                {% else %}
+                                    <td> Nei</td>
+                                {% endif %}
+                            </tr>
                             </tbody>
                         </table>
                         <h3>Intervjuet av</h3>
-                        <p>{{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}</p>
+                        <p>{{ application.interview.interviewer }}</p>
                     </div>
                 </div>
                 {{ form_start(form) }}
@@ -69,8 +71,12 @@
                         <h4>Introduksjon</h4>
                         <ul>
                             <li>En ungdomsskoledag varer fra kl 08.00 til 14.00. I tillegg kommer reisetid</li>
-                            <li>Det kan hende at du ikke har noe å gjøre deler av dagen pga timeplanen. Derfor er det lurt å ta med bøker hvis det blir pauser</li>
-                            <li>Informere om at vi har to bolker. Spørre om de har en reise eller lignende planlagt NÅ som gjør at de ikke kan en av de</li>
+                            <li>Det kan hende at du ikke har noe å gjøre deler av dagen pga timeplanen. Derfor er det
+                                lurt å ta med bøker hvis det blir pauser
+                            </li>
+                            <li>Informere om at vi har to bolker. Spørre om de har en reise eller lignende planlagt NÅ
+                                som gjør at de ikke kan en av de
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -109,7 +115,9 @@
                     </div>
                 </div>
 
-                <h3>Intervjuspørsmål <small>{{ interview.interviewSchema.name }}</small></h3>
+                <h3>Intervjuspørsmål
+                    <small>{{ application.interview.interviewSchema.name }}</small>
+                </h3>
                 {% for interviewAnswer in form.interview.interviewAnswers %}
                     <div class="row">
                         <div class="small-12 medium-12 large-9 columns">
@@ -145,13 +153,25 @@
 
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
-                        {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
-                        {% if not interview.interviewed %}
+                        {% if not application.interview.interviewed %}
+                            {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
+                            {{ form_widget(form.saveAndSend, {'attr': {'class': 'button tiny success'}}) }}
                             <div class="row">
                                 <div class="medium-6 columns">
                                     <br>
-                                    <span class="text-alert">Obs!</span> Et sammendrag med praktisk informasjon (ikke intervjuspørsmål eller evaluering)
+                                    <span class="text-alert">Obs!</span> Ved å trykke på 'Lagre og send kvittering' vil et sammendrag med praktisk informasjon (ikke
+                                    intervjuspørsmål eller evaluering)
                                     fra dette intervjuet vil bli sendt på e-post til {{ u.firstName }}.
+                                </div>
+                            </div>
+                        {% else %}
+                            <button type="submit" class="button tiny">Oppdater</button>
+                            {{ form_widget(form.save, {'attr': {'class': 'button tiny hide'}}) }}
+                            {{ form_widget(form.saveAndSend, {'attr': {'class': 'button tiny success hide'}}) }}
+                            <div class="row">
+                                <div class="medium-6 columns">
+                                    <br>
+                                    <span class="text-alert">Obs!</span> Kvittering vil <b>ikke</b> bli sendt.
                                 </div>
                             </div>
                         {% endif %}

@@ -12,7 +12,7 @@
 
     <script>
 
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             // Bind delete schema functionality to each delete button
             $('.delete').deleteablerow('interview_schema_delete', {
@@ -52,7 +52,7 @@
                 {% for schema in schemas %}
                     <tr>
                         <td>{{ schema.name }}</td>
-                        <td><a href="{{ path('interview_schema_edit', {'id': schema.id }) }}" class="button right tiny" >
+                        <td><a href="{{ path('interview_schema_edit', {'id': schema.id }) }}" class="button right tiny">
                                 <i class="fa fa-pencil-square-o"></i> Rediger</a></td>
                         {# Delete button disabled because you can't delete schemas which have been used in interviews #}
                         {# <td><a href="#" id="{{ schema.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td> #}

@@ -4,7 +4,6 @@ namespace AppBundle\Tests\Entity;
 
 use AppBundle\Entity\School;
 use AppBundle\Entity\Department;
-use AppBundle\Entity\Subforum;
 
 class SchoolEntityUnitTest extends \PHPUnit_Framework_TestCase
 {
@@ -120,63 +119,5 @@ class SchoolEntityUnitTest extends \PHPUnit_Framework_TestCase
 
         // Assert the result
         $this->assertEquals('12312312', $school->getPhone());
-    }
-
-    // Check whether the addSubforum function is working correctly
-    public function testAddSubforum()
-    {
-
-        // new entity
-        $school = new School();
-
-        // dummy entity
-        $subforum1 = new Subforum();
-        $subforum1->setName('NTNU');
-
-        // Use the addSubforum method
-        $school->addSubforum($subforum1);
-
-        // Subforums are stored in an array
-        $subforums = $school->getSubforums();
-
-        // Loop through the array and check for matches
-        foreach ($subforums as $subforum) {
-            if ($subforum1 == $subforum) {
-                // Assert the result
-                $this->assertEquals($subforum1, $subforum);
-            }
-        }
-    }
-
-    // Check whether the removeSubforum function is working correctly
-    public function testRemoveSubforum()
-    {
-
-        // new entity
-        $school = new School();
-
-        $subforum1 = new Subforum();
-        $subforum1->setName('Subforum1');
-        $subforum2 = new Subforum();
-        $subforum2->setName('Subforum2');
-        $subforum3 = new Subforum();
-        $subforum3->setName('Subforum3');
-
-        // Use the addSubforum method
-        $school->addSubforum($subforum1);
-        $school->addSubforum($subforum2);
-        $school->addSubforum($subforum3);
-
-        // Remove $subforum1
-        $school->removeSubforum($subforum1);
-
-        // Subforums are stored in an array
-        $subforums = $school->getSubforums();
-
-        // Loop through the array
-        foreach ($subforums as $subforum) {
-            // Assert the result
-            $this->assertNotEquals($subforum1, $subforum);
-        }
     }
 }

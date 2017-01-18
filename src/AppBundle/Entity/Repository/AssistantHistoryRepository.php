@@ -3,11 +3,43 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\AssistantHistory;
+use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
 class AssistantHistoryRepository extends EntityRepository
 {
+    /**
+     * @param User $user
+     *
+     * @return AssistantHistory[]
+     */
+    public function findByUser(User $user): array
+    {
+        return $this->createQueryBuilder('assistantHistory')
+            ->select('assistantHistory')
+            ->where('assistantHistory.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param Semester $semester
+     *
+     * @return AssistantHistory[]
+     */
+    public function findBySemester(Semester $semester): array
+    {
+        return $this->createQueryBuilder('assistantHistory')
+            ->select('assistantHistory')
+            ->where('assistantHistory.semester = :semester')
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findActiveAssistantHistoriesByUser($user)
     {
         $today = new \DateTime('now');
@@ -22,14 +54,19 @@ class AssistantHistoryRepository extends EntityRepository
 		AND semester.semesterStartDate < :today
 		AND semester.semesterEndDate > :today
 		')
-        ->setParameter('user', $user)
-        ->setParameter('today', $today)
-        ->getResult();
+            ->setParameter('user', $user)
+            ->setParameter('today', $today)
+            ->getResult();
 
         return $assistantHistories;
     }
 
-    public function findActiveAssistantHistoriesBySchool($school)
+    /**
+     * @param $school
+     *
+     * @return AssistantHistory[]
+     */
+    public function findActiveAssistantHistoriesBySchool($school): array
     {
         $today = new \DateTime('now');
         $assistantHistories = $this->getEntityManager()->createQuery('
@@ -63,8 +100,8 @@ class AssistantHistoryRepository extends EntityRepository
 		WHERE semester.semesterStartDate < :today
 		AND semester.semesterEndDate > :today
 		')
-        ->setParameter('today', $today)
-        ->getResult();
+            ->setParameter('today', $today)
+            ->getResult();
 
         return $assistantHistories;
     }
@@ -83,16 +120,16 @@ class AssistantHistoryRepository extends EntityRepository
 		AND (semester.semesterStartDate > :today
 		OR semester.semesterEndDate < :today)
 		')
-        ->setParameter('school', $school)
-        ->setParameter('today', $today)
-        ->getResult();
+            ->setParameter('school', $school)
+            ->setParameter('today', $today)
+            ->getResult();
 
         return $assistantHistories;
     }
 
     /**
-     * @param int      $department
-     * @param Semester $semester
+     * @param Department $department
+     * @param Semester   $semester
      *
      * @return AssistantHistory[]
      */

@@ -2,6 +2,8 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\SurveyAnswer;
+use AppBundle\Entity\SurveyQuestionAlternative;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -22,59 +24,42 @@ class SurveyAnswerType extends AbstractType
                 case 'list': // This creates a dropdown list if the type is list
                     $choices = $this->createChoices($surveyAnswer);
 
-                    $ansOptions = array(
+                    $form->add('answer', 'choice', array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'placeholder' => 'Velg',
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $choices,
-                    );
-                    if ($surveyAnswer->getSurveyQuestion()->getOptional() == true) {
-                        $ansOptions['required'] = false;
-                    }
-                    $form->add('answer', 'choice', $ansOptions);
+                        'required' => !$surveyAnswer->getSurveyQuestion()->getOptional(),
+                    ));
 
                     break;
                 case 'radio': // This creates a set of radio buttons if the type is radio
                     $choices = $this->createChoices($surveyAnswer);
-                    $ansOptions = array(
+                    $form->add('answer', 'choice', array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $choices,
                         'expanded' => true,
-                    );
-                    if ($surveyAnswer->getSurveyQuestion()->getOptional() == true) {
-                        $ansOptions['required'] = false;
-                    }
-                    $form->add('answer', 'choice', $ansOptions);
+                        'required' => !$surveyAnswer->getSurveyQuestion()->getOptional(),
+                    ));
                     break;
                 case 'check': // This creates a set of checkboxes if the type is check
                     $choices = $this->createChoices($surveyAnswer);
-
-                    $ansOptions = array(
+                    $form->add('answer', 'choice', array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $choices,
                         'expanded' => true,
                         'multiple' => true,
-                    );
-                    if ($surveyAnswer->getSurveyQuestion()->getOptional() == true) {
-                        $ansOptions['required'] = false;
-                    }
-
-                    $form->add('answer', 'choice', $ansOptions);
+                        'required' => !$surveyAnswer->getSurveyQuestion()->getOptional(),
+                    ));
                     break;
                 default: // This creates a textarea if the type is text (default)
-                    $type = 'text';
-
-                    $ansOptions = array(
+                    $form->add('answer', 'textarea', array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
-                    );
-                    if ($surveyAnswer->getSurveyQuestion()->getOptional() == true) {
-                        $ansOptions['required'] = false;
-                    }
-
-                    $form->add('answer', 'textarea', $ansOptions);
+                        'required' => !$surveyAnswer->getSurveyQuestion()->getOptional(),
+                    ));
             }
         });
 
@@ -141,15 +126,15 @@ class SurveyAnswerType extends AbstractType
      * Creates a key value array of alternatives from a Doctrine collection of QuestionAlternatives.
      * The key and the value are the same.
      *
-     * @param $surveyAnswer
+     * @param SurveyAnswer $surveyAnswer
      *
      * @return array
      */
-    public function createChoices($surveyAnswer)
+    public function createChoices(SurveyAnswer $surveyAnswer)
     {
         $alternatives = $surveyAnswer->getSurveyQuestion()->getAlternatives();
 
-        $values = array_map(function ($a) {
+        $values = array_map(function (SurveyQuestionAlternative $a) {
             return $a->getAlternative();
         }, $alternatives->getValues());
 

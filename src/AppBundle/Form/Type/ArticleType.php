@@ -25,7 +25,7 @@ class ArticleType extends AbstractType
             ->add('departments', 'entity', array(
                 'label' => 'Regioner',
                 'class' => 'AppBundle:Department',
-                'property' => 'short_name',
+                'property' => 'shortName',
                 'multiple' => true,
                 'expanded' => true,
             ))

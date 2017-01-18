@@ -6,13 +6,15 @@
             <h1>{{ department.shortName }} sine nyhetsbrev</h1>
         </div>
     </div>
-    {% if  is_granted('ROLE_SUPER_ADMIN')%}
-    <div class="row">
-        <div class="small-12 columns">
-            <a class="tiny button success" href="{{ path('newsletter_create') }}">Opprett nytt nyhetsbrev  <i class="fa fa-plus"></i></a>
+    {% if  is_granted('ROLE_SUPER_ADMIN') %}
+        <div class="row">
+            <div class="small-12 columns">
+                <a class="tiny button success" href="{{ path('newsletter_create') }}">
+                    Opprett nytt nyhetsbrev <i class="fa fa-plus"></i>
+                </a>
+            </div>
+            <br><br>
         </div>
-        <br><br>
-    </div>
     {% endif %}
     <div class="row">
         <div class="small-12 columns">
@@ -21,30 +23,44 @@
                     <th>Navn</th>
                     <th>Abonnenter</th>
                     <th colspan="3"></th>
-                    {% if  is_granted('ROLE_SUPER_ADMIN')%}
-                    <th>Vis på påmeldingsside</th>
+                    {% if  is_granted('ROLE_SUPER_ADMIN') %}
+                        <th>Vis på påmeldingsside</th>
                     {% endif %}
                 </tr>
                 {% for newsletter in newsletters %}
                     <tr>
-                        <td><a href="{{ path('newsletter_show_subscribers', {id: newsletter.id}) }}">{{ newsletter.name }}</a></td>
-                        <td><a href="{{ path('newsletter_show_subscribers', {id: newsletter.id}) }}">{{ newsletter.subscribers|length }}</a></td>
                         <td>
-                        {% if  is_granted('ROLE_SUPER_ADMIN')%}
-                            <a class="tiny button" href="{{ path('newsletter_send_letter', {'id': newsletter.id}) }}">Lag brev</a>
-                        {% endif %}
+                            <a href="{{ path('newsletter_show_subscribers', {id: newsletter.id}) }}">{{ newsletter.name }}</a>
                         </td>
-                        <td><a class="tiny button" href="{{ path('newsletter_show_letters', {'id':newsletter.id}) }}">Sendte brev</a></td>
-                        <td><a href="{{ path('newsletter_show_subscribe', { 'id': newsletter.id }) }}" class="button tiny">Påmeldingsside</a></td>
-                        {% if  is_granted('ROLE_SUPER_ADMIN')%}
+                        <td>
+                            <a href="{{ path('newsletter_show_subscribers', {id: newsletter.id}) }}">{{ newsletter.subscribers|length }}</a>
+                        </td>
+                        <td>
+                            {% if  is_granted('ROLE_SUPER_ADMIN') %}
+                                <a class="tiny button"
+                                   href="{{ path('newsletter_send_letter', {'id': newsletter.id}) }}">
+                                    Lag brev
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a class="tiny button" href="{{ path('newsletter_show_letters', {'id':newsletter.id}) }}">
+                                Sendte brev
+                            </a>
+                        </td>
+                        <td><a href="{{ path('newsletter_show_subscribe', { 'id': newsletter.id }) }}"
+                               class="button tiny">Påmeldingsside</a>
+                        </td>
+                        {% if  is_granted('ROLE_SUPER_ADMIN') %}
                             <td>
-                            <form method="POST" action="{{ path('newsletter_toggle_visible', {'id' : newsletter.id}) }}">
-                                <button type="submit" class="tiny button {{ newsletter.showOnAdmissionPage ? 'success' : '' }} ">{{ newsletter.showOnAdmissionPage ? 'Aktiv' : 'Aktiver' }}</button>
-                            </form>
+                                <form method="POST"
+                                      action="{{ path('newsletter_toggle_visible', {'id' : newsletter.id}) }}">
+                                    <button type="submit"
+                                            class="tiny button {{ newsletter.showOnAdmissionPage ? 'success' : '' }} ">{{ newsletter.showOnAdmissionPage ? 'Aktiv' : 'Aktiver' }}</button>
+                                </form>
                             </td>
                         {% endif %}
-
-
+                    </tr>
                 {% endfor %}
             </table>
         </div>

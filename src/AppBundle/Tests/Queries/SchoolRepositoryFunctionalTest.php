@@ -19,8 +19,7 @@ class SchoolRepositoryFunctionalTest extends KernelTestCase
         self::bootKernel();
         $this->em = static::$kernel->getContainer()
             ->get('doctrine')
-            ->getManager()
-        ;
+            ->getManager();
     }
 
     /* Removed this method

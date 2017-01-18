@@ -3,10 +3,10 @@
  * Use on a collection of buttons, each with an id equal to an entity id.
  * Requires a route which deletes the entity with the specified id and returns a json response.
  */
-(function ( $ ) {
+(function ($) {
 
     // Route is required, options are optional
-    $.fn.deleteablerow = function( route, options ) {
+    $.fn.deleteablerow = function (route, options) {
 
         // Default settings
         var settings = $.extend({
@@ -26,15 +26,15 @@
         var button = null;
 
         // Adds callbacks to the custom modal buttons
-        if(customModal) {
-            settings.confirmation.acceptButton.on("click", function(e) {
+        if (customModal) {
+            settings.confirmation.acceptButton.on("click", function (e) {
                 e.preventDefault();
                 settings.confirmation.modal.foundation('reveal', 'close');
                 requestDelete(button);
                 button = null;
             });
-            if(settings.confirmation.cancelButton) {
-                settings.confirmation.cancelButton.on("click", function(e) {
+            if (settings.confirmation.cancelButton) {
+                settings.confirmation.cancelButton.on("click", function (e) {
                     e.preventDefault();
                     settings.confirmation.modal.foundation('reveal', 'close');
                 });
@@ -42,36 +42,36 @@
         }
 
         // Adds a callback to the selected buttons, each holding an id = an entity id
-        this.on("click", function(e) {
+        this.on("click", function (e) {
             e.preventDefault();
             // Open custom modal dialog
-            if(customModal) {
+            if (customModal) {
                 button = this;
                 settings.confirmation.modal.foundation('reveal', 'open');
-            // Open default javascript confirmation dialog
-            } else if(!settings.confirmation.disable) {
+                // Open default javascript confirmation dialog
+            } else if (!settings.confirmation.disable) {
                 if (confirm(settings.confirmation.confirmMessage)) {
                     requestDelete(this);
                 }
-            // Skip dialog
+                // Skip dialog
             } else {
                 requestDelete(this);
             }
         });
 
         // Takes a button with an id = an entity id and performs an ajax request to the specified route to delete the entity
-        function requestDelete( button ) {
+        function requestDelete(button) {
             var row = $(button).closest('tr');
             var entityId = parseInt(button.id);
 
             $.ajax({
-                type: 'GET',
-                url: Routing.generate(route, { id: entityId }),
+                type: 'POST',
+                url: Routing.generate(route, {id: entityId}),
                 cache: false,
-                success: function(response) {
+                success: function (response) {
                     // Remove the row from the table if the entity was successfully deleted
                     if (response.success) {
-                        row.fadeOut('slow', function() {
+                        row.fadeOut('slow', function () {
                             $(this).remove();
                         });
                     } else {
@@ -85,4 +85,4 @@
         return this;
     };
 
-}( jQuery ));
+}(jQuery));

@@ -40,16 +40,16 @@ class Semester
     protected $department;
 
     /**
-     * @ORM\Column(type="datetime", length=150)
+     * @ORM\Column(name="admission_start_date", type="datetime", length=150)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
-    protected $admission_start_date;
+    protected $admissionStartDate;
 
     /**
-     * @ORM\Column(type="datetime", length=150)
+     * @ORM\Column(name="admission_end_date", type="datetime", length=150)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
-    protected $admission_end_date;
+    protected $admissionEndDate;
 
     /**
      * @ORM\Column(type="datetime", length=150)
@@ -72,7 +72,7 @@ class Semester
     }
 
     /**
-     * Set admission_start_date.
+     * Set admissionStartDate.
      *
      * @param \DateTime $admissionStartDate
      *
@@ -80,37 +80,23 @@ class Semester
      */
     public function setAdmissionStartDate($admissionStartDate)
     {
-        $this->admission_start_date = $admissionStartDate;
+        $this->admissionStartDate = $admissionStartDate;
 
         return $this;
     }
 
     /**
-     * Set admission_start_date.
-     *
-     * @param \DateTime $admissionStartDate
-     *
-     * @return Semester
-     */
-    public function setAdmission_Start_Date($admissionStartDate)
-    {
-        $this->admission_start_date = $admissionStartDate;
-
-        return $this;
-    }
-
-    /**
-     * Get admission_start_date.
+     * Get admissionStartDate.
      *
      * @return \DateTime
      */
     public function getAdmissionStartDate()
     {
-        return $this->admission_start_date;
+        return $this->admissionStartDate;
     }
 
     /**
-     * Set admission_end_date.
+     * Set admissionEndDate.
      *
      * @param \DateTime $admissionEndDate
      *
@@ -118,33 +104,19 @@ class Semester
      */
     public function setAdmissionEndDate($admissionEndDate)
     {
-        $this->admission_end_date = $admissionEndDate;
+        $this->admissionEndDate = $admissionEndDate;
 
         return $this;
     }
 
     /**
-     * Set admission_end_date.
-     *
-     * @param \DateTime $admissionEndDate
-     *
-     * @return Semester
-     */
-    public function setAdmission_End_Date($admissionEndDate)
-    {
-        $this->admission_end_date = $admissionEndDate;
-
-        return $this;
-    }
-
-    /**
-     * Get admission_end_date.
+     * Get admissionEndDate.
      *
      * @return \DateTime
      */
     public function getAdmissionEndDate()
     {
-        return $this->admission_end_date;
+        return $this->admissionEndDate;
     }
 
     /**

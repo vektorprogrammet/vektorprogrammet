@@ -1,17 +1,112 @@
 services:
-#    app.example:
-#        class: AppBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+  app.logger:
+    class: AppBundle\Service\LogService
+    arguments: ['@logger', '@app.slack_messenger']
 
-#  app.form.type.article:
-#   class: AppBundle\Form\Type\ArticleType
-#    arguments:
-#            - { name: form.type, alias: article }
+  app.email_sender:
+    class: AppBundle\Service\EmailSender
+    arguments: ['@mailer', '@twig', '@app.logger', '%default_from_email%']
+
+  app.slack_messenger:
+    class: AppBundle\Service\SlackMessenger
+    arguments: ['@nexy_slack.client', '%slack.notification_channel%', '%slack.log_channel%', '%slack.disable_delivery%', '@logger']
+
   app.user.registration:
-    class: AppBundle\UserRegistration\UserRegistration
-    arguments: ['@twig']
+    class: AppBundle\Service\UserRegistration
+    arguments: ['@twig', '@doctrine.orm.default_entity_manager', '@mailer', '@logger']
+
+  app.roles:
+    class: AppBundle\Service\RoleManager
+    arguments: ['@security.authorization_checker']
+
+  app.interview.manager:
+    class: AppBundle\Service\InterviewManager
+    arguments: ['@security.token_storage', '@security.authorization_checker', '@mailer', '@twig']
+
+  app.newsletter.manager:
+      class: AppBundle\Service\NewsletterManager
+      arguments: ['@swiftmailer.mailer.newsletter', '@twig']
+
+  app.password_manager:
+      class: AppBundle\Service\PasswordManager
+      arguments: ['@doctrine.orm.default_entity_manager', '@mailer', '@twig', '@app.logger']
+
+  app.interview_notification_manager:
+      class: AppBundle\Service\InterviewNotificationManager
+      arguments: ['@app.slack_messenger', '@application.data', '@router']
+
+  app.assistants.data:
+    class: AppBundle\Service\AssistantsData
+    arguments: ['@doctrine.orm.default_entity_manager']
+
+  app.sbs_data:
+    class: AppBundle\Service\SbsData
+    parent: application.data
+
   app.safe_html_extension:
     class: AppBundle\Twig\Extension\SafeHtmlExtension
     public: false
     tags:
       - { name: twig.extension }
+
+  app.department_extension:
+    class: AppBundle\Twig\Extension\DepartmentExtension
+    arguments: ['@doctrine.orm.default_entity_manager']
+    tags:
+      - { name: twig.extension }
+
+  app.semester_extension:
+    class: AppBundle\Twig\Extension\SemesterExtension
+    arguments: ['@doctrine.orm.default_entity_manager']
+    tags:
+      - { name: twig.extension }
+
+  app.exception_subscriber:
+    class: AppBundle\EventSubscriber\ExceptionSubscriber
+    arguments: ['@app.logger', '@security.token_storage', '@router']
+    tags:
+      - { name: kernel.event_subscriber }
+
+  app.application_subscriber:
+    class: AppBundle\EventSubscriber\ApplicationSubscriber
+    arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data', '@router']
+    tags:
+      - { name: kernel.event_subscriber }
+
+  app.assistant_history_subscriber:
+    class: AppBundle\EventSubscriber\AssistantHistorySubscriber
+    arguments: ['@session', '@logger', '@doctrine.orm.default_entity_manager', '@app.user.registration']
+    tags:
+      - { name: kernel.event_subscriber }
+
+  app.interview_subscriber:
+      class: AppBundle\EventSubscriber\InterviewSubscriber
+      arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.sbs_data', '@app.interview_notification_manager']
+      tags:
+        - { name: kernel.event_subscriber }
+
+  app.support_ticket_subscriber:
+      class: AppBundle\EventSubscriber\SupportTicketSubscriber
+      arguments: ['@app.email_sender', '@app.slack_messenger', '@session', '@app.logger']
+      tags:
+        - { name: kernel.event_subscriber }
+
+  security.login:
+    class: AppBundle\Service\LoginManager
+    arguments: ['@twig', '@security.authentication_utils', '@router']
+
+  application.data:
+    class: AppBundle\Service\ApplicationData
+    arguments: ['@doctrine.orm.entity_manager', '@security.token_storage']
+
+  app.application_admission:
+    class: AppBundle\Service\ApplicationAdmission
+    arguments: ['@doctrine.orm.default_entity_manager', '@twig', '@security.login']
+
+  assistant_history.data:
+      class: AppBundle\Service\AssistantHistoryData
+      arguments: ['@doctrine.orm.default_entity_manager', '@security.token_storage']
+
+  survey.manager:
+        class: AppBundle\Service\SurveyManager
+        arguments: ['@doctrine.orm.default_entity_manager', '@form.factory']

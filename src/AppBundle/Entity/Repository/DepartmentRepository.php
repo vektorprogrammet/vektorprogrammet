@@ -12,7 +12,7 @@ class DepartmentRepository extends EntityRepository
 			SELECT d
 			FROM AppBundle:Department d
 		')
-        ->getResult();
+            ->getResult();
 
         return $departments;
     }
@@ -24,21 +24,21 @@ class DepartmentRepository extends EntityRepository
 			FROM AppBundle:Department d
 			WHERE d.id = :id
 		')
-        ->setParameter('id', $id)
-        ->getResult();
+            ->setParameter('id', $id)
+            ->getResult();
 
         return $departments;
     }
 
-    public function findDepartmentByShortName($short_name)
+    public function findDepartmentByShortName($shortName)
     {
         return $this->getEntityManager()->createQuery('
             SELECT d
             FROM AppBundle:Department d
-            WHERE lower(d.short_name) = lower(:short_name)
+            WHERE lower(d.shortName) = lower(:shortName)
         ')
-        ->setParameter('short_name', $short_name)
-        ->getOneOrNullResult();
+            ->setParameter('shortName', $shortName)
+            ->getOneOrNullResult();
     }
 
     public function findAllDepartment()

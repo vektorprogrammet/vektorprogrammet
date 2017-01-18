@@ -129,6 +129,14 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->id;
     }
 
+    /**
+     * @return Department
+     */
+    public function getDepartment(): Department
+    {
+        return $this->getFieldOfStudy()->getDepartment();
+    }
+
     public function getGender()
     {
         return $this->gender;
@@ -157,7 +165,7 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->email;
     }
 
-    public function getIsActive()
+    public function isActive()
     {
         return $this->isActive;
     }
@@ -185,7 +193,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->email = $email;
     }
 
-    public function setIsActive($isActive)
+    public function setActive($isActive)
     {
         $this->isActive = $isActive;
     }
@@ -394,6 +402,11 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->assistantHistories;
     }
 
+    public function hasBeenAssistant(): bool
+    {
+        return count($this->assistantHistories) > 0;
+    }
+
     /**
      * @param array $assistantHistories
      */
@@ -453,10 +466,7 @@ class User implements AdvancedUserInterface, \Serializable
     // toString method used to display the user in twig files
     public function __toString()
     {
-        $firstName = $this->getFirstName();
-        $lastName = $this->getLastName();
-
-        return "$firstName $lastName";
+        return "{$this->getFirstName()} {$this->getLastName()}";
     }
 
     /*
@@ -485,8 +495,8 @@ class User implements AdvancedUserInterface, \Serializable
             $this->id,
             $this->user_name,
             $this->password,
-                // see section on salt below
-                // $this->salt,
+            // see section on salt below
+            // $this->salt,
         ));
     }
 
@@ -496,12 +506,12 @@ class User implements AdvancedUserInterface, \Serializable
     public function unserialize($serialized)
     {
         list(
-                $this->id,
-                $this->user_name,
-                $this->password,
-                // see section on salt below
-                // $this->salt
-                ) = unserialize($serialized);
+            $this->id,
+            $this->user_name,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+            ) = unserialize($serialized);
     }
 
     public function isAccountNonExpired()

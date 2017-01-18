@@ -3,8 +3,8 @@
 {% block title %}Nyheter{% endblock %}
 
 {% block javascripts %}
-    <script src="{{asset('vendor/ckeditor/ckeditor.js')}}"></script>
-    <script src="{{asset('vendor/ckeditor/adapters/jquery.js')}}"></script>
+    <script src="{{ asset('vendor/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('vendor/ckeditor/adapters/jquery.js') }}"></script>
     {% include "statictext/js_loader_for_static_texts.html.twig" %}
 {% endblock %}
 
@@ -13,38 +13,40 @@
 
     <div class="row">
         <div class="small-12 medium-9 large-9 columns">
-                {% if pagination|first %}
-                    <div class="row">
-                        <div class="article-box small-12 medium-12 large-12 columns">
-                            <a href="{{ path('article_show', { 'id': pagination|first.id }) }}">
-                                <img src="{{ asset(pagination|first.imageLarge) }}" />
-                            </a>
-                            <h4><a href="{{ path('article_show', { 'id': pagination|first.id }) }}">
-                                    {{ pagination|first.title|safe_html }}</a></h4>
-                        </div>
+            {% if pagination|first %}
+                <div class="row">
+                    <div class="article-box small-12 medium-12 large-12 columns">
+                        <a href="{{ path('article_show', { 'id': pagination|first.id }) }}">
+                            <img src="{{ asset(pagination|first.imageLarge) }}"/>
+                        </a>
+                        <h4><a href="{{ path('article_show', { 'id': pagination|first.id }) }}">
+                                {{ pagination|first.title|safe_html }}</a></h4>
                     </div>
-                    {% set columns = ['medium-7 large-7', 'medium-5 large-5'] %}
-                    {% for row in pagination[1:]|batch(2) %}
-                        <div class="row">
-                            {% for column in row %}
-                                {% set images = [column.imageMedium, column.imageSmall] %}
-                                <div class="article-box small-12 {{ cycle(columns, loop.parent.loop.index0+loop.index0) }} columns">
-                                    <a href="{{ path('article_show', { 'id': column.id }) }}">
-                                        <img data-interchange="[{{ asset(column.imageMedium) }}, (default)], [{{ asset(cycle(images, loop.parent.loop.index0+loop.index0)) }}, (medium)]">
-                                        <noscript><img src="{{ asset(cycle(images, loop.parent.loop.index0+loop.index0)) }}"></noscript>
-                                    </a>
-                                    <h5><a href="{{ path('article_show', { 'id': column.id }) }}">
-                                            {{ column.title|safe_html }}</a></h5>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <p>Ingen artikler tilgjengelig</p>
-                {% endif %}
-                <div class="row" style="text-align: center">
-                    {{ knp_pagination_render(pagination) }}
                 </div>
+                {% set columns = ['medium-7 large-7', 'medium-5 large-5'] %}
+                {% for row in pagination[1:]|batch(2) %}
+                    <div class="row">
+                        {% for column in row %}
+                            {% set images = [column.imageMedium, column.imageSmall] %}
+                            <div class="article-box small-12 {{ cycle(columns, loop.parent.loop.index0+loop.index0) }} columns">
+                                <a href="{{ path('article_show', { 'id': column.id }) }}">
+                                    <img data-interchange="[{{ asset(column.imageMedium) }}, (default)], [{{ asset(cycle(images, loop.parent.loop.index0+loop.index0)) }}, (medium)]">
+                                    <noscript><img
+                                                src="{{ asset(cycle(images, loop.parent.loop.index0+loop.index0)) }}">
+                                    </noscript>
+                                </a>
+                                <h5><a href="{{ path('article_show', { 'id': column.id }) }}">
+                                        {{ column.title|safe_html }}</a></h5>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Ingen artikler tilgjengelig</p>
+            {% endif %}
+            <div class="row" style="text-align: center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
         </div>
 
         <div class="small-12 medium-3 large-3 columns">

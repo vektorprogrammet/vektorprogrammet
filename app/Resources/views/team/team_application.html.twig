@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
-{%  block body %}
+{% block body %}
+    <div class="row">
+        <div class="small-12 columns">
+            {% include 'common/flash.html.twig' %}
+        </div>
+    </div>
     <div class="row">
         <div class="small-12 colums">
             <h1>Søk {{ team.name }}</h1>
@@ -8,12 +13,12 @@
         {{ form_start(form) }}
         <div class="row">
             <div class="small-8 columns">
-                {{ form_row(form.name)}}
-                {{ form_row(form.email)}}
-                {{ form_row(form.yearOfStudy)}}
-                {{ form_row(form.fieldOfStudy)}}
-                {{ form_row(form.motivationText)}}
-                {{ form_row(form.biography)}}
+                {{ form_row(form.name) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.yearOfStudy) }}
+                {{ form_row(form.fieldOfStudy) }}
+                {{ form_row(form.motivationText) }}
+                {{ form_row(form.biography) }}
                 <button>Send</button>
                 <br>
                 <br>

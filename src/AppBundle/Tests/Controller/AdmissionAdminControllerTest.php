@@ -127,7 +127,7 @@ class AdmissionAdminControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
 
         // Assert that we only have the buttons for team
-        $this->assertEquals(1, $crawler->filter('a.button:contains("Ny søker")')->count());
+        $this->assertEquals(0, $crawler->filter('a.button:contains("Ny søker")')->count());
         $this->assertEquals(0, $crawler->filter('td>a.button:contains("Slett")')->count());
         $this->assertEquals(0, $crawler->filter('td>a.button:contains("Fordel")')->count());
 
@@ -273,9 +273,10 @@ class AdmissionAdminControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/kontrollpanel/opptakadmin/avdeling/1');
+        $client->request('GET', '/kontrollpanel/opptakadmin/avdeling/1');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        // Assert that the page response status code is 403 Access denied
+        $client->request('GET', '/kontrollpanel/opptakadmin/avdeling/2');
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 

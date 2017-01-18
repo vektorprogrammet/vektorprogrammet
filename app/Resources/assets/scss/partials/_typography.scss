@@ -1,17 +1,20 @@
 @import "../modules/colors";
 
-.text-alert{
+.text-alert {
   color: $alert-color;
 }
-.text-primary{
+
+.text-primary {
   color: $primary-color;
 }
+
 .text-warning{
   color: $warning-color;
 }
 .text-success{
   color: $success-color;
 }
-.text-dark-grey{
+
+.text-dark-grey {
   color: $admin-grey;
 }

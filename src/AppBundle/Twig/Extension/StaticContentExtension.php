@@ -31,9 +31,9 @@ class StaticContentExtension extends \Twig_Extension
     public function getContent($html_element_id)
     {
         $content = $this->doctrine
-                    ->getEntityManager()
-                    ->getRepository('AppBundle:StaticContent')
-                    ->findOneByHtmlId($html_element_id);
+            ->getEntityManager()
+            ->getRepository('AppBundle:StaticContent')
+            ->findOneByHtmlId($html_element_id);
         if (!$content) {
             //Makes new record for requested htmlID
             $newStaticContent = new StaticContent();

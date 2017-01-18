@@ -5,6 +5,7 @@ namespace AppBundle\Entity\Repository;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -15,6 +16,26 @@ use Doctrine\ORM\EntityRepository;
  */
 class ApplicationRepository extends EntityRepository
 {
+    /**
+     * @param User     $user
+     * @param Semester $semester
+     *
+     * @return Application|null
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findByUserInSemester(User $user, Semester $semester)
+    {
+        return $this->createQueryBuilder('application')
+            ->select('application')
+            ->where('application.user = :user')
+            ->andWhere('application.semester = :semester')
+            ->setParameter('user', $user)
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     /**
      * Finds all applications that have a conducted interview.
      *
@@ -30,17 +51,17 @@ class ApplicationRepository extends EntityRepository
             ->join('a.semester', 'sem')
             ->join('sem.department', 'd')
             ->join('a.interview', 'i')
-            ->where('i.interviewScore IS NOT NULL')
+            ->where('i.interviewed = true')
             ->andWhere('a.previousParticipation = 0');
 
         if (null !== $department) {
             $qb->andWhere('d = :department')
-                   ->setParameter('department', $department);
+                ->setParameter('department', $department);
         }
 
         if (null !== $semester) {
             $qb->andWhere('sem = :semester')
-                    ->setParameter('semester', $semester);
+                ->setParameter('semester', $semester);
         }
 
         return $qb->getQuery()->getResult();
@@ -94,12 +115,12 @@ class ApplicationRepository extends EntityRepository
 
         if (null !== $department) {
             $qb->andWhere('d = :department')
-                     ->setParameter('department', $department);
+                ->setParameter('department', $department);
         }
 
         if (null !== $semester) {
             $qb->andWhere('sem = :semester')
-                    ->setParameter('semester', $semester);
+                ->setParameter('semester', $semester);
         }
 
         return $qb->getQuery()->getResult();
@@ -145,12 +166,12 @@ class ApplicationRepository extends EntityRepository
 
         if (null !== $department) {
             $qb->andWhere('d = :department')
-                    ->setParameter('department', $department);
+                ->setParameter('department', $department);
         }
 
         if (null !== $semester) {
             $qb->andWhere('sem = :semester')
-                    ->setParameter('semester', $semester);
+                ->setParameter('semester', $semester);
         }
 
         return $qb->getQuery()->getResult();
@@ -235,7 +256,7 @@ class ApplicationRepository extends EntityRepository
      *
      * @return int
      */
-    public function NumOfApplications(Semester $semester)
+    public function numOfApplications(Semester $semester)
     {
         return $this->createQueryBuilder('Application')
             ->select('count(Application.id)')
@@ -245,7 +266,7 @@ class ApplicationRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function NumOfSemesters()
+    public function numOfSemesters()
     {
         return $this->createQueryBuilder('ApplicationStatistic')
             ->select('count(ApplicationStatistic.semester)')
@@ -254,7 +275,7 @@ class ApplicationRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function NumOfSemester($semester)
+    public function numOfSemester($semester)
     {
         return $this->createQueryBuilder('ApplicationStatistic')
             ->select('count(ApplicationStatistic.semester)')
@@ -299,7 +320,7 @@ class ApplicationRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function NumOfAccepted($accepted)
+    public function numOfAccepted($accepted)
     {
         return $this->createQueryBuilder('ApplicationStatistic')
             ->select('count(ApplicationStatistic.accepted)')
@@ -309,7 +330,7 @@ class ApplicationRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function NumOfYearOfStudy($yearOfStudy)
+    public function numOfYearOfStudy($yearOfStudy)
     {
         return $this->createQueryBuilder('ApplicationStatistic')
             ->select('count(ApplicationStatistic.yearOfStudy)')
@@ -319,7 +340,7 @@ class ApplicationRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function NumOfFieldOfStudy($fieldOfStudy)
+    public function numOfFieldOfStudy($fieldOfStudy)
     {
         return $this->createQueryBuilder('ApplicationStatistic')
             ->select('count(ApplicationStatistic.fieldOfStudy)')
@@ -329,7 +350,7 @@ class ApplicationRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function NumOfDepartment($department)
+    public function numOfDepartment($department)
     {
         $numUsers = $this->getEntityManager()->createQuery('
 

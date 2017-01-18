@@ -17,7 +17,7 @@ class FieldOfStudyType extends AbstractType
                     'placeholder' => 'Eks: Datateknikk',
                 ),
             ))
-            ->add('short_name', 'text', array(
+            ->add('shortName', 'text', array(
                 'label' => 'Forkortelse',
                 'attr' => array(
                     'placeholder' => 'Eks: MTDT',

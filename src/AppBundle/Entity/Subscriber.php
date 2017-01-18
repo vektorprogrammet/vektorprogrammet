@@ -49,11 +49,14 @@ class Subscriber
 
     /**
      * Constructor.
+     *
+     * @param Newsletter $newsletter
      */
-    public function __construct()
+    public function __construct(Newsletter $newsletter = null)
     {
         $this->timestamp = new \DateTime();
         $this->unsubscribeCode = bin2hex(openssl_random_pseudo_bytes(12));
+        $this->setNewsletter($newsletter);
     }
 
     /**
@@ -129,6 +132,7 @@ class Subscriber
     {
         $this->newsletter = $newsletter;
     }
+
     /**
      * @param mixed
      */
@@ -136,6 +140,7 @@ class Subscriber
     {
         return $this->unsubscribeCode;
     }
+
     /**
      * @param mixed $unsubscribeCode
      */

@@ -2,24 +2,22 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Role\Roles;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateUserType extends AbstractType
 {
-    private $departmentId;
-    private $admin;
-
-    public function __construct($departmentId, $admin)
-    {
-        $this->departmentId = $departmentId;
-        $this->admin = $admin;
-    }
+    private $department;
+    private $userRole;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->department = $options['department'];
+        $this->userRole = $options['user_role'];
+
         $builder
             ->add('firstName', 'text', array(
                 'label' => 'Fornavn',
@@ -27,17 +25,17 @@ class CreateUserType extends AbstractType
             ->add('lastName', 'text', array(
                 'label' => 'Etternavn',
             ))
-            ->add('gender', 'choice',  array(
+            ->add('gender', 'choice', array(
                 'label' => 'Kjønn',
                 'choices' => array(
                     0 => 'Mann',
                     1 => 'Dame',
                 ),
-                ))
-            ->add('phone', 'text',  array(
+            ))
+            ->add('phone', 'text', array(
                 'label' => 'Telefon',
             ))
-            ->add('email', 'text',  array(
+            ->add('email', 'text', array(
                 'label' => 'E-post',
             ))
             ->add('fieldOfStudy', 'entity', array(
@@ -45,38 +43,40 @@ class CreateUserType extends AbstractType
                 'class' => 'AppBundle:FieldOfStudy',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('f')
-                      ->orderBy('f.short_name', 'ASC')
-                      ->where('f.department = ?1')
-                      // Set the parameter to the department ID that the current user belongs to.
-                      ->setParameter(1, $this->departmentId);
+                        ->orderBy('f.shortName', 'ASC')
+                        ->where('f.department = ?1')
+                        // Set the parameter to the department ID that the current user belongs to.
+                        ->setParameter(1, $this->department);
                 },
-                    ));
+            ));
 
-        if ($this->admin == 'superadmin') {
-            $builder->add('role', 'choice',  array(
+        if ($this->userRole === Roles::TEAM_LEADER) {
+            $builder->add('role', 'choice', array(
                 'label' => 'Rolle',
                 'mapped' => false,
                 'choices' => array(
-                    0 => 'Assistent',
-                    1 => 'Team',
-                    2 => 'Admin',
+                    Roles::ALIAS_ASSISTANT => 'Assistent',
+                    Roles::ALIAS_TEAM_MEMBER => 'Teammedlem',
+                    Roles::ALIAS_TEAM_LEADER => 'Teamleder',
                 ),
-                ));
-        } elseif ($this->admin == 'admin') {
-            $builder->add('role', 'choice',  array(
+            ));
+        } elseif ($this->userRole === Roles::TEAM_MEMBER) {
+            $builder->add('role', 'choice', array(
                 'label' => 'Rolle',
                 'mapped' => false,
                 'choices' => array(
-                    0 => 'Assistent',
+                    Roles::ALIAS_ASSISTANT => 'Assistent',
                 ),
-                ));
+            ));
         }
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
+            'department' => 'AppBundle\Entity\Department',
+            'user_role' => Roles::TEAM_MEMBER,
         ));
     }
 

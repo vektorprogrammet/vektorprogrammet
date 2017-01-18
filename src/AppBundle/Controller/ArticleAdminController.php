@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Entity\Article;
 use AppBundle\Form\Type\ArticleType;
 use AppBundle\Form\Type\CropImageType;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * ArticleAdminController is the controller responsible for the administrative article actions,
@@ -55,7 +56,7 @@ class ArticleAdminController extends Controller
     {
         $article = new Article();
         $form = $this->createForm(new ArticleType(), $article);
-        $cropImageForm = $this->createForm(new cropImageType());
+        $cropImageForm = $this->createForm(new CropImageType());
 
         $form->handleRequest($request);
 
@@ -74,6 +75,10 @@ class ArticleAdminController extends Controller
                     'article-notice',
                     'Artikkelen har blitt publisert.'
                 );
+
+                $this->get('app.logger')->info("A new article \"{$article->getTitle()}\" by {$article->getAuthor()} has been published");
+                $this->get('app.slack_messenger')->notify("{$article->getAuthor()} publiserte en ny artikkel, \"{$article->getTitle()}\": "
+                    .$this->generateUrl('article_show', array('id' => $article->getId()), RouterInterface::ABSOLUTE_URL));
 
                 return $this->redirect($this->generateUrl('article_show', array('id' => $article->getId())));
             }
@@ -101,7 +106,7 @@ class ArticleAdminController extends Controller
     public function editAction(Request $request, Article $article)
     {
         $form = $this->createForm(new ArticleType(), $article);
-        $cropImageForm = $this->createForm(new cropImageType());
+        $cropImageForm = $this->createForm(new CropImageType());
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -116,6 +121,8 @@ class ArticleAdminController extends Controller
                     'article-notice',
                     'Endringene har blitt publisert.'
                 );
+
+                $this->get('app.logger')->info("The article \"{$article->getTitle()}\" was edited by {$this->getUser()}");
 
                 return $this->redirect($this->generateUrl('article_show', array('id' => $article->getId())));
             }
@@ -202,7 +209,7 @@ class ArticleAdminController extends Controller
      */
     public function cropImageAction(Request $request)
     {
-        $form = $this->createForm(new cropImageType());
+        $form = $this->createForm(new CropImageType());
 
         $form->handleRequest($request);
 
@@ -256,7 +263,7 @@ class ArticleAdminController extends Controller
      *
      * @return string
      */
-    public function crop($image, $cropData, $request, $location)
+    private function crop($image, $cropData, $request, $location)
     {
         // Check if the location folder exists, if not create it
         if (!file_exists($location)) {

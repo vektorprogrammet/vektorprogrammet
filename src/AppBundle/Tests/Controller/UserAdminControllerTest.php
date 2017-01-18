@@ -33,18 +33,18 @@ class UserAdminControllerTest extends WebTestCase
         $form['createUser[phone]'] = '22288222';
         $form['createUser[email]'] = 'fornavn2@mail.com';
         $form['createUser[fieldOfStudy]']->select(1);
-        $form['createUser[role]']->select(0);
+        $form['createUser[role]']->select('assistant');
 
         // submit the form
         $crawler = $client->submit($form);
 
         // Assert that the response is the correct redirect
-        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/brukeradmin'));
+        $this->assertTrue($client->getResponse()->isRedirection());
 
         // Follow the redirect
         $crawler = $client->followRedirect();
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testCreateUserSuperadmin()
@@ -70,7 +70,7 @@ class UserAdminControllerTest extends WebTestCase
         $form['createUser[phone]'] = '66688666';
         $form['createUser[email]'] = 'fornavn1@mail.com';
         $form['createUser[fieldOfStudy]']->select(3);
-        $form['createUser[role]']->select(0);
+        $form['createUser[role]']->select('team_leader');
 
         // submit the form
         $crawler = $client->submit($form);
@@ -81,7 +81,7 @@ class UserAdminControllerTest extends WebTestCase
         // Follow the redirect
         $crawler = $client->followRedirect();
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testShowUsersByDepartment()

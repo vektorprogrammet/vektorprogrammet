@@ -84,7 +84,7 @@ class InterviewControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/kontrollpanel/intervju/vis/5');
         $this->verifyInterview($crawler);
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
 
         // Team user who is assigned the interview
         $client = static::createClient(array(), array(
@@ -135,7 +135,7 @@ class InterviewControllerTest extends WebTestCase
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testShow()
@@ -232,7 +232,7 @@ class InterviewControllerTest extends WebTestCase
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testEditSchemas()
@@ -277,7 +277,7 @@ class InterviewControllerTest extends WebTestCase
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testShowSchemas()
@@ -394,7 +394,7 @@ class InterviewControllerTest extends WebTestCase
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     /*

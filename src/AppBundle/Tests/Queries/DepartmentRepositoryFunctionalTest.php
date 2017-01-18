@@ -19,8 +19,7 @@ class DepartmentRepositoryFunctionalTest extends KernelTestCase
         self::bootKernel();
         $this->em = static::$kernel->getContainer()
             ->get('doctrine')
-            ->getManager()
-        ;
+            ->getManager();
     }
 
     // A test to check whether the method returns an array of departments

@@ -50,7 +50,7 @@ class DepartmentController extends Controller
             }
 
             return $this->render('department_admin/create_department.html.twig', array(
-                 'form' => $form->createView(),
+                'form' => $form->createView(),
             ));
         } else {
             return $this->redirect($this->generateUrl('home'));
@@ -59,7 +59,7 @@ class DepartmentController extends Controller
 
     public function getAllDepartmentsForTopbarAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         // Find all departments
         $departments = $em->getRepository('AppBundle:Department')->findAll();
@@ -69,7 +69,7 @@ class DepartmentController extends Controller
         ));
     }
 
-    public function deleteDepartmentByIdAction(request $request)
+    public function deleteDepartmentByIdAction(Request $request)
     {
         $id = $request->get('id');
 
@@ -135,7 +135,7 @@ class DepartmentController extends Controller
 
             return $this->render('department_admin/create_department.html.twig', array(
                 'department' => $department,
-                 'form' => $form->createView(),
+                'form' => $form->createView(),
             ));
         } else {
             return $this->redirect($this->generateUrl('departmentadmin_show'));

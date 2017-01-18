@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SemesterController extends Controller
 {
-    public function updateSemesterAction(request $request)
+    public function updateSemesterAction(Request $request)
     {
         $id = $request->get('id');
 
@@ -35,33 +35,8 @@ class SemesterController extends Controller
             'semesterName' => $semester->getName(),
         ));
     }
-        // If it is an admin they can only edit semesters that are from their own department
-        /*
-        ************************************************************************************************************
-        ***** Enabe this if you want ROLE_ADMIN to be able to edit semesters from their own department  *****
-        ************************************************************************************************************
 
-        elseif ( ($this->get('security.context')->isGranted('ROLE_ADMIN')) && ($userDepartment == $semesterDepartment) ){
-
-            $form = $this->createForm(new CreateSemesterType(), $semester);
-
-            // Handle the form
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $em->persist($semester);
-                $em->flush();
-                return $this->redirect($this->generateUrl('semesteradmin_show'));
-            }
-
-            return $this->render('semester_admin/create_semester.html.twig', array(
-                 'form' => $form->createView(),
-            ));
-
-        }
-        */
-
-    public function showSemestersByDepartmentAction(request $request)
+    public function showSemestersByDepartmentAction(Request $request)
     {
         if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
             // Find the department
@@ -106,96 +81,58 @@ class SemesterController extends Controller
         }
     }
 
-    public function SuperadminCreateSemesterAction(request $request)
+    public function superadminCreateSemesterAction(Request $request)
     {
         $semester = new Semester();
 
-            // Get the ID parameter sent in by the request
-            $departmentId = $request->get('id');
+        // Get the ID parameter sent in by the request
+        $departmentId = $request->get('id');
 
-            // Find the department where ID matches departmentId
-            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
+        // Find the department where ID matches departmentId
+        $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
 
-            // Create the form
-            $form = $this->createForm(new CreateSemesterType(), $semester);
+        // Create the form
+        $form = $this->createForm(new CreateSemesterType(), $semester);
 
-            // Handle the form
-            $form->handleRequest($request);
+        // Handle the form
+        $form->handleRequest($request);
 
-            // The fields of the form is checked if they contain the correct information
-            if ($form->isValid()) {
-                //Check if semester already exists
-                $existingSemester = $this->getDoctrine()->getManager()->getRepository('AppBundle:Semester')->findBy(array(
-                    'department' => $department,
-                    'semesterTime' => $semester->getSemesterTime(),
-                    'year' => $semester->getYear(),
-                ));
-                //Return to semester page if semester already exists
-                if (count($existingSemester)) {
-                    return $this->redirect($this->generateUrl('semesteradmin_show'));
-                }
-
-                // Set the department of the semester
-                $semester->setDepartment($department);
-
-                $year = $semester->getYear();
-                $startMonth = $semester->getSemesterTime() == 'Vår' ? '01' : '08';
-                $endMonth = $semester->getSemesterTime() == 'Vår' ? '07' : '12';
-                $semester->setSemesterStartDate(date_create($year.'-'.$startMonth.'-01 00:00:00'));
-                $semester->setSemesterEndDate(date_create($year.'-'.$endMonth.'-31 23:59:59'));
-                // If valid insert into database
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($semester);
-                $em->flush();
-
+        // The fields of the form is checked if they contain the correct information
+        if ($form->isValid()) {
+            //Check if semester already exists
+            $existingSemester = $this->getDoctrine()->getManager()->getRepository('AppBundle:Semester')->findBy(array(
+                'department' => $department,
+                'semesterTime' => $semester->getSemesterTime(),
+                'year' => $semester->getYear(),
+            ));
+            //Return to semester page if semester already exists
+            if (count($existingSemester)) {
                 return $this->redirect($this->generateUrl('semesteradmin_show'));
             }
 
-            // Render the view
-            return $this->render('semester_admin/create_semester.html.twig', array(
-                 'form' => $form->createView(),
-            ));
-    }
+            // Set the department of the semester
+            $semester->setDepartment($department);
 
-    /* This allows the ROLE_ADMIN to create semester, but it was not mentioned in the requirements that the ROLE_ADMIN should be able to create semesters.
-    public function createSemesterAction(request $request){
+            $year = $semester->getYear();
+            $startMonth = $semester->getSemesterTime() == 'Vår' ? '01' : '08';
+            $endMonth = $semester->getSemesterTime() == 'Vår' ? '07' : '12';
+            $semester->setSemesterStartDate(date_create($year.'-'.$startMonth.'-01 00:00:00'));
+            $semester->setSemesterEndDate(date_create($year.'-'.$endMonth.'-31 23:59:59'));
+            // If valid insert into database
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($semester);
+            $em->flush();
 
-        if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
-            $semester = new Semester();
-
-            // Get the department of the current user
-            $department = $this->get('security.context')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
-
-            // Create the form
-            $form = $this->createForm(new CreateSemesterType($department), $semester);
-
-            // Handle the form
-            $form->handleRequest($request);
-
-            // The fields of the form is checked if they contain the correct information
-            if ($form->isValid()) {
-                // Set the department of the semester
-                $semester->setDepartment($department);
-                // If valid insert into database
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($semester);
-                $em->flush();
-                return $this->redirect($this->generateUrl('semesteradmin_show'));
-            }
-
-            // Render the view
-            return $this->render('semester_admin/create_semester.html.twig', array(
-                 'form' => $form->createView(),
-            ));
-        }
-        else {
-            return $this->redirect($this->generateUrl('home'));
+            return $this->redirect($this->generateUrl('semesteradmin_show'));
         }
 
+        // Render the view
+        return $this->render('semester_admin/create_semester.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
-    */
 
-    public function deleteSemesterByIdAction(request $request)
+    public function deleteSemesterByIdAction(Request $request)
     {
         $id = $request->get('id');
 
@@ -209,35 +146,7 @@ class SemesterController extends Controller
                 $em->flush();
 
                 $response['success'] = true;
-            }
-            // You have to check for admin rights here to prevent admins from deleting smesters that are not in their department
-            /*
-            Enable this if you want ROLE_ADMIN to be able to delete semesters from their department
-            elseif ($this->get('security.context')->isGranted('ROLE_ADMIN')){
-
-                $em = $this->getDoctrine()->getEntityManager();
-                // Find a semester by a given ID
-                $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($id);
-                // Find the department of the semester that is being deleted
-                $department = $semester->getDepartment();
-
-                // Is the admin from the same department as the semester he is trying to delete?
-                if ($this->get('security.context')->getToken()->getUser()->getFieldOfStudy()->getDepartment() === $department){
-
-                    $em->remove($semester);
-                    $em->flush();
-                    // Send a response back to AJAX
-                    $response['success'] = true;
-
-                }
-                else {
-                    // Send a response back to AJAX
-                    $response['success'] = false;
-                    $response['cause'] = 'Du kan ikke slette et semester som ikke er fra din avdeling.';
-                }
-            }
-            */
-            else {
+            } else {
                 // Send a response back to AJAX
                 $response['success'] = false;
                 $response['cause'] = 'Ikke tilstrekkelige rettigheter.';

@@ -2,13 +2,12 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Application;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamApplication;
 use AppBundle\Form\Type\TeamApplicationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class TeamApplicationController extends Controller
@@ -17,21 +16,22 @@ class TeamApplicationController extends Controller
     {
         $user = $this->getUser();
         $activeUserHistoriesInTeam = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeamAndUser($application->getTeam(), $user);
-        if (empty($activeUserHistoriesInTeam) and !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
-            throw new AccessDeniedHttpException();
+        if (empty($activeUserHistoriesInTeam) && !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+            throw new AccessDeniedException();
         }
 
         return $this->render('team_admin/show_application.html.twig', array(
             'application' => $application,
         ));
     }
+
     public function showAllApplicationsAction(Team $team)
     {
         $applications = $this->getDoctrine()->getRepository('AppBundle:TeamApplication')->findByTeam($team);
         $user = $this->getUser();
         $activeUserHistoriesInTeam = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeamAndUser($team, $user);
-        if (empty($activeUserHistoriesInTeam) and !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
-            throw new AccessDeniedHttpException();
+        if (empty($activeUserHistoriesInTeam) && !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+            throw new AccessDeniedException();
         }
 
         return $this->render('team_admin/show_applications.html.twig', array(
@@ -47,20 +47,13 @@ class TeamApplicationController extends Controller
         $manager->remove($teamApplication);
         $manager->flush();
 
-        /*
-        return $this->render('team/show_applications.html.twig',array(
-            'applications'=>$applications,
-            'team'=>$team
-        ));
-        */
-
         return $this->redirectToRoute('team_application_show_all', array('id' => $teamApplication->getTeam()->getId()));
     }
 
     public function showAction(Team $team, Request $request)
     {
         if (!$team->getAcceptApplication()) {
-            throw new AccessDeniedException();
+            throw new NotFoundHttpException();
         }
         $teamApplication = new TeamApplication();
         $form = $this->createForm(new TeamApplicationType(), $teamApplication);
@@ -99,12 +92,14 @@ class TeamApplicationController extends Controller
                 )));
             $this->get('mailer')->send($receipt);
 
-            return $this->render('team/confirmation.html.twig');
+            $this->addFlash('success', 'Søknaden er mottatt.');
+
+            return $this->redirectToRoute('team_application',  array('id' => $team->getId()));
         }
 
         return $this->render('team/team_application.html.twig', array(
             'team' => $team,
             'form' => $form->createView(),
-    ));
+        ));
     }
 }

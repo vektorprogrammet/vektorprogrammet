@@ -153,7 +153,7 @@ class NewsletterControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->selectButton('Aktiv')->count());
         $this->assertEquals('Aktiver', $allButtons->eq(0)->html());
         $this->assertEquals('Aktiv', $allButtons->eq(1)->html());
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testSubscribeOnAdmissionPage()
@@ -185,7 +185,7 @@ class NewsletterControllerTest extends WebTestCase
 
         $this->assertEquals(1, $crawler->filter('td:contains("Karl")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("user@user.com")')->count());
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testSubscribePage()
@@ -217,7 +217,7 @@ class NewsletterControllerTest extends WebTestCase
 
         $this->assertEquals(1, $crawler->filter('td:contains("Karl")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("user@user.com")')->count());
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testSubscribeMultipleIdenticalEmail()
@@ -262,7 +262,7 @@ class NewsletterControllerTest extends WebTestCase
 
         $this->assertEquals(1, $crawler->filter('td:contains("Karl")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("user@user.com")')->count());
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testDeleteSubscriber()
@@ -283,6 +283,6 @@ class NewsletterControllerTest extends WebTestCase
         $deleteButtonsAfter = $crawler->selectButton('Slett')->count();
 
         $this->assertEquals($deleteButtonsAfter, $deleteButtonsBefore - 1);
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 }

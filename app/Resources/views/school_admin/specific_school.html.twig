@@ -2,15 +2,15 @@
 
 {% block customScripts %}
 
-	{# Easy routing with FOSJsRouting bundle #}
-	<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    {# Easy routing with FOSJsRouting bundle #}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-	{# We need the deletetablerow.js file #}
+    {# We need the deletetablerow.js file #}
     <script src="{{ asset('js/deleteablerow.js') }}"></script>
-	
-	<script>
-	
-	$(document).ready(function() {
+
+    <script>
+
+        $(document).ready(function () {
             $('.delete').deleteablerow('schooladmin_remove_user_from_school_by_id', {
                 confirmation: {
                     modal: $('#confirmModal'),
@@ -20,116 +20,127 @@
             });
         });
 
-	</script>
+    </script>
 
 
 
 {% endblock %}
 
 {% block title %}
-	{{ school }}
+    {{ school }}
 {% endblock %}
 
 
 {% block body %}
     <p></p>
-	
-	<div class="row">
-			<div class="small-12 medium-12 large-12 columns">
-			
-					
-					<h1> {{ school }} </h1>
-					
-					<hr>
-					
-					<h3> Aktive personer </h3>
-					
-					<table width="100%">
-				
-					<thead>
-						<tr>
-							<th> Fornavn </th>
-							<th> Etternavn </th>
-							<th> Skole </th>
-							<th> Semester </th>
-							<th> </th>
-						</tr>
-					</thead>
-					
-					<tbody>
-						{% for as in activeAssistantHistory %}
-							<tr>
-								<td> {{as.user.firstName}} </td>
-								<td> {{as.user.lastName}} </td>
-								<td> {{as.school.name}} </td>
-								<td> {{as.semester.name}} </td>
-								
-								{# Only ROLE_SUPER_ADMIN or higher should be able to delete teams #}
-									{% if is_granted('ROLE_SUPER_ADMIN') %} 
-										<td><a href="#" id="{{ as.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td>
-									{% endif %}
-									
-							</tr>
-						{% endfor %}
-					</tbody>
-					
-				</table>
-				
-				<br>
-				
-				{% if inactiveAssistantHistory is defined %}
-					
-					{% if is_granted('ROLE_ADMIN') %} 
-						
-						<hr>
-							
-						<h3> Inaktive personer </h3>
-						
-						<table width="100%">
-						
-						
-							<thead>
-								<tr>
-									<th> Fornavn </th>
-									<th> Etternavn </th>
-									<th> Skole </th>
-									<th> Semester </th>
-									<th> </th>
-								</tr>
-							</thead>
-							
-							<tbody>
-								{% for as in inactiveAssistantHistory %}
-									<tr>
-										<td> {{as.user.firstName}} </td>
-										<td> {{as.user.lastName}} </td>
-										<td> {{as.school.name}} </td>
-										<td> {{as.semester.name}} </td>
-										
-										{# Only ROLE_SUPER_ADMIN or higher should be able to delete teams #}
-										{% if is_granted('ROLE_SUPER_ADMIN') %} 
-											<td><a href="#" id="{{ as.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td>
-										{% endif %}
-										
-									</tr>
-								{% endfor %}
-							</tbody>
-							
-						</table>
-					
-					{% endif %}
-					
-				{% endif %}
-				
-			</div>
-		</div>
-		
-		<div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true" role="dialog">
-			<h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
-			<ul class="inline-list">
-				<a id="modalAccept" href="#" class="button tiny">Slett</a>
-				<a id="modalCancel" href="#" class="button tiny">Avbryt</a>
-			</ul>
-		</div>
-	
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+
+
+            <h1> {{ school }} </h1>
+
+            <hr>
+
+            {% if not activeAssistantHistories %}
+                <div class="alert-box radius warning">
+                    Det finnes ingen aktive assistenter på denne skolen.
+                </div>
+            {% else %}
+                <h3> Aktive assistenter </h3>
+
+                <table width="100%">
+
+                    <thead>
+                    <tr>
+                        <th> Fornavn</th>
+                        <th> Etternavn</th>
+                        <th> Skole</th>
+                        <th> Semester</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for as in activeAssistantHistories %}
+                        <tr>
+                            <td> {{ as.user.firstName }} </td>
+                            <td> {{ as.user.lastName }} </td>
+                            <td> {{ as.school.name }} </td>
+                            <td> {{ as.semester.name }} </td>
+
+                            {# Only ROLE_SUPER_ADMIN or higher should be able to delete teams #}
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <td><a href="#" id="{{ as.id }}" class="button tiny alert delete"><i
+                                                class="fa fa-trash-o"></i> Slett</a></td>
+                            {% endif %}
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+
+            {% endif %}
+
+
+            <br>
+
+            {% if inactiveAssistantHistories %}
+
+                {% if is_granted('ROLE_ADMIN') %}
+
+                    <hr>
+
+                    <h3> Tidligere assistenter </h3>
+
+                    <table width="100%">
+
+
+                        <thead>
+                        <tr>
+                            <th> Fornavn</th>
+                            <th> Etternavn</th>
+                            <th> Skole</th>
+                            <th> Semester</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for as in inactiveAssistantHistories %}
+                            <tr>
+                                <td> {{ as.user.firstName }} </td>
+                                <td> {{ as.user.lastName }} </td>
+                                <td> {{ as.school.name }} </td>
+                                <td> {{ as.semester.name }} </td>
+
+                                {# Only ROLE_SUPER_ADMIN or higher should be able to delete teams #}
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    <td><a href="#" id="{{ as.id }}" class="button tiny alert delete"><i
+                                                    class="fa fa-trash-o"></i> Slett</a></td>
+                                {% endif %}
+
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+
+                {% endif %}
+
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
+         aria-hidden="true" role="dialog">
+        <h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
+        <ul class="inline-list">
+            <a id="modalAccept" href="#" class="button tiny">Slett</a>
+            <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
+        </ul>
+    </div>
+
 {% endblock %}

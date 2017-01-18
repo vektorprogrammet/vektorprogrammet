@@ -240,20 +240,20 @@
 
 {% block checkbox_radio_label -%}
     {% if required %}
-    {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' required')|trim}) %}
-{% endif %}
+        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' required')|trim}) %}
+    {% endif %}
     {% if errors|length > 0 -%}
-    {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' error')|trim}) %}
-{% endif %}
+        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' error')|trim}) %}
+    {% endif %}
     {% if parent_label_class is defined %}
-    {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ parent_label_class)|trim}) %}
-{% endif %}
+        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ parent_label_class)|trim}) %}
+    {% endif %}
     {% if label is empty %}
-    {% set label = name|humanize %}
-{% endif %}
+        {% set label = name|humanize %}
+    {% endif %}
     <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
-        {{ widget|safe_html }}
-        {{ label|trans({}, translation_domain) }}
+    {{ widget|safe_html }}
+    {{ label|trans({}, translation_domain) }}
     </label>
 {%- endblock checkbox_radio_label %}
 
@@ -313,9 +313,9 @@
     {% if errors|length > 0 -%}
         {% if form.parent %}<small class="error">{% else %}<div data-alert class="alert-box alert">{% endif %}
         {%- for error in errors -%}
-    {{ error.message }}
-    {% if not loop.last %}, {% endif %}
-{%- endfor -%}
+            {{ error.message }}
+            {% if not loop.last %}, {% endif %}
+        {%- endfor -%}
         {% if form.parent %}</small>{% else %}</div>{% endif %}
     {%- endif %}
 {%- endblock form_errors %}

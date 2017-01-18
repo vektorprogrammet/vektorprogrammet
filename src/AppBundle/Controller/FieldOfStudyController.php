@@ -20,6 +20,7 @@ class FieldOfStudyController extends Controller
             'department' => $department,
         ));
     }
+
     public function editAction(Request $request, FieldOfStudy $fieldOfStudy = null)
     {
         $isEdit = true;

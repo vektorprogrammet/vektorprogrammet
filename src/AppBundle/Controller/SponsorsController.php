@@ -30,7 +30,7 @@ class SponsorsController extends Controller
         return $this->render('sponsors/sponsors_edit.html.twig', array(
             'forms' => $forms,
             'logos' => $logos,
-        )); //todo: shouldn't I use AppBundle:somehting::something?
+        ));
     }
 
     public function sponsorsUpdateAction(Request $request, $id)
@@ -44,15 +44,15 @@ class SponsorsController extends Controller
             $em->remove($sponsor);
         } else { //Update the sponsor object in the database
             //Empty file-field in the form is allowed
-            if ($request->files->get('sponsor')['logoImagePath'] != null) {
+            if ($request->files->get('sponsor')['logoImagePath'] !== null) {
                 //First move the logo image file to its folder
                 $targetFolder = $this->container->getParameter('logo_images').'/';
                 //Create a FileUploader with target folder and allowed file types as parameters
-                $uploader = new FileUploader($targetFolder, ['image/gif', 'image/jpeg', 'image/png']);
+                $uploader = new FileUploader($targetFolder);
                 //Move the file to target folder
                 $result = $uploader->upload($request);
-                //Get the path of the image file as now on the server:  todo: now assumes only one image is contained in the request, as it should be.
-                $path = $result[array_keys($result)[0]]; //todo: duplicated code this line and those above it. see editProfilePhotoAction in ProfileController
+                //Get the path of the image file as now on the server:
+                $path = $result[array_keys($result)[0]];
                 $sponsor->setLogoImagePath($path);
             }
             //Get the sponsor name from the request (value entered in the form)

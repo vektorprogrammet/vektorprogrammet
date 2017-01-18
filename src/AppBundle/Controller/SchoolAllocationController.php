@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Application;
-use AppBundle\Entity\Semester;
 use AppBundle\SchoolAllocation\Assistant;
 use AppBundle\SchoolAllocation\School;
 use AppBundle\SchoolAllocation\Allocation;
@@ -25,16 +24,15 @@ class SchoolAllocationController extends Controller
 
         $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
 
-        $previousApplications = $this->getDoctrine()->getRepository('AppBundle:Application')->findPreviousApplicants($departmentId, $currentSemester);
         $interviewedApplications = $this->getDoctrine()->getRepository('AppBundle:Application')->findInterviewedApplicants($departmentId, $currentSemester);
         $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
 
         $filteredApplications = array();
 
         foreach ($interviewedApplications as $application) {
-            if ($application->getInterview() != null) {
+            if ($application->getInterview() !== null) {
                 $interviewScore = $application->getInterview()->getInterviewScore();
-                if ($interviewScore != null && ($interviewScore->getSuitableAssistant() == 'Kanskje' || $interviewScore->getSuitableAssistant() == 'Ja')) {
+                if ($interviewScore !== null && ($interviewScore->getSuitableAssistant() == 'Kanskje' || $interviewScore->getSuitableAssistant() == 'Ja')) {
                     $filteredApplications[] = $application;
                 }
             }
@@ -122,9 +120,9 @@ class SchoolAllocationController extends Controller
             } else {
                 $score = 0;
                 $interview = $application->getInterview();
-                if ($interview != null) {
+                if ($interview !== null) {
                     $intScore = $interview->getInterviewScore();
-                    if ($intScore != null) {
+                    if ($intScore !== null) {
                         $score = $intScore->getSum();
                         $suitability = $intScore->getSuitableAssistant();
                     }
@@ -138,18 +136,7 @@ class SchoolAllocationController extends Controller
         return $assistants;
     }
 
-    public function getApplicationsAction()
-    {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-
-        $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
-
-        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
-
-        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsBySemester($currentSemester);
-    }
-
-    public function allocateAction(Request $request)
+    public function allocateAction()
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
@@ -158,16 +145,15 @@ class SchoolAllocationController extends Controller
         $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
 
         $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
-//        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsBySemester($currentSemester);
         $previousApplications = $this->getDoctrine()->getRepository('AppBundle:Application')->findPreviousApplicants($departmentId, $currentSemester);
         $interviewedApplications = $this->getDoctrine()->getRepository('AppBundle:Application')->findInterviewedApplicants($departmentId, $currentSemester);
 
         $filteredApplications = array();
 
         foreach ($interviewedApplications as $application) {
-            if ($application->getInterview() != null) {
+            if ($application->getInterview() !== null) {
                 $interviewScore = $application->getInterview()->getInterviewScore();
-                if ($interviewScore != null && $interviewScore->getSuitableAssistant() == 'Ja') {
+                if ($interviewScore !== null && $interviewScore->getSuitableAssistant() === 'Ja') {
                     $filteredApplications[] = $application;
                 }
             }
@@ -182,7 +168,7 @@ class SchoolAllocationController extends Controller
         foreach ($result->getAssistants() as $assistant) {
             $sc = $assistant->getAssignedSchool();
             $day = $assistant->getAssignedDay();
-            if ($day == null) {
+            if ($day === null) {
                 continue;
             }
 
@@ -228,8 +214,6 @@ class SchoolAllocationController extends Controller
 
         if ($form->isValid()) {
             try {
-                $exists = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySchoolAndSemester($schoolCapacity->getSchool(), $schoolCapacity->getSemester());
-
                 return $this->render('school_admin/school_allocate_create.html.twig', array(
                     'message' => 'Skolen eksisterer allerede',
                     'form' => $form->createView(),

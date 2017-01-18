@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Fant ingen assistenthistorie
+    {{ title }}
 {% endblock %}
 
 {% block javascripts %}
@@ -11,9 +11,9 @@
     <br>
     <br>
     <br>
-    <h4 class="text-center">{{ title }} </h4>
+    <h4 class="text-center">{{ title }}</h4>
     {% if message is defined %}
-        <p class="text-center">{{ message }}</p>
+        <p class="text-center">{{ message|safe_html }}</p>
     {% endif %}
     <br>
 {% endblock %}

@@ -2,26 +2,16 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\School;
 use Doctrine\ORM\EntityRepository;
 
 class SchoolRepository extends EntityRepository
 {
-    /*
-    public function schoolByName($id){
-        $stmt = $this->getEntityManager()
-            ->getConnection()
-            ->prepare('
-                    SELECT *
-                    FROM School S
-                    WHERE id = :id
-                    ');
-
-        $stmt->bindValue('id', $id);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
-    }
-    */
+    /**
+     * @param $department
+     *
+     * @return School[]
+     */
     public function findSchoolsByDepartment($department)
     {
         $schools = $this->getEntityManager()->createQuery('
@@ -31,8 +21,8 @@ class SchoolRepository extends EntityRepository
 		JOIN s.departments d		
 		WHERE d = :department
 		')
-        ->setParameter('department', $department)
-        ->getResult();
+            ->setParameter('department', $department)
+            ->getResult();
 
         return $schools;
     }

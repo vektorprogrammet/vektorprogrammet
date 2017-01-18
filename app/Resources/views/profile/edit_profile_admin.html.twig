@@ -6,28 +6,28 @@
 
 {% block body %}
     <p></p>
-	
+
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
 
-				<div class="row">
-					<div class="small-12 medium-8 large-12 columns">
-						
-						<h1> Redigerer profil </h1>
-						
-						<p> Redigere for {{ user.firstName }} {{ user.lastName }} </p>
-						
-						<hr>
-						
-						{{ form_start(form) }}
-						{{ form_widget(form) }}
-						{{ form_end(form) }}
+            <div class="row">
+                <div class="small-12 medium-8 large-12 columns">
 
-					
-					</div>
-				</div>
-				
-		</div>
+                    <h1> Redigerer profil </h1>
+
+                    <p> Redigere for {{ user.firstName }} {{ user.lastName }} </p>
+
+                    <hr>
+
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+
+
+                </div>
+            </div>
+
+        </div>
     </div>
-	
+
 {% endblock %}

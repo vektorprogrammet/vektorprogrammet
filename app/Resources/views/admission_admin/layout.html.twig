@@ -47,12 +47,6 @@
                 // Bind assign interview functionality to each assign button
                 AppAdmin.appTable.find(".assign").on("click", AppAdmin.getAssignForm);
 
-                // Bind create substitute functionality to each create substitute button
-                AppAdmin.appTable.find(".createSubstitute").on("click", AppAdmin.createSubstitute);
-
-                // Bind create substitute functionality to each create substitute button
-                AppAdmin.appTable.find(".createUser").on("click", AppAdmin.createUser);
-
                 $("#bulkAction").on("click", AppAdmin.bulkAction);
 
                 $("#bulkAllCheck, .bulkCheck").on("change", AppAdmin.toggleSelectAll);
@@ -105,46 +99,6 @@
 
                 //Close the modal
                 $("#assignModal").foundation("reveal", "close");
-            },
-
-            createSubstitute: function (event) {
-                event.preventDefault();
-                var applicationId = parseInt($(this).closest('tr').attr('id'));
-                var button = $(this);
-
-                $.ajax({
-                    type: 'GET',
-                    url: Routing.generate('substitute_create', {id: applicationId}),
-                    cache: false,
-                    success: function (response) {
-                        if (response.success) {
-                            button.closest("td").find("a").addClass("secondary");
-                            button.remove();
-                        } else {
-                            alert(response.cause);
-                        }
-                    }
-                });
-            },
-
-            createUser: function (event) {
-                event.preventDefault();
-                var applicationId = parseInt($(this).closest('tr').attr('id'));
-                var td = $(this).closest("td");
-
-                $.ajax({
-                    type: 'GET',
-                    url: Routing.generate('admissionadmin_send_new_user_mail', {id: applicationId}),
-                    cache: false,
-                    success: function (response) {
-                        if (response.success) {
-                            td.empty();
-                            td.html("Bruker opprettet");
-                        } else {
-                            alert(response.cause);
-                        }
-                    }
-                });
             },
 
             bulkAction: function (event) {
@@ -369,37 +323,6 @@
                         </dd>
                     </dl>
                 </div>
-
-
-            </div>
-
-            <div class="row">
-
-                {% block bulkNavigation %}
-
-                {% endblock %}
-
-                {#{% if not is_granted('ROLE_SUPER_ADMIN') %}
-                    <div class="small-2 columns">
-                        <ul class="inline-list">
-                            &#123;&#35; Semester dropdown &#35;&#125;
-                            <li>
-                                <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown" aria-expanded="false">{{ semesterName }} <i class="fa fa-caret-down"></i></a>
-                                <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                                    {% for s in semesters %}
-
-                                        <li> <a href="{{ path(app.request.attributes.get('_route'),
-                                            app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'semester': s.id })) }}">{{ s.name }}</a> </li>
-
-                                    {% endfor %}
-
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                {% endif %}#}
-
             </div>
 
 

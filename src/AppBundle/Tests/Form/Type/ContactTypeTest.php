@@ -2,8 +2,6 @@
 
 namespace AppBundle\Tests\Form\Type;
 
-use AppBundle\Form\Type\ContactType;
-use AppBundle\Entity\Contact;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class ContactTypeTest extends TypeTestCase
@@ -47,9 +45,7 @@ class ContactTypeTest extends TypeTestCase
                 ),
             ),
             array(
-                'data' => array(
-
-                ),
+                'data' => array(),
             ),
             array(
                 'data' => array(

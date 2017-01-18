@@ -44,12 +44,6 @@ class School
     protected $email;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Subforum", mappedBy="schools")
-     * @ORM\JoinColumn(onDelete="cascade")
-     **/
-    protected $subforums;
-
-    /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
@@ -65,7 +59,6 @@ class School
     public function __construct()
     {
         $this->departments = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->subforums = new \Doctrine\Common\Collections\ArrayCollection();
         $this->international = false;
     }
 
@@ -214,40 +207,6 @@ class School
         return $this->getName();
     }
 
-    /**
-     * Add subforums.
-     *
-     * @param \AppBundle\Entity\Subforum $subforums
-     *
-     * @return School
-     */
-    public function addSubforum(\AppBundle\Entity\Subforum $subforums)
-    {
-        $this->subforums[] = $subforums;
-
-        return $this;
-    }
-
-    /**
-     * Remove subforums.
-     *
-     * @param \AppBundle\Entity\Subforum $subforums
-     */
-    public function removeSubforum(\AppBundle\Entity\Subforum $subforums)
-    {
-        $this->subforums->removeElement($subforums);
-    }
-
-    /**
-     * Get subforums.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getSubforums()
-    {
-        return $this->subforums;
-    }
-
     // Used for unit testing
     public function fromArray($data = array())
     {
@@ -271,5 +230,21 @@ class School
     public function setInternational($international)
     {
         $this->international = $international;
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return bool
+     */
+    public function belongsToDepartment(Department $department): bool
+    {
+        foreach ($this->departments as $dep) {
+            if ($dep === $department) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

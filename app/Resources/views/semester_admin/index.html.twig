@@ -2,15 +2,15 @@
 
 {% block customScripts %}
 
-	{# Easy routing with FOSJsRouting bundle #}
-	<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    {# Easy routing with FOSJsRouting bundle #}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-	{# We need the deletetablerow.js file #}
+    {# We need the deletetablerow.js file #}
     <script src="{{ asset('js/deleteablerow.js') }}"></script>
-	
-	<script>
-	
-	$(document).ready(function() {
+
+    <script>
+
+        $(document).ready(function () {
             $('.delete').deleteablerow('semesteradmin_delete_semester_by_id', {
                 confirmation: {
                     modal: $('#confirmModal'),
@@ -19,142 +19,155 @@
                 }
             });
         });
-		
-		$("#search").keyup(function(){
-		
-			_this = this;
-			
-			$.each($("#table tbody").find("tr"), function() {
-			
-				if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
-				   $(this).hide();
-				}
-				else {
-					 $(this).show();         
-				}
-			});
-			
-		}); 
 
-	</script>
+        $("#search").keyup(function () {
+
+            _this = this;
+
+            $.each($("#table tbody").find("tr"), function () {
+
+                if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
+                    $(this).hide();
+                }
+                else {
+                    $(this).show();
+                }
+            });
+
+        });
+
+    </script>
 
 
 {% endblock %}
 
-{% block title %}	
-	Semester
+{% block title %}
+    Semester
 {% endblock %}
 
 {% block body %}
     <p></p>
-	
-	<div class="row">
-		<div class="small-12 medium-12 large-12 columns">
-					
-			<h1> Semester {{ departmentName }}</h1>
-					
-			<hr>
-			
-			<div class="row">
-				
-				{% if is_granted('ROLE_SUPER_ADMIN') %} 
-					<div class="small-12 medium-12 large-6 columns">
-					
-						<ul class="inline-list">
-								
-							<li>
-								<a class="button tiny" data-dropdown="avdeling" aria-controls="avdeling" aria-expanded="false">Avdeling &raquo;</a>
-								<ul id="avdeling" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
-											
-									{% for d in departments %}
-												
-										<li><a href="{{ path('semesteradmin_filter_semesters_by_department', { 'id': d.id }) }}">{{ d.shortName }}</a></li>
-											  
-									{% endfor %}
-										
-								</ul>
-							</li>
-									
-							<li>
-								<a class="button tiny" data-dropdown="autoCloseExample" aria-controls="autoCloseExample" aria-expanded="false">Opprett semester &raquo;</a>
-								<ul id="autoCloseExample" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
-										
-									{% for d in departments %}
-											
-										<li><a href="{{ path('semesteradmin_create_semester_superadmin', { 'id': d.id }) }}">{{ d.shortName }}</a></li>
-											  
-									{% endfor %}
-										
-								</ul>
-							</li>
 
-						</ul>
-						
-					</div>
-				{% endif %}
-				
-				{% if is_granted('ROLE_SUPER_ADMIN') %} 
-					<div class="small-12 medium-12 large-6 columns">
-				{% else %}
-					<div class="small-12 medium-12 large-12 columns">
-				{% endif %}
-					<input type="text" id="search" placeholder="Søk..." />
-				</div>
-				
-			</div>
-					<hr>
-					
-					{% if semesters is defined%}
-					
-					<table width="100%" id="table">
-				
-					<thead>
-						<tr>
-							<th> Navn </th>
-							<th> Opptak start </th>
-							<th> Opptak slutt </th>
-							{% if is_granted('ROLE_SUPER_ADMIN') %} 
-								<th> </th>
-								<th> </th>
-							{% endif %}
-						</tr>
-					</thead>
-					
-					<tbody>
-						{% for s in semesters %}
-							<tr>
-								<td> {{ s.name }} </td>
-								<td> {{ s.admissionStartDate|date('Y-m-d') }} </br> Kl.   {{ s.admissionStartDate|date('H:i:s') }}</td>
-								<td> {{ s.admissionEndDate|date('Y-m-d') }}  </br> Kl.   {{ s.admissionEndDate|date('H:i:s') }}</td>
-								
-								{% if is_granted('ROLE_SUPER_ADMIN') %} 
-								
-									{% if is_granted('ROLE_HIGHEST_ADMIN') %}
-										<td><a href="#" id="{{ s.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td>
-									{% endif %}
+    <div class="row">
+    <div class="small-12 medium-12 large-12 columns">
 
-									<td>  <a href="{{ path('semesteradmin_update', { 'id': s.id }) }}" class="button tiny" >Rediger</a> </td>
-								
-								{% endif %}
-							</tr>
-						{% endfor %} 
-					</tbody>
-					
-				</table>
-					
-					
-				{% endif %}
-				
-			</div>
-		</div>
-		
-		<div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true" role="dialog">
-			<h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
-			<ul class="inline-list">
-				<a id="modalAccept" href="#" class="button tiny">Slett</a>
-				<a id="modalCancel" href="#" class="button tiny">Avbryt</a>
-			</ul>
-		</div>
-		
-		
+        <h1> Semester {{ departmentName }}</h1>
+
+        <hr>
+
+        <div class="row">
+
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <div class="small-12 medium-12 large-6 columns">
+
+                    <ul class="inline-list">
+
+                        <li>
+                            <a class="button tiny" data-dropdown="avdeling" aria-controls="avdeling"
+                               aria-expanded="false">Avdeling &raquo;</a>
+                            <ul id="avdeling" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true"
+                                aria-autoclose="false" tabindex="-1">
+
+                                {% for d in departments %}
+
+                                    <li>
+                                        <a href="{{ path('semesteradmin_filter_semesters_by_department', { 'id': d.id }) }}">{{ d.shortName }}</a>
+                                    </li>
+
+                                {% endfor %}
+
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a class="button tiny" data-dropdown="autoCloseExample" aria-controls="autoCloseExample"
+                               aria-expanded="false">Opprett semester &raquo;</a>
+                            <ul id="autoCloseExample" class="f-dropdown" data-dropdown-content tabindex="-1"
+                                aria-hidden="true" aria-autoclose="false" tabindex="-1">
+
+                                {% for d in departments %}
+
+                                    <li>
+                                        <a href="{{ path('semesteradmin_create_semester_superadmin', { 'id': d.id }) }}">{{ d.shortName }}</a>
+                                    </li>
+
+                                {% endfor %}
+
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </div>
+            {% endif %}
+
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <div class="small-12 medium-12 large-6 columns">
+                {% else %}
+                <div class="small-12 medium-12 large-12 columns">
+                    {% endif %}
+                    <input type="text" id="search" placeholder="Søk..."/>
+                </div>
+
+            </div>
+            <hr>
+
+            {% if semesters is defined %}
+
+                <table width="100%" id="table">
+
+                    <thead>
+                    <tr>
+                        <th> Navn</th>
+                        <th> Opptak start</th>
+                        <th> Opptak slutt</th>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <th></th>
+                            <th></th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for s in semesters %}
+                        <tr>
+                            <td> {{ s.name }} </td>
+                            <td> {{ s.admissionStartDate|date('Y-m-d') }} </br>
+                                Kl. {{ s.admissionStartDate|date('H:i:s') }}</td>
+                            <td> {{ s.admissionEndDate|date('Y-m-d') }} </br>
+                                Kl. {{ s.admissionEndDate|date('H:i:s') }}</td>
+
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+
+                                {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                                    <td><a href="#" id="{{ s.id }}" class="button tiny alert delete"><i
+                                                    class="fa fa-trash-o"></i> Slett</a></td>
+                                {% endif %}
+
+                                <td><a href="{{ path('semesteradmin_update', { 'id': s.id }) }}" class="button tiny">Rediger</a>
+                                </td>
+
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+
+
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
+         aria-hidden="true" role="dialog">
+        <h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
+        <ul class="inline-list">
+            <a id="modalAccept" href="#" class="button tiny">Slett</a>
+            <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
+        </ul>
+    </div>
+
+
 {% endblock %}

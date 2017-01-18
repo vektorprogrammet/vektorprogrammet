@@ -23,15 +23,14 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 		WHERE d.id = :department
 		
 		')
-        ->setParameter('department', $department)
-        ->getResult();
+            ->setParameter('department', $department)
+            ->getResult();
 
         return $users;
     }
 
     public function findAllActiveUsersByDepartment($department)
     {
-        //TODO: Check if user is in the assistantHistory for this semester instead of checking active field
         $users = $this->getEntityManager()->createQuery('
 		
 		SELECT u
@@ -41,9 +40,9 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 		WHERE d.id = :department
 			AND u.isActive = :active
 		')
-        ->setParameter('department', $department)
-        ->setParameter('active', 1)
-        ->getResult();
+            ->setParameter('department', $department)
+            ->setParameter('active', 1)
+            ->getResult();
 
         return $users;
     }
@@ -78,7 +77,6 @@ class UserRepository extends EntityRepository implements UserProviderInterface
      *
      * @return User
      *
-     * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findUserByEmail($email)
@@ -88,7 +86,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->where('User.email = :email')
             ->setParameter('email', $email)
             ->getQuery()
-            ->getSingleResult();
+            ->getOneOrNullResult();
     }
 
     public function findUserById($id)
@@ -164,6 +162,6 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     public function supportsClass($class)
     {
         return $this->getEntityName() === $class
-            || is_subclass_of($class, $this->getEntityName());
+        || is_subclass_of($class, $this->getEntityName());
     }
 }

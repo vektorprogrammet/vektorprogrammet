@@ -5,12 +5,13 @@ imports:
     - { resource: "@AppBundle/Resources/config/services.yml" }
 
 parameters:
+  slack.notification_channel: '#notifications'
+  slack.log_channel: '#website_logs'
+  slack.disable_delivery: true
+
   # File upload parameters
   public_uploads: "Offentlige filer"
   private_uploads: "../Private filer"
-
-  # Gallery photos folder
-  gallery_folder: "images/Gallery photos"
 
   # Profile photos
   profile_photos: 'images/Profile photos'
@@ -46,6 +47,7 @@ framework:
     session:
         # handler_id set to null will use default session handler from php.ini
         handler_id:  ~
+        name: "%session.name%"
     fragments:       ~
     http_method_override: true
 
@@ -99,12 +101,23 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: "%mailer_transport%"
-    host:      "%mailer_host%"
-    username:  "%mailer_user%"
-    password:  "%mailer_password%"
-    port:      "%mailer_port%"
-    spool:     { type: memory }
+    default_mailer: standard_mailer
+    mailers:
+        standard_mailer:
+            transport: "%mailer_transport%"
+            host:      "%mailer_host%"
+            username:  "%mailer_user%"
+            password:  "%mailer_password%"
+            port:      "%mailer_port%"
+            spool:     { type: memory }
+        newsletter:
+            transport: "%newsletter_transport%"
+            host:      "%newsletter_hostname%"
+            username:  "%newsletter_username%"
+            password:  "%newsletter_password%"
+            port:      "%newsletter_port%"
+            spool:     { type: memory }
+
 
 ivory_ck_editor:
     base_path: "vendor/ckeditor/"
@@ -238,7 +251,6 @@ liip_imagine:
     resolvers:
        default:
           web_path: ~
-
     filter_sets:
         cache: ~
         article_crop:
@@ -246,3 +258,9 @@ liip_imagine:
             filters:
                 relative_resize: { scale: 2.5 }
                 crop: { start: [10, 20], size: [120, 90] }
+
+nexy_slack:
+    guzzle_service: guzzle.slack
+    endpoint: "%slack_endpoint%"
+    username: 'vektorbot'
+    icon: ':robot_face:'

@@ -74,6 +74,7 @@ class Interview
     public function __construct()
     {
         $this->interviewAnswers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->conducted = new \DateTime();
         $this->interviewed = false;
         $this->cancelled = false;
     }
@@ -308,5 +309,10 @@ class Interview
     public function setUser($user)
     {
         $this->user = $user;
+    }
+
+    public function isDraft()
+    {
+        return !$this->interviewed && $this->interviewScore !== null;
     }
 }

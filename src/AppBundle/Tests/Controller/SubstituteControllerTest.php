@@ -157,7 +157,7 @@ class SubstituteControllerTest extends WebTestCase
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     /*

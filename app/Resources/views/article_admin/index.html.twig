@@ -14,7 +14,7 @@
          */
         ArticleAdmin = {
 
-            onReady: function() {
+            onReady: function () {
                 // Bind delete article functionality to each delete button
                 $(".delete").deleteablerow('articleadmin_delete', {
                     confirmation: {
@@ -28,19 +28,19 @@
                 $(".sticky").on("click", ArticleAdmin.toggleSticky);
             },
 
-            toggleSticky: function(event) {
+            toggleSticky: function (event) {
                 event.preventDefault();
                 var entityId = parseInt(this.id);
                 var button = $(this);
 
                 $.ajax({
-                    type: 'GET',
-                    url: Routing.generate("articleadmin_sticky", { id: entityId }),
+                    type: 'POST',
+                    url: Routing.generate("articleadmin_sticky", {id: entityId}),
                     cache: false,
-                    success: function(response) {
+                    success: function (response) {
                         // Update button depending on sticky status
                         if (response.success) {
-                            if(response.sticky) {
+                            if (response.sticky) {
                                 button.addClass("success");
                             } else {
                                 button.removeClass("success");
@@ -94,13 +94,15 @@
                         <td>{{ a.author.firstName }} {{ a.author.lastName }}</td>
 
                         <td>
-                            <a href="#" class="button tiny sticky{{ (a.sticky == 1) ? ' success' : '' }}" id="{{ a.id }}">
+                            <a href="#" class="button tiny sticky{{ (a.sticky == 1) ? ' success' : '' }}"
+                               id="{{ a.id }}">
                                 <i class="fa fa-thumb-tack"></i> Sticky
                             </a>
                         </td>
 
                         <td>
-                            <a href="{{ path('articleadmin_edit', { 'id': a.id }) }}" class="button tiny" id="{{ a.id }}">
+                            <a href="{{ path('articleadmin_edit', { 'id': a.id }) }}" class="button tiny"
+                               id="{{ a.id }}">
                                 <i class="fa fa-pencil-square-o"></i> Rediger
                             </a>
                         </td>

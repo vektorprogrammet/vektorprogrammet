@@ -10,16 +10,16 @@ class FieldOfStudyRepository extends EntityRepository
 {
     /*	Perhaps not needed anymore?
 
-    public function findFieldOfStudyByName($short_name){
+    public function findFieldOfStudyByName($shortName){
         $stmt = $this->getEntityManager()
                     ->getConnection()
                    ->prepare('
                     SELECT *
                     FROM Field_of_study F
-                    WHERE short_name = :short_name
+                    WHERE shortName = :shortName
                     ');
 
-        $stmt->bindValue('short_name', $short_name);
+        $stmt->bindValue('shortName', $shortName);
         $stmt->execute();
 
         return $stmt->fetchAll();

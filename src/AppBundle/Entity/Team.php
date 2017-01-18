@@ -36,11 +36,6 @@ class Team
     protected $department;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Subforum", mappedBy="teams")
-     **/
-    protected $subforums;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
@@ -75,7 +70,6 @@ class Team
     public function __construct()
     {
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->subforums = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function __toString()
@@ -139,40 +133,6 @@ class Team
     public function getDepartment()
     {
         return $this->department;
-    }
-
-    /**
-     * Add subforums.
-     *
-     * @param \AppBundle\Entity\Subforum $subforums
-     *
-     * @return Team
-     */
-    public function addSubforum(\AppBundle\Entity\Subforum $subforums)
-    {
-        $this->subforums[] = $subforums;
-
-        return $this;
-    }
-
-    /**
-     * Remove subforums.
-     *
-     * @param \AppBundle\Entity\Subforum $subforums
-     */
-    public function removeSubforum(\AppBundle\Entity\Subforum $subforums)
-    {
-        $this->subforums->removeElement($subforums);
-    }
-
-    /**
-     * Get subforums.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getSubforums()
-    {
-        return $this->subforums;
     }
 
     // Used for unit testing

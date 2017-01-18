@@ -28,6 +28,7 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $department1->addSchool($this->getReference('school-08'));
         $department1->addSchool($this->getReference('school-09'));
         $department1->setAddress('Høgskoleringen 5 7491 Trondheim');
+        $department1->setCity('Trondheim');
         $manager->persist($department1);
 
         $department2 = new Department();
@@ -36,6 +37,7 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $department2->setEmail('HiST@mail.com');
         $department2->addSchool($this->getReference('school-3'));
         $department2->setAddress('*hist adresse*');
+        $department2->setCity('Trondheim');
         $manager->persist($department2);
 
         $department3 = new Department();
@@ -44,6 +46,7 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $department3->setEmail('NMBU@mail.com');
         $department3->addSchool($this->getReference('school-1'));
         $department3->setAddress('*NMBU adresse*');
+        $department3->setCity('Ås');
         $manager->persist($department3);
 
         $department4 = new Department();
@@ -52,6 +55,7 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $department4->setEmail('UiO@mail.com');
         $department4->addSchool($this->getReference('school-2'));
         $department4->setAddress('*UiO adresse*');
+        $department4->setCity('Oslo');
         $manager->persist($department4);
 
         $manager->flush();

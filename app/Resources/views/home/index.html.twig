@@ -15,7 +15,7 @@
     <script type="text/javascript" src="{{ asset('vendor/slick/slick.min.js') }}"></script>
     {% include "statictext/js_loader_for_static_texts.html.twig" %}
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.news-carousel').slick({
                 arrows: false,
                 dots: true,
@@ -32,8 +32,8 @@
                 ]
             });
 
-            $('.news-carousel').on('beforeChange', function(event, slick, currentSlide, nextSlide){
-                var text = $('#news-carousel-text-'+nextSlide);
+            $('.news-carousel').on('beforeChange', function (event, slick, currentSlide, nextSlide) {
+                var text = $('#news-carousel-text-' + nextSlide);
                 text.show().siblings(text.prop('tagName')).hide();
             });
         });
@@ -51,16 +51,17 @@
     <div class="row">
         {% render controller('AppBundle:Article:showCarousel') %}
     </div>
-	
-	<br/>
-	<br/>
-	
-	<div class="row">
+
+    <br/>
+    <br/>
+
+    <div class="row">
         <div class="small-12 medium-12 large-12 columns">
             <div class="row">
                 <div class="small-12 medium-4 large-4 columns  text-center">
                     <div class="home-icon-container">
-                        <a href="{{ path('students') }}"><i class="fa fa-graduation-cap fa-5x" id="fa-calculator"></i></a>
+                        <a href="{{ path('students') }}"><i class="fa fa-graduation-cap fa-5x"
+                                                            id="fa-calculator"></i></a>
                         <div class="{{ element_editable() }}" id="vektor_for_studenter">
                             {{ get_content('vektor_for_studenter') | raw }}
                         </div>
@@ -86,16 +87,16 @@
             <div class="row">
                 <div class="small-12 medium-12 large-12 columns text-center">
                     <h1 class="banner-heading">
-                    <div class="{{ element_editable() }}" id="banner_one">
+                        <div class="{{ element_editable() }}" id="banner_one">
                             {{ get_content('banner_one') | raw }}
-                    </div>
+                        </div>
                     </h1>
                 </div>
             </div>
             <div class="row">
                 <div class="small-12 medium-6 large-6 columns">
                     <div class="{{ element_editable() }}" id="infobox_one">
-                            {{ get_content('infobox_one') | raw }}
+                        {{ get_content('infobox_one') | raw }}
                     </div>
                 </div>
                 <div class="small-12 medium-6 large-6 columns">
@@ -105,13 +106,13 @@
                     <a href="{{ path('about') }} " class="vektor-button tiny">Les mer om vektorprogrammet</a>
                 </div>
             </div>
-			<br/>
-			<br/>
+            <br/>
+            <br/>
 
             {% block sponsor_logos %}
                 {% include("sponsors/sponsors.html.twig") %}
             {% endblock %}
 
-		</div>
-	</div>
+        </div>
+    </div>
 {% endblock %}

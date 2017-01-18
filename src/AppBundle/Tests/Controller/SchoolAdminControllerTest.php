@@ -45,8 +45,7 @@ class SchoolAdminControllerTest extends WebTestCase
 
         $client->request('GET', '/kontrollpanel/skoleadmin/opprett/1');
 
-        // Assert that the response is a redirect to /
-        $this->assertTrue($client->getResponse()->isRedirect('/'));
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
         // USER
         $client = static::createClient(array(), array(
@@ -59,7 +58,7 @@ class SchoolAdminControllerTest extends WebTestCase
         // Assert that the response is a redirect to /
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testUpdateSchool()
@@ -97,7 +96,7 @@ class SchoolAdminControllerTest extends WebTestCase
         // Assert that the response is the correct redirect
         $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/skoleadmin'));
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testShowSchoolsByDepartment()
@@ -140,8 +139,7 @@ class SchoolAdminControllerTest extends WebTestCase
 
         $client->request('GET', '/kontrollpanel/skoleadmin/avdeling/2');
 
-        // Assert that the response is a redirect to /
-        $this->assertTrue($client->getResponse()->isRedirect('/'));
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
         // USER
         $client = static::createClient(array(), array(
@@ -154,7 +152,7 @@ class SchoolAdminControllerTest extends WebTestCase
         // Assert that the response is a redirect to /
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testShowUsersByDepartment()
@@ -327,7 +325,7 @@ class SchoolAdminControllerTest extends WebTestCase
         // Assert that the response is a redirect to /
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testShowSpecificSchool()
@@ -347,13 +345,13 @@ class SchoolAdminControllerTest extends WebTestCase
 
         // Assert that we have the correct amount of data
         $this->assertEquals(1, $crawler->filter('h1:contains("Selsbakk")')->count());
-        $this->assertEquals(1, $crawler->filter('h3:contains("Inaktive personer")')->count());
-        $this->assertEquals(1, $crawler->filter('h3:contains("Aktive personer")')->count());
+        $this->assertEquals(0, $crawler->filter('h3:contains("Tidligere assistenter")')->count());
+        $this->assertEquals(1, $crawler->filter('h3:contains("Aktive assistenter")')->count());
 
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        $client->request('GET', '/kontrollpanel/skole/skole/2');
+        $client->request('GET', '/kontrollpanel/skole/2');
 
         // Assert that the response status code is 2xx
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -372,8 +370,8 @@ class SchoolAdminControllerTest extends WebTestCase
 
         // Assert that we have the correct amount of data
         $this->assertEquals(1, $crawler->filter('h1:contains("Gimse")')->count());
-        $this->assertEquals(1, $crawler->filter('h3:contains("Inaktive personer")')->count());
-        $this->assertEquals(1, $crawler->filter('h3:contains("Aktive personer")')->count());
+        $this->assertEquals(1, $crawler->filter('h3:contains("Tidligere assistenter")')->count());
+        $this->assertEquals(1, $crawler->filter('h3:contains("Aktive assistenter")')->count());
 
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());

@@ -7,6 +7,7 @@ class Allocation
     private $schools; //Array with School objects
     private $assistants; //Array with Assistant objects
     public static $count;
+
     /**
      * Allocation constructor.
      *
@@ -48,7 +49,6 @@ class Allocation
                     if ($assistant->isDoublePosition()) {
                         if ($school->getCapacity()[1][$day] > 0 && $school->getCapacity()[2][$day] > 0) {
                             //There is capacity left in both group 1 and group 2
-//                            dump("FOUND SCHOOL! for " . $assistant->getName() . ", School: " . $school->getName() . ", Group: Both");
                             $assistantsCopy = $this->copyAssistants();
                             $schoolsCopy = $this->copySchools();
                             $allocationCopy = new self($schoolsCopy, $assistantsCopy);
@@ -67,7 +67,6 @@ class Allocation
                             $capacity = $school->getCapacity()[$group];
 
                             if ($capacity[$day] > 0) {
-                                //                                dump("FOUND SCHOOL! for " . $assistant->getName() . ", School: " . $school->getName() . ", Group: " . $group);
                                 $assistantsCopy = $this->copyAssistants();
                                 $schoolsCopy = $this->copySchools();
                                 $allocationCopy = new self($schoolsCopy, $assistantsCopy);
@@ -128,7 +127,7 @@ class Allocation
      * @param int       $group
      * @param string    $day
      */
-    public function assignAssistantToSchool($assistant, $school, $group, $day)
+    public function assignAssistantToSchool(Assistant $assistant, School $school, $group, $day)
     {
         $assistant->assignToSchool($school, $group, $day);
         $school->addAssistant($group, $day);

@@ -60,7 +60,7 @@ class ProfileControllerTest extends WebTestCase
             'PHP_AUTH_USER' => 'petjo',
             'PHP_AUTH_PW' => '1234',
         ));
-        $crawler = $client->request('GET', '/profil/rediger/4');
+        $crawler = $client->request('GET', '/kontrollpanel/profil/rediger/4');
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains(" Redigerer profil ")')->count());
@@ -71,11 +71,11 @@ class ProfileControllerTest extends WebTestCase
         $form = $crawler->selectButton('Lagre')->form();
 
         // Change the value of a field
-        $form['editUserAdmin[firstName]'] = 'Thomas';
-        $form['editUserAdmin[lastName]'] = 'Alm';
-        $form['editUserAdmin[phone]'] = '99912399';
-        $form['editUserAdmin[email]'] = 'alm@mail.com';
-        $form['editUserAdmin[fieldOfStudy]']->select(2);
+        $form['editUser[firstName]'] = 'Thomas';
+        $form['editUser[lastName]'] = 'Alm';
+        $form['editUser[phone]'] = '99912399';
+        $form['editUser[email]'] = 'alm@mail.com';
+        $form['editUser[fieldOfStudy]']->select(2);
 
         // submit the form
         $client->submit($form);
@@ -105,7 +105,7 @@ class ProfileControllerTest extends WebTestCase
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     /* Did not manage to get this one working since it was a repeated password field
@@ -187,7 +187,7 @@ class ProfileControllerTest extends WebTestCase
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
 //	public function testDownloadCertificateAction() {

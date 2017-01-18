@@ -117,6 +117,7 @@ class SurveyQuestion implements \JsonSerializable
     {
         return $this->question;
     }
+
     /**
      * Constructor.
      */

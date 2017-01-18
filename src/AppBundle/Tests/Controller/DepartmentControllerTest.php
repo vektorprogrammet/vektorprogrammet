@@ -53,9 +53,10 @@ class DepartmentControllerTest extends WebTestCase
 
         // Change the value of a field
         $form['createDepartment[name]'] = 'Heggen';
-        $form['createDepartment[short_name]'] = 'Hgn';
+        $form['createDepartment[shortName]'] = 'Hgn';
         $form['createDepartment[email]'] = 'Hgn@mail.com';
         $form['createDepartment[address]'] = 'Storgata 9';
+        $form['createDepartment[city]'] = 'Trondheim';
 
         // submit the form
         $crawler = $client->submit($form);
@@ -78,7 +79,7 @@ class DepartmentControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('a:contains("Heggen")')->count());
         $this->assertEquals(2, $crawler->filter('td:contains("Hgn")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Hgn@mail.com")')->count());
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     public function testUpdateDepartment()
@@ -102,7 +103,7 @@ class DepartmentControllerTest extends WebTestCase
 
         // Change the value of a field
         $form['createDepartment[name]'] = 'Norges teknisk-naturvitenskapelige universitet2';
-        $form['createDepartment[short_name]'] = 'NTNU2';
+        $form['createDepartment[shortName]'] = 'NTNU2';
         $form['createDepartment[email]'] = 'NTNU@mail.com2';
         $form['createDepartment[address]'] = 'Storgata 1';
 
@@ -130,7 +131,7 @@ class DepartmentControllerTest extends WebTestCase
 
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        restoreDatabase();
+        \TestDataManager::restoreDatabase();
     }
 
     /*
