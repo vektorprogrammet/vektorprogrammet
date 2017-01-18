@@ -407,6 +407,11 @@ articleadmin_saveImage:
 #             Admission                  #
 ##########################################
 
+admission_existing_user:
+ path: /opptak/eksisterende
+ defaults: {_controller: AppBundle:Admission:existingUserAdmission}
+ methods: [GET, POST]
+
 admission_show_specific_department:
  path: /opptak/avdeling/{id}
  defaults: {_controller: AppBundle:Admission:show }
@@ -431,11 +436,6 @@ admission_show_specific_department_by_name:
 admission_contact:
  path: /opptakkontakt/{id}
  defaults: {_controller: AppBundle:Admission:contact }
- methods: [GET, POST]
-
-admission_existing_user:
- path: /opptak/eksisterende
- defaults: {_controller: AppBundle:Admission:existingUserAdmission}
  methods: [GET, POST]
 
 ##########################################
