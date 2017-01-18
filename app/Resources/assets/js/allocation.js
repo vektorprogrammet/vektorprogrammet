@@ -1,15 +1,69 @@
-/**
- * Created by jorgenvalstad on 03.10.2016.
- */
-
 var schools = [];
 var assistants = [];
+
+function requestAllocation(ass) {
+    var assistantIds = [];
+    for (var i = 0; i < ass.length; i++) {
+        assistantIds.push(ass[i].id);
+    }
+
+    $.ajax({
+        type: "POST",
+        url: '/kontrollpanel/api/allocate',
+        data: {assistantIds: assistantIds},
+        success: function(data) {
+            assistants = [];
+            data.forEach(function (a) {
+                assistants.push(new Assistant(a));
+            });
+            generateAllocationTable();
+            generateSchoolOverview();
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$('#allocate_button').click(function() {
+    requestAllocation(assistants);
+});
 getSchoolsAndAssistants();
 
 ///////////////////////////////
 ////        Classes        ////
 ///////////////////////////////
 function Assistant(assistantData) {
+    this.id = assistantData.id;
     this.name = assistantData.name;
     this.group = assistantData.group;
     this.doublePosition = assistantData.doublePosition;

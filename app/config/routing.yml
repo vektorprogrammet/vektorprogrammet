@@ -837,6 +837,11 @@ school_allocation_api_schools:
   defaults: { _controller: AppBundle:SchoolAllocationAPI:generateAllSchools }
   methods: [GET]
 
+school_allocation_api_allocate_assistants:
+  path: /kontrollpanel/api/allocate
+  defaults: { _controller: AppBundle:SchoolAllocationAPI:allocateAssistants }
+  methods: [POST]
+
 ##########################################
 #              Interview                 #
 ##########################################

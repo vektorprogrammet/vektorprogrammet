@@ -1013,7 +1013,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->persist($user);
 
         $user20 = new User();
-        $user20->setIsActive('1');
+        $user20->setActive('1');
         $user20->setEmail('jan-per-gustavio@gmail.com');
         $user20->setFirstName('Jan-Per-Gustavio');
         $user20->setLastName('Tacopedia');
@@ -1028,7 +1028,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 
         for ($i = 0; $i < 100; ++$i) {
             $user = new User();
-            $user->setIsActive('0');
+            $user->setActive('0');
             $user->setEmail('allocation-user-'.$i.'@mail.com');
             $user->setFirstName('allocation-user-'.$i);
             $user->setLastName('user-lastName-'.$i);

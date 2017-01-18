@@ -190,6 +190,47 @@ class SchoolAllocationController extends Controller
         ));
     }
 
+    public function allocateTakeTwoAction()
+    {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
+
+        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
+
+        $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
+        
+        $assistants = $this->generateAssistantsFromApplications($applications);
+        $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
+        $allocation = new Allocation($schools, $assistants);
+        $result = $allocation->step();
+        $schools2 = array();
+
+        foreach ($result->getAssistants() as $assistant) {
+            $sc = $assistant->getAssignedSchool();
+            $day = $assistant->getAssignedDay();
+            if ($day === null) {
+                continue;
+            }
+
+            if (!key_exists($sc, $schools2)) {
+                $schools2[$sc] = array();
+            }
+
+            if (!key_exists($day, $schools2[$sc])) {
+                $schools2[$sc][$day] = array();
+            }
+            $schools2[$sc][$day][] = $assistant;
+        }
+
+        //Total number of allocations evaluated during optimization
+
+        return $this->render('school_admin/school_allocate_result.html.twig', array(
+            'assistants' => $result->getAssistants(),
+            'schools' => $schools2,
+        ));
+    }
+
     public function createAction(Request $request, $departmentId = null)
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();

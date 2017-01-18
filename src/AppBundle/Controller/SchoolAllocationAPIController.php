@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\SchoolAllocation\School;
 use AppBundle\SchoolAllocation\Allocation;
+use Symfony\Component\HttpFoundation\Request;
 
 class SchoolAllocationAPIController extends Controller
 {
@@ -59,6 +60,7 @@ class SchoolAllocationAPIController extends Controller
             $availability['Friday'] = array_search($application->getFriday(), $availabilityPoints);
 
             $assistant = new Assistant();
+            $assistant->setApplication($application);
             $assistant->setName($application->getUser()->getFirstName().' '.$application->getUser()->getLastName());
             $assistant->setDoublePosition($doublePosition);
             $assistant->setPreferredGroup($preferredGroup);
@@ -209,9 +211,32 @@ class SchoolAllocationAPIController extends Controller
             $assistant->setDoublePosition($doublePosition);
             $assistant->setPreferredGroup($preferredGroup);
             $assistant->setAvailability($availability);
+            $assistant->setApplication($application);
             $assistants[] = $assistant;
         }
 
         return $assistants;
+    }
+
+    public function allocateAssistantsAction(Request $request)
+    {
+        $assistantIds = $request->request->get('assistantIds');
+
+        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findById($assistantIds);
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
+
+        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
+
+        $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
+
+        $assistants = $this->generateAssistantsFromApplications($applications);
+        $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
+        $allocation = new Allocation($schools, $assistants);
+        $result = $allocation->step();
+
+        return new JsonResponse($result->getAssistants());
     }
 }

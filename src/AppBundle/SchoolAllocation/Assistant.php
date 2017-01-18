@@ -2,6 +2,8 @@
 
 namespace AppBundle\SchoolAllocation;
 
+use AppBundle\Entity\Application;
+
 class Assistant implements \JsonSerializable
 {
     public static $idCounter;
@@ -54,16 +56,15 @@ class Assistant implements \JsonSerializable
     private $suitability;
 
     /**
+     * @var Application
+     */
+    private $application;
+
+    /**
      * Assistant constructor.
      */
     public function __construct()
     {
-        if (self::$idCounter === null) {
-            $this->id = 1;
-            self::$idCounter = 1;
-        } else {
-            $this->id = ++self::$idCounter;
-        }
         $this->group = null;
         $this->preferredGroup = null;
         $this->doublePosition = false;
@@ -83,7 +84,7 @@ class Assistant implements \JsonSerializable
      */
     public function getId()
     {
-        return $this->id;
+        return $this->application->getId();
     }
 
     /**
@@ -289,6 +290,7 @@ class Assistant implements \JsonSerializable
     public function jsonSerialize()
     {
         return array(
+            'id' => $this->getId(),
             'group' => $this->group,
             'name' => $this->name,
             'assignedSchool' => $this->assignedSchool,
@@ -297,5 +299,21 @@ class Assistant implements \JsonSerializable
             'preferredGroup' => $this->preferredGroup,
             'doublePosition' => $this->doublePosition,
         );
+    }
+
+    /**
+     * @return Application
+     */
+    public function getApplication()
+    {
+        return $this->application;
+    }
+
+    /**
+     * @param Application $application
+     */
+    public function setApplication($application)
+    {
+        $this->application = $application;
     }
 }
