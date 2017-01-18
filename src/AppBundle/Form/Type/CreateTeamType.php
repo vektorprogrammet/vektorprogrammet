@@ -35,7 +35,7 @@ class CreateTeamType extends AbstractType
                 'config' => array(
                     'height' => 500,
                     'filebrowserBrowseRoute' => 'elfinder',
-                    'filebrowserBrowseRouteParameters' => array('instance' => 'article_editor'), ),
+                    'filebrowserBrowseRouteParameters' => array('instance' => 'team_editor'), ),
                 'label' => 'Lang beskrivelse (valgfritt)',
                 'attr' => array('class' => 'hide'), // Graceful loading, hides the textarea that is replaced by ckeditor
             ));

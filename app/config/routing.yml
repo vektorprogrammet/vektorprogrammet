@@ -904,7 +904,7 @@ elfinder:
 ef_connect: #This one is used only internally by FMElfinderBundle?
     path:  /efconnect/{instance}
     defaults: { _controller: FMElfinderBundle:ElFinder:load, instance: default }
-    methods: [GET]
+    methods: [GET, POST]
 
 #Route for opening a file browser window by a user of the website. Not related to ckeditor or any other subsystem.
 file_browser:
