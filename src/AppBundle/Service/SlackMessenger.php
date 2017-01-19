@@ -60,7 +60,7 @@ class SlackMessenger
             try {
                 $this->slackClient->sendMessage($message);
             } catch (\Exception $e) {
-                $this->logger->critical("Sending message to Slack failed! {$e->getMessage()}");
+                $this->logger->error("Sending message to Slack failed! {$e->getMessage()}");
             }
         }
 
