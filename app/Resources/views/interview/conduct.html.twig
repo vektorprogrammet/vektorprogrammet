@@ -20,9 +20,9 @@
             <div class="panel">
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
-                        {% if not application.interview.cancelled %}
+                        {% if not application.interview.cancelled and not application.interview.interviewed %}
                             <form action="{{ path('interview_cancel', {'id' : application.interview.id}) }}" method="POST">
-                                <button class="button alert tiny radius float-right" type="submit">Ikke møtt</button>
+                                <button class="button alert tiny radius float-right" type="submit">Kansellér intervju</button>
                             </form>
                         {% endif %}
                         <h1>Intervju</h1>
@@ -153,14 +153,25 @@
 
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
-                        {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
                         {% if not application.interview.interviewed %}
+                            {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
+                            {{ form_widget(form.saveAndSend, {'attr': {'class': 'button tiny success'}}) }}
                             <div class="row">
                                 <div class="medium-6 columns">
                                     <br>
-                                    <span class="text-alert">Obs!</span> Et sammendrag med praktisk informasjon (ikke
+                                    <span class="text-alert">Obs!</span> Ved å trykke på 'Lagre og send kvittering' vil et sammendrag med praktisk informasjon (ikke
                                     intervjuspørsmål eller evaluering)
                                     fra dette intervjuet vil bli sendt på e-post til {{ u.firstName }}.
+                                </div>
+                            </div>
+                        {% else %}
+                            <button type="submit" class="button tiny">Oppdater</button>
+                            {{ form_widget(form.save, {'attr': {'class': 'button tiny hide'}}) }}
+                            {{ form_widget(form.saveAndSend, {'attr': {'class': 'button tiny success hide'}}) }}
+                            <div class="row">
+                                <div class="medium-6 columns">
+                                    <br>
+                                    <span class="text-alert">Obs!</span> Kvittering vil <b>ikke</b> bli sendt.
                                 </div>
                             </div>
                         {% endif %}

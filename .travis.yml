@@ -11,5 +11,5 @@ script:
   - phpunit --configuration app/phpunit.xml.dist
 
 notifications:
-  slack: vektorweb:KvOMl9ysaFBW53wJV3Eu56sS
+  slack: vektorweb:jYCfQkkXOJyzPZrxzQKIbTro
   email: false

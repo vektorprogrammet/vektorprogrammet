@@ -1,6 +1,9 @@
 imports:
     - { resource: config.yml }
 
+parameters:
+    slack.disable_delivery: false
+
 #framework:
 #    validation:
 #        cache: apc

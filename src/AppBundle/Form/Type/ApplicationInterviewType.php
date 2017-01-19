@@ -32,7 +32,11 @@ class ApplicationInterviewType extends AbstractType
         $builder->add('interview', new InterviewType());
 
         $builder->add('save', 'submit', array(
-            'label' => 'Lagre',
+            'label' => 'Lagre kladd',
+        ));
+
+        $builder->add('saveAndSend', 'submit', array(
+            'label' => 'Lagre og send kvittering',
         ));
     }
 

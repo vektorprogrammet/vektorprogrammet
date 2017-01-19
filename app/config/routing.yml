@@ -220,7 +220,7 @@ specific_profile:
   id: \d+
 
 profile_edit_admin:
- path:   /profil/rediger/{id}
+ path:   /kontrollpanel/profil/rediger/{id}
  defaults: { _controller: AppBundle:Profile:editProfileInformationAdmin }
  methods: [GET, POST]
 
@@ -287,6 +287,10 @@ participanthistory_show_by_department:
  defaults: { _controller: AppBundle:ParticipantHistory:show }
  methods: [GET]
 
+assistant_history_delete:
+ path: /kontrollpanel/deltakerhistorikk/slett/{id}
+ defaults: { _controller: AppBundle:AssistantHistory:delete }
+ methods: [POST]
 
 
 
@@ -403,12 +407,24 @@ articleadmin_saveImage:
 #             Admission                  #
 ##########################################
 
+admission_existing_user:
+ path: /opptak/eksisterende
+ defaults: {_controller: AppBundle:Admission:existingUserAdmission}
+ methods: [GET, POST]
+
 admission_show_specific_department:
  path: /opptak/avdeling/{id}
  defaults: {_controller: AppBundle:Admission:show }
  methods: [GET, POST]
  requirements:
     id: \d+
+
+admission_show_by_short_name:
+ path: /opptak/{shortName}
+ defaults: {_controller: AppBundle:Admission:show }
+ methods: [GET, POST]
+ requirements:
+    id: \w+
 
 admission_show_specific_department_by_name:
  path: /avdeling/{shortName}
@@ -420,11 +436,6 @@ admission_show_specific_department_by_name:
 admission_contact:
  path: /opptakkontakt/{id}
  defaults: {_controller: AppBundle:Admission:contact }
- methods: [GET, POST]
-
-admission_existing_user:
- path: /opptak/eksisterende
- defaults: {_controller: AppBundle:Admission:existingUserAdmission}
  methods: [GET, POST]
 
 ##########################################
@@ -915,7 +926,7 @@ elfinder:
 ef_connect: #This one is used only internally by FMElfinderBundle?
     path:  /efconnect/{instance}
     defaults: { _controller: FMElfinderBundle:ElFinder:load, instance: default }
-    methods: [GET]
+    methods: [GET, POST]
 
 #Route for opening a file browser window by a user of the website. Not related to ckeditor or any other subsystem.
 file_browser:

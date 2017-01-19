@@ -81,7 +81,7 @@ class ProfileController extends Controller
     {
         try {
             // set user active level
-            $user->setActive(1);
+            $user->setActive(true);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);

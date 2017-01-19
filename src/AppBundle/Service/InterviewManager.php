@@ -6,6 +6,7 @@ use AppBundle\Entity\Application;
 use AppBundle\Entity\Interview;
 use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\User;
+use AppBundle\Role\Roles;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -43,14 +44,12 @@ class InterviewManager
     {
         $user = $this->tokenStorage->getToken()->getUser();
 
-        return $this->authorizationChecker->isGranted(RoleManager::ROLE_TEAM_LEADER) || $interview->isInterviewer($user);
+        return $this->authorizationChecker->isGranted(Roles::TEAM_LEADER) || $interview->isInterviewer($user);
     }
 
     public function initializeInterviewAnswers(Interview $interview)
     {
-        $interview->setConducted(new \DateTime());
-
-        if ($interview->getInterviewed()) {
+        if ($interview->getInterviewed() || count($interview->getInterviewAnswers()) > 0) {
             return $interview;
         }
 

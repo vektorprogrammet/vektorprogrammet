@@ -51,7 +51,7 @@ class ApplicationRepository extends EntityRepository
             ->join('a.semester', 'sem')
             ->join('sem.department', 'd')
             ->join('a.interview', 'i')
-            ->where('i.interviewScore IS NOT NULL')
+            ->where('i.interviewed = true')
             ->andWhere('a.previousParticipation = 0');
 
         if (null !== $department) {

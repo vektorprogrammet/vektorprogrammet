@@ -63,9 +63,16 @@
             // the entityId is the name of the button
             var id = parseInt(button.name);
 
+            var pathName = 'profile_change_role';
+            if (role == 'profile_activate_user') {
+                pathName = 'profile_activate_user';
+            } else if (role == 'profile_deactivate_user') {
+                pathName = 'profile_deactivate_user';
+            }
+
             $.ajax({
                 type: 'POST',
-                url: Routing.generate('profile_change_role', {id: id}),
+                url: Routing.generate(pathName, {id: id}),
                 data: {role: role},
                 cache: false,
                 success: function (response) {

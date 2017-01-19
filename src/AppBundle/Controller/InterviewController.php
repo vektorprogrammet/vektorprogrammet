@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Event\InterviewConductedEvent;
-use AppBundle\Service\RoleManager;
+use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,16 +49,25 @@ class InterviewController extends Controller
 
         if ($form->isValid()) {
             $isNewInterview = !$interview->getInterviewed();
+            $interview->setCancelled(false);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($interview);
             $em->flush();
+            if ($isNewInterview && $form->get('saveAndSend')->isClicked()) {
+                $interview->setInterviewed(true);
+                $em->persist($interview);
+                $em->flush();
 
-            if ($isNewInterview) {
                 $this->get('event_dispatcher')->dispatch(InterviewConductedEvent::NAME, new InterviewConductedEvent($application));
-            }
 
-            return $this->redirect($this->generateUrl('admissionadmin_show', array('status' => 'interviewed')));
+                return $this->redirectToRoute('admissionadmin_show', array('status' => 'interviewed'));
+            }
+            if ($isNewInterview) {
+                return $this->redirectToRoute('admissionadmin_show', array('status' => 'assigned'));
+            } else {
+                return $this->redirectToRoute('admissionadmin_show', array('status' => 'interviewed'));
+            }
         }
 
         return $this->render('interview/conduct.html.twig', array(
@@ -245,7 +254,7 @@ class InterviewController extends Controller
         $application = $em->getRepository('AppBundle:Application')->find($id);
         $user = $application->getUser();
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
-        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([RoleManager::ROLE_TEAM_MEMBER]);
+        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([Roles::TEAM_MEMBER]);
 
         $form = $this->createForm(new AssignInterviewType($roles), $application);
 
@@ -285,7 +294,7 @@ class InterviewController extends Controller
     public function bulkAssignAction(Request $request)
     {
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
-        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([RoleManager::ROLE_TEAM_MEMBER]);
+        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([Roles::TEAM_MEMBER]);
         $form = $this->createForm(new AssignInterviewType($roles));
 
         if ($request->isMethod('POST')) {

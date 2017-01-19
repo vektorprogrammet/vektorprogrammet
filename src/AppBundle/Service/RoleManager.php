@@ -2,20 +2,11 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Role\Roles;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class RoleManager
 {
-    const ROLE_ASSISTANT = 'ROLE_USER';
-    const ROLE_TEAM_MEMBER = 'ROLE_ADMIN';
-    const ROLE_TEAM_LEADER = 'ROLE_SUPER_ADMIN';
-    const ROLE_ADMIN = 'ROLE_HIGHEST_ADMIN';
-
-    const ROLE_ALIAS_ASSISTANT = 'assistant';
-    const ROLE_ALIAS_TEAM_MEMBER = 'team_member';
-    const ROLE_ALIAS_TEAM_LEADER = 'team_leader';
-    const ROLE_ALIAS_ADMIN = 'admin';
-
     private $roles = array();
     private $aliases = array();
     private $authorizationChecker;
@@ -28,16 +19,16 @@ class RoleManager
     public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->roles = array(
-            $this::ROLE_ASSISTANT,
-            $this::ROLE_TEAM_MEMBER,
-            $this::ROLE_TEAM_LEADER,
-            $this::ROLE_ADMIN,
+            Roles::ASSISTANT,
+            Roles::TEAM_MEMBER,
+            Roles::TEAM_LEADER,
+            Roles::ADMIN,
         );
         $this->aliases = array(
-            $this::ROLE_ALIAS_ASSISTANT,
-            $this::ROLE_ALIAS_TEAM_MEMBER,
-            $this::ROLE_ALIAS_TEAM_LEADER,
-            $this::ROLE_ALIAS_ADMIN,
+            Roles::ALIAS_ASSISTANT,
+            Roles::ALIAS_TEAM_MEMBER,
+            Roles::ALIAS_TEAM_LEADER,
+            Roles::ALIAS_ADMIN,
         );
         $this->authorizationChecker = $authorizationChecker;
     }
@@ -50,8 +41,8 @@ class RoleManager
     public function canChangeToRole(string $role): bool
     {
         return
-            $role !== $this::ROLE_ADMIN &&
-            $role !== $this::ROLE_ALIAS_ADMIN &&
+            $role !== Roles::ADMIN &&
+            $role !== Roles::ALIAS_ADMIN &&
             $this->isValidRole($role)
         ;
     }
@@ -64,9 +55,9 @@ class RoleManager
 
         if (in_array($alias, $this->aliases)) {
             return $this->roles[array_search($alias, $this->aliases)];
+        } else {
+            throw new \InvalidArgumentException('Invalid alias: '.$alias);
         }
-
-        return '';
     }
 
     public function loggedInUserCanCreateUserWithRole(string $role): bool
@@ -78,11 +69,11 @@ class RoleManager
         $role = $this->mapAliasToRole($role);
 
         // Can't create admins
-        // Only team leaders and admins can create users with higher permissions than ROLE_ASSISTANT
+        // Only team leaders and admins can create users with higher permissions than ASSISTANT
         return
-            $role !== self::ROLE_ADMIN &&
-            !(!$this->authorizationChecker->isGranted(self::ROLE_TEAM_LEADER) &&
-                $role !== self::ROLE_ASSISTANT)
+            $role !== Roles::ADMIN &&
+            !(!$this->authorizationChecker->isGranted(Roles::TEAM_LEADER) &&
+                $role !== Roles::ASSISTANT)
         ;
     }
 }

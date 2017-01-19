@@ -1,4 +1,16 @@
 services:
+  app.logger:
+    class: AppBundle\Service\LogService
+    arguments: ['@logger', '@app.slack_messenger']
+
+  app.email_sender:
+    class: AppBundle\Service\EmailSender
+    arguments: ['@mailer', '@twig', '@app.logger', '%default_from_email%']
+
+  app.slack_messenger:
+    class: AppBundle\Service\SlackMessenger
+    arguments: ['@nexy_slack.client', '%slack.notification_channel%', '%slack.log_channel%', '%slack.disable_delivery%', '@logger']
+
   app.user.registration:
     class: AppBundle\Service\UserRegistration
     arguments: ['@twig', '@doctrine.orm.default_entity_manager', '@mailer', '@logger']
@@ -13,11 +25,15 @@ services:
 
   app.newsletter.manager:
       class: AppBundle\Service\NewsletterManager
-      arguments: ['@mailer', '@twig']
+      arguments: ['@swiftmailer.mailer.newsletter', '@twig']
 
   app.password_manager:
       class: AppBundle\Service\PasswordManager
-      arguments: ['@doctrine.orm.default_entity_manager', '@mailer', '@twig']
+      arguments: ['@doctrine.orm.default_entity_manager', '@mailer', '@twig', '@app.logger']
+
+  app.interview_notification_manager:
+      class: AppBundle\Service\InterviewNotificationManager
+      arguments: ['@app.slack_messenger', '@application.data', '@router']
 
   app.assistants.data:
     class: AppBundle\Service\AssistantsData
@@ -25,7 +41,7 @@ services:
 
   app.sbs_data:
     class: AppBundle\Service\SbsData
-    arguments: ['@doctrine.orm.default_entity_manager', '@security.token_storage']
+    parent: application.data
 
   app.safe_html_extension:
     class: AppBundle\Twig\Extension\SafeHtmlExtension
@@ -45,9 +61,15 @@ services:
     tags:
       - { name: twig.extension }
 
+  app.exception_subscriber:
+    class: AppBundle\EventSubscriber\ExceptionSubscriber
+    arguments: ['@app.logger', '@security.token_storage', '@router']
+    tags:
+      - { name: kernel.event_subscriber }
+
   app.application_subscriber:
     class: AppBundle\EventSubscriber\ApplicationSubscriber
-    arguments: ['@mailer', '@twig', '@session', '@logger']
+    arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data', '@router']
     tags:
       - { name: kernel.event_subscriber }
 
@@ -59,7 +81,13 @@ services:
 
   app.interview_subscriber:
       class: AppBundle\EventSubscriber\InterviewSubscriber
-      arguments: ['@mailer', '@twig', '@session', '@logger', '@security.token_storage']
+      arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.sbs_data', '@app.interview_notification_manager']
+      tags:
+        - { name: kernel.event_subscriber }
+
+  app.support_ticket_subscriber:
+      class: AppBundle\EventSubscriber\SupportTicketSubscriber
+      arguments: ['@app.email_sender', '@app.slack_messenger', '@session', '@app.logger']
       tags:
         - { name: kernel.event_subscriber }
 
@@ -69,7 +97,7 @@ services:
 
   application.data:
     class: AppBundle\Service\ApplicationData
-    arguments: ['@doctrine.orm.default_entity_manager', '@security.token_storage']
+    arguments: ['@doctrine.orm.entity_manager', '@security.token_storage']
 
   app.application_admission:
     class: AppBundle\Service\ApplicationAdmission

@@ -33,6 +33,7 @@ class PasswordResetController extends Controller
             if ($passwordReset === null) {
                 $this->get('session')->getFlashBag()->add('errorMessage', '<em>Det finnes ingen brukere med denne e-postadressen</em>');
             } else {
+                $this->get('app.logger')->info("{$passwordReset->getUser()} requested a password reset");
                 $oldPasswordResets = $this->getDoctrine()->getRepository('AppBundle:PasswordReset')->findByUser($passwordReset->getUser());
                 $em = $this->getDoctrine()->getManager();
 
@@ -88,6 +89,8 @@ class PasswordResetController extends Controller
             $em->remove($passwordReset);
             $em->persist($user);
             $em->flush();
+
+            $this->get('app.logger')->info("{$passwordReset->getUser()} successfully created a new password from the reset link");
 
             return $this->redirectToRoute('login_route');
         }

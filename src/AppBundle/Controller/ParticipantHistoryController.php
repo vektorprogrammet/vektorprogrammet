@@ -9,15 +9,16 @@ class ParticipantHistoryController extends Controller
 {
     public function showAction(Request $request, $id = null)
     {
-        // Find all work histories by department
-        $workHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findWorkHistoriesByDepartment($id);
-
         // Finds the department we're currently testing for
         $department = $this->getDoctrine()->getRepository('AppBundle:Department')->findOneBy(array('id' => $id));
 
         if (is_null($department)) {
             $department = $this->getUser()->getFieldOfStudy()->getDepartment();
         }
+
+        // Find all work histories by department
+        $workHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findWorkHistoriesByDepartment($department);
+
         $semesterId = $request->query->get('semester');
         $semester = null;
         if (!is_null($semesterId)) {

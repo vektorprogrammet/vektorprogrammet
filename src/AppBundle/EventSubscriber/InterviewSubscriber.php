@@ -3,10 +3,11 @@
 namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\InterviewConductedEvent;
-use Monolog\Logger;
+use AppBundle\Service\InterviewNotificationManager;
+use AppBundle\Service\SbsData;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class InterviewSubscriber implements EventSubscriberInterface
 {
@@ -14,24 +15,27 @@ class InterviewSubscriber implements EventSubscriberInterface
     private $twig;
     private $session;
     private $logger;
-    private $tokenStorage;
+    private $sbsData;
+    private $notificationManager;
 
     /**
      * ApplicationAdmissionSubscriber constructor.
      *
-     * @param \Swift_Mailer     $mailer
-     * @param \Twig_Environment $twig
-     * @param Session           $session
-     * @param Logger            $logger
-     * @param TokenStorage      $tokenStorage
+     * @param \Swift_Mailer                $mailer
+     * @param \Twig_Environment            $twig
+     * @param Session                      $session
+     * @param LoggerInterface              $logger
+     * @param SbsData                      $sbsData
+     * @param InterviewNotificationManager $notificationManager
      */
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Session $session, Logger $logger, TokenStorage $tokenStorage)
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, SbsData $sbsData, InterviewNotificationManager $notificationManager)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->session = $session;
         $this->logger = $logger;
-        $this->tokenStorage = $tokenStorage;
+        $this->sbsData = $sbsData;
+        $this->notificationManager = $notificationManager;
     }
 
     /**
@@ -43,7 +47,8 @@ class InterviewSubscriber implements EventSubscriberInterface
     {
         return array(
             InterviewConductedEvent::NAME => array(
-                array('logEvent', 1),
+                array('logEvent', 2),
+                array('sendSlackNotifications', 1),
                 array('sendInterviewReceipt', 0),
                 array('addFlashMessage', -1),
             ),
@@ -53,8 +58,7 @@ class InterviewSubscriber implements EventSubscriberInterface
     public function sendInterviewReceipt(InterviewConductedEvent $event)
     {
         $application = $event->getApplication();
-
-        $interviewer = $this->tokenStorage->getToken()->getUser();
+        $interviewer = $application->getInterview()->getInterviewer();
 
         // Send email to the interviewee with a summary of the interview
         $emailMessage = \Swift_Message::newInstance()
@@ -73,7 +77,8 @@ class InterviewSubscriber implements EventSubscriberInterface
 
     public function addFlashMessage(InterviewConductedEvent $event)
     {
-        $message = "Intervjuet med {$event->getApplication()->getUser()} ble lagret.";
+        $user = $event->getApplication()->getUser();
+        $message = "Intervjuet med $user ble lagret. En kvittering med et sammendrag av praktisk informasjon fra intervjuet blir sendt til {$user->getEmail()}.";
 
         $this->session->getFlashBag()->add('success', $message);
     }
@@ -82,6 +87,25 @@ class InterviewSubscriber implements EventSubscriberInterface
     {
         $application = $event->getApplication();
 
-        $this->logger->info("New interview with {$application->getUser()} registered");
+        $interviewee = $application->getUser();
+
+        $department = $interviewee->getDepartment();
+
+        $this->logger->info("$department: New interview with $interviewee registered");
+    }
+
+    public function sendSlackNotifications(InterviewConductedEvent $event)
+    {
+        $application = $event->getApplication();
+
+        $department = $application->getUser()->getDepartment();
+
+        if ($this->sbsData->getInterviewedAssistantsCount() === 10 || $this->sbsData->getInterviewedAssistantsCount() % 25 === 0) {
+            $this->notificationManager->sendApplicationCountNotification($department);
+        }
+
+        if ($this->sbsData->applicantsNotYetInterviewedCount() <= 0 && $this->sbsData->getStep() >= 4) {
+            $this->notificationManager->sendInterviewsCompletedNotification($department);
+        }
     }
 }
