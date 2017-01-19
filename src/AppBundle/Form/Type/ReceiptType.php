@@ -4,6 +4,7 @@ namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use AppBundle\Form\Type\AccountNumberType;
 
 class ReceiptType extends AbstractType
 {
@@ -17,12 +18,14 @@ class ReceiptType extends AbstractType
             ->add('sum', 'money', array(
                 'label' => 'Sum',
                 'currency' => 'NOK',
-
+            ))
+            ->add('user', AccountNumberType::class, array(
+                'label' => false
             ))
             ->add('picturePath', 'file', array(
-                'required' => false,
+                'required' => true,
                 'data_class' => null,
                 'label' => 'Last opp kvittering',
-                ));
+            ));
     }
 }

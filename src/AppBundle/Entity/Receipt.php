@@ -49,6 +49,16 @@ class Receipt
     private $isActive;
 
     /**
+     * Receipt constructor.
+     */
+    public function __construct()
+    {
+        $this->isActive = true;
+        $this->submitDate = new \DateTime();
+    }
+
+
+    /**
      * @return \AppBundle\Entity\User
      */
     public function getUser()

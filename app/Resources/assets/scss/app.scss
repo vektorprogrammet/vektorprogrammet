@@ -238,7 +238,7 @@ header {
 // Footer
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 footer {
-
+  padding-top: 10px;
   .row {
     border-top: solid 3px $vektor-blue;
     padding-top: 2rem;
@@ -252,7 +252,6 @@ footer {
 }
 
 .admin-footer {
-  padding-top: 10px;
   .row {
     border-top: solid 3px $admin-grey;
   }

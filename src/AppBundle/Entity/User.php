@@ -120,6 +120,7 @@ class User implements AdvancedUserInterface, \Serializable
      **/
     protected $certificateRequests;
 
+
     public function __construct()
     {
         $this->roles = new ArrayCollection();

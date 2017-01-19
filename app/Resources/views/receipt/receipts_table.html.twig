@@ -6,6 +6,7 @@
         <th> Beskrivelse</th>
         <th> Sum</th>
         <th> Dato</th>
+        <th> Kvittering</th>
     </tr>
 
     </thead>
@@ -16,6 +17,15 @@
                 <td> {{ receipt.description }} </td>
                 <td> {{ receipt.sum|number_format(2, ',', '.') }},- </td>
                 <td> {{ receipt.submitDate|date('Y-m-d') }}</td>
+                <td>
+                    <a href="#" data-reveal-id="receipt-{{ receipt.id }}">Vis kvittering</a>
+
+                    <div id="receipt-{{ receipt.id }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+                        <h2 id="modalTitle">Kvittering</h2>
+                        <img src="{{ receipt.picturePath }}">
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                    </div>
+                </td>
             </tr>
     {% endfor %}
     </tbody>

@@ -20,24 +20,30 @@
 
             {{ form_start(form) }}
             <div class="row">
-                <div class="small-8 columns">
+                <div class="small-12 medium-8 columns">
                     {{ form_row(form.description) }}
                 </div>
             </div>
 
             <div class="row">
-                <div class="small-3 columns">
+                <div class="small-8 medium-3 columns">
                     {{ form_row(form.sum) }}
                 </div>
             </div>
 
             <div class="row">
-                <div class="small-2 columns">
+                <div class="small-8 medium-3 columns">
+                    {{ form_row(form.user) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-12 columns">
                     <div class="hide">
                         {{ form_row(form.picturePath) }}
                     </div>
                     <button type="button" class="button tiny" id="choose_picture">
-                        Velg bilde
+                        Last opp kvittering
                     </button>
                 </div>
                 <div class="small-4 columns">
@@ -53,51 +59,55 @@
         </div>
     </div>
 
+    {% if active_receipts is not empty %}
+        <div class="row">
 
-    <div class="row">
+            <div class="small-12 medium-12 large-12 columns">
+                <hr>
+            </div>
 
-        <div class="small-12 medium-12 large-12 columns">
-            <hr>
+            <div class="small-12 medium-12 large-8 columns">
+
+                <h3> Aktive utlegg </h3>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-12 medium-12 large-12 columns">
+
+                <hr>
+
+                {% include 'receipt/receipts_table.html.twig' with {'receipts': active_receipts} %}
+
+            </div>
+        </div>
+    {% endif %}
+
+    {% if inactive_receipts is not empty %}
+        <div class="row">
+
+            <div class="small-12 medium-12 large-12 columns">
+                <hr>
+            </div>
+
+            <div class="small-12 medium-12 large-8 columns">
+
+                <h3> Eldre utlegg</h3>
+
+            </div>
         </div>
 
-        <div class="small-12 medium-12 large-8 columns">
+        <div class="row">
+            <div class="small-12 medium-12 large-12 columns">
 
-            <h3> Aktive utlegg </h3>
+                <hr>
 
+                {% include 'receipt/receipts_table.html.twig' with {'receipts': inactive_receipts } %}
+
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+    {% endif %}
 
-            <hr>
-
-            {% include 'receipt/receipts_table.html.twig' with {'receipts': 'active_receipts'} %}
-
-        </div>
-    </div>
-
-    <div class="row">
-
-        <div class="small-12 medium-12 large-12 columns">
-            <hr>
-        </div>
-
-        <div class="small-12 medium-12 large-8 columns">
-
-            <h3> Eldre utlegg</h3>
-
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-
-            <hr>
-
-            {% include 'receipt/receipts_table.html.twig' with {'receipts': 'inactive_receipts'} %}
-
-        </div>
-    </div>
 {% endblock %}
 
 {% block javascripts %}
