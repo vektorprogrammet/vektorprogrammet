@@ -842,6 +842,11 @@ school_allocation_api_allocate_assistants:
   defaults: { _controller: AppBundle:SchoolAllocationAPI:allocateAssistants }
   methods: [POST]
 
+school_vue_allocation:
+  path: /kontrollpanel/vue
+  defaults: { _controller: AppBundle:SchoolAllocation:showVue }
+  methods: [GET]
+
 ##########################################
 #              Interview                 #
 ##########################################

@@ -1,36 +1,13 @@
-{% extends 'adminBase.html.twig' %}
+{% verbatim %}
+<script src="https://unpkg.com/vue@2.1.10/dist/vue.js"></script>
 
-{% block javascripts %}
-   {# <script src="/js/allocation.js"></script>#}
-    <script src="https://unpkg.com/vue@2.1.10/dist/vue.js"></script>
-    <script>
-        var assistants = [];
-        $.get("/kontrollpanel/api/assistants", function (data) {
-            JSON.parse(data).forEach(function (a) {
-                assistants.push({name: a.name});
-            });
-        });
-
-        var app = new Vue({
-            el: "#app",
-            data: {
-                assistants: assistants
-            }
-        })
-    </script>
-{% endblock %}
-
-{% block body %}
-    {% verbatim %}
-
-
-<!--<div id="app">
+<div id="app">
     <ol>
         <li v-for="assistant in assistants">
             {{assistant.name}}
         </li>
     </ol>
-</div>-->
+</div>
 
 
 <h1 class="text-center">Denne siden skal inneholde allokeringsappen</h1>
@@ -59,14 +36,11 @@
                 <th>Skole</th>
             </tr>
             </thead>
-            <tbody id="app">
-            <tr v-for="assistant in assistants">
-<!--                <td colspan="4" class="text-center">
+            <tbody>
+            <tr>
+                <td colspan="4" class="text-center">
                     <h4>Laster assistenter...</h4>
-                </td>-->
-                <th>
-                {{assistant.name}}
-</th>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -74,6 +48,19 @@
 
 </div>
 
+<script>
+    var assistants = [];
+    $.get("/kontrollpanel/api/assistants", function (data) {
+        JSON.parse(data).forEach(function (a) {
+            assistants.push(new Assistant(a));
+        });
+    });
 
+    var app = new Vue({
+        el: "#app",
+        data: {
+            assistants: assistants
+        }
+    })
+</script>
 {% endverbatim %}
-{% endblock %}

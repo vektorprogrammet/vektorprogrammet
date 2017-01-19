@@ -14,6 +14,11 @@ use AppBundle\Form\Type\SchoolCapacityType;
 
 class SchoolAllocationController extends Controller
 {
+    public function showVueAction()
+    {
+        return $this->render("/school_admin/school_allocation_vue.html");
+    }
+
     public function showAction(Request $request, $departmentId = null)
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
