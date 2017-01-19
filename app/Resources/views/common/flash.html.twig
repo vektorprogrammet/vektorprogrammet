@@ -1,6 +1,6 @@
 {% for flashMessage in app.session.flashbag.get('success') %}
     <div class="admission-notice">
-        <div data-alert class="alert-box success radius">
+        <div data-alert class="alert-box success radius text-center">
             {{ flashMessage }}
             <a href="#" class="close">&times;</a>
         </div>
@@ -8,7 +8,7 @@
 {% endfor %}
 {% for flashMessage in app.session.flashbag.get('error') %}
     <div class="admission-notice">
-        <div data-alert class="alert-box danger radius">
+        <div data-alert class="alert-box danger radius text-center">
             {{ flashMessage }}
             <a href="#" class="close">&times;</a>
         </div>

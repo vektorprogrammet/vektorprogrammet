@@ -20,7 +20,7 @@
             <div class="panel">
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
-                        {% if not application.interview.cancelled %}
+                        {% if not application.interview.cancelled and not application.interview.interviewed %}
                             <form action="{{ path('interview_cancel', {'id' : application.interview.id}) }}" method="POST">
                                 <button class="button alert tiny radius float-right" type="submit">Kansellér intervju</button>
                             </form>
