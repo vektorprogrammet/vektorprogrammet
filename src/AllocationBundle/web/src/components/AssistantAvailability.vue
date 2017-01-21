@@ -9,11 +9,24 @@
     <span :class="{'text-success': availability.Thursday}">T</span>
     &nbsp;
     <span :class="{'text-success': availability.Friday}">F</span>
+     -
+    <span>{{ getAvailableGroup() }}</span>
   </span>
 </template>
 
 <script>
   export default {
-    props: ['availability']
+    props: ['availability', 'preferredGroup', 'doublePosition'],
+    methods: {
+      getAvailableGroup() {
+        if (this.doublePosition) {
+          return 'Dobbel';
+        } else if (this.preferredGroup !== null) {
+          return 'Bolk ' + this.preferredGroup;
+        } else {
+          return 'Bolk 1 eller Bolk 2';
+        }
+      }
+    }
   }
 </script>

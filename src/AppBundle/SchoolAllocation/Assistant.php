@@ -291,14 +291,16 @@ class Assistant implements \JsonSerializable
     {
         return array(
             'id' => $this->getId(),
-            'group' => $this->group,
+            'group' => 'Bolk 1',
             'name' => $this->name,
             'assignedSchool' => $this->assignedSchool,
             'assignedDay' => $this->assignedDay,
             'availability' => $this->availability,
             'preferredGroup' => $this->preferredGroup,
             'doublePosition' => $this->doublePosition,
-            'score' => $this->score
+            'score' => $this->score,
+            'suitable' => $this->suitability,
+            'previousParticipation' => $this->previousParticipation
         );
     }
 

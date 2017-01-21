@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Application;
 use AppBundle\SchoolAllocation\Assistant;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -184,6 +185,10 @@ class SchoolAllocationAPIController extends Controller
         return new JsonResponse(json_encode($allocated_assistants));
     }
 
+    /**
+     * @param Application[] $applications
+     * @return array
+     */
     private function getAssistantAvailableDays($applications)
     {
         $assistants = array();
@@ -213,6 +218,8 @@ class SchoolAllocationAPIController extends Controller
             $assistant->setAvailability($availability);
             $assistant->setApplication($application);
             $assistant->setScore($application->getInterview()->getScore());
+            $assistant->setSuitability($application->getInterview()->getInterviewScore()->getSuitableAssistant());
+            $assistant->setPreviousParticipation($application->getPreviousParticipation());
             $assistants[] = $assistant;
         }
 
