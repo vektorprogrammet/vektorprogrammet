@@ -1,0 +1,12 @@
+  {% extends 'adminBase.html.twig' %}
+
+  {% block body %}
+      <div class="row">
+          <div class="small-12 medium-6 columns">
+              <h3>Skoleoversikt</h3>
+          </div>
+          <div class="small-12 medium-6 columns">
+              {% include '@Allocation/allocation_app.html.twig' %}
+          </div>
+      </div>
+  {% endblock %}

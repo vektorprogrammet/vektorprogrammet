@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
     plumber = require('gulp-plumber'),
+    clean = require('gulp-clean'),
     autoprefixer = require('gulp-autoprefixer'),
     imagemin = require('gulp-imagemin'),
     concat = require('gulp-concat'),
@@ -9,9 +10,14 @@ var gulp = require('gulp'),
     sass = require('gulp-sass'),
     changed = require('gulp-changed');
 
+var exec = require('child_process').exec;
+
 var path = {
     dist: 'www/',
-    src: 'app/Resources/assets/'
+    src: 'app/Resources/assets/',
+    allocation: {
+        src: 'src/AllocationBundle/web'
+    }
 };
 
 gulp.task('stylesProd', function () {
@@ -118,14 +124,37 @@ gulp.task('vendor', function(){
         .pipe(gulp.dest('www/vendor/ckeditor/'));
 });
 
+gulp.task('buildAllocationApp', function (cb) {
+    exec('cd src/AllocationBundle/web && npm run build', function (err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+        cb(err);
+    })
+});
+
+gulp.task('cleanAllocationFiles', function() {
+    return  gulp.src('www/static', {read: false})
+        .pipe(clean());
+})
+
+gulp.task('allocationStaticFiles', ['cleanAllocationFiles','buildAllocationApp'], function () {
+    gulp.src(path.allocation.src + '/dist/static/**/*')
+        .pipe(gulp.dest('www/static/'));
+
+    gulp.src(path.allocation.src + '/dist/index.html')
+        .pipe(rename('allocation_app.html.twig'))
+        .pipe(gulp.dest('src/AllocationBundle/Resources/views/'));
+});
+
 
 gulp.task('watch', function () {
     gulp.watch(path.src + 'scss/**/*.scss', ['stylesDev']);
     gulp.watch(path.src + 'js/**/*.js', ['scriptsDev']);
+    gulp.watch(path.allocation.src + '/**/*.vue', ['allocationStaticFiles']);
     gulp.watch(path.src + 'images/*', ['imagesDev']);
 });
 
 
-gulp.task('build:prod', ['stylesProd', 'scriptsProd', 'imagesProd', 'files', 'icons', 'vendor']);
-gulp.task('build:dev', ['stylesDev', 'scriptsDev', 'imagesDev', 'files', 'icons', 'vendor']);
+gulp.task('build:prod', ['allocationStaticFiles','stylesProd', 'scriptsProd', 'imagesProd', 'files', 'icons', 'vendor']);
+gulp.task('build:dev', ['allocationStaticFiles','stylesDev', 'scriptsDev', 'imagesDev', 'files', 'icons', 'vendor']);
 gulp.task('default', ['build:dev', 'watch']);

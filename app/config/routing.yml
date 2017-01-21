@@ -1,3 +1,8 @@
+allocation:
+    resource: "@AllocationBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 home:
  path: /
  defaults: { _controller: AppBundle:Home:show }
@@ -813,10 +818,6 @@ school_allocation_processing:
   path: /kontrollpanel/skole/fordeling/processing
   defaults: { _controller: AppBundle:SchoolAllocationProcessing:index }
 
-school_allocation_allocationMain:
-  path: /kontrollpanel/skole/fordeling/allokering
-  defaults: { _controller: AppBundle:SchoolAllocationMain:show }
-
 school_allocation_api_assistants:
   path: /kontrollpanel/api/assistants
   defaults: { _controller: AppBundle:SchoolAllocationAPI:getAssistants }
@@ -841,11 +842,6 @@ school_allocation_api_allocate_assistants:
   path: /kontrollpanel/api/allocate
   defaults: { _controller: AppBundle:SchoolAllocationAPI:allocateAssistants }
   methods: [POST]
-
-school_vue_allocation:
-  path: /kontrollpanel/vue
-  defaults: { _controller: AppBundle:SchoolAllocation:showVue }
-  methods: [GET]
 
 ##########################################
 #              Interview                 #
