@@ -1,4 +1,4 @@
-  {% extends 'adminBase.html.twig' %}
+{% extends 'adminBase.html.twig' %}
 
   {% block body %}
       <div class="row">
@@ -6,7 +6,11 @@
               <h3>Skoleoversikt</h3>
           </div>
           <div class="small-12 medium-6 columns">
-              {% include '@Allocation/allocation_app.html.twig' %}
+              <div id="app"></div>
           </div>
       </div>
+  {% endblock %}
+
+  {% block javascripts %}
+      <script src="{{ asset('/js/allocation-build.js') }}"></script>
   {% endblock %}

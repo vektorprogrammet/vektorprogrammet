@@ -1,6 +1,5 @@
 var gulp = require('gulp'),
     plumber = require('gulp-plumber'),
-    clean = require('gulp-clean'),
     autoprefixer = require('gulp-autoprefixer'),
     imagemin = require('gulp-imagemin'),
     concat = require('gulp-concat'),
@@ -132,18 +131,9 @@ gulp.task('buildAllocationApp', function (cb) {
     })
 });
 
-gulp.task('cleanAllocationFiles', function() {
-    return  gulp.src('www/static', {read: false})
-        .pipe(clean());
-})
-
-gulp.task('allocationStaticFiles', ['cleanAllocationFiles','buildAllocationApp'], function () {
-    gulp.src(path.allocation.src + '/dist/static/**/*')
-        .pipe(gulp.dest('www/static/'));
-
-    gulp.src(path.allocation.src + '/dist/index.html')
-        .pipe(rename('allocation_app.html.twig'))
-        .pipe(gulp.dest('src/AllocationBundle/Resources/views/'));
+gulp.task('allocationStaticFiles', ['buildAllocationApp'], function () {
+    gulp.src(path.allocation.src + '/dist/**/*.js')
+        .pipe(gulp.dest('www/js/'));
 });
 
 
