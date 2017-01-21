@@ -298,6 +298,7 @@ class Assistant implements \JsonSerializable
             'availability' => $this->availability,
             'preferredGroup' => $this->preferredGroup,
             'doublePosition' => $this->doublePosition,
+            'score' => $this->score
         );
     }
 

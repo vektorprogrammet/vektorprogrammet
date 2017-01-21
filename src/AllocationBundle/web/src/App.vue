@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <assistant-table></assistant-table>
   </div>
 </template>
@@ -8,9 +8,8 @@
   import AssistantTable from './components/AssistantTable.vue'
 
   export default {
-    name: 'app',
     components: {
-      AssistantTable
+      'assistant-table': AssistantTable
     }
   }
 </script>

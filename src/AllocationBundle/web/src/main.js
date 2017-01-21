@@ -3,15 +3,12 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 import App from './App.vue'
-import AssistantTable from './components/AssistantTable.vue'
 
 Vue.use(VueResource)
 
-Vue.component('allocation-assistant-table', AssistantTable)
-
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
+  el: '#allocation-app',
   template: '<App/>',
-  components: { App }
+  components: { 'App': App }
 })
