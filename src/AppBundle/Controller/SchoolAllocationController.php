@@ -16,7 +16,7 @@ class SchoolAllocationController extends Controller
 {
     public function showVueAction()
     {
-        return $this->render("/school_admin/school_allocation_vue.html");
+        return $this->render('/school_admin/school_allocation_vue.html');
     }
 
     public function showAction(Request $request, $departmentId = null)
@@ -204,7 +204,7 @@ class SchoolAllocationController extends Controller
         $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
 
         $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
-        
+
         $assistants = $this->generateAssistantsFromApplications($applications);
         $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
         $allocation = new Allocation($schools, $assistants);

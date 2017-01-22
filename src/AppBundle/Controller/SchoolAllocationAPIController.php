@@ -187,6 +187,7 @@ class SchoolAllocationAPIController extends Controller
 
     /**
      * @param Application[] $applications
+     *
      * @return array
      */
     private function getAssistantAvailableDays($applications)

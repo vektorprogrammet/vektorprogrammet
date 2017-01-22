@@ -1,14 +1,14 @@
 <template>
   <span>
-    <span :class="{'text-success': availability.Monday}">M</span>
+    <span :class="{'text-success': availability.Monday, 'text-bold': availability.Monday}">M</span>
     &nbsp;
-    <span :class="{'text-success': availability.Tuesday}">T</span>
+    <span :class="{'text-success': availability.Tuesday, 'text-bold': availability.Tuesday}">T</span>
     &nbsp;
-    <span :class="{'text-success': availability.Wednesday}">O</span>
+    <span :class="{'text-success': availability.Wednesday, 'text-bold': availability.Wednesday}">O</span>
     &nbsp;
-    <span :class="{'text-success': availability.Thursday}">T</span>
+    <span :class="{'text-success': availability.Thursday, 'text-bold': availability.Thursday}">T</span>
     &nbsp;
-    <span :class="{'text-success': availability.Friday}">F</span>
+    <span :class="{'text-success': availability.Friday, 'text-bold': availability.Friday}">F</span>
      -
     <span>{{ getAvailableGroup() }}</span>
   </span>

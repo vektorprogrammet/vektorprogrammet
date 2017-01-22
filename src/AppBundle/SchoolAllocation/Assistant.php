@@ -300,7 +300,7 @@ class Assistant implements \JsonSerializable
             'doublePosition' => $this->doublePosition,
             'score' => $this->score,
             'suitable' => $this->suitability,
-            'previousParticipation' => $this->previousParticipation
+            'previousParticipation' => $this->previousParticipation,
         );
     }
 

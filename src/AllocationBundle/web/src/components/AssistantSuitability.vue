@@ -2,9 +2,9 @@
   <span>
     <span v-if="previousParticipation">Tidligere assistent</span>
     <span v-else>
-      {{ score }} Poeng
+      <span class="text-bold">{{ score }}</span> Poeng
        -
-      Passer som assistent: {{ suitable }}
+      Passer som assistent: <span class="text-bold">{{ suitable }}</span>
     </span>
   </span>
 </template>
