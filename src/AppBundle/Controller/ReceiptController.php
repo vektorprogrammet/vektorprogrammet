@@ -12,10 +12,26 @@ class ReceiptController extends Controller
 {
     public function showAction(Request $request)
     {
-        $receipt = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByUser($this->getUser());
+
+        $receipt = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByDepartment($department);
 
         return $this->render('receipt/show_receipts.html.twig', array(
             'receipt' => $receipt,
+            'active_receipts' => $active_receipts,
+            'inactive_receipts' => $inactive_receipts,
+        ));
+    }
+
+    public function showIndividualAction(Request $request)
+    {
+        $receipt = $this->getDoctrine()->getRepository('AppBundle:Receipt')->finedByUser($this->getUser());
+        $active_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findActiveByUser($this->getUser());
+        $inactive_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findInactiveByUser($this->getUser());
+
+        return $this->render('receipt/show_receipts.html.twig', array(
+            'receipt' => $receipt,
+            'active_receipts' => $active_receipts,
+            'inactive_receipts' => $inactive_receipts,
         ));
     }
 

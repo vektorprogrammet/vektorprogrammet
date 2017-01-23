@@ -15,6 +15,10 @@ services:
     class: AppBundle\Service\UserRegistration
     arguments: ['@twig', '@doctrine.orm.default_entity_manager', '@mailer', '@logger']
 
+  app.receipt.manager:
+      class: AppBundle\Service\ReceiptManager
+      arguments: []
+
   app.roles:
     class: AppBundle\Service\RoleManager
     arguments: ['@security.authorization_checker']

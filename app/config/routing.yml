@@ -534,6 +534,12 @@ receipt_create:
   defaults: {_controller: AppBundle:Receipt:create }
   methods: [GET, POST]
 
+receitps_show_individual:
+  path: /kontrollpanel/utlegg/{id}
+  defaults: {_controller: AppBundle:Receipt:showIndividual }
+  methods: [GET]
+  requirements:
+    id: \d+
 
 ##########################################
 #              Semester                  #
