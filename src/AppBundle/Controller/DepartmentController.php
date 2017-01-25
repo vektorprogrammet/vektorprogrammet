@@ -107,7 +107,7 @@ class DepartmentController extends Controller
     {
 
         // Get the ID variable from the request
-        $id = $request->get('department');
+        $id = $request->get('id');
 
         // Create a new Department entity
         $department = new Department();
