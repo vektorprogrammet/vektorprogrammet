@@ -61,22 +61,7 @@
 
                     <ul class="inline-list">
 
-                        <li>
-                            <a class="button tiny" data-dropdown="selectDepartment" aria-controls="selectDepartment"
-                               aria-expanded="false">Avdeling &raquo;</a>
-                            <ul id="selectDepartment" class="f-dropdown" data-dropdown-content tabindex="-1"
-                                aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                                {% for d in departments %}
-
-                                    <li>
-                                        <a href="{{ path('teamadmin_filter_teams_by_department', { 'id': d.id }) }}">{{ d.shortName }}</a>
-                                    </li>
-
-                                {% endfor %}
-
-                            </ul>
-                        </li>
+                        {% include "common/department_dropdown.html.twig" with {'pathForDepartment': 'teamadmin_filter_teams_by_department', 'departmentParameterName': 'id', 'currentDepartment': userDepartment} %}
 
                         <li>
                             <a class="button tiny" data-dropdown="team" aria-controls="team" aria-expanded="false">Opprett

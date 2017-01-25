@@ -87,6 +87,7 @@ class UserAdminController extends Controller
         return $this->render('user_admin/index.html.twig', array(
             'users' => $users,
             'departments' => $allDepartments,
+            'department' => $department,
         ));
     }
 

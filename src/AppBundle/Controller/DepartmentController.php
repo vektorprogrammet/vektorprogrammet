@@ -71,7 +71,7 @@ class DepartmentController extends Controller
 
     public function deleteDepartmentByIdAction(Request $request)
     {
-        $id = $request->get('id');
+        $id = $request->get('department');
 
         try {
             // Only HIGHEST_ADMIN can delete departments
@@ -107,7 +107,7 @@ class DepartmentController extends Controller
     {
 
         // Get the ID variable from the request
-        $id = $request->get('id');
+        $id = $request->get('department');
 
         // Create a new Department entity
         $department = new Department();

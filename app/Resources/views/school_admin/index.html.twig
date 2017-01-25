@@ -62,23 +62,7 @@
 
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
 
-
-                            <li>
-                                <a class="button tiny" data-dropdown="avdeling" aria-controls="avdeling"
-                                   aria-expanded="false">Avdeling &raquo;</a>
-                                <ul id="avdeling" class="f-dropdown" data-dropdown-content tabindex="-1"
-                                    aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                                    {% for d in departments %}
-
-                                        <li>
-                                            <a href="{{ path('schooladmin_filter_schools_by_department', { 'id': d.id }) }}">{{ d.shortName }}</a>
-                                        </li>
-
-                                    {% endfor %}
-
-                                </ul>
-                            </li>
+                            {% include "common/department_dropdown.html.twig" with {'pathForDepartment': 'schooladmin_filter_schools_by_department', 'departmentParameterName': 'id', 'currentDepartment': departmentName} %}
 
                             <li>
                                 <a class="button tiny" data-dropdown="opprettSkole" aria-controls="opprettSkole"

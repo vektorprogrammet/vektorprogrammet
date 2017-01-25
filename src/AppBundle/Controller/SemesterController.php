@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Department;
 use AppBundle\Form\Type\EditSemesterType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,11 +37,9 @@ class SemesterController extends Controller
         ));
     }
 
-    public function showSemestersByDepartmentAction(Request $request)
+    public function showSemestersByDepartmentAction(Request $request, Department $department)
     {
         if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-            // Find the department
-            $department = $request->get('id');
 
             // Finds all the departments
             $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
@@ -52,7 +51,7 @@ class SemesterController extends Controller
             return $this->render('semester_admin/index.html.twig', array(
                 'semesters' => $semesters,
                 'departments' => $allDepartments,
-                'departmentName' => $this->getDoctrine()->getRepository('AppBundle:Department')->find($department)->getShortName(),
+                'departmentName' => $department->getShortName(),
             ));
         } else {
             return $this->redirect($this->generateUrl('home'));

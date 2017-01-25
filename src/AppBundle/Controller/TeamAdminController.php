@@ -29,6 +29,7 @@ class TeamAdminController extends Controller
             'departments' => $allDepartments,
             'teams' => $teams,
             'departmentName' => $department->getShortName(),
+            'userDepartment' => $department,
         ));
     }
 

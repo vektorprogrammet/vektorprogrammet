@@ -65,7 +65,7 @@ class ApplicationAdmission
 
     public function getDepartment(Request $request): Department
     {
-        $departmentIdQuery = $request->get('id');
+        $departmentIdQuery = $request->get('department');
         $departmentShortNameQuery = $request->get('shortName');
         $department = null;
 
