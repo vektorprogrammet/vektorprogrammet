@@ -45,6 +45,7 @@ class SubstituteController extends Controller
             'substitutes' => $substitutes,
             'departments' => $departments,
             'semesters' => $semesters,
+            'department' => $department,
         ));
     }
 
@@ -74,6 +75,7 @@ class SubstituteController extends Controller
             'substitutes' => $substitutes,
             'departments' => $departments,
             'semesters' => $semesters,
+            'department' => $department,
         ));
     }
 

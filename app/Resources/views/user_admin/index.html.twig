@@ -66,28 +66,9 @@
                         {# Dropdown to choose department, only for superadmins #}
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
 
-                            <li>
-                                <a class="button tiny" data-dropdown="selectDepartmentDropdown"
-                                   aria-controls="selectDepartmentDropdown" aria-expanded="false">Avdeling &raquo;</a>
-                                <ul id="selectDepartmentDropdown" class="f-dropdown" data-dropdown-content tabindex="-1"
-                                    aria-hidden="true" aria-autoclose="false" tabindex="-1">
+                            {% include "common/department_dropdown.html.twig" with {'pathForDepartment': 'useradmin_filter_users_by_department', 'departmentParameterName': 'id', 'currentDepartment': department} %}
 
-                                    {% for d in departments %}
-
-                                        <li>
-                                            <a href="{{ path('useradmin_filter_users_by_department', { 'id': d.id }) }}">{{ d.shortName }}</a>
-                                        </li>
-
-                                    {% endfor %}
-
-                                </ul>
-                            </li>
-
-                        {% endif %}
-
-
-                        {# Button to create a user, dropdown for superadmin and regular button for admin #}
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            {# Button to create a user, dropdown for superadmin and regular button for admin #}
                             <li>
                                 <a class="button tiny" data-dropdown="superadminCreateUser"
                                    aria-controls="superadminCreateUser" aria-expanded="false">Opprett bruker &raquo;</a>

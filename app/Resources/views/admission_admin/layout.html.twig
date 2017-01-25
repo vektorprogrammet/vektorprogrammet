@@ -265,22 +265,10 @@
                 <div class="small-3 columns">
                     <ul class="inline-list">
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
+
                             {# Department dropdown #}
-                            <li>
-                                <a class="button tiny" data-dropdown="autoCloseExample" aria-controls="autoCloseExample"
-                                   aria-expanded="false">{{ departmentName }} <i class="fa fa-caret-down"></i></a>
-                                <ul id="autoCloseExample" class="f-dropdown" data-dropdown-content tabindex="-1"
-                                    aria-hidden="true" aria-autoclose="false" tabindex="-1">
+                            {% include "common/department_dropdown.html.twig" with {'pathForDepartment': 'admissionadmin_filter_applications_by_department', 'departmentParameterName': 'id', 'currentDepartment': departmentName} %}
 
-                                    {% for d in departments %}
-
-                                        <li><a href="{{ path('admissionadmin_filter_applications_by_department',
-                                            { 'id': d.id, 'status': status }) }}">{{ d.shortName }}</a></li>
-
-                                    {% endfor %}
-
-                                </ul>
-                            </li>
                         {% endif %}
                         {# Semester dropdown #}
                         <li>
