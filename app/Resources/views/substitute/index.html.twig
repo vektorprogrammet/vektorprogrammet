@@ -66,22 +66,7 @@
                     <ul class="inline-list">
 
                         {# Departments dropdown #}
-                        <li>
-                            <a class="button tiny" data-dropdown="autoCloseExample" aria-controls="autoCloseExample"
-                               aria-expanded="false">Avdeling <i class="fa fa-caret-down"></i></a>
-                            <ul id="autoCloseExample" class="f-dropdown" data-dropdown-content tabindex="-1"
-                                aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                                {% for d in departments %}
-
-                                    <li>
-                                        <a href="{{ path('substitute_show_by_department', { 'id': d.id }) }}">{{ d.shortName }}</a>
-                                    </li>
-
-                                {% endfor %}
-
-                            </ul>
-                        </li>
+                        {% include "common/department_dropdown.html.twig" with {'pathForDepartment': 'substitute_show_by_department', 'departmentParameterName': 'id', 'currentDepartment': department} %}
 
                         {# Semester dropdown #}
                         <li>

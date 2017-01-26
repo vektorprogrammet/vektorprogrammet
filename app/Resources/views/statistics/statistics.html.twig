@@ -13,23 +13,9 @@
     <div class="row">
         <div class="small-12 columns">
             <ul class="inline-list">
-                {# Department dropdown #}
-                <li>
-                    <a class="button tiny" data-dropdown="autoCloseExample" aria-controls="autoCloseExample"
-                       aria-expanded="false">{{ department }} <i class="fa fa-caret-down"></i></a>
-                    <ul id="autoCloseExample" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true"
-                        aria-autoclose="false" tabindex="-1">
 
-                        {% for d in get_departments() %}
-
-                            <li><a href="{{ path('statistics_application_by_department',
-                                { 'department': d.id }) }}">{{ d.shortName }}</a></li>
-
-                        {% endfor %}
-
-                    </ul>
-                </li>
-
+                {# Departments dropdown #}
+                {% include "common/department_dropdown.html.twig" with {'pathForDepartment': 'statistics_application_by_department', 'departmentParameterName': 'department'} %}
 
                 {# Semester dropdown #}
                 <li>
