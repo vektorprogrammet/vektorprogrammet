@@ -73,7 +73,7 @@
                             <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
                             </td>
                         {% endif %}
-                        <td>{{ a.user.firstName }}</td>
+                        <td><a href="{{ path('specific_profile', {id: a.user.id}) }}">{{ a.user.firstName }}</a></td>
                         <td>{{ a.user.lastName }}</td>
                         <td>{{ a.user.email }}</td>
 
@@ -83,7 +83,7 @@
 
 
                         {# Add the read interview button #}
-                        {% if a.user != user %}
+                        {% if a.user != user and ( is_granted('ROLE_SUPER_ADMIN') or a.interview.interviewer == app.user ) %}
                             <td>{{ a.interview.interviewScore.sum }}</td>
                             <td>{{ a.interview.interviewScore.suitableAssistant }}</td>
                             <td>

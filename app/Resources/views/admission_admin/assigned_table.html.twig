@@ -20,7 +20,7 @@
     <tbody>
     {% for a in applicants %}
         <tr>
-            <td>{{ a.user.firstName }}</td>
+            <td><a href="{{ path('specific_profile', {id: a.user.id}) }}">{{ a.user.firstName }}</a></td>
             <td>{{ a.user.lastName }}</td>
             <td>{{ a.user.phone }}</td>
             <td>{{ a.user.email }}</td>
