@@ -11,7 +11,8 @@
         {% set no = no +1 %}
     {% endif %}
 {% endfor %}
-{% block bulkNavigation %}
+
+{% block applications %}
     {% if is_granted('ROLE_HIGHEST_ADMIN') %}
         <div class="small-6 medium-5 large-3 columns">
             <div class="row collapse">
@@ -32,9 +33,6 @@
         <h6 class="float-right">Ja: {{ yes }} / Kanskje: {{ maybe }} / Nei: {{ no }} /
             Totalt: {{ applicants | length }}</h6>
     </div>
-{% endblock %}
-
-{% block applications %}
     {% if applicants is defined %}
 
         {# The table containing interviewed applications #}
