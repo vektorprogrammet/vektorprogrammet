@@ -66,11 +66,12 @@ class UserAdminController extends Controller
         // Finds the department for the current logged in user
         $department = $this->getUser()->getDepartment();
 
-        // Finds the users for the given department
-        $users = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersByDepartment($department);
+        $activeUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findAllActiveUsersByDepartment($department);
+        $inActiveUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findAllInActiveUsersByDepartment($department);
 
         return $this->render('user_admin/index.html.twig', array(
-            'users' => $users,
+            'activeUsers' => $activeUsers,
+            'inActiveUsers' => $inActiveUsers,
             'departments' => $allDepartments,
             'department' => $department,
         ));
@@ -81,12 +82,13 @@ class UserAdminController extends Controller
         // Finds all the departments
         $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
 
-        // Finds the  users of the departmend with the departmed id of $id
-        $users = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersByDepartment($department);
+        $activeUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findAllActiveUsersByDepartment($department);
+        $inActiveUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findAllInActiveUsersByDepartment($department);
 
         // Renders the view with the variables
         return $this->render('user_admin/index.html.twig', array(
-            'users' => $users,
+            'activeUsers' => $activeUsers,
+            'inActiveUsers' => $inActiveUsers,
             'departments' => $allDepartments,
             'department' => $department,
         ));
@@ -142,5 +144,12 @@ class UserAdminController extends Controller
             'form' => $form->createView(),
             'user' => $user,
         ));
+    }
+
+    public function sendActivationMailAction(User $user)
+    {
+        $this->get('app.user.registration')->sendActivationCode($user);
+
+        return $this->redirectToRoute('useradmin_show');
     }
 }
