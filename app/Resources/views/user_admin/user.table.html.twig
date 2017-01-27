@@ -9,7 +9,9 @@
         <th> Linje</th>
         <th> Avdeling</th>
         <th></th>
-        <th>Send aktiveringsmelding</th>
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <th>Send aktiveringsmelding</th>
+        {% endif %}
     </tr>
     </thead>
 
@@ -24,7 +26,7 @@
             <td> {{ u.fieldOfStudy.department }} </td>
             <td><a href="#" id="{{ u.id }}" class="button tiny alert delete"><i
                             class="fa fa-trash-o"></i> Slett</a></td>
-            {% if u.password is null %}
+            {% if u.password is null and is_granted('ROLE_SUPER_ADMIN') %}
                 <td>
                     <form method="POST"
                           onsubmit="return confirm('Send aktiveringslenke til {{ u }}?')"
