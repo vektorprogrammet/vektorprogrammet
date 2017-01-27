@@ -17,16 +17,28 @@
       }
     },
     created () {
-      this.getAssistants()
+      this.getAssistants();
+      this.getSchools();
     },
     methods: {
       getAssistants () {
-        console.log('getting assistants from api')
+        console.log('getting assistants from api');
         this.$http
           .get('http://localhost:8000/kontrollpanel/api/assistants')
           .then((response) => {
-            this.assistants = JSON.parse(response.body)
+            this.assistants = JSON.parse(response.body);
             console.log(this.assistants)
+          }, (response) => {
+            console.error('err!', response.statusText)
+          })
+      },
+      getSchools () {
+        console.log('getting schools from api');
+        this.$http
+          .get('http://localhost:8000/kontrollpanel/api/schools_and_days')
+          .then((response) => {
+            this.schools = JSON.parse(response.body);
+            console.log(this.schools)
           }, (response) => {
             console.error('err!', response.statusText)
           })
