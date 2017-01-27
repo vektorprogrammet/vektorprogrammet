@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Department;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,32 +13,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class SubstituteRepository extends EntityRepository
 {
-    /**
-     * Finds all substitutes. Optionally filter by department and semester.
-     *
-     * @param null $department
-     * @param null $semester
-     *
-     * @return array
-     */
-    public function findSubstitutes($department = null, $semester = null)
-    {
-        $qb = $this->createQueryBuilder('sub')
-            ->select('sub')
-            ->join('sub.fieldOfStudy', 'f')
-            ->join('sub.semester', 'sem')
-            ->join('f.department', 'd');
-
-        if (null !== $department) {
-            $qb->andWhere('d = :department')
-                ->setParameter('department', $department);
-        }
-
-        if (null !== $semester) {
-            $qb->andWhere('sem = :semester')
-                ->setParameter('semester', $semester);
-        }
-
-        return $qb->getQuery()->getResult();
+    public function findSubstitutesByDepartment(Department $department){
+        return $this->createQueryBuilder('substitute')
+            ->select('substitute')
+            ->join('substitute.interview', 'interview')
+            ->join('interview.user', 'user')
+            ->join('user.fieldOfStudy', 'fos')
+            ->join('fos.department', 'd')
+            ->where('d = :department')
+            ->setParameter('department', $department)
+            ->getQuery()
+            ->getResult();
     }
 }
