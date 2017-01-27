@@ -199,6 +199,7 @@ class ProfileController extends Controller
 
         $form = $this->createForm(EditUserType::class, $user, array(
             'department' => $user->getDepartment(),
+            'validation_groups' => array('edit_user'),
         ));
 
         $form->handleRequest($request);

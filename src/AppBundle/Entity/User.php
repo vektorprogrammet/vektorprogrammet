@@ -16,13 +16,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(
  *      fields={"email"},
  *      message="Denne Eposten er allerede i bruk.",
- *      groups={"create_user"}
+ *      groups={"create_user", "edit_user"}
  * )
  *
  * @UniqueEntity(
  *      fields={"user_name"},
  *      message="Dette brukernavnet er allerede i bruk.",
- *      groups={"create_user", "username"}
+ *      groups={"create_user", "username", "edit_user"}
  * )
  */
 class User implements AdvancedUserInterface, \Serializable
@@ -36,13 +36,13 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $firstName;
 
@@ -66,13 +66,13 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", unique=true, nullable=true)
-     * @Assert\NotBlank(groups={"username"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"username", "edit_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $user_name;
 
@@ -83,8 +83,8 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", unique=true)
-     * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
-     * @Assert\Email(groups={"admission", "create_user"}, message="Ikke gyldig e-post.")
+     * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\Email(groups={"admission", "create_user", "edit_user"}, message="Ikke gyldig e-post.")
      */
     private $email;
 
