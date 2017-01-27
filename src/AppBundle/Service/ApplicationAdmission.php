@@ -5,6 +5,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\User;
+use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,6 +56,11 @@ class ApplicationAdmission
         $user = $this->em->getRepository('AppBundle:User')->findOneBy(array('email' => $application->getUser()->getEmail()));
         if ($user !== null) {
             $application->setUser($user);
+        }
+
+        if (count($application->getUser()->getRoles()) === 0) {
+            $role = $this->em->getRepository('AppBundle:Role')->findByRoleName(Roles::ASSISTANT);
+            $application->getUser()->addRole($role);
         }
     }
 
