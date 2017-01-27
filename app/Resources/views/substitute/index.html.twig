@@ -84,7 +84,43 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <hr>
+            <table width="100%" id="assistantTable">
+                <thead>
 
+                <tr>
+                    <th> Fornavn</th>
+                    <th> Etternavn</th>
+                    <th> Tlf</th>
+                    <th> E-post</th>
+                    <th> Epost</th>
+                    <th> Linje</th>
+
+                    <th> År</th>
+                    <th> M</th>
+                    <th> T</th>
+                    <th> O</th>
+                    <th> T</th>
+                    <th> F</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+
+                </thead>
+
+                <tbody>
+                    {% for sub in substitutes %}
+                        <tr>
+                            <td>{{ sub.interview.user.firstName }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </hr>
+        </div>
+    </div>
 
 
 

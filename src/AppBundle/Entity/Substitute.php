@@ -23,5 +23,37 @@ class Substitute
      */
     private $interview;
 
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return Interview
+     */
+    public function getInterview()
+    {
+        return $this->interview;
+    }
+
+    /**
+     * @param Interview $interview
+     */
+    public function setInterview($interview)
+    {
+        $this->interview = $interview;
+    }
+
 
 }

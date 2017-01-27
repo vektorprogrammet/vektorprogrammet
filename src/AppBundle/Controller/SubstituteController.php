@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Semester;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,21 +17,18 @@ use AppBundle\Form\Type\SubstituteType;
  */
 class SubstituteController extends Controller
 {
-    public function showAction(Request $request, $id){
-        dump($id);
+    public function showAction(Request $request, Department $department = null){
 
-        $department = $this->getDoctrine()->getRepository('AppBundle:Department')->findDepartmentById($id);
-        if (is_null($id)){
+        if ($department === null){
             $department = $this->getUser()->getDepartment();
-            dump($department);
         }
-        dump($department);
-
-
-        $semester =
+        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findOneBy(array('id' => $request->get('semester')));
+        if ($semester === null){
+            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
+        }
 
         $substitutes = $this->getDoctrine()->getRepository('AppBundle:Substitute')->findSubstitutesByDepartment($department);
-
+        dump($substitutes);
         $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
 
 

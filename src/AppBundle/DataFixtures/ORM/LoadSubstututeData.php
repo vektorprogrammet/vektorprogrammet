@@ -12,18 +12,7 @@ class LoadSubstututeData extends AbstractFixture implements OrderedFixtureInterf
     public function load(ObjectManager $manager)
     {
         $sub1 = new Substitute();
-        $sub1->setFirstName('Marius');
-        $sub1->setLastName('Svendsen');
-        $sub1->setEmail('marius@svendsven.no');
-        $sub1->setPhone('95128535');
-        $sub1->setFieldOfStudy($this->getReference('fos-1'));
-        $sub1->setYearOfStudy(1);
-        $sub1->setSemester($this->getReference('semester-current'));
-        $sub1->setMonday('Bra');
-        $sub1->setTuesday('Ikke');
-        $sub1->setWednesday('Ikke');
-        $sub1->setThursday('Ok');
-        $sub1->setFriday('Bra');
+        $sub1->
 
         $manager->persist($sub1);
 

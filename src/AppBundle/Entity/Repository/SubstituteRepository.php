@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Department;
+use AppBundle\Entity\Substitute;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -13,6 +14,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class SubstituteRepository extends EntityRepository
 {
+    /**
+     * @param Department $department
+     *
+     * @return Substitute[]
+     */
     public function findSubstitutesByDepartment(Department $department){
         return $this->createQueryBuilder('substitute')
             ->select('substitute')
