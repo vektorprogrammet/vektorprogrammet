@@ -21,7 +21,7 @@ services:
 
   app.interview.manager:
     class: AppBundle\Service\InterviewManager
-    arguments: ['@security.token_storage', '@security.authorization_checker', '@mailer', '@twig']
+    arguments: ['@security.token_storage', '@security.authorization_checker', '@mailer', '@twig', '@app.logger']
 
   app.newsletter.manager:
       class: AppBundle\Service\NewsletterManager
