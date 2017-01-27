@@ -35,13 +35,13 @@ class User implements AdvancedUserInterface, \Serializable
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="string")
      * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="string")
      * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $firstName;
@@ -60,18 +60,18 @@ class User implements AdvancedUserInterface, \Serializable
     private $gender;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="string")
      */
     private $picture_path;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="string")
      * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $phone;
 
     /**
-     * @ORM\Column(type="string", length=45, unique=true, nullable=true)
+     * @ORM\Column(type="string", unique=true, nullable=true)
      * @Assert\NotBlank(groups={"username"}, message="Dette feltet kan ikke være tomt.")
      */
     private $user_name;
@@ -82,7 +82,7 @@ class User implements AdvancedUserInterface, \Serializable
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=45, unique=true)
+     * @ORM\Column(type="string", unique=true)
      * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
      * @Assert\Email(groups={"admission", "create_user"}, message="Ikke gyldig e-post.")
      */
