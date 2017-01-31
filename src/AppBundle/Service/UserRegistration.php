@@ -72,7 +72,7 @@ class UserRegistration
         return hash('sha512', $newUserCode, false);
     }
 
-    public function activateUserByNewUserCode(string $newUserCode): User
+    public function activateUserByNewUserCode(string $newUserCode)
     {
         $hashedNewUserCode = $this->getHashedCode($newUserCode);
         $user = $this->em->getRepository('AppBundle:User')->findUserByNewUserCode($hashedNewUserCode);
