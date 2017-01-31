@@ -8,6 +8,18 @@
     <script src="{{ asset('js/deleteablerow.js') }}"></script>
 
     <script>
+        $(document).ready(function () {
+            $('.delete').deleteablerow('substitute_delete_user_by_id', {
+                confirmation: {
+                    modal: $('#confirmModal'),
+                    acceptButton: $('#modalAccept'),
+                    cancelButton: $('#modalCancel')
+                }
+            });
+        });
+    </script>
+
+    <script>
 
         /**
          * This object organizes the javascript used by this twig.
@@ -87,23 +99,22 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
             <hr>
-            <table width="100%" id="assistantTable">
+            <table width="100%" id="substitute-table">
                 <thead>
 
                 <tr>
-                    <th> Fornavn</th>
-                    <th> Etternavn</th>
-                    <th> Tlf</th>
-                    <th> E-post</th>
-                    <th> Epost</th>
-                    <th> Linje</th>
+                    <th data-sort="string"> Fornavn</th>
+                    <th data-sort="string"> Etternavn</th>
+                    <th data-sort="int"> Tlf</th>
+                    <th data-sort="string"> E-post</th>
+                    <th data-sort="string"> Linje</th>
 
-                    <th> År</th>
-                    <th> M</th>
-                    <th> T</th>
-                    <th> O</th>
-                    <th> T</th>
-                    <th> F</th>
+                    <th data-sort="int"> År</th>
+                    <th data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Mandag"> M</th>
+                    <th data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Tirsdag"> T</th>
+                    <th data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Onsdag"> O</th>
+                    <th data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Torsdag"> T</th>
+                    <th data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Fredag"> F</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -113,8 +124,31 @@
                 <tbody>
                     {% for sub in substitutes %}
                         <tr>
-                            <td>{{ sub.interview.user.firstName }}</td>
+                            <td>{{ sub.application.user.firstName }}</td>
+
+                            <td>{{ sub.application.user.lastName }}</td>
+
+                            <td>{{ sub.application.user.phone }}</td>
+
+                            <td>{{ sub.application.user.email }}</td>
+
+                            <td>{{ sub.application.user.fieldOfStudy }}</td>
+
+                            <td>{{ sub.application.yearOfStudy }}</td>
+
+                            <td>{{ sub.application.monday }}</td>
+
+                            <td>{{ sub.application.tuesday }}</td>
+
+                            <td>{{ sub.application.wednesday }}</td>
+
+                            <td>{{ sub.application.thursday }}</td>
+
+                            <td>{{ sub.application.friday }}</td>
+                            <td><a href="#" id="{{ sub.application.user.id }}" class="button tiny alert delete"><i
+                                            class="fa fa-trash-o"></i> Slett</a></td>
                         </tr>
+
                     {% endfor %}
                 </tbody>
             </table>

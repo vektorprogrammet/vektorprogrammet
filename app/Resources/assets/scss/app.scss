@@ -822,3 +822,10 @@ ul.alternatives {
 .hide {
   display: none;
 }
+
+#substitute-table{
+  th{
+    cursor:pointer;
+    user-select: none;
+  }
+}

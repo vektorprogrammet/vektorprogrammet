@@ -18,10 +18,10 @@ class Substitute
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Interview", inversedBy="interviewAnswers")
-     * @ORM\JoinColumn(name="interview_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\OneToOne(targetEntity="Application")
+     * @ORM\JoinColumn(name="application_id", referencedColumnName="id")
      */
-    private $interview;
+    private $application;
 
     /**
      * @return integer
@@ -40,19 +40,19 @@ class Substitute
     }
 
     /**
-     * @return Interview
+     * @return \AppBundle\Entity\application
      */
-    public function getInterview()
+    public function getApplication()
     {
-        return $this->interview;
+        return $this->application;
     }
 
     /**
-     * @param Interview $interview
+     * @param \AppBundle\Entity\application $application
      */
-    public function setInterview($interview)
+    public function setApplication($application)
     {
-        $this->interview = $interview;
+        $this->application = $application;
     }
 
 

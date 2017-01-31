@@ -22,12 +22,11 @@ class SubstituteRepository extends EntityRepository
     public function findSubstitutesByDepartment(Department $department){
         return $this->createQueryBuilder('substitute')
             ->select('substitute')
-            ->join('substitute.interview', 'interview')
-            ->join('interview.user', 'user')
-            ->join('user.fieldOfStudy', 'fos')
-            ->join('fos.department', 'd')
+            ->join('substitute.application', 'application')
+            ->join('application.semester','semester')
+            ->join('semester.department', 'd')
             ->where('d = :department')
-            ->setParameter('department', $department)
+            ->setParameter('department', $department->getId())
             ->getQuery()
             ->getResult();
     }

@@ -31,14 +31,38 @@ class SubstituteController extends Controller
         dump($substitutes);
         $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
 
-
-
+        dump($department->getId());
+        dump($substitutes);
         return $this->render('substitute/index.html.twig', array(
-            'substitutes' => $substitutes,
+        'substitutes' => $substitutes,
             'department' => $department,
             'semesters' => $semesters,
             'semester' => $semester,
         ));
     }
 
+    /*public function deleteSubstituteByIdAction(Substitute $substitute)
+    {
+        // If Non-ROLE_HIGHEST_ADMIN try to delete user in other department
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $substitute->user->getDepartment() !== $this->getUser()->getDepartment) {
+            throw new BadRequestHttpException();
+        }
+        try {
+            // This deletes the given user
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($user);
+            $em->flush();
+
+            return new JsonResponse(array(
+                'success' => true,
+            ));
+        } catch (\Exception $e) {
+            // Send a response back to AJAX
+            return new JsonResponse([
+                'success' => false,
+                'code' => $e->getCode(),
+                'cause' => 'Det er ikke mulig å slette brukeren. Vennligst kontakt IT-ansvarlig.',
+            ]);
+        }
+    }*/
 }
