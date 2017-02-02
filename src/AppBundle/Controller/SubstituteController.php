@@ -24,11 +24,15 @@ class SubstituteController extends Controller
         }
         $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findOneBy(array('id' => $request->get('semester')));
         if ($semester === null){
+
             $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
+
+            if($semester === null) {
+                $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findLatestSemesterByDepartmentId($department->getId());
+            }
         }
 
-        $substitutes = $this->getDoctrine()->getRepository('AppBundle:Substitute')->findSubstitutesByDepartment($department);
-        dump($substitutes);
+        $substitutes = $this->getDoctrine()->getRepository('AppBundle:Substitute')->findSubstitutesByDepartmentAndSemester($department, $semester);
         $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
 
         dump($department->getId());

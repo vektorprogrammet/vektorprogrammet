@@ -31,7 +31,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application1->setUser($this->getReference('user-10'));
         $application1->setPreviousParticipation(true);
         $application1->setYearOfStudy(1);
-        $application1->setSemester($this->getReference('semester-current'));
+        $application1->setSemester($this->getReference('semester-5'));
         $application1->setMonday('Bra');
         $application1->setTuesday('Ikke');
         $application1->setWednesday('Bra');
@@ -44,7 +44,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application2->setUser($this->getReference('user-11'));
         $application2->setPreviousParticipation(false);
         $application2->setYearOfStudy(1);
-        $application2->setSemester($this->getReference('semester-current'));
+        $application2->setSemester($this->getReference('semester-1'));
         $application2->setMonday('Bra');
         $application2->setTuesday('Bra');
         $application2->setWednesday('Ikke');
