@@ -121,6 +121,8 @@ class ProfileController extends Controller
             $em->persist($user);
             $em->flush();
 
+            $this->get('app.logger')->info("User $user activated with new user code");
+
             return $this->redirectToRoute('login_route');
         }
 
