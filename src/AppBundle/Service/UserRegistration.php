@@ -5,7 +5,6 @@ namespace AppBundle\Service;
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManager;
-use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 
 class UserRegistration

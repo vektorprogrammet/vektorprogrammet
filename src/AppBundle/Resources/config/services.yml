@@ -13,7 +13,7 @@ services:
 
   app.user.registration:
     class: AppBundle\Service\UserRegistration
-    arguments: ['@twig', '@doctrine.orm.default_entity_manager', '@mailer', '@logger']
+    arguments: ['@twig', '@doctrine.orm.default_entity_manager', '@mailer', '@app.logger']
 
   app.roles:
     class: AppBundle\Service\RoleManager
