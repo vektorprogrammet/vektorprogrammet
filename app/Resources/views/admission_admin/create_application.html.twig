@@ -113,11 +113,26 @@
 
                 </div>
 
+
+
+
+            </div>
+
+            <div class="row">
+                <div class="small-6 medium-4 large-2 columns large-offset-2">
+
+                    <div>
+                        {{ form_label(form.user.wantNewsletter) }}
+                        {{ form_errors(form.user.wantNewsletter) }}
+                        {{ form_widget(form.user.wantNewsletter, { 'attr': {'tabindex': '9'}}) }}
+                    </div>
+
+                </div>
             </div>
 
             <div class="row">
                 <div class="small-12 medium-6 large-4 text-center large-offset-4 columns">
-                    {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted', 'tabindex': '9'}}) }}
+                    {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted', 'tabindex': '10'}}) }}
                 </div>
             </div>
 
