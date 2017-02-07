@@ -8,18 +8,6 @@
     <script src="{{ asset('js/deleteablerow.js') }}"></script>
 
     <script>
-        $(document).ready(function () {
-            $('.delete').deleteablerow('substitute_delete_user_by_id', {
-                confirmation: {
-                    modal: $('#confirmModal'),
-                    acceptButton: $('#modalAccept'),
-                    cancelButton: $('#modalCancel')
-                }
-            });
-        });
-    </script>
-
-    <script>
 
         /**
          * This object organizes the javascript used by this twig.
@@ -39,8 +27,14 @@
                 Substitute.subTable.on("aftertablesort", Substitute.addSortArrows);
 
                 // Bind delete application functionality to each substitute delete button
-                Substitute.subTable.find(".delete").deleteablerow('substitute_delete', {
+                Substitute.subTable.find('.delete').deleteablerow('substitute_delete_substitute_by_id', {
+                    confirmation: {
+                        modal: $('#confirmModal'),
+                        acceptButton: $('#modalAccept'),
+                        cancelButton: $('#modalCancel')
+                    }
                 });
+
             },
 
             addSortArrows: function (event, data) {
@@ -145,7 +139,7 @@
                             <td>{{ sub.application.thursday }}</td>
 
                             <td>{{ sub.application.friday }}</td>
-                            <td><a href="#" id="{{ sub.application.user.id }}" class="button tiny alert delete"><i
+                            <td><a href="#" id="{{ sub.id }}" class="button tiny alert delete"><i
                                             class="fa fa-trash-o"></i> Slett</a></td>
                         </tr>
 
@@ -156,15 +150,12 @@
         </div>
     </div>
 
-
-
-
-
-
-
-
-
-
-
-
+    <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
+         aria-hidden="true" role="dialog">
+        <h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
+        <ul class="inline-list">
+            <a id="modalAccept" href="#" class="button tiny">Slett</a>
+            <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
+        </ul>
+    </div>
 {% endblock %}

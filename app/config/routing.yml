@@ -974,6 +974,15 @@ substitute_show_by_semester:
   department: \d+
   semester: \d+
 
+substitute_delete_substitute_by_id:
+ path: /kontrollpanel/vikar/slett/{id}
+ defaults: {_controller: AppBundle:Substitute:deleteSubstituteById }
+ methods: [POST]
+ requirements:
+    id: \d+
+ options:
+    expose: true
+
 
 ##########################################
 #                Certificate              #
