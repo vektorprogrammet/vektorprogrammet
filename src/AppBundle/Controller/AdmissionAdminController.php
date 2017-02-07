@@ -327,6 +327,8 @@ class AdmissionAdminController extends Controller
             'departmentId' => $department->getId(),
         ));
 
+        //TODO: Check if checkbox is checked here, act accordinglys
+
         $form->handleRequest($request);
 
         if ($form->isValid()) {
