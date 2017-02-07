@@ -1,0 +1,9 @@
+{% if step >= 4 and step < 5 %}
+    {% if data.totalAssistantsCount != 0 %}
+        <p>Fordelt {{ data.totalAssistantsCount }} assistenter</p>
+    {% endif %}
+{% elseif step >= 5 %}
+    <p>{{ data.totalAssistantsCount }} assistenter</p>
+    <p>{{ data.positionsCount }} stillinger</p>
+{% endif %}
+<p><a href="{{ path('schooladmin_show_users_of_department') }}">Fordel assistenter</a></p>

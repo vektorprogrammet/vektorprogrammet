@@ -1,0 +1,14 @@
+{% if data.admissionTimeLeft < 24 %}
+    {% if data.admissionTimeLeft == 1 %}
+        <p>{{ data.admissionTimeLeft }} time igjen</p>
+    {% else %}
+        <p>{{ data.admissionTimeLeft }} timer igjen</p>
+    {% endif %}
+{% else %}
+    {% if data.admissionTimeLeft // 24 == 1 %}
+        <p>{{ data.admissionTimeLeft // 24 }} dag igjen</p>
+    {% else %}
+        <p>{{ data.admissionTimeLeft // 24 }} dager igjen</p>
+    {% endif %}
+{% endif %}
+<p><a href="{{ path('admissionadmin_show') }}">{{ data.totalApplicationsCount }} søkere</a></p>

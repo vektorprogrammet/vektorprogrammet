@@ -1,0 +1,11 @@
+{% if step < 4 and step >= 3 and data.totalInterviewsCount != 0 %}
+    <p><a href="{{ path('admissionadmin_show', {'status':'interviewed'}) }}">Intervjuet {{ data.interviewedAssistantsCount }}/{{ data.totalInterviewsCount }}</a></p>
+{% elseif step >= 4 %}
+    <p><a href="{{ path('admissionadmin_show', {'status':'interviewed'}) }}">{{ data.totalInterviewsCount }}
+            intervjuer</a></p>
+{% endif %}
+<p><a href="{{ path('admissionadmin_show') }}">Fordel intervjuer</a></p>
+
+<p><a href="{{ path('admissionadmin_show', {'status':'assigned'}) }}">Utfør intervju</a></p>
+
+<p><a href="{{ path('teamadmin_show') }}">Opprett team-medlem</a></p>
