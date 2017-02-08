@@ -8,8 +8,6 @@
         {% include 'control_panel/step_by_step/steps/step2.html.twig' %}
     {% else %}
         <p>Opptaket er stengt</p>
-        {% if step >= 2 %}
-            <p><a href="{{ path('admissionadmin_show') }}">{{ data.totalApplicationsCount }} søkere</a></p>
-        {% endif %}
+        <p><a href="{{ path('admissionadmin_show') }}">{{ data.totalApplicationsCount }} søkere</a></p>
     {% endif %}
 </div>
