@@ -1,8 +1,6 @@
-{% if step >= 4 and step < 5 %}
-    {% if data.totalAssistantsCount != 0 %}
-        <p>Fordelt {{ data.totalAssistantsCount }} assistenter</p>
-    {% endif %}
-{% elseif step >= 5 %}
+{% if step == 4 %}
+    <p>Fordelt <a href="{{ path('participanthistory_show') }}">{{ data.totalAssistantsCount }} assistenter</a></p>
+{% elseif step > 4 %}
     <p>{{ data.totalAssistantsCount }} assistenter</p>
     <p>{{ data.positionsCount }} stillinger</p>
 {% endif %}
