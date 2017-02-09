@@ -1,13 +1,7 @@
-{% if data.timeToAdmissionStart < 24 %}
-    {% if data.timeToAdmissionStart == 1 %}
-        <p>{{ data.timeToAdmissionStart }} time til opptaket starter!!</p>
-    {% else %}
-        <p>{{ data.timeToAdmissionStart }} timer til opptaket starter!</p>
-    {% endif %}
+{% set hoursLeft = data.timeToAdmissionStart %}
+{% if hoursLeft < 24 %}
+    <p>{{ hoursLeft }} {{ hoursLeft == 1 ? 'time' : 'timer' }} til opptaket starter!</p>
 {% else %}
-    {% if timeToAdmissionStart // 24 == 1 %}
-        <p>{{ data.timeToAdmissionStart // 24 }} dag til opptaket starter!</p>
-    {% else %}
-        <p>{{ data.timeToAdmissionStart // 24 }} dager til opptaket starter!</p>
-    {% endif %}
+    {% set daysLeft = hoursLeft // 24 %}
+    <p>{{ daysLeft }} {{ daysLeft == 1 ? 'dag' : 'dager' }} til opptaket starter!</p>
 {% endif %}
