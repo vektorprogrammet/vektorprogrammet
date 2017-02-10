@@ -117,6 +117,16 @@
                         </div>
                     </div>
 
+                    {% if form.wantNewsletter is defined %}
+                    <div class="row">
+                            <div class="small-6 medium-4 large-2 columns large-offset-2">
+                                <div>
+                                    {{ form_row(form.wantNewsletter, { 'attr': {'tabindex': '10'}}) }}
+                                </div>
+                            </div>
+                    </div>
+                    {% endif %}
+
                     <div class="row">
                         <div class="text-center">
                             <br>
