@@ -49,12 +49,6 @@ class CreateUserOnApplicationType extends AbstractType
                         // Set the parameter to the department ID that the current user belongs to.
                         ->setParameter(1, $this->departmentId);
                 },
-            ))
-            ->add('wantNewsletter', CheckboxType::class, array(
-                'label' => 'Motta Nyhetsbrev?',
-                'attr' => array('checked' => 'checked'),
-                'mapped' => false,
-                'required' => false,
             ));
     }
 
