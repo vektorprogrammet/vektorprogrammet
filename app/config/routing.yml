@@ -975,6 +975,7 @@ substitute_show_by_semester:
   semester: \d+
 
 substitute_delete_substitute_by_id:
+ #TODO: Change name to substitute_delete
  path: /kontrollpanel/vikar/slett/{id}
  defaults: {_controller: AppBundle:Substitute:deleteSubstituteById }
  methods: [POST]
@@ -982,6 +983,13 @@ substitute_delete_substitute_by_id:
     id: \d+
  options:
     expose: true
+
+substitute_create_from_application:
+  path: /kontrollpanel/vikar/ny/{id}
+  defaults: {_controller: AppBundle:Substitute:createSubstituteFromApplication }
+  methods: [GET]
+  requirements:
+    department: \d+
 
 
 ##########################################
@@ -1010,7 +1018,7 @@ certificate_request:
 
 certificate_signature_picture_upload:
   path: /kontrollpanel/attest/signatur
-  defaults: {_controller: AppBundle:Signature:show}
+  defaults: {_controller: AppBundle:Signature:show }
   methods: [GET, POST]
 
 signature_image_show:

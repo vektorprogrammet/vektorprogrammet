@@ -825,7 +825,9 @@ ul.alternatives {
 
 #substitute-table{
   th{
-    cursor:pointer;
     user-select: none;
+  }
+  .clickable{
+    cursor:pointer;
   }
 }

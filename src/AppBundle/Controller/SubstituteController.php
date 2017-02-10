@@ -68,6 +68,28 @@ class SubstituteController extends Controller
         }
     }
 
+    public function createSubstituteFromApplicationAction(Application $application){
+        try {
+            $substitute = new Substitute();
+            $substitute->setApplication($application);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($substitute);
+            $em->flush();
+
+            return new JsonResponse(array(
+                'success' => true,
+            ));
+        } catch (\Exception $e) {
+            // Send a response back to AJAX
+            return new JsonResponse([
+                'success' => false,
+                'code' => $e->getCode(),
+                'cause' => 'Det er ikke mulig å opprette vikaren. Vennligst kontakt IT-ansvarlig.',
+            ]);
+        }
+    }
+
     /*public function deleteSubstituteByIdAction(Substitute $substitute)
     {
         // If Non-ROLE_HIGHEST_ADMIN try to delete user in other department

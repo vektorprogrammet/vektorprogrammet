@@ -97,20 +97,21 @@
                 <thead>
 
                 <tr>
-                    <th data-sort="string"> Fornavn</th>
-                    <th data-sort="string"> Etternavn</th>
-                    <th data-sort="int"> Tlf</th>
-                    <th data-sort="string"> E-post</th>
-                    <th data-sort="string"> Linje</th>
+                    <th data-sort="string" class="clickable"> Fornavn</th>
+                    <th data-sort="string" class="clickable"> Etternavn</th>
+                    <th data-sort="int" class="clickable"> Tlf</th>
+                    <th data-sort="string" class="clickable"> E-post</th>
+                    <th data-sort="string" class="clickable"> Linje</th>
 
-                    <th data-sort="int"> År</th>
-                    <th data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Mandag"> M</th>
-                    <th data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Tirsdag"> T</th>
-                    <th data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Onsdag"> O</th>
-                    <th data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Torsdag"> T</th>
-                    <th data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Fredag"> F</th>
-                    <th></th>
-                    <th></th>
+                    <th data-sort="int" class="clickable"> År</th>
+                    <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Mandag"> M</span></th>
+                    <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Tirsdag"> T</span></th>
+                    <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Onsdag"> O</span></th>
+                    <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Torsdag"> T</span></th>
+                    <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Fredag"> F</span></th>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <th></th>
+                    {% endif %}
                 </tr>
 
                 </thead>
@@ -136,11 +137,13 @@
 
                             <td>{{ sub.application.wednesday }}</td>
 
-                            <td>{{ sub.application.thursday }}</td>
+                        <td>{{ sub.application.thursday }}</td>
 
                             <td>{{ sub.application.friday }}</td>
-                            <td><a href="#" id="{{ sub.id }}" class="button tiny alert delete"><i
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <td><a href="#" id="{{ sub.id }}" class="button tiny alert delete"><i
                                             class="fa fa-trash-o"></i> Slett</a></td>
+                            {% endif %}
                         </tr>
 
                     {% endfor %}

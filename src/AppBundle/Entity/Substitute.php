@@ -15,7 +15,7 @@ class Substitute
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\OneToOne(targetEntity="Application")
