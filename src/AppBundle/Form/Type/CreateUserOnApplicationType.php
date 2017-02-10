@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -49,7 +50,7 @@ class CreateUserOnApplicationType extends AbstractType
                         ->setParameter(1, $this->departmentId);
                 },
             ))
-            ->add('wantNewsletter', 'checkbox', array(
+            ->add('wantNewsletter', CheckboxType::class, array(
                 'label' => 'Motta Nyhetsbrev?',
                 'attr' => array('checked' => 'checked'),
             ));
