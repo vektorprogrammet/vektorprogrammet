@@ -198,6 +198,19 @@ class ApplicationRepository extends EntityRepository
             ->getResult();
     }
 
+    public function findApplicationByTeamInterestAndSemester(Semester $semester)
+    {
+        return $this->createQueryBuilder('application')
+            ->select('application')
+            ->where('application.teamInterest = :teamInt')
+            ->andWhere('application.semester = :sem')
+            ->setParameter('teamInt', true)
+            ->setParameter('sem', $semester)
+            ->getQuery()
+            ->getResult();
+
+    }
+
     /* Disse brukes ikke lenger(?)
     public function getAllApplicants(){
 

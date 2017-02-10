@@ -55,7 +55,7 @@
                 <h3>Praktisk informasjon</h3>
                 <div class="row">
                     <div class="small-12 columns">
-                        <label class="question-label">Hvilke dager passer for deg?</label>
+                        <label class="question-label">Hvilke dager passer IKKE for deg?</label>
                         <table>
                             <thead>
                             <tr>
@@ -135,6 +135,21 @@
                         {% endfor %}
                     </p>
                 {% endfor %}
+
+                <div class="row">
+                    <div class="small-12 medium-12 large-9 columns">
+                        <label class="question-label">Kan du tenke deg å være med i organiseringen av Vektorprogrammet?
+                            Dette inneholder teamarbeid</label>
+                        <p>
+                            {% if application.teamInterest %}
+                                Ja
+                            {% else %}
+                                Nei
+                            {% endif %}
+                        </p>
+                    </div>
+
+                </div>
 
                 <h3>Evaluering</h3>
 

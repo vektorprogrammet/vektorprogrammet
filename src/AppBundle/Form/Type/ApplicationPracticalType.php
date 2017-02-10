@@ -75,6 +75,17 @@ class ApplicationPracticalType extends AbstractType
             'expanded' => true,
             'multiple' => false,
         ));
+
+        $builder->add('teamInterest', 'choice', array(
+        'label' => 'Kan du tenke deg å være med i organiseringen av Vektorprogrammet? Dette inneholder teamarbeid',
+        'choices' => array(
+            0 => 'Nei',
+            1 => 'Ja',
+        ),
+        'expanded' => true,
+        'multiple' => false,
+        ));
+
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
