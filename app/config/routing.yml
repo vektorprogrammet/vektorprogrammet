@@ -989,8 +989,9 @@ substitute_create_from_application:
   defaults: {_controller: AppBundle:Substitute:createSubstituteFromApplication }
   methods: [GET]
   requirements:
-    department: \d+
-
+    id: \d+
+  options:
+    expose: true
 
 ##########################################
 #                Certificate              #
