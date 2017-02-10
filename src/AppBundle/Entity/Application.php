@@ -108,8 +108,8 @@ class Application
     private $heardAboutFrom;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Interview", cascade={"persist"})
-     * @ORM\JoinColumn(name="interview_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\OneToOne(targetEntity="Interview", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      * @Assert\Valid
      */
     private $interview;
