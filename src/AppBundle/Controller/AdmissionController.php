@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Subscriber;
 use AppBundle\Entity\SupportTicket;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Event\SupportTicketCreatedEvent;
@@ -39,6 +40,27 @@ class AdmissionController extends Controller
 
             if ($application->getUser()->hasBeenAssistant()) {
                 return $this->redirectToRoute('admission_existing_user');
+            }
+
+            // If the checkbox is checked, we want to subscribe to a newsletter
+            if ($form['wantNewsletter']->getData()) {
+                $subscriber = new Subscriber();
+                $subscriber->setName($application->getUser()->getFullName());
+                $subscriber->setEmail($application->getUser()->getEmail());
+
+                // Find the relevant newsletter, based on what department the user is applying for
+                $newsletter = $em->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
+
+                // Check if the user is already subscribed
+                $alreadySubscribed = count($this->getDoctrine()->getRepository('AppBundle:Subscriber')->
+                    findByEmailAndNewsletter($subscriber->getEmail(), $newsletter)) > 0;
+
+                if (!$alreadySubscribed) {
+                    $subscriber->setNewsletter($newsletter);
+                    $manager = $this->getDoctrine()->getManager();
+                    $manager->persist($subscriber);
+                    $manager->flush();
+                }
             }
 
             $application->setSemester($semester);
