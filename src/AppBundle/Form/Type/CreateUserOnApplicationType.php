@@ -53,6 +53,8 @@ class CreateUserOnApplicationType extends AbstractType
             ->add('wantNewsletter', CheckboxType::class, array(
                 'label' => 'Motta Nyhetsbrev?',
                 'attr' => array('checked' => 'checked'),
+                'mapped' => false,
+                'required' => false,
             ));
     }
 
