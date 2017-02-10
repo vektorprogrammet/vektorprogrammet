@@ -128,23 +128,12 @@
                     </div>
                     {{ form_end(form) }}
 
-                    {% if teams is not empty %}
-                        <div class="row">
-                            <div class="text-center">
-                                <h4>Følgende team har også opptak</h4>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="small-12 medium-12 large-8 large-offset-2 columns text-center">
-                                {% for team in teams %}
-                                    <a href="{{ path('team_page',{id:team.id}) }}" class="button tiny team-link"> {{ team.name }}</a>
-                                {% endfor %}
-                            </div>
-                        </div>
+                   {% include "admission/team_application_widget.html.twig" with {'teams': teams} %}
                         <br>
-                     {% endif %}
+
 
                 {% else %}
+                    {% include "admission/team_application_widget.html.twig" with {'teams': teams} %}
                     <br>
                     <h4 class="text-center text-alert ">
                         Avdelingen {{ department.shortname }} har ikke aktiv søkeperiode.
