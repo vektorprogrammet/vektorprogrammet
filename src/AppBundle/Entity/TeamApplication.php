@@ -109,7 +109,7 @@ class TeamApplication
     }
 
     /**
-     * @return mixed
+     * @return Team
      */
     public function getTeam()
     {
@@ -117,15 +117,15 @@ class TeamApplication
     }
 
     /**
-     * @param mixed $team
+     * @param Team $team
      */
-    public function setTeam($team)
+    public function setTeam(Team $team)
     {
         $this->team = $team;
     }
 
     /**
-     * @return mixed
+     * @return FieldOfStudy
      */
     public function getFieldOfStudy()
     {

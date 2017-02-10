@@ -6,23 +6,21 @@
         </div>
     </div>
     <div class="row">
-        <div class="small-12 colums">
+        <div class="small-12 columns">
             <h1>Søk {{ team.name }}</h1>
         </div>
 
-        {{ form_start(form) }}
-        <div class="row">
-            <div class="small-8 columns">
-                {{ form_row(form.name) }}
-                {{ form_row(form.email) }}
-                {{ form_row(form.yearOfStudy) }}
-                {{ form_row(form.fieldOfStudy) }}
-                {{ form_row(form.motivationText) }}
-                {{ form_row(form.biography) }}
-                <button>Send</button>
-                <br>
-                <br>
-            </div>
+        <div class="small-8 columns">
+            {{ form_start(form) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.yearOfStudy) }}
+            {{ form_row(form.fieldOfStudy) }}
+            {{ form_row(form.motivationText) }}
+            {{ form_row(form.biography) }}
+            <button>Send</button>
+            <br>
+            <br>
         </div>
         {{ form_end(form) }}
     </div>
