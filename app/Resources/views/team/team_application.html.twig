@@ -10,8 +10,8 @@
             <h1>Søk {{ team.name }}</h1>
         </div>
 
+        {{ form_start(form) }}
         <div class="small-8 columns">
-            {{ form_start(form) }}
             {{ form_row(form.name) }}
             {{ form_row(form.email) }}
             {{ form_row(form.yearOfStudy) }}
