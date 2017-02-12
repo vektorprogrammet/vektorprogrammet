@@ -1,5 +1,34 @@
 {% extends 'admission_admin/layout.html.twig' %}
 
+{% block customScripts %}
+
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+    <script src="{{ asset('js/createablerow.js') }}"></script>
+    <script>
+        var ExistingApplications = {
+
+            // The html table containing the interviewed applicants
+            appTable: $("#application-table"),
+
+            onReady: function() {
+
+                ExistingApplications.appTable.find('.make-sub')
+                    .createablerow('substitute_create_from_application', {
+                        confirmation: {
+                            modal: $('#confirmModal'),
+                            acceptButton: $('#modalAccept'),
+                            cancelButton: $('#modalCancel'),
+                            message: $('#modalMessage')
+                        }
+                    });
+            }
+        };
+
+        $(document).ready(ExistingApplications.onReady);
+    </script>
+{% endblock %}
+
 {% block bulkNavigation %}
     {% if is_granted('ROLE_HIGHEST_ADMIN') %}
         <div class="small-6 medium-5 large-3 columns">
@@ -70,8 +99,9 @@
                             </a>
                         </td>
 
+                        {# Make applicant admin #}
                         <td>
-                            <a href="{{ path('substitute_create_from_application', { 'id': a.id }) }}" class="button tiny success"><i
+                            <a href="#" class="button tiny success make-sub" id="{{ a.id }}" name="{{ a.user.firstName }} {{ a.user.lastName }}"><i
                                         class="fa fa-user-secret"></i> Lag vikar</a>
                         </td>
 
@@ -99,5 +129,14 @@
             </tbody>
         </table>
     {% endif %}
+
+    <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
+         aria-hidden="true" role="dialog">
+        <h2 id="modalMessage">Vil du gjøre denne brukeren til vikar?</h2>
+        <ul class="inline-list">
+            <a id="modalAccept" href="#" class="button tiny success">Lag vikar</a>
+            <a id="modalCancel" href="#" class="button tiny cancel">Avbryt</a>
+        </ul>
+    </div>
 
 {% endblock %}

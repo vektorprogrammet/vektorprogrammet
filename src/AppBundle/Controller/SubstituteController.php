@@ -77,8 +77,13 @@ class SubstituteController extends Controller
             $em->persist($substitute);
             $em->flush();
 
+            dump($application);
+
             return new JsonResponse(array(
                 'success' => true,
+                'semester' => $application->getSemester()->getId(),
+                'department' => $application->getSemester()->getDepartment()->getId(),
+                'subId' => $substitute->getId(),
             ));
         } catch (\Exception $e) {
             // Send a response back to AJAX

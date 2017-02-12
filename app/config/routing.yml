@@ -985,9 +985,9 @@ substitute_delete_substitute_by_id:
     expose: true
 
 substitute_create_from_application:
-  path: /kontrollpanel/vikar/ny/{id}
+  path: /kontrollpanel/vikar/{id}
   defaults: {_controller: AppBundle:Substitute:createSubstituteFromApplication }
-  methods: [GET]
+  methods: [GET,POST]
   requirements:
     id: \d+
   options:

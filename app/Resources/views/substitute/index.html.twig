@@ -35,6 +35,8 @@
                     }
                 });
 
+                // Emphasise a row in the table if it belongs to a newly added sub
+                $("#row" + Substitute.getURLParameter("newsub")).addClass("emphasized-row");
             },
 
             addSortArrows: function (event, data) {
@@ -44,6 +46,10 @@
 
                 var arrow = data.direction === dir.ASC ? "asc" : "desc";
                 th.eq(data.column).append('<span class="arrow"> <i class="fa fa-sort-' + arrow + '"></i></span>');
+            },
+
+            getURLParameter: function (name) {
+                return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
             }
 
         };
@@ -118,7 +124,7 @@
 
                 <tbody>
                     {% for sub in substitutes %}
-                        <tr>
+                        <tr id="row{{ sub.id }}">
                             <td>{{ sub.application.user.firstName }}</td>
 
                             <td>{{ sub.application.user.lastName }}</td>
@@ -137,7 +143,7 @@
 
                             <td>{{ sub.application.wednesday }}</td>
 
-                        <td>{{ sub.application.thursday }}</td>
+                            <td>{{ sub.application.thursday }}</td>
 
                             <td>{{ sub.application.friday }}</td>
                             {% if is_granted('ROLE_SUPER_ADMIN') %}
@@ -157,8 +163,8 @@
          aria-hidden="true" role="dialog">
         <h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
         <ul class="inline-list">
-            <a id="modalAccept" href="#" class="button tiny">Slett</a>
-            <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
+            <a id="modalAccept" href="#" class="button tiny alert">Slett</a>
+            <a id="modalCancel" href="#" class="button tiny cancel">Avbryt</a>
         </ul>
     </div>
 {% endblock %}
