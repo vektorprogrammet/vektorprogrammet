@@ -44,7 +44,7 @@ class ApplicationType extends AbstractType
             ))
 
             ->add('wantNewsletter', CheckboxType::class, array(
-                'label' => 'Motta Nyhetsbrev?',
+                'label' => 'Send meg informasjon om opptak på epost',
                 'attr' => array('checked' => 'checked'),
                 'mapped' => false,
                 'required' => false,
