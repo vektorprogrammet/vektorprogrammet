@@ -69,7 +69,7 @@ class SurveyQuestion implements \JsonSerializable
     }
 
     /**
-     * @return SurveyAnswer
+     * @return SurveyAnswer[]
      */
     public function getAnswers()
     {
@@ -77,7 +77,7 @@ class SurveyQuestion implements \JsonSerializable
     }
 
     /**
-     * @param SurveyAnswer $answers
+     * @param SurveyAnswer[] $answers
      */
     public function setAnswers($answers)
     {

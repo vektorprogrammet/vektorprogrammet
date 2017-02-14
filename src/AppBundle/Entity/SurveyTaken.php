@@ -73,7 +73,7 @@ class SurveyTaken implements \JsonSerializable
     }
 
     /**
-     * @param SurveyAnswer $surveyAnswers
+     * @param SurveyAnswer[] $surveyAnswers
      */
     public function setSurveyAnswers($surveyAnswers)
     {
