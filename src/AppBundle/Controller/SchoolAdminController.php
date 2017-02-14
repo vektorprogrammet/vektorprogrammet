@@ -168,9 +168,11 @@ class SchoolAdminController extends Controller
         if ($form->isValid()) {
             // Set the department of the school
             $school->addDepartment($department);
+            $department->addSchool($school);
             // If valid insert into database
             $em = $this->getDoctrine()->getManager();
             $em->persist($school);
+            $em->persist($department);
             $em->flush();
 
             return $this->redirect($this->generateUrl('schooladmin_show'));

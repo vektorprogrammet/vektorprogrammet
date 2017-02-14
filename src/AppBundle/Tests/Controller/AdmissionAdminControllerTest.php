@@ -154,7 +154,7 @@ class AdmissionAdminControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
 
         // Assert that we only have the buttons for team
-        $this->assertEquals(2, $crawler->filter('td>a:contains("Les intervju")')->count());
+        $this->assertEquals(0, $crawler->filter('td>a:contains("Les intervju")')->count());
         $this->assertEquals(0, $crawler->filter('td>a:contains("Slett")')->count());
 
         // Assistant user

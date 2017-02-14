@@ -47,6 +47,18 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $users;
     }
 
+    public function findAllInActiveUsersByDepartment($department)
+    {
+        return $this->createQueryBuilder('user')
+            ->select('user')
+            ->join('user.fieldOfStudy', 'fos')
+            ->where('user.isActive = false')
+            ->andWhere('fos.department = :department')
+            ->setParameter('department', $department)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllUsersByDepartmentAndRoles($department, $roles)
     {
         return $this->createQueryBuilder('u')

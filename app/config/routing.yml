@@ -520,6 +520,13 @@ useradmin_create_user:
  requirements:
     id: \d+
 
+send_user_activation_mail:
+  path: /kontrollpanel/brukeradmin/sendaktivering/{id}
+  defaults: { _controller: AppBundle:UserAdmin:sendActivationMail }
+  methods: [POST]
+  requirements:
+    id: \d+
+
 ##########################################
 #              Semester                  #
 ##########################################
