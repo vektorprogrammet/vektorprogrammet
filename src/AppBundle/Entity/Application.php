@@ -421,7 +421,7 @@ class Application
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function wantsNewsletter()
     {
@@ -429,7 +429,7 @@ class Application
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isWantsNewsletter()
     {
@@ -437,7 +437,7 @@ class Application
     }
 
     /**
-     * @param boolean $wantsNewsletter
+     * @param bool $wantsNewsletter
      */
     public function setWantsNewsletter($wantsNewsletter)
     {
