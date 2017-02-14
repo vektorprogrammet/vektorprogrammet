@@ -42,11 +42,9 @@ class ApplicationType extends AbstractType
                 'distortion' => false,
                 'background_color' => [111, 206, 238],
             ))
-
-            ->add('wantNewsletter', CheckboxType::class, array(
+            ->add('wantsNewsletter', CheckboxType::class, array(
                 'label' => 'Send meg informasjon om opptak på epost',
                 'attr' => array('checked' => 'checked'),
-                'mapped' => false,
                 'required' => false,
             ));
     }

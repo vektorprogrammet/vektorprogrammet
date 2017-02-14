@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
-use AppBundle\Entity\Subscriber;
 use AppBundle\Entity\SupportTicket;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Event\SupportTicketCreatedEvent;
@@ -38,7 +37,7 @@ class AdmissionController extends Controller
 
         // If the department has no active newsletter, the checkbox is removed.
         if ($newsletter === null) {
-            $form->remove('wantNewsletter');
+            $form->remove('wantsNewsletter');
         }
 
         $form->handleRequest($request);
@@ -48,24 +47,6 @@ class AdmissionController extends Controller
 
             if ($application->getUser()->hasBeenAssistant()) {
                 return $this->redirectToRoute('admission_existing_user');
-            }
-
-            // If the checkbox is checked, we want to subscribe to a newsletter
-            if ($form['wantNewsletter']->getData() && $newsletter !== null) {
-                $subscriber = new Subscriber();
-                $subscriber->setName($application->getUser()->getFullName());
-                $subscriber->setEmail($application->getUser()->getEmail());
-
-                // Check if the user is already subscribed
-                $alreadySubscribed = count($this->getDoctrine()->getRepository('AppBundle:Subscriber')->
-                    findByEmailAndNewsletter($subscriber->getEmail(), $newsletter)) > 0;
-
-                if (!$alreadySubscribed) {
-                    $subscriber->setNewsletter($newsletter);
-                    $manager = $this->getDoctrine()->getManager();
-                    $manager->persist($subscriber);
-                    $manager->flush();
-                }
             }
 
             $application->setSemester($semester);
