@@ -1,0 +1,45 @@
+<table width="100%" class="test" id="table">
+
+    <thead>
+    <tr>
+        <th> Fornavn</th>
+        <th> Etternavn</th>
+        <th> Tlf</th>
+        <th> E-post</th>
+        <th> Linje</th>
+        <th> Avdeling</th>
+        <th></th>
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <th>Send aktiveringsmelding</th>
+        {% endif %}
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for u in users %}
+        <tr>
+            <td><a href='{{ path('specific_profile', { 'id': u.id }) }}'>{{ u.firstName }}</a></td>
+            <td> {{ u.lastName }} </td>
+            <td> {{ u.phone }} </td>
+            <td> {{ u.email }} </td>
+            <td> {{ u.fieldOfStudy }} </td>
+            <td> {{ u.fieldOfStudy.department }} </td>
+            <td><a href="#" id="{{ u.id }}" class="button tiny alert delete"><i
+                            class="fa fa-trash-o"></i> Slett</a></td>
+            {% if u.password is null and is_granted('ROLE_SUPER_ADMIN') %}
+                <td>
+                    <form method="POST"
+                          onsubmit="return confirm('Send aktiveringslenke til {{ u }}?')"
+                          action="{{ path('send_user_activation_mail', {id: u.id}) }}">
+                        <button type="submit"
+                                class="button tiny">{{ u.newUserCode is null ? 'Send' : 'Send på nytt' }}</button>
+                    </form>
+                </td>
+            {% else %}
+                <td><span class="text-success">Aktivert</span></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>

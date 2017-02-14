@@ -6,6 +6,7 @@ use AppBundle\Event\AssistantHistoryCreatedEvent;
 use AppBundle\Service\UserRegistration;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -20,11 +21,11 @@ class AssistantHistorySubscriber implements EventSubscriberInterface
      * ApplicationAdmissionSubscriber constructor.
      *
      * @param Session          $session
-     * @param Logger           $logger
+     * @param LoggerInterface  $logger
      * @param EntityManager    $em
      * @param UserRegistration $userRegistrationService
      */
-    public function __construct(Session $session, Logger $logger, EntityManager $em, UserRegistration $userRegistrationService)
+    public function __construct(Session $session, LoggerInterface $logger, EntityManager $em, UserRegistration $userRegistrationService)
     {
         $this->session = $session;
         $this->logger = $logger;

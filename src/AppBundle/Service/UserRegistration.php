@@ -5,7 +5,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManager;
-use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 
 class UserRegistration
 {
@@ -20,9 +20,9 @@ class UserRegistration
      * @param \Twig_Environment $twig
      * @param EntityManager     $em
      * @param \Swift_Mailer     $mailer
-     * @param Logger            $logger
+     * @param LoggerInterface   $logger
      */
-    public function __construct(\Twig_Environment $twig, EntityManager $em, \Swift_Mailer $mailer, Logger $logger)
+    public function __construct(\Twig_Environment $twig, EntityManager $em, \Swift_Mailer $mailer, LoggerInterface $logger)
     {
         $this->twig = $twig;
         $this->em = $em;
@@ -72,7 +72,7 @@ class UserRegistration
         return hash('sha512', $newUserCode, false);
     }
 
-    public function activateUserByNewUserCode(string $newUserCode): User
+    public function activateUserByNewUserCode(string $newUserCode)
     {
         $hashedNewUserCode = $this->getHashedCode($newUserCode);
         $user = $this->em->getRepository('AppBundle:User')->findUserByNewUserCode($hashedNewUserCode);

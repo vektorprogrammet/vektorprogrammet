@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "80554f87ca34479cab32ef556dfdfca9",
+    "hash": "aba540c7122a1bbf30240dda0c17ea87",
     "content-hash": "d11ad69329b4d2ff702be70e916139ee",
     "packages": [
         {
@@ -3508,16 +3508,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.15",
+            "version": "v2.8.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "3ec15b9379ebb0758e296d4193926a7b4121a964"
+                "reference": "c423a13a031c9388b7f9103f176b1872c00c7ffa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/3ec15b9379ebb0758e296d4193926a7b4121a964",
-                "reference": "3ec15b9379ebb0758e296d4193926a7b4121a964",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/c423a13a031c9388b7f9103f176b1872c00c7ffa",
+                "reference": "c423a13a031c9388b7f9103f176b1872c00c7ffa",
                 "shasum": ""
             },
             "require": {
@@ -3595,6 +3595,7 @@
                 "monolog/monolog": "~1.11",
                 "ocramius/proxy-manager": "~0.4|~1.0|~2.0",
                 "phpdocumentor/reflection": "^1.0.7",
+                "sensio/framework-extra-bundle": "^3.0.2",
                 "symfony/phpunit-bridge": "~3.2"
             },
             "type": "library",
@@ -3639,7 +3640,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2016-12-13 12:16:34"
+            "time": "2017-02-06 12:47:48"
         },
         {
             "name": "tfox/mpdf-port-bundle",

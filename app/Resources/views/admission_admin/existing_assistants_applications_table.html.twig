@@ -87,7 +87,7 @@
                             <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
                             </td>
                         {% endif %}
-                        <td>{{ a.user.firstName }}</td>
+                        <td><a href="{{ path('specific_profile', {id: a.user.id}) }}">{{ a.user.firstName }}</a></td>
                         <td>{{ a.user.lastName }}</td>
                         <td>{{ a.user.email }}</td>
                         <td>{{ a.doublePosition ? 'Dobbel':'Enkel' }}</td>
@@ -99,7 +99,7 @@
                             </a>
                         </td>
 
-                        {# Make applicant admin #}
+                        {# Make applicant substitute #}
                         <td>
                             <a href="#" class="button tiny success make-sub" id="{{ a.id }}" name="{{ a.user.firstName }} {{ a.user.lastName }}"><i
                                         class="fa fa-user-secret"></i> Lag vikar</a>

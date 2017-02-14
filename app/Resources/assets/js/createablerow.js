@@ -1,6 +1,5 @@
 /**
- * Adds functionality to make add a row of data to a table
- * provided route and data object.
+ * Don't use this. Gives you bad karma.
  */
 
 (function ($) {
@@ -8,8 +7,6 @@
         // Options and data are optional.
         // An id given by the button id is always sent together
         // with the rest of data's contents
-
-        // TODO, Warning: has not yet been tested with a provided data parameter
 
         if(!data){
             var data = {};
@@ -21,7 +18,7 @@
                 modal: null,
                 acceptButton: null,
                 cancelButton: null,
-                jsConfirmDialogMessage: 'Er du sikker på at du vil legget til denne raden?',
+                jsConfirmDialogMessage: 'Er du sikker på at du vil legge til denne raden?',
                 disable: false
             }
         }, options);
