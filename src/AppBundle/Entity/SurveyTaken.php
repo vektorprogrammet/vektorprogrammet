@@ -73,7 +73,7 @@ class SurveyTaken implements \JsonSerializable
     }
 
     /**
-     * @param mixed $surveyAnswers
+     * @param SurveyAnswer $surveyAnswers
      */
     public function setSurveyAnswers($surveyAnswers)
     {
@@ -81,7 +81,7 @@ class SurveyTaken implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId()
     {
@@ -89,7 +89,7 @@ class SurveyTaken implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return School
      */
     public function getSchool()
     {
@@ -97,7 +97,7 @@ class SurveyTaken implements \JsonSerializable
     }
 
     /**
-     * @param mixed $school
+     * @param School $school
      */
     public function setSchool($school)
     {
@@ -113,7 +113,7 @@ class SurveyTaken implements \JsonSerializable
     }
 
     /**
-     * @param mixed $survey
+     * @param Survey $survey
      */
     public function setSurvey($survey)
     {
@@ -121,7 +121,7 @@ class SurveyTaken implements \JsonSerializable
     }
 
     /**
-     * @param mixed $time
+     * @param \DateTime $time
      */
     public function setTime($time)
     {

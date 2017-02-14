@@ -61,7 +61,7 @@ class Survey implements \JsonSerializable
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -69,7 +69,7 @@ class Survey implements \JsonSerializable
     }
 
     /**
-     * @param mixed $semester
+     * @param Semester $semester
      */
     public function setSemester($semester)
     {
@@ -77,7 +77,7 @@ class Survey implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -85,7 +85,7 @@ class Survey implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return Semester
      */
     public function getSemester()
     {
