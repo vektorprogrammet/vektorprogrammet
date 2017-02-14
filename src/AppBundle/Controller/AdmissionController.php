@@ -37,7 +37,7 @@ class AdmissionController extends Controller
         $newsletter = $em->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
 
         // If the department has no active newsletter, the checkbox is removed.
-        if ($newsletter == null) {
+        if ($newsletter === null) {
             $form->remove('wantNewsletter');
         }
 
@@ -51,7 +51,7 @@ class AdmissionController extends Controller
             }
 
             // If the checkbox is checked, we want to subscribe to a newsletter
-            if ($form['wantNewsletter']->getData() && $newsletter != null) {
+            if ($form['wantNewsletter']->getData() && $newsletter !== null) {
                 $subscriber = new Subscriber();
                 $subscriber->setName($application->getUser()->getFullName());
                 $subscriber->setEmail($application->getUser()->getEmail());
