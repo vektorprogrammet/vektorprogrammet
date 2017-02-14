@@ -967,18 +967,17 @@ substitute_show:
    methods: [GET]
 
 substitute_show_by_department:
-  path: /kontrollpanel/vikar/{department}
-  defaults: {_controller: AppBundle:Substitute:show }
+  path: /kontrollpanel/vikar/avdeling/{department}
+  defaults: {_controller: AppBundle:Substitute:showByDepartment }
   methods: [GET]
   requirements:
     department: \d+
 
 substitute_show_by_semester:
- path: /kontrollpanel/statistikk/opptak/{department}/{semester}
- defaults: { _controller: AppBundle:Substitute:show }
+ path: /kontrollpanel/vikar/semester/{semester}
+ defaults: { _controller: AppBundle:Substitute:showBySemester }
  methods: [GET]
  requirements:
-  department: \d+
   semester: \d+
 
 substitute_delete_substitute_by_id:
@@ -999,7 +998,7 @@ substitute_create_from_application:
     id: \d+
   options:
     expose: true
-blæh
+
 ##########################################
 #                Certificate              #
 ##########################################

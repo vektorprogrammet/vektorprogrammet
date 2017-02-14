@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity\Repository;
 
-use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Substitute;
 use Doctrine\ORM\EntityRepository;
@@ -16,22 +15,16 @@ use Doctrine\ORM\EntityRepository;
 class SubstituteRepository extends EntityRepository
 {
     /**
-     * @param Department $department
-     *
      * @param Semester $semester
      *
      * @return Substitute[]
      */
-    public function findSubstitutesByDepartmentAndSemester(Department $department, Semester $semester){
+    public function findSubstitutesBySemester(Semester $semester){
         return $this->createQueryBuilder('substitute')
             ->select('substitute')
             ->join('substitute.application', 'application')
-            ->join('application.semester','s')
-            ->join('s.department', 'd')
-            ->where('d = :department')
-            ->andwhere('s = :semester')
-            ->setParameter('department', $department->getId())
-            ->setParameter('semester', $semester->getId())
+            ->where('application.semester = :semester')
+            ->setParameter('semester', $semester)
             ->getQuery()
             ->getResult();
     }

@@ -74,19 +74,18 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
             <ul class="inline-list">
-            {% include 'common/department_dropdown.html.twig' with {'pathForDepartment': 'substitute_show_by_department', 'departmentParameterName': 'department', 'currentDepartment': department} %}
+            {% include 'common/department_dropdown.html.twig' with {'pathForDepartment': 'substitute_show_by_department', 'departmentParameterName': 'department', 'currentDepartment': semester.department} %}
 
             <li>
                 <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown"
-                   aria-expanded="false">{% if semester != NULL %}{{ semester }}{% else %}Semester{% endif %} <i
+                   aria-expanded="false">{% if semester != NULL %}{{ semester.name }}{% else %}Semester{% endif %} <i
                             class="fa fa-caret-down"></i></a>
                 <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1"
                     aria-hidden="true" aria-autoclose="false" tabindex="-1">
 
                     {% for s in semesters %}
 
-                        <li><a href="{{ path(app.request.attributes.get('_route'),
-                            app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'semester': s.id })) }}">{{ s.name }}</a>
+                        <li><a href="{{ path("substitute_show_by_semester", { semester: s.id }) }}"> {{ s.name }}</a>
                         </li>
 
                     {% endfor %}

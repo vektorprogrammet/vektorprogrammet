@@ -18,29 +18,27 @@ use AppBundle\Form\Type\SubstituteType;
  */
 class SubstituteController extends Controller
 {
-    public function showAction(Request $request, Department $department = null){
-        if ($department === null){
-            $department = $this->getUser()->getDepartment();
-        }
-        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findOneBy(array('id' => $request->get('semester')));
-        if ($semester === null){
+    public function showAction(){
+        $department = $this->getUser()->getDepartment();
+        return $this->showByDepartmentAction($department);
+    }
 
-            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
-
-            if($semester === null) {
-                $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findLatestSemesterByDepartmentId($department->getId());
-            }
-        }
-
-        $substitutes = $this->getDoctrine()->getRepository('AppBundle:Substitute')->findSubstitutesByDepartmentAndSemester($department, $semester);
-        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
-
+    public function showBySemesterAction(Semester $semester) {
+        $substitutes = $this->getDoctrine()->getRepository('AppBundle:Substitute')->findSubstitutesBySemester($semester);
+        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($semester->getDepartment());
         return $this->render('substitute/index.html.twig', array(
-        'substitutes' => $substitutes,
-            'department' => $department,
+            'substitutes' => $substitutes,
             'semesters' => $semesters,
             'semester' => $semester,
         ));
+    }
+
+    public function showByDepartmentAction(Department $department) {
+        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
+        if($semester === null) {
+            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findLatestSemesterByDepartmentId($department);
+        }
+        return $this->showBySemesterAction($semester);
     }
 
     public function deleteSubstituteByIdAction(Substitute $substitute)
@@ -69,30 +67,14 @@ class SubstituteController extends Controller
     }
 
     public function createSubstituteFromApplicationAction(Application $application){
-        try {
-            $substitute = new Substitute();
-            $substitute->setApplication($application);
+        $substitute = new Substitute();
+        $substitute->setApplication($application);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($substitute);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($substitute);
+        $em->flush();
 
-            dump($application);
-
-            return new JsonResponse(array(
-                'success' => true,
-                'semester' => $application->getSemester()->getId(),
-                'department' => $application->getSemester()->getDepartment()->getId(),
-                'subId' => $substitute->getId(),
-            ));
-        } catch (\Exception $e) {
-            // Send a response back to AJAX
-            return new JsonResponse([
-                'success' => false,
-                'code' => $e->getCode(),
-                'cause' => 'Det er ikke mulig å opprette vikaren. Vennligst kontakt IT-ansvarlig.',
-            ]);
-        }
+        return $this->redirectToRoute('substitute_show_by_semester', array('semester' => $application->getSemester()->getId()));
     }
 
     /*public function deleteSubstituteByIdAction(Substitute $substitute)
