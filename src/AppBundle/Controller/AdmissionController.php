@@ -2,17 +2,17 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Application;
+use AppBundle\Entity\Department;
 use AppBundle\Entity\Subscriber;
 use AppBundle\Entity\SupportTicket;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Event\SupportTicketCreatedEvent;
 use AppBundle\Form\Type\ApplicationExistingUserType;
+use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Form\Type\SupportTicketType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Form\Type\ApplicationType;
-use AppBundle\Entity\Application;
-use AppBundle\Entity\Department;
 
 class AdmissionController extends Controller
 {
@@ -33,6 +33,14 @@ class AdmissionController extends Controller
             'departmentId' => $department->getId(),
         ));
 
+        // Find the relevant newsletter, based on what department the user is applying for
+        $newsletter = $em->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
+
+        // If the department has no active newsletter, the checkbox is removed.
+        if ($newsletter == null) {
+            $form->remove('wantNewsletter');
+        }
+
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -43,13 +51,10 @@ class AdmissionController extends Controller
             }
 
             // If the checkbox is checked, we want to subscribe to a newsletter
-            if ($form['wantNewsletter']->getData()) {
+            if ($form['wantNewsletter']->getData() && $newsletter != null) {
                 $subscriber = new Subscriber();
                 $subscriber->setName($application->getUser()->getFullName());
                 $subscriber->setEmail($application->getUser()->getEmail());
-
-                // Find the relevant newsletter, based on what department the user is applying for
-                $newsletter = $em->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
 
                 // Check if the user is already subscribed
                 $alreadySubscribed = count($this->getDoctrine()->getRepository('AppBundle:Subscriber')->
