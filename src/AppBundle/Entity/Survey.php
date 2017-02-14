@@ -45,7 +45,7 @@ class Survey implements \JsonSerializable
     protected $totalAnswered;
 
     /**
-     * @return integer
+     * @return int
      */
     public function getTotalAnswered()
     {
@@ -53,7 +53,7 @@ class Survey implements \JsonSerializable
     }
 
     /**
-     * @param integer $totalAnswered
+     * @param int $totalAnswered
      */
     public function setTotalAnswered($totalAnswered)
     {
