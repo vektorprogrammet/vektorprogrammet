@@ -15,9 +15,9 @@ class NewsletterManager
     /**
      * LetterManager constructor.
      *
-     * @param \Swift_Mailer $mailer
+     * @param \Swift_Mailer     $mailer
      * @param \Twig_Environment $twig
-     * @param EntityManager $em
+     * @param EntityManager     $em
      */
     public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, EntityManager $em)
     {

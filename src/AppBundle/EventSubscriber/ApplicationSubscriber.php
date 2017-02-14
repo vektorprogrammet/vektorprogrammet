@@ -25,13 +25,13 @@ class ApplicationSubscriber implements EventSubscriberInterface
     /**
      * ApplicationAdmissionSubscriber constructor.
      *
-     * @param \Swift_Mailer $mailer
+     * @param \Swift_Mailer     $mailer
      * @param \Twig_Environment $twig
-     * @param Session $session
-     * @param LoggerInterface $logger
-     * @param SlackMessenger $slackMessenger
-     * @param ApplicationData $applicationData
-     * @param RouterInterface $router
+     * @param Session           $session
+     * @param LoggerInterface   $logger
+     * @param SlackMessenger    $slackMessenger
+     * @param ApplicationData   $applicationData
+     * @param RouterInterface   $router
      * @param NewsletterManager $newsletterManager
      */
     public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, SlackMessenger $slackMessenger, ApplicationData $applicationData, RouterInterface $router, NewsletterManager $newsletterManager)
