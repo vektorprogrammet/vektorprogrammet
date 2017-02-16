@@ -62,7 +62,7 @@ class Newsletter
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId()
     {
@@ -70,7 +70,7 @@ class Newsletter
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      */
     public function setId($id)
     {
@@ -78,7 +78,7 @@ class Newsletter
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -86,7 +86,7 @@ class Newsletter
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {

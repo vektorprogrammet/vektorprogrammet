@@ -216,7 +216,7 @@ class Semester
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getYear()
     {
@@ -224,7 +224,7 @@ class Semester
     }
 
     /**
-     * @param mixed $year
+     * @param string $year
      */
     public function setYear($year)
     {
@@ -232,7 +232,7 @@ class Semester
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getSemesterTime()
     {
@@ -240,7 +240,7 @@ class Semester
     }
 
     /**
-     * @param mixed $semesterTime
+     * @param string $semesterTime
      */
     public function setSemesterTime($semesterTime)
     {
