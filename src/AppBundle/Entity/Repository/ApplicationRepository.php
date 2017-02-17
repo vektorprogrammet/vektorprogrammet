@@ -389,7 +389,7 @@ class ApplicationRepository extends EntityRepository
      *
      * @return Application[]
      */
-    public function findSubstitutesBySemester (Semester $semester)
+    public function findSubstitutesBySemester(Semester $semester)
     {
         return $this->createQueryBuilder('Application')
             ->select('Application')

@@ -406,7 +406,7 @@ class Application
     }
 
     /**
-     * @param boolean $substitute
+     * @param bool $substitute
      */
     public function setSubstitute($substitute)
     {

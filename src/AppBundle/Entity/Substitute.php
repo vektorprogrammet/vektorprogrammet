@@ -24,7 +24,7 @@ class Substitute
     private $application;
 
     /**
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -32,7 +32,7 @@ class Substitute
     }
 
     /**
-     * @param integer $id
+     * @param int $id
      */
     public function setId($id)
     {
@@ -54,6 +54,4 @@ class Substitute
     {
         $this->application = $application;
     }
-
-
 }

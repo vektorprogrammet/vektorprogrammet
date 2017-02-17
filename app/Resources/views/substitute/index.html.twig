@@ -1,63 +1,5 @@
 {% extends 'adminBase.html.twig' %}
 
-{% block customScripts %}
-
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-    <script src="{{ asset('js/stupidtable.js') }}"></script>
-    <script src="{{ asset('js/deleteablerow.js') }}"></script>
-
-    <script>
-
-        /**
-         * This object organizes the javascript used by this twig.
-         *
-         * The onReady function is called when the document is ready.
-         */
-        var Substitute = {
-            // The html table containing the substitute assistants
-            subTable: $("#substitute-table"),
-
-            onReady: function () {
-                // Add sort functionality to the table containing the substitute assistants
-                Substitute.subTable.stupidtable();
-
-                // Add arrows after sorting the table
-                Substitute.subTable.on("aftertablesort", Substitute.addSortArrows);
-
-                // Bind delete application functionality to each substitute delete button
-                Substitute.subTable.find('.delete').deleteablerow('substitute_delete_substitute_by_id', {
-                    confirmation: {
-                        modal: $('#confirmModal'),
-                        acceptButton: $('#modalAccept'),
-                        cancelButton: $('#modalCancel')
-                    }
-                });
-
-                // Emphasise a row in the table if it belongs to a newly added sub
-                $("#row" + Substitute.getURLParameter("newsub")).addClass("emphasized-row");
-            },
-
-            addSortArrows: function (event, data) {
-                var th = $(this).find("th");
-                th.find(".arrow").remove();
-                var dir = $.fn.stupidtable.dir;
-
-                var arrow = data.direction === dir.ASC ? "asc" : "desc";
-                th.eq(data.column).append('<span class="arrow"> <i class="fa fa-sort-' + arrow + '"></i></span>');
-            },
-
-            getURLParameter: function (name) {
-                return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
-            }
-
-        };
-
-        $(document).ready(Substitute.onReady);
-    </script>
-
-{% endblock %}
-
 {% block title %}
     Vikar
 {% endblock %}
@@ -122,7 +64,7 @@
 
                 <tbody>
                     {% for sub in substitutes %}
-                        <tr id="row{{ sub.id }}">
+                        <tr>
                             <td>{{ sub.user.firstName }}</td>
 
                             <td>{{ sub.user.lastName }}</td>
@@ -145,24 +87,23 @@
 
                             <td>{{ sub.friday }}</td>
                             {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                <td><a href="#" id="{{ sub.id }}" class="button tiny alert delete"><i
-                                            class="fa fa-trash-o"></i> Slett</a></td>
+                                <td>
+                                    <form method="POST"
+                                          onsubmit="return confirm('Vil du virkelig fjerne vikarstillingen til {{ sub.user.firstName }} {{ sub.user.lastName }}?')"
+                                          action="{{ path('substitute_delete', { id: sub.id }) }}">
+                                        <button type="submit"
+                                                class="button tiny alert">
+                                            <i class="fa fa-user-secret"></i>
+                                                Slett
+                                        </button>
+                                    </form>
+                                </td>
                             {% endif %}
                         </tr>
-
                     {% endfor %}
                 </tbody>
             </table>
             </hr>
         </div>
-    </div>
-
-    <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
-         aria-hidden="true" role="dialog">
-        <h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
-        <ul class="inline-list">
-            <a id="modalAccept" href="#" class="button tiny alert">Slett</a>
-            <a id="modalCancel" href="#" class="button tiny cancel">Avbryt</a>
-        </ul>
     </div>
 {% endblock %}

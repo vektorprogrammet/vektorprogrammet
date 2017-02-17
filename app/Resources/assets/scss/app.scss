@@ -831,20 +831,3 @@ ul.alternatives {
     cursor:pointer;
   }
 }
-
-@keyFrames green-fade {
-  from { background-color: $vektor-blue; }
-  to { background-color: inherit; }
-}
-
-.emphasized-row{
-    animation-name: green-fade;
-    animation-duration: 2s;
-}
-
-a.cancel{
-  background-color:#888;
-  &:hover{
-    background-color:#666;
-  }
-}

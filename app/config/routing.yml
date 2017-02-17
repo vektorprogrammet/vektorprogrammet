@@ -980,15 +980,12 @@ substitute_show_by_semester:
  requirements:
   semester: \d+
 
-substitute_delete_substitute_by_id:
- #TODO: Change name to substitute_delete
+substitute_delete:
  path: /kontrollpanel/vikar/slett/{id}
  defaults: {_controller: AppBundle:Substitute:deleteSubstituteById }
  methods: [GET,POST]
  requirements:
     id: \d+
- options:
-    expose: true
 
 substitute_create_from_application:
   path: /kontrollpanel/vikar/{id}
@@ -996,8 +993,6 @@ substitute_create_from_application:
   methods: [GET,POST]
   requirements:
     id: \d+
-  options:
-    expose: true
 
 ##########################################
 #                Certificate              #
