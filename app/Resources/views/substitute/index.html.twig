@@ -15,7 +15,6 @@
          * The onReady function is called when the document is ready.
          */
         var Substitute = {
-
             // The html table containing the substitute assistants
             subTable: $("#substitute-table"),
 
@@ -124,27 +123,27 @@
                 <tbody>
                     {% for sub in substitutes %}
                         <tr id="row{{ sub.id }}">
-                            <td>{{ sub.application.user.firstName }}</td>
+                            <td>{{ sub.user.firstName }}</td>
 
-                            <td>{{ sub.application.user.lastName }}</td>
+                            <td>{{ sub.user.lastName }}</td>
 
-                            <td>{{ sub.application.user.phone }}</td>
+                            <td>{{ sub.user.phone }}</td>
 
-                            <td>{{ sub.application.user.email }}</td>
+                            <td>{{ sub.user.email }}</td>
 
-                            <td>{{ sub.application.user.fieldOfStudy }}</td>
+                            <td>{{ sub.user.fieldOfStudy }}</td>
 
-                            <td>{{ sub.application.yearOfStudy }}</td>
+                            <td>{{ sub.yearOfStudy }}</td>
 
-                            <td>{{ sub.application.monday }}</td>
+                            <td>{{ sub.monday }}</td>
 
-                            <td>{{ sub.application.tuesday }}</td>
+                            <td>{{ sub.tuesday }}</td>
 
-                            <td>{{ sub.application.wednesday }}</td>
+                            <td>{{ sub.wednesday }}</td>
 
-                            <td>{{ sub.application.thursday }}</td>
+                            <td>{{ sub.thursday }}</td>
 
-                            <td>{{ sub.application.friday }}</td>
+                            <td>{{ sub.friday }}</td>
                             {% if is_granted('ROLE_SUPER_ADMIN') %}
                                 <td><a href="#" id="{{ sub.id }}" class="button tiny alert delete"><i
                                             class="fa fa-trash-o"></i> Slett</a></td>

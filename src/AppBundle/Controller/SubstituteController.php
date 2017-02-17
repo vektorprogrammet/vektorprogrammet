@@ -6,11 +6,10 @@ use AppBundle\Entity\Semester;
 use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Entity\Department;
-use AppBundle\Entity\Substitute;
 use AppBundle\Entity\Application;
-use AppBundle\Form\Type\SubstituteType;
 
 /**
  * SubstituteController is the controller responsible for substitute assistants,
@@ -24,8 +23,10 @@ class SubstituteController extends Controller
     }
 
     public function showBySemesterAction(Semester $semester) {
-        $substitutes = $this->getDoctrine()->getRepository('AppBundle:Substitute')->findSubstitutesBySemester($semester);
+        //$substitutes = $this->getDoctrine()->getRepository('AppBundle:Substitute')->findSubstitutesBySemester($semester);
+        $substitutes = $this->getDoctrine()->getRepository('AppBundle:Application')->findSubstitutesBySemester($semester);
         $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($semester->getDepartment());
+        dump($substitutes);
         return $this->render('substitute/index.html.twig', array(
             'substitutes' => $substitutes,
             'semesters' => $semesters,
@@ -41,37 +42,31 @@ class SubstituteController extends Controller
         return $this->showBySemesterAction($semester);
     }
 
-    public function deleteSubstituteByIdAction(Substitute $substitute)
+    public function deleteSubstituteByIdAction(Application $application)
     {
-        // If Non-ROLE_HIGHEST_ADMIN try to delete user in other department
-        if (!$this->isGranted(Roles::TEAM_LEADER) && $substitute->user->getDepartment() !== $this->getUser()->getDepartment) {
-            throw new BadRequestHttpException();
-        }
-        try {
-            // This deletes the given substitute
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($substitute);
-            $em->flush();
+        $application->setSubstitute(false);
 
-            return new JsonResponse(array(
-                'success' => true,
-            ));
-        } catch (\Exception $e) {
-            // Send a response back to AJAX
-            return new JsonResponse([
-            'success' => false,
-            'code' => $e->getCode(),
-            'cause' => 'Det er ikke mulig å slette vikaren. Vennligst kontakt IT-ansvarlig.',
-            ]);
-        }
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($application);
+        $em->flush();
+
+        return new JsonResponse(array(
+            'success' => true,
+        ));
     }
 
     public function createSubstituteFromApplicationAction(Application $application){
-        $substitute = new Substitute();
-        $substitute->setApplication($application);
+        if($application->isSubstitute()){
+            # Brukeren er allerede vikar error:
+            # TODO Hva slags error? 400?
+            $response = new Response();
+            $response->setStatusCode(500);
+            return $response;
+        }
+        $application->setSubstitute(true);
 
         $em = $this->getDoctrine()->getManager();
-        $em->persist($substitute);
+        $em->persist($application);
         $em->flush();
 
         return $this->redirectToRoute('substitute_show_by_semester', array('semester' => $application->getSemester()->getId()));

@@ -80,7 +80,6 @@
             </thead>
 
             <tbody>
-            <form id="bulk" name="application">
                 {% for a in applicants %}
                     <tr id="{{ a.id }}">
                         {% if is_granted('ROLE_HIGHEST_ADMIN') %}
@@ -101,9 +100,25 @@
 
                         {# Make applicant substitute #}
                         <td>
+                            <form method="POST"
+                                  onsubmit="return confirm('Lag vikar av {{ a.user.firstName }} {{ a.user.lastName }}?')"
+                                  action="{{ path('substitute_create_from_application', { id: a.id }) }}">
+                                <button type="submit"
+                                        {% if a.substitute %} disabled {% endif %}
+                                        class="button tiny">
+                                    <i class="fa fa-user-secret"></i>
+                                    {% if a.substitute %}
+                                        Allerede vikar
+                                    {% else %}
+                                        Lag vikar
+                                    {% endif %}
+                                </button>
+                            </form>
+                        </td>
+                        {#<td>
                             <a href="#" class="button tiny success make-sub" id="{{ a.id }}" name="{{ a.user.firstName }} {{ a.user.lastName }}"><i
                                         class="fa fa-user-secret"></i> Lag vikar</a>
-                        </td>
+                        </td>}#}
 
                         {# Add the delete interview and application dropdown button, given the correct permissions #}
                         {% if is_granted('ROLE_HIGHEST_ADMIN') %}
@@ -125,7 +140,6 @@
                         {% endif %}
                     </tr>
                 {% endfor %}
-            </form>
             </tbody>
         </table>
     {% endif %}

@@ -113,10 +113,7 @@ class Application
      * @Assert\Valid
      */
     private $interview;
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isSubstitute;
+
     /**
      * ApplicationInfo constructor.
      */
@@ -401,19 +398,18 @@ class Application
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function isSubstitute()
     {
-        return $this->isSubstitute;
+        return $this->substitute;
     }
 
     /**
-     * @param mixed $isSubstitute
+     * @param boolean $substitute
      */
-    public function setSubstitute($isSubstitute)
+    public function setSubstitute($substitute)
     {
-        $this->isSubstitute = $isSubstitute;
+        $this->substitute = $substitute;
     }
-
 }

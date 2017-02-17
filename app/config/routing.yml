@@ -984,7 +984,7 @@ substitute_delete_substitute_by_id:
  #TODO: Change name to substitute_delete
  path: /kontrollpanel/vikar/slett/{id}
  defaults: {_controller: AppBundle:Substitute:deleteSubstituteById }
- methods: [POST]
+ methods: [GET,POST]
  requirements:
     id: \d+
  options:

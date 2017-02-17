@@ -130,9 +130,14 @@
                               onsubmit="return confirm('Lag vikar av {{ a.user.firstName }} {{ a.user.lastName }}?')"
                               action="{{ path('substitute_create_from_application', { id: a.id }) }}">
                             <button type="submit"
+                                    {% if a.substitute %} disabled {% endif %}
                                     class="button tiny">
                                 <i class="fa fa-user-secret"></i>
+                                {% if a.substitute %}
+                                Allerede vikar
+                                {% else %}
                                 Lag vikar
+                                {% endif %}
                             </button>
                         </form>
                     </td>
