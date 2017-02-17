@@ -85,7 +85,6 @@ class ApplicationPracticalType extends AbstractType
         'expanded' => true,
         'multiple' => false,
         ));
-
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

@@ -86,6 +86,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application3->setEnglish(true);
         $application3->setPreferredGroup('Bolk 1');
         $application3->setDoublePosition(true);
+        $application3->setTeamInterest(true);
 
         $manager->persist($application3);
 

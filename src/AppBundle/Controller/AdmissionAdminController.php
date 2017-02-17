@@ -371,7 +371,7 @@ class AdmissionAdminController extends Controller
         ));
     }
 
-    public function showTeamInterestAction(Request $request, $departmentId=null)
+    public function showTeamInterestAction(Request $request, $departmentId = null)
     {
         $user = $this->getUser();
 
@@ -392,9 +392,9 @@ class AdmissionAdminController extends Controller
             $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterId);
         }
         $teamInterest = $this->getDoctrine()->getRepository('AppBundle:Application')->findApplicationByTeamInterestAndSemester($semester);
-        return $this->render('admission_admin/teamInterest.html.twig', array (
+
+        return $this->render('admission_admin/teamInterest.html.twig', array(
             'teamInterest' => $teamInterest,
         ));
     }
 }
-

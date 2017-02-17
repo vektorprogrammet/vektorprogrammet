@@ -108,7 +108,7 @@ class Application
     private $heardAboutFrom;
 
     /**
-     * @ORM\Column(type="boolean", options={"default"=false})
+     * @ORM\Column(type="boolean")
      * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
      */
     private $teamInterest;
@@ -132,6 +132,7 @@ class Application
         $this->doublePosition = false;
         $this->previousParticipation = false;
         $this->english = false;
+        $this->teamInterest = false;
     }
 
     /**
@@ -435,5 +436,4 @@ class Application
     {
         $this->teamInterest = $teamInterest;
     }
-
 }

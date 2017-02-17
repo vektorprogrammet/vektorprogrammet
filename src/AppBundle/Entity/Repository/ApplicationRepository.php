@@ -208,7 +208,6 @@ class ApplicationRepository extends EntityRepository
             ->setParameter('sem', $semester)
             ->getQuery()
             ->getResult();
-
     }
 
     /* Disse brukes ikke lenger(?)
