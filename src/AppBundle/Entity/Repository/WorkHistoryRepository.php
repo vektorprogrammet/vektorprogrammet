@@ -138,28 +138,18 @@ class WorkHistoryRepository extends EntityRepository
             ->getResult();
     }
 
+    /**
+     * @param $department
+     *
+     * @return WorkHistory[]
+     */
     public function findWorkHistoriesByDepartment($department)
     {
-        $today = new \DateTime('now');
-        $workHistories = $this->getEntityManager()->createQuery('
-			SELECT whistory
-			FROM AppBundle:WorkHistory whistory
-			JOIN whistory.team team
-			JOIN whistory.startSemester startSemester
-			LEFT JOIN whistory.endSemester endSemester
-			WHERE (startSemester.semesterStartDate < :today
-			AND endSemester.semesterEndDate > :today)
-			OR (startSemester.semesterStartDate < :today
-			AND endSemester.semesterEndDate is NULL)
-			OR (startSemester.semesterStartDate < :today
-			AND endSemester.semesterEndDate < :today)
-			AND team.department = :department
-
-			')
-            ->setParameter('today', $today)
+        return $this->createQueryBuilder('wh')
+            ->join('wh.team', 'team')
+            ->where('team.department = :department')
             ->setParameter('department', $department)
+            ->getQuery()
             ->getResult();
-
-        return $workHistories;
     }
 }

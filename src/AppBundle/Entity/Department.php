@@ -57,6 +57,7 @@ class Department
 
     /**
      * @ORM\OneToMany(targetEntity="Semester", mappedBy="department",  cascade={"remove"})
+     * @ORM\OrderBy({"admissionStartDate" = "DESC"})
      **/
     private $semesters;
 
@@ -80,6 +81,38 @@ class Department
         $this->fieldOfStudy = new \Doctrine\Common\Collections\ArrayCollection();
         $this->semesters = new \Doctrine\Common\Collections\ArrayCollection();
         $this->teams = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * @return Semester|null
+     */
+    public function getCurrentOrLatestSemester()
+    {
+        /** @var Semester[] $semesters */
+        $semesters = $this->getSemesters()->toArray();
+
+        /** @var Semester $latestSemester */
+        $latestSemester = null;
+
+        $now = new \DateTime();
+
+        foreach ($semesters as $semester) {
+            if ($now > $semester->getAdmissionStartDate() && $now < $semester->getAdmissionEndDate()) {
+                return $semester;
+            }
+
+            if ($latestSemester === null ||
+                ($semester->getAdmissionStartDate() < $now && $semester->getAdmissionStartDate() > $latestSemester->getAdmissionStartDate())
+            ) {
+                $latestSemester = $semester;
+            }
+        }
+
+        if ($latestSemester === null && count($semesters) > 0) {
+            $latestSemester = current($semesters);
+        }
+
+        return $latestSemester;
     }
 
     /**
@@ -298,11 +331,11 @@ class Department
     /**
      * Add teams.
      *
-     * @param \AppBundle\Entity\Team $teams
+     * @param Team $teams
      *
      * @return Department
      */
-    public function addTeam(\AppBundle\Entity\Team $teams)
+    public function addTeam(Team $teams)
     {
         $this->teams[] = $teams;
 

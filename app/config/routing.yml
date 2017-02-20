@@ -282,9 +282,9 @@ participanthistory_show:
  methods: [GET]
 
 
-participanthistory_show_by_department:
+participanthistory_show_by_semester:
  path:   /kontrollpanel/deltakerhistorikk/{id}
- defaults: { _controller: AppBundle:ParticipantHistory:show }
+ defaults: { _controller: AppBundle:ParticipantHistory:showBySemester }
  methods: [GET]
 
 assistant_history_delete:
