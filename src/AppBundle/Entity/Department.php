@@ -107,10 +107,6 @@ class Department
             }
         }
 
-        if ($latestSemester === null && count($semesters) > 0) {
-            $latestSemester = current($semesters);
-        }
-
         return $latestSemester;
     }
 
