@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -77,10 +78,10 @@ class Department
      */
     public function __construct()
     {
-        $this->schools = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->fieldOfStudy = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->semesters = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->teams = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->schools = new ArrayCollection();
+        $this->fieldOfStudy = new ArrayCollection();
+        $this->semesters = new ArrayCollection();
+        $this->teams = new ArrayCollection();
     }
 
     /**
@@ -91,19 +92,17 @@ class Department
         /** @var Semester[] $semesters */
         $semesters = $this->getSemesters()->toArray();
 
-        /** @var Semester $latestSemester */
-        $latestSemester = null;
+        $latestSemester = current($semesters);
 
         $now = new \DateTime();
 
         foreach ($semesters as $semester) {
             if ($now > $semester->getAdmissionStartDate() && $now < $semester->getAdmissionEndDate()) {
+                // Current semester
                 return $semester;
             }
 
-            if ($latestSemester === null ||
-                ($semester->getAdmissionStartDate() < $now && $semester->getAdmissionStartDate() > $latestSemester->getAdmissionStartDate())
-            ) {
+            if ($semester->getAdmissionStartDate() < $now && $semester->getAdmissionStartDate() > $latestSemester->getAdmissionStartDate()) {
                 $latestSemester = $semester;
             }
         }
@@ -176,11 +175,11 @@ class Department
     /**
      * Add fieldOfStudy.
      *
-     * @param \AppBundle\Entity\FieldOfStudy $fieldOfStudy
+     * @param FieldOfStudy $fieldOfStudy
      *
      * @return Department
      */
-    public function addFieldOfStudy(\AppBundle\Entity\FieldOfStudy $fieldOfStudy)
+    public function addFieldOfStudy(FieldOfStudy $fieldOfStudy)
     {
         $this->fieldOfStudy[] = $fieldOfStudy;
 
@@ -190,9 +189,9 @@ class Department
     /**
      * Remove fieldOfStudy.
      *
-     * @param \AppBundle\Entity\FieldOfStudy $fieldOfStudy
+     * @param FieldOfStudy $fieldOfStudy
      */
-    public function removeFieldOfStudy(\AppBundle\Entity\FieldOfStudy $fieldOfStudy)
+    public function removeFieldOfStudy(FieldOfStudy $fieldOfStudy)
     {
         $this->fieldOfStudy->removeElement($fieldOfStudy);
     }
@@ -200,7 +199,7 @@ class Department
     /**
      * Get fieldOfStudy.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection
      */
     public function getFieldOfStudy()
     {
@@ -239,11 +238,11 @@ class Department
     /**
      * Add schools.
      *
-     * @param \AppBundle\Entity\School $schools
+     * @param School $schools
      *
      * @return Department
      */
-    public function addSchool(\AppBundle\Entity\School $schools)
+    public function addSchool(School $schools)
     {
         $this->schools[] = $schools;
 
@@ -253,9 +252,9 @@ class Department
     /**
      * Remove schools.
      *
-     * @param \AppBundle\Entity\School $schools
+     * @param School $schools
      */
-    public function removeSchool(\AppBundle\Entity\School $schools)
+    public function removeSchool(School $schools)
     {
         $this->schools->removeElement($schools);
     }
@@ -263,7 +262,7 @@ class Department
     /**
      * Get schools.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection
      */
     public function getSchools()
     {
@@ -297,11 +296,11 @@ class Department
     /**
      * Add semesters.
      *
-     * @param \AppBundle\Entity\Semester $semesters
+     * @param Semester $semesters
      *
      * @return Department
      */
-    public function addSemester(\AppBundle\Entity\Semester $semesters)
+    public function addSemester(Semester $semesters)
     {
         $this->semesters[] = $semesters;
 
@@ -311,9 +310,9 @@ class Department
     /**
      * Remove semesters.
      *
-     * @param \AppBundle\Entity\Semester $semesters
+     * @param Semester $semesters
      */
-    public function removeSemester(\AppBundle\Entity\Semester $semesters)
+    public function removeSemester(Semester $semesters)
     {
         $this->semesters->removeElement($semesters);
     }
@@ -321,7 +320,7 @@ class Department
     /**
      * Get semesters.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection
      */
     public function getSemesters()
     {
@@ -345,9 +344,9 @@ class Department
     /**
      * Remove teams.
      *
-     * @param \AppBundle\Entity\Team $teams
+     * @param Team $teams
      */
-    public function removeTeam(\AppBundle\Entity\Team $teams)
+    public function removeTeam(Team $teams)
     {
         $this->teams->removeElement($teams);
     }
@@ -355,7 +354,7 @@ class Department
     /**
      * Get teams.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection
      */
     public function getTeams()
     {
