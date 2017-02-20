@@ -4,9 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Application;
 use AppBundle\Form\Type\ApplicationType;
-use AppBundle\Form\Type\NewUserType;
 use AppBundle\Role\Roles;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -179,52 +177,20 @@ class AdmissionAdminController extends Controller
      * Deletes the given application.
      * This method is intended to be called by an Ajax request.
      *
-     * @param $id
+     * @param Application $application
      *
      * @return JsonResponse
      */
-    public function deleteApplicationByIdAction($id)
+    public function deleteApplicationByIdAction(Application $application)
     {
-        try {
-            if ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')) {
+        $em = $this->getDoctrine()->getManager();
 
-                // This deletes the given application
-                $this->deleteApplicationById($id);
-
-                // AJAX response
-                $response['success'] = true;
-            } else {
-                // Send a respons to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Ikke tilstrekkelige rettigheter.';
-            }
-        } catch (\Exception $e) {
-            // Send a respons to AJAX
-            return new JsonResponse([
-                'success' => false,
-                'code' => $e->getCode(),
-                'cause' => 'En exception oppstod. Vennligst kontakt IT-ansvarlig.',
-                // 'cause' => $e->getMessage(), if you want to see the exception message.
-            ]);
-        }
-
-        // Response to ajax
-        return new JsonResponse($response);
-    }
-
-    private function deleteApplicationById($id)
-    {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $application = $this->getDoctrine()->getRepository('AppBundle:Application')->find($id);
-        if ($application->getInterview() !== null) {
-            $em->remove($application->getInterview());
-            $em->flush();
-        }
         $em->remove($application);
         $em->flush();
 
-        return true;
+        return new JsonResponse([
+            'success' => true,
+        ]);
     }
 
     /**
@@ -237,90 +203,32 @@ class AdmissionAdminController extends Controller
      */
     public function bulkDeleteApplicationAction(Request $request)
     {
-        try {
-            // Get the ids from the form
-            $applicationIds = $request->request->get('application')['id'];
+        // Get the ids from the form
+        $applicationIds = $request->request->get('application')['id'];
 
-            if ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')) {
-                // Delete the applications
-                foreach ($applicationIds as $applicationId) {
-                    $this->deleteApplicationById($applicationId);
-                }
-                // AJAX response
-                $response['success'] = true;
-            } else {
-                // Send a respons to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Ikke tilstrekkelige rettigheter.';
+        $em = $this->getDoctrine()->getManager();
+
+        // Delete the applications
+        foreach ($applicationIds as $id) {
+            $application = $this->getDoctrine()->getRepository('AppBundle:Application')->find($id);
+
+            if ($application !== null) {
+                $em->remove($application);
             }
-        } catch (\Exception $e) {
-            // Send a respons to AJAX
-            return new JsonResponse([
-                'success' => false,
-                'cause' => 'En exception oppstod. Vennligst kontakt IT-ansvarlig.',
-                // 'cause' => $e->getMessage(), if you want to see the exception message.
-            ]);
         }
 
-        // Response to ajax
-        return new JsonResponse($response);
-    }
+        $em->flush();
 
-    /**
-     * @param Request $request
-     * @param $id
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function createNewUserAction(Request $request, $id)
-    {
-        try {
-            $repositoryUser = $this->getDoctrine()->getRepository('AppBundle:User');
-            $hashedNewUserCode = hash('sha512', $id, false);
-            $user = $repositoryUser->findUserByNewUserCode($hashedNewUserCode);
-
-            $form = $this->createForm(new NewUserType(), $user);
-
-            $form->handleRequest($request);
-
-            //Checks if the form is valid
-            if ($form->isValid()) {
-                //Deletes the newUserCode, so it can only be used one time.
-                $user->setNewUserCode(null);
-
-                $user->setActive('1');
-
-                //Updates the database
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
-
-                //renders the login page, with a feedback message so that the user knows that the new password was stored.
-                $feedback = 'Logg inn med din nye bruker';
-
-                return $this->render('Login/login.html.twig', array('message' => $feedback, 'error' => null, 'last_username' => $user->getUsername()));
-            }
-            //Render reset_password twig with the form.
-            return $this->render('new_user/create_new_user.html.twig', array(
-                'form' => $form->createView(),
-                'user' => $user,
-            ));
-        } catch (\Exception $e) {
-            return $this->redirect('/');
-        }
+        return new JsonResponse([
+            'success' => true,
+        ]);
     }
 
     public function createApplicationAction(Request $request)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-        $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
-        try {
-            $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
-        } catch (NoResultException $e) {
-            return $this->redirect($this->generateUrl('semesteradmin_show'));
-        } catch (NonUniqueResultException $e) {
-            return $this->redirect($this->generateUrl('semesteradmin_show'));
-        }
+        $em = $this->getDoctrine()->getManager();
+        $department = $this->getUser()->getDepartment();
+        $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
 
         $application = new Application();
         $form = $this->createForm(ApplicationType::class, $application, array(
@@ -338,19 +246,9 @@ class AdmissionAdminController extends Controller
             $em->persist($application);
             $em->flush();
 
-            // Send a confirmation email with a copy of the application
-            $emailMessage = \Swift_Message::newInstance()
-                ->setSubject('Søknad - Vektorassistent')
-                ->setFrom(array($department->getEmail() => 'Vektorprogrammet'))
-                ->setTo($application->getUser()->getEmail())
-                ->setBody($this->renderView('admission/admission_email.html.twig', array('application' => $application)));
-            $this->get('mailer')->send($emailMessage);
+            $this->addFlash('admission-notice', 'Søknaden er registrert.');
 
-            $request->getSession()->getFlashBag()->add('admission-notice', 'Søknaden er registrert.');
-
-            return $this->redirect($this->generateUrl('register_applicant', array(
-                'id' => $department->getId(),
-            )));
+            return $this->redirectToRoute('register_applicant', array('id' => $department->getId()));
         }
 
         return $this->render(':admission_admin:create_application.html.twig', array(
