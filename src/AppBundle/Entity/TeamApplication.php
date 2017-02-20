@@ -61,7 +61,7 @@ class TeamApplication
     private $team;
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId()
     {
@@ -69,7 +69,7 @@ class TeamApplication
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      */
     public function setId($id)
     {
@@ -77,7 +77,7 @@ class TeamApplication
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -85,7 +85,7 @@ class TeamApplication
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -93,7 +93,7 @@ class TeamApplication
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEmail()
     {
@@ -101,7 +101,7 @@ class TeamApplication
     }
 
     /**
-     * @param mixed $email
+     * @param string $email
      */
     public function setEmail($email)
     {
@@ -125,7 +125,7 @@ class TeamApplication
     }
 
     /**
-     * @return FieldOfStudy
+     * @return string
      */
     public function getFieldOfStudy()
     {
@@ -133,7 +133,7 @@ class TeamApplication
     }
 
     /**
-     * @param mixed $fieldOfStudy
+     * @param string $fieldOfStudy
      */
     public function setFieldOfStudy($fieldOfStudy)
     {
@@ -141,7 +141,7 @@ class TeamApplication
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getMotivationText()
     {
@@ -149,7 +149,7 @@ class TeamApplication
     }
 
     /**
-     * @param mixed $motivationText
+     * @param string $motivationText
      */
     public function setMotivationText($motivationText)
     {
@@ -157,7 +157,7 @@ class TeamApplication
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBiography()
     {
@@ -165,7 +165,7 @@ class TeamApplication
     }
 
     /**
-     * @param mixed $biography
+     * @param string $biography
      */
     public function setBiography($biography)
     {
@@ -173,7 +173,7 @@ class TeamApplication
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getYearOfStudy()
     {
@@ -181,7 +181,7 @@ class TeamApplication
     }
 
     /**
-     * @param mixed $yearOfStudy
+     * @param string $yearOfStudy
      */
     public function setYearOfStudy($yearOfStudy)
     {
