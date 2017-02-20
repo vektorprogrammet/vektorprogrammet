@@ -19,26 +19,26 @@ class TeamApplication
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      * @Assert\Email(message="Ikke gyldig e-post.")
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     private $fieldOfStudy;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     private $yearOfStudy;
@@ -119,7 +119,7 @@ class TeamApplication
     /**
      * @param Team $team
      */
-    public function setTeam($team)
+    public function setTeam(Team $team)
     {
         $this->team = $team;
     }
