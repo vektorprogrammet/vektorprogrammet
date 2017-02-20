@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class ParticipantHistoryController extends Controller
@@ -19,6 +20,10 @@ class ParticipantHistoryController extends Controller
     public function showBySemesterAction(Semester $semester)
     {
         $department = $semester->getDepartment();
+
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $department !== $this->getUser()->getDepartment()) {
+            throw $this->createAccessDeniedException();
+        }
 
         // Find all work histories by department
         $workHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findWorkHistoriesByDepartment($department);

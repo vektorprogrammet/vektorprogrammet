@@ -90,8 +90,8 @@
                 <ul class="inline-list">
                     {# Semester dropdown #}
                     {% include "common/semester_dropdown.html.twig" with {
-                    'pathForSemester': 'participanthistory_show',
-                    'semesterParameterName': 'semester',
+                    'pathForSemester': 'participanthistory_show_by_semester',
+                    'semesterParameterName': 'id',
                     'currentSemester': semester} %}
                 </ul>
             {% endif %}
