@@ -12,18 +12,7 @@ class AdmissionControllerTest extends WebTestCase
 
     public function testCreateWantNewsletterApplication()
     {
-
-        // Admin
-        $clientAdmin = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        // Go to AdmissionTestList
-        $crawler = $clientAdmin->request('GET', '/kontrollpanel/nyhetsbrev/4');
-        $this->assertTrue($clientAdmin->getResponse()->isSuccessful());
-
-        $applicationsBefore = $crawler->filter('tr')->count();
+        $applicationsBefore = $this->countRows();
 
         // Submit an application
         // User
@@ -46,10 +35,7 @@ class AdmissionControllerTest extends WebTestCase
 
         $clientAnonymous->submit($form);
 
-        $crawler = $clientAdmin->request('GET', '/kontrollpanel/nyhetsbrev/4');
-        $this->assertTrue($clientAdmin->getResponse()->isSuccessful());
-
-        $applicationsAfter = $crawler->filter('tr')->count();
+        $applicationsAfter = $this->countRows();
 
         $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
         \TestDataManager::restoreDatabase();
@@ -57,19 +43,7 @@ class AdmissionControllerTest extends WebTestCase
 
     public function testCreateNotWantNewsletterApplication()
     {
-
-        // Admin
-        $clientAdmin = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        // Go to AdmissionTestList
-        $crawler = $clientAdmin->request('GET', '/kontrollpanel/nyhetsbrev/4');
-        $this->assertTrue($clientAdmin->getResponse()->isSuccessful());
-
-        $applicationsBefore = $crawler->filter('tr')->count();
-
+        $applicationsBefore = $this->countRows();
         // Submit an application
         // User
         $clientAnonymous = static::createClient();
@@ -91,12 +65,24 @@ class AdmissionControllerTest extends WebTestCase
 
         $clientAnonymous->submit($form);
 
-        $crawler = $clientAdmin->request('GET', '/kontrollpanel/nyhetsbrev/4');
-        $this->assertTrue($clientAdmin->getResponse()->isSuccessful());
-
-        $applicationsAfter = $crawler->filter('tr')->count();
+        $applicationsAfter = $this->countRows();
 
         $this->assertEquals($applicationsBefore, $applicationsAfter);
         \TestDataManager::restoreDatabase();
+    }
+
+    private function countRows()
+    {
+        // Admin
+        $clientAdmin = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'admin',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        // Go to AdmissionTestList
+        $crawler = $clientAdmin->request('GET', '/kontrollpanel/nyhetsbrev/4');
+        $this->assertTrue($clientAdmin->getResponse()->isSuccessful());
+
+        return $crawler->filter('tr')->count();
     }
 }
