@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamApplication;
+use AppBundle\Event\TeamApplicationCreatedEvent;
 use AppBundle\Form\Type\TeamApplicationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,33 +67,7 @@ class TeamApplicationController extends Controller
             $manager->persist($teamApplication);
             $manager->flush();
 
-            if ($team->getEmail() !== null) {
-                $emailMessage = \Swift_Message::newInstance()
-                    ->setSubject('Ny søker til '.$team->getName())
-                    ->setFrom(array('vektorprogrammet@vektorprogrammet.no' => 'Vektorprogrammet'))
-                    ->setReplyTo($teamApplication->getEmail())
-                    ->setTo($team->getEmail())
-                    ->setBody($this->renderView('team/application_email.html.twig', array(
-                        'application' => $teamApplication,
-                    )));
-                $this->get('mailer')->send($emailMessage);
-
-                $email = $team->getEmail();
-            } else {
-                $email = $team->getDepartment()->getEmail();
-            }
-
-            $receipt = \Swift_Message::newInstance()
-                ->setSubject('Søknad til '.$team->getName().' mottatt')
-                ->setFrom(array($email => $team->getName()))
-                ->setReplyTo($email)
-                ->setTo($teamApplication->getEmail())
-                ->setBody($this->renderView('team/receipt.html.twig', array(
-                    'team' => $team,
-                )));
-            $this->get('mailer')->send($receipt);
-
-            $this->addFlash('success', 'Søknaden er mottatt.');
+            $this->get('event_dispatcher')->dispatch(TeamApplicationCreatedEvent::NAME, new TeamApplicationCreatedEvent($teamApplication));
 
             return $this->redirectToRoute('team_application',  array('id' => $team->getId()));
         }

@@ -1,0 +1,7 @@
+{% set hoursLeft = data.timeToAdmissionStart %}
+{% if hoursLeft < 24 %}
+    <p>{{ hoursLeft }} {{ hoursLeft == 1 ? 'time' : 'timer' }} til opptaket starter!</p>
+{% else %}
+    {% set daysLeft = hoursLeft // 24 %}
+    <p>{{ daysLeft }} {{ daysLeft == 1 ? 'dag' : 'dager' }} til opptaket starter!</p>
+{% endif %}

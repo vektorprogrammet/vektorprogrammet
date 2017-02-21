@@ -10,7 +10,12 @@ class SbsData extends ApplicationData
     {
         return $this->getApplicationCount();
     }
-    public function getStep(): float
+    public function getStep(): int
+    {
+        return (int) $this->getStepProgress();
+    }
+
+    public function getStepProgress(): float
     {
         return $this->determineCurrentStep($this->getSemester(), $this->getInterviewedAssistantsCount(), $this->getAssignedInterviewsCount(), $this->getTotalAssistantsCount());
     }
@@ -28,6 +33,9 @@ class SbsData extends ApplicationData
     private function determineCurrentStep(Semester $semester, $interviewedAssistantsCount, $assignedInterviewsCount, $totalAssistantsCount): float
     {
         $today = new \DateTime();
+        if ($today > $semester->getSemesterEndDate()) {
+            return 0;
+        }
 
         // Step 1 Wait for admission to start
         if ($this->admissionHasNotStartedYet($semester)) {

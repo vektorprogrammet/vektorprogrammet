@@ -1,0 +1,7 @@
+{% if step == 4 %}
+    <p>Fordelt <a href="{{ path('participanthistory_show') }}">{{ data.totalAssistantsCount }} assistenter</a></p>
+{% elseif step > 4 %}
+    <p>{{ data.totalAssistantsCount }} assistenter</p>
+    <p>{{ data.positionsCount }} stillinger</p>
+{% endif %}
+<p><a href="{{ path('schooladmin_show_users_of_department') }}">Fordel assistenter</a></p>

@@ -1,0 +1,17 @@
+<div class="row progressbar">
+    {% for i in 0..4 %}
+        <div class="small-2 columns{{ loop.first ? ' small-offset-1' }}{{ loop.last ? ' end' }} step"
+             id="step-progressbar-{{ i }}">
+            <div class="ring-container">
+                <div class="outer-ring">
+                    <div class="inner-ring"></div>
+                </div>
+            </div>
+            <div class="line-container">
+                <div class="line">
+                    <div class="fill"></div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

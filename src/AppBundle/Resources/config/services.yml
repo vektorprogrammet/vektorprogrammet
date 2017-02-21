@@ -73,6 +73,12 @@ services:
     tags:
       - { name: kernel.event_subscriber }
 
+  app.team_application_subscriber:
+    class: AppBundle\EventSubscriber\TeamApplicationSubscriber
+    arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@router']
+    tags:
+      - { name: kernel.event_subscriber }
+
   app.assistant_history_subscriber:
     class: AppBundle\EventSubscriber\AssistantHistorySubscriber
     arguments: ['@session', '@logger', '@doctrine.orm.default_entity_manager', '@app.user.registration']

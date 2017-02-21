@@ -73,7 +73,7 @@ class SchoolCapacity
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getMonday()
     {
@@ -81,7 +81,7 @@ class SchoolCapacity
     }
 
     /**
-     * @param mixed $monday
+     * @param int $monday
      */
     public function setMonday($monday)
     {
@@ -89,7 +89,7 @@ class SchoolCapacity
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getTuesday()
     {
@@ -97,7 +97,7 @@ class SchoolCapacity
     }
 
     /**
-     * @param mixed $tuesday
+     * @param int $tuesday
      */
     public function setTuesday($tuesday)
     {
@@ -105,7 +105,7 @@ class SchoolCapacity
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getWednesday()
     {
@@ -113,7 +113,7 @@ class SchoolCapacity
     }
 
     /**
-     * @param mixed $wednesday
+     * @param int $wednesday
      */
     public function setWednesday($wednesday)
     {
@@ -121,7 +121,7 @@ class SchoolCapacity
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getThursday()
     {
@@ -129,7 +129,7 @@ class SchoolCapacity
     }
 
     /**
-     * @param mixed $thursday
+     * @param int $thursday
      */
     public function setThursday($thursday)
     {
@@ -137,7 +137,7 @@ class SchoolCapacity
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getFriday()
     {
@@ -145,7 +145,7 @@ class SchoolCapacity
     }
 
     /**
-     * @param mixed $friday
+     * @param int $friday
      */
     public function setFriday($friday)
     {
@@ -153,7 +153,7 @@ class SchoolCapacity
     }
 
     /**
-     * @return mixed
+     * @return School
      */
     public function getSchool()
     {
@@ -161,7 +161,7 @@ class SchoolCapacity
     }
 
     /**
-     * @param mixed $school
+     * @param School $school
      */
     public function setSchool($school)
     {
@@ -169,7 +169,7 @@ class SchoolCapacity
     }
 
     /**
-     * @return mixed
+     * @return Semester
      */
     public function getSemester()
     {
@@ -177,7 +177,7 @@ class SchoolCapacity
     }
 
     /**
-     * @param mixed $semester
+     * @param Semester $semester
      */
     public function setSemester($semester)
     {

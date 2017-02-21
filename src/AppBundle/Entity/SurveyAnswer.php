@@ -35,7 +35,7 @@ class SurveyAnswer implements \JsonSerializable
     protected $surveyTaken;
 
     /**
-     * @return mixed
+     * @return SurveyTaken
      */
     public function getSurveyTaken()
     {
@@ -43,7 +43,7 @@ class SurveyAnswer implements \JsonSerializable
     }
 
     /**
-     * @param mixed $surveyTaken
+     * @param SurveyTaken $surveyTaken
      */
     public function setSurveyTaken($surveyTaken)
     {

@@ -166,7 +166,7 @@ class AssistantHistory
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBolk()
     {
@@ -174,7 +174,7 @@ class AssistantHistory
     }
 
     /**
-     * @param mixed $bolk
+     * @param string $bolk
      */
     public function setBolk($bolk)
     {
