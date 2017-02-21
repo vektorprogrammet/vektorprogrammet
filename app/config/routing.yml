@@ -478,11 +478,6 @@ admissionadmin_delete_application_bulk:
  options:
     expose: true
 
-admissionadmin_create_new_user:
- path: /kontrollpanel/opprettbruker/{id}
- defaults: {_controller: AppBundle:AdmissionAdmin:createNewUser }
- methods: [GET, POST]
-
 register_applicant:
  path: /kontrollpanel/opprettsoker
  defaults: {_controller: AppBundle:AdmissionAdmin:createApplication}

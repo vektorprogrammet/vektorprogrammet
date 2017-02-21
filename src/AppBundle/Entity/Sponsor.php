@@ -48,7 +48,7 @@ class Sponsor
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getSize()
     {
@@ -56,7 +56,7 @@ class Sponsor
     }
 
     /**
-     * @param mixed $size
+     * @param string $size
      */
     public function setSize($size)
     {
