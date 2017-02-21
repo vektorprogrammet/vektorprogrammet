@@ -2,8 +2,6 @@
 
 namespace AppBundle\Service;
 
-
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +13,7 @@ class FileUploader
 
     /**
      * FileUploader constructor.
+     *
      * @param string $signatureFolder
      * @param string $logoFolder
      */
@@ -26,6 +25,7 @@ class FileUploader
 
     /**
      * @param Request $request
+     *
      * @return string absolute file path
      */
     public function uploadSignature(Request $request)
@@ -37,6 +37,7 @@ class FileUploader
 
     /**
      * @param Request $request
+     *
      * @return string
      */
     public function uploadLogo(Request $request)
@@ -48,7 +49,8 @@ class FileUploader
 
     /**
      * @param UploadedFile $file
-     * @param string $targetFolder
+     * @param string       $targetFolder
+     *
      * @return string absolute file path
      */
     public function uploadFile(UploadedFile $file, string $targetFolder)
