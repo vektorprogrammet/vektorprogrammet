@@ -33,6 +33,7 @@ class ApplicationType extends AbstractType
             https://github.com/Gregwar/CaptchaBundle
             */
             ->add('captchaAdmission', 'captcha', array(
+                'disabled' => $options['environment'] === 'test',
                 'label' => ' ',
                 'width' => 200,
                 'height' => 50,
@@ -55,6 +56,7 @@ class ApplicationType extends AbstractType
             'data_class' => 'AppBundle\Entity\Application',
             'user' => null,
             'departmentId' => null,
+            'environment' => 'prod',
         ));
     }
 

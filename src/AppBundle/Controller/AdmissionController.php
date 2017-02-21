@@ -30,6 +30,7 @@ class AdmissionController extends Controller
         $form = $this->createForm(ApplicationType::class, $application, array(
             'validation_groups' => array('admission'),
             'departmentId' => $department->getId(),
+            'environment' => $this->get('kernel')->getEnvironment(),
         ));
 
         // Find the relevant newsletter, based on what department the user is applying for
