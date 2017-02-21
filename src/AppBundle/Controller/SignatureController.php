@@ -30,16 +30,8 @@ class SignatureController extends Controller
             $isImageUpload = $request->files->get('create_signature')['signature_path'] !== null;
 
             if ($isImageUpload) {
-                //First move the signature image file to its folder
-                $targetFolder = $this->container->getParameter('signature_images').'/';
-                //Create a FileUploader with target folder and allowed file types as parameters
-                $uploader = new FileUploader($targetFolder);
-                //Move the file to target folder
-
-                $result = $uploader->upload($request);
-                $path = $result[array_keys($result)[0]];
-                $fileName = substr($path, strrpos($path, '/') + 1);
-                $signature->setSignaturePath('signatures/'.$fileName);
+                $signaturePath = $this->get('app.file_uploader')->uploadSignature($request);
+                $signature->setSignaturePath($signaturePath);
             } else {
                 $signature->setSignaturePath($oldPath);
             }
