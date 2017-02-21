@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service;
 
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,6 +72,22 @@ class FileUploader
         return $this->getAbsolutePath($targetFolder, $fileName);
     }
 
+    public function deleteSignature(string $path)
+    {
+        $fileName = $this->getFileNameFromPath($path);
+
+        $this->deleteFile("$this->signatureFolder/$fileName");
+    }
+
+    public function deleteFile(string $path)
+    {
+        if (file_exists($path)) {
+            if (!unlink($path)) {
+                throw new FileException('Could not remove file '.$path);
+            }
+        }
+    }
+
     private function getFileFromRequest(Request $request)
     {
         $fileKey = current($request->files->keys());
@@ -98,5 +115,10 @@ class FileUploader
         }
 
         return "$absoluteTargetDir/$fileName";
+    }
+
+    private function getFileNameFromPath(string $path)
+    {
+        return substr($path, strrpos($path, '/') + 1);
     }
 }

@@ -30,6 +30,8 @@ class SignatureController extends Controller
 
             if ($isImageUpload) {
                 $signaturePath = $this->get('app.file_uploader')->uploadSignature($request);
+                $this->get('app.file_uploader')->deleteSignature($oldPath);
+
                 $signature->setSignaturePath($signaturePath);
             } else {
                 $signature->setSignaturePath($oldPath);
