@@ -85,9 +85,26 @@ class Department
     }
 
     /**
-     * @return Semester|null
+     * @return Semester
      */
-    public function getCurrentOrLatestSemester()
+    public function getCurrentSemester()
+    {
+        $now = new \DateTime();
+
+        foreach ($this->semesters as $semester) {
+            if ($now > $semester->getAdmissionStartDate() && $now < $semester->getAdmissionEndDate()) {
+                // Current semester
+                return $semester;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return Semester
+     */
+    public function getLatestSemester()
     {
         /** @var Semester[] $semesters */
         $semesters = $this->getSemesters()->toArray();
@@ -97,17 +114,24 @@ class Department
         $now = new \DateTime();
 
         foreach ($semesters as $semester) {
-            if ($now > $semester->getAdmissionStartDate() && $now < $semester->getAdmissionEndDate()) {
-                // Current semester
-                return $semester;
-            }
-
             if ($semester->getAdmissionStartDate() < $now && $semester->getAdmissionStartDate() > $latestSemester->getAdmissionStartDate()) {
                 $latestSemester = $semester;
             }
         }
 
         return $latestSemester;
+    }
+
+    /**
+     * @return Semester
+     */
+    public function getCurrentOrLatestSemester()
+    {
+        if (null === $semester = $this->getCurrentSemester()) {
+            $semester = $this->getLatestSemester();
+        }
+
+        return $semester;
     }
 
     /**
