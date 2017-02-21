@@ -26,7 +26,7 @@ class NewsletterManager
         $this->em = $em;
     }
 
-    public function subscribeToCheckedNewletter($department, $name, $email)
+    public function subscribeToCheckedNewsletter($department, $name, $email)
     {
         $newsletter = $this->em->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
         $this->subscribe($newsletter, $name, $email);

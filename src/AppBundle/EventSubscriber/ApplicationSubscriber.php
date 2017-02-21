@@ -70,7 +70,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
             $department = $application->getUser()->getDepartment();
             $fullName = $application->getUser()->getFullName();
             $email = $application->getUser()->getEmail();
-            $this->newsletterManager->subscribeToCheckedNewletter($department, $fullName, $email);
+            $this->newsletterManager->subscribeToCheckedNewsletter($department, $fullName, $email);
         }
     }
 
