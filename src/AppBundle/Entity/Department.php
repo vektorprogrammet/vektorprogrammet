@@ -58,7 +58,7 @@ class Department
 
     /**
      * @ORM\OneToMany(targetEntity="Semester", mappedBy="department",  cascade={"remove"})
-     * @ORM\OrderBy({"admissionStartDate" = "DESC"})
+     * @ORM\OrderBy({"semesterStartDate" = "DESC"})
      **/
     private $semesters;
 
@@ -92,7 +92,7 @@ class Department
         $now = new \DateTime();
 
         foreach ($this->semesters as $semester) {
-            if ($now > $semester->getAdmissionStartDate() && $now < $semester->getAdmissionEndDate()) {
+            if ($now > $semester->getSemesterStartDate() && $now < $semester->getSemesterEndDate()) {
                 // Current semester
                 return $semester;
             }
@@ -114,7 +114,7 @@ class Department
         $now = new \DateTime();
 
         foreach ($semesters as $semester) {
-            if ($semester->getAdmissionStartDate() < $now && $semester->getAdmissionStartDate() > $latestSemester->getAdmissionStartDate()) {
+            if ($semester->getSemesterStartDate() < $now && $semester->getSemesterEndDate() > $latestSemester->getSemesterEndDate()) {
                 $latestSemester = $semester;
             }
         }
