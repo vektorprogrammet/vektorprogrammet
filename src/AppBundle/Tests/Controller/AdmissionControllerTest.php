@@ -14,26 +14,7 @@ class AdmissionControllerTest extends WebTestCase
     {
         $applicationsBefore = $this->countRows();
 
-        // Submit an application
-        // User
-        $clientAnonymous = static::createClient();
-
-        $crawler = $clientAnonymous->request('GET', '/opptak/avdeling/1');
-        $this->assertTrue($clientAnonymous->getResponse()->isSuccessful());
-
-        $submitButton = $crawler->selectButton('Søk');
-        $form = $submitButton->form();
-
-        $form['application[user][firstName]'] = 'Newsletter Please';
-        $form['application[user][lastName]'] = 'Newsletter Please';
-        $form['application[user][email]'] = 'j@vektorprogrammet.no';
-        $form['application[user][phone]'] = '99887766';
-        $form['application[user][fieldOfStudy]'] = 2;
-        $form['application[user][gender]'] = 0;
-        $form['application[yearOfStudy]'] = 4;
-        $form['application[wantsNewsletter]'] = true;
-
-        $clientAnonymous->submit($form);
+        $this->createAndSubmitForm('Love newsletters Peter', true);
 
         $applicationsAfter = $this->countRows();
 
@@ -44,26 +25,8 @@ class AdmissionControllerTest extends WebTestCase
     public function testCreateNotWantNewsletterApplication()
     {
         $applicationsBefore = $this->countRows();
-        // Submit an application
-        // User
-        $clientAnonymous = static::createClient();
 
-        $crawler = $clientAnonymous->request('GET', '/opptak/avdeling/1');
-        $this->assertTrue($clientAnonymous->getResponse()->isSuccessful());
-
-        $submitButton = $crawler->selectButton('Søk');
-        $form = $submitButton->form();
-
-        $form['application[user][firstName]'] = 'No newsletters please';
-        $form['application[user][lastName]'] = 'No newsletters please';
-        $form['application[user][email]'] = 'j@vektorprogrammet.no';
-        $form['application[user][phone]'] = '99887766';
-        $form['application[user][fieldOfStudy]'] = 2;
-        $form['application[user][gender]'] = 0;
-        $form['application[yearOfStudy]'] = 4;
-        $form['application[wantsNewsletter]'] = false;
-
-        $clientAnonymous->submit($form);
+        $this->createAndSubmitForm('No newsletter Johnson', false);
 
         $applicationsAfter = $this->countRows();
 
@@ -71,7 +34,10 @@ class AdmissionControllerTest extends WebTestCase
         \TestDataManager::restoreDatabase();
     }
 
-    private function countRows()
+    /**
+     * @return int
+     */
+    private function countRows():int
     {
         // Admin
         $clientAdmin = static::createClient(array(), array(
@@ -84,5 +50,31 @@ class AdmissionControllerTest extends WebTestCase
         $this->assertTrue($clientAdmin->getResponse()->isSuccessful());
 
         return $crawler->filter('tr')->count();
+    }
+
+    /**
+     * @param string $testname
+     * @param bool   $wantsNewsletter
+     */
+    private function createAndSubmitForm(string $testname, bool $wantsNewsletter)
+    {
+        $clientAnonymous = static::createClient();
+
+        $crawler = $clientAnonymous->request('GET', '/opptak/avdeling/1');
+        $this->assertTrue($clientAnonymous->getResponse()->isSuccessful());
+
+        $submitButton = $crawler->selectButton('Søk');
+        $form = $submitButton->form();
+
+        $form['application[user][firstName]'] = $testname;
+        $form['application[user][lastName]'] = $testname;
+        $form['application[user][email]'] = 'test@vektorprogrammet.no';
+        $form['application[user][phone]'] = '99887766';
+        $form['application[user][fieldOfStudy]'] = 2;
+        $form['application[user][gender]'] = 0;
+        $form['application[yearOfStudy]'] = 4;
+        $form['application[wantsNewsletter]'] = $wantsNewsletter;
+
+        $clientAnonymous->submit($form);
     }
 }
