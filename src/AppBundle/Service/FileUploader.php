@@ -90,6 +90,13 @@ class FileUploader
 
     private function getAbsolutePath(string $targetDir, string $fileName)
     {
-        return str_replace('..', '', $targetDir).'/'.$fileName;
+        // Removes ../, ./, //
+        $absoluteTargetDir = preg_replace('/\.+\/|\/\//i', '', $targetDir);
+
+        if ($absoluteTargetDir[0] !== '/') {
+            $absoluteTargetDir = '/'.$absoluteTargetDir;
+        }
+
+        return "$absoluteTargetDir/$fileName";
     }
 }
