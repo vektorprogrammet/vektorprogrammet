@@ -108,6 +108,12 @@ class Application
     private $heardAboutFrom;
 
     /**
+     * @ORM\Column(type="boolean")
+     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
+     */
+    private $teamInterest;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Interview", cascade={"persist"})
      * @ORM\JoinColumn(name="interview_id", referencedColumnName="id", onDelete="SET NULL")
      * @Assert\Valid
@@ -126,6 +132,7 @@ class Application
         $this->doublePosition = false;
         $this->previousParticipation = false;
         $this->english = false;
+        $this->teamInterest = false;
     }
 
     /**
@@ -413,4 +420,22 @@ class Application
     {
         $this->previousParticipation = $previousParticipation;
     }
+
+    /**
+     * @return boolean
+     */
+    public function getTeamInterest()
+    {
+        return $this->teamInterest;
+    }
+
+    /**
+     * @param boolean $teamInterest
+     */
+    public function setTeamInterest($teamInterest)
+    {
+        $this->teamInterest = $teamInterest;
+    }
+
+
 }

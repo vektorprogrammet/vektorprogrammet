@@ -269,26 +269,15 @@ class AdmissionAdminController extends Controller
         ));
     }
 
-    public function showTeamInterestAction(Request $request, $departmentId = null)
+    public function showTeamInterestAction(Semester $semester)
     {
         $user = $this->getUser();
+        $department = $semester->getDepartment();
 
-        if ($departmentId === null) {
-            // Finds the department for the current logged in user
-            $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
-        } else {
-            if (!$this->isGranted(Roles::TEAM_LEADER) && $user->getDepartment()->getId() !== (int) $departmentId) {
-                throw $this->createAccessDeniedException();
-            }
-            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $user->getDepartment()->getId() !== (int) $department) {
+            throw $this->createAccessDeniedException();
         }
 
-        $semesterId = $request->query->get('semester', null);
-        if ($semesterId === null) {
-            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
-        } else {
-            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterId);
-        }
         $teamInterest = $this->getDoctrine()->getRepository('AppBundle:Application')->findApplicationByTeamInterestAndSemester($semester);
 
         return $this->render('admission_admin/teamInterest.html.twig', array(
