@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -32,6 +33,7 @@ class ApplicationType extends AbstractType
             https://github.com/Gregwar/CaptchaBundle
             */
             ->add('captchaAdmission', 'captcha', array(
+                'disabled' => $options['environment'] === 'test',
                 'label' => ' ',
                 'width' => 200,
                 'height' => 50,
@@ -40,6 +42,11 @@ class ApplicationType extends AbstractType
                 'keep_value' => true,
                 'distortion' => false,
                 'background_color' => [111, 206, 238],
+            ))
+            ->add('wantsNewsletter', CheckboxType::class, array(
+                'label' => 'Send meg informasjon om opptak på epost',
+                'attr' => array('checked' => 'checked'),
+                'required' => false,
             ));
     }
 
@@ -49,6 +56,7 @@ class ApplicationType extends AbstractType
             'data_class' => 'AppBundle\Entity\Application',
             'user' => null,
             'departmentId' => null,
+            'environment' => 'prod',
         ));
     }
 
