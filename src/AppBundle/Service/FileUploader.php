@@ -74,6 +74,10 @@ class FileUploader
 
     public function deleteSignature(string $path)
     {
+        if (empty($path)) {
+            return;
+        }
+
         $fileName = $this->getFileNameFromPath($path);
 
         $this->deleteFile("$this->signatureFolder/$fileName");
