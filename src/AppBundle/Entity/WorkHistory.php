@@ -187,6 +187,7 @@ class WorkHistory
 
     /**
      * @param Semester $semester
+     *
      * @return bool
      */
     public function isActiveInSemester(Semester $semester)
