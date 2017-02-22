@@ -184,4 +184,12 @@ class WorkHistory
     {
         return $this->endSemester;
     }
+
+    public function isActiveInSemester(Semester $semester)
+    {
+        $semesterStartLaterThanWorkHistory = $semester->getSemesterStartDate() >= $this->getStartSemester()->getSemesterStartDate();
+        $semesterEndsBeforeWorkHistory = $this->getEndSemester() === null || $semester->getSemesterEndDate() <= $this->getEndSemester()->getSemesterEndDate();
+
+        return $semesterStartLaterThanWorkHistory && $semesterEndsBeforeWorkHistory;
+    }
 }
