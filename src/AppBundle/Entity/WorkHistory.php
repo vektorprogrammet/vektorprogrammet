@@ -19,7 +19,7 @@ class WorkHistory
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="workHistories")
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Assert\Valid
      **/
@@ -183,5 +183,17 @@ class WorkHistory
     public function getEndSemester()
     {
         return $this->endSemester;
+    }
+
+    /**
+     * @param Semester $semester
+     * @return bool
+     */
+    public function isActiveInSemester(Semester $semester)
+    {
+        $semesterStartLaterThanWorkHistory = $semester->getSemesterStartDate() >= $this->getStartSemester()->getSemesterStartDate();
+        $semesterEndsBeforeWorkHistory = $this->getEndSemester() === null || $semester->getSemesterEndDate() <= $this->getEndSemester()->getSemesterEndDate();
+
+        return $semesterStartLaterThanWorkHistory && $semesterEndsBeforeWorkHistory;
     }
 }
