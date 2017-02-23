@@ -60,6 +60,8 @@ HELP
             $this->updateUserRole($user);
         }
 
+        $this->entityManager->flush();
+
         $finishTime = microtime(true);
         $elapsedTime = ($finishTime - $startTime) * 1000;
 
@@ -73,8 +75,6 @@ HELP
         } else {
             $this->demoteUserToAssistant($user);
         }
-
-        $this->entityManager->flush();
     }
 
     private function userIsInATeam(User $user)
