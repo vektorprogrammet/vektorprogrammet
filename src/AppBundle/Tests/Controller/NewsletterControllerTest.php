@@ -136,7 +136,7 @@ class NewsletterControllerTest extends WebTestCase
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        $this->assertEquals(0, $crawler->selectButton('Aktiv')->count());
+        $this->assertEquals(1, $crawler->selectButton('Aktiv')->count());
         $activateButtons = $crawler->selectButton('Aktiver');
         $form = $activateButtons->eq(0)->form();
         $client->submit($form);

@@ -1,0 +1,17 @@
+<li>
+    <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown"
+       aria-expanded="false">{% if currentSemester != NULL %}{{ currentSemester.name }}{% else %}Semester{% endif %} <i
+                class="fa fa-caret-down"></i></a>
+    <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1"
+        aria-hidden="true" aria-autoclose="false" tabindex="-1">
+
+        {% for s in currentSemester.department.semesters %}
+
+            <li>
+                <a href="{{ path(pathForSemester, { (semesterParameterName): s.id }) }}">{{ s.name }}</a>
+            </li>
+
+        {% endfor %}
+    </ul>
+</li>
+

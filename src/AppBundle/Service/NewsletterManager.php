@@ -3,22 +3,53 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\Letter;
+use AppBundle\Entity\Subscriber;
+use Doctrine\ORM\EntityManager;
 
 class NewsletterManager
 {
     private $mailer;
     private $twig;
+    private $em;
 
     /**
      * LetterManager constructor.
      *
      * @param \Swift_Mailer     $mailer
      * @param \Twig_Environment $twig
+     * @param EntityManager     $em
      */
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig)
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, EntityManager $em)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
+        $this->em = $em;
+    }
+
+    public function subscribeToCheckedNewsletter($department, $name, $email)
+    {
+        $newsletter = $this->em->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
+        $this->subscribe($newsletter, $name, $email);
+    }
+
+    public function subscribe($newsletter, $name, $email)
+    {
+        if ($newsletter === null) {
+            return;
+        }
+        $subscriber = new Subscriber();
+        $subscriber->setName($name);
+        $subscriber->setEmail($email);
+
+        $alreadySubscribed = count($this->em->getRepository('AppBundle:Subscriber')->
+            findByEmailAndNewsletter($subscriber->getEmail(), $newsletter)) > 0;
+
+        // Check if the user is already subscribed
+        if (!$alreadySubscribed) {
+            $subscriber->setNewsletter($newsletter);
+            $this->em->persist($subscriber);
+            $this->em->flush();
+        }
     }
 
     public function send(Letter $letter)
