@@ -114,7 +114,7 @@ HELP
 
     private function userIsAssistant(User $user)
     {
-        return  current($user->getRoles())->getRole() === Roles::ASSISTANT;
+        return !empty($user->getRoles()) && current($user->getRoles())->getRole() === Roles::ASSISTANT;
     }
 
     private function setUserRole(User $user, string $role)
