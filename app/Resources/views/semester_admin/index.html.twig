@@ -11,7 +11,7 @@
     <script>
 
         $(document).ready(function () {
-            $('.delete').deleteablerow('semesteradmin_delete_semester_by_id', {
+            $('.delete').deleteablerow('semester_delete', {
                 confirmation: {
                     modal: $('#confirmModal'),
                     acceptButton: $('#modalAccept'),
@@ -70,9 +70,9 @@
                         } %}
 
                         <li>
-                            <a class="button tiny" data-dropdown="autoCloseExample" aria-controls="autoCloseExample"
+                            <a class="button tiny" data-dropdown="createSemesterDropdown" aria-controls="createSemesterDropdown"
                                aria-expanded="false">Opprett semester &raquo;</a>
-                            <ul id="autoCloseExample" class="f-dropdown" data-dropdown-content tabindex="-1"
+                            <ul id="createSemesterDropdown" class="f-dropdown" data-dropdown-content tabindex="-1"
                                 aria-hidden="true" aria-autoclose="false" tabindex="-1">
 
                                 {% for d in get_departments() %}

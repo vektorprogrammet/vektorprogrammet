@@ -96,36 +96,12 @@ class SemesterController extends Controller
         ));
     }
 
-    public function deleteSemesterByIdAction(Request $request)
+    public function deleteAction(Semester $semester)
     {
-        $id = $request->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($semester);
+        $em->flush();
 
-        try {
-            if ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')) {
-
-                // This deletes the given semester
-                $em = $this->getDoctrine()->getEntityManager();
-                $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($id);
-                $em->remove($semester);
-                $em->flush();
-
-                $response['success'] = true;
-            } else {
-                // Send a response back to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Ikke tilstrekkelige rettigheter.';
-            }
-        } catch (\Exception $e) {
-            // Send a response back to AJAX
-            return new JsonResponse([
-                'success' => false,
-                'code' => $e->getCode(),
-                'cause' => 'Det er ikke mulig å slette semesteret. Vennligst kontakt IT-ansvarlig.',
-                // 'cause' => $e->getMessage(), if you want to see the exception message.
-            ]);
-        }
-
-        // Send a respons to ajax
-        return new JsonResponse($response);
+        return new JsonResponse(array('success' => true));
     }
 }
