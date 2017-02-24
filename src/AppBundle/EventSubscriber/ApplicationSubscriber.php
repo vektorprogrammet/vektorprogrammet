@@ -4,6 +4,7 @@ namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Service\ApplicationData;
+use AppBundle\Service\NewsletterManager;
 use AppBundle\Service\SlackMessenger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -19,6 +20,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
     private $slackMessenger;
     private $applicationData;
     private $router;
+    private $newsletterManager;
 
     /**
      * ApplicationAdmissionSubscriber constructor.
@@ -30,8 +32,9 @@ class ApplicationSubscriber implements EventSubscriberInterface
      * @param SlackMessenger    $slackMessenger
      * @param ApplicationData   $applicationData
      * @param RouterInterface   $router
+     * @param NewsletterManager $newsletterManager
      */
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, SlackMessenger $slackMessenger, ApplicationData $applicationData, RouterInterface $router)
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, SlackMessenger $slackMessenger, ApplicationData $applicationData, RouterInterface $router, NewsletterManager $newsletterManager)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
@@ -40,6 +43,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
         $this->slackMessenger = $slackMessenger;
         $this->applicationData = $applicationData;
         $this->router = $router;
+        $this->newsletterManager = $newsletterManager;
     }
 
     /**
@@ -54,8 +58,20 @@ class ApplicationSubscriber implements EventSubscriberInterface
                 array('logApplication', 1),
                 array('sendConfirmationMail', 0),
                 array('addFlashMessage', -1),
+                array('subscribeToCheckedNewsletter', -2),
             ),
         );
+    }
+
+    public function subscribeToCheckedNewsletter(ApplicationCreatedEvent $event)
+    {
+        $application = $event->getApplication();
+        if ($application->wantsNewsletter()) {
+            $department = $application->getUser()->getDepartment();
+            $fullName = $application->getUser()->getFullName();
+            $email = $application->getUser()->getEmail();
+            $this->newsletterManager->subscribeToCheckedNewsletter($department, $fullName, $email);
+        }
     }
 
     public function sendConfirmationMail(ApplicationCreatedEvent $event)

@@ -2,16 +2,16 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Application;
+use AppBundle\Entity\Department;
 use AppBundle\Entity\SupportTicket;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Event\SupportTicketCreatedEvent;
 use AppBundle\Form\Type\ApplicationExistingUserType;
+use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Form\Type\SupportTicketType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Form\Type\ApplicationType;
-use AppBundle\Entity\Application;
-use AppBundle\Entity\Department;
 
 class AdmissionController extends Controller
 {
@@ -30,7 +30,16 @@ class AdmissionController extends Controller
         $form = $this->createForm(ApplicationType::class, $application, array(
             'validation_groups' => array('admission'),
             'departmentId' => $department->getId(),
+            'environment' => $this->get('kernel')->getEnvironment(),
         ));
+
+        // Find the relevant newsletter, based on what department the user is applying for
+        $newsletter = $em->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
+
+        // If the department has no active newsletter, the checkbox is removed.
+        if ($newsletter === null) {
+            $form->remove('wantsNewsletter');
+        }
 
         $form->handleRequest($request);
 

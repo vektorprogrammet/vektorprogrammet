@@ -114,11 +114,16 @@ class Application
     private $teamInterest;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Interview", cascade={"persist"})
-     * @ORM\JoinColumn(name="interview_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\OneToOne(targetEntity="Interview", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      * @Assert\Valid
      */
     private $interview;
+
+    /**
+     * @var bool
+     */
+    private $wantsNewsletter;
 
     /**
      * ApplicationInfo constructor.
@@ -133,6 +138,7 @@ class Application
         $this->previousParticipation = false;
         $this->english = false;
         $this->teamInterest = false;
+        $this->wantsNewsletter = false;
     }
 
     /**
@@ -162,7 +168,7 @@ class Application
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getYearOfStudy()
     {
@@ -170,7 +176,7 @@ class Application
     }
 
     /**
-     * @param mixed $yearOfStudy
+     * @param string $yearOfStudy
      */
     public function setYearOfStudy($yearOfStudy)
     {
@@ -178,7 +184,7 @@ class Application
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getMonday()
     {
@@ -186,7 +192,7 @@ class Application
     }
 
     /**
-     * @param mixed $monday
+     * @param string $monday
      */
     public function setMonday($monday)
     {
@@ -194,7 +200,7 @@ class Application
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTuesday()
     {
@@ -202,7 +208,7 @@ class Application
     }
 
     /**
-     * @param mixed $tuesday
+     * @param string $tuesday
      */
     public function setTuesday($tuesday)
     {
@@ -210,7 +216,7 @@ class Application
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getWednesday()
     {
@@ -218,7 +224,7 @@ class Application
     }
 
     /**
-     * @param mixed $wednesday
+     * @param string $wednesday
      */
     public function setWednesday($wednesday)
     {
@@ -226,7 +232,7 @@ class Application
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getThursday()
     {
@@ -234,7 +240,7 @@ class Application
     }
 
     /**
-     * @param mixed $thursday
+     * @param string $thursday
      */
     public function setThursday($thursday)
     {
@@ -242,7 +248,7 @@ class Application
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getFriday()
     {
@@ -250,7 +256,7 @@ class Application
     }
 
     /**
-     * @param mixed $friday
+     * @param string $friday
      */
     public function setFriday($friday)
     {
@@ -258,7 +264,7 @@ class Application
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function getSubstitute()
     {
@@ -266,7 +272,7 @@ class Application
     }
 
     /**
-     * @param mixed $substitute
+     * @param bool $substitute
      */
     public function setSubstitute($substitute)
     {
@@ -274,7 +280,7 @@ class Application
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function getEnglish()
     {
@@ -282,7 +288,7 @@ class Application
     }
 
     /**
-     * @param mixed $english
+     * @param bool $english
      */
     public function setEnglish($english)
     {
@@ -306,7 +312,7 @@ class Application
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function getDoublePosition()
     {
@@ -314,7 +320,7 @@ class Application
     }
 
     /**
-     * @param mixed $doublePosition
+     * @param bool $doublePosition
      */
     public function setDoublePosition($doublePosition)
     {
@@ -338,7 +344,7 @@ class Application
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getLastEdited()
     {
@@ -346,7 +352,7 @@ class Application
     }
 
     /**
-     * @param mixed $last_edited
+     * @param \DateTime $last_edited
      */
     public function setLastEdited($last_edited)
     {
@@ -354,7 +360,7 @@ class Application
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getCreated()
     {
@@ -362,21 +368,11 @@ class Application
     }
 
     /**
-     * @param mixed $created
+     * @param \DateTime $created
      */
     public function setCreated($created)
     {
         $this->created = $created;
-    }
-
-    /**
-     * Set heardAboutFrom.
-     *
-     * @param array $heardAboutFrom
-     */
-    public function setHeardAboutFrom($heardAboutFrom)
-    {
-        $this->heardAboutFrom = $heardAboutFrom;
     }
 
     /**
@@ -387,6 +383,16 @@ class Application
     public function getHeardAboutFrom()
     {
         return $this->heardAboutFrom;
+    }
+
+    /**
+     * Set heardAboutFrom.
+     *
+     * @param array $heardAboutFrom
+     */
+    public function setHeardAboutFrom($heardAboutFrom)
+    {
+        $this->heardAboutFrom = $heardAboutFrom;
     }
 
     /**
@@ -438,4 +444,28 @@ class Application
     }
 
 
+
+    /**
+     * @return bool
+     */
+    public function wantsNewsletter()
+    {
+        return $this->isWantsNewsletter();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWantsNewsletter()
+    {
+        return $this->wantsNewsletter;
+    }
+
+    /**
+     * @param bool $wantsNewsletter
+     */
+    public function setWantsNewsletter($wantsNewsletter)
+    {
+        $this->wantsNewsletter = $wantsNewsletter;
+    }
 }
