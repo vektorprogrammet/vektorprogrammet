@@ -47,24 +47,16 @@ class SemesterController extends Controller
 
     public function showAction()
     {
-        if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
-            // Finds all the departments
-            $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+        // Finds the departmentId for the current logged in user
+        $department = $this->getUser()->getDepartment();
 
-            // Finds the departmentId for the current logged in user
-            $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
+        // Finds the users for the given department
+        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
 
-            // Finds the users for the given department
-            $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
-
-            return $this->render('semester_admin/index.html.twig', array(
-                'semesters' => $semesters,
-                'departments' => $allDepartments,
-                'departmentName' => $department->getShortName(),
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
-        }
+        return $this->render('semester_admin/index.html.twig', array(
+            'semesters' => $semesters,
+            'departmentName' => $department->getShortName(),
+        ));
     }
 
     public function superadminCreateSemesterAction(Request $request)
