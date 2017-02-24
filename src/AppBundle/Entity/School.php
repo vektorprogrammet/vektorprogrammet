@@ -44,6 +44,11 @@ class School
     protected $email;
 
     /**
+     * @ORM\OneToMany(targetEntity="AssistantHistory", mappedBy="school")
+     */
+    private $assistantHistories;
+
+    /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
@@ -246,5 +251,13 @@ class School
         }
 
         return false;
+    }
+
+    /**
+     * @return AssistantHistory[]
+     */
+    public function getAssistantHistories()
+    {
+        return $this->assistantHistories;
     }
 }
