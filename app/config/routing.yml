@@ -526,26 +526,26 @@ send_user_activation_mail:
 #              Semester                  #
 ##########################################
 
-semesteradmin_show:
+semester_show:
  path: /kontrollpanel/semesteradmin
  defaults: {_controller: AppBundle:Semester:show }
  methods: [GET]
 
-semesteradmin_update:
+semester_update:
  path: /kontrollpanel/semesteradmin/update/{id}
  defaults: {_controller: AppBundle:Semester:updateSemester }
  methods: [GET, POST]
  requirements:
     id: \d+
 
-semesteradmin_create_semester_superadmin:
+semester_create:
  path: /kontrollpanel/semesteradmin/avdeling/opprett/{id}
  defaults: {_controller: AppBundle:Semester:createSemester }
  methods: [GET, POST]
  requirements:
     id: \d+
 
-semesteradmin_filter_semesters_by_department:
+semester_show_by_department:
  path: /kontrollpanel/semesteradmin/avdeling/{id}
  defaults: { _controller: AppBundle:Semester:showSemestersByDepartment }
  methods: [GET]

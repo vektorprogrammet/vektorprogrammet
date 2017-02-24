@@ -64,7 +64,7 @@
                     <ul class="inline-list">
 
                         {% include 'common/department_dropdown.html.twig' with {
-                            'pathForDepartment': 'semesteradmin_filter_semesters_by_department',
+                            'pathForDepartment': 'semester_show_by_department',
                             'departmentParameterName': 'id',
                             'currentDepartment': departmentName
                         } %}
@@ -78,7 +78,7 @@
                                 {% for d in get_departments() %}
 
                                     <li>
-                                        <a href="{{ path('semesteradmin_create_semester_superadmin', { 'id': d.id }) }}">{{ d.shortName }}</a>
+                                        <a href="{{ path('semester_create', { 'id': d.id }) }}">{{ d.shortName }}</a>
                                     </li>
 
                                 {% endfor %}
@@ -134,7 +134,7 @@
                                                     class="fa fa-trash-o"></i> Slett</a></td>
                                 {% endif %}
 
-                                <td><a href="{{ path('semesteradmin_update', { 'id': s.id }) }}" class="button tiny">Rediger</a>
+                                <td><a href="{{ path('semester_update', { 'id': s.id }) }}" class="button tiny">Rediger</a>
                                 </td>
 
                             {% endif %}

@@ -24,7 +24,7 @@ class SemesterController extends Controller
             $em->persist($semester);
             $em->flush();
 
-            return $this->redirectToRoute('semesteradmin_show');
+            return $this->redirectToRoute('semester_show');
         }
 
         return $this->render('semester_admin/edit_semester.html.twig', array(
@@ -77,7 +77,7 @@ class SemesterController extends Controller
 
             //Return to semester page if semester already exists
             if (count($existingSemester)) {
-                return $this->redirectToRoute('semesteradmin_show');
+                return $this->redirectToRoute('semester_show');
             }
 
             $semester->setDepartment($department);
@@ -87,7 +87,7 @@ class SemesterController extends Controller
             $em->persist($semester);
             $em->flush();
 
-            return $this->redirectToRoute('semesteradmin_show');
+            return $this->redirectToRoute('semester_show');
         }
 
         // Render the view
