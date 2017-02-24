@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Application;
+use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\NoResultException;
@@ -170,6 +171,7 @@ class AdmissionAdminController extends Controller
             'departmentName' => $department->getShortName(),
             'user' => $user,
             'cancelledApplicants' => $cancelledApplicants,
+            'semester' => $semester,
         ));
     }
 
@@ -274,7 +276,7 @@ class AdmissionAdminController extends Controller
         $user = $this->getUser();
         $department = $semester->getDepartment();
 
-        if (!$this->isGranted(Roles::TEAM_LEADER) && $user->getDepartment()->getId() !== (int) $department) {
+        if ($user->getDepartment() !== $department) {
             throw $this->createAccessDeniedException();
         }
 

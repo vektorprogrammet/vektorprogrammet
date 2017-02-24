@@ -141,11 +141,8 @@
                         <label class="question-label">Kan du tenke deg å være med i organiseringen av Vektorprogrammet?
                             Dette inneholder teamarbeid</label>
                         <p>
-                            {% if application.teamInterest %}
-                                Ja
-                            {% else %}
-                                Nei
-                            {% endif %}
+                            {{ application.teamInterest ? 'Ja' : 'Nei' }}
+
                         </p>
                     </div>
 

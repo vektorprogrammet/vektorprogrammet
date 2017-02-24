@@ -428,7 +428,7 @@ class Application
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getTeamInterest()
     {
@@ -436,14 +436,12 @@ class Application
     }
 
     /**
-     * @param boolean $teamInterest
+     * @param bool $teamInterest
      */
     public function setTeamInterest($teamInterest)
     {
         $this->teamInterest = $teamInterest;
     }
-
-
 
     /**
      * @return bool
