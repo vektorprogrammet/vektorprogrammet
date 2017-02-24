@@ -1,5 +1,5 @@
 /**
- * Don't use this. Gives you bad karma.
+ * Depreciated
  */
 
 (function ($) {

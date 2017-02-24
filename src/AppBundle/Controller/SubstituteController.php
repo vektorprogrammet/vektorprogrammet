@@ -7,6 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Application;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use AppBundle\Form\Type\ScheduleInterviewType;
+use AppBundle\Form\Type\ApplicationInterviewType;
+use AppBundle\Form\Type\ModifySubstituteType;
 
 /**
  * SubstituteController is the controller responsible for substitute assistants,
@@ -42,6 +45,38 @@ class SubstituteController extends Controller
         }
 
         return $this->showBySemesterAction($semester);
+    }
+
+    public function showModifyFormAction(Application $application)
+    {
+        /*
+        $form = $this->createFormBuilder($application)
+            ->add('english')
+            ->add('monday')
+            ->add('tuesday')
+            ->add('wednesday')
+            ->add('thursday')
+            ->add('friday')
+            ->getForm();
+        */
+
+        /*
+        $form = $this->createForm( new ModifySubstituteType(), $application, array(
+            'validation_groups' => array('interview'),
+        ));
+        */
+
+        // Only substitutes should be modified with this form
+        if(!$application->isSubstitute()){
+            throw new BadRequestHttpException();
+        }
+
+        $form = $this->createForm( new ModifySubstituteType(), $application);
+
+        return $this->render('substitute/modify_substitute.twig', array(
+            'application' => $application,
+            'form' => $form->createView(),
+        ));
     }
 
     public function deleteSubstituteByIdAction(Application $application)

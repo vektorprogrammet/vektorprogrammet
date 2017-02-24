@@ -1,5 +1,35 @@
 {% extends 'adminBase.html.twig' %}
 
+{% block customScripts %}
+
+    <script src="{{ asset('js/stupidtable.js') }}"></script>
+    <script>
+        var Substitute = {
+            // The html table containing the substitute assistants
+            subTable: $("#substitute-table"),
+
+            onReady: function () {
+                // Add sort functionality to the table containing the substitute assistants
+                Substitute.subTable.stupidtable();
+
+                // Add arrows after sorting the table
+                Substitute.subTable.on("aftertablesort", Substitute.addSortArrows);
+            },
+
+            addSortArrows: function (event, data) {
+                var th = $(this).find("th");
+                th.find(".arrow").remove();
+                var dir = $.fn.stupidtable.dir;
+
+                var arrow = data.direction === dir.ASC ? "asc" : "desc";
+                th.eq(data.column).append('<span class="arrow"> <i class="fa fa-sort-' + arrow + '"></i></span>');
+            }
+        };
+        $(document).ready(Substitute.onReady);
+    </script>
+
+{% endblock %}
+
 {% block title %}
     Vikar
 {% endblock %}
@@ -50,6 +80,7 @@
                     <th data-sort="string" class="clickable"> Linje</th>
 
                     <th data-sort="int" class="clickable"> År</th>
+                    <th data-sort="string" class="clickable"> Engelsk</th>
                     <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Mandag"> M</span></th>
                     <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Tirsdag"> T</span></th>
                     <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Onsdag"> O</span></th>
@@ -76,6 +107,8 @@
                             <td>{{ sub.user.fieldOfStudy }}</td>
 
                             <td>{{ sub.yearOfStudy }}</td>
+
+                            <td>{{ sub.english ? "Ja" : "Nei"}}</td>
 
                             <td>{{ sub.monday }}</td>
 

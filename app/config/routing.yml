@@ -994,6 +994,13 @@ substitute_create_from_application:
   requirements:
     id: \d+
 
+substitute_modify:
+  path: /kontrollpanel/vikar/endre/{id}
+  defaults: {_controller: AppBundle:Substitute:showModifyForm }
+  methods: [GET,POST]
+  requirements:
+    id: \d+
+
 ##########################################
 #                Certificate              #
 ##########################################

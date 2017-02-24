@@ -1,0 +1,30 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Endre vikar
+{% endblock %}
+
+{# Form themes user to modify the templates of the various form components #}
+{% form_theme form 'form/interview_layout.html.twig' %}
+{% block body %}
+    {{ dump(form) }}
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <div class="panel">
+                <div class="row">
+                    <div class="small-12 medium-12 large-12 columns">
+                        <h1>Endre vikar</h1>
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <label class="question-label">Hvilke dager passer IKKE for deg?</label>
+                                {{ form_start(form) }}
+                                {{ form_errors(form) }}
+                                {{ form_end(form) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
