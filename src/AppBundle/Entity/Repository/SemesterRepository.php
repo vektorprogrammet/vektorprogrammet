@@ -9,6 +9,26 @@ use Doctrine\ORM\EntityRepository;
 
 class SemesterRepository extends EntityRepository
 {
+    /**
+     * @param Department $department
+     * @param string     $time
+     * @param string     $year
+     *
+     * @return Semester[]
+     */
+    public function findByDepartmentAndTime(Department $department, string $time, string $year)
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.department = :department')
+            ->andWhere('s.semesterTime = :time')
+            ->andWhere('s.year = :year')
+            ->setParameter('department', $department)
+            ->setParameter('time', $time)
+            ->setParameter('year', $year)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllSemestersByDepartment($department)
     {
         $semesters = $this->getEntityManager()->createQuery('

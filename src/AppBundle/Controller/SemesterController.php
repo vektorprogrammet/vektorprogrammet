@@ -59,15 +59,9 @@ class SemesterController extends Controller
         ));
     }
 
-    public function superadminCreateSemesterAction(Request $request)
+    public function createSemesterAction(Request $request, Department $department)
     {
         $semester = new Semester();
-
-        // Get the ID parameter sent in by the request
-        $departmentId = $request->get('id');
-
-        // Find the department where ID matches departmentId
-        $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
 
         // Create the form
         $form = $this->createForm(new CreateSemesterType(), $semester);
@@ -78,30 +72,22 @@ class SemesterController extends Controller
         // The fields of the form is checked if they contain the correct information
         if ($form->isValid()) {
             //Check if semester already exists
-            $existingSemester = $this->getDoctrine()->getManager()->getRepository('AppBundle:Semester')->findBy(array(
-                'department' => $department,
-                'semesterTime' => $semester->getSemesterTime(),
-                'year' => $semester->getYear(),
-            ));
+            $existingSemester = $this->getDoctrine()->getManager()->getRepository('AppBundle:Semester')->
+            findByDepartmentAndTime($department, $semester->getSemesterTime(), $semester->getYear());
+
             //Return to semester page if semester already exists
             if (count($existingSemester)) {
-                return $this->redirect($this->generateUrl('semesteradmin_show'));
+                return $this->redirectToRoute('semesteradmin_show');
             }
 
-            // Set the department of the semester
             $semester->setDepartment($department);
+            $semester->setStartAndEndDateByTime($semester->getSemesterTime(), $semester->getYear());
 
-            $year = $semester->getYear();
-            $startMonth = $semester->getSemesterTime() == 'Vår' ? '01' : '08';
-            $endMonth = $semester->getSemesterTime() == 'Vår' ? '07' : '12';
-            $semester->setSemesterStartDate(date_create($year.'-'.$startMonth.'-01 00:00:00'));
-            $semester->setSemesterEndDate(date_create($year.'-'.$endMonth.'-31 23:59:59'));
-            // If valid insert into database
             $em = $this->getDoctrine()->getManager();
             $em->persist($semester);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('semesteradmin_show'));
+            return $this->redirectToRoute('semesteradmin_show');
         }
 
         // Render the view
