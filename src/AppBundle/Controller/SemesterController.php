@@ -12,23 +12,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SemesterController extends Controller
 {
-    public function updateSemesterAction(Request $request)
+    public function updateSemesterAction(Request $request, Semester $semester)
     {
-        $id = $request->get('id');
-
-        $em = $this->getDoctrine()->getManager();
-        $semester = $em->getRepository('AppBundle:Semester')->find($id);
-
         $form = $this->createForm(new EditSemesterType(), $semester);
 
         // Handle the form
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($semester);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('semesteradmin_show'));
+            return $this->redirectToRoute('semesteradmin_show');
         }
 
         return $this->render('semester_admin/edit_semester.html.twig', array(
@@ -37,25 +33,16 @@ class SemesterController extends Controller
         ));
     }
 
-    public function showSemestersByDepartmentAction(Request $request, Department $department)
+    public function showSemestersByDepartmentAction(Department $department)
     {
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+        // Finds the semesters for the given department
+        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
 
-            // Finds all the departments
-            $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
-
-            // Finds the semesters for the given department
-            $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
-
-            // Renders the view with the variables
-            return $this->render('semester_admin/index.html.twig', array(
-                'semesters' => $semesters,
-                'departments' => $allDepartments,
-                'departmentName' => $department->getShortName(),
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
-        }
+        // Renders the view with the variables
+        return $this->render('semester_admin/index.html.twig', array(
+            'semesters' => $semesters,
+            'departmentName' => $department->getShortName(),
+        ));
     }
 
     public function showAction()

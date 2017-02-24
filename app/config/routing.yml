@@ -547,7 +547,7 @@ semesteradmin_create_semester_superadmin:
 
 semesteradmin_filter_semesters_by_department:
  path: /kontrollpanel/semesteradmin/avdeling/{id}
- defaults: {_controller: AppBundle:Semester:showSemestersByDepartment }
+ defaults: { _controller: AppBundle:Semester:showSemestersByDepartment }
  methods: [GET]
  requirements:
     id: \d+
