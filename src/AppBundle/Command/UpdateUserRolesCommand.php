@@ -45,6 +45,8 @@ HELP
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->entityManager = $this->getContainer()->get('doctrine')->getManager();
+
+        $this->rolesUpdatedCount = 0;
     }
     /**
      * This method is executed after initialize(). It usually contains the logic
