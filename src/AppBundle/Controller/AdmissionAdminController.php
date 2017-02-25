@@ -31,8 +31,11 @@ class AdmissionAdminController extends Controller
         return $this->showNewApplicationsBySemesterAction($semester);
     }
 
-    public function showNewApplicationsBySemesterAction(Semester $semester)
+    public function showNewApplicationsBySemesterAction(Semester $semester = null)
     {
+        if ($semester === null) {
+            $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
+        }
         $department = $semester->getDepartment();
 
         if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
@@ -48,8 +51,11 @@ class AdmissionAdminController extends Controller
         ));
     }
 
-    public function showAssignedApplicationsBySemesterAction(Semester $semester)
+    public function showAssignedApplicationsBySemesterAction(Semester $semester = null)
     {
+        if ($semester === null) {
+            $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
+        }
         $department = $semester->getDepartment();
 
         if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
@@ -75,8 +81,11 @@ class AdmissionAdminController extends Controller
         ));
     }
 
-    public function showInterviewedApplicationsBySemesterAction(Semester $semester)
+    public function showInterviewedApplicationsBySemesterAction(Semester $semester = null)
     {
+        if ($semester === null) {
+            $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
+        }
         $department = $semester->getDepartment();
 
         if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
@@ -97,8 +106,11 @@ class AdmissionAdminController extends Controller
         ));
     }
 
-    public function showExistingApplicationsBySemesterAction(Semester $semester)
+    public function showExistingApplicationsBySemesterAction(Semester $semester = null)
     {
+        if ($semester === null) {
+            $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
+        }
         $department = $semester->getDepartment();
 
         if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {

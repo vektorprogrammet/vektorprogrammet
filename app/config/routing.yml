@@ -468,12 +468,22 @@ applications_show_new_by_semester:
  requirements:
     id: \d+
 
+applications_show_new:
+ path: /kontrollpanel/opptak/nye
+ defaults: { _controller: AppBundle:AdmissionAdmin:showNewApplicationsBySemester }
+ methods: [GET]
+
 applications_show_assigned_by_semester:
  path: /kontrollpanel/opptak/fordelt/{id}
  defaults: { _controller: AppBundle:AdmissionAdmin:showAssignedApplicationsBySemester }
  methods: [GET]
  requirements:
     id: \d+
+
+applications_show_assigned:
+ path: /kontrollpanel/opptak/fordelt
+ defaults: { _controller: AppBundle:AdmissionAdmin:showAssignedApplicationsBySemester }
+ methods: [GET]
 
 applications_show_interviewed_by_semester:
  path: /kontrollpanel/opptak/intervjuet/{id}
@@ -482,12 +492,22 @@ applications_show_interviewed_by_semester:
  requirements:
     id: \d+
 
+applications_show_interviewed:
+ path: /kontrollpanel/opptak/intervjuet
+ defaults: { _controller: AppBundle:AdmissionAdmin:showInterviewedApplicationsBySemester }
+ methods: [GET]
+
 applications_show_existing_by_semester:
  path: /kontrollpanel/opptak/gamle/{id}
  defaults: { _controller: AppBundle:AdmissionAdmin:showExistingApplicationsBySemester }
  methods: [GET]
  requirements:
     id: \d+
+
+applications_show_existing:
+ path: /kontrollpanel/opptak/gamle
+ defaults: { _controller: AppBundle:AdmissionAdmin:showExistingApplicationsBySemester }
+ methods: [GET]
 
 admissionadmin_delete_application_by_id:
  path: /kontrollpanel/opptakadmin/slett/{id}
