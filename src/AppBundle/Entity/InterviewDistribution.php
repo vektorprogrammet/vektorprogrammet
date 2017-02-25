@@ -31,7 +31,7 @@ class InterviewDistribution
                 continue;
             }
 
-            if (!$interview->getInterviewed()) {
+            if (!$interview->getCancelled() && !$interview->getInterviewed()) {
                 ++$interviewsLeftCount;
             }
         }
