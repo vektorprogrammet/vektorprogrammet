@@ -56,21 +56,7 @@
                         </td>
                     {% endif %}
 
-                    {# Add the delete interview and application dropdown button, given the correct permissions #}
-                    {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-                        <td>
-                            <a href="#" class="button tiny alert" data-dropdown="deleteDropdown{{ a.id }}"
-                               aria-controls="deleteDropdown{{ a.id }}" aria-expanded="false" id="{{ a.id }}">
-                                <i class="fa fa-trash fa-lg"></i> Slett <i class="fa fa-caret-down"></i>
-                            </a>
-                            <ul id="deleteDropdown{{ a.id }}" data-dropdown-content class="f-dropdown"
-                                aria-hidden="true">
-                                <li class="deleteInterview" id="{{ a.interview.id }}"><a href="#">Slett intervju</a>
-                                </li>
-                                <li class="deleteApplication" id="{{ a.id }}"><a href="#">Slett søknad</a></li>
-                            </ul>
-                        </td>
-                    {% endif %}
+                    {% include 'admission_admin/interviewed_applications/delete_column.html.twig' %}
                 </tr>
             {% endfor %}
 

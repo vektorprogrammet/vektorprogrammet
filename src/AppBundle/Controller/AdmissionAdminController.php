@@ -69,17 +69,15 @@ class AdmissionAdminController extends Controller
 
         $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findInterviewedApplicants(null, $semester);
 
-        $yes = $this->get('app.interview_counter')->count($applications,  InterviewCounter::YES);
-        $maybe = $this->get('app.interview_counter')->count($applications,  InterviewCounter::MAYBE);
-        $no = $this->get('app.interview_counter')->count($applications,  InterviewCounter::NO);
+        $counter = $this->get('app.interview_counter');
 
         return $this->render('admission_admin/interviewed_applications_table.html.twig', array(
+            'status' => 'interviewed',
             'applications' => $applications,
             'semester' => $semester,
-            'status' => 'interviewed',
-            'yes' => $yes,
-            'no' => $no,
-            'maybe' => $maybe,
+            'yes' => $counter->count($applications,  InterviewCounter::YES),
+            'no' => $counter->count($applications,  InterviewCounter::NO),
+            'maybe' => $counter->count($applications,  InterviewCounter::MAYBE),
         ));
     }
 
@@ -91,7 +89,13 @@ class AdmissionAdminController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        return $this->renderApplicants($semester, 'existing');
+        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findExistingApplicants($department, $semester);
+
+        return $this->render('admission_admin/existing_assistants_applications_table.html.twig', array(
+            'status' => 'existing',
+            'applications' => $applications,
+            'semester' => $semester,
+        ));
     }
 
     private function renderApplicants(Semester $semester, string $status)
@@ -111,7 +115,6 @@ class AdmissionAdminController extends Controller
         $applicantsAssignedToUser = array();
         $interviewDistribution = array();
         $interviewDistributionLeft = array();
-        $cancelledApplicants = array();
         /* @var Application[] $applicants */
         switch ($status) {
             case 'assigned':
@@ -152,20 +155,6 @@ class AdmissionAdminController extends Controller
                 $cancelledApplicants = $repository->findCancelledApplicants($semester);
                 arsort($interviewDistribution);
                 $template = 'assigned_applications_table.html.twig';
-                break;
-            case 'interviewed':
-                $applicants = $repository->findInterviewedApplicants($department, $semester);
-                foreach ($applicants as $applicant) {
-                    if ($applicant->getUser() == $user) {
-                        $applicant->getInterview()->getInterviewScore()->hideScores();
-                        break;
-                    }
-                }
-                $template = 'interviewed_applications_table.html.twig';
-                break;
-            case 'existing':
-                $applicants = $repository->findExistingApplicants($department, $semester);
-                $template = 'existing_assistants_applications_table.html.twig';
                 break;
             default:
                 throw $this->createNotFoundException();
