@@ -57,7 +57,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user3->setPhone('95148725');
         $user3->setUserName('kribo');
         $user3->setPassword('1234');
-        $user3->addRole($this->getReference('role-1'));
+        $user3->addRole($this->getReference('role-3'));
         $user3->setFieldOfStudy($this->getReference('fos-3'));
         $user3->setPicturePath('images/defaultProfile.png');
         $manager->persist($user3);
