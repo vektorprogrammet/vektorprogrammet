@@ -99,7 +99,7 @@ class ApplicationRepository extends EntityRepository
      *
      * @param null $semester
      *
-     * @return array
+     * @return Application[]
      */
     public function findAssignedApplicants($semester = null)
     {
@@ -118,6 +118,26 @@ class ApplicationRepository extends EntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param User     $user
+     * @param Semester $semester
+     *
+     * @return Application[]
+     */
+    public function findAssignedByUserAndSemester(User $user, Semester $semester)
+    {
+        return $this->createQueryBuilder('a')
+            ->join('a.interview', 'i')
+            ->where('a.semester = :semester')
+            ->andWhere('i.interviewer = :user')
+            ->andWhere('i.interviewed = 0')
+            ->andWhere('i.cancelled is NULL OR i.cancelled = 0')
+            ->setParameter('semester', $semester)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
     }
 
     /**

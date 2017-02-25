@@ -56,7 +56,23 @@ class AdmissionAdminController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        return $this->renderApplicants($semester,  'assigned');
+        $applicationRepo = $this->getDoctrine()->getRepository('AppBundle:Application');
+
+        $applications = $applicationRepo->findAssignedApplicants($semester);
+        $interviewDistributions = $this->get('app.interview_counter')->createInterviewDistributions($applications, $semester);
+
+        $cancelledApplications = $applicationRepo->findCancelledApplicants($semester);
+
+        $applicationsAssignedToUser = $applicationRepo->findAssignedByUserAndSemester($this->getUser(), $semester);
+
+        return $this->render('admission_admin/assigned_applications_table.html.twig', array(
+            'status' => 'assigned',
+            'applications' => $applications,
+            'semester' => $semester,
+            'interviewDistributions' => $interviewDistributions,
+            'cancelledApplications' => $cancelledApplications,
+            'yourApplications' => $applicationsAssignedToUser,
+        ));
     }
 
     public function showInterviewedApplicationsBySemesterAction(Semester $semester)
@@ -95,85 +111,6 @@ class AdmissionAdminController extends Controller
             'status' => 'existing',
             'applications' => $applications,
             'semester' => $semester,
-        ));
-    }
-
-    private function renderApplicants(Semester $semester, string $status)
-    {
-        $department = $semester->getDepartment();
-
-        $user = $this->getUser();
-
-        // Finds all the departments
-        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
-
-        // Find all the semesters associated with the department
-        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
-
-        // Finds the applicants for the given department filtered by interview status and semester
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Application');
-        $applicantsAssignedToUser = array();
-        $interviewDistribution = array();
-        $interviewDistributionLeft = array();
-        /* @var Application[] $applicants */
-        switch ($status) {
-            case 'assigned':
-                $interviewRepo = $this->getDoctrine()->getRepository('AppBundle:Interview');
-
-                //Count completed interviews
-                $interviewedApplicants = $repository->findInterviewedApplicants($department, $semester);
-                foreach ($interviewedApplicants as $interviewedApplicant) {
-                    $numInterviews = $interviewRepo->numberOfInterviewsByUserInSemester($interviewedApplicant->getInterview()->getInterviewer(), $semester);
-                    $fullName = $interviewedApplicant->getInterview()->getInterviewer()->getFullName();
-                    if (!array_key_exists($fullName, $interviewDistribution) && $numInterviews > 0) {
-                        $interviewDistribution[$fullName] = $numInterviews;
-                        $interviewDistributionLeft[$fullName] = 0;
-                    }
-                }
-
-                //Count assigned interviews
-                $applicants = $repository->findAssignedApplicants($department, $semester);
-                foreach ($applicants as $applicant) {
-                    $numInterviews = $interviewRepo->numberOfInterviewsByUserInSemester($applicant->getInterview()->getInterviewer(), $semester);
-                    $fullName = $applicant->getInterview()->getInterviewer()->getFullName();
-                    if (!array_key_exists($fullName, $interviewDistribution) && $numInterviews > 0) {
-                        $interviewDistribution[$fullName] = $numInterviews;
-                    }
-                    if ($applicant->getInterview()->getInterviewer() == $user) {
-                        $applicantsAssignedToUser[] = $applicant;
-                    }
-                }
-
-                foreach ($applicants as $applicant) {
-                    $fullName = $applicant->getInterview()->getInterviewer()->getFirstName().' '.$applicant->getInterview()->getInterviewer()->getLastName();
-                    if (array_key_exists($fullName, $interviewDistributionLeft)) {
-                        ++$interviewDistributionLeft[$fullName];
-                    } else {
-                        $interviewDistributionLeft[$fullName] = 1;
-                    }
-                }
-                $cancelledApplicants = $repository->findCancelledApplicants($semester);
-                arsort($interviewDistribution);
-                $template = 'assigned_applications_table.html.twig';
-                break;
-            default:
-                throw $this->createNotFoundException();
-        }
-
-        return $this->render('admission_admin/'.$template, array(
-            'status' => $status,
-            'applicants' => $applicants,
-            'yourApplicants' => $applicantsAssignedToUser,
-            'interviewDistribution' => $interviewDistribution,
-            'interviewDistributionLeft' => $interviewDistributionLeft,
-            'department' => $department,
-            'departments' => $allDepartments,
-            'semesters' => $semesters,
-            'semester' => $semester,
-            'numOfApplicants' => sizeof($applicants),
-            'departmentName' => $department->getShortName(),
-            'user' => $user,
-            'cancelledApplicants' => $cancelledApplicants,
         ));
     }
 
