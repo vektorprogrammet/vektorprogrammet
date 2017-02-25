@@ -17,6 +17,6 @@
     {% endif %}
     <div class="small-12 {{ is_granted('ROLE_HIGHEST_ADMIN') ? 'medium-7 large-9' }} columns">
             <span class="float-right">Ja: {{ yes }} / Kanskje: {{ maybe }} / Nei: {{ no }} /
-                Totalt: {{ applicants | length }}</span>
+                Totalt: {{ applications | length }}</span>
     </div>
 </div>

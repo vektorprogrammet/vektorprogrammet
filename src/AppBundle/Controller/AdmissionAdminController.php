@@ -3,10 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Application;
-use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Role\Roles;
+use AppBundle\Service\InterviewCounter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,7 +56,7 @@ class AdmissionAdminController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        return $this->renderApplicants($semester,  "assigned");
+        return $this->renderApplicants($semester,  'assigned');
     }
 
     public function showInterviewedApplicationsBySemesterAction(Semester $semester)
@@ -67,7 +67,20 @@ class AdmissionAdminController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        return $this->renderApplicants($semester,  "interviewed");
+        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findInterviewedApplicants(null, $semester);
+
+        $yes = $this->get('app.interview_counter')->count($applications,  InterviewCounter::YES);
+        $maybe = $this->get('app.interview_counter')->count($applications,  InterviewCounter::MAYBE);
+        $no = $this->get('app.interview_counter')->count($applications,  InterviewCounter::NO);
+
+        return $this->render('admission_admin/interviewed_applications_table.html.twig', array(
+            'applications' => $applications,
+            'semester' => $semester,
+            'status' => 'interviewed',
+            'yes' => $yes,
+            'no' => $no,
+            'maybe' => $maybe,
+        ));
     }
 
     public function showExistingApplicationsBySemesterAction(Semester $semester)
@@ -78,12 +91,11 @@ class AdmissionAdminController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        return $this->renderApplicants($semester, "existing");
+        return $this->renderApplicants($semester, 'existing');
     }
 
     private function renderApplicants(Semester $semester, string $status)
     {
-
         $department = $semester->getDepartment();
 
         $user = $this->getUser();

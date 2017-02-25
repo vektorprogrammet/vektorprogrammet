@@ -1,16 +1,4 @@
 {% extends 'admission_admin/layout.html.twig' %}
-{% set yes=0 %}
-{% set maybe=0 %}
-{% set no=0 %}
-{% for applicant in applicants %}
-    {% if applicant.interview.interviewScore.suitableAssistant == "Ja" %}
-        {% set yes = yes +1 %}
-    {% elseif applicant.interview.interviewScore.suitableAssistant == "Kanskje" %}
-        {% set maybe = maybe +1 %}
-    {% elseif applicant.interview.interviewScore.suitableAssistant == "Nei" %}
-        {% set no = no +1 %}
-    {% endif %}
-{% endfor %}
 
 {% block applications %}
     {% include 'admission_admin/interviewed_applications/bulk_navigation.html.twig' %}
@@ -39,7 +27,7 @@
 
             <tbody>
 
-            {% for a in applicants %}
+            {% for a in applications %}
                 <tr id="{{ a.id }}">
                     {% if is_granted('ROLE_HIGHEST_ADMIN') %}
                         <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
@@ -55,7 +43,7 @@
 
 
                     {# Add the read interview button #}
-                    {% if a.user != user and ( is_granted('ROLE_SUPER_ADMIN') or a.interview.interviewer == app.user ) %}
+                    {% if a.user != app.user and ( is_granted('ROLE_SUPER_ADMIN') or a.interview.interviewer == app.user ) %}
                         <td>{{ a.interview.interviewScore.sum }}</td>
                         <td>{{ a.interview.interviewScore.suitableAssistant }}</td>
                         <td>

@@ -143,6 +143,7 @@ class ApplicationRepository extends EntityRepository
      *
      * @param null $department
      * @param null $semester
+     *
      * @return array
      */
     public function findNewApplicants($department = null, $semester = null)
