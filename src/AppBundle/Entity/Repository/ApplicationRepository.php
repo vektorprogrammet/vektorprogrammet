@@ -97,12 +97,11 @@ class ApplicationRepository extends EntityRepository
     /**
      * Finds all applications that have been assigned an interview that has not yet been conducted.
      *
-     * @param null $department
      * @param null $semester
      *
      * @return array
      */
-    public function findAssignedApplicants($department = null, $semester = null)
+    public function findAssignedApplicants($semester = null)
     {
         $qb = $this->createQueryBuilder('a')
             ->select('a')
@@ -112,11 +111,6 @@ class ApplicationRepository extends EntityRepository
             ->join('a.interview', 'i')
             ->where('i.interviewed = 0')
             ->andWhere('i.cancelled is NULL OR i.cancelled = 0');
-
-        if (null !== $department) {
-            $qb->andWhere('d = :department')
-                ->setParameter('department', $department);
-        }
 
         if (null !== $semester) {
             $qb->andWhere('sem = :semester')
@@ -149,7 +143,6 @@ class ApplicationRepository extends EntityRepository
      *
      * @param null $department
      * @param null $semester
-     *
      * @return array
      */
     public function findNewApplicants($department = null, $semester = null)
@@ -175,6 +168,19 @@ class ApplicationRepository extends EntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findNewApplicationsBySemester(Semester $semester)
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.interview', 'i')
+            ->where('a.previousParticipation = 0')
+            ->andWhere('i is NULL OR i.interviewed = 0')
+            ->andWhere('i.cancelled is NULL OR i.cancelled = 0')
+            ->andWhere('a.semester = :semester')
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getResult();
     }
 
     /**

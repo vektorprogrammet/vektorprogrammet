@@ -249,13 +249,12 @@
 
 
 {% block body %}
-    <p></p>
     {% include 'common/flash.html.twig' %}
 
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
 
-            <h1>Opptak {{ departmentName }}</h1>
+            <h1>Opptak {{ semester.department }}</h1>
 
             <hr>
 
@@ -263,59 +262,44 @@
 
                 {# Contains the bulk action navigation. Bulk actions depends on interview status #}
                 <div class="small-3 columns">
-                    <ul class="inline-list">
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
-
-                            {# Department dropdown #}
-                            {% include "common/department_dropdown.html.twig" with {'pathForDepartment': 'admissionadmin_filter_applications_by_department', 'departmentParameterName': 'id', 'currentDepartment': departmentName} %}
-
-                        {% endif %}
-                        {# Semester dropdown #}
-                        <li>
-                            <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown"
-                               aria-expanded="false">{{ semesterName }} <i class="fa fa-caret-down"></i></a>
-                            <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1"
-                                aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                                {% for s in semesters %}
-
-                                    <li><a href="{{ path(app.request.attributes.get('_route'),
-                                        app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'semester': s.id })) }}">{{ s.name }}</a>
-                                    </li>
-
-                                {% endfor %}
-
+                            {% include "common/department_semester_dropdowns.html.twig" with {
+                                'path': 'applications_show_by_semester',
+                                'parameterName': 'id',
+                                'currentSemester': semester
+                            } %}
+                        {% else %}
+                            <ul class="inline-list">
+                                {% include 'common/semester_dropdown.html.twig' with {
+                                    'pathForSemester': 'applications_show_by_semester',
+                                    'semesterParameterName': 'id',
+                                    'currentSemester': semester
+                                } %}
                             </ul>
-                        </li>
-                    </ul>
+                        {% endif %}
                 </div>
                 {# The interview status navigation #}
                 <div class="small-7 columns" style="float:right">
                     <dl id="interviewStatusNav" class="sub-nav right">
                         <dt>Status:</dt>
-                        <dd {{ (status == "new") ? 'class="active"' : '' }}>
-                            <a href="{{ path(app.request.attributes.get('_route'),
-                            app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'status': 'new' })) }}">Nye</a>
+                        <dd {{ status == "new" ? 'class="active"' : '' }}>
+                            <a href="{{ path('applications_show_new_by_semester', {id: semester.id}) }}">Nye</a>
                         </dd>
-                        <dd {{ (status == "assigned") ? 'class="active"' : '' }}>
-                            <a href="{{ path(app.request.attributes.get('_route'),
-                            app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'status': 'assigned' })) }}">Fordelt</a>
+                        <dd {{ status == "assigned" ? 'class="active"' : '' }}>
+                            <a href="{{ path('applications_show_assigned_by_semester', {id: semester.id}) }}">Fordelt</a>
                         </dd>
-                        <dd {{ (status == "interviewed") ? 'class="active"' : '' }}>
-                            <a href="{{ path(app.request.attributes.get('_route'),
-                            app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'status': 'interviewed' })) }}">Intervjuet</a>
+                        <dd {{ status == "interviewed" ? 'class="active"' : '' }}>
+                            <a href="{{ path('applications_show_interviewed_by_semester', {id: semester.id}) }}">Intervjuet</a>
                         </dd>
-                        <dd {{ (status == "existing") ? 'class="active"' : '' }}>
-                            <a href="{{ path(app.request.attributes.get('_route'),
-                            app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'status': 'existing' })) }}">Tidligere
-                                Assistenter</a>
+                        <dd {{ status == "existing" ? 'class="active"' : '' }}>
+                            <a href="{{ path('applications_show_existing_by_semester', {id: semester.id}) }}">Tidligere Assistenter</a>
                         </dd>
                     </dl>
                 </div>
             </div>
 
 
-            {# Contains an application table, depends on interview status #}
+             {#Contains an application table, depends on interview status #}
             {% block applications %}
 
             {% endblock %}

@@ -3,9 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Application;
+use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Role\Roles;
-use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,72 +17,76 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AdmissionAdminController extends Controller
 {
-    // The name of the default role a new user is given.
-    const NEW_USER_ROLE = 'User';
-
     /**
      * Shows the admission admin page. Shows only applications for the department of the logged in user.
      * This works as the restricted admission management method, only allowing users to manage applications within their department.
      *
-     * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Request $request)
+    public function showAction()
     {
-        return $this->renderApplicants($request);
+        $department = $this->getUser()->getDepartment();
+        $semester = $department->getCurrentOrLatestSemester();
+
+        return $this->showNewApplicationsBySemesterAction($semester);
     }
 
-    /**
-     * Shows the admission admin page with applications from the given department.
-     * This is the method is only accessible by users with sufficient rights to manage all departments.
-     *
-     * @param Request $request
-     * @param $id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function showApplicationsByDepartmentAction(Request $request, $id)
+    public function showNewApplicationsBySemesterAction(Semester $semester)
     {
-        return $this->renderApplicants($request, $id);
+        $department = $semester->getDepartment();
+
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findNewApplicationsBySemester($semester);
+
+        return $this->render('admission_admin/new_applications_table.html.twig', array(
+            'applications' => $applications,
+            'semester' => $semester,
+            'status' => 'new',
+        ));
     }
 
-    private function renderApplicants(Request $request, $departmentId = null)
+    public function showAssignedApplicationsBySemesterAction(Semester $semester)
     {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        // Get query strings for filtering applications
-        $status = $request->query->get('status', 'new');
+        $department = $semester->getDepartment();
 
-        if ($departmentId === null) {
-            // Finds the department for the current logged in user
-            $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
-        } else {
-            if (!$this->isGranted(Roles::TEAM_LEADER) && $user->getDepartment()->getId() !== (int) $departmentId) {
-                throw $this->createAccessDeniedException();
-            }
-            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
+            throw $this->createAccessDeniedException();
         }
 
-        $semesterId = $request->query->get('semester', null);
-        if ($semesterId === null) {
-            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
-        } else {
-            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterId);
+        return $this->renderApplicants($semester,  "assigned");
+    }
+
+    public function showInterviewedApplicationsBySemesterAction(Semester $semester)
+    {
+        $department = $semester->getDepartment();
+
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
+            throw $this->createAccessDeniedException();
         }
 
-        $em = $this->getDoctrine();
+        return $this->renderApplicants($semester,  "interviewed");
+    }
 
-        if ($semester === null) {
-            try {
-                $semester = $em->getRepository('AppBundle:Semester')->findLatestSemesterByDepartmentId($department->getId());
-            } catch (NoResultException $e) {
-                return $this->render('error/no_semester.html.twig', array('department' => $department));
-            }
-        } else {
-            $semester = $em->getRepository('AppBundle:Semester')->find($semester);
+    public function showExistingApplicationsBySemesterAction(Semester $semester)
+    {
+        $department = $semester->getDepartment();
+
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
+            throw $this->createAccessDeniedException();
         }
-        // Finds the name of the chosen semester. If no semester chosen display 'Alle'
-        $semesterName = is_null($semester) ? 'Alle' : $semester->getName();
+
+        return $this->renderApplicants($semester, "existing");
+    }
+
+    private function renderApplicants(Semester $semester, string $status)
+    {
+
+        $department = $semester->getDepartment();
+
+        $user = $this->getUser();
 
         // Finds all the departments
         $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
@@ -151,9 +156,7 @@ class AdmissionAdminController extends Controller
                 $template = 'existing_assistants_applications_table.html.twig';
                 break;
             default:
-                $applicants = $repository->findNewApplicants($department, $semester);
-                $template = 'new_applications_table.html.twig';
-                $status = 'new';
+                throw $this->createNotFoundException();
         }
 
         return $this->render('admission_admin/'.$template, array(
@@ -165,7 +168,7 @@ class AdmissionAdminController extends Controller
             'department' => $department,
             'departments' => $allDepartments,
             'semesters' => $semesters,
-            'semesterName' => $semesterName,
+            'semester' => $semester,
             'numOfApplicants' => sizeof($applicants),
             'departmentName' => $department->getShortName(),
             'user' => $user,

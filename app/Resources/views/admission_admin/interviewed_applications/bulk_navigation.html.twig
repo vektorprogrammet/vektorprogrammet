@@ -1,0 +1,22 @@
+<div class="row">
+    {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+        <div class="small-6 medium-5 large-3 columns">
+            <div class="row collapse">
+                <div class="small-9 columns">
+                    <select id="bulkSelect">
+                        <option value="title">Gruppehandling</option>
+                        <option value="deleteApplication">Slett søknad</option>
+                        <option value="deleteInterview">Slett intervju</option>
+                    </select>
+                </div>
+                <div class="small-3 columns">
+                    <a href="#" id="bulkAction" class="button postfix">Utfør</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="small-12 {{ is_granted('ROLE_HIGHEST_ADMIN') ? 'medium-7 large-9' }} columns">
+            <span class="float-right">Ja: {{ yes }} / Kanskje: {{ maybe }} / Nei: {{ no }} /
+                Totalt: {{ applicants | length }}</span>
+    </div>
+</div>
