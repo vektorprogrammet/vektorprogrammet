@@ -12,49 +12,32 @@ class DepartmentController extends Controller
 {
     public function showAction()
     {
-        if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
-            // Finds all the departments
-            $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
-
-            // Return the view with suitable variables
-            return $this->render('department_admin/index.html.twig', array(
-                'departments' => $allDepartments,
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
-        }
+        return $this->render('department_admin/index.html.twig', array());
     }
 
-    public function createDepartmentAction(request $request)
+    public function createDepartmentAction(Request $request)
     {
+        // Create a new Team entity
+        $department = new Department();
 
-        // Only create if it is a HIGHEST_ADMIN
-        if ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')) {
+        // Create a new formType with the needed variables
+        $form = $this->createForm(new CreateDepartmentType(), $department);
 
-            // Create a new Team entity
-            $deparment = new Department();
+        // Handle the form
+        $form->handleRequest($request);
 
-            // Create a new formType with the needed variables
-            $form = $this->createForm(new CreateDepartmentType(), $deparment);
+        if ($form->isValid()) {
+            // Persist the team to the database
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($department);
+            $em->flush();
 
-            // Handle the form
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                // Persist the team to the database
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($deparment);
-                $em->flush();
-
-                return $this->redirect($this->generateUrl('departmentadmin_show'));
-            }
-
-            return $this->render('department_admin/create_department.html.twig', array(
-                'form' => $form->createView(),
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
+            return $this->redirectToRoute('departmentadmin_show');
         }
+
+        return $this->render('department_admin/create_department.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
     public function getAllDepartmentsForTopbarAction()
@@ -69,76 +52,34 @@ class DepartmentController extends Controller
         ));
     }
 
-    public function deleteDepartmentByIdAction(Request $request)
+    public function deleteDepartmentByIdAction(Department $department)
     {
-        $id = $request->get('department');
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($department);
+        $em->flush();
 
-        try {
-            // Only HIGHEST_ADMIN can delete departments
-            if ($this->get('security.context')->isGranted('ROLE_HIGHEST_ADMIN')) {
-
-                // This deletes the given department
-                $em = $this->getDoctrine()->getEntityManager();
-                $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($id);
-                $em->remove($department);
-                $em->flush();
-
-                // Send a response back to AJAX
-                $response['success'] = true;
-            } else {
-                // Send a response back to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Du har ikke tilstrekkelige rettigheter.';
-            }
-        } catch (\Exception $e) {
-            // Send a response back to AJAX
-            $response['success'] = false;
-            $response['cause'] = 'Kunne ikke slette avdelingen.';
-            //$response['cause'] = $e->getMessage(); // if you want to see the exception message.
-
-            return new JsonResponse($response);
-        }
-
-        // Send a respons to ajax
-        return new JsonResponse($response);
+        return new JsonResponse(array('success' => true));
     }
 
-    public function updateDepartmentAction(request $request)
+    public function updateDepartmentAction(Request $request, Department $department)
     {
+        // Create the form
+        $form = $this->createForm(new CreateDepartmentType(), $department);
 
-        // Get the ID variable from the request
-        $id = $request->get('id');
+        // Handle the form
+        $form->handleRequest($request);
 
-        // Create a new Department entity
-        $department = new Department();
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($department);
+            $em->flush();
 
-        $em = $this->getDoctrine()->getManager();
-
-        // Find a department by the ID sent in by the request
-        $department = $em->getRepository('AppBundle:Department')->find($id);
-
-        // Only edit if it is a SUPER_ADMIN
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-
-            // Create the form
-            $form = $this->createForm(new CreateDepartmentType(), $department);
-
-            // Handle the form
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $em->persist($department);
-                $em->flush();
-
-                return $this->redirect($this->generateUrl('departmentadmin_show'));
-            }
-
-            return $this->render('department_admin/create_department.html.twig', array(
-                'department' => $department,
-                'form' => $form->createView(),
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('departmentadmin_show'));
+            return $this->redirectToRoute('departmentadmin_show');
         }
+
+        return $this->render('department_admin/create_department.html.twig', array(
+            'department' => $department,
+            'form' => $form->createView(),
+        ));
     }
 }
