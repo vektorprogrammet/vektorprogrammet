@@ -4,9 +4,6 @@
     Opptak {{ department.shortname }}
 {% endblock %}
 
-{% block javascripts %}
-    {% include "statictext/js_loader_for_static_texts.html.twig" %}
-{% endblock %}
 {% if semester is defined %}
     {% form_theme form 'form/foundation_layout.html.twig' %}
 {% endif %}
@@ -258,7 +255,8 @@
         {% render controller('AppBundle:Article:showDepartmentNews', {'id' : department.id}) %}
     </div>
 {% endblock %}
-{% block customScripts %}
+{% block javascripts %}
+    {% include "statictext/js_loader_for_static_texts.html.twig" %}
 
     <script>
         var $submitBtn = $('.vektor-button-inverted');

@@ -4,11 +4,6 @@
     Resultater {{ survey.name }} {{ survey.semester }}
 {% endblock %}
 
-{% block scripts %}
-    {{ parent() }}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
-{% endblock %}
-
 {% block body %}
     <header class="row">
         <div class="small-12 columns">
@@ -39,6 +34,9 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+
     <script>
         // Add event listener to Show/Hide filter button
         (function () {
