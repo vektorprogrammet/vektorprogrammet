@@ -15,9 +15,6 @@ class TeamAdminController extends Controller
 {
     public function showAction()
     {
-        // Finds all the departments
-        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
-
         // Finds the department for the current logged in user
         $department = $this->getUser()->getDepartment();
 
@@ -26,10 +23,8 @@ class TeamAdminController extends Controller
 
         // Return the view with suitable variables
         return $this->render('team_admin/index.html.twig', array(
-            'departments' => $allDepartments,
             'teams' => $teams,
-            'departmentName' => $department->getShortName(),
-            'userDepartment' => $department,
+            'department' => $department,
         ));
     }
 
