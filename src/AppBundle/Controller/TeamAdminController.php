@@ -159,18 +159,13 @@ class TeamAdminController extends Controller
 
     public function showTeamsByDepartmentAction(Department $department)
     {
-        // Finds all the departments
-        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
-
         // Find teams that are connected to the department of the department ID sent in by the request
         $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByDepartment($department);
 
         // Return the view with suitable variables
         return $this->render('team_admin/index.html.twig', array(
-            'departments' => $allDepartments,
-            'userDepartment' => $department,
+            'department' => $department,
             'teams' => $teams,
-            'departmentName' => $department->getShortName(),
         ));
     }
 
@@ -212,41 +207,23 @@ class TeamAdminController extends Controller
 
     public function removeUserFromTeamByIdAction(WorkHistory $workHistory)
     {
-        try {
-            // This deletes the given work history
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($workHistory);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($workHistory);
+        $em->flush();
 
-            return new JsonResponse(array(
-                'success' => true,
-            ));
-        } catch (\Exception $e) {
-            // Send a response back to AJAX
-            return new JsonResponse(array(
-                'success' => true,
-                'cause' => $e->getMessage(),
-            ));
-        }
+        return new JsonResponse(array(
+            'success' => true,
+        ));
     }
 
     public function deleteTeamByIdAction(Team $team)
     {
-        try {
-            // This deletes the given team
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($team);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($team);
+        $em->flush();
 
-            return new JsonResponse(array(
-                'success' => true,
-            ));
-        } catch (\Exception $e) {
-            // Send a response back to AJAX
-            return new JsonResponse(array(
-                'success' => true,
-                'cause' => $e->getMessage(),
-            ));
-        }
+        return new JsonResponse(array(
+            'success' => true,
+        ));
     }
 }
