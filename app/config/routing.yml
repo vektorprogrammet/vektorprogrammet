@@ -995,7 +995,7 @@ substitute_create_from_application:
     id: \d+
 
 substitute_modify:
-  path: /kontrollpanel/vikar/endre/{id}
+  path: /kontrollpanel/vikar/rediger/{id}
   defaults: {_controller: AppBundle:Substitute:showModifyForm }
   methods: [GET,POST]
   requirements:

@@ -86,6 +86,9 @@
                     <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Onsdag"> O</span></th>
                     <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Torsdag"> T</span></th>
                     <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Fredag"> F</span></th>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <th></th>
+                    {% endif %}
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <th></th>
                     {% endif %}
@@ -126,8 +129,20 @@
                                           action="{{ path('substitute_delete', { id: sub.id }) }}">
                                         <button type="submit"
                                                 class="button tiny alert">
-                                            <i class="fa fa-user-secret"></i>
+                                            <i class="fa fa-trash"></i>
                                                 Slett
+                                        </button>
+                                    </form>
+                                </td>
+                            {% endif %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <td>
+                                    <form method="POST"
+                                          action="{{ path('substitute_modify', { id: sub.id }) }}">
+                                        <button type="submit"
+                                                class="button tiny">
+                                            <i class="fa"></i>
+                                            Rediger
                                         </button>
                                     </form>
                                 </td>

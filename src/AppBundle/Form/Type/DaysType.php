@@ -51,6 +51,7 @@ class DaysType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Application',
             'inherit_data' => true,
+            'label' => '',
         ));
     }
 

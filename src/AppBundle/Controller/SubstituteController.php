@@ -2,8 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Semester;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Entity\Semester;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Application;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -47,7 +48,7 @@ class SubstituteController extends Controller
         return $this->showBySemesterAction($semester);
     }
 
-    public function showModifyFormAction(Application $application)
+    public function showModifyFormAction(Request $request, Application $application)
     {
         /*
         $form = $this->createFormBuilder($application)
@@ -71,7 +72,25 @@ class SubstituteController extends Controller
             throw new BadRequestHttpException();
         }
 
-        $form = $this->createForm( new ModifySubstituteType(), $application);
+        $department = $application->getUser()->getDepartment();
+
+        $form = $this->createForm(ModifySubstituteType::class, $application, array(
+            'department' => $department,
+        ));
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($application);
+            $em->flush();
+
+            // Need some form of redirect. Will cause wrong database entries if the form is rendered again
+            // after a valid submit, without remaking the form with up to date question objects from the database.
+            return $this->redirect($this->generateUrl('substitute_modify', array(
+                'id' => $application->getId(),
+            )));
+        }
 
         return $this->render('substitute/modify_substitute.twig', array(
             'application' => $application,

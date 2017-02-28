@@ -10,8 +10,14 @@ class ModifySubstituteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('days', new DaysType(), array(
-            'data_class' => 'AppBundle\Entity\Application',
+        $options['label'] = false;
+        $builder->add('user', new UserDataForSubstituteType(), array(
+            'department' => $options['department'],
+            'label' => false,
+        ));
+
+        $builder->add('yearOfStudy', 'text', array(
+            'label' => 'År',
         ));
 
         $builder->add('english', 'choice', array(
@@ -24,25 +30,26 @@ class ModifySubstituteType extends AbstractType
             'multiple' => false,
         ));
 
-        // Hvordan bruke data fra andre klasser enn application?
-        // Her trengs blant annet user->phone
-        /*
-        $builder->add('phone', 'text', array(
-            'data_class' => 'AppBundle\Entity\User',
-            'label' => 'Telefon',
+        $builder->add('days', new DaysType(), array(
+            'data_class' => 'AppBundle\Entity\Application',
+            'label' => 'Hvilke dager passer IKKE for deg?',
         ));
-        */
+
+        $builder->add('save', 'submit', array(
+            'label' => 'Endre vikar',
+        ));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Application',
+            'department' => null,
         ));
     }
 
     public function getName()
     {
-        return 'application';
+        return 'modifySubstitute';
     }
 }
