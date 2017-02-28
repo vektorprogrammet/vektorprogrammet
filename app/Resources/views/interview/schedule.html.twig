@@ -49,12 +49,15 @@
                     </div>
                 </div>
 
-                <h5>Tidspunkt</h5>
+                <h5>Tid og sted</h5>
 
                 {{ form_start(form) }}
                 <div class="row">
                     <div class="small-12 medium-4 columns">
                         {{ form_row(form.datetime) }}
+                    </div>
+                    <div class="small-12 medium-4 columns">
+                        {{ form_row(form.room) }}
                     </div>
 
                 </div>
