@@ -91,6 +91,7 @@
                     {% endif %}
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <th></th>
+                        <th></th>
                     {% endif %}
                 </tr>
 
@@ -124,6 +125,12 @@
                             <td>{{ sub.friday }}</td>
                             {% if is_granted('ROLE_SUPER_ADMIN') %}
                                 <td>
+                                    <a href="{{ path('substitute_modify', { id: sub.id }) }}" class="button tiny">
+                                        <i class="fa fa-user-secret"></i>
+                                            Endre
+                                    </a>
+                                </td>
+                                <td>
                                     <form method="POST"
                                           onsubmit="return confirm('Vil du virkelig fjerne vikarstillingen til {{ sub.user.firstName }} {{ sub.user.lastName }}?')"
                                           action="{{ path('substitute_delete', { id: sub.id }) }}">
@@ -151,7 +158,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            </hr>
+            <hr>
         </div>
     </div>
 {% endblock %}
