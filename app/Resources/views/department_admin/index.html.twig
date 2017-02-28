@@ -18,35 +18,15 @@
                     cancelButton: $('#modalCancel')
                 }
             });
-
-            $("#search").keyup(function () {
-
-                _this = this;
-
-                $.each($("#table tbody").find("tr"), function () {
-
-                    if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
-                        $(this).hide();
-                    }
-                    else {
-                        $(this).show();
-                    }
-                });
-
-            });
-
         });
 
     </script>
 
-    {% block title %}
-        Avdeling
-    {% endblock %}
-
-
 {% endblock %}
 
-
+{% block title %}
+    Avdeling
+{% endblock %}
 	
 {% block body %}
     <p></p>
@@ -65,11 +45,6 @@
                         </ul>
                     </div>
                 {% endif %}
-
-                <div class="small-12 medium-12 large-6 columns">
-                    <input type="text" id="search" placeholder="Søk..."/>
-                </div>
-
             </div>
 
             <hr>
