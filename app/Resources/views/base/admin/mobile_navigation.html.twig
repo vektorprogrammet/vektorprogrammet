@@ -1,0 +1,73 @@
+<!--Mobile Navigation-->
+<div class="show-for-small-only">
+    <div class="row">
+        <div class="small-12 columns" style="text-align: center;">
+            {% include 'base/logo_link.html.twig' %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 columns" style="text-align: center;margin-top:20px;margin-bottom:20px;">
+            <a href="{{ path('home') }}">Tilbake til hovedsiden</a>
+        </div>
+    </div>
+    <div class="row">
+        <nav class="top-bar" data-topbar role="navigation">
+            <ul class="title-area">
+                <li class="name">
+                    <h1><a href="#">Administrator</a></h1>
+                </li>
+
+                <li class="toggle-topbar menu-icon"><a href="#"><span>Meny</span></a></li>
+            </ul>
+
+            <section class="top-bar-section">
+                <!-- Right Nav Section -->
+                <ul class="right">
+                    <li><a href="{{ path('control_panel') }}">Kontrollpanel</a></li>
+                    <li class="has-dropdown">
+                        <a href="#">Artikkel</a>
+                        <ul class="dropdown">
+                            <li><a href="{{ path('articleadmin_show') }}">Artikler</a></li>
+                            <li><a href="{{ path('articleadmin_create') }}">Ny artikkel</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="has-dropdown">
+                        <a href="{{ path('useradmin_show') }}">Brukere</a>
+                        <ul class="dropdown">
+                            <li><a href="{{ path('participanthistory_show') }}">Deltakerhistorikk</a></li>
+                            <li><a href="{{ path('substitute_show') }}">Vikarer</a></li>
+                            <li><a href="{{ path('teamadmin_show') }}">Team</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="has-dropdown">
+                        <a href="#">Opptak & Undersøkelse</a>
+                        <ul class="dropdown">
+                            <li><a href="{{ path('admissionadmin_show') }}">Opptak</a></li>
+                            <li>
+                                <a href="{{ path('statistics_application_by_department', {'department': app.user.fieldOfStudy.department.id}) }}">Opptaksstatistikk</a>
+                            </li>
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
+                            {% endif %}
+                            <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
+                            <li><a href="{{ path('newsletter_show_all') }}">Nyhetsbrev</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="has-dropdown">
+                        <a href="#">Diverse</a>
+                        <ul class="dropdown">
+                            <li><a href="{{ path('departmentadmin_show') }}">Avdeling</a></li>
+                            <li><a href="{{ path('semesteradmin_show') }}">Semester</a></li>
+                            <li><a href="{{ path('schooladmin_show') }}">Skole</a></li>
+                            <li><a href="{{ path('sponsors_edit') }}">Sponsorer</a></li>
+                            <li><a href="{{ path('certificate_show') }}">Attest</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+        </nav>
+    </div>
+</div>
