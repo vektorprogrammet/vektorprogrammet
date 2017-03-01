@@ -36,18 +36,16 @@
             <h1> Avdeling </h1>
             <hr>
 
-            <div class="row">
-                {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+            {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                <div class="row">
                     <div class="small-12 medium-12 large-6 columns">
                         <ul class="inline-list">
                             <li><a href="{{ path('departmentadmin_create_department') }}" class="button tiny">Opprett
                                     avdeling</a></li>
                         </ul>
                     </div>
-                {% endif %}
-            </div>
-
-            <hr>
+                </div>
+            {% endif %}
 
             <table width="100%" id="table">
                 <thead>
