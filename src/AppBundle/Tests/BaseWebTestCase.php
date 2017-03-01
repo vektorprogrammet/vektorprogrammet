@@ -8,67 +8,67 @@ use Symfony\Component\DomCrawler\Crawler;
 
 abstract class BaseWebTestCase extends WebTestCase
 {
-    private $anonymousClient;
-    private $assistantClient;
-    private $teamMemberClient;
-    private $teamLeaderClient;
-    private $adminClient;
+    private static $anonymousClient;
+    private static $assistantClient;
+    private static $teamMemberClient;
+    private static $teamLeaderClient;
+    private static $adminClient;
 
-    protected function createAnonymousClient() : Client
+    protected static function createAnonymousClient() : Client
     {
-        if ($this->anonymousClient === null) {
-            $this->anonymousClient = self::createClient();
+        if (self::$anonymousClient === null) {
+            self::$anonymousClient = self::createClient();
         }
 
-        return $this->anonymousClient;
+        return self::$anonymousClient;
     }
 
-    protected function createAssistantClient() : Client
+    protected static function createAssistantClient() : Client
     {
-        if ($this->assistantClient === null) {
-            $this->assistantClient = self::createClient(array(), array(
+        if (self::$assistantClient === null) {
+            self::$assistantClient = self::createClient(array(), array(
                 'PHP_AUTH_USER' => 'assistant',
                 'PHP_AUTH_PW' => '1234',
             ));
         }
 
-        return $this->assistantClient;
+        return self::$assistantClient;
     }
 
-    protected function createTeamMemberClient() : Client
+    protected static function createTeamMemberClient() : Client
     {
-        if ($this->teamMemberClient === null) {
-            $this->teamMemberClient = self::createClient(array(), array(
+        if (self::$teamMemberClient === null) {
+            self::$teamMemberClient = self::createClient(array(), array(
                 'PHP_AUTH_USER' => 'team',
                 'PHP_AUTH_PW' => '1234',
             ));
         }
 
-        return $this->teamMemberClient;
+        return self::$teamMemberClient;
     }
 
-    protected function createTeamLeaderClient() : Client
+    protected static function createTeamLeaderClient() : Client
     {
-        if ($this->teamLeaderClient === null) {
-            $this->teamLeaderClient = self::createClient(array(), array(
+        if (self::$teamLeaderClient === null) {
+            self::$teamLeaderClient = self::createClient(array(), array(
                 'PHP_AUTH_USER' => 'admin',
                 'PHP_AUTH_PW' => '1234',
             ));
         }
 
-        return $this->teamLeaderClient;
+        return self::$teamLeaderClient;
     }
 
-    protected function createAdminClient() : Client
+    protected static function createAdminClient() : Client
     {
-        if ($this->adminClient === null) {
-            $this->adminClient = self::createClient(array(), array(
+        if (self::$adminClient === null) {
+            self::$adminClient = self::createClient(array(), array(
                 'PHP_AUTH_USER' => 'superadmin',
                 'PHP_AUTH_PW' => '1234',
             ));
         }
 
-        return $this->adminClient;
+        return self::$adminClient;
     }
 
     protected function goTo(Client $client, string $path) : Crawler
@@ -82,33 +82,33 @@ abstract class BaseWebTestCase extends WebTestCase
 
     protected function anonymousGoTo(string $path) : Crawler
     {
-        return $this->goTo($this->createAnonymousClient(), $path);
+        return $this->goTo(self::createAnonymousClient(), $path);
     }
 
     protected function assistantGoTo(string $path) : Crawler
     {
-        return $this->goTo($this->createAssistantClient(), $path);
+        return $this->goTo(self::createAssistantClient(), $path);
     }
 
     protected function teamMemberGoTo(string $path) : Crawler
     {
-        return $this->goTo($this->createTeamMemberClient(), $path);
+        return $this->goTo(self::createTeamMemberClient(), $path);
     }
 
     protected function teamLeaderGoTo(string $path) : Crawler
     {
-        return $this->goTo($this->createTeamLeaderClient(), $path);
+        return $this->goTo(self::createTeamLeaderClient(), $path);
     }
 
     protected function adminGoTo(string $path) : Crawler
     {
-        return $this->goTo($this->createAdminClient(), $path);
+        return $this->goTo(self::createAdminClient(), $path);
     }
 
     protected function countTableRows(string $path, Client $client = null) : int
     {
         if ($client === null) {
-            $client = $this->createAdminClient();
+            $client = self::createAdminClient();
         }
 
         $crawler = $this->goTo($client, $path);
