@@ -17,17 +17,13 @@ class DepartmentController extends Controller
 
     public function createDepartmentAction(Request $request)
     {
-        // Create a new Team entity
         $department = new Department();
 
-        // Create a new formType with the needed variables
         $form = $this->createForm(new CreateDepartmentType(), $department);
 
-        // Handle the form
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            // Persist the team to the database
             $em = $this->getDoctrine()->getManager();
             $em->persist($department);
             $em->flush();
@@ -44,7 +40,6 @@ class DepartmentController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        // Find all departments
         $departments = $em->getRepository('AppBundle:Department')->findAll();
 
         return $this->render('home/department_loop.html.twig', array(
@@ -63,10 +58,8 @@ class DepartmentController extends Controller
 
     public function updateDepartmentAction(Request $request, Department $department)
     {
-        // Create the form
         $form = $this->createForm(new CreateDepartmentType(), $department);
 
-        // Handle the form
         $form->handleRequest($request);
 
         if ($form->isValid()) {
