@@ -21,7 +21,7 @@
             <ul>
                 <li><a href="{{ path('admissionadmin_show') }}">Opptak</a></li>
                 <li>
-                    <a href="{{ path('statistics_application_by_department', {'department': app.user.fieldOfStudy.department.id}) }}">Opptaksstatistikk</a>
+                    <a href="{{ path('statistics_application_show') }}">Opptaksstatistikk</a>
                 </li>
                 {% if is_granted('ROLE_SUPER_ADMIN') %}
                     <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
