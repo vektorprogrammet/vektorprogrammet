@@ -30,7 +30,7 @@ class AssistantHistory
     protected $semester;
 
     /**
-     * @ORM\ManyToOne(targetEntity="School")
+     * @ORM\ManyToOne(targetEntity="School", inversedBy="assistantHistories")
      * @ORM\JoinColumn(onDelete="SET NULL")
      **/
     protected $school;
