@@ -31,6 +31,10 @@ services:
       class: AppBundle\Service\NewsletterManager
       arguments: ['@swiftmailer.mailer.newsletter', '@twig', '@doctrine.orm.entity_manager']
 
+  app.receipt.manager:
+    class: AppBundle\Service\ReceiptManager
+    arguments: []
+
   app.password_manager:
       class: AppBundle\Service\PasswordManager
       arguments: ['@doctrine.orm.default_entity_manager', '@mailer', '@twig', '@app.logger']

@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Form\Type\ReceiptType;
-use AppBundle\FileSystem\FileUploader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Receipt;
