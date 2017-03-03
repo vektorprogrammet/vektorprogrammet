@@ -22,6 +22,7 @@ class TeamRepository extends EntityRepository
             ->select('team')
             ->where('team.department = :department')
             ->setParameter('department', $department)
+            ->orderBy('team.name', 'ASC')
             ->getQuery()
             ->getResult();
     }

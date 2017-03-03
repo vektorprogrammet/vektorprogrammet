@@ -1,6 +1,6 @@
 {% extends 'adminBase.html.twig' %}
 
-{% block customScripts %}
+{% block javascripts %}
 
     {# Easy routing with FOSJsRouting bundle #}
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
@@ -22,113 +22,39 @@
 
     </script>
 
-
-
 {% endblock %}
 
 {% block title %}
     {{ school }}
 {% endblock %}
 
-
 {% block body %}
     {% include 'common/flash.html.twig' %}
-    <p></p>
-
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-
-
             <h1> {{ school }} </h1>
 
             <hr>
 
-            {% if not activeAssistantHistories %}
+            {% if activeAssistantHistories %}
+                <h3> Aktive assistenter </h3>
+
+                {% include 'school_admin/assistant_history_table.html.twig' with {assistantHistories: activeAssistantHistories} %}
+
+            {% else %}
                 <div class="alert-box radius warning">
                     Det finnes ingen aktive assistenter på denne skolen.
                 </div>
-            {% else %}
-                <h3> Aktive assistenter </h3>
-
-                <table width="100%">
-
-                    <thead>
-                    <tr>
-                        <th> Fornavn</th>
-                        <th> Etternavn</th>
-                        <th> Skole</th>
-                        <th> Semester</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    {% for as in activeAssistantHistories %}
-                        <tr>
-                            <td> {{ as.user.firstName }} </td>
-                            <td> {{ as.user.lastName }} </td>
-                            <td> {{ as.school.name }} </td>
-                            <td> {{ as.semester.name }} </td>
-
-                            {# Only ROLE_SUPER_ADMIN or higher should be able to delete teams #}
-                            {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                <td><a href="#" id="{{ as.id }}" class="button tiny alert delete"><i
-                                                class="fa fa-trash-o"></i> Slett</a></td>
-                            {% endif %}
-
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-
-                </table>
-
             {% endif %}
-
 
             <br>
 
             {% if inactiveAssistantHistories %}
+                <hr>
 
-                {% if is_granted('ROLE_ADMIN') %}
+                <h3> Tidligere assistenter </h3>
 
-                    <hr>
-
-                    <h3> Tidligere assistenter </h3>
-
-                    <table width="100%">
-
-
-                        <thead>
-                        <tr>
-                            <th> Fornavn</th>
-                            <th> Etternavn</th>
-                            <th> Skole</th>
-                            <th> Semester</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        {% for as in inactiveAssistantHistories %}
-                            <tr>
-                                <td> {{ as.user.firstName }} </td>
-                                <td> {{ as.user.lastName }} </td>
-                                <td> {{ as.school.name }} </td>
-                                <td> {{ as.semester.name }} </td>
-
-                                {# Only ROLE_SUPER_ADMIN or higher should be able to delete teams #}
-                                {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                    <td><a href="#" id="{{ as.id }}" class="button tiny alert delete"><i
-                                                    class="fa fa-trash-o"></i> Slett</a></td>
-                                {% endif %}
-
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-
-                    </table>
-
-                {% endif %}
+                {% include 'school_admin/assistant_history_table.html.twig' with {assistantHistories: inactiveAssistantHistories} %}
 
             {% endif %}
 

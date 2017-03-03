@@ -25,7 +25,7 @@ services:
 
   app.newsletter.manager:
       class: AppBundle\Service\NewsletterManager
-      arguments: ['@swiftmailer.mailer.newsletter', '@twig']
+      arguments: ['@swiftmailer.mailer.newsletter', '@twig', '@doctrine.orm.entity_manager']
 
   app.password_manager:
       class: AppBundle\Service\PasswordManager
@@ -69,7 +69,7 @@ services:
 
   app.application_subscriber:
     class: AppBundle\EventSubscriber\ApplicationSubscriber
-    arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data', '@router']
+    arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data', '@router', '@app.newsletter.manager']
     tags:
       - { name: kernel.event_subscriber }
 
@@ -95,6 +95,12 @@ services:
       class: AppBundle\EventSubscriber\SupportTicketSubscriber
       arguments: ['@app.email_sender', '@app.slack_messenger', '@session', '@app.logger']
       tags:
+        - { name: kernel.event_subscriber }
+
+  app.work_history_subscriber:
+    class: AppBundle\EventSubscriber\WorkHistorySubscriber
+    arguments: ['@session', '@app.logger', '@security.authorization_checker', '@doctrine.orm.entity_manager']
+    tags:
         - { name: kernel.event_subscriber }
 
   app.file_uploader:

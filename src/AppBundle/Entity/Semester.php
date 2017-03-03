@@ -246,4 +246,13 @@ class Semester
     {
         $this->semesterTime = $semesterTime;
     }
+
+    public function setStartAndEndDateByTime(string $time, string $year)
+    {
+        $startMonth = $time == 'Vår' ? '01' : '08';
+        $endMonth = $time == 'Vår' ? '07' : '12';
+
+        $this->setSemesterStartDate(date_create($year.'-'.$startMonth.'-01 00:00:00'));
+        $this->setSemesterEndDate(date_create($year.'-'.$endMonth.'-31 23:59:59'));
+    }
 }

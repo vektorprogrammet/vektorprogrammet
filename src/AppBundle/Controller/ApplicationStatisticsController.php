@@ -2,35 +2,21 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
 class ApplicationStatisticsController extends Controller
 {
     /**
-     * @param Department|null $department
-     * @param Request         $request
+     * @param Semester $semester
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Department $department = null, Request $request)
+    public function showAction(Semester $semester = null)
     {
-        $semesterId = $request->get('semester');
-
-        // Set default department and semester
-        if (is_null($department)) {
-            $department = $this->getUser()->getFieldOfStudy()->getDepartment();
-        }
-        if (is_null($semesterId)) {
-            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findLatestSemesterByDepartmentId($department->getId());
-        } else {
-            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterId);
-        }
-
-        // 404 exception if semester does not belong to department
-        if ($semester->getDepartment()->getId() != $department->getId()) {
-            throw $this->createNotFoundException('Denne siden finnes ikke.');
+        if ($semester === null) {
+            $department = $this->getUser()->getDepartment();
+            $semester = $department->getCurrentOrLatestSemester();
         }
 
         $applicationData = $this->get('application.data');
@@ -41,7 +27,6 @@ class ApplicationStatisticsController extends Controller
         return $this->render('statistics/statistics.html.twig', array(
             'applicationData' => $applicationData,
             'assistantHistoryData' => $assistantHistoryData,
-            'department' => $department,
             'semester' => $semester,
         ));
     }

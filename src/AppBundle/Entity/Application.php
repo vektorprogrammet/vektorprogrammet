@@ -115,6 +115,11 @@ class Application
     private $interview;
 
     /**
+     * @var bool
+     */
+    private $wantsNewsletter;
+
+    /**
      * ApplicationInfo constructor.
      */
     public function __construct()
@@ -126,6 +131,7 @@ class Application
         $this->doublePosition = false;
         $this->previousParticipation = false;
         $this->english = false;
+        $this->wantsNewsletter = false;
     }
 
     /**
@@ -363,16 +369,6 @@ class Application
     }
 
     /**
-     * Set heardAboutFrom.
-     *
-     * @param array $heardAboutFrom
-     */
-    public function setHeardAboutFrom($heardAboutFrom)
-    {
-        $this->heardAboutFrom = $heardAboutFrom;
-    }
-
-    /**
      * Get heardAboutFrom.
      *
      * @return array
@@ -380,6 +376,16 @@ class Application
     public function getHeardAboutFrom()
     {
         return $this->heardAboutFrom;
+    }
+
+    /**
+     * Set heardAboutFrom.
+     *
+     * @param array $heardAboutFrom
+     */
+    public function setHeardAboutFrom($heardAboutFrom)
+    {
+        $this->heardAboutFrom = $heardAboutFrom;
     }
 
     /**
@@ -412,5 +418,29 @@ class Application
     public function setPreviousParticipation($previousParticipation)
     {
         $this->previousParticipation = $previousParticipation;
+    }
+
+    /**
+     * @return bool
+     */
+    public function wantsNewsletter()
+    {
+        return $this->isWantsNewsletter();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWantsNewsletter()
+    {
+        return $this->wantsNewsletter;
+    }
+
+    /**
+     * @param bool $wantsNewsletter
+     */
+    public function setWantsNewsletter($wantsNewsletter)
+    {
+        $this->wantsNewsletter = $wantsNewsletter;
     }
 }
