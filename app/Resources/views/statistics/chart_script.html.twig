@@ -1,0 +1,139 @@
+<script>
+    function getColor(i) {
+        var colors = ["#36A2EB", "#4BC0C0", "#9F65AD", "#FFCE56", "#FF6384", "#737373", "#D07054", "#D97DB5"];
+        return colors[i % colors.length];
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        Chart.defaults.global.animation = false;
+        var $applicationCharts = $('#applicationCharts');
+        var $admissionCharts = $('#admissionCharts');
+        {% if applicationData.count %}
+        var genderData = [
+            {
+                label: 'Gutt' + ' ({{ (applicationData.maleCount/applicationData.count*100)|round }} %)',
+                value: {{ applicationData.maleCount }},
+                color: getColor(0)
+            },
+            {
+                label: 'Jente' + ' ({{ (applicationData.femaleCount/applicationData.count*100)|round }} %)',
+                value: {{ applicationData.femaleCount }},
+                color: getColor(4)
+            }
+
+        ];
+        var applicantsData = [
+            {
+                label: 'Nye' + ' ({{ ((applicationData.count- applicationData.previousParticipationCount)/applicationData.count*100)|round }} %)',
+                value: {{ applicationData.count-applicationData.previousParticipationCount }},
+                color: getColor(0)
+            },
+            {
+                label: 'Gamle' + ' ({{ (applicationData.previousParticipationCount/applicationData.count*100)|round }} %)',
+                value: {{ applicationData.previousParticipationCount }},
+                color: getColor(1)
+            }
+
+        ];
+        var fieldOfStudyData = [
+            {% for fieldOfStudy in applicationData.fieldsOfStudyCounts|keys %}
+            {
+                label: '{{ fieldOfStudy }}' + ' ({{ (applicationData.fieldsOfStudyCounts[fieldOfStudy]/applicationData.count*100)|round }} %)',
+                value: {{ applicationData.fieldsOfStudyCounts[fieldOfStudy] }},
+                color: getColor({{ loop.index0 }})
+            },
+            {% endfor %}
+        ];
+        var studyYearData = [
+            {% for studyYear in applicationData.studyYearCounts|keys %}
+            {
+                label: '{{ studyYear }}. år' + ' ({{ (applicationData.studyYearCounts[studyYear]/applicationData.count*100)|round }} %)',
+                value: {{ applicationData.studyYearCounts[studyYear] }},
+                color: getColor({{ loop.index0 }})
+            },
+            {% endfor %}
+        ];
+        var admissionData = [
+            {
+                label: 'Tatt opp' + ' ({{ (assistantHistoryData.count/applicationData.count*100)|round }} %)',
+                value: {{ assistantHistoryData.count }},
+                color: getColor(0)
+            },
+            {
+                label: 'Ikke tatt opp' + ' ({{ ((applicationData.count-assistantHistoryData.count-applicationData.cancelledInterviewsCount)/applicationData.count*100)|round }} %)',
+                value: {{ applicationData.count-assistantHistoryData.count-applicationData.cancelledInterviewsCount }},
+                color: getColor(4)
+            },
+            {
+                label: 'Kansellerte intervjuer' + ' ({{ (applicationData.cancelledInterviewsCount/applicationData.count*100)|round }} %)',
+                value: {{ applicationData.cancelledInterviewsCount }},
+                color: getColor(3)
+            }
+        ];
+
+        renderChart(fieldOfStudyData, 'Studie', $applicationCharts, false);
+        renderChart(studyYearData, 'Stuideår', $applicationCharts, true);
+        renderChart(genderData, 'Kjønn', $applicationCharts, true);
+        renderChart(applicantsData, 'Nye/Gamle Søkere', $applicationCharts, true);
+        renderChart(admissionData, 'Opptak', $admissionCharts, true);
+        {% endif %}
+
+        {% if assistantHistoryData.count %}
+        var acceptedGenderData = [
+            {
+                label: 'Gutt' + ' ({{ (assistantHistoryData.maleCount/assistantHistoryData.count*100)|round }} %)',
+                value: {{ assistantHistoryData.maleCount }},
+                color: getColor(0)
+            },
+            {
+                label: 'Jente' + ' ({{ (assistantHistoryData.femaleCount/assistantHistoryData.count*100)|round }} %)',
+                value: {{ assistantHistoryData.femaleCount }},
+                color: getColor(4)
+            }
+        ];
+
+        renderChart(acceptedGenderData, 'Kjønn', $admissionCharts, true);
+        {% endif %}
+
+        function renderChart(data, label, chartRoot, legend) {
+            var div = $('<div></div>');
+            div.addClass('small-12 medium-6 large-4 columns');
+
+            // The pie chart will be painted on the canvas
+            var canvas = $('<canvas width="185" height="125"><canvas/>');
+
+            // Add the question text as a title above the chart
+            div.append('<h6>' + label + '</h6>');
+
+            // Create a chart container and append the canvas
+            var chart = $('<div></div>');
+            chart.addClass('chart');
+            chart.append(canvas);
+            div.append(chart);
+
+            chartRoot.append(div);
+
+            // Paint the charts to the canvases using Chart.js
+            ctx = canvas.get(0).getContext("2d");
+            var myNewChart = new Chart(ctx).Pie(data);
+
+            if (legend) {
+                chart.append($(myNewChart.generateLegend()));
+            }
+        }
+
+        /**
+         * Equalizes height of .equalheight children nodes
+         */
+        $(document).ready(function () {
+            $('.equalheight').each(function () {
+                var maxHeight = 0;
+                $(this).children().each(function () {
+                    if ($(this).height() > maxHeight)
+                        maxHeight = $(this).height();
+                });
+                $(this).children().height(maxHeight);
+            });
+        })
+
+    })
+</script>
