@@ -1,0 +1,23 @@
+{% if interviewDistributions|length > 0 %}
+    <h3>Intervjufordeling</h3>
+    <table>
+        <thead>
+        <tr class="text-center">
+            <th>Navn</th>
+            <th class="text-center">Intervjuer igjen</th>
+            <th class="text-center">Totalt antall intervjuer</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for interviewer in interviewDistributions%}
+            <tr>
+                <td>{{ interviewer }}</td>
+                <td class="text-center">{{ interviewer.getInterviewsLeft }}</td>
+                <td class="text-center">{{ interviewer.getTotalInterviews }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <hr>
+{% endif %}

@@ -116,6 +116,6 @@ class ApplicationSubscriber implements EventSubscriberInterface
         $this->applicationData->setDepartment($department);
 
         $this->slackMessenger->notify("$department: Ny søknad fra *$user* registrert. $department har nå *{$this->applicationData->getApplicationCount()}* søkere: "
-            .$this->router->generate('admissionadmin_filter_applications_by_department', array('id' => $department->getId()), RouterInterface::ABSOLUTE_URL));
+            .$this->router->generate('applications_show_by_semester', array('id' => $department->getCurrentOrLatestSemester()->getId()), RouterInterface::ABSOLUTE_URL));
     }
 }

@@ -120,6 +120,11 @@ class User implements AdvancedUserInterface, \Serializable
      **/
     protected $certificateRequests;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Interview", mappedBy="interviewer")
+     */
+    private $interviews;
+
     public function __construct()
     {
         $this->roles = new ArrayCollection();
@@ -554,5 +559,13 @@ class User implements AdvancedUserInterface, \Serializable
     public function getWorkHistories()
     {
         return $this->workHistories;
+    }
+
+    /**
+     * @return Interview[]
+     */
+    public function getInterviews()
+    {
+        return $this->interviews;
     }
 }

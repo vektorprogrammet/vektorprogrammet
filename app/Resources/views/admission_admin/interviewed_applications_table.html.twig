@@ -1,121 +1,66 @@
 {% extends 'admission_admin/layout.html.twig' %}
-{% set yes=0 %}
-{% set maybe=0 %}
-{% set no=0 %}
-{% for applicant in applicants %}
-    {% if applicant.interview.interviewScore.suitableAssistant == "Ja" %}
-        {% set yes = yes +1 %}
-    {% elseif applicant.interview.interviewScore.suitableAssistant == "Kanskje" %}
-        {% set maybe = maybe +1 %}
-    {% elseif applicant.interview.interviewScore.suitableAssistant == "Nei" %}
-        {% set no = no +1 %}
-    {% endif %}
-{% endfor %}
 
 {% block applications %}
-    {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-        <div class="small-6 medium-5 large-3 columns">
-            <div class="row collapse">
-                <div class="small-9 columns">
-                    <select id="bulkSelect">
-                        <option value="title">Gruppehandling</option>
-                        <option value="deleteApplication">Slett søknad</option>
-                        <option value="deleteInterview">Slett intervju</option>
-                    </select>
-                </div>
-                <div class="small-3 columns">
-                    <a href="#" id="bulkAction" class="button postfix">Utfør</a>
-                </div>
-            </div>
-        </div>
-    {% endif %}
-    <div class="small-12 columns">
-        <h6 class="float-right">Ja: {{ yes }} / Kanskje: {{ maybe }} / Nei: {{ no }} /
-            Totalt: {{ applicants | length }}</h6>
-    </div>
-    {% if applicants is defined %}
+    {% include 'admission_admin/interviewed_applications/bulk_navigation.html.twig' %}
 
-        {# The table containing interviewed applications #}
-        <form id="bulk" name="application">
-            <table width="100%" id="application-table">
-                <thead>
-                <tr>
+    <form id="bulk" name="application">
+        <table width="100%" id="application-table">
+            <thead>
+            <tr>
+                {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                    <th><input type="checkbox" id="bulkAllCheck"></th>
+                {% endif %}
+
+                {# data-sort is used to sort the tables with stupidtable.js #}
+                <th data-sort="string">Fornavn</th>
+                <th data-sort="string">Etternavn</th>
+                <th data-sort="string">E-post</th>
+                <th data-sort="string">Mobil</th>
+                <th data-sort="string">Dobbel Stilling</th>
+                <th data-sort="string">Ønsket Bolk</th>
+                <th data-sort="string">Språk</th>
+                <th data-sort="int">Poeng</th>
+                <th data-sort="string">Passende</th>
+                <th colspan="2"></th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            {% for a in applications %}
+                <tr id="{{ a.id }}">
                     {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-                        <th><input type="checkbox" id="bulkAllCheck"></th>
+                        <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
+                        </td>
+                    {% endif %}
+                    <td><a href="{{ path('specific_profile', {id: a.user.id}) }}">{{ a.user.firstName }}</a></td>
+                    <td>{{ a.user.lastName }}</td>
+                    <td>{{ a.user.email }}</td>
+                    <td>{{ a.user.phone }}</td>
+                    <td>{{ a.doublePosition ? 'Ja':'Nei' }}</td>
+                    <td>{{ a.preferredGroup ? a.preferredGroup:'Ingen' }}</td>
+                    <td>{{ a.english ? 'Engelsk':'Norsk' }}</td>
+
+
+                    {# Add the read interview button #}
+                    {% if a.user != app.user and ( is_granted('ROLE_SUPER_ADMIN') or a.interview.interviewer == app.user ) %}
+                        <td>{{ a.interview.interviewScore.sum }}</td>
+                        <td>{{ a.interview.interviewScore.suitableAssistant }}</td>
+                        <td>
+                            <a href="{{ path('interview_show', { 'id': a.id }) }}" class="button tiny"><i
+                                        class="fa fa-list-ul"></i> Les intervju</a>
+                        </td>
+                    {% else %}
+                        <td colspan="3">
+                            <span class="text-alert">Intervjuet er skjult</span>
+                        </td>
                     {% endif %}
 
-                    {# data-sort is used to sort the tables with stupidtable.js #}
-                    <th data-sort="string">Fornavn</th>
-                    <th data-sort="string">Etternavn</th>
-                    <th data-sort="string">E-post</th>
-                    <th data-sort="string">Mobil</th>
-                    <th data-sort="string">Dobbel Stilling</th>
-                    <th data-sort="string">Ønsket Bolk</th>
-                    <th data-sort="string">Språk</th>
-                    <th data-sort="int">Poeng</th>
-                    <th data-sort="string">Passende</th>
-                    <th></th>
-                    <th></th>
-
-                    {# Add header columns to match the buttons added #}
-                    {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-                        <th></th>
-                    {% endif %}
+                    {% include 'admission_admin/interviewed_applications/delete_column.html.twig' %}
                 </tr>
-                </thead>
+            {% endfor %}
 
-                <tbody>
-
-                {% for a in applicants %}
-                    <tr id="{{ a.id }}">
-                        {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-                            <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
-                            </td>
-                        {% endif %}
-                        <td><a href="{{ path('specific_profile', {id: a.user.id}) }}">{{ a.user.firstName }}</a></td>
-                        <td>{{ a.user.lastName }}</td>
-                        <td>{{ a.user.email }}</td>
-                        <td>{{ a.user.phone }}</td>
-                        <td>{{ a.doublePosition ? 'Ja':'Nei' }}</td>
-                        <td>{{ a.preferredGroup ? a.preferredGroup:'Ingen' }}</td>
-                        <td>{{ a.english ? 'Engelsk':'Norsk' }}</td>
-
-
-                        {# Add the read interview button #}
-                        {% if a.user != user and ( is_granted('ROLE_SUPER_ADMIN') or a.interview.interviewer == app.user ) %}
-                            <td>{{ a.interview.interviewScore.sum }}</td>
-                            <td>{{ a.interview.interviewScore.suitableAssistant }}</td>
-                            <td>
-                                <a href="{{ path('interview_show', { 'id': a.id }) }}" class="button tiny"><i
-                                            class="fa fa-list-ul"></i> Les intervju</a>
-                            </td>
-                        {% else %}
-                            <td colspan="3">
-                                <span class="text-alert">Intervjuet er skjult</span>
-                            </td>
-                        {% endif %}
-
-                        {# Add the delete interview and application dropdown button, given the correct permissions #}
-                        {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-                            <td>
-                                <a href="#" class="button tiny alert" data-dropdown="deleteDropdown{{ a.id }}"
-                                   aria-controls="deleteDropdown{{ a.id }}" aria-expanded="false" id="{{ a.id }}">
-                                    <i class="fa fa-trash fa-lg"></i> Slett <i class="fa fa-caret-down"></i>
-                                </a>
-                                <ul id="deleteDropdown{{ a.id }}" data-dropdown-content class="f-dropdown"
-                                    aria-hidden="true">
-                                    <li class="deleteInterview" id="{{ a.interview.id }}"><a href="#">Slett intervju</a>
-                                    </li>
-                                    <li class="deleteApplication" id="{{ a.id }}"><a href="#">Slett søknad</a></li>
-                                </ul>
-                            </td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-
-                </tbody>
-            </table>
-        </form>
-    {% endif %}
-
+            </tbody>
+        </table>
+    </form>
 {% endblock %}
