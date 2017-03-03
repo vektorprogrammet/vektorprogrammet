@@ -77,4 +77,12 @@ class ReceiptController extends Controller
             'inactive_receipts' => $inactive_receipts,
         ));
     }
+
+    public function deleteAction(Request $request){
+
+    }
+
+    public function editAction(Request $request){
+
+    }
 }
