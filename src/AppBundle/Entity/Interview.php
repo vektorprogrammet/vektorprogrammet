@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Type\InterviewAcceptedType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -65,6 +66,12 @@ class Interview
     protected $interviewScore;
 
     /**
+     * @ORM\Column(type="integer", nullable=false)
+     * @var InterviewAcceptedType
+     */
+    private $interviewAccepted;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
      */
     protected $user;
@@ -83,6 +90,7 @@ class Interview
         $this->conducted = new \DateTime();
         $this->interviewed = false;
         $this->cancelled = false;
+        $this->interviewAccepted = InterviewAcceptedType::PENDING;
     }
 
     /**
@@ -328,5 +336,30 @@ class Interview
     public function getApplication()
     {
         return $this->application;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInterviewAcceptedAsString(): string
+    {
+        switch ($this->interviewAccepted) {
+            case InterviewAcceptedType::PENDING:
+                return "Ingen svar";
+            case InterviewAcceptedType::ACCEPTED:
+                return "Akseptert";
+            case InterviewAcceptedType::REQUEST_NEW_TIME:
+                return "Ny tid ønskes";
+            default:
+                return "Venter";
+        }
+    }
+
+    /**
+     * @param int $interviewAccepted
+     */
+    public function setInterviewAccepted(int $interviewAccepted)
+    {
+        $this->interviewAccepted = $interviewAccepted;
     }
 }
