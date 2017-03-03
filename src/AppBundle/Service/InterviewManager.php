@@ -7,6 +7,7 @@ use AppBundle\Entity\Interview;
 use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -16,6 +17,7 @@ class InterviewManager
     private $authorizationChecker;
     private $mailer;
     private $twig;
+    private $logger;
 
     /**
      * InterviewManager constructor.
@@ -24,13 +26,15 @@ class InterviewManager
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param \Swift_Mailer                 $mailer
      * @param \Twig_Environment             $twig
+     * @param LoggerInterface               $logger
      */
-    public function __construct(TokenStorage $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, \Swift_Mailer $mailer, \Twig_Environment $twig)
+    public function __construct(TokenStorage $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, \Swift_Mailer $mailer, \Twig_Environment $twig, LoggerInterface $logger)
     {
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
         $this->mailer = $mailer;
         $this->twig = $twig;
+        $this->logger = $logger;
     }
 
     /**
@@ -97,6 +101,13 @@ class InterviewManager
                 'text/html'
             );
         $this->mailer->send($message);
+
+        $this->logger->info(
+            "Schedule email sent to {$data['to']}\n".
+            "```\n".
+            "{$message->getBody()}\n".
+            '```'
+        );
     }
 
     public function getDefaultScheduleFormData(Interview $interview): array

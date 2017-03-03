@@ -16,13 +16,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(
  *      fields={"email"},
  *      message="Denne Eposten er allerede i bruk.",
- *      groups={"create_user"}
+ *      groups={"create_user", "edit_user"}
  * )
  *
  * @UniqueEntity(
  *      fields={"user_name"},
  *      message="Dette brukernavnet er allerede i bruk.",
- *      groups={"create_user", "username"}
+ *      groups={"create_user", "username", "edit_user"}
  * )
  */
 class User implements AdvancedUserInterface, \Serializable
@@ -35,14 +35,14 @@ class User implements AdvancedUserInterface, \Serializable
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=45)
-     * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=45)
-     * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $firstName;
 
@@ -60,13 +60,13 @@ class User implements AdvancedUserInterface, \Serializable
     private $gender;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="string")
      */
     private $picture_path;
 
     /**
-     * @ORM\Column(type="string", length=45)
-     * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $phone;
 
@@ -76,8 +76,8 @@ class User implements AdvancedUserInterface, \Serializable
     private $accountNumber;
 
     /**
-     * @ORM\Column(type="string", length=45, unique=true, nullable=true)
-     * @Assert\NotBlank(groups={"username"}, message="Dette feltet kan ikke være tomt.")
+     * @ORM\Column(type="string", unique=true, nullable=true)
+     * @Assert\NotBlank(groups={"username", "edit_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $user_name;
 
@@ -87,9 +87,9 @@ class User implements AdvancedUserInterface, \Serializable
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=45, unique=true)
-     * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
-     * @Assert\Email(groups={"admission", "create_user"}, message="Ikke gyldig e-post.")
+     * @ORM\Column(type="string", unique=true)
+     * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\Email(groups={"admission", "create_user", "edit_user"}, message="Ikke gyldig e-post.")
      */
     private $email;
 
@@ -116,15 +116,18 @@ class User implements AdvancedUserInterface, \Serializable
     private $assistantHistories;
 
     /**
+     * @ORM\OneToMany(targetEntity="WorkHistory", mappedBy="user")
+     */
+    private $workHistories;
+
+    /**
      * @ORM\OneToMany(targetEntity="CertificateRequest", mappedBy="user")
      **/
     protected $certificateRequests;
 
-
     public function __construct()
     {
         $this->roles = new ArrayCollection();
-        $this->fieldOfStudy = new ArrayCollection();
         $this->certificateRequests = new ArrayCollection();
         $this->isActive = false;
         $this->picture_path = 'images/defaultProfile.png';
@@ -564,5 +567,13 @@ class User implements AdvancedUserInterface, \Serializable
         // you *may* need a real salt depending on your encoder
         // see section on salt below
         return;
+    }
+
+    /**
+     * @return WorkHistory[]
+     */
+    public function getWorkHistories()
+    {
+        return $this->workHistories;
     }
 }

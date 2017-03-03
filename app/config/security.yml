@@ -55,6 +55,8 @@ security:
         # require ROLE_ADMIN for /admin*
 
           #ROLE_HIGHEST_ADMIN = superadmin user
+        - { path: ^/kontrollpanel/avdelingadmin/opprett, roles: ROLE_HIGHEST_ADMIN }
+        - { path: ^/kontrollpanel/avdelingadmin/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/semesteradmin/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/stilling/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/skoleadmin/slett, roles: ROLE_HIGHEST_ADMIN }
@@ -62,8 +64,10 @@ security:
         - { path: ^/kontrollpanel/opptakadmin/slett, roles: ROLE_HIGHEST_ADMIN }
 
           #ROLE_SUPER_ADMIN = admin user
+        - { path: ^/kontrollpanel/avdelingadmin/update, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/slett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/avdeling, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/brukeradmin/sendaktivering, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/jubileum, role: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/jubileum/betalt, role: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/jubileum/slettbetaling, role: ROLE_SUPER_ADMIN }

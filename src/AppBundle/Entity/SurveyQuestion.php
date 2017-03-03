@@ -53,7 +53,7 @@ class SurveyQuestion implements \JsonSerializable
     protected $answers;
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function getOptional()
     {
@@ -61,7 +61,7 @@ class SurveyQuestion implements \JsonSerializable
     }
 
     /**
-     * @param mixed $optional
+     * @param bool $optional
      */
     public function setOptional($optional)
     {
@@ -69,7 +69,7 @@ class SurveyQuestion implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return SurveyAnswer[]
      */
     public function getAnswers()
     {
@@ -77,7 +77,7 @@ class SurveyQuestion implements \JsonSerializable
     }
 
     /**
-     * @param mixed $answers
+     * @param SurveyAnswer[] $answers
      */
     public function setAnswers($answers)
     {

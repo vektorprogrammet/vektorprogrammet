@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -51,13 +52,13 @@ class Interview
     protected $interviewer; // Unidirectional, may turn out to be bidirectional
 
     /**
-     * @ORM\OneToMany(targetEntity="InterviewAnswer", mappedBy="interview", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="InterviewAnswer", mappedBy="interview", cascade={"persist", "remove"})
      * @Assert\Valid
      */
     protected $interviewAnswers;
 
     /**
-     * @ORM\OneToOne(targetEntity="InterviewScore", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="InterviewScore", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="interview_score_id", referencedColumnName="id")
      * @Assert\Valid
      */
@@ -73,7 +74,7 @@ class Interview
      */
     public function __construct()
     {
-        $this->interviewAnswers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->interviewAnswers = new ArrayCollection();
         $this->conducted = new \DateTime();
         $this->interviewed = false;
         $this->cancelled = false;
@@ -92,11 +93,11 @@ class Interview
     /**
      * Set interviewSchema.
      *
-     * @param \AppBundle\Entity\InterviewSchema $interviewSchema
+     * @param InterviewSchema $interviewSchema
      *
      * @return Interview
      */
-    public function setInterviewSchema(\AppBundle\Entity\InterviewSchema $interviewSchema = null)
+    public function setInterviewSchema(InterviewSchema $interviewSchema = null)
     {
         $this->interviewSchema = $interviewSchema;
 
@@ -106,7 +107,7 @@ class Interview
     /**
      * Get interviewSchema.
      *
-     * @return \AppBundle\Entity\InterviewSchema
+     * @return InterviewSchema
      */
     public function getInterviewSchema()
     {
@@ -116,11 +117,11 @@ class Interview
     /**
      * Set interviewer.
      *
-     * @param \AppBundle\Entity\User $interviewer
+     * @param User $interviewer
      *
      * @return Interview
      */
-    public function setInterviewer(\AppBundle\Entity\User $interviewer = null)
+    public function setInterviewer(User $interviewer = null)
     {
         $this->interviewer = $interviewer;
 
@@ -130,7 +131,7 @@ class Interview
     /**
      * Get interviewer.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getInterviewer()
     {
@@ -140,11 +141,11 @@ class Interview
     /**
      * Add interviewAnswers.
      *
-     * @param \AppBundle\Entity\InterviewAnswer $interviewAnswers
+     * @param InterviewAnswer $interviewAnswers
      *
      * @return Interview
      */
-    public function addInterviewAnswer(\AppBundle\Entity\InterviewAnswer $interviewAnswers)
+    public function addInterviewAnswer(InterviewAnswer $interviewAnswers)
     {
         $this->interviewAnswers[] = $interviewAnswers;
 
@@ -154,9 +155,9 @@ class Interview
     /**
      * Remove interviewAnswers.
      *
-     * @param \AppBundle\Entity\InterviewAnswer $interviewAnswers
+     * @param InterviewAnswer $interviewAnswers
      */
-    public function removeInterviewAnswer(\AppBundle\Entity\InterviewAnswer $interviewAnswers)
+    public function removeInterviewAnswer(InterviewAnswer $interviewAnswers)
     {
         $this->interviewAnswers->removeElement($interviewAnswers);
     }
@@ -174,11 +175,11 @@ class Interview
     /**
      * Set interviewScore.
      *
-     * @param \AppBundle\Entity\InterviewScore $interviewScore
+     * @param InterviewScore $interviewScore
      *
      * @return Interview
      */
-    public function setInterviewScore(\AppBundle\Entity\InterviewScore $interviewScore = null)
+    public function setInterviewScore(InterviewScore $interviewScore = null)
     {
         $this->interviewScore = $interviewScore;
 
@@ -188,7 +189,7 @@ class Interview
     /**
      * Get interviewScore.
      *
-     * @return \AppBundle\Entity\InterviewScore
+     * @return InterviewScore
      */
     public function getInterviewScore()
     {

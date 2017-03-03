@@ -11,7 +11,8 @@
         {% set no = no +1 %}
     {% endif %}
 {% endfor %}
-{% block bulkNavigation %}
+
+{% block applications %}
     {% if is_granted('ROLE_HIGHEST_ADMIN') %}
         <div class="small-6 medium-5 large-3 columns">
             <div class="row collapse">
@@ -32,9 +33,6 @@
         <h6 class="float-right">Ja: {{ yes }} / Kanskje: {{ maybe }} / Nei: {{ no }} /
             Totalt: {{ applicants | length }}</h6>
     </div>
-{% endblock %}
-
-{% block applications %}
     {% if applicants is defined %}
 
         {# The table containing interviewed applications #}
@@ -50,6 +48,7 @@
                     <th data-sort="string">Fornavn</th>
                     <th data-sort="string">Etternavn</th>
                     <th data-sort="string">E-post</th>
+                    <th data-sort="string">Mobil</th>
                     <th data-sort="string">Dobbel Stilling</th>
                     <th data-sort="string">Ønsket Bolk</th>
                     <th data-sort="string">Språk</th>
@@ -73,17 +72,17 @@
                             <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
                             </td>
                         {% endif %}
-                        <td>{{ a.user.firstName }}</td>
+                        <td><a href="{{ path('specific_profile', {id: a.user.id}) }}">{{ a.user.firstName }}</a></td>
                         <td>{{ a.user.lastName }}</td>
                         <td>{{ a.user.email }}</td>
-
+                        <td>{{ a.user.phone }}</td>
                         <td>{{ a.doublePosition ? 'Ja':'Nei' }}</td>
                         <td>{{ a.preferredGroup ? a.preferredGroup:'Ingen' }}</td>
                         <td>{{ a.english ? 'Engelsk':'Norsk' }}</td>
 
 
                         {# Add the read interview button #}
-                        {% if a.user != user %}
+                        {% if a.user != user and ( is_granted('ROLE_SUPER_ADMIN') or a.interview.interviewer == app.user ) %}
                             <td>{{ a.interview.interviewScore.sum }}</td>
                             <td>{{ a.interview.interviewScore.suitableAssistant }}</td>
                             <td>

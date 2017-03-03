@@ -52,7 +52,7 @@ class Team
     private $acceptApplication;
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function getAcceptApplication()
     {
@@ -60,7 +60,7 @@ class Team
     }
 
     /**
-     * @param mixed $acceptApplication
+     * @param bool $acceptApplication
      */
     public function setAcceptApplication($acceptApplication)
     {
@@ -145,7 +145,7 @@ class Team
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEmail()
     {
@@ -153,7 +153,7 @@ class Team
     }
 
     /**
-     * @param mixed $email
+     * @param string $email
      */
     public function setEmail($email)
     {
@@ -177,7 +177,7 @@ class Team
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getShortDescription()
     {
@@ -185,7 +185,7 @@ class Team
     }
 
     /**
-     * @param mixed $shortDescription
+     * @param string $shortDescription
      */
     public function setShortDescription($shortDescription)
     {

@@ -1,6 +1,6 @@
 {% extends 'adminBase.html.twig' %}
 
-{% block customScripts %}
+{% block javascripts %}
 
     {# Easy routing with FOSJsRouting bundle #}
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
@@ -51,7 +51,7 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
 
-            <h1> Skoler {{ departmentName }} </h1>
+            <h1> Skoler {{ department }} </h1>
 
             <hr>
 
@@ -61,59 +61,24 @@
                     <ul class="inline-list">
 
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            {% include "common/department_dropdown.html.twig" with {
+                            'pathForDepartment': 'schooladmin_filter_schools_by_department',
+                            'departmentParameterName': 'id',
+                            'currentDepartment': department} %}
 
+                            {% include "common/department_dropdown.html.twig" with {
+                            'pathForDepartment': 'schooladmin_create_school_by_department',
+                            'departmentParameterName': 'id',
+                            'currentDepartment': 'Opprett Skole',
+                            'dropdownId': 'createSchoolDropdown'
+                            } %}
 
-                            <li>
-                                <a class="button tiny" data-dropdown="avdeling" aria-controls="avdeling"
-                                   aria-expanded="false">Avdeling &raquo;</a>
-                                <ul id="avdeling" class="f-dropdown" data-dropdown-content tabindex="-1"
-                                    aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                                    {% for d in departments %}
-
-                                        <li>
-                                            <a href="{{ path('schooladmin_filter_schools_by_department', { 'id': d.id }) }}">{{ d.shortName }}</a>
-                                        </li>
-
-                                    {% endfor %}
-
-                                </ul>
-                            </li>
-
-                            <li>
-                                <a class="button tiny" data-dropdown="opprettSkole" aria-controls="opprettSkole"
-                                   aria-expanded="false">Opprett skole &raquo;</a>
-                                <ul id="opprettSkole" class="f-dropdown" data-dropdown-content tabindex="-1"
-                                    aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                                    {% for d in departments %}
-
-                                        <li>
-                                            <a href="{{ path('schooladmin_create_school_by_department', { 'id': d.id }) }}">{{ d.shortName }}</a>
-                                        </li>
-
-                                    {% endfor %}
-
-                                </ul>
-                            </li>
-
-                            <li>
-                                <a class="button tiny" data-dropdown="tildelSkole" aria-controls="tildelSkole"
-                                   aria-expanded="false">Tildel skole &raquo;</a>
-                                <ul id="tildelSkole" class="f-dropdown" data-dropdown-content tabindex="-1"
-                                    aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                                    {% for d in departments %}
-
-                                        <li>
-                                            <a href="{{ path('schooladmin_show_users_of_department_superadmin', { 'id': d.id }) }}">{{ d.shortName }}</a>
-                                        </li>
-
-                                    {% endfor %}
-
-                                </ul>
-                            </li>
-
+                            {% include "common/department_dropdown.html.twig" with {
+                            'pathForDepartment': 'schooladmin_show_users_of_department_superadmin',
+                            'departmentParameterName': 'id',
+                            'currentDepartment': 'Tildel Skole',
+                            'dropdownId': 'createHistoryDropdown'
+                            } %}
                         {% else %}
 
                             <li><a href="{{ path('schooladmin_show_users_of_department') }}" class="button tiny">Tildel
@@ -122,13 +87,10 @@
                         {% endif %}
 
                     </ul>
-
                 </div>
 
                 <div class="small-12 medium-12 large-6 columns">
-
                     <input type="text" id="search" placeholder="Søk..."/>
-
                 </div>
 
             </div>
@@ -136,25 +98,13 @@
             <hr>
 
             <table width="100%" id="table">
-
                 <thead>
                 <tr>
                     <th> Skole</th>
                     <th> Kontaktperson</th>
                     <th> Telefon</th>
                     <th> E-post</th>
-                    <th> Språk</th>
-
-                    {# Only need this if user is SUPER_ADMIN #}
-                    {% if is_granted('ROLE_SUPER_ADMIN') %}
-                        <th></th>
-                    {% endif %}
-
-                    {# Only need this if user is SUPER_ADMIN #}
-                    {% if is_granted('ROLE_SUPER_ADMIN') %}
-                        <th></th>
-                    {% endif %}
-
+                    <th colspan="3"> Språk</th>
                 </tr>
                 </thead>
 
@@ -179,18 +129,12 @@
                             <td><a href="#" id="{{ s.id }}" class="button tiny alert delete"><i
                                             class="fa fa-trash-o"></i> Slett</a></td>
                         {% endif %}
-
-
                     </tr>
                 {% endfor %}
                 </tbody>
-
             </table>
-
-
         </div>
     </div>
-
 
     <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
          aria-hidden="true" role="dialog">

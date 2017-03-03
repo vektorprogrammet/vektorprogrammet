@@ -13,7 +13,7 @@ services:
 
   app.user.registration:
     class: AppBundle\Service\UserRegistration
-    arguments: ['@twig', '@doctrine.orm.default_entity_manager', '@mailer', '@logger']
+    arguments: ['@twig', '@doctrine.orm.default_entity_manager', '@mailer', '@app.logger']
 
   app.receipt.manager:
       class: AppBundle\Service\ReceiptManager
@@ -25,11 +25,11 @@ services:
 
   app.interview.manager:
     class: AppBundle\Service\InterviewManager
-    arguments: ['@security.token_storage', '@security.authorization_checker', '@mailer', '@twig']
+    arguments: ['@security.token_storage', '@security.authorization_checker', '@mailer', '@twig', '@app.logger']
 
   app.newsletter.manager:
       class: AppBundle\Service\NewsletterManager
-      arguments: ['@swiftmailer.mailer.newsletter', '@twig']
+      arguments: ['@swiftmailer.mailer.newsletter', '@twig', '@doctrine.orm.entity_manager']
 
   app.password_manager:
       class: AppBundle\Service\PasswordManager
@@ -73,7 +73,13 @@ services:
 
   app.application_subscriber:
     class: AppBundle\EventSubscriber\ApplicationSubscriber
-    arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data', '@router']
+    arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data', '@router', '@app.newsletter.manager']
+    tags:
+      - { name: kernel.event_subscriber }
+
+  app.team_application_subscriber:
+    class: AppBundle\EventSubscriber\TeamApplicationSubscriber
+    arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@router']
     tags:
       - { name: kernel.event_subscriber }
 
@@ -94,6 +100,16 @@ services:
       arguments: ['@app.email_sender', '@app.slack_messenger', '@session', '@app.logger']
       tags:
         - { name: kernel.event_subscriber }
+
+  app.work_history_subscriber:
+    class: AppBundle\EventSubscriber\WorkHistorySubscriber
+    arguments: ['@session', '@app.logger', '@security.authorization_checker', '@doctrine.orm.entity_manager']
+    tags:
+        - { name: kernel.event_subscriber }
+
+  app.file_uploader:
+      class: AppBundle\Service\FileUploader
+      arguments: ['%signature_images%', '%logo_images%']
 
   security.login:
     class: AppBundle\Service\LoginManager

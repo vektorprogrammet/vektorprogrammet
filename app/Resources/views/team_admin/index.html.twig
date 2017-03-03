@@ -1,6 +1,6 @@
 {% extends 'adminBase.html.twig' %}
 
-{% block customScripts %}
+{% block javascripts %}
 
     {# Easy routing with FOSJsRouting bundle #}
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
@@ -20,22 +20,6 @@
             });
         });
 
-        $("#search").keyup(function () {
-
-            _this = this;
-
-            $.each($("#table tbody").find("tr"), function () {
-
-                if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
-                    $(this).hide();
-                }
-                else {
-                    $(this).show();
-                }
-            });
-
-        });
-
     </script>
 
 
@@ -47,86 +31,49 @@
 	
 {% block body %}
     <div class="row">
-    <div class="small-12 medium-12 large-12 columns">
-
-        <h1> Team {{ departmentName }}</h1>
-
-        <hr>
-
-        <div class="row">
-
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
-
-                <div class="small-12 medium-12 large-6 columns">
-
-                    <ul class="inline-list">
-
-                        <li>
-                            <a class="button tiny" data-dropdown="selectDepartment" aria-controls="selectDepartment"
-                               aria-expanded="false">Avdeling &raquo;</a>
-                            <ul id="selectDepartment" class="f-dropdown" data-dropdown-content tabindex="-1"
-                                aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                                {% for d in departments %}
-
-                                    <li>
-                                        <a href="{{ path('teamadmin_filter_teams_by_department', { 'id': d.id }) }}">{{ d.shortName }}</a>
-                                    </li>
-
-                                {% endfor %}
-
-                            </ul>
-                        </li>
-
-                        <li>
-                            <a class="button tiny" data-dropdown="team" aria-controls="team" aria-expanded="false">Opprett
-                                team &raquo;</a>
-                            <ul id="team" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true"
-                                aria-autoclose="false" tabindex="-1">
-
-                                {% for d in departments %}
-
-                                    <li>
-                                        <a href="{{ path('teamadmin_create_team_for_department', { 'id': d.id }) }}">{{ d.shortName }}</a>
-                                    </li>
-
-                                {% endfor %}
-
-                            </ul>
-                        </li>
-
-                        <li>
-                            <a href="{{ path('teamadmin_show_position') }}" class="button tiny">Stillinger</a>
-                        </li>
-
-                    </ul>
-
-                </div>
-
-            {% endif %}
-
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
-            <div class="small-12 medium-12 large-6 columns">
-                {% else %}
-                <div class="small-12 medium-12 large-12 columns">
-                    {% endif %}
-
-                    <input type="text" id="search" placeholder="Søk..."/>
-
-                </div>
-
-            </div>
-
+        <div class="small-12 medium-12 large-12 columns">
+            <h1> Team {{ department }}</h1>
 
             <hr>
+
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <div class="row">
+                    <div class="small-12 medium-12 large-6 columns">
+                        <ul class="inline-list">
+
+                            {% include "common/department_dropdown.html.twig" with {'pathForDepartment': 'teamadmin_filter_teams_by_department', 'departmentParameterName': 'id', 'currentDepartment': department} %}
+
+                            <li>
+                                <a class="button tiny" data-dropdown="team" aria-controls="team" aria-expanded="false">Opprett
+                                    team &raquo;</a>
+                                <ul id="team" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true"
+                                    aria-autoclose="false" tabindex="-1">
+
+                                    {% for d in get_departments() %}
+
+                                        <li>
+                                            <a href="{{ path('teamadmin_create_team_for_department', { 'id': d.id }) }}">{{ d.shortName }}</a>
+                                        </li>
+
+                                    {% endfor %}
+
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="{{ path('teamadmin_show_position') }}" class="button tiny">Stillinger</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
 
             <table width="100%" id="table">
 
                 <thead>
                 <tr>
-                    <th> Navn</th>
-                    <th></th>
-                    <th></th>
+                    <th colspan="3">Navn</th>
                 </tr>
                 </thead>
 
@@ -137,7 +84,8 @@
                                     href="{{ path('teamadmin_show_specific_team', { 'id': t.id }) }}"> {{ t.name }} </a>
                         </td>
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
-                            <td><a href="{{ path('teamadmin_update', { 'id': t.id }) }}" class="button tiny">Rediger</a>
+                            <td><a href="{{ path('teamadmin_update', { 'id': t.id }) }}"
+                                   class="button tiny">Rediger</a>
                             </td>
                         {% endif %}
                         {% if is_granted('ROLE_HIGHEST_ADMIN') %}
@@ -149,7 +97,6 @@
                 </tbody>
 
             </table>
-
         </div>
     </div>
 
