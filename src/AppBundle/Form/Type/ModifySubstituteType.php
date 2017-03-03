@@ -36,7 +36,7 @@ class ModifySubstituteType extends AbstractType
         ));
 
         $builder->add('save', 'submit', array(
-            'label' => 'Endre vikar',
+            'label' => 'Oppdater',
         ));
     }
 

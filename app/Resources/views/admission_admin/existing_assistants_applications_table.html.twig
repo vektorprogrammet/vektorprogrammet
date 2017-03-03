@@ -43,8 +43,8 @@
 
                 {# Add header columns to match the buttons added #}
                 <th></th>
-                <th></th>
                 {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                    <th></th>
                     <th></th>
                 {% endif %}
             </tr>
@@ -69,22 +69,22 @@
                             </a>
                         </td>
 
-                        {# Make applicant substitute #}
-                        <td>
-                            <form method="POST"
-                                  onsubmit="return confirm('Lag vikar av {{ a.user.firstName }} {{ a.user.lastName }}?')"
-                                  action="{{ path('substitute_create_from_application', { id: a.id }) }}">
-                                <button type="submit"
-                                        {% if a.substitute %} disabled {% endif %}
-                                        class="button tiny">
-                                    <i class="fa fa-user-secret"></i>
-                                    {{ a.substitute ? 'Allerede vikar':'Lag vikar' }}
-                                </button>
-                            </form>
-                        </td>
+                        {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                            {# Make applicant substitute #}
+                            <td>
+                                <form method="POST"
+                                      onsubmit="return confirm('Lag vikar av {{ a.user.firstName }} {{ a.user.lastName }}?')"
+                                      action="{{ path('substitute_create_from_application', { id: a.id }) }}">
+                                    <button type="submit"
+                                            {% if a.substitute %} disabled {% endif %}
+                                            class="button tiny">
+                                        <i class="fa fa-user-secret"></i>
+                                        {{ a.substitute ? 'Allerede vikar':'Lag vikar' }}
+                                    </button>
+                                </form>
+                            </td>
 
                         {# Add the delete interview and application dropdown button, given the correct permissions #}
-                        {% if is_granted('ROLE_HIGHEST_ADMIN') %}
                             <td>
                                 <a href="#" class="button tiny alert" data-dropdown="deleteDropdown{{ a.id }}"
                                    aria-controls="deleteDropdown{{ a.id }}" aria-expanded="false" id="{{ a.id }}">
@@ -111,19 +111,6 @@
                                     <li class="deleteApplication" id="{{ a.id }}"><a href="#">Slett søknad</a></li>
                                 </ul>
                             </td>
-
-                            <li>
-                                <form method="POST"
-                                      onsubmit="return confirm('Lag vikar av {{ a.user.firstName }} {{ a.user.lastName }}?')"
-                                      action="{{ path('substitute_create_from_application', { id: a.id }) }}">
-                                    <button type="submit"
-                                            {% if a.substitute %} disabled {% endif %}
-                                            class="button tiny">
-                                        <i class="fa fa-user-secret"></i>
-                                        {{ a.substitute ? 'Allerede vikar':'Lag vikar' }}
-                                    </button>
-                                </form>
-                            </li>
                         {% endif %}
                     </tr>
                 {% endfor %}
