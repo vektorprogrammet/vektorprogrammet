@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Signature;
-use AppBundle\FileSystem\FileUploader;
 use AppBundle\Form\Type\CreateSignatureType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -30,16 +29,10 @@ class SignatureController extends Controller
             $isImageUpload = $request->files->get('create_signature')['signature_path'] !== null;
 
             if ($isImageUpload) {
-                //First move the signature image file to its folder
-                $targetFolder = $this->container->getParameter('signature_images').'/';
-                //Create a FileUploader with target folder and allowed file types as parameters
-                $uploader = new FileUploader($targetFolder);
-                //Move the file to target folder
+                $signaturePath = $this->get('app.file_uploader')->uploadSignature($request);
+                $this->get('app.file_uploader')->deleteSignature($oldPath);
 
-                $result = $uploader->upload($request);
-                $path = $result[array_keys($result)[0]];
-                $fileName = substr($path, strrpos($path, '/') + 1);
-                $signature->setSignaturePath('signatures/'.$fileName);
+                $signature->setSignaturePath($signaturePath);
             } else {
                 $signature->setSignaturePath($oldPath);
             }
