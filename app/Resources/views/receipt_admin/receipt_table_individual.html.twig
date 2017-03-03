@@ -6,12 +6,8 @@
         <th> Beskrivelse</th>
         <th> Sum</th>
         <th> Dato</th>
-        <th> Kontonummer</th>
         <th> Kvittering</th>
-        <th> </th>
-        <th> </th>
-        <th> </th>
-        <th></th>
+        <th colspan="4"> </th>
     </tr>
 
     </thead>
@@ -22,7 +18,6 @@
             <td>{{ receipt.description }}</td>
             <td> {{ receipt.sum|number_format(2, ',', '.') }},- </td>
             <td> {{ receipt.submitDate|date('Y-m-d') }}</td>
-            <td> {{ receipt.user.accountNumber }}</td>
             <td>
                 <a href="#" data-reveal-id="receipt-{{ receipt.id }}">Vis kvittering</a>
 

@@ -10,26 +10,24 @@
 
     {% if active_receipts is not empty %}
         <div class="row">
-
-            <div class="small-12 medium-12 large-12 columns">
-                <hr>
-            </div>
-
-            <div class="small-12 medium-12 large-8 columns">
-
+            <div class="small-6 medium-6 large-6 columns">
                 <h3> Aktive utlegg </h3>
-
             </div>
         </div>
+
+        <div class="row">
+            <div class="small-12 medium-12 large-12 columns small-offset-6">
+                Kontonummer: {{ receipt.user.accountNumber }}
+            </div>
+        </div>
+
         <div class="row">
             <div class="small-12 medium-12 large-12 columns">
-
                 <hr>
-
                 {% include 'receipt_admin/receipt_table_individual.html.twig' with {'receipts': active_receipts} %}
-
             </div>
         </div>
+
     {% endif %}
 
     {% if inactive_receipts is not empty %}
