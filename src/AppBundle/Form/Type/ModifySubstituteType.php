@@ -11,6 +11,10 @@ class ModifySubstituteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $options['label'] = false;
+        $builder->add('days', new DaysType(), array(
+            'label' => 'Dager som passer',
+            'data_class' => 'AppBundle\Entity\Application',
+        ));
         $builder->add('user', new UserDataForSubstituteType(), array(
             'department' => $options['department'],
             'label' => false,
@@ -30,10 +34,6 @@ class ModifySubstituteType extends AbstractType
             'multiple' => false,
         ));
 
-        $builder->add('days', new DaysType(), array(
-            'data_class' => 'AppBundle\Entity\Application',
-            'label' => 'Hvilke dager passer IKKE for deg?',
-        ));
 
         $builder->add('save', 'submit', array(
             'label' => 'Oppdater',

@@ -11,6 +11,7 @@ class ApplicationPracticalType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('days', new DaysType(), array(
+            'label' => 'Hvilke dager passer IKKE for deg?',
             'data_class' => 'AppBundle\Entity\Application',
         ));
 
