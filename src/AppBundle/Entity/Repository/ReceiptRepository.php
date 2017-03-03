@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Department;
 use AppBundle\Entity\Receipt;
 use Doctrine\ORM\EntityRepository;
 use AppBundle\Entity\User;
@@ -43,5 +44,21 @@ class ReceiptRepository extends EntityRepository
             ->setParameter('user', $user)
             ->getQuery()
             ->getResult();
+    }
+
+    public function findByDepartment(Department $department){
+
+        return $this->createQueryBuilder('receipt')
+            ->select('receipt')
+            ->join('receipt.user', 'user')
+            ->join('user.fieldOfStudy', 'fos')
+            ->where('fos.department = :department')
+            ->setParameter('department', $department)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findActiveReceiptsByDepartment(Department $department){
+
     }
 }
