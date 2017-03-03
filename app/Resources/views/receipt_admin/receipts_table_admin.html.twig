@@ -3,11 +3,12 @@
     <thead>
 
     <tr>
-        <th> Beskrivelse</th>
+        <th> Navn</th>
         <th> Sum</th>
         <th> Dato</th>
         <th> Kontonummer</th>
         <th> Kvittering</th>
+        <th> </th>
         <th> </th>
         <th> </th>
     </tr>
@@ -17,7 +18,7 @@
     <tbody>
     {% for receipt in receipts%}
         <tr>
-            <td> {{ receipt.description }} </td>
+            <td><a href="{{ path('receipts_show_individual', {'receipt': receipt.id}) }}"> {{ receipt.user.getFullName }} </a></td>
             <td> {{ receipt.sum|number_format(2, ',', '.') }},- </td>
             <td> {{ receipt.submitDate|date('Y-m-d') }}</td>
             <td> {{ receipt.user.accountNumber }}</td>
@@ -31,6 +32,7 @@
                 </div>
             </td>
             <td><a href="" class="button tiny">Marker som behandlet</a></td>
+            <td><a href="" class="button tiny">Rediger</a><td>
             <td><a href="" class="button tiny alert delete">Slett</a></td>
         </tr>
     {% endfor %}

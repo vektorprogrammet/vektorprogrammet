@@ -11,6 +11,7 @@ class FileUploader
 {
     private $signatureFolder;
     private $logoFolder;
+    private $receiptFolder;
 
     /**
      * FileUploader constructor.
@@ -18,10 +19,11 @@ class FileUploader
      * @param string $signatureFolder
      * @param string $logoFolder
      */
-    public function __construct(string $signatureFolder, string $logoFolder)
+    public function __construct(string $signatureFolder, string $logoFolder, string $receiptFolder)
     {
         $this->signatureFolder = $signatureFolder;
         $this->logoFolder = $logoFolder;
+        $this->receiptFolder = $receiptFolder;
     }
 
     /**
@@ -46,6 +48,13 @@ class FileUploader
         $file = $this->getFileFromRequest($request);
 
         return $this->uploadFile($file, $this->logoFolder);
+    }
+
+    public function uploadReceipt(Request $request)
+    {
+        $file = $this->getFileFromRequest($request);
+
+        return $this->uploadFile($file, $this->receiptFolder);
     }
 
     /**

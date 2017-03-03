@@ -1,62 +1,61 @@
 {% extends 'adminBase.html.twig' %}
-
 {% block title %}Utlegg{% endblock %}
 
 {% block body %}
-<div class="row">
-    <div class="small-12 medium-12 large-12 columns">
-        <h1>Utlegg</h1>
-    </div>
-</div>
-
-{% if active_receipts is not empty %}
-    <div class="row">
-
-        <div class="small-12 medium-12 large-12 columns">
-            <hr>
-        </div>
-
-        <div class="small-12 medium-12 large-8 columns">
-
-            <h3> Aktive utlegg </h3>
-
-        </div>
-    </div>
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-
-            <hr>
-
-            {% include 'receipt/receipts_table.html.twig' with {'receipts': active_receipts} %}
-
-        </div>
-    </div>
-{% endif %}
-
-{% if inactive_receipts is not empty %}
-    <div class="row">
-
-        <div class="small-12 medium-12 large-12 columns">
-            <hr>
-        </div>
-
-        <div class="small-12 medium-12 large-8 columns">
-
-            <h3> Eldre utlegg</h3>
-
+            <h1>Utlegg for {{ receipt.user.getFullName }}</h1>
         </div>
     </div>
 
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+    {% if active_receipts is not empty %}
+        <div class="row">
 
-            <hr>
+            <div class="small-12 medium-12 large-12 columns">
+                <hr>
+            </div>
 
-            {% include 'receipt/receipts_table.html.twig' with {'receipts': inactive_receipts } %}
+            <div class="small-12 medium-12 large-8 columns">
 
+                <h3> Aktive utlegg </h3>
+
+            </div>
         </div>
-    </div>
-{% endif %}
+        <div class="row">
+            <div class="small-12 medium-12 large-12 columns">
+
+                <hr>
+
+                {% include 'receipt_admin/receipts_table_admin.html.twig' with {'receipts': active_receipts} %}
+
+            </div>
+        </div>
+    {% endif %}
+
+    {% if inactive_receipts is not empty %}
+        <div class="row">
+
+            <div class="small-12 medium-12 large-12 columns">
+                <hr>
+            </div>
+
+            <div class="small-12 medium-12 large-8 columns">
+
+                <h3> Eldre utlegg</h3>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="small-12 medium-12 large-12 columns">
+
+                <hr>
+
+                {% include 'receipt_admin/receipts_table_admin.html.twig' with {'receipts': inactive_receipts } %}
+
+            </div>
+        </div>
+    {% endif %}
 
 
 

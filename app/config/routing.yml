@@ -521,7 +521,7 @@ send_user_activation_mail:
 ##########################################
 #              Receipt                  #
 ##########################################
-receitps_show:
+receipts_show:
   path: /kontrollpanel/utlegg
   defaults: {_controller: AppBundle:Receipt:show }
   methods: [GET]
@@ -545,12 +545,12 @@ receipt_create:
   defaults: {_controller: AppBundle:Receipt:create }
   methods: [GET, POST]
 
-receitps_show_individual:
-  path: /kontrollpanel/utlegg/{id}
+receipts_show_individual:
+  path: /kontrollpanel/utlegg/{receipt}
   defaults: {_controller: AppBundle:Receipt:showIndividual }
   methods: [GET]
   requirements:
-    id: \d+
+    receipt: \d+
 
 ##########################################
 #              Semester                  #

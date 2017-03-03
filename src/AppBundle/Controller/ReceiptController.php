@@ -24,13 +24,13 @@ class ReceiptController extends Controller
         ));
     }
 
-    public function showIndividualAction(Request $request)
+    // TODO: Write this one
+    public function showIndividualAction(Receipt $receipt)
     {
-        $receipt = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByUser($this->getUser());
-        $active_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findActiveByUser($this->getUser());
-        $inactive_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findInactiveByUser($this->getUser());
+        $active_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findActiveByUser($receipt->getUser());
+        $inactive_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findInactiveByUser($receipt->getUser());
 
-        return $this->render('receipt/show_receipts.html.twig', array(
+        return $this->render('receipt_admin/show_individual_receipts.html.twig', array(
             'receipt' => $receipt,
             'active_receipts' => $active_receipts,
             'inactive_receipts' => $inactive_receipts,
@@ -51,16 +51,8 @@ class ReceiptController extends Controller
         if ($form->isSubmitted() && $form->isValid()){
             $isImageUpload = $request->files->get('receipt', ['picture_path']) !== null;
             if ($isImageUpload) {
-                //First move the signature image file to its folder
-                $targetFolder = $this->container->getParameter('receipt_images') . '/';
-                //Create a FileUploader with target folder and allowed file types as parameters
-                $uploader = new FileUploader($targetFolder);
-                //Move the file to target folder
-
-                $result = $uploader->upload($request);
-                $path = $result[array_keys($result)[0]];
-                $fileName = substr($path, strrpos($path, '/') + 1);
-                $receipt->setPicturePath('/images/receipts/' . $fileName);
+                $path = $this->get('app.file_uploader')->uploadReceipt($request);
+                $receipt->setPicturePath($path);
             }
             $em = $this->getDoctrine()->getManager();
             $em->persist($receipt);
