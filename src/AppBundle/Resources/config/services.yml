@@ -97,6 +97,12 @@ services:
       tags:
         - { name: kernel.event_subscriber }
 
+  app.work_history_subscriber:
+    class: AppBundle\EventSubscriber\WorkHistorySubscriber
+    arguments: ['@session', '@app.logger', '@security.authorization_checker', '@doctrine.orm.entity_manager']
+    tags:
+        - { name: kernel.event_subscriber }
+
   security.login:
     class: AppBundle\Service\LoginManager
     arguments: ['@twig', '@security.authentication_utils', '@router']

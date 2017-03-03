@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
+use AppBundle\Event\WorkHistoryCreatedEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,13 +69,15 @@ class TeamAdminController extends Controller
 
         if ($form->isValid()) {
 
-                //set the team of the department
-                $workHistory->setTeam($team);
+            //set the team of the department
+            $workHistory->setTeam($team);
 
-                // Persist the team to the database
-                $em = $this->getDoctrine()->getManager();
+            // Persist the team to the database
+            $em = $this->getDoctrine()->getManager();
             $em->persist($workHistory);
             $em->flush();
+
+            $this->get('event_dispatcher')->dispatch(WorkHistoryCreatedEvent::NAME, new WorkHistoryCreatedEvent($workHistory));
 
             return $this->redirect($this->generateUrl('teamadmin_show_specific_team', array('id' => $team->getId())));
         }
