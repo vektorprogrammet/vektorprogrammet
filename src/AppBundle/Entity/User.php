@@ -73,7 +73,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      */
-    private $account_number;
+    private $accountNumber;
 
     /**
      * @ORM\Column(type="string", length=45, unique=true, nullable=true)
@@ -309,15 +309,15 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function getAccountNumber()
     {
-        return $this->account_number;
+        return $this->accountNumber;
     }
 
     /**
      * @param string $account_number
      */
-    public function setAccountNumber($account_number)
+    public function setAccountNumber($accountNumber)
     {
-        $this->account_number = $account_number;
+        $this->accountNumber = $accountNumber;
     }
 
     /**

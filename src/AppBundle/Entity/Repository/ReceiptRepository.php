@@ -58,7 +58,29 @@ class ReceiptRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findActiveReceiptsByDepartment(Department $department){
+    public function findActiveByDepartment(Department $department){
 
+        return $this->createQueryBuilder('receipt')
+            ->select('receipt')
+            ->join('receipt.user', 'user')
+            ->join('user.fieldOfStudy', 'fos')
+            ->where('fos.department = :department')
+            ->andWhere('receipt.isActive = true')
+            ->setParameter('department', $department)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findInactiveByDepartment(Department $department){
+
+        return $this->createQueryBuilder('receipt')
+            ->select('receipt')
+            ->join('receipt.user', 'user')
+            ->join('user.fieldOfStudy', 'fos')
+            ->where('fos.department = :department')
+            ->andWhere('receipt.isActive = false')
+            ->setParameter('department', $department)
+            ->getQuery()
+            ->getResult();
     }
 }

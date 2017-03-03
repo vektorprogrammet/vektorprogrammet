@@ -12,7 +12,7 @@
     </thead>
 
     <tbody>
-    {% for receipt in receipts if receipt.isActive %}
+    {% for receipt in receipts %}
             <tr>
                 <td> {{ receipt.description }} </td>
                 <td> {{ receipt.sum|number_format(2, ',', '.') }},- </td>
