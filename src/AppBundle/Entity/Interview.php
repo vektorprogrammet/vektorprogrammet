@@ -67,7 +67,8 @@ class Interview
 
     /**
      * @ORM\Column(type="integer", nullable=false)
-     * @var InterviewAcceptedType
+     *
+     * @var int
      */
     private $interviewAccepted;
 
