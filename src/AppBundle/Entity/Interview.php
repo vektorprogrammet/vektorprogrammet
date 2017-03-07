@@ -364,10 +364,65 @@ class Interview
     }
 
     /**
+     * @return bool
+     */
+    public function isPending(): bool
+    {
+        return $this->interviewAccepted === InterviewAcceptedType::PENDING;
+    }
+
+    /**
      * @param int $interviewAccepted
      */
     public function setInterviewAccepted(int $interviewAccepted)
     {
         $this->interviewAccepted = $interviewAccepted;
+    }
+
+    public function acceptInterview()
+    {
+        $this->setInterviewAccepted(InterviewAcceptedType::ACCEPTED);
+    }
+
+    public function requestNewTime()
+    {
+        $this->setInterviewAccepted(InterviewAcceptedType::REQUEST_NEW_TIME);
+    }
+
+    public function cancel()
+    {
+        $this->setInterviewAccepted(InterviewAcceptedType::CANCELLED);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCancelled()
+    {
+        return $this->interviewAccepted === InterviewAcceptedType::CANCELLED;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResponseCode()
+    {
+        return $this->responseCode;
+    }
+
+    public function setResponseCode(string $responseCode)
+    {
+        $this->responseCode = $responseCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function generateAndSetResponseCode()
+    {
+        $newResponseCode = bin2hex(openssl_random_pseudo_bytes(12));
+        $this->responseCode = $newResponseCode;
+
+        return $newResponseCode;
     }
 }
