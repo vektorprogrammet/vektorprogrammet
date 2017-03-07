@@ -345,13 +345,13 @@ class Interview
     {
         switch ($this->interviewAccepted) {
             case InterviewAcceptedType::PENDING:
-                return "Ingen svar";
+                return 'Ingen svar';
             case InterviewAcceptedType::ACCEPTED:
-                return "Akseptert";
+                return 'Akseptert';
             case InterviewAcceptedType::REQUEST_NEW_TIME:
-                return "Ny tid ønskes";
+                return 'Ny tid ønskes';
             default:
-                return "Ingen svar";
+                return 'Ingen svar';
         }
     }
 
