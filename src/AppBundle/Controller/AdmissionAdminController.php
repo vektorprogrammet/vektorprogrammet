@@ -235,6 +235,7 @@ class AdmissionAdminController extends Controller
 
         return $this->render('admission_admin/teamInterest.html.twig', array(
             'teamInterest' => $teamInterest,
+            'semester' => $semester,
         ));
     }
 }
