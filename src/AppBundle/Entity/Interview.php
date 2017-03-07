@@ -83,6 +83,13 @@ class Interview
     private $application;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    private $responseCode;
+
+    /**
      * Constructor.
      */
     public function __construct()
