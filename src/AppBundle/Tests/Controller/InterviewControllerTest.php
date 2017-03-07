@@ -2,9 +2,9 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\BaseWebTestCase;
 
-class InterviewControllerTest extends WebTestCase
+class InterviewControllerTest extends BaseWebTestCase
 {
     /**
      * @param bool teamInterest
@@ -433,8 +433,7 @@ class InterviewControllerTest extends WebTestCase
 
     public function testWantTeamInterest()
     {
-        $ACT = new AdmissionControllerTest();
-        $applicationsBefore = $ACT->countRows('/kontrollpanel/opptakadmin/teaminteresse/2');
+        $applicationsBefore = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
 
         // Admin user
         $client = static::createClient(array(), array(
@@ -452,7 +451,7 @@ class InterviewControllerTest extends WebTestCase
 
         $this->fillAndSubmitInterviewFormWithTeamInterest($client, $crawler, true);
 
-        $applicationsAfter = $ACT->countRows('/kontrollpanel/opptakadmin/teaminteresse/2');
+        $applicationsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
 
         $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
         \TestDataManager::restoreDatabase();
@@ -460,8 +459,8 @@ class InterviewControllerTest extends WebTestCase
 
     public function testNotWantTeamInterest()
     {
-        $ACT = new AdmissionControllerTest();
-        $applicationsBefore = $ACT->countRows('/kontrollpanel/opptakadmin/teaminteresse/2');
+
+        $applicationsBefore = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
 
         // Admin user
         $client = static::createClient(array(), array(
@@ -479,7 +478,7 @@ class InterviewControllerTest extends WebTestCase
 
         $this->fillAndSubmitInterviewFormWithTeamInterest($client, $crawler, false);
 
-        $applicationsAfter = $ACT->countRows('/kontrollpanel/opptakadmin/teaminteresse/2');
+        $applicationsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
 
         $this->assertEquals($applicationsBefore, $applicationsAfter);
         \TestDataManager::restoreDatabase();

@@ -2,9 +2,9 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\BaseWebTestCase;
 
-class AdmissionControllerTest extends WebTestCase
+class AdmissionControllerTest extends BaseWebTestCase
 {
     public function testShow()
     {
@@ -14,11 +14,11 @@ class AdmissionControllerTest extends WebTestCase
     {
         $path = '/kontrollpanel/nyhetsbrev/4';
 
-        $applicationsBefore = $this->countRows($path);
+        $applicationsBefore = $this->countTableRows($path);
 
         $this->createAndSubmitForm('Love newsletters Peter', true);
 
-        $applicationsAfter = $this->countRows($path);
+        $applicationsAfter = $this->countTableRows($path);
 
         $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
         \TestDataManager::restoreDatabase();
@@ -28,11 +28,11 @@ class AdmissionControllerTest extends WebTestCase
     {
         $path = '/kontrollpanel/nyhetsbrev/4';
 
-        $applicationsBefore = $this->countRows($path);
+        $applicationsBefore = $this->countTableRows($path);
 
         $this->createAndSubmitForm('No newsletter Johnson', false);
 
-        $applicationsAfter = $this->countRows($path);
+        $applicationsAfter = $this->countTableRows($path);
 
         $this->assertEquals($applicationsBefore, $applicationsAfter);
         \TestDataManager::restoreDatabase();
@@ -42,11 +42,11 @@ class AdmissionControllerTest extends WebTestCase
     {
         $path = '/kontrollpanel/opptakadmin/teaminteresse/2';
 
-        $applicationsBefore = $this->countRows($path);
+        $applicationsBefore = $this->countTableRows($path);
 
         $this->createAndSubmitForm_teamInterest(true);
 
-        $applicationsAfter = $this->countRows($path);
+        $applicationsAfter = $this->countTableRows($path);
 
         $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
         \TestDataManager::restoreDatabase();
@@ -56,34 +56,14 @@ class AdmissionControllerTest extends WebTestCase
     {
         $path = '/kontrollpanel/opptakadmin/teaminteresse/2';
 
-        $applicationsBefore = $this->countRows($path);
+        $applicationsBefore = $this->countTableRows($path);
 
         $this->createAndSubmitForm_teamInterest(false);
 
-        $applicationsAfter = $this->countRows($path);
+        $applicationsAfter = $this->countTableRows($path);
 
         $this->assertEquals($applicationsBefore, $applicationsAfter);
         \TestDataManager::restoreDatabase();
-    }
-
-    /**
-     * @param string $path
-     *
-     * @return int
-     */
-    public function countRows(string $path):int
-    {
-        // Admin
-        $clientAdmin = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        // Go to AdmissionTestList
-        $crawler = $clientAdmin->request('GET', $path);
-        $this->assertTrue($clientAdmin->getResponse()->isSuccessful());
-
-        return $crawler->filter('tr')->count();
     }
 
     /**
@@ -92,6 +72,7 @@ class AdmissionControllerTest extends WebTestCase
      */
     private function createAndSubmitForm(string $testname, bool $wantsNewsletter)
     {
+
         $clientAnonymous = static::createClient();
 
         $crawler = $clientAnonymous->request('GET', '/opptak/avdeling/1');
