@@ -35,6 +35,11 @@ class Interview
     protected $scheduled;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $room;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $conducted;
@@ -234,6 +239,22 @@ class Interview
     public function setCancelled($cancelled)
     {
         $this->cancelled = $cancelled;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRoom()
+    {
+        return $this->room;
+    }
+
+    /**
+     * @param string $room
+     */
+    public function setRoom($room)
+    {
+        $this->room = $room;
     }
 
     /**
