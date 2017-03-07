@@ -72,7 +72,6 @@ class AdmissionControllerTest extends BaseWebTestCase
      */
     private function createAndSubmitForm(string $testname, bool $wantsNewsletter)
     {
-
         $clientAnonymous = static::createClient();
 
         $crawler = $clientAnonymous->request('GET', '/opptak/avdeling/1');

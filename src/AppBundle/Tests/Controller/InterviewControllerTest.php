@@ -459,7 +459,6 @@ class InterviewControllerTest extends BaseWebTestCase
 
     public function testNotWantTeamInterest()
     {
-
         $applicationsBefore = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
 
         // Admin user
