@@ -945,6 +945,13 @@ interview_schedule:
  requirements:
   id: \d+
 
+interview_response:
+    path: /intervju/{responseCode}
+    defaults: { _controller: AppBundle:Interview:respond }
+    methods: [GET, POST]
+    requirements:
+      reponseCode: \w+
+
 ##########################################
 #                File browser            #
 ##########################################

@@ -195,6 +195,8 @@ class InterviewController extends Controller
         if ($form->isValid()) {
             $data = $form->getData();
 
+            $interview->generateAndSetResponseCode();
+
             // Update the scheduled time for the interview
             $interview->setScheduled($data['datetime']);
             $em = $this->getDoctrine()->getManager();

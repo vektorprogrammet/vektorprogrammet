@@ -96,6 +96,7 @@ class InterviewManager
                         'fromName' => $interview->getInterviewer()->getFirstName().' '.$interview->getInterviewer()->getLastName(),
                         'fromMail' => $data['from'],
                         'fromPhone' => $interview->getInterviewer()->getPhone(),
+                        'responseCode' => $interview->getResponseCode(),
                     )
                 ),
                 'text/html'
