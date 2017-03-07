@@ -1,0 +1,61 @@
+<div class="row hide-for-small-only">
+    <div class="medium-12 columns hide-for-small-only" data-equalizer-watch>
+        <nav class="control-menu">
+            <ul>
+                <li><a href="{{ path('control_panel') }}">Kontrollpanel</a></li>
+                <li>
+                    <a href="#" data-dropdown="articleDropDown" data-options="is_hover:true; hover_timeout:200">Artikkel
+                        <i class="fa fa-chevron-down"></i></a>
+
+                    <ul id="articleDropDown" class="f-dropdown mini" data-dropdown-content>
+                        <li><a href="{{ path('articleadmin_show') }}">Artikler</a></li>
+                        <li><a href="{{ path('articleadmin_create') }}">Ny artikkel</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" data-dropdown="usersDropDown" data-options="is_hover:true; hover_timeout:200">Brukere
+                        <i class="fa fa-chevron-down"></i></a>
+
+                    <ul id="usersDropDown" class="f-dropdown very-small" data-dropdown-content>
+                        <li><a href="{{ path('useradmin_show') }}">Brukere</a></li>
+                        <li><a href="{{ path('participanthistory_show') }}">Deltakerhistorikk</a></li>
+                        <li><a href="{{ path('substitute_show') }}">Vikarer</a></li>
+                        <li><a href="{{ path('teamadmin_show') }}">Team</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" data-dropdown="admissionDropDown"
+                       data-options="is_hover:true; hover_timeout:200">Opptak & Undersøkelse <i
+                                class="fa fa-chevron-down"></i> </a>
+
+                    <ul id="admissionDropDown" class="f-dropdown very-small" data-dropdown-content>
+                        <li><a href="{{ path('admissionadmin_show') }}">Opptak</a></li>
+                        <li>
+                            <a href="{{ path('statistics_application_show') }}">Opptaksstatistikk</a>
+                        </li>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
+                        {% endif %}
+                        <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
+                        <li><a href="{{ path('newsletter_show_all') }}">Nyhetsbrev</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" data-dropdown="miscDropDown" data-options="is_hover:true; hover_timeout:200">Diverse
+                        <i class="fa fa-chevron-down"></i></a>
+
+                    <ul id="miscDropDown" class="f-dropdown mini" data-dropdown-content>
+                        <li><a href="{{ path('departmentadmin_show') }}">Avdeling</a></li>
+                        <li><a href="{{ path('semester_show') }}">Semester</a></li>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <li><a href="{{ path('show_field_of_studies') }}">Linjer</a></li>
+                        {% endif %}
+                        <li><a href="{{ path('schooladmin_show') }}">Skole</a></li>
+                        <li><a href="{{ path('sponsors_edit') }}">Sponsorer</a></li>
+                        <li><a href="{{ path('certificate_show') }}">Attest</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

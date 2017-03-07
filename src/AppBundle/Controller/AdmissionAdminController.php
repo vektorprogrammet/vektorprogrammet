@@ -6,7 +6,7 @@ use AppBundle\Entity\Application;
 use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Role\Roles;
-use Doctrine\ORM\NoResultException;
+use AppBundle\Service\InterviewCounter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,160 +17,111 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AdmissionAdminController extends Controller
 {
-    // The name of the default role a new user is given.
-    const NEW_USER_ROLE = 'User';
-
     /**
      * Shows the admission admin page. Shows only applications for the department of the logged in user.
      * This works as the restricted admission management method, only allowing users to manage applications within their department.
      *
-     * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Request $request)
+    public function showAction()
     {
-        return $this->renderApplicants($request);
+        $department = $this->getUser()->getDepartment();
+        $semester = $department->getCurrentOrLatestSemester();
+
+        return $this->showNewApplicationsBySemesterAction($semester);
     }
 
-    /**
-     * Shows the admission admin page with applications from the given department.
-     * This is the method is only accessible by users with sufficient rights to manage all departments.
-     *
-     * @param Request $request
-     * @param $id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function showApplicationsByDepartmentAction(Request $request, $id)
+    public function showNewApplicationsBySemesterAction(Semester $semester = null)
     {
-        return $this->renderApplicants($request, $id);
-    }
-
-    private function renderApplicants(Request $request, $departmentId = null)
-    {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        // Get query strings for filtering applications
-        $status = $request->query->get('status', 'new');
-
-        if ($departmentId === null) {
-            // Finds the department for the current logged in user
-            $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
-        } else {
-            if (!$this->isGranted(Roles::TEAM_LEADER) && $user->getDepartment()->getId() !== (int) $departmentId) {
-                throw $this->createAccessDeniedException();
-            }
-            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
-        }
-
-        $semesterId = $request->query->get('semester', null);
-        if ($semesterId === null) {
-            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
-        } else {
-            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterId);
-        }
-
-        $em = $this->getDoctrine();
-
         if ($semester === null) {
-            try {
-                $semester = $em->getRepository('AppBundle:Semester')->findLatestSemesterByDepartmentId($department->getId());
-            } catch (NoResultException $e) {
-                return $this->render('error/no_semester.html.twig', array('department' => $department));
-            }
-        } else {
-            $semester = $em->getRepository('AppBundle:Semester')->find($semester);
+            $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
         }
-        // Finds the name of the chosen semester. If no semester chosen display 'Alle'
-        $semesterName = is_null($semester) ? 'Alle' : $semester->getName();
+        $department = $semester->getDepartment();
 
-        // Finds all the departments
-        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
-
-        // Find all the semesters associated with the department
-        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
-
-        // Finds the applicants for the given department filtered by interview status and semester
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Application');
-        $applicantsAssignedToUser = array();
-        $interviewDistribution = array();
-        $interviewDistributionLeft = array();
-        $cancelledApplicants = array();
-        /* @var Application[] $applicants */
-        switch ($status) {
-            case 'assigned':
-                $interviewRepo = $this->getDoctrine()->getRepository('AppBundle:Interview');
-
-                //Count completed interviews
-                $interviewedApplicants = $repository->findInterviewedApplicants($department, $semester);
-                foreach ($interviewedApplicants as $interviewedApplicant) {
-                    $numInterviews = $interviewRepo->numberOfInterviewsByUserInSemester($interviewedApplicant->getInterview()->getInterviewer(), $semester);
-                    $fullName = $interviewedApplicant->getInterview()->getInterviewer()->getFullName();
-                    if (!array_key_exists($fullName, $interviewDistribution) && $numInterviews > 0) {
-                        $interviewDistribution[$fullName] = $numInterviews;
-                        $interviewDistributionLeft[$fullName] = 0;
-                    }
-                }
-
-                //Count assigned interviews
-                $applicants = $repository->findAssignedApplicants($department, $semester);
-                foreach ($applicants as $applicant) {
-                    $numInterviews = $interviewRepo->numberOfInterviewsByUserInSemester($applicant->getInterview()->getInterviewer(), $semester);
-                    $fullName = $applicant->getInterview()->getInterviewer()->getFullName();
-                    if (!array_key_exists($fullName, $interviewDistribution) && $numInterviews > 0) {
-                        $interviewDistribution[$fullName] = $numInterviews;
-                    }
-                    if ($applicant->getInterview()->getInterviewer() == $user) {
-                        $applicantsAssignedToUser[] = $applicant;
-                    }
-                }
-
-                foreach ($applicants as $applicant) {
-                    $fullName = $applicant->getInterview()->getInterviewer()->getFirstName().' '.$applicant->getInterview()->getInterviewer()->getLastName();
-                    if (array_key_exists($fullName, $interviewDistributionLeft)) {
-                        ++$interviewDistributionLeft[$fullName];
-                    } else {
-                        $interviewDistributionLeft[$fullName] = 1;
-                    }
-                }
-                $cancelledApplicants = $repository->findCancelledApplicants($semester);
-                arsort($interviewDistribution);
-                $template = 'assigned_applications_table.html.twig';
-                break;
-            case 'interviewed':
-                $applicants = $repository->findInterviewedApplicants($department, $semester);
-                foreach ($applicants as $applicant) {
-                    if ($applicant->getUser() == $user) {
-                        $applicant->getInterview()->getInterviewScore()->hideScores();
-                        break;
-                    }
-                }
-                $template = 'interviewed_applications_table.html.twig';
-                break;
-            case 'existing':
-                $applicants = $repository->findExistingApplicants($department, $semester);
-                $template = 'existing_assistants_applications_table.html.twig';
-                break;
-            default:
-                $applicants = $repository->findNewApplicants($department, $semester);
-                $template = 'new_applications_table.html.twig';
-                $status = 'new';
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
+            throw $this->createAccessDeniedException();
         }
 
-        return $this->render('admission_admin/'.$template, array(
-            'status' => $status,
-            'applicants' => $applicants,
-            'yourApplicants' => $applicantsAssignedToUser,
-            'interviewDistribution' => $interviewDistribution,
-            'interviewDistributionLeft' => $interviewDistributionLeft,
-            'department' => $department,
-            'departments' => $allDepartments,
-            'semesters' => $semesters,
-            'semesterName' => $semesterName,
-            'numOfApplicants' => sizeof($applicants),
-            'departmentName' => $department->getShortName(),
-            'user' => $user,
-            'cancelledApplicants' => $cancelledApplicants,
+        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findNewApplicationsBySemester($semester);
+
+        return $this->render('admission_admin/new_applications_table.html.twig', array(
+            'applications' => $applications,
+            'semester' => $semester,
+            'status' => 'new',
+        ));
+    }
+
+    public function showAssignedApplicationsBySemesterAction(Semester $semester = null)
+    {
+        if ($semester === null) {
+            $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
+        }
+        $department = $semester->getDepartment();
+
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $applicationRepo = $this->getDoctrine()->getRepository('AppBundle:Application');
+
+        $applications = $applicationRepo->findAssignedApplicants($semester);
+        $interviewDistributions = $this->get('app.interview_counter')->createInterviewDistributions($applications, $semester);
+
+        $cancelledApplications = $applicationRepo->findCancelledApplicants($semester);
+
+        $applicationsAssignedToUser = $applicationRepo->findAssignedByUserAndSemester($this->getUser(), $semester);
+
+        return $this->render('admission_admin/assigned_applications_table.html.twig', array(
+            'status' => 'assigned',
+            'applications' => $applications,
+            'semester' => $semester,
+            'interviewDistributions' => $interviewDistributions,
+            'cancelledApplications' => $cancelledApplications,
+            'yourApplications' => $applicationsAssignedToUser,
+        ));
+    }
+
+    public function showInterviewedApplicationsBySemesterAction(Semester $semester = null)
+    {
+        if ($semester === null) {
+            $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
+        }
+        $department = $semester->getDepartment();
+
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findInterviewedApplicants(null, $semester);
+
+        $counter = $this->get('app.interview_counter');
+
+        return $this->render('admission_admin/interviewed_applications_table.html.twig', array(
+            'status' => 'interviewed',
+            'applications' => $applications,
+            'semester' => $semester,
+            'yes' => $counter->count($applications,  InterviewCounter::YES),
+            'no' => $counter->count($applications,  InterviewCounter::NO),
+            'maybe' => $counter->count($applications,  InterviewCounter::MAYBE),
+        ));
+    }
+
+    public function showExistingApplicationsBySemesterAction(Semester $semester = null)
+    {
+        if ($semester === null) {
+            $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
+        }
+        $department = $semester->getDepartment();
+
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findExistingApplicants($department, $semester);
+
+        return $this->render('admission_admin/existing_assistants_applications_table.html.twig', array(
+            'status' => 'existing',
+            'applications' => $applications,
             'semester' => $semester,
         ));
     }

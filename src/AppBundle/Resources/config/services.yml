@@ -39,6 +39,9 @@ services:
     class: AppBundle\Service\AssistantsData
     arguments: ['@doctrine.orm.default_entity_manager']
 
+  app.interview_counter:
+    class: AppBundle\Service\InterviewCounter
+
   app.sbs_data:
     class: AppBundle\Service\SbsData
     parent: application.data
@@ -96,6 +99,16 @@ services:
       arguments: ['@app.email_sender', '@app.slack_messenger', '@session', '@app.logger']
       tags:
         - { name: kernel.event_subscriber }
+
+  app.work_history_subscriber:
+    class: AppBundle\EventSubscriber\WorkHistorySubscriber
+    arguments: ['@session', '@app.logger', '@security.authorization_checker', '@doctrine.orm.entity_manager']
+    tags:
+        - { name: kernel.event_subscriber }
+
+  app.file_uploader:
+      class: AppBundle\Service\FileUploader
+      arguments: ['%signature_images%', '%logo_images%']
 
   security.login:
     class: AppBundle\Service\LoginManager

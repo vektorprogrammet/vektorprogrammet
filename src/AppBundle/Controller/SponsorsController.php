@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\SponsorType;
-use AppBundle\FileSystem\FileUploader;
 use AppBundle\Entity\Sponsor;
 
 class SponsorsController extends Controller
@@ -45,14 +44,7 @@ class SponsorsController extends Controller
         } else { //Update the sponsor object in the database
             //Empty file-field in the form is allowed
             if ($request->files->get('sponsor')['logoImagePath'] !== null) {
-                //First move the logo image file to its folder
-                $targetFolder = $this->container->getParameter('logo_images').'/';
-                //Create a FileUploader with target folder and allowed file types as parameters
-                $uploader = new FileUploader($targetFolder);
-                //Move the file to target folder
-                $result = $uploader->upload($request);
-                //Get the path of the image file as now on the server:
-                $path = $result[array_keys($result)[0]];
+                $path = $this->get('app.file_uploader')->uploadLogo($request);
                 $sponsor->setLogoImagePath($path);
             }
             //Get the sponsor name from the request (value entered in the form)

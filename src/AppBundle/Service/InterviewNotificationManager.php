@@ -31,8 +31,8 @@ class InterviewNotificationManager
         $interviewsLeftCount = $this->applicationData->getInterviewsLeftCount();
 
         $interviewsLink = $this->router->generate(
-            'admissionadmin_filter_applications_by_department',
-            array('id' => $department->getId(), 'status' => 'interviewed'),
+            'applications_show_interviewed_by_semester',
+            array('id' => $department->getCurrentOrLatestSemester()->getId()),
             Router::ABSOLUTE_URL
         );
 
@@ -60,8 +60,8 @@ class InterviewNotificationManager
 
         $this->slackMessenger->notify(
             'Se alle intervjuene her: '.$this->router->generate(
-                'admissionadmin_filter_applications_by_department',
-                array('id' => $department->getId(), 'status' => 'interviewed'),
+                'applications_show_interviewed_by_semester',
+                array('id' => $department->getCurrentOrLatestSemester()->getId(), 'status' => 'interviewed'),
                 Router::ABSOLUTE_URL
             ));
     }
