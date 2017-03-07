@@ -308,4 +308,53 @@ class InterviewController extends Controller
                 )),
         ));
     }
+
+    public function cancelByReponseCodeAction(string $responseCode)
+    {
+        $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
+
+        if ($interview === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $interview->cancel();
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($interview);
+        $manager->flush();
+
+        $this->addFlash('success', 'Intervjuet ble kansellert.');
+
+        return $this->redirectToRoute('home');
+    }
+
+    public function acceptByResponseCodeAction(string $responseCode)
+    {
+        $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
+
+        if ($interview === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $interview->acceptInterview();
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($interview);
+        $manager->flush();
+
+        $this->addFlash('success', 'Intervjuet ble akseptert.');
+
+        return $this->redirectToRoute('home');
+    }
+
+    public function respondAction(string $responseCode)
+    {
+        $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
+
+        if ($interview === null || !$interview->isPending()) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('interview/response.html.twig', array(
+            'interview' => $interview,
+        ));
+    }
 }
