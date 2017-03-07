@@ -351,7 +351,7 @@ class Interview
             case InterviewAcceptedType::REQUEST_NEW_TIME:
                 return "Ny tid ønskes";
             default:
-                return "Venter";
+                return "Ingen svar";
         }
     }
 
