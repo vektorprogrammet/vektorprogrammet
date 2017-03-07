@@ -70,7 +70,7 @@ class Subscriber
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEmail()
     {
@@ -78,7 +78,7 @@ class Subscriber
     }
 
     /**
-     * @param mixed $email
+     * @param string $email
      */
     public function setEmail($email)
     {
@@ -86,7 +86,7 @@ class Subscriber
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -94,7 +94,7 @@ class Subscriber
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -102,7 +102,7 @@ class Subscriber
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getTimestamp()
     {
@@ -110,7 +110,7 @@ class Subscriber
     }
 
     /**
-     * @param mixed $timestamp
+     * @param \DateTime $timestamp
      */
     public function setTimestamp($timestamp)
     {
@@ -118,7 +118,7 @@ class Subscriber
     }
 
     /**
-     * @return mixed
+     * @return Newsletter
      */
     public function getNewsletter()
     {
@@ -126,7 +126,7 @@ class Subscriber
     }
 
     /**
-     * @param mixed $newsletter
+     * @param Newsletter $newsletter
      */
     public function setNewsletter($newsletter)
     {
@@ -134,7 +134,7 @@ class Subscriber
     }
 
     /**
-     * @param mixed
+     * @param string
      */
     public function getUnsubscribeCode()
     {
@@ -142,7 +142,7 @@ class Subscriber
     }
 
     /**
-     * @param mixed $unsubscribeCode
+     * @param string $unsubscribeCode
      */
     public function setUnsubscribeCode($unsubscribeCode)
     {

@@ -1,0 +1,14 @@
+<div class="row">
+    <div class="small-12 columns">
+        <div id="cancelledApplicationsList" class="slide-group">
+            {% if cancelledApplications is defined %}
+                {% if cancelledApplications|length %}
+                    <h5 class="">Kansellerte intervujer | Antall: {{ cancelledApplications|length }}</h5>
+                {% endif %}
+                {% include 'admission_admin/assigned_table.html.twig' with {'applicants': cancelledApplications} %}
+            {% endif %}
+        </div>
+        <button id="cancelledApplicationsButton" class="button tiny alert radius">Vis kansellerte intervjuer
+            ({{ cancelledApplications|length }}) <i class="fa fa-caret-down"></i></button>
+    </div>
+</div>

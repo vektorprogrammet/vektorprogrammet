@@ -63,7 +63,7 @@ class Letter
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTitle()
     {
@@ -71,7 +71,7 @@ class Letter
     }
 
     /**
-     * @param mixed $title
+     * @param string $title
      */
     public function setTitle($title)
     {
@@ -79,7 +79,7 @@ class Letter
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getTimestamp()
     {
@@ -87,7 +87,7 @@ class Letter
     }
 
     /**
-     * @param mixed $timestamp
+     * @param \DateTime $timestamp
      */
     public function setTimestamp($timestamp)
     {
@@ -95,7 +95,7 @@ class Letter
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getContent()
     {
@@ -103,7 +103,7 @@ class Letter
     }
 
     /**
-     * @param mixed $content
+     * @param string $content
      */
     public function setContent($content)
     {
@@ -119,7 +119,7 @@ class Letter
     }
 
     /**
-     * @param mixed $newsletter
+     * @param Newsletter $newsletter
      */
     public function setNewsletter($newsletter)
     {
@@ -127,7 +127,7 @@ class Letter
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getRecipientCount()
     {
@@ -135,7 +135,7 @@ class Letter
     }
 
     /**
-     * @param mixed $recipientCount
+     * @param int $recipientCount
      */
     public function setRecipientCount($recipientCount)
     {

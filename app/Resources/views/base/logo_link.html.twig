@@ -1,0 +1,7 @@
+<a href="{{ path('home') }}">
+    {% if "now"|date("m") == "12" %}
+        <img src="{{ asset('images/vektor-christmas-logo.png') }}" alt="Vektor logo">
+    {% else %}
+        <img src="{{ asset('images/vektor.png') }}" alt="Vektor logo">
+    {% endif %}
+</a>

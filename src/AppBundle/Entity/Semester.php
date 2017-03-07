@@ -216,7 +216,7 @@ class Semester
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getYear()
     {
@@ -224,7 +224,7 @@ class Semester
     }
 
     /**
-     * @param mixed $year
+     * @param string $year
      */
     public function setYear($year)
     {
@@ -232,7 +232,7 @@ class Semester
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getSemesterTime()
     {
@@ -240,10 +240,19 @@ class Semester
     }
 
     /**
-     * @param mixed $semesterTime
+     * @param string $semesterTime
      */
     public function setSemesterTime($semesterTime)
     {
         $this->semesterTime = $semesterTime;
+    }
+
+    public function setStartAndEndDateByTime(string $time, string $year)
+    {
+        $startMonth = $time == 'Vår' ? '01' : '08';
+        $endMonth = $time == 'Vår' ? '07' : '12';
+
+        $this->setSemesterStartDate(date_create($year.'-'.$startMonth.'-01 00:00:00'));
+        $this->setSemesterEndDate(date_create($year.'-'.$endMonth.'-31 23:59:59'));
     }
 }

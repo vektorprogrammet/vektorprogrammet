@@ -111,14 +111,23 @@ class User implements AdvancedUserInterface, \Serializable
     private $assistantHistories;
 
     /**
+     * @ORM\OneToMany(targetEntity="WorkHistory", mappedBy="user")
+     */
+    private $workHistories;
+
+    /**
      * @ORM\OneToMany(targetEntity="CertificateRequest", mappedBy="user")
      **/
     protected $certificateRequests;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Interview", mappedBy="interviewer")
+     */
+    private $interviews;
+
     public function __construct()
     {
         $this->roles = new ArrayCollection();
-        $this->fieldOfStudy = new ArrayCollection();
         $this->certificateRequests = new ArrayCollection();
         $this->isActive = false;
         $this->picture_path = 'images/defaultProfile.png';
@@ -542,5 +551,21 @@ class User implements AdvancedUserInterface, \Serializable
         // you *may* need a real salt depending on your encoder
         // see section on salt below
         return;
+    }
+
+    /**
+     * @return WorkHistory[]
+     */
+    public function getWorkHistories()
+    {
+        return $this->workHistories;
+    }
+
+    /**
+     * @return Interview[]
+     */
+    public function getInterviews()
+    {
+        return $this->interviews;
     }
 }

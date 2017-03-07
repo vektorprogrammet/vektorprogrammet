@@ -43,7 +43,7 @@
             </div>
             <div class="row">
                 <div class="small-12 columns">
-                    <label class="question-label">Hvilke dager passer for deg?</label>
+                    <label class="question-label">Hvilke dager passer IKKE for deg?</label>
                     {{ form_row(form.applicationPractical.monday) }}
                     {{ form_row(form.applicationPractical.tuesday) }}
                     {{ form_row(form.applicationPractical.wednesday) }}
@@ -82,7 +82,7 @@
 
 {% endblock %}
 
-{% block customScripts %}
+{% block javascripts %}
 
     <script>
         var $submitBtn = $('.vektor-button-inverted');

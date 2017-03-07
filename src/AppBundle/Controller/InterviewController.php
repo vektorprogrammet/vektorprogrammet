@@ -60,14 +60,9 @@ class InterviewController extends Controller
                 $em->flush();
 
                 $this->get('event_dispatcher')->dispatch(InterviewConductedEvent::NAME, new InterviewConductedEvent($application));
+            }
 
-                return $this->redirectToRoute('admissionadmin_show', array('status' => 'interviewed'));
-            }
-            if ($isNewInterview) {
-                return $this->redirectToRoute('admissionadmin_show', array('status' => 'assigned'));
-            } else {
-                return $this->redirectToRoute('admissionadmin_show', array('status' => 'interviewed'));
-            }
+            return $this->redirectToRoute('applications_show_interviewed_by_semester', array('id' => $application->getSemester()->getId()));
         }
 
         return $this->render('interview/conduct.html.twig', array(
@@ -88,7 +83,7 @@ class InterviewController extends Controller
         $manager->persist($interview);
         $manager->flush();
 
-        return $this->redirectToRoute('admissionadmin_show', array('status' => 'assigned'));
+        return $this->redirectToRoute('applications_show_assigned');
     }
 
     /**
@@ -101,7 +96,7 @@ class InterviewController extends Controller
     public function showAction(Application $application)
     {
         if (null === $interview = $application->getInterview()) {
-            return $this->redirectToRoute('admissionadmin_show');
+            throw $this->createNotFoundException('Interview not found.');
         }
 
         // Only accessible for admin and above, or team members belonging to the same department as the interview
@@ -121,30 +116,21 @@ class InterviewController extends Controller
      * @param Interview $interview
      *
      * @return JsonResponse
-     *
-     * @internal param $id
      */
     public function deleteInterviewAction(Interview $interview)
     {
-        try {
+        $application = $this->getDoctrine()->getRepository('AppBundle:Application')->findOneBy(array('interview' => $interview));
+        $application->setInterview(null);
 
-            // Delete the interview
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($interview);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($application);
+        $em->remove($interview);
+        $em->flush();
 
-            // AJAX response
-            return new JsonResponse(array(
-                'success' => true,
-            ));
-        } catch (\Exception $e) {
-            // Send a response to AJAX
-            return new JsonResponse([
-                'success' => false,
-                'code' => $e->getCode(),
-                'cause' => 'En feil oppstod. Vennligst kontakt IT-ansvarlig.',
-            ]);
-        }
+        // AJAX response
+        return new JsonResponse(array(
+            'success' => true,
+        ));
     }
 
     /**
@@ -159,35 +145,27 @@ class InterviewController extends Controller
      */
     public function bulkDeleteInterviewAction(Request $request)
     {
-        try {
-            // Only the highest user role should be able to delete an interview
-            // Get the ids from the form
-            $applicationIds = $request->request->get('application')['id'];
+        // Get the ids from the form
+        $applicationIds = $request->request->get('application')['id'];
 
-            // Get the application objects
-            $em = $this->getDoctrine()->getManager();
-            $applications = $em->getRepository('AppBundle:Application')->findBy(array('id' => $applicationIds));
+        // Get the application objects
+        $em = $this->getDoctrine()->getManager();
+        $applications = $em->getRepository('AppBundle:Application')->findBy(array('id' => $applicationIds));
 
-            // Delete the interviews
-            foreach ($applications as $application) {
-                $interview = $application->getInterview();
-                if ($interview) {
-                    $em->remove($interview);
-                }
+        // Delete the interviews
+        foreach ($applications as $application) {
+            $interview = $application->getInterview();
+            if ($interview) {
+                $em->remove($interview);
             }
-            $em->flush();
-
-            // AJAX response
-            return new JsonResponse(array(
-                'success' => true,
-            ));
-        } catch (\Exception $e) {
-            // Send a response to AJAX
-            return new JsonResponse([
-                'success' => false,
-                'cause' => 'En exception oppstod. Vennligst kontakt IT-ansvarlig.',
-            ]);
+            $application->setInterview(null);
         }
+        $em->flush();
+
+        // AJAX response
+        return new JsonResponse(array(
+            'success' => true,
+        ));
     }
 
     /**
@@ -228,7 +206,7 @@ class InterviewController extends Controller
                 $this->get('app.interview.manager')->sendScheduleEmail($interview, $data);
             }
 
-            return $this->redirect($this->generateUrl('admissionadmin_show', array('status' => 'assigned')));
+            return $this->redirect($this->generateUrl('applications_show_assigned_by_semester', array('id' => $application->getSemester()->getId())));
         }
 
         return $this->render('interview/schedule.html.twig', array(

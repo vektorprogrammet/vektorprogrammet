@@ -1,6 +1,6 @@
 {% extends 'adminBase.html.twig' %}
 
-{% block customScripts %}
+{% block javascripts %}
 
     {# Easy routing with FOSJsRouting bundle #}
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
@@ -61,6 +61,7 @@
 {% endblock %}
 
 {% block body %}
+    {% include 'common/flash.html.twig' %}
     <p></p>
 
     <div class="row">

@@ -34,8 +34,8 @@
             {% else %}
                 <td data-sort-value="0"></td>
             {% endif %}
-            {{ dump(a) }}
-            <td>{{ a.interview.interviewer.firstName }} {{ a.interview.interviewer.lastName }}</td>
+
+            <td>{{ a.interview.interviewer }}</td>
 
             {# Add the buttons to book(send email) and conduct an interview, given the correct permissions #}
             {% if is_granted('ROLE_SUPER_ADMIN') or a.interview.isInterviewer(app.user) %}
