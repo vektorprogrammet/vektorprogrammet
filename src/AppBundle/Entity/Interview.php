@@ -26,11 +26,6 @@ class Interview
     protected $interviewed;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $cancelled;
-
-    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $scheduled;
@@ -97,7 +92,6 @@ class Interview
         $this->interviewAnswers = new ArrayCollection();
         $this->conducted = new \DateTime();
         $this->interviewed = false;
-        $this->cancelled = false;
         $this->interviewAccepted = InterviewAcceptedType::PENDING;
     }
 
@@ -246,7 +240,7 @@ class Interview
      */
     public function getCancelled()
     {
-        return $this->cancelled;
+        return $this->isCancelled();
     }
 
     /**
@@ -254,7 +248,11 @@ class Interview
      */
     public function setCancelled($cancelled)
     {
-        $this->cancelled = $cancelled;
+        if ($cancelled === true) {
+            $this->cancel();
+        } else {
+            $this->acceptInterview();
+        }
     }
 
     /**
