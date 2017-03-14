@@ -127,7 +127,7 @@ class AvailabilityFunctionalTest extends WebTestCase
     {
         return array(
             array('/kontrollpanel/brukeradmin/opprett'),
-            array('/kontrollpanel/opptakadmin'),
+            array('/kontrollpanel/opptak'),
             array('/kontrollpanel/opprettsoker'),
             array('/kontrollpanel/brukeradmin'),
             array('/kontrollpanel/semesteradmin'),

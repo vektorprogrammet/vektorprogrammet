@@ -46,7 +46,7 @@ class Interview
     protected $interviewSchema; // Bidirectional, may turn out to be unidirectional
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="interviews")
      * @ORM\JoinColumn(name="interviewer_id", referencedColumnName="id")
      */
     protected $interviewer; // Unidirectional, may turn out to be bidirectional
@@ -68,6 +68,11 @@ class Interview
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
      */
     protected $user;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Application", mappedBy="interview")
+     */
+    private $application;
 
     /**
      * Constructor.
@@ -315,5 +320,13 @@ class Interview
     public function isDraft()
     {
         return !$this->interviewed && $this->interviewScore !== null;
+    }
+
+    /**
+     * @return Application
+     */
+    public function getApplication()
+    {
+        return $this->application;
     }
 }

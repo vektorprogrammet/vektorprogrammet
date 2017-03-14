@@ -1,97 +1,48 @@
 {% extends 'admission_admin/layout.html.twig' %}
 
-{% block bulkNavigation %}
-    {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-        <div class="small-6 medium-5 large-3 columns">
-            <div class="row collapse">
-                <div class="small-9 columns">
-                    <select id="bulkSelect">
-                        <option value="title">Gruppehandling</option>
-                        <option value="deleteApplication">Slett søknad</option>
-                        <option value="deleteInterview">Slett intervju</option>
-                    </select>
-                </div>
-                <div class="small-3 columns">
-                    <a href="#" id="bulkAction" class="button postfix">Utfør</a>
-                </div>
-            </div>
-        </div>
-    {% endif %}
-    <div class="small-12 columns">
-        <h6 class="float-right">Antall: {{ applicants|length }}</h6>
-    </div>
-{% endblock %}
-
 {% block applications %}
-    {% if applicants is defined %}
+    {% include 'admission_admin/existing_applications/bulk_navigation.html.twig' %}
+    <table width="100%" id="application-table">
+        <thead>
+        <tr>
+            {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                <th><input type="checkbox" id="bulkAllCheck"></th>
+            {% endif %}
 
-        {# The table containing interviewed applications #}
-        <table width="100%" id="application-table">
-            <thead>
-            <tr>
-                {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-                    <th><input type="checkbox" id="bulkAllCheck"></th>
-                {% endif %}
+            {# data-sort is used to sort the tables with stupidtable.js #}
+            <th data-sort="string">Fornavn</th>
+            <th data-sort="string">Etternavn</th>
+            <th>E-post</th>
+            <th>Dobbel Stilling</th>
+            <th>Bolk</th>
+            <th>Språk</th>
+            <th colspan="2"></th>
+        </tr>
+        </thead>
 
-                {# data-sort is used to sort the tables with stupidtable.js #}
-                <th data-sort="string">Fornavn</th>
-                <th data-sort="string">Etternavn</th>
-                <th>E-post</th>
-                <th>Dobbel Stilling</th>
-                <th>Bolk</th>
-                <th>Språk</th>
-                <th></th>
-
-                {# Add header columns to match the buttons added #}
-                {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-                    <th></th>
-                {% endif %}
-            </tr>
-            </thead>
-
-            <tbody>
-            <form id="bulk" name="application">
-                {% for a in applicants %}
-                    <tr id="{{ a.id }}">
-                        {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-                            <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
-                            </td>
-                        {% endif %}
-                        <td><a href="{{ path('specific_profile', {id: a.user.id}) }}">{{ a.user.firstName }}</a></td>
-                        <td>{{ a.user.lastName }}</td>
-                        <td>{{ a.user.email }}</td>
-                        <td>{{ a.doublePosition ? 'Dobbel':'Enkel' }}</td>
-                        <td>{{ a.preferredGroup }}</td>
-                        <td>{{ a.english ? 'Engelsk':'Norsk' }}</td>
-                        <td><a class="button tiny" href="{{ path('admissionadmin_show_application', {'id': a.id}) }}">
-                                <i class="fa fa-list-ul"></i>
-                                Les søknad
-                            </a>
+        <tbody>
+        <form id="bulk" name="application">
+            {% for a in applications %}
+                <tr id="{{ a.id }}">
+                    {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                        <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
                         </td>
-
-                        {# Add the delete interview and application dropdown button, given the correct permissions #}
-                        {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-                            <td>
-                                <a href="#" class="button tiny alert" data-dropdown="deleteDropdown{{ a.id }}"
-                                   aria-controls="deleteDropdown{{ a.id }}" aria-expanded="false" id="{{ a.id }}">
-                                    <i class="fa fa-trash fa-lg"></i> Slett <i class="fa fa-caret-down"></i>
-                                </a>
-                                <ul id="deleteDropdown{{ a.id }}" data-dropdown-content class="f-dropdown"
-                                    aria-hidden="true">
-                                    {% if a.interview is not null %}
-                                        <li class="deleteInterview" id="{{ a.interview.id }}"><a href="#">Slett
-                                                intervju</a>
-                                        </li>
-                                    {% endif %}
-                                    <li class="deleteApplication" id="{{ a.id }}"><a href="#">Slett søknad</a></li>
-                                </ul>
-                            </td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-            </form>
-            </tbody>
-        </table>
-    {% endif %}
-
+                    {% endif %}
+                    <td><a href="{{ path('specific_profile', {id: a.user.id}) }}">{{ a.user.firstName }}</a></td>
+                    <td>{{ a.user.lastName }}</td>
+                    <td>{{ a.user.email }}</td>
+                    <td>{{ a.doublePosition ? 'Dobbel':'Enkel' }}</td>
+                    <td>{{ a.preferredGroup }}</td>
+                    <td>{{ a.english ? 'Engelsk':'Norsk' }}</td>
+                    <td><a class="button tiny" href="{{ path('admissionadmin_show_application', {'id': a.id}) }}">
+                            <i class="fa fa-list-ul"></i>
+                            Les søknad
+                        </a>
+                    </td>
+                    {% include 'admission_admin/existing_applications/delete_column.html.twig' %}
+                </tr>
+            {% endfor %}
+        </form>
+        </tbody>
+    </table>
 {% endblock %}
