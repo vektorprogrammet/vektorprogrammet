@@ -9,11 +9,9 @@
         <th> Linje</th>
         <th> Avdeling</th>
         {% if is_granted('ROLE_SUPER_ADMIN') %}
-            <th></th>
             <th>Send aktiveringsmelding</th>
-            {% else %}
-                <th></th>
         {% endif %}
+        <th></th>
     </tr>
     </thead>
 
