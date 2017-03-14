@@ -41,17 +41,29 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#" data-dropdown="miscDropDown" data-options="is_hover:true; hover_timeout:200">Diverse
-                        <i class="fa fa-chevron-down"></i></a>
+                    <a href="#" data-dropdown="schoolDropDown"
+                       data-options="is_hover:true; hover_timeout:200">Skole<i
+                                class="fa fa-chevron-down"></i> </a>
 
-                    <ul id="miscDropDown" class="f-dropdown mini" data-dropdown-content>
+                    <ul id="schoolDropDown" class="f-dropdown very-small" data-dropdown-content>
                         <li><a href="{{ path('departmentadmin_show') }}">Avdeling</a></li>
                         <li><a href="{{ path('semester_show') }}">Semester</a></li>
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
                             <li><a href="{{ path('show_field_of_studies') }}">Linjer</a></li>
                         {% endif %}
                         <li><a href="{{ path('schooladmin_show') }}">Skole</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" data-dropdown="miscDropDown" data-options="is_hover:true; hover_timeout:200">Diverse
+                        <i class="fa fa-chevron-down"></i></a>
+
+                    <ul id="miscDropDown" class="f-dropdown mini" data-dropdown-content>
+
                         <li><a href="{{ path('sponsors_edit') }}">Sponsorer</a></li>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <li><a href="{{ path('receipts_show') }}">Utlegg</a></li>
+                        {% endif %}
                         <li><a href="{{ path('certificate_show') }}">Attest</a></li>
                     </ul>
                 </li>
