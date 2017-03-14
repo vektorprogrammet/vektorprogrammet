@@ -8,6 +8,18 @@ class AdmissionControllerTest extends BaseWebTestCase
 {
     public function testShow()
     {
+        $clientAssistant  = self::createAssistantClient();
+
+        $crawler = $clientAssistant->request('GET', '/opptak/NTNU');
+        $this->assertTrue($clientAssistant->getResponse()->isSuccessful());
+
+        $this->assertEquals(200, $clientAssistant->getResponse()->getStatusCode());
+
+        $this->assertEquals(1, $crawler->filter('h4:contains("Følgende team har opptak")')->count());
+        $this->assertEquals(1, $crawler->filter('h2:contains("Vektorprogrammet")')->count());
+
+
+        \TestDataManager::restoreDatabase();
     }
 
     public function testCreateWantNewsletterApplication()
