@@ -104,6 +104,7 @@ security:
         - { path: ^/profile/deaktiv, roles: ROLE_SUPER_ADMIN }
         - { path: ^/profile/rolle/endre, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/profil/rediger, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/opptakadmin/teaminteresse, roles: ROLE_SUPER_ADMIN}
 
           #ROLE_ADMIN = team user
         - { path: ^/profile/edit, roles: ROLE_ADMIN }
