@@ -2,17 +2,37 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\BaseWebTestCase;
 
-class SubstituteControllerTest extends WebTestCase
+class SubstituteControllerTest extends BaseWebTestCase
 {
+    public function testCreate()
+    {
+        // Team leader
+        $client = self::createTeamLeaderClient();
+
+        // GET returns 405 method not allowed
+        $client->request('GET', '/kontrollpanel/vikar/opprett/4');
+
+        $this->assertEquals(405, $client->getResponse()->getStatusCode());
+
+        // POST
+        $client->request('POST', '/kontrollpanel/vikar/opprett/4');
+
+        $crawler = $client->followRedirect();
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        // Assert that the substitute was added
+        $this->assertEquals(1, $crawler->filter('h1:contains("Vikarer")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Markus")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Gundersen")')->count());
+    }
+
     public function testShow()
     {
-        // Admin user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        // Team leader
+        $client = self::createTeamLeaderClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/vikar');
 
@@ -21,18 +41,15 @@ class SubstituteControllerTest extends WebTestCase
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Vikarer")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Marius")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Svendsen")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Markus")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Gundersen")')->count());
 
-        // Assert that we have the edit/delete buttons as admin (1 delete button is the hidden modal button, so we have to check > 1)
-        $this->assertGreaterThan(1, $crawler->filter('a:contains("Slett")')->count());
-        $this->assertGreaterThan(0, $crawler->filter('a:contains("Rediger")')->count());
+        // Assert that we have the edit/delete buttons as admin
+        $this->assertEquals(1, $crawler->filter('button:contains("Slett")')->count());
+        $this->assertEquals(1, $crawler->filter('button:contains("Rediger")')->count());
 
-        // Team user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        // Team member
+        $client = self::createTeamMemberClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/vikar');
 
@@ -41,100 +58,69 @@ class SubstituteControllerTest extends WebTestCase
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Vikarer")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Marius")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Svendsen")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Markus")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Gundersen")')->count());
 
-        // Assert that we don't have the edit/delete buttons as team (1 delete button is the hidden modal button, so we have to check = 1)
-        $this->assertEquals(1, $crawler->filter('a:contains("Slett")')->count());
+        // Assert that we don't have the edit/delete buttons as team
+        $this->assertEquals(0, $crawler->filter('a:contains("Slett")')->count());
         $this->assertEquals(0, $crawler->filter('a:contains("Rediger")')->count());
-
-        // Assistant user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/vikar');
-
-        // Assert that the page response status code is 403 access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testShowSubstitutesByDepartment()
     {
-        // Admin user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        // Team leader
+        $client = self::createTeamLeaderClient();
 
-        $crawler = $client->request('GET', '/kontrollpanel/vikar/1');
+        $crawler = $client->request('GET', '/kontrollpanel/vikar/semester/2');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Vikarer")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Marius")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Svendsen")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Markus")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Gundersen")')->count());
 
-        // Assert that we have the edit/delete buttons as admin (1 delete button is the hidden modal button, so we have to check > 1)
-        $this->assertGreaterThan(1, $crawler->filter('a:contains("Slett")')->count());
-        $this->assertGreaterThan(0, $crawler->filter('a:contains("Rediger")')->count());
+        // Assert that we have the edit/delete buttons as admin
+        $this->assertEquals(1, $crawler->filter('button:contains("Slett")')->count());
+        $this->assertEquals(1, $crawler->filter('button:contains("Rediger")')->count());
 
-        // Team user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        // Team member
+        $client = self::createTeamMemberClient();
 
-        $crawler = $client->request('GET', '/kontrollpanel/vikar/1');
+        $crawler = $client->request('GET', '/kontrollpanel/vikar/semester/2');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Vikarer")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Marius")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Svendsen")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Markus")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Gundersen")')->count());
 
-        // Assert that we don't have the edit/delete buttons as team (1 delete button is the hidden modal button, so we have to check = 1)
-        $this->assertEquals(1, $crawler->filter('a:contains("Slett")')->count());
+        // Assert that we don't have the edit/delete buttons as team
+        $this->assertEquals(0, $crawler->filter('a:contains("Slett")')->count());
         $this->assertEquals(0, $crawler->filter('a:contains("Rediger")')->count());
-
-        // Assistant user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/vikar/1');
-
-        // Assert that the page response status code is 403 access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testEdit()
     {
-        // Admin user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        // Team leader
+        $client = self::createTeamLeaderClient();
 
-        $crawler = $client->request('GET', '/kontrollpanel/vikar/rediger/1');
+        $crawler = $client->request('GET', '/kontrollpanel/vikar/rediger/4');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("Endre vikarinformasjon")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Rediger vikar")')->count());
 
         // Find the form
-        $form = $crawler->selectButton('Lagre')->form();
+        $form = $crawler->selectButton('Oppdater')->form();
 
         // Fill in the form
-        $form['substitute[phone]'] = '95999999';
+        $form['modifySubstitute[user][phone]'] = '95999999';
 
         // Submit the form
         $client->submit($form);
@@ -147,25 +133,13 @@ class SubstituteControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('td:contains("95999999")')->count());
 
         // Team user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = self::createTeamMemberClient();
 
-        $client->request('GET', '/kontrollpanel/vikar/rediger/1');
+        $client->request('GET', '/kontrollpanel/vikar/rediger/4');
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
         \TestDataManager::restoreDatabase();
     }
-
-    /*
-    Requires JQuery interaction, Symfony2 does not support that
-
-    Phpunit was designed to test the PHP language, have to use another tool to test these.
-
-    public function testDelete() {}
-    public function testCreate() {}
-    */
 }

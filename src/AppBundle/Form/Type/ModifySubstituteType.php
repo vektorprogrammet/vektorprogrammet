@@ -34,7 +34,6 @@ class ModifySubstituteType extends AbstractType
             'multiple' => false,
         ));
 
-
         $builder->add('save', 'submit', array(
             'label' => 'Oppdater',
         ));

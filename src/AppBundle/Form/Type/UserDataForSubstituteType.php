@@ -6,7 +6,6 @@ use AppBundle\Entity\Repository\FieldOfStudyRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class UserDataForSubstituteType extends AbstractType
 {
@@ -44,9 +43,6 @@ class UserDataForSubstituteType extends AbstractType
                         ->setParameter(1, $this->department);
                 },
             ));
-
-
-        ;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

@@ -8,8 +8,6 @@ use AppBundle\Entity\Semester;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Application;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use AppBundle\Form\Type\ScheduleInterviewType;
-use AppBundle\Form\Type\ApplicationInterviewType;
 use AppBundle\Form\Type\ModifySubstituteType;
 
 /**
@@ -68,7 +66,7 @@ class SubstituteController extends Controller
         */
 
         // Only substitutes should be modified with this form
-        if(!$application->isSubstitute()){
+        if (!$application->isSubstitute()) {
             throw new BadRequestHttpException();
         }
 
@@ -87,8 +85,8 @@ class SubstituteController extends Controller
 
             // Need some form of redirect. Will cause wrong database entries if the form is rendered again
             // after a valid submit, without remaking the form with up to date question objects from the database.
-            return $this->redirect($this->generateUrl('substitute_modify', array(
-                'id' => $application->getId(),
+            return $this->redirect($this->generateUrl('substitute_show', array(
+                'semester' => $application->getSemester()->getId(),
             )));
         }
 
