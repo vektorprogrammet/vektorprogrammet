@@ -8,9 +8,11 @@
         <th> E-post</th>
         <th> Linje</th>
         <th> Avdeling</th>
-        <th></th>
         {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <th></th>
             <th>Send aktiveringsmelding</th>
+            {% else %}
+                <th></th>
         {% endif %}
     </tr>
     </thead>
@@ -24,8 +26,10 @@
             <td> {{ u.email }} </td>
             <td> {{ u.fieldOfStudy }} </td>
             <td> {{ u.fieldOfStudy.department }} </td>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
             <td><a href="#" id="{{ u.id }}" class="button tiny alert delete"><i
                             class="fa fa-trash-o"></i> Slett</a></td>
+            {% endif %}
             {% if u.password is null and is_granted('ROLE_SUPER_ADMIN') %}
                 <td>
                     <form method="POST"
