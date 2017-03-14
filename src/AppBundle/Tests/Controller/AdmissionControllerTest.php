@@ -8,16 +8,23 @@ class AdmissionControllerTest extends BaseWebTestCase
 {
     public function testShow()
     {
-        $clientAssistant  = self::createAssistantClient();
+        $clientAssistant = self::createAssistantClient();
 
-        $crawler = $clientAssistant->request('GET', '/opptak/NTNU');
+        $crawlerNTNU = $clientAssistant->request('GET', '/opptak/NTNU');
         $this->assertTrue($clientAssistant->getResponse()->isSuccessful());
 
         $this->assertEquals(200, $clientAssistant->getResponse()->getStatusCode());
 
-        $this->assertEquals(1, $crawler->filter('h4:contains("Følgende team har opptak")')->count());
-        $this->assertEquals(1, $crawler->filter('h2:contains("Vektorprogrammet")')->count());
+        $this->assertEquals(1, $crawlerNTNU->filter('h4:contains("Følgende team har opptak")')->count());
+        $this->assertEquals(1, $crawlerNTNU->filter('h1:contains("Søk Vektorprogrammet ved NTNU")')->count());
+        $this->assertEquals(1, $crawlerNTNU->filter('button:contains("Søk nå!")')->count());
 
+        $crawlerNMBU = $clientAssistant->request('GET', '/opptak/NMBU');
+        $this->assertTrue($clientAssistant->getResponse()->isSuccessful());
+
+        $this->assertEquals(200, $clientAssistant->getResponse()->getStatusCode());
+
+        $this->assertEquals(1, $crawlerNMBU->filter('h4:contains("Avdelingen NMBU har ikke aktiv søkeperiode")')->count());
 
         \TestDataManager::restoreDatabase();
     }
