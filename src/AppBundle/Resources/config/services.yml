@@ -47,6 +47,9 @@ services:
     class: AppBundle\Service\AssistantsData
     arguments: ['@doctrine.orm.default_entity_manager']
 
+  app.interview_counter:
+    class: AppBundle\Service\InterviewCounter
+
   app.sbs_data:
     class: AppBundle\Service\SbsData
     parent: application.data

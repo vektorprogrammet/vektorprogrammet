@@ -5,7 +5,6 @@ namespace AppBundle\EventSubscriber;
 use AppBundle\Event\AssistantHistoryCreatedEvent;
 use AppBundle\Service\UserRegistration;
 use Doctrine\ORM\EntityManager;
-use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
