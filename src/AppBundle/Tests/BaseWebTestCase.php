@@ -27,7 +27,7 @@ abstract class BaseWebTestCase extends WebTestCase
     {
         if (self::$assistantClient === null) {
             self::$assistantClient = self::createClient(array(), array(
-                'PHP_AUTH_USER' => 'assistant',
+                'PHP_AUTH_USER' => 'assistent',
                 'PHP_AUTH_PW' => '1234',
             ));
         }
