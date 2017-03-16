@@ -364,6 +364,25 @@ class Interview
     }
 
     /**
+     * @return string
+     */
+    public function getInterviewAcceptedAsColor(): string
+    {
+        switch ($this->interviewAccepted) {
+            case InterviewAcceptedType::PENDING:
+                return '#000000';
+            case InterviewAcceptedType::ACCEPTED:
+                return '#32CD32';
+            case InterviewAcceptedType::REQUEST_NEW_TIME:
+                return '#F08A24';
+            case InterviewAcceptedType::CANCELLED:
+                return '#f40f0f';
+            default:
+                return '#000000';
+        }
+    }
+
+    /**
      * @return bool
      */
     public function isPending(): bool

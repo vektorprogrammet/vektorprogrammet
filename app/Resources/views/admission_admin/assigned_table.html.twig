@@ -38,7 +38,9 @@
 
             <td>{{ a.interview.interviewer }}</td>
 
-            <td>{{ a.interview.getInterviewAcceptedAsString() }}</td>
+            <td style="color:  {{ a.interview.getInterviewAcceptedAsColor() }}">
+                {{ a.interview.getInterviewAcceptedAsString() }}
+            </td>
 
             {# Add the buttons to book(send email) and conduct an interview, given the correct permissions #}
             {% if is_granted_team_leader() or a.interview.isInterviewer(app.user) %}
