@@ -1,16 +1,12 @@
 /**
- * Depreciated
+ * Provides delete functionality to a table of entities using ajax.
+ * Use on a collection of buttons, each with an id equal to an entity id.
+ * Requires a route which deletes the entity with the specified id and returns a json response.
  */
-
 (function ($) {
-    $.fn.createablerow = function(route, options, data){
-        // Options and data are optional.
-        // An id given by the button id is always sent together
-        // with the rest of data's contents
 
-        if(!data){
-            var data = {};
-        }
+    // Route is required, options are optional
+    $.fn.deleteablerow = function (route, options) {
 
         // Default settings
         var settings = $.extend({
@@ -18,12 +14,12 @@
                 modal: null,
                 acceptButton: null,
                 cancelButton: null,
-                jsConfirmDialogMessage: 'Er du sikker på at du vil legge til denne raden?',
+                jsConfirmDialogMessage: 'Er du sikker på at du vil slette denne raden?',
                 disable: false
             }
         }, options);
 
-        // Check if custom modal dialogue is specified
+        // Checks if a custom Foundation modal dialog is specified
         var customModal = settings.confirmation.modal && settings.confirmation.acceptButton;
 
         // Holds the clicked button, with the entity id, for use with custom modal
@@ -34,7 +30,7 @@
             settings.confirmation.acceptButton.on("click", function (e) {
                 e.preventDefault();
                 settings.confirmation.modal.foundation('reveal', 'close');
-                requestCreate(button);
+                requestDelete(button);
                 button = null;
             });
             if (settings.confirmation.cancelButton) {
@@ -45,39 +41,39 @@
             }
         }
 
+        // Adds a callback to the selected buttons, each holding an id = an entity id
         this.on("click", function (e) {
             e.preventDefault();
+            // Open custom modal dialog
             if (customModal) {
                 button = this;
-                // Open custom modal dialog
                 settings.confirmation.modal.foundation('reveal', 'open');
-                if (settings.confirmation.message) {
-                    settings.confirmation.message.html("Vil du legge til " + this.getAttribute("name") + " som vikar?");
-                }
                 // Open default javascript confirmation dialog
             } else if (!settings.confirmation.disable) {
                 if (confirm(settings.confirmation.confirmMessage)) {
-                    requestCreate(this);
+                    requestDelete(this);
                 }
                 // Skip dialog
             } else {
-                requestCreate(this);
+                requestDelete(this);
             }
         });
 
         // Takes a button with an id = an entity id and performs an ajax request to the specified route to delete the entity
-        function requestCreate(button) {
-            $.extend(data,{ id: parseInt(button.id) });
+        function requestDelete(button) {
+            var row = $(button).closest('tr');
+            var entityId = parseInt(button.id);
+
             $.ajax({
                 type: 'POST',
-                url: Routing.generate(route, data),
+                url: Routing.generate(route, {id: entityId}),
                 cache: false,
                 success: function (response) {
-                    // Redirect to substitutes page if insert succeeded
+                    // Remove the row from the table if the entity was successfully deleted
                     if (response.success) {
-                        window.location.replace("vikar/" + response.department
-                            + "?semester=" + response.semester
-                            + "&newsub=" + response.subId);
+                        row.fadeOut('slow', function () {
+                            $(this).remove();
+                        });
                     } else {
                         alert(response.cause);
                     }
@@ -88,4 +84,5 @@
         // Return to enable function chaining
         return this;
     };
+
 }(jQuery));
