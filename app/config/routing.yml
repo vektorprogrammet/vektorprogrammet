@@ -954,7 +954,7 @@ interview_response:
 
 interview_cancel_by_response:
     path: /intervju/kanseller/{responseCode}
-    defaults: { _controller: AppBundle:Interview:cancelByReponseCode }
+    defaults: { _controller: AppBundle:Interview:cancelByResponseCode }
     methods: [POST]
     requirements:
       reponseCode: \w+

@@ -309,7 +309,7 @@ class InterviewController extends Controller
         ));
     }
 
-    public function cancelByReponseCodeAction(string $responseCode)
+    public function cancelByResponseCodeAction(string $responseCode)
     {
         $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
 
