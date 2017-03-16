@@ -93,34 +93,22 @@
                         <th></th>
                     {% endif %}
                 </tr>
-
                 </thead>
 
                 <tbody>
                     {% for sub in substitutes %}
                         <tr>
                             <td>{{ sub.user.firstName }}</td>
-
                             <td>{{ sub.user.lastName }}</td>
-
                             <td>{{ sub.user.phone }}</td>
-
                             <td>{{ sub.user.email }}</td>
-
                             <td>{{ sub.user.fieldOfStudy }}</td>
-
                             <td>{{ sub.yearOfStudy }}</td>
-
                             <td>{{ sub.english ? "Ja" : "Nei"}}</td>
-
                             <td>{{ sub.monday }}</td>
-
                             <td>{{ sub.tuesday }}</td>
-
                             <td>{{ sub.wednesday }}</td>
-
                             <td>{{ sub.thursday }}</td>
-
                             <td>{{ sub.friday }}</td>
                             {% if is_granted('ROLE_ADMIN') %}
                                 <td>
