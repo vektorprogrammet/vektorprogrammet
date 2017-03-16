@@ -12,6 +12,7 @@ use AppBundle\Entity\Application;
 use AppBundle\Form\Type\ScheduleInterviewType;
 use AppBundle\Form\Type\ApplicationInterviewType;
 use AppBundle\Form\Type\AssignInterviewType;
+use AppBundle\Type\InterviewAcceptedType;
 
 /**
  * InterviewController is the controller responsible for interview actions,
@@ -322,6 +323,8 @@ class InterviewController extends Controller
         $manager->persist($interview);
         $manager->flush();
 
+        $this->notifyInterviewer(InterviewAcceptedType::CANCELLED);
+
         $this->addFlash('success', 'Intervjuet ble kansellert.');
 
         return $this->redirectToRoute('home');
@@ -339,6 +342,8 @@ class InterviewController extends Controller
         $manager = $this->getDoctrine()->getManager();
         $manager->persist($interview);
         $manager->flush();
+
+        $this->notifyInterviewer(InterviewAcceptedType::ACCEPTED);
 
         $this->addFlash('success', 'Intervjuet ble akseptert.');
 
@@ -364,6 +369,8 @@ class InterviewController extends Controller
         $manager->persist($interview);
         $manager->flush();
 
+        $this->notifyInterviewer(InterviewAcceptedType::REQUEST_NEW_TIME);
+
         $this->addFlash('success', 'Forespørsel har blitt sendt.');
 
         return $this->redirectToRoute('home');
@@ -380,5 +387,10 @@ class InterviewController extends Controller
         return $this->render('interview/response.html.twig', array(
             'interview' => $interview,
         ));
+    }
+
+    private function notifyInterviewer(int $response)
+    {
+        /* TODO: Notify interviewers about accept/cancel/newtime */
     }
 }
