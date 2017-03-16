@@ -6,11 +6,6 @@
 
 {# Form themes user to modify the templates of the various form components #}
 {% form_theme form 'form/interview_layout.html.twig' %}
-{% form_theme form.applicationPractical.monday 'form/radio_grid_layout.html.twig' %}
-{% form_theme form.applicationPractical.tuesday 'form/radio_grid_layout.html.twig' %}
-{% form_theme form.applicationPractical.wednesday 'form/radio_grid_layout.html.twig' %}
-{% form_theme form.applicationPractical.thursday 'form/radio_grid_layout.html.twig' %}
-{% form_theme form.applicationPractical.friday 'form/radio_grid_layout.html.twig' %}
 
 {% block body %}
     <div class="row">
@@ -44,11 +39,7 @@
             <div class="row">
                 <div class="small-12 columns">
                     <label class="question-label">Hvilke dager passer IKKE for deg?</label>
-                    {{ form_row(form.applicationPractical.monday) }}
-                    {{ form_row(form.applicationPractical.tuesday) }}
-                    {{ form_row(form.applicationPractical.wednesday) }}
-                    {{ form_row(form.applicationPractical.thursday) }}
-                    {{ form_row(form.applicationPractical.friday) }}
+                    {{ form_widget(form.applicationPractical.days) }}
                 </div>
             </div>
 

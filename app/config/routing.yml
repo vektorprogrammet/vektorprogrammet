@@ -1004,13 +1004,6 @@ substitute_show:
    defaults: { _controller: AppBundle:Substitute:show }
    methods: [GET]
 
-substitute_show_by_department:
-  path: /kontrollpanel/vikar/avdeling/{department}
-  defaults: {_controller: AppBundle:Substitute:showByDepartment }
-  methods: [GET]
-  requirements:
-    department: \d+
-
 substitute_show_by_semester:
  path: /kontrollpanel/vikar/semester/{semester}
  defaults: { _controller: AppBundle:Substitute:showBySemester }

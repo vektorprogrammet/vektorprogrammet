@@ -44,21 +44,12 @@
 
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            <ul class="inline-list">
-                {# Department dropdown #}
-                {% include 'common/department_dropdown.html.twig' with {
-                'pathForDepartment': 'substitute_show_by_department',
-                'departmentParameterName': 'department',
-                'currentDepartment': semester.department
-                } %}
-
-                {# Semester dropdown #}
-                {% include 'common/semester_dropdown.html.twig' with {
-                'pathForSemester': 'substitute_show_by_semester',
-                'semesterParameterName': 'semester',
-                'currentSemester': semester
-                } %}
-            </ul>
+            {# Semester dropdown #}
+            {% include 'common/department_semester_dropdowns.html.twig' with {
+            'path': 'substitute_show_by_semester',
+            'parameterName': 'semester',
+            'currentSemester': semester
+            } %}
         </div>
     </div>
 
@@ -83,10 +74,7 @@
                     <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Torsdag"> T</span></th>
                     <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Fredag"> F</span></th>
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
-                        <th></th>
-                    {% endif %}
-                    {% if is_granted('ROLE_SUPER_ADMIN') %}
-                        <th></th>
+                        <th colspan="2"></th>
                     {% endif %}
                 </tr>
                 </thead>

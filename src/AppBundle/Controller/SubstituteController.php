@@ -18,27 +18,16 @@ class SubstituteController extends Controller
 {
     public function showAction()
     {
-        // No department specified, get the user's department and showByDepartment
+        // No department specified, get the user's department and call showBySemester with
+        // either current or latest semester for that department
         $department = $this->getUser()->getDepartment();
 
-        return $this->showByDepartmentAction($department);
-    }
-
-    public function showByDepartmentAction(Department $department)
-    {
-        // Department specified, get corresponding semester and showBySemester
-        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
-        if ($semester === null) {
-            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findLatestSemesterByDepartmentId($department);
-        }
-
-        return $this->showBySemesterAction($semester);
+        return $this->showBySemesterAction($department->getCurrentOrLatestSemester());
     }
 
     public function showBySemesterAction(Semester $semester)
     {
         $substitutes = $this->getDoctrine()->getRepository('AppBundle:Application')->findSubstitutesBySemester($semester);
-        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($semester->getDepartment());
 
         return $this->render('substitute/index.html.twig', array(
             'substitutes' => $substitutes,
