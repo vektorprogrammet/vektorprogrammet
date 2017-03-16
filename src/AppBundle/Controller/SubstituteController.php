@@ -18,26 +18,15 @@ class SubstituteController extends Controller
 {
     public function showAction()
     {
+        // No department specified, get the user's department and showByDepartment
         $department = $this->getUser()->getDepartment();
 
         return $this->showByDepartmentAction($department);
     }
 
-    public function showBySemesterAction(Semester $semester)
-    {
-        //$substitutes = $this->getDoctrine()->getRepository('AppBundle:Substitute')->findSubstitutesBySemester($semester);
-        $substitutes = $this->getDoctrine()->getRepository('AppBundle:Application')->findSubstitutesBySemester($semester);
-        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($semester->getDepartment());
-
-        return $this->render('substitute/index.html.twig', array(
-            'substitutes' => $substitutes,
-            'semesters' => $semesters,
-            'semester' => $semester,
-        ));
-    }
-
     public function showByDepartmentAction(Department $department)
     {
+        // Department specified, get corresponding semester and showBySemester
         $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
         if ($semester === null) {
             $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findLatestSemesterByDepartmentId($department);
@@ -46,25 +35,19 @@ class SubstituteController extends Controller
         return $this->showBySemesterAction($semester);
     }
 
+    public function showBySemesterAction(Semester $semester)
+    {
+        $substitutes = $this->getDoctrine()->getRepository('AppBundle:Application')->findSubstitutesBySemester($semester);
+        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($semester->getDepartment());
+
+        return $this->render('substitute/index.html.twig', array(
+            'substitutes' => $substitutes,
+            'semester' => $semester,
+        ));
+    }
+
     public function showModifyFormAction(Request $request, Application $application)
     {
-        /*
-        $form = $this->createFormBuilder($application)
-            ->add('english')
-            ->add('monday')
-            ->add('tuesday')
-            ->add('wednesday')
-            ->add('thursday')
-            ->add('friday')
-            ->getForm();
-        */
-
-        /*
-        $form = $this->createForm( new ModifySubstituteType(), $application, array(
-            'validation_groups' => array('interview'),
-        ));
-        */
-
         // Only substitutes should be modified with this form
         if (!$application->isSubstitute()) {
             throw new BadRequestHttpException();
@@ -104,6 +87,7 @@ class SubstituteController extends Controller
         $em->persist($application);
         $em->flush();
 
+        // Redirect to substitute page, set semester to that of the deleted substitute
         return $this->redirectToRoute('substitute_show_by_semester', array('semester' => $application->getSemester()->getId()));
     }
 
@@ -119,6 +103,7 @@ class SubstituteController extends Controller
         $em->persist($application);
         $em->flush();
 
+        // Redirect to substitute page, set semester to that of the newly added substitute
         return $this->redirectToRoute('substitute_show_by_semester', array('semester' => $application->getSemester()->getId()));
     }
 }

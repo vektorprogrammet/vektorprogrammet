@@ -81,8 +81,6 @@ security:
         - { path: ^/kontrollpanel/skoleadmin/historikk/slett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/intervju/skjema, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/intervju/fordel, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/vikar/rediger, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/vikar/slett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/undersokelse/slett, role: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/undersokelse/kopier, role: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/stillinger, roles: ROLE_SUPER_ADMIN }

@@ -45,23 +45,19 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
             <ul class="inline-list">
-            {% include 'common/department_dropdown.html.twig' with {'pathForDepartment': 'substitute_show_by_department', 'departmentParameterName': 'department', 'currentDepartment': semester.department} %}
+                {# Department dropdown #}
+                {% include 'common/department_dropdown.html.twig' with {
+                'pathForDepartment': 'substitute_show_by_department',
+                'departmentParameterName': 'department',
+                'currentDepartment': semester.department
+                } %}
 
-            <li>
-                <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown"
-                   aria-expanded="false">{% if semester != NULL %}{{ semester.name }}{% else %}Semester{% endif %} <i
-                            class="fa fa-caret-down"></i></a>
-                <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1"
-                    aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                    {% for s in semesters %}
-
-                        <li><a href="{{ path("substitute_show_by_semester", { semester: s.id }) }}"> {{ s.name }}</a>
-                        </li>
-
-                    {% endfor %}
-                </ul>
-            </li>
+                {# Semester dropdown #}
+                {% include 'common/semester_dropdown.html.twig' with {
+                'pathForSemester': 'substitute_show_by_semester',
+                'semesterParameterName': 'semester',
+                'currentSemester': semester
+                } %}
             </ul>
         </div>
     </div>
@@ -121,8 +117,6 @@
                                         </button>
                                     </form>
                                 </td>
-                            {% endif %}
-                            {% if is_granted('ROLE_SUPER_ADMIN') %}
                                 <td>
                                     <form method="POST"
                                           onsubmit="return confirm('Vil du virkelig fjerne vikarstillingen til {{ sub.user.firstName }} {{ sub.user.lastName }}?')"

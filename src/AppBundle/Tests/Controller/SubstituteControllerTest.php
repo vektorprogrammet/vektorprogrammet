@@ -32,12 +32,7 @@ class SubstituteControllerTest extends BaseWebTestCase
     public function testShow()
     {
         // Team leader
-        $client = self::createTeamLeaderClient();
-
-        $crawler = $client->request('GET', '/kontrollpanel/vikar');
-
-        // Assert that the page response status code is 200
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->teamLeaderGoTo('/kontrollpanel/vikar');
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Vikarer")')->count());
@@ -49,12 +44,7 @@ class SubstituteControllerTest extends BaseWebTestCase
         $this->assertEquals(1, $crawler->filter('button:contains("Rediger")')->count());
 
         // Team member
-        $client = self::createTeamMemberClient();
-
-        $crawler = $client->request('GET', '/kontrollpanel/vikar');
-
-        // Assert that the page response status code is 200
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->teamMemberGoTo('/kontrollpanel/vikar');
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Vikarer")')->count());
@@ -69,12 +59,7 @@ class SubstituteControllerTest extends BaseWebTestCase
     public function testShowSubstitutesByDepartment()
     {
         // Team leader
-        $client = self::createTeamLeaderClient();
-
-        $crawler = $client->request('GET', '/kontrollpanel/vikar/semester/2');
-
-        // Assert that the page response status code is 200
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->teamLeaderGoTo('/kontrollpanel/vikar/semester/2');
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Vikarer")')->count());
@@ -86,12 +71,7 @@ class SubstituteControllerTest extends BaseWebTestCase
         $this->assertEquals(1, $crawler->filter('button:contains("Rediger")')->count());
 
         // Team member
-        $client = self::createTeamMemberClient();
-
-        $crawler = $client->request('GET', '/kontrollpanel/vikar/semester/2');
-
-        // Assert that the page response status code is 200
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->teamMemberGoTo('/kontrollpanel/vikar/semester/2');
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Vikarer")')->count());
