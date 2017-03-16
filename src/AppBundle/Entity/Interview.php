@@ -356,6 +356,8 @@ class Interview
                 return 'Akseptert';
             case InterviewAcceptedType::REQUEST_NEW_TIME:
                 return 'Ny tid ønskes';
+            case InterviewAcceptedType::CANCELLED:
+                return 'Kansellert';
             default:
                 return 'Ingen svar';
         }
