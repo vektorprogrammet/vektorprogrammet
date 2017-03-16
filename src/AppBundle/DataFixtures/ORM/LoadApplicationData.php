@@ -67,8 +67,6 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $interview3->setInterviewer($this->getReference('user-2'));
         $interview3->setInterviewSchema($this->getReference('ischema-1'));
         $interview3->setUser($this->getReference('user-12'));
-        $interview3->setResponseCode('code');
-        $interview3->setScheduled(new \DateTime('+2 days'));
         $application3->setInterview($interview3);
 
         // Create answer objects for all the questions in the schema
@@ -156,6 +154,8 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $interview5->setInterviewer($this->getReference('user-2'));
         $interview5->setInterviewSchema($this->getReference('ischema-1'));
         $interview5->setUser($this->getReference('user-14'));
+        $interview5->setResponseCode('code');
+        $interview5->setScheduled(new \DateTime('+2 days'));
         $application5->setInterview($interview5);
 
         $manager->persist($application5);
