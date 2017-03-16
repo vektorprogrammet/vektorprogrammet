@@ -2,21 +2,42 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\BaseWebTestCase;
 
-class AdmissionControllerTest extends WebTestCase
+class AdmissionControllerTest extends BaseWebTestCase
 {
     public function testShow()
     {
+        $clientAssistant = self::createAssistantClient();
+
+        $crawlerNTNU = $clientAssistant->request('GET', '/opptak/NTNU');
+        $this->assertTrue($clientAssistant->getResponse()->isSuccessful());
+
+        $this->assertEquals(200, $clientAssistant->getResponse()->getStatusCode());
+
+        $this->assertEquals(1, $crawlerNTNU->filter('h4:contains("Følgende team har opptak")')->count());
+        $this->assertEquals(1, $crawlerNTNU->filter('h1:contains("Søk Vektorprogrammet ved NTNU")')->count());
+        $this->assertEquals(1, $crawlerNTNU->filter('button:contains("Søk nå!")')->count());
+
+        $crawlerNMBU = $clientAssistant->request('GET', '/opptak/NMBU');
+        $this->assertTrue($clientAssistant->getResponse()->isSuccessful());
+
+        $this->assertEquals(200, $clientAssistant->getResponse()->getStatusCode());
+
+        $this->assertEquals(1, $crawlerNMBU->filter('h4:contains("Avdelingen NMBU har ikke aktiv søkeperiode")')->count());
+
+        \TestDataManager::restoreDatabase();
     }
 
     public function testCreateWantNewsletterApplication()
     {
-        $applicationsBefore = $this->countRows();
+        $path = '/kontrollpanel/nyhetsbrev/4';
+
+        $applicationsBefore = $this->countTableRows($path);
 
         $this->createAndSubmitForm('Love newsletters Peter', true);
 
-        $applicationsAfter = $this->countRows();
+        $applicationsAfter = $this->countTableRows($path);
 
         $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
         \TestDataManager::restoreDatabase();
@@ -24,32 +45,44 @@ class AdmissionControllerTest extends WebTestCase
 
     public function testCreateNotWantNewsletterApplication()
     {
-        $applicationsBefore = $this->countRows();
+        $path = '/kontrollpanel/nyhetsbrev/4';
+
+        $applicationsBefore = $this->countTableRows($path);
 
         $this->createAndSubmitForm('No newsletter Johnson', false);
 
-        $applicationsAfter = $this->countRows();
+        $applicationsAfter = $this->countTableRows($path);
 
         $this->assertEquals($applicationsBefore, $applicationsAfter);
         \TestDataManager::restoreDatabase();
     }
 
-    /**
-     * @return int
-     */
-    private function countRows():int
+    public function testCreateWantTeamInterest()
     {
-        // Admin
-        $clientAdmin = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $path = '/kontrollpanel/opptakadmin/teaminteresse/2';
 
-        // Go to AdmissionTestList
-        $crawler = $clientAdmin->request('GET', '/kontrollpanel/nyhetsbrev/4');
-        $this->assertTrue($clientAdmin->getResponse()->isSuccessful());
+        $applicationsBefore = $this->countTableRows($path);
 
-        return $crawler->filter('tr')->count();
+        $this->createAndSubmitForm_teamInterest(true);
+
+        $applicationsAfter = $this->countTableRows($path);
+
+        $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
+        \TestDataManager::restoreDatabase();
+    }
+
+    public function testCreateNotWantTeamInterest()
+    {
+        $path = '/kontrollpanel/opptakadmin/teaminteresse/2';
+
+        $applicationsBefore = $this->countTableRows($path);
+
+        $this->createAndSubmitForm_teamInterest(false);
+
+        $applicationsAfter = $this->countTableRows($path);
+
+        $this->assertEquals($applicationsBefore, $applicationsAfter);
+        \TestDataManager::restoreDatabase();
     }
 
     /**
@@ -74,6 +107,36 @@ class AdmissionControllerTest extends WebTestCase
         $form['application[user][gender]'] = 0;
         $form['application[yearOfStudy]'] = 4;
         $form['application[wantsNewsletter]'] = $wantsNewsletter;
+
+        $clientAnonymous->submit($form);
+    }
+
+    /**
+     * @param bool $teamInterest
+     */
+    private function createAndSubmitForm_teamInterest(bool $teamInterest)
+    {
+        $clientAnonymous = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'assistent',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $clientAnonymous->request('GET', '/opptak/eksisterende');
+        $this->assertTrue($clientAnonymous->getResponse()->isSuccessful());
+
+        $submitButton = $crawler->selectButton('Søk');
+        $form = $submitButton->form();
+
+        $form['application[yearOfStudy]'] = 3;
+        $form['application[applicationPractical][monday]'] = 'Bra';
+        $form['application[applicationPractical][tuesday]'] = 'Ikke';
+        $form['application[applicationPractical][wednesday]'] = 'Bra';
+        $form['application[applicationPractical][thursday]'] = 'Ikke';
+        $form['application[applicationPractical][friday]'] = 'Bra';
+        $form['application[applicationPractical][doublePosition]'] = 0;
+        $form['application[applicationPractical][preferredGroup]'] = 'Bolk 1';
+        $form['application[applicationPractical][english]'] = 1;
+        $form['application[applicationPractical][teamInterest]'] = $teamInterest;
 
         $clientAnonymous->submit($form);
     }

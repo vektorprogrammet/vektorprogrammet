@@ -526,6 +526,13 @@ register_applicant:
  defaults: {_controller: AppBundle:AdmissionAdmin:createApplication}
  methods: [GET, POST]
 
+admissionadmin_team_interest:
+ path: /kontrollpanel/opptakadmin/teaminteresse/{semester}
+ defaults: {_controller: AppBundle:AdmissionAdmin:showTeamInterest}
+ methods: [GET]
+ requirements:
+  semester: \d+
+
 ##########################################
 #              UserAdmin                 #
 ##########################################

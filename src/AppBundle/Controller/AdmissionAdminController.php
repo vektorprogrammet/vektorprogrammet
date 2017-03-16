@@ -221,4 +221,21 @@ class AdmissionAdminController extends Controller
             'application' => $application,
         ));
     }
+
+    public function showTeamInterestAction(Semester $semester)
+    {
+        $user = $this->getUser();
+        $department = $semester->getDepartment();
+
+        if ($user->getDepartment() !== $department) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $teamInterest = $this->getDoctrine()->getRepository('AppBundle:Application')->findApplicationByTeamInterestAndSemester($semester);
+
+        return $this->render('admission_admin/teamInterest.html.twig', array(
+            'teamInterest' => $teamInterest,
+            'semester' => $semester,
+        ));
+    }
 }
