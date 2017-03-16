@@ -4,32 +4,35 @@
 {% endblock %}
 
 {% block body %}
-  <div class="row">
-    <div class="small-12 columns text-center">
+    <div class="row">
+        <div class="small-12 columns text-center">
 
-      <p>{{ interview.user }}</p>
-      <p>Intervju tid: {{ interview.scheduled | date("d.m.Y H:i") }}</p>
-      <p>Hei! Du har blitt innkalt til intervju med Vektorprogrammet. For å akseptere, vennligst trykk på:</p>
+            <p>{{ interview.user }}</p>
+            <p>Intervju tid: {{ interview.scheduled | date("d.m.Y H:i") }}</p>
+            <p>Hei! Du har blitt innkalt til intervju med Vektorprogrammet. For å akseptere, vennligst trykk på:</p>
 
-      <form method="POST"
-            action="{{ path('interview_accept_by_response', {responseCode:interview.responseCode}) }}">
-            <button class="success button">Godta</button>
-      </form>
+            <form method="POST"
+                  action="{{ path('interview_accept_by_response', {responseCode:interview.responseCode}) }}">
+                <button class="success button">Godta</button>
+            </form>
 
-      <p><small class="text-bold">Hvis det ikke passer, eller hvis du ønsker å kansellere intervjuet, trykk på:</small></p>
-      <form method="POST">
-	<button class="tiny warning button">Be om ny tid</button>
-      </form>
+            <p>
+                <small class="text-bold">Hvis det ikke passer, eller hvis du ønsker å kansellere intervjuet, trykk på:
+                </small>
+            </p>
+            <form method="POST">
+                <button class="tiny warning button">Be om ny tid</button>
+            </form>
 
-      </br>
+            </br>
 
-      <form method="POST"
-	    action="{{ path('interview_cancel_by_response', {responseCode:interview.responseCode}) }}"
-	    onsubmit="return confirm('Er du sikker på at du vil kansellere intervjuet?')">
-	    <button class="tiny alert button">Kanseller</button>
-      </form>
+            <form method="POST"
+                  action="{{ path('interview_cancel_by_response', {responseCode:interview.responseCode}) }}"
+                  onsubmit="return confirm('Er du sikker på at du vil kansellere intervjuet?')">
+                <button class="tiny alert button">Kanseller</button>
+            </form>
+        </div>
     </div>
-  </div>
 {% endblock %}
 
 {% block footer %}
