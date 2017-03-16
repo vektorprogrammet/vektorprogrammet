@@ -345,6 +345,30 @@ class InterviewController extends Controller
         return $this->redirectToRoute('home');
     }
 
+    /**
+     * @param string $responseCode
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function requestNewTimeAction(string $responseCode)
+    {
+        $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
+
+        if ($interview === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $interview->requestNewTime();
+
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($interview);
+        $manager->flush();
+
+        $this->addFlash('success', 'Forespørsel har blitt sendt.');
+
+        return $this->redirectToRoute('home');
+    }
+
     public function respondAction(string $responseCode)
     {
         $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
