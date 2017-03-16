@@ -110,7 +110,7 @@
                             <td>{{ sub.wednesday }}</td>
                             <td>{{ sub.thursday }}</td>
                             <td>{{ sub.friday }}</td>
-                            {% if is_granted('ROLE_ADMIN') %}
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
                                 <td>
                                     <form method="POST"
                                           action="{{ path('substitute_modify', { id: sub.id }) }}">
@@ -122,7 +122,7 @@
                                     </form>
                                 </td>
                             {% endif %}
-                            {% if is_granted('ROLE_ADMIN') %}
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
                                 <td>
                                     <form method="POST"
                                           onsubmit="return confirm('Vil du virkelig fjerne vikarstillingen til {{ sub.user.firstName }} {{ sub.user.lastName }}?')"

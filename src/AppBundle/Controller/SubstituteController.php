@@ -85,7 +85,7 @@ class SubstituteController extends Controller
 
             // Need some form of redirect. Will cause wrong database entries if the form is rendered again
             // after a valid submit, without remaking the form with up to date question objects from the database.
-            return $this->redirect($this->generateUrl('substitute_show', array(
+            return $this->redirect($this->generateUrl('substitute_show_by_semester', array(
                 'semester' => $application->getSemester()->getId(),
             )));
         }
