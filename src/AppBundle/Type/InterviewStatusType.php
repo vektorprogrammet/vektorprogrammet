@@ -2,7 +2,7 @@
 
 namespace AppBundle\Type;
 
-abstract class InterviewAcceptedType
+abstract class InterviewStatusType
 {
     const PENDING = 0;
     const ACCEPTED = 1;

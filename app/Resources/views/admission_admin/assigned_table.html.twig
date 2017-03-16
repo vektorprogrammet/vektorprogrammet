@@ -38,8 +38,8 @@
 
             <td>{{ a.interview.interviewer }}</td>
 
-            <td style="color:  {{ a.interview.getInterviewAcceptedAsColor() }}">
-                {{ a.interview.getInterviewAcceptedAsString() }}
+            <td style="color: {{ a.interview.getInterviewStatusAsColor() }}">
+                {{ a.interview.getInterviewStatusAsString() }}
             </td>
 
             {# Add the buttons to book(send email) and conduct an interview, given the correct permissions #}

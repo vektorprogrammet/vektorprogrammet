@@ -2,7 +2,7 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Type\InterviewAcceptedType;
+use AppBundle\Type\InterviewStatusType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -65,7 +65,7 @@ class Interview
      *
      * @var int
      */
-    private $interviewAccepted;
+    private $interviewStatus;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
@@ -92,7 +92,7 @@ class Interview
         $this->interviewAnswers = new ArrayCollection();
         $this->conducted = new \DateTime();
         $this->interviewed = false;
-        $this->interviewAccepted = InterviewAcceptedType::PENDING;
+        $this->interviewStatus = InterviewStatusType::PENDING;
     }
 
     /**
@@ -347,16 +347,16 @@ class Interview
     /**
      * @return string
      */
-    public function getInterviewAcceptedAsString(): string
+    public function getInterviewStatusAsString(): string
     {
-        switch ($this->interviewAccepted) {
-            case InterviewAcceptedType::PENDING:
+        switch ($this->interviewStatus) {
+            case InterviewStatusType::PENDING:
                 return 'Ingen svar';
-            case InterviewAcceptedType::ACCEPTED:
+            case InterviewStatusType::ACCEPTED:
                 return 'Akseptert';
-            case InterviewAcceptedType::REQUEST_NEW_TIME:
+            case InterviewStatusType::REQUEST_NEW_TIME:
                 return 'Ny tid ønskes';
-            case InterviewAcceptedType::CANCELLED:
+            case InterviewStatusType::CANCELLED:
                 return 'Kansellert';
             default:
                 return 'Ingen svar';
@@ -366,16 +366,16 @@ class Interview
     /**
      * @return string
      */
-    public function getInterviewAcceptedAsColor(): string
+    public function getInterviewStatusAsColor(): string
     {
-        switch ($this->interviewAccepted) {
-            case InterviewAcceptedType::PENDING:
+        switch ($this->interviewStatus) {
+            case InterviewStatusType::PENDING:
                 return '#000000';
-            case InterviewAcceptedType::ACCEPTED:
+            case InterviewStatusType::ACCEPTED:
                 return '#32CD32';
-            case InterviewAcceptedType::REQUEST_NEW_TIME:
+            case InterviewStatusType::REQUEST_NEW_TIME:
                 return '#F08A24';
-            case InterviewAcceptedType::CANCELLED:
+            case InterviewStatusType::CANCELLED:
                 return '#f40f0f';
             default:
                 return '#000000';
@@ -387,30 +387,30 @@ class Interview
      */
     public function isPending(): bool
     {
-        return $this->interviewAccepted === InterviewAcceptedType::PENDING;
+        return $this->interviewStatus === InterviewStatusType::PENDING;
     }
 
     /**
-     * @param int $interviewAccepted
+     * @param int $interviewStatus
      */
-    public function setInterviewAccepted(int $interviewAccepted)
+    public function setInterviewStatus(int $interviewStatus)
     {
-        $this->interviewAccepted = $interviewAccepted;
+        $this->interviewStatus = $interviewStatus;
     }
 
     public function acceptInterview()
     {
-        $this->setInterviewAccepted(InterviewAcceptedType::ACCEPTED);
+        $this->setInterviewStatus(InterviewStatusType::ACCEPTED);
     }
 
     public function requestNewTime()
     {
-        $this->setInterviewAccepted(InterviewAcceptedType::REQUEST_NEW_TIME);
+        $this->setInterviewStatus(InterviewStatusType::REQUEST_NEW_TIME);
     }
 
     public function cancel()
     {
-        $this->setInterviewAccepted(InterviewAcceptedType::CANCELLED);
+        $this->setInterviewStatus(InterviewStatusType::CANCELLED);
     }
 
     /**
@@ -418,7 +418,7 @@ class Interview
      */
     public function isCancelled()
     {
-        return $this->interviewAccepted === InterviewAcceptedType::CANCELLED;
+        return $this->interviewStatus === InterviewStatusType::CANCELLED;
     }
 
     /**

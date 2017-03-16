@@ -12,7 +12,7 @@ use AppBundle\Entity\Application;
 use AppBundle\Form\Type\ScheduleInterviewType;
 use AppBundle\Form\Type\ApplicationInterviewType;
 use AppBundle\Form\Type\AssignInterviewType;
-use AppBundle\Type\InterviewAcceptedType;
+use AppBundle\Type\InterviewStatusType;
 
 /**
  * InterviewController is the controller responsible for interview actions,
@@ -328,7 +328,7 @@ class InterviewController extends Controller
         $manager->persist($interview);
         $manager->flush();
 
-        $this->notifyInterviewer(InterviewAcceptedType::CANCELLED);
+        $this->notifyInterviewer(InterviewStatusType::CANCELLED);
 
         $this->addFlash('success', 'Intervjuet ble kansellert.');
 
@@ -353,7 +353,7 @@ class InterviewController extends Controller
         $manager->persist($interview);
         $manager->flush();
 
-        $this->notifyInterviewer(InterviewAcceptedType::ACCEPTED);
+        $this->notifyInterviewer(InterviewStatusType::ACCEPTED);
 
         $this->addFlash('success', 'Intervjuet ble akseptert.');
 
@@ -379,7 +379,7 @@ class InterviewController extends Controller
         $manager->persist($interview);
         $manager->flush();
 
-        $this->notifyInterviewer(InterviewAcceptedType::REQUEST_NEW_TIME);
+        $this->notifyInterviewer(InterviewStatusType::REQUEST_NEW_TIME);
 
         $this->addFlash('success', 'Forespørsel har blitt sendt.');
 
