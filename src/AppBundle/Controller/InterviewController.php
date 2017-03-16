@@ -310,6 +310,11 @@ class InterviewController extends Controller
         ));
     }
 
+    /**
+     * @param string $responseCode
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function cancelByResponseCodeAction(string $responseCode)
     {
         $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
@@ -330,6 +335,11 @@ class InterviewController extends Controller
         return $this->redirectToRoute('home');
     }
 
+    /**
+     * @param string $responseCode
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function acceptByResponseCodeAction(string $responseCode)
     {
         $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
@@ -376,6 +386,11 @@ class InterviewController extends Controller
         return $this->redirectToRoute('home');
     }
 
+    /**
+     * @param string $responseCode
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function respondAction(string $responseCode)
     {
         $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
@@ -389,6 +404,9 @@ class InterviewController extends Controller
         ));
     }
 
+    /**
+     * @param int $response
+     */
     private function notifyInterviewer(int $response)
     {
         /* TODO: Notify interviewers about accept/cancel/newtime */
