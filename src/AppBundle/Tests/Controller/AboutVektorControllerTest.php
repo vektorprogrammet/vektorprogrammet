@@ -8,7 +8,7 @@ class AboutVektorControllerTest extends BaseWebTestCase
 {
     public function testShow()
     {
-        $crawler = $this->anonymousGoTo('/omvektor');
+        $crawler = $this->goTo('/omvektor');
 
         $this->assertEquals(1, $crawler->filter('h1:contains("Om Vektorprogrammet")')->count());
         $this->assertEquals(1, $crawler->filter('h1:contains("Mål og verdier")')->count());
@@ -21,7 +21,7 @@ class AboutVektorControllerTest extends BaseWebTestCase
 
     public function testShowFaq()
     {
-        $crawler = $this->anonymousGoTo('/faq');
+        $crawler = $this->goTo('/faq');
 
         $this->assertEquals(1, $crawler->filter('h1:contains("Ofte stilte spørsmål")')->count());
     }
