@@ -20,7 +20,8 @@
                 <small class="text-bold">Hvis det ikke passer, eller hvis du ønsker å kansellere intervjuet, trykk på:
                 </small>
             </p>
-            <form method="POST">
+            <form method="POST"
+                  action="{{ path('interview_request_new_time_by_response', {responseCode:interview.responseCode}) }}">
                 <button class="tiny warning button">Be om ny tid</button>
             </form>
 
