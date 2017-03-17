@@ -588,17 +588,17 @@ receipts_edit:
   requirements:
     receipt: \d+
 
-receipt_create:
-  path: /utlegg
-  defaults: {_controller: AppBundle:Receipt:create }
-  methods: [GET, POST]
-
 receipts_show_individual:
   path: /kontrollpanel/utlegg/{receipt}
   defaults: {_controller: AppBundle:Receipt:showIndividual }
   methods: [GET]
   requirements:
     receipt: \d+
+
+receipt_create:
+  path: /utlegg
+  defaults: {_controller: AppBundle:Receipt:create }
+  methods: [GET, POST]
 
 ##########################################
 #              Semester                  #
