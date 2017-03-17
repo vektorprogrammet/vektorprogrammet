@@ -23,6 +23,13 @@
                     <td>{{ a.user.email }}</td>
                     <td>{{ a.school }}</td>
                     <td>{{ a.user.fieldOfStudy }}</td>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <td>
+                            <a href="{{ path('profile_certificate', { 'id': a.user.id }) }}" class="button tiny">
+                                <i class="fa fa-pencil-square-o"></i> Last ned
+                            </a>
+                        </td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
                 </tbody>
