@@ -88,10 +88,7 @@ class SubstituteControllerTest extends BaseWebTestCase
         // Team leader
         $client = self::createTeamLeaderClient();
 
-        $crawler = $client->request('GET', '/kontrollpanel/vikar/rediger/4');
-
-        // Assert that the page response status code is 200
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->goTo('/kontrollpanel/vikar/rediger/4', $client);
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Rediger vikar")')->count());
