@@ -44,7 +44,7 @@ class SemesterControllerTest extends WebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/kontrollpanel/semesteradmin/avdeling/opprett/%7Bid%5D%7D?id=1');
+        $crawler = $client->request('GET', '/kontrollpanel/semesteradmin/avdeling/opprett/1');
 
         // Assert that we have the correct amount of data
         $this->assertEquals(1, $crawler->filter('h1:contains("Opprett semester")')->count());

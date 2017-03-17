@@ -60,14 +60,9 @@ class InterviewController extends Controller
                 $em->flush();
 
                 $this->get('event_dispatcher')->dispatch(InterviewConductedEvent::NAME, new InterviewConductedEvent($application));
+            }
 
-                return $this->redirectToRoute('admissionadmin_show', array('status' => 'interviewed'));
-            }
-            if ($isNewInterview) {
-                return $this->redirectToRoute('admissionadmin_show', array('status' => 'assigned'));
-            } else {
-                return $this->redirectToRoute('admissionadmin_show', array('status' => 'interviewed'));
-            }
+            return $this->redirectToRoute('applications_show_interviewed_by_semester', array('id' => $application->getSemester()->getId()));
         }
 
         return $this->render('interview/conduct.html.twig', array(
@@ -88,7 +83,7 @@ class InterviewController extends Controller
         $manager->persist($interview);
         $manager->flush();
 
-        return $this->redirectToRoute('admissionadmin_show', array('status' => 'assigned'));
+        return $this->redirectToRoute('applications_show_assigned');
     }
 
     /**
@@ -212,7 +207,7 @@ class InterviewController extends Controller
                 $this->get('app.interview.manager')->sendScheduleEmail($interview, $data);
             }
 
-            return $this->redirect($this->generateUrl('admissionadmin_show', array('status' => 'assigned')));
+            return $this->redirect($this->generateUrl('applications_show_assigned_by_semester', array('id' => $application->getSemester()->getId())));
         }
 
         return $this->render('interview/schedule.html.twig', array(

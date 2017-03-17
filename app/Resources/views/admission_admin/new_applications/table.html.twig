@@ -1,0 +1,56 @@
+<form id="bulk" name="application">
+    <table width="100%" id="application-table">
+        <thead>
+        <tr>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <th><input type="checkbox" id="bulkAllCheck"></th>
+            {% endif %}
+            {# data-sort is used to sort the tables with stupidtable.js #}
+            <th data-sort="string">Fornavn</th>
+            <th data-sort="string">Etternavn</th>
+            <th data-sort="int">Tlf</th>
+            <th data-sort="string">E-post</th>
+            <th data-sort="string">Linje</th>
+            <th data-sort="int">År</th>
+            <th colspan="3"></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for application in applications %}
+            <tr id="{{ application.id }}">
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ application.id }}">
+                    </td>
+                {% endif %}
+                <td>
+                    <a href="{{ path('specific_profile', {id: application.user.id}) }}">{{ application.user.firstName }}</a>
+                </td>
+                <td>{{ application.user.lastName }}</td>
+                <td>{{ application.user.phone }}</td>
+                <td>{{ application.user.email }}</td>
+                <td>{{ application.user.fieldOfStudy }}</td>
+                <td>{{ application.yearOfStudy }}</td>
+
+                {# Add the assign interview button, given the correct permissions #}
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <td>
+                        <a href="#" class="assign button tiny{{ application.interview is null ? '' : ' success' }}">
+                            <i class="fa fa-share-alt"></i> Fordel
+                        </a>
+                    </td>
+                {% endif %}
+
+                {# Add the delete application button, given the correct permissions #}
+                {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                    <td>
+                        <a href="#" class="button tiny alert deleteApplication" id="{{ application.id }}">
+                            <i class="fa fa-trash"></i> Slett
+                        </a>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</form>

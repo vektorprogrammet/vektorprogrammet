@@ -1,84 +1,20 @@
 {% extends 'admission_admin/layout.html.twig' %}
-{% block applicantsSettings %}
-    <div class="small-4 columns" style="width:445px;">
-        <div class="row">
-            <div class="small-9 columns">
-                <p style="text-align: center;">Semester: {{ semesterName }}</p>
-            </div>
-        </div>
-    </div>
-{% endblock %}
 {% block applications %}
-    {% if interviewDistribution|length > 0 %}
-        <h3>Intervjufordeling</h3>
-        <table>
-            <thead>
-            <tr class="text-center">
-                <th>Navn</th>
-                <th class="text-center">Intervjuer igjen</th>
-                <th class="text-center">Totalt antall intervjuer</th>
-            </tr>
-            </thead>
 
-            <tbody>
-            {% for interviewer in interviewDistribution|keys %}
-                <tr>
-                    <td>{{ interviewer }}</td>
-                    <td class="text-center">{{ interviewDistributionLeft[interviewer] }}</td>
-                    <td class="text-center">{{ interviewDistribution[interviewer] }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        <hr>
-    {% endif %}
-    {% if yourApplicants is defined and yourApplicants|length > 0 %}
-        <h5 class="">Dine Intervjuer | Antall: {{ yourApplicants|length }}</h5>
-        {% include 'admission_admin/assigned_table.html.twig' with {'applicants': yourApplicants} %}
-        <hr>
-    {% endif %}
-    <div class="row">
-        <div class="small-12 columns">
-            <div id="allApplicantsList" class="slide-group">
-                {% if applicants is defined %}
-                    {% if applicants|length %}
-                        <h5 class="">Alle intervujer | Antall: {{ applicants|length }}</h5>
-                    {% endif %}
-                    {% include 'admission_admin/assigned_table.html.twig' with {'applicants': applicants} %}
-                {% endif %}
-            </div>
-            <button id="allApplicantsButton" class="button tiny default radius">Vis alle intervjuer
-                ({{ applicants|length }})
-                <i class="fa fa-caret-down"></i></button>
-
-        </div>
-    </div>
-
+    {% include 'admission_admin/assigned_applications/interview_distribution.html.twig' %}
+    {% include 'admission_admin/assigned_applications/logged_in_user_interview_table.html.twig' %}
+    {% include 'admission_admin/assigned_applications/all_interviews_table.html.twig' %}
     <br>
-
-    <div class="row">
-        <div class="small-12 columns">
-            <div id="cancelledApplicantsList" class="slide-group">
-                {% if cancelledApplicants is defined %}
-                    {% if cancelledApplicants|length %}
-                        <h5 class="">Kansellerte intervujer | Antall: {{ cancelledApplicants|length }}</h5>
-                    {% endif %}
-                    {% include 'admission_admin/assigned_table.html.twig' with {'applicants': cancelledApplicants} %}
-                {% endif %}
-            </div>
-            <button id="cancelledApplicantsButton" class="button tiny alert radius">Vis kansellerte intervjuer
-                ({{ cancelledApplicants|length }}) <i class="fa fa-caret-down"></i></button>
-        </div>
-    </div>
+    {% include 'admission_admin/assigned_applications/cancelled_interviews_table.html.twig' %}
     <br>
 {% endblock %}
 
-{% block customScripts %}
+{% block javascripts %}
     <script>
         function setSliders(listId, buttonId) {
             var $list = $('#' + listId);
             var $button = $('#' + buttonId);
-            $list.attr('expanded', 'false')
+            $list.attr('expanded', 'false');
             $button.on('click', function () {
                 $list.slideToggle(400);
                 if ($list.attr('expanded') == 'false') {
@@ -91,6 +27,6 @@
             });
         }
         setSliders('allApplicantsList', 'allApplicantsButton');
-        setSliders('cancelledApplicantsList', 'cancelledApplicantsButton');
+        setSliders('cancelledApplicationsList', 'cancelledApplicationsButton');
     </script>
 {% endblock %}
