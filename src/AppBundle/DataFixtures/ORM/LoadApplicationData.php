@@ -19,6 +19,11 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application0->setPreviousParticipation(false);
         $application0->setYearOfStudy(1);
         $application0->setSemester($this->getReference('semester-current'));
+        $application0->setMonday('Ikke');
+        $application0->setTuesday('Ikke');
+        $application0->setWednesday('Ikke');
+        $application0->setThursday('Ikke');
+        $application0->setFriday('Bra');
 
         $manager->persist($application0);
 
@@ -26,10 +31,10 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application1->setUser($this->getReference('user-10'));
         $application1->setPreviousParticipation(true);
         $application1->setYearOfStudy(1);
-        $application1->setSemester($this->getReference('semester-current'));
+        $application1->setSemester($this->getReference('semester-5'));
         $application1->setMonday('Bra');
-        $application1->setTuesday('Bra');
-        $application1->setWednesday('Ikke');
+        $application1->setTuesday('Ikke');
+        $application1->setWednesday('Bra');
         $application1->setThursday('Ikke');
         $application1->setFriday('Bra');
 
@@ -39,7 +44,12 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application2->setUser($this->getReference('user-11'));
         $application2->setPreviousParticipation(false);
         $application2->setYearOfStudy(1);
-        $application2->setSemester($this->getReference('semester-current'));
+        $application2->setSemester($this->getReference('semester-1'));
+        $application2->setMonday('Bra');
+        $application2->setTuesday('Bra');
+        $application2->setWednesday('Ikke');
+        $application2->setThursday('Ikke');
+        $application2->setFriday('Bra');
 
         $manager->persist($application2);
 
@@ -162,6 +172,10 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application6->setInterview($interview6);
 
         $manager->persist($application6);
+
+        $this->setReference('application-0', $application0);
+        $this->setReference('application-1', $application1);
+        $this->setReference('application-2', $application2);
 
         $manager->flush();
     }

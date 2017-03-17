@@ -1004,31 +1004,33 @@ substitute_show:
    defaults: { _controller: AppBundle:Substitute:show }
    methods: [GET]
 
-substitute_show_by_department:
-   path: /kontrollpanel/vikar/{id}
-   defaults: { _controller: AppBundle:Substitute:showSubstitutesByDepartment }
-   methods: [GET]
-   requirements:
-      id: \d+
-
-substitute_edit:
-   path: /kontrollpanel/vikar/rediger/{id}
-   defaults: { _controller: AppBundle:Substitute:edit }
-   methods: [GET, POST]
-
-substitute_create:
-   path: /kontrollpanel/vikar/opprett/{id}
-   defaults: { _controller: AppBundle:Substitute:create }
-   methods: [GET, POST]
-   options:
-      expose: true
+substitute_show_by_semester:
+ path: /kontrollpanel/vikar/semester/{semester}
+ defaults: { _controller: AppBundle:Substitute:showBySemester }
+ methods: [GET]
+ requirements:
+  semester: \d+
 
 substitute_delete:
-   path: /kontrollpanel/vikar/slett/{id}
-   defaults: { _controller: AppBundle:Substitute:delete }
-   methods: [POST]
-   options:
-      expose: true
+ path: /kontrollpanel/vikar/slett/{id}
+ defaults: {_controller: AppBundle:Substitute:deleteSubstituteById }
+ methods: [GET,POST]
+ requirements:
+    id: \d+
+
+substitute_create_from_application:
+  path: /kontrollpanel/vikar/opprett/{id}
+  defaults: {_controller: AppBundle:Substitute:createSubstituteFromApplication }
+  methods: [POST]
+  requirements:
+    id: \d+
+
+substitute_modify:
+  path: /kontrollpanel/vikar/rediger/{id}
+  defaults: {_controller: AppBundle:Substitute:showModifyForm }
+  methods: [GET,POST]
+  requirements:
+    id: \d+
 
 ##########################################
 #                Certificate              #
@@ -1056,7 +1058,7 @@ certificate_request:
 
 certificate_signature_picture_upload:
   path: /kontrollpanel/attest/signatur
-  defaults: {_controller: AppBundle:Signature:show}
+  defaults: {_controller: AppBundle:Signature:show }
   methods: [GET, POST]
 
 signature_image_show:

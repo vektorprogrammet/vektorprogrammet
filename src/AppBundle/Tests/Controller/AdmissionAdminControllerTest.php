@@ -24,7 +24,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
         $this->assertEquals(0, $crawler->filter('td>a:contains("Slett")')->count());
-        $this->assertEquals(4, $crawler->filter('a:contains("Fordel")')->count());
+        $this->assertEquals(3, $crawler->filter('a:contains("Fordel")')->count());
     }
 
     public function testShowAsAdmin()
@@ -34,8 +34,8 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
-        $this->assertEquals(3, $crawler->filter('td>a:contains("Slett")')->count());
-        $this->assertEquals(3, $crawler->filter('td>a:contains("Fordel")')->count());
+        $this->assertEquals(2, $crawler->filter('td>a:contains("Slett")')->count());
+        $this->assertEquals(2, $crawler->filter('td>a:contains("Fordel")')->count());
     }
 
     public function testAssignedAsTeamMember()
@@ -129,8 +129,8 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         // Assert that we have the correct buttons for superadmin
         $this->assertEquals(1, $crawler->filter('a.button:contains("NTNU")')->count());
-        $this->assertEquals(3, $crawler->filter('td>a:contains("Slett")')->count());
-        $this->assertEquals(3, $crawler->filter('td>a:contains("Fordel")')->count());
+        $this->assertEquals(2, $crawler->filter('td>a:contains("Slett")')->count());
+        $this->assertEquals(2, $crawler->filter('td>a:contains("Fordel")')->count());
 
         // Assigned to interview applications
         $crawler = $client->request('GET', '/kontrollpanel/opptak/fordelt/2');
@@ -177,7 +177,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         // Assert that we only have the buttons for admin
         $this->assertEquals(1, $crawler->filter('a.button:contains("NTNU")')->count());
-        $this->assertEquals(3, $crawler->filter('td>a:contains("Fordel")')->count());
+        $this->assertEquals(2, $crawler->filter('td>a:contains("Fordel")')->count());
 
         // Assigned to interview applications
         $crawler = $client->request('GET', '/kontrollpanel/opptak/fordelt/2');

@@ -2,201 +2,96 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use AppBundle\Entity\Department;
-use AppBundle\Entity\Substitute;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Entity\Semester;
 use AppBundle\Entity\Application;
-use AppBundle\Form\Type\SubstituteType;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use AppBundle\Form\Type\ModifySubstituteType;
 
 /**
  * SubstituteController is the controller responsible for substitute assistants,
- * such as showing and deleting substitutes.
+ * such as showing, modifying and deleting substitutes.
  */
 class SubstituteController extends Controller
 {
-    /**
-     * Shows the substitute page for the department of the logged in user.
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function showAction(Request $request)
+    public function showBySemesterAction(Semester $semester)
     {
-        // Get query strings for filtering by semester
-        $semester = $request->query->get('semester', null);
-
-        $em = $this->getDoctrine()->getManager();
-
-        // Finds the department for the current logged in user
-        $department = $this->getUser()->getFieldOfStudy()->getDepartment();
-
-        // Find all the substitutes for the department of the user and the given semester (can be null)
-        $substitutes = $em->getRepository('AppBundle:Substitute')->findSubstitutes($department, $semester);
-
-        $departments = $em->getRepository('AppBundle:Department')->findAllDepartments();
-
-        // Find all the semesters associated with the department
-        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
+        $substitutes = $this->getDoctrine()->getRepository('AppBundle:Application')->findSubstitutesBySemester($semester);
 
         return $this->render('substitute/index.html.twig', array(
             'substitutes' => $substitutes,
-            'departments' => $departments,
-            'semesters' => $semesters,
-            'department' => $department,
+            'semester' => $semester,
         ));
     }
 
-    /**
-     * Shows the substitute page for the given department.
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function showSubstitutesByDepartmentAction(Request $request, Department $department)
+    public function showAction()
     {
-        // Get query strings for filtering by semester
-        $semester = $request->query->get('semester', null);
+        // No department specified, get the user's department and call showBySemester with
+        // either current or latest semester for that department
+        $department = $this->getUser()->getDepartment();
 
-        $em = $this->getDoctrine()->getManager();
-
-        // Find all the substitutes for the given semester (can be null) and department
-        $substitutes = $em->getRepository('AppBundle:Substitute')->findSubstitutes($department, $semester);
-
-        $departments = $em->getRepository('AppBundle:Department')->findAllDepartments();
-
-        // Find all the semesters associated with the department
-        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
-
-        return $this->render('substitute/index.html.twig', array(
-            'substitutes' => $substitutes,
-            'departments' => $departments,
-            'semesters' => $semesters,
-            'department' => $department,
-        ));
+        return $this->showBySemesterAction($department->getCurrentOrLatestSemester());
     }
 
-    /**
-     * Creates a substitute assistant with the info from the given application.
-     * If an interview has been conducted, the work day information is taken from InterviewPractical,
-     * if not it is left as null values and can be filled in by manually editing the substitute.
-     * This method is intended to be called by an Ajax request.
-     *
-     * @param Application $application
-     *
-     * @return JsonResponse
-     */
-    public function createAction(Application $application)
+    public function showModifyFormAction(Request $request, Application $application)
     {
-        // Only admin or team members withing the same department as the applicant can create substitute
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') ||
-            $application->isSameDepartment($this->getUser())
-        ) {
-            $appStat = $application->getStatistic();
-            $intPrac = $appStat->getInterviewPractical();
-
-            $substitute = new Substitute();
-
-            $substitute->setFirstName($application->getFirstName());
-            $substitute->setLastName($application->getLastName());
-            $substitute->setPhone($application->getPhone());
-            $substitute->setEmail($application->getEmail());
-            $substitute->setFieldOfStudy($appStat->getFieldOfStudy());
-            $substitute->setYearOfStudy($appStat->getYearOfStudy());
-            $substitute->setSemester($appStat->getSemester());
-
-            if ($intPrac) {
-                $substitute->setMonday($intPrac->getMonday());
-                $substitute->setTuesday($intPrac->getTuesday());
-                $substitute->setWednesday($intPrac->getWednesday());
-                $substitute->setThursday($intPrac->getThursday());
-                $substitute->setFriday($intPrac->getFriday());
-            }
-
-            $application->setSubstituteCreated(true);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($substitute);
-            $em->persist($application);
-            $em->flush();
-
-            // AJAX response
-            $response['success'] = true;
-        } else {
-            // AJAX response
-            $response['success'] = false;
-            $response['cause'] = 'Ikke tilstrekkelige rettigheter.';
+        // Only substitutes should be modified with this form
+        if (!$application->isSubstitute()) {
+            throw new BadRequestHttpException();
         }
 
-        return new JsonResponse($response);
-    }
+        $department = $application->getUser()->getDepartment();
 
-    /**
-     * Shows and handles submissions of the edit substitute form.
-     *
-     * @param Request    $request
-     * @param Substitute $substitute
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function editAction(Request $request, Substitute $substitute)
-    {
-        $form = $this->createForm(new SubstituteType(), $substitute);
+        $form = $this->createForm(ModifySubstituteType::class, $application, array(
+            'department' => $department,
+        ));
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($substitute);
+            $em->persist($application);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('substitute_show'));
+            // Need some form of redirect. Will cause wrong database entries if the form is rendered again
+            // after a valid submit, without remaking the form with up to date question objects from the database.
+            return $this->redirect($this->generateUrl('substitute_show_by_semester', array(
+                'semester' => $application->getSemester()->getId(),
+            )));
         }
 
-        return $this->render('substitute/edit.html.twig', array('form' => $form->createView()));
+        return $this->render('substitute/modify_substitute.twig', array(
+            'application' => $application,
+            'form' => $form->createView(),
+        ));
     }
 
-    /**
-     * Deletes the given substitute.
-     * This method is intended to be called by an Ajax request.
-     *
-     * @param $id
-     *
-     * @return JsonResponse
-     */
-    public function deleteAction($id)
+    public function deleteSubstituteByIdAction(Application $application)
     {
-        try {
-            if ($this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+        $application->setSubstitute(false);
 
-                // This deletes the given substitute
-                $em = $this->getDoctrine()->getEntityManager();
-                // Find the substitute by ID
-                $substitute = $this->getDoctrine()->getRepository('AppBundle:Substitute')->find($id);
-                $em->remove($substitute);
-                $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($application);
+        $em->flush();
 
-                // AJAX response
-                $response['success'] = true;
-            } else {
-                // Send a response to AJAX
-                $response['success'] = false;
-                $response['cause'] = 'Ikke tilstrekkelige rettigheter.';
-            }
-        } catch (\Exception $e) {
-            // Send a response to AJAX
-            return new JsonResponse([
-                'success' => false,
-                'code' => $e->getCode(),
-                'cause' => 'En exception oppstod. Vennligst kontakt IT-ansvarlig.',
-                // 'cause' => $e->getMessage(), if you want to see the exception message.
-            ]);
+        // Redirect to substitute page, set semester to that of the deleted substitute
+        return $this->redirectToRoute('substitute_show_by_semester', array('semester' => $application->getSemester()->getId()));
+    }
+
+    public function createSubstituteFromApplicationAction(Application $application)
+    {
+        if ($application->isSubstitute()) {
+            // User is already substitute
+            throw new BadRequestHttpException();
         }
+        $application->setSubstitute(true);
 
-        // Response to ajax
-        return new JsonResponse($response);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($application);
+        $em->flush();
+
+        // Redirect to substitute page, set semester to that of the newly added substitute
+        return $this->redirectToRoute('substitute_show_by_semester', array('semester' => $application->getSemester()->getId()));
     }
 }
