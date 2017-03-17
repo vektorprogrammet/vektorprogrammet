@@ -14,6 +14,7 @@
                     <th>E-post</th>
                     <th>Skole</th>
                     <th>Linje</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -26,7 +27,7 @@
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <td>
                             <a href="{{ path('profile_certificate', { 'id': a.user.id }) }}" class="button tiny">
-                                <i class="fa fa-pencil-square-o"></i> Last ned
+                                <i class="fa fa-download"></i> Last ned
                             </a>
                         </td>
                     {% endif %}

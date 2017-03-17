@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Entity\CertificateRequest;
-use Doctrine\ORM\EntityManager;
 
 class CertificateController extends Controller
 {
@@ -64,11 +63,9 @@ class CertificateController extends Controller
     }
     public function downloadAction()
     {
-        ;
 
         // Only ROLE_SUPER_ADMIN can download certificates
         if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-
             $em = $this->getDoctrine()->getManager();
             // Finds all the assistants
             $assistants = $em->getRepository('AppBundle:AssistantHistory')->findAllActiveAssistantHistories();
