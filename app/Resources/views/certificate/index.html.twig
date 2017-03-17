@@ -9,15 +9,17 @@
         <div class="small-12 medium-12 large-12 columns">
 
             <h1> Attester </h1>
+            <h5>  Her kan du laste ned attest for assistentene og oppdatere signaturen din</h5></h5>
 
             <hr>
 
             <div class="row">
-                <div class="small-4 columns">
-                    <a href="{{ path('certificate_signature_picture_upload') }}" class="button tiny"> Last opp
-                        signatur</a>
+                <div class="small-2 columns">
+                    <a href="{{ path('certificate_download') }}" class="button tiny"> Last ned attest    </a>
                 </div>
-
+                <div class="small-2 columns">
+                    <a href="{{ path('certificate_signature_picture_upload') }}" class="button tiny"> Oppdater signatur</a>
+                </div>
             </div>
 
         </div>
