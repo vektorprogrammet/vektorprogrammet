@@ -111,6 +111,29 @@ class InterviewManager
         );
     }
 
+    public function sendRescheduleEmail(Interview $interview)
+    {
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Intervju: Ønske om ny tid')
+            ->setTo($interview->getInterviewer()->getEmail())
+            ->setFrom(array('opptak@vektorprogrammet.no' => 'Vektorprogrammet'))
+            ->setReplyTo('opptak@vektorprogrammet.no')
+            ->setBody(
+                $this->twig->render('interview/reschedule_email.html.twig',
+                    array('interview' => $interview,
+                    )
+                ),
+                'text/html'
+            );
+
+        $this->mailer->send($message);
+
+        $this->logger->info(
+            'Schedule email sent to {$interview->getInterviewer()->getEmail()}\n'.
+            'Request for new interview by '.$interview->getUser()
+        );
+    }
+
     public function getDefaultScheduleFormData(Interview $interview): array
     {
         $message = "Hei, {$interview->getUser()->getFirstName()}!
