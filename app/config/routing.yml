@@ -576,14 +576,14 @@ receipts_show:
 
 receipts_delete:
   path: /kontrollpanel/utlegg/slett/{receipt}
-  defaults: { _controller: AppBundle:Receipt:delete }
-  methods: [POST]
+  defaults: { _controller: AppBundle:Receipt:deleteAdmin }
+  methods: [GET]
   requirements:
     receipt: \d+
 
 receipts_edit:
   path: /kontrollpanel/utlegg/rediger/{receipt}
-  defaults: { _controller: AppBundle:Receipt:edit }
+  defaults: { _controller: AppBundle:Receipt:editAdmin }
   methods: [GET, POST]
   requirements:
     receipt: \d+
@@ -599,6 +599,20 @@ receipt_create:
   path: /utlegg
   defaults: {_controller: AppBundle:Receipt:create }
   methods: [GET, POST]
+
+receipt_edit_individual:
+  path: /utlegg/rediger/{receipt}
+  defaults: {_controller: AppBundle:Receipt:edit }
+  methods: [GET, POST]
+  requirements:
+    receipt: \d+
+
+receipt_delete_individual:
+  path: /utlegg/slett/{receipt}
+  defaults: { _controller: AppBundle:Receipt:delete }
+  methods: [GET]
+  requirements:
+    receipt: \d+
 
 ##########################################
 #              Semester                  #

@@ -5,7 +5,7 @@
 {% block body %}
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            <h1>Opprett utlegg</h1>
+            <h1>Rediger utlegg</h1>
             <hr>
         </div>
     </div>
@@ -58,55 +58,6 @@
 
         </div>
     </div>
-
-    {% if active_receipts is not empty %}
-        <div class="row">
-
-            <div class="small-12 medium-12 large-12 columns">
-                <hr>
-            </div>
-
-            <div class="small-12 medium-12 large-8 columns">
-
-                <h3> Aktive utlegg </h3>
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="small-12 medium-12 large-12 columns">
-
-                <hr>
-
-                {% include 'receipt/receipts_table.html.twig' with {'receipts': active_receipts} %}
-
-            </div>
-        </div>
-    {% endif %}
-
-    {% if inactive_receipts is not empty %}
-        <div class="row">
-
-            <div class="small-12 medium-12 large-12 columns">
-                <hr>
-            </div>
-
-            <div class="small-12 medium-12 large-8 columns">
-
-                <h3> Eldre utlegg</h3>
-
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="small-12 medium-12 large-12 columns">
-
-                <hr>
-
-                {% include 'receipt/receipts_table.html.twig' with {'receipts': inactive_receipts } %}
-
-            </div>
-        </div>
-    {% endif %}
 
 {% endblock %}
 

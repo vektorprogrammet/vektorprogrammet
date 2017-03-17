@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ReceiptRepository")
@@ -35,11 +36,13 @@ class Receipt
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     private $description;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     private $sum;
 
