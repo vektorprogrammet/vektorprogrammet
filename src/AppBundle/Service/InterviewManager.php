@@ -55,6 +55,11 @@ class InterviewManager
         return $this->authorizationChecker->isGranted(Roles::TEAM_LEADER) || $interview->isInterviewer($user);
     }
 
+    /**
+     * @param Interview $interview
+     *
+     * @return Interview
+     */
     public function initializeInterviewAnswers(Interview $interview)
     {
         if ($interview->getInterviewed() || count($interview->getInterviewAnswers()) > 0) {
@@ -74,6 +79,10 @@ class InterviewManager
         return $interview;
     }
 
+    /**
+     * @param User        $interviewer
+     * @param Application $application
+     */
     public function assignInterviewerToApplication(User $interviewer, Application $application)
     {
         $interview = $application->getInterview();
@@ -86,6 +95,10 @@ class InterviewManager
         $interview->setInterviewer($interviewer);
     }
 
+    /**
+     * @param Interview $interview
+     * @param array     $data
+     */
     public function sendScheduleEmail(Interview $interview, array $data)
     {
         $message = \Swift_Message::newInstance()
@@ -115,6 +128,9 @@ class InterviewManager
         );
     }
 
+    /**
+     * @param Interview $interview
+     */
     public function sendRescheduleEmail(Interview $interview)
     {
         $application = $this->em->getRepository('AppBundle:Application')->findOneBy(array('interview' => $interview));
@@ -141,6 +157,9 @@ class InterviewManager
         );
     }
 
+    /**
+     * @param Interview $interview
+     */
     public function sendCancelEmail(Interview $interview)
     {
         $message = \Swift_Message::newInstance()
@@ -164,6 +183,11 @@ class InterviewManager
         );
     }
 
+    /**
+     * @param Interview $interview
+     *
+     * @return array
+     */
     public function getDefaultScheduleFormData(Interview $interview): array
     {
         $message = "Hei, {$interview->getUser()->getFirstName()}!
