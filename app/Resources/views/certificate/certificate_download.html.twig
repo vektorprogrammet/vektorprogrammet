@@ -1,0 +1,33 @@
+{% extends 'adminBase.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <h1>Last ned attest</h1>
+
+            <hr>
+
+            <table width="100%" id="substitute-table">
+                <thead>
+                <tr>
+                    <!--Navn	e-post	Skole	Semester	Avdeling-->
+                    <th>Navn</th>
+                    <th>E-post</th>
+                    <th>Skole</th>
+                    <th>Linje</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for a in assistants %}
+                <tr id="{{ a.id }}">
+                    <td>{{ a.user }}</td>
+                    <td>{{ a.user.email }}</td>
+                    <td>{{ a.school }}</td>
+                    <td>{{ a.user.fieldOfStudy }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
