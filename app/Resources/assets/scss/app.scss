@@ -418,7 +418,12 @@ ul.alternatives {
 }
 
 .radio-grid {
-  margin-right: 1rem;
+  margin-left: 0;
+  list-style-type: none;
+  &>div>li{
+    margin-right: 1rem;
+    display:inline-block;
+  }
 }
 
 // Utils
@@ -820,4 +825,13 @@ ul.alternatives {
 
 .hide {
   display: none;
+}
+
+#substitute-table {
+  th {
+    user-select: none;
+  }
+  .clickable {
+    cursor:pointer;
+  }
 }

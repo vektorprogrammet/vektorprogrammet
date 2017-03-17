@@ -3,64 +3,65 @@
 {% block applications %}
     {% include 'admission_admin/interviewed_applications/bulk_navigation.html.twig' %}
 
-    <form id="bulk" name="application">
-        <table width="100%" id="application-table">
-            <thead>
-            <tr>
+    {# The table containing interviewed applications #}
+    <table width="100%" id="application-table">
+        <thead>
+        <tr>
+            {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                <th><input type="checkbox" id="bulkAllCheck"></th>
+            {% endif %}
+
+            {# data-sort is used to sort the tables with stupidtable.js #}
+            <th data-sort="string">Fornavn</th>
+            <th data-sort="string">Etternavn</th>
+            <th data-sort="string">E-post</th>
+            <th data-sort="string">Mobil</th>
+            <th data-sort="string">Dobbel Stilling</th>
+            <th data-sort="string">Ønsket Bolk</th>
+            <th data-sort="string">Språk</th>
+            <th data-sort="int">Poeng</th>
+            <th data-sort="string">Passende</th>
+            <th colspan="3"></th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        {% for a in applications %}
+            <tr id="{{ a.id }}">
                 {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-                    <th><input type="checkbox" id="bulkAllCheck"></th>
+                    <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
+                    </td>
+                {% endif %}
+                <td><a href="{{ path('specific_profile', {id: a.user.id}) }}">{{ a.user.firstName }}</a></td>
+                <td>{{ a.user.lastName }}</td>
+                <td>{{ a.user.email }}</td>
+                <td>{{ a.user.phone }}</td>
+                <td>{{ a.doublePosition ? 'Ja':'Nei' }}</td>
+                <td>{{ a.preferredGroup ? a.preferredGroup:'Ingen' }}</td>
+                <td>{{ a.english ? 'Engelsk':'Norsk' }}</td>
+
+
+                {# Add the read interview button #}
+                {% if a.user != app.user and ( is_granted('ROLE_SUPER_ADMIN') or a.interview.interviewer == app.user ) %}
+                    <td>{{ a.interview.interviewScore.sum }}</td>
+                    <td>{{ a.interview.interviewScore.suitableAssistant }}</td>
+                    <td>
+                        <a href="{{ path('interview_show', { 'id': a.id }) }}" class="button tiny"><i
+                                    class="fa fa-list-ul"></i> Les intervju</a>
+                    </td>
+                {% else %}
+                    <td colspan="3">
+                        <span class="text-alert">Intervjuet er skjult</span>
+                    </td>
                 {% endif %}
 
-                {# data-sort is used to sort the tables with stupidtable.js #}
-                <th data-sort="string">Fornavn</th>
-                <th data-sort="string">Etternavn</th>
-                <th data-sort="string">E-post</th>
-                <th data-sort="string">Mobil</th>
-                <th data-sort="string">Dobbel Stilling</th>
-                <th data-sort="string">Ønsket Bolk</th>
-                <th data-sort="string">Språk</th>
-                <th data-sort="int">Poeng</th>
-                <th data-sort="string">Passende</th>
-                <th colspan="2"></th>
+                {% include 'admission_admin/create_substitute_button.html.twig' %}
+
+                {% include 'admission_admin/interviewed_applications/delete_column.html.twig' %}
             </tr>
-            </thead>
+        {% endfor %}
 
-            <tbody>
-
-            {% for a in applications %}
-                <tr id="{{ a.id }}">
-                    {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-                        <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
-                        </td>
-                    {% endif %}
-                    <td><a href="{{ path('specific_profile', {id: a.user.id}) }}">{{ a.user.firstName }}</a></td>
-                    <td>{{ a.user.lastName }}</td>
-                    <td>{{ a.user.email }}</td>
-                    <td>{{ a.user.phone }}</td>
-                    <td>{{ a.doublePosition ? 'Ja':'Nei' }}</td>
-                    <td>{{ a.preferredGroup ? a.preferredGroup:'Ingen' }}</td>
-                    <td>{{ a.english ? 'Engelsk':'Norsk' }}</td>
-
-
-                    {# Add the read interview button #}
-                    {% if a.user != app.user and ( is_granted('ROLE_SUPER_ADMIN') or a.interview.interviewer == app.user ) %}
-                        <td>{{ a.interview.interviewScore.sum }}</td>
-                        <td>{{ a.interview.interviewScore.suitableAssistant }}</td>
-                        <td>
-                            <a href="{{ path('interview_show', { 'id': a.id }) }}" class="button tiny"><i
-                                        class="fa fa-list-ul"></i> Les intervju</a>
-                        </td>
-                    {% else %}
-                        <td colspan="3">
-                            <span class="text-alert">Intervjuet er skjult</span>
-                        </td>
-                    {% endif %}
-
-                    {% include 'admission_admin/interviewed_applications/delete_column.html.twig' %}
-                </tr>
-            {% endfor %}
-
-            </tbody>
-        </table>
-    </form>
+        </tbody>
+    </table>
 {% endblock %}

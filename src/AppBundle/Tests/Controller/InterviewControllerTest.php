@@ -16,11 +16,11 @@ class InterviewControllerTest extends WebTestCase
         $form = $crawler->selectButton('Lagre')->form();
 
         // Fill in the form
-        $form['application[applicationPractical][monday]']->select('Bra');
-        $form['application[applicationPractical][tuesday]']->select('Bra');
-        $form['application[applicationPractical][wednesday]']->select('Ikke');
-        $form['application[applicationPractical][thursday]']->select('Bra');
-        $form['application[applicationPractical][friday]']->select('Ikke');
+        $form['application[applicationPractical][days][monday]']->select('Bra');
+        $form['application[applicationPractical][days][tuesday]']->select('Bra');
+        $form['application[applicationPractical][days][wednesday]']->select('Ikke');
+        $form['application[applicationPractical][days][thursday]']->select('Bra');
+        $form['application[applicationPractical][days][friday]']->select('Ikke');
 
         $form['application[applicationPractical][doublePosition]']->select('1');
         $form['application[applicationPractical][preferredGroup]']->select('Bolk 1');

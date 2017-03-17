@@ -4,22 +4,16 @@ namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class SubstituteType extends AbstractType
+class DaysType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $workChoices = array(
             'Bra' => 'Bra',
-            'Ok' => 'Ok',
             'Ikke' => 'Ikke',
         );
-
-        $builder
-            ->add('firstName', 'text', array('label' => 'Fornavn'))
-            ->add('lastName', 'text', array('label' => 'Etternavn'))
-            ->add('phone', 'text', array('label' => 'Tlf'))
-            ->add('email', 'text', array('label' => 'E-post'));
 
         $builder->add('monday', 'choice', array(
             'label' => 'Mandag',
@@ -50,14 +44,19 @@ class SubstituteType extends AbstractType
             'choices' => $workChoices,
             'expanded' => true,
         ));
+    }
 
-        $builder->add('save', 'submit', array(
-            'label' => 'Lagre',
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'AppBundle\Entity\Application',
+            'inherit_data' => true,
+            'label' => '',
         ));
     }
 
     public function getName()
     {
-        return 'substitute';
+        return 'application';
     }
 }
