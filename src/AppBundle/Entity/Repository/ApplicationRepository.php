@@ -410,4 +410,20 @@ class ApplicationRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param Semester $semester
+     *
+     * @return Application[]
+     */
+    public function findSubstitutesBySemester(Semester $semester)
+    {
+        return $this->createQueryBuilder('Application')
+            ->select('Application')
+            ->where('Application.semester = :semester')
+            ->andWhere('Application.substitute = TRUE')
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getResult();
+    }
 }
