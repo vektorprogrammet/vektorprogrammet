@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="82a241de-011e-47b1-a4a2-d278cecd901c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/Resources/views/certificate/certificate_download.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/certificate/index.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/certificate/index.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/config/routing.yml" afterPath="$PROJECT_DIR$/app/config/routing.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/CertificateController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/CertificateController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/certificate/certificate_download.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/certificate/certificate_download.html.twig" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,8 +21,8 @@
       <file leaf-file-name="routing.yml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/config/routing.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="173">
-              <caret line="270" column="39" lean-forward="false" selection-start-line="270" selection-start-column="39" selection-end-line="270" selection-end-column="39" />
+            <state relative-caret-position="80">
+              <caret line="206" column="9" lean-forward="false" selection-start-line="206" selection-start-column="9" selection-end-line="206" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -35,10 +33,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="306">
               <caret line="18" column="30" lean-forward="false" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
-              <folding>
-                <element signature="e#346#366#1#PHP" expanded="false" />
-                <element signature="e#609#636#0#PHP" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -46,10 +41,10 @@
       <file leaf-file-name="members.html.twig" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Resources/views/members/members.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="379">
-              <caret line="51" column="78" lean-forward="false" selection-start-line="51" selection-start-column="78" selection-end-line="51" selection-end-column="78" />
+            <state relative-caret-position="345">
+              <caret line="49" column="127" lean-forward="false" selection-start-line="49" selection-start-column="127" selection-end-line="49" selection-end-column="127" />
               <folding>
-                <element signature="e#2455#2471#0#Twig" expanded="false" />
+                <element signature="e#12#26#0#Twig" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -68,9 +63,11 @@
       <file leaf-file-name="certificate_download.html.twig" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Resources/views/certificate/certificate_download.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
-              <caret line="15" column="29" lean-forward="false" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
-              <folding />
+            <state relative-caret-position="185">
+              <caret line="22" column="47" lean-forward="true" selection-start-line="22" selection-start-column="47" selection-end-line="22" selection-end-column="47" />
+              <folding>
+                <element signature="e#966#985#0#Twig" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -88,7 +85,7 @@
       <file leaf-file-name="SubstituteController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/SubstituteController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
+            <state relative-caret-position="261">
               <caret line="43" column="30" lean-forward="false" selection-start-line="43" selection-start-column="30" selection-end-line="43" selection-end-column="30" />
               <folding>
                 <element signature="e#40#97#0#PHP" expanded="true" />
@@ -126,13 +123,10 @@
       <file leaf-file-name="index.html.twig" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Resources/views/substitute/index.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="453">
-              <caret line="151" column="28" lean-forward="false" selection-start-line="151" selection-start-column="28" selection-end-line="151" selection-end-column="28" />
+            <state relative-caret-position="177">
+              <caret line="135" column="50" lean-forward="false" selection-start-line="135" selection-start-column="50" selection-end-line="135" selection-end-column="50" />
               <folding>
-                <element signature="e#12#31#0#Twig" expanded="false" />
-                <element signature="e#167#184#0#Twig" expanded="false" />
-                <element signature="e#2372#2408#0#Twig" expanded="false" />
-                <element signature="e#6005#6020#0#Twig" expanded="false" />
+                <element signature="e#6005#6020#0#Twig" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -165,13 +159,13 @@
       <find>attest/</find>
       <find>kontrollpanel/attest/lastned</find>
       <find>ASSISTE</find>
-      <find>kontrollpanel/vikar</find>
       <find>departm</find>
       <find>substi</find>
       <find>assi</find>
       <find>email</find>
       <find>Depa</find>
       <find>depart</find>
+      <find>kontrollpanel/vikar</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -766,7 +760,7 @@
       <workItem from="1488981412696" duration="60000" />
       <workItem from="1489506369871" duration="4693000" />
       <workItem from="1489594068129" duration="4291000" />
-      <workItem from="1489761283455" duration="8016000" />
+      <workItem from="1489761283455" duration="8968000" />
     </task>
     <task id="LOCAL-00001" summary="Endret spørsmål ved søking for gamle assistenter fra &quot;Hvilke dager passer?&quot; til &quot;Hvilke dager passer IKKE?&quot;">
       <created>1487699143116</created>
@@ -814,7 +808,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="108365000" />
+    <option name="totallyTimeSpent" value="109317000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -827,7 +821,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="1378" height="735" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -840,7 +834,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.48172757" sideWeight="0.5499244" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12292359" sideWeight="0.5499244" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17602427" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1194,7 +1188,7 @@
         <state relative-caret-position="-857">
           <caret line="10" column="6" lean-forward="false" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
           <folding>
-            <element signature="e#47#85#0#PHP" expanded="true" />
+            <element signature="e#47#85#0#PHP" expanded="false" />
             <marker date="1488905922688" expanded="true" signature="1280:1541" ph="SELECT ahist... AppBundle" />
             <marker date="1488905922688" expanded="true" signature="1975:2241" ph="SELECT ahist... AppBundle" />
             <marker date="1488905922688" expanded="true" signature="2583:2816" ph="SELECT ahist... AppBundle" />
@@ -1235,19 +1229,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Resources/views/substitute/index.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="453">
-          <caret line="151" column="28" lean-forward="false" selection-start-line="151" selection-start-column="28" selection-end-line="151" selection-end-column="28" />
-          <folding>
-            <element signature="e#12#31#0#Twig" expanded="false" />
-            <element signature="e#167#184#0#Twig" expanded="false" />
-            <element signature="e#2372#2408#0#Twig" expanded="false" />
-            <element signature="e#6005#6020#0#Twig" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/AssistantsData.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="197">
@@ -1255,46 +1236,6 @@
           <folding>
             <element signature="e#128#160#0#PHP" expanded="true" />
             <element signature="e#620#648#1#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/config/routing.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="270" column="39" lean-forward="false" selection-start-line="270" selection-start-column="39" selection-end-line="270" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/MembersController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="30" lean-forward="false" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
-          <folding>
-            <element signature="e#346#366#1#PHP" expanded="false" />
-            <element signature="e#609#636#0#PHP" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Resources/views/members/members.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="379">
-          <caret line="51" column="78" lean-forward="false" selection-start-line="51" selection-start-column="78" selection-end-line="51" selection-end-column="78" />
-          <folding>
-            <element signature="e#2455#2471#0#Twig" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/SubstituteController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="43" column="30" lean-forward="false" selection-start-line="43" selection-start-column="30" selection-end-line="43" selection-end-column="30" />
-          <folding>
-            <element signature="e#40#97#0#PHP" expanded="true" />
-            <element signature="e#1329#1351#1#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1325,11 +1266,60 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/SubstituteController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="261">
+          <caret line="43" column="30" lean-forward="false" selection-start-line="43" selection-start-column="30" selection-end-line="43" selection-end-column="30" />
+          <folding>
+            <element signature="e#40#97#0#PHP" expanded="true" />
+            <element signature="e#1329#1351#1#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/substitute/index.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="135" column="50" lean-forward="false" selection-start-line="135" selection-start-column="50" selection-end-line="135" selection-end-column="50" />
+          <folding>
+            <element signature="e#6005#6020#0#Twig" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/config/routing.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="206" column="9" lean-forward="false" selection-start-line="206" selection-start-column="9" selection-end-line="206" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/MembersController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="30" lean-forward="false" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/members/members.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="49" column="127" lean-forward="false" selection-start-line="49" selection-start-column="127" selection-end-line="49" selection-end-column="127" />
+          <folding>
+            <element signature="e#12#26#0#Twig" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Resources/views/certificate/certificate_download.html.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="15" column="29" lean-forward="false" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
-          <folding />
+        <state relative-caret-position="185">
+          <caret line="22" column="47" lean-forward="true" selection-start-line="22" selection-start-column="47" selection-end-line="22" selection-end-column="47" />
+          <folding>
+            <element signature="e#966#985#0#Twig" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
