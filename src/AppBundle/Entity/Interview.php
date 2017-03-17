@@ -413,6 +413,11 @@ class Interview
         $this->setInterviewStatus(InterviewStatusType::CANCELLED);
     }
 
+    public function resetStatus()
+    {
+        $this->setInterviewStatus(InterviewStatusType::PENDING);
+    }
+
     /**
      * @return bool
      */
