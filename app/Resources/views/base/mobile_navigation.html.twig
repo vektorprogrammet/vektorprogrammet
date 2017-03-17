@@ -37,9 +37,7 @@
                         {% endif %}
                         <li><a href='{{ path('profile') }}'>Profil</a></li>
                         <li><a href='{{ path('members_show') }}'>Medlemmer</a></li>
-                        {% if is_granted('ROLE_USER') %}
-                            <li><a href='{{ path('receipt_create')}}'>Utlegg</a></li>
-                        {% endif %}
+                        <li><a href='{{ path('receipt_create')}}'>Utlegg</a></li>
                         <li><a href="{{ path('logout') }}">Logg ut</a></li>
                     </ul>
                 </li>
