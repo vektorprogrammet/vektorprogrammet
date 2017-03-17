@@ -71,8 +71,12 @@ abstract class BaseWebTestCase extends WebTestCase
         return self::$adminClient;
     }
 
-    protected function goTo(Client $client, string $path) : Crawler
+    protected function goTo(string $path, Client $client = null) : Crawler
     {
+        if ($client === null) {
+            $client = self::createAnonymousClient();
+        }
+
         $crawler = $client->request('GET', $path);
 
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -82,27 +86,27 @@ abstract class BaseWebTestCase extends WebTestCase
 
     protected function anonymousGoTo(string $path) : Crawler
     {
-        return $this->goTo(self::createAnonymousClient(), $path);
+        return $this->goTo($path, self::createAnonymousClient());
     }
 
     protected function assistantGoTo(string $path) : Crawler
     {
-        return $this->goTo(self::createAssistantClient(), $path);
+        return $this->goTo($path, self::createAssistantClient());
     }
 
     protected function teamMemberGoTo(string $path) : Crawler
     {
-        return $this->goTo(self::createTeamMemberClient(), $path);
+        return $this->goTo($path, self::createTeamMemberClient());
     }
 
     protected function teamLeaderGoTo(string $path) : Crawler
     {
-        return $this->goTo(self::createTeamLeaderClient(), $path);
+        return $this->goTo($path, self::createTeamLeaderClient());
     }
 
     protected function adminGoTo(string $path) : Crawler
     {
-        return $this->goTo(self::createAdminClient(), $path);
+        return $this->goTo($path, self::createAdminClient());
     }
 
     protected function countTableRows(string $path, Client $client = null) : int
@@ -111,7 +115,7 @@ abstract class BaseWebTestCase extends WebTestCase
             $client = self::createAdminClient();
         }
 
-        $crawler = $this->goTo($client, $path);
+        $crawler = $this->goTo($path, $client);
 
         return $crawler->filter('tr')->count();
     }
