@@ -328,7 +328,7 @@ class InterviewController extends Controller
         $manager->persist($interview);
         $manager->flush();
 
-        $this->notifyInterviewer(InterviewStatusType::CANCELLED);
+        $this->notifyInterviewer(InterviewStatusType::CANCELLED, $interview);
 
         $this->addFlash('success', 'Intervjuet ble kansellert.');
 
@@ -377,7 +377,7 @@ class InterviewController extends Controller
         $manager->persist($interview);
         $manager->flush();
 
-        $this->notifyInterviewer(InterviewStatusType::REQUEST_NEW_TIME);
+        $this->notifyInterviewer(InterviewStatusType::REQUEST_NEW_TIME, $interview);
 
         $this->addFlash('success', 'Forespørsel har blitt sendt.');
 
@@ -403,9 +403,10 @@ class InterviewController extends Controller
     }
 
     /**
-     * @param int $response
+     * @param int       $response
+     * @param Interview $interview
      */
-    private function notifyInterviewer(int $response)
+    private function notifyInterviewer(int $response, Interview $interview)
     {
         /* TODO: Notify interviewers about accept/cancel/newtime */
     }
