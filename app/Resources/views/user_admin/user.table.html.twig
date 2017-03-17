@@ -24,10 +24,7 @@
             <td> {{ u.email }} </td>
             <td> {{ u.fieldOfStudy }} </td>
             <td> {{ u.fieldOfStudy.department }} </td>
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
-            <td><a href="#" id="{{ u.id }}" class="button tiny alert delete"><i
-                            class="fa fa-trash-o"></i> Slett</a></td>
-            {% endif %}
+
             {% if u.password is null and is_granted('ROLE_SUPER_ADMIN') %}
                 <td>
                     <form method="POST"
@@ -39,6 +36,19 @@
                 </td>
             {% else %}
                 <td><span class="text-success">Aktivert</span></td>
+            {% endif %}
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <td>
+                    <form method="POST"
+                          onsubmit="return confirm('Vil du virkelig fjerne brukeren til {{ u.firstName }} {{ u.lastName }}?')"
+                          action="{{ path('useradmin_delete_user_by_id', { id: u.id }) }}">
+                        <button type="submit"
+                                class="button tiny alert">
+                            <i class="fa fa-trash"></i>
+                            Slett
+                        </button>
+                    </form>
+                </td>
             {% endif %}
         </tr>
     {% endfor %}
