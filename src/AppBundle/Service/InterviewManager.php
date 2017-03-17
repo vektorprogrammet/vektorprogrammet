@@ -134,6 +134,29 @@ class InterviewManager
         );
     }
 
+    public function sendCancelEmail(Interview $interview)
+    {
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Intervju: Kansellert')
+            ->setTo($interview->getInterviewer()->getEmail())
+            ->setFrom(array('opptak@vektorprogrammet.no' => 'Vektorprogrammet'))
+            ->setReplyTo('opptak@vektorprogrammet.no')
+            ->setBody(
+                $this->twig->render('interview/cancel_email.html.twig',
+                    array('interview' => $interview,
+                    )
+                ),
+                'text/html'
+            );
+
+        $this->mailer->send($message);
+
+        $this->logger->info(
+            'Schedule email sent to {$interview->getInterviewer()->getEmail()}\n'.
+            'Interview cancelled by '.$interview->getUser()
+        );
+    }
+
     public function getDefaultScheduleFormData(Interview $interview): array
     {
         $message = "Hei, {$interview->getUser()->getFirstName()}!

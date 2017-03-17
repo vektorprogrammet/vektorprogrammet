@@ -408,10 +408,13 @@ class InterviewController extends Controller
      */
     private function notifyInterviewer(int $response, Interview $interview)
     {
-        /* TODO: Notify interviewers about accept/cancel/newtime */
         switch ($response) {
             case InterviewStatusType::REQUEST_NEW_TIME:
                 $this->get('app.interview.manager')->sendRescheduleEmail($interview);
+                break;
+            case InterviewStatusType::CANCELLED:
+                $this->get('app.interview.manager')->sendCancelEmail($interview);
+                break;
         }
     }
 }
