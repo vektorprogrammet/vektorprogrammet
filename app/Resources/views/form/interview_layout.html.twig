@@ -1,19 +1,5 @@
-{% block field_help %}
-    {% if help|default %}
-        <span class="question-help">{{ help }}</span>
-    {% endif %}
-{% endblock %}
-
-{% block form_row %}
-    {% spaceless %}
-        <div>
-            {{ form_label(form, label|default(null), {'label_attr': {'class': valid ? 'question-label': 'question-label error'}}) }}
-            {{ block('field_help') }}
-            {{ form_errors(form) }}
-            {{ form_widget(form) }}
-        </div>
-    {% endspaceless %}
-{% endblock form_row %}
+{# Form row #}
+{% use 'form/components/form_row_with_help_layout.html.twig' %}
 
 {%- block choice_widget_expanded -%}
     <ul {{ block('widget_container_attributes') }} class="no-bullet alternatives{% if not valid %} error{% endif %}">
@@ -27,14 +13,4 @@
 {%- endblock choice_widget_expanded -%}
 
 {# Errors #}
-
-{% block form_errors -%}
-    {% if errors|length > 0 -%}
-        {% if form.parent %}<small class="error">{% else %}<div data-alert class="alert-box alert">{% endif %}
-        {%- for error in errors -%}
-            {{ error.message }}
-            {% if not loop.last %}, {% endif %}
-        {%- endfor -%}
-        {% if form.parent %}</small>{% else %}</div>{% endif %}
-    {%- endif %}
-{%- endblock form_errors %}
+{% use 'form/components/error_layout.html.twig' %}
