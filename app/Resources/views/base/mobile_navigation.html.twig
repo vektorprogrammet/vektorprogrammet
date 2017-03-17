@@ -27,6 +27,7 @@
                     {% render controller('AppBundle:Department:getAllDepartmentsForTopbar') %}
                 </ul>
             </li>
+            <li><a href="{{ path('faq') }}">FAQ</a></li>
 
             {% if app.user and is_granted('ROLE_USER') %}
                 <li class="has-dropdown">
