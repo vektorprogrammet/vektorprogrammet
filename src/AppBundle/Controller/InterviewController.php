@@ -353,8 +353,6 @@ class InterviewController extends Controller
         $manager->persist($interview);
         $manager->flush();
 
-        $this->notifyInterviewer(InterviewStatusType::ACCEPTED);
-
         $this->addFlash('success', 'Intervjuet ble akseptert.');
 
         return $this->redirectToRoute('home');
