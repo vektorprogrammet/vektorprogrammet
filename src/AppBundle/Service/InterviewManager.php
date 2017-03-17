@@ -117,6 +117,8 @@ class InterviewManager
 
     public function sendRescheduleEmail(Interview $interview)
     {
+        $application = $this->em->getRepository('AppBundle:Application')->findOneBy(array('interview' => $interview));
+
         $message = \Swift_Message::newInstance()
             ->setSubject('Intervju: Ønske om ny tid')
             ->setTo($interview->getInterviewer()->getEmail())
@@ -125,6 +127,7 @@ class InterviewManager
             ->setBody(
                 $this->twig->render('interview/reschedule_email.html.twig',
                     array('interview' => $interview,
+                        'application' => $application,
                     )
                 ),
                 'text/html'

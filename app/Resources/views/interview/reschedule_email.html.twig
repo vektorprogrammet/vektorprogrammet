@@ -4,10 +4,9 @@
 <p>Tidligere intervjutidspunkt var: {{ interview.getScheduled|date("d.m.y - G:i") }}</p>
 <p>
     For å sette opp nytt intervju, gå til
-    <a href="https://vektorprogrammet.no/kontrollpanel/opptak/fordelt">
-    vektorprogrammet.no/kontrollpanel/opptak/fordelt
+    <a href=https://vektorprogrammet.no{{ path('interview_schedule', { 'id': application.id }) }}>
+        https://vektorprogrammet.no{{ path('interview_schedule', { 'id': application.id }) }}
     </a>
-    og trykk på "sett opp".
 </p>
 
 <p>Vennlig hilsen,<br>
