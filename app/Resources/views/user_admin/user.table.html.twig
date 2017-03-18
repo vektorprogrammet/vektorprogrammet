@@ -8,7 +8,7 @@
         <th> E-post</th>
         <th> Linje</th>
         <th> Avdeling</th>
-        {% if is_granted('ROLE_SUPER_ADMIN') %}
+        {% if is_granted_team_leader() %}
             <th>Send aktiveringsmelding</th>
         {% endif %}
         <th></th>
@@ -25,7 +25,7 @@
             <td> {{ u.fieldOfStudy }} </td>
             <td> {{ u.department }} </td>
 
-            {% if u.password is null and is_granted('ROLE_SUPER_ADMIN') %}
+            {% if u.password is null and  is_granted_team_leader() %}
                 <td>
                     <form method="POST"
                           onsubmit="return confirm('Send aktiveringslenke til {{ u }}?')"

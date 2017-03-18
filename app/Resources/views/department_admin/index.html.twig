@@ -36,7 +36,7 @@
             <h1> Avdeling </h1>
             <hr>
 
-            {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+            {% if is_granted_admin() %}
                 <div class="row">
                     <div class="small-12 medium-12 large-6 columns">
                         <ul class="inline-list">
@@ -66,7 +66,7 @@
                         <td width="20%"> {{ d.email }} </td>
 
                         {# Only SUPER_ADMIN should be able to edit teams #}
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        {% if is_granted_team_leader() %}
 
                             <td><a href="{{ path('departmentadmin_update', { 'id': d.id }) }}" class="button tiny">Rediger</a>
                             </td>
@@ -74,7 +74,7 @@
                         {% endif %}
 
                         {# Only HIGHEST_ADMIN should be able to delete teams #}
-                        {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                        {% if is_granted_admin() %}
                             <td><a href="#" id="{{ d.id }}" class="button tiny alert delete"><i
                                             class="fa fa-trash-o"></i> Slett</a></td>
                         {% endif %}

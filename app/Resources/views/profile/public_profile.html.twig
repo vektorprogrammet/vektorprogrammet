@@ -40,7 +40,7 @@
 
             {% include 'profile/profile_picture.html.twig' %}
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted_team_leader() %}
                 <div class="panel callout radius">
                     <h3> Admin </h3>
                     <ul class="side-nav" role="navigation" title="Link List">

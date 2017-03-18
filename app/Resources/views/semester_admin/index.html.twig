@@ -57,7 +57,7 @@
 
         <div class="row">
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted_team_leader() %}
                 <div class="small-12 medium-12 large-6 columns">
 
 
@@ -91,7 +91,7 @@
                 </div>
             {% endif %}
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted_team_leader() %}
             <div class="small-12 medium-12 large-6 columns">
                 {% else %}
                 <div class="small-12 medium-12 large-12 columns">
@@ -111,7 +111,7 @@
                         <th> Navn</th>
                         <th> Opptak start</th>
                         <th> Opptak slutt</th>
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        {% if is_granted_team_leader() %}
                             <th></th>
                             <th></th>
                         {% endif %}
@@ -127,9 +127,9 @@
                             <td> {{ s.admissionEndDate|date('Y-m-d') }} </br>
                                 Kl. {{ s.admissionEndDate|date('H:i:s') }}</td>
 
-                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            {% if is_granted_team_leader() %}
 
-                                {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                                {% if is_granted_admin() %}
                                     <td><a href="#" id="{{ s.id }}" class="button tiny alert delete"><i
                                                     class="fa fa-trash-o"></i> Slett</a></td>
                                 {% endif %}

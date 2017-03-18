@@ -6,7 +6,7 @@
             <h2>Abonnenter til {{ newsletter.name }}</h2>
         </div>
     </div>
-    {% if  is_granted('ROLE_SUPER_ADMIN') %}
+    {% if  is_granted_team_leader() %}
         <div class="row">
             <div class="small-12 columns">
                 <table>
@@ -45,7 +45,7 @@
                         <td>{{ subscriber.name }}</td>
                         <td>{{ subscriber.email }}</td>
                         <td>
-                            {% if  is_granted('ROLE_SUPER_ADMIN') %}
+                            {% if  is_granted_team_leader() %}
                                 <form method="POST"
                                       action="{{ path('newsletter_admin_unsubscribe', {id: subscriber.id}) }}"
                                       onsubmit="return confirm('Er du sikker?')">

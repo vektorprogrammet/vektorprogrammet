@@ -84,7 +84,7 @@
             <hr>
 
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted_team_leader() %}
                     {% include "common/department_semester_dropdowns.html.twig" with {'path': 'participanthistory_show_by_semester', 'parameterName': 'id', 'currentSemester': semester} %}
             {% else %}
                 <ul class="inline-list">
@@ -160,7 +160,7 @@
                                 <td> {{ ah.bolk }}</td>
                                 <td> {{ ah.day }}</td>
                                 <td>
-                                    {% if is_granted('ROLE_HIGHEST_ADMIN') or (is_granted('ROLE_SUPER_ADMIN') and app.user.department == semester.department) %}
+                                    {% if is_granted_admin() or (is_granted_team_leader() and app.user.department == semester.department) %}
                                         <form
                                                 action="{{ path('assistant_history_delete', {id: ah.id}) }}"
                                                 method="POST"

@@ -75,7 +75,7 @@
                 <div class="small-12 medium-12 large-6 columns">
                     <ul class="inline-list">
 
-                        {% if is_granted('ROLE_SUPER_ADMIN') or isUserInTeam %}
+                        {% if is_granted_team_leader() or isUserInTeam %}
 
                             <li>
                                 <a href="{{ path('teamadmin_add_user_to_team', { 'id': team.id }) }}"
