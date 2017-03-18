@@ -66,7 +66,7 @@ services:
 
   app.role_extension:
     class: AppBundle\Twig\Extension\RoleExtension
-    arguments: ['@security.authorization_checker']
+    arguments: ['@security.authorization_checker', '@security.token_storage']
     tags:
         - { name: twig.extension }
 
