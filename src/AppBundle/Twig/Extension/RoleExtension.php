@@ -3,15 +3,18 @@
 namespace AppBundle\Twig\Extension;
 
 use AppBundle\Role\Roles;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 class RoleExtension extends \Twig_Extension
 {
     private $authorizationChecker;
+    private $tokenStorage;
 
-    public function __construct(AuthorizationChecker $authorizationChecker)
+    public function __construct(AuthorizationChecker $authorizationChecker, TokenStorage $tokenStorage)
     {
         $this->authorizationChecker = $authorizationChecker;
+        $this->tokenStorage = $tokenStorage;
     }
 
     public function getName()
@@ -31,21 +34,37 @@ class RoleExtension extends \Twig_Extension
 
     public function isGrantedAssistant()
     {
+        if ($this->tokenStorage->getToken() === null) {
+            return false;
+        }
+
         return $this->authorizationChecker->isGranted(Roles::ASSISTANT);
     }
 
     public function isGrantedTeamMember()
     {
+        if ($this->tokenStorage->getToken() === null) {
+            return false;
+        }
+
         return $this->authorizationChecker->isGranted(Roles::TEAM_MEMBER);
     }
 
     public function isGrantedTeamLeader()
     {
+        if ($this->tokenStorage->getToken() === null) {
+            return false;
+        }
+
         return $this->authorizationChecker->isGranted(Roles::TEAM_LEADER);
     }
 
     public function isGrantedAdmin()
     {
+        if ($this->tokenStorage->getToken() === null) {
+            return false;
+        }
+
         return $this->authorizationChecker->isGranted(Roles::ADMIN);
     }
 }
