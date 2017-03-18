@@ -50,6 +50,17 @@
 
             <hr>
 
+            <div class="row">
+                <div class="small-6 medium-6 large-6 columns">
+                    <ul class="inline-list">
+
+                        {# Departments dropdown #}
+                        {% include "common/department_dropdown.html.twig" with {'pathForDepartment': 'substitute_show_by_department', 'departmentParameterName': 'id', 'currentDepartment': department} %}
+
+                    </ul>
+                </div>
+            </div>
+
             <table width="100%" id="substitute-table">
                 <thead>
                 <tr>
