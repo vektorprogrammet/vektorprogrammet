@@ -3,23 +3,9 @@
 
 {% block javascripts %}
 
-    {# Easy routing with FOSJsRouting bundle #}
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-    {# We need the deletetablerow.js file #}
-    <script src="{{ asset('js/deleteablerow.js') }}"></script>
 
     <script>
 
-        $(document).ready(function () {
-            $('.delete').deleteablerow('useradmin_delete_user_by_id', {
-                confirmation: {
-                    modal: $('#confirmModal'),
-                    acceptButton: $('#modalAccept'),
-                    cancelButton: $('#modalCancel')
-                }
-            });
-        });
 
         $("#search").keyup(function () {
 
@@ -86,7 +72,7 @@
                                 </ul>
                             </li>
                         {% else %}
-                            <li><a href="{{ path('useradmin_create_user') }}"" class="button tiny">Opprett bruker</a>
+                            <li><a href="{{ path('useradmin_create_user') }}" class="button tiny">Opprett bruker</a>
                             </li>
                         {% endif %}
 
@@ -112,14 +98,7 @@
         </div>
     </div>
 
-    <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
-         aria-hidden="true" role="dialog">
-        <h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
-        <ul class="inline-list">
-            <a id="modalAccept" href="#" class="button tiny">Slett</a>
-            <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
-        </ul>
-    </div>
+
 
     {% if is_granted('ROLE_SUPER_ADMIN') %}
 
@@ -140,14 +119,6 @@
             </div>
         </div>
 
-        <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
-             aria-hidden="true" role="dialog">
-            <h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
-            <ul class="inline-list">
-                <a id="modalAccept" href="#" class="button tiny">Slett</a>
-                <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
-            </ul>
-        </div>
     {% endif %}
 {% endblock %}
 
