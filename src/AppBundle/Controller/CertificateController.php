@@ -61,22 +61,32 @@ class CertificateController extends Controller
         // Send a respons to ajax
         return new JsonResponse($response);
     }
-    public function downloadAction()
+    public function downloadAction(Request $request)
     {
 
         // Only ROLE_SUPER_ADMIN can download certificates
         if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
             $em = $this->getDoctrine()->getManager();
+
+            // Finds the department for the current logged in user
+            $department = $this->getUser()->getFieldOfStudy()->getDepartment();
+
+            $departments = $em->getRepository('AppBundle:Department')->findAllDepartments();
+
             // Finds all the assistants
             $assistants = $em->getRepository('AppBundle:AssistantHistory')->findAllActiveAssistantHistories();
 
+
             return $this->render('certificate/certificate_download.html.twig', array(
                 'assistants' => $assistants,
+                'department' => $department,
+                'departments' => $departments,
             ));
         } else {
             throw $this->createAccessDeniedException();
         }
     }
+
 
     public function requestAction()
     {
