@@ -34,37 +34,30 @@ class RoleExtension extends \Twig_Extension
 
     public function isGrantedAssistant()
     {
-        if ($this->tokenStorage->getToken() === null) {
-            return false;
-        }
-
-        return $this->authorizationChecker->isGranted(Roles::ASSISTANT);
+        return $this->isGranted(Roles::ASSISTANT);
     }
 
     public function isGrantedTeamMember()
     {
-        if ($this->tokenStorage->getToken() === null) {
-            return false;
-        }
-
-        return $this->authorizationChecker->isGranted(Roles::TEAM_MEMBER);
+        return $this->isGranted(Roles::TEAM_MEMBER);
     }
 
     public function isGrantedTeamLeader()
     {
-        if ($this->tokenStorage->getToken() === null) {
-            return false;
-        }
-
-        return $this->authorizationChecker->isGranted(Roles::TEAM_LEADER);
+        return $this->isGranted(Roles::TEAM_LEADER);
     }
 
     public function isGrantedAdmin()
+    {
+        return $this->isGranted(Roles::ADMIN);
+    }
+
+    private function isGranted(string $role) : bool
     {
         if ($this->tokenStorage->getToken() === null) {
             return false;
         }
 
-        return $this->authorizationChecker->isGranted(Roles::ADMIN);
+        return $this->authorizationChecker->isGranted($role);
     }
 }
