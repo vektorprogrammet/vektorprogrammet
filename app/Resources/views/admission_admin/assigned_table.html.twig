@@ -38,7 +38,7 @@
             <td>{{ a.interview.interviewer }}</td>
 
             {# Add the buttons to book(send email) and conduct an interview, given the correct permissions #}
-            {% if is_granted('ROLE_SUPER_ADMIN') or a.interview.isInterviewer(app.user) %}
+            {% if is_granted_team_leader() or a.interview.isInterviewer(app.user) %}
                 <td>
                     <a href="{{ path('interview_schedule', { 'id': a.id }) }}" class="button tiny"><i
                                 class="fa fa-envelope"></i> Sett opp</a>

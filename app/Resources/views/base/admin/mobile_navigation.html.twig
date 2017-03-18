@@ -48,7 +48,7 @@
                             <li>
                                 <a href="{{ path('statistics_application_show') }}">Opptaksstatistikk</a>
                             </li>
-                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            {% if is_granted_team_leader() %}
                                 <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
                             {% endif %}
                             <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>

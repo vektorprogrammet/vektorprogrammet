@@ -47,7 +47,7 @@
                     {#<li role="menuitem"><a href="#" id="certificate_request" class="requestCertificate">Send attest
                             forespørsel</a></li>#}
 
-                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    {% if is_granted_team_leader() %}
                         <li role="menuitem"><a href="{{ path('profile_certificate', { id: user.id} ) }}">Last ned
                                 attest</a></li>
                     {% endif %}

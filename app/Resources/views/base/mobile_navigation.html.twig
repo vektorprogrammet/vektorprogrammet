@@ -30,11 +30,11 @@
             </li>
             <li><a href="{{ path('faq') }}">FAQ</a></li>
 
-            {% if app.user and is_granted('ROLE_USER') %}
+            {% if app.user and is_granted_assistant() %}
                 <li class="has-dropdown">
                     <a href='{{ path('profile') }}'>Min Vektor</a>
                     <ul class="dropdown">
-                        {% if app.user and is_granted('ROLE_ADMIN') %}
+                        {% if app.user and is_granted_team_member() %}
                             <li><a href='{{ path('control_panel') }}'>Kontrollpanel</a></li>
                         {% endif %}
                         <li><a href='{{ path('profile') }}'>Profil</a></li>

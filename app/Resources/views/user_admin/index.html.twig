@@ -64,7 +64,7 @@
                     <ul class="inline-list">
 
                         {# Dropdown to choose department, only for superadmins #}
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        {% if is_granted_team_leader() %}
 
                             {% include "common/department_dropdown.html.twig" with {'pathForDepartment': 'useradmin_filter_users_by_department', 'departmentParameterName': 'id', 'currentDepartment': department} %}
 
@@ -121,7 +121,7 @@
         </ul>
     </div>
 
-    {% if is_granted('ROLE_SUPER_ADMIN') %}
+    {% if is_granted_team_leader() %}
 
         <p></p>
 
