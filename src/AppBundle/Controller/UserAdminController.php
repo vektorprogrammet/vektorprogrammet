@@ -95,11 +95,13 @@ class UserAdminController extends Controller
 
     public function deleteUserByIdAction(User $user)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($user);
-        $em->flush();
-
-        return $this->redirectToRoute('useradmin_show');
+        if ($this->isGranted(ROLES::ADMIN) || $user->getDepartment() == $this->getUser()->getDepartment()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($user);
+            $em->flush();
+        }
+        // Redirect to useradmin page, set department to that of the deleted user
+        return $this->redirectToRoute('useradmin_filter_users_by_department', array('id' => $user->getDepartment()->getId()));
     }
 
     public function activateNewUserAction(Request $request, $newUserCode)

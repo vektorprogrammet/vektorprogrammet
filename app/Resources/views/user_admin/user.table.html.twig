@@ -23,7 +23,7 @@
             <td> {{ u.phone }} </td>
             <td> {{ u.email }} </td>
             <td> {{ u.fieldOfStudy }} </td>
-            <td> {{ u.fieldOfStudy.department }} </td>
+            <td> {{ u.department }} </td>
 
             {% if u.password is null and is_granted('ROLE_SUPER_ADMIN') %}
                 <td>
@@ -37,10 +37,10 @@
             {% else %}
                 <td><span class="text-success">Aktivert</span></td>
             {% endif %}
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted('ROLE_HIGHEST_ADMIN') or (app.user.department == u.department and is_granted('ROLE_SUPER_ADMIN')) %}
                 <td>
                     <form method="POST"
-                          onsubmit="return confirm('Vil du virkelig fjerne brukeren til {{ u.firstName }} {{ u.lastName }}?')"
+                          onsubmit="return confirm('Vil du virkelig fjerne brukeren {{ u.firstName }} {{ u.lastName }}?')"
                           action="{{ path('useradmin_delete_user_by_id', { id: u.id }) }}">
                         <button type="submit"
                                 class="button tiny alert">
