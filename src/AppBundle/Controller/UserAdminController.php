@@ -99,6 +99,8 @@ class UserAdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush();
+        } else {
+            throw $this->createAccessDeniedException();
         }
         // Redirect to useradmin page, set department to that of the deleted user
         return $this->redirectToRoute('useradmin_filter_users_by_department', array('id' => $user->getDepartment()->getId()));
