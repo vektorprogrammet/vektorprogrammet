@@ -2,17 +2,17 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Application;
+use AppBundle\Entity\Interview;
 use AppBundle\Event\InterviewConductedEvent;
+use AppBundle\Form\Type\ApplicationInterviewType;
+use AppBundle\Form\Type\AssignInterviewType;
+use AppBundle\Form\Type\ScheduleInterviewType;
 use AppBundle\Role\Roles;
+use AppBundle\Type\InterviewStatusType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Interview;
-use AppBundle\Entity\Application;
-use AppBundle\Form\Type\ScheduleInterviewType;
-use AppBundle\Form\Type\ApplicationInterviewType;
-use AppBundle\Form\Type\AssignInterviewType;
-use AppBundle\Type\InterviewStatusType;
 
 /**
  * InterviewController is the controller responsible for interview actions,
@@ -316,7 +316,7 @@ class InterviewController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function cancelByResponseCodeAction(string $responseCode)
+    public function userCancelFinalAction(string $responseCode)
     {
         $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
 
@@ -401,6 +401,19 @@ class InterviewController extends Controller
         return $this->render('interview/response.html.twig', array(
             'interview' => $interview,
         ));
+    }
+
+    public function cancelByResponseCodeAction(string $responseCode)
+    {
+        $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
+
+        if ($interview === null || !$interview->isPending()) {
+            throw $this->createNotFoundException();
+        }
+
+/*        return $this->render('interview/response_confirm_cancel.html.twig', array(
+            'interview' => $interview,
+        ));*/
     }
 
     /**

@@ -952,9 +952,9 @@ interview_response:
     requirements:
       reponseCode: \w+
 
-interview_cancel_by_response:
+interview_cancel_by_response_final:
     path: /intervju/kanseller/{responseCode}
-    defaults: { _controller: AppBundle:Interview:cancelByResponseCode }
+    defaults: { _controller: AppBundle:Interview:userCancelFinal }
     methods: [POST]
     requirements:
       reponseCode: \w+
@@ -972,6 +972,13 @@ interview_request_new_time_by_response:
     methods: [POST]
     requirements:
       reponseCode: \w+
+
+interview_cancel_by_response:
+    path: /intervju/kanseller/tilbakemelding/{responseCode}
+    defaults: { _controller: AppBundle:Interview:cancelByResponseCode }
+    methods: [POST]
+    requirements:
+      responseCode: \w+
 
 ##########################################
 #                File browser            #
