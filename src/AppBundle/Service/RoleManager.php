@@ -3,7 +3,6 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\User;
-use AppBundle\Entity\Role;
 use AppBundle\Role\Roles;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
