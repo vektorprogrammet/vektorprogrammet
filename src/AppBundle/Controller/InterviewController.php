@@ -7,6 +7,7 @@ use AppBundle\Entity\Interview;
 use AppBundle\Event\InterviewConductedEvent;
 use AppBundle\Form\Type\ApplicationInterviewType;
 use AppBundle\Form\Type\AssignInterviewType;
+use AppBundle\Form\Type\CancelInterviewConfirmationType;
 use AppBundle\Form\Type\ScheduleInterviewType;
 use AppBundle\Role\Roles;
 use AppBundle\Type\InterviewStatusType;
@@ -316,7 +317,7 @@ class InterviewController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function userCancelFinalAction(string $responseCode)
+    private function userCancelFinal(string $responseCode)
     {
         $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
 
@@ -403,7 +404,12 @@ class InterviewController extends Controller
         ));
     }
 
-    public function cancelByResponseCodeAction(string $responseCode)
+    /**
+     * @param string $responseCode
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function cancelByResponseCodeAction(Request $request, string $responseCode)
     {
         $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
 
@@ -411,9 +417,22 @@ class InterviewController extends Controller
             throw $this->createNotFoundException();
         }
 
-/*        return $this->render('interview/response_confirm_cancel.html.twig', array(
+        $form = $this->createForm(new CancelInterviewConfirmationType());
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $data = $form->getData();
+            if ($data['message'] !== null) {
+                $interview->setCancelMessage($data['message']);
+            }
+
+            return $this->userCancelFinal($responseCode);
+        }
+
+        return $this->render('interview/response_confirm_cancel.html.twig', array(
             'interview' => $interview,
-        ));*/
+            'form' => $form->createView(),
+        ));
     }
 
     /**
