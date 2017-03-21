@@ -85,6 +85,13 @@ class Interview
     private $responseCode;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    private $cancelMessage;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -448,5 +455,21 @@ class Interview
         $this->responseCode = $newResponseCode;
 
         return $newResponseCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCancelMessage(): string
+    {
+        return $this->cancelMessage;
+    }
+
+    /**
+     * @param string $cancelMessage
+     */
+    public function setCancelMessage(string $cancelMessage)
+    {
+        $this->cancelMessage = $cancelMessage;
     }
 }
