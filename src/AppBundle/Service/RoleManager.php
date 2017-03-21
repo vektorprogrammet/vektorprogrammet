@@ -92,19 +92,22 @@ class RoleManager
 
     public function userIsGranted(User $user, string $role): bool
     {
+        $roles = array(
+            Roles::ASSISTANT,
+            Roles::TEAM_MEMBER,
+            Roles::TEAM_LEADER,
+            Roles::ADMIN,
+        );
+
         if (empty($user->getRoles())) {
             return false;
         }
 
-        $roles = array(
-            'ROLE_USER',
-            'ROLE_ADMIN',
-            'ROLE_SUPER_ADMIN',
-            'ROLE_HIGHEST_ADMIN',
-        );
-
         $userRole = $user->getRoles()[0]->getRole();
 
-        return array_search($userRole, $roles) >= array_search($role, $roles);
+        $userAccessLevel = array_search($userRole, $roles);
+        $roleAccessLevel = array_search($role, $roles);
+
+        return $userAccessLevel >= $roleAccessLevel;
     }
 }
