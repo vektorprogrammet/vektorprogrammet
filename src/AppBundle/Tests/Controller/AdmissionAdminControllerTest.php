@@ -237,6 +237,22 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
     }
 
     /**
+     * Assert that no email is sent when we click on 'Lagre tidspunkt'.
+     */
+    public function testSaveAndNoEmail()
+    {
+        $client = self::createAdminClient();
+        $crawler = $this->goTo('/kontrollpanel/intervju/settopp/6', $client);
+        $form['scheduleInterview[datetime]'] = '2015-08-10 15:00:00';
+        $form = $crawler->selectButton('Lagre tidspunkt')->form();
+        $client->enableProfiler();
+        $client->submit($form);
+
+        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+        $this->assertEquals(0, $mailCollector->getMessageCount());
+    }
+
+    /**
      * Test the functions on /intervju/code.
      */
     public function testResponseInterview()
