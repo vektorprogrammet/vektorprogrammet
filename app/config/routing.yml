@@ -952,13 +952,6 @@ interview_response:
     requirements:
       reponseCode: \w+
 
-interview_cancel_by_response_final:
-    path: /intervju/kanseller/{responseCode}
-    defaults: { _controller: AppBundle:Interview:userCancelFinal }
-    methods: [POST]
-    requirements:
-      reponseCode: \w+
-
 interview_accept_by_response:
     path: /intervju/aksepter/{responseCode}
     defaults: { _controller: AppBundle:Interview:acceptByResponseCode }
