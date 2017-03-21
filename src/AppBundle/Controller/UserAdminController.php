@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Department;
 use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\CreateUserType;
@@ -96,27 +95,15 @@ class UserAdminController extends Controller
 
     public function deleteUserByIdAction(User $user)
     {
-        // If Non-ROLE_HIGHEST_ADMIN try to delete user in other department
-        if (!$this->isGranted(Roles::ADMIN) && $user->getDepartment() !== $this->getUser()->getDepartment) {
-            throw new BadRequestHttpException();
-        }
-        try {
-            // This deletes the given user
+        if ($this->isGranted(ROLES::ADMIN) || $user->getDepartment() == $this->getUser()->getDepartment()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush();
-
-            return new JsonResponse(array(
-                'success' => true,
-            ));
-        } catch (\Exception $e) {
-            // Send a response back to AJAX
-            return new JsonResponse([
-                'success' => false,
-                'code' => $e->getCode(),
-                'cause' => 'Det er ikke mulig å slette brukeren. Vennligst kontakt IT-ansvarlig.',
-            ]);
+        } else {
+            throw $this->createAccessDeniedException();
         }
+        // Redirect to useradmin page, set department to that of the deleted user
+        return $this->redirectToRoute('useradmin_filter_users_by_department', array('id' => $user->getDepartment()->getId()));
     }
 
     public function activateNewUserAction(Request $request, $newUserCode)

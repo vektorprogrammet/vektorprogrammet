@@ -5,7 +5,7 @@
     <table width="100%" id="application-table">
         <thead>
         <tr>
-            {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+            {% if is_granted_admin() %}
                 <th><input type="checkbox" id="bulkAllCheck"></th>
             {% endif %}
 
@@ -16,15 +16,14 @@
             <th>Dobbel Stilling</th>
             <th>Bolk</th>
             <th>Språk</th>
-            <th colspan="2"></th>
+            <th colspan="3"></th>
         </tr>
         </thead>
 
         <tbody>
-        <form id="bulk" name="application">
             {% for a in applications %}
                 <tr id="{{ a.id }}">
-                    {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                    {% if is_granted_admin() %}
                         <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
                         </td>
                     {% endif %}
@@ -39,10 +38,11 @@
                             Les søknad
                         </a>
                     </td>
+
+                    {% include 'admission_admin/create_substitute_button.html.twig' %}
                     {% include 'admission_admin/existing_applications/delete_column.html.twig' %}
                 </tr>
             {% endfor %}
-        </form>
         </tbody>
     </table>
 {% endblock %}

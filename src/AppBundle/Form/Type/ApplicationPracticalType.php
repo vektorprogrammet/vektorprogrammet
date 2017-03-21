@@ -10,10 +10,10 @@ class ApplicationPracticalType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $workChoices = array(
-            'Bra' => 'Bra',
-            'Ikke' => 'Ikke',
-        );
+        $builder->add('days', new DaysType(), array(
+            'label' => 'Hvilke dager passer IKKE for deg?',
+            'data_class' => 'AppBundle\Entity\Application',
+        ));
 
         $builder->add('doublePosition', 'choice', array(
             'label' => 'Kunne du tenke deg dobbel stilling? Altså en gang i uka i 8 uker?',
@@ -34,36 +34,6 @@ class ApplicationPracticalType extends AbstractType
             ),
             'expanded' => true,
             'multiple' => false,
-        ));
-
-        $builder->add('monday', 'choice', array(
-            'label' => 'Mandag',
-            'choices' => $workChoices,
-            'expanded' => true,
-        ));
-
-        $builder->add('tuesday', 'choice', array(
-            'label' => 'Tirsdag',
-            'choices' => $workChoices,
-            'expanded' => true,
-        ));
-
-        $builder->add('wednesday', 'choice', array(
-            'label' => 'Onsdag',
-            'choices' => $workChoices,
-            'expanded' => true,
-        ));
-
-        $builder->add('thursday', 'choice', array(
-            'label' => 'Torsdag',
-            'choices' => $workChoices,
-            'expanded' => true,
-        ));
-
-        $builder->add('friday', 'choice', array(
-            'label' => 'Fredag',
-            'choices' => $workChoices,
-            'expanded' => true,
         ));
 
         $builder->add('english', 'choice', array(

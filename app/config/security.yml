@@ -81,7 +81,6 @@ security:
         - { path: ^/kontrollpanel/skoleadmin/historikk/slett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/intervju/skjema, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/intervju/fordel, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/vikar/rediger, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/undersokelse/slett, role: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/undersokelse/kopier, role: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/stillinger, roles: ROLE_SUPER_ADMIN }
@@ -105,6 +104,9 @@ security:
         - { path: ^/profile/rolle/endre, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/profil/rediger, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/opptakadmin/teaminteresse, roles: ROLE_SUPER_ADMIN}
+        - { path: ^/kontrollpanel/vikar/rediger, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/vikar/slett, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/vikar/opprett, roles: ROLE_SUPER_ADMIN }
 
           #ROLE_ADMIN = team user
         - { path: ^/profile/edit, roles: ROLE_ADMIN }

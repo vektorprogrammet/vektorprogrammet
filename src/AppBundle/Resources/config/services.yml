@@ -64,6 +64,12 @@ services:
     tags:
       - { name: twig.extension }
 
+  app.role_extension:
+    class: AppBundle\Twig\Extension\RoleExtension
+    arguments: ['@security.authorization_checker', '@security.token_storage']
+    tags:
+        - { name: twig.extension }
+
   app.exception_subscriber:
     class: AppBundle\EventSubscriber\ExceptionSubscriber
     arguments: ['@app.logger', '@security.token_storage', '@router']

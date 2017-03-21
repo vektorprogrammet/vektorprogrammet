@@ -262,23 +262,6 @@ class Application
     {
         $this->friday = $friday;
     }
-
-    /**
-     * @return bool
-     */
-    public function getSubstitute()
-    {
-        return $this->substitute;
-    }
-
-    /**
-     * @param bool $substitute
-     */
-    public function setSubstitute($substitute)
-    {
-        $this->substitute = $substitute;
-    }
-
     /**
      * @return bool
      */
@@ -465,5 +448,21 @@ class Application
     public function setWantsNewsletter($wantsNewsletter)
     {
         $this->wantsNewsletter = $wantsNewsletter;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSubstitute()
+    {
+        return $this->substitute;
+    }
+
+    /**
+     * @param bool $substitute
+     */
+    public function setSubstitute($substitute)
+    {
+        $this->substitute = $substitute;
     }
 }

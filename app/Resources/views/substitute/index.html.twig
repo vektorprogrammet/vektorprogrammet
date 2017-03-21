@@ -2,20 +2,9 @@
 
 {% block javascripts %}
 
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
     <script src="{{ asset('js/stupidtable.js') }}"></script>
-    <script src="{{ asset('js/deleteablerow.js') }}"></script>
-
     <script>
-
-        /**
-         * This object organizes the javascript used by this twig.
-         *
-         * The onReady function is called when the document is ready.
-         */
         var Substitute = {
-
             // The html table containing the substitute assistants
             subTable: $("#substitute-table"),
 
@@ -25,15 +14,6 @@
 
                 // Add arrows after sorting the table
                 Substitute.subTable.on("aftertablesort", Substitute.addSortArrows);
-
-                // Bind delete application functionality to each substitute delete button
-                Substitute.subTable.find(".delete").deleteablerow('substitute_delete', {
-                    confirmation: {
-                        modal: $("#deleteModal"),
-                        acceptButton: $("#deleteModal .accept"),
-                        cancelButton: $("#deleteModal .cancel")
-                    }
-                });
             },
 
             addSortArrows: function (event, data) {
@@ -44,9 +24,7 @@
                 var arrow = data.direction === dir.ASC ? "asc" : "desc";
                 th.eq(data.column).append('<span class="arrow"> <i class="fa fa-sort-' + arrow + '"></i></span>');
             }
-
         };
-
         $(document).ready(Substitute.onReady);
     </script>
 
@@ -58,112 +36,92 @@
 
 {% block body %}
     <p></p>
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <h1>Vikarer</h1>
+        </div>
+    </div>
 
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
+            {# Semester dropdown #}
+            {% include 'common/department_semester_dropdowns.html.twig' with {
+            'path': 'substitute_show_by_semester',
+            'parameterName': 'semester',
+            'currentSemester': semester
+            } %}
+        </div>
+    </div>
 
-            <h1>Vikarer</h1>
-
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
             <hr>
-
-            <div class="row">
-                <div class="small-6 medium-6 large-6 columns">
-                    <ul class="inline-list">
-
-                        {# Departments dropdown #}
-                        {% include "common/department_dropdown.html.twig" with {'pathForDepartment': 'substitute_show_by_department', 'departmentParameterName': 'id', 'currentDepartment': department} %}
-
-                        {# Semester dropdown #}
-                        <li>
-                            <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown"
-                               aria-expanded="false">Semester <i class="fa fa-caret-down"></i></a>
-                            <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1"
-                                aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                                {% for s in semesters %}
-
-                                    <li><a href="{{ path(app.request.attributes.get('_route'),
-                                        app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'semester': s.id })) }}">{{ s.name }}</a>
-                                    </li>
-
-                                {% endfor %}
-
-                            </ul>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
-
-            {# The table containing new applications #}
             <table width="100%" id="substitute-table">
                 <thead>
+
                 <tr>
-                    {# data-sort is used to sort the tables with stupidtable.js #}
-                    <th data-sort="string">Fornavn</th>
-                    <th data-sort="string">Etternavn</th>
-                    <th data-sort="int">Tlf</th>
-                    <th data-sort="string">E-post</th>
-                    <th data-sort="string">Linje</th>
-                    <th data-sort="int">År</th>
-                    <th data-sort="string"><span data-tooltip aria-haspopup="true" class="has-tip"
-                                                 title="Mandag">M</span></th>
-                    <th data-sort="string"><span data-tooltip aria-haspopup="true" class="has-tip"
-                                                 title="Tirdag">T</span></th>
-                    <th data-sort="string"><span data-tooltip aria-haspopup="true" class="has-tip"
-                                                 title="Onsdag">O</span></th>
-                    <th data-sort="string"><span data-tooltip aria-haspopup="true" class="has-tip"
-                                                 title="Torsdag">T</span></th>
-                    <th data-sort="string"><span data-tooltip aria-haspopup="true" class="has-tip"
-                                                 title="Fredag">F</span></th>
-                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <th data-sort="string" class="clickable"> Fornavn</th>
+                    <th data-sort="string" class="clickable"> Etternavn</th>
+                    <th data-sort="int" class="clickable"> Tlf</th>
+                    <th data-sort="string" class="clickable"> E-post</th>
+                    <th data-sort="string" class="clickable"> Linje</th>
+
+                    <th data-sort="int" class="clickable"> År</th>
+                    <th data-sort="string" class="clickable"> Engelsk</th>
+                    <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Mandag"> M</span></th>
+                    <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Tirsdag"> T</span></th>
+                    <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Onsdag"> O</span></th>
+                    <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Torsdag"> T</span></th>
+                    <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Fredag"> F</span></th>
+                    {% if is_granted_team_leader() %}
                         <th colspan="2"></th>
                     {% endif %}
                 </tr>
                 </thead>
 
                 <tbody>
-                {% for s in substitutes %}
-                    <tr id="{{ s.id }}">
-                        <td>{{ s.firstName }}</td>
-                        <td>{{ s.lastName }}</td>
-                        <td>{{ s.phone }}</td>
-                        <td>{{ s.email }}</td>
-                        <td>{{ s.fieldOfStudy }}</td>
-                        <td>{{ s.yearOfStudy }}</td>
-                        <td>{{ s.monday }}</td>
-                        <td>{{ s.tuesday }}</td>
-                        <td>{{ s.wednesday }}</td>
-                        <td>{{ s.thursday }}</td>
-                        <td>{{ s.friday }}</td>
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
-                            <td>
-                                <a href="{{ path('substitute_edit', { 'id': s.id }) }}" class="button tiny">
-                                    <i class="fa fa-pencil-square-o"></i> Rediger
-                                </a>
-                            </td>
-                            <td>
-                                <a href="#" class="button tiny alert delete" id="{{ s.id }}">
-                                    <i class="fa fa-trash"></i> Slett
-                                </a>
-                            </td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
+                    {% for sub in substitutes %}
+                        <tr>
+                            <td>{{ sub.user.firstName }}</td>
+                            <td>{{ sub.user.lastName }}</td>
+                            <td>{{ sub.user.phone }}</td>
+                            <td>{{ sub.user.email }}</td>
+                            <td>{{ sub.user.fieldOfStudy }}</td>
+                            <td>{{ sub.yearOfStudy }}</td>
+                            <td>{{ sub.english ? "Ja" : "Nei"}}</td>
+                            <td>{{ sub.monday }}</td>
+                            <td>{{ sub.tuesday }}</td>
+                            <td>{{ sub.wednesday }}</td>
+                            <td>{{ sub.thursday }}</td>
+                            <td>{{ sub.friday }}</td>
+                            {% if is_granted_team_leader() %}
+                                <td>
+                                    <form method="POST"
+                                          action="{{ path('substitute_modify', { id: sub.id }) }}">
+                                        <button type="submit"
+                                                class="button tiny">
+                                            <i class="fa"></i>
+                                            Rediger
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form method="POST"
+                                          onsubmit="return confirm('Vil du virkelig fjerne vikarstillingen til {{ sub.user.firstName }} {{ sub.user.lastName }}?')"
+                                          action="{{ path('substitute_delete', { id: sub.id }) }}">
+                                        <button type="submit"
+                                                class="button tiny alert">
+                                            <i class="fa fa-trash"></i>
+                                            Slett
+                                        </button>
+                                    </form>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
-
+            <hr>
         </div>
     </div>
-
-    {# The confirmation modal, used to confirm substitute deletes #}
-    <div id="deleteModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete" aria-hidden="true"
-         role="dialog">
-        <h2 id="modalMessage">Vil du virkelig slette vikaren?</h2>
-        <ul class="inline-list">
-            <a href="#" class="button tiny accept">Slett</a>
-            <a href="#" class="button tiny cancel">Avbryt</a>
-        </ul>
-    </div>
-
 {% endblock %}

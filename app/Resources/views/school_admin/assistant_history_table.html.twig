@@ -17,7 +17,7 @@
             <td> {{ ah.semester.name }} </td>
             <td> {{ ah.bolk }} </td>
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted_team_leader() %}
                 <td><a href="#" id="{{ ah.id }}" class="button tiny alert delete"><i
                                 class="fa fa-trash-o"></i> Slett</a></td>
             {% endif %}
