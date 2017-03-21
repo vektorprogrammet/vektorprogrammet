@@ -17,11 +17,11 @@ class InterviewControllerTest extends BaseWebTestCase
         $form = $crawler->selectButton('Lagre')->form();
 
         // Fill in the form
-        $form['application[applicationPractical][monday]']->select('Bra');
-        $form['application[applicationPractical][tuesday]']->select('Bra');
-        $form['application[applicationPractical][wednesday]']->select('Ikke');
-        $form['application[applicationPractical][thursday]']->select('Bra');
-        $form['application[applicationPractical][friday]']->select('Ikke');
+        $form['application[applicationPractical][days][monday]']->select('Bra');
+        $form['application[applicationPractical][days][tuesday]']->select('Bra');
+        $form['application[applicationPractical][days][wednesday]']->select('Ikke');
+        $form['application[applicationPractical][days][thursday]']->select('Bra');
+        $form['application[applicationPractical][days][friday]']->select('Ikke');
 
         $form['application[applicationPractical][doublePosition]']->select('1');
         $form['application[applicationPractical][preferredGroup]']->select('Bolk 1');
@@ -436,20 +436,16 @@ class InterviewControllerTest extends BaseWebTestCase
         $applicationsBefore = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
 
         // Admin user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
 
-        $crawler = $client->request('GET', '/kontrollpanel/intervju/conduct/6');
+        $crawler = $this->adminGoTo('/kontrollpanel/intervju/conduct/6');
 
         // Assert that the page response status code is 200
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, self::createAdminClient()->getResponse()->getStatusCode());
 
         // Assert that we have the correct page
         $this->verifyCorrectInterview($crawler, 'Assistent', 'Johansen');
 
-        $this->fillAndSubmitInterviewFormWithTeamInterest($client, $crawler, true);
+        $this->fillAndSubmitInterviewFormWithTeamInterest(self::createAdminClient(), $crawler, true);
 
         $applicationsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
 
@@ -462,20 +458,16 @@ class InterviewControllerTest extends BaseWebTestCase
         $applicationsBefore = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
 
         // Admin user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
 
-        $crawler = $client->request('GET', '/kontrollpanel/intervju/conduct/6');
+        $crawler = $this->adminGoTo('/kontrollpanel/intervju/conduct/6');
 
         // Assert that the page response status code is 200
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, self::createAdminClient()->getResponse()->getStatusCode());
 
         // Assert that we have the correct page
         $this->verifyCorrectInterview($crawler, 'Assistent', 'Johansen');
 
-        $this->fillAndSubmitInterviewFormWithTeamInterest($client, $crawler, false);
+        $this->fillAndSubmitInterviewFormWithTeamInterest(self::createAdminClient(), $crawler, false);
 
         $applicationsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
 

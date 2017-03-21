@@ -72,10 +72,7 @@ class AdmissionControllerTest extends BaseWebTestCase
      */
     private function createAndSubmitForm(string $testname, bool $wantsNewsletter)
     {
-        $clientAnonymous = static::createClient();
-
-        $crawler = $clientAnonymous->request('GET', '/opptak/avdeling/1');
-        $this->assertTrue($clientAnonymous->getResponse()->isSuccessful());
+        $crawler = $this->assistantGoTo('/opptak/avdeling/1');
 
         $submitButton = $crawler->selectButton('Søk');
         $form = $submitButton->form();
@@ -89,7 +86,7 @@ class AdmissionControllerTest extends BaseWebTestCase
         $form['application[yearOfStudy]'] = 4;
         $form['application[wantsNewsletter]'] = $wantsNewsletter;
 
-        $clientAnonymous->submit($form);
+        self::createAssistantClient()->submit($form);
     }
 
     /**
@@ -97,28 +94,22 @@ class AdmissionControllerTest extends BaseWebTestCase
      */
     private function createAndSubmitForm_teamInterest(bool $teamInterest)
     {
-        $clientAnonymous = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $crawler = $clientAnonymous->request('GET', '/opptak/eksisterende');
-        $this->assertTrue($clientAnonymous->getResponse()->isSuccessful());
+        $crawler = $this->assistantGoTo('/opptak/eksisterende');
 
         $submitButton = $crawler->selectButton('Søk');
         $form = $submitButton->form();
 
         $form['application[yearOfStudy]'] = 3;
-        $form['application[applicationPractical][monday]'] = 'Bra';
-        $form['application[applicationPractical][tuesday]'] = 'Ikke';
-        $form['application[applicationPractical][wednesday]'] = 'Bra';
-        $form['application[applicationPractical][thursday]'] = 'Ikke';
-        $form['application[applicationPractical][friday]'] = 'Bra';
+        $form['application[applicationPractical][days][monday]'] = 'Bra';
+        $form['application[applicationPractical][days][tuesday]'] = 'Ikke';
+        $form['application[applicationPractical][days][wednesday]'] = 'Bra';
+        $form['application[applicationPractical][days][thursday]'] = 'Ikke';
+        $form['application[applicationPractical][days][friday]'] = 'Bra';
         $form['application[applicationPractical][doublePosition]'] = 0;
         $form['application[applicationPractical][preferredGroup]'] = 'Bolk 1';
         $form['application[applicationPractical][english]'] = 1;
         $form['application[applicationPractical][teamInterest]'] = $teamInterest;
 
-        $clientAnonymous->submit($form);
+        self::createAssistantClient()->submit($form);
     }
 }
