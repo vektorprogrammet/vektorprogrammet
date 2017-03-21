@@ -275,15 +275,34 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $count_no_answer = $crawler->filter('td:contains("Ingen svar")')->count();
         $count_status = $crawler->filter('td:contains('.$status.')')->count();
 
-        // "code" is a special response code used in the dev environment
-        $crawler = $this->anonymousGoTo('/intervju/code');
+        // We need an admin client who is able to schedule an interview
+        $client = self::createAdminClient();
+
+        // We need to schedule an interview, and catch the unique code in the email which is sent
+        $crawler = $this->goTo('/kontrollpanel/intervju/settopp/6', $client);
+
+        // At this point we are about to send the email
+        $form['scheduleInterview[datetime]'] = '2015-08-10 15:00:00';
+        $form = $crawler->selectButton('Lagre tidspunkt og send mail')->form();
+        $client->enableProfiler();
+        $client->submit($form);
+
+        $response_code = $this->getResponseCodeFromEmail($client);
+
+        $client->followRedirect();
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        $client = self::createAnonymousClient();
+        $crawler = $this->goTo('/intervju/'.$response_code, $client);
 
         // Clicking a button on this page should trigger the mentioned change.
         $statusButton = $crawler->selectButton($button_text);
         $form = $statusButton->form();
-        self::createAnonymousClient()->submit($form);
+        $client->submit($form);
 
-        $crawler = self::createAnonymousClient()->followRedirect();
+        $crawler = $client->followRedirect();
+
+        $this->assertTrue($client->getResponse()->isSuccessful());
 
         $filter_string = "div:contains('".$flash_text."')";
         $this->assertEquals(4, $crawler->filter($filter_string)->count());
@@ -295,5 +314,18 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->assertEquals($count_status + 1, $crawler->filter('td:contains('.$status.')')->count());
 
         \TestDataManager::restoreDatabase();
+    }
+
+    private function getResponseCodeFromEmail($client)
+    {
+        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+        $this->assertEquals(1, $mailCollector->getMessageCount());
+        $message = $mailCollector->getMessages()[0];
+        $body = $message->getBody();
+        $start = strpos($body, 'intervju/') + 9;
+        $messageStartingWithCode = substr($body, $start);
+        $end = strpos($messageStartingWithCode, '"');
+
+        return substr($body, $start, $end);
     }
 }
