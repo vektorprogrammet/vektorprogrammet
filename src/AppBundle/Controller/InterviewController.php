@@ -317,10 +317,8 @@ class InterviewController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    private function userCancelFinal(string $responseCode)
+    private function userCancelFinal(string $responseCode, Interview $interview)
     {
-        $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
-
         if ($interview === null) {
             throw $this->createNotFoundException();
         }
@@ -428,7 +426,7 @@ class InterviewController extends Controller
                 $interview->unsetCancelMessage();
             }
 
-            return $this->userCancelFinal($responseCode);
+            return $this->userCancelFinal($responseCode, $interview);
         }
 
         return $this->render('interview/response_confirm_cancel.html.twig', array(
