@@ -3,6 +3,8 @@
 namespace AppBundle\Tests\Controller;
 
 use AppBundle\Tests\BaseWebTestCase;
+use Symfony\Bundle\FrameworkBundle\Client;
+use AppBundle\Entity\Interview;
 
 class AdmissionAdminControllerTest extends BaseWebTestCase
 {
@@ -264,7 +266,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->helperTestStatus('Ny tid ønskes', 'Be om ny tid', 'Forespørsel har blitt sendt.');
 
         // Test cancel
-        // TODO
+        $this->helperTestStatus('Kansellert', 'Kanseller', 'Intervjuet ble kansellert.', true);
     }
 
     /**
@@ -316,8 +318,11 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $form = $statusButton->form();
         $client->submit($form);
 
-        $crawler = $client->followRedirect();
+        if ($isCancel) {
+            $client = $this->helperTestCancelConfirm($client, $response_code);
+        }
 
+        $crawler = $client->followRedirect();
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $filter_string = "div:contains('".$flash_text."')";
@@ -343,5 +348,28 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $end = strpos($messageStartingWithCode, '"');
 
         return substr($body, $start, $end);
+    }
+
+    /**
+     * @param Client $client
+     * @param string $response_code
+     *
+     * @return Client
+     */
+    private function helperTestCancelConfirm(Client $client, string $response_code)
+    {
+        $crawler = $this->goTo('/intervju/kanseller/tilbakemelding/'.$response_code, $client);
+        $form = $crawler->selectButton('Kanseller')->form();
+        $form['CancelInterviewConfirmation[message]'] = 'Test answer';
+        $client->submit($form);
+
+        $kernel = $this->createKernel();
+        $kernel->boot();
+        $em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+
+        $interview = $em->getRepository('AppBundle:Interview')->findByResponseCode($response_code);
+        $this->assertEquals('Test answer', $interview->getCancelMessage());
+
+        return $client;
     }
 }
