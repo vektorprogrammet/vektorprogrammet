@@ -948,7 +948,7 @@ interview_schedule:
 interview_response:
     path: /intervju/{responseCode}
     defaults: { _controller: AppBundle:Interview:respond }
-    methods: [GET, POST]
+    methods: [GET]
     requirements:
       reponseCode: \w+
 
