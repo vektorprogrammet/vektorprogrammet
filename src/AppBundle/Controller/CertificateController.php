@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Entity\CertificateRequest;
+use AppBundle\Entity\Department;
 
 class CertificateController extends Controller
 {
@@ -61,7 +62,8 @@ class CertificateController extends Controller
         // Send a respons to ajax
         return new JsonResponse($response);
     }
-    public function downloadAction(Request $request)
+
+    public function downloadAction()
     {
 
         // Only ROLE_SUPER_ADMIN can download certificates
@@ -76,7 +78,6 @@ class CertificateController extends Controller
             // Finds all the assistants
             $assistants = $em->getRepository('AppBundle:AssistantHistory')->findAllActiveAssistantHistories();
 
-
             return $this->render('certificate/certificate_download.html.twig', array(
                 'assistants' => $assistants,
                 'department' => $department,
@@ -87,6 +88,28 @@ class CertificateController extends Controller
         }
     }
 
+    //TODO: Make an own controller: "AssitantController"?
+    public function showAssistantsByDepartmentAction(Department $department)
+    {
+
+        // Only ROLE_SUPER_ADMIN can download certificates
+        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+            $em = $this->getDoctrine()->getManager();
+
+            $departments = $em->getRepository('AppBundle:Department')->findAllDepartments();
+
+            // Finds all the assistants
+            $assistants = $em->getRepository('AppBundle:AssistantHistory')->findAssistantHistoriesByDepartment($department);
+
+            return $this->render('certificate/certificate_download.html.twig', array(
+                'assistants' => $assistants,
+                'department' => $department,
+                'departments' => $departments,
+            ));
+        } else {
+            throw $this->createAccessDeniedException();
+        }
+    }
 
     public function requestAction()
     {
