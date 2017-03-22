@@ -969,7 +969,7 @@ interview_request_new_time_by_response:
 interview_cancel_by_response:
     path: /intervju/kanseller/tilbakemelding/{responseCode}
     defaults: { _controller: AppBundle:Interview:cancelByResponseCode }
-    methods: [POST]
+    methods: [GET, POST]
     requirements:
       responseCode: \w+
 
