@@ -281,8 +281,9 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
      * @param string $status
      * @param string $button_text
      * @param string $flash_text
+     * @param bool   $isCancel
      */
-    private function helperTestStatus(string $status, string $button_text, string $flash_text)
+    private function helperTestStatus(string $status, string $button_text, string $flash_text, bool $isCancel = false)
     {
         $crawler = $this->teamMemberGoTo('/kontrollpanel/opptak/fordelt');
 
