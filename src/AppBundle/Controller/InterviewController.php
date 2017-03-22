@@ -426,7 +426,9 @@ class InterviewController extends Controller
                 $interview->unsetCancelMessage();
             }
 
-            return $this->userCancelFinal($responseCode, $interview);
+            $this->userCancelFinal($responseCode, $interview);
+
+            return $this->redirectToRoute('home');
         }
 
         return $this->render('interview/response_confirm_cancel.html.twig', array(
