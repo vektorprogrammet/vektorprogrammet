@@ -337,7 +337,12 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         \TestDataManager::restoreDatabase();
     }
 
-    private function getResponseCodeFromEmail($client)
+    /**
+     * @param Client $client
+     *
+     * @return string
+     */
+    private function getResponseCodeFromEmail(Client $client)
     {
         $mailCollector = $client->getProfile()->getCollector('swiftmailer');
         $this->assertEquals(1, $mailCollector->getMessageCount());
