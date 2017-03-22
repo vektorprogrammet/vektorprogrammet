@@ -462,7 +462,11 @@ class Interview
      */
     public function getCancelMessage(): string
     {
-        return $this->cancelMessage;
+        if ($this->cancelMessage !== null) {
+            return $this->cancelMessage;
+        } else {
+            return '';
+        }
     }
 
     /**

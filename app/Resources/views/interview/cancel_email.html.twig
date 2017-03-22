@@ -2,6 +2,9 @@
 
 <p>{{ interview.getUser.getFullName }} har kansellert sitt intervju.</p>
 <p>Tidligere intervjutidspunkt var: {{ interview.getScheduled|date("d.m.y - G:i") }}</p>
-
+{% if interview.getCancelMessage %}
+<p>Begunnelse:<br>
+{{ interview.getCancelMessage }}</p>
+{% endif %}
 <p>Vennlig hilsen,<br>
 Vektorprogrammet </p>
