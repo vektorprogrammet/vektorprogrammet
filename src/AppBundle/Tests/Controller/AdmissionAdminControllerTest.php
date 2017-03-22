@@ -270,14 +270,13 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
     /**
      * Test the status functionality on /intervju/code.
      *
-     * Start at kontrollpanel/opptak/fordelt and count occurrences of
-     * $status and "Ingen svar". Proceed to the schedule response page
-     * for our designated fixture and click the button corresponding
-     * to $button_text. Then, verify that we get the correct flash
-     * message after the redirect. Finally, go back to assigned page
-     * and check that the number of elements containing $status has
-     * increased and that the number of elements containing
-     * "Ingen svar" har decreased.
+     * Start at kontrollpanel/opptak/fordelt and count occurrences of $status and "Ingen
+     * svar". Then, set up an interview and arrange for an email to be sent to the candidate.
+     * Examine the contents of the email and extract the unique response code. Proceed to the
+     * schedule response page with our special code and click the button corresponding to
+     * $button_text. Then, verify that we get the correct flash message after the redirect. Finally,
+     * go back to assigned page and check that the number of elements containing $status has
+     * increased and that the number of elements containing "Ingen svar" har decreased.
      *
      * @param string $status
      * @param string $button_text
