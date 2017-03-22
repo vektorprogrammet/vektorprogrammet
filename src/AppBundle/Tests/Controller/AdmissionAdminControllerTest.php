@@ -266,7 +266,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->helperTestStatus('Ny tid ønskes', 'Be om ny tid', 'Forespørsel har blitt sendt.');
 
         // Test cancel
-        $this->helperTestStatus('Kansellert', 'Kanseller', 'Intervjuet ble kansellert.', true);
+        $this->helperTestStatus('Kansellert', 'Kanseller', 'Intervjuet ble kansellert.');
     }
 
     /**
@@ -287,7 +287,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
      * @param string $flash_text
      * @param bool   $isCancel
      */
-    private function helperTestStatus(string $status, string $button_text, string $flash_text, bool $isCancel = false)
+    private function helperTestStatus(string $status, string $button_text, string $flash_text)
     {
         $crawler = $this->teamMemberGoTo('/kontrollpanel/opptak/fordelt');
 
@@ -324,7 +324,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         }
         $client->submit($form);
 
-        if ($isCancel) {
+        if ($status === 'Kansellert') {
             $client = $this->helperTestCancelConfirm($client, $response_code);
         }
 
