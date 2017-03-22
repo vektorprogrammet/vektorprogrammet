@@ -258,10 +258,10 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
     public function testResponseInterview()
     {
         // Test accept
-        $this->testStatus('Akseptert', 'Godta', 'Intervjuet ble akseptert.');
+        $this->helperTestStatus('Akseptert', 'Godta', 'Intervjuet ble akseptert.');
 
         // Test reschedule
-        $this->testStatus('Ny tid ønskes', 'Be om ny tid', 'Forespørsel har blitt sendt.');
+        $this->helperTestStatus('Ny tid ønskes', 'Be om ny tid', 'Forespørsel har blitt sendt.');
 
         // Test cancel
         // TODO
@@ -282,7 +282,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
      * @param string $button_text
      * @param string $flash_text
      */
-    private function testStatus(string $status, string $button_text, string $flash_text)
+    private function helperTestStatus(string $status, string $button_text, string $flash_text)
     {
         $crawler = $this->teamMemberGoTo('/kontrollpanel/opptak/fordelt');
 
