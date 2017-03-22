@@ -424,6 +424,8 @@ class InterviewController extends Controller
             $data = $form->getData();
             if ($data['message'] !== null) {
                 $interview->setCancelMessage($data['message']);
+            } else {
+                $interview->unsetCancelMessage();
             }
 
             return $this->userCancelFinal($responseCode);

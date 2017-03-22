@@ -472,4 +472,9 @@ class Interview
     {
         $this->cancelMessage = $cancelMessage;
     }
+
+    public function unsetCancelMessage()
+    {
+        $this->cancelMessage = null;
+    }
 }
