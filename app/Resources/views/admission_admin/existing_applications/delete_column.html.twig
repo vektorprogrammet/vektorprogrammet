@@ -1,5 +1,5 @@
 {# Add the delete interview and application dropdown button, given the correct permissions #}
-{% if is_granted('ROLE_HIGHEST_ADMIN') %}
+{% if is_granted_admin() %}
     <td>
         <a href="#" class="button tiny alert" data-dropdown="deleteDropdown{{ a.id }}"
            aria-controls="deleteDropdown{{ a.id }}" aria-expanded="false" id="{{ a.id }}">

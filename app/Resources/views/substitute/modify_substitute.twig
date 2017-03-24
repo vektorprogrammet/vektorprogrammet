@@ -6,7 +6,8 @@
 
 {# Form themes user to modify the templates of the various form components #}
 {% form_theme form 'form/interview_layout.html.twig' %}
-{% form_theme form.days 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.days 'form/components/radio_grid_layout.html.twig' %}
+
 {% block body %}
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">

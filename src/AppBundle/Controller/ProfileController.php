@@ -139,7 +139,7 @@ class ProfileController extends Controller
         $roleManager = $this->get('app.roles');
         $roleName = $roleManager->mapAliasToRole($request->request->get('role'));
 
-        if (!$roleManager->canChangeToRole($roleName)) {
+        if (!$roleManager->loggedInUserCanChangeRoleOfUsersWithRole($user, $roleName)) {
             throw new BadRequestHttpException();
         }
 

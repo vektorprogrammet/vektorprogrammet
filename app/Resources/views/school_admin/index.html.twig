@@ -60,7 +60,7 @@
 
                     <ul class="inline-list">
 
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        {% if is_granted_team_leader() %}
                             {% include "common/department_dropdown.html.twig" with {
                             'pathForDepartment': 'schooladmin_filter_schools_by_department',
                             'departmentParameterName': 'id',
@@ -119,13 +119,13 @@
                         <td> {{ s.international ? 'Internasjonal':'Norsk' }} </td>
 
                         {# Only SUPER_ADMIN can edit #}
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        {% if is_granted_team_leader() %}
                             <td><a href="{{ path('schooladmin_update', { 'id': s.id }) }}"
                                    class="button tiny">Rediger</a></td>
                         {% endif %}
 
                         {# Only HIGHEST_ADMIN can delete #}
-                        {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                        {% if is_granted_admin() %}
                             <td><a href="#" id="{{ s.id }}" class="button tiny alert delete"><i
                                             class="fa fa-trash-o"></i> Slett</a></td>
                         {% endif %}

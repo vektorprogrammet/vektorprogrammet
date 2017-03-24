@@ -36,7 +36,7 @@
 
             <hr>
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted_team_leader() %}
                 <div class="row">
                     <div class="small-12 medium-12 large-6 columns">
                         <ul class="inline-list">
@@ -83,12 +83,12 @@
                         <td width="70%"><a
                                     href="{{ path('teamadmin_show_specific_team', { 'id': t.id }) }}"> {{ t.name }} </a>
                         </td>
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        {% if is_granted_team_leader() %}
                             <td><a href="{{ path('teamadmin_update', { 'id': t.id }) }}"
                                    class="button tiny">Rediger</a>
                             </td>
                         {% endif %}
-                        {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                        {% if is_granted_admin() %}
                             <td><a href="#" id="{{ t.id }}" class="button tiny alert delete"><i
                                             class="fa fa-trash-o"></i> Slett</a></td>
                         {% endif %}
