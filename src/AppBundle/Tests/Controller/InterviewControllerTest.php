@@ -439,7 +439,6 @@ class InterviewControllerTest extends BaseWebTestCase
 
         $crawler = $this->adminGoTo('/kontrollpanel/intervju/conduct/6');
 
-
         // Assert that we have the correct page
         $this->verifyCorrectInterview($crawler, 'Assistent', 'Johansen');
 
@@ -458,7 +457,6 @@ class InterviewControllerTest extends BaseWebTestCase
         // Admin user
 
         $crawler = $this->adminGoTo('/kontrollpanel/intervju/conduct/6');
-
 
         // Assert that we have the correct page
         $this->verifyCorrectInterview($crawler, 'Assistent', 'Johansen');
