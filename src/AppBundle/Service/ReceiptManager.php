@@ -23,23 +23,31 @@ class ReceiptManager
         $this->em = $em;
     }
 
-
-    public function getTotalActiveReceiptDataByUser(User $user){
+    /*public function getTotalActiveReceiptDataPerUser(User $user){
         $receipts = $this->em->getRepository('AppBundle:Receipt')->findActiveByDepartment($user->getDepartment());
 
         $receipts_data = array();
         foreach ($receipts as $receipt)
+    }*/
+
+    public function getTotalActiveSumByUser(User $user): float
+    {
+        return $this->getTotalInactiveOrActiveSumByUser(true, $user);
     }
 
-
-
-    public function getSumByUser(User $user): float
+    public function getTotalInactiveSumByUser(User $user): float
     {
-        $sum = 0.0;
-        $user_receipts = $this->em->getRepository('AppBundle:Receipt')->findActiveByUser($user);
-        foreach ($user_receipts as $receipt)
-            $sum += $receipt->sum;
+        return $this->getTotalInactiveOrActiveSumByUser(false, $user);
+    }
 
-        return $sum;
+    public function getTotalInactiveOrActiveSumByUser(bool $active, User $user): float{
+        $totalSum = 0.0;
+        $user_receipts = $active ?
+            $this->em->getRepository('AppBundle:Receipt')->findActiveByUser($user) :
+            $this->em->getRepository('AppBundle:Receipt')->findInactiveByUser($user);
+        foreach ($user_receipts as $receipt)
+            $totalSum += $receipt->sum;
+
+        return $totalSum;
     }
 }
