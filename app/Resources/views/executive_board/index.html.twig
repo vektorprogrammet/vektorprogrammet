@@ -1,0 +1,91 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block javascripts %}
+
+    {# Easy routing with FOSJsRouting bundle #}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+    {# We need the deletetablerow.js file #}
+    <script src="{{ asset('js/deleteablerow.js') }}"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $('.delete').deleteablerow('teamadmin_delete_team_by_id', {
+                confirmation: {
+                    modal: $('#confirmModal'),
+                    acceptButton: $('#modalAccept'),
+                    cancelButton: $('#modalCancel')
+                }
+            });
+        });
+
+    </script>
+
+
+{% endblock %}
+
+{% block title %}
+    Hovedstyret
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <h1> Hovedstyret </h1>
+
+            <hr>
+
+            {% if is_granted_team_leader() %}
+                <div class="row">
+                    <div class="small-12 medium-12 large-6 columns">
+                        <ul class="inline-list">
+
+                            <li>
+                                <a href="{{ path('executive_board_add_user_to_board', { 'id': board.id } )}}" class="button tiny">Legg til ny bruker</a>
+                            </li>
+                            {% if is_granted_team_leader() %}
+                            <li><a href="{{ path('executive_board_update')}}"
+                                class="button tiny">Rediger</a>
+                            </li>
+                            {% endif %}
+
+
+
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+
+            <table width="100%" id="table">
+
+                <thead>
+                <tr>
+                    <th colspan="3">Navn</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+
+                        {% if is_granted_admin() %}
+                            <td><a href="#" id="{{ t.id }}" class="button tiny alert delete"><i
+                                            class="fa fa-trash-o"></i> Slett</a></td>
+                        {% endif %}
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
+         aria-hidden="true" role="dialog">
+        <h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
+        <ul class="inline-list">
+            <a id="modalAccept" href="#" class="button tiny">Slett</a>
+            <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
+        </ul>
+    </div>
+
+{% endblock %}

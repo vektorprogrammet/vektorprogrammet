@@ -44,6 +44,12 @@ class WorkHistory
     protected $team;
 
     /**
+     * @ORM\ManyToOne(targetEntity="ExecutiveBoard")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     **/
+    protected $board;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Position")
      * @ORM\JoinColumn(name="position_id", referencedColumnName="id", onDelete="SET NULL")
      * @Assert\Valid
@@ -111,6 +117,31 @@ class WorkHistory
     public function getTeam()
     {
         return $this->team;
+    }
+
+    /**
+     * Set executive board.
+     *
+     * @param \AppBundle\Entity\ExecutiveBoard $board
+     *
+     * @return WorkHistory
+     */
+
+    public function setBoard(\AppBundle\Entity\ExecutiveBoard $board = null)
+    {
+        $this->board = $board;
+
+        return $this;
+    }
+
+    /**
+     * Get executive board.
+     *
+     * @return \AppBundle\Entity\ExecutiveBoard
+     */
+    public function getBoard()
+    {
+        return $this->board;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Team;
+use AppBundle\Entity\ExecutiveBoard;
 use AppBundle\Entity\User;
 use AppBundle\Entity\WorkHistory;
 use Doctrine\ORM\EntityRepository;
@@ -149,6 +150,28 @@ class WorkHistoryRepository extends EntityRepository
             ->join('wh.team', 'team')
             ->where('team.department = :department')
             ->setParameter('department', $department)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param ExecutiveBoard $board
+     *
+     * @return WorkHistory[]
+     */
+    public function findActiveWorkHistoriesByBoard($board)
+    {
+        $today = new \DateTime('now');
+
+        return $this->createQueryBuilder('whistory')
+            ->select('whistory')
+            ->join('whistory.startSemester', 'startSemester')
+            ->leftJoin('whistory.endSemester', 'endSemester')
+            ->where('startSemester.semesterStartDate < :today')
+            ->andWhere('whistory.team = :team')
+            ->andWhere('endSemester is null or endSemester.semesterEndDate > :today')
+            ->setParameter('today', $today)
+            ->setParameter('board', $board)
             ->getQuery()
             ->getResult();
     }

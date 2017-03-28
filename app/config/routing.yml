@@ -1188,8 +1188,6 @@ unsubscribe_newsletter_confirmation:
 #              Field of study            #
 ##########################################
 
-
-
 create_field_of_study:
   path: /kontrollpanel/linje
   defaults: { _controller: AppBundle:FieldOfStudy:edit }
@@ -1204,3 +1202,39 @@ show_field_of_studies:
   path: /kontrollpanel/linjer
   defaults: {_controller: AppBundle:FieldOfStudy:show }
   methods: [GET]
+
+##########################################
+#           Executive board              #
+##########################################
+executive_board_page:
+  path: /hovedstyret
+  defaults: {_controller: AppBundle:ExecutiveBoard:show}
+  methods: [GET]
+
+executive_board_show:
+ path: /kontrollpanel/hovedstyret
+ defaults: {_controller: AppBundle:ExecutiveBoard:showAdmin }
+ methods: [GET]
+
+executive_board_add_user_to_board:
+ path: /kontrollpanel/hovedstyret/nytt_medlem/{id}
+ defaults: {_controller: AppBundle:ExecutiveBoard:addUserToBoard }
+ methods: [GET, POST]
+ requirements:
+    id: \d+
+
+Executive_board_remove_user_from_board_by_id:
+ path: /kontrollpanel/hovedstyret/slett/bruker/{id}
+ defaults: {_controller: AppBundle:ExecutiveBoard:removeUserFromBoardById }
+ methods: [POST]
+ requirements:
+    id: \d+
+ options:
+    expose: true
+
+executive_board_update:
+ path: /kontrollpanel/hovedstyret/update
+ defaults: {_controller: AppBundle:ExecutiveBoard:updateBoard }
+ methods: [GET, POST]
+ requirements:
+    id: \d+
