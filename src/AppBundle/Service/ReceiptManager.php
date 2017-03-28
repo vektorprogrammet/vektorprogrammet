@@ -23,13 +23,15 @@ class ReceiptManager
         $this->em = $em;
     }
 
-    // TODO: This name though.... What datatype should be used?
-   /* public function getTotalActiveReceiptDataPerPerson(User $user){
+
+    public function getTotalActiveReceiptDataByUser(User $user){
         $receipts = $this->em->getRepository('AppBundle:Receipt')->findActiveByDepartment($user->getDepartment());
 
         $receipts_data = array();
         foreach ($receipts as $receipt)
-    }*/
+    }
+
+
 
     public function getSumByUser(User $user): float
     {

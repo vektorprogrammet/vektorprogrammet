@@ -13,14 +13,10 @@ class ReceiptController extends Controller
     public function showAction()
     {
         $department = $this->getUser()->getDepartment();
-        $receipt = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByDepartment($department);
         $active_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findActiveByDepartment($department);
         $inactive_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findInactiveByDepartment($department);
 
         return $this->render('receipt_admin/show_receipts.html.twig', array(
-            'receipt' => $receipt,
-            'active_receipts' => $active_receipts,
-            'inactive_receipts' => $inactive_receipts,
         ));
     }
 

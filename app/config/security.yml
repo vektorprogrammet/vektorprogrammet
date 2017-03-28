@@ -106,13 +106,13 @@ security:
         - { path: ^/kontrollpanel/vikar/rediger, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/vikar/slett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/vikar/opprett, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/utlegg, roles: ROLE_SUPER_ADMIN }
 
           #ROLE_ADMIN = team user
         - { path: ^/profile/edit, roles: ROLE_ADMIN }
         - { path: ^/efconnect, role: ROLE_ADMIN }
         - { path: ^/elfinder, role: ROLE_ADMIN }
         - { path: ^/kontrollpanel, role: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/utlegg, roles: ROLE_ADMIN }
 
           #ROLE_USER = assistant user
         - { path: ^/profile, roles: ROLE_USER }
