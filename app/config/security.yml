@@ -106,6 +106,7 @@ security:
         - { path: ^/kontrollpanel/vikar/rediger, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/vikar/slett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/vikar/opprett, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/attest/lastned, roles: ROLE_SUPER_ADMIN }
 
           #ROLE_ADMIN = team user
         - { path: ^/profile/edit, roles: ROLE_ADMIN }

@@ -91,24 +91,18 @@ class CertificateController extends Controller
     //TODO: Make an own controller: "AssitantController"?
     public function showAssistantsByDepartmentAction(Department $department)
     {
+        $em = $this->getDoctrine()->getManager();
 
-        // Only ROLE_SUPER_ADMIN can download certificates
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-            $em = $this->getDoctrine()->getManager();
+        $departments = $em->getRepository('AppBundle:Department')->findAllDepartments();
 
-            $departments = $em->getRepository('AppBundle:Department')->findAllDepartments();
+        // Finds all the assistants
+        $assistants = $em->getRepository('AppBundle:AssistantHistory')->findAssistantHistoriesByDepartment($department);
 
-            // Finds all the assistants
-            $assistants = $em->getRepository('AppBundle:AssistantHistory')->findAssistantHistoriesByDepartment($department);
-
-            return $this->render('certificate/certificate_download.html.twig', array(
-                'assistants' => $assistants,
-                'department' => $department,
-                'departments' => $departments,
-            ));
-        } else {
-            throw $this->createAccessDeniedException();
-        }
+        return $this->render('certificate/certificate_download.html.twig', array(
+            'assistants' => $assistants,
+            'department' => $department,
+            'departments' => $departments,
+        ));
     }
 
     public function requestAction()
