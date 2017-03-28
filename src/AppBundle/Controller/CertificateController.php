@@ -63,45 +63,25 @@ class CertificateController extends Controller
         return new JsonResponse($response);
     }
 
-    public function downloadAction()
+    public function downloadAction(Request $request)
     {
+        // Get query strings for filtering by semester
+        $semester = $request->query->get('semester', null);
 
-        // Only ROLE_SUPER_ADMIN can download certificates
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-            $em = $this->getDoctrine()->getManager();
-
-            // Finds the department for the current logged in user
-            $department = $this->getUser()->getFieldOfStudy()->getDepartment();
-
-            $departments = $em->getRepository('AppBundle:Department')->findAllDepartments();
-
-            // Finds all the assistants
-            $assistants = $em->getRepository('AppBundle:AssistantHistory')->findAllActiveAssistantHistories();
-
-            return $this->render('certificate/certificate_download.html.twig', array(
-                'assistants' => $assistants,
-                'department' => $department,
-                'departments' => $departments,
-            ));
-        } else {
-            throw $this->createAccessDeniedException();
-        }
-    }
-
-    //TODO: Make an own controller: "AssitantController"?
-    public function showAssistantsByDepartmentAction(Department $department)
-    {
         $em = $this->getDoctrine()->getManager();
 
-        $departments = $em->getRepository('AppBundle:Department')->findAllDepartments();
+        // Finds the department for the current logged in user
+        $department = $this->getUser()->getFieldOfStudy()->getDepartment();
 
-        // Finds all the assistants
-        $assistants = $em->getRepository('AppBundle:AssistantHistory')->findAssistantHistoriesByDepartment($department);
+        // Finds all the assistants of the associated semester and department (semester can be NULL)
+        $assistants = $em->getRepository('AppBundle:AssistantHistory')->findAssistantHistoriesByDepartment($department, $semester);
+
+        // Find all the semesters associated with the department
+        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
 
         return $this->render('certificate/certificate_download.html.twig', array(
             'assistants' => $assistants,
-            'department' => $department,
-            'departments' => $departments,
+            'semesters' => $semesters,
         ));
     }
 
