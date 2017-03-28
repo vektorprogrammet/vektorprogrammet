@@ -439,8 +439,6 @@ class InterviewControllerTest extends BaseWebTestCase
 
         $crawler = $this->adminGoTo('/kontrollpanel/intervju/conduct/6');
 
-        // Assert that the page response status code is 200
-        $this->assertEquals(200, self::createAdminClient()->getResponse()->getStatusCode());
 
         // Assert that we have the correct page
         $this->verifyCorrectInterview($crawler, 'Assistent', 'Johansen');
@@ -461,8 +459,6 @@ class InterviewControllerTest extends BaseWebTestCase
 
         $crawler = $this->adminGoTo('/kontrollpanel/intervju/conduct/6');
 
-        // Assert that the page response status code is 200
-        $this->assertEquals(200, self::createAdminClient()->getResponse()->getStatusCode());
 
         // Assert that we have the correct page
         $this->verifyCorrectInterview($crawler, 'Assistent', 'Johansen');

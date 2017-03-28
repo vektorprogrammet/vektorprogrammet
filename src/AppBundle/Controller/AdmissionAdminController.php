@@ -227,7 +227,7 @@ class AdmissionAdminController extends Controller
         $user = $this->getUser();
         $department = $semester->getDepartment();
 
-        if ($user->getDepartment() !== $department) {
+        if (!$this->isGranted(Roles::ADMIN) && $user->getDepartment() !== $department) {
             throw $this->createAccessDeniedException();
         }
 

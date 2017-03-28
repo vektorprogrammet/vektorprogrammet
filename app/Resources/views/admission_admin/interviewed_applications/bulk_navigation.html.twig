@@ -13,7 +13,7 @@
                     <a href="#" id="bulkAction" class="button postfix">Utfør</a>
                 </div>
                 {% endif %}
-                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                {% if is_granted_team_leader() and department == semester.department %}
                     <div class="small-3 columns"style="padding-left: 15px">
                         <a class="button tiny" href="{{ path('admissionadmin_team_interest' , { 'semester': semester.id })}}">Team-interesse</a>
                     </div>
