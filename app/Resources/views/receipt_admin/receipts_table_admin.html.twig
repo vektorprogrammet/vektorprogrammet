@@ -11,11 +11,11 @@
     </thead>
 
     <tbody>
-    {% for receipt in receipts%}
+    {% for user in users%}
         <tr>
-            <td><a href="{{ path('receipts_show_individual', {'receipt': receipt.id}) }}"> {{ receipt.user.getFullName }} </a></td>
-            <td> {{ receipt.sum|number_format(2, ',', '.') }},- </td>
-            <td> {{ receipt.user.accountNumber }}</td>
+            <td><a href="{{ path('receipts_show_individual', {'user': user.id}) }}"> {{ user.fullName }} </a></td>
+            <td> {{ (active ? user.totalActiveReceiptSum : user.totalInactiveReceiptSum)|number_format(2, ',', '.') }},- </td>
+            <td> {{ user.accountNumber }}</td>
         </tr>
     {% endfor %}
     </tbody>

@@ -11,7 +11,7 @@ class ReceiptRepository extends EntityRepository
 {
     public function findByUser(User $user)
     {
-        /**
+        /*
          * @param User $user
          *
          * @return Receipt[]
@@ -29,7 +29,7 @@ class ReceiptRepository extends EntityRepository
         return $this->createQueryBuilder('receipt')
             ->select('receipt')
             ->where('receipt.user = :user')
-            ->andWhere('receipt.isActive = true')
+            ->andWhere('receipt.active = true')
             ->setParameter('user', $user)
             ->getQuery()
             ->getResult();
@@ -40,14 +40,14 @@ class ReceiptRepository extends EntityRepository
         return $this->createQueryBuilder('receipt')
             ->select('receipt')
             ->where('receipt.user = :user')
-            ->andWhere('receipt.isActive = false')
+            ->andWhere('receipt.active = false')
             ->setParameter('user', $user)
             ->getQuery()
             ->getResult();
     }
 
-    public function findByDepartment(Department $department){
-
+    public function findByDepartment(Department $department)
+    {
         return $this->createQueryBuilder('receipt')
             ->select('receipt')
             ->join('receipt.user', 'user')
@@ -58,27 +58,27 @@ class ReceiptRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findActiveByDepartment(Department $department){
-
+    public function findActiveByDepartment(Department $department)
+    {
         return $this->createQueryBuilder('receipt')
             ->select('receipt')
             ->join('receipt.user', 'user')
             ->join('user.fieldOfStudy', 'fos')
             ->where('fos.department = :department')
-            ->andWhere('receipt.isActive = true')
+            ->andWhere('receipt.active = true')
             ->setParameter('department', $department)
             ->getQuery()
             ->getResult();
     }
 
-    public function findInactiveByDepartment(Department $department){
-
+    public function findInactiveByDepartment(Department $department)
+    {
         return $this->createQueryBuilder('receipt')
             ->select('receipt')
             ->join('receipt.user', 'user')
             ->join('user.fieldOfStudy', 'fos')
             ->where('fos.department = :department')
-            ->andWhere('receipt.isActive = false')
+            ->andWhere('receipt.active = false')
             ->setParameter('department', $department)
             ->getQuery()
             ->getResult();

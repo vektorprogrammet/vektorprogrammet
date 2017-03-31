@@ -6,6 +6,7 @@ use AppBundle\Form\Type\ReceiptType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Receipt;
+use AppBundle\Entity\User;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class ReceiptController extends Controller
@@ -16,19 +17,22 @@ class ReceiptController extends Controller
         $active_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findActiveByDepartment($department);
         $inactive_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findInactiveByDepartment($department);
 
+        $usersWithActiveReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithActiveReceipts();
+        $usersWithInactiveReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithInactiveReceipts();
+
         return $this->render('receipt_admin/show_receipts.html.twig', array(
-            'active_receipts' => $active_receipts,
-            'inactive_receipts' => $inactive_receipts,
+            'users_with_active_receipts' => $usersWithActiveReceipts,
+            'users_with_inactive_receipts' => $usersWithInactiveReceipts,
         ));
     }
 
-    public function showIndividualAction(Receipt $receipt)
+    public function showIndividualAction(User $user)
     {
-        $active_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findActiveByUser($receipt->getUser());
-        $inactive_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findInactiveByUser($receipt->getUser());
+        $active_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findActiveByUser($user);
+        $inactive_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findInactiveByUser($user);
 
         return $this->render('receipt_admin/show_individual_receipts.html.twig', array(
-            'receipt' => $receipt,
+            'user' => $user,
             'active_receipts' => $active_receipts,
             'inactive_receipts' => $inactive_receipts,
         ));
@@ -45,7 +49,7 @@ class ReceiptController extends Controller
         $form = $this->createForm(new ReceiptType(), $receipt);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $isImageUpload = $request->files->get('receipt', ['picture_path']) !== null;
             if ($isImageUpload) {
                 $path = $this->get('app.file_uploader')->uploadReceipt($request);
@@ -54,10 +58,9 @@ class ReceiptController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($receipt);
             $em->flush();
+
             return $this->redirectToRoute('receipt_create');
         }
-
-
 
         return $this->render('receipt/create_receipt.twig', array(
             'form' => $form->createView(),
@@ -67,7 +70,8 @@ class ReceiptController extends Controller
         ));
     }
 
-    public function deleteAdminAction(Receipt $receipt){
+    public function deleteAdminAction(Receipt $receipt)
+    {
         $em = $this->getDoctrine()->getManager();
         $em->remove($receipt);
         $em->flush();
@@ -75,12 +79,13 @@ class ReceiptController extends Controller
         return $this->redirectToRoute('receipts_show');
     }
 
-    public function editAdminAction(Request $request, Receipt $receipt){
+    public function editAdminAction(Request $request, Receipt $receipt)
+    {
         $form = $this->createForm(ReceiptType::class, $receipt);
 
         $form->handleRequest($request);
         // TODO: Doesn't upload if there isn't a change in picture?
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $isImageUpload = $request->files->get('receipt', ['picture_path']) !== null;
             if ($isImageUpload) {
                 $path = $this->get('app.file_uploader')->uploadReceipt($request);
@@ -98,11 +103,10 @@ class ReceiptController extends Controller
             'form' => $form->createView(),
             'receipt' => $receipt,
         ));
-
-
     }
 
-    public function deleteAction(Receipt $receipt){
+    public function deleteAction(Receipt $receipt)
+    {
         $em = $this->getDoctrine()->getManager();
         $em->remove($receipt);
         $em->flush();
@@ -111,17 +115,17 @@ class ReceiptController extends Controller
     }
 
     // TODO: Can these two functions be merged with separate redirects?
-    public function editAction(Request $request, Receipt $receipt){
-
-        if ($this->getUser() != $receipt->getUser()){
-            throw new AccessDeniedHttpException;
+    public function editAction(Request $request, Receipt $receipt)
+    {
+        if ($this->getUser() != $receipt->getUser()) {
+            throw new AccessDeniedHttpException();
         }
 
         $form = $this->createForm(ReceiptType::class, $receipt);
 
         $form->handleRequest($request);
         // TODO: Doesn't upload if there isn't a change in picture?
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $isImageUpload = $request->files->get('receipt', ['picture_path']) !== null;
             if ($isImageUpload) {
                 $path = $this->get('app.file_uploader')->uploadReceipt($request);
@@ -139,7 +143,5 @@ class ReceiptController extends Controller
             'form' => $form->createView(),
             'receipt' => $receipt,
         ));
-
-
     }
 }

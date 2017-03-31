@@ -589,7 +589,7 @@ receipts_edit:
     receipt: \d+
 
 receipts_show_individual:
-  path: /kontrollpanel/utlegg/{receipt}
+  path: /kontrollpanel/utlegg/{user}
   defaults: {_controller: AppBundle:Receipt:showIndividual }
   methods: [GET]
   requirements:

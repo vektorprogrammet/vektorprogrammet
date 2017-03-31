@@ -130,6 +130,12 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $interviews;
 
+    /**
+     * @var Receipt[]
+     * @ORM\OneToMany(targetEntity="Receipt", mappedBy="user")
+     */
+    private $receipts;
+
     public function __construct()
     {
         $this->roles = new ArrayCollection();
@@ -485,6 +491,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     // Used for unit testing
+
     public function fromArray($data = array())
     {
         foreach ($data as $property => $value) {
@@ -492,13 +499,12 @@ class User implements AdvancedUserInterface, \Serializable
             $this->$method($value);
         }
     }
-
     // toString method used to display the user in twig files
+
     public function __toString()
     {
         return "{$this->getFirstName()} {$this->getLastName()}";
     }
-
     /*
 
     You may or may not need the code below depending on the algorithm you chose to hash and salt passwords with.
@@ -588,5 +594,37 @@ class User implements AdvancedUserInterface, \Serializable
     public function getInterviews()
     {
         return $this->interviews;
+    }
+
+    /**
+     * @return Receipt[]
+     */
+    public function getReceipts(): array
+    {
+        return $this->receipts;
+    }
+
+    public function getTotalActiveReceiptSum(): float
+    {
+        $totalSum = 0.0;
+        foreach ($this->receipts as $receipt) {
+            if ($receipt->isActive()) {
+                $totalSum += $receipt->getSum();
+            }
+        }
+
+        return $totalSum;
+    }
+
+    public function getTotalInactiveReceiptSum(): float
+    {
+        $totalSum = 0.0;
+        foreach ($this->receipts as $receipt) {
+            if (!$receipt->isActive()) {
+                $totalSum += $receipt->getSum();
+            }
+        }
+
+        return $totalSum;
     }
 }

@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -20,7 +19,7 @@ class Receipt
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="receipts", cascade={"persist"})
      */
     private $user;
 
@@ -47,19 +46,19 @@ class Receipt
     private $sum;
 
     /**
+     * @var bool
      * @ORM\Column(type="boolean")
      */
-    private $isActive;
+    private $active;
 
     /**
      * Receipt constructor.
      */
     public function __construct()
     {
-        $this->isActive = true;
+        $this->active = true;
         $this->submitDate = new \DateTime();
     }
-
 
     /**
      * @return \AppBundle\Entity\User
@@ -94,7 +93,7 @@ class Receipt
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -102,7 +101,7 @@ class Receipt
     }
 
     /**
-     * @param integer $id
+     * @param int $id
      */
     public function setId($id)
     {
@@ -124,8 +123,6 @@ class Receipt
     {
         $this->picturePath = $picturePath;
     }
-
-
 
     /**
      * @return string
@@ -160,23 +157,18 @@ class Receipt
     }
 
     /**
-     * @return boolean
+     * @return mixed
      */
-    public function getIsActive()
+    public function isActive()
     {
-        return $this->isActive;
+        return $this->active;
     }
 
     /**
-     * @param boolean $isActive
+     * @param mixed $active
      */
-    public function setIsActive($isActive)
+    public function setActive($active)
     {
-        $this->isActive = $isActive;
+        $this->active = $active;
     }
-
-
-
-
-
 }
