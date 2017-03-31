@@ -70,6 +70,17 @@
                     </a>
                 </div>
             </div>
+            {% if is_granted_team_leader() %}
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('executive_board_show') }}">
+                        <i class="fa fa-diamond fa-3x"></i>
+
+                        <p>Hovedstyret</p>
+                    </a>
+                </div>
+            </div>
+            {% endif %}
             <div class="small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">
                     <a data-dropdown="superadminCreateUser" aria-controls="superadminCreateUser" aria-expanded="false">
@@ -151,15 +162,6 @@
                 </div>
             </div>
 
-            {#<div class="small-4 medium-3 large-2 columns">#}
-            {#<div class="control-panel-item">#}
-            {#<a href="{{ path('school_allocation') }}">#}
-            {#<i class="fa fa-building fa-3x"></i>#}
-
-            {#<p>Sexyface</p>#}
-            {#</a>#}
-            {#</div>#}
-            {#</div>#}
             <hr/>
         </div>
 

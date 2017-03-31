@@ -1,7 +1,7 @@
 
 
 
-{#{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}
     {{ board.name }} - Vektorprogrammet
@@ -17,13 +17,13 @@
 
     <div class="row">
         <div class="small-12 columns">
-            <h1>{{ team.name }}</h1>
+            <h1>{{ board.name }}</h1>
         </div>
     </div>
 
     <div class="row">
         <div class="small-8 columns">
-            <p class="team-short-description">{{ board.shortDescription }} <br> {{ board.email }}</p>
+            <p class="board-short-description">{{ board.shortDescription }} <br> {{ board.email }}</p>
         </div>
 
     </div>
@@ -33,33 +33,33 @@
         </div>
     </div>
     <div class="row">
-        <div class="large-7 columns team-description-column">
-            {{ team.description|safe_html }}
+        <div class="large-7 columns board-description-column">
+            {{ board.description|safe_html }}
         </div>
         <div class="large-5 columns">
             <h4>Medlemmer</h4>
 
             <table>
-                {% for wh in workHistories %}
+                {% for m in members %}
 
                     <tr>
                         <td width="100">
-                            <img width="50" src="{{ asset(wh.user.picturePath) }}"/>
+                            <img width="50" src="{{ asset(m.user.picturePath) }}"/>
                         </td>
                         <td>
                             {% if app.user %}
-                                <span><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{ wh.user }}</a></span>
+                                <span><a href='{{ path('specific_profile', { 'id': m.user.id }) }}'>{{ m.user }}</a></span>
                             {% else %}
-                                <p> {{ wh.user }}  </p>
+                                <p> {{ m.user }}  </p>
                             {% endif %}
                         </td>
                         <td>
-                            {% if wh.position is not null %}
-                                {{ wh.position.name }}<br/>
+                            {% if m.position is not null %}
+                                {{ m.position }}<br/>
                             {% endif %}
                         </td>
                         <td width="60">
-                            <a href="mailto:{{ wh.user.email }}">E-post</a><br/>
+                            <a href="mailto:{{ m.user.email }}">E-post</a><br/>
                         </td>
 
                     </tr>
@@ -76,6 +76,4 @@
 
 {% endblock %}
 
-#}
 
-Dette er den offentlige siden
