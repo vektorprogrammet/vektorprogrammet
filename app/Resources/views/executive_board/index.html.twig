@@ -42,13 +42,15 @@
                         <ul class="inline-list">
 
                             <li>
-                                <a href="{{ path('executive_board_add_user_to_board', { 'id': board.id } )}}" class="button tiny">Legg til ny bruker</a>
+                                <a href="{{ path('executive_board_add_user_to_board', { 'id': board.id } )}}"
+                                   class="button tiny">Legg til ny bruker</a>
                             </li>
-                            {% if is_granted_team_leader() %}
-                            <li><a href="{{ path('executive_board_update')}}"
-                                class="button tiny">Rediger</a>
+
+                            <li>
+                                <a href="{{ path('executive_board_update', { 'id': board.id } )}}"
+                                   class="button tiny">Rediger</a>
                             </li>
-                            {% endif %}
+
 
 
 
@@ -61,19 +63,50 @@
 
                 <thead>
                 <tr>
-                    <th colspan="3">Navn</th>
+                    <th> Fornavn</th>
+                    <th> Etternavn</th>
+                    <th> Stilling</th>
+                    <th> Tlf</th>
+                    <th> E-post</th>
+                    <th> Linje</th>
+                    <th> Avdeling</th>
+
+                    {% if is_granted_admin()  %}
+                    <th></th>
+                    {% endif %}
                 </tr>
                 </thead>
-
                 <tbody>
+                {% for m in members %}
                     <tr>
+                        <td><a href='{{ path('specific_profile', { 'id': m.id }) }}'>{{ m.user.firstName }}</a></td>
+                        <td> {{ m.user.lastName }} </td>
+                        <td> {{ m.position }}</td>
+                        <td> {{ m.user.phone }} </td>
+                        <td> {{ m.user.email }} </td>
+                        <td> {{ m.user.fieldOfStudy }} </td>
+                        <td> {{ m.user.department }} </td>
 
-                        {% if is_granted_admin() %}
-                            <td><a href="#" id="{{ t.id }}" class="button tiny alert delete"><i
-                                            class="fa fa-trash-o"></i> Slett</a></td>
+                        {% if is_granted_admin()  %}
+                            <td>
+                                <form method="POST"
+                                      onsubmit="return confirm('Vil du virkelig fjerne brukeren {{ m.user.firstName }} {{ m.user.lastName }}?')"
+                                      action="{{ path('executive_board_remove_user_from_board_by_id', { id: m.id }) }}">
+                                    <button type="submit"
+                                            class="button tiny alert">
+                                        <i class="fa fa-trash"></i>
+                                        Slett
+                                    </button>
+                                </form>
+                            </td>
                         {% endif %}
+
+
+
                     </tr>
+                {% endfor %}
                 </tbody>
+
 
             </table>
         </div>

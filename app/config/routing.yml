@@ -1223,7 +1223,7 @@ executive_board_add_user_to_board:
  requirements:
     id: \d+
 
-Executive_board_remove_user_from_board_by_id:
+executive_board_remove_user_from_board_by_id:
  path: /kontrollpanel/hovedstyret/slett/bruker/{id}
  defaults: {_controller: AppBundle:ExecutiveBoard:removeUserFromBoardById }
  methods: [POST]
@@ -1233,7 +1233,7 @@ Executive_board_remove_user_from_board_by_id:
     expose: true
 
 executive_board_update:
- path: /kontrollpanel/hovedstyret/update
+ path: /kontrollpanel/hovedstyret/update/{id}
  defaults: {_controller: AppBundle:ExecutiveBoard:updateBoard }
  methods: [GET, POST]
  requirements:

@@ -1,7 +1,7 @@
 {% extends 'adminBase.html.twig' %}
 
 {% block title %}
-    Opprett arbeidshistorie
+    Hovedstyret
 {% endblock %}
 
 {% form_theme form 'form/foundation_layout.html.twig' %}
@@ -13,7 +13,7 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
 
-            <h1> Opprett arbeidshistorie </h1>
+            <h1> Legg til bruker i hovedstyret </h1>
 
             <hr>
 
@@ -23,7 +23,9 @@
 
                     {{ form_start(form) }}
                     {{ form_widget(form) }}
+                    <button class="button tiny success" type="submit">Lagre</button>
                     {{ form_end(form) }}
+
 
 
                 </div>

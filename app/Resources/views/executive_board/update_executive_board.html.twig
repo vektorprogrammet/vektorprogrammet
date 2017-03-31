@@ -24,7 +24,7 @@
 
                     <label>Kort beskrivelse (<span id="shortDescription_length"></span> tegn igjen.
                         Valgfritt){{ form_row(form.shortDescription) }}</label>
-                    {{ form_row(form.acceptApplication) }}
+
                     {{ form_row(form.description) }}
                     <br>
                     <div class="small-8  columns">
@@ -47,7 +47,7 @@
 {% block javascripts %}
 
     <script>
-        var shortDescriptionInput = document.getElementById('createTeam_shortDescription');
+        var shortDescriptionInput = document.getElementById('createBoard_shortDescription');
         var shortDescriptionLength = document.getElementById('shortDescription_length');
         function updateShortDescriptionLength() {
             var charactersLeft = (125 - shortDescriptionInput.value.length);

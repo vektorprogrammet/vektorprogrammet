@@ -2,115 +2,84 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Event\WorkHistoryCreatedEvent;
-use AppBundle\Form\Type\CreateExecutiveBoardType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\WorkHistory;
-use AppBundle\Form\Type\CreateWorkHistoryType;
-use AppBundle\Form\Type\CreateExecutiveBoardHistoryType;
+use AppBundle\Form\Type\CreateExecutiveBoardType;
+use AppBundle\Form\Type\CreateExecutiveBoardMemberType;
 use AppBundle\Entity\ExecutiveBoard;
-use AppBundle\Entity\Department;
+use AppBundle\Entity\ExecutiveBoardMember;
 
 class ExecutiveBoardController extends Controller
 {
     public function showAction()
     {
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->find(1);
-        $workHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeam($board);
-
-        $leaders = array();
-        $members = array();
-        foreach ($workHistories as $workHistory) {
-            $position = strtolower($workHistory->getPosition());
-            if ($position === 'leder' || $position === 'nestleder') {
-                $leaders[] = $workHistory;
-            } else {
-                $members[] = $workHistory;
-            }
-        }
-
-        usort($members, function (WorkHistory $a, WorkHistory $b) {
-            return strcmp(strtolower($a->getPosition()), strtolower($b->getPosition()));
-        });
-
-        usort($leaders, function (WorkHistory $a, WorkHistory $b) {
-            return strcmp(strtolower($a->getPosition()), strtolower($b->getPosition()));
-        });
+        $members = $board->getUsers();
 
         return $this->render('executive_board/executive_board_page.html.twig', array(
             'board' => $board,
-            'workHistories' => array_merge($leaders, $members),
+            'members' => $members,
         ));
     }
 
     public function showAdminAction()
     {
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->find(1);
+        $members = $board->getUsers();
         return $this->render(':executive_board:index.html.twig', array(
             'board' => $board,
+            'members' => $members,
         ));
     }
 
     public function addUserToBoardAction(Request $request, ExecutiveBoard $board)
     {
         // Create a new WorkHistory entity
-        $workHistory = new WorkHistory();
-        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+        $member = new ExecutiveBoardMember();
 
-        $getDepartmentId = function(Department $department) {
-            return $department->getId();
-        };
-
-        $allDepartments = array_map($getDepartmentId, $allDepartments);
-        dump($allDepartments);
         // Create a new formType with the needed variables
-        $form = $this->createForm(new CreateExecutiveBoardHistoryType(1), $workHistory);
+        $form = $this->createForm(new CreateExecutiveBoardMemberType(), $member);
 
         // Handle the form
         $form->handleRequest($request);
 
         if ($form->isValid()) {
 
-            $workHistory->setBoard($board);
+            $member->setBoard($board);
 
             // Persist the board to the database
             $em = $this->getDoctrine()->getManager();
-            $em->persist($workHistory);
+            $em->persist($member);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(WorkHistoryCreatedEvent::NAME, new WorkHistoryCreatedEvent($workHistory));
-
-            return $this->redirect($this->generateUrl('executive_board_page', array('id' => $board->getId())));
+            return $this->redirect($this->generateUrl('executive_board_show'));
         }
 
-        return $this->render('executive_board/create_work_history.html.twig', array(
+        return $this->render('executive_board/create_member.html.twig', array(
             'form' => $form->createView(),
         ));
     }
 
 
 
-    public function removeUserFromBoardByIdAction(WorkHistory $workHistory)
+    public function removeUserFromBoardByIdAction(ExecutiveBoardMember $member)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($workHistory);
+        $em->remove($member);
         $em->flush();
 
-        return new JsonResponse(array(
-            'success' => true,
-        ));
+        return $this->redirect($this->generateUrl('executive_board_show'));
     }
 
     public function updateBoardAction(Request $request, ExecutiveBoard $board)
     {
         // Create the form
-        $form = $this->createForm(new CreateExecutiveBoardType($board));
+        $form = $this->createForm(new CreateExecutiveBoardType($board), $board);
 
         // Handle the form
         $form->handleRequest($request);
-
+        $members = $board->getUsers();
         if ($form->isSubmitted() && $form->isValid()) {
             //Don't persist if the preview button was clicked
             if (!$form->get('preview')->isClicked()) {
@@ -119,17 +88,20 @@ class ExecutiveBoardController extends Controller
                 $em->persist($board);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('executive_board_update'));
+                return $this->render('executive_board/executive_board_page.html.twig', array(
+                    'board' => $board,
+                    'members' => $members,
+                ));
             }
-              $workHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByBoard($board);
+
             // Render the boardpage as a preview
             return $this->render('executive_board/executive_board_page.html.twig', array(
                 'board' => $board,
-                'workHistories' => $workHistories,
+                'members' => $members,
             ));
         }
 
-        return $this->render('executive_board/executive_board_page.html.twig', array(
+        return $this->render('executive_board/update_executive_board.html.twig', array(
             'form' => $form->createView(),
             'isUpdate' => true,
         ));

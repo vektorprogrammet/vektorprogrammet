@@ -41,11 +41,12 @@ class ExecutiveBoard
      */
     private $shortDescription;
 
+    /**
+     * @var ExecutiveBoardMember[]
+     * @ORM\OneToMany(targetEntity="ExecutiveBoardMember", mappedBy="board")
+     */
+    private $users;
 
-    public function __construct()
-    {
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     public function __toString()
     {
@@ -142,4 +143,14 @@ class ExecutiveBoard
     {
         $this->shortDescription = $shortDescription;
     }
+
+    /**
+     * @return ExecutiveBoardMember[]
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+
 }
