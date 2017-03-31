@@ -74,6 +74,15 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getResult();
     }
 
+    public function findAllUsersWithReceipts()
+    {
+        // Do magic
+        /*return $this->createQueryBuilder('receipt')
+            ->select('User')
+            ->join('receipt.user', 'user')
+        */
+    }
+
     public function findUserByUsername($username)
     {
         return $this->createQueryBuilder('User')

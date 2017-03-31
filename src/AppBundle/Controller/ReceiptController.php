@@ -17,6 +17,8 @@ class ReceiptController extends Controller
         $inactive_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findInactiveByDepartment($department);
 
         return $this->render('receipt_admin/show_receipts.html.twig', array(
+            'active_receipts' => $active_receipts,
+            'inactive_receipts' => $inactive_receipts,
         ));
     }
 
