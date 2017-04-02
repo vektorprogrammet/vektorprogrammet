@@ -4,10 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\Semester;
-use AppBundle\Entity\WorkHistory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Form\Type\GenerateMailingListType;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 class MailingListController extends Controller
