@@ -1204,3 +1204,12 @@ show_field_of_studies:
   path: /kontrollpanel/linjer
   defaults: {_controller: AppBundle:FieldOfStudy:show }
   methods: [GET]
+
+##########################################
+#              Mailing Lists             #
+##########################################
+
+generate_mail_lists:
+  path: /kontrollpanel/mailinglists
+  defaults: {_controller: AppBundle:MailingList:show }
+  methods: [GET, POST]
