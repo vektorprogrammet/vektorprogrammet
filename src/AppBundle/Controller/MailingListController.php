@@ -10,6 +10,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MailingListController extends Controller
 {
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function showAction(Request $request)
     {
         $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemesters();
@@ -30,6 +35,11 @@ class MailingListController extends Controller
         ));
     }
 
+    /**
+     * @param Semester $semester
+     *
+     * @return array
+     */
     private function getUsersFromWorkHistories(Semester $semester)
     {
         $work_histories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistories();
@@ -43,6 +53,9 @@ class MailingListController extends Controller
         return $users;
     }
 
+    /**
+     * @return array
+     */
     private function getUsersFromAssistantHistories()
     {
         $assistant_histories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findAllActiveAssistantHistories();
@@ -54,6 +67,11 @@ class MailingListController extends Controller
         return $users;
     }
 
+    /**
+     * @param $data
+     *
+     * @return array
+     */
     private function getUsersByType($data)
     {
         switch ($data['type']) {
