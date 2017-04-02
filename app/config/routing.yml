@@ -1210,6 +1210,6 @@ show_field_of_studies:
 ##########################################
 
 generate_mail_lists:
-  path: /kontrollpanel/mailinglists
+  path: /kontrollpanel/epostlister
   defaults: {_controller: AppBundle:MailingList:show }
   methods: [GET, POST]
