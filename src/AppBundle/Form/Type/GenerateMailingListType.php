@@ -7,12 +7,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class GenerateMailingListType extends AbstractType
 {
-    private $departments;
     private $semesters;
 
-    public function __construct($departments, $semesters)
+    public function __construct($semesters)
     {
-        $this->departments = $departments;
         $this->semesters = $semesters;
     }
 
