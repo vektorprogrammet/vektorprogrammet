@@ -1233,7 +1233,7 @@ executive_board_remove_user_from_board_by_id:
     expose: true
 
 executive_board_update:
- path: /kontrollpanel/hovedstyret/update/{id}
+ path: /kontrollpanel/hovedstyret/oppdater/{id}
  defaults: {_controller: AppBundle:ExecutiveBoard:updateBoard }
  methods: [GET, POST]
  requirements:

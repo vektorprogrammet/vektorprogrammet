@@ -22,8 +22,10 @@ class CreateExecutiveBoardMemberType extends AbstractType
                         ->Join('fos.department', 'd')
                         ->addOrderBy('d.name')
                         ->addOrderBy('u.firstName', 'ASC');
-
                 },
+                'choice_label' => function($value, $key, $index){
+                    return $value->getFullName().' - '.$value->getDepartment();
+                }
             ))
             ->add('position', 'text', array(
                 'label' => 'Stilling',

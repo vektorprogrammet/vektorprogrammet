@@ -13,7 +13,6 @@
 
             <hr>
 
-            {% if is_granted_team_leader() %}
                 <div class="row">
                     <div class="small-12 medium-12 large-6 columns">
                         <ul class="inline-list">
@@ -34,7 +33,6 @@
                         </ul>
                     </div>
                 </div>
-            {% endif %}
 
             <table width="100%" id="table">
 
@@ -47,10 +45,7 @@
                     <th> E-post</th>
                     <th> Linje</th>
                     <th> Avdeling</th>
-
-                    {% if is_granted_admin()  %}
                     <th></th>
-                    {% endif %}
                 </tr>
                 </thead>
                 <tbody>
@@ -64,7 +59,6 @@
                         <td> {{ m.user.fieldOfStudy }} </td>
                         <td> {{ m.user.department }} </td>
 
-                        {% if is_granted_admin()  %}
                             <td>
                                 <form method="POST"
                                       onsubmit="return confirm('Vil du virkelig fjerne brukeren {{ m.user.firstName }} {{ m.user.lastName }}?')"
@@ -76,7 +70,6 @@
                                     </button>
                                 </form>
                             </td>
-                        {% endif %}
 
 
 

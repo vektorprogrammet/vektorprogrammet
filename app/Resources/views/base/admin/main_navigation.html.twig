@@ -21,7 +21,9 @@
                         <li><a href="{{ path('participanthistory_show') }}">Deltakerhistorikk</a></li>
                         <li><a href="{{ path('substitute_show') }}">Vikarer</a></li>
                         <li><a href="{{ path('teamadmin_show') }}">Team</a></li>
+                        {% if is_granted_team_leader() %}
                         <li><a href="{{ path('executive_board_show') }}">Hovedstyret</a></li>
+                        {% endif %}
                     </ul>
                 </li>
                 <li>

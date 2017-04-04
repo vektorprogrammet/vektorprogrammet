@@ -24,12 +24,14 @@
 
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
+              <table class="executive-board-table">
+                        <tr>
+                            <td><h3><a href="{{ path('executive_board_page', {'id': board.id}) }}">{{ board.name }}</a></h3></td>
+                            <td><span class="team-short-description">{{ board.shortDescription }}</span></td>
+                            <td></td>
+                        </tr>
+                </table>
             <table>
-                    <tr>
-                        <td><h3><a href="{{ path('executive_board_page', {'id': board.id}) }}">{{ board.name }}</a></h3></td>
-                        <td><span class="team-short-description">{{ board.shortDescription }}</span></td>
-                        <td></td>
-                    </tr>
 
                 {% for department in departments %}
                     <tr>
