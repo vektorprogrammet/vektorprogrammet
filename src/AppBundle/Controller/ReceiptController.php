@@ -81,29 +81,7 @@ class ReceiptController extends Controller
 
     public function editAdminAction(Request $request, Receipt $receipt)
     {
-        $form = $this->createForm(ReceiptType::class, $receipt);
-        $oldPicturePath = $receipt->getPicturePath();
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $isImageUpload = array_values($request->files->get('receipt', ['picture_path']))[0] !== null;
-
-            if ($isImageUpload) {
-                $path = $this->get('app.file_uploader')->uploadReceipt($request);
-                $receipt->setPicturePath($path);
-            } else $receipt->setPicturePath($oldPicturePath); // If a new image hasn't been uploaded
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($receipt);
-            $em->flush();
-
-            return $this->redirectToRoute('receipts_show');
-        }
-
-        return $this->render('receipt_admin/edit_receipt.twig', array(
-            'form' => $form->createView(),
-            'receipt' => $receipt,
-        ));
+        return $this->performEditAndRedirect($request, $receipt, 'receipts_show');
     }
 
     public function deleteAction(Receipt $receipt)
@@ -115,13 +93,17 @@ class ReceiptController extends Controller
         return $this->redirectToRoute('receipt_create');
     }
 
-    // TODO: Can these two functions be merged with separate redirects?
     public function editAction(Request $request, Receipt $receipt)
     {
         if ($this->getUser() != $receipt->getUser()) {
             throw new AccessDeniedHttpException();
         }
 
+        return $this->performEditAndRedirect($request, $receipt, 'receipt_create');
+    }
+
+    public function performEditAndRedirect(Request $request, Receipt $receipt, string $redirectRoute)
+    {
         $form = $this->createForm(ReceiptType::class, $receipt);
         $oldPicturePath = $receipt->getPicturePath();
 
@@ -138,7 +120,7 @@ class ReceiptController extends Controller
             $em->persist($receipt);
             $em->flush();
 
-            return $this->redirectToRoute('receipt_create');
+            return $this->redirectToRoute($redirectRoute);
         }
 
         return $this->render('receipt_admin/edit_receipt.twig', array(
