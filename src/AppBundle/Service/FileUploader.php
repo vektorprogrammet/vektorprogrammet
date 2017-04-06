@@ -50,6 +50,11 @@ class FileUploader
         return $this->uploadFile($file, $this->logoFolder);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return string
+     */
     public function uploadReceipt(Request $request)
     {
         $file = $this->getFileFromRequest($request);

@@ -82,15 +82,16 @@ class ReceiptController extends Controller
     public function editAdminAction(Request $request, Receipt $receipt)
     {
         $form = $this->createForm(ReceiptType::class, $receipt);
+        $oldPicturePath = $receipt->getPicturePath();
 
         $form->handleRequest($request);
-        // TODO: Doesn't upload if there isn't a change in picture?
         if ($form->isSubmitted() && $form->isValid()) {
-            $isImageUpload = $request->files->get('receipt', ['picture_path']) !== null;
+            $isImageUpload = array_values($request->files->get('receipt', ['picture_path']))[0] !== null;
+
             if ($isImageUpload) {
                 $path = $this->get('app.file_uploader')->uploadReceipt($request);
                 $receipt->setPicturePath($path);
-            }
+            } else $receipt->setPicturePath($oldPicturePath); // If a new image hasn't been uploaded
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($receipt);
@@ -122,15 +123,16 @@ class ReceiptController extends Controller
         }
 
         $form = $this->createForm(ReceiptType::class, $receipt);
+        $oldPicturePath = $receipt->getPicturePath();
 
         $form->handleRequest($request);
-        // TODO: Doesn't upload if there isn't a change in picture?
         if ($form->isSubmitted() && $form->isValid()) {
-            $isImageUpload = $request->files->get('receipt', ['picture_path']) !== null;
+            $isImageUpload = array_values($request->files->get('receipt', ['picture_path']))[0] !== null;
+
             if ($isImageUpload) {
                 $path = $this->get('app.file_uploader')->uploadReceipt($request);
                 $receipt->setPicturePath($path);
-            }
+            } else $receipt->setPicturePath($oldPicturePath); // If a new image hasn't been uploaded
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($receipt);

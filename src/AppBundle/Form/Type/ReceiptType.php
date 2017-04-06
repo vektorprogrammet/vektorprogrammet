@@ -20,10 +20,10 @@ class ReceiptType extends AbstractType
                 'currency' => 'NOK',
             ))
             ->add('user', AccountNumberType::class, array(
-                'label' => false
+                'label' => false,
             ))
             ->add('picturePath', 'file', array(
-                'required' => true,
+                'required' => false, // Is this ok?
                 'data_class' => null,
                 'label' => 'Last opp kvittering',
             ));
