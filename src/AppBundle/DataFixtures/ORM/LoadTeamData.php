@@ -13,9 +13,9 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
     {
         $team1 = new Team();
         $team1->setDepartment($this->getReference('dep-1'));
-        $team1->setName('Hovedstyret');
+        $team1->setName('Styret');
         $team1->setAcceptApplication(true);
-        $team1->setShortDescription('Dette her hovedstyret. Det er vi som bestemmer alt!');
+        $team1->setShortDescription('Dette her styret. Det er vi som tror vi bestemmer alt!');
         $team1->setDescription('<table border="1" cellpadding="1" cellspacing="1" style="width:500px">
 	<tbody>
 		<tr>
@@ -133,3 +133,4 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         return 3;
     }
 }
+

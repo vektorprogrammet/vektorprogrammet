@@ -88,10 +88,7 @@ class ExecutiveBoardController extends Controller
                 $em->persist($board);
                 $em->flush();
 
-                return $this->render('executive_board/executive_board_page.html.twig', array(
-                    'board' => $board,
-                    'members' => $members,
-                ));
+                return $this->redirect($this->generateUrl('executive_board_show'));
             }
 
             // Render the boardpage as a preview

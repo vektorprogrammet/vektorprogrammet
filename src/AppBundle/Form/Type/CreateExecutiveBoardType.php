@@ -46,6 +46,6 @@ class CreateExecutiveBoardType extends AbstractType
 
     public function getName()
     {
-        return 'createBoard';
+        return 'createExecutiveBoard';
     }
 }
