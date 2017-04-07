@@ -50,7 +50,6 @@ class LoadExecutiveBoardData extends AbstractFixture implements OrderedFixtureIn
         $manager->flush();
 
         $this->addReference('board', $board);
-
     }
 
     public function getOrder()

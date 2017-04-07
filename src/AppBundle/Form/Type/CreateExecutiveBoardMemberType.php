@@ -9,7 +9,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CreateExecutiveBoardMemberType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -23,9 +22,9 @@ class CreateExecutiveBoardMemberType extends AbstractType
                         ->addOrderBy('d.name')
                         ->addOrderBy('u.firstName', 'ASC');
                 },
-                'choice_label' => function($value, $key, $index){
+                'choice_label' => function ($value, $key, $index) {
                     return $value->getFullName().' - '.$value->getDepartment();
-                }
+                },
             ))
             ->add('position', 'text', array(
                 'label' => 'Stilling',

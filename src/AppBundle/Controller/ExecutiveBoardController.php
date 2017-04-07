@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\CreateExecutiveBoardType;
 use AppBundle\Form\Type\CreateExecutiveBoardMemberType;
@@ -27,6 +26,7 @@ class ExecutiveBoardController extends Controller
     {
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->find(1);
         $members = $board->getUsers();
+
         return $this->render(':executive_board:index.html.twig', array(
             'board' => $board,
             'members' => $members,
@@ -45,7 +45,6 @@ class ExecutiveBoardController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $member->setBoard($board);
 
             // Persist the board to the database
@@ -60,8 +59,6 @@ class ExecutiveBoardController extends Controller
             'form' => $form->createView(),
         ));
     }
-
-
 
     public function removeUserFromBoardByIdAction(ExecutiveBoardMember $member)
     {
@@ -103,5 +100,4 @@ class ExecutiveBoardController extends Controller
             'isUpdate' => true,
         ));
     }
-
 }

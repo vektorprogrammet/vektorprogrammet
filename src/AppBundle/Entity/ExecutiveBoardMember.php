@@ -25,14 +25,12 @@ class ExecutiveBoardMember
      **/
     private $user;
 
-
     /**
      * @var ExecutiveBoard
      * @ORM\ManyToOne(targetEntity="ExecutiveBoard")
      * @ORM\JoinColumn(onDelete="SET NULL")
      **/
     private $board;
-
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -64,7 +62,7 @@ class ExecutiveBoardMember
      */
     public function setUser(User $user = null)
     {
-        $this->user= $user;
+        $this->user = $user;
 
         return $this;
     }
@@ -118,6 +116,4 @@ class ExecutiveBoardMember
     {
         $this->position = $position;
     }
-
-
 }

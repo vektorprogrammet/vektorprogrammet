@@ -152,5 +152,4 @@ class WorkHistoryRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
-
 }

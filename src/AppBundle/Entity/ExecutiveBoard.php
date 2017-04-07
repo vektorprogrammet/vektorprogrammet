@@ -47,7 +47,6 @@ class ExecutiveBoard
      */
     private $users;
 
-
     public function __toString()
     {
         return (string) $this->getName();
@@ -151,6 +150,4 @@ class ExecutiveBoard
     {
         return $this->users;
     }
-
-
 }

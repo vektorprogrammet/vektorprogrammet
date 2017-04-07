@@ -43,7 +43,6 @@ class WorkHistory
      **/
     protected $team;
 
-
     /**
      * @ORM\ManyToOne(targetEntity="Position")
      * @ORM\JoinColumn(name="position_id", referencedColumnName="id", onDelete="SET NULL")
@@ -113,7 +112,6 @@ class WorkHistory
     {
         return $this->team;
     }
-
 
     /**
      * Set position.
