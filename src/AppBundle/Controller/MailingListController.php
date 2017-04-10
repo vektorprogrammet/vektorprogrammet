@@ -109,11 +109,13 @@ class MailingListController extends Controller
     }
 
     /**
+     * @param Semester $semester
+     *
      * @return array
      */
-    private function getUsersFromAssistantHistories()
+    private function getUsersFromAssistantHistories(Semester $semester)
     {
-        $assistant_histories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findAllActiveAssistantHistories();
+        $assistant_histories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findBySemester($semester);
         $getUsersFromAssistants = function (AssistantHistory $assistant) {
             return $assistant->getUser();
         };
@@ -123,19 +125,20 @@ class MailingListController extends Controller
     }
 
     /**
-     * @param $data
+     * @param string   $type
+     * @param Semester $semester
      *
      * @return array
      */
-    private function getUsersByTypeSemester($type, $semester)
+    private function getUsersByTypeSemester(string $type, Semester $semester)
     {
         switch ($type) {
             case 'Assistent':
-                return $this->getUsersFromAssistantHistories();
+                return $this->getUsersFromAssistantHistories($semester);
             case 'Team':
                 return $this->getUsersFromWorkHistories($semester);
             case 'Begge':
-                $a_users = $this->getUsersFromAssistantHistories();
+                $a_users = $this->getUsersFromAssistantHistories($semester);
                 $w_users = $this->getUsersFromWorkHistories($semester);
 
                 return array_merge($a_users, $w_users);
