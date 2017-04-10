@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\Semester;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -91,22 +90,6 @@ class MailingListController extends Controller
     }
 
     /**
-     * @param Semester $semester
-     *
-     * @return array
-     */
-    private function getUsersFromAssistantHistories(Semester $semester)
-    {
-        $assistant_histories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findBySemester($semester);
-        $getUsersFromAssistants = function (AssistantHistory $assistant) {
-            return $assistant->getUser();
-        };
-        $users = array_map($getUsersFromAssistants, $assistant_histories);
-
-        return $users;
-    }
-
-    /**
      * @param string   $type
      * @param Semester $semester
      *
@@ -116,11 +99,11 @@ class MailingListController extends Controller
     {
         switch ($type) {
             case 'Assistent':
-                return $this->getUsersFromAssistantHistories($semester);
+                return $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithAssistantHistoryInSemester($semester);
             case 'Team':
                 return $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithWorkHistoryInSemester($semester);
             case 'Begge':
-                $a_users = $this->getUsersFromAssistantHistories($semester);
+                $a_users = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithAssistantHistoryInSemester($semester);
                 $w_users = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithWorkHistoryInSemester($semester);
 
                 return array_merge($a_users, $w_users);

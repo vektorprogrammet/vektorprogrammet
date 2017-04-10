@@ -31,6 +31,17 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getResult();
     }
 
+    public function findUsersWithAssistantHistoryInSemester(Semester $semester)
+    {
+        return $this->createQueryBuilder('user')
+            ->select('user')
+            ->join('user.assistantHistories', 'ah')
+            ->where('ah.semester = :semester')
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllUsersByDepartment($department)
     {
         $users = $this->getEntityManager()->createQuery('
