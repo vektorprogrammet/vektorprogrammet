@@ -1213,3 +1213,24 @@ generate_mail_lists:
   path: /kontrollpanel/epostlister
   defaults: {_controller: AppBundle:MailingList:show }
   methods: [GET, POST]
+
+generate_assistant_mail_list:
+  path: /kontrollpanel/epostlister/assistenter/{semester_id}
+  defaults: {_controller: AppBundle:MailingList:showAssistants}
+  methods: [GET]
+  requirements:
+    semester_id: \d+
+
+generate_team_mail_list:
+  path: /kontrollpanel/epostlister/teammedlemmer/{semester_id}
+  defaults: {_controller: AppBundle:MailingList:showTeam}
+  methods: [GET]
+  requirements:
+    semester_id: \d+
+
+generate_all_mail_list:
+  path: /kontrollpanel/epostlister/alle/{semester_id}
+  defaults: {_controller: AppBundle:MailingList:showAll}
+  methods: [GET]
+  requirements:
+    semester_id: \d+
