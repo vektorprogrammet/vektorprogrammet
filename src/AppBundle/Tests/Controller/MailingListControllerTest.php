@@ -7,6 +7,54 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class MailingListControllerTest extends BaseWebTestCase
 {
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $em;
+
+    public function setUp()
+    {
+        self::bootKernel();
+        $this->em = static::$kernel->getContainer()
+            ->get('doctrine')
+            ->getManager();
+    }
+
+    public function testAddOneAssistant()
+    {
+        $client = self::createAdminClient();
+
+        $length_team_old = $this->generateListCountChars($client, 'Team');
+
+        // Get a user email and add user to a team
+        $user_id = 22;
+        $user = $this->em->getRepository('AppBundle:User')->find($user_id);
+        $this->assertNotNull($user);
+        $user_email_length = strlen($user->getEmail());
+
+        $crawler = $this->goTo('/kontrollpanel/teamadmin/team/nytt_medlem/2', $client);
+        $form = $crawler->selectButton('Opprett')->form();
+        $form['createWorkHistory[user]'] = $user_id;
+        $form['createWorkHistory[position]'] = 2;
+        $form['createWorkHistory[startSemester]'] = 2;
+        $client->submit($form);
+        $client->followRedirect();
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        $length_team_new = $this->generateListCountChars($client, 'Team');
+
+        // Add 2 for comma and whitespace
+        $this->assertEquals($length_team_old + $user_email_length + 2, $length_team_new);
+
+        \TestDataManager::restoreDatabase();
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+        $this->em->close();
+    }
+
     public function testTeamAddAssistantIsAll()
     {
         $client = self::createAdminClient();
