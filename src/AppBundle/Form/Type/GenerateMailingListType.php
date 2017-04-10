@@ -28,7 +28,7 @@ class GenerateMailingListType extends AbstractType
                 'choices' => array(
                     'Assistent' => 'Assistent',
                     'Team' => 'Team',
-                    'Begge' => 'Begge',
+                    'Alle' => 'Alle',
                 ),
                 'required' => true,
             ))

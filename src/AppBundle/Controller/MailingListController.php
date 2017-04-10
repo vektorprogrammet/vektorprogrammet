@@ -32,10 +32,10 @@ class MailingListController extends Controller
                     return $this->redirectToRoute('generate_assistant_mail_list', array('semester_id' => $semester_id));
                 case 'Team':
                     return $this->redirectToRoute('generate_team_mail_list', array('semester_id' => $semester_id));
-                case 'Begge':
+                case 'Alle':
                     return $this->redirectToRoute('generate_all_mail_list', array('semester_id' => $semester_id));
                 default:
-                    throw new InvalidArgumentException('type can only be "Assistent", "Team" or "Begge". Was: '.$type);
+                    throw new InvalidArgumentException('type can only be "Assistent", "Team" or "Alle". Was: '.$type);
             }
         }
 
@@ -82,7 +82,7 @@ class MailingListController extends Controller
     public function showAllAction(int $semester_id)
     {
         $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semester_id);
-        $type = 'Begge';
+        $type = 'Alle';
 
         return $this->render('mailing_list/mailinglist_show.html.twig', array(
             'users' => $this->getUsersByTypeSemester($type, $semester),
@@ -102,13 +102,13 @@ class MailingListController extends Controller
                 return $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithAssistantHistoryInSemester($semester);
             case 'Team':
                 return $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithWorkHistoryInSemester($semester);
-            case 'Begge':
+            case 'Alle':
                 $a_users = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithAssistantHistoryInSemester($semester);
                 $w_users = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithWorkHistoryInSemester($semester);
 
                 return array_merge($a_users, $w_users);
             default:
-                throw new InvalidArgumentException('type can only be "Assistent", "Team" or "Begge". Was: '.$type);
+                throw new InvalidArgumentException('type can only be "Assistent", "Team" or "Alle". Was: '.$type);
         }
     }
 }
