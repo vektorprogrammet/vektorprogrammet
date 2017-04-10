@@ -95,24 +95,6 @@ class MailingListController extends Controller
      *
      * @return array
      */
-    private function getUsersFromWorkHistories(Semester $semester)
-    {
-        $work_histories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistories();
-        $users = array();
-        foreach ($work_histories as $wh) {
-            if ($wh->isActiveInSemester($semester)) {
-                $users[] = $wh->getUser();
-            }
-        }
-
-        return $users;
-    }
-
-    /**
-     * @param Semester $semester
-     *
-     * @return array
-     */
     private function getUsersFromAssistantHistories(Semester $semester)
     {
         $assistant_histories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findBySemester($semester);
@@ -136,10 +118,10 @@ class MailingListController extends Controller
             case 'Assistent':
                 return $this->getUsersFromAssistantHistories($semester);
             case 'Team':
-                return $this->getUsersFromWorkHistories($semester);
+                return $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithWorkHistoryInSemester($semester);
             case 'Begge':
                 $a_users = $this->getUsersFromAssistantHistories($semester);
-                $w_users = $this->getUsersFromWorkHistories($semester);
+                $w_users = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithWorkHistoryInSemester($semester);
 
                 return array_merge($a_users, $w_users);
             default:
