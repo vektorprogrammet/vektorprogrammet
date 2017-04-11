@@ -24,27 +24,27 @@ class MailingListControllerTest extends BaseWebTestCase
     {
         $client = self::createAdminClient();
 
-        $length_team_old = $this->generateListCountChars($client, 'Team');
+        $lengthTeamOld = $this->generateListCountChars($client, 'Team');
 
         // Get a user email and add user to a team
-        $user_id = 22;
-        $user = $this->em->getRepository('AppBundle:User')->find($user_id);
+        $userID = 22;
+        $user = $this->em->getRepository('AppBundle:User')->find($userID);
         $this->assertNotNull($user);
-        $user_email_length = strlen($user->getEmail());
+        $userEmailLength = strlen($user->getEmail());
 
         $crawler = $this->goTo('/kontrollpanel/teamadmin/team/nytt_medlem/2', $client);
         $form = $crawler->selectButton('Opprett')->form();
-        $form['createWorkHistory[user]'] = $user_id;
+        $form['createWorkHistory[user]'] = $userID;
         $form['createWorkHistory[position]'] = 2;
         $form['createWorkHistory[startSemester]'] = 2;
         $client->submit($form);
         $client->followRedirect();
         $this->assertTrue($client->getResponse()->isSuccessful());
 
-        $length_team_new = $this->generateListCountChars($client, 'Team');
+        $lengthTeamNew = $this->generateListCountChars($client, 'Team');
 
         // Add 2 for comma and whitespace
-        $this->assertEquals($length_team_old + $user_email_length + 2, $length_team_new);
+        $this->assertEquals($lengthTeamOld + $userEmailLength + 2, $lengthTeamNew);
 
         \TestDataManager::restoreDatabase();
     }
@@ -59,11 +59,11 @@ class MailingListControllerTest extends BaseWebTestCase
     {
         $client = self::createAdminClient();
 
-        $length_assistants = $this->generateListCountChars($client, 'Assistent');
-        $length_team = $this->generateListCountChars($client, 'Team');
-        $length_all = $this->generateListCountChars($client, 'Alle');
+        $lengthAssistants = $this->generateListCountChars($client, 'Assistent');
+        $lengthTeam = $this->generateListCountChars($client, 'Team');
+        $lengthAll = $this->generateListCountChars($client, 'Alle');
 
-        $this->assertEquals($length_assistants + $length_team, $length_all);
+        $this->assertEquals($lengthAssistants + $lengthTeam, $lengthAll);
     }
 
     /**

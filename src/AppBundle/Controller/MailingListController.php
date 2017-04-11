@@ -25,15 +25,15 @@ class MailingListController extends Controller
         if ($form->isValid()) {
             $data = $form->getData();
             $type = $data['type'];
-            $semester_id = $data['semester']->getId();
+            $semesterID = $data['semester']->getId();
 
             switch ($type) {
                 case 'Assistent':
-                    return $this->redirectToRoute('generate_assistant_mail_list', array('semester_id' => $semester_id));
+                    return $this->redirectToRoute('generate_assistant_mail_list', array('semesterID' => $semesterID));
                 case 'Team':
-                    return $this->redirectToRoute('generate_team_mail_list', array('semester_id' => $semester_id));
+                    return $this->redirectToRoute('generate_team_mail_list', array('semesterID' => $semesterID));
                 case 'Alle':
-                    return $this->redirectToRoute('generate_all_mail_list', array('semester_id' => $semester_id));
+                    return $this->redirectToRoute('generate_all_mail_list', array('semesterID' => $semesterID));
                 default:
                     throw new InvalidArgumentException('type can only be "Assistent", "Team" or "Alle". Was: '.$type);
             }
@@ -45,13 +45,13 @@ class MailingListController extends Controller
     }
 
     /**
-     * @param int $semester_id
+     * @param int $semesterID
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAssistantsAction(int $semester_id)
+    public function showAssistantsAction(int $semesterID)
     {
-        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semester_id);
+        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterID);
         $type = 'Assistent';
 
         return $this->render('mailing_list/mailinglist_show.html.twig', array(
@@ -60,13 +60,13 @@ class MailingListController extends Controller
     }
 
     /**
-     * @param int $semester_id
+     * @param int $semesterID
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showTeamAction(int $semester_id)
+    public function showTeamAction(int $semesterID)
     {
-        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semester_id);
+        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterID);
         $type = 'Team';
 
         return $this->render('mailing_list/mailinglist_show.html.twig', array(
@@ -75,13 +75,13 @@ class MailingListController extends Controller
     }
 
     /**
-     * @param int $semester_id
+     * @param int $semesterID
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAllAction(int $semester_id)
+    public function showAllAction(int $semesterID)
     {
-        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semester_id);
+        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterID);
         $type = 'Alle';
 
         return $this->render('mailing_list/mailinglist_show.html.twig', array(
@@ -103,10 +103,10 @@ class MailingListController extends Controller
             case 'Team':
                 return $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithWorkHistoryInSemester($semester);
             case 'Alle':
-                $a_users = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithAssistantHistoryInSemester($semester);
-                $w_users = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithWorkHistoryInSemester($semester);
+                $assistantUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithAssistantHistoryInSemester($semester);
+                $workingUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithWorkHistoryInSemester($semester);
 
-                return array_merge($a_users, $w_users);
+                return array_merge($assistantUsers, $workingUsers);
             default:
                 throw new InvalidArgumentException('type can only be "Assistent", "Team" or "Alle". Was: '.$type);
         }

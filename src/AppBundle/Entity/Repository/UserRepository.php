@@ -15,18 +15,18 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 {
     public function findUsersWithWorkHistoryInSemester(Semester $semester)
     {
-        $start_date = $semester->getSemesterStartDate();
-        $end_date = $semester->getSemesterEndDate();
+        $startDate = $semester->getSemesterStartDate();
+        $endDate = $semester->getSemesterEndDate();
 
         return $this->createQueryBuilder('user')
             ->select('user')
             ->join('user.workHistories', 'wh')
             ->leftJoin('wh.startSemester', 'ss')
-            ->where('ss.semesterStartDate <= :start_date')
+            ->where('ss.semesterStartDate <= :startDate')
             ->leftJoin('wh.endSemester', 'se')
-            ->andWhere('wh.endSemester is NULL OR se.semesterEndDate >= :end_date')
-            ->setParameter('start_date', $start_date)
-            ->setParameter('end_date', $end_date)
+            ->andWhere('wh.endSemester is NULL OR se.semesterEndDate >= :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
             ->getQuery()
             ->getResult();
     }
