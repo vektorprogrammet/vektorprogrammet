@@ -20,7 +20,7 @@ class MailingListControllerTest extends BaseWebTestCase
             ->getManager();
     }
 
-    public function testAddOneAssistant()
+    public function testAddOneTeamMember()
     {
         $client = self::createAdminClient();
 
