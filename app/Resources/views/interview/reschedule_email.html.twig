@@ -4,8 +4,8 @@
 <p>Tidligere intervjutidspunkt var: {{ interview.getScheduled|date("d.m.y - G:i") }}</p>
 <p>
     For å sette opp nytt intervju, gå til
-    <a href=https://vektorprogrammet.no{{ path('interview_schedule', { 'id': application.id }) }}>
-        https://vektorprogrammet.no{{ path('interview_schedule', { 'id': application.id }) }}
+    <a href="{{ url('interview_schedule', { 'id' : application.id }) }}">
+        Vektorprogrammet.no{{ path('interview_schedule', { 'id' : application.id }) }}
     </a>
 </p>
 

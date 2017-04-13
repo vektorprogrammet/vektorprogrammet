@@ -3,7 +3,9 @@
 Tidspunkt: {{ datetime|date("d.m.y - G:i") }}.
 <br/><br/>
 <p>For å akseptere eller kansellere intervjuet, gå inn på følgende link: <p/>
-<a href="http://www.vektorprogrammet.no/intervju/{{ responseCode }}">Vektorprogrammet.no/intervju/{{ responseCode }}</a>
+  <a href="{{ url('interview_response', { 'responseCode' : responseCode}) }}">
+    Vektorprogrammet.no{{path('interview_response', {'responseCode' : responseCode})}}
+  </a>
 <br/>
 Mvh.
 <br/>
