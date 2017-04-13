@@ -1217,7 +1217,7 @@ executive_board_show:
  methods: [GET]
 
 executive_board_add_user_to_board:
- path: /kontrollpanel/hovedstyret/nytt_medlem/{id}
+ path: /kontrollpanel/hovedstyret/nytt_medlem
  defaults: {_controller: AppBundle:ExecutiveBoard:addUserToBoard }
  methods: [GET, POST]
  requirements:
@@ -1233,7 +1233,7 @@ executive_board_remove_user_from_board_by_id:
     expose: true
 
 executive_board_update:
- path: /kontrollpanel/hovedstyret/oppdater/{id}
+ path: /kontrollpanel/hovedstyret/oppdater
  defaults: {_controller: AppBundle:ExecutiveBoard:updateBoard }
  methods: [GET, POST]
  requirements:
