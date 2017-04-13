@@ -12,6 +12,7 @@ SYMFONY_ENV=prod php ./composer.phar install --no-dev --optimize-autoloader >>$l
 npm install >>$log 2>&1
 ./node_modules/.bin/gulp build:prod >>$log 2>&1
 php app/console cache:clear --env=prod >>$log 2>&1
+php app/console doctrine:migrations:migrate -n >>$log 2>&1
 echo "---------------------------------------------------" >>$log
 
 exit 0
