@@ -52,10 +52,10 @@ class MailingListController extends Controller
     public function showAssistantsAction(int $semesterID)
     {
         $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterID);
-        $type = 'Assistent';
+        $users = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithAssistantHistoryInSemester($semester);
 
         return $this->render('mailing_list/mailinglist_show.html.twig', array(
-            'users' => $this->getUsersByTypeSemester($type, $semester),
+            'users' => $users,
         ));
     }
 
@@ -67,10 +67,10 @@ class MailingListController extends Controller
     public function showTeamAction(int $semesterID)
     {
         $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterID);
-        $type = 'Team';
+        $users = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithWorkHistoryInSemester($semester);
 
         return $this->render('mailing_list/mailinglist_show.html.twig', array(
-            'users' => $this->getUsersByTypeSemester($type, $semester),
+            'users' => $users,
         ));
     }
 
@@ -82,33 +82,12 @@ class MailingListController extends Controller
     public function showAllAction(int $semesterID)
     {
         $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterID);
-        $type = 'Alle';
+        $assistantUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithAssistantHistoryInSemester($semester);
+        $workingUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithWorkHistoryInSemester($semester);
+        $users = array_merge($assistantUsers, $workingUsers);
 
         return $this->render('mailing_list/mailinglist_show.html.twig', array(
-            'users' => $this->getUsersByTypeSemester($type, $semester),
+            'users' => $users,
         ));
-    }
-
-    /**
-     * @param string   $type
-     * @param Semester $semester
-     *
-     * @return array
-     */
-    private function getUsersByTypeSemester(string $type, Semester $semester)
-    {
-        switch ($type) {
-            case 'Assistent':
-                return $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithAssistantHistoryInSemester($semester);
-            case 'Team':
-                return $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithWorkHistoryInSemester($semester);
-            case 'Alle':
-                $assistantUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithAssistantHistoryInSemester($semester);
-                $workingUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithWorkHistoryInSemester($semester);
-
-                return array_merge($assistantUsers, $workingUsers);
-            default:
-                throw new InvalidArgumentException('type can only be "Assistent", "Team" or "Alle". Was: '.$type);
-        }
     }
 }
