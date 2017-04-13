@@ -4,7 +4,7 @@ Tidspunkt: {{ datetime|date("d.m.y - G:i") }}.
 <br/><br/>
 <p>For å akseptere eller kansellere intervjuet, gå inn på følgende link: <p/>
   <a href="{{ url('interview_response', { 'responseCode' : responseCode}) }}">
-    {{ url('interview_response', {'responseCode' : responseCode})}}
+    {{ app.request.httpHost ~ path('interview_response', {'responseCode' : responseCode})}}
   </a>
 <br/>
 Mvh.

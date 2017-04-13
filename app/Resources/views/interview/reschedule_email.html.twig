@@ -5,7 +5,7 @@
 <p>
     For å sette opp nytt intervju, gå til
     <a href="{{ url('interview_schedule', { 'id' : application.id }) }}">
-        {{ url('interview_schedule', { 'id' : application.id }) }}
+        {{ app.request.httpHost ~ path('interview_schedule', { 'id' : application.id }) }}
     </a>
 </p>
 
