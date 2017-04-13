@@ -14,11 +14,9 @@ class ExecutiveBoardController extends Controller
     public function showAction()
     {
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->find(1);
-        $members = $board->getUsers();
 
-        return $this->render('executive_board/executive_board_page.html.twig', array(
-            'board' => $board,
-            'members' => $members,
+        return $this->render('team/team_page.html.twig', array(
+            'team' => $board,
         ));
     }
 

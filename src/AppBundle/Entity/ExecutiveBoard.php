@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="executive_board")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ExecutiveBoardRepository")
  */
-class ExecutiveBoard
+class ExecutiveBoard implements TeamInterface
 {
     /**
      * @ORM\Column(type="integer")
@@ -149,5 +149,15 @@ class ExecutiveBoard
     public function getUsers()
     {
         return $this->users;
+    }
+
+    public function getWorkHistories()
+    {
+        return $this->users;
+    }
+
+    public function getAcceptApplication()
+    {
+        return false;
     }
 }
