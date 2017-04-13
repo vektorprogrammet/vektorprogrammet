@@ -3,10 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Semester;
-use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Form\Type\GenerateMailingListType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class MailingListController extends Controller
 {
@@ -35,7 +35,7 @@ class MailingListController extends Controller
                 case 'Alle':
                     return $this->redirectToRoute('generate_all_mail_list', array('id' => $semesterID));
                 default:
-                    throw new InvalidArgumentException('type can only be "Assistent", "Team" or "Alle". Was: '.$type);
+                    throw new BadRequestHttpException('type can only be "Assistent", "Team" or "Alle". Was: '.$type);
             }
         }
 
