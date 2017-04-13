@@ -49,7 +49,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for m in members %}
+                {% for m in board.users %}
                     <tr>
                         <td><a href='{{ path('specific_profile', { 'id': m.id }) }}'>{{ m.user.firstName }}</a></td>
                         <td> {{ m.user.lastName }} </td>

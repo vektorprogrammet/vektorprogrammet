@@ -23,11 +23,9 @@ class ExecutiveBoardController extends Controller
     public function showAdminAction()
     {
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
-        $members = $board->getUsers();
 
         return $this->render(':executive_board:index.html.twig', array(
             'board' => $board,
-            'members' => $members,
         ));
     }
 
@@ -78,7 +76,6 @@ class ExecutiveBoardController extends Controller
 
         // Handle the form
         $form->handleRequest($request);
-        $members = $board->getUsers();
         if ($form->isSubmitted() && $form->isValid()) {
             //Don't persist if the preview button was clicked
             if (!$form->get('preview')->isClicked()) {
@@ -91,15 +88,13 @@ class ExecutiveBoardController extends Controller
             }
 
             // Render the boardpage as a preview
-            return $this->render('executive_board/executive_board_page.html.twig', array(
-                'board' => $board,
-                'members' => $members,
+            return $this->render('team/team_page.html.twig', array(
+                'team' => $board,
             ));
         }
 
         return $this->render('executive_board/update_executive_board.html.twig', array(
             'form' => $form->createView(),
-            'isUpdate' => true,
         ));
     }
 }
