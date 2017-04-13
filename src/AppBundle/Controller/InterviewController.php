@@ -336,18 +336,12 @@ class InterviewController extends Controller
     }
 
     /**
-     * @param string $responseCode
+     * @param Interview $interview
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function acceptByResponseCodeAction(string $responseCode)
+    public function acceptByResponseCodeAction(Interview $interview)
     {
-        $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
-
-        if ($interview === null) {
-            throw $this->createNotFoundException();
-        }
-
         $interview->acceptInterview();
         $manager = $this->getDoctrine()->getManager();
         $manager->persist($interview);
@@ -359,18 +353,12 @@ class InterviewController extends Controller
     }
 
     /**
-     * @param string $responseCode
+     * @param Interview $interview
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function requestNewTimeAction(string $responseCode)
+    public function requestNewTimeAction(Interview $interview)
     {
-        $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
-
-        if ($interview === null) {
-            throw $this->createNotFoundException();
-        }
-
         $interview->requestNewTime();
 
         $manager = $this->getDoctrine()->getManager();
@@ -385,15 +373,13 @@ class InterviewController extends Controller
     }
 
     /**
-     * @param string $responseCode
+     * @param Interview $interview
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function respondAction(string $responseCode)
+    public function respondAction(Interview $interview)
     {
-        $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
-
-        if ($interview === null || !$interview->isPending()) {
+        if (!$interview->isPending()) {
             throw $this->createNotFoundException();
         }
 
@@ -403,15 +389,14 @@ class InterviewController extends Controller
     }
 
     /**
-     * @param string $responseCode
+     * @param Request   $request
+     * @param Interview $interview
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function cancelByResponseCodeAction(Request $request, string $responseCode)
+    public function cancelByResponseCodeAction(Request $request, Interview $interview)
     {
-        $interview = $this->getDoctrine()->getRepository('AppBundle:Interview')->findByResponseCode($responseCode);
-
-        if ($interview === null || !$interview->isPending()) {
+        if (!$interview->isPending()) {
             throw $this->createNotFoundException();
         }
 
