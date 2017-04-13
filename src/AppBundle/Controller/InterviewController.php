@@ -10,7 +10,6 @@ use AppBundle\Form\Type\AssignInterviewType;
 use AppBundle\Form\Type\CancelInterviewConfirmationType;
 use AppBundle\Form\Type\ScheduleInterviewType;
 use AppBundle\Role\Roles;
-use AppBundle\Type\InterviewStatusType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -328,7 +327,7 @@ class InterviewController extends Controller
         $manager->persist($interview);
         $manager->flush();
 
-        $this->notifyInterviewer(InterviewStatusType::CANCELLED, $interview);
+        $this->get('app.interview.manager')->sendCancelEmail($interview);
 
         $this->addFlash('success', 'Intervjuet ble kansellert.');
 
@@ -365,7 +364,7 @@ class InterviewController extends Controller
         $manager->persist($interview);
         $manager->flush();
 
-        $this->notifyInterviewer(InterviewStatusType::REQUEST_NEW_TIME, $interview);
+        $this->get('app.interview.manager')->sendRescheduleEmail($interview);
 
         $this->addFlash('success', 'Forespørsel har blitt sendt.');
 
@@ -420,21 +419,5 @@ class InterviewController extends Controller
             'interview' => $interview,
             'form' => $form->createView(),
         ));
-    }
-
-    /**
-     * @param int       $response
-     * @param Interview $interview
-     */
-    private function notifyInterviewer(int $response, Interview $interview)
-    {
-        switch ($response) {
-            case InterviewStatusType::REQUEST_NEW_TIME:
-                $this->get('app.interview.manager')->sendRescheduleEmail($interview);
-                break;
-            case InterviewStatusType::CANCELLED:
-                $this->get('app.interview.manager')->sendCancelEmail($interview);
-                break;
-        }
     }
 }
