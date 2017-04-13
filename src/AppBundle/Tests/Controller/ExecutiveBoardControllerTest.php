@@ -2,19 +2,16 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\BaseWebTestCase;
 
-class ExecutiveBoardControllerTest extends WebTestCase
+class ExecutiveBoardControllerTest extends BaseWebTestCase
 {
     public function testUpdateExecutiveBoard()
     {
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamLeaderClient();
 
-        $crawler = $client->request('GET', '/kontrollpanel/hovedstyret');
+        $crawler = $this->goTo('/kontrollpanel/hovedstyret', $client);
 
         // Find a link and click it
         $link = $crawler->selectLink('Rediger')->link();
@@ -29,7 +26,7 @@ class ExecutiveBoardControllerTest extends WebTestCase
         $form['createExecutiveBoard[name]'] = 'nyttStyre';
 
         // submit the form
-        $crawler = $client->submit($form);
+        $client->submit($form);
 
         // Follow the redirect
         $crawler = $client->followRedirect();
@@ -42,13 +39,9 @@ class ExecutiveBoardControllerTest extends WebTestCase
 
     public function testAddUserToBoard()
     {
-        // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamLeaderClient();
 
-        $crawler = $client->request('GET', '/kontrollpanel/hovedstyret');
+        $crawler = $this->goTo('/kontrollpanel/hovedstyret', $client);
 
         // Find a link and click it
         $link = $crawler->selectLink('Legg til ny bruker')->eq(0)->link();
@@ -64,7 +57,7 @@ class ExecutiveBoardControllerTest extends WebTestCase
         $form['createExecutiveBoardMember[position]'] = 'Leder';
 
         // submit the form
-        $crawler = $client->submit($form);
+        $client->submit($form);
 
         // Follow the redirect
         $crawler = $client->followRedirect();
@@ -74,26 +67,16 @@ class ExecutiveBoardControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('td:contains("Petter")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Johansen")')->count());
 
-        // USER
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAssistantClient();
 
-        $crawler = $client->request('GET', '/kontrollpanel/hovedstyret/nytt_medlem/3');
+        $client->request('GET', '/kontrollpanel/hovedstyret/nytt_medlem');
 
-        // Assert that the response is a redirect
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-        // TEAM
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamMemberClient();
 
-        $crawler = $client->request('GET', '/kontrollpanel/hovedstyret/nytt_medlem/3');
+        $client->request('GET', '/kontrollpanel/hovedstyret/nytt_medlem');
 
-        // Assert that the response is a redirect
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
         \TestDataManager::restoreDatabase();
@@ -101,42 +84,22 @@ class ExecutiveBoardControllerTest extends WebTestCase
 
     public function testShowAdmin()
     {
-        // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $crawler = $client->request('GET', '/kontrollpanel/hovedstyret');
+        $crawler = $this->teamLeaderGoTo('/kontrollpanel/hovedstyret');
 
         // Check the count for the different variables
         $this->assertEquals(1, $crawler->filter('h1:contains("Hovedstyret")')->count());
 
-        // TEAM
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamMemberClient();
 
-        $crawler = $client->request('GET', '/kontrollpanel/hovedstyret');
+        $client->request('GET', '/kontrollpanel/hovedstyret');
 
-        // Assert that the response is a redirect
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testShow()
     {
-        $client = static::createClient();
+        $crawler = $this->goTo('/hovedstyret');
 
-        $crawler = $client->request('GET', '/hovedstyret');
-
-        // Assert that we have the correct page
-        $this->assertContains('Hovedstyret', $client->getResponse()->getContent());
-
-        // Check the count for the parameters
         $this->assertEquals(1, $crawler->filter('h1:contains("Hovedstyret")')->count());
-
-        // Assert a specific 200 status code
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 }
