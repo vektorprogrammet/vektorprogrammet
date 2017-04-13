@@ -313,11 +313,11 @@ class InterviewController extends Controller
     }
 
     /**
-     * @param string $responseCode
+     * @param Interview $interview
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    private function userCancelFinal(string $responseCode, Interview $interview)
+    private function userCancelFinal(Interview $interview)
     {
         if ($interview === null) {
             throw $this->createNotFoundException();
@@ -426,7 +426,7 @@ class InterviewController extends Controller
                 $interview->unsetCancelMessage();
             }
 
-            $this->userCancelFinal($responseCode, $interview);
+            $this->userCancelFinal($interview);
 
             return $this->redirectToRoute('home');
         }
