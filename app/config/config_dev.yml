@@ -50,13 +50,13 @@ assetic:
 swiftmailer:
   disable_delivery: true
 
-#doctrine:
-#    dbal:
-#        path: "%kernel.root_dir%/data/dev.db"
-#        driver: pdo_sqlite
-#        host: localhost
-#        port: null
-#        dbname: "%kernel.root_dir%/data/dev.db"
-#        user: root
-#        password: null
-#        charset: UTF8
+doctrine:
+    dbal:
+        path: "%kernel.root_dir%/data/dev.db"
+        driver: pdo_sqlite
+        host: localhost
+        port: null
+        dbname: "%kernel.root_dir%/data/dev.db"
+        user: root
+        password: null
+        charset: UTF8
