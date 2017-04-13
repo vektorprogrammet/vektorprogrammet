@@ -13,7 +13,7 @@ class ExecutiveBoardController extends Controller
 {
     public function showAction()
     {
-        $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->find(1);
+        $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
 
         return $this->render('team/team_page.html.twig', array(
             'team' => $board,
@@ -22,7 +22,7 @@ class ExecutiveBoardController extends Controller
 
     public function showAdminAction()
     {
-        $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->find(1);
+        $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
         $members = $board->getUsers();
 
         return $this->render(':executive_board:index.html.twig', array(
@@ -31,8 +31,10 @@ class ExecutiveBoardController extends Controller
         ));
     }
 
-    public function addUserToBoardAction(Request $request, ExecutiveBoard $board)
+    public function addUserToBoardAction(Request $request)
     {
+        $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
+
         // Create a new WorkHistory entity
         $member = new ExecutiveBoardMember();
 
@@ -67,8 +69,10 @@ class ExecutiveBoardController extends Controller
         return $this->redirect($this->generateUrl('executive_board_show'));
     }
 
-    public function updateBoardAction(Request $request, ExecutiveBoard $board)
+    public function updateBoardAction(Request $request)
     {
+        $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
+
         // Create the form
         $form = $this->createForm(new CreateExecutiveBoardType($board), $board);
 
