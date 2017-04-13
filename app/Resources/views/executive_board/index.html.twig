@@ -1,7 +1,5 @@
 {% extends 'adminBase.html.twig' %}
 
-
-
 {% block title %}
     {{ board.name }}
 {% endblock %}
@@ -10,13 +8,10 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
             <h1> {{ board.name }} </h1>
-
             <hr>
-
                 <div class="row">
                     <div class="small-12 medium-12 large-6 columns">
                         <ul class="inline-list">
-
                             <li>
                                 <a href="{{ path('executive_board_add_user_to_board' )}}"
                                    class="button tiny">Legg til ny bruker</a>
@@ -26,10 +21,6 @@
                                 <a href="{{ path('executive_board_update' )}}"
                                    class="button tiny">Rediger</a>
                             </li>
-
-
-
-
                         </ul>
                     </div>
                 </div>
@@ -58,37 +49,21 @@
                         <td> {{ m.user.email }} </td>
                         <td> {{ m.user.fieldOfStudy }} </td>
                         <td> {{ m.user.department }} </td>
-
-                            <td>
-                                <form method="POST"
-                                      onsubmit="return confirm('Vil du virkelig fjerne brukeren {{ m.user.firstName }} {{ m.user.lastName }}?')"
-                                      action="{{ path('executive_board_remove_user_from_board_by_id', { id: m.id }) }}">
-                                    <button type="submit"
-                                            class="button tiny alert">
-                                        <i class="fa fa-trash"></i>
-                                        Slett
-                                    </button>
-                                </form>
-                            </td>
-
-
-
+                        <td>
+                            <form method="POST"
+                                  onsubmit="return confirm('Vil du virkelig fjerne brukeren {{ m.user.firstName }} {{ m.user.lastName }}?')"
+                                  action="{{ path('executive_board_remove_user_from_board_by_id', { id: m.id }) }}">
+                                <button type="submit"
+                                        class="button tiny alert">
+                                    <i class="fa fa-trash"></i>
+                                    Slett
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
-
-
             </table>
         </div>
     </div>
-
-    <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
-         aria-hidden="true" role="dialog">
-        <h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
-        <ul class="inline-list">
-            <a id="modalAccept" href="#" class="button tiny">Slett</a>
-            <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
-        </ul>
-    </div>
-
 {% endblock %}
