@@ -10,7 +10,7 @@ class BoardAndTeamController extends Controller
     {
         // Find all departments
         $departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
-        $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->find(1);
+        $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
 
         return $this->render('about/board_and_team.html.twig', array(
             'departments' => $departments,

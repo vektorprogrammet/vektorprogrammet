@@ -20,15 +20,13 @@ class ExecutiveBoardMember
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      * @Assert\Valid
      **/
     private $user;
 
     /**
      * @var ExecutiveBoard
-     * @ORM\ManyToOne(targetEntity="ExecutiveBoard")
-     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @ORM\ManyToOne(targetEntity="ExecutiveBoard", inversedBy="users")
      **/
     private $board;
 
@@ -56,7 +54,7 @@ class ExecutiveBoardMember
     /**
      * Set user.
      *
-     * @param \AppBundle\Entity\User $user
+     * @param User $user
      *
      * @return ExecutiveBoardMember
      */
@@ -70,7 +68,7 @@ class ExecutiveBoardMember
     /**
      * Get user.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {
