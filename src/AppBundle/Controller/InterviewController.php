@@ -316,29 +316,6 @@ class InterviewController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    private function userCancelFinal(Interview $interview)
-    {
-        if ($interview === null) {
-            throw $this->createNotFoundException();
-        }
-
-        $interview->cancel();
-        $manager = $this->getDoctrine()->getManager();
-        $manager->persist($interview);
-        $manager->flush();
-
-        $this->get('app.interview.manager')->sendCancelEmail($interview);
-
-        $this->addFlash('success', 'Intervjuet ble kansellert.');
-
-        return $this->redirectToRoute('home');
-    }
-
-    /**
-     * @param Interview $interview
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
     public function acceptByResponseCodeAction(Interview $interview)
     {
         $interview->acceptInterview();
@@ -410,7 +387,14 @@ class InterviewController extends Controller
                 $interview->unsetCancelMessage();
             }
 
-            $this->userCancelFinal($interview);
+            $interview->cancel();
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($interview);
+            $manager->flush();
+
+            $this->get('app.interview.manager')->sendCancelEmail($interview);
+
+            $this->addFlash('success', 'Intervjuet ble kansellert.');
 
             return $this->redirectToRoute('home');
         }
