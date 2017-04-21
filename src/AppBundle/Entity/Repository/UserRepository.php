@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -12,6 +13,35 @@ use Doctrine\ORM\NoResultException;
 
 class UserRepository extends EntityRepository implements UserProviderInterface
 {
+    public function findUsersWithWorkHistoryInSemester(Semester $semester)
+    {
+        $startDate = $semester->getSemesterStartDate();
+        $endDate = $semester->getSemesterEndDate();
+
+        return $this->createQueryBuilder('user')
+            ->select('user')
+            ->join('user.workHistories', 'wh')
+            ->leftJoin('wh.startSemester', 'ss')
+            ->where('ss.semesterStartDate <= :startDate')
+            ->leftJoin('wh.endSemester', 'se')
+            ->andWhere('wh.endSemester is NULL OR se.semesterEndDate >= :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findUsersWithAssistantHistoryInSemester(Semester $semester)
+    {
+        return $this->createQueryBuilder('user')
+            ->select('user')
+            ->join('user.assistantHistories', 'ah')
+            ->where('ah.semester = :semester')
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllUsersByDepartment($department)
     {
         $users = $this->getEntityManager()->createQuery('

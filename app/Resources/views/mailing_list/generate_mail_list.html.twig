@@ -1,0 +1,21 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Generer epostliste
+{% endblock %}
+
+{% form_theme form 'form/foundation_layout.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <h1>Generer epostliste</h1>
+            <hr>
+            <div class="row">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

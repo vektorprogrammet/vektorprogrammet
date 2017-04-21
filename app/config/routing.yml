@@ -526,6 +526,13 @@ register_applicant:
  defaults: {_controller: AppBundle:AdmissionAdmin:createApplication}
  methods: [GET, POST]
 
+admissionadmin_team_interest:
+ path: /kontrollpanel/opptakadmin/teaminteresse/{semester}
+ defaults: {_controller: AppBundle:AdmissionAdmin:showTeamInterest}
+ methods: [GET]
+ requirements:
+  semester: \d+
+
 ##########################################
 #              UserAdmin                 #
 ##########################################
@@ -945,6 +952,34 @@ interview_schedule:
  requirements:
   id: \d+
 
+interview_response:
+    path: /intervju/{responseCode}
+    defaults: { _controller: AppBundle:Interview:respond }
+    methods: [GET]
+    requirements:
+      reponseCode: \w+
+
+interview_accept_by_response:
+    path: /intervju/aksepter/{responseCode}
+    defaults: { _controller: AppBundle:Interview:acceptByResponseCode }
+    methods: [POST]
+    requirements:
+      reponseCode: \w+
+
+interview_request_new_time_by_response:
+    path: /intervju/nytid/{responseCode}
+    defaults: { _controller: AppBundle:Interview:requestNewTime }
+    methods: [POST]
+    requirements:
+      reponseCode: \w+
+
+interview_cancel_by_response:
+    path: /intervju/kanseller/tilbakemelding/{responseCode}
+    defaults: { _controller: AppBundle:Interview:cancelByResponseCode }
+    methods: [GET, POST]
+    requirements:
+      responseCode: \w+
+
 ##########################################
 #                File browser            #
 ##########################################
@@ -1209,3 +1244,69 @@ show_field_of_studies:
   path: /kontrollpanel/linjer
   defaults: {_controller: AppBundle:FieldOfStudy:show }
   methods: [GET]
+
+##########################################
+#           Executive board              #
+##########################################
+executive_board_page:
+  path: /hovedstyret
+  defaults: {_controller: AppBundle:ExecutiveBoard:show}
+  methods: [GET]
+
+executive_board_show:
+ path: /kontrollpanel/hovedstyret
+ defaults: {_controller: AppBundle:ExecutiveBoard:showAdmin }
+ methods: [GET]
+
+executive_board_add_user_to_board:
+ path: /kontrollpanel/hovedstyret/nytt_medlem
+ defaults: {_controller: AppBundle:ExecutiveBoard:addUserToBoard }
+ methods: [GET, POST]
+ requirements:
+    id: \d+
+
+executive_board_remove_user_from_board_by_id:
+ path: /kontrollpanel/hovedstyret/slett/bruker/{id}
+ defaults: {_controller: AppBundle:ExecutiveBoard:removeUserFromBoardById }
+ methods: [POST]
+ requirements:
+    id: \d+
+ options:
+    expose: true
+
+executive_board_update:
+ path: /kontrollpanel/hovedstyret/oppdater
+ defaults: {_controller: AppBundle:ExecutiveBoard:updateBoard }
+ methods: [GET, POST]
+ requirements:
+    id: \d+
+
+##########################################
+#              Mailing Lists             #
+##########################################
+
+generate_mail_lists:
+  path: /kontrollpanel/epostlister
+  defaults: {_controller: AppBundle:MailingList:show }
+  methods: [GET, POST]
+
+generate_assistant_mail_list:
+  path: /kontrollpanel/epostlister/assistenter/{id}
+  defaults: {_controller: AppBundle:MailingList:showAssistants}
+  methods: [GET]
+  requirements:
+    id: \d+
+
+generate_team_mail_list:
+  path: /kontrollpanel/epostlister/teammedlemmer/{id}
+  defaults: {_controller: AppBundle:MailingList:showTeam}
+  methods: [GET]
+  requirements:
+    id: \d+
+
+generate_all_mail_list:
+  path: /kontrollpanel/epostlister/alle/{id}
+  defaults: {_controller: AppBundle:MailingList:showAll}
+  methods: [GET]
+  requirements:
+    id: \d+

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -75,5 +76,37 @@ class RoleManager
             !(!$this->authorizationChecker->isGranted(Roles::TEAM_LEADER) &&
                 $role !== Roles::ASSISTANT)
         ;
+    }
+
+    public function loggedInUserCanChangeRoleOfUsersWithRole(User $user, string $role): bool
+    {
+        // Teamleaders can't change the role of admins
+        $loggedInAsAdmin = $this->authorizationChecker->isGranted(Roles::ADMIN);
+        $tryingToChangeAdmin = $this->userIsGranted($user, Roles::ADMIN);
+
+        return
+            ($loggedInAsAdmin || !$tryingToChangeAdmin) &&
+            $this->canChangeToRole($role);
+    }
+
+    public function userIsGranted(User $user, string $role): bool
+    {
+        $roles = array(
+            Roles::ASSISTANT,
+            Roles::TEAM_MEMBER,
+            Roles::TEAM_LEADER,
+            Roles::ADMIN,
+        );
+
+        if (empty($user->getRoles())) {
+            return false;
+        }
+
+        $userRole = $user->getRoles()[0]->getRole();
+
+        $userAccessLevel = array_search($userRole, $roles);
+        $roleAccessLevel = array_search($role, $roles);
+
+        return $userAccessLevel >= $roleAccessLevel;
     }
 }

@@ -21,7 +21,7 @@ services:
 
   app.interview.manager:
     class: AppBundle\Service\InterviewManager
-    arguments: ['@security.token_storage', '@security.authorization_checker', '@mailer', '@twig', '@app.logger']
+    arguments: ['@security.token_storage', '@security.authorization_checker', '@mailer', '@twig', '@app.logger', '@doctrine.orm.entity_manager']
 
   app.newsletter.manager:
       class: AppBundle\Service\NewsletterManager
@@ -66,7 +66,7 @@ services:
 
   app.role_extension:
     class: AppBundle\Twig\Extension\RoleExtension
-    arguments: ['@security.authorization_checker', '@security.token_storage']
+    arguments: ['@security.authorization_checker', '@security.token_storage', '@app.roles']
     tags:
         - { name: twig.extension }
 

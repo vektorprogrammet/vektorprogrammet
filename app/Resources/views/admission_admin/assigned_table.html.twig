@@ -11,7 +11,9 @@
         <th data-sort="string">Linje</th>
         <th data-sort="int">År</th>
         <th data-sort="int">Oppsatt dato</th>
+        <th data-sort="string">Oppsatt rom</th>
         <th data-sort="string">Intervjues av</th>
+        <th data-sort="string">Status</th>
         {# Add header columns to match the buttons added #}
         <th colspan="2"></th>
     </tr>
@@ -35,7 +37,13 @@
                 <td data-sort-value="0"></td>
             {% endif %}
 
+
+            <td>{{ a.interview.room }}</td>
             <td>{{ a.interview.interviewer }}</td>
+
+            <td style="color: {{ a.interview.getInterviewStatusAsColor() }}">
+                {{ a.interview.getInterviewStatusAsString() }}
+            </td>
 
             {# Add the buttons to book(send email) and conduct an interview, given the correct permissions #}
             {% if is_granted_team_leader() or a.interview.isInterviewer(app.user) %}

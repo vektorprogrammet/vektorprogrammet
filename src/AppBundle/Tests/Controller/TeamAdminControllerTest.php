@@ -499,7 +499,7 @@ class TeamAdminControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('h1:contains("Team")')->count());
 
         // Check the count for the different variables
-        $this->assertEquals(1, $crawler->filter('a:contains("Hovedstyret")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("Styret")')->count());
         $this->assertEquals(1, $crawler->filter('a:contains("IT")')->count());
 
         // USER
@@ -552,11 +552,11 @@ class TeamAdminControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/kontrollpanel/teamadmin');
 
         // Find a link and click it
-        $link = $crawler->selectLink('Hovedstyret')->eq(0)->link();
+        $link = $crawler->selectLink('Styret')->eq(0)->link();
         $crawler = $client->click($link);
 
         // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("Hovedstyret")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Styret")')->count());
 
         // Check the count for the different variables
         $this->assertEquals(1, $crawler->filter('td:contains("Petter")')->count());
@@ -600,7 +600,7 @@ class TeamAdminControllerTest extends WebTestCase
 
         // Check the count for the different variables
         $this->assertEquals(1, $crawler->filter('h1:contains("Team")')->count());
-        $this->assertEquals(1, $crawler->filter('a:contains("Hovedstyret")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("Styret")')->count());
         $this->assertEquals(1, $crawler->filter('a:contains("IT")')->count());
 
         // USER

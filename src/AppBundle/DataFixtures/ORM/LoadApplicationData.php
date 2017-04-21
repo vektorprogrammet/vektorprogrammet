@@ -96,6 +96,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application3->setEnglish(true);
         $application3->setPreferredGroup('Bolk 1');
         $application3->setDoublePosition(true);
+        $application3->setTeamInterest(true);
 
         $manager->persist($application3);
 
@@ -154,6 +155,8 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $interview5->setInterviewer($this->getReference('user-2'));
         $interview5->setInterviewSchema($this->getReference('ischema-1'));
         $interview5->setUser($this->getReference('user-14'));
+        $interview5->setResponseCode('code');
+        $interview5->setScheduled(new \DateTime('+2 days'));
         $application5->setInterview($interview5);
 
         $manager->persist($application5);
