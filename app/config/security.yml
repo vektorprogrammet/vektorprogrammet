@@ -65,6 +65,7 @@ security:
 
           #ROLE_SUPER_ADMIN = admin user
         - { path: ^/kontrollpanel/avdelingadmin/update, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/brukeradmin/opprett/, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/slett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/avdeling, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/sendaktivering, roles: ROLE_SUPER_ADMIN }
