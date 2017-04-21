@@ -472,13 +472,8 @@ class Interview
     /**
      * @param string $cancelMessage
      */
-    public function setCancelMessage(string $cancelMessage)
+    public function setCancelMessage(string $cancelMessage = null)
     {
         $this->cancelMessage = $cancelMessage;
-    }
-
-    public function unsetCancelMessage()
-    {
-        $this->cancelMessage = null;
     }
 }

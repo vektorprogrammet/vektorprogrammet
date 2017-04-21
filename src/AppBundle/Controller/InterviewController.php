@@ -381,12 +381,7 @@ class InterviewController extends Controller
 
         if ($form->isValid()) {
             $data = $form->getData();
-            if ($data['message'] !== null) {
-                $interview->setCancelMessage($data['message']);
-            } else {
-                $interview->unsetCancelMessage();
-            }
-
+            $interview->setCancelMessage($data['message']);
             $interview->cancel();
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($interview);
