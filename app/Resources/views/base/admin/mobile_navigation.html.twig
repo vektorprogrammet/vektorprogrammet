@@ -36,7 +36,6 @@
                         <a href="{{ path('useradmin_show') }}">Brukere</a>
                         <ul class="dropdown">
                             <li><a href="{{ path('participanthistory_show') }}">Deltakerhistorikk</a></li>
-                            <li><a href="{{ path('substitute_show') }}">Vikarer</a></li>
                             <li><a href="{{ path('teamadmin_show') }}">Team</a></li>
                             {% if is_granted_team_leader() %}
                                 <li><a href="{{ path('executive_board_show') }}">Hovedstyret</a></li>
@@ -52,6 +51,7 @@
                             <li>
                                 <a href="{{ path('statistics_application_show') }}">Opptaksstatistikk</a>
                             </li>
+                            <li><a href="{{ path('substitute_show') }}">Vikarer</a></li>
                             {% if is_granted_team_leader() %}
                                 <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
                             {% endif %}
