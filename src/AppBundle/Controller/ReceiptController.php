@@ -46,7 +46,9 @@ class ReceiptController extends Controller
         $active_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findActiveByUser($this->getUser());
         $inactive_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findInactiveByUser($this->getUser());
 
-        $form = $this->createForm(new ReceiptType(), $receipt);
+        $form = $this->createForm(ReceiptType::class, $receipt, array(
+            'required' => true,
+        ));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -104,7 +106,9 @@ class ReceiptController extends Controller
 
     public function performEditAndRedirect(Request $request, Receipt $receipt, string $redirectRoute)
     {
-        $form = $this->createForm(ReceiptType::class, $receipt);
+        $form = $this->createForm(ReceiptType::class, $receipt, array(
+            'required' => false,
+        ));
         $oldPicturePath = $receipt->getPicturePath();
 
         $form->handleRequest($request);

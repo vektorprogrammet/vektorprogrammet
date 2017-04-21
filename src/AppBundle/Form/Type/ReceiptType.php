@@ -23,7 +23,7 @@ class ReceiptType extends AbstractType
                 'label' => false,
             ))
             ->add('picturePath', 'file', array(
-                'required' => false, // Is this ok?
+                'required' => $options['required'],
                 'data_class' => null,
                 'label' => 'Last opp kvittering',
             ));
