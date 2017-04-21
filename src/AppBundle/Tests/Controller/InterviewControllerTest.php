@@ -2,10 +2,44 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\BaseWebTestCase;
 
-class InterviewControllerTest extends WebTestCase
+class InterviewControllerTest extends BaseWebTestCase
 {
+    /**
+     * @param bool teamInterest
+     * @param $client
+     * @param $crawler
+     */
+    private function fillAndSubmitInterviewFormWithTeamInterest($client, $crawler, bool $teamInterest)
+    {
+        // Find the form
+        $form = $crawler->selectButton('Lagre')->form();
+
+        // Fill in the form
+        $form['application[applicationPractical][days][monday]']->select('Bra');
+        $form['application[applicationPractical][days][tuesday]']->select('Bra');
+        $form['application[applicationPractical][days][wednesday]']->select('Ikke');
+        $form['application[applicationPractical][days][thursday]']->select('Bra');
+        $form['application[applicationPractical][days][friday]']->select('Ikke');
+
+        $form['application[applicationPractical][doublePosition]']->select('1');
+        $form['application[applicationPractical][preferredGroup]']->select('Bolk 1');
+        $form['application[applicationPractical][english]']->select('1');
+
+        $form['application[interview][interviewAnswers][0][answer]'] = 'Test answer';
+        $form['application[interview][interviewAnswers][1][answer]'] = 'Test answer';
+        $form['application[applicationPractical][teamInterest]'] = $teamInterest;
+
+        $form['application[interview][interviewScore][explanatoryPower]']->select(5);
+        $form['application[interview][interviewScore][roleModel]']->select(4);
+        $form['application[interview][interviewScore][suitability]']->select(6);
+
+        $form['application[interview][interviewScore][suitableAssistant]']->select('Ja');
+
+        // Submit the form
+        $client->submit($form);
+    }
     /**
      * @param $client
      * @param $crawler
@@ -394,6 +428,44 @@ class InterviewControllerTest extends WebTestCase
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
+        \TestDataManager::restoreDatabase();
+    }
+
+    public function testWantTeamInterest()
+    {
+        $applicationsBefore = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
+
+        // Admin user
+
+        $crawler = $this->adminGoTo('/kontrollpanel/intervju/conduct/6');
+
+        // Assert that we have the correct page
+        $this->verifyCorrectInterview($crawler, 'Assistent', 'Johansen');
+
+        $this->fillAndSubmitInterviewFormWithTeamInterest(self::createAdminClient(), $crawler, true);
+
+        $applicationsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
+
+        $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
+        \TestDataManager::restoreDatabase();
+    }
+
+    public function testNotWantTeamInterest()
+    {
+        $applicationsBefore = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
+
+        // Admin user
+
+        $crawler = $this->adminGoTo('/kontrollpanel/intervju/conduct/6');
+
+        // Assert that we have the correct page
+        $this->verifyCorrectInterview($crawler, 'Assistent', 'Johansen');
+
+        $this->fillAndSubmitInterviewFormWithTeamInterest(self::createAdminClient(), $crawler, false);
+
+        $applicationsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
+
+        $this->assertEquals($applicationsBefore, $applicationsAfter);
         \TestDataManager::restoreDatabase();
     }
 

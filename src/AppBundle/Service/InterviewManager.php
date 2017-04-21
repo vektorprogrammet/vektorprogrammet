@@ -110,6 +110,7 @@ class InterviewManager
                 $this->twig->render('interview/email.html.twig',
                     array('message' => $data['message'],
                         'datetime' => $data['datetime'],
+                        'room' => $data['room'],
                         'fromName' => $interview->getInterviewer()->getFirstName().' '.$interview->getInterviewer()->getLastName(),
                         'fromMail' => $data['from'],
                         'fromPhone' => $interview->getInterviewer()->getPhone(),
@@ -197,9 +198,11 @@ Vennligst gi beskjed til meg hvis tidspunktet ikke passer.";
 
         return array(
             'datetime' => $interview->getScheduled(),
+            'room' => $interview->getRoom(),
             'message' => $message,
             'from' => $interview->getInterviewer()->getEmail(),
             'to' => $interview->getUser()->getEmail(),
+
         );
     }
 }

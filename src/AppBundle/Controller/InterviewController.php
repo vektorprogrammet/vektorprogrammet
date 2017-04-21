@@ -200,6 +200,7 @@ class InterviewController extends Controller
 
             // Update the scheduled time for the interview
             $interview->setScheduled($data['datetime']);
+            $interview->setRoom($data['room']);
             $interview->resetStatus();
             $em = $this->getDoctrine()->getManager();
             $em->persist($interview);
