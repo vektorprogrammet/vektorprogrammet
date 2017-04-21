@@ -82,7 +82,6 @@ class CertificateController extends Controller
 
         return $this->render('certificate/certificate_download.html.twig', array(
             'assistants' => $assistants,
-            'semesters' => $semesters,
             'currentSemester' => $semester,
         ));
     }
