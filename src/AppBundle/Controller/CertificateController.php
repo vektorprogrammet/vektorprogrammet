@@ -77,9 +77,6 @@ class CertificateController extends Controller
         // Finds all the assistants of the associated semester and department (semester can be NULL)
         $assistants = $em->getRepository('AppBundle:AssistantHistory')->findAssistantHistoriesByDepartment($department, $semester);
 
-        // Find all the semesters associated with the department
-        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
-
         return $this->render('certificate/certificate_download.html.twig', array(
             'assistants' => $assistants,
             'currentSemester' => $semester,
