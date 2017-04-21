@@ -24,7 +24,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->join('user.workHistories', 'wh')
             ->join('user.fieldOfStudy', 'fos')
             ->where('fos.department = :department')
-            ->leftJoin('wh.startSemester', 'ss')
+            ->join('wh.startSemester', 'ss')
             ->andWhere('ss.semesterStartDate <= :startDate')
             ->leftJoin('wh.endSemester', 'se')
             ->andWhere('wh.endSemester is NULL OR se.semesterEndDate >= :endDate')
