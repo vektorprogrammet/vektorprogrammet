@@ -48,7 +48,9 @@
                     <th></th>
                     <th></th>
                     <th></th>
+                    {% if is_granted_team_leader() %}
                     <th></th>
+                    {% endif %}
                     <th></th>
                 </tr>
                 </thead>
@@ -62,7 +64,9 @@
                                 utfylling</a></td>
                         <td><a href="{{ path('survey_results', {'id': survey.id }) }}" class="button tiny">Vis
                                 resultater</a></td>
+                        {% if is_granted_team_leader() %}
                         <td><a href="{{ path('survey_copy', {'id': survey.id }) }}" class="button tiny">Kopier</a></td>
+                        {% endif %}
                         <td><a href="{{ path('survey_edit', {'id': survey.id }) }}" class="button tiny">
                                 <i class="fa fa-pencil-square-o"></i> Rediger</a></td>
 
