@@ -945,6 +945,34 @@ interview_schedule:
  requirements:
   id: \d+
 
+interview_response:
+    path: /intervju/{responseCode}
+    defaults: { _controller: AppBundle:Interview:respond }
+    methods: [GET]
+    requirements:
+      reponseCode: \w+
+
+interview_accept_by_response:
+    path: /intervju/aksepter/{responseCode}
+    defaults: { _controller: AppBundle:Interview:acceptByResponseCode }
+    methods: [POST]
+    requirements:
+      reponseCode: \w+
+
+interview_request_new_time_by_response:
+    path: /intervju/nytid/{responseCode}
+    defaults: { _controller: AppBundle:Interview:requestNewTime }
+    methods: [POST]
+    requirements:
+      reponseCode: \w+
+
+interview_cancel_by_response:
+    path: /intervju/kanseller/tilbakemelding/{responseCode}
+    defaults: { _controller: AppBundle:Interview:cancelByResponseCode }
+    methods: [GET, POST]
+    requirements:
+      responseCode: \w+
+
 ##########################################
 #                File browser            #
 ##########################################

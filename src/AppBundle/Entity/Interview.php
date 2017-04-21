@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Type\InterviewStatusType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,11 +24,6 @@ class Interview
      * @ORM\Column(type="boolean")
      */
     protected $interviewed;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $cancelled;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -65,6 +61,13 @@ class Interview
     protected $interviewScore;
 
     /**
+     * @ORM\Column(type="integer", nullable=false)
+     *
+     * @var int
+     */
+    private $interviewStatus;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
      */
     protected $user;
@@ -75,6 +78,20 @@ class Interview
     private $application;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    private $responseCode;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    private $cancelMessage;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -82,7 +99,7 @@ class Interview
         $this->interviewAnswers = new ArrayCollection();
         $this->conducted = new \DateTime();
         $this->interviewed = false;
-        $this->cancelled = false;
+        $this->interviewStatus = InterviewStatusType::PENDING;
     }
 
     /**
@@ -230,7 +247,7 @@ class Interview
      */
     public function getCancelled()
     {
-        return $this->cancelled;
+        return $this->isCancelled();
     }
 
     /**
@@ -238,7 +255,11 @@ class Interview
      */
     public function setCancelled($cancelled)
     {
-        $this->cancelled = $cancelled;
+        if ($cancelled === true) {
+            $this->cancel();
+        } else {
+            $this->acceptInterview();
+        }
     }
 
     /**
@@ -328,5 +349,131 @@ class Interview
     public function getApplication()
     {
         return $this->application;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInterviewStatusAsString(): string
+    {
+        switch ($this->interviewStatus) {
+            case InterviewStatusType::PENDING:
+                return 'Ingen svar';
+            case InterviewStatusType::ACCEPTED:
+                return 'Akseptert';
+            case InterviewStatusType::REQUEST_NEW_TIME:
+                return 'Ny tid ønskes';
+            case InterviewStatusType::CANCELLED:
+                return 'Kansellert';
+            default:
+                return 'Ingen svar';
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getInterviewStatusAsColor(): string
+    {
+        switch ($this->interviewStatus) {
+            case InterviewStatusType::PENDING:
+                return '#000000';
+            case InterviewStatusType::ACCEPTED:
+                return '#32CD32';
+            case InterviewStatusType::REQUEST_NEW_TIME:
+                return '#F08A24';
+            case InterviewStatusType::CANCELLED:
+                return '#f40f0f';
+            default:
+                return '#000000';
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPending(): bool
+    {
+        return $this->interviewStatus === InterviewStatusType::PENDING;
+    }
+
+    /**
+     * @param int $interviewStatus
+     */
+    public function setInterviewStatus(int $interviewStatus)
+    {
+        $this->interviewStatus = $interviewStatus;
+    }
+
+    public function acceptInterview()
+    {
+        $this->setInterviewStatus(InterviewStatusType::ACCEPTED);
+    }
+
+    public function requestNewTime()
+    {
+        $this->setInterviewStatus(InterviewStatusType::REQUEST_NEW_TIME);
+    }
+
+    public function cancel()
+    {
+        $this->setInterviewStatus(InterviewStatusType::CANCELLED);
+    }
+
+    public function resetStatus()
+    {
+        $this->setInterviewStatus(InterviewStatusType::PENDING);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCancelled()
+    {
+        return $this->interviewStatus === InterviewStatusType::CANCELLED;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResponseCode()
+    {
+        return $this->responseCode;
+    }
+
+    public function setResponseCode(string $responseCode)
+    {
+        $this->responseCode = $responseCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function generateAndSetResponseCode()
+    {
+        $newResponseCode = bin2hex(openssl_random_pseudo_bytes(12));
+        $this->responseCode = $newResponseCode;
+
+        return $newResponseCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCancelMessage(): string
+    {
+        if ($this->cancelMessage !== null) {
+            return $this->cancelMessage;
+        } else {
+            return '';
+        }
+    }
+
+    /**
+     * @param string $cancelMessage
+     */
+    public function setCancelMessage(string $cancelMessage = null)
+    {
+        $this->cancelMessage = $cancelMessage;
     }
 }

@@ -1,0 +1,13 @@
+<p> Hei, </p>
+
+<p>{{ interview.getUser.getFullName }} har bedt om nytt intervju.</p>
+<p>Tidligere intervjutidspunkt var: {{ interview.getScheduled|date("d.m.y - G:i") }}</p>
+<p>
+    For å sette opp nytt intervju, gå til
+    <a href="{{ url('interview_schedule', { 'id' : application.id }) }}">
+        {{ app.request.httpHost ~ path('interview_schedule', { 'id' : application.id }) }}
+    </a>
+</p>
+
+<p>Vennlig hilsen,<br>
+Vektorprogrammet </p>
