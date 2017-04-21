@@ -1096,6 +1096,13 @@ certificate_signature_picture_upload:
   defaults: {_controller: AppBundle:Signature:show }
   methods: [GET, POST]
 
+certificate_download:
+  path: /kontrollpanel/attest/lastned/{id}
+  defaults: {_controller: AppBundle:Certificate:download}
+  methods: [GET]
+  requirements:
+    id: \d+
+
 signature_image_show:
   path: /signatures/{imageName}
   defaults: { _controller: AppBundle:Signature:showSignatureImage }

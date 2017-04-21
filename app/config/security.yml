@@ -107,11 +107,11 @@ security:
         - { path: ^/kontrollpanel/vikar/rediger, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/vikar/slett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/vikar/opprett, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/attest/lastned, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/hovedstyret, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/hovedstyret/nytt_medlem, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/hovedstyret/oppdater, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/hovedstyret/slett/bruker, roles: ROLE_SUPER_ADMIN }
-
 
           #ROLE_ADMIN = team user
         - { path: ^/profile/edit, roles: ROLE_ADMIN }
