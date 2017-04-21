@@ -1,4 +1,4 @@
-{% if is_granted('ROLE_SUPER_ADMIN') %}
+{% if is_granted_team_leader() %}
     {# Make applicant substitute #}
     <td>
         <form method="POST"

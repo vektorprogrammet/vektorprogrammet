@@ -7,7 +7,7 @@
             <ul id="aboutDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
                 <li><a href="{{ path('about') }}">Om vektor</a></li>
                 <li><a href="{{ path('faq') }}">FAQ</a></li>
-                <li><a href="{{ path('boardandteam_show') }}">Styre og team</a></li>
+                <li><a href="{{ path('boardandteam_show') }}">Styret og team</a></li>
                 <li><a href="{{ path('students') }}">For studenter</a></li>
                 <li><a href="{{ path('schools') }}">For skoler</a></li>
                 <li><a href="{{ path('businesses') }}">For bedrifter</a></li>
@@ -25,13 +25,13 @@
             </ul>
         </li>
         <li>
-            {% if app.user and is_granted('ROLE_USER') %}
+            {% if is_granted_assistant() %}
                 <a href="#" data-dropdown="myVektorDropdown" aria-controls="myVektorDropdown"
                    aria-expanded="false" class="vektor-button"
                    data-options="is_hover:true; hover_timeout:200">Min Vektor <i
                             class="fa fa-chevron-down arrow"></i></a>
                 <ul id="myVektorDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
-                    {% if app.user and is_granted('ROLE_ADMIN') %}
+                    {% if is_granted_team_member() %}
                         <li><a href='{{ path('control_panel') }}'>Kontrollpanel</a></li>
                     {% endif %}
                     <li><a href='{{ path('profile') }}'>Profil</a></li>

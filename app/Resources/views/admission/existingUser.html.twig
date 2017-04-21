@@ -6,7 +6,7 @@
 
 {# Form themes user to modify the templates of the various form components #}
 {% form_theme form 'form/interview_layout.html.twig' %}
-{% form_theme form.applicationPractical.days 'form/radio_grid_layout.html.twig' %}
+{% form_theme form.applicationPractical.days 'form/components/radio_grid_layout.html.twig' %}
 
 {% block body %}
     <div class="row">
@@ -65,6 +65,12 @@
             </div>
 
             <div class="row">
+                <div class="small-12 medium-12 large-12 columns">
+                    {{ form_row(form.applicationPractical.teamInterest) }}
+                </div>
+            </div>
+
+            <div class="class">
                 <div class="text-center">
                     {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted'}}) }}
                 </div>

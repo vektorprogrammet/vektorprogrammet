@@ -1,13 +1,13 @@
 {% extends 'admission_admin/layout.html.twig' %}
 
 {% block applications %}
-    {% include 'admission_admin/interviewed_applications/bulk_navigation.html.twig' %}
+    {% include 'admission_admin/interviewed_applications/bulk_navigation.html.twig' with {'department': app.user.department} %}
 
     {# The table containing interviewed applications #}
     <table width="100%" id="application-table">
         <thead>
         <tr>
-            {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+            {% if is_granted_admin() %}
                 <th><input type="checkbox" id="bulkAllCheck"></th>
             {% endif %}
 
@@ -29,7 +29,7 @@
 
         {% for a in applications %}
             <tr id="{{ a.id }}">
-                {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                {% if is_granted_admin() %}
                     <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
                     </td>
                 {% endif %}
@@ -43,7 +43,7 @@
 
 
                 {# Add the read interview button #}
-                {% if a.user != app.user and ( is_granted('ROLE_SUPER_ADMIN') or a.interview.interviewer == app.user ) %}
+                {% if a.user != app.user and ( is_granted_team_leader() or a.interview.interviewer == app.user ) %}
                     <td>{{ a.interview.interviewScore.sum }}</td>
                     <td>{{ a.interview.interviewScore.suitableAssistant }}</td>
                     <td>

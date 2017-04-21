@@ -7,6 +7,7 @@
 @import "modules/well";
 @import "modules/colors";
 @import "modules/team.scss";
+@import "modules/interview_confirmation.scss";
 
 // Or selectively include components
 // @import
@@ -826,6 +827,11 @@ ul.alternatives {
 
 .hide {
   display: none;
+}
+
+.team-interest-table {
+  padding-top: 25px;
+
 }
 
 #substitute-table {

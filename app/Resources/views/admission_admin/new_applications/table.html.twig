@@ -2,7 +2,7 @@
     <table width="100%" id="application-table">
         <thead>
         <tr>
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted_team_leader() %}
                 <th><input type="checkbox" id="bulkAllCheck"></th>
             {% endif %}
             {# data-sort is used to sort the tables with stupidtable.js #}
@@ -19,7 +19,7 @@
 
         {% for application in applications %}
             <tr id="{{ application.id }}">
-                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                {% if is_granted_team_leader() %}
                     <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ application.id }}">
                     </td>
                 {% endif %}
@@ -33,7 +33,7 @@
                 <td>{{ application.yearOfStudy }}</td>
 
                 {# Add the assign interview button, given the correct permissions #}
-                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                {% if is_granted_team_leader() %}
                     <td>
                         <a href="#" class="assign button tiny{{ application.interview is null ? '' : ' success' }}">
                             <i class="fa fa-share-alt"></i> Fordel
@@ -42,7 +42,7 @@
                 {% endif %}
 
                 {# Add the delete application button, given the correct permissions #}
-                {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                {% if is_granted_admin() %}
                     <td>
                         <a href="#" class="button tiny alert deleteApplication" id="{{ application.id }}">
                             <i class="fa fa-trash"></i> Slett

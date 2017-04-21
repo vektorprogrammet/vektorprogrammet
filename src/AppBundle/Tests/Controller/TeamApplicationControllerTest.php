@@ -13,11 +13,11 @@ class TeamApplicationControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/team/1');
 
         // Find a link and click it
-        $link = $crawler->selectLink('Søk Hovedstyret')->eq(0)->link();
+        $link = $crawler->selectLink('Søk Styret')->eq(0)->link();
         $crawler = $client->click($link);
 
         //Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("Søk Hovedstyret")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Søk Styret")')->count());
         //Form checks?
     }
 
@@ -36,7 +36,7 @@ class TeamApplicationControllerTest extends WebTestCase
         $crawler = $client->click($link);
 
         //Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h3:contains("Søknader til Hovedstyret")')->count());
+        $this->assertEquals(1, $crawler->filter('h3:contains("Søknader til Styret")')->count());
 
         // USER
         $client = static::createClient(array(), array(
@@ -88,7 +88,7 @@ class TeamApplicationControllerTest extends WebTestCase
         $crawler = $client->click($link);
 
         //Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h3:contains("Søknad til Hovedstyret fra ")')->count());
+        $this->assertEquals(1, $crawler->filter('h3:contains("Søknad til Styret fra ")')->count());
 
         // USER
         $client = static::createClient(array(), array(
@@ -132,7 +132,7 @@ class TeamApplicationControllerTest extends WebTestCase
         $this->assertTrue($clientAnonymous->getResponse()->isSuccessful());
 
         // Find a link
-        $this->assertGreaterThan(0, $crawler->selectLink('Søk Hovedstyret')->count());
+        $this->assertGreaterThan(0, $crawler->selectLink('Søk Styret')->count());
 
         // Admin
         $clientAdmin = static::createClient(array(), array(
@@ -153,7 +153,7 @@ class TeamApplicationControllerTest extends WebTestCase
         $this->assertTrue($clientAnonymous->getResponse()->isSuccessful());
 
         // Assert that the link is gone
-        $this->assertEquals(0, $crawler->selectLink('Søk Hovedstyret')->count());
+        $this->assertEquals(0, $crawler->selectLink('Søk Styret')->count());
         \TestDataManager::restoreDatabase();
     }
 

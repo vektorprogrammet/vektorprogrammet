@@ -38,6 +38,7 @@
                             <li><a href="{{ path('participanthistory_show') }}">Deltakerhistorikk</a></li>
                             <li><a href="{{ path('substitute_show') }}">Vikarer</a></li>
                             <li><a href="{{ path('teamadmin_show') }}">Team</a></li>
+                            <li><a href="{{ path('executive_board_show') }}">Hovedstyret</a></li>
                         </ul>
                     </li>
 
@@ -48,7 +49,7 @@
                             <li>
                                 <a href="{{ path('statistics_application_show') }}">Opptaksstatistikk</a>
                             </li>
-                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            {% if is_granted_team_leader() %}
                                 <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
                             {% endif %}
                             <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
