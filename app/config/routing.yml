@@ -1234,6 +1234,42 @@ show_field_of_studies:
   methods: [GET]
 
 ##########################################
+#           Executive board              #
+##########################################
+executive_board_page:
+  path: /hovedstyret
+  defaults: {_controller: AppBundle:ExecutiveBoard:show}
+  methods: [GET]
+
+executive_board_show:
+ path: /kontrollpanel/hovedstyret
+ defaults: {_controller: AppBundle:ExecutiveBoard:showAdmin }
+ methods: [GET]
+
+executive_board_add_user_to_board:
+ path: /kontrollpanel/hovedstyret/nytt_medlem
+ defaults: {_controller: AppBundle:ExecutiveBoard:addUserToBoard }
+ methods: [GET, POST]
+ requirements:
+    id: \d+
+
+executive_board_remove_user_from_board_by_id:
+ path: /kontrollpanel/hovedstyret/slett/bruker/{id}
+ defaults: {_controller: AppBundle:ExecutiveBoard:removeUserFromBoardById }
+ methods: [POST]
+ requirements:
+    id: \d+
+ options:
+    expose: true
+
+executive_board_update:
+ path: /kontrollpanel/hovedstyret/oppdater
+ defaults: {_controller: AppBundle:ExecutiveBoard:updateBoard }
+ methods: [GET, POST]
+ requirements:
+    id: \d+
+
+##########################################
 #              Mailing Lists             #
 ##########################################
 

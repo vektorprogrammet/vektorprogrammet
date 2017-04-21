@@ -38,7 +38,7 @@ class WorkHistory
     protected $endSemester;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Team")
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="workHistories")
      * @ORM\JoinColumn(onDelete="SET NULL")
      **/
     protected $team;

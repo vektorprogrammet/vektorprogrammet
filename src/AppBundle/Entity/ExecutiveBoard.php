@@ -6,10 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="team")
- * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\TeamRepository")
+ * @ORM\Table(name="executive_board")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ExecutiveBoardRepository")
  */
-class Team implements TeamInterface
+class ExecutiveBoard implements TeamInterface
 {
     /**
      * @ORM\Column(type="integer")
@@ -31,11 +31,6 @@ class Team implements TeamInterface
     private $email;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Department", inversedBy="teams")
-     **/
-    protected $department;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
@@ -47,36 +42,10 @@ class Team implements TeamInterface
     private $shortDescription;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @var ExecutiveBoardMember[]
+     * @ORM\OneToMany(targetEntity="ExecutiveBoardMember", mappedBy="board")
      */
-    private $acceptApplication;
-
-    /**
-     * @var WorkHistory[]
-     * @ORM\OneToMany(targetEntity="WorkHistory", mappedBy="team")
-     */
-    private $workHistories;
-
-    /**
-     * @return bool
-     */
-    public function getAcceptApplication()
-    {
-        return $this->acceptApplication;
-    }
-
-    /**
-     * @param bool $acceptApplication
-     */
-    public function setAcceptApplication($acceptApplication)
-    {
-        $this->acceptApplication = $acceptApplication;
-    }
-
-    public function __construct()
-    {
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+    private $users;
 
     public function __toString()
     {
@@ -98,7 +67,7 @@ class Team implements TeamInterface
      *
      * @param string $name
      *
-     * @return Team
+     * @return ExecutiveBoard
      */
     public function setName($name)
     {
@@ -115,39 +84,6 @@ class Team implements TeamInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set department.
-     *
-     * @param \AppBundle\Entity\Department $department
-     *
-     * @return Team
-     */
-    public function setDepartment(\AppBundle\Entity\Department $department = null)
-    {
-        $this->department = $department;
-
-        return $this;
-    }
-
-    /**
-     * Get department.
-     *
-     * @return \AppBundle\Entity\Department
-     */
-    public function getDepartment()
-    {
-        return $this->department;
-    }
-
-    // Used for unit testing
-    public function fromArray($data = array())
-    {
-        foreach ($data as $property => $value) {
-            $method = "set{$property}";
-            $this->$method($value);
-        }
     }
 
     /**
@@ -199,10 +135,20 @@ class Team implements TeamInterface
     }
 
     /**
-     * @return WorkHistory[]
+     * @return ExecutiveBoardMember[]
      */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
     public function getWorkHistories()
     {
-        return $this->workHistories;
+        return $this->users;
+    }
+
+    public function getAcceptApplication()
+    {
+        return false;
     }
 }
