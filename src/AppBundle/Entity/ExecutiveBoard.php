@@ -86,14 +86,6 @@ class ExecutiveBoard implements TeamInterface
         return $this->name;
     }
 
-    // Used for unit testing
-    public function fromArray($data = array())
-    {
-        foreach ($data as $property => $value) {
-            $method = "set{$property}";
-            $this->$method($value);
-        }
-    }
 
     /**
      * @return string
