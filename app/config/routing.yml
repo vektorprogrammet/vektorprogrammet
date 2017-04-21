@@ -1066,13 +1066,6 @@ certificate_download:
   defaults: {_controller: AppBundle:Certificate:download}
   methods: [GET]
 
-assistant_show_by_department:
-   path: /kontrollpanel/attest/lastned/{id}
-   defaults: { _controller: AppBundle:Certificate:showAssistantsByDepartment }
-   methods: [GET]
-   requirements:
-      id: \d+
-
 signature_image_show:
   path: /signatures/{imageName}
   defaults: { _controller: AppBundle:Signature:showSignatureImage }
