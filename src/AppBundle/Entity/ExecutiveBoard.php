@@ -86,7 +86,6 @@ class ExecutiveBoard implements TeamInterface
         return $this->name;
     }
 
-
     /**
      * @return string
      */
