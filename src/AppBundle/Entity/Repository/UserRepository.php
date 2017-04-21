@@ -21,7 +21,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $this->createQueryBuilder('user')
             ->select('user')
             ->join('user.workHistories', 'wh')
-            ->leftJoin('wh.startSemester', 'ss')
+            ->join('wh.startSemester', 'ss')
             ->where('ss.semesterStartDate <= :startDate')
             ->leftJoin('wh.endSemester', 'se')
             ->andWhere('wh.endSemester is NULL OR se.semesterEndDate >= :endDate')
