@@ -42,7 +42,7 @@
                 <tbody>
                 {% for m in board.users %}
                     <tr>
-                        <td><a href='{{ path('specific_profile', { 'id': m.id }) }}'>{{ m.user.firstName }}</a></td>
+                        <td><a href='{{ path('specific_profile', { 'id': m.user.id }) }}'>{{ m.user.firstName }}</a></td>
                         <td> {{ m.user.lastName }} </td>
                         <td> {{ m.position }}</td>
                         <td> {{ m.user.phone }} </td>
