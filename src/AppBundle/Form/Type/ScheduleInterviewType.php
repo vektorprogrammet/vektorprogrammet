@@ -20,7 +20,11 @@ class ScheduleInterviewType extends AbstractType
                 'label' => false,
                 'widget' => 'single_text',
                 'date_format' => 'yyyy-MM-dd  HH:mm:ss',
+                'label' => 'Tidspunkt',
                 'attr' => array('placeholder' => 'yyyy-MM-dd HH:mm:ss'),
+            ))
+            ->add('room', 'text', array(
+                'label' => 'Rom',
             ))
             ->add('message', 'textarea', array(
                 'label' => 'Melding',
