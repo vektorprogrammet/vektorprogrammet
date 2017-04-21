@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Semester;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,9 +19,12 @@ class CertificateController extends Controller
 
             // Finds all the the certificate requests
             $certificateRequests = $this->getDoctrine()->getRepository('AppBundle:CertificateRequest')->findAll();
+            $department = $this->getUser()->getDepartment();
+            $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
 
             return $this->render('certificate/index.html.twig', array(
                 'certificateRequests' => $certificateRequests,
+                'currentSemester' => $currentSemester,
             ));
         } else {
             return $this->redirect($this->generateUrl('home'));
@@ -63,15 +67,12 @@ class CertificateController extends Controller
         return new JsonResponse($response);
     }
 
-    public function downloadAction(Request $request)
+    public function downloadAction(Semester $semester)
     {
-        // Get query strings for filtering by semester
-        $semester = $request->query->get('semester', null);
-
         $em = $this->getDoctrine()->getManager();
 
         // Finds the department for the current logged in user
-        $department = $this->getUser()->getFieldOfStudy()->getDepartment();
+        $department = $this->getUser()->getDepartment();
 
         // Finds all the assistants of the associated semester and department (semester can be NULL)
         $assistants = $em->getRepository('AppBundle:AssistantHistory')->findAssistantHistoriesByDepartment($department, $semester);
@@ -82,6 +83,7 @@ class CertificateController extends Controller
         return $this->render('certificate/certificate_download.html.twig', array(
             'assistants' => $assistants,
             'semesters' => $semesters,
+            'currentSemester' => $semester,
         ));
     }
 

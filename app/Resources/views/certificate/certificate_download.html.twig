@@ -53,23 +53,10 @@
             <div class="row">
                 <div class="small-6 medium-6 large-6 columns">
                     <ul class="inline-list">
-                        {# Semester dropdown #}
-                        <li>
-                            <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown"
-                               aria-expanded="false">Semester <i class="fa fa-caret-down"></i></a>
-                            <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1"
-                                aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                                {% for s in semesters %}
-
-                                    <li><a href="{{ path(app.request.attributes.get('_route'),
-                                        app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'semester': s.id })) }}">{{ s.name }}</a>
-                                    </li>
-
-                                {% endfor %}
-
-                            </ul>
-                        </li>
+                        {% include "common/semester_dropdown.html.twig" with {
+                        'pathForSemester': 'certificate_download',
+                        'semesterParameterName': 'id',
+                        'currentSemester': currentSemester} %}
                     </ul>
                 </div>
             </div>

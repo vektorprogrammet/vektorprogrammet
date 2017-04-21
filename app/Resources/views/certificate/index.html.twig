@@ -15,7 +15,7 @@
 
             <div class="row">
                 <div class="small-2 columns">
-                    <a href="{{ path('certificate_download') }}" class="button tiny"> Last ned attest    </a>
+                    <a href="{{ path('certificate_download', {id: currentSemester.id}) }}" class="button tiny"> Last ned attest    </a>
                 </div>
                 <div class="small-2 columns">
                     <a href="{{ path('certificate_signature_picture_upload') }}" class="button tiny"> Oppdater signatur</a>
