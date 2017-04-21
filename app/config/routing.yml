@@ -1204,3 +1204,33 @@ show_field_of_studies:
   path: /kontrollpanel/linjer
   defaults: {_controller: AppBundle:FieldOfStudy:show }
   methods: [GET]
+
+##########################################
+#              Mailing Lists             #
+##########################################
+
+generate_mail_lists:
+  path: /kontrollpanel/epostlister
+  defaults: {_controller: AppBundle:MailingList:show }
+  methods: [GET, POST]
+
+generate_assistant_mail_list:
+  path: /kontrollpanel/epostlister/assistenter/{id}
+  defaults: {_controller: AppBundle:MailingList:showAssistants}
+  methods: [GET]
+  requirements:
+    id: \d+
+
+generate_team_mail_list:
+  path: /kontrollpanel/epostlister/teammedlemmer/{id}
+  defaults: {_controller: AppBundle:MailingList:showTeam}
+  methods: [GET]
+  requirements:
+    id: \d+
+
+generate_all_mail_list:
+  path: /kontrollpanel/epostlister/alle/{id}
+  defaults: {_controller: AppBundle:MailingList:showAll}
+  methods: [GET]
+  requirements:
+    id: \d+
