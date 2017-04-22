@@ -73,6 +73,7 @@
             {% endif %}
             <div class="small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">
+                    {% if is_granted_team_leader() %}
                     <a data-dropdown="superadminCreateUser" aria-controls="superadminCreateUser" aria-expanded="false">
                         <i class="fa fa-user-plus fa-3x"></i>
 
@@ -89,8 +90,15 @@
                             </li>
 
                         {% endfor %}
-
                     </ul>
+                        {% else %}
+                            <a href="{{ path('useradmin_create_user') }}">
+                                <i class="fa fa-user-plus fa-3x"></i>
+
+                                <p>Ny bruker</p>
+                            </a>
+                    {% endif %}
+
                 </div>
             </div>
             <div class="small-4 medium-3 large-2 columns">
