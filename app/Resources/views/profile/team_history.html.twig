@@ -1,6 +1,5 @@
 <div class="row">
     <div class="small-12 medium-12 large-12 columns">
-
         {% if workHistory is not empty %}
 
             <h3>Teamhistorikk</h3>
@@ -14,11 +13,7 @@
                 {% for wh in workHistory %}
                     <tr>
                         <td>
-                            {% if wh.team is not null %}
-                                {{ wh.team.name }}
-                            {% else %}
-                                Teamet er slettet
-                            {% endif %}
+                            {{ wh.teamName }}
                         </td>
 
                         <td>

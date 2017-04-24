@@ -38,6 +38,15 @@ class WorkHistory
     protected $endSemester;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $deletedTeamName;
+
+    /**
+     * @var Team
+     *
      * @ORM\ManyToOne(targetEntity="Team", inversedBy="workHistories")
      * @ORM\JoinColumn(onDelete="SET NULL")
      **/
@@ -196,5 +205,25 @@ class WorkHistory
         $semesterEndsBeforeWorkHistory = $this->getEndSemester() === null || $semester->getSemesterEndDate() <= $this->getEndSemester()->getSemesterEndDate();
 
         return $semesterStartLaterThanWorkHistory && $semesterEndsBeforeWorkHistory;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTeamName(): string
+    {
+        if ($this->deletedTeamName !== null) {
+            return $this->deletedTeamName;
+        }
+
+        return $this->team->getName();
+    }
+
+    /**
+     * @param string $deletedTeamName
+     */
+    public function setDeletedTeamName(string $deletedTeamName)
+    {
+        $this->deletedTeamName = $deletedTeamName;
     }
 }
