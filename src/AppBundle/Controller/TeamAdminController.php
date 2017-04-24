@@ -222,6 +222,12 @@ class TeamAdminController extends Controller
     public function deleteTeamByIdAction(Team $team)
     {
         $em = $this->getDoctrine()->getManager();
+
+        foreach ($team->getWorkHistories() as $workHistory) {
+            $workHistory->setDeletedTeamName($team->getName());
+            $em->persist($workHistory);
+        }
+
         $em->remove($team);
         $em->flush();
 
