@@ -91,6 +91,7 @@ class ExecutiveBoardController extends Controller
             // Render the boardpage as a preview
             return $this->render('team/team_page.html.twig', array(
                 'team' => $board,
+                'workHistories' => $board->getUsers(),
             ));
         }
 
