@@ -86,7 +86,7 @@
             <div class="flex-wrapper">
                 <div class="small-12 medium-8 large-6 columns">
                     {{ form_start(form) }}
-                    {{ form_row(form.name) }}
+                    {{ form_row(form.name, {'attr': {'autofocus': 'autofocus'}}) }}
                     {{ form_row(form.email) }}
                     <button>Registrer</button>
                     {{ form_end(form) }}
