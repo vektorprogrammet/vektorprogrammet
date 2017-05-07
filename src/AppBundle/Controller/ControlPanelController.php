@@ -19,6 +19,11 @@ class ControlPanelController extends Controller
     public function showSBSAction()
     {
         $sbsData = $this->get('app.sbs_data');
+        $currentSemester = $this->getUser()->getDepartment()->getCurrentSemester();
+
+        if ($currentSemester) {
+            $sbsData->setSemester($currentSemester);
+        }
 
         // Return the view to be rendered
         return $this->render('control_panel/sbs.html.twig', array(
