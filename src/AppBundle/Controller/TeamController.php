@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\WorkHistory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class TeamController extends Controller
