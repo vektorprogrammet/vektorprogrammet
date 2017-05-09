@@ -135,3 +135,9 @@ services:
   survey.manager:
         class: AppBundle\Service\SurveyManager
         arguments: ['@doctrine.orm.default_entity_manager', '@form.factory']
+
+  group_sorter:
+      class: AppBundle\Service\GroupSorter
+      arguments: []
+
+
