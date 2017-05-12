@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="work_history")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\WorkHistoryRepository")
  */
-class WorkHistory
+class WorkHistory implements GroupMemberInterface
 {
     /**
      * @ORM\Column(type="integer")
@@ -93,7 +93,7 @@ class WorkHistory
      *
      * @return \AppBundle\Entity\User
      */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -139,9 +139,9 @@ class WorkHistory
     /**
      * Get position.
      *
-     * @return \AppBundle\Entity\Position
+     * @return string
      */
-    public function getPosition()
+    public function getPosition(): string
     {
         return $this->position;
     }

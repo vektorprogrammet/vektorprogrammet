@@ -136,8 +136,10 @@ services:
         class: AppBundle\Service\SurveyManager
         arguments: ['@doctrine.orm.default_entity_manager', '@form.factory']
 
-  group_sorter:
-      class: AppBundle\Service\GroupSorter
-      arguments: []
+  app.group_sorter_extension:
+    class: AppBundle\Twig\Extension\GroupSortExtension
+    public: false
+    tags:
+      - { name: twig.extension }
 
 

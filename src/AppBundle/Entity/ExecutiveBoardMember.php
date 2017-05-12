@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="executive_board_member")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ExecutiveBoardRepository")
  */
-class ExecutiveBoardMember
+class ExecutiveBoardMember implements GroupMemberInterface
 {
     /**
      * @ORM\Column(type="integer")
@@ -70,7 +70,7 @@ class ExecutiveBoardMember
      *
      * @return User
      */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -102,7 +102,7 @@ class ExecutiveBoardMember
     /**
      * @return string
      */
-    public function getPosition()
+    public function getPosition(): string
     {
         return $this->position;
     }

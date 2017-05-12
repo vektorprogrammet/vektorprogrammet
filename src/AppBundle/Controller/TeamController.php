@@ -10,11 +10,10 @@ class TeamController extends Controller
     {
         $team = $this->getDoctrine()->getRepository('AppBundle:Team')->find($id);
         $workHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeam($team);
-        $sortedTeamMembers = $this->container->get('group_sorter')->getSortedTeamMembers($workHistories);
 
         return $this->render('team/team_page.html.twig', array(
             'team' => $team,
-            'workHistories' => $sortedTeamMembers,
+            'workHistories' => $workHistories,
         ));
     }
 }

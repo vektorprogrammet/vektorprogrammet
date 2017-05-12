@@ -15,11 +15,10 @@ class ExecutiveBoardController extends Controller
     {
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
         $executiveBoardMembers = $board->getUsers();
-        $sortedBoardMembers = $this->container->get('group_sorter')->getSortedBoardMembers($executiveBoardMembers);
 
         return $this->render('team/team_page.html.twig', array(
             'team' => $board,
-            'workHistories' => $sortedBoardMembers,
+            'workHistories' => $executiveBoardMembers,
         ));
     }
 
