@@ -43,7 +43,7 @@ class GroupSortExtension extends \Twig_Extension
         return array_merge($leaders, $members);
     }
 
-    public function positionsCompare(GroupMemberInterface $a, GroupMemberInterface $b)
+    private function positionsCompare(GroupMemberInterface $a, GroupMemberInterface $b)
     {
         return strcmp(strtolower($a->getPositionName()), strtolower($b->getPositionName()));
     }
