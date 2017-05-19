@@ -36,6 +36,14 @@ class ExecutiveBoardMember implements GroupMemberInterface
      **/
     private $position;
 
+    /**
+     * ExecutiveBoardMember constructor.
+     */
+    public function __construct()
+    {
+        $this->position = '';
+    }
+
     public function __toString()
     {
         return (string) $this->getId();
@@ -113,5 +121,10 @@ class ExecutiveBoardMember implements GroupMemberInterface
     public function setPosition($position)
     {
         $this->position = $position;
+    }
+
+    public function getPositionName(): string
+    {
+        return $this->position;
     }
 }

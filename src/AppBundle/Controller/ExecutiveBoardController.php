@@ -37,6 +37,7 @@ class ExecutiveBoardController extends Controller
 
         // Create a new WorkHistory entity
         $member = new ExecutiveBoardMember();
+        $member->setUser($this->getUser());
 
         // Create a new formType with the needed variables
         $form = $this->createForm(new CreateExecutiveBoardMemberType(), $member);

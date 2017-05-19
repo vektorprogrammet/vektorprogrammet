@@ -53,6 +53,8 @@ class WorkHistory implements GroupMemberInterface
     protected $team;
 
     /**
+     * @var Position
+     *
      * @ORM\ManyToOne(targetEntity="Position")
      * @ORM\JoinColumn(name="position_id", referencedColumnName="id", onDelete="SET NULL")
      * @Assert\Valid
@@ -139,9 +141,9 @@ class WorkHistory implements GroupMemberInterface
     /**
      * Get position.
      *
-     * @return string
+     * @return Position
      */
-    public function getPosition(): string
+    public function getPosition(): Position
     {
         return $this->position;
     }
@@ -225,5 +227,10 @@ class WorkHistory implements GroupMemberInterface
     public function setDeletedTeamName(string $deletedTeamName)
     {
         $this->deletedTeamName = $deletedTeamName;
+    }
+
+    public function getPositionName(): string
+    {
+        return $this->position->getName();
     }
 }

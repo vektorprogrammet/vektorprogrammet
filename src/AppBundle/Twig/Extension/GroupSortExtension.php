@@ -29,7 +29,7 @@ class GroupSortExtension extends \Twig_Extension
         $members = array();
 
         foreach ($group as $member) {
-            $position = strtolower($member->getPosition());
+            $position = strtolower($member->getPositionName());
             if ($position === 'leder' || $position === 'nestleder') {
                 $leaders[] = $member;
             } else {
@@ -37,14 +37,14 @@ class GroupSortExtension extends \Twig_Extension
             }
         }
 
-        usort($members, function (GroupMemberInterface $a, GroupMemberInterface $b) {
-            return strcmp(strtolower($a->getPosition()), strtolower($b->getPosition()));
-        });
-
-        usort($leaders, function (GroupMemberInterface $a, GroupMemberInterface $b) {
-            return strcmp(strtolower($a->getPosition()), strtolower($b->getPosition()));
-        });
+        usort($members, array($this, 'positionsCompare'));
+        usort($leaders, array($this, 'positionsCompare'));
 
         return array_merge($leaders, $members);
+    }
+
+    public function positionsCompare(GroupMemberInterface $a, GroupMemberInterface $b)
+    {
+        return strcmp(strtolower($a->getPositionName()), strtolower($b->getPositionName()));
     }
 }
