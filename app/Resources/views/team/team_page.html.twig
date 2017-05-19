@@ -41,7 +41,7 @@
             <h4>Medlemmer</h4>
 
             <table>
-                {% for wh in workHistories %}
+                {% for wh in workHistories | groupSort %}
 
                     <tr>
                         <td width="100">

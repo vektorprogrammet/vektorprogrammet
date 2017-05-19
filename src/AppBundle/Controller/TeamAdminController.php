@@ -60,6 +60,8 @@ class TeamAdminController extends Controller
 
             // Create a new WorkHistory entity
             $workHistory = new WorkHistory();
+        $workHistory->setUser($this->getUser());
+        $workHistory->setPosition($this->getDoctrine()->getRepository('AppBundle:Position')->findOneBy(array('name' => 'Medlem')));
 
             // Create a new formType with the needed variables
             $form = $this->createForm(new CreateWorkHistoryType($department), $workHistory);

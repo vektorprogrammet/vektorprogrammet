@@ -14,10 +14,11 @@ class ExecutiveBoardController extends Controller
     public function showAction()
     {
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
+        $executiveBoardMembers = $board->getUsers();
 
         return $this->render('team/team_page.html.twig', array(
             'team' => $board,
-            'workHistories' => $board->getUsers(),
+            'workHistories' => $executiveBoardMembers,
         ));
     }
 
@@ -36,6 +37,7 @@ class ExecutiveBoardController extends Controller
 
         // Create a new WorkHistory entity
         $member = new ExecutiveBoardMember();
+        $member->setUser($this->getUser());
 
         // Create a new formType with the needed variables
         $form = $this->createForm(new CreateExecutiveBoardMemberType(), $member);
