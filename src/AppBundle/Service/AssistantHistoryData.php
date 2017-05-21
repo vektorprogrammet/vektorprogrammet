@@ -15,7 +15,7 @@ class AssistantHistoryData
     {
         $this->assistantHistoryRepository = $em->getRepository('AppBundle:AssistantHistory');
         $department = $ts->getToken()->getUser()->getDepartment();
-        $this->semester = $em->getRepository('AppBundle:Semester')->findLatestSemesterByDepartmentId($department->getId());
+        $this->semester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
     }
 
     public function setSemester(Semester $semester)
