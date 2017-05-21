@@ -2,9 +2,9 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('js/optionbox.js') }}"></script>
+    <script src="{{ asset_with_version('js/optionbox.js') }}"></script>
     <!-- Load Aviary widget code -->
-    <script type="text/javascript" src="{{ asset('js/aviaryImageEditor.js') }}"></script>
+    <script type="text/javascript" src="{{ asset_with_version('js/aviaryImageEditor.js') }}"></script>
 
     <script>
 

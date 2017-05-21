@@ -3,11 +3,11 @@
 {% block javascripts %}
 
     {# Need these to expose the routes to our JS code #}
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ asset_with_version('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 
     {# import the genericAjax.js file #}
-    <script src="{{ asset('js/genericAjax.js') }}"></script>
+    <script src="{{ asset_with_version('js/genericAjax.js') }}"></script>
 
     <script>
 
