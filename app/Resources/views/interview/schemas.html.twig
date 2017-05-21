@@ -6,9 +6,9 @@
 
 {% block javascripts %}
 
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ asset_with_version('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-    <script src="{{ asset('js/deleteablerow.js') }}"></script>
+    <script src="{{ asset_with_version('js/deleteablerow.js') }}"></script>
 
     <script>
 

@@ -16,7 +16,7 @@
     {% endif %}
     <meta property="og:title" content="{{ block('title') }}"/>
     <meta property="og:image"
-          content="http://vektorprogrammet.no{% block facebookImage %}{{ asset('images/vektor_stor.png') }}{% endblock %}"/>
+          content="http://vektorprogrammet.no{% block facebookImage %}{{ asset_with_version('images/vektor_stor.png') }}{% endblock %}"/>
     <meta property="og:description"
           content="{% block facebookDescription %}Vektorprogrammet er Norges største organisasjon som jobber for å øke interessen for matematikk og realfag blant elever i grunnskolen. Vi sender realfagssterke studenter til barne- og ungdomsskoler hvor de fungerer som lærerens assistent.{% endblock %}"/>
     <meta property="og:site_name" content="Vektorprogrammet"/>
@@ -26,8 +26,8 @@
     <meta name="msapplication-navbutton-color" content="#6FCEEE"><!-- Windows Phone -->
     <meta name="apple-mobile-web-app-status-bar-style" content="#6FCEEE"><!-- iOS Safari -->
 
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=2"/>
+    <link rel="stylesheet" href="{{ asset_with_version('css/app.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset_with_version('favicon.ico') }}"/>
     {% block stylesheets %}{% endblock %}
 
     {% block customStyles %}{% endblock %}
@@ -55,7 +55,7 @@
     {% include 'base/footer.html.twig' %}
 {% endblock %}
 
-<script src="{{ asset('js/vendor.js') }}"></script>
+<script src="{{ asset_with_version('js/vendor.js') }}"></script>
 <script>
     {# This has to be in all twig files, can't be overwritten #}
     $(document).foundation();

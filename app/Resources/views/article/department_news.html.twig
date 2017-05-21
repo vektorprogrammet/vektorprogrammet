@@ -1,7 +1,7 @@
 {% for article in articles %}
     <div class="small-12 medium-3 large-3 columns">
         <a href="{{ path('article_show', { 'id': article.id }) }}">
-            <img src="{{ asset(article.imageSmall) }}">
+            <img src="{{ asset_with_version(article.imageSmall) }}">
         </a>
         <a href="{{ path('article_show', { 'id': article.id }) }}">{{ article.title|safe_html }}</a>
     </div>
