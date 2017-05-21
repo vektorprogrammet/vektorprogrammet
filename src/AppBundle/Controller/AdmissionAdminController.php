@@ -100,9 +100,9 @@ class AdmissionAdminController extends Controller
             'status' => 'interviewed',
             'applications' => $applications,
             'semester' => $semester,
-            'yes' => $counter->count($applications,  InterviewCounter::YES),
-            'no' => $counter->count($applications,  InterviewCounter::NO),
-            'maybe' => $counter->count($applications,  InterviewCounter::MAYBE),
+            'yes' => $counter->count($applications, InterviewCounter::YES),
+            'no' => $counter->count($applications, InterviewCounter::NO),
+            'maybe' => $counter->count($applications, InterviewCounter::MAYBE),
         ));
     }
 

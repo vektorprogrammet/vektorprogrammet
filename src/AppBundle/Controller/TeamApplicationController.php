@@ -69,7 +69,7 @@ class TeamApplicationController extends Controller
 
             $this->get('event_dispatcher')->dispatch(TeamApplicationCreatedEvent::NAME, new TeamApplicationCreatedEvent($teamApplication));
 
-            return $this->redirectToRoute('team_application',  array('id' => $team->getId()));
+            return $this->redirectToRoute('team_application', array('id' => $team->getId()));
         }
 
         return $this->render('team/team_application.html.twig', array(
