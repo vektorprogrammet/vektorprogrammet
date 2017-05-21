@@ -47,7 +47,7 @@ class ApplicationData
     public function setDepartment(Department $department)
     {
         $this->department = $department;
-        $this->semester = $this->em->getRepository('AppBundle:Semester')->findLatestSemesterByDepartmentId($department->getId());
+        $this->semester = $this->em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
     }
 
     public function setSemester(Semester $semester)
