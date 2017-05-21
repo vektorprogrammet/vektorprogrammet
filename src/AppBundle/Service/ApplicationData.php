@@ -110,7 +110,7 @@ class ApplicationData
 
     public function getAssignedInterviewsCount(): int
     {
-        return count($this->em->getRepository('AppBundle:Application')->findAssignedApplicants($this->department, $this->semester));
+        return count($this->em->getRepository('AppBundle:Application')->findAssignedApplicants($this->semester));
     }
 
     public function getTotalAssistantsCount(): int
