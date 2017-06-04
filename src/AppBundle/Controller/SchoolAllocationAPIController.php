@@ -218,6 +218,7 @@ class SchoolAllocationAPIController extends Controller
             $assistant->setPreferredGroup($preferredGroup);
             $assistant->setAvailability($availability);
             $assistant->setApplication($application);
+            dump($application->getInterview());
             $assistant->setScore($application->getInterview()->getScore());
             $assistant->setSuitability($application->getInterview()->getInterviewScore()->getSuitableAssistant());
             $assistant->setPreviousParticipation($application->getPreviousParticipation());

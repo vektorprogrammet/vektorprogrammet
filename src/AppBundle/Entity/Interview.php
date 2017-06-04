@@ -59,6 +59,8 @@ class Interview
     protected $interviewAnswers;
 
     /**
+     * @var InterviewScore
+     *
      * @ORM\OneToOne(targetEntity="InterviewScore", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="interview_score_id", referencedColumnName="id")
      * @Assert\Valid
@@ -221,6 +223,14 @@ class Interview
     public function getInterviewScore()
     {
         return $this->interviewScore;
+    }
+
+    public function getScore() {
+    	if ($this->interviewScore === null) {
+    		return 0;
+	    }
+
+	    return $this->interviewScore->getSum();
     }
 
     /**
