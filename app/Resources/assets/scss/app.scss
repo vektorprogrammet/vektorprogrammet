@@ -7,7 +7,7 @@
 @import "modules/well";
 @import "modules/colors";
 @import "modules/team.scss";
-@import "modules/school_allocation.scss";
+@import "modules/interview_confirmation.scss";
 
 // Or selectively include components
 // @import
@@ -420,7 +420,12 @@ ul.alternatives {
 }
 
 .radio-grid {
-  margin-right: 1rem;
+  margin-left: 0;
+  list-style-type: none;
+  &>div>li{
+    margin-right: 1rem;
+    display:inline-block;
+  }
 }
 
 // Utils
@@ -824,6 +829,16 @@ ul.alternatives {
   display: none;
 }
 
-.hover-hand:hover {
-  cursor: pointer;
+.team-interest-table {
+  padding-top: 25px;
+
+}
+
+#substitute-table {
+  th {
+    user-select: none;
+  }
+  .clickable {
+    cursor:pointer;
+  }
 }

@@ -1,12 +1,12 @@
 {% extends 'adminBase.html.twig' %}
 
-{% block customScripts %}
+{% block javascripts %}
 
     {# Easy routing with FOSJsRouting bundle #}
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ asset_with_version('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
     {# We need the deletetablerow.js file #}
-    <script src="{{ asset('js/deleteablerow.js') }}"></script>
+    <script src="{{ asset_with_version('js/deleteablerow.js') }}"></script>
 
     <script>
 
@@ -18,95 +18,46 @@
                     cancelButton: $('#modalCancel')
                 }
             });
-
-            $("#search").keyup(function () {
-
-                _this = this;
-
-                $.each($("#table tbody").find("tr"), function () {
-
-                    if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
-                        $(this).hide();
-                    }
-                    else {
-                        $(this).show();
-                    }
-                });
-
-            });
-
         });
 
     </script>
 
-    {% block title %}
-        Avdeling
-    {% endblock %}
-
-
 {% endblock %}
 
-
+{% block title %}
+    Avdeling
+{% endblock %}
 	
 {% block body %}
     <p></p>
 
     <div class="row">
-    <div class="small-12 medium-12 large-12 columns">
-
-        <h1> Avdeling </h1>
-
-        <hr>
-
-        <div class="row">
-
-            {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-
-                <div class="small-12 medium-12 large-6 columns">
-
-                    <ul class="inline-list">
-
-
-                        <li><a href="{{ path('departmentadmin_create_department') }}" class="button tiny">Opprett
-                                avdeling</a></li>
-
-
-                    </ul>
-
-                </div>
-
-            {% endif %}
-
-            {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-            <div class="small-12 medium-12 large-6 columns">
-                {% else %}
-                <div class="small-12 medium-12 large-12 columns">
-                    {% endif %}
-                    <input type="text" id="search" placeholder="Søk..."/>
-                </div>
-
-            </div>
-
+        <div class="small-12 medium-12 large-12 columns">
+            <h1> Avdeling </h1>
             <hr>
 
-            <table width="100%" id="table">
+            {% if is_granted_admin() %}
+                <div class="row">
+                    <div class="small-12 medium-12 large-6 columns">
+                        <ul class="inline-list">
+                            <li><a href="{{ path('departmentadmin_create_department') }}" class="button tiny">Opprett
+                                    avdeling</a></li>
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
 
+            <table width="100%" id="table">
                 <thead>
                 <tr>
                     <th> Navn</th>
                     <th> Forkortet navn</th>
-                    <th> E-post</th>
-                    {% if is_granted('ROLE_SUPER_ADMIN') %}
-                        <th></th>
-                    {% endif %}
-                    {% if is_granted('ROLE_HIGHEST_ADMIN') %}
-                        <th></th>
-                    {% endif %}
+                    <th colspan="3"> E-post</th>
                 </tr>
                 </thead>
 
                 <tbody>
-                {% for d in departments %}
+                {% for d in get_departments() %}
                     <tr>
                         <td width="40%"><a
                                     href="{{ path('admission_show_specific_department', { 'id': d.id} ) }}">  {{ d.name }} </a>
@@ -115,7 +66,7 @@
                         <td width="20%"> {{ d.email }} </td>
 
                         {# Only SUPER_ADMIN should be able to edit teams #}
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        {% if is_granted_team_leader() %}
 
                             <td><a href="{{ path('departmentadmin_update', { 'id': d.id }) }}" class="button tiny">Rediger</a>
                             </td>
@@ -123,7 +74,7 @@
                         {% endif %}
 
                         {# Only HIGHEST_ADMIN should be able to delete teams #}
-                        {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                        {% if is_granted_admin() %}
                             <td><a href="#" id="{{ d.id }}" class="button tiny alert delete"><i
                                             class="fa fa-trash-o"></i> Slett</a></td>
                         {% endif %}
@@ -131,9 +82,7 @@
                     </tr>
                 {% endfor %}
                 </tbody>
-
             </table>
-
         </div>
     </div>
 

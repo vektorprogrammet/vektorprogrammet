@@ -1,0 +1,67 @@
+<nav class="main-navigation">
+    <ul>
+        <li>
+            <a href="#" data-dropdown="aboutDropdown" aria-controls="aboutDropdown" aria-expanded="false"
+               class="vektor-button" data-options="is_hover:true; hover_timeout:200">Om Vektor <i
+                        class="fa fa-chevron-down arrow"></i></a>
+            <ul id="aboutDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
+                <li><a href="{{ path('about') }}">Om vektor</a></li>
+                <li><a href="{{ path('faq') }}">FAQ</a></li>
+                <li><a href="{{ path('boardandteam_show') }}">Styret og team</a></li>
+                <li><a href="{{ path('students') }}">For studenter</a></li>
+                <li><a href="{{ path('schools') }}">For skoler</a></li>
+                <li><a href="{{ path('businesses') }}">For bedrifter</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="{{ path('article') }}" class="vektor-button">Nyheter</a>
+        </li>
+        <li>
+            <a href="#" data-dropdown="regionDropdown" aria-controls="regionDropdown" aria-expanded="false"
+               class="vektor-button" data-options="is_hover:true; hover_timeout:200">Opptak & kontakt <i
+                        class="fa fa-chevron-down arrow"></i></a>
+            <ul id="regionDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
+                {% render controller('AppBundle:Department:getAllDepartmentsForTopbar') %}
+            </ul>
+        </li>
+        <li>
+            {% if is_granted_assistant() %}
+                <a href="#" data-dropdown="myVektorDropdown" aria-controls="myVektorDropdown"
+                   aria-expanded="false" class="vektor-button"
+                   data-options="is_hover:true; hover_timeout:200">Min Vektor <i
+                            class="fa fa-chevron-down arrow"></i></a>
+                <ul id="myVektorDropdown" data-dropdown-content class="f-dropdown" aria-hidden="true">
+                    {% if is_granted_team_member() %}
+                        <li><a href='{{ path('control_panel') }}'>Kontrollpanel</a></li>
+                    {% endif %}
+                    <li><a href='{{ path('profile') }}'>Profil</a></li>
+                    <li><a href='{{ path('members_show') }}'>Assistenter</a></li>
+                    <li><a href="{{ path('logout') }}">Logg ut</a></li>
+                </ul>
+            {% else %}
+                <a href="#" data-dropdown="loginDropdown" aria-controls="loginDropdown"
+                   aria-expanded="false" class="vektor-button">Logg inn</a>
+                <div id="loginDropdown" data-dropdown-content class="small f-dropdown content"
+                     aria-autoclose="false" aria-hidden="true" tabindex="-1">
+                    <form action="{{ path('login_check') }}" method="post">
+                        {#<label for="username">Brukernavn:</label>#}
+                        <input type="text" id="username" name="_username" placeholder="Brukernavn"/>
+
+                        {#<label for="password">Passord:</label>#}
+                        <input type="password" id="password" name="_password" placeholder="Passord"/>
+
+                        <ul class="inline-list">
+                            <li>
+                                <button type="submit" class="tiny">Slipp meg inn!</button>
+                            </li>
+                            <li>
+                                <a href="{{ path('reset_password') }}">Glemt passord?</a>
+                            </li>
+                        </ul>
+
+                    </form>
+                </div>
+            {% endif %}
+        </li>
+    </ul>
+</nav>

@@ -5,11 +5,11 @@
     See Vektorprogrammet\app\Resources\views\about\about_vektor.html.twig for a small example on how to use it
 #}
 
-{% if is_granted('ROLE_SUPER_ADMIN') %}
+{% if is_granted_team_leader() %}
     <script> var dump_file = "{{ path('update_static_content') }}" </script>
-    <script src="{{ asset('vendor/ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('vendor/ckeditor/adapters/jquery.js') }}"></script>
-    <script src="{{ asset('js/ckeditor/createCkeditorInstances.js') }}"></script>
+    <script src="{{ asset_with_version('vendor/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset_with_version('vendor/ckeditor/adapters/jquery.js') }}"></script>
+    <script src="{{ asset_with_version('js/ckeditor/createCkeditorInstances.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             createCkeditorInstances();

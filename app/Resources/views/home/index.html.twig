@@ -6,13 +6,13 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" type="text/css" href="{{ asset('vendor/slick/slick.css') }}"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('vendor/slick/slick-theme.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset_with_version('vendor/slick/slick.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset_with_version('vendor/slick/slick-theme.css') }}"/>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('vendor/slick/slick.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset_with_version('vendor/slick/slick.min.js') }}"></script>
     {% include "statictext/js_loader_for_static_texts.html.twig" %}
     <script>
         $(document).ready(function () {
@@ -41,7 +41,7 @@
 {% endblock %}
 
 {% block body %}
-    <p></p>
+    {% include "common/flash.html.twig" %}
 
     <div class="row">
         <div class="small-12 columns">

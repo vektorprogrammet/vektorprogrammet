@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
+use AppBundle\Event\WorkHistoryCreatedEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,9 +16,6 @@ class TeamAdminController extends Controller
 {
     public function showAction()
     {
-        // Finds all the departments
-        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
-
         // Finds the department for the current logged in user
         $department = $this->getUser()->getDepartment();
 
@@ -26,9 +24,8 @@ class TeamAdminController extends Controller
 
         // Return the view with suitable variables
         return $this->render('team_admin/index.html.twig', array(
-            'departments' => $allDepartments,
             'teams' => $teams,
-            'departmentName' => $department->getShortName(),
+            'department' => $department,
         ));
     }
 
@@ -63,6 +60,8 @@ class TeamAdminController extends Controller
 
             // Create a new WorkHistory entity
             $workHistory = new WorkHistory();
+        $workHistory->setUser($this->getUser());
+        $workHistory->setPosition($this->getDoctrine()->getRepository('AppBundle:Position')->findOneBy(array('name' => 'Medlem')));
 
             // Create a new formType with the needed variables
             $form = $this->createForm(new CreateWorkHistoryType($department), $workHistory);
@@ -72,13 +71,15 @@ class TeamAdminController extends Controller
 
         if ($form->isValid()) {
 
-                //set the team of the department
-                $workHistory->setTeam($team);
+            //set the team of the department
+            $workHistory->setTeam($team);
 
-                // Persist the team to the database
-                $em = $this->getDoctrine()->getManager();
+            // Persist the team to the database
+            $em = $this->getDoctrine()->getManager();
             $em->persist($workHistory);
             $em->flush();
+
+            $this->get('event_dispatcher')->dispatch(WorkHistoryCreatedEvent::NAME, new WorkHistoryCreatedEvent($workHistory));
 
             return $this->redirect($this->generateUrl('teamadmin_show_specific_team', array('id' => $team->getId())));
         }
@@ -163,18 +164,13 @@ class TeamAdminController extends Controller
 
     public function showTeamsByDepartmentAction(Department $department)
     {
-        // Finds all the departments
-        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
-
         // Find teams that are connected to the department of the department ID sent in by the request
         $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByDepartment($department);
 
         // Return the view with suitable variables
         return $this->render('team_admin/index.html.twig', array(
-            'departments' => $allDepartments,
-            'userDepartment' => $department,
+            'department' => $department,
             'teams' => $teams,
-            'departmentName' => $department->getShortName(),
         ));
     }
 
@@ -216,41 +212,29 @@ class TeamAdminController extends Controller
 
     public function removeUserFromTeamByIdAction(WorkHistory $workHistory)
     {
-        try {
-            // This deletes the given work history
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($workHistory);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($workHistory);
+        $em->flush();
 
-            return new JsonResponse(array(
-                'success' => true,
-            ));
-        } catch (\Exception $e) {
-            // Send a response back to AJAX
-            return new JsonResponse(array(
-                'success' => true,
-                'cause' => $e->getMessage(),
-            ));
-        }
+        return new JsonResponse(array(
+            'success' => true,
+        ));
     }
 
     public function deleteTeamByIdAction(Team $team)
     {
-        try {
-            // This deletes the given team
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($team);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
 
-            return new JsonResponse(array(
-                'success' => true,
-            ));
-        } catch (\Exception $e) {
-            // Send a response back to AJAX
-            return new JsonResponse(array(
-                'success' => true,
-                'cause' => $e->getMessage(),
-            ));
+        foreach ($team->getWorkHistories() as $workHistory) {
+            $workHistory->setDeletedTeamName($team->getName());
+            $em->persist($workHistory);
         }
+
+        $em->remove($team);
+        $em->flush();
+
+        return new JsonResponse(array(
+            'success' => true,
+        ));
     }
 }

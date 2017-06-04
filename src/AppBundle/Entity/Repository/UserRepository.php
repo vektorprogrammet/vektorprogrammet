@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -12,6 +13,39 @@ use Doctrine\ORM\NoResultException;
 
 class UserRepository extends EntityRepository implements UserProviderInterface
 {
+    public function findUsersWithWorkHistoryInSemester(Semester $semester)
+    {
+        $startDate = $semester->getSemesterStartDate();
+        $endDate = $semester->getSemesterEndDate();
+        $department = $semester->getDepartment();
+
+        return $this->createQueryBuilder('user')
+            ->select('user')
+            ->join('user.workHistories', 'wh')
+            ->join('user.fieldOfStudy', 'fos')
+            ->where('fos.department = :department')
+            ->join('wh.startSemester', 'ss')
+            ->andWhere('ss.semesterStartDate <= :startDate')
+            ->leftJoin('wh.endSemester', 'se')
+            ->andWhere('wh.endSemester is NULL OR se.semesterEndDate >= :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('department', $department)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findUsersWithAssistantHistoryInSemester(Semester $semester)
+    {
+        return $this->createQueryBuilder('user')
+            ->select('user')
+            ->join('user.assistantHistories', 'ah')
+            ->where('ah.semester = :semester')
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllUsersByDepartment($department)
     {
         $users = $this->getEntityManager()->createQuery('
@@ -45,6 +79,18 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getResult();
 
         return $users;
+    }
+
+    public function findAllInActiveUsersByDepartment($department)
+    {
+        return $this->createQueryBuilder('user')
+            ->select('user')
+            ->join('user.fieldOfStudy', 'fos')
+            ->where('user.isActive = false')
+            ->andWhere('fos.department = :department')
+            ->setParameter('department', $department)
+            ->getQuery()
+            ->getResult();
     }
 
     public function findAllUsersByDepartmentAndRoles($department, $roles)

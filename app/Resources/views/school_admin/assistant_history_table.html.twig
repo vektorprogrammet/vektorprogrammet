@@ -1,0 +1,29 @@
+<table width="100%">
+
+    <thead>
+    <tr>
+        <th>Navn</th>
+        <th>Skole</th>
+        <th>Semester</th>
+        <th colspan="2">Pulje</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for ah in assistantHistories %}
+        <tr>
+            <td><a href="{{ path('specific_profile', {id: ah.user.id}) }}">{{ ah.user }}</a></td>
+            <td> {{ ah.school.name }} </td>
+            <td> {{ ah.semester.name }} </td>
+            <td> {{ ah.bolk }} </td>
+
+            {% if is_granted_team_leader() %}
+                <td><a href="#" id="{{ ah.id }}" class="button tiny alert delete"><i
+                                class="fa fa-trash-o"></i> Slett</a></td>
+            {% endif %}
+
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>

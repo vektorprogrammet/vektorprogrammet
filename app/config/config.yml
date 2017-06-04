@@ -29,6 +29,9 @@ parameters:
   # Newsletter images
   newsletter_images: 'images/newsletter_images'
 
+  # Team images
+  team_images: 'images/team_images'
+
 framework:
     #esi:             ~
     #translator:      { fallbacks: ["%locale%"] }
@@ -229,20 +232,37 @@ fm_elfinder:
                                 upload_deny: ['all']
                                 upload_max_size: 2M
         newsletter_editor:
-          locale: %locale% # defaults to current request locale
-          editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
-          fullscreen: true # defaults true, applies to simple and ckeditor editors
-          include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
-          connector:
-            debug: false # defaults to false
-            roots:       # at least one root must be defined
-              public:
-                #show_hidden: false # defaults to false
-                driver: LocalFileSystem
-                path: %newsletter_images%
-                upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
-                upload_deny: ['all']
-                upload_max_size: 2M
+                    locale: %locale% # defaults to current request locale
+                    editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
+                    fullscreen: true # defaults true, applies to simple and ckeditor editors
+                    include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
+                    connector:
+                      debug: false # defaults to false
+                      roots:       # at least one root must be defined
+                        public:
+                          #show_hidden: false # defaults to false
+                          driver: LocalFileSystem
+                          path: %newsletter_images%
+                          upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
+                          upload_deny: ['all']
+                          upload_max_size: 2M
+
+        team_editor:
+                    locale: %locale% # defaults to current request locale
+                    editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
+                    fullscreen: true # defaults true, applies to simple and ckeditor editors
+                    include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
+                    connector:
+                      debug: false # defaults to false
+                      roots:       # at least one root must be defined
+                        public:
+                          #show_hidden: false # defaults to false
+                          driver: LocalFileSystem
+                          path: %team_images%
+                          upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
+                          upload_deny: ['all']
+                          upload_max_size: 2M
+
 
 # Provides help text functionality to forms
 simple_things_form_extra:

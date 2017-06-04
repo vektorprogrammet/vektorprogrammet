@@ -17,11 +17,11 @@ class ProfileControllerTest extends WebTestCase
         // Assert that we have the correct profile user
         $this->assertContains('Petter Johansen', $client->getResponse()->getContent());
         // Assert that we have the correct team and position
-        $this->assertContains('Hovedstyret', $client->getResponse()->getContent());
+        $this->assertContains('Styret', $client->getResponse()->getContent());
         $this->assertContains('Leder', $client->getResponse()->getContent());
 
-        // Check the count for Hovedstyret, Leder and Petter Johansen
-        $this->assertEquals(1, $crawler->filter('html:contains("Hovedstyret")')->count());
+        // Check the count for Styret, Leder and Petter Johansen
+        $this->assertEquals(1, $crawler->filter('html:contains("Styret")')->count());
         $this->assertEquals(1, $crawler->filter('html:contains("Leder")')->count());
 
         // Assert a specific 200 status code

@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block customScripts %}
+{% block javascripts %}
 
     {# Need these to expose the routes to our JS code #}
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ asset_with_version('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 
     {# import the genericAjax.js file #}
-    <script src="{{ asset('js/genericAjax.js') }}"></script>
+    <script src="{{ asset_with_version('js/genericAjax.js') }}"></script>
 
     <script>
 
@@ -40,7 +40,7 @@
 
             {% include 'profile/profile_picture.html.twig' %}
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted_team_leader() %}
                 <div class="panel callout radius">
                     <h3> Admin </h3>
                     <ul class="side-nav" role="navigation" title="Link List">
@@ -50,21 +50,22 @@
                                 bilde</a></li>
                         <li role="menuitem"><a href="{{ path('profile_certificate', { id: user.id} ) }}">Last
                                 ned attest</a></li>
+                        {% if not user_is_granted_admin(user) %}
+                            <li role="menuitem">
+                                <a data-dropdown="drop1" aria-controls="drop1" aria-expanded="false">Rediger
+                                    rettighetsnivå</a>
+                                <ul id="drop1" class="f-dropdown" data-dropdown-content aria-hidden="true"
+                                    tabindex="-1">
 
-                        <li role="menuitem">
-                            <a data-dropdown="drop1" aria-controls="drop1" aria-expanded="false">Rediger
-                                rettighetsnivå</a>
-                            <ul id="drop1" class="f-dropdown" data-dropdown-content aria-hidden="true"
-                                tabindex="-1">
-
-                                <li><a href="#" name={{ user.id }} class="assistent"
-                                       id="assistant"> Assistent </a></li>
-                                <li><a href="#" name={{ user.id }} class="team"
-                                       id="team_member"> Teammedlem </a></li>
-                                <li><a href="#" name={{ user.id }} class="admin"
-                                       id="team_leader"> Teamleder </a></li>
-                            </ul>
-                        </li>
+                                    <li><a href="#" name={{ user.id }} class="assistent"
+                                           id="assistant"> Assistent </a></li>
+                                    <li><a href="#" name={{ user.id }} class="team"
+                                           id="team_member"> Teammedlem </a></li>
+                                    <li><a href="#" name={{ user.id }} class="admin"
+                                           id="team_leader"> Teamleder </a></li>
+                                </ul>
+                            </li>
+                        {% endif %}
 
                         <li role="menuitem">
                             <a data-dropdown="drop2" aria-controls="drop2" aria-expanded="false">Rediger

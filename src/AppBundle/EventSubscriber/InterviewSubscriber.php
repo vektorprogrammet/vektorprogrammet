@@ -47,7 +47,8 @@ class InterviewSubscriber implements EventSubscriberInterface
     {
         return array(
             InterviewConductedEvent::NAME => array(
-                array('logEvent', 1),
+                array('logEvent', 2),
+                array('sendSlackNotifications', 1),
                 array('sendInterviewReceipt', 0),
                 array('addFlashMessage', -1),
             ),
@@ -76,7 +77,8 @@ class InterviewSubscriber implements EventSubscriberInterface
 
     public function addFlashMessage(InterviewConductedEvent $event)
     {
-        $message = "Intervjuet med {$event->getApplication()->getUser()} ble lagret.";
+        $user = $event->getApplication()->getUser();
+        $message = "Intervjuet med $user ble lagret. En kvittering med et sammendrag av praktisk informasjon fra intervjuet blir sendt til {$user->getEmail()}.";
 
         $this->session->getFlashBag()->add('success', $message);
     }
@@ -90,8 +92,17 @@ class InterviewSubscriber implements EventSubscriberInterface
         $department = $interviewee->getDepartment();
 
         $this->logger->info("$department: New interview with $interviewee registered");
+    }
 
-        $this->notificationManager->sendNewApplicationNotification($application);
+    public function sendSlackNotifications(InterviewConductedEvent $event)
+    {
+        $application = $event->getApplication();
+
+        $department = $application->getUser()->getDepartment();
+
+        if ($this->sbsData->getInterviewedAssistantsCount() === 10 || $this->sbsData->getInterviewedAssistantsCount() % 25 === 0) {
+            $this->notificationManager->sendApplicationCountNotification($department);
+        }
 
         if ($this->sbsData->applicantsNotYetInterviewedCount() <= 0 && $this->sbsData->getStep() >= 4) {
             $this->notificationManager->sendInterviewsCompletedNotification($department);

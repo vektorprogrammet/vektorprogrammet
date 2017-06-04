@@ -7,7 +7,7 @@
         <th> Stilling</th>
         <th> Start</th>
 
-        {% if is_granted('ROLE_SUPER_ADMIN') %}
+        {% if is_granted_team_leader() %}
             <th></th>
             <th></th>
         {% endif %}
@@ -19,7 +19,7 @@
     {% for wh in workHistories %}
 
         <tr>
-            <td> {{ wh.user.firstName }} </td>
+            <td><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'> {{ wh.user.firstName }} </td>
             <td> {{ wh.user.lastName }} </td>
             <td>
 
@@ -32,12 +32,12 @@
             </td>
             <td> {{ wh.startSemester.name }} </td>
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted_team_leader() %}
                 <td><a href="{{ path('teamadmin_update_workhistory', { 'id': wh.id }) }}"
                        class="button tiny">Rediger</a></td>
             {% endif %}
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted_team_leader() %}
                 <td><a href="#" id="{{ wh.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i>
                         Slett</a></td>
             {% endif %}

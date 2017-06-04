@@ -2,16 +2,17 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Application;
+use AppBundle\Entity\Interview;
 use AppBundle\Event\InterviewConductedEvent;
+use AppBundle\Form\Type\ApplicationInterviewType;
+use AppBundle\Form\Type\AssignInterviewType;
+use AppBundle\Form\Type\CancelInterviewConfirmationType;
+use AppBundle\Form\Type\ScheduleInterviewType;
 use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Interview;
-use AppBundle\Entity\Application;
-use AppBundle\Form\Type\ScheduleInterviewType;
-use AppBundle\Form\Type\ApplicationInterviewType;
-use AppBundle\Form\Type\AssignInterviewType;
 
 /**
  * InterviewController is the controller responsible for interview actions,
@@ -60,14 +61,9 @@ class InterviewController extends Controller
                 $em->flush();
 
                 $this->get('event_dispatcher')->dispatch(InterviewConductedEvent::NAME, new InterviewConductedEvent($application));
+            }
 
-                return $this->redirectToRoute('admissionadmin_show', array('status' => 'interviewed'));
-            }
-            if ($isNewInterview) {
-                return $this->redirectToRoute('admissionadmin_show', array('status' => 'assigned'));
-            } else {
-                return $this->redirectToRoute('admissionadmin_show', array('status' => 'interviewed'));
-            }
+            return $this->redirectToRoute('applications_show_interviewed_by_semester', array('id' => $application->getSemester()->getId()));
         }
 
         return $this->render('interview/conduct.html.twig', array(
@@ -88,7 +84,7 @@ class InterviewController extends Controller
         $manager->persist($interview);
         $manager->flush();
 
-        return $this->redirectToRoute('admissionadmin_show', array('status' => 'assigned'));
+        return $this->redirectToRoute('applications_show_assigned');
     }
 
     /**
@@ -101,7 +97,7 @@ class InterviewController extends Controller
     public function showAction(Application $application)
     {
         if (null === $interview = $application->getInterview()) {
-            return $this->redirectToRoute('admissionadmin_show');
+            throw $this->createNotFoundException('Interview not found.');
         }
 
         // Only accessible for admin and above, or team members belonging to the same department as the interview
@@ -121,30 +117,21 @@ class InterviewController extends Controller
      * @param Interview $interview
      *
      * @return JsonResponse
-     *
-     * @internal param $id
      */
     public function deleteInterviewAction(Interview $interview)
     {
-        try {
+        $application = $this->getDoctrine()->getRepository('AppBundle:Application')->findOneBy(array('interview' => $interview));
+        $application->setInterview(null);
 
-            // Delete the interview
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($interview);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($application);
+        $em->remove($interview);
+        $em->flush();
 
-            // AJAX response
-            return new JsonResponse(array(
-                'success' => true,
-            ));
-        } catch (\Exception $e) {
-            // Send a response to AJAX
-            return new JsonResponse([
-                'success' => false,
-                'code' => $e->getCode(),
-                'cause' => 'En feil oppstod. Vennligst kontakt IT-ansvarlig.',
-            ]);
-        }
+        // AJAX response
+        return new JsonResponse(array(
+            'success' => true,
+        ));
     }
 
     /**
@@ -159,35 +146,27 @@ class InterviewController extends Controller
      */
     public function bulkDeleteInterviewAction(Request $request)
     {
-        try {
-            // Only the highest user role should be able to delete an interview
-            // Get the ids from the form
-            $applicationIds = $request->request->get('application')['id'];
+        // Get the ids from the form
+        $applicationIds = $request->request->get('application')['id'];
 
-            // Get the application objects
-            $em = $this->getDoctrine()->getManager();
-            $applications = $em->getRepository('AppBundle:Application')->findBy(array('id' => $applicationIds));
+        // Get the application objects
+        $em = $this->getDoctrine()->getManager();
+        $applications = $em->getRepository('AppBundle:Application')->findBy(array('id' => $applicationIds));
 
-            // Delete the interviews
-            foreach ($applications as $application) {
-                $interview = $application->getInterview();
-                if ($interview) {
-                    $em->remove($interview);
-                }
+        // Delete the interviews
+        foreach ($applications as $application) {
+            $interview = $application->getInterview();
+            if ($interview) {
+                $em->remove($interview);
             }
-            $em->flush();
-
-            // AJAX response
-            return new JsonResponse(array(
-                'success' => true,
-            ));
-        } catch (\Exception $e) {
-            // Send a response to AJAX
-            return new JsonResponse([
-                'success' => false,
-                'cause' => 'En exception oppstod. Vennligst kontakt IT-ansvarlig.',
-            ]);
+            $application->setInterview(null);
         }
+        $em->flush();
+
+        // AJAX response
+        return new JsonResponse(array(
+            'success' => true,
+        ));
     }
 
     /**
@@ -217,8 +196,12 @@ class InterviewController extends Controller
         if ($form->isValid()) {
             $data = $form->getData();
 
+            $interview->generateAndSetResponseCode();
+
             // Update the scheduled time for the interview
             $interview->setScheduled($data['datetime']);
+            $interview->setRoom($data['room']);
+            $interview->resetStatus();
             $em = $this->getDoctrine()->getManager();
             $em->persist($interview);
             $em->flush();
@@ -228,7 +211,7 @@ class InterviewController extends Controller
                 $this->get('app.interview.manager')->sendScheduleEmail($interview, $data);
             }
 
-            return $this->redirect($this->generateUrl('admissionadmin_show', array('status' => 'assigned')));
+            return $this->redirect($this->generateUrl('applications_show_assigned_by_semester', array('id' => $application->getSemester()->getId())));
         }
 
         return $this->render('interview/schedule.html.twig', array(
@@ -326,6 +309,95 @@ class InterviewController extends Controller
             'form' => $this->renderView('interview/assign_interview_form.html.twig', array(
                     'form' => $form->createView(),
                 )),
+        ));
+    }
+
+    /**
+     * @param Interview $interview
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function acceptByResponseCodeAction(Interview $interview)
+    {
+        $interview->acceptInterview();
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($interview);
+        $manager->flush();
+
+        $this->addFlash('success', 'Intervjuet ble akseptert.');
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @param Interview $interview
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function requestNewTimeAction(Interview $interview)
+    {
+        $interview->requestNewTime();
+
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($interview);
+        $manager->flush();
+
+        $this->get('app.interview.manager')->sendRescheduleEmail($interview);
+
+        $this->addFlash('success', 'Forespørsel har blitt sendt.');
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @param Interview $interview
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function respondAction(Interview $interview)
+    {
+        if (!$interview->isPending()) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('interview/response.html.twig', array(
+            'interview' => $interview,
+        ));
+    }
+
+    /**
+     * @param Request   $request
+     * @param Interview $interview
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function cancelByResponseCodeAction(Request $request, Interview $interview)
+    {
+        if (!$interview->isPending()) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->createForm(new CancelInterviewConfirmationType());
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $interview->setCancelMessage($data['message']);
+            $interview->cancel();
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($interview);
+            $manager->flush();
+
+            $this->get('app.interview.manager')->sendCancelEmail($interview);
+
+            $this->addFlash('success', 'Intervjuet ble kansellert.');
+
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('interview/response_confirm_cancel.html.twig', array(
+            'interview' => $interview,
+            'form' => $form->createView(),
         ));
     }
 }

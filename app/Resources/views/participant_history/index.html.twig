@@ -1,6 +1,6 @@
 {% extends 'adminBase.html.twig' %}
 
-{% block customScripts %}
+{% block javascripts %}
 
     <script>
 
@@ -79,69 +79,20 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
 
-            <h1>Deltakerhistorie {{ department }}</h1>
+            <h1>Deltakerhistorie {{ semester.department }}</h1>
 
             <hr>
 
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
-
-                <ul class="inline-list">
-
-                    {# Department dropdown #}
-                    <li>
-                        <a class="button tiny" data-dropdown="autoCloseExample" aria-controls="autoCloseExample"
-                           aria-expanded="false">{{ department }} <i class="fa fa-caret-down"></i></a>
-                        <ul id="autoCloseExample" class="f-dropdown" data-dropdown-content tabindex="-1"
-                            aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                            {% for d in departments %}
-
-                                <li><a href="{{ path('participanthistory_show_by_department',
-                                    { 'id': d.id }) }}">{{ d.shortName }}</a></li>
-
-                            {% endfor %}
-
-                        </ul>
-                    </li>
-
-
-                    {# Semester dropdown #}
-                    <li>
-                        <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown"
-                           aria-expanded="false">{% if semester != NULL %}{{ semester }}{% else %}Semester{% endif %} <i
-                                    class="fa fa-caret-down"></i></a>
-                        <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1"
-                            aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                            {% for s in semesters %}
-
-                                <li><a href="{{ path(app.request.attributes.get('_route'),
-                                    app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'semester': s.id })) }}">{{ s.name }}</a>
-                                </li>
-
-                            {% endfor %}
-                        </ul>
-                    </li>
-                </ul>
+            {% if is_granted_team_leader() %}
+                    {% include "common/department_semester_dropdowns.html.twig" with {'path': 'participanthistory_show_by_semester', 'parameterName': 'id', 'currentSemester': semester} %}
             {% else %}
                 <ul class="inline-list">
                     {# Semester dropdown #}
-                    <li>
-                        <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown"
-                           aria-expanded="false">{% if semester != NULL %}{{ semester.name }}{% else %}Semester{% endif %}
-                            <i class="fa fa-caret-down"></i></a>
-                        <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1"
-                            aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                            {% for s in semesters %}
-                                <li><a href="{{ path(app.request.attributes.get('_route'),
-                                    app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ 'semester': s.id })) }}">{{ s.name }}</a>
-                                </li>
-                            {% endfor %}
-
-                        </ul>
-                    </li>
+                    {% include "common/semester_dropdown.html.twig" with {
+                    'pathForSemester': 'participanthistory_show_by_semester',
+                    'semesterParameterName': 'id',
+                    'currentSemester': semester} %}
                 </ul>
             {% endif %}
 
@@ -153,8 +104,7 @@
 
                 <div class="small-12 medium-12 large-8 columns">
 
-                    <h3> Assistent historie <span
-                                style="float:right;font-size: 80%;">Antall: {{ assistantHistories|length }}</span></h3>
+                    <h3> Assistent historie <span style="float:right;font-size: 80%;">Antall: {{ assistantHistories|length }}</span></h3>
 
                 </div>
 
@@ -190,77 +140,39 @@
                         </thead>
 
                         <tbody>
-                        {% if sortBySemester != NULL %}
-                            {% for ah in assistantHistories %}
-                                {% if ah.semester.department == department and ah.semester.id == sortBySemester %}
-                                    <tr>
-                                        <td>
-                                            <a href='{{ path('specific_profile', { 'id': ah.user.id }) }}'>{{ ah.user.firstName }} {{ ah.user.lastName }}</a>
-                                        </td>
-                                        <td>
+                        {% for ah in assistantHistories %}
+                            <tr>
+                                <td>
+                                    <a href='{{ path('specific_profile', { 'id': ah.user.id }) }}'>{{ ah.user }}</a>
+                                </td>
+                                <td>
 
-                                            {% if ah.school is not null %}
-                                                {{ ah.school.name }}
-                                            {% else %}
-                                                Skolen er slettet.
-                                            {% endif %}
+                                    {% if ah.school is not null %}
+                                        {{ ah.school.name }}
+                                    {% else %}
+                                        Skolen er slettet.
+                                    {% endif %}
 
-                                        </td>
-                                        <td> {{ ah.user.email }}</td>
-                                        <td> {{ ah.semester.name }}</td>
-                                        <td> {{ ah.semester.department.shortname }}</td>
-                                        <td> {{ ah.bolk }}</td>
-                                        <td> {{ ah.day }}</td>
-                                        <td>
-                                            {% if is_granted('ROLE_HIGHEST_ADMIN') or (is_granted('ROLE_SUPER_ADMIN') and app.user.department == department) %}
-                                                <form
-                                                        action="{{ path('assistant_history_delete', {id: ah.id}) }}"
-                                                        method="POST"
-                                                        onsubmit="return confirm('Er du sikker på at du vil slette {{ ah.user }} fra {{ ah.school.name }} {{ ah.semester.name }}?')"
-                                                >
-                                                    <button type="submit" class="button tiny alert"><i class="fa fa-trash"></i></button>
-                                                </form>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% endif %}
-                            {% endfor %}
-                        {% else %}
-                            {% for ah in assistantHistories %}
-                                {% if ah.semester.department == department %}
-                                    <tr>
-                                        <td>
-                                            <a href='{{ path('specific_profile', { 'id': ah.user.id }) }}'>{{ ah.user.firstName }} {{ ah.user.lastName }}</a>
-                                        </td>
-                                        <td>
-
-                                            {% if ah.school is not null %}
-                                                {{ ah.school.name }}
-                                            {% else %}
-                                                Skolen er slettet.
-                                            {% endif %}
-
-                                        </td>
-                                        <td> {{ ah.user.email }}</td>
-                                        <td> {{ ah.semester.name }}</td>
-                                        <td> {{ ah.semester.department.shortname }}</td>
-                                        <td> {{ ah.bolk }}</td>
-                                        <td> {{ ah.day }}</td>
-                                        <td>
-                                            {% if is_granted('ROLE_HIGHEST_ADMIN') or (is_granted('ROLE_SUPER_ADMIN') and app.user.department == department) %}
-                                                <form
-                                                        action="{{ path('assistant_history_delete', {id: ah.id}) }}"
-                                                        method="POST"
-                                                        onsubmit="return confirm('Er du sikker på at du vil slette {{ ah.user }} fra {{ ah.school.name }} {{ ah.semester.name }}?')"
-                                                >
-                                                    <button type="submit" class="button tiny alert"><i class="fa fa-trash"></i></button>
-                                                </form>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
+                                </td>
+                                <td> {{ ah.user.email }}</td>
+                                <td> {{ ah.semester.name }}</td>
+                                <td> {{ ah.semester.department.shortname }}</td>
+                                <td> {{ ah.bolk }}</td>
+                                <td> {{ ah.day }}</td>
+                                <td>
+                                    {% if is_granted_admin() or (is_granted_team_leader() and app.user.department == semester.department) %}
+                                        <form
+                                                action="{{ path('assistant_history_delete', {id: ah.id}) }}"
+                                                method="POST"
+                                                onsubmit="return confirm('Er du sikker på at du vil slette {{ ah.user }} fra {{ ah.school.name }} {{ ah.semester.name }}?')"
+                                        >
+                                            <button type="submit" class="button tiny alert"><i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
 
                     </table>
@@ -311,90 +223,40 @@
                         </thead>
 
                         <tbody>
-                        {% if sortBySemester != NULL %}
-                            {% for wh in workHistories %}
-                                {% if wh.team is not null and wh.team.department == department and wh.startSemester.id == sortBySemester %}
-                                    <tr>
-                                        <td>
-                                            {% if wh.user is not null %}
-                                                <a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{ wh.user.firstName }} {{ wh.user.lastName }}</a>
-                                            {% else %}
-                                                Brukeren er slettet.
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if wh.user is not null %}
-                                                {{ wh.user.email }}
-                                            {% else %}
-                                                Brukeren er slettet.
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if wh.team is not null %}
-                                                {{ wh.team.name }}
-                                            {% else %}
-                                                Teamet er slettet.
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if wh.team is not null %}
-                                                {{ wh.team.department.shortName }}
-                                            {% else %}
-                                                Avdelingen er slettet.
-                                            {% endif %}
-                                        </td>
-                                        <td> {{ wh.startSemester.name }} </td>
+                        {% for wh in workHistories %}
+                            <tr>
+                                <td>
+                                    {% if wh.user is not null %}
+                                        <a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{ wh.user.firstName }} {{ wh.user.lastName }}</a>
+                                    {% else %}
+                                        Brukeren er slettet.
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if wh.user is not null %}
+                                        {{ wh.user.email }}
+                                    {% else %}
+                                        Brukeren er slettet.
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{ wh.teamName }}
+                                </td>
+                                <td>
+                                    {% if wh.team is not null %}
+                                        {{ wh.team.department.shortName }}
+                                    {% else %}
+                                        Avdelingen er slettet.
+                                    {% endif %}
+                                </td>
+                                <td> {{ wh.startSemester.name }} </td>
 
 
-                                        <td> {{ wh.endSemester is not null ? wh.endSemester.name : '' }}</td>
+                                <td> {{ wh.endSemester is not null ? wh.endSemester.name : '' }}</td>
 
-                                    </tr>
+                            </tr>
 
-                                {% endif %}
-                            {% endfor %}
-
-                        {% else %}
-                            {% for wh in workHistories %}
-                                {% if wh.team is not null and wh.team.department == department %}
-                                    <tr>
-                                        <td>
-                                            {% if wh.user is not null %}
-                                                <a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{ wh.user.firstName }} {{ wh.user.lastName }}</a>
-                                            {% else %}
-                                                Brukeren er slettet.
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if wh.user is not null %}
-                                                {{ wh.user.email }}
-                                            {% else %}
-                                                Brukeren er slettet.
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if wh.team is not null %}
-                                                {{ wh.team.name }}
-                                            {% else %}
-                                                Teamet er slettet.
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if wh.team is not null %}
-                                                {{ wh.team.department.shortName }}
-                                            {% else %}
-                                                Avdelingen er slettet.
-                                            {% endif %}
-                                        </td>
-                                        <td> {{ wh.startSemester.name }} </td>
-
-
-                                        <td> {{ wh.endSemester is null ? '-':wh.endSemester.name }}</td>
-
-                                    </tr>
-
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
+                        {% endfor %}
                         </tbody>
 
                     </table>

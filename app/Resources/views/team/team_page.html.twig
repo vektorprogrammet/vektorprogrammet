@@ -41,11 +41,11 @@
             <h4>Medlemmer</h4>
 
             <table>
-                {% for wh in workHistories %}
+                {% for wh in workHistories | groupSort %}
 
                     <tr>
                         <td width="100">
-                            <img width="50" src="{{ asset(wh.user.picturePath) }}"/>
+                            <img width="50" src="{{ asset_with_version(wh.user.picturePath) }}"/>
                         </td>
                         <td>
                             {% if app.user %}
@@ -56,7 +56,7 @@
                         </td>
                         <td>
                             {% if wh.position is not null %}
-                                {{ wh.position.name }}<br/>
+                                {{ wh.position }}<br/>
                             {% endif %}
                         </td>
                         <td width="60">

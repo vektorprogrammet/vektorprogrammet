@@ -9,7 +9,7 @@
             <div class="small-12 medium-6 large-6 sponsor-column {{ loop.last? 'end':'' }} {% if (((large_sponsors|length) % 2) == 1) and loop.last %}medium-offset-3{% endif %} columns">
                 <a href="{{ sponsor.url }}">
                     <span class="vertical-align-image-helper"></span><img class="sponsor-img-large"
-                                                                          src="{{ asset(sponsor.logoImagePath) }}">
+                                                                          src="{{ asset_with_version(sponsor.logoImagePath) }}">
                 </a>
             </div>
         {% endfor %}
@@ -28,7 +28,7 @@
         {% endif %} columns">
             <a href="{{ sponsor.url }}">
                 <span class="vertical-align-image-helper"></span><img class="sponsor-img-{{ sponsor.size }}"
-                                                                      src="{{ asset(sponsor.logoImagePath) }}">
+                                                                      src="{{ asset_with_version(sponsor.logoImagePath) }}">
             </a>
         </div>
     {% endfor %}
@@ -43,7 +43,7 @@
         {% endif %} columns">
             <a href="{{ sponsor.url }}">
                 <span class="vertical-align-image-helper"></span><img class="sponsor-img-{{ sponsor.size }}"
-                                                                      src="{{ asset(sponsor.logoImagePath) }}">
+                                                                      src="{{ asset_with_version(sponsor.logoImagePath) }}">
             </a>
         </div>
     {% endfor %}

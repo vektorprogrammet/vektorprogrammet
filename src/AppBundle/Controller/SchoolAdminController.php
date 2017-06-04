@@ -101,36 +101,28 @@ class SchoolAdminController extends Controller
 
     public function showAction()
     {
-        // Finds all the departments
-        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
-
         // Finds the department for the current logged in user
-        $department = $this->get('security.token_storage')->getToken()->getUser()->getFieldOfStudy()->getDepartment();
+        $department = $this->getUser()->getDepartment();
 
         // Find schools that are connected to the department of the user
         $schools = $this->getDoctrine()->getRepository('AppBundle:School')->findSchoolsByDepartment($department);
 
         // Return the view with suitable variables
         return $this->render('school_admin/index.html.twig', array(
-            'departments' => $allDepartments,
             'schools' => $schools,
-            'departmentName' => $department->getShortName(),
+            'department' => $department,
         ));
     }
 
     public function showSchoolsByDepartmentAction(Department $department)
     {
-        // Finds all the departments
-        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
-
         // Finds the schools for the given department
         $schools = $this->getDoctrine()->getRepository('AppBundle:School')->findSchoolsByDepartment($department);
 
         // Renders the view with the variables
         return $this->render('school_admin/index.html.twig', array(
-            'departments' => $allDepartments,
             'schools' => $schools,
-            'departmentName' => $department->getShortName(),
+            'department' => $department,
         ));
     }
 
@@ -168,9 +160,11 @@ class SchoolAdminController extends Controller
         if ($form->isValid()) {
             // Set the department of the school
             $school->addDepartment($department);
+            $department->addSchool($school);
             // If valid insert into database
             $em = $this->getDoctrine()->getManager();
             $em->persist($school);
+            $em->persist($department);
             $em->flush();
 
             return $this->redirect($this->generateUrl('schooladmin_show'));

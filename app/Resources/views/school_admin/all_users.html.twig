@@ -1,6 +1,6 @@
 {% extends 'adminBase.html.twig' %}
 
-{% block customScripts %}
+{% block javascripts %}
 
     <script>
 
@@ -35,6 +35,7 @@
 
 
 {% block body %}
+    {% include 'common/flash.html.twig' %}
     <p></p>
 
     <div class="row">
@@ -46,7 +47,7 @@
 
         <div class="row">
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted_team_leader() %}
                 <div class="small-12 medium-12 large-6 columns">
 
                     <ul class="inline-list">
@@ -74,7 +75,7 @@
 
             {% endif %}
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted_team_leader() %}
             <div class="small-12 medium-12 large-6 columns">
                 {% else %}
                 <div class="small-12 medium-12 large-12 columns">

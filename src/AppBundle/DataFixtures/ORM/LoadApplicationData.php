@@ -5,7 +5,6 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Entity\Interview;
 use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\InterviewScore;
-use AppBundle\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -20,6 +19,11 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application0->setPreviousParticipation(false);
         $application0->setYearOfStudy(1);
         $application0->setSemester($this->getReference('semester-current'));
+        $application0->setMonday('Ikke');
+        $application0->setTuesday('Ikke');
+        $application0->setWednesday('Ikke');
+        $application0->setThursday('Ikke');
+        $application0->setFriday('Bra');
 
         $manager->persist($application0);
 
@@ -27,10 +31,10 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application1->setUser($this->getReference('user-10'));
         $application1->setPreviousParticipation(true);
         $application1->setYearOfStudy(1);
-        $application1->setSemester($this->getReference('semester-current'));
+        $application1->setSemester($this->getReference('semester-5'));
         $application1->setMonday('Bra');
-        $application1->setTuesday('Bra');
-        $application1->setWednesday('Ikke');
+        $application1->setTuesday('Ikke');
+        $application1->setWednesday('Bra');
         $application1->setThursday('Ikke');
         $application1->setFriday('Bra');
 
@@ -40,7 +44,12 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application2->setUser($this->getReference('user-11'));
         $application2->setPreviousParticipation(false);
         $application2->setYearOfStudy(1);
-        $application2->setSemester($this->getReference('semester-current'));
+        $application2->setSemester($this->getReference('semester-1'));
+        $application2->setMonday('Bra');
+        $application2->setTuesday('Bra');
+        $application2->setWednesday('Ikke');
+        $application2->setThursday('Ikke');
+        $application2->setFriday('Bra');
 
         $manager->persist($application2);
 
@@ -87,6 +96,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application3->setEnglish(true);
         $application3->setPreferredGroup('Bolk 1');
         $application3->setDoublePosition(true);
+        $application3->setTeamInterest(true);
 
         $manager->persist($application3);
 
@@ -145,6 +155,8 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $interview5->setInterviewer($this->getReference('user-2'));
         $interview5->setInterviewSchema($this->getReference('ischema-1'));
         $interview5->setUser($this->getReference('user-14'));
+        $interview5->setResponseCode('code');
+        $interview5->setScheduled(new \DateTime('+2 days'));
         $application5->setInterview($interview5);
 
         $manager->persist($application5);
@@ -164,54 +176,9 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
 
         $manager->persist($application6);
 
-        /* Person 20: Jan-Per-Gustavio */
-        $application20 = new Application();
-        $application20->setUser($this->getReference('user-20'));
-        $application20->setPreviousParticipation(false);
-        $application20->setYearOfStudy(1);
-        $application20->setSemester($this->getReference('semester-current'));
-
-        $application20->setMonday('Ikke');
-        $application20->setTuesday('Ikke');
-        $application20->setWednesday('Ikke');
-        $application20->setThursday('Ikke');
-        $application20->setFriday('Bra');
-        $application20->setHeardAboutFrom(array('Stand'));
-        $application20->setEnglish(true);
-        $application20->setPreferredGroup('Bolk 1');
-        $application20->setDoublePosition(true);
-
-        $interview20 = new Interview();
-        $interview20->setInterviewed(true);
-        $interview20->setInterviewer($this->getReference('user-2'));
-        $interview20->setInterviewSchema($this->getReference('ischema-1'));
-        $interview20->setUser($this->getReference('user-20'));
-        $interview20->setCancelled(false);
-
-        // Create answer objects for all the questions in the schema
-        foreach ($interview20->getInterviewSchema()->getInterviewQuestions() as $interviewQuestion) {
-            $answer = new InterviewAnswer();
-            $answer->setAnswer('Test answer');
-            $answer->setInterview($interview20);
-            $answer->setInterviewQuestion($interviewQuestion);
-            $interview20->addInterviewAnswer($answer);
-        }
-
-        // The interview score
-        $intScore = new InterviewScore();
-        $intScore->setSuitability(6);
-        $intScore->setExplanatoryPower(5);
-        $intScore->setRoleModel(4);
-        $intScore->setSuitableAssistant('Ja');
-        $interview20->setInterviewScore($intScore);
-        $application20->setInterview($interview20);
-
-        $manager->persist($application20);
-
-        for ($i = 0; $i < 100; ++$i) {
-            $user = $this->getReference('allocation-user-'.$i);
-            $this->createAllocationApplication($user, $manager);
-        }
+        $this->setReference('application-0', $application0);
+        $this->setReference('application-1', $application1);
+        $this->setReference('application-2', $application2);
 
         $manager->flush();
     }
@@ -219,52 +186,5 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
     public function getOrder()
     {
         return 5;
-    }
-
-    private function createAllocationApplication(User $user, $manager)
-    {
-        $application = new Application();
-        $application->setUser($user);
-        $application->setPreviousParticipation(mt_rand(0, 100) < 10 ? true : false);
-        $application->setYearOfStudy(1);
-        $application->setSemester($this->getReference('semester-current'));
-        $randomArr = array(true, false, false, false, false);
-        shuffle($randomArr);
-        $application->setMonday($randomArr[0] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
-        $application->setTuesday($randomArr[1] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
-        $application->setWednesday($randomArr[2] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
-        $application->setThursday($randomArr[3] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
-        $application->setFriday($randomArr[4] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
-        $application->setHeardAboutFrom(array('Stand'));
-        $application->setEnglish(mt_rand(0, 100) < 10 ? true : false);
-        $application->setPreferredGroup(mt_rand(0, 100) < 50 ? 'Bolk 1' : 'Bolk 2');
-        $application->setDoublePosition(mt_rand(0, 100) < 10 ? true : false);
-
-        $interview = new Interview();
-        $interview->setInterviewed(true);
-        $interview->setInterviewer($this->getReference('user-2'));
-        $interview->setInterviewSchema($this->getReference('ischema-1'));
-        $interview->setUser($user);
-        $interview->setCancelled(false);
-
-        // Create answer objects for all the questions in the schema
-        foreach ($interview->getInterviewSchema()->getInterviewQuestions() as $interviewQuestion) {
-            $answer = new InterviewAnswer();
-            $answer->setAnswer('Test answer');
-            $answer->setInterview($interview);
-            $answer->setInterviewQuestion($interviewQuestion);
-            $interview->addInterviewAnswer($answer);
-        }
-
-        // The interview score
-        $intScore = new InterviewScore();
-        $intScore->setSuitability(mt_rand(4, 6));
-        $intScore->setExplanatoryPower(mt_rand(4, 6));
-        $intScore->setRoleModel(mt_rand(4, 6));
-        $intScore->setSuitableAssistant('Ja');
-        $interview->setInterviewScore($intScore);
-        $application->setInterview($interview);
-
-        $manager->persist($application);
     }
 }

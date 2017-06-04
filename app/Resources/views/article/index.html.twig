@@ -3,8 +3,8 @@
 {% block title %}Nyheter{% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('vendor/ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('vendor/ckeditor/adapters/jquery.js') }}"></script>
+    <script src="{{ asset_with_version('vendor/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset_with_version('vendor/ckeditor/adapters/jquery.js') }}"></script>
     {% include "statictext/js_loader_for_static_texts.html.twig" %}
 {% endblock %}
 
@@ -17,7 +17,7 @@
                 <div class="row">
                     <div class="article-box small-12 medium-12 large-12 columns">
                         <a href="{{ path('article_show', { 'id': pagination|first.id }) }}">
-                            <img src="{{ asset(pagination|first.imageLarge) }}"/>
+                            <img src="{{ asset_with_version(pagination|first.imageLarge) }}"/>
                         </a>
                         <h4><a href="{{ path('article_show', { 'id': pagination|first.id }) }}">
                                 {{ pagination|first.title|safe_html }}</a></h4>
@@ -30,9 +30,9 @@
                             {% set images = [column.imageMedium, column.imageSmall] %}
                             <div class="article-box small-12 {{ cycle(columns, loop.parent.loop.index0+loop.index0) }} columns">
                                 <a href="{{ path('article_show', { 'id': column.id }) }}">
-                                    <img data-interchange="[{{ asset(column.imageMedium) }}, (default)], [{{ asset(cycle(images, loop.parent.loop.index0+loop.index0)) }}, (medium)]">
+                                    <img data-interchange="[{{ asset_with_version(column.imageMedium) }}, (default)], [{{ asset_with_version(cycle(images, loop.parent.loop.index0+loop.index0)) }}, (medium)]">
                                     <noscript><img
-                                                src="{{ asset(cycle(images, loop.parent.loop.index0+loop.index0)) }}">
+                                                src="{{ asset_with_version(cycle(images, loop.parent.loop.index0+loop.index0)) }}">
                                     </noscript>
                                 </a>
                                 <h5><a href="{{ path('article_show', { 'id': column.id }) }}">

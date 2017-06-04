@@ -5,13 +5,13 @@
 {% endblock %}
 
 
-{% block customScripts %}
+{% block javascripts %}
 
     {# Easy routing with FOSJsRouting bundle #}
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ asset_with_version('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
     {# We need the deletetablerow.js file #}
-    <script src="{{ asset('js/genericAjax.js') }}"></script>
+    <script src="{{ asset_with_version('js/genericAjax.js') }}"></script>
 
     <script>
 
@@ -47,7 +47,7 @@
                     {#<li role="menuitem"><a href="#" id="certificate_request" class="requestCertificate">Send attest
                             forespørsel</a></li>#}
 
-                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    {% if is_granted_team_leader() %}
                         <li role="menuitem"><a href="{{ path('profile_certificate', { id: user.id} ) }}">Last ned
                                 attest</a></li>
                     {% endif %}

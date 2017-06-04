@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="team")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\TeamRepository")
  */
-class Team
+class Team implements TeamInterface
 {
     /**
      * @ORM\Column(type="integer")
@@ -52,7 +52,13 @@ class Team
     private $acceptApplication;
 
     /**
-     * @return mixed
+     * @var WorkHistory[]
+     * @ORM\OneToMany(targetEntity="WorkHistory", mappedBy="team")
+     */
+    private $workHistories;
+
+    /**
+     * @return bool
      */
     public function getAcceptApplication()
     {
@@ -60,7 +66,7 @@ class Team
     }
 
     /**
-     * @param mixed $acceptApplication
+     * @param bool $acceptApplication
      */
     public function setAcceptApplication($acceptApplication)
     {
@@ -145,7 +151,7 @@ class Team
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEmail()
     {
@@ -153,7 +159,7 @@ class Team
     }
 
     /**
-     * @param mixed $email
+     * @param string $email
      */
     public function setEmail($email)
     {
@@ -177,7 +183,7 @@ class Team
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getShortDescription()
     {
@@ -185,10 +191,18 @@ class Team
     }
 
     /**
-     * @param mixed $shortDescription
+     * @param string $shortDescription
      */
     public function setShortDescription($shortDescription)
     {
         $this->shortDescription = $shortDescription;
+    }
+
+    /**
+     * @return WorkHistory[]
+     */
+    public function getWorkHistories()
+    {
+        return $this->workHistories;
     }
 }

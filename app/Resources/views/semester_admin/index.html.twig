@@ -1,17 +1,17 @@
 {% extends 'adminBase.html.twig' %}
 
-{% block customScripts %}
+{% block javascripts %}
 
     {# Easy routing with FOSJsRouting bundle #}
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ asset_with_version('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
     {# We need the deletetablerow.js file #}
-    <script src="{{ asset('js/deleteablerow.js') }}"></script>
+    <script src="{{ asset_with_version('js/deleteablerow.js') }}"></script>
 
     <script>
 
         $(document).ready(function () {
-            $('.delete').deleteablerow('semesteradmin_delete_semester_by_id', {
+            $('.delete').deleteablerow('semester_delete', {
                 confirmation: {
                     modal: $('#confirmModal'),
                     acceptButton: $('#modalAccept'),
@@ -57,38 +57,28 @@
 
         <div class="row">
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted_team_leader() %}
                 <div class="small-12 medium-12 large-6 columns">
+
 
                     <ul class="inline-list">
 
-                        <li>
-                            <a class="button tiny" data-dropdown="avdeling" aria-controls="avdeling"
-                               aria-expanded="false">Avdeling &raquo;</a>
-                            <ul id="avdeling" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true"
-                                aria-autoclose="false" tabindex="-1">
-
-                                {% for d in departments %}
-
-                                    <li>
-                                        <a href="{{ path('semesteradmin_filter_semesters_by_department', { 'id': d.id }) }}">{{ d.shortName }}</a>
-                                    </li>
-
-                                {% endfor %}
-
-                            </ul>
-                        </li>
+                        {% include 'common/department_dropdown.html.twig' with {
+                            'pathForDepartment': 'semester_show_by_department',
+                            'departmentParameterName': 'id',
+                            'currentDepartment': departmentName
+                        } %}
 
                         <li>
-                            <a class="button tiny" data-dropdown="autoCloseExample" aria-controls="autoCloseExample"
+                            <a class="button tiny" data-dropdown="createSemesterDropdown" aria-controls="createSemesterDropdown"
                                aria-expanded="false">Opprett semester &raquo;</a>
-                            <ul id="autoCloseExample" class="f-dropdown" data-dropdown-content tabindex="-1"
+                            <ul id="createSemesterDropdown" class="f-dropdown" data-dropdown-content tabindex="-1"
                                 aria-hidden="true" aria-autoclose="false" tabindex="-1">
 
-                                {% for d in departments %}
+                                {% for d in get_departments() %}
 
                                     <li>
-                                        <a href="{{ path('semesteradmin_create_semester_superadmin', { 'id': d.id }) }}">{{ d.shortName }}</a>
+                                        <a href="{{ path('semester_create', { 'id': d.id }) }}">{{ d.shortName }}</a>
                                     </li>
 
                                 {% endfor %}
@@ -101,7 +91,7 @@
                 </div>
             {% endif %}
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted_team_leader() %}
             <div class="small-12 medium-12 large-6 columns">
                 {% else %}
                 <div class="small-12 medium-12 large-12 columns">
@@ -121,7 +111,7 @@
                         <th> Navn</th>
                         <th> Opptak start</th>
                         <th> Opptak slutt</th>
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        {% if is_granted_team_leader() %}
                             <th></th>
                             <th></th>
                         {% endif %}
@@ -137,14 +127,14 @@
                             <td> {{ s.admissionEndDate|date('Y-m-d') }} </br>
                                 Kl. {{ s.admissionEndDate|date('H:i:s') }}</td>
 
-                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            {% if is_granted_team_leader() %}
 
-                                {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                                {% if is_granted_admin() %}
                                     <td><a href="#" id="{{ s.id }}" class="button tiny alert delete"><i
                                                     class="fa fa-trash-o"></i> Slett</a></td>
                                 {% endif %}
 
-                                <td><a href="{{ path('semesteradmin_update', { 'id': s.id }) }}" class="button tiny">Rediger</a>
+                                <td><a href="{{ path('semester_update', { 'id': s.id }) }}" class="button tiny">Rediger</a>
                                 </td>
 
                             {% endif %}

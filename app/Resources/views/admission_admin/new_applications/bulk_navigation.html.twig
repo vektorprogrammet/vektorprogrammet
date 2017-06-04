@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="small-3 columns">
+        {% if is_granted_team_leader() %}
+            <div class="row collapse">
+                <div class="small-9 columns">
+                    <select id="bulkSelect">
+                        <option value="title">Gruppehandling</option>
+                        <option value="assign">Fordel intervju</option>
+                        {% if is_granted_admin() %}
+                            <option value="deleteApplication">Slett søknad</option>
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="small-3 columns">
+                    <a href="#" id="bulkAction" class="button postfix">Utfør</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="small-9 columns">
+        {% if app.user.department == semester.department and is_granted_team_leader() %}
+            <a class="button tiny success float-right" href="{{ path('register_applicant') }}">
+                Ny søker <i class="fa fa-plus"></i>
+            </a>
+        {% endif %}
+    </div>
+
+</div>

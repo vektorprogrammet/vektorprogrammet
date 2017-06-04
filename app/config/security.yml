@@ -55,6 +55,8 @@ security:
         # require ROLE_ADMIN for /admin*
 
           #ROLE_HIGHEST_ADMIN = superadmin user
+        - { path: ^/kontrollpanel/avdelingadmin/opprett, roles: ROLE_HIGHEST_ADMIN }
+        - { path: ^/kontrollpanel/avdelingadmin/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/semesteradmin/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/stilling/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/skoleadmin/slett, roles: ROLE_HIGHEST_ADMIN }
@@ -62,8 +64,11 @@ security:
         - { path: ^/kontrollpanel/opptakadmin/slett, roles: ROLE_HIGHEST_ADMIN }
 
           #ROLE_SUPER_ADMIN = admin user
+        - { path: ^/kontrollpanel/avdelingadmin/update, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/brukeradmin/opprett/, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/slett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/avdeling, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/brukeradmin/sendaktivering, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/jubileum, role: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/jubileum/betalt, role: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/jubileum/slettbetaling, role: ROLE_SUPER_ADMIN }
@@ -77,7 +82,6 @@ security:
         - { path: ^/kontrollpanel/skoleadmin/historikk/slett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/intervju/skjema, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/intervju/fordel, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/vikar/rediger, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/undersokelse/slett, role: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/undersokelse/kopier, role: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/stillinger, roles: ROLE_SUPER_ADMIN }
@@ -100,6 +104,15 @@ security:
         - { path: ^/profile/deaktiv, roles: ROLE_SUPER_ADMIN }
         - { path: ^/profile/rolle/endre, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/profil/rediger, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/opptakadmin/teaminteresse, roles: ROLE_SUPER_ADMIN}
+        - { path: ^/kontrollpanel/vikar/rediger, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/vikar/slett, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/vikar/opprett, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/attest/lastned, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/hovedstyret, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/hovedstyret/nytt_medlem, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/hovedstyret/oppdater, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/hovedstyret/slett/bruker, roles: ROLE_SUPER_ADMIN }
 
           #ROLE_ADMIN = team user
         - { path: ^/profile/edit, roles: ROLE_ADMIN }

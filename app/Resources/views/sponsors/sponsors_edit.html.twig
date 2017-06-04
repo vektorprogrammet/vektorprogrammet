@@ -16,7 +16,7 @@
             </td>
             <td>
                 Nåværende logo:<br>
-                <img src="{{ asset(logos[loop.index0] ) }}" height="60px">
+                <img src="{{ asset_with_version(logos[loop.index0] ) }}" height="60px">
             </td>
         </tr>
     {% endfor %}
@@ -65,7 +65,7 @@
                     Nåværende logo
                 </div>
                 <div class="row">
-                    <img src="{{ asset(logos[loop.index0] ) }}" height="60px">
+                    <img src="{{ asset_with_version(logos[loop.index0] ) }}" height="60px">
                 </div>
                 <div class="row">
                     {{ form_widget(form.logoImagePath, {'attr': {'value': 'Last opp ny logo'}}) }}

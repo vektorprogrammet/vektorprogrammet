@@ -1,12 +1,12 @@
 {% extends 'adminBase.html.twig' %}
 
-{% block customScripts %}
+{% block javascripts %}
 
     {# Easy routing with FOSJsRouting bundle #}
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ asset_with_version('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
     {# We need the deletetablerow.js file #}
-    <script src="{{ asset('js/deleteablerow.js') }}"></script>
+    <script src="{{ asset_with_version('js/deleteablerow.js') }}"></script>
 
     <script>
 
@@ -56,7 +56,7 @@
 
         <div class="row">
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted_team_leader() %}
 
                 <div class="small-12 medium-12 large-6 columns">
 
@@ -72,7 +72,7 @@
 
             {% endif %}
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted_team_leader() %}
             <div class="small-12 medium-12 large-6 columns">
                 {% else %}
                 <div class="small-12 medium-12 large-12 columns">
@@ -103,11 +103,11 @@
                         <td width="70%"> {{ p.name }} </a> </td>
 
                         {# Only SUPER_ADMIN should be able to edit teams #}
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        {% if is_granted_team_leader() %}
                             <td><a href="{{ path('teamadmin_edit_position', { 'id': p.id }) }}" class="button tiny">Rediger</a>
                             </td>
                         {% endif %}
-                        {% if is_granted('ROLE_HIGHEST_ADMIN') %}
+                        {% if is_granted_admin() %}
                             <td><a href="#" id="{{ p.id }}" class="button tiny alert delete"><i
                                             class="fa fa-trash-o"></i> Slett</a></td>
                         {% endif %}

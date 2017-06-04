@@ -2,7 +2,6 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
 use Symfony\Component\Routing\Router;
 
@@ -26,21 +25,19 @@ class InterviewNotificationManager
         $this->router = $router;
     }
 
-    public function sendNewApplicationNotification(Application $application)
+    public function sendApplicationCountNotification(Department $department)
     {
-        $interviewee = $application->getUser();
+        $interviewsCompletedCount = $this->applicationData->getInterviewedAssistantsCount();
+        $interviewsLeftCount = $this->applicationData->getInterviewsLeftCount();
 
-        $interviewer = $application->getInterview()->getInterviewer();
-
-        $department = $interviewer->getDepartment();
-
-        $interviewsLeft = $this->applicationData->getInterviewsLeftCount();
-
-        $interviewLink = $this->router->generate('interview_show', array('id' => $application->getId()), Router::ABSOLUTE_URL);
+        $interviewsLink = $this->router->generate(
+            'applications_show_interviewed_by_semester',
+            array('id' => $department->getCurrentOrLatestSemester()->getId()),
+            Router::ABSOLUTE_URL
+        );
 
         $this->slackMessenger->notify(
-            "$department: *$interviewer* har fullført et intervju med *$interviewee*. "
-            ."$department har *$interviewsLeft* intervju(er) igjen. Les hele intervjuet her: $interviewLink"
+            "$department har fullført *$interviewsCompletedCount* intervjuer. *$interviewsLeftCount* intervjuer gjenstår. Se alle intervjuene her: $interviewsLink"
         );
     }
 
@@ -63,8 +60,8 @@ class InterviewNotificationManager
 
         $this->slackMessenger->notify(
             'Se alle intervjuene her: '.$this->router->generate(
-                'admissionadmin_filter_applications_by_department',
-                array('id' => $department->getId(), 'status' => 'interviewed'),
+                'applications_show_interviewed_by_semester',
+                array('id' => $department->getCurrentOrLatestSemester()->getId(), 'status' => 'interviewed'),
                 Router::ABSOLUTE_URL
             ));
     }

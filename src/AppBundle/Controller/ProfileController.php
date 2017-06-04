@@ -121,6 +121,8 @@ class ProfileController extends Controller
             $em->persist($user);
             $em->flush();
 
+            $this->get('app.logger')->info("User $user activated with new user code");
+
             return $this->redirectToRoute('login_route');
         }
 
@@ -137,7 +139,7 @@ class ProfileController extends Controller
         $roleManager = $this->get('app.roles');
         $roleName = $roleManager->mapAliasToRole($request->request->get('role'));
 
-        if (!$roleManager->canChangeToRole($roleName)) {
+        if (!$roleManager->loggedInUserCanChangeRoleOfUsersWithRole($user, $roleName)) {
             throw new BadRequestHttpException();
         }
 
@@ -199,6 +201,7 @@ class ProfileController extends Controller
 
         $form = $this->createForm(EditUserType::class, $user, array(
             'department' => $user->getDepartment(),
+            'validation_groups' => array('edit_user'),
         ));
 
         $form->handleRequest($request);

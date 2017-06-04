@@ -9,6 +9,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="signature")
@@ -30,6 +31,7 @@ class Signature
 
     /**
      * @ORM\Column(type="string", length=45)
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     private $description;
 
@@ -39,7 +41,7 @@ class Signature
     protected $user;
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getSignaturePath()
     {
@@ -47,7 +49,7 @@ class Signature
     }
 
     /**
-     * @param mixed $signaturePath
+     * @param string $signaturePath
      */
     public function setSignaturePath($signaturePath)
     {
@@ -55,7 +57,7 @@ class Signature
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getDescription()
     {
@@ -63,7 +65,7 @@ class Signature
     }
 
     /**
-     * @param mixed $description
+     * @param string $description
      */
     public function setDescription($description)
     {
@@ -71,7 +73,7 @@ class Signature
     }
 
     /**
-     * @return mixed
+     * @return User
      */
     public function getUser()
     {
@@ -79,7 +81,7 @@ class Signature
     }
 
     /**
-     * @param mixed $user
+     * @param User $user
      */
     public function setUser($user)
     {

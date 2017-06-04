@@ -6,8 +6,8 @@
 
 {% block javascripts %}
 
-    <script type="text/javascript" src="{{ asset('vendor/dropzone/dist/min/dropzone.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/aviaryImageEditor.js') }}"></script>
+    <script type="text/javascript" src="{{ asset_with_version('vendor/dropzone/dist/min/dropzone.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset_with_version('js/aviaryImageEditor.js') }}"></script>
 
     <script>
 
@@ -223,7 +223,7 @@
                         </div>
                         <div class="medium-6 columns text-center bordered">
 
-                            <img id="profileImg" src="{{ path }}"/>
+                            <img id="profileImg" src="{{ asset_with_version(path) }}"/>
                             <div class="row">
                                 <br>
                                 <a href="#" class="button small" id="editImageBtn">Rediger bilde</a>

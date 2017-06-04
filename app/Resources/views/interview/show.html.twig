@@ -55,7 +55,7 @@
                 <h3>Praktisk informasjon</h3>
                 <div class="row">
                     <div class="small-12 columns">
-                        <label class="question-label">Hvilke dager passer for deg?</label>
+                        <label class="question-label">Hvilke dager passer IKKE for deg?</label>
                         <table>
                             <thead>
                             <tr>
@@ -136,6 +136,18 @@
                     </p>
                 {% endfor %}
 
+                <div class="row">
+                    <div class="small-12 medium-12 large-9 columns">
+                        <label class="question-label">Kan du tenke deg å være med i organiseringen av Vektorprogrammet?
+                            Dette inneholder teamarbeid</label>
+                        <p>
+                            {{ application.teamInterest ? 'Ja' : 'Nei' }}
+
+                        </p>
+                    </div>
+
+                </div>
+
                 <h3>Evaluering</h3>
 
                 <div class="row">
@@ -144,7 +156,7 @@
                             <thead>
                             <tr>
                                 <th>Forklaringsevne</th>
-                                <th><span data-tooltip aria-haspopup="true" class="has-tip"
+                                <th><span class="has-tip"
                                           title="Forbilde for ungdomsskoleelever">Forbilde</span></th>
                                 <th>Egnethet</th>
                                 <th>Sum</th>

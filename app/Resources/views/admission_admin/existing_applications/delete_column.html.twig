@@ -1,0 +1,18 @@
+{# Add the delete interview and application dropdown button, given the correct permissions #}
+{% if is_granted_admin() %}
+    <td>
+        <a href="#" class="button tiny alert" data-dropdown="deleteDropdown{{ a.id }}"
+           aria-controls="deleteDropdown{{ a.id }}" aria-expanded="false" id="{{ a.id }}">
+            <i class="fa fa-trash fa-lg"></i> Slett <i class="fa fa-caret-down"></i>
+        </a>
+        <ul id="deleteDropdown{{ a.id }}" data-dropdown-content class="f-dropdown"
+            aria-hidden="true">
+            {% if a.interview is not null %}
+                <li class="deleteInterview" id="{{ a.interview.id }}"><a href="#">Slett
+                        intervju</a>
+                </li>
+            {% endif %}
+            <li class="deleteApplication" id="{{ a.id }}"><a href="#">Slett søknad</a></li>
+        </ul>
+    </td>
+{% endif %}

@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Type\InterviewStatusType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,14 +26,14 @@ class Interview
     protected $interviewed;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $cancelled;
-
-    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $scheduled;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $room;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -45,24 +47,30 @@ class Interview
     protected $interviewSchema; // Bidirectional, may turn out to be unidirectional
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="interviews")
      * @ORM\JoinColumn(name="interviewer_id", referencedColumnName="id")
      */
     protected $interviewer; // Unidirectional, may turn out to be bidirectional
 
     /**
-     * @ORM\OneToMany(targetEntity="InterviewAnswer", mappedBy="interview", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="InterviewAnswer", mappedBy="interview", cascade={"persist", "remove"})
      * @Assert\Valid
      */
     protected $interviewAnswers;
 
     /**
-     * @var InterviewScore
-     * @ORM\OneToOne(targetEntity="InterviewScore", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="InterviewScore", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="interview_score_id", referencedColumnName="id")
      * @Assert\Valid
      */
     protected $interviewScore;
+
+    /**
+     * @ORM\Column(type="integer", nullable=false)
+     *
+     * @var int
+     */
+    private $interviewStatus;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
@@ -70,14 +78,33 @@ class Interview
     protected $user;
 
     /**
+     * @ORM\OneToOne(targetEntity="Application", mappedBy="interview")
+     */
+    private $application;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    private $responseCode;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    private $cancelMessage;
+
+    /**
      * Constructor.
      */
     public function __construct()
     {
-        $this->interviewAnswers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->interviewAnswers = new ArrayCollection();
         $this->conducted = new \DateTime();
         $this->interviewed = false;
-        $this->cancelled = false;
+        $this->interviewStatus = InterviewStatusType::PENDING;
     }
 
     /**
@@ -93,11 +120,11 @@ class Interview
     /**
      * Set interviewSchema.
      *
-     * @param \AppBundle\Entity\InterviewSchema $interviewSchema
+     * @param InterviewSchema $interviewSchema
      *
      * @return Interview
      */
-    public function setInterviewSchema(\AppBundle\Entity\InterviewSchema $interviewSchema = null)
+    public function setInterviewSchema(InterviewSchema $interviewSchema = null)
     {
         $this->interviewSchema = $interviewSchema;
 
@@ -107,7 +134,7 @@ class Interview
     /**
      * Get interviewSchema.
      *
-     * @return \AppBundle\Entity\InterviewSchema
+     * @return InterviewSchema
      */
     public function getInterviewSchema()
     {
@@ -117,11 +144,11 @@ class Interview
     /**
      * Set interviewer.
      *
-     * @param \AppBundle\Entity\User $interviewer
+     * @param User $interviewer
      *
      * @return Interview
      */
-    public function setInterviewer(\AppBundle\Entity\User $interviewer = null)
+    public function setInterviewer(User $interviewer = null)
     {
         $this->interviewer = $interviewer;
 
@@ -131,7 +158,7 @@ class Interview
     /**
      * Get interviewer.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getInterviewer()
     {
@@ -141,11 +168,11 @@ class Interview
     /**
      * Add interviewAnswers.
      *
-     * @param \AppBundle\Entity\InterviewAnswer $interviewAnswers
+     * @param InterviewAnswer $interviewAnswers
      *
      * @return Interview
      */
-    public function addInterviewAnswer(\AppBundle\Entity\InterviewAnswer $interviewAnswers)
+    public function addInterviewAnswer(InterviewAnswer $interviewAnswers)
     {
         $this->interviewAnswers[] = $interviewAnswers;
 
@@ -155,9 +182,9 @@ class Interview
     /**
      * Remove interviewAnswers.
      *
-     * @param \AppBundle\Entity\InterviewAnswer $interviewAnswers
+     * @param InterviewAnswer $interviewAnswers
      */
-    public function removeInterviewAnswer(\AppBundle\Entity\InterviewAnswer $interviewAnswers)
+    public function removeInterviewAnswer(InterviewAnswer $interviewAnswers)
     {
         $this->interviewAnswers->removeElement($interviewAnswers);
     }
@@ -175,11 +202,11 @@ class Interview
     /**
      * Set interviewScore.
      *
-     * @param \AppBundle\Entity\InterviewScore $interviewScore
+     * @param InterviewScore $interviewScore
      *
      * @return Interview
      */
-    public function setInterviewScore(\AppBundle\Entity\InterviewScore $interviewScore = null)
+    public function setInterviewScore(InterviewScore $interviewScore = null)
     {
         $this->interviewScore = $interviewScore;
 
@@ -189,7 +216,7 @@ class Interview
     /**
      * Get interviewScore.
      *
-     * @return \AppBundle\Entity\InterviewScore
+     * @return InterviewScore
      */
     public function getInterviewScore()
     {
@@ -225,7 +252,7 @@ class Interview
      */
     public function getCancelled()
     {
-        return $this->cancelled;
+        return $this->isCancelled();
     }
 
     /**
@@ -233,7 +260,27 @@ class Interview
      */
     public function setCancelled($cancelled)
     {
-        $this->cancelled = $cancelled;
+        if ($cancelled === true) {
+            $this->cancel();
+        } else {
+            $this->acceptInterview();
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getRoom()
+    {
+        return $this->room;
+    }
+
+    /**
+     * @param string $room
+     */
+    public function setRoom($room)
+    {
+        $this->room = $room;
     }
 
     /**
@@ -312,17 +359,142 @@ class Interview
         $this->user = $user;
     }
 
-    public function getScore()
-    {
-        if ($this->interviewScore === null) {
-            return 0;
-        }
-
-        return $this->interviewScore->getSum();
-    }
-
     public function isDraft()
     {
         return !$this->interviewed && $this->interviewScore !== null;
+    }
+
+    /**
+     * @return Application
+     */
+    public function getApplication()
+    {
+        return $this->application;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInterviewStatusAsString(): string
+    {
+        switch ($this->interviewStatus) {
+            case InterviewStatusType::PENDING:
+                return 'Ingen svar';
+            case InterviewStatusType::ACCEPTED:
+                return 'Akseptert';
+            case InterviewStatusType::REQUEST_NEW_TIME:
+                return 'Ny tid ønskes';
+            case InterviewStatusType::CANCELLED:
+                return 'Kansellert';
+            default:
+                return 'Ingen svar';
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getInterviewStatusAsColor(): string
+    {
+        switch ($this->interviewStatus) {
+            case InterviewStatusType::PENDING:
+                return '#000000';
+            case InterviewStatusType::ACCEPTED:
+                return '#32CD32';
+            case InterviewStatusType::REQUEST_NEW_TIME:
+                return '#F08A24';
+            case InterviewStatusType::CANCELLED:
+                return '#f40f0f';
+            default:
+                return '#000000';
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPending(): bool
+    {
+        return $this->interviewStatus === InterviewStatusType::PENDING;
+    }
+
+    /**
+     * @param int $interviewStatus
+     */
+    public function setInterviewStatus(int $interviewStatus)
+    {
+        $this->interviewStatus = $interviewStatus;
+    }
+
+    public function acceptInterview()
+    {
+        $this->setInterviewStatus(InterviewStatusType::ACCEPTED);
+    }
+
+    public function requestNewTime()
+    {
+        $this->setInterviewStatus(InterviewStatusType::REQUEST_NEW_TIME);
+    }
+
+    public function cancel()
+    {
+        $this->setInterviewStatus(InterviewStatusType::CANCELLED);
+    }
+
+    public function resetStatus()
+    {
+        $this->setInterviewStatus(InterviewStatusType::PENDING);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCancelled()
+    {
+        return $this->interviewStatus === InterviewStatusType::CANCELLED;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResponseCode()
+    {
+        return $this->responseCode;
+    }
+
+    public function setResponseCode(string $responseCode)
+    {
+        $this->responseCode = $responseCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function generateAndSetResponseCode()
+    {
+        $newResponseCode = bin2hex(openssl_random_pseudo_bytes(12));
+        $this->responseCode = $newResponseCode;
+
+        return $newResponseCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCancelMessage(): string
+    {
+        if ($this->cancelMessage !== null) {
+            return $this->cancelMessage;
+        } else {
+            return '';
+        }
+    }
+
+    /**
+     * @param string $cancelMessage
+     */
+    public function setCancelMessage(string $cancelMessage = null)
+    {
+        $this->cancelMessage = $cancelMessage;
     }
 }

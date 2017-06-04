@@ -30,7 +30,7 @@ class AssistantHistory
     protected $semester;
 
     /**
-     * @ORM\ManyToOne(targetEntity="School")
+     * @ORM\ManyToOne(targetEntity="School", inversedBy="assistantHistories")
      * @ORM\JoinColumn(onDelete="SET NULL")
      **/
     protected $school;
@@ -166,7 +166,7 @@ class AssistantHistory
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBolk()
     {
@@ -174,7 +174,7 @@ class AssistantHistory
     }
 
     /**
-     * @param mixed $bolk
+     * @param string $bolk
      */
     public function setBolk($bolk)
     {

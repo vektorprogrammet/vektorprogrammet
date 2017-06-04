@@ -13,7 +13,7 @@ services:
 
   app.user.registration:
     class: AppBundle\Service\UserRegistration
-    arguments: ['@twig', '@doctrine.orm.default_entity_manager', '@mailer', '@logger']
+    arguments: ['@twig', '@doctrine.orm.default_entity_manager', '@mailer', '@app.logger']
 
   app.roles:
     class: AppBundle\Service\RoleManager
@@ -21,11 +21,11 @@ services:
 
   app.interview.manager:
     class: AppBundle\Service\InterviewManager
-    arguments: ['@security.token_storage', '@security.authorization_checker', '@mailer', '@twig']
+    arguments: ['@security.token_storage', '@security.authorization_checker', '@mailer', '@twig', '@app.logger', '@doctrine.orm.entity_manager']
 
   app.newsletter.manager:
       class: AppBundle\Service\NewsletterManager
-      arguments: ['@swiftmailer.mailer.newsletter', '@twig']
+      arguments: ['@swiftmailer.mailer.newsletter', '@twig', '@doctrine.orm.entity_manager']
 
   app.password_manager:
       class: AppBundle\Service\PasswordManager
@@ -38,6 +38,9 @@ services:
   app.assistants.data:
     class: AppBundle\Service\AssistantsData
     arguments: ['@doctrine.orm.default_entity_manager']
+
+  app.interview_counter:
+    class: AppBundle\Service\InterviewCounter
 
   app.sbs_data:
     class: AppBundle\Service\SbsData
@@ -61,6 +64,12 @@ services:
     tags:
       - { name: twig.extension }
 
+  app.role_extension:
+    class: AppBundle\Twig\Extension\RoleExtension
+    arguments: ['@security.authorization_checker', '@security.token_storage', '@app.roles']
+    tags:
+        - { name: twig.extension }
+
   app.exception_subscriber:
     class: AppBundle\EventSubscriber\ExceptionSubscriber
     arguments: ['@app.logger', '@security.token_storage', '@router']
@@ -69,7 +78,13 @@ services:
 
   app.application_subscriber:
     class: AppBundle\EventSubscriber\ApplicationSubscriber
-    arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data', '@router']
+    arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data', '@router', '@app.newsletter.manager']
+    tags:
+      - { name: kernel.event_subscriber }
+
+  app.team_application_subscriber:
+    class: AppBundle\EventSubscriber\TeamApplicationSubscriber
+    arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@router']
     tags:
       - { name: kernel.event_subscriber }
 
@@ -91,6 +106,16 @@ services:
       tags:
         - { name: kernel.event_subscriber }
 
+  app.work_history_subscriber:
+    class: AppBundle\EventSubscriber\WorkHistorySubscriber
+    arguments: ['@session', '@app.logger', '@security.authorization_checker', '@doctrine.orm.entity_manager']
+    tags:
+        - { name: kernel.event_subscriber }
+
+  app.file_uploader:
+      class: AppBundle\Service\FileUploader
+      arguments: ['%signature_images%', '%logo_images%']
+
   security.login:
     class: AppBundle\Service\LoginManager
     arguments: ['@twig', '@security.authentication_utils', '@router']
@@ -110,3 +135,16 @@ services:
   survey.manager:
         class: AppBundle\Service\SurveyManager
         arguments: ['@doctrine.orm.default_entity_manager', '@form.factory']
+
+  app.group_sorter_extension:
+    class: AppBundle\Twig\Extension\GroupSortExtension
+    public: false
+    tags:
+      - { name: twig.extension }
+
+  app.twig.extension.assets:
+        class: AppBundle\Twig\Extension\AssetExtension
+        arguments: ['@assets.packages', '%kernel.root_dir%']
+        public: false
+        tags:
+          - { name: twig.extension }

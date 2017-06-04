@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Department;
 use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\CreateUserType;
@@ -55,6 +54,7 @@ class UserAdminController extends Controller
         // Render the view
         return $this->render('user_admin/create_user.html.twig', array(
             'form' => $form->createView(),
+            'department' => $department,
         ));
     }
 
@@ -66,12 +66,14 @@ class UserAdminController extends Controller
         // Finds the department for the current logged in user
         $department = $this->getUser()->getDepartment();
 
-        // Finds the users for the given department
-        $users = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersByDepartment($department);
+        $activeUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findAllActiveUsersByDepartment($department);
+        $inActiveUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findAllInActiveUsersByDepartment($department);
 
         return $this->render('user_admin/index.html.twig', array(
-            'users' => $users,
+            'activeUsers' => $activeUsers,
+            'inActiveUsers' => $inActiveUsers,
             'departments' => $allDepartments,
+            'department' => $department,
         ));
     }
 
@@ -80,39 +82,29 @@ class UserAdminController extends Controller
         // Finds all the departments
         $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
 
-        // Finds the  users of the departmend with the departmed id of $id
-        $users = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersByDepartment($department);
+        $activeUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findAllActiveUsersByDepartment($department);
+        $inActiveUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findAllInActiveUsersByDepartment($department);
 
         // Renders the view with the variables
         return $this->render('user_admin/index.html.twig', array(
-            'users' => $users,
+            'activeUsers' => $activeUsers,
+            'inActiveUsers' => $inActiveUsers,
             'departments' => $allDepartments,
+            'department' => $department,
         ));
     }
 
     public function deleteUserByIdAction(User $user)
     {
-        // If Non-ROLE_HIGHEST_ADMIN try to delete user in other department
-        if (!$this->isGranted(Roles::ADMIN) && $user->getDepartment() !== $this->getUser()->getDepartment) {
-            throw new BadRequestHttpException();
-        }
-        try {
-            // This deletes the given user
+        if ($this->isGranted(ROLES::ADMIN) || $user->getDepartment() == $this->getUser()->getDepartment()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush();
-
-            return new JsonResponse(array(
-                'success' => true,
-            ));
-        } catch (\Exception $e) {
-            // Send a response back to AJAX
-            return new JsonResponse([
-                'success' => false,
-                'code' => $e->getCode(),
-                'cause' => 'Det er ikke mulig å slette brukeren. Vennligst kontakt IT-ansvarlig.',
-            ]);
+        } else {
+            throw $this->createAccessDeniedException();
         }
+        // Redirect to useradmin page, set department to that of the deleted user
+        return $this->redirectToRoute('useradmin_filter_users_by_department', array('id' => $user->getDepartment()->getId()));
     }
 
     public function activateNewUserAction(Request $request, $newUserCode)
@@ -140,5 +132,12 @@ class UserAdminController extends Controller
             'form' => $form->createView(),
             'user' => $user,
         ));
+    }
+
+    public function sendActivationMailAction(User $user)
+    {
+        $this->get('app.user.registration')->sendActivationCode($user);
+
+        return $this->redirectToRoute('useradmin_show');
     }
 }

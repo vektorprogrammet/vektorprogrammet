@@ -1,0 +1,51 @@
+<nav class="top-bar" data-topbar role="navigation" data-options="back_text: Tilbake">
+    <ul class="title-area">
+        <li class="name">
+            <h1 style="text-align: center;"><a href="#">Vektorprogrammet</a></h1>
+        </li>
+        <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Meny</span></a></li>
+    </ul>
+
+    <section class="top-bar-section">
+        <!-- Right Nav Section -->
+        <ul class="right">
+            <li class="has-dropdown">
+                <a href="{{ path('about') }}">Om vektor</a>
+                <ul class="dropdown">
+                    <li><a href="{{ path('faq') }}">FAQ</a></li>
+                    <li><a href="{{ path('boardandteam_show') }}">Styre og team</a></li>
+                    <li><a href="{{ path('students') }}">For studenter</a></li>
+                    <li><a href="{{ path('schools') }}">For skoler</a></li>
+                    <li><a href="{{ path('businesses') }}">For bedrifter</a></li>
+                </ul>
+            </li>
+
+            <li><a href="{{ path('article') }}">Nyheter</a></li>
+            <li class="has-dropdown">
+                <a href="#">Opptak & Kontakt</a>
+                <ul class="dropdown">
+                    {% render controller('AppBundle:Department:getAllDepartmentsForTopbar') %}
+                </ul>
+            </li>
+            <li><a href="{{ path('faq') }}">FAQ</a></li>
+
+            {% if app.user and is_granted_assistant() %}
+                <li class="has-dropdown">
+                    <a href='{{ path('profile') }}'>Min Vektor</a>
+                    <ul class="dropdown">
+                        {% if app.user and is_granted_team_member() %}
+                            <li><a href='{{ path('control_panel') }}'>Kontrollpanel</a></li>
+                        {% endif %}
+                        <li><a href='{{ path('profile') }}'>Profil</a></li>
+                        <li><a href='{{ path('members_show') }}'>Medlemmer</a></li>
+                        <li><a href="{{ path('logout') }}">Logg ut</a></li>
+                    </ul>
+                </li>
+
+            {% else %}
+                <li><a href="{{ path('login_route') }}">Logg inn</a></li>
+            {% endif %}
+        </ul>
+    </section>
+</nav>
