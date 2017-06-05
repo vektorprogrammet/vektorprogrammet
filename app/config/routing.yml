@@ -1,8 +1,3 @@
-allocation:
-    resource: "@AllocationBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 home:
  path: /
  defaults: { _controller: AppBundle:Home:show }
@@ -848,7 +843,7 @@ schooladmin_show_specific_school:
 
 school_allocation:
   path: /kontrollpanel/skole/fordeling/
-  defaults: { _controller: AppBundle:SchoolAllocation:show }
+  defaults: { _controller: AppBundle:SchoolAllocation:showVue }
   methods: [GET]
 
 allocate_edit:

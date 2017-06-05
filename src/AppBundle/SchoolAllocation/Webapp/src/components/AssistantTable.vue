@@ -1,7 +1,8 @@
 <template>
   <v-data-table
     v-bind:headers="headers"
-    v-bind:items="schools"
+    v-bind:items="assistants"
+    @input="assistantSelected"
     v-model="selected"
     selected-key="name"
     select-all
@@ -13,7 +14,7 @@
         <v-checkbox
           primary
           hide-details
-          v-model="props.selected"
+          v-model="props.item.selected"
         ></v-checkbox>
       </td>
       <td>{{ props.item.name }}</td>
@@ -28,7 +29,10 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
+
   export default {
+    computed: mapGetters(['assistants']),
     data () {
       return {
         search: '',
@@ -45,80 +49,6 @@
           {text: 'Onsdag', value: 'wednesday'},
           {text: 'Torsdag', value: 'thursday'},
           {text: 'Fredag', value: 'friday'},
-        ],
-        schools: [
-          {
-            name: "Test assistent 1",
-            double: true,
-            monday: true,
-            tuesday: false,
-            wednesday: false,
-            thursday: true,
-            friday: false
-          },
-          {
-            name: "Test assistent 2",
-            double: false,
-            monday: false,
-            tuesday: true,
-            wednesday: false,
-            thursday: true,
-            friday: false
-          },
-          {
-            name: "Test assistent 3",
-            double: false,
-            monday: false,
-            tuesday: false,
-            wednesday: true,
-            thursday: false,
-            friday: true
-          },
-          {
-            name: "Test assistent 4",
-            double: true,
-            monday: false,
-            tuesday: false,
-            wednesday: false,
-            thursday: false,
-            friday: true
-          },
-          {
-            name: "Test assistent 5",
-            double: false,
-            monday: true,
-            tuesday: true,
-            wednesday: true,
-            thursday: true,
-            friday: true
-          },
-          {
-            name: "Test assistent 6",
-            double: false,
-            monday: false,
-            tuesday: true,
-            wednesday: false,
-            thursday: true,
-            friday: true
-          },
-          {
-            name: "Test assistent 7",
-            double: false,
-            monday: true,
-            tuesday: true,
-            wednesday: false,
-            thursday: false,
-            friday: false
-          },
-          {
-            name: "Test assistent 8",
-            double: false,
-            monday: false,
-            tuesday: true,
-            wednesday: true,
-            thursday: false,
-            friday: false
-          },
         ]
       }
     }

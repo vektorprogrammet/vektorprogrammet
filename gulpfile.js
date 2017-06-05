@@ -15,7 +15,7 @@ var path = {
     dist: 'www/',
     src: 'app/Resources/assets/',
     allocation: {
-        src: 'src/AllocationBundle/web'
+        src: 'src/AppBundle/SchoolAllocation/Webapp'
     }
 };
 
@@ -124,7 +124,7 @@ gulp.task('vendor', function(){
 });
 
 gulp.task('buildAllocationApp', function (cb) {
-    exec('cd src/AllocationBundle/web && npm run build', function (err, stdout, stderr) {
+    exec('cd '+path.allocation.src+' && npm run build', function (err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
         cb(err);
@@ -132,8 +132,10 @@ gulp.task('buildAllocationApp', function (cb) {
 });
 
 gulp.task('allocationStaticFiles', ['buildAllocationApp'], function () {
-    gulp.src(path.allocation.src + '/dist/**/*.js')
-        .pipe(gulp.dest('www/js/'));
+    gulp.src(path.allocation.src + '/dist/build.js')
+        .pipe(gulp.dest('www/js/allocation'));
+    gulp.src(path.allocation.src + '/dist/build.js.map')
+        .pipe(gulp.dest('www/js/allocation'));
 });
 
 
@@ -142,6 +144,10 @@ gulp.task('watch', function () {
     gulp.watch(path.src + 'js/**/*.js', ['scriptsDev']);
     gulp.watch(path.allocation.src + '/**/*.vue', ['allocationStaticFiles']);
     gulp.watch(path.src + 'images/*', ['imagesDev']);
+});
+
+gulp.task('watch:allocation', function () {
+    gulp.watch(path.allocation.src + '/**/*.vue', ['allocationStaticFiles']);
 });
 
 

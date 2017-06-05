@@ -16,7 +16,7 @@ class SchoolAllocationController extends Controller
 {
     public function showVueAction()
     {
-        return $this->render('/school_admin/school_allocation_vue.html');
+        return $this->render('school_allocation/index.html.twig');
     }
 
     public function showAction(Request $request, $departmentId = null)

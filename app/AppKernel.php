@@ -27,7 +27,6 @@ class AppKernel extends Kernel
             new TFox\MpdfPortBundle\TFoxMpdfPortBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Nexy\SlackBundle\NexySlackBundle(),
-            new AllocationBundle\AllocationBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

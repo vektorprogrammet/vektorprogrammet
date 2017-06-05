@@ -3,7 +3,6 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: "@AppBundle/Resources/config/services.yml" }
-    - { resource: "@AllocationBundle/Resources/config/services.yml" }
 
 parameters:
   slack.notification_channel: '#notifications'

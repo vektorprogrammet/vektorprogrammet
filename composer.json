@@ -5,8 +5,7 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "AppBundle\\": "src/AppBundle",
-            "AllocationBundle\\": "src/AllocationBundle"
+            "AppBundle\\": "src/AppBundle"
         }
     },
     "require": {
