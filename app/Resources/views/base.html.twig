@@ -16,7 +16,7 @@
     {% endif %}
     <meta property="og:title" content="{{ block('title') }}"/>
     <meta property="og:image"
-          content="http://vektorprogrammet.no{% block facebookImage %}{{ asset('images/vektor_stor.png') }}{% endblock %}"/>
+          content="http://vektorprogrammet.no{% block facebookImage %}{{ asset_with_version('images/vektor_stor.png') }}{% endblock %}"/>
     <meta property="og:description"
           content="{% block facebookDescription %}Vektorprogrammet er Norges største organisasjon som jobber for å øke interessen for matematikk og realfag blant elever i grunnskolen. Vi sender realfagssterke studenter til barne- og ungdomsskoler hvor de fungerer som lærerens assistent.{% endblock %}"/>
     <meta property="og:site_name" content="Vektorprogrammet"/>
@@ -26,11 +26,30 @@
     <meta name="msapplication-navbutton-color" content="#6FCEEE"><!-- Windows Phone -->
     <meta name="apple-mobile-web-app-status-bar-style" content="#6FCEEE"><!-- iOS Safari -->
 
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=2"/>
+    <link rel="stylesheet" href="{{ asset_with_version('css/app.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset_with_version('favicon.ico') }}"/>
     {% block stylesheets %}{% endblock %}
 
     {% block customStyles %}{% endblock %}
+
+    <script type="text/javascript">
+        window.smartlook||(function(d) {
+            var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];
+            var c=d.createElement('script');o.api=new Array();c.async=true;c.type='text/javascript';
+            c.charset='utf-8';c.src='https://rec.smartlook.com/recorder.js';h.appendChild(c);
+        })(document);
+        smartlook('init', 'aa5cd6b3e4a09aece523aacaf9b1e5962b300a79');
+    </script>
+
+    <script type='text/javascript'>
+        window.__lo_site_id = 83252;
+
+        (function() {
+            var wa = document.createElement('script'); wa.type = 'text/javascript'; wa.async = true;
+            wa.src = 'https://d10lpsik1i8c69.cloudfront.net/w.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(wa, s);
+        })();
+    </script>
 
 </head>
 <body>
@@ -55,7 +74,7 @@
     {% include 'base/footer.html.twig' %}
 {% endblock %}
 
-<script src="{{ asset('js/vendor.js') }}"></script>
+<script src="{{ asset_with_version('js/vendor.js') }}"></script>
 <script>
     {# This has to be in all twig files, can't be overwritten #}
     $(document).foundation();
@@ -72,7 +91,7 @@
         a.async = 1;
         a.src = g;
         m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
     ga('create', '{{ googleAnalyticsId }}', 'auto');
     ga('send', 'pageview');

@@ -51,16 +51,6 @@
                     </a>
                 </div>
             </div>
-
-            <div class="small-4 medium-3 large-2 columns">
-                <div class="control-panel-item">
-                    <a href="{{ path('substitute_show') }}">
-                        <i class="fa fa-user-secret fa-3x"></i>
-
-                        <p>Vikarer</p>
-                    </a>
-                </div>
-            </div>
             <div class="small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('teamadmin_show') }}">
@@ -70,8 +60,20 @@
                     </a>
                 </div>
             </div>
+            {% if is_granted_team_leader() %}
             <div class="small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">
+                    <a href="{{ path('executive_board_show') }}">
+                        <i class="fa fa-diamond fa-3x"></i>
+
+                        <p>Hovedstyret</p>
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    {% if is_granted_team_leader() %}
                     <a data-dropdown="superadminCreateUser" aria-controls="superadminCreateUser" aria-expanded="false">
                         <i class="fa fa-user-plus fa-3x"></i>
 
@@ -88,8 +90,23 @@
                             </li>
 
                         {% endfor %}
-
                     </ul>
+                        {% else %}
+                            <a href="{{ path('useradmin_create_user') }}">
+                                <i class="fa fa-user-plus fa-3x"></i>
+
+                                <p>Ny bruker</p>
+                            </a>
+                    {% endif %}
+
+                </div>
+            </div>
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                  <a href="{{ path('generate_mail_lists') }}">
+		    <i class="fa fa-list fa-3x"></i>
+                        <p>Epostliste</p>
+                    </a>
                 </div>
             </div>
             <hr/>
@@ -115,6 +132,16 @@
                         <i class="fa fa-bar-chart fa-3x"></i>
 
                         <p>Opptaksstatistikk</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('substitute_show') }}">
+                        <i class="fa fa-user-secret fa-3x"></i>
+
+                        <p>Vikarer</p>
                     </a>
                 </div>
             </div>
@@ -151,15 +178,6 @@
                 </div>
             </div>
 
-            {#<div class="small-4 medium-3 large-2 columns">#}
-            {#<div class="control-panel-item">#}
-            {#<a href="{{ path('school_allocation') }}">#}
-            {#<i class="fa fa-building fa-3x"></i>#}
-
-            {#<p>Sexyface</p>#}
-            {#</a>#}
-            {#</div>#}
-            {#</div>#}
             <hr/>
         </div>
 
@@ -234,15 +252,17 @@
                 </div>
             </div>
 
-            <div class="small-4 medium-3 large-2 columns">
-                <div class="control-panel-item">
-                    <a href="{{ path('certificate_show') }}">
-                        <i class="fa fa-sticky-note-o fa-3x"></i>
+            {% if is_granted_team_leader() %}
+                <div class="small-4 medium-3 large-2 columns">
+                    <div class="control-panel-item">
+                        <a href="{{ path('certificate_show') }}">
+                            <i class="fa fa-sticky-note-o fa-3x"></i>
 
-                        <p>Attest</p>
-                    </a>
+                            <p>Attest</p>
+                        </a>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
             <hr/>
         </div>
     </div>

@@ -54,6 +54,7 @@ class UserAdminController extends Controller
         // Render the view
         return $this->render('user_admin/create_user.html.twig', array(
             'form' => $form->createView(),
+            'department' => $department,
         ));
     }
 

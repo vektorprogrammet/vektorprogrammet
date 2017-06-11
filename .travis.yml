@@ -8,7 +8,7 @@ before_script:
 
 script:
   - ./bin/php-cs-fixer fix src/ --dry-run --diff -vv
-  - phpunit --configuration app/phpunit.xml.dist
+  - ./bin/phpunit --configuration app/phpunit.xml.dist
 
 notifications:
   slack: vektorweb:jYCfQkkXOJyzPZrxzQKIbTro

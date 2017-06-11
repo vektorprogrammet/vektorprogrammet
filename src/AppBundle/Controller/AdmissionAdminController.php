@@ -100,9 +100,9 @@ class AdmissionAdminController extends Controller
             'status' => 'interviewed',
             'applications' => $applications,
             'semester' => $semester,
-            'yes' => $counter->count($applications,  InterviewCounter::YES),
-            'no' => $counter->count($applications,  InterviewCounter::NO),
-            'maybe' => $counter->count($applications,  InterviewCounter::MAYBE),
+            'yes' => $counter->count($applications, InterviewCounter::YES),
+            'no' => $counter->count($applications, InterviewCounter::NO),
+            'maybe' => $counter->count($applications, InterviewCounter::MAYBE),
         ));
     }
 
@@ -219,6 +219,23 @@ class AdmissionAdminController extends Controller
 
         return $this->render('admission_admin/application.html.twig', array(
             'application' => $application,
+        ));
+    }
+
+    public function showTeamInterestAction(Semester $semester)
+    {
+        $user = $this->getUser();
+        $department = $semester->getDepartment();
+
+        if (!$this->isGranted(Roles::ADMIN) && $user->getDepartment() !== $department) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $teamInterest = $this->getDoctrine()->getRepository('AppBundle:Application')->findApplicationByTeamInterestAndSemester($semester);
+
+        return $this->render('admission_admin/teamInterest.html.twig', array(
+            'teamInterest' => $teamInterest,
+            'semester' => $semester,
         ));
     }
 }

@@ -2,10 +2,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Semester;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Entity\CertificateRequest;
+use AppBundle\Entity\Department;
 
 class CertificateController extends Controller
 {
@@ -17,9 +19,12 @@ class CertificateController extends Controller
 
             // Finds all the the certificate requests
             $certificateRequests = $this->getDoctrine()->getRepository('AppBundle:CertificateRequest')->findAll();
+            $department = $this->getUser()->getDepartment();
+            $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
 
             return $this->render('certificate/index.html.twig', array(
                 'certificateRequests' => $certificateRequests,
+                'currentSemester' => $currentSemester,
             ));
         } else {
             return $this->redirect($this->generateUrl('home'));
@@ -60,6 +65,22 @@ class CertificateController extends Controller
 
         // Send a respons to ajax
         return new JsonResponse($response);
+    }
+
+    public function downloadAction(Semester $semester)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        // Finds the department for the current logged in user
+        $department = $this->getUser()->getDepartment();
+
+        // Finds all the assistants of the associated semester and department (semester can be NULL)
+        $assistants = $em->getRepository('AppBundle:AssistantHistory')->findAssistantHistoriesByDepartment($department, $semester);
+
+        return $this->render('certificate/certificate_download.html.twig', array(
+            'assistants' => $assistants,
+            'currentSemester' => $semester,
+        ));
     }
 
     public function requestAction()

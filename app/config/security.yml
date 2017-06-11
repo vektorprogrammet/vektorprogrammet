@@ -65,6 +65,7 @@ security:
 
           #ROLE_SUPER_ADMIN = admin user
         - { path: ^/kontrollpanel/avdelingadmin/update, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/brukeradmin/opprett/, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/slett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/avdeling, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/sendaktivering, roles: ROLE_SUPER_ADMIN }
@@ -103,9 +104,15 @@ security:
         - { path: ^/profile/deaktiv, roles: ROLE_SUPER_ADMIN }
         - { path: ^/profile/rolle/endre, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/profil/rediger, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/opptakadmin/teaminteresse, roles: ROLE_SUPER_ADMIN}
         - { path: ^/kontrollpanel/vikar/rediger, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/vikar/slett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/vikar/opprett, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/attest/lastned, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/hovedstyret, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/hovedstyret/nytt_medlem, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/hovedstyret/oppdater, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/hovedstyret/slett/bruker, roles: ROLE_SUPER_ADMIN }
 
           #ROLE_ADMIN = team user
         - { path: ^/profile/edit, roles: ROLE_ADMIN }

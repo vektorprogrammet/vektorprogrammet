@@ -4,12 +4,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ newsletter.name }}, Vektorprogrammet</title>
 
-    <link rel="stylesheet" rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" rel="stylesheet" type="text/css" href="{{ asset_with_version('css/app.css') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=2"/>
+    <link rel="icon" type="image/x-icon" href="{{ asset_with_version('favicon.ico') }}?v=2"/>
 
     {# Used by Foundation for backwards compability, and is supposed to be in the header #}
-    <script src="{{ asset('js/vendor/modernizr.js') }}"></script>
+    <script src="{{ asset_with_version('js/vendor/modernizr.js') }}"></script>
 
     <style>
         body {
@@ -71,7 +71,7 @@
     <div class="content">
         <div class="row">
             <div class="small-12 columns">
-                <img src="{{ asset('images/vektor.png') }}" alt="Vektor logo">
+                <img src="{{ asset_with_version('images/vektor.png') }}" alt="Vektor logo">
             </div>
         </div>
         <div class="row">
@@ -86,7 +86,7 @@
             <div class="flex-wrapper">
                 <div class="small-12 medium-8 large-6 columns">
                     {{ form_start(form) }}
-                    {{ form_row(form.name) }}
+                    {{ form_row(form.name, {'attr': {'autofocus': 'autofocus'}}) }}
                     {{ form_row(form.email) }}
                     <button>Registrer</button>
                     {{ form_end(form) }}

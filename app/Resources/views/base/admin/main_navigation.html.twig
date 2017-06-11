@@ -19,8 +19,11 @@
                     <ul id="usersDropDown" class="f-dropdown very-small" data-dropdown-content>
                         <li><a href="{{ path('useradmin_show') }}">Brukere</a></li>
                         <li><a href="{{ path('participanthistory_show') }}">Deltakerhistorikk</a></li>
-                        <li><a href="{{ path('substitute_show') }}">Vikarer</a></li>
                         <li><a href="{{ path('teamadmin_show') }}">Team</a></li>
+                        {% if is_granted_team_leader() %}
+                        <li><a href="{{ path('executive_board_show') }}">Hovedstyret</a></li>
+                        {% endif %}
+                        <li><a href="{{ path('generate_mail_lists') }}">Epostlister</a></li>
                     </ul>
                 </li>
                 <li>
@@ -33,6 +36,7 @@
                         <li>
                             <a href="{{ path('statistics_application_show') }}">Opptaksstatistikk</a>
                         </li>
+                        <li><a href="{{ path('substitute_show') }}">Vikarer</a></li>
                         {% if is_granted_team_leader() %}
                             <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
                         {% endif %}
@@ -64,7 +68,9 @@
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
                             <li><a href="{{ path('receipts_show') }}">Utlegg</a></li>
                         {% endif %}
-                        <li><a href="{{ path('certificate_show') }}">Attest</a></li>
+                        {% if is_granted_team_leader() %}
+                            <li><a href="{{ path('certificate_show') }}">Attest</a></li>
+                        {% endif %}
                     </ul>
                 </li>
             </ul>

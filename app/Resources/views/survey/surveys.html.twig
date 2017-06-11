@@ -6,9 +6,9 @@
 
 {% block javascripts %}
 
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ asset_with_version('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-    <script src="{{ asset('js/deleteablerow.js') }}"></script>
+    <script src="{{ asset_with_version('js/deleteablerow.js') }}"></script>
 
     <script>
 
@@ -48,7 +48,9 @@
                     <th></th>
                     <th></th>
                     <th></th>
+                    {% if is_granted_team_leader() %}
                     <th></th>
+                    {% endif %}
                     <th></th>
                 </tr>
                 </thead>
@@ -62,10 +64,11 @@
                                 utfylling</a></td>
                         <td><a href="{{ path('survey_results', {'id': survey.id }) }}" class="button tiny">Vis
                                 resultater</a></td>
+                        {% if is_granted_team_leader() %}
                         <td><a href="{{ path('survey_copy', {'id': survey.id }) }}" class="button tiny">Kopier</a></td>
+                        {% endif %}
                         <td><a href="{{ path('survey_edit', {'id': survey.id }) }}" class="button tiny">
                                 <i class="fa fa-pencil-square-o"></i> Rediger</a></td>
-
                         {# Delete button disabled because you can't delete surveys which have been used in interviews #}
                         {# <td><a href="#" id="{{ survey.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td> #}
                     </tr>

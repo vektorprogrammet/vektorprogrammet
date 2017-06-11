@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="work_history")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\WorkHistoryRepository")
  */
-class WorkHistory
+class WorkHistory implements GroupMemberInterface
 {
     /**
      * @ORM\Column(type="integer")
@@ -38,12 +38,23 @@ class WorkHistory
     protected $endSemester;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Team")
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $deletedTeamName;
+
+    /**
+     * @var Team
+     *
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="workHistories")
      * @ORM\JoinColumn(onDelete="SET NULL")
      **/
     protected $team;
 
     /**
+     * @var Position
+     *
      * @ORM\ManyToOne(targetEntity="Position")
      * @ORM\JoinColumn(name="position_id", referencedColumnName="id", onDelete="SET NULL")
      * @Assert\Valid
@@ -84,7 +95,7 @@ class WorkHistory
      *
      * @return \AppBundle\Entity\User
      */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -130,9 +141,9 @@ class WorkHistory
     /**
      * Get position.
      *
-     * @return \AppBundle\Entity\Position
+     * @return Position
      */
-    public function getPosition()
+    public function getPosition(): Position
     {
         return $this->position;
     }
@@ -196,5 +207,30 @@ class WorkHistory
         $semesterEndsBeforeWorkHistory = $this->getEndSemester() === null || $semester->getSemesterEndDate() <= $this->getEndSemester()->getSemesterEndDate();
 
         return $semesterStartLaterThanWorkHistory && $semesterEndsBeforeWorkHistory;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTeamName(): string
+    {
+        if ($this->deletedTeamName !== null) {
+            return $this->deletedTeamName;
+        }
+
+        return $this->team->getName();
+    }
+
+    /**
+     * @param string $deletedTeamName
+     */
+    public function setDeletedTeamName(string $deletedTeamName)
+    {
+        $this->deletedTeamName = $deletedTeamName;
+    }
+
+    public function getPositionName(): string
+    {
+        return $this->position->getName();
     }
 }

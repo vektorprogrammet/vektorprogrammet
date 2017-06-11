@@ -3,6 +3,8 @@
 namespace AppBundle\Tests\Controller;
 
 use AppBundle\Tests\BaseWebTestCase;
+use Symfony\Bundle\FrameworkBundle\Client;
+use AppBundle\Entity\Interview;
 
 class AdmissionAdminControllerTest extends BaseWebTestCase
 {
@@ -234,5 +236,157 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/kontrollpanel/opptak/nye');
         $this->assertEquals(0, $crawler->filter('td:contains("Ruben")')->count());
         $this->assertEquals(0, $crawler->filter('td:contains("Ravnå")')->count());
+    }
+
+    /**
+     * Assert that no email is sent when we click on 'Lagre tidspunkt'.
+     */
+    public function testSaveAndNoEmail()
+    {
+        $client = self::createAdminClient();
+        $crawler = $this->goTo('/kontrollpanel/intervju/settopp/6', $client);
+        $form['scheduleInterview[datetime]'] = '2015-08-10 15:00:00';
+        $form = $crawler->selectButton('Lagre tidspunkt')->form();
+        $client->enableProfiler();
+        $client->submit($form);
+
+        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+        $this->assertEquals(0, $mailCollector->getMessageCount());
+    }
+
+    /**
+     * Test the functions on /intervju/code.
+     */
+    public function testResponseInterview()
+    {
+        // Test accept
+        $this->helperTestStatus('Akseptert', 'Godta', 'Intervjuet ble akseptert.');
+
+        // Test reschedule
+        $this->helperTestStatus('Ny tid ønskes', 'Be om ny tid', 'Forespørsel har blitt sendt.');
+
+        // Test cancel
+        $this->helperTestStatus('Kansellert', 'Kanseller', 'Intervjuet ble kansellert.');
+    }
+
+    /**
+     * Test the status functionality on /intervju/code.
+     *
+     * Start at kontrollpanel/opptak/fordelt and count occurrences of $status and "Ingen
+     * svar". Then, set up an interview and arrange for an email to be sent to the candidate.
+     * Examine the contents of the email and extract the unique response code. Proceed to the
+     * schedule response page with our special code and click the button corresponding to
+     * $button_text. If this is a cancellation or a request for new time, we verify that an email
+     * is sent to the interviewer. If this is a cancellation, we go through the cancel confirmation page.
+     * Afterwards, verify that we get the correct flash message after the redirect. Finally,
+     * go back to assigned page and check that the number of elements containing $status has
+     * increased and that the number of elements containing "Ingen svar" har decreased.
+     *
+     * @param string $status
+     * @param string $button_text
+     * @param string $flash_text
+     * @param bool   $isCancel
+     */
+    private function helperTestStatus(string $status, string $button_text, string $flash_text)
+    {
+        $crawler = $this->teamMemberGoTo('/kontrollpanel/opptak/fordelt');
+
+        // We store these values, because we expect them to change soon
+        $count_no_answer = $crawler->filter('td:contains("Ingen svar")')->count();
+        $count_status = $crawler->filter('td:contains('.$status.')')->count();
+
+        // We need an admin client who is able to schedule an interview
+        $client = self::createAdminClient();
+
+        // We need to schedule an interview, and catch the unique code in the email which is sent
+        $crawler = $this->goTo('/kontrollpanel/intervju/settopp/6', $client);
+
+        // At this point we are about to send the email
+        $form['scheduleInterview[datetime]'] = '2015-08-10 15:00:00';
+        $form = $crawler->selectButton('Lagre tidspunkt og send mail')->form();
+        $client->enableProfiler();
+        $client->submit($form);
+
+        $response_code = $this->getResponseCodeFromEmail($client);
+
+        $client->followRedirect();
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        $client = self::createAnonymousClient();
+        $crawler = $this->goTo('/intervju/'.$response_code, $client);
+
+        // Clicking a button on this page should trigger the mentioned change.
+        $statusButton = $crawler->selectButton($button_text);
+        $form = $statusButton->form();
+        $wantEmail = ($status === 'Ny tid ønskes' || $status === 'Kansellert');
+        if ($wantEmail) {
+            $client->enableProfiler();
+        }
+        $client->submit($form);
+
+        if ($status === 'Kansellert') {
+            $client = $this->helperTestCancelConfirm($client, $response_code);
+        }
+
+        if ($wantEmail) {
+            $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+            $this->assertEquals(1, $mailCollector->getMessageCount());
+        }
+
+        $crawler = $client->followRedirect();
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        $filter_string = "div:contains('".$flash_text."')";
+        $this->assertEquals(4, $crawler->filter($filter_string)->count());
+
+        $crawler = $this->teamMemberGoTo('/kontrollpanel/opptak/fordelt');
+
+        // Verify that a change has taken place.
+        $this->assertEquals($count_no_answer - 1, $crawler->filter('td:contains("Ingen svar")')->count());
+        $this->assertEquals($count_status + 1, $crawler->filter('td:contains('.$status.')')->count());
+
+        \TestDataManager::restoreDatabase();
+    }
+
+    /**
+     * @param Client $client
+     *
+     * @return string
+     */
+    private function getResponseCodeFromEmail(Client $client)
+    {
+        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+        $this->assertEquals(1, $mailCollector->getMessageCount());
+        $message = $mailCollector->getMessages()[0];
+        $body = $message->getBody();
+        $start = strpos($body, 'intervju/') + 9;
+        $messageStartingWithCode = substr($body, $start);
+        $end = strpos($messageStartingWithCode, '"');
+
+        return substr($body, $start, $end);
+    }
+
+    /**
+     * @param Client $client
+     * @param string $response_code
+     *
+     * @return Client
+     */
+    private function helperTestCancelConfirm(Client $client, string $response_code)
+    {
+        $crawler = $this->goTo('/intervju/kanseller/tilbakemelding/'.$response_code, $client);
+        $form = $crawler->selectButton('Kanseller')->form();
+        $form['CancelInterviewConfirmation[message]'] = 'Test answer';
+        $client->enableProfiler();
+        $client->submit($form);
+
+        $kernel = $this->createKernel();
+        $kernel->boot();
+        $em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+
+        $interview = $em->getRepository('AppBundle:Interview')->findByResponseCode($response_code);
+        $this->assertEquals('Test answer', $interview->getCancelMessage());
+
+        return $client;
     }
 }

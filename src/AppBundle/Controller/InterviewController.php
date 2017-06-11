@@ -2,16 +2,17 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Application;
+use AppBundle\Entity\Interview;
 use AppBundle\Event\InterviewConductedEvent;
+use AppBundle\Form\Type\ApplicationInterviewType;
+use AppBundle\Form\Type\AssignInterviewType;
+use AppBundle\Form\Type\CancelInterviewConfirmationType;
+use AppBundle\Form\Type\ScheduleInterviewType;
 use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Interview;
-use AppBundle\Entity\Application;
-use AppBundle\Form\Type\ScheduleInterviewType;
-use AppBundle\Form\Type\ApplicationInterviewType;
-use AppBundle\Form\Type\AssignInterviewType;
 
 /**
  * InterviewController is the controller responsible for interview actions,
@@ -195,8 +196,12 @@ class InterviewController extends Controller
         if ($form->isValid()) {
             $data = $form->getData();
 
+            $interview->generateAndSetResponseCode();
+
             // Update the scheduled time for the interview
             $interview->setScheduled($data['datetime']);
+            $interview->setRoom($data['room']);
+            $interview->resetStatus();
             $em = $this->getDoctrine()->getManager();
             $em->persist($interview);
             $em->flush();
@@ -304,6 +309,95 @@ class InterviewController extends Controller
             'form' => $this->renderView('interview/assign_interview_form.html.twig', array(
                     'form' => $form->createView(),
                 )),
+        ));
+    }
+
+    /**
+     * @param Interview $interview
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function acceptByResponseCodeAction(Interview $interview)
+    {
+        $interview->acceptInterview();
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($interview);
+        $manager->flush();
+
+        $this->addFlash('success', 'Intervjuet ble akseptert.');
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @param Interview $interview
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function requestNewTimeAction(Interview $interview)
+    {
+        $interview->requestNewTime();
+
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($interview);
+        $manager->flush();
+
+        $this->get('app.interview.manager')->sendRescheduleEmail($interview);
+
+        $this->addFlash('success', 'Forespørsel har blitt sendt.');
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @param Interview $interview
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function respondAction(Interview $interview)
+    {
+        if (!$interview->isPending()) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('interview/response.html.twig', array(
+            'interview' => $interview,
+        ));
+    }
+
+    /**
+     * @param Request   $request
+     * @param Interview $interview
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function cancelByResponseCodeAction(Request $request, Interview $interview)
+    {
+        if (!$interview->isPending()) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->createForm(new CancelInterviewConfirmationType());
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $interview->setCancelMessage($data['message']);
+            $interview->cancel();
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($interview);
+            $manager->flush();
+
+            $this->get('app.interview.manager')->sendCancelEmail($interview);
+
+            $this->addFlash('success', 'Intervjuet ble kansellert.');
+
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('interview/response_confirm_cancel.html.twig', array(
+            'interview' => $interview,
+            'form' => $form->createView(),
         ));
     }
 }

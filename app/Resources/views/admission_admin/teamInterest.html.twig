@@ -1,0 +1,47 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block body %}
+<div class="row">
+    <div class="small-12 columns">
+        <h1>Teaminteresse {{ semester.department.shortname }} {{ semester.semestertime }} {{ semester.year }}</h1>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-12 columns">
+        <a class="button tiny" href="#" data-reveal-id="myModal">Få liste med e-postadresser</a>
+
+        <div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+            <p>{% for application in teamInterest %} {{ application.user.email }}; {% endfor %}</p>
+            <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+        </div>
+    </div>
+</div>
+
+<div class="row team-interest-table">
+    <div class="small-12 columns">
+    <table width="100%" id="application-table">
+        <thead>
+        <tr>
+            <th>Fornavn</th>
+            <th>Etternavn</th>
+            <th>E-post</th>
+            <th>Mobil</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for application in teamInterest %}
+        <tr>
+            <td><a href='{{ path('specific_profile', { 'id': application.user.id }) }}'>{{ application.user.firstName }}</td>
+            <td>{{ application.user.lastName }}</td>
+            <td>{{ application.user.email }}</td>
+            <td>{{ application.user.phone }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+{% endblock %}

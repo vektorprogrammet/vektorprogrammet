@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Interview;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
@@ -67,5 +68,19 @@ class InterviewRepository extends EntityRepository
             ->setMaxResults(1);
 
         return $query->getOneOrNullResult();
+    }
+
+    /**
+     * @param string $responseCode
+     *
+     * @return Interview
+     */
+    public function findByResponseCode(string $responseCode)
+    {
+        return $this->createQueryBuilder('interview')
+            ->where('interview.responseCode = :responseCode')
+            ->setParameter('responseCode', $responseCode)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

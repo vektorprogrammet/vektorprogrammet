@@ -19,7 +19,7 @@
     {% for wh in workHistories %}
 
         <tr>
-            <td> {{ wh.user.firstName }} </td>
+            <td><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'> {{ wh.user.firstName }} </td>
             <td> {{ wh.user.lastName }} </td>
             <td>
 

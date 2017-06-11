@@ -12,17 +12,21 @@
             <ul>
                 <li><a href="{{ path('useradmin_show') }}">Brukere</a></li>
                 <li><a href="{{ path('participanthistory_show') }}">Deltakerhistorikk</a></li>
-                <li><a href="{{ path('substitute_show') }}">Vikarer</a></li>
                 <li><a href="{{ path('teamadmin_show') }}">Team</a></li>
+                {% if is_granted_team_leader() %}
+                <li><a href="{{ path('executive_board_show') }}">Hovedstyret</a></li>
+                {% endif %}
+                <li><a href="{{ path('generate_mail_lists') }}">Epostlister</a></li>
             </ul>
         </div>
         <div class="small-12 medium-6 large-3 columns">
-            <h6><b>Opptak og Undersøkelse</b></h6>
+            <h6><b>Opptak & Undersøkelse</b></h6>
             <ul>
                 <li><a href="{{ path('admissionadmin_show') }}">Opptak</a></li>
                 <li>
                     <a href="{{ path('statistics_application_show') }}">Opptaksstatistikk</a>
                 </li>
+                <li><a href="{{ path('substitute_show') }}">Vikarer</a></li>
                 {% if is_granted_team_leader() %}
                     <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
                 {% endif %}
@@ -40,7 +44,9 @@
                 {% endif %}
                 <li><a href="{{ path('schooladmin_show') }}">Skole</a></li>
                 <li><a href="{{ path('sponsors_edit') }}">Sponsorer</a></li>
-                <li><a href="{{ path('certificate_show') }}">Attest</a></li>
+                {% if is_granted_team_leader() %}
+                    <li><a href="{{ path('certificate_show') }}">Attest</a></li>
+                {% endif %}
             </ul>
         </div>
     </div>

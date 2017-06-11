@@ -2,7 +2,7 @@
 
 {% block javascripts %}
 
-    <script src="{{ asset('js/stupidtable.js') }}"></script>
+    <script src="{{ asset_with_version('js/stupidtable.js') }}"></script>
     <script>
         var Substitute = {
             // The html table containing the substitute assistants
@@ -68,11 +68,11 @@
 
                     <th data-sort="int" class="clickable"> År</th>
                     <th data-sort="string" class="clickable"> Engelsk</th>
-                    <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Mandag"> M</span></th>
-                    <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Tirsdag"> T</span></th>
-                    <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Onsdag"> O</span></th>
-                    <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Torsdag"> T</span></th>
-                    <th><span data-sort="string" data-tooltip aria-haspopup="true" class="has-tip" title="Fredag"> F</span></th>
+                    <th><span data-sort="string" class="has-tip" title="Mandag"> M</span></th>
+                    <th><span data-sort="string" class="has-tip" title="Tirsdag"> T</span></th>
+                    <th><span data-sort="string" class="has-tip" title="Onsdag"> O</span></th>
+                    <th><span data-sort="string" class="has-tip" title="Torsdag"> T</span></th>
+                    <th><span data-sort="string" class="has-tip" title="Fredag"> F</span></th>
                     {% if is_granted_team_leader() %}
                         <th colspan="2"></th>
                     {% endif %}
