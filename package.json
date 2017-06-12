@@ -26,7 +26,7 @@
     "gulp-uglify": "^1.5.1"
   },
   "scripts": {
-    "install:all": "npm install && cd src/AllocationBundle/web && npm install && cd ../../..",
+    "install:all": "npm install && cd src/AppBundle/Webapp && npm install && cd -",
     "test": "./bin/phpunit --configuration app/phpunit.xml.dist",
     "test:win": ".\\bin\\phpunit --configuration app/phpunit.xml.dist",
     "setup": "php ./composer.phar install -n && npm run install:all && npm run build:dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:schema:update --force --env=dev && php app/console doctrine:fixtures:load --env=dev -n",
