@@ -43,3 +43,4 @@ parameters:
 twig:
     globals:
         googleAnalyticsId: ~
+        smartlookID: ~
