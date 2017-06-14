@@ -76,11 +76,8 @@
                         <a href="#">Diverse</a>
                         <ul class="dropdown">
                             <li><a href="{{ path('sponsors_edit') }}">Sponsorer</a></li>
-                            // TODO: Combine these
-                            {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                <li><a href="{{ path('receipts_show') }}">Utlegg</a></li>
-                            {% endif %}
                             {%  if is_granted_team_leader() %}
+                                <li><a href="{{ path('receipts_show') }}">Utlegg</a></li>
                                 <li><a href="{{ path('certificate_show') }}">Attest</a></li>
                             {% endif %}
                         </ul>

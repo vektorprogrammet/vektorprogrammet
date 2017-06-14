@@ -574,7 +574,7 @@ send_user_activation_mail:
 
 
 ##########################################
-#              Receipt                  #
+#               Receipt                  #
 ##########################################
 receipts_show:
   path: /kontrollpanel/utlegg
@@ -594,6 +594,13 @@ receipts_edit:
   methods: [GET, POST]
   requirements:
     receipt: \d+
+
+receipts_finish:
+  path: /kontrollpanel/utlegg/ferdig/{receipt}
+  defaults: { _controller: AppBundle:Receipt:finishAdmin }
+  methods: [GET]
+  requirements:
+    receipts: \d+
 
 receipts_show_individual:
   path: /kontrollpanel/utlegg/{user}

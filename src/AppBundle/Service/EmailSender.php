@@ -3,6 +3,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\SupportTicket;
+use AppBundle\Entity\Receipt;
 use Psr\Log\LoggerInterface;
 
 class EmailSender
@@ -48,6 +49,25 @@ class EmailSender
 
         $this->logger->info(
             "Support ticket receipt sent to {$supportTicket->getName()} at {$supportTicket->getEmail()}"
+        );
+    }
+
+    public function sendPaidReceiptConfirmation(Receipt $receipt)
+    {
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Vi har overført penger for utlegget ditt')
+            ->setFrom($this->defaultEmail)
+            ->setReplyTo($this->defaultEmail)
+            ->setTo($receipt->getUser()->getEmail())
+            ->setBody($this->twig->render('receipt/confirmation_email.txt.twig', array(
+                'name' => $receipt->getUser()->getFullName(),
+                'account_number' => $receipt->getUser()->getAccountNumber(),
+                'receipt' => $receipt, )));
+
+        $this->mailer->send($message);
+
+        $this->logger->info(
+            "Confirmation for paid receipt sent to {$receipt->getUser()->getFullName()} at {$receipt->getUser()->getEmail()}"
         );
     }
 }

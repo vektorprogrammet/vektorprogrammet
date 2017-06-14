@@ -14,8 +14,8 @@ class ReceiptController extends Controller
     public function showAction()
     {
         $department = $this->getUser()->getDepartment();
-        $active_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findActiveByDepartment($department);
-        $inactive_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findInactiveByDepartment($department);
+        //$active_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findActiveByDepartment($department);
+        //$inactive_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findInactiveByDepartment($department);
 
         $usersWithActiveReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithActiveReceipts();
         $usersWithInactiveReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithInactiveReceipts();
@@ -86,6 +86,21 @@ class ReceiptController extends Controller
         return $this->performEditAndRedirect($request, $receipt, 'receipts_show');
     }
 
+    public function finishAdminAction(Receipt $receipt)
+    {
+        $receipt->setActive(false);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($receipt);
+        $em->flush();
+
+        // Send email
+        $emailSender = $this->get('app.email_sender');
+        $emailSender->sendPaidReceiptConfirmation($receipt);
+
+        return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
+    }
+
     public function deleteAction(Receipt $receipt)
     {
         $em = $this->getDoctrine()->getManager();
@@ -118,13 +133,15 @@ class ReceiptController extends Controller
             if ($isImageUpload) {
                 $path = $this->get('app.file_uploader')->uploadReceipt($request);
                 $receipt->setPicturePath($path);
-            } else $receipt->setPicturePath($oldPicturePath); // If a new image hasn't been uploaded
+            } else {
+                $receipt->setPicturePath($oldPicturePath);
+            } // If a new image hasn't been uploaded
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($receipt);
             $em->flush();
 
-            return $this->redirectToRoute($redirectRoute);
+            return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
         }
 
         return $this->render('receipt_admin/edit_receipt.twig', array(

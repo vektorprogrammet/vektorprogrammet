@@ -27,7 +27,9 @@
                     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                 </div>
             </td>
-            <td><a href="{{ path('receipts_show') }}" class="button tiny">Ferdig</a></td>
+            <td><a href="{{ path('receipts_finish', {'receipt': receipt.id}) }}"
+                   onclick="return confirm('Marker utlegget som ferdig og send en bekreftelsesmail?')"
+                   class="button tiny">Ferdig</a></td>
             <td><a href="{{ path('receipts_edit', {'receipt': receipt.id}) }}" class="button tiny">Rediger</a><td>
             <td><a href="{{ path('receipts_delete', {'receipt': receipt.id}) }}" class="button tiny alert delete">Slett</a></td>
         </tr>

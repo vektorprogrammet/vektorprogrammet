@@ -8,16 +8,16 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            Kontonummer: {{ user.accountNumber }}
+        </div>
+    </div>
+
     {% if active_receipts is not empty %}
         <div class="row">
             <div class="small-6 medium-6 large-6 columns">
                 <h3> Aktive utlegg </h3>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="small-12 medium-12 large-12 columns small-offset-6">
-                Kontonummer: {{ user.accountNumber }}
             </div>
         </div>
 
