@@ -28,7 +28,7 @@
                     </div>
                 </td>
                 <td><a href="{{ path('receipt_edit', {'receipt': receipt.id })}}" class="button tiny">Rediger</a></td>
-                <td><a href="{{ path('receipt_delete_individual', {'receipt': receipt.id })}}" class="button tiny alert delete">Slett</a></td>
+                <td><a href="{{ path('receipt_delete', {'receipt': receipt.id })}}" class="button tiny alert delete">Slett</a></td>
             </tr>
     {% endfor %}
     </tbody>

@@ -118,15 +118,6 @@ class ReceiptController extends Controller
 		));
 	}
 
-    public function deleteAdminAction(Receipt $receipt)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($receipt);
-        $em->flush();
-
-        return $this->redirectToRoute('receipts_show');
-    }
-
     public function finishAdminAction(Receipt $receipt)
     {
         $receipt->setActive(false);
@@ -142,13 +133,20 @@ class ReceiptController extends Controller
         return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
     }
 
-    public function deleteAction(Receipt $receipt)
+    public function deleteAction(Request $request, Receipt $receipt)
     {
+    	$user = $this->getUser();
+    	$isTeamLeader = $this->get('app.roles')->userIsGranted($user, Roles::TEAM_LEADER);
+
+    	if (!$isTeamLeader && $user !== $receipt->getUser()) {
+    		throw $this->createAccessDeniedException();
+	    }
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($receipt);
         $em->flush();
 
-        return $this->redirectToRoute('receipt_create');
+        return $this->redirect($request->headers->get('referer'));
     }
 
 }
