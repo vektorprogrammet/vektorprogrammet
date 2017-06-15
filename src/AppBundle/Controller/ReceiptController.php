@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Event\ReceiptCreatedEvent;
 use AppBundle\Form\Type\ReceiptType;
+use AppBundle\Role\Roles;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Receipt;
@@ -75,6 +76,48 @@ class ReceiptController extends Controller
         ));
     }
 
+	public function editAction(Request $request, Receipt $receipt)
+	{
+		$user = $this->getUser();
+		$isTeamLeader = $this->get('app.roles')->userIsGranted($user, Roles::TEAM_LEADER);
+
+		if (!$isTeamLeader && $user !== $receipt->getUser()) {
+			throw new AccessDeniedHttpException();
+		}
+
+		$form = $this->createForm(ReceiptType::class, $receipt, array(
+			'required' => false,
+		));
+		$oldPicturePath = $receipt->getPicturePath();
+
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+			$isImageUpload = array_values($request->files->get('receipt', ['picture_path']))[0] !== null;
+
+			if ($isImageUpload) {
+				$path = $this->get('app.file_uploader')->uploadReceipt($request);
+				$receipt->setPicturePath($path);
+			} else {
+				$receipt->setPicturePath($oldPicturePath);
+			} // If a new image hasn't been uploaded
+
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($receipt);
+			$em->flush();
+
+			if ($user === $receipt->getUser()) {
+				return $this->redirectToRoute('receipt_create');
+			} else {
+				return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
+			}
+		}
+
+		return $this->render('receipt_admin/edit_receipt.twig', array(
+			'form' => $form->createView(),
+			'receipt' => $receipt,
+		));
+	}
+
     public function deleteAdminAction(Receipt $receipt)
     {
         $em = $this->getDoctrine()->getManager();
@@ -82,11 +125,6 @@ class ReceiptController extends Controller
         $em->flush();
 
         return $this->redirectToRoute('receipts_show');
-    }
-
-    public function editAdminAction(Request $request, Receipt $receipt)
-    {
-        return $this->performEditAndRedirect($request, $receipt, 'receipts_show');
     }
 
     public function finishAdminAction(Receipt $receipt)
@@ -113,43 +151,4 @@ class ReceiptController extends Controller
         return $this->redirectToRoute('receipt_create');
     }
 
-    public function editAction(Request $request, Receipt $receipt)
-    {
-        if ($this->getUser() != $receipt->getUser()) {
-            throw new AccessDeniedHttpException();
-        }
-
-        return $this->performEditAndRedirect($request, $receipt, 'receipt_create');
-    }
-
-    public function performEditAndRedirect(Request $request, Receipt $receipt, string $redirectRoute)
-    {
-        $form = $this->createForm(ReceiptType::class, $receipt, array(
-            'required' => false,
-        ));
-        $oldPicturePath = $receipt->getPicturePath();
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $isImageUpload = array_values($request->files->get('receipt', ['picture_path']))[0] !== null;
-
-            if ($isImageUpload) {
-                $path = $this->get('app.file_uploader')->uploadReceipt($request);
-                $receipt->setPicturePath($path);
-            } else {
-                $receipt->setPicturePath($oldPicturePath);
-            } // If a new image hasn't been uploaded
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($receipt);
-            $em->flush();
-
-            return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
-        }
-
-        return $this->render('receipt_admin/edit_receipt.twig', array(
-            'form' => $form->createView(),
-            'receipt' => $receipt,
-        ));
-    }
 }

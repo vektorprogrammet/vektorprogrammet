@@ -588,13 +588,6 @@ receipts_delete:
   requirements:
     receipt: \d+
 
-receipts_edit:
-  path: /kontrollpanel/utlegg/rediger/{receipt}
-  defaults: { _controller: AppBundle:Receipt:editAdmin }
-  methods: [GET, POST]
-  requirements:
-    receipt: \d+
-
 receipts_finish:
   path: /kontrollpanel/utlegg/ferdig/{receipt}
   defaults: { _controller: AppBundle:Receipt:finishAdmin }
@@ -614,7 +607,7 @@ receipt_create:
   defaults: {_controller: AppBundle:Receipt:create }
   methods: [GET, POST]
 
-receipt_edit_individual:
+receipt_edit:
   path: /utlegg/rediger/{receipt}
   defaults: {_controller: AppBundle:Receipt:edit }
   methods: [GET, POST]
