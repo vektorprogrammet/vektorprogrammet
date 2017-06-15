@@ -8,7 +8,7 @@ use AppBundle\Form\Type\AccountNumberType;
 
 class ReceiptType extends AbstractType
 {
-        public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('description', 'textarea', array(

@@ -78,7 +78,7 @@ class FileUploader
         $relativePath = $this->getRelativePath($targetFolder, $fileName);
 
         if (!is_dir($targetFolder)) {
-        	mkdir($targetFolder);
+            mkdir($targetFolder);
         }
 
         $uploadSuccessful = move_uploaded_file($file->getPathname(), $relativePath);
