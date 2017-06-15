@@ -119,7 +119,6 @@ security:
         - { path: ^/efconnect, role: ROLE_ADMIN }
         - { path: ^/elfinder, role: ROLE_ADMIN }
         - { path: ^/kontrollpanel, role: ROLE_ADMIN }
-        - { path: ^/kontrollpanel/utlegg, roles: ROLE_ADMIN }
 
           #ROLE_USER = assistant user
         - { path: ^/profile, roles: ROLE_USER }
