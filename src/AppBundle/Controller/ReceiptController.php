@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Event\ReceiptCreatedEvent;
 use AppBundle\Form\Type\ReceiptType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -60,6 +61,8 @@ class ReceiptController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($receipt);
             $em->flush();
+
+            $this->get('event_dispatcher')->dispatch(ReceiptCreatedEvent::NAME, new ReceiptCreatedEvent($receipt));
 
             return $this->redirectToRoute('receipt_create');
         }
