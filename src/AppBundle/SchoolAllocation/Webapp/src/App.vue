@@ -41,7 +41,7 @@
     components: {
       'school-table': SchoolTable,
       'assistant-table': AssistantTable,
-      'allocation': Allocation
+      'allocation': Allocation,
     },
     data() {
       return {
@@ -61,10 +61,13 @@
         this.$http.get('/kontrollpanel/api/assistants')
             .then(response => {
               this.$store.state.assistants = JSON.parse(response.body).map(a => {
+                console.log(a);
                 return {
                   name: a.name,
                   double: a.doublePosition,
                   selected: false,
+                  preferredGroup: a.preferredGroup,
+                  score: a.score,
                   monday: a.availability.Monday === 1,
                   tuesday: a.availability.Tuesday === 1,
                   wednesday: a.availability.Wednesday === 1,

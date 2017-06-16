@@ -37,20 +37,32 @@
           <v-progress-linear v-show="allocating" v-bind:indeterminate="true"></v-progress-linear>
         </v-flex>
 
+      <v-flex xs12>
+        <schedule :scheduleData="scheduleData"></schedule>
+        <h3>Hei?</h3>
+      </v-flex>
+
+
     </v-layout>
   </div>
 </template>
 
 <script>
   import {mapGetters} from "vuex";
+  import {AssistantScheduler} from "../AssistantScheduler";
+
   export default {
     methods: {
       allocate: function () {
+        const scheduler = new AssistantScheduler(this.schools, this.assistants);
+        const greedySchedule = scheduler.scheduleGreedily();
+        console.log(greedySchedule);
+        this.scheduleData = greedySchedule;
         console.log(this.$store.state);
-        this.allocating = true;
-        setInterval(() => {
-          this.showMessage = true
-        }, 5000);
+//        this.allocating = true;
+//        setInterval(() => {
+//          this.showMessage = true
+//        }, 5000);
       },
       goBack() {
         this.$emit('goBack');
@@ -63,7 +75,8 @@
     data () {
       return {
         allocating: false,
-        showMessage: false
+        showMessage: false,
+        scheduleData: {}
       }
     }
   }

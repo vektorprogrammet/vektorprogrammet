@@ -124,7 +124,7 @@ gulp.task('vendor', function(){
 });
 
 gulp.task('buildAllocationApp', function (cb) {
-    exec('cd '+path.allocation.src+' && npm run build', function (err, stdout, stderr) {
+    exec('cd '+path.allocation.src+' && npm run build:dev', function (err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
         cb(err);
@@ -148,6 +148,7 @@ gulp.task('watch', function () {
 
 gulp.task('watch:allocation', function () {
     gulp.watch(path.allocation.src + '/**/*.vue', ['allocationStaticFiles']);
+    gulp.watch(path.allocation.src + '/src/**/*.js', ['allocationStaticFiles']);
 });
 
 
