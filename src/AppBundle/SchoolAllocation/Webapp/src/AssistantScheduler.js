@@ -10,8 +10,8 @@ export class AssistantScheduler {
     const schedule = this.schedule;
     const assistants = deepCopy(schedule.queuedAssistants);
 
-    for (let i = 0; i < assistants.length; i++) {
-      const assistant = assistants[i];
+    for (let j = 0; j < assistants.length; j++) {
+      const assistant = assistants[j];
       const double = assistant.double;
 
       if (double) {
