@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <v-layout row wrap>
+  <v-layout row wrap>
 
-      <v-flex xs12 sm6 v-show="schools.length > 0">
+      <v-flex xs12 sm6 v-show="schools.length > 0 && !scheduleData.hasOwnProperty('monday')">
         <h4>Skoler</h4>
         <v-list>
           <v-list-item v-for="school in schools">
@@ -16,7 +15,7 @@
         </v-list>
       </v-flex>
 
-      <v-flex xs12 sm6 v-show="assistants.length > 0">
+      <v-flex xs12 sm6 v-show="assistants.length > 0 && !scheduleData.hasOwnProperty('monday')">
         <h4>Assistenter</h4>
         <v-list>
           <v-list-item v-for="assistant in assistants">
@@ -42,7 +41,6 @@
       </v-flex>
 
     </v-layout>
-  </div>
 </template>
 
 <script>
