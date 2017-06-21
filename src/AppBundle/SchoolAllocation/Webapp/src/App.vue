@@ -61,8 +61,9 @@
         this.$http.get('/kontrollpanel/api/assistants')
             .then(response => {
               this.$store.state.assistants = JSON.parse(response.body).map(a => {
-                console.log(a);
+//                console.log(a);
                 return {
+                  id: a.id,
                   name: a.name,
                   double: a.doublePosition,
                   selected: false,

@@ -2,7 +2,7 @@
   <v-data-table
       v-bind:headers="headers"
       v-bind:items="schools"
-      v-on:input="schoolSelected"
+      @input="toggleSelected()"
       v-model="selected"
       selected-key="name"
       select-all
@@ -31,10 +31,18 @@
   import {mapGetters} from 'vuex';
 
   export default {
-    computed: mapGetters(['schools']),
+    methods: {
+      toggleSelected: function() {
+        if (this.selected.length > 0) {
+          this.selected.forEach(school => school.selected = true);
+        } else {
+          this.schools.forEach(school => school.selected = false);
+        }
+      }
+    },
+    computed: mapGetters(['schools', 'selectedSchools']),
     data () {
       return {
-        search: '',
         selected: [],
         headers: [
           {

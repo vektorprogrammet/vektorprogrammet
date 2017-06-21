@@ -12,7 +12,6 @@ export class AssistantScheduler {
 
     for (let i = 0; i < assistants.length; i++) {
       const assistant = assistants[i];
-      console.log(assistant);
       const double = assistant.double;
 
       if (double) {
