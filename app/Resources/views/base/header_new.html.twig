@@ -1,3 +1,4 @@
+{%  set route = app.request.get('_route') %}
 <header class="vektor-header mdl-layout__header mdl-layout__header--waterfall">
     <!-- Top row, always visible -->
     <div class="vektor-header-row__top mdl-layout__header-row">
@@ -13,16 +14,21 @@
     </div>
     <!-- Bottom row, not visible on scroll -->
     <div class="vektor-header-row__bottom mdl-layout__header-row">
-        <a href="{{ path('home') }}"><img class="logo" src="{{ asset_with_version('images/logo_condensed.png') }}"></a>
+        <a href="{{ path('home') }}"><img class="logo" src="{{ asset_with_version('images/logo_small.png') }}"></a>
 
         <div class="mdl-layout-spacer"></div>
         <!-- Navigation -->
         <nav class="vetktor-navigation mdl-navigation">
-            <a class="mdl-navigation__link active" href="">Assistenter</a>
-            <a class="mdl-navigation__link" href="">Team</a>
-            <a class="mdl-navigation__link" href="">Lærere</a>
-            <a class="mdl-navigation__link" href="">Foreldre</a>
-            <a class="mdl-navigation__link" href="">Om oss</a>
+            <a class="mdl-navigation__link {{ route == 'assistants' ? 'active' : '' }}"
+               href="{{ path('assistants') }}">Assistenter</a>
+            <a class="mdl-navigation__link {{ route == 'team' ? 'active' : '' }}"
+               href="{{ path('team') }}">Team</a>
+            <a class="mdl-navigation__link {{ route == 'teachers' ? 'active' : '' }}"
+               href="{{ path('teachers') }}">Lærere</a>
+            <a class="mdl-navigation__link {{ route == 'parents' ? 'active' : '' }}"
+               href="{{ path('parents') }}">Foreldre</a>
+            <a class="mdl-navigation__link {{ route == 'about_new' ? 'active' : '' }}"
+               href="{{ path('about_new') }}">Om oss</a>
         </nav>
     </div>
 </header>

@@ -16,4 +16,8 @@ class TeamController extends Controller
             'workHistories' => $workHistories,
         ));
     }
+
+    public function indexAction() {
+    	return $this->render('team/index.html.twig');
+    }
 }

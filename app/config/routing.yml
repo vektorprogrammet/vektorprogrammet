@@ -1377,3 +1377,19 @@ generate_all_mail_list:
 assistants:
     path: /assistenter
     defaults: {_controller: AppBundle:Assistant:index}
+
+team:
+    path: /team
+    defaults: { _controller: AppBundle:Team:index }
+
+teachers:
+    path: /laerere
+    defaults: { _controller: AppBundle:Teacher:index }
+
+parents:
+    path: /foreldre
+    defaults: { _controller: AppBundle:Parent:index }
+
+about_new:
+    path: /om
+    defaults: { _controller: AppBundle:About:index }
