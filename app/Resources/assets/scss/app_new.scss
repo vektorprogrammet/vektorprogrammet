@@ -9,12 +9,9 @@ $grey: #fff;
 $light: #e0e0e0;
 
 html, body {
-  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  font-family: Roboto,Helvetica,Arial,sans-serif;
   background-color: #fafafa;
-}
-
-h1, h2, h3 {
-  color: #444444;
+  color: #333333;
 }
 
 h1 {
@@ -23,15 +20,22 @@ h1 {
 
 h2 {
   font-size: 38px;
+  font-weight: 900;
 }
 
 h3 {
   font-size: 28px;
 }
 
-p, li {
-  font-size: 16px;
-  color: #656565;
+p {
+  font-size: 20px;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+}
+
+li {
+  font-size: 18px;
+  font-weight: 300;
 }
 
 .container {
