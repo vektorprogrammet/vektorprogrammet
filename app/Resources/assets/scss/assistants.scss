@@ -1,0 +1,68 @@
+.assistants {
+  section {
+    margin: 100px auto;
+  }
+
+  .content-centered {
+    max-width: 100%;
+    width: 600px;
+    margin: 0 auto;
+
+    h2 {
+      text-align: center;
+    }
+  }
+
+  .hero-image {
+    background: url(/images/assistenter.jpg) top no-repeat;
+    background-size: cover;
+    height: 500px;
+    width: 100%;
+  }
+
+  .intro {
+    h1 {
+      text-align: center;
+    }
+
+    p {
+      font-size: 18px;
+    }
+  }
+
+  .blurb {
+    text-align: center;
+    padding: 0 20px;
+
+    img {
+      width: 125px;
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+
+  .requirements {
+    h2 {
+      text-align: left;
+    }
+  }
+
+  .vektor-reminder-form {
+    background-color: #fff;
+    max-width: 100%;
+    width: 600px;
+    margin: 100px auto;
+    padding: 16px 20px 32px;
+    text-align: center;
+
+    .mdl-textfield {
+      width: 90%;
+    }
+
+    select {
+      margin: 16px;
+    }
+  }
+
+}
+

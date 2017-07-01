@@ -1,0 +1,30 @@
+@import '../colors';
+@import '../functions';
+
+.vektor-testemonial {
+  background-color: color($color-primary);
+  position: relative;
+  width: 600px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 40px;
+
+  .testemonial-content {
+    color: #fff;
+    text-align: center;
+    font-size: 18px;
+    left: 50%;
+    top: 50%;
+  }
+
+  .testemonial-author {
+    color: #fff;
+    opacity: 0.87;
+    position: absolute;
+    font-size: 14px;
+    text-align: right;
+    margin: 0;
+    right: 15px;
+    bottom: 15px;
+  }
+}

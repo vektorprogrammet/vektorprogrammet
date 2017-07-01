@@ -1,53 +1,43 @@
-<footer class="mdl-mega-footer">
-    <div class="mdl-mega-footer--middle-section">
-        <div class="mdl-mega-footer--drop-down-section">
-            <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked>
-            <h1 class="mdl-mega-footer--heading">Features</h1>
-            <ul class="mdl-mega-footer--link-list">
-                <li><a href="#">About</a></li>
-                <li><a href="#">Terms</a></li>
-                <li><a href="#">Partners</a></li>
-                <li><a href="#">Updates</a></li>
-            </ul>
+<footer class="vektor-footer mdl-mega-footer">
+    <div class="container">
+        <div class="mdl-mega-footer--middle-section">
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--3-col">
+                    <h1 class="mdl-mega-footer--heading">Følg oss</h1>
+                    <ul class="mdl-mega-footer--link-list">
+                        <li><a href="https://www.facebook.com/vektorprogrammet">Facebook</a></li>
+                        <li><a href="https://instagram.com/vektorprogrammet/">Instagram</a></li>
+                    </ul>
+                </div>
+                <div class="mdl-cell mdl-cell--3-col">
+                    <h1 class="mdl-mega-footer--heading">Kontakt oss</h1>
+                    <ul class="mdl-mega-footer--link-list">
+                        {% for department in get_departments() %}
+                            <li><a href="{{ path('about_new') }}">{{ department }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="mdl-cell mdl-cell--3-col">
+                    <h1 class="mdl-mega-footer--heading">For eksterne</h1>
+                    <ul class="mdl-mega-footer--link-list">
+                        <li><a href="#">Ungdomsskoler</a></li>
+                        <li><a href="#">Samarbeidspartnere</a></li>
+                        <li><a href="#">Arbeidsgivere</a></li>
+                        <li><a href="#">Media</a></li>
+                    </ul>
+                </div>
+                <div class="mdl-cell mdl-cell--3-col">
+                    <h1 class="mdl-mega-footer--heading">Samarbeidspartnere</h1>
+                    <ul class="mdl-mega-footer--link-list">
+                        {% for sponsor in get_sponsors() %}
+                            <li><a href="{{ sponsor.url }}">{{ sponsor.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="vektor-footer-createdby mdl-mega-footer--bottom-section">
+                <p>Nettsiden er utviklet av Vektorprogrammets <a href="{{ path('team') }}">IT-TEAM</a></p>
+            </div>
         </div>
-        <div class="mdl-mega-footer--drop-down-section">
-            <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked>
-            <h1 class="mdl-mega-footer--heading">Details</h1>
-            <ul class="mdl-mega-footer--link-list">
-                <li><a href="#">Spec</a></li>
-                <li><a href="#">Tools</a></li>
-                <li><a href="#">Resources</a></li>
-            </ul>
-        </div>
-        <div class="mdl-mega-footer--drop-down-section">
-            <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked>
-            <h1 class="mdl-mega-footer--heading">Technology</h1>
-            <ul class="mdl-mega-footer--link-list">
-                <li><a href="#">How it works</a></li>
-                <li><a href="#">Patterns</a></li>
-                <li><a href="#">Usage</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">Contracts</a></li>
-            </ul>
-        </div>
-        <div class="mdl-mega-footer--drop-down-section">
-            <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked>
-            <h1 class="mdl-mega-footer--heading">FAQ</h1>
-            <ul class="mdl-mega-footer--link-list">
-                <li><a href="#">Questions</a></li>
-                <li><a href="#">Answers</a></li>
-                <li><a href="#">Contact us</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="mdl-mega-footer--bottom-section">
-        <div class="mdl-logo">
-            More Information
-        </div>
-        <ul class="mdl-mega-footer--link-list">
-            <li><a href="https://developers.google.com/web/starter-kit/">Web Starter Kit</a></li>
-            <li><a href="#">Help</a></li>
-            <li><a href="#">Privacy and Terms</a></li>
-        </ul>
     </div>
 </footer>

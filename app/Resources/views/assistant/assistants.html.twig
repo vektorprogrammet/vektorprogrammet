@@ -1,72 +1,111 @@
 {% extends "base_new.html.twig" %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/assistants.css') }}">
+{% endblock %}
+
+
 {% block body %}
-    <section class="mdl-grid">
-        <div class="mdl-cell mdl-cell--4-col">
-            <h3>Fint å ha på CVen</h3>
-            <p>Erfaring som arbeidsgivere setter pris på. Alle assistenter får en attest.</p>
-        </div>
-        <div class="mdl-cell mdl-cell--4-col">
-            <h3>Sosiale arrangementer</h3>
-            <p>Alle assistenter blir invitert til arrangementer som fester, populærforedrag, bowling, grilling i parken,
-                gokart og paintball.</p>
-        </div>
-        <div class="mdl-cell mdl-cell--4-col">
-            <h3>Vær et forbilde</h3>
-            <p>Her kommer en liten tekst om at vektorassistenter er superhelter i matteundervisningen.</p>
-        </div>
-    </section>
-    <br>
-    <section>
-        <h2>Lærerassistent i matematikk</h2>
-        <p>Her trenger vi en tekst som forklarer hva en assistent gjør ute på skolen (får en gruppe elever på grupperom,
-            hjelpe til med oppgaveløsing i klasserom osv.) Husk å få med at man samarbeider med en lærer og at man
-            alltid blir sendt ut sammen med en annen vektorassistent. Også noen ord om hvor mye barn og lærere setter
-            pris på vektorassistenter (motivasjon, bedre hjelp til oppgaveløsing, de sterke elevene får spennende og
-            utfordrende oppgaver osv.)</p>
-    </section>
+    <div class="assistants">
+        <div class="hero-image"></div>
+        <header class="intro content-centered">
+            <h1>Assistenter</h1>
+            <p>Vektorassistent er et frivillig verv der du reiser til en ungdomsskole én dag i uka for å hjelpe til som
+                lærerassistent i matematikk. En stilling som vektorassistent varer i 4 eller 8 uker, og du kan selv
+                velge hvilken ukedag som passer best for deg. </p>
+        </header>
+        <section class="mdl-grid">
+            <div class="blurb mdl-cell mdl-cell--4-col">
+                <img src="{{ asset_with_version('images/certificate.svg') }}" alt="CV">
+                <h3>Fint å ha på CVen</h3>
+                <p>Erfaring som arbeidsgivere setter pris på. Alle assistenter får en attest.</p>
+            </div>
+            <div class="blurb mdl-cell mdl-cell--4-col">
+                <img src="{{ asset_with_version('images/calendar.svg') }}" alt="CV">
+                <h3>Sosiale arrangementer</h3>
+                <p>Alle assistenter blir invitert til arrangementer som fester, populærforedrag, bowling, grilling i
+                    parken,
+                    gokart og paintball.</p>
+            </div>
+            <div class="blurb mdl-cell mdl-cell--4-col">
+                <img src="{{ asset_with_version('images/graduation.svg') }}" alt="CV">
+                <h3>Vær et forbilde</h3>
+                <p>Her kommer en liten tekst om at vektorassistenter er superhelter i matteundervisningen.</p>
+            </div>
+        </section>
 
-    <section class="vektor-quote">
-        <p>"Dette er en quote fra en tidligere assistent
-            som synes Vektorprogrammet er best!"</p>
-        <p>Kari, vektorassistent 2016</p>
-    </section>
+        <section class="content-centered">
+            <h2>Lærerassistent i matematikk</h2>
+            <p>Her trenger vi en tekst som forklarer hva en assistent gjør ute på skolen (får en gruppe elever på
+                grupperom,
+                hjelpe til med oppgaveløsing i klasserom osv.) Husk å få med at man samarbeider med en lærer og at
+                man
+                alltid blir sendt ut sammen med en annen vektorassistent. Også noen ord om hvor mye barn og lærere
+                setter
+                pris på vektorassistenter (motivasjon, bedre hjelp til oppgaveløsing, de sterke elevene får
+                spennende og
+                utfordrende oppgaver osv.)</p>
+        </section>
 
-    <section>
-        <h2>Hvordan blir jeg Vektorassistent?</h2>
-        <p><strong>Oppfølger du følgende krav kan bli vektorassistent:</strong></p>
-        <ul>
-            <li>Du studerer på høgskole/universitet</li>
-            <li>Du har hatt R1/P2 på videregående</li>
-            <li>Du har tid til å dra til en ungdomsskole èn dag i uka (kl. 8-14)</li>
-        </ul>
+        <section class="vektor-testemonial mdl-shadow--4dp">
+            <p class="testemonial-content">"Dette er en quote fra en tidligere assistent
+                som synes Vektorprogrammet er best!"</p>
+            <p class="testemonial-author">Kari, vektorassistent 2016</p>
+        </section>
 
-        <p><strong>Opptaksprosessen:</strong></p>
-        <ol>
-            <li>Vent til opptaksperioden starter</li>
-            <li>Send inn søknad på <a href="">opptakssiden</a></li>
-            <li>Møt opp på intervju (obligatorisk)</li>
-            <li>Dra på et gratis pedagogikkurs arrangert av Vektorprogrammet</li>
-            <li>Få tildelt en ungdomsskole som du og din vektorpartner skal dra til</li>
-        </ol>
-    </section>
+        <section class="requirements content-centered">
 
-    <section>
-        <h2>Få en påminnelse når opptaket starter</h2>
-        <form action="">
-            <label for="">
-                Navn
-                <input type="text">
-            </label>
-            <label for="">
-                E-post
-                <input type="text">
-            </label>
-            <br>
-            <button>Trondheim</button>
-            <br>
-            <button>FÅ PÅMINNELSE</button>
-        </form>
-    </section>
+            <h2>Hvordan blir jeg Vektorassistent?</h2>
+            <h5>Oppfølger du følgende krav kan bli vektorassistent:</h5>
+            <ul>
+                <li>Du studerer på høgskole/universitet</li>
+                <li>Du har hatt R1/P2 på videregående</li>
+                <li>Du har tid til å dra til en ungdomsskole èn dag i uka (kl. 8-14)</li>
+            </ul>
+
+            <h5>Opptaksprosessen:</h5>
+            <ol>
+                <li>Vektorprogrammet tar opp nye assistenter i starten av hvert semester</li>
+                <li>Send inn søknad på <a href="">opptakssiden</a> til ditt nærmeste universitet</li>
+                <li>Møt opp på intervju (obligatorisk)</li>
+                <li>Dra på et gratis pedagogikkurs arrangert av Vektorprogrammet</li>
+                <li>Få tildelt en ungdomsskole som du og din vektorpartner skal dra til</li>
+            </ol>
+
+            <p class="mdl-color-text--red">Opptaket for neste semester har ikke startet enda</p>
+        </section>
+
+        <section class="vektor-reminder-form mdl-shadow--4dp">
+                <h3>Få en påminnelse når opptaket starter</h3>
+                <form action="">
+                    <div class="mdl-grid">
+                        <mdl-cell class="mdl-cell--6-col">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="text" id="name">
+                                <label class="mdl-textfield__label" for="name">Navn...</label>
+                            </div>
+                        </mdl-cell>
+                        <mdl-cell class="mdl-cell--6-col">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="text" id="email">
+                                <label class="mdl-textfield__label" for="email">E-post...</label>
+                            </div>
+                        </mdl-cell>
+                    </div>
+                    <br>
+                    <select name="department" id="department">
+                        {% for department in get_departments() %}
+                            <option value="{{ department.id }}">{{ department.city }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                    <br>
+                    <button type="button"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        FÅ PÅMINNELSE
+                    </button>
+                </form>
+        </section>
+    </div>
 {% endblock %}
 
