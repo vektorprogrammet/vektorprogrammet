@@ -36,7 +36,17 @@
 
         <section class="content-centered">
             <h2>Lærerassistent i matematikk</h2>
-            <p>Her trenger vi en tekst som forklarer hva en assistent gjør ute på skolen (får en gruppe elever på
+            <p>Vektorprogrammet er en studentorganisasjon som sender realfagssterke studenter til grunnskolen for å
+                hjelpe elevene med matematikk i skoletiden. Vi ser etter deg som lengter etter en mulighet til å lære
+                bort kunnskapene du sitter med og ønsker å ta del i et sterkt sosialt fellesskap. Etter å ha vært
+                vektorassistent kommer du til å sitte igjen med mange gode erfaringer og nye venner på tvert av trinn og
+                linje. I tillegg vil du få muligheten til å delta på mange sosiale arrangementer, alt fra fest og
+                grilling til spillkveld. Samtidig arrangerer vi populærforedrag som er til for å øke motivasjonen din
+                for videre studier. Vi har hatt besøk av blant annet Andreas Wahl, Jo Røislien, Knut Jørgen Røed
+                Ødegaard og James Grime.
+            </p>
+            <p class="mdl-color-text--orange-800">
+                Her trenger vi en tekst som forklarer hva en assistent gjør ute på skolen (får en gruppe elever på
                 grupperom,
                 hjelpe til med oppgaveløsing i klasserom osv.) Husk å få med at man samarbeider med en lærer og at
                 man
@@ -72,39 +82,39 @@
                 <li>Få tildelt en ungdomsskole som du og din vektorpartner skal dra til</li>
             </ol>
 
-            <p class="mdl-color-text--red">Opptaket for neste semester har ikke startet enda</p>
+            <p class="mdl-color-text--red">Neste opptak vil starte i begynnelsen av høstsemesteret 2017</p>
         </section>
 
         <section class="vektor-reminder-form mdl-shadow--4dp">
-                <h3>Få en påminnelse når opptaket starter</h3>
-                <form action="">
-                    <div class="mdl-grid">
-                        <mdl-cell class="mdl-cell--6-col">
-                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="text" id="name">
-                                <label class="mdl-textfield__label" for="name">Navn...</label>
-                            </div>
-                        </mdl-cell>
-                        <mdl-cell class="mdl-cell--6-col">
-                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="text" id="email">
-                                <label class="mdl-textfield__label" for="email">E-post...</label>
-                            </div>
-                        </mdl-cell>
-                    </div>
-                    <br>
-                    <select name="department" id="department">
-                        {% for department in get_departments() %}
-                            <option value="{{ department.id }}">{{ department.city }}</option>
-                        {% endfor %}
-                    </select>
-                    <br>
-                    <br>
-                    <button type="button"
-                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                        FÅ PÅMINNELSE
-                    </button>
-                </form>
+            <h3>Få en påminnelse når opptaket starter</h3>
+            <form action="">
+                <div class="mdl-grid">
+                    <mdl-cell class="mdl-cell--6-col">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="name">
+                            <label class="mdl-textfield__label" for="name">Navn...</label>
+                        </div>
+                    </mdl-cell>
+                    <mdl-cell class="mdl-cell--6-col">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="email">
+                            <label class="mdl-textfield__label" for="email">E-post...</label>
+                        </div>
+                    </mdl-cell>
+                </div>
+                <br>
+                <select name="department" id="department">
+                    {% for department in get_departments() %}
+                        <option value="{{ department.id }}">{{ department.city }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <br>
+                <button type="button"
+                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    FÅ PÅMINNELSE
+                </button>
+            </form>
         </section>
     </div>
 {% endblock %}
