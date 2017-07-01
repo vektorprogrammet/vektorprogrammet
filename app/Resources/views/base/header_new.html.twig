@@ -1,0 +1,28 @@
+<header class="vektor-header mdl-layout__header mdl-layout__header--waterfall">
+    <!-- Top row, always visible -->
+    <div class="vektor-header-row__top mdl-layout__header-row">
+        <!-- Title -->
+        <div class="mdl-layout-spacer"></div>
+        <nav class="vetktor-navigation mdl-navigation">
+            <a href="mdl-navigation__link"><img class="vektor-locale-flag" src="{{ asset_with_version('images/flag_uk.svg') }}" alt="English page"></a>
+            <a href="mdl-navigation__link">F</a>
+            <a href="mdl-navigation__link">I</a>
+            <a href="mdl-navigation__link">Trondheim</a>
+            <a href="mdl-navigation__link">Logg inn</a>
+        </nav>
+    </div>
+    <!-- Bottom row, not visible on scroll -->
+    <div class="vektor-header-row__bottom mdl-layout__header-row">
+        <a href="{{ path('home') }}"><img class="logo" src="{{ asset_with_version('images/logo_condensed.png') }}"></a>
+
+        <div class="mdl-layout-spacer"></div>
+        <!-- Navigation -->
+        <nav class="vetktor-navigation mdl-navigation">
+            <a class="mdl-navigation__link active" href="">Assistenter</a>
+            <a class="mdl-navigation__link" href="">Team</a>
+            <a class="mdl-navigation__link" href="">Lærere</a>
+            <a class="mdl-navigation__link" href="">Foreldre</a>
+            <a class="mdl-navigation__link" href="">Om oss</a>
+        </nav>
+    </div>
+</header>
