@@ -262,7 +262,7 @@ profile_save_photo:
 ##########################################
 
 members_show:
- path:   /assistenter
+ path:   /profile/assistenter
  defaults: { _controller: AppBundle:Members:show }
  methods: [GET]
 
@@ -1373,3 +1373,7 @@ generate_all_mail_list:
   methods: [GET]
   requirements:
     id: \d+
+
+assistants:
+    path: /assistenter
+    defaults: {_controller: AppBundle:Assistant:index}
