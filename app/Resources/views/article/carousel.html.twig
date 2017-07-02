@@ -2,7 +2,7 @@
     <div class="small-12 medium-8 medium-push-4 columns">
         <div class="news-carousel">
             {% for article in articles %}
-                <div><img src="{{ asset_with_version(article.imageMedium) }}"/></div>
+                <div><img {{ not loop.first ? 'lazy-src' : 'src' }}="{{ asset_with_version(article.imageMedium) }}"/></div>
             {% else %}
                 <div><h3>Ingen nyheter</h3></div>
             {% endfor %}
