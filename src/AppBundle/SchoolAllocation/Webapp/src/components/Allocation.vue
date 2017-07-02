@@ -47,13 +47,16 @@
   import {mapGetters} from "vuex";
   import {Schedule} from "../Schedule";
   import {scheduleGreedily} from "../GreedyScheduler";
+  import {SAOptimize} from "../SAOptimizer";
 
   export default {
     methods: {
       allocate () {
         this.allocating = true;
         let schedule = new Schedule(this.schools, this.assistants);
+          //console.log(schedule, schedule.deepCopy());
         schedule = scheduleGreedily(schedule);
+          schedule = SAOptimize(schedule);
           this.scheduleData = schedule;
         console.log(this.$store.state);
         this.allocating = false;
