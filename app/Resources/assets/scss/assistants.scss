@@ -14,7 +14,7 @@
   }
 
   .hero-image {
-    background: url(/images/assistenter.jpg) top no-repeat;
+    background: top no-repeat;
     background-size: cover;
     height: 500px;
     width: 100%;
@@ -38,6 +38,8 @@
   }
 
   .requirements {
+    display: flex;
+    justify-content: center;
     h2 {
       text-align: left;
     }
