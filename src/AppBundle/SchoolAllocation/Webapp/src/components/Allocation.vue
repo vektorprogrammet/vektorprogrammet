@@ -45,16 +45,16 @@
 
 <script>
   import {mapGetters} from "vuex";
-  import {AssistantScheduler} from "../AssistantScheduler";
+  import {Schedule} from "../Schedule";
+  import {scheduleGreedily} from "../GreedyScheduler";
 
   export default {
     methods: {
       allocate () {
         this.allocating = true;
-        const scheduler = new AssistantScheduler(this.schools, this.assistants);
-        const greedySchedule = scheduler.scheduleGreedily();
-        console.log(greedySchedule);
-        this.scheduleData = greedySchedule;
+        let schedule = new Schedule(this.schools, this.assistants);
+        schedule = scheduleGreedily(schedule);
+          this.scheduleData = schedule;
         console.log(this.$store.state);
         this.allocating = false;
       },
