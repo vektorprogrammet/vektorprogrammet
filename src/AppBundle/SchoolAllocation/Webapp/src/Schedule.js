@@ -88,7 +88,14 @@ export class Schedule {
   }
 
   fitness() {
-    return -this.queuedAssistants.length;
+    let fitness = 0;
+    for (let i = 0; i < weekDays.length; i++){
+      const day = weekDays[i];
+      fitness += this[day + "AssistantsGroup1"].length;
+      fitness += this[day + "AssistantsGroup2"].length;
+    }
+    return fitness;
+    //return -this.queuedAssistants.length;
   }
 
   mutate() {

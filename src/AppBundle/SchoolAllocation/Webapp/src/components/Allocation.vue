@@ -53,18 +53,18 @@
     methods: {
       allocate () {
         this.allocating = true;
-        let schedule = new Schedule(this.schools, this.assistants);
-          //console.log(schedule, schedule.deepCopy());
-        schedule = scheduleGreedily(schedule);
-          schedule = SAOptimize(schedule);
-          this.scheduleData = schedule;
-        console.log(this.$store.state);
-        this.allocating = false;
+          let schedule = new Schedule(this.schools, this.assistants);
+          schedule = scheduleGreedily(schedule);
+          SAOptimize(schedule).then(function (result) {
+            this.scheduleData = result;
+              this.allocating = false;
+          }.bind(this));
       },
       goBack() {
         this.$emit('goBack');
       }
     },
+
     computed: mapGetters({
       assistants: 'selectedAssistants',
       schools: 'selectedSchools',

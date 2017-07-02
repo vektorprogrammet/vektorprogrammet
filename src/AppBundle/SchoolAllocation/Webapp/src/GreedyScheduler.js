@@ -1,6 +1,7 @@
-const weekDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
 
 export function scheduleGreedily(schedule) {
+  let weekDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+  shuffle(weekDays);
   schedule = schedule.deepCopy();
   const assistants = schedule.queuedAssistants;
   let j = 0;
@@ -48,4 +49,11 @@ export function scheduleGreedily(schedule) {
   }
 
   return schedule;
+}
+
+function shuffle(a) {
+  for (let i = a.length; i; i--) {
+    let j= Math.floor(Math.random() * i);
+    [a[i-1], a[j]] = [a[j], a[i-1]];
+  }
 }
