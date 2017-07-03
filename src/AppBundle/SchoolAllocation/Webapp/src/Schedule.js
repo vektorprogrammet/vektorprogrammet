@@ -6,6 +6,8 @@ function randomElement(arr) {
 
 const weekDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
 
+let busyAssistants = [];
+
 export class Schedule {
   constructor(schools, assistants) {
     this.queuedAssistants = this._copy(assistants);
@@ -43,8 +45,11 @@ export class Schedule {
     if (!this.hasOwnProperty(day)) return false;
     if (!this.hasOwnProperty(assistantsKey)) return false;
 
-    this[assistantsKey].push(assistant);
-    this._removeAssistantFromList(assistant, this.queuedAssistants);
+      this[assistantsKey].push(assistant);
+      this._removeAssistantFromList(assistant, this.queuedAssistants);
+
+      busyAssistants.push(assistant);
+      assistant.assignedDay = assistantsKey;
   }
 
   _removeAssistantFromList(assistant, list) {
@@ -59,6 +64,7 @@ export class Schedule {
     const assistantsKeyTo = toDay + "AssistantsGroup" + toGroup;
     this[assistantsKeyTo].push(assistant);
     this._removeAssistantFromList(assistant, this[assistantsKeyFrom]);
+      assistant.assignedDay = assistantsKeyTo;
   }
 
   deepCopy() {
@@ -142,6 +148,49 @@ export class Schedule {
     return clone;
   }
 
+    mutate2() {
+	const clone = this.deepCopy();
+	const remainingDays = this.getRemainingDays();
+	if (remainingDays.length === 0) {
+	    return clone;
+	}
+	const toDayKey = randomElement(Object.keys(remainingDays));
+	const toDay = toDayKey.slice(0, -16);
+	const toGroup = toDayKey.substr(toDayKey.length - 1);
+	for (let i = 0; i < busyAssistants.length; i++) {
+	    const busyAssistant = busyAssistants[i];
+	    const double = busyAssistant.double;
+	    if (busyAssistant[toDay]) {
+		if (double) {
+		    if (this.hasCapacity(toDay, 1) && this.hasCapacity(toDay, 2)) {
+			const fromDayKey = busyAssistant.assignedDay;
+			const fromGroup = fromDayKey.substr(fromDayKey.length -1 );
+			const fromDay = fromDayKey.slice(0, -16);
+			clone.reassignAssistant(busyAssistant, fromDay, toDay, 1, 1);
+			clone.reassignAssistant(busyAssistant, fromDay, toDay, 2, 2);
+			break;
+		    }
+		} else if (busyAssistant.preferredGroup === toGroup){
+		    const fromDayKey = busyAssistant.assignedDay;
+		    const fromGroup = fromDayKey.substr(fromDayKey.length -1 );
+		    const fromDay = fromDayKey.slice(0, -16);
+		    clone.reassignAssistant(busyAssistant, fromDay, toDay, fromGroup, toGroup);
+		    break;
+		} else if (busyAssistant.preferredGroup !== toGroup){
+		    continue;
+		} else { // Not double, any group
+		    const fromDayKey = busyAssistant.assignedDay;
+		    const fromGroup = fromDayKey.substr(fromDayKey.length -1 );
+		    const fromDay = fromDayKey.slice(0, -16);
+		    clone.reassignAssistant(busyAssistant, fromDay, toDay, fromGroup, toGroup);
+		    break;
+		}
+	    }
+	}
+	return clone;
+
+    }
+
     getRemainingDays() {
 	let remainingDays = {};
 
@@ -151,11 +200,11 @@ export class Schedule {
 	    const remaining2 = this[day] - this[day + "AssistantsGroup2"].length;
 
 	    if (remaining1 > 0) {
-		remainingDays[day + "AssistantGroup1"] = remaining1;
+		remainingDays[day + "AssistantsGroup1"] = remaining1;
 	    }
 
 	    if (remaining2 > 0) {
-		remainingDays[day + "AssistantGroup2"] = remaining2;
+		remainingDays[day + "AssistantsGroup2"] = remaining2;
 	    }
 	}
 
