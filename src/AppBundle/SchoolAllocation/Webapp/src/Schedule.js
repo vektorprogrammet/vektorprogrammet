@@ -142,4 +142,23 @@ export class Schedule {
     return clone;
   }
 
+    getRemainingDays() {
+	let remainingDays = {};
+
+	for (let i = 0; i < weekDays.length; i++) {
+	    const day = weekDays[i];
+	    const remaining1 = this[day] - this[day + "AssistantsGroup1"].length;
+	    const remaining2 = this[day] - this[day + "AssistantsGroup2"].length;
+
+	    if (remaining1 > 0) {
+		remainingDays[day + "AssistantGroup1"] = remaining1;
+	    }
+
+	    if (remaining2 > 0) {
+		remainingDays[day + "AssistantGroup2"] = remaining2;
+	    }
+	}
+
+	return remainingDays;
+    }
 }
