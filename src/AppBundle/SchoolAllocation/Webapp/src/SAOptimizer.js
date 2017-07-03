@@ -2,17 +2,12 @@ const weekDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
 const dt = 0.001;
 const mutationCount = 20;
 
-export function SAOptimize(schedule) {
+export function SAOptimize(schedule, cb, done) {
   let temp = 1;
-  const assistants = schedule.queuedAssistants;
   let bestSchedule = schedule;
   let currentSchedule = schedule;
 
-  return new Promise((resolve) => {
     setTimeout(function a() {
-      /*    if (currentSchedule.fitness() === 0) {
-       return currentSchedule;
-       }*/
 
       const mutations = [currentSchedule.mutate()];
       let bestMutation = mutations[0];
@@ -40,13 +35,16 @@ export function SAOptimize(schedule) {
       }
 
       temp -= dt;
+      if (Math.round(temp/dt) % 10 === 0) {
+        const percent = Math.round((1-temp) * 100)
+        cb(percent);
+      }
       if (temp > 0) {
         setTimeout(a, 0);
       } else {
-        resolve(bestSchedule);
+        done(bestSchedule);
       }
     }, 0);
-  });
  }
 
 

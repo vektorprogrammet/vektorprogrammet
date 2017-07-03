@@ -73,8 +73,7 @@ export class Schedule {
   }
 
   deepCopy() {
-    const clone = new Schedule(this._copy(this.schools), this._copy(this.queuedAssistants));
-    clone.mondayAssistantsGroup1 = [0, 12, 3];
+    const clone = new Schedule(this.schools, this._copy(this.queuedAssistants));
     for (let i = 0; i < weekDays.length; i++){
       const day = weekDays[i];
       clone[day + "AssistantsGroup1"] = this._copy(this[day + "AssistantsGroup1"]);
@@ -84,7 +83,7 @@ export class Schedule {
   }
 
   _copy(a) {
-    return JSON.parse(JSON.stringify(a));
+    return a.slice();
   }
 
   fitness() {
