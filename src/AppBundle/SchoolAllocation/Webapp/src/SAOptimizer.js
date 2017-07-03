@@ -1,5 +1,5 @@
 const weekDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
-const dt = 0.001;
+const dt = 0.0005;
 const mutationCount = 20;
 
 export function SAOptimize(schedule, cb, done) {
