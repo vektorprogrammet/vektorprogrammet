@@ -75,7 +75,7 @@ export class Schedule {
     return a.slice();
   }
 
-  isOptimal() {return false;
+  isOptimal() {
     const schoolsFull = this.totalCapacity() === this.scheduledAssistantsCount();
     const allAssistantsScheduled = this.queuedAssistants.length === 0;
 
