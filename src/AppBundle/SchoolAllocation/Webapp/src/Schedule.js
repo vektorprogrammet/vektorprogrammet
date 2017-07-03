@@ -86,15 +86,26 @@ export class Schedule {
     return a.slice();
   }
 
-  fitness() {
-    let fitness = 0;
+  isOptimal() {
+    const totalCapacity = weekDays.reduce((acc, day) => (
+        acc + this[day] * 2 // Group 1 & group 2
+    ), 0);
+
+    return totalCapacity === this.scheduledAssistantsCount();
+  }
+
+  scheduledAssistantsCount() {
+    let count = 0;
     for (let i = 0; i < weekDays.length; i++){
       const day = weekDays[i];
-      fitness += this[day + "AssistantsGroup1"].length;
-      fitness += this[day + "AssistantsGroup2"].length;
+      count += this[day + "AssistantsGroup1"].length;
+      count += this[day + "AssistantsGroup2"].length;
     }
-    return fitness;
-    //return -this.queuedAssistants.length;
+    return count;
+  }
+
+  fitness() {
+    return this.scheduledAssistantsCount();
   }
 
   mutate() {

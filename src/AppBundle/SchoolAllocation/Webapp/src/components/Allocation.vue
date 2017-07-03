@@ -1,7 +1,7 @@
 <template>
   <v-layout row wrap>
 
-    <v-flex xs12 sm6 v-show="!allocating && schools.length > 0 && !scheduleData.hasOwnProperty('monday')">
+    <v-flex xs12 sm6 v-show="!allocating && schools.length > 0 && !bestSchedule.hasOwnProperty('monday')">
       <h4>Skoler</h4>
       <v-list>
         <v-list-item v-for="school in schools">
@@ -15,7 +15,7 @@
       </v-list>
     </v-flex>
 
-    <v-flex xs12 sm6 v-show="!allocating && assistants.length > 0 && !scheduleData.hasOwnProperty('monday')">
+    <v-flex xs12 sm6 v-show="!allocating && assistants.length > 0 && !bestSchedule.hasOwnProperty('monday')">
       <h4>Assistenter</h4>
       <v-list>
         <v-list-item v-for="assistant in assistants">
@@ -29,11 +29,19 @@
       </v-list>
     </v-flex>
 
-    <v-flex xs12 v-show="scheduleData.hasOwnProperty('monday')">
-      <schedule :scheduleData="scheduleData"></schedule>
+    <v-flex xs12 v-show="!allocating && bestSchedule.hasOwnProperty('monday')">
+      <schedule :scheduleData="bestSchedule"></schedule>
     </v-flex>
 
     <v-flex xs12 class="status">
+
+      <v-flex v-show="!allocating" xs12 sm6 offset-sm3>
+        <label> Maximum number of runs</label>
+        <v-slider v-model="numberOfRuns" dark thumb-label step="2"></v-slider>
+        <p>{{numberOfRuns}}</p>
+      </v-flex>
+
+      <br>
       <v-btn v-show="!allocating" @click.native="allocate" primary light>Fordel</v-btn>
       <div class="text-center" v-show="allocating">
         <p>Fordeling pågår. Dette kan ta noen minutter...</p>
@@ -54,8 +62,7 @@
 <script>
   import {mapGetters} from "vuex";
   import {Schedule} from "../Schedule";
-  import {scheduleGreedily} from "../GreedyScheduler";
-  import {SAOptimize} from "../SAOptimizer";
+  import {SAOptimize, scheduleGreedily} from "../Schedulers";
 
   export default {
     methods: {
@@ -63,20 +70,29 @@
         let schedule = new Schedule(this.schools, this.assistants);
         schedule = scheduleGreedily(schedule);
 
-        SAOptimize(schedule, () => {
-        }, result => {
+        SAOptimize(schedule, result => {
           const calculatedProgress = Math.round((i + 1) / this.numberOfRuns * 100);
           this.progress = Math.min(100, calculatedProgress);
-          if (!this.bestSchedule || result.fitness() > this.bestSchedule.fitness()) {
+          if (result.isOptimal()) {
+            this.progress = 100;
+            this.bestSchedule = result;
+            setTimeout(() => {
+              this.allocating = false;
+            }, 750)
+
+            return;
+          }
+
+          if (!this.bestSchedule.hasOwnProperty('monday') || result.fitness() > this.bestSchedule.fitness()) {
             this.bestSchedule = result;
           }
+
           if (i < this.numberOfRuns) {
             this.schedule (i + 1);
           } else {
-
-            this.scheduleData = this.bestSchedule;
             this.allocating = false;
           }
+
         })
       },
       allocate () {
@@ -97,9 +113,8 @@
         allocating: false,
         progress: 0,
         showMessage: false,
-        scheduleData: {},
-        bestResult: {},
-        numberOfRuns: 20,
+        bestSchedule: {},
+        numberOfRuns: 50,
       }
     }
   }

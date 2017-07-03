@@ -3,7 +3,7 @@ const dt = 0.0005;
 const mutationCount = 20;
 const calculationsPerRenderFrame = 500;
 
-export function SAOptimize(schedule, reportProgress, done) {
+export function SAOptimize(schedule, done) {
   let temp = 1;
   let bestSchedule = schedule;
   let currentSchedule = schedule;
@@ -38,11 +38,9 @@ export function SAOptimize(schedule, reportProgress, done) {
 
       temp -= dt;
     }
-    // const percent = Math.round((1 - temp) * 100)
     if (temp > 0) {
       setTimeout(a, 0);
     } else {
-      reportProgress(0);
       setTimeout(() => {
         done(bestSchedule);
       }, 300)
@@ -53,7 +51,7 @@ export function SAOptimize(schedule, reportProgress, done) {
 
 //const weekDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
 
-function scheduleGreedily(schedule) {
+export function scheduleGreedily(schedule) {
   const assistants = schedule.queuedAssistants;
   let j = 0;
   while (j < assistants.length) {
