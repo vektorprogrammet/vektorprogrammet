@@ -8,7 +8,7 @@ const weekDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
 
 export class Schedule {
   constructor(schools, assistants) {
-    this.queuedAssistants = assistants;
+    this.queuedAssistants = this._copy(assistants);
     this.schools = schools;
     weekDays.forEach(day => {
       this[day] = 0;
@@ -57,19 +57,8 @@ export class Schedule {
   reassignAssistant(assistant, fromDay, toDay, fromGroup, toGroup) {
     const assistantsKeyFrom = fromDay + "AssistantsGroup" + fromGroup;
     const assistantsKeyTo = toDay + "AssistantsGroup" + toGroup;
-    //console.log("Reassigning ", assistant.name, fromDay, toDay);
     this[assistantsKeyTo].push(assistant);
     this._removeAssistantFromList(assistant, this[assistantsKeyFrom]);
-  }
-
-  schoolsHaveMoreCapacity() {
-    weekDays.forEach(day => {
-      if (this[day] > 0) {
-        return true;
-      }
-    });
-
-    return false;
   }
 
   deepCopy() {
@@ -86,8 +75,11 @@ export class Schedule {
     return a.slice();
   }
 
-  isOptimal() {
-    return this.totalCapacity() === this.scheduledAssistantsCount();
+  isOptimal() {return false;
+    const schoolsFull = this.totalCapacity() === this.scheduledAssistantsCount();
+    const allAssistantsScheduled = this.queuedAssistants.length === 0;
+
+    return schoolsFull || allAssistantsScheduled;
   }
 
   totalCapacity() {
