@@ -87,11 +87,13 @@ export class Schedule {
   }
 
   isOptimal() {
-    const totalCapacity = weekDays.reduce((acc, day) => (
+    return this.totalCapacity() === this.scheduledAssistantsCount();
+  }
+
+  totalCapacity() {
+    return weekDays.reduce((acc, day) => (
         acc + this[day] * 2 // Group 1 & group 2
     ), 0);
-
-    return totalCapacity === this.scheduledAssistantsCount();
   }
 
   scheduledAssistantsCount() {

@@ -52,7 +52,14 @@
             v-bind:rotate="180"
             v-bind:value="progress"
             class="primary--text"
-        >{{ progress }} %</v-progress-circular>
+        >{{ progress }} %
+        </v-progress-circular>
+        <br>
+        <br>
+        <div v-if="bestSchedule.hasOwnProperty('monday')">
+          <p>Beste fordeling:</p>
+          <p>{{bestSchedule.scheduledAssistantsCount()}} / {{bestSchedule.totalCapacity()}}</p>
+        </div>
       </div>
     </v-flex>
 
@@ -88,7 +95,7 @@
           }
 
           if (i < this.numberOfRuns) {
-            this.schedule (i + 1);
+            this.schedule(i + 1);
           } else {
             this.allocating = false;
           }
@@ -97,7 +104,7 @@
       },
       allocate () {
         this.allocating = true;
-        this.schedule (0);
+        this.schedule(0);
       },
       goBack() {
         this.$emit('goBack');
