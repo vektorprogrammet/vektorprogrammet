@@ -1,7 +1,7 @@
 <template>
   <v-layout row wrap>
 
-    <v-flex xs12 sm6 v-show="schools.length > 0 && !scheduleData.hasOwnProperty('monday')">
+    <v-flex xs12 sm6 v-show="!allocating && schools.length > 0 && !scheduleData.hasOwnProperty('monday')">
       <h4>Skoler</h4>
       <v-list>
         <v-list-item v-for="school in schools">
@@ -15,7 +15,7 @@
       </v-list>
     </v-flex>
 
-    <v-flex xs12 sm6 v-show="assistants.length > 0 && !scheduleData.hasOwnProperty('monday')">
+    <v-flex xs12 sm6 v-show="!allocating && assistants.length > 0 && !scheduleData.hasOwnProperty('monday')">
       <h4>Assistenter</h4>
       <v-list>
         <v-list-item v-for="assistant in assistants">
@@ -35,10 +35,17 @@
 
     <v-flex xs12 class="status">
       <v-btn v-show="!allocating" @click.native="allocate" primary light>Fordel</v-btn>
-      <div class="text-center" v-show="allocating">Fordeler... <span v-show="showMessage">(Det skjer faktisk ingenting, jeg bare later som)</span>
+      <div class="text-center" v-show="allocating">
+        <p>Fordeling pågår. Dette kan ta noen minutter...</p>
+        <br>
+        <v-progress-circular
+            v-bind:size="100"
+            v-bind:width="15"
+            v-bind:rotate="180"
+            v-bind:value="progress"
+            class="primary--text"
+        >{{ progress }} %</v-progress-circular>
       </div>
-      <v-progress-linear v-show="allocating" v-model="progress"></v-progress-linear>
-      <p v-show="allocating">{{progress}} %</p>
     </v-flex>
 
   </v-layout>
@@ -52,18 +59,29 @@
 
   export default {
     methods: {
-      allocate () {
-        this.allocating = true;
+      schedule (i) {
         let schedule = new Schedule(this.schools, this.assistants);
         schedule = scheduleGreedily(schedule);
-        SAOptimize(schedule, progress => {
-          this.progress = progress;
+
+        SAOptimize(schedule, () => {
         }, result => {
-          setTimeout(() => {
-            this.scheduleData = result;
+          const calculatedProgress = Math.round((i + 1) / this.numberOfRuns * 100);
+          this.progress = Math.min(100, calculatedProgress);
+          if (!this.bestSchedule || result.fitness() > this.bestSchedule.fitness()) {
+            this.bestSchedule = result;
+          }
+          if (i < this.numberOfRuns) {
+            this.schedule (i + 1);
+          } else {
+
+            this.scheduleData = this.bestSchedule;
             this.allocating = false;
-          }, 750)
-        });
+          }
+        })
+      },
+      allocate () {
+        this.allocating = true;
+        this.schedule (0);
       },
       goBack() {
         this.$emit('goBack');
@@ -79,7 +97,9 @@
         allocating: false,
         progress: 0,
         showMessage: false,
-        scheduleData: {}
+        scheduleData: {},
+        bestResult: {},
+        numberOfRuns: 20,
       }
     }
   }
