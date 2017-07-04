@@ -5,8 +5,8 @@
       <h4>{{schools.length}} skoler valgt. {{assistants.length}} assistenter valgt.</h4>
     </v-flex>
 
-    <v-flex xs12 v-show="!allocating && bestSchedule.hasOwnProperty('monday')">
-      <schedule :scheduleData="bestSchedule"></schedule>
+    <v-flex xs12 v-if="!allocating && Object.keys(timeTable).length > 0">
+      <time-table :timeTable="timeTable"></time-table>
     </v-flex>
 
     <v-flex xs12 class="status">
@@ -45,7 +45,7 @@
 <script>
   import {mapGetters} from "vuex";
   import {Schedule} from "../Schedule";
-  import {SAOptimize, scheduleGreedily, optimizeScore} from "../Schedulers";
+  import {SAOptimize, scheduleGreedily, optimizeScore, mapScheduledAssistantsToSchools} from "../Schedulers";
 
   export default {
     methods: {
@@ -62,6 +62,7 @@
             if (!this.bestSchedule.isValid()) {
               console.error('Invalid schedule', this.bestSchedule)
             }
+            this.timeTable = mapScheduledAssistantsToSchools(this.schools, this.bestSchedule);
             setTimeout(() => {
               this.allocating = false;
             }, 750)
@@ -80,6 +81,8 @@
             if (!this.bestSchedule.isValid()) {
               console.error('Invalid schedule', this.bestSchedule)
             }
+            this.timeTable = mapScheduledAssistantsToSchools(this.schools, this.bestSchedule);
+
             this.allocating = false;
           }
 
@@ -105,6 +108,7 @@
         showMessage: false,
         bestSchedule: {},
         numberOfRuns: 50,
+        timeTable: {}
       }
     }
   }

@@ -5,8 +5,8 @@ import Vuetify from 'vuetify'
 
 import store from './store';
 
-import Schedule from './components/Schedule.vue';
-Vue.component('schedule', Schedule)
+import TimeTable from './components/TimeTable.vue';
+Vue.component('time-table', TimeTable)
 
 Vue.use(Vuetify)
 Vue.use(VueResource)

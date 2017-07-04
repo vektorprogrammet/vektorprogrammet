@@ -126,6 +126,16 @@ export class Schedule {
     return this.scheduledAssistantsCount();
   }
 
+  removeAssistant(assistant) {
+    this._removeAssistantFromList(assistant, this.queuedAssistants);
+    for (let group = 1; group <= 2; group++) {
+      for (let i = 0; i < weekDays.length; i++) {
+        const day = weekDays[i];
+        this._removeAssistantFromList(assistant, this[day + "AssistantsGroup" + group]);
+      }
+    }
+  }
+
   isValid() {
     for (let group = 1; group <= 2; group++) {
       for (let i = 0; i < weekDays.length; i++) {
