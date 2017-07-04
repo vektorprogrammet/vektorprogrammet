@@ -25,12 +25,14 @@
         <table>
           <tr>
             <th>Navn</th>
+            <th>Poeng</th>
             <th>Ønsket pulje</th>
             <th>Dobbel stilling</th>
             <th v-for="day in weekDays">{{day}}</th>
           </tr>
           <tr v-for="assistant in scheduleData.queuedAssistants">
             <td>{{assistant.name}}</td>
+            <td>{{assistant.score}}</td>
             <td>{{assistant.preferredGroup}}</td>
             <td>{{assistant.double}}</td>
             <td v-for="day in weekDays">{{assistant[day]}}</td>

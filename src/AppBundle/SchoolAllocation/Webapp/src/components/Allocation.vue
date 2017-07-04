@@ -1,32 +1,8 @@
 <template>
   <v-layout row wrap>
 
-    <v-flex xs12 sm6 v-show="!allocating && schools.length > 0 && !bestSchedule.hasOwnProperty('monday')">
-      <h4>Skoler</h4>
-      <v-list>
-        <v-list-item v-for="school in schools">
-          <v-list-tile avatar ripple>
-            <v-list-tile-content>
-              <v-list-tile-title>{{ school.name }}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-divider></v-divider>
-        </v-list-item>
-      </v-list>
-    </v-flex>
-
-    <v-flex xs12 sm6 v-show="!allocating && assistants.length > 0 && !bestSchedule.hasOwnProperty('monday')">
-      <h4>Assistenter</h4>
-      <v-list>
-        <v-list-item v-for="assistant in assistants">
-          <v-list-tile avatar ripple>
-            <v-list-tile-content>
-              <v-list-tile-title>{{ assistant.name }}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-divider></v-divider>
-        </v-list-item>
-      </v-list>
+    <v-flex xs12 sm6 offset-sm3 v-show="!allocating && !bestSchedule.hasOwnProperty('monday')">
+      <h4>{{schools.length}} skoler valgt. {{assistants.length}} assistenter valgt.</h4>
     </v-flex>
 
     <v-flex xs12 v-show="!allocating && bestSchedule.hasOwnProperty('monday')">
@@ -69,7 +45,7 @@
 <script>
   import {mapGetters} from "vuex";
   import {Schedule} from "../Schedule";
-  import {SAOptimize, scheduleGreedily} from "../Schedulers";
+  import {SAOptimize, scheduleGreedily, optimizeScore} from "../Schedulers";
 
   export default {
     methods: {
@@ -82,7 +58,7 @@
           this.progress = Math.min(100, calculatedProgress);
           if (result.isOptimal()) {
             this.progress = 100;
-            this.bestSchedule = result;
+            this.bestSchedule = optimizeScore(result);
             if (!this.bestSchedule.isValid()) {
               console.error('Invalid schedule', this.bestSchedule)
             }
@@ -100,6 +76,7 @@
           if (i < this.numberOfRuns) {
             this.schedule(i + 1);
           } else {
+            this.bestSchedule = optimizeScore(this.bestSchedule);
             if (!this.bestSchedule.isValid()) {
               console.error('Invalid schedule', this.bestSchedule)
             }
@@ -134,6 +111,8 @@
 </script>
 
 <style lang="stylus" scoped>
+  h4
+    text-align: center;
   .status
     margin-top: 100px
     text-align: center

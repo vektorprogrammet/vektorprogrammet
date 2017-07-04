@@ -98,6 +98,61 @@ export function scheduleGreedily(schedule) {
   return schedule;
 }
 
+export function optimizeScore(schedule) {
+  let didSwap = true;
+  while (didSwap) {
+    didSwap = false;
+    const assistants = schedule.queuedAssistants;
+    for (let i = 0; i < assistants.length; i++) {
+      const assistant = assistants[i];
+      const assistantSwapped = _swapAssistant(schedule, assistant);
+      if (assistantSwapped) {
+        didSwap = true;
+      }
+    }
+  }
+
+  return schedule;
+}
+
+function _swapAssistant(schedule, assistant) {
+  const availableDays = weekDays.filter(weekday => assistant[weekday]);
+  for (let j = 0; j < availableDays.length; j++) {
+    const day = availableDays[j];
+    if (assistant.preferredGroup === null) {
+      if (_trySwap(schedule, assistant, day, 1)) {
+        return true;
+      }
+
+      if (_trySwap(schedule, assistant, day, 2)) {
+        return true;
+      }
+    } else {
+      if (_trySwap(schedule, assistant, day, assistant.preferredGroup)) {
+        return true;
+      }
+    }
+  }
+}
+
+function _trySwap(schedule, assistant, day, group) {
+  if (assistant.double) {
+    group = 1;
+  }
+  const assistantsToCheck = schedule.getAssignedAssistants(day, group);
+
+  for (let k = 0; k < assistantsToCheck.length; k++) {
+    const otherAssistant = assistantsToCheck[k];
+
+    if (assistant.double === otherAssistant.double && assistant.score > otherAssistant.score) {
+      schedule.swapFromQueue(assistant, otherAssistant, day, group);
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function shuffle(a) {
   for (let i = a.length; i; i--) {
     let j= Math.floor(Math.random() * i);

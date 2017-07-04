@@ -16,7 +16,7 @@ export class Schedule {
       this[day] = 0;
       this[day + "AssistantsGroup1"] = [];
       this[day + "AssistantsGroup2"] = [];
-    })
+    });
 
     this._updateCapacitiesFromSchools(schools);
   }
@@ -37,6 +37,24 @@ export class Schedule {
     if (!this.hasOwnProperty(assistantsKey)) return false;
 
     return this[day] > this[assistantsKey].length;
+  }
+
+  getAssignedAssistants(day, group) {
+    const assistantsKey = day + "AssistantsGroup" + group;
+    return this[assistantsKey];
+  }
+
+  swapFromQueue(assistantInQueue, assignedAssistant, day, group) {
+    if (assistantInQueue.double) {
+      this.assignAssistantTo(assistantInQueue, day, 1);
+      this.assignAssistantTo(assistantInQueue, day, 2);
+      this._removeAssistantFromList(assignedAssistant, this[day + "AssistantsGroup" + 1]);
+      this._removeAssistantFromList(assignedAssistant, this[day + "AssistantsGroup" + 2]);
+    } else {
+      this.assignAssistantTo(assistantInQueue, day, group);
+      this._removeAssistantFromList(assignedAssistant, this[day + "AssistantsGroup" + group]);
+    }
+    this.queuedAssistants.push(assignedAssistant);
   }
 
   assignAssistantTo(assistant, day, group) {
