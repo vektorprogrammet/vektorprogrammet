@@ -83,6 +83,9 @@
           if (result.isOptimal()) {
             this.progress = 100;
             this.bestSchedule = result;
+            if (!this.bestSchedule.isValid()) {
+              console.error('Invalid schedule', this.bestSchedule)
+            }
             setTimeout(() => {
               this.allocating = false;
             }, 750)
@@ -97,6 +100,9 @@
           if (i < this.numberOfRuns) {
             this.schedule(i + 1);
           } else {
+            if (!this.bestSchedule.isValid()) {
+              console.error('Invalid schedule', this.bestSchedule)
+            }
             this.allocating = false;
           }
 

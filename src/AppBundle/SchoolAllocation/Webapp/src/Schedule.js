@@ -108,6 +108,24 @@ export class Schedule {
     return this.scheduledAssistantsCount();
   }
 
+  isValid() {
+    for (let group = 1; group <= 2; group++) {
+      for (let i = 0; i < weekDays.length; i++) {
+        const day = weekDays[i];
+        const assistantsKey = day + "AssistantsGroup" + group;
+        const assistants = this[assistantsKey];
+        for (let j = 0; j < assistants.length; j++) {
+          const assistant = assistants[j];
+          if (assistant.preferredGroup !== null && assistant.preferredGroup !== group) {
+            return false;
+          }
+        }
+      }
+    }
+
+    return true;
+  }
+
   mutate() {
     const clone = this.deepCopy();
     const group = randomElement([1, 2]);
@@ -137,7 +155,7 @@ export class Schedule {
         clone.reassignAssistant(assistant, fromDay, toDay, group, group);
         return clone;
       }
-    } else {
+    } else if (assistant.preferredGroup === null) {
       const randomGroup = randomElement([1, 2]);
       if (this.hasCapacity(toDay, randomGroup)) {
         clone.reassignAssistant(assistant, fromDay, toDay, group, randomGroup);
