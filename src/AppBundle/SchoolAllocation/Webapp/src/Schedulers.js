@@ -171,7 +171,7 @@ export function mapScheduledAssistantsToSchools(schools, schedule) {
         const group2 = [];
 
         const doubleAssistants = schedule.getAssignedAssistants(day, 1).filter(a => a.double);
-        let N = Math.min(assistantsNeeded, doubleAssistants.length);
+        let N = Math.min(assistantsNeeded - group1.length, doubleAssistants.length);
         for (let k = 0; k < N; k++) {
           const assistant = doubleAssistants[k];
           group1.push(assistant);

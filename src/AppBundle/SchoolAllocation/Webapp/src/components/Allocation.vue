@@ -7,6 +7,8 @@
 
     <v-flex xs12 v-if="!allocating && Object.keys(timeTable).length > 0">
       <time-table :timeTable="timeTable"></time-table>
+      <br>
+      <queue :queue="bestSchedule.queuedAssistants"></queue>
     </v-flex>
 
     <v-flex xs12 class="status">
@@ -44,10 +46,14 @@
 
 <script>
   import {mapGetters} from "vuex";
+  import ScheduleQueue from './ScheduleQueue.vue';
   import {Schedule} from "../Schedule";
   import {SAOptimize, scheduleGreedily, optimizeScore, mapScheduledAssistantsToSchools} from "../Schedulers";
 
   export default {
+    components: {
+      'queue': ScheduleQueue
+    },
     methods: {
       schedule (i) {
         let schedule = new Schedule(this.schools, this.assistants);
