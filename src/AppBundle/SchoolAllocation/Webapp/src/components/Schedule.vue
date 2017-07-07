@@ -20,26 +20,6 @@
               :capacity="scheduleData[d]"
           ></assistant-list>
       </v-flex>
-      <v-flex xs12 v-if="scheduleData.hasOwnProperty('queuedAssistants')">
-        <h3>Assistenter som ikke ble fordelt</h3>
-        <table>
-          <tr>
-            <th>Navn</th>
-            <th>Poeng</th>
-            <th>Ønsket pulje</th>
-            <th>Dobbel stilling</th>
-            <th v-for="day in weekDays">{{day}}</th>
-          </tr>
-          <tr v-for="assistant in scheduleData.queuedAssistants">
-            <td>{{assistant.name}}</td>
-            <td>{{assistant.score}}</td>
-            <td>{{assistant.preferredGroup}}</td>
-            <td>{{assistant.double}}</td>
-            <td v-for="day in weekDays">{{assistant[day]}}</td>
-          </tr>
-        </table>
-        <p>{{scheduleData.queuedAssistants.length}}</p>
-      </v-flex>
     </v-layout>
   </div>
 </template>
