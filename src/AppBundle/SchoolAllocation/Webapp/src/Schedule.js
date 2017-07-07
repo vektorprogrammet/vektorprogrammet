@@ -326,13 +326,9 @@ export class Schedule {
         }
       }
 
-      if (valid && !this.isValid()) {
-        console.error("Failed after first");
-      }
-
       for (let i = 0; i < weekDays.length; i++) {
         const day = weekDays[i];
-        const doubleAssistants = this.getAssignedAssistants(day, 1).filter(a => a.double);
+        const doubleAssistants = this.getAssignedAssistants(day, 1).filter(a => this._assistantHasDoublePosition(a, day));
         for (let j = 0; j < doubleAssistants.length; j++) {
           const assistant = doubleAssistants[j];
           const doubleSwapped = this._swapDoubleAssistantWithSingles(day, assistant);
@@ -340,10 +336,6 @@ export class Schedule {
             didSwap = true;
           }
         }
-      }
-
-      if (valid && !this.isValid()) {
-        console.error("Failed after second");
       }
 
       const doubleAssistants = this.queuedAssistants.filter(a => a.double);
@@ -356,9 +348,6 @@ export class Schedule {
         }
       }
 
-      if (valid && !this.isValid()) {
-        console.error("Failed after third");
-      }
     }
   }
 
