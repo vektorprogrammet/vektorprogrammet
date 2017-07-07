@@ -24,7 +24,7 @@
       <tr v-for="(i, index) in group2Max">
         <td class="group-header"><span v-if="index === 0">Gruppe 2</span></td>
         <td v-for="day in weekDays"><span
-            v-if="group2.hasOwnProperty(day) && group2[day].length >= index+1">{{group2[day][index].name}} - {{group1[day][index].score}}</span>
+            v-if="group2.hasOwnProperty(day) && group2[day].length >= index+1">{{group2[day][index].name}} - {{group2[day][index].score}}</span>
         </td>
       </tr>
       </tbody>

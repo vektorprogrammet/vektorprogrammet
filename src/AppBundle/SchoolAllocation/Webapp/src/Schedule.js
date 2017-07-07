@@ -52,7 +52,8 @@ export class Schedule {
       this._removeAssistantFromList(assignedAssistant, this[day + "AssistantsGroup" + 2]);
     } else {
       this.assignAssistantTo(assistantInQueue, day, group);
-      this._removeAssistantFromList(assignedAssistant, this[day + "AssistantsGroup" + group]);
+      this._removeAssistantFromList(assignedAssistant, this[day + "AssistantsGroup" + 1]);
+      this._removeAssistantFromList(assignedAssistant, this[day + "AssistantsGroup" + 2]);
     }
     this.queuedAssistants.push(assignedAssistant);
   }
@@ -292,14 +293,28 @@ export class Schedule {
 
   optimizeScore() {
     let didSwap = true;
+
     while (didSwap) {
       didSwap = false;
       const assistants = this.queuedAssistants;
+
       for (let i = 0; i < assistants.length; i++) {
         const assistant = assistants[i];
         const assistantSwapped = this._swapAssistant(assistant);
         if (assistantSwapped) {
           didSwap = true;
+        }
+      }
+
+      for (let i = 0; i < weekDays.length; i++) {
+        const day = weekDays[i];
+        const doubleAssistants = this.getAssignedAssistants(day, 1).filter(a => a.double);
+        for (let j = 0; j < doubleAssistants.length; j++) {
+          const assistant = doubleAssistants[j];
+          const doubleSwapped = this._swapDoubleAssistantWithSingles(day, assistant);
+          if (doubleSwapped) {
+            didSwap = true;
+          }
         }
       }
     }
@@ -338,6 +353,28 @@ export class Schedule {
         this.swapFromQueue(assistant, otherAssistant, day, group);
         return true;
       }
+    }
+
+    return false;
+  }
+
+  _swapDoubleAssistantWithSingles(day, doubleAssistant) {
+    const assistantsGroup1 = this.queuedAssistants.filter(a => a[day] && !a.double && a.preferredGroup === null || a.preferredGroup === 1);
+    const assistantsGroup2 = this.queuedAssistants.filter(a => a[day] && !a.double && a.preferredGroup === null || a.preferredGroup === 2);
+
+    const assistant1 = assistantsGroup1.reduce((prev, curr) => {
+      return prev.score > curr.score ? prev : curr;
+    });
+
+    const assistant2 = assistantsGroup2.reduce((prev, curr) => {
+      return prev.score > curr.score ? prev : curr;
+    });
+
+    if (assistant1.score + assistant2.score > doubleAssistant.score * 2) {
+      this.swapFromQueue(assistant1, doubleAssistant, day, 1);
+      this.assignAssistantTo(assistant2, day, 2);
+
+      return true;
     }
 
     return false;
