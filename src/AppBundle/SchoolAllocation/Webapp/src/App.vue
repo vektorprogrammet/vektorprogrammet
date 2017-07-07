@@ -61,14 +61,14 @@
         this.$http.get('/kontrollpanel/api/assistants')
             .then(response => {
               this.$store.state.assistants = JSON.parse(response.body).map(a => {
-//                console.log(a);
                 return {
                   id: a.id,
                   name: a.name,
                   double: a.doublePosition,
                   selected: false,
                   preferredGroup: a.preferredGroup,
-                  score: a.score,
+                  suitable: a.suitable,
+                  score: a.previousParticipation ? 20 : a.score,
                   monday: a.availability.Monday === 1,
                   tuesday: a.availability.Tuesday === 1,
                   wednesday: a.availability.Wednesday === 1,
