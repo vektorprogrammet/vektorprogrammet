@@ -44,8 +44,8 @@ export class Schedule {
     return this[assistantsKey];
   }
 
-  swapFromQueue(assistantInQueue, assignedAssistant, day, group) {
-    if (assistantInQueue.double) {
+  swapFromQueue(assistantInQueue, assignedAssistant, day, group, double) {
+    if (double) {
       this.assignAssistantTo(assistantInQueue, day, 1);
       this.assignAssistantTo(assistantInQueue, day, 2);
       this._removeAssistantFromList(assignedAssistant, this[day + "AssistantsGroup" + 1]);
@@ -138,6 +138,13 @@ export class Schedule {
   }
 
   isValid() {
+    let valid = true;
+
+    if (this.scheduledAssistantsCount() > this.totalCapacity()) {
+      console.error(this.scheduledAssistantsCount() + " assistants were scheduled, but the capacity is only " + this.totalCapacity());
+      valid = false;
+    }
+
     for (let group = 1; group <= 2; group++) {
       for (let i = 0; i < weekDays.length; i++) {
         const day = weekDays[i];
@@ -147,18 +154,31 @@ export class Schedule {
           const assistant = assistants[j];
 
           const inNonPreferredGroup = assistant.preferredGroup !== null && assistant.preferredGroup !== group;
+          if (inNonPreferredGroup) {
+            console.error("Assistant prefers group " + assistant.preferredGroup + ", but was assigned to group " + group);
+          }
+
           const assignedToMultipleDays = !this._assistantAssignedToOnlyOneDay(assistant);
+          if (assignedToMultipleDays) {
+            console.error("Assistant assigned to multiple days");
+          }
+
           const overBooked = !assistant.double && this._assistantHasDoublePosition(assistant, day);
+          if (overBooked) {
+            console.error("Assistant don't want double position but has been assigned to both groups");
+          }
 
           if (inNonPreferredGroup || assignedToMultipleDays || overBooked) {
-            return false;
+            console.error(assistant);
+            console.error("-----------------------------------------");
+            valid = false;
           }
         }
 
       }
     }
 
-    return true;
+    return valid;
   }
 
   _assistantAssignedToOnlyOneDay(assistant) {
@@ -317,6 +337,16 @@ export class Schedule {
           }
         }
       }
+
+      const doubleAssistants = this.queuedAssistants.filter(a => a.double);
+
+      for (let i = 0; i < doubleAssistants.length; i++) {
+        const assistant = doubleAssistants[i];
+        const assistantSwapped = this._swapDoubleAssistantAsSingle(assistant);
+        if (assistantSwapped) {
+          didSwap = true;
+        }
+      }
     }
   }
 
@@ -333,7 +363,8 @@ export class Schedule {
           return true;
         }
       } else {
-        if (this._trySwap(assistant, day, assistant.preferredGroup)) {
+        const group = assistant.double ? 1 : assistant.preferredGroup;
+        if (this._trySwap(assistant, day, group)) {
           return true;
         }
       }
@@ -341,16 +372,29 @@ export class Schedule {
   }
 
   _trySwap(assistant, day, group) {
-    if (assistant.double) {
-      group = 1;
+    const assistantsToCheck = this.getAssignedAssistants(day, group);
+
+    for (let k = 0; k < assistantsToCheck.length; k++) {
+      const otherAssistant = assistantsToCheck[k];
+      const doubleSwap = assistant.double && this._assistantHasDoublePosition(otherAssistant, day);
+
+      if (assistant.double === this._assistantHasDoublePosition(otherAssistant, day) && assistant.score > otherAssistant.score) {
+        this.swapFromQueue(assistant, otherAssistant, day, group, doubleSwap);
+        return true;
+      }
     }
+
+    return false;
+  }
+
+  _trySwapDoubleAsSingle(assistant, day, group) {
     const assistantsToCheck = this.getAssignedAssistants(day, group);
 
     for (let k = 0; k < assistantsToCheck.length; k++) {
       const otherAssistant = assistantsToCheck[k];
 
-      if (assistant.double === otherAssistant.double && assistant.score > otherAssistant.score) {
-        this.swapFromQueue(assistant, otherAssistant, day, group);
+      if (!this._assistantHasDoublePosition(otherAssistant, day) && assistant.score > otherAssistant.score) {
+        this.swapFromQueue(assistant, otherAssistant, day, group, false);
         return true;
       }
     }
@@ -362,6 +406,10 @@ export class Schedule {
     const assistantsGroup1 = this.queuedAssistants.filter(a => a[day] && !a.double && a.preferredGroup === null || a.preferredGroup === 1);
     const assistantsGroup2 = this.queuedAssistants.filter(a => a[day] && !a.double && a.preferredGroup === null || a.preferredGroup === 2);
 
+    if (assistantsGroup1.length === 0 || assistantsGroup2.length === 0) {
+      return false;
+    }
+
     const assistant1 = assistantsGroup1.reduce((prev, curr) => {
       return prev.score > curr.score ? prev : curr;
     });
@@ -371,13 +419,27 @@ export class Schedule {
     });
 
     if (assistant1.score + assistant2.score > doubleAssistant.score * 2) {
-      this.swapFromQueue(assistant1, doubleAssistant, day, 1);
+      this.swapFromQueue(assistant1, doubleAssistant, day, 1, false);
       this.assignAssistantTo(assistant2, day, 2);
 
       return true;
     }
 
     return false;
+  }
+
+  _swapDoubleAssistantAsSingle(assistant) {
+    const availableDays = weekDays.filter(weekday => assistant[weekday]);
+    for (let j = 0; j < availableDays.length; j++) {
+      const day = availableDays[j];
+      if (this._trySwapDoubleAsSingle(assistant, day, 1)) {
+        return true;
+      }
+
+      if (this._trySwapDoubleAsSingle(assistant, day, 2)) {
+        return true;
+      }
+    }
   }
 
   generateTimeTable() {

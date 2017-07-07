@@ -24,7 +24,6 @@
     },
     created() {
       this.schools = Object.keys(this.timeTable);
-      console.log("created", this.timeTable);
     }
   }
 </script>

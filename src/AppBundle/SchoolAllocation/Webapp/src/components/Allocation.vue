@@ -82,7 +82,6 @@
           if (i < this.numberOfRuns) {
             this.schedule(i + 1);
           } else {
-            const optimizedSchedule = optimizeScore(this.bestSchedule);
             this.updateSchedule(optimizedSchedule);
           }
 

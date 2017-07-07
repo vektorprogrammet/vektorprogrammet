@@ -45,9 +45,6 @@
     created() {
       this.group1 = this.school[1];
       this.group2 = this.school[2];
-//      this.group1Max = this.school[1];
-//      this.group2Max = this.school[2];
-      console.log(this.school);
     },
     computed: {
       group1Max: function () {
