@@ -7,7 +7,6 @@
 
     <v-flex xs12 v-if="!allocating && Object.keys(timeTable).length > 0">
       <time-table :timeTable="timeTable"></time-table>
-      <schedule :scheduleData="bestSchedule"></schedule>
       <br>
       <queue :queue="bestSchedule.queuedAssistants"></queue>
     </v-flex>
@@ -48,17 +47,16 @@
 <script>
   import {mapGetters} from "vuex";
   import ScheduleQueue from './ScheduleQueue.vue';
-  import ScheduleComp from './Schedule.vue';
   import {Schedule} from "../Schedule";
   import {SAOptimize, scheduleGreedily} from "../Schedulers";
 
   export default {
     components: {
-      'queue': ScheduleQueue,
-      'schedule': ScheduleComp
+      'queue': ScheduleQueue
     },
     methods: {
       allocate () {
+        this.progress = 0;
         this.allocating = true;
         this.schedule(0);
       },
@@ -85,7 +83,7 @@
           if (i < this.numberOfRuns) {
             this.schedule(i + 1);
           } else {
-            this.updateSchedule(optimizedSchedule);
+            this.updateSchedule(this.bestSchedule);
           }
 
         })
