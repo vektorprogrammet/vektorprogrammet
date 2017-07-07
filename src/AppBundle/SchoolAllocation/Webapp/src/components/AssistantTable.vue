@@ -30,6 +30,7 @@
           ></v-checkbox>
         </td>
         <td>{{ props.item.name }}</td>
+        <td class="text-xs-right">{{ props.item.suitable }}</td>
         <td class="text-xs-right">{{ props.item.score }}</td>
         <td class="text-xs-right">{{ props.item.double }}</td>
         <td class="text-xs-right">{{ props.item.monday }}</td>
@@ -66,6 +67,7 @@
             left: true,
             value: 'name'
           },
+          {text: 'Passer', value: 'suitable'},
           {text: 'Score', value: 'score'},
           {text: 'Dobbel stilling', value: 'double'},
           {text: 'Mandag', value: 'monday'},
