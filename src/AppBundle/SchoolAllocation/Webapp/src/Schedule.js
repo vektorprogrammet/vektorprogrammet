@@ -513,4 +513,68 @@ export class Schedule {
 
     return timeTable;
   }
+
+  toCSV() {
+    const timeTable = this.generateTimeTable();
+    let csv = '';
+
+    const schools = Object.keys(timeTable);
+
+    for (let i = 0; i < schools.length; i++) {
+      const school = schools[i];
+      const grp1 = timeTable[school][1];
+      const grp2 = timeTable[school][2];
+
+      csv += school.toUpperCase() + "\n";
+      csv += "; Mandag;Tirsdag;Onsdag;Torsdag;Fredag\n";
+
+      csv += "Gruppe 1";
+      csv += this._assistantsInGroupCSV(grp1);
+
+      csv += '\n';
+
+      csv += "Gruppe 2";
+      csv += this._assistantsInGroupCSV(grp2);
+
+      csv += "\n\n-----------------------------------\n";
+
+      csv += '\n\n\n';
+
+    }
+
+    return csv;
+
+  }
+
+  _assistantsInGroupCSV(group) {
+    const N = weekDays.reduce((acc, day) => {
+      if (!group.hasOwnProperty(day)) {
+        return acc;
+      }
+      const assOnDay = group[day].length;
+
+      if (assOnDay > acc) {
+        return assOnDay;
+      }
+
+      return acc;
+    }, 0);
+
+    let csv = "";
+
+    for (let k = 0; k < N; k++) {
+      csv += ';';
+
+      for (let j = 0; j < weekDays.length; j++) {
+        const day = weekDays[j];
+        if (group.hasOwnProperty(day)) {
+          csv += group[day][k].name;
+        }
+        csv += ';';
+      }
+      csv += '\n';
+    }
+
+    return csv;
+  }
 }

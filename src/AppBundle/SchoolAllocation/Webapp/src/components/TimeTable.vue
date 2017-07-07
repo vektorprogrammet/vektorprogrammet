@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>Timeplan</h2>
       <div v-for="school in schools">
         <school :school="timeTable[school]" :name="school"></school>
         <hr>

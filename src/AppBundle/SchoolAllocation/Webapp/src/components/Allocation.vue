@@ -6,6 +6,8 @@
     </v-flex>
 
     <v-flex xs12 v-if="!allocating && Object.keys(timeTable).length > 0">
+      <h2>Timeplan</h2>
+      <v-btn @click.native="downloadCSV" primary light>Last ned CSV<v-icon right light>file_download</v-icon></v-btn>
       <time-table :timeTable="timeTable"></time-table>
       <br>
       <queue :queue="bestSchedule.queuedAssistants"></queue>
@@ -102,9 +104,20 @@
           this.allocating = false;
         }, 750)
       },
+      downloadCSV() {
+        const csv = this.bestSchedule.toCSV();
+        const encodedUri = encodeURI(csv);
+        const link = document.createElement("a");
+        link.style.visibility = 'hidden';
+        link.setAttribute("href", "data:text/csv;charset=utf-8,\uFEFF" + encodedUri);
+        link.setAttribute("download", "timeplan.csv");
+        document.body.appendChild(link);
+
+        link.click();
+      },
       goBack() {
         this.$emit('goBack');
-      }
+      },
     },
 
     computed: mapGetters({
