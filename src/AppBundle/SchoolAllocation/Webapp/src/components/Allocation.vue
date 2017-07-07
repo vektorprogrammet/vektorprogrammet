@@ -48,33 +48,32 @@
   import {mapGetters} from "vuex";
   import ScheduleQueue from './ScheduleQueue.vue';
   import {Schedule} from "../Schedule";
-  import {SAOptimize, scheduleGreedily, optimizeScore, mapScheduledAssistantsToSchools} from "../Schedulers";
+  import {SAOptimize, scheduleGreedily} from "../Schedulers";
 
   export default {
     components: {
       'queue': ScheduleQueue
     },
     methods: {
+      allocate () {
+        this.allocating = true;
+        this.schedule(0);
+      },
       schedule (i) {
         let schedule = new Schedule(this.schools, this.assistants);
         schedule = scheduleGreedily(schedule);
 
         SAOptimize(schedule, result => {
-          const calculatedProgress = Math.round((i + 1) / this.numberOfRuns * 100);
-          this.progress = Math.min(100, calculatedProgress);
           if (result.isOptimal()) {
             this.progress = 100;
-            this.bestSchedule = optimizeScore(result);
-            if (!this.bestSchedule.isValid()) {
-              console.error('Invalid schedule', this.bestSchedule)
-            }
-            this.timeTable = mapScheduledAssistantsToSchools(this.schools, this.bestSchedule);
-            setTimeout(() => {
-              this.allocating = false;
-            }, 750)
+
+            this.updateSchedule(result);
 
             return;
           }
+
+          const calculatedProgress = Math.round((i + 1) / this.numberOfRuns * 100);
+          this.progress = Math.min(100, calculatedProgress);
 
           if (!this.bestSchedule.hasOwnProperty('monday') || result.fitness() > this.bestSchedule.fitness()) {
             this.bestSchedule = result;
@@ -83,20 +82,25 @@
           if (i < this.numberOfRuns) {
             this.schedule(i + 1);
           } else {
-            this.bestSchedule = optimizeScore(this.bestSchedule);
-            if (!this.bestSchedule.isValid()) {
-              console.error('Invalid schedule', this.bestSchedule)
-            }
-            this.timeTable = mapScheduledAssistantsToSchools(this.schools, this.bestSchedule);
-
-            this.allocating = false;
+            const optimizedSchedule = optimizeScore(this.bestSchedule);
+            this.updateSchedule(optimizedSchedule);
           }
 
         })
       },
-      allocate () {
-        this.allocating = true;
-        this.schedule(0);
+      updateSchedule(schedule) {
+        schedule.optimizeScore();
+
+        if (!schedule.isValid()) {
+          console.error('Invalid schedule', schedule)
+        }
+
+        this.bestSchedule = schedule;
+        this.timeTable = schedule.generateTimeTable();
+
+        setTimeout(() => {
+          this.allocating = false;
+        }, 750)
       },
       goBack() {
         this.$emit('goBack');

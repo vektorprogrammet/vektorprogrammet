@@ -108,7 +108,7 @@ export class Schedule {
 
   totalCapacity() {
     return weekDays.reduce((acc, day) => (
-      acc + this[day] * 2 // Group 1 & group 2
+        acc + this[day] * 2 // Group 1 & group 2
     ), 0);
   }
 
@@ -187,109 +187,213 @@ export class Schedule {
     return assistantsInGroup1.indexOf(assistant) !== -1 && assistantsInGroup2.indexOf(assistant) !== -1;
   }
 
-mutate()
-{
-  const clone = this.deepCopy();
-  const group = randomElement([1, 2]);
-  const fromDay = randomElement(weekDays);
-  const assistantsKey = fromDay + "AssistantsGroup" + group;
-  const assistants = this[assistantsKey];
+  mutate() {
+    const clone = this.deepCopy();
+    const group = randomElement([1, 2]);
+    const fromDay = randomElement(weekDays);
+    const assistantsKey = fromDay + "AssistantsGroup" + group;
+    const assistants = this[assistantsKey];
 
-  const length = assistants.length;
-  if (length === 0) {
-    return clone;
-  }
-  const assistant = randomElement(assistants);
-  const availableDays = weekDays.filter(weekday => assistant[weekday] && fromDay !== weekday);
-  if (availableDays.length === 0) {
-    return clone;
-  }
-  const double = assistant.double;
-  const toDay = randomElement(availableDays);
-  if (double) {
-    if (this.hasCapacity(toDay, 1) && (this.hasCapacity(toDay, 2))) {
-      clone.reassignAssistant(assistant, fromDay, toDay, 1, 1);
-      clone.reassignAssistant(assistant, fromDay, toDay, 2, 2);
+    const length = assistants.length;
+    if (length === 0) {
       return clone;
     }
-  } else if (assistant.preferredGroup === group) {
-    if (this.hasCapacity(toDay, group)) {
-      clone.reassignAssistant(assistant, fromDay, toDay, group, group);
+    const assistant = randomElement(assistants);
+    const availableDays = weekDays.filter(weekday => assistant[weekday] && fromDay !== weekday);
+    if (availableDays.length === 0) {
       return clone;
     }
-  } else if (assistant.preferredGroup === null) {
-    const randomGroup = randomElement([1, 2]);
-    if (this.hasCapacity(toDay, randomGroup)) {
-      clone.reassignAssistant(assistant, fromDay, toDay, group, randomGroup);
-      return clone;
+    const double = assistant.double;
+    const toDay = randomElement(availableDays);
+    if (double) {
+      if (this.hasCapacity(toDay, 1) && (this.hasCapacity(toDay, 2))) {
+        clone.reassignAssistant(assistant, fromDay, toDay, 1, 1);
+        clone.reassignAssistant(assistant, fromDay, toDay, 2, 2);
+        return clone;
+      }
+    } else if (assistant.preferredGroup === group) {
+      if (this.hasCapacity(toDay, group)) {
+        clone.reassignAssistant(assistant, fromDay, toDay, group, group);
+        return clone;
+      }
+    } else if (assistant.preferredGroup === null) {
+      const randomGroup = randomElement([1, 2]);
+      if (this.hasCapacity(toDay, randomGroup)) {
+        clone.reassignAssistant(assistant, fromDay, toDay, group, randomGroup);
+        return clone;
+      }
     }
-  }
 
-  return clone;
-}
-
-mutate2()
-{
-  const clone = this.deepCopy();
-  const remainingDays = this.getRemainingDays();
-  if (remainingDays.length === 0) {
     return clone;
   }
-  const toDayKey = randomElement(Object.keys(remainingDays));
-  const toDay = toDayKey.slice(0, -16);
-  const toGroup = toDayKey.substr(toDayKey.length - 1);
-  for (let i = 0; i < busyAssistants.length; i++) {
-    const busyAssistant = busyAssistants[i];
-    const double = busyAssistant.double;
-    if (busyAssistant[toDay]) {
-      if (double) {
-        if (this.hasCapacity(toDay, 1) && this.hasCapacity(toDay, 2)) {
+
+  mutate2() {
+    const clone = this.deepCopy();
+    const remainingDays = this.getRemainingDays();
+    if (remainingDays.length === 0) {
+      return clone;
+    }
+    const toDayKey = randomElement(Object.keys(remainingDays));
+    const toDay = toDayKey.slice(0, -16);
+    const toGroup = toDayKey.substr(toDayKey.length - 1);
+    for (let i = 0; i < busyAssistants.length; i++) {
+      const busyAssistant = busyAssistants[i];
+      const double = busyAssistant.double;
+      if (busyAssistant[toDay]) {
+        if (double) {
+          if (this.hasCapacity(toDay, 1) && this.hasCapacity(toDay, 2)) {
+            const fromDayKey = busyAssistant.assignedDay;
+            const fromGroup = fromDayKey.substr(fromDayKey.length - 1);
+            const fromDay = fromDayKey.slice(0, -16);
+            clone.reassignAssistant(busyAssistant, fromDay, toDay, 1, 1);
+            clone.reassignAssistant(busyAssistant, fromDay, toDay, 2, 2);
+            break;
+          }
+        } else if (busyAssistant.preferredGroup === toGroup) {
           const fromDayKey = busyAssistant.assignedDay;
           const fromGroup = fromDayKey.substr(fromDayKey.length - 1);
           const fromDay = fromDayKey.slice(0, -16);
-          clone.reassignAssistant(busyAssistant, fromDay, toDay, 1, 1);
-          clone.reassignAssistant(busyAssistant, fromDay, toDay, 2, 2);
+          clone.reassignAssistant(busyAssistant, fromDay, toDay, fromGroup, toGroup);
+          break;
+        } else if (busyAssistant.preferredGroup !== toGroup) {
+          continue;
+        } else { // Not double, any group
+          const fromDayKey = busyAssistant.assignedDay;
+          const fromGroup = fromDayKey.substr(fromDayKey.length - 1);
+          const fromDay = fromDayKey.slice(0, -16);
+          clone.reassignAssistant(busyAssistant, fromDay, toDay, fromGroup, toGroup);
           break;
         }
-      } else if (busyAssistant.preferredGroup === toGroup) {
-        const fromDayKey = busyAssistant.assignedDay;
-        const fromGroup = fromDayKey.substr(fromDayKey.length - 1);
-        const fromDay = fromDayKey.slice(0, -16);
-        clone.reassignAssistant(busyAssistant, fromDay, toDay, fromGroup, toGroup);
-        break;
-      } else if (busyAssistant.preferredGroup !== toGroup) {
-        continue;
-      } else { // Not double, any group
-        const fromDayKey = busyAssistant.assignedDay;
-        const fromGroup = fromDayKey.substr(fromDayKey.length - 1);
-        const fromDay = fromDayKey.slice(0, -16);
-        clone.reassignAssistant(busyAssistant, fromDay, toDay, fromGroup, toGroup);
-        break;
+      }
+    }
+    return clone;
+
+  }
+
+  getRemainingDays() {
+    let remainingDays = {};
+
+    for (let i = 0; i < weekDays.length; i++) {
+      const day = weekDays[i];
+      const remaining1 = this[day] - this[day + "AssistantsGroup1"].length;
+      const remaining2 = this[day] - this[day + "AssistantsGroup2"].length;
+
+      if (remaining1 > 0) {
+        remainingDays[day + "AssistantsGroup1"] = remaining1;
+      }
+
+      if (remaining2 > 0) {
+        remainingDays[day + "AssistantsGroup2"] = remaining2;
+      }
+    }
+
+    return remainingDays;
+  }
+
+  optimizeScore() {
+    let didSwap = true;
+    while (didSwap) {
+      didSwap = false;
+      const assistants = this.queuedAssistants;
+      for (let i = 0; i < assistants.length; i++) {
+        const assistant = assistants[i];
+        const assistantSwapped = this._swapAssistant(assistant);
+        if (assistantSwapped) {
+          didSwap = true;
+        }
       }
     }
   }
-  return clone;
 
-}
+  _swapAssistant(assistant) {
+    const availableDays = weekDays.filter(weekday => assistant[weekday]);
+    for (let j = 0; j < availableDays.length; j++) {
+      const day = availableDays[j];
+      if (assistant.preferredGroup === null) {
+        if (this._trySwap(assistant, day, 1)) {
+          return true;
+        }
 
-getRemainingDays()
-{
-  let remainingDays = {};
-
-  for (let i = 0; i < weekDays.length; i++) {
-    const day = weekDays[i];
-    const remaining1 = this[day] - this[day + "AssistantsGroup1"].length;
-    const remaining2 = this[day] - this[day + "AssistantsGroup2"].length;
-
-    if (remaining1 > 0) {
-      remainingDays[day + "AssistantsGroup1"] = remaining1;
-    }
-
-    if (remaining2 > 0) {
-      remainingDays[day + "AssistantsGroup2"] = remaining2;
+        if (this._trySwap(assistant, day, 2)) {
+          return true;
+        }
+      } else {
+        if (this._trySwap(assistant, day, assistant.preferredGroup)) {
+          return true;
+        }
+      }
     }
   }
 
-  return remainingDays;
-}
+  _trySwap(assistant, day, group) {
+    if (assistant.double) {
+      group = 1;
+    }
+    const assistantsToCheck = this.getAssignedAssistants(day, group);
+
+    for (let k = 0; k < assistantsToCheck.length; k++) {
+      const otherAssistant = assistantsToCheck[k];
+
+      if (assistant.double === otherAssistant.double && assistant.score > otherAssistant.score) {
+        this.swapFromQueue(assistant, otherAssistant, day, group);
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  generateTimeTable() {
+    const schedule = this.deepCopy();
+
+    const timeTable = {};
+    for (let i = 0; i < schedule.schools.length; i++) {
+      const school = schedule.schools[i];
+      timeTable[school.name] = {};
+      const schoolTimeTable = {};
+      schoolTimeTable[1] = {};
+      schoolTimeTable[2] = {};
+      for (let j = 0; j < weekDays.length; j++) {
+        const day = weekDays[j];
+        const assistantsNeeded = school[day];
+        if (assistantsNeeded > 0) {
+          const group1 = [];
+          const group2 = [];
+
+          const doubleAssistants = schedule.getAssignedAssistants(day, 1).filter(a => a.double);
+          let N = Math.min(assistantsNeeded - group1.length, doubleAssistants.length);
+          for (let k = 0; k < N; k++) {
+            const assistant = doubleAssistants[k];
+            group1.push(assistant);
+            group2.push(assistant);
+            schedule.removeAssistant(assistant);
+          }
+
+          const assistantsGroup1 = schedule.getAssignedAssistants(day, 1).filter(a => !a.double);
+          const assistantsGroup2 = schedule.getAssignedAssistants(day, 2).filter(a => !a.double);
+
+          N = Math.min(assistantsNeeded - group1.length, assistantsGroup1.length);
+          for (let k = 0; k < N; k++) {
+            const assistant = assistantsGroup1[k];
+            group1.push(assistant);
+            schedule.removeAssistant(assistant);
+          }
+
+          N = Math.min(assistantsNeeded - group2.length, assistantsGroup2.length);
+          for (let k = 0; k < N; k++) {
+            const assistant = assistantsGroup2[k];
+            group2.push(assistant);
+            schedule.removeAssistant(assistant);
+          }
+
+
+          schoolTimeTable[1][day] = group1;
+          schoolTimeTable[2][day] = group2;
+        }
+      }
+      timeTable[school.name] = schoolTimeTable;
+    }
+
+    return timeTable;
+  }
 }
