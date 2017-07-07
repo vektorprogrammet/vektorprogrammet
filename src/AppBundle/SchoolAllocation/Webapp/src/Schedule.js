@@ -418,7 +418,7 @@ export class Schedule {
     const assistantsGroup1 = this.queuedAssistants.filter(a => a[day] && !a.double && (a.preferredGroup === null || a.preferredGroup === 1));
     const assistantsGroup2 = this.queuedAssistants.filter(a => a[day] && !a.double && (a.preferredGroup === null || a.preferredGroup === 2));
 
-    if (assistantsGroup1.length === 0 || assistantsGroup2.length === 0) {
+    if (assistantsGroup1.length === 0) {
       return false;
     }
 
@@ -427,6 +427,10 @@ export class Schedule {
     });
 
     this._removeAssistantFromList(assistant1, assistantsGroup2);
+
+    if (assistantsGroup2.length === 0) {
+      return false;
+    }
 
     const assistant2 = assistantsGroup2.reduce((prev, curr) => {
       return prev.score > curr.score ? prev : curr;
