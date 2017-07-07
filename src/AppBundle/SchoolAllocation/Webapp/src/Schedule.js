@@ -477,7 +477,7 @@ export class Schedule {
           const group1 = [];
           const group2 = [];
 
-          const doubleAssistants = schedule.getAssignedAssistants(day, 1).filter(a => a.double);
+          const doubleAssistants = schedule.getAssignedAssistants(day, 1).filter(a => this._assistantHasDoublePosition(a, day));
           let N = Math.min(assistantsNeeded - group1.length, doubleAssistants.length);
           for (let k = 0; k < N; k++) {
             const assistant = doubleAssistants[k];
@@ -486,8 +486,8 @@ export class Schedule {
             schedule.removeAssistant(assistant);
           }
 
-          const assistantsGroup1 = schedule.getAssignedAssistants(day, 1).filter(a => !a.double);
-          const assistantsGroup2 = schedule.getAssignedAssistants(day, 2).filter(a => !a.double);
+          const assistantsGroup1 = schedule.getAssignedAssistants(day, 1).filter(a => !this._assistantHasDoublePosition(a, day));
+          const assistantsGroup2 = schedule.getAssignedAssistants(day, 2).filter(a => !this._assistantHasDoublePosition(a, day));
 
           N = Math.min(assistantsNeeded - group1.length, assistantsGroup1.length);
           for (let k = 0; k < N; k++) {
