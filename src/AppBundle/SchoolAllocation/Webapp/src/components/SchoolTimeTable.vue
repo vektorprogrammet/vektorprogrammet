@@ -91,6 +91,10 @@
     padding-bottom: 50px;
   }
 
+  th {
+    text-align: left;
+  }
+
   .group-header {
     font-weight: bold;
     text-decoration: underline;

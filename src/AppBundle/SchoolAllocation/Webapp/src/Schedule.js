@@ -48,13 +48,12 @@ export class Schedule {
     if (double) {
       this.assignAssistantTo(assistantInQueue, day, 1);
       this.assignAssistantTo(assistantInQueue, day, 2);
-      this._removeAssistantFromList(assignedAssistant, this[day + "AssistantsGroup" + 1]);
-      this._removeAssistantFromList(assignedAssistant, this[day + "AssistantsGroup" + 2]);
     } else {
       this.assignAssistantTo(assistantInQueue, day, group);
-      this._removeAssistantFromList(assignedAssistant, this[day + "AssistantsGroup" + 1]);
-      this._removeAssistantFromList(assignedAssistant, this[day + "AssistantsGroup" + 2]);
     }
+
+    this._removeAssistantFromList(assignedAssistant, this[day + "AssistantsGroup" + 1]);
+    this._removeAssistantFromList(assignedAssistant, this[day + "AssistantsGroup" + 2]);
     this.queuedAssistants.push(assignedAssistant);
   }
 
@@ -165,7 +164,7 @@ export class Schedule {
 
           const overBooked = !assistant.double && this._assistantHasDoublePosition(assistant, day);
           if (overBooked) {
-            console.error("Assistant don't want double position but has been assigned to both groups");
+            console.error("Assistant doesn't want double position but has been assigned to both groups");
           }
 
           if (inNonPreferredGroup || assignedToMultipleDays || overBooked) {
@@ -315,6 +314,7 @@ export class Schedule {
     let didSwap = true;
 
     while (didSwap) {
+      let valid = this.isValid();
       didSwap = false;
       const assistants = this.queuedAssistants;
 
@@ -324,6 +324,10 @@ export class Schedule {
         if (assistantSwapped) {
           didSwap = true;
         }
+      }
+
+      if (valid && !this.isValid()) {
+        console.error("Failed after first");
       }
 
       for (let i = 0; i < weekDays.length; i++) {
@@ -338,6 +342,10 @@ export class Schedule {
         }
       }
 
+      if (valid && !this.isValid()) {
+        console.error("Failed after second");
+      }
+
       const doubleAssistants = this.queuedAssistants.filter(a => a.double);
 
       for (let i = 0; i < doubleAssistants.length; i++) {
@@ -346,6 +354,10 @@ export class Schedule {
         if (assistantSwapped) {
           didSwap = true;
         }
+      }
+
+      if (valid && !this.isValid()) {
+        console.error("Failed after third");
       }
     }
   }
@@ -372,13 +384,13 @@ export class Schedule {
   }
 
   _trySwap(assistant, day, group) {
-    const assistantsToCheck = this.getAssignedAssistants(day, group);
+    const assistantsToCheck = this.getAssignedAssistants(day, group).filter(a => assistant.double === this._assistantHasDoublePosition(a, day));
 
     for (let k = 0; k < assistantsToCheck.length; k++) {
       const otherAssistant = assistantsToCheck[k];
       const doubleSwap = assistant.double && this._assistantHasDoublePosition(otherAssistant, day);
 
-      if (assistant.double === this._assistantHasDoublePosition(otherAssistant, day) && assistant.score > otherAssistant.score) {
+      if (assistant.score > otherAssistant.score) {
         this.swapFromQueue(assistant, otherAssistant, day, group, doubleSwap);
         return true;
       }
@@ -388,12 +400,12 @@ export class Schedule {
   }
 
   _trySwapDoubleAsSingle(assistant, day, group) {
-    const assistantsToCheck = this.getAssignedAssistants(day, group);
+    const assistantsToCheck = this.getAssignedAssistants(day, group).filter(a => !this._assistantHasDoublePosition(a, day));
 
     for (let k = 0; k < assistantsToCheck.length; k++) {
       const otherAssistant = assistantsToCheck[k];
 
-      if (!this._assistantHasDoublePosition(otherAssistant, day) && assistant.score > otherAssistant.score) {
+      if (assistant.score > otherAssistant.score) {
         this.swapFromQueue(assistant, otherAssistant, day, group, false);
         return true;
       }
@@ -403,8 +415,8 @@ export class Schedule {
   }
 
   _swapDoubleAssistantWithSingles(day, doubleAssistant) {
-    const assistantsGroup1 = this.queuedAssistants.filter(a => a[day] && !a.double && a.preferredGroup === null || a.preferredGroup === 1);
-    const assistantsGroup2 = this.queuedAssistants.filter(a => a[day] && !a.double && a.preferredGroup === null || a.preferredGroup === 2);
+    const assistantsGroup1 = this.queuedAssistants.filter(a => a[day] && !a.double && (a.preferredGroup === null || a.preferredGroup === 1));
+    const assistantsGroup2 = this.queuedAssistants.filter(a => a[day] && !a.double && (a.preferredGroup === null || a.preferredGroup === 2));
 
     if (assistantsGroup1.length === 0 || assistantsGroup2.length === 0) {
       return false;
@@ -413,6 +425,8 @@ export class Schedule {
     const assistant1 = assistantsGroup1.reduce((prev, curr) => {
       return prev.score > curr.score ? prev : curr;
     });
+
+    this._removeAssistantFromList(assistant1, assistantsGroup2);
 
     const assistant2 = assistantsGroup2.reduce((prev, curr) => {
       return prev.score > curr.score ? prev : curr;
