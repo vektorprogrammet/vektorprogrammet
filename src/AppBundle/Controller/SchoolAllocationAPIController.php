@@ -31,46 +31,6 @@ class SchoolAllocationAPIController extends Controller
         return new JsonResponse(json_encode($assistants));
     }
 
-    /**
-     * @param Application[] $applications
-     *
-     * @return Assistant[]
-     */
-    private function generateAssistantsFromApplications($applications)
-    {
-        //Use applications to create Assistant objects for the allocation algorithm
-        $assistants = array();
-        foreach ($applications as $application) {
-            $doublePosition = $application->getDoublePosition();
-            $preferredGroup = null;
-            if ($application->getPreferredGroup() == 'Bolk 1') {
-                $preferredGroup = 1;
-            } elseif ($application->getPreferredGroup() == 'Bolk 2') {
-                $preferredGroup = 2;
-            }
-            if ($doublePosition) {
-                $preferredGroup = null;
-            }
-
-            $availability = array();
-            $availabilityPoints = ['Ikke', 'Bra'];
-            $availability['Monday'] = array_search($application->getMonday(), $availabilityPoints);
-            $availability['Tuesday'] = array_search($application->getTuesday(), $availabilityPoints);
-            $availability['Wednesday'] = array_search($application->getWednesday(), $availabilityPoints);
-            $availability['Thursday'] = array_search($application->getThursday(), $availabilityPoints);
-            $availability['Friday'] = array_search($application->getFriday(), $availabilityPoints);
-
-            $assistant = new Assistant();
-            $assistant->setApplication($application);
-            $assistant->setName($application->getUser()->getFirstName().' '.$application->getUser()->getLastName());
-            $assistant->setDoublePosition($doublePosition);
-            $assistant->setPreferredGroup($preferredGroup);
-            $assistant->setAvailability($availability);
-            $assistants[] = $assistant;
-        }
-
-        return $assistants;
-    }
 
     private function generateSchoolsFromSchoolCapacities($schoolCapacities)
     {
@@ -91,7 +51,7 @@ class SchoolAllocationAPIController extends Controller
             $capacity[1] = $capacityDays;
             $capacity[2] = $capacityDays;
 
-            $school = new School($capacity, $sc->getSchool()->getName());
+            $school = new School($capacity, $sc->getSchool()->getName(), $sc->getId());
             $schools[] = $school;
         }
 
@@ -105,6 +65,7 @@ class SchoolAllocationAPIController extends Controller
         $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
         $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
         $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
+        dump($allCurrentSchoolCapacities);
         $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
 
         // Array for fast lookup on school availability by days
@@ -143,46 +104,6 @@ class SchoolAllocationAPIController extends Controller
         $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
 
         return new JsonResponse(json_encode($schools));
-    }
-
-    public function getAllocatedAssistantsAction()
-    {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-
-        $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
-
-        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
-
-        $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
-        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsBySemester($currentSemester);
-        $assistants = $this->generateAssistantsFromApplications($applications);
-        $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
-        $allocation = new Allocation($schools, $assistants);
-        $result = $allocation->step();
-
-        //Total number of allocations evaluated during optimization
-
-        /*return $this->render('school_admin/school_allocate_result.html.twig', array(
-            'assistants' => $result->getAssistants(),
-        ));*/
-
-        $allocated_assistants = $result->getAssistants();
-        foreach ($allocated_assistants as $assistant) {
-            $availability = $assistant->getAvailability();
-            foreach ($availability as $day => $avail) {
-                switch ($day) {
-                    case 'Monday': $availability['Mandag'] = $avail; break;
-                    case 'Tuesday': $availability['Tirsdag'] = $avail; break;
-                    case 'Wednesday': $availability['Onsdag'] = $avail; break;
-                    case 'Thursday': $availability['Torsdag'] = $avail; break;
-                    case 'Friday': $availability['Fredag'] = $avail; break;
-                }
-                unset($availability[$day]);
-            }
-            $assistant->setAvailability($availability);
-        }
-
-        return new JsonResponse(json_encode($allocated_assistants));
     }
 
     /**
@@ -227,25 +148,4 @@ class SchoolAllocationAPIController extends Controller
         return $assistants;
     }
 
-    public function allocateAssistantsAction(Request $request)
-    {
-        $assistantIds = $request->request->get('assistantIds');
-
-        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findById($assistantIds);
-
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-
-        $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
-
-        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
-
-        $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
-
-        $assistants = $this->generateAssistantsFromApplications($applications);
-        $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
-        $allocation = new Allocation($schools, $assistants);
-        $result = $allocation->step();
-
-        return new JsonResponse($result->getAssistants());
-    }
 }

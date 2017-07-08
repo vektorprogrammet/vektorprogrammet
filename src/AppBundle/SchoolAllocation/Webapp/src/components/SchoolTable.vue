@@ -23,6 +23,7 @@
       <td class="text-xs-right">{{ props.item.wednesday }}</td>
       <td class="text-xs-right">{{ props.item.thursday }}</td>
       <td class="text-xs-right">{{ props.item.friday }}</td>
+      <td class="text-xs-right"><a :href="'/kontrollpanel/skole/capacity/' + props.item.id"><v-icon dark>edit</v-icon></a></td>
     </template>
   </v-data-table>
 </template>
@@ -55,8 +56,15 @@
           {text: 'Onsdag', value: 'wednesday'},
           {text: 'Torsdag', value: 'thursday'},
           {text: 'Fredag', value: 'friday'},
+          {text: '', value: ''},
         ]
       }
     }
   }
 </script>
+
+<style scoped>
+  a {
+    text-decoration: none;
+  }
+</style>

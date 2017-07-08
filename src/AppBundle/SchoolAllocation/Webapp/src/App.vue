@@ -15,12 +15,14 @@
           </v-stepper-header>
           <v-stepper-content step="1">
             <school-table></school-table>
-            <v-btn @click.native="goToStep(2)" primary light>Neste &gt;</v-btn>
+            <a class="add-school" href="/kontrollpanel/skole/capacity"><v-btn small success light>Legg til skole</v-btn></a>
+            <br>
+            <v-btn class="next" @click.native="goToStep(2)" primary light>Neste &gt;</v-btn>
           </v-stepper-content>
           <v-stepper-content step="2">
             <assistant-table></assistant-table>
             <v-btn @click.native="goToStep(1)" dark>&lt; Tilbake</v-btn>
-            <v-btn @click.native="goToStep(3)" primary light>Neste &gt;</v-btn>
+            <v-btn class="next" @click.native="goToStep(3)" primary light>Neste &gt;</v-btn>
           </v-stepper-content>
           <v-stepper-content step="3">
             <allocation></allocation>
@@ -83,6 +85,7 @@
             .then(response => {
               this.$store.state.schools = JSON.parse(response.body).map(s => {
                 return {
+                  id: s.id,
                   name: s.name,
                   selected: false,
                   monday: s.capacity['1'].Monday,
@@ -100,4 +103,13 @@
 
 <style lang="stylus">
   @import './stylus/main'
+
+  .add-school
+    text-decoration: none
+    margin-top: 25px
+    display: block
+    text-align: center;
+
+  .next
+    float: right;
 </style>

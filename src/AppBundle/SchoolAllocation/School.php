@@ -4,6 +4,11 @@ namespace AppBundle\SchoolAllocation;
 
 class School implements \JsonSerializable
 {
+	/**
+	 * @var int
+	 */
+	private $id;
+
     /**
      * @var string
      */
@@ -18,16 +23,18 @@ class School implements \JsonSerializable
      */
     private $capacity;
 
-    /**
-     * School constructor.
-     *
-     * @param array capacity
-     * @param string name
-     */
-    public function __construct($capacity, $name)
+	/**
+	 * School constructor.
+	 *
+	 * @param $capacity
+	 * @param $name
+	 * @param $id
+	 */
+    public function __construct($capacity, $name, $id)
     {
         $this->capacity = $capacity;
         $this->name = $name;
+        $this->id = $id;
     }
 
     /**
@@ -104,6 +111,7 @@ class School implements \JsonSerializable
     public function jsonSerialize()
     {
         return array(
+            'id' => $this->id,
             'name' => $this->name,
             'capacity' => $this->capacity,
         );

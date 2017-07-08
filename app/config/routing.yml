@@ -846,38 +846,9 @@ school_allocation:
   defaults: { _controller: AppBundle:SchoolAllocation:showVue }
   methods: [GET]
 
-allocate_edit:
-  path: /kontrollpanel/skole/fordeling/endre
-  defaults: { _controller: AppBundle:SchoolAllocation:edit }
-  methods: [GET, POST]
-
-allocate_create:
-  path: /kontrollpanel/skole/fordeling/opprett
-  defaults: { _controller: AppBundle:SchoolAllocation:create }
-  methods: [GET, POST]
-
-school_allocation_allocate:
-  path: /kontrollpanel/skole/fordeling/fordel
-  defaults: { _controller: AppBundle:SchoolAllocation:allocate }
-  methods: [GET]
-
-school_allocation_processing:
-  path: /kontrollpanel/skole/fordeling/processing
-  defaults: { _controller: AppBundle:SchoolAllocationProcessing:index }
-
 school_allocation_api_assistants:
   path: /kontrollpanel/api/assistants
   defaults: { _controller: AppBundle:SchoolAllocationAPI:getAssistants }
-  methods: [GET]
-
-school_allocation_api_allocated_assistants:
-  path: /kontrollpanel/api/allocated_assistants
-  defaults: { _controller: AppBundle:SchoolAllocationAPI:getAllocatedAssistants }
-  methods: [GET]
-
-school_allocation_api_schools_and_days:
-  path: /kontrollpanel/api/schools_and_days
-  defaults: { _controller: AppBundle:SchoolAllocationAPI:generateSchoolsFromSchoolCapacities }
   methods: [GET]
 
 school_allocation_api_schools:
@@ -885,10 +856,17 @@ school_allocation_api_schools:
   defaults: { _controller: AppBundle:SchoolAllocationAPI:generateAllSchools }
   methods: [GET]
 
-school_allocation_api_allocate_assistants:
-  path: /kontrollpanel/api/allocate
-  defaults: { _controller: AppBundle:SchoolAllocationAPI:allocateAssistants }
-  methods: [POST]
+school_capacity_create:
+    path: /kontrollpanel/skole/capacity/
+    defaults: { _controller: AppBundle:SchoolAllocation:create }
+    methods: [GET, POST]
+
+school_capacity_edit:
+    path: /kontrollpanel/skole/capacity/{id}
+    defaults: { _controller: AppBundle:SchoolAllocation:edit }
+    methods: [GET, POST]
+    requirements:
+        id: \d+
 
 ##########################################
 #              Interview                 #
