@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\SchoolAllocation;
+namespace AppBundle\AssistantScheduling;
 
 use AppBundle\Entity\Application;
 

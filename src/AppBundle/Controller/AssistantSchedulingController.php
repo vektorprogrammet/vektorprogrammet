@@ -3,8 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Application;
-use AppBundle\SchoolAllocation\Assistant;
-use AppBundle\SchoolAllocation\School;
+use AppBundle\AssistantScheduling\Assistant;
+use AppBundle\AssistantScheduling\School;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

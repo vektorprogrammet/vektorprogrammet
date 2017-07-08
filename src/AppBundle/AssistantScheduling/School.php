@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\SchoolAllocation;
+namespace AppBundle\AssistantScheduling;
 
 class School implements \JsonSerializable
 {

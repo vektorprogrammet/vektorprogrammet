@@ -14,8 +14,8 @@ var exec = require('child_process').exec;
 var path = {
     dist: 'www/',
     src: 'app/Resources/assets/',
-    allocation: {
-        src: 'src/AppBundle/SchoolAllocation/Webapp'
+    scheduling: {
+        src: 'src/AppBundle/AssistantScheduling/Webapp'
     }
 };
 
@@ -123,35 +123,35 @@ gulp.task('vendor', function(){
         .pipe(gulp.dest('www/vendor/ckeditor/'));
 });
 
-gulp.task('buildAllocationApp', function (cb) {
-    exec('cd '+path.allocation.src+' && npm run build:dev', function (err, stdout, stderr) {
+gulp.task('buildAssistantSchedulingApp', function (cb) {
+    exec('cd '+path.scheduling.src+' && npm run build:dev', function (err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
         cb(err);
     })
 });
 
-gulp.task('allocationStaticFiles', ['buildAllocationApp'], function () {
-    gulp.src(path.allocation.src + '/dist/build.js')
-        .pipe(gulp.dest('www/js/allocation'));
-    gulp.src(path.allocation.src + '/dist/build.js.map')
-        .pipe(gulp.dest('www/js/allocation'));
+gulp.task('assistantSchedulingStaticFiles', ['buildAssistantSchedulingApp'], function () {
+    gulp.src(path.scheduling.src + '/dist/build.js')
+        .pipe(gulp.dest('www/js/scheduling'));
+    gulp.src(path.scheduling.src + '/dist/build.js.map')
+        .pipe(gulp.dest('www/js/scheduling'));
 });
 
 
 gulp.task('watch', function () {
     gulp.watch(path.src + 'scss/**/*.scss', ['stylesDev']);
     gulp.watch(path.src + 'js/**/*.js', ['scriptsDev']);
-    gulp.watch(path.allocation.src + '/**/*.vue', ['allocationStaticFiles']);
+    gulp.watch(path.scheduling.src + '/**/*.vue', ['assistantSchedulingStaticFiles']);
     gulp.watch(path.src + 'images/*', ['imagesDev']);
 });
 
-gulp.task('watch:allocation', function () {
-    gulp.watch(path.allocation.src + '/**/*.vue', ['allocationStaticFiles']);
-    gulp.watch(path.allocation.src + '/src/**/*.js', ['allocationStaticFiles']);
+gulp.task('watch:scheduling', function () {
+    gulp.watch(path.scheduling.src + '/**/*.vue', ['assistantSchedulingStaticFiles']);
+    gulp.watch(path.scheduling.src + '/src/**/*.js', ['assistantSchedulingStaticFiles']);
 });
 
 
-gulp.task('build:prod', ['allocationStaticFiles','stylesProd', 'scriptsProd', 'imagesProd', 'files', 'icons', 'vendor']);
-gulp.task('build:dev', ['allocationStaticFiles','stylesDev', 'scriptsDev', 'imagesDev', 'files', 'icons', 'vendor']);
+gulp.task('build:prod', ['assistantSchedulingStaticFiles','stylesProd', 'scriptsProd', 'imagesProd', 'files', 'icons', 'vendor']);
+gulp.task('build:dev', ['assistantSchedulingStaticFiles','stylesDev', 'scriptsDev', 'imagesDev', 'files', 'icons', 'vendor']);
 gulp.task('default', ['build:dev', 'watch']);
