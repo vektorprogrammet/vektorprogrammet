@@ -26,7 +26,6 @@
     "gulp-uglify": "^1.5.1"
   },
   "scripts": {
-    "install:all": "npm install && cd src/AppBundle/Webapp && npm install && cd -",
     "test": "./bin/phpunit --configuration app/phpunit.xml.dist",
     "test:win": ".\\bin\\phpunit --configuration app/phpunit.xml.dist",
     "setup": "php ./composer.phar install -n && npm run install:all && npm run build:dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:schema:update --force --env=dev && php app/console doctrine:fixtures:load --env=dev -n",
@@ -37,9 +36,10 @@
     "db:reload": "php app/console doctrine:fixtures:load --env=dev",
     "db:update": "php app/console doctrine:schema:update --force --env=dev",
     "build": "gulp build:dev",
+    "compress-images": "gulp compressImages",
     "build:scheduling": "gulp assistantSchedulingStaticFiles",
-    "build:dev": "npm run build:allocation && gulp build:dev",
-    "build:prod": "npm run build:allocation && gulp build:prod",
+    "build:dev": "npm run build:scheduling && gulp build:dev",
+    "build:prod": "npm run build:scheduling && gulp build:prod",
     "code-style": "./bin/php-cs-fixer fix src/ --dry-run --diff -vv",
     "code-style:win": ".\\bin\\php-cs-fixer fix src/ --dry-run --diff -vv",
     "cs": "./bin/php-cs-fixer fix src/ -vv",
