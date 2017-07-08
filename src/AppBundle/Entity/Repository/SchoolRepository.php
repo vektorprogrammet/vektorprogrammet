@@ -51,11 +51,12 @@ class SchoolRepository extends EntityRepository
         return $schools;
     }
 
-    public function findSchoolsWithoutCapacity(Department $department) {
-    	return $this->createQueryBuilder('s')
-		    ->leftJoin('s.capacities', 'capacities')
-		    ->where('capacities.semester != :semester')
-		    ->setParameter('semester', $department->getCurrentSemester())
-		    ->orWhere('capacities.semester IS NULL');
+    public function findSchoolsWithoutCapacity(Department $department)
+    {
+        return $this->createQueryBuilder('s')
+            ->leftJoin('s.capacities', 'capacities')
+            ->where('capacities.semester != :semester')
+            ->setParameter('semester', $department->getCurrentSemester())
+            ->orWhere('capacities.semester IS NULL');
     }
 }

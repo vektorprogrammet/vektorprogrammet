@@ -20,5 +20,4 @@ class SchoolCapacityRepository extends EntityRepository
 
         return $schoolCapacities;
     }
-
 }

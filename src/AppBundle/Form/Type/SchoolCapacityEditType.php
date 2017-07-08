@@ -16,7 +16,7 @@ class SchoolCapacityEditType extends AbstractType
             ->add('wednesday', 'integer')
             ->add('thursday', 'integer')
             ->add('friday', 'integer')
-	        ;
+            ;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

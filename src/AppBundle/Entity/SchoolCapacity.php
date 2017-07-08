@@ -11,14 +11,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class SchoolCapacity
 {
-	/**
-	 * @ORM\Id
-	 * @ORM\Column(type="integer")
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	protected $id;
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
 
-	/**
+    /**
      * @ORM\ManyToOne(targetEntity="School", inversedBy="capacities")
      * @ORM\JoinColumn(name="school_id", referencedColumnName="id")
      */

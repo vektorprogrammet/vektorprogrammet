@@ -225,12 +225,13 @@ class Interview
         return $this->interviewScore;
     }
 
-    public function getScore() {
-    	if ($this->interviewScore === null) {
-    		return 0;
-	    }
+    public function getScore()
+    {
+        if ($this->interviewScore === null) {
+            return 0;
+        }
 
-	    return $this->interviewScore->getSum();
+        return $this->interviewScore->getSum();
     }
 
     /**

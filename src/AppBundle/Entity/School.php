@@ -61,10 +61,10 @@ class School
      */
     private $international;
 
-	/**
-	 * @var SchoolCapacity[]
-	 * @ORM\OneToMany(targetEntity="SchoolCapacity", mappedBy="school")
-	 */
+    /**
+     * @var SchoolCapacity[]
+     * @ORM\OneToMany(targetEntity="SchoolCapacity", mappedBy="school")
+     */
     private $capacities;
 
     public function __construct()
@@ -267,10 +267,11 @@ class School
         return $this->assistantHistories;
     }
 
-	/**
-	 * @return SchoolCapacity[]
-	 */
-	public function getCapacities(): array {
-		return $this->capacities;
-	}
+    /**
+     * @return SchoolCapacity[]
+     */
+    public function getCapacities(): array
+    {
+        return $this->capacities;
+    }
 }
