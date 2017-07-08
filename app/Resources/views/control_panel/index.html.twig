@@ -6,9 +6,6 @@
             {{ render(controller('AppBundle:ControlPanel:showSBS')) }}
         </div>
         <div class="row">
-            <h1><a href="{{ path('school_allocation') }}">SKOLEFORDELING</a></h1>
-        </div>
-        <div class="row">
             <h3>Artikkel</h3>
 
             <div class="small-4 medium-3 large-2 columns">
@@ -245,6 +242,17 @@
                             <i class="fa fa-sticky-note-o fa-3x"></i>
 
                             <p>Attest</p>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+            {% if is_granted_team_leader() %}
+                <div class="small-4 medium-3 large-2 columns">
+                    <div class="control-panel-item">
+                        <a href="{{ path('school_allocation') }}">
+                            <i class="fa fa-calendar fa-3x"></i>
+
+                            <p>Timeplan</p>
                         </a>
                     </div>
                 </div>

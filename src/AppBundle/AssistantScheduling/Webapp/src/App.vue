@@ -2,6 +2,10 @@
   <v-app>
     <v-toolbar>
       <v-toolbar-title v-text="title"></v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items>
+        <a class="home-link" :href="'/kontrollpanel'">Tilbake til kontrollpanelet</a>
+      </v-toolbar-items>
     </v-toolbar>
     <main>
       <v-container>
@@ -11,7 +15,7 @@
             <v-divider></v-divider>
             <v-stepper-step step="2" editable>Velg assistenter</v-stepper-step>
             <v-divider></v-divider>
-            <v-stepper-step step="3" editable>Fordel!</v-stepper-step>
+            <v-stepper-step step="3" editable>Generer!</v-stepper-step>
           </v-stepper-header>
           <v-stepper-content step="1">
             <school-table></school-table>
@@ -25,7 +29,7 @@
             <v-btn class="next" @click.native="goToStep(3)" primary light>Neste &gt;</v-btn>
           </v-stepper-content>
           <v-stepper-content step="3">
-            <allocation></allocation>
+            <scheduling></scheduling>
             <v-btn @click.native="goToStep(2)" dark>&lt; Tilbake</v-btn>
           </v-stepper-content>
         </v-stepper>
@@ -37,17 +41,17 @@
 <script>
   import SchoolTable from './components/SchoolTable.vue'
   import AssistantTable from './components/AssistantTable.vue'
-  import Allocation from './components/Allocation.vue'
+  import Scheduling from './components/Scheduling.vue'
 
   export default {
     components: {
       'school-table': SchoolTable,
       'assistant-table': AssistantTable,
-      'allocation': Allocation,
+      'scheduling': Scheduling,
     },
     data() {
       return {
-        title: 'Vektorprogrammet - Skolefordeling',
+        title: 'Vektorprogrammet - Timeplangenerator',
         stepper: 1
       }
     },
@@ -103,6 +107,13 @@
 
 <style lang="stylus">
   @import './stylus/main'
+
+  .home-link, .home-link:active, .home-link:visited
+    color: #fff
+    text-decoration none
+
+  .home-link:hover
+    text-decoration: underline
 
   .add-school
     text-decoration: none

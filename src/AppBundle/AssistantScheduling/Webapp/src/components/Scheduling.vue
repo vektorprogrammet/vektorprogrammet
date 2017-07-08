@@ -2,7 +2,8 @@
   <v-layout row wrap>
 
     <v-flex xs12 sm6 offset-sm3 v-show="!allocating && !bestSchedule.hasOwnProperty('monday')">
-      <h4>{{schools.length}} skoler valgt. {{assistants.length}} assistenter valgt.</h4>
+      <h5>{{schools.length}} skoler valgt</h5>
+      <h5>{{assistants.length}} assistenter valgt</h5>
     </v-flex>
 
     <v-flex xs12 v-if="!allocating && Object.keys(timeTable).length > 0">
@@ -15,14 +16,14 @@
 
     <v-flex xs12 class="status">
 
-      <v-flex v-show="!allocating" xs12 sm6 offset-sm3>
+      <!--<v-flex v-show="!allocating" xs12 sm6 offset-sm3>
         <label> Maximum number of runs</label>
         <v-slider v-model="numberOfRuns" dark thumb-label step="2"></v-slider>
         <p>{{numberOfRuns}}</p>
-      </v-flex>
+      </v-flex>-->
 
       <br>
-      <v-btn v-show="!allocating" @click.native="allocate" primary light>Fordel</v-btn>
+      <v-btn v-show="!allocating" @click.native="allocate" primary light>Generer timeplan</v-btn>
       <div class="text-center" v-show="allocating">
         <p>Fordeling pågår. Dette kan ta noen minutter...</p>
         <br>
@@ -130,7 +131,7 @@
         progress: 0,
         showMessage: false,
         bestSchedule: {},
-        numberOfRuns: 50,
+        numberOfRuns: 100,
         timeTable: {}
       }
     }
@@ -138,9 +139,9 @@
 </script>
 
 <style lang="stylus" scoped>
-  h4
+  h5
     text-align: center;
   .status
-    margin-top: 100px
+    margin-top: 30px
     text-align: center
 </style>
