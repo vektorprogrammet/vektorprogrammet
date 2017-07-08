@@ -53,10 +53,18 @@ class SchoolRepository extends EntityRepository
 
     public function findSchoolsWithoutCapacity(Department $department)
     {
-        return $this->createQueryBuilder('s')
-            ->leftJoin('s.capacities', 'capacities')
-            ->where('capacities.semester != :semester')
-            ->setParameter('semester', $department->getCurrentSemester())
-            ->orWhere('capacities.semester IS NULL');
+    	$qb = $this->_em->createQueryBuilder();
+    	$exclude = $qb
+		    ->select('IDENTITY(capacity.school)')
+		    ->from('AppBundle:SchoolCapacity', 'capacity')
+		    ->where('capacity.semester = :semester');
+
+    	return $this->createQueryBuilder('school')
+		    ->select('school')
+		    ->join('school.departments', 'departments')
+		    ->where('departments = :department')
+		    ->setParameter('department', $department)
+		    ->setParameter('semester', $department->getCurrentSemester())
+	        ->andWhere($qb->expr()->notIn('school.id', $exclude->getDQL()));
     }
 }

@@ -17,11 +17,9 @@ class AssistantSchedulingController extends Controller
 
     public function getAssistantsAction()
     {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $user = $this->getUser();
 
-        $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
-
-        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
+        $currentSemester = $user->getDepartment()->getCurrentSemester();
         $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsBySemester($currentSemester);
 
         $assistants = $this->getAssistantAvailableDays($applications);
@@ -87,9 +85,6 @@ class AssistantSchedulingController extends Controller
         //Use schoolCapacities to create School objects for the SA-Algorithm
         $schools = array();
         foreach ($schoolCapacities as $sc) {
-            if ($sc->getMonday() == 0 && $sc->getTuesday() == 0 && $sc->getWednesday() == 0 && $sc->getThursday() == 0 && $sc->getFriday() == 0) {
-                continue;
-            }
             $capacityDays = array();
             $capacityDays['Monday'] = $sc->getMonday();
             $capacityDays['Tuesday'] = $sc->getTuesday();
