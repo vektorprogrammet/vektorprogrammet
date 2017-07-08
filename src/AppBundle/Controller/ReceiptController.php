@@ -2,7 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Event\ReceiptCreatedEvent;
 use AppBundle\Form\Type\ReceiptType;
+use AppBundle\Role\Roles;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Receipt;
@@ -13,10 +15,6 @@ class ReceiptController extends Controller
 {
     public function showAction()
     {
-        $department = $this->getUser()->getDepartment();
-        //$active_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findActiveByDepartment($department);
-        //$inactive_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findInactiveByDepartment($department);
-
         $usersWithActiveReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithActiveReceipts();
         $usersWithInactiveReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithInactiveReceipts();
 
@@ -61,6 +59,8 @@ class ReceiptController extends Controller
             $em->persist($receipt);
             $em->flush();
 
+            $this->get('event_dispatcher')->dispatch(ReceiptCreatedEvent::NAME, new ReceiptCreatedEvent($receipt));
+
             return $this->redirectToRoute('receipt_create');
         }
 
@@ -72,55 +72,15 @@ class ReceiptController extends Controller
         ));
     }
 
-    public function deleteAdminAction(Receipt $receipt)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($receipt);
-        $em->flush();
-
-        return $this->redirectToRoute('receipts_show');
-    }
-
-    public function editAdminAction(Request $request, Receipt $receipt)
-    {
-        return $this->performEditAndRedirect($request, $receipt, 'receipts_show');
-    }
-
-    public function finishAdminAction(Receipt $receipt)
-    {
-        $receipt->setActive(false);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($receipt);
-        $em->flush();
-
-        // Send email
-        $emailSender = $this->get('app.email_sender');
-        $emailSender->sendPaidReceiptConfirmation($receipt);
-
-        return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
-    }
-
-    public function deleteAction(Receipt $receipt)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($receipt);
-        $em->flush();
-
-        return $this->redirectToRoute('receipt_create');
-    }
-
     public function editAction(Request $request, Receipt $receipt)
     {
-        if ($this->getUser() != $receipt->getUser()) {
+        $user = $this->getUser();
+        $isTeamLeader = $this->get('app.roles')->userIsGranted($user, Roles::TEAM_LEADER);
+
+        if (!$isTeamLeader && $user !== $receipt->getUser()) {
             throw new AccessDeniedHttpException();
         }
 
-        return $this->performEditAndRedirect($request, $receipt, 'receipt_create');
-    }
-
-    public function performEditAndRedirect(Request $request, Receipt $receipt, string $redirectRoute)
-    {
         $form = $this->createForm(ReceiptType::class, $receipt, array(
             'required' => false,
         ));
@@ -141,12 +101,47 @@ class ReceiptController extends Controller
             $em->persist($receipt);
             $em->flush();
 
-            return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
+            if ($user === $receipt->getUser()) {
+                return $this->redirectToRoute('receipt_create');
+            } else {
+                return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
+            }
         }
 
         return $this->render('receipt_admin/edit_receipt.twig', array(
             'form' => $form->createView(),
             'receipt' => $receipt,
         ));
+    }
+
+    public function finishAdminAction(Receipt $receipt)
+    {
+        $receipt->setActive(false);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($receipt);
+        $em->flush();
+
+        // Send email
+        $emailSender = $this->get('app.email_sender');
+        $emailSender->sendPaidReceiptConfirmation($receipt);
+
+        return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
+    }
+
+    public function deleteAction(Request $request, Receipt $receipt)
+    {
+        $user = $this->getUser();
+        $isTeamLeader = $this->get('app.roles')->userIsGranted($user, Roles::TEAM_LEADER);
+
+        if (!$isTeamLeader && $user !== $receipt->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($receipt);
+        $em->flush();
+
+        return $this->redirect($request->headers->get('referer'));
     }
 }

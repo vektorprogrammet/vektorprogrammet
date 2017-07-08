@@ -581,20 +581,6 @@ receipts_show:
   defaults: {_controller: AppBundle:Receipt:show }
   methods: [GET]
 
-receipts_delete:
-  path: /kontrollpanel/utlegg/slett/{receipt}
-  defaults: { _controller: AppBundle:Receipt:deleteAdmin }
-  methods: [GET]
-  requirements:
-    receipt: \d+
-
-receipts_edit:
-  path: /kontrollpanel/utlegg/rediger/{receipt}
-  defaults: { _controller: AppBundle:Receipt:editAdmin }
-  methods: [GET, POST]
-  requirements:
-    receipt: \d+
-
 receipts_finish:
   path: /kontrollpanel/utlegg/ferdig/{receipt}
   defaults: { _controller: AppBundle:Receipt:finishAdmin }
@@ -614,14 +600,14 @@ receipt_create:
   defaults: {_controller: AppBundle:Receipt:create }
   methods: [GET, POST]
 
-receipt_edit_individual:
+receipt_edit:
   path: /utlegg/rediger/{receipt}
   defaults: {_controller: AppBundle:Receipt:edit }
   methods: [GET, POST]
   requirements:
     receipt: \d+
 
-receipt_delete_individual:
+receipt_delete:
   path: /utlegg/slett/{receipt}
   defaults: { _controller: AppBundle:Receipt:delete }
   methods: [GET]
