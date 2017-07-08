@@ -843,27 +843,27 @@ schooladmin_show_specific_school:
 
 school_allocation:
   path: /kontrollpanel/skole/fordeling/
-  defaults: { _controller: AppBundle:SchoolAllocation:showVue }
+  defaults: { _controller: AppBundle:AssistantScheduling:index }
   methods: [GET]
 
 school_allocation_api_assistants:
   path: /kontrollpanel/api/assistants
-  defaults: { _controller: AppBundle:SchoolAllocationAPI:getAssistants }
+  defaults: { _controller: AppBundle:AssistantScheduling:getAssistants }
   methods: [GET]
 
 school_allocation_api_schools:
   path: /kontrollpanel/api/schools
-  defaults: { _controller: AppBundle:SchoolAllocationAPI:generateAllSchools }
+  defaults: { _controller: AppBundle:AssistantScheduling:getSchools }
   methods: [GET]
 
 school_capacity_create:
     path: /kontrollpanel/skole/capacity/
-    defaults: { _controller: AppBundle:SchoolAllocation:create }
+    defaults: { _controller: AppBundle:SchoolCapacity:create }
     methods: [GET, POST]
 
 school_capacity_edit:
     path: /kontrollpanel/skole/capacity/{id}
-    defaults: { _controller: AppBundle:SchoolAllocation:edit }
+    defaults: { _controller: AppBundle:SchoolCapacity:edit }
     methods: [GET, POST]
     requirements:
         id: \d+
