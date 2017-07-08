@@ -57,18 +57,5 @@ class SchoolRepository extends EntityRepository
 		    ->where('capacities.semester != :semester')
 		    ->setParameter('semester', $department->getCurrentSemester())
 		    ->orWhere('capacities.semester IS NULL');
-    	$qb = $this->createQueryBuilder('s');
-    	$qb2 = $this->_em->createQueryBuilder();
-
-    	$schoolsWithCapacities = $qb2
-		    ->select('capacity.school')
-		    ->from('AppBundle:SchoolCapacity', 'capacity')
-		    ->where('capacity.semester = :semester')
-		    ->setParameter('semester', $department->getCurrentSemester());
-
-    	return $qb
-		    ->select('s')
-		    ->where($qb->expr()->notIn('s.id', $schoolsWithCapacities->getDQL()));
-
     }
 }

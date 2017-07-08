@@ -557,7 +557,6 @@ export class Schedule {
       for (let j = 0; j < weekDays.length; j++) {
         const day = weekDays[j];
         if (group.hasOwnProperty(day) && group[day].length > k) {
-          console.log(group[day], k);
           csv += group[day][k].name;
         }
         csv += ';';

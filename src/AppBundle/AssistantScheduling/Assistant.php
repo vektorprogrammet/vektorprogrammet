@@ -6,11 +6,6 @@ use AppBundle\Entity\Application;
 
 class Assistant implements \JsonSerializable
 {
-    public static $idCounter;
-    /**
-     * @var int
-     */
-    private $id;
     /**
      * @var string
      */
