@@ -838,11 +838,11 @@ schooladmin_show_specific_school:
     id: \d+
 
 ##########################################
-#              SchoolAllocation          #
+#           AssistantScheduling          #
 ##########################################
 
 school_allocation:
-  path: /kontrollpanel/skole/fordeling/
+  path: /kontrollpanel/skole/timeplan/
   defaults: { _controller: AppBundle:AssistantScheduling:index }
   methods: [GET]
 
