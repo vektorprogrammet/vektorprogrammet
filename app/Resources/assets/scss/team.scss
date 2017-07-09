@@ -1,0 +1,78 @@
+.team {
+  margin-top: 50px;
+  .intro {
+    h1 {
+      text-align: center;
+    }
+    p {
+      font-size: 19px;
+    }
+  }
+
+  section {
+    margin: 125px auto;
+  }
+
+  .team-cards {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .team-card {
+    margin: 10px;
+
+    .mdl-card {
+      max-width: 314px;
+    }
+
+    .team-card__header {
+      display: flex;
+      flex-direction: column;
+
+      h2 {
+        align-self: flex-start;
+      }
+    }
+
+    .profiles {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      .profile-photo {
+        max-width: 100%;
+      }
+
+      .img-wrapper {
+        width: 25%;
+        margin: 0;
+      }
+    }
+
+    .team-card__actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+  }
+
+  .application-chip {
+    height: 26px;
+    line-height: 26px;
+    border-radius: 13px;
+    text-align: right;
+    background-color: #f7f7f7;
+
+    .application-chip__symbol {
+      width: 26px;
+      height: 26px;
+      line-height: 26px;
+    }
+
+    .application-chip__text {
+      line-height: 26px;
+    }
+  }
+
+}

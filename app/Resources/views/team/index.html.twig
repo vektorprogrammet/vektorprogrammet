@@ -1,5 +1,44 @@
 {% extends 'base_new.html.twig' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/team.css') }}">
+{% endblock %}
+
 {% block body %}
-    Team :D
+    <div class="team">
+        <header class="intro content-centered">
+            <h1>Team</h1>
+            <p>Vektorassistent er et frivillig verv der du reiser til en ungdomsskole én dag i uka for å hjelpe til som
+                lærerassistent i matematikk. En stilling som vektorassistent varer i 4 eller 8 uker, og du kan selv
+                velge hvilken ukedag som passer best for deg. </p>
+        </header>
+
+        <section class="vektor-testemonial mdl-shadow--4dp">
+            <p class="testemonial-content">"Dette er en quote fra et teammedlem
+                som synes Vektorprogrammet er best!"</p>
+            <p class="testemonial-author">Kari, rekruttering 2016</p>
+        </section>
+
+        <section class="teams">
+            <div class="mdl-tabs mdl-js-tabs">
+                <div class="mdl-tabs__tab-bar">
+                    {% for department in get_departments() %}
+                        <a href="#{{ department }}"
+                           class="mdl-tabs__tab {{ loop.first ? 'is-active' : '' }}">{{ department.city }}</a>
+                    {% endfor %}
+                </div>
+                {% for department in get_departments() %}
+                    <div class="vektor-team mdl-tabs__panel {{ loop.first ? 'is-active' : '' }}" id="{{ department }}">
+                        <div class="team-cards">
+
+                            {% for team in department.teams %}
+                                {% include 'team/team-card.html.twig' %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </section>
+    </div>
 {% endblock %}
