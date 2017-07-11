@@ -32,6 +32,7 @@
     {#<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">#}
     <script defer src="{{ asset('js/material.js') }}"></script>
 
+    <link rel="stylesheet" href="{{ asset_with_version('css/getmdl-select.min.css') }}">
     <link rel="stylesheet" href="{{ asset_with_version('css/app_new.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ asset_with_version('favicon.ico') }}"/>
     {% block stylesheets %}{% endblock %}
@@ -93,7 +94,8 @@
   ga('send', 'pageview');
 
 </script>
-{#<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>#}
+<script src="{{ asset_with_version('js/app_new.js') }}"></script>
+<script src="{{ asset_with_version('js/getmdl-select.min.js') }}"></script>
 {% block javascripts %}{% endblock %}
 
 </body>

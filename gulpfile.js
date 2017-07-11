@@ -125,6 +125,12 @@ gulp.task('vendor', function () {
   gulp.src('node_modules/material-design-lite/material.min.js')
       .pipe(rename('material.js'))
       .pipe(gulp.dest('www/js'));
+
+  gulp.src('node_modules/getmdl-select/getmdl-select.min.js')
+      .pipe(gulp.dest('www/js'));
+
+  gulp.src('node_modules/getmdl-select/getmdl-select.min.css')
+      .pipe(gulp.dest('www/css'));
 });
 
 gulp.task('buildAssistantSchedulingApp', function (cb) {

@@ -118,13 +118,20 @@
                             <label class="mdl-textfield__label" for="email">E-post...</label>
                         </div>
                     </mdl-cell>
+                    <mdl-cell class="mdl-cell--6-col">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select">
+                            <input class="mdl-textfield__input" value="{{ get_departments()[0].city }}" type="text"
+                                   id="department" readonly tabIndex="-1"/>
+                            <label class="mdl-textfield__label" for="department">Avdeling</label>
+                            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu" for="department">
+                                {% for department in get_departments() %}
+                                    <li class="mdl-menu__item">{{ department.city }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </mdl-cell>
                 </div>
                 <br>
-                <select name="department" id="department">
-                    {% for department in get_departments() %}
-                        <option value="{{ department.id }}">{{ department.city }}</option>
-                    {% endfor %}
-                </select>
                 <br>
                 <br>
                 <button type="button"
