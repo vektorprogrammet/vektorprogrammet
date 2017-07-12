@@ -20,6 +20,7 @@ class ReceiptType extends AbstractType
                 'currency' => 'NOK',
             ))
             ->add('user', AccountNumberType::class, array(
+                //'validation_groups' => array('create_receipt', 'edit_receipt'), ?
                 'label' => false,
             ))
             ->add('picturePath', 'file', array(

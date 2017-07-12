@@ -6,6 +6,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as AcmeAssert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -72,6 +73,8 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
+     * @Assert\NotBlank(groups={"create_receipt", "edit_receipt"}, message="Dette feltet kan ikke være tomt.")
+     * @AcmeAssert\BankAccountNumber(groups={"User", "create_receipt", "edit_receipt"}, message="Feilformatert kontonummer.")
      */
     private $accountNumber;
 
