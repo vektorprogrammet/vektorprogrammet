@@ -1,9 +1,14 @@
 <?php
 
-namespace AppBundle\SchoolAllocation;
+namespace AppBundle\AssistantScheduling;
 
-class School
+class School implements \JsonSerializable
 {
+    /**
+     * @var int
+     */
+    private $id;
+
     /**
      * @var string
      */
@@ -21,13 +26,15 @@ class School
     /**
      * School constructor.
      *
-     * @param array capacity
-     * @param string name
+     * @param $capacity
+     * @param $name
+     * @param $id
      */
-    public function __construct($capacity, $name)
+    public function __construct($capacity, $name, $id)
     {
         $this->capacity = $capacity;
         $this->name = $name;
+        $this->id = $id;
     }
 
     /**
@@ -96,5 +103,17 @@ class School
         }
 
         return true;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            'id' => $this->id,
+            'name' => $this->name,
+            'capacity' => $this->capacity,
+        );
     }
 }

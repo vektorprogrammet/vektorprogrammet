@@ -61,6 +61,12 @@ class School
      */
     private $international;
 
+    /**
+     * @var SchoolCapacity[]
+     * @ORM\OneToMany(targetEntity="SchoolCapacity", mappedBy="school")
+     */
+    private $capacities;
+
     public function __construct()
     {
         $this->departments = new \Doctrine\Common\Collections\ArrayCollection();
@@ -259,5 +265,13 @@ class School
     public function getAssistantHistories()
     {
         return $this->assistantHistories;
+    }
+
+    /**
+     * @return SchoolCapacity[]
+     */
+    public function getCapacities(): array
+    {
+        return $this->capacities;
     }
 }

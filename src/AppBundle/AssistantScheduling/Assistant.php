@@ -1,14 +1,11 @@
 <?php
 
-namespace AppBundle\SchoolAllocation;
+namespace AppBundle\AssistantScheduling;
 
-class Assistant
+use AppBundle\Entity\Application;
+
+class Assistant implements \JsonSerializable
 {
-    public static $idCounter;
-    /**
-     * @var int
-     */
-    private $id;
     /**
      * @var string
      */
@@ -54,16 +51,15 @@ class Assistant
     private $suitability;
 
     /**
+     * @var Application
+     */
+    private $application;
+
+    /**
      * Assistant constructor.
      */
     public function __construct()
     {
-        if (self::$idCounter === null) {
-            $this->id = 1;
-            self::$idCounter = 1;
-        } else {
-            $this->id = ++self::$idCounter;
-        }
         $this->group = null;
         $this->preferredGroup = null;
         $this->doublePosition = false;
@@ -83,7 +79,7 @@ class Assistant
      */
     public function getId()
     {
-        return $this->id;
+        return $this->application->getId();
     }
 
     /**
@@ -284,5 +280,38 @@ class Assistant
             $this->setGroup($group);
         }
         $this->setAssignedDay($day);
+    }
+
+    public function jsonSerialize()
+    {
+        return array(
+            'id' => $this->getId(),
+            'group' => 'Bolk 1',
+            'name' => $this->name,
+            'assignedSchool' => $this->assignedSchool,
+            'assignedDay' => $this->assignedDay,
+            'availability' => $this->availability,
+            'preferredGroup' => $this->preferredGroup,
+            'doublePosition' => $this->doublePosition,
+            'score' => $this->score,
+            'suitable' => $this->suitability,
+            'previousParticipation' => $this->previousParticipation,
+        );
+    }
+
+    /**
+     * @return Application
+     */
+    public function getApplication()
+    {
+        return $this->application;
+    }
+
+    /**
+     * @param Application $application
+     */
+    public function setApplication($application)
+    {
+        $this->application = $application;
     }
 }
