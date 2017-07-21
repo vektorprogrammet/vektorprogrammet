@@ -32,6 +32,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user1->addRole($this->getReference('role-4'));
         $user1->setFieldOfStudy($this->getReference('fos-1'));
         $user1->setPicturePath('images/defaultProfile.png');
+        $user1->setAccountNumber('12345678903');
         $manager->persist($user1);
 
         $user2 = new User();
@@ -46,6 +47,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user2->addRole($this->getReference('role-1'));
         $user2->setFieldOfStudy($this->getReference('fos-2'));
         $user2->setPicturePath('images/defaultProfile.png');
+        $user2->setAccountNumber('12345678903');
         $manager->persist($user2);
 
         $user3 = new User();
