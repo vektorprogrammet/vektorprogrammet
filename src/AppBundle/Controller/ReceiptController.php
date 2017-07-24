@@ -44,9 +44,8 @@ class ReceiptController extends Controller
         $active_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findActiveByUser($this->getUser());
         $inactive_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findInactiveByUser($this->getUser());
 
-        $form = $this->createForm(ReceiptType::class, $receipt, array(
-            'required' => true,
-        ));
+        $form = $this->createForm(ReceiptType::class, $receipt);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -82,7 +81,7 @@ class ReceiptController extends Controller
         }
 
         $form = $this->createForm(ReceiptType::class, $receipt, array(
-            'required' => false,
+            'picture_required' => false,
         ));
         $oldPicturePath = $receipt->getPicturePath();
 

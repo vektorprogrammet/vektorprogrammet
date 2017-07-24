@@ -4,6 +4,7 @@ namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use AppBundle\Form\Type\AccountNumberType;
 
 class ReceiptType extends AbstractType
@@ -13,10 +14,12 @@ class ReceiptType extends AbstractType
         $builder
             ->add('description', 'textarea', array(
                 'label' => 'Beskrivelse',
+                'required' => true,
                 'attr' => array('rows' => 3),
             ))
             ->add('sum', 'money', array(
                 'label' => 'Sum',
+                'required' => true,
                 'currency' => 'NOK',
                 'attr' => array('pattern' => '\d*[.,]?\d+$'),
             ))
@@ -25,10 +28,17 @@ class ReceiptType extends AbstractType
             ))
             ->add('picturePath', 'file', array(
                 'label' => 'Last opp kvittering',
-                'required' => $options['required'],
+                'required' => $options['picture_required'],
                 'data_class' => null,
                 'attr' => array('class' => 'receipt-upload-hack'),
                 'label_attr' => array('class' => 'button'),
             ));
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'picture_required' => true,
+        ));
     }
 }
