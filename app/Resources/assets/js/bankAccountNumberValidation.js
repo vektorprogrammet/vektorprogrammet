@@ -1,5 +1,4 @@
-function validateBankAccountNumber(element){
-    var field = element.getElementsByTagName('input')[0];
+function validateBankAccountNumber(field){
     var valid = true;
 
     // Check for invalid formatting

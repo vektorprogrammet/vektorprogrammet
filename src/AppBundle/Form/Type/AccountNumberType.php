@@ -15,6 +15,7 @@ class AccountNumberType extends AbstractType
             ->add('account_number', 'text', array(
                 'label' => 'Kontonummer',
                 'required' => true,
+                'attr' => array('oninput' => 'validateBankAccountNumber(this)'),
             ));
     }
 
