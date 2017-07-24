@@ -24,9 +24,11 @@ class ReceiptType extends AbstractType
                 'label' => false,
             ))
             ->add('picturePath', 'file', array(
+                'label' => 'Last opp kvittering',
                 'required' => $options['required'],
                 'data_class' => null,
-                'label' => 'Last opp kvittering',
+                'attr' => array('class' => 'receipt-upload-hack'),
+                'label_attr' => array('class' => 'button'),
             ));
     }
 }

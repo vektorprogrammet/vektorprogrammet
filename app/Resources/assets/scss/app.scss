@@ -841,3 +841,12 @@ ul.alternatives {
     cursor:pointer;
   }
 }
+
+.receipt-upload-hack {
+  height: 1px;
+  width: 1px !important;
+  position: absolute;
+  left: 115px;
+  pointer-events: none;
+  opacity: 0;
+  margin-top: 51px !important; }

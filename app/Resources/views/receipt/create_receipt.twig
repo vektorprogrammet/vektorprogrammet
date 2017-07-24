@@ -39,12 +39,9 @@
 
             <div class="row">
                 <div class="small-12 columns">
-                    <div class="hide">
+                    <div>
                         {{ form_row(form.picturePath) }}
                     </div>
-                    <button type="button" class="button tiny" id="choose_picture">
-                        Last opp kvittering
-                    </button>
                 </div>
                 <div class="small-4 columns">
                     <div class="{{ receipt.picturePath is not null ? '' : 'hide' }}">
@@ -113,11 +110,6 @@
 {% block javascripts %}
 
     <script>
-        var uploadButton = $('#choose_picture');
-        uploadButton.click(function () {
-            var realUploadButton = $('#receipt_picturePath');
-            realUploadButton.click();
-        })
         function readURL(input) {
 
             if (input.files && input.files[0]) {
