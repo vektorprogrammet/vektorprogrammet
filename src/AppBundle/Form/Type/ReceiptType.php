@@ -18,6 +18,7 @@ class ReceiptType extends AbstractType
             ->add('sum', 'money', array(
                 'label' => 'Sum',
                 'currency' => 'NOK',
+                'attr' => array('pattern' => '\d*[.,]?\d+$'),
             ))
             ->add('user', AccountNumberType::class, array(
                 'label' => false,
