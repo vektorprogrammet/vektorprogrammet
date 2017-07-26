@@ -76,8 +76,10 @@
                         <a href="#">Diverse</a>
                         <ul class="dropdown">
                             <li><a href="{{ path('sponsors_edit') }}">Sponsorer</a></li>
-                            {%  if is_granted_team_leader() %}
+                            {% if is_granted_team_member() %}
                                 <li><a href="{{ path('receipts_show') }}">Utlegg</a></li>
+                            {% endif %}
+                            {%  if is_granted_team_leader() %}
                                 <li><a href="{{ path('certificate_show') }}">Attest</a></li>
                             {% endif %}
                         </ul>
