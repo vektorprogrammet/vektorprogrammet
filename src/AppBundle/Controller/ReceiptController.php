@@ -109,9 +109,12 @@ class ReceiptController extends Controller
             }
         }
 
-        return $this->render('receipt_admin/edit_receipt.twig', array(
+        $parentTemplate = ($user === $receipt->getUser()) ? 'base.html.twig' : 'adminBase.html.twig';
+
+        return $this->render('receipt/edit_receipt.html.twig', array(
             'form' => $form->createView(),
             'receipt' => $receipt,
+            'parent_template' => $parentTemplate,
         ));
     }
 
