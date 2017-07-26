@@ -21,6 +21,9 @@ function validateBankAccountNumber(field){
     var remainder = cross % 11;
     if ((11 - remainder) != numbers[numbers.length - 1]) valid = false;
 
-    if(valid) field.setCustomValidity('');
+    if(valid){
+        field.setCustomValidity('');
+        field.value = numbers.slice(0,4).join('') + '.' + numbers.slice(4,6).join('') + '.' + numbers.slice(6).join('');
+    }
     else field.setCustomValidity('Ugyldig bankkontonummer');
 }
