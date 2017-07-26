@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Receipt;
 use AppBundle\Entity\User;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class ReceiptController extends Controller
 {
@@ -21,6 +22,7 @@ class ReceiptController extends Controller
         return $this->render('receipt_admin/show_receipts.html.twig', array(
             'users_with_active_receipts' => $usersWithActiveReceipts,
             'users_with_inactive_receipts' => $usersWithInactiveReceipts,
+            'current_user' => $this->getUser(),
         ));
     }
 
@@ -63,7 +65,7 @@ class ReceiptController extends Controller
             return $this->redirectToRoute('receipt_create');
         }
 
-        return $this->render('receipt/create_receipt.twig', array(
+        return $this->render('receipt/my_receipts.html.twig', array(
             'form' => $form->createView(),
             'receipt' => $receipt,
             'active_receipts' => $active_receipts,
@@ -76,7 +78,7 @@ class ReceiptController extends Controller
         $user = $this->getUser();
         $isTeamLeader = $this->get('app.roles')->userIsGranted($user, Roles::TEAM_LEADER);
 
-        if (!$isTeamLeader && $user !== $receipt->getUser()) {
+        if (!$isTeamLeader && ($user !== $receipt->getUser() || !$receipt->isActive())) {
             throw new AccessDeniedHttpException();
         }
 
@@ -115,6 +117,17 @@ class ReceiptController extends Controller
 
     public function finishAdminAction(Receipt $receipt)
     {
+        $user = $this->getUser();
+        $isTeamLeader = $this->get('app.roles')->userIsGranted($user, Roles::TEAM_LEADER);
+        if (!$isTeamLeader) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $alreadyFinished = !$receipt->isActive();
+        if ($alreadyFinished) {
+            throw new BadRequestHttpException();
+        }
+
         $receipt->setActive(false);
 
         $em = $this->getDoctrine()->getManager();
@@ -125,7 +138,11 @@ class ReceiptController extends Controller
         $emailSender = $this->get('app.email_sender');
         $emailSender->sendPaidReceiptConfirmation($receipt);
 
-        return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
+        if ($user === $receipt->getUser()) {
+            return $this->redirectToRoute('receipt_create');
+        } else {
+            return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
+        }
     }
 
     public function deleteAction(Request $request, Receipt $receipt)
@@ -133,9 +150,10 @@ class ReceiptController extends Controller
         $user = $this->getUser();
         $isTeamLeader = $this->get('app.roles')->userIsGranted($user, Roles::TEAM_LEADER);
 
-        if (!$isTeamLeader && $user !== $receipt->getUser()) {
-            throw $this->createAccessDeniedException();
+        if (!$isTeamLeader && ($user !== $receipt->getUser() || !$receipt->isActive())) {
+            throw new AccessDeniedHttpException();
         }
+
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($receipt);

@@ -5,53 +5,30 @@
 {% block body %}
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            <h1>Opprett utlegg</h1>
+            <h1>Mine Utlegg</h1>
             <hr>
         </div>
     </div>
 
+
+    <div class="row">
+
+        <div class="small-12 medium-12 large-12 columns">
+            <hr>
+        </div>
+
+        <div class="small-12 medium-12 large-8 columns">
+
+            <h3> Registrer nytt utlegg </h3>
+
+        </div>
+    </div>
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            {% for flashMessage in app.session.flashbag.get('success') %}
-                <div data-alert class="alert-box success radius">
-                    {{ flashMessage }}
-                </div>
-            {% endfor %}
 
-            {{ form_start(form) }}
-            <div class="row">
-                <div class="small-12 medium-8 columns">
-                    {{ form_row(form.description) }}
-                </div>
-            </div>
+            <hr>
 
-            <div class="row">
-                <div class="small-8 medium-3 columns">
-                    {{ form_row(form.sum) }}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="small-8 medium-3 columns">
-                    {{ form_row(form.user) }}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="small-12 columns">
-                    <div>
-                        {{ form_row(form.picturePath) }}
-                    </div>
-                </div>
-                <div class="small-4 columns">
-                    <div class="{{ receipt.picturePath is not null ? '' : 'hide' }}">
-                        <img src="{{ asset(receipt.picturePath) }}" height="60px" id="receipt_picture">
-                    </div>
-                </div>
-            </div>
-            <br>
-            <button class="button tiny success">Lagre</button>
-            {{ form_end(form) }}
+            {% include 'receipt/create_receipt.html.twig' with {'form': form, 'receipt': receipt} %}
 
         </div>
     </div>
@@ -74,7 +51,7 @@
 
                 <hr>
 
-                {% include 'receipt/receipts_table.html.twig' with {'receipts': active_receipts} %}
+                {% include 'receipt/my_receipts_table.html.twig' with {'receipts': active_receipts} %}
 
             </div>
         </div>
@@ -99,7 +76,7 @@
 
                 <hr>
 
-                {% include 'receipt/receipts_table.html.twig' with {'receipts': inactive_receipts } %}
+                {% include 'receipt/my_receipts_table.html.twig' with {'receipts': inactive_receipts } %}
 
             </div>
         </div>
@@ -108,7 +85,6 @@
 {% endblock %}
 
 {% block javascripts %}
-
     <script>
         function readURL(input) {
 
@@ -128,7 +104,6 @@
             readURL(this);
         });
 
-
     </script>
 
     <script>
@@ -138,6 +113,5 @@
     </script>
 
     <script src="{{ asset_with_version('js/bankAccountNumberValidation.js') }}"></script>
-
 {% endblock %}
 
