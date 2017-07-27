@@ -4,7 +4,7 @@
 {% block body %}
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            <h1>Utlegg for {{ user }}</h1>
+            <h1>Utlegg for <a href="{{ path('specific_profile', {'id': user.id}) }}">{{ user }}</a></h1>
         </div>
     </div>
 
