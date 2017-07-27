@@ -31,7 +31,7 @@ class ReceiptType extends AbstractType
                 'required' => $options['picture_required'],
                 'data_class' => null,
                 'attr' => array('class' => 'receipt-upload-hack'),
-                'label_attr' => array('class' => 'button'),
+                'label_attr' => array('class' => 'button tiny'),
             ));
     }
 
