@@ -28,8 +28,8 @@
             </td>
             {% if receipt.active and is_granted_team_leader() %}
             <td><a href="{{ path('receipts_finish', {'receipt': receipt.id}) }}"
-                   onclick="return confirm('Marker utlegget som ferdig og send en bekreftelsesmail?')"
-                   class="button tiny">Ferdig</a></td>
+                   onclick="return confirm('Marker utlegget som refundert og send en bekreftelsesmail?')"
+                   class="button tiny">Refunder</a></td>
             {% else %}
             <td></td>
             {% endif %}
