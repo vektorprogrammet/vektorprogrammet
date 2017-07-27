@@ -1,10 +1,10 @@
 function validateBankAccountNumber(field){
-    var valid = true;
-
     // Check for invalid formatting
     // Spaces and periods are valid, but optional separators
-    if (field.value.match(/^\d{4}((\.\d{2}\.)|(\s\d{2}\s)|\d{2})\d{5}$/)) {}
-    else valid = false;
+    if (!field.value.match(/^\d{4}((\.\d{2}\.)|(\s\d{2}\s)|\d{2})\d{5}$/)) {
+        field.setCustomValidity('Feil formatering. Eks: 12345678903,\n1234.56.78903,\n1234 56 78903');
+        return false;
+    }
 
     var cleanString = field.value.split('.').join('').split(' ').join('');
 
@@ -19,11 +19,12 @@ function validateBankAccountNumber(field){
 
     // Invalid MOD11
     var remainder = cross % 11;
-    if ((11 - remainder) != numbers[numbers.length - 1]) valid = false;
-
-    if(valid){
-        field.setCustomValidity('');
-        field.value = numbers.slice(0,4).join('') + '.' + numbers.slice(4,6).join('') + '.' + numbers.slice(6).join('');
+    if ((11 - remainder) != numbers[numbers.length - 1]){
+        field.setCustomValidity('Ugyldig bankkontonummer. Sjekk at alle sifrene er korrekte');
+        return false;
     }
-    else field.setCustomValidity('Ugyldig bankkontonummer');
+
+    field.setCustomValidity('');
+    field.value = numbers.slice(0,4).join('') + '.' + numbers.slice(4,6).join('') + '.' + numbers.slice(6).join('');
+    return true;
 }
