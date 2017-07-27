@@ -37,7 +37,7 @@
                 {% endif %}
 
                 <td><a href="{{ path('receipt_edit', { 'receipt': receipt.id }) }}" class="button tiny">Rediger</a></td>
-                <td><a href="{{ path('receipt_delete', { 'receipt': receipt.id }) }}" class="button tiny alert delete">Slett</a></td>
+                <td>{% include 'receipt/delete_receipt_button.html.twig' %}</td>
             {% else %}
                 <td colspan="3"></td>
             {% endif %}

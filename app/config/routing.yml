@@ -610,7 +610,7 @@ receipt_edit:
 receipt_delete:
   path: /utlegg/slett/{receipt}
   defaults: { _controller: AppBundle:Receipt:delete }
-  methods: [GET]
+  methods: [POST]
   requirements:
     receipt: \d+
 
