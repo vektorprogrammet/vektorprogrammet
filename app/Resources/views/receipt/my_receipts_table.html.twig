@@ -29,13 +29,19 @@
             {% if receipt.active and is_granted_team_leader() %}
             <td><a href="{{ path('receipts_finish', {'receipt': receipt.id}) }}"
                    onclick="return confirm('Marker utlegget som refundert og send en bekreftelsesmail?')"
-                   class="button tiny">Refunder</a></td>
+                   class="button tiny">
+                    <i class="fa fa-check-square"></i>
+                    Refunder
+                </a></td>
             {% else %}
             <td></td>
             {% endif %}
 
             {% if receipt.active or is_granted_team_leader() %}
-                <td><a href="{{ path('receipt_edit', { 'receipt': receipt.id }) }}" class="button tiny">Rediger</a></td>
+                <td><a href="{{ path('receipt_edit', { 'receipt': receipt.id }) }}" class="button tiny">
+                        <i class="fa fa-pencil"></i>
+                        Rediger
+                    </a></td>
                 <td>{% include 'receipt/delete_receipt_button.html.twig' %}</td>
             {% else %}
                 <td colspan="2"></td>
