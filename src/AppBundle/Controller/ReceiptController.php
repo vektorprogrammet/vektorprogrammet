@@ -62,6 +62,8 @@ class ReceiptController extends Controller
 
             $this->get('event_dispatcher')->dispatch(ReceiptCreatedEvent::NAME, new ReceiptCreatedEvent($receipt));
 
+            $this->addFlash('success', 'Utlegget ditt har blitt registrert.');
+
             return $this->redirectToRoute('receipt_create');
         }
 
@@ -102,6 +104,8 @@ class ReceiptController extends Controller
             $em->persist($receipt);
             $em->flush();
 
+            $this->addFlash('success', 'Endringene har blitt lagret.');
+
             if ($user === $receipt->getUser()) {
                 return $this->redirectToRoute('receipt_create');
             } else {
@@ -141,6 +145,8 @@ class ReceiptController extends Controller
         $emailSender = $this->get('app.email_sender');
         $emailSender->sendPaidReceiptConfirmation($receipt);
 
+        $this->addFlash('success', 'Utlegget ble markert som refundert og bekreftelsesmail sendt til ' . $receipt->getUser()->getEmail() . '.');
+
         if ($user === $receipt->getUser()) {
             return $this->redirectToRoute('receipt_create');
         } else {
@@ -161,6 +167,8 @@ class ReceiptController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($receipt);
         $em->flush();
+
+        $this->addFlash('success', 'Utlegget ble slettet.');
 
         return $this->redirect($request->headers->get('referer'));
     }

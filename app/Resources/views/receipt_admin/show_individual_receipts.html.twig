@@ -14,6 +14,16 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div data-alert class="alert-box success radius">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
     {% if active_receipts is not empty %}
         <div class="row">
             <div class="small-12 medium-12 large-12 columns">
@@ -58,6 +68,12 @@
         </div>
     {% endif %}
 
+{% endblock %}
 
-
+{% block javascripts %}
+    <script>
+        setTimeout(function () {
+            $('.alert-box').fadeOut(800);
+        }, 1500)
+    </script>
 {% endblock %}
