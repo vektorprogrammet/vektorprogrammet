@@ -4,6 +4,7 @@
 
     <tr>
         <th> Navn</th>
+        <th> Email</th>
         <th> Sum</th>
         <th> Kontonummer</th>
     </tr>
@@ -19,6 +20,7 @@
             <td><a href="{{ path('receipts_show_individual', {'user': user.id}) }}"> {{ user.fullName }} </a></td>
             {% endif %}
 
+            <td> {{ user.email }}</td>
             <td> {{ (active ? user.totalActiveReceiptSum : user.totalInactiveReceiptSum)|number_format(2, ',', '.') }},- </td>
             <td> {{ user.accountNumber }}</td>
         </tr>
