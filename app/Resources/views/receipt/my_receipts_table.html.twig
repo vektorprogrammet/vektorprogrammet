@@ -22,7 +22,7 @@
 
                 <div id="receipt-{{ receipt.id }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
                     <h2 id="modalTitle">Kvittering</h2>
-                    <img src="{{ receipt.picturePath }}">
+                    <img src="{{ asset_with_version(receipt.picturePath) }}">
                     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                 </div>
             </td>
