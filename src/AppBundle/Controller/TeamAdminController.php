@@ -56,18 +56,18 @@ class TeamAdminController extends Controller
     public function addUserToTeamAction(Request $request, Team $team)
     {
         // Find the department of the team
-            $department = $team->getDepartment();
+        $department = $team->getDepartment();
 
-            // Create a new WorkHistory entity
-            $workHistory = new WorkHistory();
+        // Create a new WorkHistory entity
+        $workHistory = new WorkHistory();
         $workHistory->setUser($this->getUser());
         $workHistory->setPosition($this->getDoctrine()->getRepository('AppBundle:Position')->findOneBy(array('name' => 'Medlem')));
 
-            // Create a new formType with the needed variables
-            $form = $this->createForm(new CreateWorkHistoryType($department), $workHistory);
+        // Create a new formType with the needed variables
+        $form = $this->createForm(new CreateWorkHistoryType($department), $workHistory);
 
-            // Handle the form
-            $form->handleRequest($request);
+        // Handle the form
+        $form->handleRequest($request);
 
         if ($form->isValid()) {
 
