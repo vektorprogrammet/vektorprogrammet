@@ -9,9 +9,14 @@ var gulp = require('gulp'),
     sass = require('gulp-sass'),
     changed = require('gulp-changed');
 
+var exec = require('child_process').exec;
+
 var path = {
     dist: 'www/',
-    src: 'app/Resources/assets/'
+    src: 'app/Resources/assets/',
+    scheduling: {
+        src: 'src/AppBundle/AssistantScheduling/Webapp'
+    }
 };
 
 gulp.task('stylesProd', function () {
@@ -118,14 +123,35 @@ gulp.task('vendor', function(){
         .pipe(gulp.dest('www/vendor/ckeditor/'));
 });
 
+gulp.task('buildAssistantSchedulingApp', function (cb) {
+    exec('cd '+path.scheduling.src+' && npm run build:dev', function (err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+        cb(err);
+    })
+});
+
+gulp.task('assistantSchedulingStaticFiles', ['buildAssistantSchedulingApp'], function () {
+    gulp.src(path.scheduling.src + '/dist/build.js')
+        .pipe(gulp.dest('www/js/scheduling'));
+    gulp.src(path.scheduling.src + '/dist/build.js.map')
+        .pipe(gulp.dest('www/js/scheduling'));
+});
+
 
 gulp.task('watch', function () {
     gulp.watch(path.src + 'scss/**/*.scss', ['stylesDev']);
     gulp.watch(path.src + 'js/**/*.js', ['scriptsDev']);
+    gulp.watch(path.scheduling.src + '/**/*.vue', ['assistantSchedulingStaticFiles']);
     gulp.watch(path.src + 'images/*', ['imagesDev']);
 });
 
+gulp.task('watch:scheduling', function () {
+    gulp.watch(path.scheduling.src + '/**/*.vue', ['assistantSchedulingStaticFiles']);
+    gulp.watch(path.scheduling.src + '/src/**/*.js', ['assistantSchedulingStaticFiles']);
+});
 
-gulp.task('build:prod', ['stylesProd', 'scriptsProd', 'imagesProd', 'files', 'icons', 'vendor']);
-gulp.task('build:dev', ['stylesDev', 'scriptsDev', 'imagesDev', 'files', 'icons', 'vendor']);
+
+gulp.task('build:prod', ['assistantSchedulingStaticFiles','stylesProd', 'scriptsProd', 'imagesProd', 'files', 'icons', 'vendor']);
+gulp.task('build:dev', ['assistantSchedulingStaticFiles','stylesDev', 'scriptsDev', 'imagesDev', 'files', 'icons', 'vendor']);
 gulp.task('default', ['build:dev', 'watch']);

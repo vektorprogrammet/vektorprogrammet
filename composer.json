@@ -4,8 +4,7 @@
     "license": "proprietary",
     "type": "project",
     "autoload": {
-        "psr-4": {
-            "AppBundle\\": "src/AppBundle"
+        "psr-4": { "AppBundle\\": "src/AppBundle"
         }
     },
     "require": {

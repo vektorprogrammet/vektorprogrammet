@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SubscriberRepository")
@@ -24,11 +25,13 @@ class Subscriber
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank
      */
     private $email;
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank
      */
     private $name;
 

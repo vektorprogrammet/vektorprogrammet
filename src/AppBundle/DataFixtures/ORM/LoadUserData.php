@@ -1014,6 +1014,36 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
 
+        $user20 = new User();
+        $user20->setActive('1');
+        $user20->setEmail('jan-per-gustavio@gmail.com');
+        $user20->setFirstName('Jan-Per-Gustavio');
+        $user20->setLastName('Tacopedia');
+        $user20->setGender('0');
+        $user20->setPhone('81549300');
+        $user20->setUserName('JanPerGustavio');
+        $user20->setPassword('1234');
+        $user20->addRole($this->getReference('role-2'));
+        $user20->setFieldOfStudy($this->getReference('fos-3'));
+        $user20->setPicturePath('images/defaultProfile.png');
+        $manager->persist($user20);
+
+        for ($i = 0; $i < 100; ++$i) {
+            $user = new User();
+            $user->setActive('0');
+            $user->setEmail('scheduling-user-'.$i.'@mail.com');
+            $user->setFirstName('scheduling-user-'.$i);
+            $user->setLastName('user-lastName-'.$i);
+            $user->setGender($i % 2 == 0 ? '0' : '1');
+            $user->setPhone('12345678');
+            $user->setUserName('scheduling-user-'.$i);
+            $user->addRole($this->getReference('role-3'));
+            $user->setFieldOfStudy($this->getReference('fos-1'));
+            $user->setPicturePath('images/defaultProfile.png');
+            $this->setReference('scheduling-user-'.$i, $user);
+            $manager->persist($user);
+        }
+
         $manager->flush();
 
         $this->setReference('user-1', $user1);
@@ -1029,6 +1059,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $this->setReference('user-14', $user14);
         $this->setReference('user-15', $user15);
         $this->setReference('user-16', $user16);
+        $this->setReference('user-20', $user20);
         $this->setReference('userInTeam1', $userInTeam1);
     }
 

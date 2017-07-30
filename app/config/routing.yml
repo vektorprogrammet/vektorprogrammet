@@ -880,28 +880,35 @@ schooladmin_show_specific_school:
     id: \d+
 
 ##########################################
-#              SchoolAllocation          #
+#           AssistantScheduling          #
 ##########################################
 
 school_allocation:
-  path: /skole/fordeling/
-  defaults: { _controller: AppBundle:SchoolAllocation:show }
+  path: /kontrollpanel/skole/timeplan/
+  defaults: { _controller: AppBundle:AssistantScheduling:index }
   methods: [GET]
 
-allocate_edit:
-  path: /skole/fordeling/endre
-  defaults: { _controller: AppBundle:SchoolAllocation:edit }
-  methods: [GET, POST]
-
-allocate_create:
-  path: /skole/fordeling/opprett
-  defaults: { _controller: AppBundle:SchoolAllocation:create }
-  methods: [GET, POST]
-
-school_allocation_allocate:
-  path: /skole/fordeling/fordel
-  defaults: { _controller: AppBundle:SchoolAllocation:allocate }
+school_allocation_api_assistants:
+  path: /kontrollpanel/api/assistants
+  defaults: { _controller: AppBundle:AssistantScheduling:getAssistants }
   methods: [GET]
+
+school_allocation_api_schools:
+  path: /kontrollpanel/api/schools
+  defaults: { _controller: AppBundle:AssistantScheduling:getSchools }
+  methods: [GET]
+
+school_capacity_create:
+    path: /kontrollpanel/skole/capacity/
+    defaults: { _controller: AppBundle:SchoolCapacity:create }
+    methods: [GET, POST]
+
+school_capacity_edit:
+    path: /kontrollpanel/skole/capacity/{id}
+    defaults: { _controller: AppBundle:SchoolCapacity:edit }
+    methods: [GET, POST]
+    requirements:
+        id: \d+
 
 ##########################################
 #              Interview                 #
