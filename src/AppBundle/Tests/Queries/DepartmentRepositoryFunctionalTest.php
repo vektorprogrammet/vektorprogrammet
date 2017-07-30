@@ -43,17 +43,17 @@ class DepartmentRepositoryFunctionalTest extends KernelTestCase
     }
 
     // A test to check whether the array return by the the findDepartmentById method is the correct department given a ID value
-//	public function testFindDepartmentById(){
+    //	public function testFindDepartmentById(){
 
-//		$departments = $this->em->getRepository('AppBundle:Department')->findDepartmentById(1);
+    //		$departments = $this->em->getRepository('AppBundle:Department')->findDepartmentById(1);
 
-//		foreach ($departments as $department) {
+    //		foreach ($departments as $department) {
 
-//			$this->assertEquals(1, $department->getId());
+    //			$this->assertEquals(1, $department->getId());
 
-//		}
+    //		}
 
-//	}
+    //	}
 
     /**
      * {@inheritdoc}
