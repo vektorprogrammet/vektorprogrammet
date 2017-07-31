@@ -33,8 +33,6 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
         $currentSemester->setDepartment($this->getReference('dep-1'));
         $currentSemester->setAdmissionStartDate(new \DateTime());
         $currentSemester->setAdmissionEndDate(new \DateTime());
-        $currentSemester->setSemesterStartDate(new \DateTime());
-        $currentSemester->setSemesterEndDate(new \DateTime());
         $currentSemester->setStartAndEndDateByTime($currentSemester->getSemesterTime(), $currentSemester->getYear());
         $currentSemester->getAdmissionStartDate()->modify('-1day');
         $currentSemester->getAdmissionEndDate()->modify('+1day');
@@ -46,10 +44,8 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
         $previousSemester->setDepartment($this->getReference('dep-1'));
         $previousSemester->setAdmissionStartDate(new \DateTime());
         $previousSemester->setAdmissionEndDate(new \DateTime());
-        $previousSemester->setSemesterStartDate(new \DateTime());
-        $previousSemester->setSemesterEndDate(new \DateTime());
-	    $previousSemester->setStartAndEndDateByTime($previousSemester->getSemesterTime(), $previousSemester->getYear());
-	    $previousSemester->getAdmissionStartDate()->setDate($previousSemester->getYear(), $isSpring ? $aug : $jan, 1);
+        $previousSemester->setStartAndEndDateByTime($previousSemester->getSemesterTime(), $previousSemester->getYear());
+        $previousSemester->getAdmissionStartDate()->setDate($previousSemester->getYear(), $isSpring ? $aug : $jan, 1);
         $previousSemester->getAdmissionEndDate()->setDate($previousSemester->getYear(), $isSpring ? $aug : $jan, 5);
         $manager->persist($previousSemester);
 

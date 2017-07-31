@@ -190,7 +190,7 @@ class ProfileControllerTest extends WebTestCase
         \TestDataManager::restoreDatabase();
     }
 
-//	public function testDownloadCertificateAction() {
+    //	public function testDownloadCertificateAction() {
 
 //		$client = static::createClient(array(), array(
 //			'PHP_AUTH_USER' => 'petjo',

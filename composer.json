@@ -10,12 +10,12 @@
     "require": {
         "php": ">=7.0",
         "symfony/symfony": "2.8.*",
-        "doctrine/orm": "~2.2,>=2.2.3,<2.5",
+        "doctrine/orm": "~2.2",
         "doctrine/dbal": "<2.5",
         "doctrine/doctrine-bundle": "~1.2",
         "twig/extensions": "~1.0",
         "symfony/assetic-bundle": "~2.3",
-        "symfony/swiftmailer-bundle": "~2.5,<2.6",
+        "symfony/swiftmailer-bundle": "~2.5",
         "symfony/monolog-bundle": "~2.4",
         "sensio/distribution-bundle": "~3.0,>=3.0.12",
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
@@ -35,7 +35,7 @@
         "twig/twig": "^1.33"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.6.*",
+        "phpunit/phpunit": "~4.6",
         "ext-pdo_sqlite": "*",
         "friendsofphp/php-cs-fixer": "^2.0"
     },
