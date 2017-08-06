@@ -22,19 +22,14 @@
 
                 <div id="receipt-{{ receipt.id }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
                     <h2 id="modalTitle">Kvittering</h2>
-                    <img src="{{ asset_with_version(receipt.picturePath) }}">
+                    <img src="{{ receipt.picturePath }}">
                     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                 </div>
             </td>
 
             {% if is_granted_team_leader() %}
                 {% if receipt.active %}
-                    <td><a href="{{ path('receipts_finish', {'receipt': receipt.id}) }}"
-                           onclick="return confirm('Marker utlegget som refundert og send en bekreftelsesmail?')"
-                           class="button tiny">
-                            <i class="fa fa-check-square"></i>
-                            Refunder
-                        </a></td>
+                    <td>{%  include 'receipt/finish_receipt_button.html.twig' %}</td>
                 {% else %}
                     <td></td>
                 {% endif %}

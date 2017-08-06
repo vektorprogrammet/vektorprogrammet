@@ -3,6 +3,9 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use AppBundle\Form\Type\AccountNumberType;
@@ -12,12 +15,12 @@ class ReceiptType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('description', 'textarea', array(
+            ->add('description', TextareaType::class, array(
                 'label' => 'Beskrivelse',
                 'required' => true,
                 'attr' => array('rows' => 3),
             ))
-            ->add('sum', 'money', array(
+            ->add('sum', MoneyType::class, array(
                 'label' => 'Sum',
                 'required' => true,
                 'currency' => 'NOK',
@@ -26,7 +29,7 @@ class ReceiptType extends AbstractType
             ->add('user', AccountNumberType::class, array(
                 'label' => false,
             ))
-            ->add('picturePath', 'file', array(
+            ->add('picturePath', FileType::class, array(
                 'label' => 'Last opp kvittering',
                 'required' => $options['picture_required'],
                 'data_class' => null,

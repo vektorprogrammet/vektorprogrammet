@@ -63,7 +63,7 @@
 
                 reader.onload = function (e) {
                     $('#receipt_picture').attr('src', e.target.result);
-                }
+                };
 
                 reader.readAsDataURL(input.files[0]);
             }

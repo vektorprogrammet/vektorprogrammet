@@ -70,20 +70,19 @@ class FileUploader
      */
     public function uploadFile(UploadedFile $file, string $targetFolder)
     {
-        $originalFileName = $file->getClientOriginalName();
         $fileExt = $file->guessExtension();
-
         $fileName = $this->generateRandomFileNameWithExtension($fileExt);
 
-        $relativePath = $this->getRelativePath($targetFolder, $fileName);
-
         if (!is_dir($targetFolder)) {
-            mkdir($targetFolder);
+            mkdir($targetFolder, 0777, true);
         }
 
-        $uploadSuccessful = move_uploaded_file($file->getPathname(), $relativePath);
+        try {
+            $file->move($targetFolder, $fileName);
+        } catch (FileException $e) {
+            $originalFileName = $file->getClientOriginalName();
+            $relativePath = $this->getRelativePath($targetFolder, $fileName);
 
-        if (!$uploadSuccessful) {
             throw new UploadException('Could not copy the file '.$originalFileName.' to '.$relativePath);
         }
 

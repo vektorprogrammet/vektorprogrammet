@@ -81,6 +81,8 @@ class ReceiptController extends Controller
         $isTeamLeader = $this->get('app.roles')->userIsGranted($user, Roles::TEAM_LEADER);
 
         if (!$isTeamLeader && ($user !== $receipt->getUser() || !$receipt->isActive())) {
+            // !$isTeamLeader && !($user == $receipt->getUser() && $receipt->isActive())
+            // is maybe clearer
             throw new AccessDeniedHttpException();
         }
 
