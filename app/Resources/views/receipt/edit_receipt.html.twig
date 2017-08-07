@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="small-4 columns">
-                    <div class="{{ receipt.picturePath is not null ? '' : 'hide' }}">
+                    <div>
                         <img src="{{ asset(receipt.picturePath) }}" height="60px" id="receipt_picture">
                     </div>
                 </div>
@@ -70,8 +70,12 @@
         }
 
         $("#receipt_picturePath").change(function () {
-            $('#receipt_picture').parent().removeClass('hide');
-            readURL(this);
+            if(this.value === ''){
+                $('#receipt_picture').attr('src', '{{ receipt.picturePath }}');
+            } else {
+                $('#receipt_picture').parent().removeClass('hide');
+                readURL(this);
+            }
         });
 
 

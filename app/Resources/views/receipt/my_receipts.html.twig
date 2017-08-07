@@ -101,15 +101,19 @@
 
                 reader.onload = function (e) {
                     $('#receipt_picture').attr('src', e.target.result);
-                }
+                };
 
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
         $("#receipt_picturePath").change(function () {
-            $('#receipt_picture').parent().removeClass('hide');
-            readURL(this);
+            if(this.value === ''){
+                $('#receipt_picture').parent().addClass('hide');
+            } else {
+                $('#receipt_picture').parent().removeClass('hide');
+                readURL(this);
+            }
         });
 
     </script>
