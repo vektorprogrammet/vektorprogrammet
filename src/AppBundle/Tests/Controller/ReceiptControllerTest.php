@@ -3,6 +3,7 @@
 namespace AppBundle\Tests\Controller;
 
 use AppBundle\Tests\BaseWebTestCase;
+use Symfony\Component\Debug\Exception\ContextErrorException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Client;
 
@@ -156,7 +157,6 @@ class ReceiptControllerTest extends BaseWebTestCase
         \TestDataManager::restoreDatabase();
     }
 
-
     private function fillAndSubmitForm(Client $client, $uri)
     {
         // Create a new image file
@@ -175,5 +175,15 @@ class ReceiptControllerTest extends BaseWebTestCase
 
         $client->submit($form);
         return $client->followRedirect();
+    }
+
+    protected function tearDown()
+    {
+        try {
+            rmdir('images/receipts');
+            rmdir('images');
+        } catch (ContextErrorException $e) {
+            // The directory is not empty because the receipts have not been deleted yet
+        }
     }
 }
