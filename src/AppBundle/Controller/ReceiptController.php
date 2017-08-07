@@ -11,6 +11,7 @@ use AppBundle\Entity\Receipt;
 use AppBundle\Entity\User;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Filesystem\Filesystem;
 
 class ReceiptController extends Controller
 {
@@ -96,6 +97,11 @@ class ReceiptController extends Controller
             $isImageUpload = array_values($request->files->get('receipt', ['picture_path']))[0] !== null;
 
             if ($isImageUpload) {
+                // Delete the old image file
+                $fileSystem = new Filesystem();
+                $relativeOldPicturePath = substr($oldPicturePath, 1); // Remove preceding /
+                $fileSystem->remove($relativeOldPicturePath);
+
                 $path = $this->get('app.file_uploader')->uploadReceipt($request);
                 $receipt->setPicturePath($path);
             } else {
@@ -165,6 +171,10 @@ class ReceiptController extends Controller
             throw new AccessDeniedHttpException();
         }
 
+        // Delete the image file
+        $fileSystem = new Filesystem();
+        $relativePicturePath = substr($receipt->getPicturePath(), 1); // Remove preceding /
+        $fileSystem->remove($relativePicturePath);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($receipt);

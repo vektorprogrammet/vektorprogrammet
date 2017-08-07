@@ -14,9 +14,16 @@ class ReceiptControllerTest extends BaseWebTestCase
         $crawler = $this->fillAndSubmitForm($this->createAssistantClient(), '/utlegg');
         $this->assertEquals(1, $crawler->filter('h3:contains("Nye utlegg")')->count());
 
+        // Get id for later deletion
+        $editHref = explode('/', $crawler->filter('a:contains("Rediger")')->attr('href'));
+        $receiptId = end($editHref);
+
         // Teamleader can see it in the receipt table
         $crawler = $this->teamLeaderGoTo('/kontrollpanel/utlegg');
         $this->assertEquals(1, $crawler->filter('td:contains("assistant@gmail.com")')->count());
+
+        // Delete it just to get rid of the image file
+        $this->createAssistantClient()->request('POST', '/utlegg/slett/'.$receiptId);
     }
 
     public function testFinish()
