@@ -98,9 +98,7 @@ class ReceiptController extends Controller
 
             if ($isImageUpload) {
                 // Delete the old image file
-                $fileSystem = new Filesystem();
-                $relativeOldPicturePath = substr($oldPicturePath, 1); // Remove preceding /
-                $fileSystem->remove($relativeOldPicturePath);
+                $this->get('app.file_uploader')->deleteReceipt($oldPicturePath);
 
                 $path = $this->get('app.file_uploader')->uploadReceipt($request);
                 $receipt->setPicturePath($path);
@@ -172,9 +170,7 @@ class ReceiptController extends Controller
         }
 
         // Delete the image file
-        $fileSystem = new Filesystem();
-        $relativePicturePath = substr($receipt->getPicturePath(), 1); // Remove preceding /
-        $fileSystem->remove($relativePicturePath);
+        $this->get('app.file_uploader')->deleteReceipt($receipt->getPicturePath());
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($receipt);

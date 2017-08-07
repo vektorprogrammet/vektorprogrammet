@@ -19,6 +19,7 @@ class FileUploader
      *
      * @param string $signatureFolder
      * @param string $logoFolder
+     * @param string $receiptFolder
      */
     public function __construct(string $signatureFolder, string $logoFolder, string $receiptFolder)
     {
@@ -99,6 +100,17 @@ class FileUploader
         $fileName = $this->getFileNameFromPath($path);
 
         $this->deleteFile("$this->signatureFolder/$fileName");
+    }
+
+    public function deleteReceipt(string $path)
+    {
+        if (empty($path)) {
+            return;
+        }
+
+        $fileName = $this->getFileNameFromPath($path);
+
+        $this->deleteFile("$this->receiptFolder/$fileName");
     }
 
     public function deleteFile(string $path)
