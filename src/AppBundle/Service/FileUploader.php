@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class FileUploader
 {
@@ -61,7 +62,13 @@ class FileUploader
     {
         $file = $this->getFileFromRequest($request);
 
-        return $this->uploadFile($file, $this->receiptFolder);
+        $mimeType = $file->getMimeType();
+        $fileType = explode('/', $mimeType)[0];
+        if ($fileType === 'image') {
+            return $this->uploadFile($file, $this->receiptFolder);
+        } else {
+            throw new BadRequestHttpException('Filtypen må være et bilde.');
+        }
     }
 
     /**

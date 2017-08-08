@@ -71,7 +71,7 @@
 
         $("#receipt_picturePath").change(function () {
             if(this.value === ''){
-                $('#receipt_picture').attr('src', '{{ receipt.picturePath }}');
+                $('#receipt_picture').attr('src', '{{ asset(receipt.picturePath) }}');
             } else {
                 $('#receipt_picture').parent().removeClass('hide');
                 readURL(this);
