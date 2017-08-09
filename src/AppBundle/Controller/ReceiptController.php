@@ -9,9 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Receipt;
 use AppBundle\Entity\User;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ReceiptController extends Controller
 {
@@ -81,10 +80,8 @@ class ReceiptController extends Controller
         $user = $this->getUser();
         $isTeamLeader = $this->get('app.roles')->userIsGranted($user, Roles::TEAM_LEADER);
 
-        if (!$isTeamLeader && ($user !== $receipt->getUser() || !$receipt->isActive())) {
-            // !$isTeamLeader && !($user == $receipt->getUser() && $receipt->isActive())
-            // is maybe clearer
-            throw new AccessDeniedHttpException();
+        if (!$isTeamLeader && !($user == $receipt->getUser() && $receipt->isActive())) {
+            throw new AccessDeniedException();
         }
 
         $form = $this->createForm(ReceiptType::class, $receipt, array(
@@ -133,7 +130,7 @@ class ReceiptController extends Controller
         $user = $this->getUser();
         $isTeamLeader = $this->get('app.roles')->userIsGranted($user, Roles::TEAM_LEADER);
         if (!$isTeamLeader) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $alreadyFinished = !$receipt->isActive();
@@ -148,8 +145,7 @@ class ReceiptController extends Controller
         $em->flush();
 
         // Send email
-        $emailSender = $this->get('app.email_sender');
-        $emailSender->sendPaidReceiptConfirmation($receipt);
+        $this->get('app.email_sender')->sendPaidReceiptConfirmation($receipt);
 
         $this->addFlash('success', 'Utlegget ble markert som refundert og bekreftelsesmail sendt til ' . $receipt->getUser()->getEmail() . '.');
 
@@ -166,7 +162,7 @@ class ReceiptController extends Controller
         $isTeamLeader = $this->get('app.roles')->userIsGranted($user, Roles::TEAM_LEADER);
 
         if (!$isTeamLeader && ($user !== $receipt->getUser() || !$receipt->isActive())) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Delete the image file
