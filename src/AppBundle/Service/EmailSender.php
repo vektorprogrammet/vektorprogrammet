@@ -55,7 +55,7 @@ class EmailSender
     public function sendPaidReceiptConfirmation(Receipt $receipt)
     {
         $message = \Swift_Message::newInstance()
-            ->setSubject('Vi har overført penger for utlegget ditt')
+            ->setSubject('Vi har tilbakebetalt penger for utlegget ditt')
             ->setFrom($this->defaultEmail)
             ->setReplyTo($this->defaultEmail)
             ->setTo($receipt->getUser()->getEmail())

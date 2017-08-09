@@ -52,12 +52,18 @@ class Receipt
     private $active;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $visualId;
+
+    /**
      * Receipt constructor.
      */
     public function __construct()
     {
         $this->active = true;
         $this->submitDate = new \DateTime();
+        $this->visualId = substr(md5(uniqid()),-7);
     }
 
     /**
@@ -170,5 +176,21 @@ class Receipt
     public function setActive($active)
     {
         $this->active = $active;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVisualId(): string
+    {
+        return $this->visualId;
+    }
+
+    /**
+     * @param string $visualId
+     */
+    public function setVisualId(string $visualId)
+    {
+        $this->visualId = $visualId;
     }
 }
