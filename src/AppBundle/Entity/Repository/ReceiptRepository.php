@@ -3,7 +3,6 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Department;
-use AppBundle\Entity\Receipt;
 use Doctrine\ORM\EntityRepository;
 use AppBundle\Entity\User;
 

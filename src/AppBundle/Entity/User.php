@@ -491,7 +491,6 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     // Used for unit testing
-
     public function fromArray($data = array())
     {
         foreach ($data as $property => $value) {
@@ -499,12 +498,13 @@ class User implements AdvancedUserInterface, \Serializable
             $this->$method($value);
         }
     }
-    // toString method used to display the user in twig files
 
+    // toString method used to display the user in twig files
     public function __toString()
     {
         return "{$this->getFirstName()} {$this->getLastName()}";
     }
+
     /*
 
     You may or may not need the code below depending on the algorithm you chose to hash and salt passwords with.

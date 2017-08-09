@@ -15,10 +15,6 @@ services:
     class: AppBundle\Service\UserRegistration
     arguments: ['@twig', '@doctrine.orm.default_entity_manager', '@mailer', '@app.logger']
 
-  app.receipt.manager:
-      class: AppBundle\Service\ReceiptManager
-      arguments: []
-
   app.roles:
     class: AppBundle\Service\RoleManager
     arguments: ['@security.authorization_checker']
@@ -30,10 +26,6 @@ services:
   app.newsletter.manager:
       class: AppBundle\Service\NewsletterManager
       arguments: ['@swiftmailer.mailer.newsletter', '@twig', '@doctrine.orm.entity_manager']
-
-  app.receipt.manager:
-    class: AppBundle\Service\ReceiptManager
-    arguments: []
 
   app.password_manager:
       class: AppBundle\Service\PasswordManager

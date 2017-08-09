@@ -63,7 +63,7 @@ class Receipt
     {
         $this->active = true;
         $this->submitDate = new \DateTime();
-        $this->visualId = substr(md5(uniqid()),-7);
+        $this->visualId = substr(md5(uniqid()), -7);
     }
 
     /**
