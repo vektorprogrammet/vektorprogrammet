@@ -10,7 +10,10 @@
 
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            Kontonummer: {{ user.accountNumber }}
+            <ul class="clean-list">
+                <li>Kontonummer: {{ user.accountNumber }}</li>
+                <li>Email: <a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
+            </ul>
         </div>
     </div>
 
