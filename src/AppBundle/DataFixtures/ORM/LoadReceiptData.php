@@ -19,7 +19,7 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
         );
         $receipt1->setSum(1108);
         $receipt1->setActive(true);
-        $receipt1->setPicturePath('/images/receipts/clas.jpg');
+        $receipt1->setPicturePath('/images/receipt_images/clas.jpg');
         $manager->persist($receipt1);
 
         $receipt2 = new Receipt();
@@ -30,7 +30,7 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
         );
         $receipt2->setSum(133);
         $receipt2->setActive(true);
-        $receipt2->setPicturePath('/images/receipts/taco.jpg');
+        $receipt2->setPicturePath('/images/receipt_images/taco.jpg');
         $manager->persist($receipt2);
 
         $receipt3 = new Receipt();
@@ -41,7 +41,7 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
         );
         $receipt3->setSum(531);
         $receipt3->setActive(false);
-        $receipt3->setPicturePath('/images/receipts/teamsosialt.jpg');
+        $receipt3->setPicturePath('/images/receipt_images/teamsosialt.jpg');
         $manager->persist($receipt3);
 
         $receipt4 = new Receipt();
@@ -52,7 +52,7 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
         );
         $receipt4->setSum(828.77);
         $receipt4->setActive(true);
-        $receipt4->setPicturePath('/images/receipts/hyttetur.jpg');
+        $receipt4->setPicturePath('/images/receipt_images/hyttetur.jpg');
         $manager->persist($receipt4);
 
         $manager->flush();
