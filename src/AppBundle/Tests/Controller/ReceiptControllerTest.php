@@ -27,12 +27,12 @@ class ReceiptControllerTest extends BaseWebTestCase
         $this->createAssistantClient()->request('POST', '/utlegg/slett/'.$receiptId);
     }
 
-    public function testFinish()
+    public function testRefunded()
     {
         $client = $this->createTeamLeaderClient();
-        $client->request('POST', '/kontrollpanel/utlegg/ferdig/2');
+        $client->request('POST', '/kontrollpanel/utlegg/refunder/2');
         $this->assertEquals(302, $client->getResponse()->getStatusCode()); // Successful if redirect
-        $client->request('POST', '/kontrollpanel/utlegg/ferdig/2'); // Try again with same receipt
+        $client->request('POST', '/kontrollpanel/utlegg/refunder/2'); // Try again with same receipt
         $this->assertEquals(400, $client->getResponse()->getStatusCode()); // Controller throws 400
     }
 
@@ -99,21 +99,21 @@ class ReceiptControllerTest extends BaseWebTestCase
         $editHref = explode('/', $crawler->filter('a:contains("Rediger")')->attr('href'));
         $teamLeaderReceiptId = end($editHref);
 
-        /* -- Try to finish each receipt -- */
+        /* -- Try to refund each receipt -- */
 
         // Skip assistant - no access to control panel
         // Team member has no access
         $client = $this->createTeamMemberClient();
-        $client->request('POST', '/kontrollpanel/utlegg/ferdig/' . $teamMemberReceiptId);
+        $client->request('POST', '/kontrollpanel/utlegg/refunder/' . $teamMemberReceiptId);
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
         // Team leader
         $client = $this->createTeamLeaderClient();
-        $client->request('POST', '/kontrollpanel/utlegg/ferdig/' . $assistantReceiptId);
+        $client->request('POST', '/kontrollpanel/utlegg/refunder/' . $assistantReceiptId);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $client->request('POST', '/kontrollpanel/utlegg/ferdig/' . $teamMemberReceiptId);
+        $client->request('POST', '/kontrollpanel/utlegg/refunder/' . $teamMemberReceiptId);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $client->request('POST', '/kontrollpanel/utlegg/ferdig/' . $teamLeaderReceiptId);
+        $client->request('POST', '/kontrollpanel/utlegg/refunder/' . $teamLeaderReceiptId);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
 
         /* -- Try to edit each own receipt -- */

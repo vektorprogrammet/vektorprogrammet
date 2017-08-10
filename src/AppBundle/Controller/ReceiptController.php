@@ -125,7 +125,7 @@ class ReceiptController extends Controller
         ));
     }
 
-    public function finishAdminAction(Receipt $receipt)
+    public function refundedAdminAction(Receipt $receipt)
     {
         $user = $this->getUser();
         $isTeamLeader = $this->get('app.roles')->userIsGranted($user, Roles::TEAM_LEADER);
@@ -133,8 +133,8 @@ class ReceiptController extends Controller
             throw new AccessDeniedException();
         }
 
-        $alreadyFinished = !$receipt->isActive();
-        if ($alreadyFinished) {
+        $alreadyRefunded = !$receipt->isActive();
+        if ($alreadyRefunded) {
             throw new BadRequestHttpException();
         }
 

@@ -581,9 +581,9 @@ receipts_show:
   defaults: {_controller: AppBundle:Receipt:show }
   methods: [GET]
 
-receipts_finish:
-  path: /kontrollpanel/utlegg/ferdig/{receipt}
-  defaults: { _controller: AppBundle:Receipt:finishAdmin }
+receipts_refund:
+  path: /kontrollpanel/utlegg/refunder/{receipt}
+  defaults: { _controller: AppBundle:Receipt:refundedAdmin }
   methods: [POST]
   requirements:
     receipts: \d+

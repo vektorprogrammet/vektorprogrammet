@@ -29,7 +29,7 @@
                 </div>
             </td>
             {% if receipt.active and is_granted_team_leader() %}
-            <td>{%  include 'receipt/finish_receipt_button.html.twig' %}</td>
+            <td>{%  include 'receipt/refund_receipt_button.html.twig' %}</td>
             {% else %}
             <td></td>
             {% endif %}
