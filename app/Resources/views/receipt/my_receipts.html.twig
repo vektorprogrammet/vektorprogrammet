@@ -8,7 +8,14 @@
             <h1>Mine Utlegg</h1>
             <p>
                 Her kan du registrere utlegg du har gjort for vektorprogrammet som du ønsker å få refundert. For å få utlegget
-                refundert må du laste opp en kvittering som bekrefter utlegget ditt. Du kan typisk kan få refusjon for utgifter som bussbilletter, osv.
+                refundert må du laste opp en kvittering som bekrefter utlegget ditt.
+                {% if is_granted_team_member() %}
+                    Du kan typisk få refusjon for bussbilletter til og fra skole, kaffeposer til stand, kake til arrangementer og lignende. Det er ellers
+                    lurt å høre med en leder om du kan få utlegget ditt refundert før du legger ut.
+                {% else %}
+                    Vi refunderer gjerne bussbilletter o.l. til og fra skolene. Hvis du har tenkt til å legge ut for noe annet kan det være lurt å
+                    høre med en leder om du kan få det refundert først.
+                {% endif %}
                 Om du har spørsmål kan du kontakte økonomiteamet på <a href="mailto:okonomi@vektorprogrammet.no">okonomi@vektorprogrammet.no</a>.
             </p>
         </div>
