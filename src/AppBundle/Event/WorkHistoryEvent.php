@@ -5,15 +5,15 @@ namespace AppBundle\Event;
 use AppBundle\Entity\WorkHistory;
 use Symfony\Component\EventDispatcher\Event;
 
-class WorkHistoryCreatedEvent extends Event
+class WorkHistoryEvent extends Event
 {
-    const NAME = 'work_history.created';
+    const CREATED = 'work_history.created';
+    const EDITED = 'work_history.edited';
+    const DELETED = 'work_history.deleted';
 
     private $workHistory;
 
     /**
-     * WorkHistoryCreatedEvent constructor.
-     *
      * @param WorkHistory $workHistory
      */
     public function __construct(WorkHistory $workHistory)

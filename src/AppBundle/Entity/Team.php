@@ -120,11 +120,11 @@ class Team implements TeamInterface
     /**
      * Set department.
      *
-     * @param \AppBundle\Entity\Department $department
+     * @param Department $department
      *
      * @return Team
      */
-    public function setDepartment(\AppBundle\Entity\Department $department = null)
+    public function setDepartment(Department $department = null)
     {
         $this->department = $department;
 
@@ -134,7 +134,7 @@ class Team implements TeamInterface
     /**
      * Get department.
      *
-     * @return \AppBundle\Entity\Department
+     * @return Department
      */
     public function getDepartment()
     {
