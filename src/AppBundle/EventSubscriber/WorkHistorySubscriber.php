@@ -2,7 +2,8 @@
 
 namespace AppBundle\EventSubscriber;
 
-use AppBundle\Event\WorkHistoryCreatedEvent;
+use AppBundle\Event\WorkHistoryEvent;
+use AppBundle\Event\WorkHistoryEditedEvent;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
@@ -41,15 +42,24 @@ class WorkHistorySubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            WorkHistoryCreatedEvent::NAME => array(
+            WorkHistoryEvent::CREATED        => array(
                 array('logCreatedEvent', 1),
                 array('updateUserRole', 0),
-                array('addFlashMessage', -1),
+                array('addCreatedFlashMessage', -1),
+            ),
+            WorkHistoryEvent::EDITED  => array(
+                array('logEditedEvent', 1),
+                array('updateUserRole', 0),
+                array('addUpdatedFlashMessage', -1),
+            ),
+            WorkHistoryEvent::DELETED => array(
+                array('logDeletedEvent', 1),
+                array('updateUserRole', 0),
             ),
         );
     }
 
-    public function addFlashMessage(WorkHistoryCreatedEvent $event)
+    public function addCreatedFlashMessage(WorkHistoryEvent $event)
     {
         $workHistory = $event->getWorkHistory();
 
@@ -60,22 +70,69 @@ class WorkHistorySubscriber implements EventSubscriberInterface
         $this->session->getFlashBag()->add('success', "$user har blitt lagt til i $team som $position.");
     }
 
-    public function logCreatedEvent(WorkHistoryCreatedEvent $event)
+    public function addUpdatedFlashMessage(WorkHistoryEvent $event)
+    {
+        $workHistory = $event->getWorkHistory();
+
+        $team = $workHistory->getTeam();
+        $user = $workHistory->getUser();
+        $position = $workHistory->getPosition();
+
+        $this->session->getFlashBag()->add('success', "$user i $team med stilling $position har blitt oppdatert.");
+    }
+
+    public function logCreatedEvent(WorkHistoryEvent $event)
     {
         $workHistory = $event->getWorkHistory();
 
         $user = $workHistory->getUser();
+        $position = $workHistory->getPosition();
         $team = $workHistory->getTeam();
+        $department = $team->getDepartment();
 
         $startSemester = $workHistory->getStartSemester()->getName();
         $endSemester = $workHistory->getEndSemester();
 
         $endStr = $endSemester !== null ? 'to '.$endSemester->getName() : '';
 
-        $this->logger->info(" $user has joined $team from $startSemester $endStr");
+        $this->logger->info(" $user has joined $team ($department) as $position from $startSemester $endStr");
     }
 
-    public function updateUserRole(WorkHistoryCreatedEvent $event)
+    public function logEditedEvent(WorkHistoryEvent $event)
+    {
+        $workHistory = $event->getWorkHistory();
+
+        $user = $workHistory->getUser();
+        $position = $workHistory->getPosition();
+        $team = $workHistory->getTeam();
+        $department = $team->getDepartment();
+
+        $startSemester = $workHistory->getStartSemester()->getName();
+        $endSemester = $workHistory->getEndSemester();
+
+        $endStr = $endSemester !== null ? 'to '.$endSemester->getName() : '';
+
+        $this->logger->info("WorkHistory edited: $user has joined $team ($department) as $position from $startSemester $endStr");
+    }
+
+    public function logDeletedEvent(WorkHistoryEvent $event)
+    {
+        $workHistory = $event->getWorkHistory();
+
+        $user = $workHistory->getUser();
+        $position = $workHistory->getPosition();
+        $team = $workHistory->getTeam();
+        $department = $team->getDepartment();
+
+        $startSemester = $workHistory->getStartSemester()->getName();
+        $endSemester = $workHistory->getEndSemester();
+
+        $endStr = $endSemester !== null ? 'to '.$endSemester->getName() : '';
+
+        $this->logger->info("WorkHistory deleted: $user (position: $position), active from $startSemester $endStr, was deleted from $team ($department)");
+    }
+
+    public function updateUserRole(WorkHistoryEvent $event)
     {
         $workHistory = $event->getWorkHistory();
 
