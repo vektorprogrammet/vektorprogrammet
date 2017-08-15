@@ -57,19 +57,6 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
 
         $manager->flush();
 
-        // $visualID can only be generated after $id is generated, which happens when $manager->flush() runs
-        $receipt1->generateAndSetVisualId();
-        $receipt2->generateAndSetVisualId();
-        $receipt3->generateAndSetVisualId();
-        $receipt4->generateAndSetVisualId();
-
-        $manager->persist($receipt1);
-        $manager->persist($receipt2);
-        $manager->persist($receipt3);
-        $manager->persist($receipt4);
-
-        $manager->flush();
-
         $this->addReference('rec-1', $receipt1);
         $this->addReference('rec-2', $receipt2);
         $this->addReference('rec-3', $receipt3);

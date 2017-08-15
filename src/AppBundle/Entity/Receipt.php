@@ -63,16 +63,8 @@ class Receipt
     {
         $this->active = true;
         $this->submitDate = new \DateTime();
-    }
-
-    /**
-     * Generates a 7 digit unique ID, dependant on $id
-     */
-    public function generateAndSetVisualId()
-    {
-        $bigPrime = '130147795189';
-        $sevenDigitPrime = '3281533';
-        $this->visualId = str_pad(($this->id * $bigPrime) % $sevenDigitPrime, 7, STR_PAD_LEFT);
+        $currentTimeInMilliseconds = round(microtime(true) * 1000);
+        $this->visualId = dechex($currentTimeInMilliseconds);
     }
 
     /**

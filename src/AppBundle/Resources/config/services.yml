@@ -114,7 +114,7 @@ services:
 
   app.receipt_subscriber:
     class: AppBundle\EventSubscriber\ReceiptSubscriber
-    arguments: ['@app.logger', '@doctrine.orm.entity_manager']
+    arguments: ['@app.logger']
     tags:
         - { name: kernel.event_subscriber }
 
