@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
-use AppBundle\Event\WorkHistoryCreatedEvent;
+use AppBundle\Event\WorkHistoryEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,19 +31,17 @@ class TeamAdminController extends Controller
 
     public function updateWorkHistoryAction(Request $request, WorkHistory $workHistory)
     {
-        // Find the department of the team
         $department = $workHistory->getTeam()->getDepartment();
 
-        // Create a new formType with the needed variables
         $form = $this->createForm(new CreateWorkHistoryType($department), $workHistory);
 
-        // Handle the form
         $form->handleRequest($request);
         if ($form->isValid()) {
-            // Persist the team to the database
             $em = $this->getDoctrine()->getManager();
             $em->persist($workHistory);
             $em->flush();
+
+            $this->get('event_dispatcher')->dispatch(WorkHistoryEvent::EDITED, new WorkHistoryEvent($workHistory));
 
             return $this->redirect($this->generateUrl('teamadmin_show_specific_team', array('id' => $workHistory->getTeam()->getId())));
         }
@@ -79,7 +77,7 @@ class TeamAdminController extends Controller
             $em->persist($workHistory);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(WorkHistoryCreatedEvent::NAME, new WorkHistoryCreatedEvent($workHistory));
+            $this->get('event_dispatcher')->dispatch(WorkHistoryEvent::CREATED, new WorkHistoryEvent($workHistory));
 
             return $this->redirect($this->generateUrl('teamadmin_show_specific_team', array('id' => $team->getId())));
         }
@@ -215,6 +213,8 @@ class TeamAdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($workHistory);
         $em->flush();
+
+        $this->get('event_dispatcher')->dispatch(WorkHistoryEvent::DELETED, new WorkHistoryEvent($workHistory));
 
         return new JsonResponse(array(
             'success' => true,
