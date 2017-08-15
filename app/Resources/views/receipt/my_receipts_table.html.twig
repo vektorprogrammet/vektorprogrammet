@@ -2,10 +2,10 @@
     <thead>
 
     <tr>
+        <th> Id</th>
         <th> Beskrivelse</th>
         <th> Sum</th>
         <th> Dato</th>
-        <th> Id</th>
         <th> Kvittering</th>
         <th colspan="3"></th>
     </tr>
@@ -15,12 +15,12 @@
     <tbody>
     {% for receipt in receipts %}
         <tr>
-            <td> {{ receipt.description }} </td>
-            <td> {{ receipt.sum|number_format(2, ',', '.') }},- </td>
-            <td> {{ receipt.submitDate|date('Y-m-d') }}</td>
             <td> {{ receipt.visualId }}</td>
+            <td> {{ receipt.description }} </td>
+            <td> {{ receipt.sum|number_format(2, ',', ' ') }} kr </td>
+            <td> {{ receipt.submitDate|date('d.m.Y') }}</td>
             <td>
-                <a href="#" data-reveal-id="receipt-{{ receipt.id }}">Vis kvittering</a>
+                <a href="#" data-reveal-id="receipt-{{ receipt.id }}">Vis kvittering</a>
 
                 <div id="receipt-{{ receipt.id }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
                     <h2 id="modalTitle">Kvittering</h2>

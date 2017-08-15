@@ -58,7 +58,7 @@ class ReceiptControllerTest extends BaseWebTestCase
         $crawler = $client->followRedirect();
 
         $this->assertEquals(1, $crawler->filter('td:contains("foo bar")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("999,00,-")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("999,00 kr")')->count());
     }
 
     public function testDelete()
@@ -153,8 +153,6 @@ class ReceiptControllerTest extends BaseWebTestCase
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $client->request('POST', '/utlegg/slett/' . $teamLeaderReceiptId);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-
-        \TestDataManager::restoreDatabase();
     }
 
     private function fillAndSubmitForm(Client $client, $uri)
@@ -166,7 +164,7 @@ class ReceiptControllerTest extends BaseWebTestCase
         $photo = new UploadedFile($file, 'receipt.png', null, null, null, true);
 
         $crawler = $client->request('GET', $uri);
-        $form = $crawler->selectButton('Registrer')->form();
+        $form = $crawler->selectButton('Be om refusjon')->form();
 
         $form['receipt[description]'] = 'En flott beskrivelse';
         $form['receipt[sum]'] = 123;
@@ -179,6 +177,8 @@ class ReceiptControllerTest extends BaseWebTestCase
 
     protected function tearDown()
     {
+        \TestDataManager::restoreDatabase();
+
         try {
             rmdir('images/receipts');
             rmdir('images');

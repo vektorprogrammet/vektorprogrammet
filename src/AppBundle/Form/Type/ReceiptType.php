@@ -18,12 +18,12 @@ class ReceiptType extends AbstractType
             ->add('description', TextareaType::class, array(
                 'label' => 'Beskrivelse',
                 'required' => true,
-                'attr' => array('rows' => 3),
+                'attr' => array('rows' => 3, 'placeholder' => 'Hva har du lagt ut penger for? Når?'),
             ))
             ->add('sum', MoneyType::class, array(
                 'label' => 'Sum',
                 'required' => true,
-                'currency' => 'NOK',
+                'currency' => null,
                 'attr' => array('pattern' => '\d*[.,]?\d+$'),
             ))
             ->add('user', AccountNumberType::class, array(

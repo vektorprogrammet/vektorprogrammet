@@ -42,6 +42,7 @@ class Receipt
     /**
      * @ORM\Column(type="float")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
+     * @Assert\GreaterThan(0, message="Ugyldig sum")
      */
     private $sum;
 
@@ -164,7 +165,7 @@ class Receipt
     }
 
     /**
-     * @return mixed
+     * @return boolean
      */
     public function isActive()
     {
@@ -172,7 +173,7 @@ class Receipt
     }
 
     /**
-     * @param mixed $active
+     * @param boolean $active
      */
     public function setActive($active)
     {

@@ -6,9 +6,13 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
             <h1>Mine Utlegg</h1>
+            <hr>
             <p>
                 Her kan du registrere utlegg du har gjort for vektorprogrammet som du ønsker å få refundert. For å få utlegget
                 refundert må du laste opp en kvittering som bekrefter utlegget ditt.
+            </p>
+            <h3>Hva kan jeg få refundert?</h3>
+            <p>
                 {% if is_granted_team_member() %}
                     Du kan typisk få refusjon for bussbilletter til og fra skole, kaffeposer til stand, kake til arrangementer og lignende. Det er ellers
                     lurt å høre med en leder om du kan få utlegget ditt refundert før du legger ut.
@@ -46,7 +50,7 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
 
-            <hr>
+            <br>
 
             {% include 'receipt/create_receipt.html.twig' with {'form': form, 'receipt': receipt} %}
 
@@ -69,7 +73,7 @@
         <div class="row">
             <div class="small-12 medium-12 large-12 columns">
 
-                <hr>
+                <br>
 
                 {% include 'receipt/my_receipts_table.html.twig' with {'receipts': active_receipts} %}
 
@@ -94,7 +98,7 @@
         <div class="row">
             <div class="small-12 medium-12 large-12 columns">
 
-                <hr>
+                <br>
 
                 {% include 'receipt/my_receipts_table.html.twig' with {'receipts': inactive_receipts } %}
 
