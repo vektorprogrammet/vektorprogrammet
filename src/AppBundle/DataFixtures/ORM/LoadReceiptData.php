@@ -13,7 +13,7 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
     {
         $receipt1 = new Receipt();
         $receipt1->setUser($this->getReference('user-1'));
-        $receipt1->setSubmitDate(new \DateTime());
+        $receipt1->setSubmitDate(new \DateTime('2016-09-05'));
         $receipt1->setDescription(
             'Kaffetraktere og grenuttak til stand'
         );
@@ -24,7 +24,7 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
 
         $receipt2 = new Receipt();
         $receipt2->setUser($this->getReference('user-1'));
-        $receipt2->setSubmitDate(new \DateTime());
+        $receipt2->setSubmitDate(new \DateTime('2017-04-03'));
         $receipt2->setDescription(
             'Taco til Tor'
         );
@@ -35,7 +35,7 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
 
         $receipt3 = new Receipt();
         $receipt3->setUser($this->getReference('user-1'));
-        $receipt3->setSubmitDate(new \DateTime());
+        $receipt3->setSubmitDate(new \DateTime('2015-11-03'));
         $receipt3->setDescription(
             'Teamsosialt med IT'
         );
@@ -53,6 +53,19 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
         $receipt4->setSum(828.77);
         $receipt4->setActive(true);
         $receipt4->setPicturePath('/images/receipt_images/hyttetur.jpg');
+        $manager->persist($receipt4);
+
+        $manager->flush();
+
+        // $visualID can only be generated after $id is generated, which happens when $manager->flush() runs
+        $receipt1->generateAndSetVisualId();
+        $receipt2->generateAndSetVisualId();
+        $receipt3->generateAndSetVisualId();
+        $receipt4->generateAndSetVisualId();
+
+        $manager->persist($receipt1);
+        $manager->persist($receipt2);
+        $manager->persist($receipt3);
         $manager->persist($receipt4);
 
         $manager->flush();

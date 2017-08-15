@@ -29,7 +29,7 @@ class Receipt
     private $submitDate;
 
     /**
-     * @ORM\Column(name="picture_path", type="string", length=45, nullable=true)
+     * @ORM\Column(name="picture_path", type="string", nullable=true)
      */
     private $picturePath;
 
@@ -52,7 +52,7 @@ class Receipt
     private $active;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="visual_id", type="string", nullable=true)
      */
     private $visualId;
 
@@ -63,7 +63,16 @@ class Receipt
     {
         $this->active = true;
         $this->submitDate = new \DateTime();
-        $this->visualId = substr(md5(uniqid()), -7);
+    }
+
+    /**
+     * Generates a 7 digit unique ID, dependant on $id
+     */
+    public function generateAndSetVisualId()
+    {
+        $bigPrime = '130147795189';
+        $sevenDigitPrime = '3281533';
+        $this->visualId = str_pad(($this->id * $bigPrime) % $sevenDigitPrime, 7, STR_PAD_LEFT);
     }
 
     /**
