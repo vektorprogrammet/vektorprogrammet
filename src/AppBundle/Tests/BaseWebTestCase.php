@@ -119,4 +119,10 @@ abstract class BaseWebTestCase extends WebTestCase
 
         return $crawler->filter('tr')->count();
     }
+
+    protected function tearDown() {
+	    parent::tearDown();
+
+	    \TestDataManager::restoreDatabase();
+    }
 }
