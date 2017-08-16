@@ -2,9 +2,9 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\BaseWebTestCase;
 
-class ProfileControllerTest extends WebTestCase
+class ProfileControllerTest extends BaseWebTestCase
 {
     public function testShow()
     {
@@ -104,8 +104,6 @@ class ProfileControllerTest extends WebTestCase
 
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        \TestDataManager::restoreDatabase();
     }
 
     /* Did not manage to get this one working since it was a repeated password field
@@ -186,8 +184,6 @@ class ProfileControllerTest extends WebTestCase
 
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        \TestDataManager::restoreDatabase();
     }
 
     //	public function testDownloadCertificateAction() {

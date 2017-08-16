@@ -2,9 +2,9 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\BaseWebTestCase;
 
-class TeamApplicationControllerTest extends WebTestCase
+class TeamApplicationControllerTest extends BaseWebTestCase
 {
     public function testShowApplication()
     {
@@ -154,7 +154,6 @@ class TeamApplicationControllerTest extends WebTestCase
 
         // Assert that the link is gone
         $this->assertEquals(0, $crawler->selectLink('Søk Styret')->count());
-        \TestDataManager::restoreDatabase();
     }
 
     public function testCreateApplication()
@@ -195,7 +194,6 @@ class TeamApplicationControllerTest extends WebTestCase
         $applicationsAfter = $crawler->filter('tr')->count();
 
         $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
-        \TestDataManager::restoreDatabase();
     }
 
     public function testDeleteApplication()
@@ -226,6 +224,5 @@ class TeamApplicationControllerTest extends WebTestCase
         $applicationsAfter = $crawler->filter('tr')->count();
 
         $this->assertEquals($applicationsBefore - 1, $applicationsAfter);
-        \TestDataManager::restoreDatabase();
     }
 }

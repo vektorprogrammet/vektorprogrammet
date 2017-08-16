@@ -39,9 +39,9 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application1->setWednesday('Bra');
         $application1->setThursday('Ikke');
         $application1->setFriday('Bra');
-	    $application0->setSubstitute(true);
+        $application0->setSubstitute(true);
 
-	    $manager->persist($application1);
+        $manager->persist($application1);
 
         $application2 = new Application();
         $application2->setUser($this->getReference('user-11'));
@@ -53,9 +53,9 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application2->setWednesday('Ikke');
         $application2->setThursday('Ikke');
         $application2->setFriday('Bra');
-	    $application0->setSubstitute(true);
+        $application0->setSubstitute(true);
 
-	    $manager->persist($application2);
+        $manager->persist($application2);
 
         $application3 = new Application();
         $application3->setUser($this->getReference('user-12'));

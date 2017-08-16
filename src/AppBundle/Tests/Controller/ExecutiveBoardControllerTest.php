@@ -34,7 +34,6 @@ class ExecutiveBoardControllerTest extends BaseWebTestCase
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("nyttStyre")')->count());
         $this->assertEquals(0, $crawler->filter('h1:contains("Hovedstyret")')->count());
-        \TestDataManager::restoreDatabase();
     }
 
     public function testAddUserToBoard()
@@ -78,8 +77,6 @@ class ExecutiveBoardControllerTest extends BaseWebTestCase
         $client->request('GET', '/kontrollpanel/hovedstyret/nytt_medlem');
 
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        \TestDataManager::restoreDatabase();
     }
 
     public function testShowAdmin()

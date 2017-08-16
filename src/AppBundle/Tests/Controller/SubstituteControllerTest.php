@@ -38,26 +38,26 @@ class SubstituteControllerTest extends BaseWebTestCase
         $this->assertEquals(1, $crawler->filter('button:contains("Rediger")')->count());
     }
 
-	public function testIllegalCreateMethod()
-	{
-		$client = self::createTeamLeaderClient();
+    public function testIllegalCreateMethod()
+    {
+        $client = self::createTeamLeaderClient();
 
-		$client->request('GET', '/kontrollpanel/vikar/opprett/4');
+        $client->request('GET', '/kontrollpanel/vikar/opprett/4');
 
-		$this->assertEquals(405, $client->getResponse()->getStatusCode());
-	}
+        $this->assertEquals(405, $client->getResponse()->getStatusCode());
+    }
 
-	public function testCreate()
-	{
-		$subCountBefore = $this->countTableRows('/kontrollpanel/vikar');
+    public function testCreate()
+    {
+        $subCountBefore = $this->countTableRows('/kontrollpanel/vikar');
 
-		$client = self::createTeamLeaderClient();
-		$client->request('POST', '/kontrollpanel/vikar/opprett/4');
+        $client = self::createTeamLeaderClient();
+        $client->request('POST', '/kontrollpanel/vikar/opprett/4');
 
-		$subCountAfter = $this->countTableRows('/kontrollpanel/vikar');
+        $subCountAfter = $this->countTableRows('/kontrollpanel/vikar');
 
-		$this->assertEquals(1, $subCountAfter - $subCountBefore);
-	}
+        $this->assertEquals(1, $subCountAfter - $subCountBefore);
+    }
 
     public function testEdit()
     {

@@ -4,7 +4,6 @@ namespace AppBundle\Tests\Controller;
 
 use AppBundle\Tests\BaseWebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
-use AppBundle\Entity\Interview;
 
 class AdmissionAdminControllerTest extends BaseWebTestCase
 {
@@ -257,15 +256,19 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
     /**
      * Test the functions on /intervju/code.
      */
-    public function testResponseInterview()
+    public function testAcceptInterview()
     {
         // Test accept
         $this->helperTestStatus('Akseptert', 'Godta', 'Intervjuet ble akseptert.');
+    }
 
-        // Test reschedule
+    public function testNewTimeInterview()
+    {
         $this->helperTestStatus('Ny tid ønskes', 'Be om ny tid', 'Forespørsel har blitt sendt.');
+    }
 
-        // Test cancel
+    public function testUserCancelInterview()
+    {
         $this->helperTestStatus('Kansellert', 'Kanseller', 'Intervjuet ble kansellert.');
     }
 
@@ -285,7 +288,6 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
      * @param string $status
      * @param string $button_text
      * @param string $flash_text
-     * @param bool   $isCancel
      */
     private function helperTestStatus(string $status, string $button_text, string $flash_text)
     {
@@ -344,8 +346,6 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         // Verify that a change has taken place.
         $this->assertEquals($count_no_answer - 1, $crawler->filter('td:contains("Ingen svar")')->count());
         $this->assertEquals($count_status + 1, $crawler->filter('td:contains('.$status.')')->count());
-
-        \TestDataManager::restoreDatabase();
     }
 
     /**

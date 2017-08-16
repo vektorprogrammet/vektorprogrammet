@@ -2,9 +2,9 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\BaseWebTestCase;
 
-class UserAdminControllerTest extends WebTestCase
+class UserAdminControllerTest extends BaseWebTestCase
 {
     public function testCreateUser()
     {
@@ -43,8 +43,6 @@ class UserAdminControllerTest extends WebTestCase
 
         // Follow the redirect
         $crawler = $client->followRedirect();
-
-        \TestDataManager::restoreDatabase();
     }
 
     public function testCreateUserSuperadmin()
@@ -80,8 +78,6 @@ class UserAdminControllerTest extends WebTestCase
 
         // Follow the redirect
         $crawler = $client->followRedirect();
-
-        \TestDataManager::restoreDatabase();
     }
 
     public function testShowUsersByDepartment()
