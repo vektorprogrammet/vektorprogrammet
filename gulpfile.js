@@ -131,6 +131,15 @@ gulp.task('vendor', function () {
 
   gulp.src('node_modules/getmdl-select/getmdl-select.min.css')
       .pipe(gulp.dest('www/css'));
+
+  gulp.src('node_modules/flexboxgrid/dist/flexboxgrid.min.css')
+      .pipe(gulp.dest('www/css'));
+
+  gulp.src('node_modules/material-components-web/dist/material-components-web.min.css')
+      .pipe(gulp.dest('www/css'));
+
+  gulp.src('node_modules/material-components-web/dist/material-components-web.min.js')
+      .pipe(gulp.dest('www/js'));
 });
 
 gulp.task('buildAssistantSchedulingApp', function (cb) {

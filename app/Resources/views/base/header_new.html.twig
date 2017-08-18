@@ -1,46 +1,25 @@
 {% set route = app.request.get('_route') %}
-<header class="vektor-header mdl-layout__header">
-    <div class="container">
-        <!-- Top row, always visible -->
-        <div class="vektor-header-row__top mdl-layout__header-row">
-            <!-- Title -->
-            <div class="mdl-layout-spacer"></div>
-            <nav class="vetktor-navigation mdl-navigation">
-                <a href="#" class="mdl-navigation__link">
-                    <img class="vektor-header-icon"
-                         src="{{ asset_with_version('images/flag_uk.svg') }}"
-                         alt="English page">
-                </a>
-                <a href="#" class="mdl-navigation__link">
-                    <img class="vektor-header-icon"
-                         src="{{ asset_with_version('images/facebook.svg') }}"
-                         alt="Facebook page">
-                </a>
-                <a href="#" class="mdl-navigation__link">
-                    <img class="vektor-header-icon"
-                         src="{{ asset_with_version('images/instagram.svg') }}"
-                         alt="Instagram page">
-                </a>
-                <a href="#" class="mdl-navigation__link">Logg inn</a>
-            </nav>
+<header class="header">
+    <div class="row">
+        <div class="col-xs-4 col-xs-offset-4">
+            <a href="{{ path('home') }}"><img class="logo" src="{{ asset_with_version('images/logo_condensed.png') }}"></a>
         </div>
-        <!-- Bottom row, not visible on scroll -->
-        <div class="vektor-header-row__bottom mdl-layout__header-row">
-            <a href="{{ path('home') }}"><img class="logo"
-                                              src="{{ asset_with_version('images/logo_inverted.png') }}"></a>
-
-            <div class="mdl-layout-spacer"></div>
-            <!-- Navigation -->
-            <nav class="vetktor-navigation mdl-navigation">
-                <a class="mdl-navigation__link {{ route == 'assistants' ? 'active' : '' }}"
+        <div class="col-xs-4">
+            <a href="#" class="login-link">Logg inn</a>
+        </div>
+    </div>
+    <div class="row center-xs navigation">
+        <div class="col-xs-12">
+            <nav class="main-navigation">
+                <a class="{{ route == 'assistants' ? 'active' : '' }}"
                    href="{{ path('assistants') }}">Assistenter</a>
-                <a class="mdl-navigation__link {{ route == 'team' ? 'active' : '' }}"
+                <a class="{{ route == 'team' ? 'active' : '' }}"
                    href="{{ path('team') }}">Team</a>
-                {#<a class="mdl-navigation__link {{ route == 'teachers' ? 'active' : '' }}"
+                <a class="{{ route == 'teachers' ? 'active' : '' }}"
                    href="{{ path('teachers') }}">Lærere</a>
-                <a class="mdl-navigation__link {{ route == 'parents' ? 'active' : '' }}"
-                   href="{{ path('parents') }}">Foreldre</a>#}
-                <a class="mdl-navigation__link {{ route == 'about_new' ? 'active' : '' }}"
+                <a class="{{ route == 'parents' ? 'active' : '' }}"
+                   href="{{ path('parents') }}">Foreldre</a>
+                <a class="{{ route == 'about_new' ? 'active' : '' }}"
                    href="{{ path('about_new') }}">Om oss</a>
             </nav>
         </div>

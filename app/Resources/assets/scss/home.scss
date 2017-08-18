@@ -1,0 +1,27 @@
+.hero {
+  background-color: #E6F3F7;
+  h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 36px;
+    font-weight: 900;
+  }
+  .hero-image {
+    display: block;
+    width: 500px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: 25px;
+    padding: 50px 0;
+  }
+  .hero-content {
+    margin-top: 100px;
+    margin-left: 25px;
+    a {
+      background-color: #4CAF50;
+    }
+  }
+}
+
+.other-content {
+  margin-top: 64px;
+}

@@ -1,42 +1,46 @@
-<footer class="vektor-footer mdl-mega-footer">
-    <div class="container">
-        <div class="mdl-mega-footer--middle-section">
-            <div class="mdl-grid">
-                <div class="mdl-cell mdl-cell--3-col">
-                    <h1 class="mdl-mega-footer--heading">Følg oss</h1>
-                    <ul class="mdl-mega-footer--link-list">
-                        <li><a href="https://www.facebook.com/vektorprogrammet">Facebook</a></li>
-                        <li><a href="https://instagram.com/vektorprogrammet/">Instagram</a></li>
-                    </ul>
-                </div>
-                <div class="mdl-cell mdl-cell--3-col">
-                    <h1 class="mdl-mega-footer--heading">Kontakt oss</h1>
-                    <ul class="mdl-mega-footer--link-list">
-                        {% for department in get_departments() %}
-                            <li><a href="{{ path('about_new') }}">{{ department }}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="mdl-cell mdl-cell--3-col">
-                    <h1 class="mdl-mega-footer--heading">For eksterne</h1>
-                    <ul class="mdl-mega-footer--link-list">
-                        <li><a href="#">Ungdomsskoler</a></li>
-                        <li><a href="#">Samarbeidspartnere</a></li>
-                        <li><a href="#">Arbeidsgivere</a></li>
-                        <li><a href="#">Media</a></li>
-                    </ul>
-                </div>
-                <div class="mdl-cell mdl-cell--3-col">
-                    <h1 class="mdl-mega-footer--heading">Samarbeidspartnere</h1>
-                    <ul class="mdl-mega-footer--link-list">
-                        {% for sponsor in get_sponsors() %}
-                            <li><a href="{{ sponsor.url }}">{{ sponsor.name }}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
+<footer class="row vektor-footer">
+    <div class="col-xs-12">
+
+        <div class="row">
+
+            <div class="col-xs-3">
+                <h4 class="mdl-mega-footer--heading">Følg oss</h4>
+                <ul class="mdl-mega-footer--link-list">
+                    <li><a href="https://www.facebook.com/vektorprogrammet">Facebook</a></li>
+                    <li><a href="https://instagram.com/vektorprogrammet/">Instagram</a></li>
+                </ul>
             </div>
-            <div class="vektor-footer-createdby mdl-mega-footer--bottom-section">
-                <p>Nettsiden er utviklet av Vektorprogrammets <a href="{{ path('team') }}">IT-team</a></p>
+            <div class="col-xs-3">
+                <h4 class="mdl-mega-footer--heading">Kontakt oss</h4>
+                <ul class="mdl-mega-footer--link-list">
+                    {% for department in get_departments() %}
+                        <li><a href="{{ path('about_new') }}">{{ department }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-xs-3">
+                <h4 class="mdl-mega-footer--heading">For eksterne</h4>
+                <ul class="mdl-mega-footer--link-list">
+                    <li><a href="#">Ungdomsskoler</a></li>
+                    <li><a href="#">Samarbeidspartnere</a></li>
+                    <li><a href="#">Arbeidsgivere</a></li>
+                    <li><a href="#">Media</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-3">
+                <h4 class="mdl-mega-footer--heading">Samarbeidspartnere</h4>
+                <ul class="mdl-mega-footer--link-list">
+                    {% for sponsor in get_sponsors() %}
+                        <li><a href="{{ sponsor.url }}">{{ sponsor.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="vektor-footer-createdby">
+                    <p>Nettsiden er utviklet av Vektorprogrammets <a href="{{ path('team') }}">IT-team</a></p>
+                </div>
             </div>
         </div>
     </div>

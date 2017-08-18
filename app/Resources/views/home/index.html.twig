@@ -4,6 +4,28 @@
     Vektorprogrammet
 {% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/home.css') }}">
+{% endblock %}
+
 {% block body %}
-    <h1>Vektorprogrammet</h1>
+
+    <section class="row hero">
+            <div class="col-xs-6">
+                <img class="hero-image" src="{{ 'images/blackboard.png' }}">
+            </div>
+            <div class="col-xs-6">
+                <div class="hero-content">
+                    <h1>Vektorprogrammet</h1>
+                    <p>- this is a very cool tagline</p>
+                    <a class="mdc-button mdc-button--raised mdc-button--primary" href="{{ path('assistants') }}">
+                        Les mer og bli assistent
+                    </a>
+                </div>
+            </div>
+    </section>
+
+    <section class="row other-content">
+        This is some other content
+    </section>
 {% endblock %}
