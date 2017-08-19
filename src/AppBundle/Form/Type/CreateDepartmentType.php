@@ -26,6 +26,11 @@ class CreateDepartmentType extends AbstractType
             ->add('city', 'text', array(
                 'label' => 'By',
             ))
+            ->add('slackChannel', 'text', array(
+                'label' => 'Privat Slack Channel',
+                'required' => false,
+                'attr' => ['placeholder' => 'eks. #styret_ntnu']
+            ))
             ->add('save', 'submit', array(
                 'label' => 'Opprett',
             ));
