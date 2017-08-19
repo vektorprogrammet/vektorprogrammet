@@ -11,18 +11,23 @@
 {% block body %}
 
     <section class="row hero">
-            <div class="col-xs-6">
-                <img class="hero-image" src="{{ 'images/blackboard.png' }}">
-            </div>
-            <div class="col-xs-6">
-                <div class="hero-content">
-                    <h1>Vektorprogrammet</h1>
-                    <p>- this is a very cool tagline</p>
-                    <a class="mdc-button mdc-button--raised mdc-button--primary" href="{{ path('assistants') }}">
-                        Les mer og bli assistent
-                    </a>
+        <div class="col-xs-12">
+            <div class="row container">
+                <div class="col-xs-6">
+                    <img class="hero-image" src="{{ 'images/blackboard.png' }}">
+                </div>
+                <div class="col-xs-6">
+                    <div class="hero-content">
+                        <h1>Vektorprogrammet</h1>
+                        <p>- sender studenter til ungomdsskoler for å hjelpe til som <br>
+                            assistentlærere i mattematikkundervisningen</p>
+                        <a class="mdc-button mdc-button--raised mdc-button--primary" href="{{ path('assistants') }}">
+                            Les mer og bli assistent
+                        </a>
+                    </div>
                 </div>
             </div>
+        </div>
     </section>
 
     <section class="row other-content">

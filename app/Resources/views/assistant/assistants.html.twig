@@ -7,27 +7,31 @@
 
 {% block body %}
     <div class="assistants">
-        <div class="hero-image" style="background-image: url({{ asset_with_version('images/assistenter.jpg') }})"></div>
-        <header class="intro content-centered">
+        <header class="page-intro content-centered">
             <h1>Assistenter</h1>
             <p>Vektorassistent er et frivillig verv der du reiser til en ungdomsskole én dag i uka for å hjelpe til som
                 lærerassistent i matematikk. En stilling som vektorassistent varer i 4 eller 8 uker, og du kan selv
                 velge hvilken ukedag som passer best for deg. </p>
         </header>
-        <section class="mdl-grid">
-            <div class="blurb mdl-cell mdl-cell--4-col">
+        {#<div class="row container">#}
+        {#<div class="col-xs-12">#}
+        {#<div class="hero-image" style="margin-top: 25px; background-image: url({{ asset_with_version('images/assistenter.jpg') }})"></div>#}
+        {#</div>#}
+        {#</div>#}
+        <section class="row container">
+            <div class="blurb col-xs-4">
                 <img src="{{ asset_with_version('images/certificate.svg') }}" alt="CV">
                 <h4>Fint å ha på CVen</h4>
                 <p>Erfaring som arbeidsgivere setter pris på. Alle assistenter får en attest.</p>
             </div>
-            <div class="blurb mdl-cell mdl-cell--4-col">
+            <div class="blurb col-xs-4">
                 <img src="{{ asset_with_version('images/calendar.svg') }}" alt="CV">
                 <h4>Sosiale arrangementer</h4>
                 <p>Alle assistenter blir invitert til arrangementer som fester, populærforedrag, bowling, grilling i
                     parken,
                     gokart og paintball.</p>
             </div>
-            <div class="blurb mdl-cell mdl-cell--4-col">
+            <div class="blurb col-xs-4">
                 <img src="{{ asset_with_version('images/graduation.svg') }}" alt="CV">
                 <h4>Vær et forbilde</h4>
                 <p>Her kommer en liten tekst om at vektorassistenter er superhelter i matteundervisningen.</p>
@@ -69,40 +73,39 @@
                 utfordrende oppgaver osv.)</p>
         </section>
 
-        <section>
-            <h2 class="text-center">Hvordan blir jeg Vektorassistent?</h2>
-            <div class="requirements">
-
-                <div>
-                    <div class="flex-end">
-                        <div>
-
-
-                            <h5>Opptakskrav</h5>
-                            <ul>
-                                <li>Du studerer på høgskole/universitet</li>
-                                <li>Du har hatt R1/P2 på videregående</li>
-                                <li>Du har tid til å dra til en ungdomsskole <br>èn dag i uka (kl. 8-14)</li>
-                            </ul>
+        <section class="content-centered">
+                <h2 class="text-center">Hvordan blir jeg Vektorassistent?</h2>
+                <div class="requirements container">
+                    <div>
+                        <h5>Opptakskrav</h5>
+                        <ul>
+                            <li>Du studerer på høgskole/universitet</li>
+                            <li>Du har hatt R1/P2 på videregående</li>
+                            <li>Du har tid til å dra til en ungdomsskole <br>èn dag i uka (kl. 8-14)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="flex-end">
+                            <div>
+                                <h5>Opptaksprosessen</h5>
+                                <ol>
+                                    <li>Vektorprogrammet tar opp nye assistenter i starten av hvert semester</li>
+                                    <li>Send inn søknad på <a href="">opptakssiden</a> til ditt universitet</li>
+                                    <li>Møt opp på intervju (obligatorisk)</li>
+                                    <li>Dra på et gratis pedagogikkurs arrangert av Vektorprogrammet</li>
+                                    <li>Få tildelt en ungdomsskole som du og din vektorpartner skal dra til</li>
+                                </ol>
+                            </div>
                         </div>
                     </div>
+
                 </div>
-                <div>
-                    <h5>Opptaksprosessen</h5>
-                    <ol>
-                        <li>Vektorprogrammet tar opp nye assistenter i starten av hvert semester</li>
-                        <li>Send inn søknad på <a href="">opptakssiden</a> til ditt nærmeste universitet</li>
-                        <li>Møt opp på intervju (obligatorisk)</li>
-                        <li>Dra på et gratis pedagogikkurs arrangert av Vektorprogrammet</li>
-                        <li>Få tildelt en ungdomsskole som du og din vektorpartner skal dra til</li>
-                    </ol>
-                </div>
-            </div>
-            <br>
-            <p class="text-center mdl-color-text--red">Neste opptak starter i begynnelsen av høstsemesteret 2017</p>
+
+                <br>
+                <p class="text-center next-admission">Neste opptak starter i begynnelsen av vårsemesteret 2018</p>
         </section>
 
-        <section class="vektor-reminder-form mdl-shadow--4dp">
+        {#<section class="vektor-reminder-form mdl-shadow--4dp">
             <h3>Få en påminnelse når opptaket starter</h3>
             <form action="">
                 <div class="mdl-grid">
@@ -139,7 +142,7 @@
                     FÅ PÅMINNELSE
                 </button>
             </form>
-        </section>
+        </section>#}
     </div>
 {% endblock %}
 

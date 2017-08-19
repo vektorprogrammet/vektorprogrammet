@@ -1,27 +1,32 @@
 {% set route = app.request.get('_route') %}
-<header class="header">
-    <div class="row">
-        <div class="col-xs-4 col-xs-offset-4">
-            <a href="{{ path('home') }}"><img class="logo" src="{{ asset_with_version('images/logo_condensed.png') }}"></a>
+<header class="row header">
+    <div class="col-xs-12">
+
+        <div class="row container">
+            <div class="col-xs-4 col-xs-offset-4">
+                <a href="{{ path('home') }}">
+                    <img class="logo" src="{{ asset_with_version('images/logo_condensed.png') }}">
+                </a>
+            </div>
+            <div class="col-xs-4">
+                <a href="#" class="login-link">Logg inn</a>
+            </div>
         </div>
-        <div class="col-xs-4">
-            <a href="#" class="login-link">Logg inn</a>
-        </div>
-    </div>
-    <div class="row center-xs navigation">
-        <div class="col-xs-12">
-            <nav class="main-navigation">
-                <a class="{{ route == 'assistants' ? 'active' : '' }}"
-                   href="{{ path('assistants') }}">Assistenter</a>
-                <a class="{{ route == 'team' ? 'active' : '' }}"
-                   href="{{ path('team') }}">Team</a>
-                <a class="{{ route == 'teachers' ? 'active' : '' }}"
-                   href="{{ path('teachers') }}">Lærere</a>
-                <a class="{{ route == 'parents' ? 'active' : '' }}"
-                   href="{{ path('parents') }}">Foreldre</a>
-                <a class="{{ route == 'about_new' ? 'active' : '' }}"
-                   href="{{ path('about_new') }}">Om oss</a>
-            </nav>
+        <div class="row center-xs container navigation">
+            <div class="col-xs-12">
+                <nav class="main-navigation">
+                    <a class="{{ route == 'assistants' ? 'active' : '' }}"
+                       href="{{ path('assistants') }}">Assistenter</a>
+                    <a class="{{ route == 'team' ? 'active' : '' }}"
+                       href="{{ path('team') }}">Team</a>
+                    <a class="{{ route == 'teachers' ? 'active' : '' }}"
+                       href="{{ path('teachers') }}">Lærere</a>
+                    <a class="{{ route == 'parents' ? 'active' : '' }}"
+                       href="{{ path('parents') }}">Foreldre</a>
+                    <a class="{{ route == 'about_new' ? 'active' : '' }}"
+                       href="{{ path('about_new') }}">Om oss</a>
+                </nav>
+            </div>
         </div>
     </div>
 </header>

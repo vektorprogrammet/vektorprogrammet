@@ -1,4 +1,5 @@
 .assistants {
+  //margin-top: 50px;
   section {
     margin: 125px auto;
   }
@@ -8,15 +9,6 @@
     background-size: cover;
     height: 500px;
     width: 100%;
-  }
-
-  .intro {
-    h1 {
-      text-align: center;
-    }
-    p {
-      font-size: 19px;
-    }
   }
 
   .blurb {
@@ -29,8 +21,13 @@
       max-height: 100%;
     }
 
+    h4 {
+      font-size: 26px;
+      margin: 20px 0;
+    }
+
     p {
-      font-size: 16px;
+      font-size: 18px;
       line-height: 26px;
     }
   }
@@ -57,16 +54,31 @@
     flex-direction: column;
     align-items: flex-end;
   }
+
+  .requirements {
+    display: flex;
+    justify-content: center;
+    h5 {
+      font-size: 20px;
+      margin: 20px 0;
+    }
+    &>div {
+      width: 50%;
+      max-width: 100%;
+    }
+    ul, ol {
+      padding-left: 17px;
+      li {
+        font-size: 18px;
+        font-weight: 300;
+      }
+    }
+  }
+
+  .next-admission {
+    color: #F44336;
+    font-weight: 400;
+  }
 }
 
-.requirements {
-  display: flex;
-  justify-content: center;
-  &>div {
-    min-width: 430px;
-    padding: 0 50px;
-  }
-  ul, ol {
-    padding-left: 17px;
-  }
-}
+
