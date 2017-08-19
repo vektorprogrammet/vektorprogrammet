@@ -205,4 +205,21 @@ class Team implements TeamInterface
     {
         return $this->workHistories;
     }
+
+	/**
+	 * @return WorkHistory[]
+	 */
+    public function getActiveWorkHistories()
+	{
+		$histories = [];
+
+		foreach ($this->workHistories as $wh) {
+			$semester = $wh->getUser()->getDepartment()->getCurrentOrLatestSemester();
+			if ($semester !== null && $wh->isActiveInSemester($semester)) {
+				$histories[] = $wh;
+			}
+		}
+
+		return $histories;
+	}
 }

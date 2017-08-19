@@ -20,25 +20,56 @@
         </section>
 
         <section class="teams">
-            <div class="mdl-tabs mdl-js-tabs">
-                <div class="mdl-tabs__tab-bar">
-                    {% for department in get_departments() %}
-                        <a href="#{{ department }}"
-                           class="mdl-tabs__tab {{ loop.first ? 'is-active' : '' }}">{{ department.city }}</a>
-                    {% endfor %}
-                </div>
+            <nav id="department-tabs" class="mdc-tab-bar">
                 {% for department in get_departments() %}
-                    <div class="vektor-team mdl-tabs__panel {{ loop.first ? 'is-active' : '' }}" id="{{ department }}">
-                        <div class="team-cards">
-
+                    <a class="mdc-tab {{ loop.first ? 'mdc-tab--active' : '' }}"
+                       href="#{{ department }}"
+                       role="tab"
+                       aria-controls="{{ department }}">{{ department.city }}</a>
+                {% endfor %}
+                <span class="mdc-tab-bar__indicator"></span>
+            </nav>
+            <div class="panels container">
+                {% for department in get_departments() %}
+                    <div class="vektor-team panel {{ loop.first ? 'active' : '' }}" id="{{ department }}" role="tabpanel" aria-hidden="{{ loop.first ? 'false' : 'true' }}">
+                        <div class="row team-cards">
                             {% for team in department.teams %}
-                                {% include 'team/team-card.html.twig' %}
+                                <div class="col-xs-3">
+                                    {% include 'team/team-card.html.twig' %}
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
                 {% endfor %}
-
             </div>
         </section>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+      var dynamicTabBar = window.dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#department-tabs'));
+      var panels = document.querySelector('.panels');
+
+      dynamicTabBar.preventDefaultOnClick = true;
+      function updatePanel(index) {
+        var activePanel = panels.querySelector('.panel.active');
+        if (activePanel) {
+          activePanel.classList.remove('active');
+        }
+        var newActivePanel = panels.querySelector('.panel:nth-child(' + (index + 1) + ')');
+        if (newActivePanel) {
+          newActivePanel.classList.add('active');
+        }
+      }
+
+      dynamicTabBar.listen('MDCTabBar:change', function ({detail: tabs}) {
+        var nthChildIndex = tabs.activeTabIndex;
+        var scrollY = window.scrollY;
+
+        updatePanel(nthChildIndex);
+        window.scrollTo(0, scrollY);
+      });
+
+    </script>
 {% endblock %}

@@ -20,7 +20,7 @@
             <ul>
                 <li>Kontakt:</li>
                 {% for department in get_departments() %}
-                    <li><a href="#contact-us" smooth-scroll>{{ department.city }}</a></li>
+                    <li><a href="mailto:{{ department.email }}" smooth-scroll>{{ department.city }}</a></li>
                 {% endfor %}
             </ul>
         </section>
@@ -59,7 +59,7 @@
                     <img src="http://placehold.it/900x335" alt="En forsmak til læreryrket">
         </section>
 
-        <section class="contact-us vektor-reminder-form mdl-shadow--4dp" id="contact-us">
+        {#<section class="contact-us vektor-reminder-form mdl-shadow--4dp" id="contact-us">
             <h3>Kontaktskjema</h3>
             <form action="">
                 <div class="mdl-grid">
@@ -102,7 +102,7 @@
                     FÅ PÅMINNELSE
                 </button>
             </form>
-        </section>
+        </section>#}
     </div>
 {% endblock %}
 

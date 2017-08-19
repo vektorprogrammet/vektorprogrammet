@@ -1,5 +1,18 @@
 .team {
   margin-top: 50px;
+  .mdc-tab-bar__indicator {
+    background-color: #2196F3;
+  }
+  .panels {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 25px;
+    .panel {
+      display: none;
+      &.active {
+        display: block;
+      }
+    }
+  }
   .intro {
     h1 {
       text-align: center;
@@ -19,13 +32,11 @@
   }
 
   .team-card {
-    margin: 10px;
-
-    .mdl-card {
-      max-width: 314px;
-    }
+    margin-bottom: 25px;
+    max-width: 100%;
 
     .team-card__header {
+      height: 100%;
       display: flex;
       flex-direction: column;
 
@@ -38,6 +49,7 @@
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
+      margin: 0 16px;
 
       .profile-photo {
         max-width: 100%;
@@ -49,10 +61,20 @@
       }
     }
 
+    .mdc-card__supporting-text {
+      color: #666;
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+
     .team-card__actions {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      a {
+        color: #2196f3;
+      }
     }
 
   }
@@ -63,15 +85,35 @@
     border-radius: 13px;
     text-align: right;
     background-color: #f7f7f7;
+    font-family: Roboto,Helvetica,Arial,sans-serif;
+    padding: 0 12px 0 0;
+    border: 0;
+    display: inline-block;
+    color: rgba(0,0,0,.87);
+    margin: 2px 0;
+    font-size: 0;
+    white-space: nowrap;
 
     .application-chip__symbol {
       width: 26px;
       height: 26px;
       line-height: 26px;
+      border-radius: 16px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 8px;
+      overflow: hidden;
+      text-align: center;
+      font-size: 18px;
+      background-color: #26a69a;
+      color: #fff;
     }
 
     .application-chip__text {
       line-height: 26px;
+      font-size: 13px;
+      vertical-align: middle;
+      display: inline-block;
     }
   }
 
