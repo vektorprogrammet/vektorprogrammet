@@ -16,15 +16,6 @@
                 rollemodeller – de er Norges realfagshelter.</p>
         </section>
 
-        <section class="content-centered contact-links">
-            <ul>
-                <li>Kontakt:</li>
-                {% for department in get_departments() %}
-                    <li><a href="mailto:{{ department.email }}" smooth-scroll>{{ department.city }}</a></li>
-                {% endfor %}
-            </ul>
-        </section>
-
         <section class="row content-centered">
             <div class="col-xs-6">
                 <h2>Motivere elever</h2>
@@ -57,6 +48,15 @@
                         realfag vurderer en fremtid som lærer, og får gjennom oss muligheten til å få reell
                         erfaring.</p>
                     <img src="http://placehold.it/900x335" alt="En forsmak til læreryrket">
+        </section>
+
+        <section class="content-centered contact-links">
+            <ul>
+                <li>Kontakt:</li>
+                {% for department in get_departments() %}
+                    <li><a href="mailto:{{ department.email }}" smooth-scroll>{{ department.city }}</a></li>
+                {% endfor %}
+            </ul>
         </section>
 
         {#<section class="contact-us vektor-reminder-form mdl-shadow--4dp" id="contact-us">
