@@ -39,6 +39,25 @@ class Department
     private $email;
 
     /**
+     * @ORM\Column(type="string", length=250)
+     * @Assert\NotBlank
+     */
+    protected $address;
+
+    /**
+     * @ORM\Column(type="string", length=250, nullable=true)
+     * @Assert\NotBlank
+     */
+    private $city;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $slackChannel;
+
+    /**
      * @ORM\ManyToMany(targetEntity="School", inversedBy="departments")
      * @ORM\JoinTable(name="department_school")
      * @ORM\JoinColumn(onDelete="cascade")
@@ -51,12 +70,6 @@ class Department
     private $fieldOfStudy;
 
     /**
-     * @ORM\Column(type="string", length=250)
-     * @Assert\NotBlank
-     */
-    protected $address;
-
-    /**
      * @ORM\OneToMany(targetEntity="Semester", mappedBy="department",  cascade={"remove"})
      * @ORM\OrderBy({"semesterStartDate" = "DESC"})
      **/
@@ -66,12 +79,6 @@ class Department
      * @ORM\OneToMany(targetEntity="Team", mappedBy="department", cascade={"remove"})
      **/
     private $teams;
-
-    /**
-     * @ORM\Column(type="string", length=250, nullable=true)
-     * @Assert\NotBlank
-     */
-    private $city;
 
     /**
      * Constructor.
@@ -404,5 +411,21 @@ class Department
             $method = "set{$property}";
             $this->$method($value);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlackChannel()
+    {
+        return $this->slackChannel;
+    }
+
+    /**
+     * @param string $slackChannel
+     */
+    public function setSlackChannel(string $slackChannel)
+    {
+        $this->slackChannel = $slackChannel;
     }
 }

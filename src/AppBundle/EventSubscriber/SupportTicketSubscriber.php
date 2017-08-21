@@ -18,9 +18,9 @@ class SupportTicketSubscriber implements EventSubscriberInterface
 
     public function __construct(EmailSender $emailSender, SlackMessenger $slackMessenger, Session $session, LoggerInterface $logger)
     {
-        $this->emailSender = $emailSender;
-        $this->session = $session;
-        $this->logger = $logger;
+        $this->emailSender    = $emailSender;
+        $this->session        = $session;
+        $this->logger         = $logger;
         $this->slackMessenger = $slackMessenger;
     }
 
@@ -33,11 +33,12 @@ class SupportTicketSubscriber implements EventSubscriberInterface
     {
         return array(
             SupportTicketCreatedEvent::NAME => array(
-                array('logEvent', 1),
-                array('sendTicketToDepartment', 0),
-                array('sendTicketReceipt', 0),
-                array('addFlashMessage', -1),
-                array('sendSlackNotification', -2),
+                array( 'logEvent', 1 ),
+                array( 'sendTicketToDepartment', 0 ),
+                array( 'sendTicketReceipt', 0 ),
+                array( 'sendTicketToDepartmentSlackChannel', 0 ),
+                array( 'addFlashMessage', - 1 ),
+                array( 'sendSlackNotification', - 2 ),
             ),
         );
     }
@@ -56,6 +57,23 @@ class SupportTicketSubscriber implements EventSubscriberInterface
         $this->emailSender->sendSupportTicketReceipt($supportTicket);
     }
 
+    public function sendTicketToDepartmentSlackChannel(SupportTicketCreatedEvent $event)
+    {
+        $supportTicket = $event->getSupportTicket();
+        if (!$supportTicket->getDepartment()->getSlackChannel()) {
+            return;
+        }
+
+        $message =
+            "Ny henvendelse fra {$supportTicket->getName()} ({$supportTicket->getEmail()}).\n" .
+            "Emne: `{$supportTicket->getSubject()}`\n" .
+            "```\n" .
+            $supportTicket->getBody() .
+            '```';
+
+        $this->slackMessenger->messageDepartment($message, $supportTicket->getDepartment());
+    }
+
     public function addFlashMessage()
     {
         $message = 'Kontaktforespørsel sendt, takk for henvendelsen!';
@@ -68,10 +86,10 @@ class SupportTicketSubscriber implements EventSubscriberInterface
         $supportTicket = $event->getSupportTicket();
 
         $this->logger->info(
-            "New support ticket from {$supportTicket->getName()}.\n".
-            "Subject: `{$supportTicket->getSubject()}`\n".
-            "```\n".
-            $supportTicket->getBody().
+            "New support ticket from {$supportTicket->getName()}.\n" .
+            "Subject: `{$supportTicket->getSubject()}`\n" .
+            "```\n" .
+            $supportTicket->getBody() .
             '```'
         );
     }
@@ -81,8 +99,8 @@ class SupportTicketSubscriber implements EventSubscriberInterface
         $supportTicket = $event->getSupportTicket();
 
         $notification =
-            "{$supportTicket->getDepartment()}: Ny melding mottatt fra *{$supportTicket->getName()}*. Meldingen ble sendt fra et kontaktskjema på vektorprogrammet.no. \n".
-            "Emne: `{$supportTicket->getSubject()}`\n".
+            "{$supportTicket->getDepartment()}: Ny melding mottatt fra *{$supportTicket->getName()}*. Meldingen ble sendt fra et kontaktskjema på vektorprogrammet.no. \n" .
+            "Emne: `{$supportTicket->getSubject()}`\n" .
             "Meldingen har blitt videresendt til {$supportTicket->getDepartment()->getEmail()}";
 
         $this->slackMessenger->notify($notification);

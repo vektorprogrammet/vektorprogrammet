@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Department;
 use Maknz\Slack\Client;
 use Maknz\Slack\Message;
 use Monolog\Logger;
@@ -49,6 +50,21 @@ class SlackMessenger
 
         $message
             ->to($this->logChannel)
+            ->setText($messageBody);
+
+        $this->send($message);
+    }
+
+    public function messageDepartment(string $messageBody, Department $department)
+    {
+        if (!$department->getSlackChannel()) {
+            return;
+        }
+
+        $message = $this->slackClient->createMessage();
+
+        $message
+            ->to($department->getSlackChannel())
             ->setText($messageBody);
 
         $this->send($message);
