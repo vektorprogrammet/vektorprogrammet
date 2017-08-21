@@ -2,9 +2,9 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\BaseWebTestCase;
 
-class ArticleControllerTest extends WebTestCase
+class ArticleControllerTest extends BaseWebTestCase
 {
     public function testShow()
     {

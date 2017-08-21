@@ -2,9 +2,9 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\BaseWebTestCase;
 
-class ArticleAdminControllerTest extends WebTestCase
+class ArticleAdminControllerTest extends BaseWebTestCase
 {
     public function testShow()
     {
@@ -85,8 +85,6 @@ class ArticleAdminControllerTest extends WebTestCase
 
         // Assert that the page response status code is 403 Access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        \TestDataManager::restoreDatabase();
     }
 
     public function testEdit()
@@ -129,8 +127,6 @@ class ArticleAdminControllerTest extends WebTestCase
 
         // Assert that the page response status code is 403 Access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        \TestDataManager::restoreDatabase();
     }
 
     /*

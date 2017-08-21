@@ -6,50 +6,17 @@ use AppBundle\Tests\BaseWebTestCase;
 
 class SubstituteControllerTest extends BaseWebTestCase
 {
-    public function testCreate()
-    {
-        // Team leader
-        $client = self::createTeamLeaderClient();
-
-        // GET returns 405 method not allowed
-        $client->request('GET', '/kontrollpanel/vikar/opprett/4');
-
-        $this->assertEquals(405, $client->getResponse()->getStatusCode());
-
-        // POST
-        $client->request('POST', '/kontrollpanel/vikar/opprett/4');
-
-        $crawler = $client->followRedirect();
-
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        // Assert that the substitute was added
-        $this->assertEquals(1, $crawler->filter('h1:contains("Vikarer")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Markus")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Gundersen")')->count());
-    }
-
     public function testShow()
     {
         // Team leader
         $crawler = $this->teamLeaderGoTo('/kontrollpanel/vikar');
 
-        // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("Vikarer")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Markus")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Gundersen")')->count());
-
         // Assert that we have the edit/delete buttons as admin
-        $this->assertEquals(1, $crawler->filter('button:contains("Slett")')->count());
-        $this->assertEquals(1, $crawler->filter('button:contains("Rediger")')->count());
+        $this->assertGreaterThanOrEqual(1, $crawler->filter('button:contains("Slett")')->count());
+        $this->assertGreaterThanOrEqual(1, $crawler->filter('button:contains("Rediger")')->count());
 
         // Team member
         $crawler = $this->teamMemberGoTo('/kontrollpanel/vikar');
-
-        // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("Vikarer")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Markus")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Gundersen")')->count());
 
         // Assert that we don't have the edit/delete buttons as team
         $this->assertEquals(0, $crawler->filter('a:contains("Slett")')->count());
@@ -63,24 +30,33 @@ class SubstituteControllerTest extends BaseWebTestCase
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Vikarer")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Markus")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Gundersen")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Team")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("Johansen")')->count());
 
         // Assert that we have the edit/delete buttons as admin
         $this->assertEquals(1, $crawler->filter('button:contains("Slett")')->count());
         $this->assertEquals(1, $crawler->filter('button:contains("Rediger")')->count());
+    }
 
-        // Team member
-        $crawler = $this->teamMemberGoTo('/kontrollpanel/vikar/semester/2');
+    public function testIllegalCreateMethod()
+    {
+        $client = self::createTeamLeaderClient();
 
-        // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("Vikarer")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Markus")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Gundersen")')->count());
+        $client->request('GET', '/kontrollpanel/vikar/opprett/4');
 
-        // Assert that we don't have the edit/delete buttons as team
-        $this->assertEquals(0, $crawler->filter('a:contains("Slett")')->count());
-        $this->assertEquals(0, $crawler->filter('a:contains("Rediger")')->count());
+        $this->assertEquals(405, $client->getResponse()->getStatusCode());
+    }
+
+    public function testCreate()
+    {
+        $subCountBefore = $this->countTableRows('/kontrollpanel/vikar');
+
+        $client = self::createTeamLeaderClient();
+        $client->request('POST', '/kontrollpanel/vikar/opprett/4');
+
+        $subCountAfter = $this->countTableRows('/kontrollpanel/vikar');
+
+        $this->assertEquals(1, $subCountAfter - $subCountBefore);
     }
 
     public function testEdit()
@@ -88,7 +64,7 @@ class SubstituteControllerTest extends BaseWebTestCase
         // Team leader
         $client = self::createTeamLeaderClient();
 
-        $crawler = $this->goTo('/kontrollpanel/vikar/rediger/4', $client);
+        $crawler = $this->goTo('/kontrollpanel/vikar/rediger/1', $client);
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Rediger vikar")')->count());
@@ -116,7 +92,5 @@ class SubstituteControllerTest extends BaseWebTestCase
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        \TestDataManager::restoreDatabase();
     }
 }

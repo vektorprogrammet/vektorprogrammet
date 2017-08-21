@@ -21,7 +21,6 @@ class AdmissionControllerTest extends BaseWebTestCase
         $applicationsAfter = $this->countTableRows($path);
 
         $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
-        \TestDataManager::restoreDatabase();
     }
 
     public function testCreateNotWantNewsletterApplication()
@@ -35,7 +34,6 @@ class AdmissionControllerTest extends BaseWebTestCase
         $applicationsAfter = $this->countTableRows($path);
 
         $this->assertEquals($applicationsBefore, $applicationsAfter);
-        \TestDataManager::restoreDatabase();
     }
 
     public function testCreateWantTeamInterest()
@@ -49,7 +47,6 @@ class AdmissionControllerTest extends BaseWebTestCase
         $applicationsAfter = $this->countTableRows($path);
 
         $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
-        \TestDataManager::restoreDatabase();
     }
 
     public function testCreateNotWantTeamInterest()
@@ -63,7 +60,6 @@ class AdmissionControllerTest extends BaseWebTestCase
         $applicationsAfter = $this->countTableRows($path);
 
         $this->assertEquals($applicationsBefore, $applicationsAfter);
-        \TestDataManager::restoreDatabase();
     }
 
     /**

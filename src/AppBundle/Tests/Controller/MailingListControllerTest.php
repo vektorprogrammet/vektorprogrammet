@@ -45,8 +45,6 @@ class MailingListControllerTest extends BaseWebTestCase
 
         // Add 2 for comma and whitespace
         $this->assertEquals($lengthTeamOld + $userEmailLength + 2, $lengthTeamNew);
-
-        \TestDataManager::restoreDatabase();
     }
 
     protected function tearDown()

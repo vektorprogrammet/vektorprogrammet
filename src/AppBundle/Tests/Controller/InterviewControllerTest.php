@@ -118,7 +118,7 @@ class InterviewControllerTest extends BaseWebTestCase
 
         $crawler = $client->request('GET', '/kontrollpanel/intervju/vis/5');
         $this->verifyInterview($crawler);
-        \TestDataManager::restoreDatabase();
+
 
         // Team user who is assigned the interview
         $client = static::createClient(array(), array(
@@ -168,8 +168,6 @@ class InterviewControllerTest extends BaseWebTestCase
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        \TestDataManager::restoreDatabase();
     }
 
     public function testShow()
@@ -265,8 +263,6 @@ class InterviewControllerTest extends BaseWebTestCase
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        \TestDataManager::restoreDatabase();
     }
 
     public function testEditSchemas()
@@ -311,7 +307,6 @@ class InterviewControllerTest extends BaseWebTestCase
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
-        \TestDataManager::restoreDatabase();
     }
 
     public function testShowSchemas()
@@ -428,7 +423,6 @@ class InterviewControllerTest extends BaseWebTestCase
 
         // Assert that the page response status code is 403 access denied
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
-        \TestDataManager::restoreDatabase();
     }
 
     public function testWantTeamInterest()
@@ -447,7 +441,6 @@ class InterviewControllerTest extends BaseWebTestCase
         $applicationsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
 
         $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
-        \TestDataManager::restoreDatabase();
     }
 
     public function testNotWantTeamInterest()
@@ -466,7 +459,6 @@ class InterviewControllerTest extends BaseWebTestCase
         $applicationsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
 
         $this->assertEquals($applicationsBefore, $applicationsAfter);
-        \TestDataManager::restoreDatabase();
     }
 
     /*
