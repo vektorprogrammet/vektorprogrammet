@@ -1,0 +1,33 @@
+.teacher {
+  section:not(:first-of-type) {
+    margin: 125px auto;
+  }
+
+  ul, ol {
+    padding-left: 17px;
+    li {
+      font-size: 18px;
+      font-weight: 300;
+    }
+  }
+
+  table {
+    margin: 32px 0;
+  }
+
+  .expand {
+    p {
+      font-size: 18px;
+    }
+    .expand-contact {
+      h4 {
+        margin-bottom: 0;
+        font-size: 18px;
+      }
+      p {
+        margin-top: 0;
+        font-size: 16px;
+      }
+    }
+  }
+}

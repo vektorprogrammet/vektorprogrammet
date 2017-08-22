@@ -1,1 +1,118 @@
-{% extends "base_new.html.twig" %}
+{% extends 'base_new.html.twig' %}
+
+{% block title %}
+    Vektorprogrammet
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/teacher.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="teacher">
+        <section class="row hero content-centered page-intro">
+            <div class="col-xs-12">
+                <h1>Vektorassistenter i skolen</h1>
+            </div>
+            <div class="col-xs-12">
+                <img class="hero-image" style="margin: 0 auto; display: block; width: 700px; max-width: 100%;"
+                     src="{{ 'images/teacher2.png' }}">
+            </div>
+            <div class="col-xs-12">
+                <p>
+                    TODO: Bytte med lærertekst.
+                    Vektorassistent er et frivillig verv der studenter reiser til en ungdomsskole én dag i uka for å
+                    hjelpe
+                    til som lærerassistent i matematikk. En stilling som vektorassistent varer i 4 eller 8 uker, og
+                    du kan
+                    selv velge hvilken ukedag som passer best for deg.
+                </p>
+            </div>
+        </section>
+
+        <section class="vektor-testemonial mdl-shadow--4dp">
+            <p class="testemonial-content">"Over 95% av lærerne sier at de er fornøyde med assistentene
+                fra Vektorprogrammet og ønsker å delta videre"</p>
+            <p class="testemonial-author">Spørreundersøkelser hvert semester</p>
+        </section>
+
+        <section class="content-centered">
+            <h2>Vektorassistenter i matteundervisning</h2>
+            <p>Studentene fungerer som lærerens assistenter og kan dermed bidra til at alle elevene får hjelp i timen
+                raskere og at undervisningen kan bli mer tilpasset de ulike elevgruppene. </p>
+
+            <p>Alle assistentene har vært gjennom en intervjuprossess der vi gjør oss sikre på at de vil passe som
+                assistentlærere og kan være gode forbilder for elevene. Dette er en unik mulighet til å få inn
+                rollemodeller
+                i klasserommet som kan være med å motivere elevene ytterligere.</p>
+        </section>
+
+        <section class="content-centered">
+            <h2>Enkelt å bruke assistenter i undervisningen</h2>
+
+            <p>Som lærer står du fritt til å bruke assistentene slik du selv ønsker. Her er noen forslag vi har gode erfaringer med:</p>
+
+            <ol>
+                <li>Hjelpe til med oppgaveløsing i klasserom</li>
+                <li>Utfordre de sterkeste elevene med vanskeligere oppgaver</li>
+                <li>Engasjere elever med matteleker, gåter og spill</li>
+                <li>Alternativ undervisning med elever på grupperom</li>
+            </ol>
+        </section>
+
+        <section class="content-centered expand">
+            <h2>Søk om å få assistenter til din skole</h2>
+
+            <p>Ta kontakt med ansvarlig for skolekoordinering i din by for å sende inn en <span class="text-bold">søknad om å få vektorassistenter til din skole:</span></p>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>By</th>
+                    <th>Ansvarlig</th>
+                    <th>Telefon</th>
+                    <th>E-post</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Trondheim</td>
+                    <td>Kari Nordmann</td>
+                    <td>987 65 321</td>
+                    <td>kari@nordmann.no</td>
+                </tr>
+                <tr>
+                    <td>Oslo</td>
+                    <td>Ola Nordmann</td>
+                    <td>987 65 321</td>
+                    <td>ola@nordmann.no</td>
+                </tr>
+                <tr>
+                    <td>Bergen</td>
+                    <td>Erna Solberg</td>
+                    <td>987 65 321</td>
+                    <td>erna@solberg.no</td>
+                </tr>
+                <tr>
+                    <td>Tromsø</td>
+                    <td>Chuck Norris</td>
+                    <td>987 65 321</td>
+                    <td>chuck@norris.no</td>
+                </tr>
+                <tr>
+                    <td>Ås</td>
+                    <td>Jens Stoltenberg</td>
+                    <td>987 65 321</td>
+                    <td>jens@stoltenberg.no</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="expand-contact">
+                <h4>Har ikke Vektorprogrammet etablert seg i din by enda?</h4>
+                <p>Ta kontakt med ekspansjon@vektorprogrammet.no for å melde din interesse!</p>
+            </div>
+        </section>
+
+    </div>
+{% endblock %}

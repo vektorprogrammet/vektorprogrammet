@@ -21,11 +21,16 @@ h1 {
 
 h2 {
   font-size: 32px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 h3 {
   font-size: 28px;
+}
+
+h4 {
+  font-size: 22px;
+  font-weight: 500;
 }
 
 p {
@@ -47,6 +52,21 @@ li {
 
 img {
   max-width: 100%;
+}
+
+table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  tr {
+    margin-top: 10px;
+    th {
+      text-align: left;
+      padding-bottom: 3px;
+      border-bottom: 1px solid #959595;
+    }
+    td {padding: 10px 0;}
+  }
 }
 
 .container {
@@ -99,6 +119,7 @@ img {
   padding: 20px;
 
   h4 {
+    font-size: 18px;
     color: $light;
   }
   a {
@@ -148,4 +169,8 @@ img {
 
 .text-center {
   text-align: center;
+}
+
+.text-bold {
+  font-weight: 500;
 }
