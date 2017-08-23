@@ -987,13 +987,6 @@ interview_cancel_by_response:
     requirements:
       responseCode: \w+
 
-interview_preview:
-    path: /kontrollpanel/intervju/preview/{id}
-    defaults: { _controller: AppBundle:Interview:preview }
-    methods: [GET]
-    requirements:
-      id: \d+
-
 ##########################################
 #                File browser            #
 ##########################################
