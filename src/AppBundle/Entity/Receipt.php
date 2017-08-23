@@ -19,7 +19,7 @@ class Receipt
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="receipts", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="receipts")
      */
     private $user;
 

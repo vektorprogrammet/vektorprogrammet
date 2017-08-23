@@ -83,7 +83,7 @@ class FileUploader
         $fileName = $this->generateRandomFileNameWithExtension($fileExt);
 
         if (!is_dir($targetFolder)) {
-            mkdir($targetFolder, 0777, true); // Should mode be 777? 664 maybe? 644?
+            mkdir($targetFolder, 0775, true);
         }
 
         try {
