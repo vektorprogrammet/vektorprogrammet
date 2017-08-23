@@ -55,12 +55,60 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
         $receipt4->setPicturePath('/images/receipt_images/hyttetur.jpg');
         $manager->persist($receipt4);
 
+        $receiptAssistant = new Receipt();
+        $receiptAssistant->setUser($this->getReference('user-assistant'));
+        $receiptAssistant->setSubmitDate(new \DateTime('2015-11-03'));
+        $receiptAssistant->setDescription(
+            'Teamsosialt med IT'
+        );
+        $receiptAssistant->setSum(531);
+        $receiptAssistant->setActive(true);
+        $receiptAssistant->setPicturePath('/images/receipt_images/teamsosialt.jpg');
+        $manager->persist($receiptAssistant);
+
+        $receiptTeam = new Receipt();
+        $receiptTeam->setUser($this->getReference('user-team'));
+        $receiptTeam->setSubmitDate(new \DateTime('2015-11-03'));
+        $receiptTeam->setDescription(
+            'Teamsosialt med IT'
+        );
+        $receiptTeam->setSum(531);
+        $receiptTeam->setActive(true);
+        $receiptTeam->setPicturePath('/images/receipt_images/teamsosialt.jpg');
+        $manager->persist($receiptTeam);
+
+        $receiptAdmin = new Receipt();
+        $receiptAdmin->setUser($this->getReference('user-admin'));
+        $receiptAdmin->setSubmitDate(new \DateTime('2015-11-03'));
+        $receiptAdmin->setDescription(
+            'Teamsosialt med IT'
+        );
+        $receiptAdmin->setSum(531);
+        $receiptAdmin->setActive(true);
+        $receiptAdmin->setPicturePath('/images/receipt_images/teamsosialt.jpg');
+        $manager->persist($receiptAdmin);
+
+        $receiptSuperAdmin = new Receipt();
+        $receiptSuperAdmin->setUser($this->getReference('user-superadmin'));
+        $receiptSuperAdmin->setSubmitDate(new \DateTime('2015-11-03'));
+        $receiptSuperAdmin->setDescription(
+            'Teamsosialt med IT'
+        );
+        $receiptSuperAdmin->setSum(531);
+        $receiptSuperAdmin->setActive(true);
+        $receiptSuperAdmin->setPicturePath('/images/receipt_images/teamsosialt.jpg');
+        $manager->persist($receiptSuperAdmin);
+
         $manager->flush();
 
         $this->addReference('rec-1', $receipt1);
         $this->addReference('rec-2', $receipt2);
         $this->addReference('rec-3', $receipt3);
         $this->addReference('rec-4', $receipt4);
+        $this->addReference('rec-assistant', $receiptAssistant);
+        $this->addReference('rec-team', $receiptTeam);
+        $this->addReference('rec-admin', $receiptAdmin);
+        $this->addReference('rec-superadmin', $receiptSuperAdmin);
     }
 
     public function getOrder()

@@ -16,7 +16,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
     public function load(ObjectManager $manager)
     {
         $application0 = new Application();
-        $application0->setUser($this->getReference('user-15'));
+        $application0->setUser($this->getReference('user-team'));
         $application0->setPreviousParticipation(false);
         $application0->setYearOfStudy(1);
         $application0->setSemester($this->getReference('semester-current'));
@@ -147,7 +147,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $manager->persist($application4);
 
         $application5 = new Application();
-        $application5->setUser($this->getReference('user-14'));
+        $application5->setUser($this->getReference('user-assistant'));
         $application5->setPreviousParticipation(false);
         $application5->setYearOfStudy(1);
         $application5->setSemester($this->getReference('semester-current'));
@@ -155,7 +155,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $interview5->setInterviewed(false);
         $interview5->setInterviewer($this->getReference('user-2'));
         $interview5->setInterviewSchema($this->getReference('ischema-1'));
-        $interview5->setUser($this->getReference('user-14'));
+        $interview5->setUser($this->getReference('user-assistant'));
         $interview5->setResponseCode('code');
         $interview5->setScheduled(new \DateTime('+2 days'));
         $application5->setInterview($interview5);

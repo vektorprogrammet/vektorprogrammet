@@ -12,7 +12,25 @@ class ReceiptControllerTest extends BaseWebTestCase
     public function testCreate()
     {
         // Assistant creates a receipt
-        $crawler = $this->fillAndSubmitForm($this->createAssistantClient(), '/utlegg');
+        $client = $this->createAssistantClient();
+
+        // Create a new image file
+        $file = tempnam(sys_get_temp_dir(), 'rec');
+        imagepng(imagecreatetruecolor(1, 1), $file);
+
+        $photo = new UploadedFile($file, 'receipt.png', null, null, null, true);
+
+        $crawler = $client->request('GET', '/utlegg');
+        $form = $crawler->selectButton('Be om refusjon')->form();
+
+        $form['receipt[description]'] = 'En flott beskrivelse';
+        $form['receipt[sum]'] = 123;
+        $form['receipt[user][account_number]'] = '1234.56.78903';
+        $form['receipt[picturePath]'] = $photo;
+
+        $client->submit($form);
+        $crawler = $client->followRedirect();
+
         $this->assertEquals(1, $crawler->filter('h3:contains("Nye utlegg")')->count());
 
         // Get id for later deletion
@@ -71,108 +89,90 @@ class ReceiptControllerTest extends BaseWebTestCase
         $this->assertEquals(404, $client->getResponse()->getStatusCode()); // Doesn't exist
     }
 
-    public function testPermissions()
+    public function testAnonymousPermission()
     {
         // Anonymous has no access
         $client = $this->createAnonymousClient();
         $client->request('GET', '/utlegg');
         $crawler = $client->followRedirect();
         $this->assertEquals(1, $crawler->filter('button:contains("login")')->count());
-
-        /* -- Create receipts for each role (except highest admin which has same permission as teamleader) -- */
-
-        // Assistant
-        $crawler = $this->fillAndSubmitForm($this->createAssistantClient(), '/utlegg');
-        $this->assertEquals(1, $crawler->filter('h3:contains("Nye utlegg")')->count());
-        $editHref = explode('/', $crawler->filter('a:contains("Rediger")')->attr('href'));
-        $assistantReceiptId = end($editHref);
-
-        // Team member
-        $crawler = $this->fillAndSubmitForm($this->createTeamMemberClient(), '/utlegg');
-        $this->assertEquals(1, $crawler->filter('h3:contains("Nye utlegg")')->count());
-        $editHref = explode('/', $crawler->filter('a:contains("Rediger")')->attr('href'));
-        $teamMemberReceiptId = end($editHref);
-
-        // Team leader
-        $crawler = $this->fillAndSubmitForm($this->createTeamLeaderClient(), '/utlegg');
-        $this->assertEquals(1, $crawler->filter('h3:contains("Nye utlegg")')->count());
-        $editHref = explode('/', $crawler->filter('a:contains("Rediger")')->attr('href'));
-        $teamLeaderReceiptId = end($editHref);
-
-        /* -- Try to refund each receipt -- */
-
-        // Skip assistant - no access to control panel
-        // Team member has no access
-        $client = $this->createTeamMemberClient();
-        $client->request('POST', '/kontrollpanel/utlegg/refunder/' . $teamMemberReceiptId);
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        // Team leader
-        $client = $this->createTeamLeaderClient();
-        $client->request('POST', '/kontrollpanel/utlegg/refunder/' . $assistantReceiptId);
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $client->request('POST', '/kontrollpanel/utlegg/refunder/' . $teamMemberReceiptId);
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $client->request('POST', '/kontrollpanel/utlegg/refunder/' . $teamLeaderReceiptId);
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-
-        /* -- Try to edit each own receipt -- */
-
-        // Assistant
-        $client = $this->createAssistantClient();
-        $client->request('GET', '/utlegg/rediger/' . $assistantReceiptId);
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        // Team member
-        $client = $this->createTeamMemberClient();
-        $client->request('GET', '/utlegg/rediger/' . $teamMemberReceiptId);
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        // Team leader can access all
-        $this->teamLeaderGoTo('/utlegg/rediger/' . $assistantReceiptId);
-        $this->teamLeaderGoTo('/utlegg/rediger/' . $teamMemberReceiptId);
-        $this->teamLeaderGoTo('/utlegg/rediger/' . $teamLeaderReceiptId);
-
-        /* -- Try to delete each own receipt -- */
-
-        // Assistant
-        $client = $this->createAssistantClient();
-        $client->request('POST', '/utlegg/slett/' . $assistantReceiptId);
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        // Team member
-        $client = $this->createTeamMemberClient();
-        $client->request('POST', '/utlegg/slett/' . $teamMemberReceiptId);
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        // Team leader can delete all
-        $client = $this->createTeamLeaderClient();
-        $client->request('POST', '/utlegg/slett/' . $assistantReceiptId);
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $client->request('POST', '/utlegg/slett/' . $teamMemberReceiptId);
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $client->request('POST', '/utlegg/slett/' . $teamLeaderReceiptId);
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
     }
 
-    private function fillAndSubmitForm(Client $client, $uri)
+    public function testAssistantPermissions()
     {
-        // Create a new image file
-        $file = tempnam(sys_get_temp_dir(), 'rec');
-        imagepng(imagecreatetruecolor(1, 1), $file);
+        // Allowed to edit
+        $this->assistantGoTo('/utlegg/rediger/5');
 
-        $photo = new UploadedFile($file, 'receipt.png', null, null, null, true);
+        // Not allowed to edit other people's receipts
+        $client = $this->createAssistantClient();
+        $client->request('GET', '/utlegg/rediger/1');
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-        $crawler = $client->request('GET', $uri);
-        $form = $crawler->selectButton('Be om refusjon')->form();
+        // Make team leader refund the receipt
+        $client = $this->createTeamLeaderClient();
+        $client->request('POST', '/kontrollpanel/utlegg/refunder/5');
 
-        $form['receipt[description]'] = 'En flott beskrivelse';
-        $form['receipt[sum]'] = 123;
-        $form['receipt[user][account_number]'] = '1234.56.78903';
-        $form['receipt[picturePath]'] = $photo;
+        // Not allowed to edit refunded receipt
+        $client = $this->createAssistantClient();
+        $client->request('GET', '/utlegg/rediger/5');
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-        $client->submit($form);
-        return $client->followRedirect();
+        // Not allowed to delete refunded receipt
+        $client = $this->createAssistantClient();
+        $client->request('POST', '/utlegg/slett/5');
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+    }
+
+    public function testTeamMemberPermissions()
+    {
+        // Allowed to edit own receipt
+        $this->teamMemberGoTo('/utlegg/rediger/6');
+
+        // Not allowed to edit other people's receipts
+        $client = $this->createTeamMemberClient();
+        $client->request('GET', '/utlegg/rediger/1');
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+
+        // Not allowed to refund
+        $client = $this->createTeamMemberClient();
+        $client->request('POST', '/kontrollpanel/utlegg/refunder/6');
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+
+        // Make team leader refund the receipt
+        $client = $this->createTeamLeaderClient();
+        $client->request('POST', '/kontrollpanel/utlegg/refunder/6');
+
+        // Not allowed to edit refunded receipt
+        $client = $this->createTeamMemberClient();
+        $client->request('GET', '/utlegg/rediger/6');
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+
+        // Not allowed to delete refunded receipt
+        $client = $this->createTeamMemberClient();
+        $client->request('POST', '/utlegg/slett/6');
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+    }
+
+    public function testTeamLeaderPermissions()
+    {
+        // Allowed to edit own receipt
+        $this->teamLeaderGoTo('/utlegg/rediger/7');
+
+        // Allowed to edit other people's receipts
+        $this->teamLeaderGoTo('/utlegg/rediger/1');
+
+        // Allowed to refund
+        $client = $this->createTeamLeaderClient();
+        $client->request('POST', '/kontrollpanel/utlegg/refunder/7');
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+
+        // Allowed to edit refunded receipt
+        $this->teamLeaderGoTo('/utlegg/rediger/7');
+
+        // Allowed to delete refunded receipt
+        $client = $this->createTeamLeaderClient();
+        $client->request('POST', '/utlegg/slett/6');
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
     }
 
     protected function tearDown()
