@@ -202,6 +202,13 @@ class InterviewController extends Controller
             $interview->setScheduled($data['datetime']);
             $interview->setRoom($data['room']);
             $interview->resetStatus();
+
+            if ($form->get('preview')->isClicked()) {
+                return $this->render('interview/preview.html.twig', array(
+                    'interview' => $interview,
+                ));
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($interview);
             $em->flush();
@@ -211,7 +218,7 @@ class InterviewController extends Controller
                 $this->get('app.interview.manager')->sendScheduleEmail($interview, $data);
             }
 
-            return $this->redirect($this->generateUrl('applications_show_assigned_by_semester', array('id' => $application->getSemester()->getId())));
+            return $this->redirectToRoute('applications_show_assigned_by_semester', array('id' => $application->getSemester()->getId()));
         }
 
         return $this->render('interview/schedule.html.twig', array(
