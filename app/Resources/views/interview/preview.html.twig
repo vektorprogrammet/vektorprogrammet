@@ -1,24 +1,33 @@
-{% extends 'adminBase.html.twig' %}
-
-{% block title %}
-    Forhåndsvisning
-{% endblock %}
-
-{% block body %}
-    <p></p>
-
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <div class="panel">
-                <div class="row">
-                    <div class="small-12 medium-12 large-12 columns">
-                        <h3>Forhåndsvisning</h3>
-                    </div>
+<div class="row">
+    <div class="small-12 medium-12 large-12 columns">
+        <div class="panel">
+            <div class="row">
+                <div class="small-12 medium-12 large-12 columns">
+                    <h3>Forhåndsvisning</h3>
+                    {{ interview.previewData['message'] }}
+                    <br/>
+                    Tidspunkt: {{ interview.previewData['datetime']|date("d.m.y - G:i") }}.
+                    <br/>
+                    Rom: {{ interview.previewData['room'] }}
+                    <br/><br/>
+                    <p>For å akseptere eller kansellere intervjuet, gå inn på følgende link:
+                    <p/>
+                    <a href="{{ url('interview_response', { 'responseCode' : interview.responseCode}) }}">
+                        {{ app.request.httpHost ~ path('interview_response', {'responseCode' : interview.responseCode}) }}
+                    </a>
+                    <br/>
+                    Mvh.
+                    <br/>
+                    {{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}
+                    <br/>
+                    {{ interview.previewData['from'] }}
+                    <br/>
+                    {{ interview.interviewer.phone }}
                 </div>
-
-
             </div>
+
+
         </div>
     </div>
+</div>
 
-{% endblock %}
