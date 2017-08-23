@@ -206,6 +206,7 @@ class InterviewController extends Controller
             if ($form->get('preview')->isClicked()) {
                 return $this->render('interview/preview.html.twig', array(
                     'interview' => $interview,
+                    'data' => $data,
                 ));
             }
 
