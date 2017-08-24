@@ -81,10 +81,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="small-12 medium-8 columns">
+                    <div class="small-12 columns">
                         {{ form_row(form.message) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-12 columns">
+
                         {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
-                        {{ form_widget(form.saveAndSend, {'attr': {'class': 'button tiny'}}) }}
+                        {{ form_widget(form.preview, {'attr': {'class': 'button tiny', 'formtarget': '_blank'}}) }}
+                        <div class="float-right">
+                            {{ form_widget(form.saveAndSend, {'attr': {'class': 'button tiny'}}) }}
+                        </div>
+
                     </div>
                 </div>
                 {{ form_end(form) }}
