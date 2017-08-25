@@ -5,10 +5,30 @@ namespace AppBundle\Tests\Controller;
 use AppBundle\Tests\BaseWebTestCase;
 use Symfony\Component\Debug\Exception\ContextErrorException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Component\Finder\Finder;
 
 class ReceiptControllerTest extends BaseWebTestCase
 {
+    /**
+     * @var array $imagePaths
+     */
+    private $imagePaths;
+
+    public function setUp()
+    {
+        try {
+            // Keep track of all the initial files in the image folder
+            $this->imagePaths = array();
+            $finder = new Finder();
+            $finder->files()->in('images/receipts');
+            foreach ($finder as $file) {
+                array_push($this->imagePaths, $file->getRealPath());
+            }
+        } catch (\InvalidArgumentException $e) {
+            // Directory doesn't exist
+        }
+    }
+
     public function testCreate()
     {
         // Assistant creates a receipt
@@ -177,14 +197,28 @@ class ReceiptControllerTest extends BaseWebTestCase
 
     protected function tearDown()
     {
-        \TestDataManager::restoreDatabase();
         parent::tearDown();
 
         try {
-            rmdir('images/receipts');
-            rmdir('images');
-        } catch (ContextErrorException $e) {
-            // The directory is not empty because the receipts have not been deleted yet
+            // Delete all new files
+            $finder = new Finder();
+            $finder->files()->in('images/receipts');
+            foreach ($finder as $file) {
+                $fileIsNew = !in_array($file->getRealPath(), $this->imagePaths);
+                if ($fileIsNew) {
+                    unlink($file);
+                }
+            }
+
+            // Remove folder if empty
+            try {
+                rmdir('images/receipts');
+                rmdir('images');
+            } catch (ContextErrorException $e) {
+                // Directory not empty
+            }
+        } catch (\InvalidArgumentException $e) {
+            // The directory doesn't exist
         }
     }
 }

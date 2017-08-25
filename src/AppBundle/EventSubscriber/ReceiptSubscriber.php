@@ -111,6 +111,5 @@ class ReceiptSubscriber implements EventSubscriberInterface
     public function addDeletedFlashMessage()
     {
         $this->session->getFlashBag()->add('success', 'Utlegget ble slettet.');
-
     }
 }
