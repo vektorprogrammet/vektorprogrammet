@@ -143,7 +143,7 @@ class WorkHistory implements GroupMemberInterface
      *
      * @return Position
      */
-    public function getPosition(): Position
+    public function getPosition()
     {
         return $this->position;
     }

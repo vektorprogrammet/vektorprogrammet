@@ -35,7 +35,11 @@ class ScheduleInterviewType extends AbstractType
             ))
             ->add('saveAndSend', 'submit', array(
                 'label' => 'Lagre tidspunkt og send mail',
-            ));
+            ))
+            ->add('preview', 'submit', array(
+                'label' => 'Forhåndsvis'
+            ))
+        ;
     }
 
     public function getName()

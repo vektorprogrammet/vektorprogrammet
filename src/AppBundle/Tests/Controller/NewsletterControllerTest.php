@@ -2,9 +2,9 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\BaseWebTestCase;
 
-class NewsletterControllerTest extends WebTestCase
+class NewsletterControllerTest extends BaseWebTestCase
 {
     public function testShowWithActiveAdmission()
     {
@@ -153,7 +153,6 @@ class NewsletterControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->selectButton('Aktiv')->count());
         $this->assertEquals('Aktiver', $allButtons->eq(0)->html());
         $this->assertEquals('Aktiv', $allButtons->eq(1)->html());
-        \TestDataManager::restoreDatabase();
     }
 
     public function testSubscribeOnAdmissionPage()
@@ -185,7 +184,6 @@ class NewsletterControllerTest extends WebTestCase
 
         $this->assertEquals(1, $crawler->filter('td:contains("Karl")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("user@user.com")')->count());
-        \TestDataManager::restoreDatabase();
     }
 
     public function testSubscribePage()
@@ -217,7 +215,6 @@ class NewsletterControllerTest extends WebTestCase
 
         $this->assertEquals(1, $crawler->filter('td:contains("Karl")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("user@user.com")')->count());
-        \TestDataManager::restoreDatabase();
     }
 
     public function testSubscribeMultipleIdenticalEmail()
@@ -262,7 +259,6 @@ class NewsletterControllerTest extends WebTestCase
 
         $this->assertEquals(1, $crawler->filter('td:contains("Karl")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("user@user.com")')->count());
-        \TestDataManager::restoreDatabase();
     }
 
     public function testDeleteSubscriber()
@@ -283,6 +279,5 @@ class NewsletterControllerTest extends WebTestCase
         $deleteButtonsAfter = $crawler->selectButton('Slett')->count();
 
         $this->assertEquals($deleteButtonsAfter, $deleteButtonsBefore - 1);
-        \TestDataManager::restoreDatabase();
     }
 }

@@ -1,0 +1,20 @@
+<h3>Forhåndsvisning</h3>
+{{ data['message'] }}
+<br/>
+Tidspunkt: {{ data['datetime']|date("d.m.y - G:i") }}.
+<br/>
+Rom: {{ data['room'] }}
+<br/><br/>
+<p>For å akseptere eller kansellere intervjuet, gå inn på følgende link:
+<p/>
+<a href="{{ url('interview_response', { 'responseCode' : interview.responseCode}) }}">
+    {{ app.request.httpHost ~ path('interview_response', {'responseCode' : interview.responseCode}) }}
+</a>
+<br/>
+Mvh.
+<br/>
+{{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}
+<br/>
+{{ data['from'] }}
+<br/>
+{{ interview.interviewer.phone }}

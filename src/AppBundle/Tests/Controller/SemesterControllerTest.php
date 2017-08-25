@@ -2,9 +2,9 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\BaseWebTestCase;
 
-class SemesterControllerTest extends WebTestCase
+class SemesterControllerTest extends BaseWebTestCase
 {
     public function testShowSemestersByDepartment()
     {
@@ -65,8 +65,6 @@ class SemesterControllerTest extends WebTestCase
 
         // Assert that the response is the correct redirect
         $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/semesteradmin'));
-
-        \TestDataManager::restoreDatabase();
     }
 
     public function testUpdateSemester()
@@ -115,8 +113,6 @@ class SemesterControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('td:contains("10:30:00")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("2015-09-02")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("10:40:00")')->count());
-
-        \TestDataManager::restoreDatabase();
     }
 
     public function testShow()

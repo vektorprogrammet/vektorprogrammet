@@ -5,3 +5,6 @@
     {% set daysLeft = hoursLeft // 24 %}
     <p>{{ daysLeft }} {{ daysLeft == 1 ? 'dag' : 'dager' }} til opptaket starter!</p>
 {% endif %}
+{% if is_granted_team_leader() %}
+    <p><a href="{{ path('semester_show') }}">Endre opptakstid</a></p>
+{% endif %}

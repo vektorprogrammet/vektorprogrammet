@@ -2,9 +2,9 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\BaseWebTestCase;
 
-class ParticipantHistoryControllerTest extends WebTestCase
+class ParticipantHistoryControllerTest extends BaseWebTestCase
 {
     public function testIndex()
     {
