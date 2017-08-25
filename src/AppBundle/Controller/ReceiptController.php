@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Event\ReceiptCreatedEvent;
+use AppBundle\Event\ReceiptEvent;
 use AppBundle\Form\Type\ReceiptType;
 use AppBundle\Role\Roles;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,9 +60,7 @@ class ReceiptController extends Controller
             $em->persist($receipt);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(ReceiptCreatedEvent::NAME, new ReceiptCreatedEvent($receipt));
-
-            $this->addFlash('success', 'Utlegget ditt har blitt registrert.');
+            $this->get('event_dispatcher')->dispatch(ReceiptEvent::CREATED, new ReceiptEvent($receipt));
 
             return $this->redirectToRoute('receipt_create');
         }
@@ -109,7 +107,7 @@ class ReceiptController extends Controller
             $em->persist($receipt);
             $em->flush();
 
-            $this->addFlash('success', 'Endringene har blitt lagret.');
+            $this->get('event_dispatcher')->dispatch(ReceiptEvent::EDITED, new ReceiptEvent($receipt));
 
             if ($user === $receipt->getUser()) {
                 return $this->redirectToRoute('receipt_create');
@@ -146,10 +144,7 @@ class ReceiptController extends Controller
         $em->persist($receipt);
         $em->flush();
 
-        // Send email
-        $this->get('app.email_sender')->sendPaidReceiptConfirmation($receipt);
-
-        $this->addFlash('success', 'Utlegget ble markert som refundert og bekreftelsesmail sendt til ' . $receipt->getUser()->getEmail() . '.');
+        $this->get('event_dispatcher')->dispatch(ReceiptEvent::REFUNDED, new ReceiptEvent($receipt));
 
         if ($user === $receipt->getUser()) {
             return $this->redirectToRoute('receipt_create');
@@ -174,7 +169,7 @@ class ReceiptController extends Controller
         $em->remove($receipt);
         $em->flush();
 
-        $this->addFlash('success', 'Utlegget ble slettet.');
+        $this->get('event_dispatcher')->dispatch(ReceiptEvent::DELETED, new ReceiptEvent($receipt));
 
         return $this->redirect($request->headers->get('referer'));
     }

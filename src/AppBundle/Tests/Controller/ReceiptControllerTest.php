@@ -178,6 +178,7 @@ class ReceiptControllerTest extends BaseWebTestCase
     protected function tearDown()
     {
         \TestDataManager::restoreDatabase();
+        parent::tearDown();
 
         try {
             rmdir('images/receipts');

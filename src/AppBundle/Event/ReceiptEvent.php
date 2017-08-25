@@ -5,14 +5,17 @@ namespace AppBundle\Event;
 use AppBundle\Entity\Receipt;
 use Symfony\Component\EventDispatcher\Event;
 
-class ReceiptCreatedEvent extends Event
+class ReceiptEvent extends Event
 {
-    const NAME = 'receipt.created';
+    const CREATED = 'receipt.created';
+    const REFUNDED = 'receipt.refunded';
+    const EDITED = 'receipt.edited';
+    const DELETED = 'receipt.deleted';
 
     private $receipt;
 
     /**
-     * ReceiptCreatedEvent constructor.
+     * ReceiptEvent constructor.
      *
      * @param Receipt $receipt
      */
