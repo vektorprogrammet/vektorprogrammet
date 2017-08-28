@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -25,6 +26,10 @@ class ReceiptType extends AbstractType
                 'required' => true,
                 'currency' => null,
                 'attr' => array('pattern' => '\d*[.,]?\d+$'),
+            ))
+            ->add('receiptDate', DateType::class, array(
+                'label' => 'Utleggsdato',
+                'required' => true,
             ))
             ->add('user', AccountNumberType::class, array(
                 'label' => false,

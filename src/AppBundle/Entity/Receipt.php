@@ -29,6 +29,12 @@ class Receipt
     private $submitDate;
 
     /**
+     * @ORM\Column(type="datetime")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
+     */
+    private $receiptDate;
+
+    /**
      * @ORM\Column(name="picture_path", type="string", nullable=true)
      */
     private $picturePath;
@@ -98,6 +104,23 @@ class Receipt
     public function setSubmitDate($submitDate)
     {
         $this->submitDate = $submitDate;
+    }
+
+
+    /**
+     * @return \DateTime
+     */
+    public function getReceiptDate()
+    {
+        return $this->receiptDate;
+    }
+
+    /**
+     * @param \DateTime $receiptDate
+     */
+    public function setReceiptDate($receiptDate)
+    {
+        $this->receiptDate = $receiptDate;
     }
 
     /**
