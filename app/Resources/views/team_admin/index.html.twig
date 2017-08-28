@@ -74,7 +74,8 @@
                 <thead>
                 <tr>
                     <th>Navn</th>
-                    <th colspan="3">E-post</th>
+                    <th>E-post</th>
+                    <th colspan="3">Opptak</th>
                 </tr>
                 </thead>
 
@@ -87,6 +88,11 @@
                         <td>
                             {{ t.email }}
                         </td>
+                        {% if t.acceptApplication %}
+                            <td><span class="text-success">Åpent</span></td>
+                        {% else %}
+                            <td><span class="text-alert">Stengt</span></td>
+                        {% endif %}
                         {% if is_granted_admin() %}
                             <td class="float-right"><a href="#" id="{{ t.id }}" class="button tiny alert delete"><i
                                             class="fa fa-trash-o"></i> Slett</a></td>
