@@ -16,16 +16,17 @@ class ReceiptControllerTest extends BaseWebTestCase
 
     public function setUp()
     {
-        try {
-            // Keep track of all the initial files in the image folder
-            $this->imagePaths = array();
-            $finder = new Finder();
-            $finder->files()->in('images/receipts');
-            foreach ($finder as $file) {
-                array_push($this->imagePaths, $file->getRealPath());
-            }
-        } catch (\InvalidArgumentException $e) {
-            // Directory doesn't exist
+        // Keep track of all the initial files in the image folder
+        $this->imagePaths = array();
+        $finder = new Finder();
+
+        if (!file_exists('images/receipts')) {
+            return;
+        }
+
+        $finder->files()->in('images/receipts');
+        foreach ($finder as $file) {
+            array_push($this->imagePaths, $file->getRealPath());
         }
     }
 
@@ -199,26 +200,21 @@ class ReceiptControllerTest extends BaseWebTestCase
     {
         parent::tearDown();
 
-        try {
-            // Delete all new files
-            $finder = new Finder();
-            $finder->files()->in('images/receipts');
-            foreach ($finder as $file) {
-                $fileIsNew = !in_array($file->getRealPath(), $this->imagePaths);
-                if ($fileIsNew) {
-                    unlink($file);
-                }
+        // Delete all new files
+        $finder = new Finder();
+        $finder->files()->in('images/receipts');
+        foreach ($finder as $file) {
+            $fileIsNew = !in_array($file->getRealPath(), $this->imagePaths);
+            if ($fileIsNew) {
+                unlink($file);
             }
+        }
 
-            // Remove folder if empty
-            try {
-                rmdir('images/receipts');
-                rmdir('images');
-            } catch (ContextErrorException $e) {
-                // Directory not empty
-            }
-        } catch (\InvalidArgumentException $e) {
-            // The directory doesn't exist
+        $directoryExists = file_exists('images/receipts');
+        $directoryIsEmpty = count(glob('images/receipts')) === 0;
+        if ($directoryExists && $directoryIsEmpty) {
+            rmdir('images/receipts');
+            rmdir('images');
         }
     }
 }
