@@ -65,6 +65,10 @@ class ReceiptController extends Controller
             return $this->redirectToRoute('receipt_create');
         }
 
+        if (!$form->isValid()) {
+            $receipt->setPicturePath(null);
+        }
+
         return $this->render('receipt/my_receipts.html.twig', array(
             'form' => $form->createView(),
             'receipt' => $receipt,
@@ -114,6 +118,10 @@ class ReceiptController extends Controller
             } else {
                 return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
             }
+        }
+
+        if (!$form->isValid()) {
+            $receipt->setPicturePath($oldPicturePath);
         }
 
         $parentTemplate = ($user === $receipt->getUser()) ? 'base.html.twig' : 'adminBase.html.twig';
