@@ -60,8 +60,13 @@ class AssistantSchedulingController extends Controller
             $assistant->setPreferredGroup($preferredGroup);
             $assistant->setAvailability($availability);
             $assistant->setApplication($application);
-            $assistant->setScore($application->getInterview()->getScore());
-            $assistant->setSuitability($application->getInterview()->getInterviewScore()->getSuitableAssistant());
+            if ($application->getPreviousParticipation()) {
+                $assistant->setSuitability('Ja');
+                $assistant->setScore(20);
+            } else {
+                $assistant->setScore($application->getInterview()->getScore());
+                $assistant->setSuitability($application->getInterview()->getInterviewScore()->getSuitableAssistant());
+            }
             $assistant->setPreviousParticipation($application->getPreviousParticipation());
             $assistants[] = $assistant;
         }
