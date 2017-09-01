@@ -92,9 +92,17 @@
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
                         <label class="question-label">
-                            Har du et ønske om bolk?
+                            Er det noen tidspunkt i løpet av semesteret du ikke kan delta på?
                         </label>
-                        <p>{{ application.preferredGroup ? application.preferredGroup:'Ingen' }}</p>
+                        <p>
+                            {% if application.preferredGroup == "Bolk 2" %}
+                            Bolk 1
+                            {% elseif application.preferredGroup == "Bolk 1" %}
+                            Bolk 2
+                            {% else %}
+                            Kan hele semesteret
+                            {% endif %}
+                        </p>
                     </div>
                 </div>
 
