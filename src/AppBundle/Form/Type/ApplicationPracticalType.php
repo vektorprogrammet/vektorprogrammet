@@ -37,10 +37,10 @@ class ApplicationPracticalType extends AbstractType
         ));
 
         $builder->add('english', 'choice', array(
-            'label' => 'Vi har en internasjonal skole. Har du lyst til å undervise på engelsk?',
+            'label' => 'Vil du undervise på norsk skole eller internasjonal skole?',
             'choices' => array(
-                0 => 'Nei',
-                1 => 'Ja',
+                0 => 'Norsk',
+                1 => 'Engelsk',
             ),
             'expanded' => true,
             'multiple' => false,
