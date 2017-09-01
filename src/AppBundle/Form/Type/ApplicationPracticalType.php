@@ -16,10 +16,10 @@ class ApplicationPracticalType extends AbstractType
         ));
 
         $builder->add('doublePosition', 'choice', array(
-            'label' => 'Kunne du tenke deg dobbel stilling? Altså en gang i uka i 8 uker?',
+            'label' => 'Kunne du tenke deg dobbel eller enkel stilling?',
             'choices' => array(
-                0 => 'Nei',
-                1 => 'Ja',
+                0 => '4 uker',
+                1 => '8 uker'
             ),
             'expanded' => true,
             'multiple' => false,
