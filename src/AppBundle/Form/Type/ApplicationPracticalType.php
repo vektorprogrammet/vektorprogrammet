@@ -26,11 +26,11 @@ class ApplicationPracticalType extends AbstractType
         ));
 
         $builder->add('preferredGroup', 'choice', array(
-            'label' => 'Har du et ønske om bolk?',
+            'label' => 'Er det noen tidspunkt i løpet av semesteret du ikke kan delta på?',
             'choices' => array(
-                null => 'Ingen',
-                'Bolk 1' => 'Bolk 1',
-                'Bolk 2' => 'Bolk 2',
+                null => 'Kan hele semesteret',
+                'Bolk 2' => 'Kan ikke i bolk 1',
+                'Bolk 1' => 'Kan ikke i bolk 2',
             ),
             'expanded' => true,
             'multiple' => false,
