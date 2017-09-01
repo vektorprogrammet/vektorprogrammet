@@ -47,7 +47,7 @@ class ApplicationPracticalType extends AbstractType
         ));
 
         $builder->add('teamInterest', 'choice', array(
-        'label' => 'Kan du tenke deg å være med i organiseringen av Vektorprogrammet? Dette inneholder teamarbeid',
+        'label' => 'Legg til personen i teaminteresse-listen?',
         'choices' => array(
             0 => 'Nei',
             1 => 'Ja',
