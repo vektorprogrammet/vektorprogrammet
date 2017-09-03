@@ -11,12 +11,12 @@ class ApplicationPracticalType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('days', new DaysType(), array(
-            'label' => 'Hvilke dager passer IKKE for deg?',
+            'label' => 'Er det noen dager som IKKE passer for deg?',
             'data_class' => 'AppBundle\Entity\Application',
         ));
 
         $builder->add('doublePosition', 'choice', array(
-            'label' => 'Kunne du tenke deg dobbel eller enkel stilling?',
+            'label' => 'Kunne du tenke deg enkel eller dobbel stilling?',
             'choices' => array(
                 0 => '4 uker',
                 1 => '8 uker'

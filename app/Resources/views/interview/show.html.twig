@@ -26,7 +26,6 @@
                                 <th>E-post</th>
                                 <th>Linje</th>
                                 <th>År</th>
-                                <th>Tidligere deltagelse</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -38,12 +37,6 @@
                                 <td> {{ u.email }} </td>
                                 <td> {{ u.fieldOfStudy }} </td>
                                 <td> {{ application.yearOfStudy }} </td>
-
-                                {% if u.assistantHistories | length %}
-                                    <td> Ja</td>
-                                {% else %}
-                                    <td> Nei</td>
-                                {% endif %}
                             </tr>
                             </tbody>
                         </table>
@@ -55,7 +48,7 @@
                 <h3>Praktisk informasjon</h3>
                 <div class="row">
                     <div class="small-12 columns">
-                        <label class="question-label">Hvilke dager passer IKKE for deg?</label>
+                        <label class="question-label">Er det noen dager som IKKE passer for deg?</label>
                         <table>
                             <thead>
                             <tr>
@@ -82,7 +75,7 @@
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
                         <label class="question-label">
-                            Kunne du tenke deg dobbel eller enkel stilling?
+                            Kunne du tenke deg enkel eller dobbel stilling?
                         </label>
                         <p>{{ application.doublePosition ? '8 uker':'4 uker' }}</p>
 
