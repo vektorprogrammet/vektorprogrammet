@@ -25,7 +25,6 @@
                                 <th> E-post</th>
                                 <th> Linje</th>
                                 <th> År</th>
-                                <th> Tidligere deltagelse</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -37,12 +36,6 @@
                                 <td> {{ u.email }} </td>
                                 <td> {{ u.fieldOfStudy }} </td>
                                 <td> {{ application.yearOfStudy }} </td>
-
-                                {% if u.assistantHistories|length %}
-                                    <td> Ja</td>
-                                {% else %}
-                                    <td> Nei</td>
-                                {% endif %}
                             </tr>
                             </tbody>
                         </table>
