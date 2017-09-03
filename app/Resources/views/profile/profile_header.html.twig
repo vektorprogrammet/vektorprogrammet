@@ -3,13 +3,14 @@
 
         <h2> {{ user.firstName }} {{ user.lastName }} </h2>
         <h6 class="subheader">
-
-            {{ user.fieldOfStudy.department }} - {{ user.fieldOfStudy }}
-
             {% for r in user.roles %}
-                - {{ r.name }}
+                {{ r.name | replace({
+                    'User': 'Assistent',
+                    'Admin': 'Teammedlem',
+                    'Superadmin': 'Teamleder',
+                    'Highest admin': 'Admin'
+                }) }}
             {% endfor %}
-
         </h6>
 
         <hr>
