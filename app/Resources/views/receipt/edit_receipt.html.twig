@@ -1,0 +1,98 @@
+{% extends parent_template %}
+
+{% block title %}Utlegg{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <h1>Rediger utlegg</h1>
+            <hr>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="small-12 medium-8 columns">
+                    {{ form_row(form.description) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-8 medium-3 columns">
+                    {{ form_row(form.sum) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-8 medium-12 columns">
+                    {{ form_row(form.receiptDate) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-8 medium-3 columns">
+                    {{ form_row(form.user) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-12 columns">
+                    <div>
+                        {{ form_row(form.picturePath) }}
+                    </div>
+                </div>
+                <div class="small-4 columns">
+                    <div>
+                        <img src="{{ asset(receipt.picturePath) }}" height="60px" id="receipt_picture">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <button class="button success">Lagre</button>
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#receipt_picture').attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#receipt_picturePath").change(function () {
+            if(this.value === ''){
+                $('#receipt_picture').attr('src', '{{ asset(receipt.picturePath) }}');
+            } else {
+                $('#receipt_picture').parent().removeClass('hide');
+                readURL(this);
+            }
+        });
+
+
+    </script>
+
+    <script>
+        setTimeout(function () {
+            $('.alert-box').fadeOut(800);
+        }, 1500)
+    </script>
+
+    <script src="{{ asset_with_version('js/bankAccountNumberValidation.js') }}"></script>
+
+{% endblock %}

@@ -239,7 +239,7 @@ header {
 // Footer
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 footer {
-
+  padding-top: 10px;
   .row {
     border-top: solid 3px $vektor-blue;
     padding-top: 2rem;
@@ -253,7 +253,6 @@ footer {
 }
 
 .admin-footer {
-  padding-top: 10px;
   .row {
     border-top: solid 3px $admin-grey;
   }
@@ -842,4 +841,25 @@ ul.alternatives {
   .clickable {
     cursor:pointer;
   }
+}
+
+.receipt-upload-hack {
+  height: 1px;
+  width: 1px !important;
+  position: absolute;
+  left: 115px;
+  pointer-events: none;
+  opacity: 0;
+  margin-top: 51px !important; }
+
+.clean-list {
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+
+#receipt_receiptDate select{
+  display: inline-block;
+  width: 70px;
+  margin-right:10px;
 }

@@ -1,0 +1,51 @@
+<table width="100%" id="activeReceiptsTable">
+    <thead>
+
+    <tr>
+        <th> Id</th>
+        <th> Utleggsdato</th>
+        <th> Beskrivelse</th>
+        <th> Sum</th>
+        <th> Kvittering</th>
+        <th colspan="3"></th>
+    </tr>
+
+    </thead>
+
+    <tbody>
+    {% for receipt in receipts %}
+        <tr>
+            <td> {{ receipt.visualId }}</td>
+            <td> {{ receipt.receiptDate|date('d.m.Y') }}</td>
+            <td> {{ receipt.description }} </td>
+            <td> {{ receipt.sum|number_format(2, ',', ' ') }} kr </td>
+            <td>
+                <a href="#" data-reveal-id="receipt-{{ receipt.id }}">Vis kvittering</a>
+
+                <div id="receipt-{{ receipt.id }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+                    <h2 id="modalTitle">Kvittering</h2>
+                    <img src="{{ receipt.picturePath }}">
+                    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                </div>
+            </td>
+
+            {% if is_granted_team_leader() %}
+                {% if receipt.active %}
+                    <td>{%  include 'receipt/refund_receipt_button.html.twig' %}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+
+                <td><a href="{{ path('receipt_edit', { 'receipt': receipt.id }) }}" class="button tiny">
+                        <i class="fa fa-pencil"></i>
+                        Rediger
+                    </a></td>
+                <td>{% include 'receipt/delete_receipt_button.html.twig' %}</td>
+            {% else %}
+                <td colspan="3"></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>

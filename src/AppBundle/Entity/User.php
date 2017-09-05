@@ -71,6 +71,11 @@ class User implements AdvancedUserInterface, \Serializable
     private $phone;
 
     /**
+     * @ORM\Column(type="string", length=45, nullable=true)
+     */
+    private $accountNumber;
+
+    /**
      * @ORM\Column(type="string", unique=true, nullable=true)
      * @Assert\NotBlank(groups={"username", "edit_user"}, message="Dette feltet kan ikke være tomt.")
      */
@@ -124,6 +129,12 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\OneToMany(targetEntity="Interview", mappedBy="interviewer")
      */
     private $interviews;
+
+    /**
+     * @var Receipt[]
+     * @ORM\OneToMany(targetEntity="Receipt", mappedBy="user")
+     */
+    private $receipts;
 
     public function __construct()
     {
@@ -305,6 +316,22 @@ class User implements AdvancedUserInterface, \Serializable
     public function getPhone()
     {
         return $this->phone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccountNumber()
+    {
+        return $this->accountNumber;
+    }
+
+    /**
+     * @param string $account_number
+     */
+    public function setAccountNumber($accountNumber)
+    {
+        $this->accountNumber = $accountNumber;
     }
 
     /**
@@ -567,5 +594,37 @@ class User implements AdvancedUserInterface, \Serializable
     public function getInterviews()
     {
         return $this->interviews;
+    }
+
+    /**
+     * @return Receipt[]
+     */
+    public function getReceipts(): array
+    {
+        return $this->receipts;
+    }
+
+    public function getTotalActiveReceiptSum(): float
+    {
+        $totalSum = 0.0;
+        foreach ($this->receipts as $receipt) {
+            if ($receipt->isActive()) {
+                $totalSum += $receipt->getSum();
+            }
+        }
+
+        return $totalSum;
+    }
+
+    public function getTotalInactiveReceiptSum(): float
+    {
+        $totalSum = 0.0;
+        foreach ($this->receipts as $receipt) {
+            if (!$receipt->isActive()) {
+                $totalSum += $receipt->getSum();
+            }
+        }
+
+        return $totalSum;
     }
 }

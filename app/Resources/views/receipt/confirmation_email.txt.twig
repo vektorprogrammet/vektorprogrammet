@@ -1,0 +1,9 @@
+
+Hei {{ name }}, vi har overført {{ receipt.sum }}kr til kontoen med kontonr. {{ account_number }} for utlegget du registrerte på datoen {{ receipt.submitDate | date("d.m.Y H:i") }}.
+
+Beskrivelse av utlegget:
+{{ receipt.description }}
+
+Utlegg-id: {{ receipt.visualId }}
+
+Mvh. Vektorprogrammets økonomiteam.

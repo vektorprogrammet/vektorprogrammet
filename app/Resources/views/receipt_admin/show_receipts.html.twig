@@ -1,0 +1,63 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}Utlegg{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="small-12 medium-12 large-12 columns">
+        <h1>Utlegg</h1>
+    </div>
+</div>
+
+{% if users_with_active_receipts is not empty %}
+    <div class="row">
+
+        <div class="small-12 medium-12 large-12 columns">
+            <hr>
+        </div>
+
+        <div class="small-12 medium-12 large-8 columns">
+
+            <h3> Personer med nye utlegg </h3>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+
+            <br>
+
+            {% include 'receipt_admin/receipts_table_admin.html.twig' with { 'users': users_with_active_receipts, 'active': true, 'current_user': current_user } %}
+
+        </div>
+    </div>
+{% endif %}
+
+{% if users_with_inactive_receipts is not empty %}
+    <div class="row">
+
+        <div class="small-12 medium-12 large-12 columns">
+            <hr>
+        </div>
+
+        <div class="small-12 medium-12 large-8 columns">
+
+            <h3> Personer med refunderte utlegg</h3>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+
+            <br>
+
+            {% include 'receipt_admin/receipts_table_admin.html.twig' with { 'users': users_with_inactive_receipts, 'active': false, 'current_user': current_user } %}
+
+        </div>
+    </div>
+{% endif %}
+
+
+
+{% endblock %}

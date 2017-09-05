@@ -2,26 +2,31 @@
 
 namespace AppBundle\Service;
 
+use Ivory\CKEditorBundle\Exception\Exception;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class FileUploader
 {
     private $signatureFolder;
     private $logoFolder;
+    private $receiptFolder;
 
     /**
      * FileUploader constructor.
      *
      * @param string $signatureFolder
      * @param string $logoFolder
+     * @param string $receiptFolder
      */
-    public function __construct(string $signatureFolder, string $logoFolder)
+    public function __construct(string $signatureFolder, string $logoFolder, string $receiptFolder)
     {
         $this->signatureFolder = $signatureFolder;
         $this->logoFolder = $logoFolder;
+        $this->receiptFolder = $receiptFolder;
     }
 
     /**
@@ -49,6 +54,24 @@ class FileUploader
     }
 
     /**
+     * @param Request $request
+     *
+     * @return string
+     */
+    public function uploadReceipt(Request $request)
+    {
+        $file = $this->getFileFromRequest($request);
+
+        $mimeType = $file->getMimeType();
+        $fileType = explode('/', $mimeType)[0];
+        if ($fileType === 'image') {
+            return $this->uploadFile($file, $this->receiptFolder);
+        } else {
+            throw new BadRequestHttpException('Filtypen må være et bilde.');
+        }
+    }
+
+    /**
      * @param UploadedFile $file
      * @param string       $targetFolder
      *
@@ -56,16 +79,19 @@ class FileUploader
      */
     public function uploadFile(UploadedFile $file, string $targetFolder)
     {
-        $originalFileName = $file->getClientOriginalName();
         $fileExt = $file->guessExtension();
-
         $fileName = $this->generateRandomFileNameWithExtension($fileExt);
 
-        $relativePath = $this->getRelativePath($targetFolder, $fileName);
+        if (!is_dir($targetFolder)) {
+            mkdir($targetFolder, 0775, true);
+        }
 
-        $uploadSuccessful = move_uploaded_file($file->getPathname(), $relativePath);
+        try {
+            $file->move($targetFolder, $fileName);
+        } catch (FileException $e) {
+            $originalFileName = $file->getClientOriginalName();
+            $relativePath = $this->getRelativePath($targetFolder, $fileName);
 
-        if (!$uploadSuccessful) {
             throw new UploadException('Could not copy the file '.$originalFileName.' to '.$relativePath);
         }
 
@@ -81,6 +107,17 @@ class FileUploader
         $fileName = $this->getFileNameFromPath($path);
 
         $this->deleteFile("$this->signatureFolder/$fileName");
+    }
+
+    public function deleteReceipt(string $path)
+    {
+        if (empty($path)) {
+            return;
+        }
+
+        $fileName = $this->getFileNameFromPath($path);
+
+        $this->deleteFile("$this->receiptFolder/$fileName");
     }
 
     public function deleteFile(string $path)

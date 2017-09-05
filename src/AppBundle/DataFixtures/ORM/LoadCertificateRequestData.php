@@ -12,7 +12,7 @@ class LoadCertificateRequestData extends AbstractFixture implements OrderedFixtu
     public function load(ObjectManager $manager)
     {
         $cr1 = new CertificateRequest();
-        $cr1->setUser($this->getReference('user-14'));
+        $cr1->setUser($this->getReference('user-assistant'));
 
         $manager->persist($cr1);
 

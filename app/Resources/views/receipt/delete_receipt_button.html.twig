@@ -1,0 +1,9 @@
+<form method="POST"
+      onsubmit="return confirm('Vil du virkelig slette dette utlegget?')"
+      action="{{ path('receipt_delete', { 'receipt': receipt.id }) }}">
+    <button type="submit"
+            class="button tiny alert delete">
+        <i class="fa fa-trash"></i>
+        Slett
+    </button>
+</form>

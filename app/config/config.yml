@@ -19,8 +19,11 @@ parameters:
   # Logo images
   logo_images: 'images/Logo images'
 
-  #Signature images
+  # Signature images
   signature_images: '../signatures'
+
+  # Receipt images
+  receipt_images: 'images/receipts'
 
   # Article images
   article_images: 'images/article_images'

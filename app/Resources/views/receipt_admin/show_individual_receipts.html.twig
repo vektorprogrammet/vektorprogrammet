@@ -1,0 +1,84 @@
+{% extends 'adminBase.html.twig' %}
+{% block title %}Utlegg{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <h1>Utlegg for <a href="{{ path('specific_profile', {'id': user.id}) }}">{{ user }}</a></h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <ul class="clean-list">
+                <li>Kontonummer: {{ user.accountNumber }}</li>
+                <li>Email: <a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div data-alert class="alert-box success radius">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if active_receipts is not empty %}
+        <div class="row">
+            <div class="small-12 medium-12 large-12 columns">
+                <hr>
+            </div>
+
+            <div class="small-6 medium-6 large-6 columns">
+                <h3> Nye utlegg </h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="small-12 medium-12 large-12 columns">
+
+                <br>
+
+                {% include 'receipt_admin/receipts_table_individual.html.twig' with { 'receipts': active_receipts } %}
+            </div>
+        </div>
+
+    {% endif %}
+
+    {% if inactive_receipts is not empty %}
+        <div class="row">
+            <div class="small-12 medium-12 large-12 columns">
+                <hr>
+            </div>
+
+            <div class="small-12 medium-12 large-8 columns">
+
+                <h3> Refunderte utlegg </h3>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="small-12 medium-12 large-12 columns">
+
+                <br>
+
+                {% include 'receipt_admin/receipts_table_individual.html.twig' with { 'receipts': inactive_receipts } %}
+
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        setTimeout(function () {
+            $('.alert-box').fadeOut(800);
+        }, 1500)
+    </script>
+{% endblock %}

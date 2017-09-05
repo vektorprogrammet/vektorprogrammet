@@ -21,7 +21,7 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
         $manager->persist($ah1);
 
         $ah2 = new AssistantHistory();
-        $ah2->setUser($this->getReference('user-14'));
+        $ah2->setUser($this->getReference('user-assistant'));
         $ah2->setSchool($this->getReference('school-2'));
         $ah2->setSemester($this->getReference('semester-current'));
         $ah2->setWorkdays(8);
@@ -30,7 +30,7 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
         $manager->persist($ah2);
 
         $ah3 = new AssistantHistory();
-        $ah3->setUser($this->getReference('user-14'));
+        $ah3->setUser($this->getReference('user-assistant'));
         $ah3->setSchool($this->getReference('school-1'));
         $ah3->setSemester($this->getReference('semester-1'));
         $ah3->setWorkdays(4);
