@@ -166,7 +166,9 @@ class ReceiptController extends Controller
         $user = $this->getUser();
         $isTeamLeader = $this->get('app.roles')->userIsGranted($user, Roles::TEAM_LEADER);
 
-        if (!$isTeamLeader && ($user !== $receipt->getUser() || !$receipt->isActive())) {
+        $userCanDeleteReceipt = $isTeamLeader || ($user == $receipt->getUser() && $receipt->isActive());
+
+        if (!$userCanDeleteReceipt) {
             throw new AccessDeniedException();
         }
 
