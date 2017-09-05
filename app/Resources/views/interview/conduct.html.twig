@@ -65,12 +65,9 @@
                     <div class="small-12 columns">
                         <h4>Introduksjon</h4>
                         <ul>
-                            <li>En ungdomsskoledag varer fra kl 08.00 til 14.00. I tillegg kommer reisetid</li>
+                            <li>En ungdomsskoledag er innenfor tidsrommet kl. 08.00 og 14.45. I tillegg kommer reisetid</li>
                             <li>Det kan hende at du ikke har noe å gjøre deler av dagen pga timeplanen. Derfor er det
                                 lurt å ta med bøker hvis det blir pauser
-                            </li>
-                            <li>Informere om at vi har to bolker. Spørre om de har en reise eller lignende planlagt NÅ
-                                som gjør at de ikke kan en av de
                             </li>
                         </ul>
                     </div>
@@ -92,7 +89,11 @@
 
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
-                        {{ form_row(form.applicationPractical.preferredGroup) }}
+                        {{form_label(form.applicationPractical.preferredGroup, null, {'label_attr': {'class': 'question-label'}})}}
+                        <span class="question-help">Dette kan være f.eks reise, studietur, lab, annet obligatorisk opplegg eller liknende.</span>
+                        {{form_errors(form.applicationPractical.preferredGroup)}}
+                        {{form_widget(form.applicationPractical.preferredGroup)}}
+
                     </div>
                 </div>
 

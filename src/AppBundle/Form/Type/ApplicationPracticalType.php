@@ -11,43 +11,43 @@ class ApplicationPracticalType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('days', new DaysType(), array(
-            'label' => 'Hvilke dager passer IKKE for deg?',
+            'label' => 'Er det noen dager som IKKE passer for deg?',
             'data_class' => 'AppBundle\Entity\Application',
         ));
 
         $builder->add('doublePosition', 'choice', array(
-            'label' => 'Kunne du tenke deg dobbel stilling? Altså en gang i uka i 8 uker?',
+            'label' => 'Kunne du tenke deg enkel eller dobbel stilling?',
             'choices' => array(
-                0 => 'Nei',
-                1 => 'Ja',
+                0 => '4 uker',
+                1 => '8 uker'
             ),
             'expanded' => true,
             'multiple' => false,
         ));
 
         $builder->add('preferredGroup', 'choice', array(
-            'label' => 'Har du et ønske om bolk?',
+            'label' => 'Er det noen tidspunkt i løpet av semesteret du ikke kan delta på?',
             'choices' => array(
-                null => 'Ingen',
-                'Bolk 1' => 'Bolk 1',
-                'Bolk 2' => 'Bolk 2',
+                null => 'Kan hele semesteret',
+                'Bolk 2' => 'Kan ikke i bolk 1',
+                'Bolk 1' => 'Kan ikke i bolk 2',
             ),
             'expanded' => true,
             'multiple' => false,
         ));
 
         $builder->add('english', 'choice', array(
-            'label' => 'Vi har en internasjonal skole. Har du lyst til å undervise på engelsk?',
+            'label' => 'Vil du undervise på norsk skole eller internasjonal skole?',
             'choices' => array(
-                0 => 'Nei',
-                1 => 'Ja',
+                0 => 'Norsk',
+                1 => 'Engelsk',
             ),
             'expanded' => true,
             'multiple' => false,
         ));
 
         $builder->add('teamInterest', 'choice', array(
-        'label' => 'Kan du tenke deg å være med i organiseringen av Vektorprogrammet? Dette inneholder teamarbeid',
+        'label' => 'Legg til personen i teaminteresse-listen?',
         'choices' => array(
             0 => 'Nei',
             1 => 'Ja',

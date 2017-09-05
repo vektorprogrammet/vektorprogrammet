@@ -421,7 +421,7 @@ class ApplicationRepository extends EntityRepository
     {
         return $this->createQueryBuilder('a')
             ->select('a')
-            ->join('a.interview', 'i')
+            ->leftJoin('a.interview', 'i')
             ->where('a.semester = :semester')
             ->andWhere('a.previousParticipation = 1 OR i.interviewed = 1')
             ->setParameter('semester', $semester)

@@ -153,7 +153,7 @@ class InterviewManager
         $this->mailer->send($message);
 
         $this->logger->info(
-            'Schedule email sent to {$interview->getInterviewer()->getEmail()}\n'.
+            "Schedule email sent to {$interview->getInterviewer()->getEmail()}\n".
             'Request for new interview by '.$interview->getUser()
         );
     }
@@ -179,7 +179,7 @@ class InterviewManager
         $this->mailer->send($message);
 
         $this->logger->info(
-            'Schedule email sent to {$interview->getInterviewer()->getEmail()}\n'.
+            "Schedule email sent to {$interview->getInterviewer()->getEmail()}\n".
             'Interview cancelled by '.$interview->getUser()
         );
     }

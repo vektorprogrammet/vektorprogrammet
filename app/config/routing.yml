@@ -657,6 +657,11 @@ semester_delete:
 ##########################################
 #               Team                     #
 ##########################################
+team_page_it:
+    path: /it
+    defaults: {_controller: AppBundle:Team:show, id: 9}
+    methods: [GET]
+
 team_page:
   path: /team/{id}
   defaults: {_controller: AppBundle:Team:show}

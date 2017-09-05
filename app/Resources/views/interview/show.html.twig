@@ -26,7 +26,6 @@
                                 <th>E-post</th>
                                 <th>Linje</th>
                                 <th>År</th>
-                                <th>Tidligere deltagelse</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -38,12 +37,6 @@
                                 <td> {{ u.email }} </td>
                                 <td> {{ u.fieldOfStudy }} </td>
                                 <td> {{ application.yearOfStudy }} </td>
-
-                                {% if u.assistantHistories | length %}
-                                    <td> Ja</td>
-                                {% else %}
-                                    <td> Nei</td>
-                                {% endif %}
                             </tr>
                             </tbody>
                         </table>
@@ -55,7 +48,7 @@
                 <h3>Praktisk informasjon</h3>
                 <div class="row">
                     <div class="small-12 columns">
-                        <label class="question-label">Hvilke dager passer IKKE for deg?</label>
+                        <label class="question-label">Er det noen dager som IKKE passer for deg?</label>
                         <table>
                             <thead>
                             <tr>
@@ -82,9 +75,9 @@
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
                         <label class="question-label">
-                            Kunne du tenke deg dobbelt stilling? Altså en gang i uka i 8 uker?
+                            Kunne du tenke deg enkel eller dobbel stilling?
                         </label>
-                        <p>{{ application.doublePosition ? 'Ja':'Nei' }}</p>
+                        <p>{{ application.doublePosition ? '8 uker':'4 uker' }}</p>
 
                     </div>
                 </div>
@@ -92,21 +85,28 @@
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
                         <label class="question-label">
-                            Har du et ønske om bolk?
+                            Er det noen tidspunkt i løpet av semesteret du ikke kan delta på?
                         </label>
-                        <p>{{ application.preferredGroup ? application.preferredGroup:'Ingen' }}</p>
+                        <p>
+                            {% if application.preferredGroup == "Bolk 2" %}
+                            Kan ikke i bolk 1
+                            {% elseif application.preferredGroup == "Bolk 1" %}
+                            Kan ikke i bolk 2
+                            {% else %}
+                            Kan hele semesteret
+                            {% endif %}
+                        </p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="small-12 medium-12 large-9 columns">
-                        <label class="question-label">Vi har en internasjonal skole. Har du lyst til å undervise på
-                            engelsk?</label>
+                        <label class="question-label">Vil du undervise på norsk skole eller internasjonal skole?</label>
                         <p>
                             {% if application.english == 1 %}
-                                Ja
+                                Engelsk
                             {% else %}
-                                Nei
+                                Norsk
                             {% endif %}
                         </p>
                     </div>

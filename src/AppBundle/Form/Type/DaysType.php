@@ -11,8 +11,8 @@ class DaysType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $workChoices = array(
-            'Bra' => 'Bra',
-            'Ikke' => 'Ikke',
+            'Bra' => 'Passer bra',
+            'Ikke' => 'Passer ikke',
         );
 
         $builder->add('monday', 'choice', array(
