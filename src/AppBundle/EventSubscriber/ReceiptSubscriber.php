@@ -9,18 +9,21 @@ use AppBundle\Service\EmailSender;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class ReceiptSubscriber implements EventSubscriberInterface
 {
     private $logger;
     private $emailSender;
     private $session;
+    private $tokenStorage;
 
-    public function __construct(LoggerInterface $logger, EmailSender $emailSender, Session $session)
+    public function __construct(LoggerInterface $logger, EmailSender $emailSender, Session $session, TokenStorage $tokenStorage)
     {
         $this->logger = $logger;
         $this->emailSender = $emailSender;
         $this->session = $session;
+        $this->tokenStorage = $tokenStorage;
     }
 
     public static function getSubscribedEvents()
@@ -88,10 +91,11 @@ class ReceiptSubscriber implements EventSubscriberInterface
     public function logEditedEvent(ReceiptEvent $event)
     {
         $receipt = $event->getReceipt();
-        $user = $receipt->getUser();
+        $owner = $receipt->getUser();
         $visualID = $receipt->getVisualId();
+        $loggedInUser = $this->tokenStorage->getToken()->getUser();
 
-        $this->logger->info($user->getDepartment() . ": Receipt *$visualID* edited.");
+        $this->logger->info($owner->getDepartment() . ": Receipt *$visualID* belonging to $owner was edited by $loggedInUser.");
     }
 
     public function addEditedFlashMessage()
@@ -102,10 +106,11 @@ class ReceiptSubscriber implements EventSubscriberInterface
     public function logDeletedEvent(ReceiptEvent $event)
     {
         $receipt = $event->getReceipt();
-        $user = $receipt->getUser();
+        $owner = $receipt->getUser();
         $visualID = $receipt->getVisualId();
+        $loggedInUser = $this->tokenStorage->getToken()->getUser();
 
-        $this->logger->info($user->getDepartment() . ": Receipt *$visualID* deleted.");
+        $this->logger->info($owner->getDepartment() . ": Receipt *$visualID* belonging to $owner has been deleted by $loggedInUser.");
     }
 
     public function addDeletedFlashMessage()
