@@ -899,14 +899,21 @@ ul.alternatives {
   }
 }
 
-table tr .table-action {
-  opacity: 0;
+@media screen and (min-width: 1025px) {
+  table tr .table-action {
+    opacity: 0;
+  }
+
+  table tr:hover .table-action {
+    opacity: 0.7;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+      opacity: 1;
+    }
+  }
 }
 
-table tr:hover .table-action {
-  opacity: 0.7;
-  transition: all 0.2s ease-in-out;
-  &:hover {
-    opacity: 1;
-  }
+.table-responsive {
+  max-width: 100%;
+  overflow-x: auto;
 }

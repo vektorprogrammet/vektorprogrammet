@@ -78,7 +78,9 @@
                 <br>
 
                 {% if receipts %}
+                <div class="table-responsive">
                     {% include 'receipt/my_receipts_table.html.twig' with {'receipts': receipts} %}
+                </div>
                 {% endif %}
 
             </div>
