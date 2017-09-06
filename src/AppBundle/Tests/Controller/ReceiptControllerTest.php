@@ -3,7 +3,6 @@
 namespace AppBundle\Tests\Controller;
 
 use AppBundle\Tests\BaseWebTestCase;
-use Symfony\Component\Debug\Exception\ContextErrorException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Finder\Finder;
 
@@ -35,6 +34,8 @@ class ReceiptControllerTest extends BaseWebTestCase
         // Assistant creates a receipt
         $client = $this->createAssistantClient();
 
+        $receiptsBefore = $this->countTableRows('/utlegg', $client);
+
         // Create a new image file
         $file = tempnam(sys_get_temp_dir(), 'rec');
         imagepng(imagecreatetruecolor(1, 1), $file);
@@ -50,20 +51,13 @@ class ReceiptControllerTest extends BaseWebTestCase
         $form['receipt[picturePath]'] = $photo;
 
         $client->submit($form);
-        $crawler = $client->followRedirect();
 
-        $this->assertEquals(1, $crawler->filter('h3:contains("Nye utlegg")')->count());
-
-        // Get id for later deletion
-        $editHref = explode('/', $crawler->filter('a:contains("Rediger")')->attr('href'));
-        $receiptId = end($editHref);
+        $receiptsAfter = $this->countTableRows('/utlegg', $client);
+        $this->assertEquals(1, $receiptsAfter - $receiptsBefore);
 
         // Teamleader can see it in the receipt table
         $crawler = $this->teamLeaderGoTo('/kontrollpanel/utlegg');
         $this->assertEquals(1, $crawler->filter('td:contains("assistant@gmail.com")')->count());
-
-        // Delete it just to get rid of the image file
-        $this->createAssistantClient()->request('POST', '/utlegg/slett/'.$receiptId);
     }
 
     public function testRefunded()
@@ -200,6 +194,11 @@ class ReceiptControllerTest extends BaseWebTestCase
     {
         parent::tearDown();
 
+        $directoryExists = file_exists('images/receipts');
+        if (!$directoryExists) {
+            return;
+        }
+
         // Delete all new files
         $finder = new Finder();
         $finder->files()->in('images/receipts');
@@ -210,9 +209,8 @@ class ReceiptControllerTest extends BaseWebTestCase
             }
         }
 
-        $directoryExists = file_exists('images/receipts');
-        $directoryIsEmpty = count(glob('images/receipts')) === 0;
-        if ($directoryExists && $directoryIsEmpty) {
+        $directoryIsEmpty = count(glob('images/receipts/*')) === 0;
+        if ($directoryIsEmpty) {
             rmdir('images/receipts');
             rmdir('images');
         }
