@@ -2,7 +2,7 @@
       onsubmit="return confirm('Vil du virkelig slette dette utlegget?')"
       action="{{ path('receipt_delete', { 'receipt': receipt.id }) }}">
     <button type="submit"
-            class="delete">
+            class="button tiny alert delete">
         <i class="fa fa-trash"></i>
     </button>
 </form>
