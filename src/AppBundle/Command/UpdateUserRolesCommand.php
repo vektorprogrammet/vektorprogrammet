@@ -128,6 +128,8 @@ HELP
         $user->setRoles([$role]);
         $this->entityManager->persist($user);
 
+        $this->getContainer()->get('app.logger')->info("Automatic role update ({$user->getDepartment()}): $user has been updated to $role");
+
         ++$this->rolesUpdatedCount;
     }
 }
