@@ -40,6 +40,11 @@ class Role implements RoleInterface
         $this->users = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     /**
      * @see RoleInterface
      */
@@ -73,6 +78,9 @@ class Role implements RoleInterface
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
