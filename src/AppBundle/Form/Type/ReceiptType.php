@@ -15,7 +15,7 @@ class ReceiptType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-    	$currentYear = intval((new \DateTime())->format('Y'));
+        $currentYear = intval((new \DateTime())->format('Y'));
         $builder
             ->add('description', TextareaType::class, array(
                 'label' => 'Beskrivelse',
@@ -31,8 +31,8 @@ class ReceiptType extends AbstractType
             ->add('receiptDate', DateType::class, array(
                 'label' => 'Utleggsdato',
                 'required' => true,
-	            'years' => [$currentYear, $currentYear - 1],
-	            'format' => 'ddMMMyyyy'
+                'years' => [$currentYear, $currentYear - 1],
+                'format' => 'ddMMMyyyy'
             ))
             ->add('user', AccountNumberType::class, array(
                 'label' => false,
