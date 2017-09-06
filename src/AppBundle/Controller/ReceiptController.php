@@ -45,9 +45,6 @@ class ReceiptController extends Controller
 
         $receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByUser($this->getUser());
 
-        $active_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findActiveByUser($this->getUser());
-        $inactive_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findInactiveByUser($this->getUser());
-
         $form = $this->createForm(ReceiptType::class, $receipt);
 
         $form->handleRequest($request);
@@ -75,8 +72,6 @@ class ReceiptController extends Controller
             'form' => $form->createView(),
             'receipt' => $receipt,
             'receipts' => $receipts,
-            'active_receipts' => $active_receipts,
-            'inactive_receipts' => $inactive_receipts,
         ));
     }
 
