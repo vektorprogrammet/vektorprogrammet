@@ -68,8 +68,9 @@ class ReceiptSubscriber implements EventSubscriberInterface
         $receipt = $event->getReceipt();
         $user = $receipt->getUser();
         $visualID = $receipt->getVisualId();
+        $loggedInUser = $this->tokenStorage->getToken()->getUser();
 
-        $this->logger->info($user->getDepartment() . ": Receipt *$visualID* belonging to *$user* has been refunded.");
+        $this->logger->info($user->getDepartment() . ": Receipt *$visualID* belonging to *$user* has been refunded by $loggedInUser.");
     }
 
     public function sendRefundedEmail(ReceiptEvent $event)
