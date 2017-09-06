@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -42,6 +43,11 @@ class EditUserType extends AbstractType
                         ->setParameter(1, $this->department);
                 },
             ))
+	        ->add('accountNumber', TextType::class, array(
+		        'label' => 'Kontonummer',
+		        'required' => true,
+		        'attr' => array('oninput' => 'validateBankAccountNumber(this)'),
+	        ))
             ->add('save', 'submit', array(
                 'label' => 'Lagre',
             ));
