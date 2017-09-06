@@ -84,9 +84,14 @@ HELP
         $department = $user->getDepartment();
         $semester = $department->getCurrentOrLatestSemester();
         $workHistories = $user->getWorkHistories();
+        $executiveBoardMember = $this->entityManager->getRepository('AppBundle:ExecutiveBoardMember')->findByUser($user);
 
         if ($semester === null) {
             return false;
+        }
+
+        if (!empty($executiveBoardMember)) {
+            return true;
         }
 
         foreach ($workHistories as $workHistory) {
