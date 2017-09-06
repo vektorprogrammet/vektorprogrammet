@@ -80,7 +80,7 @@ class ReceiptControllerTest extends BaseWebTestCase
 
         $photo = new UploadedFile($file, 'receipt.png', null, null, null, true);
 
-        $crawler = $client->request('GET', '/utlegg/rediger/2');
+        $crawler = $client->request('GET', '/kontrollpanel/utlegg/rediger/2');
         $form = $crawler->selectButton('Lagre')->form();
 
         $form['receipt[description]'] = 'foo bar';
@@ -174,7 +174,7 @@ class ReceiptControllerTest extends BaseWebTestCase
         $this->teamLeaderGoTo('/utlegg/rediger/7');
 
         // Allowed to edit other people's receipts
-        $this->teamLeaderGoTo('/utlegg/rediger/1');
+        $this->teamLeaderGoTo('/kontrollpanel/utlegg/rediger/1');
 
         // Allowed to refund
         $client = $this->createTeamLeaderClient();
@@ -182,7 +182,7 @@ class ReceiptControllerTest extends BaseWebTestCase
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
 
         // Allowed to edit refunded receipt
-        $this->teamLeaderGoTo('/utlegg/rediger/7');
+        $this->teamLeaderGoTo('/kontrollpanel/utlegg/rediger/7');
 
         // Allowed to delete refunded receipt
         $client = $this->createTeamLeaderClient();

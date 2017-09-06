@@ -78,9 +78,8 @@ class ReceiptController extends Controller
     public function editAction(Request $request, Receipt $receipt)
     {
         $user = $this->getUser();
-        $isTeamLeader = $this->get('app.roles')->userIsGranted($user, Roles::TEAM_LEADER);
 
-        $userCanEditReceipt = $isTeamLeader || ($user == $receipt->getUser() && $receipt->isActive());
+        $userCanEditReceipt = $user === $receipt->getUser() && $receipt->isActive();
 
         if (!$userCanEditReceipt) {
             throw new AccessDeniedException();
@@ -111,23 +110,58 @@ class ReceiptController extends Controller
 
             $this->get('event_dispatcher')->dispatch(ReceiptEvent::EDITED, new ReceiptEvent($receipt));
 
-            if ($user === $receipt->getUser()) {
-                return $this->redirectToRoute('receipt_create');
-            } else {
-                return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
-            }
+            return $this->redirectToRoute('receipt_create');
         }
 
         if (!$form->isValid()) {
             $receipt->setPicturePath($oldPicturePath);
         }
 
-        $parentTemplate = ($user === $receipt->getUser()) ? 'base.html.twig' : 'adminBase.html.twig';
+        return $this->render('receipt/edit_receipt.html.twig', array(
+            'form' => $form->createView(),
+            'receipt' => $receipt,
+            'parent_template' => 'base.html.twig',
+        ));
+    }
+
+    public function adminEditAction(Request $request, Receipt $receipt)
+    {
+        $form = $this->createForm(ReceiptType::class, $receipt, array(
+            'picture_required' => false,
+        ));
+        $oldPicturePath = $receipt->getPicturePath();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $isImageUpload = array_values($request->files->get('receipt', ['picture_path']))[0] !== null;
+
+            if ($isImageUpload) {
+                // Delete the old image file
+                $this->get('app.file_uploader')->deleteReceipt($oldPicturePath);
+
+                $path = $this->get('app.file_uploader')->uploadReceipt($request);
+                $receipt->setPicturePath($path);
+            } else {
+                $receipt->setPicturePath($oldPicturePath);
+            } // If a new image hasn't been uploaded
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($receipt);
+            $em->flush();
+
+            $this->get('event_dispatcher')->dispatch(ReceiptEvent::EDITED, new ReceiptEvent($receipt));
+
+            return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
+        }
+
+        if (!$form->isValid()) {
+            $receipt->setPicturePath($oldPicturePath);
+        }
 
         return $this->render('receipt/edit_receipt.html.twig', array(
             'form' => $form->createView(),
             'receipt' => $receipt,
-            'parent_template' => $parentTemplate,
+            'parent_template' => 'adminBase.html.twig',
         ));
     }
 
