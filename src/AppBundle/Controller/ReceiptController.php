@@ -43,6 +43,8 @@ class ReceiptController extends Controller
         $receipt = new Receipt();
         $receipt->setUser($this->getUser());
 
+        $receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByUser($this->getUser());
+
         $active_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findActiveByUser($this->getUser());
         $inactive_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findInactiveByUser($this->getUser());
 
@@ -72,6 +74,7 @@ class ReceiptController extends Controller
         return $this->render('receipt/my_receipts.html.twig', array(
             'form' => $form->createView(),
             'receipt' => $receipt,
+            'receipts' => $receipts,
             'active_receipts' => $active_receipts,
             'inactive_receipts' => $inactive_receipts,
         ));

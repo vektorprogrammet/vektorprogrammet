@@ -57,7 +57,6 @@
         </div>
     </div>
 
-    {% if active_receipts is not empty %}
         <div class="row">
 
             <div class="small-12 medium-12 large-12 columns">
@@ -66,7 +65,7 @@
 
             <div class="small-12 medium-12 large-8 columns">
 
-                <h3> Nye utlegg </h3>
+                <h3>Mine utlegg</h3>
 
             </div>
         </div>
@@ -75,37 +74,10 @@
 
                 <br>
 
-                {% include 'receipt/my_receipts_table.html.twig' with {'receipts': active_receipts} %}
+                {% include 'receipt/my_receipts_table.html.twig' with {'receipts': receipts} %}
 
             </div>
         </div>
-    {% endif %}
-
-    {% if inactive_receipts is not empty %}
-        <div class="row">
-
-            <div class="small-12 medium-12 large-12 columns">
-                <hr>
-            </div>
-
-            <div class="small-12 medium-12 large-8 columns">
-
-                <h3> Refunderte utlegg </h3>
-
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="small-12 medium-12 large-12 columns">
-
-                <br>
-
-                {% include 'receipt/my_receipts_table.html.twig' with {'receipts': inactive_receipts } %}
-
-            </div>
-        </div>
-    {% endif %}
-
 {% endblock %}
 
 {% block javascripts %}
