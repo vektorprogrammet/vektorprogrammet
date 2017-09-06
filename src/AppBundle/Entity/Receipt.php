@@ -70,6 +70,7 @@ class Receipt
     {
         $this->active = true;
         $this->submitDate = new \DateTime();
+        $this->receiptDate = new \DateTime();
         $currentTimeInMilliseconds = round(microtime(true) * 1000);
         $this->visualId = dechex($currentTimeInMilliseconds);
     }

@@ -607,6 +607,13 @@ receipt_edit:
   requirements:
     receipt: \d+
 
+receipt_admin_edit:
+  path: /kontrollpanel/utlegg/rediger/{receipt}
+  defaults: {_controller: AppBundle:Receipt:adminEdit }
+  methods: [GET, POST]
+  requirements:
+    receipt: \d+
+
 receipt_delete:
   path: /utlegg/slett/{receipt}
   defaults: { _controller: AppBundle:Receipt:delete }

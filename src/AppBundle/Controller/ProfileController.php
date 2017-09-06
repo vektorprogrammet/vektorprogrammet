@@ -259,7 +259,7 @@ class ProfileController extends Controller
             return $this->redirect($this->generateUrl('specific_profile', array('id' => $user->getId())));
         }
 
-        return $this->render('profile/edit_profile_admin.html.twig', array(
+        return $this->render('profile/edit_profile.html.twig', array(
             'form' => $form->createView(),
             'user' => $user,
         ));

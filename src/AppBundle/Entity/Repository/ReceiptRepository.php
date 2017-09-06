@@ -20,6 +20,8 @@ class ReceiptRepository extends EntityRepository
             ->select('receipt')
             ->where('receipt.user = :user')
             ->setParameter('user', $user)
+            ->orderBy('receipt.active', 'DESC')
+            ->addOrderBy('receipt.submitDate', 'DESC')
             ->getQuery()
             ->getResult();
     }

@@ -5,7 +5,7 @@
 {% block body %}
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            <h1>Mine Utlegg</h1>
+            <h1>Utlegg</h1>
             <hr>
             <p>
                 Her kan du registrere utlegg du har gjort for vektorprogrammet som du ønsker å få refundert. For å få utlegget
@@ -35,29 +35,7 @@
         </div>
     {% endfor %}
 
-    <div class="row">
-
-        <div class="small-12 medium-12 large-12 columns">
-            <hr>
-        </div>
-
-        <div class="small-12 medium-12 large-8 columns">
-
-            <h3> Registrer nytt utlegg </h3>
-
-        </div>
-    </div>
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-
-            <br>
-
-            {% include 'receipt/create_receipt.html.twig' with {'form': form, 'receipt': receipt} %}
-
-        </div>
-    </div>
-
-    {% if active_receipts is not empty %}
+    <section id="receipt-form">
         <div class="row">
 
             <div class="small-12 medium-12 large-12 columns">
@@ -66,7 +44,7 @@
 
             <div class="small-12 medium-12 large-8 columns">
 
-                <h3> Nye utlegg </h3>
+                <h3> Registrer nytt utlegg </h3>
 
             </div>
         </div>
@@ -75,13 +53,12 @@
 
                 <br>
 
-                {% include 'receipt/my_receipts_table.html.twig' with {'receipts': active_receipts} %}
+                {% include 'receipt/create_receipt.html.twig' with {'form': form, 'receipt': receipt} %}
 
             </div>
         </div>
-    {% endif %}
+    </section>
 
-    {% if inactive_receipts is not empty %}
         <div class="row">
 
             <div class="small-12 medium-12 large-12 columns">
@@ -90,25 +67,32 @@
 
             <div class="small-12 medium-12 large-8 columns">
 
-                <h3> Refunderte utlegg </h3>
+                <h3>Mine utlegg</h3>
+                <a href="#receipt-form" class="text-success" onclick="toggleForm()"><i class="fa fa-plus"></i> Nytt utlegg</a>
 
             </div>
         </div>
-
         <div class="row">
             <div class="small-12 medium-12 large-12 columns">
 
                 <br>
 
-                {% include 'receipt/my_receipts_table.html.twig' with {'receipts': inactive_receipts } %}
+                {% if receipts %}
+                <div class="table-responsive">
+                    {% include 'receipt/my_receipts_table.html.twig' with {'receipts': receipts} %}
+                </div>
+                {% endif %}
 
             </div>
         </div>
-    {% endif %}
-
 {% endblock %}
 
 {% block javascripts %}
+    <script>
+        function toggleForm() {
+          $('#receipt-form').slideDown();
+        }
+    </script>
     <script>
         function readURL(input) {
 

@@ -14,11 +14,7 @@
     <tbody>
     {% for user in users%}
         <tr>
-            {% if user == current_user %}
-                <td><a href="{{ path('receipt_create') }}"> {{ user.fullName }} (deg) </a></td>
-            {% else %}
             <td><a href="{{ path('receipts_show_individual', {'user': user.id}) }}"> {{ user.fullName }} </a></td>
-            {% endif %}
 
             <td> {{ user.email }}</td>
             <td> {{ (active ? user.totalActiveReceiptSum : user.totalInactiveReceiptSum)|number_format(2, ',', '.') }},- </td>

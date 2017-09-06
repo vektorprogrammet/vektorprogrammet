@@ -7,7 +7,8 @@
         <th> Beskrivelse</th>
         <th> Sum</th>
         <th> Kvittering</th>
-        <th colspan="3"></th>
+        <th>Status</th>
+        <th></th>
     </tr>
 
     </thead>
@@ -18,30 +19,46 @@
             <td> {{ receipt.visualId }}</td>
             <td> {{ receipt.receiptDate|date('d.m.Y') }}</td>
             <td> {{ receipt.description }} </td>
-            <td> {{ receipt.sum|number_format(2, ',', ' ') }} kr </td>
+            <td> {{ receipt.sum|number_format(2, ',', ' ') }} kr</td>
             <td>
                 <a href="#" data-reveal-id="receipt-{{ receipt.id }}">Vis kvittering</a>
 
-                <div id="receipt-{{ receipt.id }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+                <div id="receipt-{{ receipt.id }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle"
+                     aria-hidden="true" role="dialog">
                     <h2 id="modalTitle">Kvittering</h2>
                     <img src="{{ asset_with_version(receipt.picturePath) }}">
                     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                 </div>
             </td>
-            {% if receipt.active and is_granted_team_leader() %}
-            <td>{%  include 'receipt/refund_receipt_button.html.twig' %}</td>
+            {% if receipt.active %}
+                <td class="text-warning">Til behandling...</td>
             {% else %}
-            <td></td>
+                <td class="text-success">Refundert</td>
             {% endif %}
 
-            {% if receipt.active or is_granted_team_leader() %}
-                <td><a href="{{ path('receipt_edit', { 'receipt': receipt.id }) }}" class="button tiny">
-                        <i class="fa fa-pencil"></i>
-                        Rediger
-                    </a></td>
-                <td>{% include 'receipt/delete_receipt_button.html.twig' %}</td>
+            {% if receipt.active %}
+                <td>
+                    <form method="POST"
+                          onsubmit="return confirm('Vil du virkelig slette dette utlegget?')"
+                          action="{{ path('receipt_delete', { 'receipt': receipt.id }) }}">
+
+                        <div class="btn-group">
+                            <a href="{{ path('receipt_edit', { 'receipt': receipt.id }) }}">
+                                <button type="button" class="button-link table-action">
+                                    <i class="fa fa-pencil"></i>
+                                    <span class="text-primary action-label">rediger</span>
+                                </button>
+                            </a>
+                            <button type="submit"
+                                    class="button-link delete table-action">
+                                <i class="fa fa fa-trash text-alert"></i>
+                                <span class="text-alert action-label">slett</span>
+                            </button>
+                        </div>
+                    </form>
+                </td>
             {% else %}
-                <td colspan="2"></td>
+                <td></td>
             {% endif %}
         </tr>
     {% endfor %}
