@@ -2,8 +2,7 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Entity\User;
-use AppBundle\Role\Roles;
+use AppBundle\Service\RoleManager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,6 +14,11 @@ class UpdateUserRolesCommand extends ContainerAwareCommand
      * @var ObjectManager
      */
     private $entityManager;
+
+    /**
+     * @var RoleManager
+     */
+    private $roleManager;
 
     /**
      * @var int
@@ -45,6 +49,7 @@ HELP
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->entityManager = $this->getContainer()->get('doctrine')->getManager();
+        $this->roleManager = $this->getContainer()->get('app.roles');
 
         $this->rolesUpdatedCount = 0;
     }
@@ -59,7 +64,7 @@ HELP
         $users = $this->entityManager->getRepository('AppBundle:User')->findAll();
 
         foreach ($users as $user) {
-            $this->updateUserRole($user);
+            $this->roleManager->updateUserRole($user);
         }
 
         $this->entityManager->flush();
@@ -68,73 +73,5 @@ HELP
         $elapsedTime = ($finishTime - $startTime) * 1000;
 
         $output->writeln(sprintf('%d roles updated in %d ms', $this->rolesUpdatedCount, $elapsedTime));
-    }
-
-    private function updateUserRole(User $user)
-    {
-        if ($this->userIsInATeam($user)) {
-            $this->promoteUserToTeamMember($user);
-        } else {
-            $this->demoteUserToAssistant($user);
-        }
-    }
-
-    private function userIsInATeam(User $user)
-    {
-        $department = $user->getDepartment();
-        $semester = $department->getCurrentOrLatestSemester();
-        $workHistories = $user->getWorkHistories();
-        $executiveBoardMember = $this->entityManager->getRepository('AppBundle:ExecutiveBoardMember')->findByUser($user);
-
-        if ($semester === null) {
-            return false;
-        }
-
-        if (!empty($executiveBoardMember)) {
-            return true;
-        }
-
-        foreach ($workHistories as $workHistory) {
-            if ($workHistory->isActiveInSemester($semester)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private function promoteUserToTeamMember(User $user)
-    {
-        if ($this->userIsAssistant($user)) {
-            $this->setUserRole($user, Roles::TEAM_MEMBER);
-        }
-    }
-
-    private function demoteUserToAssistant(User $user)
-    {
-        if (!$this->userIsAssistant($user)) {
-            $this->setUserRole($user, Roles::ASSISTANT);
-        }
-    }
-
-    private function userIsAssistant(User $user)
-    {
-        return !empty($user->getRoles()) && current($user->getRoles())->getRole() === Roles::ASSISTANT;
-    }
-
-    private function setUserRole(User $user, string $role)
-    {
-        $isValidRole = $this->getContainer()->get('app.roles')->isValidRole($role);
-        if (!$isValidRole) {
-            throw new \InvalidArgumentException("Invalid role $role");
-        }
-
-        $role = $this->entityManager->getRepository('AppBundle:Role')->findByRoleName($role);
-        $user->setRoles([$role]);
-        $this->entityManager->persist($user);
-
-        $this->getContainer()->get('app.logger')->info("Automatic role update ({$user->getDepartment()}): $user has been updated to $role");
-
-        ++$this->rolesUpdatedCount;
     }
 }

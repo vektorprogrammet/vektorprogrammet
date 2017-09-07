@@ -17,7 +17,7 @@ services:
 
   app.roles:
     class: AppBundle\Service\RoleManager
-    arguments: ['@security.authorization_checker']
+    arguments: ['@security.authorization_checker', '@doctrine.orm.entity_manager', '@app.logger']
 
   app.interview.manager:
     class: AppBundle\Service\InterviewManager

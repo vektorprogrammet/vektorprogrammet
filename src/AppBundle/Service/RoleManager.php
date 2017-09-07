@@ -4,6 +4,8 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
+use Doctrine\ORM\EntityManager;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class RoleManager
@@ -11,13 +13,17 @@ class RoleManager
     private $roles = array();
     private $aliases = array();
     private $authorizationChecker;
+    private $em;
+    private $logger;
 
     /**
      * RoleManager constructor.
      *
      * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param EntityManager $em
+     * @param LoggerInterface $logger
      */
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker, EntityManager $em, LoggerInterface $logger)
     {
         $this->roles = array(
             Roles::ASSISTANT,
@@ -32,6 +38,8 @@ class RoleManager
             Roles::ALIAS_ADMIN,
         );
         $this->authorizationChecker = $authorizationChecker;
+        $this->em = $em;
+        $this->logger = $logger;
     }
 
     public function isValidRole(string $role): bool
@@ -108,5 +116,71 @@ class RoleManager
         $roleAccessLevel = array_search($role, $roles);
 
         return $userAccessLevel >= $roleAccessLevel;
+    }
+
+    public function updateUserRole(User $user)
+    {
+        if ($this->userIsInATeam($user)) {
+            $this->promoteUserToTeamMember($user);
+        } else {
+            $this->demoteUserToAssistant($user);
+        }
+    }
+
+    private function userIsInATeam(User $user)
+    {
+        $department = $user->getDepartment();
+        $semester = $department->getCurrentOrLatestSemester();
+        $workHistories = $user->getWorkHistories();
+        $executiveBoardMember = $this->em->getRepository('AppBundle:ExecutiveBoardMember')->findByUser($user);
+
+        if ($semester === null) {
+            return false;
+        }
+
+        if (!empty($executiveBoardMember)) {
+            return true;
+        }
+
+        foreach ($workHistories as $workHistory) {
+            if ($workHistory->isActiveInSemester($semester)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function promoteUserToTeamMember(User $user)
+    {
+        if ($this->userIsAssistant($user)) {
+            $this->setUserRole($user, Roles::TEAM_MEMBER);
+        }
+    }
+
+    private function demoteUserToAssistant(User $user)
+    {
+        if (!$this->userIsAssistant($user)) {
+            $this->setUserRole($user, Roles::ASSISTANT);
+        }
+    }
+
+    private function userIsAssistant(User $user)
+    {
+        return !empty($user->getRoles()) && current($user->getRoles())->getRole() === Roles::ASSISTANT;
+    }
+
+    private function setUserRole(User $user, string $role)
+    {
+        $isValidRole = $this->isValidRole($role);
+        if (!$isValidRole) {
+            throw new \InvalidArgumentException("Invalid role $role");
+        }
+
+        $role = $this->em->getRepository('AppBundle:Role')->findByRoleName($role);
+        $user->setRoles([$role]);
+        $this->em->persist($user);
+
+        $this->logger->info("Automatic role update ({$user->getDepartment()}): $user has been updated to $role");
     }
 }
