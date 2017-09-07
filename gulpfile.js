@@ -152,6 +152,6 @@ gulp.task('watch:scheduling', function () {
 });
 
 
-gulp.task('build:prod', ['assistantSchedulingStaticFiles','stylesProd', 'scriptsProd', 'imagesProd', 'files', 'icons', 'vendor']);
-gulp.task('build:dev', ['assistantSchedulingStaticFiles','stylesDev', 'scriptsDev', 'imagesDev', 'files', 'icons', 'vendor']);
+gulp.task('build:prod', ['stylesProd', 'scriptsProd', 'imagesProd', 'files', 'icons', 'vendor']);
+gulp.task('build:dev', ['stylesDev', 'scriptsDev', 'imagesDev', 'files', 'icons', 'vendor']);
 gulp.task('default', ['build:dev', 'watch']);
