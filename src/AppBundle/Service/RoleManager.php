@@ -118,12 +118,17 @@ class RoleManager
         return $userAccessLevel >= $roleAccessLevel;
     }
 
+    /**
+     * @param User $user
+     *
+     * @return bool True if role was updated, false if no role changed
+     */
     public function updateUserRole(User $user)
     {
         if ($this->userIsInATeam($user)) {
-            $this->promoteUserToTeamMember($user);
+            return $this->promoteUserToTeamMember($user);
         } else {
-            $this->demoteUserToAssistant($user);
+            return $this->demoteUserToAssistant($user);
         }
     }
 
@@ -155,14 +160,20 @@ class RoleManager
     {
         if ($this->userIsAssistant($user)) {
             $this->setUserRole($user, Roles::TEAM_MEMBER);
+            return true;
         }
+
+        return false;
     }
 
     private function demoteUserToAssistant(User $user)
     {
         if (!$this->userIsAssistant($user)) {
             $this->setUserRole($user, Roles::ASSISTANT);
+            return true;
         }
+
+        return false;
     }
 
     private function userIsAssistant(User $user)

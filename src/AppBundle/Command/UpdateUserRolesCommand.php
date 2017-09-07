@@ -64,7 +64,10 @@ HELP
         $users = $this->entityManager->getRepository('AppBundle:User')->findAll();
 
         foreach ($users as $user) {
-            $this->roleManager->updateUserRole($user);
+            $roleUpdated = $this->roleManager->updateUserRole($user);
+            if ($roleUpdated) {
+                ++$this->rolesUpdatedCount;
+            }
         }
 
         $this->entityManager->flush();
