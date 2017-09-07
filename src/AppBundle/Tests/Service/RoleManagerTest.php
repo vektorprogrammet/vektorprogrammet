@@ -39,6 +39,7 @@ class RoleManagerTest extends KernelTestCase
             new RoleUserMock('admin@gmail.com', Roles::TEAM_LEADER, Roles::ASSISTANT),
             new RoleUserMock('aah@b.c', Roles::TEAM_LEADER, Roles::TEAM_LEADER),
             new RoleUserMock('jan-per-gustavio@gmail.com', Roles::TEAM_LEADER, Roles::TEAM_LEADER), // Executive board member
+            new RoleUserMock('aaf@b.c', Roles::TEAM_MEMBER, Roles::TEAM_LEADER), // Executive board member
             new RoleUserMock('superadmin@gmail.com', Roles::ADMIN, Roles::ASSISTANT),
             new RoleUserMock('petter@stud.ntnu.no', Roles::ADMIN, Roles::ADMIN),
         ];

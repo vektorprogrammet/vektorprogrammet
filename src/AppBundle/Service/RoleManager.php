@@ -125,11 +125,20 @@ class RoleManager
      */
     public function updateUserRole(User $user)
     {
-        if ($this->userIsInATeam($user)) {
+        if ($this->userIsInExecutiveBoard($user)) {
+            return $this->promoteUserToTeamLeader($user);
+        } elseif ($this->userIsInATeam($user)) {
             return $this->promoteUserToTeamMember($user);
         } else {
             return $this->demoteUserToAssistant($user);
         }
+    }
+
+    private function userIsInExecutiveBoard(User $user)
+    {
+        $executiveBoardMember = $this->em->getRepository('AppBundle:ExecutiveBoardMember')->findByUser($user);
+
+        return !empty($executiveBoardMember);
     }
 
     private function userIsInATeam(User $user)
@@ -137,20 +146,25 @@ class RoleManager
         $department = $user->getDepartment();
         $semester = $department->getCurrentOrLatestSemester();
         $workHistories = $user->getWorkHistories();
-        $executiveBoardMember = $this->em->getRepository('AppBundle:ExecutiveBoardMember')->findByUser($user);
 
         if ($semester === null) {
             return false;
-        }
-
-        if (!empty($executiveBoardMember)) {
-            return true;
         }
 
         foreach ($workHistories as $workHistory) {
             if ($workHistory->isActiveInSemester($semester)) {
                 return true;
             }
+        }
+
+        return false;
+    }
+
+    private function promoteUserToTeamLeader(User $user)
+    {
+        if (!$this->userIsGranted($user, Roles::TEAM_LEADER)) {
+            $this->setUserRole($user, Roles::TEAM_LEADER);
+            return true;
         }
 
         return false;

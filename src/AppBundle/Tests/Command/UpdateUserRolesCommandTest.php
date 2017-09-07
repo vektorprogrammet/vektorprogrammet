@@ -29,6 +29,7 @@ class UpdateUserRolesCommandTest extends KernelTestCase
             new MockUser('admin@gmail.com', Roles::TEAM_LEADER, Roles::ASSISTANT),
             new MockUser('aah@b.c', Roles::TEAM_LEADER, Roles::TEAM_LEADER),
             new MockUser('jan-per-gustavio@gmail.com', Roles::TEAM_LEADER, Roles::TEAM_LEADER), // Executive board member
+            new MockUser('aaf@b.c', Roles::TEAM_MEMBER, Roles::TEAM_LEADER), // Executive board member
             new MockUser('superadmin@gmail.com', Roles::ADMIN, Roles::ASSISTANT),
             new MockUser('petter@stud.ntnu.no', Roles::ADMIN, Roles::ADMIN),
         ];
