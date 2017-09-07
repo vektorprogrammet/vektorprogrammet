@@ -3,9 +3,7 @@
 namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\WorkHistoryEvent;
-use AppBundle\Event\WorkHistoryEditedEvent;
-use AppBundle\Role\Roles;
-use Doctrine\ORM\EntityManager;
+use AppBundle\Service\RoleManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -16,22 +14,22 @@ class WorkHistorySubscriber implements EventSubscriberInterface
     private $session;
     private $logger;
     private $authorizationChecker;
-    private $em;
+    private $roleManager;
 
     /**
      * ApplicationAdmissionSubscriber constructor.
      *
-     * @param Session              $session
-     * @param LoggerInterface      $logger
+     * @param Session $session
+     * @param LoggerInterface $logger
      * @param AuthorizationChecker $authorizationChecker
-     * @param EntityManager        $em
+     * @param RoleManager $roleManager
      */
-    public function __construct(Session $session, LoggerInterface $logger, AuthorizationChecker $authorizationChecker, EntityManager $em)
+    public function __construct(Session $session, LoggerInterface $logger, AuthorizationChecker $authorizationChecker, RoleManager $roleManager)
     {
         $this->session = $session;
         $this->logger = $logger;
         $this->authorizationChecker = $authorizationChecker;
-        $this->em = $em;
+        $this->roleManager = $roleManager;
     }
 
     /**
@@ -134,22 +132,8 @@ class WorkHistorySubscriber implements EventSubscriberInterface
 
     public function updateUserRole(WorkHistoryEvent $event)
     {
-        $workHistory = $event->getWorkHistory();
-
         $user = $event->getWorkHistory()->getUser();
-        $department = $user->getDepartment();
-        $currentSemester = $department->getCurrentSemester();
 
-        $isInTeamCurrentSemester = $workHistory->isActiveInSemester($currentSemester);
-
-        $userNeedsToBePromoted = empty($user->getRoles()) || current($user->getRoles())->getRole() === Roles::ASSISTANT;
-
-        if ($isInTeamCurrentSemester && $userNeedsToBePromoted) {
-            $role = $this->em->getRepository('AppBundle:Role')->findByRoleName(Roles::TEAM_MEMBER);
-            $user->setRoles([$role]);
-
-            $this->em->persist($user);
-            $this->em->flush();
-        }
+        $this->roleManager->updateUserRole($user);
     }
 }

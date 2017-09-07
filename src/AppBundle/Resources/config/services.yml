@@ -108,7 +108,7 @@ services:
 
   app.work_history_subscriber:
     class: AppBundle\EventSubscriber\WorkHistorySubscriber
-    arguments: ['@session', '@app.logger', '@security.authorization_checker', '@doctrine.orm.entity_manager']
+    arguments: ['@session', '@app.logger', '@security.authorization_checker', '@app.roles']
     tags:
         - { name: kernel.event_subscriber }
 
