@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="executive_board_member")
- * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ExecutiveBoardRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ExecutiveBoardMemberRepository")
  */
 class ExecutiveBoardMember implements GroupMemberInterface
 {

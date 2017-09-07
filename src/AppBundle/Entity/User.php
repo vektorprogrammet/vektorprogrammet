@@ -225,6 +225,10 @@ class User implements AdvancedUserInterface, \Serializable
 
     public function getRoles()
     {
+        if (is_array($this->roles)) {
+            return $this->roles;
+        }
+
         return $this->roles->toArray();
     }
 
