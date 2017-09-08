@@ -1,4 +1,7 @@
 function validateBankAccountNumber(field){
+    if (!field.getAttribute('required') && field.value === '') {
+        return true;
+    }
     // Check for invalid formatting
     // Spaces and periods are valid, but optional separators
     if (!field.value.match(/^\d{4}((\.\d{2}\.)|(\s\d{2}\s)|\d{2})\d{5}$/)) {
