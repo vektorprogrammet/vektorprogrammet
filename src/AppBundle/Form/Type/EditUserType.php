@@ -45,7 +45,7 @@ class EditUserType extends AbstractType
             ))
             ->add('accountNumber', TextType::class, array(
                 'label' => 'Kontonummer',
-                'required' => true,
+                'required' => false,
                 'attr' => array('oninput' => 'validateBankAccountNumber(this)'),
             ))
             ->add('save', 'submit', array(
