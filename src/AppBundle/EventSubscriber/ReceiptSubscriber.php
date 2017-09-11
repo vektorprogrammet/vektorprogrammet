@@ -31,6 +31,7 @@ class ReceiptSubscriber implements EventSubscriberInterface
         return array(
             ReceiptEvent::CREATED => array(
                 array('logCreatedEvent', 1),
+                array('sendCreatedEmail', 1),
                 array('addCreatedFlashMessage', 1)
             ),
             ReceiptEvent::REFUNDED => array(
@@ -72,6 +73,13 @@ class ReceiptSubscriber implements EventSubscriberInterface
 
         $this->logger->info($user->getDepartment() . ": Receipt *$visualID* belonging to *$user* has been refunded by $loggedInUser.");
     }
+
+	public function sendCreatedEmail(ReceiptEvent $event)
+	{
+		$receipt = $event->getReceipt();
+
+		$this->emailSender->sendReceiptCreatedNotification($receipt);
+	}
 
     public function sendRefundedEmail(ReceiptEvent $event)
     {
