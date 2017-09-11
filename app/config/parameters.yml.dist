@@ -33,7 +33,7 @@ parameters:
 
     default_from_email: post@vektorprogrammet.no
 
-    economy_email: ~
+    economy_email: ''
 
     # A secret key that's used to generate certain security-related tokens
     secret:            CreateASuperDuperSecretHere
