@@ -1,0 +1,17 @@
+<p>{{ name }} har opprettet en ny forespørsmål om refusjon på Vektorprogrammet.no.</p>
+
+<p>"{{ receipt.description }}"</p>
+
+<p><img src="{{ absolute_url(asset_with_version(receipt.picturePath)) }}" style="max-width:450px;max-height:450px;margin-top:25px;margin-bottom:25px;"></p>
+
+<p>
+    ID: {{ receipt.visualId }}<br>
+    Utleggsdato: {{ receipt.receiptDate | date("d.m.Y") }}<br>
+    Sum: {{ receipt.sum }}kr<br>
+    Konto.nr: {{ accountNumber }}<br>
+    Link til utlegget: <a href="{{ absolute_url(url) }}">{{ absolute_url(url) }}</a>
+</p>
+
+<p>Husk å markere utlegget som refundert etter det har blitt tilbakebetalt.</p>
+
+<p>Mvh. Vektorbot</p>

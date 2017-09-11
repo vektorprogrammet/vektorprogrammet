@@ -5,6 +5,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\SupportTicket;
 use AppBundle\Entity\Receipt;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Routing\Router;
 
 class EmailSender
 {
@@ -12,13 +13,17 @@ class EmailSender
     private $twig;
     private $defaultEmail;
     private $logger;
+    private $economyEmail;
+    private $router;
 
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, LoggerInterface $logger, string $defaultEmail)
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Router $router, LoggerInterface $logger, string $defaultEmail, string $economyEmail)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->defaultEmail = $defaultEmail;
         $this->logger = $logger;
+        $this->economyEmail = $economyEmail;
+        $this->router = $router;
     }
 
     public function sendSupportTicketToDepartment(SupportTicket $supportTicket)
@@ -68,6 +73,26 @@ class EmailSender
 
         $this->logger->info(
             "Confirmation for paid receipt sent to {$receipt->getUser()->getFullName()} at {$receipt->getUser()->getEmail()}"
+        );
+    }
+
+    public function sendReceiptCreatedNotification(Receipt $receipt)
+    {
+        $message = \Swift_Message::newInstance()
+                                 ->setSubject('Nytt utlegg fra '.$receipt->getUser())
+                                 ->setFrom('vektorbot@vektorprogrammet.no')
+                                 ->setTo($this->economyEmail)
+                                 ->setBody($this->twig->render('receipt/created_email.html.twig', array(
+                                      'url' => $this->router->generate('receipts_show_individual', ['user' => $receipt->getUser()->getId()]),
+                                     'name' => $receipt->getUser()->getFullName(),
+                                     'accountNumber' => $receipt->getUser()->getAccountNumber(),
+                                     'receipt' => $receipt, )), 'text/html')
+                                 ->setContentType('text/html');
+
+        $this->mailer->send($message);
+
+        $this->logger->info(
+            "Receipt created email sent to $this->economyEmail"
         );
     }
 }

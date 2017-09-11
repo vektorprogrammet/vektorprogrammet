@@ -5,7 +5,7 @@ services:
 
   app.email_sender:
     class: AppBundle\Service\EmailSender
-    arguments: ['@mailer', '@twig', '@app.logger', '%default_from_email%']
+    arguments: ['@mailer', '@twig', '@router', '@app.logger', '%default_from_email%', '%economy_email%']
 
   app.slack_messenger:
     class: AppBundle\Service\SlackMessenger
