@@ -13,17 +13,17 @@ class EmailSender
     private $twig;
     private $defaultEmail;
     private $logger;
-	private $economyEmail;
-	private $router;
+    private $economyEmail;
+    private $router;
 
-	public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Router $router, LoggerInterface $logger, string $defaultEmail, string $economyEmail)
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Router $router, LoggerInterface $logger, string $defaultEmail, string $economyEmail)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->defaultEmail = $defaultEmail;
         $this->logger = $logger;
-	    $this->economyEmail = $economyEmail;
-	    $this->router = $router;
+        $this->economyEmail = $economyEmail;
+        $this->router = $router;
     }
 
     public function sendSupportTicketToDepartment(SupportTicket $supportTicket)
@@ -76,23 +76,23 @@ class EmailSender
         );
     }
 
-	public function sendReceiptCreatedNotification(Receipt $receipt)
-	{
-		$message = \Swift_Message::newInstance()
-		                         ->setSubject('Nytt utlegg fra '.$receipt->getUser())
-		                         ->setFrom('vektorbot@vektorprogrammet.no')
-		                         ->setTo($this->economyEmail)
-		                         ->setBody($this->twig->render('receipt/created_email.html.twig', array(
-		                         	 'url' => $this->router->generate('receipts_show_individual', ['user' => $receipt->getUser()->getId()]),
-			                         'name' => $receipt->getUser()->getFullName(),
-			                         'accountNumber' => $receipt->getUser()->getAccountNumber(),
-			                         'receipt' => $receipt, )), 'text/html')
-		                         ->setContentType('text/html');
+    public function sendReceiptCreatedNotification(Receipt $receipt)
+    {
+        $message = \Swift_Message::newInstance()
+                                 ->setSubject('Nytt utlegg fra '.$receipt->getUser())
+                                 ->setFrom('vektorbot@vektorprogrammet.no')
+                                 ->setTo($this->economyEmail)
+                                 ->setBody($this->twig->render('receipt/created_email.html.twig', array(
+                                      'url' => $this->router->generate('receipts_show_individual', ['user' => $receipt->getUser()->getId()]),
+                                     'name' => $receipt->getUser()->getFullName(),
+                                     'accountNumber' => $receipt->getUser()->getAccountNumber(),
+                                     'receipt' => $receipt, )), 'text/html')
+                                 ->setContentType('text/html');
 
-		$this->mailer->send($message);
+        $this->mailer->send($message);
 
-		$this->logger->info(
-			"Receipt created email sent to $this->economyEmail"
-		);
-	}
+        $this->logger->info(
+            "Receipt created email sent to $this->economyEmail"
+        );
+    }
 }
