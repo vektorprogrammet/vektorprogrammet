@@ -172,9 +172,7 @@ class RoleManager
 
     private function promoteUserToTeamMember(User $user)
     {
-        dump("Updating to team");
         if ($this->userIsAssistant($user)) {
-            dump("Is assistant");
             $this->setUserRole($user, Roles::TEAM_MEMBER);
             return true;
         }
