@@ -204,7 +204,7 @@ class RoleManager
 
         $role = $this->em->getRepository('AppBundle:Role')->findByRoleName($role);
         $user->setRoles([$role]);
-        $this->em->persist($user);
+        $this->em->flush();
 
         $this->logger->info("Automatic role update ({$user->getDepartment()}): $user has been updated to $role");
     }
