@@ -125,12 +125,12 @@ class RoleManager
      */
     public function updateUserRole(User $user)
     {
-        if ($this->userIsInExecutiveBoard($user)) {
-            return $this->promoteUserToTeamLeader($user);
-        } elseif ($this->userIsInATeam($user)) {
-            return $this->promoteUserToTeamMember($user);
+        if ($this->userIsInExecutiveBoard($user) || $this->userIsTeamLeader($user)) {
+            return $this->setUserRole($user, Roles::TEAM_LEADER);
+        } elseif ($this->userIsTeamMember($user)) {
+            return $this->setUserRole($user, Roles::TEAM_MEMBER);
         } else {
-            return $this->demoteUserToAssistant($user);
+            return $this->setUserRole($user, Roles::ASSISTANT);
         }
     }
 
@@ -141,7 +141,17 @@ class RoleManager
         return !empty($executiveBoardMember);
     }
 
-    private function userIsInATeam(User $user)
+    private function userIsTeamLeader(User $user)
+    {
+        return $this->userIsInATeam($user, true);
+    }
+
+    private function userIsTeamMember(User $user)
+    {
+        return $this->userIsInATeam($user, false);
+    }
+
+    private function userIsInATeam(User $user, bool $teamLeader)
     {
         $department = $user->getDepartment();
         $semester = $department->getCurrentOrLatestSemester();
@@ -152,7 +162,7 @@ class RoleManager
         }
 
         foreach ($workHistories as $workHistory) {
-            if ($workHistory->isActiveInSemester($semester)) {
+            if ($workHistory->isActiveInSemester($semester) && $workHistory->isTeamLeader() === $teamLeader) {
                 return true;
             }
         }
@@ -160,39 +170,16 @@ class RoleManager
         return false;
     }
 
-    private function promoteUserToTeamLeader(User $user)
+    private function userIsAdmin(User $user)
     {
-        if (!$this->userIsGranted($user, Roles::TEAM_LEADER)) {
-            $this->setUserRole($user, Roles::TEAM_LEADER);
-            return true;
+        $roles = $user->getRoles();
+        foreach ($roles as $role) {
+            if ($role->getRole() === Roles::ADMIN) {
+                return true;
+            }
         }
 
         return false;
-    }
-
-    private function promoteUserToTeamMember(User $user)
-    {
-        if ($this->userIsAssistant($user)) {
-            $this->setUserRole($user, Roles::TEAM_MEMBER);
-            return true;
-        }
-
-        return false;
-    }
-
-    private function demoteUserToAssistant(User $user)
-    {
-        if (!$this->userIsAssistant($user)) {
-            $this->setUserRole($user, Roles::ASSISTANT);
-            return true;
-        }
-
-        return false;
-    }
-
-    private function userIsAssistant(User $user)
-    {
-        return !empty($user->getRoles()) && current($user->getRoles())->getRole() === Roles::ASSISTANT;
     }
 
     private function setUserRole(User $user, string $role)
@@ -201,11 +188,22 @@ class RoleManager
         if (!$isValidRole) {
             throw new \InvalidArgumentException("Invalid role $role");
         }
+        if ($this->userIsAdmin($user)) {
+            return false;
+        }
 
         $role = $this->em->getRepository('AppBundle:Role')->findByRoleName($role);
         $user->setRoles([$role]);
-        $this->em->flush();
+        $roleNeedsToUpdate = array_search($role, $user->getRoles()) === false;
 
-        $this->logger->info("Automatic role update ({$user->getDepartment()}): $user has been updated to $role");
+        if ($roleNeedsToUpdate) {
+            $user->setRoles([$role]);
+	        $this->em->flush();
+
+            $this->logger->info("Automatic role update ({$user->getDepartment()}): $user has been updated to $role");
+            return true;
+        }
+
+        return false;
     }
 }
