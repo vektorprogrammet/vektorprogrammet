@@ -170,25 +170,13 @@ class RoleManager
         return false;
     }
 
-    private function userIsAdmin(User $user)
-    {
-        $roles = $user->getRoles();
-        foreach ($roles as $role) {
-            if ($role->getRole() === Roles::ADMIN) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     private function setUserRole(User $user, string $role)
     {
         $isValidRole = $this->isValidRole($role);
         if (!$isValidRole) {
             throw new \InvalidArgumentException("Invalid role $role");
         }
-        if ($this->userIsAdmin($user)) {
+        if ($this->userIsGranted($user, Roles::ADMIN)) {
             return false;
         }
 
