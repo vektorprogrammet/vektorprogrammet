@@ -172,7 +172,9 @@ class RoleManager
 
     private function promoteUserToTeamMember(User $user)
     {
+        dump("Updating to team");
         if ($this->userIsAssistant($user)) {
+            dump("Is assistant");
             $this->setUserRole($user, Roles::TEAM_MEMBER);
             return true;
         }
@@ -204,7 +206,7 @@ class RoleManager
 
         $role = $this->em->getRepository('AppBundle:Role')->findByRoleName($role);
         $user->setRoles([$role]);
-        $this->em->persist($user);
+        $this->em->flush();
 
         $this->logger->info("Automatic role update ({$user->getDepartment()}): $user has been updated to $role");
     }
