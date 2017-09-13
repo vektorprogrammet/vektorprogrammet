@@ -31,7 +31,7 @@ class RoleManagerTest extends KernelTestCase
         $this->roleManager = $kernel->getContainer()->get('app.roles');
 
         $this->mockUsers = [
-            // Assitants
+            // Assistants
             new RoleUserMock('assistant@gmail.com', Roles::ASSISTANT, Roles::ASSISTANT),
             new RoleUserMock('aai@b.c', Roles::TEAM_MEMBER, Roles::ASSISTANT),
             new RoleUserMock('admin@gmail.com', Roles::TEAM_LEADER, Roles::ASSISTANT),
