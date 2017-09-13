@@ -198,7 +198,7 @@ class RoleManager
 
         if ($roleNeedsToUpdate) {
             $user->setRoles([$role]);
-	        $this->em->flush();
+            $this->em->flush();
 
             $this->logger->info("Automatic role update ({$user->getDepartment()}): $user has been updated to $role");
             return true;
