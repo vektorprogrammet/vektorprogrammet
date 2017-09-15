@@ -13,7 +13,7 @@
         <th data-sort="string">Intervjues av</th>
         <th data-sort="string">Status</th>
         {# Add header columns to match the buttons added #}
-        <th colspan="2"></th>
+        <th colspan="3"></th>
     </tr>
     </thead>
 
@@ -50,6 +50,19 @@
                 <td>
                     <a href="{{ path('interview_conduct', { 'id': a.id }) }}" class="button tiny {{ a.interview.isDraft ? 'warning' }}"><i
                                 class="fa fa-list-ul"></i> {{ a.interview.isDraft ? 'Kladd' : 'Intervju' }}</a>
+                </td>
+                <td>
+                    <button data-reveal-id="adbc" class="button tiny">
+                        Endre status
+                    </button>
+
+                    <div id="adbc" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+                        <h3 id="modalTitle">Endre status</h3>
+                        {{ form_start(form) }}
+                        {{ form_widget(form) }}
+                        {{ form_end(form) }}
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                    </div>
                 </td>
             {% else %}
                 <td colspan="2"></td>
