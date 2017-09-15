@@ -125,6 +125,15 @@ class ReceiptController extends Controller
     public function editStatusAction(Request $request, Receipt $receipt)
     {
         $status = $request->get('status');
+        if ($status !== Receipt::STATUS_PENDING &&
+            $status !== Receipt::STATUS_REFUNDED &&
+            $status !== Receipt::STATUS_CANCELLED) {
+            throw new BadRequestHttpException('Invalid status');
+        }
+
+        if ($status === $receipt->getStatus()) {
+            return $this->redirectToRoute('receipts_show_individual', ['user' => $receipt->getUser()->getId()]);
+        }
 
         $receipt->setStatus($status);
         $em = $this->getDoctrine()->getManager();
