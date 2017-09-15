@@ -19,7 +19,6 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
             'Kaffetraktere og grenuttak til stand'
         );
         $receipt1->setSum(1108);
-        $receipt1->setActive(true);
         $receipt1->setPicturePath('/images/receipt_images/clas.jpg');
         $manager->persist($receipt1);
 
@@ -31,7 +30,6 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
             'Taco til Tor'
         );
         $receipt2->setSum(133);
-        $receipt2->setActive(true);
         $receipt2->setPicturePath('/images/receipt_images/taco.jpg');
         $manager->persist($receipt2);
 
@@ -43,7 +41,7 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
             'Teamsosialt med IT'
         );
         $receipt3->setSum(531);
-        $receipt3->setActive(false);
+        $receipt3->setStatus(Receipt::STATUS_REFUNDED);
         $receipt3->setPicturePath('/images/receipt_images/teamsosialt.jpg');
         $manager->persist($receipt3);
 
@@ -55,7 +53,6 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
             'Innkjøp til hyttetur'
         );
         $receipt4->setSum(828.77);
-        $receipt4->setActive(true);
         $receipt4->setPicturePath('/images/receipt_images/hyttetur.jpg');
         $manager->persist($receipt4);
 
@@ -67,7 +64,6 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
             'Teamsosialt med IT'
         );
         $receiptAssistant->setSum(531);
-        $receiptAssistant->setActive(true);
         $receiptAssistant->setPicturePath('/images/receipt_images/teamsosialt.jpg');
         $manager->persist($receiptAssistant);
 
@@ -79,7 +75,6 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
             'Teamsosialt med IT'
         );
         $receiptTeam->setSum(531);
-        $receiptTeam->setActive(true);
         $receiptTeam->setPicturePath('/images/receipt_images/teamsosialt.jpg');
         $manager->persist($receiptTeam);
 
@@ -91,7 +86,6 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
             'Teamsosialt med IT'
         );
         $receiptAdmin->setSum(531);
-        $receiptAdmin->setActive(true);
         $receiptAdmin->setPicturePath('/images/receipt_images/teamsosialt.jpg');
         $manager->persist($receiptAdmin);
 
@@ -103,7 +97,6 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
             'Teamsosialt med IT'
         );
         $receiptSuperAdmin->setSum(531);
-        $receiptSuperAdmin->setActive(true);
         $receiptSuperAdmin->setPicturePath('/images/receipt_images/teamsosialt.jpg');
         $manager->persist($receiptSuperAdmin);
 

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Receipt;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -113,7 +114,8 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $this->createQueryBuilder('user')
             ->select('user')
             ->join('user.receipts', 'receipt')
-            ->where('receipt.active = true')
+            ->where('receipt.status = :status')
+            ->setParameter('status', Receipt::STATUS_PENDING)
             ->getQuery()
             ->getResult();
     }
@@ -123,7 +125,8 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $this->createQueryBuilder('user')
             ->select('user')
             ->join('user.receipts', 'receipt')
-            ->where('receipt.active = false')
+            ->where('receipt.status != :status')
+            ->setParameter('status', Receipt::STATUS_PENDING)
             ->getQuery()
             ->getResult();
     }

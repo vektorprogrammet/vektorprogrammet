@@ -331,7 +331,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @param string $account_number
+     * @param string $accountNumber
      */
     public function setAccountNumber($accountNumber)
     {
@@ -612,7 +612,7 @@ class User implements AdvancedUserInterface, \Serializable
     {
         $totalSum = 0.0;
         foreach ($this->receipts as $receipt) {
-            if ($receipt->isActive()) {
+            if ($receipt->getStatus() === Receipt::STATUS_PENDING) {
                 $totalSum += $receipt->getSum();
             }
         }
@@ -624,7 +624,7 @@ class User implements AdvancedUserInterface, \Serializable
     {
         $totalSum = 0.0;
         foreach ($this->receipts as $receipt) {
-            if (!$receipt->isActive()) {
+            if (!$receipt->getStatus() === Receipt::STATUS_PENDING) {
                 $totalSum += $receipt->getSum();
             }
         }

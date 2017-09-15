@@ -1,0 +1,12 @@
+Hei {{ name }},
+
+Utlegget ditt med ID: {{ receipt.visualId }} har blitt kansellert.
+
+Dato registrert: {{ receipt.submitDate | date("d.m.Y H:i") }}
+Sum: {{ receipt.sum }}kr
+Beskrivelse av utlegget:
+"{{ receipt.description }}"
+
+Du kan svare på denne eposten hvis du har noen spørsmål.
+
+Mvh. Vektorprogrammets økonomiteam

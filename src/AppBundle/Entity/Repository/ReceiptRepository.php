@@ -16,14 +16,30 @@ class ReceiptRepository extends EntityRepository
      */
     public function findByUser(User $user)
     {
-        return $this->createQueryBuilder('receipt')
+        $receipts = $this->createQueryBuilder('receipt')
             ->select('receipt')
             ->where('receipt.user = :user')
             ->setParameter('user', $user)
-            ->orderBy('receipt.active', 'DESC')
+            ->orderBy('receipt.status', 'DESC')
             ->addOrderBy('receipt.submitDate', 'DESC')
             ->getQuery()
             ->getResult();
+
+        usort($receipts, function (Receipt $a, Receipt $b) {
+            if ($a->getStatus() === Receipt::STATUS_PENDING && $b->getStatus() !== Receipt::STATUS_PENDING) {
+                return -1;
+            } elseif ($b->getStatus() === Receipt::STATUS_PENDING && $a->getStatus() !== Receipt::STATUS_PENDING) {
+                return 1;
+            } elseif ($a->getStatus() === Receipt::STATUS_REFUNDED && $b->getStatus() !== Receipt::STATUS_REFUNDED) {
+                return -1;
+            } elseif ($b->getStatus() === Receipt::STATUS_REFUNDED && $a->getStatus() !== Receipt::STATUS_REFUNDED) {
+                return 1;
+            } else {
+                return $a->getSubmitDate()->getTimestamp() - $b->getSubmitDate()->getTimestamp();
+            }
+        });
+
+        return $receipts;
     }
 
     /**
@@ -36,8 +52,9 @@ class ReceiptRepository extends EntityRepository
         return $this->createQueryBuilder('receipt')
             ->select('receipt')
             ->where('receipt.user = :user')
-            ->andWhere('receipt.active = true')
+            ->andWhere('receipt.status = :status')
             ->setParameter('user', $user)
+            ->setParameter('status', Receipt::STATUS_PENDING)
             ->getQuery()
             ->getResult();
     }
@@ -52,8 +69,9 @@ class ReceiptRepository extends EntityRepository
         return $this->createQueryBuilder('receipt')
             ->select('receipt')
             ->where('receipt.user = :user')
-            ->andWhere('receipt.active = false')
+            ->andWhere('receipt.status != :status')
             ->setParameter('user', $user)
+            ->setParameter('status', Receipt::STATUS_PENDING)
             ->getQuery()
             ->getResult();
     }
@@ -87,8 +105,9 @@ class ReceiptRepository extends EntityRepository
             ->join('receipt.user', 'user')
             ->join('user.fieldOfStudy', 'fos')
             ->where('fos.department = :department')
-            ->andWhere('receipt.active = true')
+            ->andWhere('receipt.status = :status')
             ->setParameter('department', $department)
+            ->setParameter('status', Receipt::STATUS_PENDING)
             ->getQuery()
             ->getResult();
     }
@@ -105,8 +124,9 @@ class ReceiptRepository extends EntityRepository
             ->join('receipt.user', 'user')
             ->join('user.fieldOfStudy', 'fos')
             ->where('fos.department = :department')
-            ->andWhere('receipt.active = false')
+            ->andWhere('receipt.status != :status')
             ->setParameter('department', $department)
+            ->setParameter('status', Receipt::STATUS_PENDING)
             ->getQuery()
             ->getResult();
     }

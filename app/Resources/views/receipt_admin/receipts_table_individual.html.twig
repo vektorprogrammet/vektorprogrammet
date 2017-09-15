@@ -7,7 +7,8 @@
         <th> Beskrivelse</th>
         <th> Sum</th>
         <th> Kvittering</th>
-        <th colspan="3"></th>
+        <th> Status (klikk for å endre)</th>
+        <th colspan="2"></th>
     </tr>
 
     </thead>
@@ -18,11 +19,12 @@
             <td> {{ receipt.visualId }}</td>
             <td> {{ receipt.receiptDate|date('d.m.Y') }}</td>
             <td> {{ receipt.description }} </td>
-            <td> {{ receipt.sum|number_format(2, ',', ' ') }} kr </td>
+            <td> {{ receipt.sum|number_format(2, ',', ' ') }} kr</td>
             <td>
                 <a href="#" data-reveal-id="receipt-{{ receipt.id }}">Vis kvittering</a>
 
-                <div id="receipt-{{ receipt.id }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+                <div id="receipt-{{ receipt.id }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle"
+                     aria-hidden="true" role="dialog">
                     <h2 id="modalTitle">Kvittering</h2>
                     <img src="{{ receipt.picturePath }}">
                     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
@@ -30,11 +32,42 @@
             </td>
 
             {% if is_granted_team_leader() %}
-                {% if receipt.active %}
-                    <td>{%  include 'receipt/refund_receipt_button.html.twig' %}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
+                    <td>
+                    {% if receipt.status == 'pending' %}
+                        <a class="text-warning" href="#" data-reveal-id="status-{{ receipt.id }}">Venter behandling...</a>
+                    {% elseif receipt.status == 'refunded' %}
+                        <a class="text-success" href="#" data-reveal-id="status-{{ receipt.id }}">Refundert</a>
+                    {% elseif receipt.status == 'cancelled' %}
+                        <a class="text-alert" href="#" data-reveal-id="status-{{ receipt.id }}">Kansellert</a>
+                    {% endif %}
+
+                        <div id="status-{{ receipt.id }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle"
+                             aria-hidden="true" role="dialog">
+                            <h2>Endre status</h2>
+                            <p>ID: {{ receipt.visualId }}</p>
+                            <form method="POST" action="{{ path('receipt_edit_status', {receipt: receipt.id}) }}">
+                                <select name="status" id="status">
+                                    <option value="pending"{% if receipt.status == 'pending' %} selected{% endif %}>
+                                        Venter behandling
+                                    </option>
+                                    <option value="refunded"{% if receipt.status == 'refunded' %} selected{% endif %}>
+                                        Refundert
+                                    </option>
+                                    <option value="cancelled"{% if receipt.status == 'cancelled' %} selected{% endif %}>
+                                        Kansellert
+                                    </option>
+                                </select>
+                                <p>Hvis utlegget endrer status til
+                                    <span class="text-success">Refundert</span>
+                                     eller
+                                    <span class="text-alert">Kansellert</span>
+                                     vil {{ receipt.user }} få en epostvarsling.
+                                </p>
+                                <button type="submit" class="tiny success button">Lagre</button>
+                            </form>
+                            <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        </div>
+                    </td>
 
                 <td><a href="{{ path('receipt_admin_edit', { 'receipt': receipt.id }) }}" class="button tiny">
                         <i class="fa fa-pencil"></i>
@@ -47,5 +80,6 @@
         </tr>
     {% endfor %}
     </tbody>
+
 
 </table>

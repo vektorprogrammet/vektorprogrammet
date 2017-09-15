@@ -30,13 +30,15 @@
                     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                 </div>
             </td>
-            {% if receipt.active %}
+            {% if receipt.status == 'pending' %}
                 <td class="text-warning">Til behandling...</td>
-            {% else %}
+            {% elseif receipt.status == 'refunded' %}
                 <td class="text-success">Refundert</td>
+            {% elseif receipt.status == 'cancelled' %}
+                <td class="text-alert">Kansellert</td>
             {% endif %}
 
-            {% if receipt.active %}
+            {% if receipt.status == 'pending' %}
                 <td>
                     <form method="POST"
                           onsubmit="return confirm('Vil du virkelig slette dette utlegget?')"

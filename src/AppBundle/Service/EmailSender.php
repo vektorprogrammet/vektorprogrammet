@@ -61,13 +61,32 @@ class EmailSender
     {
         $message = \Swift_Message::newInstance()
             ->setSubject('Vi har tilbakebetalt penger for utlegget ditt')
-            ->setFrom($this->defaultEmail)
-            ->setReplyTo($this->defaultEmail)
+            ->setFrom($this->economyEmail)
+            ->setReplyTo($this->economyEmail)
             ->setTo($receipt->getUser()->getEmail())
             ->setBody($this->twig->render('receipt/confirmation_email.txt.twig', array(
                 'name' => $receipt->getUser()->getFullName(),
                 'account_number' => $receipt->getUser()->getAccountNumber(),
                 'receipt' => $receipt, )));
+
+        $this->mailer->send($message);
+
+        $this->logger->info(
+            "Confirmation for paid receipt sent to {$receipt->getUser()->getFullName()} at {$receipt->getUser()->getEmail()}"
+        );
+    }
+
+    public function sendCancelReceiptConfirmation(Receipt $receipt)
+    {
+        $message = \Swift_Message::newInstance()
+                                 ->setSubject('Utlegget ditt har blitt kansellert')
+                                 ->setFrom($this->economyEmail)
+                                 ->setReplyTo($this->economyEmail)
+                                 ->setTo($receipt->getUser()->getEmail())
+                                 ->setBody($this->twig->render('receipt/cancel_email.txt.twig', array(
+                                     'name' => $receipt->getUser()->getFullName(),
+                                     'account_number' => $receipt->getUser()->getAccountNumber(),
+                                     'receipt' => $receipt, )));
 
         $this->mailer->send($message);
 
