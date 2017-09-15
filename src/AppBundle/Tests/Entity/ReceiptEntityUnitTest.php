@@ -61,13 +61,12 @@ class ReceiptEntityUnitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($sum, $receipt->getSum());
     }
 
-    public function testSetActive()
+    public function testSetStatus()
     {
-        $active = true;
         $receipt = new Receipt();
 
-        $receipt->setActive($active);
+        $receipt->setStatus(Receipt::STATUS_PENDING);
 
-        $this->assertEquals($active, $receipt->isActive());
+        $this->assertEquals(Receipt::STATUS_PENDING, $receipt->getStatus());
     }
 }

@@ -130,8 +130,6 @@ class ReceiptController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
-        dump($status);
-
         if ($status === Receipt::STATUS_REFUNDED) {
             $this->get('event_dispatcher')->dispatch(ReceiptEvent::REFUNDED, new ReceiptEvent($receipt));
         } elseif ($status === Receipt::STATUS_CANCELLED) {
