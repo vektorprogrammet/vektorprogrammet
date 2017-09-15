@@ -9,10 +9,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class EditInterviewStatusType extends AbstractType
 {
-    protected $roles;
-
-    protected $department;
-
     public function __construct()
     {
     }
