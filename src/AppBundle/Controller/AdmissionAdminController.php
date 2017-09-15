@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\ApplicationType;
+use AppBundle\Form\Type\EditInterviewStatusType;
 use AppBundle\Role\Roles;
 use AppBundle\Service\InterviewCounter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -71,6 +72,8 @@ class AdmissionAdminController extends Controller
 
         $applicationsAssignedToUser = $applicationRepo->findAssignedByUserAndSemester($this->getUser(), $semester);
 
+        $form = $this->createForm(new EditInterviewStatusType());
+
         return $this->render('admission_admin/assigned_applications_table.html.twig', array(
             'status' => 'assigned',
             'applications' => $applications,
@@ -78,6 +81,7 @@ class AdmissionAdminController extends Controller
             'interviewDistributions' => $interviewDistributions,
             'cancelledApplications' => $cancelledApplications,
             'yourApplications' => $applicationsAssignedToUser,
+            'form' => $form->createView(),
         ));
     }
 
