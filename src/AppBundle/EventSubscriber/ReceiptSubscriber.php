@@ -34,6 +34,10 @@ class ReceiptSubscriber implements EventSubscriberInterface
                 array('sendCreatedEmail', 1),
                 array('addCreatedFlashMessage', 1)
             ),
+            ReceiptEvent::PENDING => array(
+                array('logPendingEvent', 1),
+                array('addPendingFlashMessage', 1)
+            ),
             ReceiptEvent::REFUNDED => array(
                 array('logRefundedEvent', 1),
                 array('sendRefundedEmail', 1),
@@ -67,6 +71,17 @@ class ReceiptSubscriber implements EventSubscriberInterface
     public function addCreatedFlashMessage()
     {
         $this->session->getFlashBag()->add('success', 'Utlegget ditt har blitt registrert.');
+    }
+
+    public function logPendingEvent(ReceiptEvent $event)
+    {
+        $receipt = $event->getReceipt();
+        $user = $receipt->getUser();
+        $visualID = $receipt->getVisualId();
+        $loggedInUser = $this->tokenStorage->getToken()->getUser();
+        $status = $receipt->getStatus();
+
+        $this->logger->info($user->getDepartment() . ": $loggedInUser has changed status of receipt *$visualID* belonging to *$user* to $status");
     }
 
     public function logRefundedEvent(ReceiptEvent $event)
@@ -108,6 +123,13 @@ class ReceiptSubscriber implements EventSubscriberInterface
         $receipt = $event->getReceipt();
 
         $this->emailSender->sendCancelReceiptConfirmation($receipt);
+    }
+
+    public function addPendingFlashMessage()
+    {
+        $message = "Utlegget ble markert som 'Venter behandling'.";
+
+        $this->session->getFlashBag()->add('success', $message);
     }
 
     public function addRefundedFlashMessage(ReceiptEvent $event)
