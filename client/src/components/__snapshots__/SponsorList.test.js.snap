@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<ul>
+  <li>
+    <a
+      href="http://sponsor1.com"
+    >
+      Sponsor 1
+    </a>
+  </li>
+  <li>
+    <a
+      href="http://sponsor2.com"
+    >
+      Sponsor 2
+    </a>
+  </li>
+</ul>
+`;
