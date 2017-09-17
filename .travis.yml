@@ -3,13 +3,17 @@ language: php
 php:
   - 7.0
 
+node_js:
+  - 6
+
 before_script:
   - composer install
+  - cd client && npm install && cd -
 
 script:
+  - cd client && npm test -- --coverage && cd -
   - ./bin/php-cs-fixer fix src/ --dry-run --diff -vv
   - ./bin/phpunit --configuration app/phpunit.xml.dist
 
 notifications:
-  slack: vektorweb:jYCfQkkXOJyzPZrxzQKIbTro
   email: false
