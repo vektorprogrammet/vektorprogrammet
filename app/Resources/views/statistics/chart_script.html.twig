@@ -52,7 +52,7 @@
             },
             {% endfor %}
         ];
-        var applicantsNotRecruited = Math.max(0,applicationData.count-assistantHistoryData.count-applicationData.cancelledInterviewsCount);
+      {% set applicantsNotRecruited = max(0, applicationData.count-assistantHistoryData.count-applicationData.cancelledInterviewsCount)%}
         var admissionData = [
             {
                 label: 'Tatt opp' + ' ({{ (assistantHistoryData.count/applicationData.count*100)|round }} %)',
