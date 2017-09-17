@@ -247,49 +247,6 @@ export class Schedule {
     return clone;
   }
 
-  mutate2() {
-    const clone = this.deepCopy();
-    const remainingDays = this.getRemainingDays();
-    if (remainingDays.length === 0) {
-      return clone;
-    }
-    const toDayKey = randomElement(Object.keys(remainingDays));
-    const toDay = toDayKey.slice(0, -16);
-    const toGroup = toDayKey.substr(toDayKey.length - 1);
-    for (let i = 0; i < busyAssistants.length; i++) {
-      const busyAssistant = busyAssistants[i];
-      const double = busyAssistant.double;
-      if (busyAssistant[toDay]) {
-        if (double) {
-          if (this.hasCapacity(toDay, 1) && this.hasCapacity(toDay, 2)) {
-            const fromDayKey = busyAssistant.assignedDay;
-            const fromGroup = fromDayKey.substr(fromDayKey.length - 1);
-            const fromDay = fromDayKey.slice(0, -16);
-            clone.reassignAssistant(busyAssistant, fromDay, toDay, 1, 1);
-            clone.reassignAssistant(busyAssistant, fromDay, toDay, 2, 2);
-            break;
-          }
-        } else if (busyAssistant.preferredGroup === toGroup) {
-          const fromDayKey = busyAssistant.assignedDay;
-          const fromGroup = fromDayKey.substr(fromDayKey.length - 1);
-          const fromDay = fromDayKey.slice(0, -16);
-          clone.reassignAssistant(busyAssistant, fromDay, toDay, fromGroup, toGroup);
-          break;
-        } else if (busyAssistant.preferredGroup !== toGroup) {
-          continue;
-        } else { // Not double, any group
-          const fromDayKey = busyAssistant.assignedDay;
-          const fromGroup = fromDayKey.substr(fromDayKey.length - 1);
-          const fromDay = fromDayKey.slice(0, -16);
-          clone.reassignAssistant(busyAssistant, fromDay, toDay, fromGroup, toGroup);
-          break;
-        }
-      }
-    }
-    return clone;
-
-  }
-
   getRemainingDays() {
     let remainingDays = {};
 
@@ -314,41 +271,90 @@ export class Schedule {
     let didSwap = true;
 
     while (didSwap) {
-      let valid = this.isValid();
-      didSwap = false;
-      const assistants = this.queuedAssistants;
-
-      for (let i = 0; i < assistants.length; i++) {
-        const assistant = assistants[i];
-        const assistantSwapped = this._swapAssistant(assistant);
-        if (assistantSwapped) {
-          didSwap = true;
-        }
-      }
-
-      for (let i = 0; i < weekDays.length; i++) {
-        const day = weekDays[i];
-        const doubleAssistants = this.getAssignedAssistants(day, 1).filter(a => this._assistantHasDoublePosition(a, day));
-        for (let j = 0; j < doubleAssistants.length; j++) {
-          const assistant = doubleAssistants[j];
-          const doubleSwapped = this._swapDoubleAssistantWithSingles(day, assistant);
-          if (doubleSwapped) {
-            didSwap = true;
-          }
-        }
-      }
-
-      const doubleAssistants = this.queuedAssistants.filter(a => a.double);
-
-      for (let i = 0; i < doubleAssistants.length; i++) {
-        const assistant = doubleAssistants[i];
-        const assistantSwapped = this._swapDoubleAssistantAsSingle(assistant);
-        if (assistantSwapped) {
-          didSwap = true;
-        }
-      }
-
+      didSwap =
+          this.replaceWithBetterAssistantFromQueue() ||
+          this.replaceDoubleInQueueWithTwoSingles() ||
+          this.fromDoubleInQueueToSinglePosition() ||
+          this.fromAssignedSingleToDouble(1, 2) ||
+          this.fromAssignedSingleToDouble(2, 1);
     }
+  }
+
+  replaceWithBetterAssistantFromQueue() {
+    const assistants = this.queuedAssistants;
+    for (let i = 0; i < assistants.length; i++) {
+      const assistant = assistants[i];
+      const assistantSwapped = this._swapAssistant(assistant);
+      if (assistantSwapped) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  replaceDoubleInQueueWithTwoSingles() {
+    for (let i = 0; i < weekDays.length; i++) {
+      const day = weekDays[i];
+      const doubleAssistants = this.getAssignedAssistants(day, 1).filter(a => this._assistantHasDoublePosition(a, day));
+      for (let j = 0; j < doubleAssistants.length; j++) {
+        const assistant = doubleAssistants[j];
+        const doubleSwapped = this._swapDoubleAssistantWithSingles(day, assistant);
+        if (doubleSwapped) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  fromDoubleInQueueToSinglePosition() {
+    const doubleAssistants = this.queuedAssistants.filter(a => a.double);
+
+    for (let i = 0; i < doubleAssistants.length; i++) {
+      const assistant = doubleAssistants[i];
+      const assistantSwapped = this._swapDoubleAssistantAsSingle(assistant);
+      if (assistantSwapped) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  fromAssignedSingleToDouble(fromGroup, toGroup) {
+    for (let i = 0; i < weekDays.length; i++) {
+      const day = weekDays[i];
+      const doubleAssistantsWithSinglePosition = this.getAssignedAssistants(day, fromGroup).filter(a => (
+          a.double && !this._assistantHasDoublePosition(a, day)
+      ));
+      if (doubleAssistantsWithSinglePosition.length === 0) {
+        continue;
+      }
+
+      let bestAssistant;
+      for (let j = 0; j < doubleAssistantsWithSinglePosition.length; j++) {
+        const assistant = doubleAssistantsWithSinglePosition[j];
+        if (!bestAssistant || assistant.score > bestAssistant.score) {
+          bestAssistant = assistant;
+        }
+      }
+
+      const assistantsInOtherGroup = this.getAssignedAssistants(day, toGroup);
+      let worstAssistant;
+      for (let j = 0; j < assistantsInOtherGroup.length; j++) {
+        const assistant = assistantsInOtherGroup[j];
+        if (!worstAssistant || assistant.score < worstAssistant.score) {
+          worstAssistant = assistant;
+        }
+      }
+
+      if (bestAssistant.score > worstAssistant.score) {
+        this.assignAssistantTo(bestAssistant, day, toGroup);
+        this._removeAssistantFromList(worstAssistant, this[day + "AssistantsGroup" + toGroup]);
+        this.queuedAssistants.push(worstAssistant);
+        return true;
+      }
+    }
+    return false;
   }
 
   _swapAssistant(assistant) {
@@ -557,7 +563,7 @@ export class Schedule {
       for (let j = 0; j < weekDays.length; j++) {
         const day = weekDays[j];
         if (group.hasOwnProperty(day) && group[day].length > k) {
-          csv += group[day][k].name;
+          csv += group[day][k].name + ' - ' + group[day][k].email;
         }
         csv += ';';
       }

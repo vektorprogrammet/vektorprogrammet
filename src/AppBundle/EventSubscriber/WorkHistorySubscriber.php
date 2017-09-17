@@ -7,28 +7,17 @@ use AppBundle\Service\RoleManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 class WorkHistorySubscriber implements EventSubscriberInterface
 {
     private $session;
     private $logger;
-    private $authorizationChecker;
     private $roleManager;
 
-    /**
-     * ApplicationAdmissionSubscriber constructor.
-     *
-     * @param Session $session
-     * @param LoggerInterface $logger
-     * @param AuthorizationChecker $authorizationChecker
-     * @param RoleManager $roleManager
-     */
-    public function __construct(Session $session, LoggerInterface $logger, AuthorizationChecker $authorizationChecker, RoleManager $roleManager)
+    public function __construct(Session $session, LoggerInterface $logger, RoleManager $roleManager)
     {
         $this->session = $session;
         $this->logger = $logger;
-        $this->authorizationChecker = $authorizationChecker;
         $this->roleManager = $roleManager;
     }
 
@@ -40,7 +29,7 @@ class WorkHistorySubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            WorkHistoryEvent::CREATED        => array(
+            WorkHistoryEvent::CREATED => array(
                 array('logCreatedEvent', 1),
                 array('updateUserRole', 0),
                 array('addCreatedFlashMessage', -1),

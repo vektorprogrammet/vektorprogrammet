@@ -13,6 +13,10 @@ class Assistant implements \JsonSerializable
     /**
      * @var string
      */
+    private $email;
+    /**
+     * @var string
+     */
     private $assignedSchool; //Name of school
     /**
      * @var string
@@ -288,6 +292,7 @@ class Assistant implements \JsonSerializable
             'id' => $this->getId(),
             'group' => 'Bolk 1',
             'name' => $this->name,
+            'email' => $this->email,
             'assignedSchool' => $this->assignedSchool,
             'assignedDay' => $this->assignedDay,
             'availability' => $this->availability,
@@ -313,5 +318,21 @@ class Assistant implements \JsonSerializable
     public function setApplication($application)
     {
         $this->application = $application;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
     }
 }

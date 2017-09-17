@@ -40,6 +40,10 @@ parameters:
 
     session.name: VPSESSID
 
+    google_api_client_id: 'xxxxx'
+    google_api_client_secret: 'xxxxx'
+    google_api_refresh_token: 'xxxxx'
+
     # Webhook from GitHub to automatically deploy on push to master
 
 twig:

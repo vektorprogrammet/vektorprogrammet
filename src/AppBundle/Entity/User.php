@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Validator\Constraints as CustomAssert;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -92,6 +93,14 @@ class User implements AdvancedUserInterface, \Serializable
      * @Assert\Email(groups={"admission", "create_user", "edit_user"}, message="Ikke gyldig e-post.")
      */
     private $email;
+
+    /**
+     * @ORM\Column(type="string", unique=true, nullable=true)
+     * @Assert\Email
+     * @CustomAssert\UniqueCompanyEmail
+     * @CustomAssert\VektorEmail
+     */
+    private $companyEmail;
 
     /**
      * @ORM\Column(name="is_active", type="boolean")
@@ -223,6 +232,9 @@ class User implements AdvancedUserInterface, \Serializable
         $this->roles = $roles;
     }
 
+    /**
+     * @return Role[]
+     */
     public function getRoles()
     {
         if (is_array($this->roles)) {
@@ -663,5 +675,21 @@ class User implements AdvancedUserInterface, \Serializable
         }
 
         return $totalSum;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCompanyEmail()
+    {
+        return $this->companyEmail;
+    }
+
+    /**
+     * @param string $companyEmail
+     */
+    public function setCompanyEmail($companyEmail)
+    {
+        $this->companyEmail = $companyEmail;
     }
 }

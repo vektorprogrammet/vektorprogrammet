@@ -118,6 +118,11 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getResult();
     }
 
+    /**
+     * @param $username
+     *
+     * @return User
+     */
     public function findUserByUsername($username)
     {
         return $this->createQueryBuilder('User')
@@ -170,6 +175,17 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function findAllCompanyEmails()
+    {
+        $results = $this->createQueryBuilder('user')
+            ->select('user.companyEmail')
+            ->where('user.companyEmail IS NOT NULL')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_column($results, 'companyEmail');
     }
 
     /*
