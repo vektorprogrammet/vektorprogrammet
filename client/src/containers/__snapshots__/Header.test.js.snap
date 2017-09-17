@@ -1,24 +1,62 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly 1`] = `
-<nav>
-  <a
-    href="/"
-    onClick={[Function]}
+<div
+  className="ui grid"
+>
+  <div
+    className="centered row"
   >
-    Hjem
-  </a>
-  <a
-    href="/assistenter"
-    onClick={[Function]}
+    <a
+      href="/"
+      onClick={[Function]}
+    >
+      <img
+        alt={undefined}
+        className="ui image logo"
+        height={undefined}
+        src="logo_condensed.png"
+        width={undefined}
+      />
+    </a>
+  </div>
+  <div
+    className="centered row"
   >
-    Assistenter
-  </a>
-  <a
-    href="/team"
-    onClick={[Function]}
-  >
-    Team
-  </a>
-</nav>
+    <nav
+      className="main-navigation"
+    >
+      <a
+        href="/assistenter"
+        onClick={[Function]}
+      >
+        Assistenter
+      </a>
+      <a
+        href="/team"
+        onClick={[Function]}
+      >
+        Team
+      </a>
+      <a
+        href="/laerere"
+        onClick={[Function]}
+      >
+        Lærere
+      </a>
+      <a
+        href="/foreldre"
+        onClick={[Function]}
+      >
+        Foreldre
+      </a>
+      <a
+        href="/om-oss"
+        onClick={[Function]}
+      >
+        Om oss
+      </a>
+    </nav>
+  </div>
+</div>
 `;
