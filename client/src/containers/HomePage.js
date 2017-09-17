@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import logo from '../images/logo.svg';
+import React, {Component} from 'react';
 import './HomePage.css';
+import {Button, Image, Grid} from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import SponsorList from '../components/SponsorList';
 import {SponsorApi} from '../api/SponsorApi';
+import hero from '../images/blackboard.png';
 
 class HomePage extends Component {
   constructor(props) {
@@ -24,18 +26,27 @@ class HomePage extends Component {
 
   render() {
     return (
-        <div className="App">
-          <div className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h2>Welcome to React</h2>
-          </div>
-          <p className="App-intro">
-            To get started, edit <code>src/App.js</code> and save to reload.
-          </p>
+        <Grid className="homepage">
+          <Grid.Row className="hero-section">
+            <Grid.Column width={8}>
+              <Image className="hero-image" src={hero} alt={'Vektorprogrammet'}/>
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <div className="hero-content">
+                <h1>Vektorprogrammet</h1>
+                <p>- sender studenter til ungdomsskoler for å hjelpe til som <br />
+                  assistentlærere i matematikkundervisningen</p>
+                <Link to={'/assistenter'}>
+                  <Button color={'green'} className="hero-cta">LES MER OG BLI ASSISTENT</Button>
+                </Link>
+              </div>
+            </Grid.Column>
+          </Grid.Row>
+
           <h2>Hovedsponsor: {this.state.mainSponsor.name}</h2>
           <h3>Andre sponsorer</h3>
-          <SponsorList sponsors={this.state.sponsors} />
-        </div>
+          <SponsorList sponsors={this.state.sponsors}/>
+        </Grid>
     );
   }
 }
