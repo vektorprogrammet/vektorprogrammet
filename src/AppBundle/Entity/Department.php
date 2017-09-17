@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Table(name="department")
@@ -61,17 +62,20 @@ class Department
      * @ORM\ManyToMany(targetEntity="School", inversedBy="departments")
      * @ORM\JoinTable(name="department_school")
      * @ORM\JoinColumn(onDelete="cascade")
+     * @JMS\Exclude
      **/
     protected $schools;
 
     /**
      * @ORM\OneToMany(targetEntity="FieldOfStudy", mappedBy="department", cascade={"remove"})
+     * @JMS\Exclude
      */
     private $fieldOfStudy;
 
     /**
      * @ORM\OneToMany(targetEntity="Semester", mappedBy="department",  cascade={"remove"})
      * @ORM\OrderBy({"semesterStartDate" = "DESC"})
+     * @JMS\Exclude
      **/
     private $semesters;
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from '../images/logo.svg';
 import './HomePage.css';
-import {SponsorList} from '../components/SponsorList';
+import SponsorList from '../components/SponsorList';
 import {SponsorApi} from '../api/SponsorApi';
 
 class HomePage extends Component {

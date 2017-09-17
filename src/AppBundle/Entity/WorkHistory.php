@@ -209,6 +209,14 @@ class WorkHistory implements GroupMemberInterface
         return $semesterStartLaterThanWorkHistory && $semesterEndsBeforeWorkHistory;
     }
 
+    public function isActive()
+    {
+        $department = $this->team->getDepartment();
+        $activeSemester = $department->getCurrentOrLatestSemester();
+
+        return $this->isActiveInSemester($activeSemester);
+    }
+
     /**
      * @return string
      */
