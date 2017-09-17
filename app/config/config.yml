@@ -315,3 +315,23 @@ nelmio_cors:
             allow_headers: ['*']
             allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
             max_age: 3600
+
+fos_rest:
+    body_listener: true
+    param_fetcher_listener: true
+    view:
+        formats:
+            jsonp: true
+            json: true
+            xml: false
+            rss: false
+        mime_types:
+            json: ['application/json', 'application/x-json']
+            jpg: ['image/jpeg']
+            png: ['image/png']
+        jsonp_handler: ~
+    routing_loader:
+        default_format:  json
+        include_format:  false
+    exception:
+        enabled: true
