@@ -7,6 +7,11 @@ home:
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
+api:
+#    type: rest
+    resource: "routing_api.yml"
+    prefix: /api
+
 #LiipImagineBundle
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
