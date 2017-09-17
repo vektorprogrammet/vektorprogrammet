@@ -288,7 +288,15 @@ nexy_slack:
     username: 'vektorbot'
     icon: ':robot_face:'
 
-nelmio_api_doc: ~
+nelmio_api_doc:
+    sandbox:
+        accept_type:        "application/json"
+        body_format:
+            formats:        [ "json" ]
+            default_format: "json"
+        request_format:
+            formats:
+                json:       "application/json"
 
 nelmio_cors:
     defaults:
