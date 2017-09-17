@@ -17,7 +17,8 @@ class TeamController extends Controller
         ));
     }
 
-    public function indexAction() {
-    	return $this->render('team/index.html.twig');
+    public function indexAction()
+    {
+        return $this->render('team/index.html.twig');
     }
 }
