@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<nav>
+  <a
+    href="/"
+    onClick={[Function]}
+  >
+    Hjem
+  </a>
+  <a
+    href="/assistenter"
+    onClick={[Function]}
+  >
+    Assistenter
+  </a>
+  <a
+    href="/team"
+    onClick={[Function]}
+  >
+    Team
+  </a>
+</nav>
+`;
