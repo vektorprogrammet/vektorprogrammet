@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use AppBundle\Type\InterviewStatusType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -507,5 +508,27 @@ class Interview
     public function setCancelMessage(string $cancelMessage = null)
     {
         $this->cancelMessage = $cancelMessage;
+    }
+
+    /**
+     * @param int $newStatus
+     */
+    public function updateStatus(int $newStatus) {
+        switch ($newStatus) {
+            case 0:
+                $this->resetStatus();
+                break;
+            case 1:
+                $this->acceptInterview();
+                break;
+            case 2:
+                $this->requestNewTime();
+                break;
+            case 3:
+                $this->cancel();
+                break;
+            default:
+                throw new BadRequestHttpException('Invalid status');
+        }
     }
 }
