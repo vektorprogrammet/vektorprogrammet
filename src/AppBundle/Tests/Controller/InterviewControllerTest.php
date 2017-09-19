@@ -509,18 +509,14 @@ class InterviewControllerTest extends BaseWebTestCase
         $this->em->persist($application);
         $this->em->flush();
 
-        $client = self::createAdminClient();
+        $client = $this->createAdminClient();
         $crawler = $this->goTo('/kontrollpanel/opptak/fordelt/2', $client);
         $before = $crawler->filter('td:contains("Ingen svar")')->count();
 
         $applicationID = $application->getId();
-        $this->goTo("/kontrollpanel/intervju/settopp/".$applicationID, $client);
+        $crawler = $this->goTo("/kontrollpanel/intervju/settopp/".$applicationID, $client);
 
-        //$changeButton = $crawler->selectButton("Endre status");
-        //$this->assertNotNull($changeButton);
-        //$client->click($changeButton->link());
-
-        $saveButton = $crawler->selectButton('Lagre');
+        $saveButton = $crawler->filter('button#status_form_button');
         $this->assertNotNull($saveButton);
         $form = $saveButton->form();
         $this->assertNotNull($form);
