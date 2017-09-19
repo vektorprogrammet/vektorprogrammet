@@ -8,7 +8,6 @@ use AppBundle\Event\InterviewConductedEvent;
 use AppBundle\Form\Type\ApplicationInterviewType;
 use AppBundle\Form\Type\AssignInterviewType;
 use AppBundle\Form\Type\CancelInterviewConfirmationType;
-use AppBundle\Form\Type\EditInterviewStatusType;
 use AppBundle\Form\Type\ScheduleInterviewType;
 use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -223,21 +222,11 @@ class InterviewController extends Controller
             return $this->redirectToRoute('applications_show_assigned_by_semester', array('id' => $application->getSemester()->getId()));
         }
 
-        $statusForm = $this->createForm(new EditInterviewStatusType());
-        $statusForm->handleRequest($request);
-        if ($statusForm->isValid()) {
-            $data = $statusForm->getData();
-            if($statusForm->get('save')->isClicked()) {
-                dump($data);
-            }
-            dump($data);
-        }
 
         return $this->render('interview/schedule.html.twig', array(
             'form' => $form->createView(),
             'interview' => $interview,
-            'application' => $application,
-            'statusForm' => $statusForm->createView()));
+            'application' => $application));
     }
 
     /**
