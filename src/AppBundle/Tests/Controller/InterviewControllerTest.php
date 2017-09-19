@@ -10,25 +10,6 @@ use AppBundle\Tests\BaseWebTestCase;
 class InterviewControllerTest extends BaseWebTestCase
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    private $em;
-
-    public function setUp()
-    {
-        self::bootKernel();
-        $this->em = static::$kernel->getContainer()
-            ->get('doctrine')
-            ->getManager();
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-        $this->em->close();
-    }
-
-    /**
      * @param bool teamInterest
      * @param $client
      * @param $crawler
@@ -489,11 +470,7 @@ class InterviewControllerTest extends BaseWebTestCase
         $crawler = $this->goTo('/kontrollpanel/opptak/fordelt/2', $client);
         $before = $crawler->filter('td:contains("Ingen svar")')->count();
 
-        $user = $this->em->getRepository('AppBundle:User')->findUserByUsername('assistent');
-        $application = $this->em->getRepository('AppBundle:Application')->findByUser($user);
-        $applicationID = $application->getId();
-        $crawler = $this->goTo("/kontrollpanel/intervju/settopp/".$applicationID, $client);
-
+        $crawler = $this->goTo("/kontrollpanel/intervju/settopp/6", $client);
         $saveButton = $crawler->filter('button#status_form_button');
         $this->assertNotNull($saveButton);
         $form = $saveButton->form();
@@ -505,8 +482,6 @@ class InterviewControllerTest extends BaseWebTestCase
         $crawler = $this->goTo('/kontrollpanel/opptak/fordelt/2', $client);
         $after = $crawler->filter('td:contains("Ingen svar")')->count();
         $this->assertEquals($before - 1, $after);
-
-        \TestDataManager::restoreDatabase();
     }
 
     /*
