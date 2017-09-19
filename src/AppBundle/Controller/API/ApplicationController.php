@@ -6,25 +6,25 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-class SponsorController extends FOSRestController implements ClassResourceInterface
+class ApplicationController extends FOSRestController implements ClassResourceInterface
 {
     /**
-     * Gets an individual Sponsor
+     * Gets an individual Application
      *
      * @param int $id
      * @return mixed
      *
      * @ApiDoc(
-     *     section="Sponsor",
+     *     section="Application",
      *     requirements={
      *      {
      *          "name"="id",
      *          "dataType"="integer",
      *          "requirement"="\d+",
-     *          "description"="Sponsor ID"
+     *          "description"="Application ID"
      *      }
      *     },
-     *     output="AppBundle\Entity\Sponsor",
+     *     output="AppBundle\Entity\Application",
      *     statusCodes={
      *          200 = "Returned when successful",
      *          404 = "Return when not found",
@@ -34,17 +34,17 @@ class SponsorController extends FOSRestController implements ClassResourceInterf
      */
     public function getAction(int $id)
     {
-        return $this->getDoctrine()->getRepository('AppBundle:Sponsor')->find($id);
+        return $this->getDoctrine()->getRepository('AppBundle:Application')->find($id);
     }
 
     /**
-     * Gets all Sponsors
+     * Gets all Applications
      *
      * @return mixed
      *
      * @ApiDoc(
-     *     section="Sponsor",
-     *     output="AppBundle\Entity\Sponsor",
+     *     section="Application",
+     *     output="AppBundle\Entity\Application",
      *     statusCodes={
      *          200 = "Returned when successful",
      *          404 = "Return when not found",
@@ -54,17 +54,17 @@ class SponsorController extends FOSRestController implements ClassResourceInterf
      */
     public function cgetAction()
     {
-        return $this->getDoctrine()->getRepository('AppBundle:Sponsor')->findAll();
+        return $this->getDoctrine()->getRepository('AppBundle:Application')->findAll();
     }
 
     /**
-     * Creates a new Sponsor
+     * Creates a new Application
      *
      * @return mixed
      *
      * @ApiDoc(
-     *     section="Sponsor",
-     *     input="AppBundle\Entity\Sponsor",
+     *     section="Application",
+     *     input="AppBundle\Form\Type\ApplicationType",
      *     statusCodes={
      *          201 = "Returned when successful",
      *          400 = "Bad request",
@@ -77,21 +77,21 @@ class SponsorController extends FOSRestController implements ClassResourceInterf
     }
 
     /**
-     * Updates a Sponsor
+     * Updates an Application
      *
      * @return mixed
      *
      * @ApiDoc(
-     *     section="Sponsor",
+     *     section="Application",
      *     requirements={
      *      {
      *          "name"="id",
      *          "dataType"="integer",
      *          "requirement"="\d+",
-     *          "description"="Sponsor ID"
+     *          "description"="Application ID"
      *      }
      *     },
-     *     input="AppBundle\Entity\Sponsor",
+     *     input="AppBundle\Entity\Application",
      *     statusCodes={
      *          201 = "Returned when successful",
      *          400 = "Bad request",
@@ -104,18 +104,18 @@ class SponsorController extends FOSRestController implements ClassResourceInterf
     }
 
     /**
-     * Deletes a Sponsor
+     * Deletes an Application
      *
      * @return mixed
      *
      * @ApiDoc(
-     *     section="Sponsor",
+     *     section="Application",
      *     requirements={
      *      {
      *          "name"="id",
      *          "dataType"="integer",
      *          "requirement"="\d+",
-     *          "description"="Sponsor ID"
+     *          "description"="Application ID"
      *      }
      *     },
      *     statusCodes={

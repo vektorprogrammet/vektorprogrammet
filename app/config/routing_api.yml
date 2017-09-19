@@ -10,3 +10,7 @@ teams:
     type: rest
     resource: @AppBundle/Controller/API/TeamController.php
 
+applications:
+    type: rest
+    resource: @AppBundle/Controller/API/ApplicationController.php
+
