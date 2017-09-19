@@ -409,4 +409,21 @@ class InterviewController extends Controller
             'form' => $form->createView(),
         ));
     }
+
+    /**
+     * @param Request $request
+     * @param Interview $interview
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function editStatusAction(Request $request, Interview $interview)
+    {
+        $status = $request->get('status');
+        $interview->updateStatus($status);
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return $this->redirectToRoute('interview_schedule',
+            ['id' => $interview->getApplication()->getId()]);
+    }
 }
