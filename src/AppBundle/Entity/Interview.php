@@ -513,7 +513,8 @@ class Interview
     /**
      * @param int $newStatus
      */
-    public function updateStatus(int $newStatus) {
+    public function updateStatus(int $newStatus)
+    {
         switch ($newStatus) {
             case 0:
                 $this->resetStatus();
