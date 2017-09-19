@@ -2,10 +2,32 @@
 
 namespace AppBundle\Tests\Controller;
 
+use AppBundle\Entity\Application;
+use AppBundle\Entity\Interview;
+use AppBundle\Entity\User;
 use AppBundle\Tests\BaseWebTestCase;
 
 class InterviewControllerTest extends BaseWebTestCase
 {
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $em;
+
+    public function setUp()
+    {
+        self::bootKernel();
+        $this->em = static::$kernel->getContainer()
+            ->get('doctrine')
+            ->getManager();
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+        $this->em->close();
+    }
+
     /**
      * @param bool teamInterest
      * @param $client
@@ -459,6 +481,58 @@ class InterviewControllerTest extends BaseWebTestCase
         $applicationsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
 
         $this->assertEquals($applicationsBefore, $applicationsAfter);
+    }
+
+    public function testUpdateStatus()
+    {
+        $user = new User();
+        $user->setFirstName("Ola");
+        $user->setLastName("Nordmann");
+        $user->setGender(0);
+        $user->setPhone("12345678");
+        $user->setEmail("Ola@Nordmann.no");
+
+        $interviewer = $this->em->getRepository('AppBundle:User')->findUserById(2);
+        $this->assertNotNull($interviewer);
+
+        $interview = new Interview();
+        $interview->setInterviewer($interviewer);
+        $interview->setUser($user);
+
+        $application = new Application();
+        $application->setInterview($interview);
+        $application->setYearOfStudy("2");
+        $application->setUser($user);
+
+        $this->em->persist($user);
+        $this->em->persist($interview);
+        $this->em->persist($application);
+        $this->em->flush();
+
+        $client = self::createAdminClient();
+        $crawler = $this->goTo('/kontrollpanel/opptak/fordelt/2', $client);
+        $before = $crawler->filter('td:contains("Ingen svar")')->count();
+
+        $applicationID = $application->getId();
+        $this->goTo("/kontrollpanel/intervju/settopp/".$applicationID, $client);
+
+        //$changeButton = $crawler->selectButton("Endre status");
+        //$this->assertNotNull($changeButton);
+        //$client->click($changeButton->link());
+
+        $saveButton = $crawler->selectButton('Lagre');
+        $this->assertNotNull($saveButton);
+        $form = $saveButton->form();
+        $this->assertNotNull($form);
+        $form['status'] = 1;
+        $client->submit($form);
+        $client->followRedirect();
+
+        $crawler = $this->goTo('/kontrollpanel/opptak/fordelt/2', $client);
+        $after = $crawler->filter('td:contains("Ingen svar")')->count();
+        $this->assertEquals($before - 1, $after);
+
+        \TestDataManager::restoreDatabase();
     }
 
     /*
