@@ -83,11 +83,19 @@
 
                         {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
                         {{ form_widget(form.preview, {'attr': {'class': 'button tiny', 'formtarget': '_blank'}}) }}
+                        {{ form_widget(form.changeStatus, {'attr': {'class': 'button tiny', 'data-reveal-id': 'abcd'}}) }}
                         <div class="float-right">
                             {{ form_widget(form.saveAndSend, {'attr': {'class': 'button tiny'}}) }}
                         </div>
 
                     </div>
+                </div>
+                <div id="abcd" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+                    <h3 id="modalTitle">Endre status</h3>
+                    {{ form_start(statusForm) }}
+                    {{ form_widget(statusForm) }}
+                    {{ form_end(statusForm) }}
+                    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                 </div>
                 {{ form_end(form) }}
             </div>
