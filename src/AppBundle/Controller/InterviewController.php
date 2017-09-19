@@ -222,11 +222,10 @@ class InterviewController extends Controller
             return $this->redirectToRoute('applications_show_assigned_by_semester', array('id' => $application->getSemester()->getId()));
         }
 
-
         return $this->render('interview/schedule.html.twig', array(
             'form' => $form->createView(),
             'interview' => $interview,
-            'application' => $application));
+            'application' => $application, ));
     }
 
     /**
