@@ -418,7 +418,7 @@ class InterviewController extends Controller
     public function editStatusAction(Request $request, Interview $interview)
     {
         $status = $request->get('status');
-        $interview->updateStatus($status);
+        $interview->setStatus($status);
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
