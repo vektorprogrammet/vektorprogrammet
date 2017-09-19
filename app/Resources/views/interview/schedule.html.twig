@@ -96,10 +96,10 @@
                     <form method="POST" action="{{ path('interview_edit_status', {id: interview.id}) }}">
                         <select name="status" id="status">
                             {% set s = interview.interviewStatusAsString %}
-                            <option value=0 {% if s == 'Ingen svar' %}selected{% endif %}>Ingen svar</option>
-                            <option value=1 {% if s == 'Akseptert' %}selected{% endif %}>Akseptert</option>
-                            <option value=2 {% if s == 'Ny tid ønskes' %}selected{% endif %}>Ny tid ønskes</option>
-                            <option value=3 {% if s == 'Kansellert' %}selected{% endif %}>Kansellert</option>
+                            <option value="0" {% if s == 'Ingen svar' %}selected{% endif %}>Ingen svar</option>
+                            <option value="1" {% if s == 'Akseptert' %}selected{% endif %}>Akseptert</option>
+                            <option value="2" {% if s == 'Ny tid ønskes' %}selected{% endif %}>Ny tid ønskes</option>
+                            <option value="3" {% if s == 'Kansellert' %}selected{% endif %}>Kansellert</option>
                         </select>
                         <p>OBS: Dette vil laste inn siden på nytt. Alle felter vil bli tilbakestilt.</p>
                     <button id="status_form_button" type="submit" class="tiny success">Lagre</button>
