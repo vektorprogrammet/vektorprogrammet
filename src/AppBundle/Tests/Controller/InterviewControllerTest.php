@@ -485,34 +485,12 @@ class InterviewControllerTest extends BaseWebTestCase
 
     public function testUpdateStatus()
     {
-        $user = new User();
-        $user->setFirstName("Ola");
-        $user->setLastName("Nordmann");
-        $user->setGender(0);
-        $user->setPhone("12345678");
-        $user->setEmail("Ola@Nordmann.no");
-
-        $interviewer = $this->em->getRepository('AppBundle:User')->findUserById(2);
-        $this->assertNotNull($interviewer);
-
-        $interview = new Interview();
-        $interview->setInterviewer($interviewer);
-        $interview->setUser($user);
-
-        $application = new Application();
-        $application->setInterview($interview);
-        $application->setYearOfStudy("2");
-        $application->setUser($user);
-
-        $this->em->persist($user);
-        $this->em->persist($interview);
-        $this->em->persist($application);
-        $this->em->flush();
-
         $client = $this->createAdminClient();
         $crawler = $this->goTo('/kontrollpanel/opptak/fordelt/2', $client);
         $before = $crawler->filter('td:contains("Ingen svar")')->count();
 
+        $user = $this->em->getRepository('AppBundle:User')->findUserByUsername('assistent');
+        $application = $this->em->getRepository('AppBundle:Application')->findByUser($user);
         $applicationID = $application->getId();
         $crawler = $this->goTo("/kontrollpanel/intervju/settopp/".$applicationID, $client);
 
