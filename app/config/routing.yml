@@ -1042,7 +1042,7 @@ interview_cancel_by_response:
       responseCode: \w+
 
 interview_edit_status:
-    path: /intervju/status/{id}
+    path: kontrollpanel/intervju/status/{id}
     defaults: { _controller: AppBundle:Interview:editStatus }
     methods: [POST]
     requirements:
