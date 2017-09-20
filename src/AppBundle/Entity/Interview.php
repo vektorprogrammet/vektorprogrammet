@@ -4,8 +4,8 @@ namespace AppBundle\Entity;
 
 use AppBundle\Type\InterviewStatusType;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
