@@ -2,9 +2,6 @@
 
 namespace AppBundle\Tests\Controller;
 
-use AppBundle\Entity\Application;
-use AppBundle\Entity\Interview;
-use AppBundle\Entity\User;
 use AppBundle\Tests\BaseWebTestCase;
 
 class InterviewControllerTest extends BaseWebTestCase
