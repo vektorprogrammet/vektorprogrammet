@@ -444,19 +444,4 @@ class ApplicationRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
-
-    /**
-     * @param User $user
-     *
-     * @return User
-     */
-    public function findByUser(User $user)
-    {
-        return $this->createQueryBuilder('Application')
-            ->select('Application')
-            ->where('Application.user = :user')
-            ->setParameter('user', $user)
-            ->getQuery()
-            ->getSingleResult();
-    }
 }
