@@ -10,12 +10,14 @@ class Sender
 
     private $token;
     private $logger;
+    private $disableDelivery;
 
-    public function __construct(string $token, LogService $logger)
+    public function __construct(string $token, LogService $logger, bool $disableDelivery)
     {
         $this->landCode = '47';
         $this->token = $token;
         $this->logger = $logger;
+        $this->disableDelivery = $disableDelivery;
     }
     
     public function send(Sms $sms)
@@ -38,10 +40,12 @@ class Sender
             }
         }
 
-        $query = http_build_query($data);
-        $result = file_get_contents('https://gatewayapi.com/rest/mtsms?' . $query);
+        if (!$this->disableDelivery) {
+            $query = http_build_query($data);
+            file_get_contents('https://gatewayapi.com/rest/mtsms?' . $query);
+        }
+
         $this->log($sms);
-        $this->logger->info(print_r(json_decode($result)->ids, true));
     }
 
     private function log(Sms $sms)

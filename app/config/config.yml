@@ -8,6 +8,7 @@ parameters:
   slack.notification_channel: '#notifications'
   slack.log_channel: '#website_logs'
   slack.disable_delivery: true
+  sms.disable_delivery: true
 
   # File upload parameters
   public_uploads: "Offentlige filer"
