@@ -29,12 +29,12 @@ class Sender
         );
 
         $recipients = $sms->getRecipients();
-        $c = 0;
+        $i = 0;
         foreach ($recipients as $recipient) {
             $number = $this->cleanPhoneNumber($recipient);
             if ($number !== false) {
-                $data["recipients.$c.msisdn"] = $number;
-                $c++;
+                $data["recipients.$i.msisdn"] = $number;
+                $i++;
             } else {
                 $this->logger->alert("Could not send sms to $recipient");
             }
