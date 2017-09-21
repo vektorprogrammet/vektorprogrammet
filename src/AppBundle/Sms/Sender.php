@@ -39,10 +39,9 @@ class Sender
         }
 
         $query = http_build_query($data);
-        $this->logger->info($query);
-//        $result = file_get_contents('https://gatewayapi.com/rest/mtsms?' . $query);
+        $result = file_get_contents('https://gatewayapi.com/rest/mtsms?' . $query);
         $this->log($sms);
-//        $this->logger->info(print_r(json_decode($result)->ids, true));
+        $this->logger->info(print_r(json_decode($result)->ids, true));
     }
 
     private function log(Sms $sms)

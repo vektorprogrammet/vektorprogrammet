@@ -3,11 +3,16 @@
 namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\InterviewConductedEvent;
+use AppBundle\Event\InterviewEvent;
+use AppBundle\Service\InterviewManager;
 use AppBundle\Service\InterviewNotificationManager;
 use AppBundle\Service\SbsData;
+use AppBundle\Sms\Sender;
+use AppBundle\Sms\Sms;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\RouterInterface;
 
 class InterviewSubscriber implements EventSubscriberInterface
 {
@@ -17,25 +22,43 @@ class InterviewSubscriber implements EventSubscriberInterface
     private $logger;
     private $sbsData;
     private $notificationManager;
+    private $interviewManager;
+    private $smsSender;
+    private $router;
 
     /**
      * ApplicationAdmissionSubscriber constructor.
      *
-     * @param \Swift_Mailer                $mailer
-     * @param \Twig_Environment            $twig
-     * @param Session                      $session
-     * @param LoggerInterface              $logger
-     * @param SbsData                      $sbsData
+     * @param \Swift_Mailer $mailer
+     * @param \Twig_Environment $twig
+     * @param Session $session
+     * @param LoggerInterface $logger
+     * @param SbsData $sbsData
      * @param InterviewNotificationManager $notificationManager
+     * @param InterviewManager $interviewManager
+     * @param Sender $smsSender
+     * @param RouterInterface $router
      */
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, SbsData $sbsData, InterviewNotificationManager $notificationManager)
-    {
+    public function __construct(
+        \Swift_Mailer $mailer,
+        \Twig_Environment $twig,
+        Session $session,
+        LoggerInterface $logger,
+        SbsData $sbsData,
+        InterviewNotificationManager $notificationManager,
+        InterviewManager $interviewManager,
+        Sender $smsSender,
+        RouterInterface $router
+    ) {
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->session = $session;
         $this->logger = $logger;
         $this->sbsData = $sbsData;
         $this->notificationManager = $notificationManager;
+        $this->interviewManager = $interviewManager;
+        $this->smsSender = $smsSender;
+        $this->router = $router;
     }
 
     /**
@@ -51,6 +74,10 @@ class InterviewSubscriber implements EventSubscriberInterface
                 array('sendSlackNotifications', 1),
                 array('sendInterviewReceipt', 0),
                 array('addFlashMessage', -1),
+            ),
+            InterviewEvent::SCHEDULE => array(
+                array('sendScheduleEmail', 0),
+                array('sendScheduleSms', 0),
             ),
         );
     }
@@ -107,5 +134,48 @@ class InterviewSubscriber implements EventSubscriberInterface
         if ($this->sbsData->applicantsNotYetInterviewedCount() <= 0 && $this->sbsData->getStep() >= 4) {
             $this->notificationManager->sendInterviewsCompletedNotification($department);
         }
+    }
+
+    public function sendScheduleEmail(InterviewEvent $event)
+    {
+        $this->interviewManager->sendScheduleEmail($event->getInterview(), $event->getData());
+    }
+
+    public function sendScheduleSms(InterviewEvent $event)
+    {
+        $interview = $event->getInterview();
+        $data = $event->getData();
+        $user = $interview->getUser();
+        $interviewer = $interview->getInterviewer();
+        $number = $this->smsSender->cleanPhoneNumber($interview->getUser()->getPhone());
+        if ($number === false) {
+            $this->logger->alert("Kunne ikke sende schedule sms til $user, $number");
+            return;
+        }
+
+        $message =
+            $data['message'] .
+            "\n\n" .
+            "Tid: ".$data['datetime']->format('d.m.Y - H:i') .
+            "\n" .
+            "Rom: ".$data['room'] .
+            "\n\n" .
+            "Vennligst følg linken under for å godkjenne tidspunktet eller be om ny tid:\n" .
+            $this->router->generate('interview_response',
+                ['responseCode' => $interview->getResponseCode()],
+                RouterInterface::ABSOLUTE_URL
+            ) .
+            "\n\n" .
+            "Mvh $interviewer, Vektorprogrammet\n" .
+            $interviewer->getEmail() .
+            "\n" .
+            $interviewer->getPhone();
+
+        $sms = new Sms();
+        $sms->message($message);
+        $sms->sender("Vektor");
+        $sms->recipients([$interview->getUser()->getPhone()]);
+
+        $this->smsSender->send($sms);
     }
 }
