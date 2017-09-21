@@ -1,4 +1,8 @@
 services:
+  app.sms:
+    class: AppBundle\Sms\Sender
+    arguments: ['%sms_token%', '@app.logger']
+
   app.logger:
     class: AppBundle\Service\LogService
     arguments: ['@logger', '@app.slack_messenger']
