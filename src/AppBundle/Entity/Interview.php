@@ -107,7 +107,7 @@ class Interview
         $this->interviewAnswers = new ArrayCollection();
         $this->conducted = new \DateTime();
         $this->interviewed = false;
-        $this->interviewStatus = InterviewStatusType::PENDING;
+        $this->interviewStatus = InterviewStatusType::NO_CONTACT;
     }
 
     /**
@@ -390,6 +390,8 @@ class Interview
     public function getInterviewStatusAsString(): string
     {
         switch ($this->interviewStatus) {
+            case InterviewStatusType::NO_CONTACT:
+                return 'Ikke satt opp';
             case InterviewStatusType::PENDING:
                 return 'Ingen svar';
             case InterviewStatusType::ACCEPTED:
@@ -409,6 +411,8 @@ class Interview
     public function getInterviewStatusAsColor(): string
     {
         switch ($this->interviewStatus) {
+            case InterviewStatusType::NO_CONTACT:
+                return '#9999ff';
             case InterviewStatusType::PENDING:
                 return '#000000';
             case InterviewStatusType::ACCEPTED:

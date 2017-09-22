@@ -96,6 +96,7 @@
                     <form method="POST" action="{{ path('interview_edit_status', {id: interview.id}) }}">
                         <select name="status" id="status">
                             {% set s = interview.interviewStatusAsString %}
+                            <option value="4" {% if s == 'Ikke satt opp' %}selected{% endif %}>Ikke satt opp</option>
                             <option value="0" {% if s == 'Ingen svar' %}selected{% endif %}>Ingen svar</option>
                             <option value="1" {% if s == 'Akseptert' %}selected{% endif %}>Akseptert</option>
                             <option value="2" {% if s == 'Ny tid ønskes' %}selected{% endif %}>Ny tid ønskes</option>
