@@ -4,7 +4,7 @@ namespace AppBundle\Sms;
 
 use AppBundle\Service\LogService;
 
-class Sender
+class Sender implements SmsSender
 {
     private $landCode;
 

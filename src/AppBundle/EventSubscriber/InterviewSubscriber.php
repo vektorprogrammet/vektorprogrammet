@@ -7,8 +7,8 @@ use AppBundle\Event\InterviewEvent;
 use AppBundle\Service\InterviewManager;
 use AppBundle\Service\InterviewNotificationManager;
 use AppBundle\Service\SbsData;
-use AppBundle\Sms\Sender;
 use AppBundle\Sms\Sms;
+use AppBundle\Sms\SmsSender;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -36,7 +36,7 @@ class InterviewSubscriber implements EventSubscriberInterface
      * @param SbsData $sbsData
      * @param InterviewNotificationManager $notificationManager
      * @param InterviewManager $interviewManager
-     * @param Sender $smsSender
+     * @param SmsSender $smsSender
      * @param RouterInterface $router
      */
     public function __construct(
@@ -47,7 +47,7 @@ class InterviewSubscriber implements EventSubscriberInterface
         SbsData $sbsData,
         InterviewNotificationManager $notificationManager,
         InterviewManager $interviewManager,
-        Sender $smsSender,
+        SmsSender $smsSender,
         RouterInterface $router
     ) {
         $this->mailer = $mailer;
