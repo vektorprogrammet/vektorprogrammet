@@ -100,7 +100,7 @@ services:
 
   app.interview_subscriber:
       class: AppBundle\EventSubscriber\InterviewSubscriber
-      arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.sbs_data', '@app.interview_notification_manager', '@app.interview.manager', '@app.sms', '%sms.country_code%', '@router']
+      arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.sbs_data', '@app.interview_notification_manager', '@app.interview.manager', '@app.sms', '@router']
       tags:
         - { name: kernel.event_subscriber }
 

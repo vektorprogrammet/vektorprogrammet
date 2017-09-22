@@ -25,7 +25,6 @@ class InterviewSubscriber implements EventSubscriberInterface
     private $interviewManager;
     private $smsSender;
     private $router;
-    private $smsCountryCode;
 
     public function __construct(
         \Swift_Mailer $mailer,
@@ -36,7 +35,6 @@ class InterviewSubscriber implements EventSubscriberInterface
         InterviewNotificationManager $notificationManager,
         InterviewManager $interviewManager,
         SmsSender $smsSender,
-        string $smsCountryCode,
         RouterInterface $router
     ) {
         $this->mailer = $mailer;
@@ -48,7 +46,6 @@ class InterviewSubscriber implements EventSubscriberInterface
         $this->interviewManager = $interviewManager;
         $this->smsSender = $smsSender;
         $this->router = $router;
-        $this->smsCountryCode = $smsCountryCode;
     }
 
     /**
@@ -139,7 +136,7 @@ class InterviewSubscriber implements EventSubscriberInterface
         $phoneNumber = $interview->getUser()->getPhone();
         $interviewer = $interview->getInterviewer();
 
-        $validNumber = $this->smsSender->validatePhoneNumber($phoneNumber, $this->smsCountryCode);
+        $validNumber = $this->smsSender->validatePhoneNumber($phoneNumber);
         if (!$validNumber) {
             $this->logger->alert("Kunne ikke sende schedule sms til *$user*\n Tlf.nr.: *$phoneNumber*");
             return;

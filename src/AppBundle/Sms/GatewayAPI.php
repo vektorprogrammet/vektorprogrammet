@@ -80,14 +80,34 @@ class GatewayAPI implements SmsSender
         $this->logger->alert($message);
     }
 
-    public function validatePhoneNumber(string $number, string $countryCode): bool
+    public function formatPhoneNumber(string $number)
+    {
+        $countryCode = $this->countryCode;
+        $number = preg_replace('/\s+/', '', $number);
+
+        if (!$this->validatePhoneNumber($number)) {
+            return false;
+        }
+
+        if (strlen($number) === 8) {
+            return $countryCode . $number;
+        } elseif (strlen($number) === 10 && $this->startsWith($number, "{$countryCode}")) {
+            return $number;
+        } elseif (strlen($number) === 11 && $this->startsWith($number, "+{$countryCode}")) {
+            return $countryCode . substr($number, 3);
+        } else {
+            return false;
+        }
+    }
+
+    public function validatePhoneNumber(string $number): bool
     {
         $number = preg_replace('/\s+/', '', $number);
 
         return
             strlen($number) === 8 ||
-            strlen($number) === 10 && $this->startsWith($number, "{$countryCode}") ||
-            strlen($number) === 11 && $this->startsWith($number, "+{$countryCode}");
+            strlen($number) === 10 && $this->startsWith($number, $this->countryCode) ||
+            strlen($number) === 11 && $this->startsWith($number, "+$this->countryCode");
     }
 
     private function startsWith(string $string, string $search)
