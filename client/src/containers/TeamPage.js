@@ -1,8 +1,14 @@
 import React, {Component} from 'react';
+import Testimonial from '../components/Testimonial';
 
 class TeamPage extends Component {
   render() {
-    return <h1>Team page</h1>
+    return (
+        <div>
+            <h3>Team</h3>
+            <Testimonial/>
+        </div>
+    )
   }
 }
 

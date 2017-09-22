@@ -1,0 +1,11 @@
+.testimonial {
+    display: inline-block;
+    border-style: solid;
+    text-align: center;
+    margin: auto;
+}
+
+Image.testimonial {
+    display: inline;
+    float: none;
+}
