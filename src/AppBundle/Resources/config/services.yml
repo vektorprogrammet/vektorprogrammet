@@ -1,7 +1,7 @@
 services:
   app.sms:
     class: AppBundle\Sms\Sender
-    arguments: ['%sms_token%', '@app.logger', '%sms.disable_delivery%']
+    arguments: ['%sms_token%', '@app.logger', '%sms.disable_delivery%', '%sms.max_length%']
 
   app.logger:
     class: AppBundle\Service\LogService

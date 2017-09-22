@@ -40,4 +40,17 @@ class Sms
     {
         return $this->recipients;
     }
+
+    public function getRecipientsString()
+    {
+        $recipientsString = "";
+        for ($i = 0; $i < count($this->recipients); $i++) {
+            $recipientsString .= $this->recipients[$i];
+            if ($i !== count($this->recipients)-1) {
+                $recipientsString .= ", ";
+            }
+        }
+
+        return $recipientsString;
+    }
 }

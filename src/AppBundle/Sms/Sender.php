@@ -11,17 +11,23 @@ class Sender
     private $token;
     private $logger;
     private $disableDelivery;
+    private $maxLength;
 
-    public function __construct(string $token, LogService $logger, bool $disableDelivery)
+    public function __construct(string $token, LogService $logger, bool $disableDelivery, string $maxLength)
     {
         $this->landCode = '47';
         $this->token = $token;
         $this->logger = $logger;
         $this->disableDelivery = $disableDelivery;
+        $this->maxLength = $maxLength;
     }
     
     public function send(Sms $sms)
     {
+        if (strlen($sms->getMessage()) > $this->maxLength) {
+            $this->logMessageTooLong($sms);
+        }
+
         $data = array(
             'token' => $this->token,
             'sender' => $sms->getSender(),
@@ -36,7 +42,7 @@ class Sender
                 $data["recipients.$i.msisdn"] = $number;
                 $i++;
             } else {
-                $this->logger->alert("Could not send sms to $recipient");
+                $this->logger->alert("Could not send sms to *$recipient*, invalid phone number");
             }
         }
 
@@ -50,14 +56,7 @@ class Sender
 
     private function log(Sms $sms)
     {
-        $recipients = $sms->getRecipients();
-        $recipientsString = "";
-        for ($i = 0; $i < count($recipients); $i++) {
-            $recipientsString .= $recipients[$i];
-            if ($i !== count($recipients)-1) {
-                $recipientsString .= ", ";
-            }
-        }
+        $recipientsString = $sms->getRecipientsString();
 
         $logMessage =
             "SMS sent\n" .
@@ -67,6 +66,19 @@ class Sender
             "Message: {$sms->getMessage()}" .
             "```\n";
         $this->logger->info($logMessage);
+    }
+
+    private function logMessageTooLong(Sms $sms)
+    {
+        $smsLength = strlen($sms->getMessage());
+        $message =
+            "Could not send SMS to *{$sms->getRecipientsString()}*: " .
+            "Message too long ($smsLength/$this->maxLength characters)\n\n" .
+            "```\n" .
+            $sms->getMessage() .
+            "```\n";
+
+        $this->logger->alert($message);
     }
 
     public function cleanPhoneNumber(string $number)
