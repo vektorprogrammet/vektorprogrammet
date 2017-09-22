@@ -3,6 +3,7 @@
 namespace AppBundle\Tests\Sms;
 
 use AppBundle\Sms\GatewayAPI;
+use AppBundle\Sms\Sms;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class GatewayApiTest extends KernelTestCase
@@ -195,5 +196,15 @@ class GatewayApiTest extends KernelTestCase
         $actual = $this->gatewayApi->formatPhoneNumber('+47123456789');
 
         self::assertEquals($expected, $actual);
+    }
+
+    public function testSendWithoutCrashing()
+    {
+        $sms = new Sms();
+        $sms->recipients(['12345678'])
+            ->sender('Vektorbot')
+            ->message('This is a test message');
+
+        $this->gatewayApi->send($sms);
     }
 }

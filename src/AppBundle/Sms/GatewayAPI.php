@@ -36,7 +36,7 @@ class GatewayAPI implements SmsSender
         $recipients = $sms->getRecipients();
         $i = 0;
         foreach ($recipients as $recipient) {
-            $number = PhoneNumberFormatter::format($recipient, $this->countryCode);
+            $number = $this->formatPhoneNumber($recipient);
             if ($number !== false) {
                 $data["recipients.$i.msisdn"] = $number;
                 $i++;
