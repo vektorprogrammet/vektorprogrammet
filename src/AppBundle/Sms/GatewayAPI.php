@@ -6,19 +6,19 @@ use AppBundle\Service\LogService;
 
 class GatewayAPI implements SmsSender
 {
-    private $landCode;
     private $apiToken;
     private $logger;
     private $disableDelivery;
     private $maxLength;
+    private $countryCode;
 
-    public function __construct(string $apiToken, LogService $logger, bool $disableDelivery, string $maxLength)
+    public function __construct(string $apiToken, LogService $logger, bool $disableDelivery, string $maxLength, string $countryCode)
     {
-        $this->landCode = '47';
         $this->logger = $logger;
         $this->disableDelivery = $disableDelivery;
         $this->maxLength = $maxLength;
         $this->apiToken = $apiToken;
+        $this->countryCode = $countryCode;
     }
     
     public function send(Sms $sms)
@@ -36,7 +36,7 @@ class GatewayAPI implements SmsSender
         $recipients = $sms->getRecipients();
         $i = 0;
         foreach ($recipients as $recipient) {
-            $number = $this->cleanPhoneNumber($recipient);
+            $number = PhoneNumberFormatter::format($recipient, $this->countryCode);
             if ($number !== false) {
                 $data["recipients.$i.msisdn"] = $number;
                 $i++;
@@ -78,20 +78,5 @@ class GatewayAPI implements SmsSender
             "```\n";
 
         $this->logger->alert($message);
-    }
-
-    public function cleanPhoneNumber(string $number)
-    {
-        $number = preg_replace('/\s+/', '', $number);
-
-        if (strlen($number) === 8) {
-            return $this->landCode . $number;
-        } elseif (strlen($number) === 11 && substr($number, 0, 3) === "+{$this->landCode}") {
-            return $this->landCode . substr($number, 3);
-        } elseif (strlen($number) === 10 && substr($number, 0, 2) === $this->landCode) {
-            return $number;
-        } else {
-            return false;
-        }
     }
 }

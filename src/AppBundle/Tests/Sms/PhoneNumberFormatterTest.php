@@ -2,24 +2,17 @@
 
 namespace AppBundle\Tests\Sms;
 
+use AppBundle\Sms\PhoneNumberFormatter;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class SenderTest extends KernelTestCase
+class PhoneNumberFormatterTest extends KernelTestCase
 {
-    private $sender;
-    
-    protected function setUp()
-    {
-        $kernel = $this->createKernel();
-        $kernel->boot();
-
-        $this->sender = $kernel->getContainer()->get('app.sms');
-    }
+    private $landCode = '47';
 
     public function testNumberCleanerValid8Digit()
     {
         $expected = '4712345678';
-        $actual = $this->sender->cleanPhoneNumber('12345678');
+        $actual = PhoneNumberFormatter::format('12345678', $this->landCode);
 
         self::assertEquals($expected, $actual);
     }
@@ -27,7 +20,7 @@ class SenderTest extends KernelTestCase
     public function testNumberCleanerNumberWithSpaces()
     {
         $expected = '4712345678';
-        $actual = $this->sender->cleanPhoneNumber('123 45 678');
+        $actual = PhoneNumberFormatter::format('123 45 678', $this->landCode);
 
         self::assertEquals($expected, $actual);
     }
@@ -35,7 +28,7 @@ class SenderTest extends KernelTestCase
     public function testNumberCleanerAlreadyClean()
     {
         $expected = '4712345678';
-        $actual = $this->sender->cleanPhoneNumber('4712345678');
+        $actual = PhoneNumberFormatter::format('4712345678', $this->landCode);
 
         self::assertEquals($expected, $actual);
     }
@@ -43,7 +36,7 @@ class SenderTest extends KernelTestCase
     public function testNumberCleanerStartWithPlus()
     {
         $expected = '4712345678';
-        $actual = $this->sender->cleanPhoneNumber('+4712345678');
+        $actual = PhoneNumberFormatter::format('+4712345678', $this->landCode);
 
         self::assertEquals($expected, $actual);
     }
@@ -51,7 +44,7 @@ class SenderTest extends KernelTestCase
     public function testNumberCleanerEmptyString()
     {
         $expected = false;
-        $actual = $this->sender->cleanPhoneNumber('');
+        $actual = PhoneNumberFormatter::format('', $this->landCode);
         
         self::assertEquals($expected, $actual);
     }
@@ -59,7 +52,7 @@ class SenderTest extends KernelTestCase
     public function testNumberCleanerTooShort()
     {
         $expected = false;
-        $actual = $this->sender->cleanPhoneNumber('1234567');
+        $actual = PhoneNumberFormatter::format('1234567', $this->landCode);
 
         self::assertEquals($expected, $actual);
     }
@@ -67,7 +60,7 @@ class SenderTest extends KernelTestCase
     public function testNumberCleanerTooLong()
     {
         $expected = false;
-        $actual = $this->sender->cleanPhoneNumber('123456789');
+        $actual = PhoneNumberFormatter::format('123456789', $this->landCode);
 
         self::assertEquals($expected, $actual);
     }
@@ -75,7 +68,7 @@ class SenderTest extends KernelTestCase
     public function testNumberCleanerTooLongStartWithLandCode()
     {
         $expected = false;
-        $actual = $this->sender->cleanPhoneNumber('47123456789');
+        $actual = PhoneNumberFormatter::format('47123456789', $this->landCode);
 
         self::assertEquals($expected, $actual);
     }
@@ -83,7 +76,7 @@ class SenderTest extends KernelTestCase
     public function testNumberCleanerTooLongStartWithPlus()
     {
         $expected = false;
-        $actual = $this->sender->cleanPhoneNumber('+47123456789');
+        $actual = PhoneNumberFormatter::format('+47123456789', $this->landCode);
 
         self::assertEquals($expected, $actual);
     }

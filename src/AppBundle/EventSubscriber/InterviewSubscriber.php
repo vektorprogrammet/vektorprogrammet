@@ -7,6 +7,7 @@ use AppBundle\Event\InterviewEvent;
 use AppBundle\Service\InterviewManager;
 use AppBundle\Service\InterviewNotificationManager;
 use AppBundle\Service\SbsData;
+use AppBundle\Sms\PhoneNumberFormatter;
 use AppBundle\Sms\Sms;
 use AppBundle\Sms\SmsSender;
 use Psr\Log\LoggerInterface;
@@ -25,20 +26,8 @@ class InterviewSubscriber implements EventSubscriberInterface
     private $interviewManager;
     private $smsSender;
     private $router;
+    private $smsCountryCode;
 
-    /**
-     * ApplicationAdmissionSubscriber constructor.
-     *
-     * @param \Swift_Mailer $mailer
-     * @param \Twig_Environment $twig
-     * @param Session $session
-     * @param LoggerInterface $logger
-     * @param SbsData $sbsData
-     * @param InterviewNotificationManager $notificationManager
-     * @param InterviewManager $interviewManager
-     * @param SmsSender $smsSender
-     * @param RouterInterface $router
-     */
     public function __construct(
         \Swift_Mailer $mailer,
         \Twig_Environment $twig,
@@ -48,6 +37,7 @@ class InterviewSubscriber implements EventSubscriberInterface
         InterviewNotificationManager $notificationManager,
         InterviewManager $interviewManager,
         SmsSender $smsSender,
+        string $smsCountryCode,
         RouterInterface $router
     ) {
         $this->mailer = $mailer;
@@ -59,6 +49,7 @@ class InterviewSubscriber implements EventSubscriberInterface
         $this->interviewManager = $interviewManager;
         $this->smsSender = $smsSender;
         $this->router = $router;
+        $this->smsCountryCode = $smsCountryCode;
     }
 
     /**
@@ -147,7 +138,7 @@ class InterviewSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         $user = $interview->getUser();
         $interviewer = $interview->getInterviewer();
-        $number = $this->smsSender->cleanPhoneNumber($interview->getUser()->getPhone());
+        $number = PhoneNumberFormatter::format($interview->getUser()->getPhone(), $this->smsCountryCode);
         if ($number === false) {
             $this->logger->alert("Kunne ikke sende schedule sms til $user, $number");
             return;
