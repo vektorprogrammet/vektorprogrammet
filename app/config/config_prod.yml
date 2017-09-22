@@ -3,7 +3,9 @@ imports:
 
 parameters:
     slack.disable_delivery: false
-    sms.disable_delivery: false
+
+    sms:
+        disable_delivery: false
 
 #framework:
 #    validation:

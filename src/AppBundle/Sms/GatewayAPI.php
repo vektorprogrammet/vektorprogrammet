@@ -12,13 +12,13 @@ class GatewayAPI implements SmsSender
     private $maxLength;
     private $countryCode;
 
-    public function __construct(string $apiToken, LogService $logger, bool $disableDelivery, string $maxLength, string $countryCode)
+    public function __construct(array $smsOptions, LogService $logger)
     {
         $this->logger = $logger;
-        $this->disableDelivery = $disableDelivery;
-        $this->maxLength = $maxLength;
-        $this->apiToken = $apiToken;
-        $this->countryCode = $countryCode;
+        $this->disableDelivery = $smsOptions['disable_delivery'];
+        $this->maxLength = $smsOptions['max_length'];
+        $this->apiToken = $smsOptions['api_token'];
+        $this->countryCode = $smsOptions['country_code'];
     }
     
     public function send(Sms $sms)
