@@ -7,7 +7,6 @@ use AppBundle\Event\InterviewEvent;
 use AppBundle\Service\InterviewManager;
 use AppBundle\Service\InterviewNotificationManager;
 use AppBundle\Service\SbsData;
-use AppBundle\Sms\PhoneNumberFormatter;
 use AppBundle\Sms\Sms;
 use AppBundle\Sms\SmsSender;
 use Psr\Log\LoggerInterface;
@@ -137,10 +136,12 @@ class InterviewSubscriber implements EventSubscriberInterface
         $interview = $event->getInterview();
         $data = $event->getData();
         $user = $interview->getUser();
+        $phoneNumber = $interview->getUser()->getPhone();
         $interviewer = $interview->getInterviewer();
-        $number = PhoneNumberFormatter::format($interview->getUser()->getPhone(), $this->smsCountryCode);
-        if ($number === false) {
-            $this->logger->alert("Kunne ikke sende schedule sms til $user, $number");
+
+        $validNumber = $this->smsSender->validatePhoneNumber($phoneNumber, $this->smsCountryCode);
+        if (!$validNumber) {
+            $this->logger->alert("Kunne ikke sende schedule sms til *$user*\n Tlf.nr.: *$phoneNumber*");
             return;
         }
 
