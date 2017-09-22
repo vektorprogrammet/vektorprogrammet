@@ -69,6 +69,22 @@ class GatewayApiTest extends KernelTestCase
         self::assertEquals($expected, $actual);
     }
 
+    public function testValidateNumberTooShortAndStartsWithCountryCode()
+    {
+        $expected = false;
+        $actual = $this->gatewayApi->validatePhoneNumber('471234567');
+
+        self::assertEquals($expected, $actual);
+    }
+
+    public function testValidateNumberTooShortAndStartsWithPlusCountryCode()
+    {
+        $expected = false;
+        $actual = $this->gatewayApi->validatePhoneNumber('+471234567');
+
+        self::assertEquals($expected, $actual);
+    }
+
     public function testValidateNumberTooLong()
     {
         $expected = false;
@@ -77,7 +93,7 @@ class GatewayApiTest extends KernelTestCase
         self::assertEquals($expected, $actual);
     }
 
-    public function testValidateNumberTooLongAndStartsWithLandCode()
+    public function testValidateNumberTooLongAndStartsWithCountryCode()
     {
         $expected = false;
         $actual = $this->gatewayApi->validatePhoneNumber('47123456789');
@@ -141,6 +157,22 @@ class GatewayApiTest extends KernelTestCase
         self::assertEquals($expected, $actual);
     }
 
+    public function testFormatNumberTooShortAndStartsWithCountryCode()
+    {
+        $expected = false;
+        $actual = $this->gatewayApi->formatPhoneNumber('471234567');
+
+        self::assertEquals($expected, $actual);
+    }
+
+    public function testFormatNumberTooShortAndStartsWithPlusCountryCode()
+    {
+        $expected = false;
+        $actual = $this->gatewayApi->formatPhoneNumber('+471234567');
+
+        self::assertEquals($expected, $actual);
+    }
+
     public function testFormatNumberTooLong()
     {
         $expected = false;
@@ -149,7 +181,7 @@ class GatewayApiTest extends KernelTestCase
         self::assertEquals($expected, $actual);
     }
 
-    public function testFormatNumberTooLongStartWithLandCode()
+    public function testFormatNumberTooLongStartWithCountryCode()
     {
         $expected = false;
         $actual = $this->gatewayApi->formatPhoneNumber('47123456789');
