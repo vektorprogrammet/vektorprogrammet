@@ -9,8 +9,8 @@ parameters:
   slack.log_channel: '#website_logs'
   slack.disable_delivery: true
 
-  sms:
-    api_token: '%sms_token%'
+  gateway_sms:
+    api_token: '%gateway_api_token%'
     disable_delivery: true
     max_length: 1200
     country_code: '47'

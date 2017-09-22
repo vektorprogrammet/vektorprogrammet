@@ -4,7 +4,7 @@ imports:
 parameters:
     slack.disable_delivery: false
 
-    sms:
+    gateway_sms:
         disable_delivery: false
 
 #framework:

@@ -1,7 +1,7 @@
 services:
   app.sms:
     class: AppBundle\Sms\GatewayAPI
-    arguments: ['%sms%', '@app.logger']
+    arguments: ['%gateway_sms%', '@app.logger']
 
   app.logger:
     class: AppBundle\Service\LogService
