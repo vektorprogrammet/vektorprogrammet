@@ -13,6 +13,7 @@ use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use InvalidArgumentException;
 
 /**
  * InterviewController is the controller responsible for interview actions,
@@ -417,8 +418,12 @@ class InterviewController extends Controller
      */
     public function editStatusAction(Request $request, Interview $interview)
     {
-        $status = $request->get('status');
-        $interview->setStatus($status);
+        $status = intval($request->get('status'));
+        try {
+            $interview->setStatus($status);
+        } catch (InvalidArgumentException $e) {
+            throw new BadRequestHttpException();
+        }
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
