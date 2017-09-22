@@ -25,6 +25,7 @@ class GatewayAPI implements SmsSender
     {
         if (strlen($sms->getMessage()) > $this->maxLength) {
             $this->logMessageTooLong($sms);
+            return;
         }
 
         $data = array(
@@ -85,16 +86,19 @@ class GatewayAPI implements SmsSender
         $countryCode = $this->countryCode;
         $number = preg_replace('/\s+/', '', $number);
 
-        if (!$this->validatePhoneNumber($number)) {
-            return false;
-        }
+        $startsWithCountryCode =
+            strlen($number) === 8 + strlen($countryCode) &&
+            $this->startsWith($number, $countryCode);
+        $startsWithPlusCountryCode =
+            strlen($number) === 9 + strlen($countryCode) &&
+            $this->startsWith($number, "+$countryCode");
 
         if (strlen($number) === 8) {
             return $countryCode . $number;
-        } elseif (strlen($number) === 10 && $this->startsWith($number, "{$countryCode}")) {
+        } elseif ($startsWithCountryCode) {
             return $number;
-        } elseif (strlen($number) === 11 && $this->startsWith($number, "+{$countryCode}")) {
-            return $countryCode . substr($number, 3);
+        } elseif ($startsWithPlusCountryCode) {
+            return substr($number, 1);
         } else {
             return false;
         }
@@ -102,12 +106,20 @@ class GatewayAPI implements SmsSender
 
     public function validatePhoneNumber(string $number): bool
     {
+        $countryCode = $this->countryCode;
         $number = preg_replace('/\s+/', '', $number);
+
+        $startsWithCountryCode =
+            strlen($number) === 8 + strlen($countryCode) &&
+            $this->startsWith($number, $countryCode);
+        $startsWithPlusCountryCode =
+            strlen($number) === 9 + strlen($countryCode) &&
+            $this->startsWith($number, "+$countryCode");
 
         return
             strlen($number) === 8 ||
-            strlen($number) === 10 && $this->startsWith($number, $this->countryCode) ||
-            strlen($number) === 11 && $this->startsWith($number, "+$this->countryCode");
+            $startsWithCountryCode ||
+            $startsWithPlusCountryCode;
     }
 
     private function startsWith(string $string, string $search)

@@ -133,7 +133,7 @@ class InterviewSubscriber implements EventSubscriberInterface
         $interview = $event->getInterview();
         $data = $event->getData();
         $user = $interview->getUser();
-        $phoneNumber = $interview->getUser()->getPhone();
+        $phoneNumber = $user->getPhone();
         $interviewer = $interview->getInterviewer();
 
         $validNumber = $this->smsSender->validatePhoneNumber($phoneNumber);
@@ -161,9 +161,9 @@ class InterviewSubscriber implements EventSubscriberInterface
             $interviewer->getPhone();
 
         $sms = new Sms();
-        $sms->message($message);
-        $sms->sender("Vektor");
-        $sms->recipients([$interview->getUser()->getPhone()]);
+        $sms->setMessage($message);
+        $sms->setSender("Vektor");
+        $sms->setRecipients([$phoneNumber]);
 
         $this->smsSender->send($sms);
     }

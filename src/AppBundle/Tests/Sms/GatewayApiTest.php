@@ -201,9 +201,9 @@ class GatewayApiTest extends KernelTestCase
     public function testSendWithoutCrashing()
     {
         $sms = new Sms();
-        $sms->recipients(['12345678'])
-            ->sender('Vektorbot')
-            ->message('This is a test message');
+        $sms->setRecipients(['12345678']);
+        $sms->setSender('Vektorbot');
+        $sms->setMessage('This is a test message');
 
         $this->gatewayApi->send($sms);
     }

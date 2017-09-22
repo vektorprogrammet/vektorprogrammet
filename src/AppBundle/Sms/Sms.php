@@ -7,23 +7,10 @@ class Sms
     private $sender;
     private $message;
     private $recipients;
-    
-    public function sender(string $sender): self
+
+    public function setSender(string $sender)
     {
         $this->sender = $sender;
-        return $this;
-    }
-
-    public function message(string $message): self
-    {
-        $this->message = $message;
-        return $this;
-    }
-
-    public function recipients(array $recipients): self
-    {
-        $this->recipients = $recipients;
-        return $this;
     }
 
     public function getSender()
@@ -31,9 +18,19 @@ class Sms
         return $this->sender;
     }
 
+    public function setMessage(string $message)
+    {
+        $this->message = $message;
+    }
+
     public function getMessage()
     {
         return $this->message;
+    }
+
+    public function setRecipients(array $recipients)
+    {
+        $this->recipients = $recipients;
     }
 
     public function getRecipients()
