@@ -4,22 +4,21 @@ namespace AppBundle\Sms;
 
 use AppBundle\Service\LogService;
 
-class Sender implements SmsSender
+class GatewayAPI implements SmsSender
 {
     private $landCode;
-
-    private $token;
+    private $apiToken;
     private $logger;
     private $disableDelivery;
     private $maxLength;
 
-    public function __construct(string $token, LogService $logger, bool $disableDelivery, string $maxLength)
+    public function __construct(string $apiToken, LogService $logger, bool $disableDelivery, string $maxLength)
     {
         $this->landCode = '47';
-        $this->token = $token;
         $this->logger = $logger;
         $this->disableDelivery = $disableDelivery;
         $this->maxLength = $maxLength;
+        $this->apiToken = $apiToken;
     }
     
     public function send(Sms $sms)
@@ -29,7 +28,7 @@ class Sender implements SmsSender
         }
 
         $data = array(
-            'token' => $this->token,
+            'token' => $this->apiToken,
             'sender' => $sms->getSender(),
             'message' => $sms->getMessage()
         );

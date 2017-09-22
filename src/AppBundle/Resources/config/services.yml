@@ -1,6 +1,6 @@
 services:
   app.sms:
-    class: AppBundle\Sms\Sender
+    class: AppBundle\Sms\GatewayAPI
     arguments: ['%sms_token%', '@app.logger', '%sms.disable_delivery%', '%sms.max_length%']
 
   app.logger:
