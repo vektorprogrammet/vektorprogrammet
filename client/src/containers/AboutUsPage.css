@@ -1,0 +1,20 @@
+.about-us-text {
+    margin-right: 50px;
+    margin-left: 150px;
+    font-size: 130%;
+    /*margin-top: 50px; TODO:Get this to work */
+}
+
+.FAQ {
+    margin-left: 50px;
+    margin-right: 150px;
+}
+
+.links {
+    margin-left: 350px;
+}
+
+.links a {
+    margin-left: 150px;
+    font-size: 130%;
+}
