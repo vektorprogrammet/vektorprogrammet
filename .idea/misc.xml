@@ -3,5 +3,5 @@
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="JSX" />
   </component>
-  <component name="ProjectRootManager" version="2" default="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_3" default="false" />
 </project>
