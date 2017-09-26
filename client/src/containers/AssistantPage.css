@@ -1,0 +1,41 @@
+.header-text {
+    text-align: center;
+    margin: 1250px auto;
+}
+
+p {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 26px;
+    text-align: left;
+}
+
+p.center {
+    text-align: center;
+}
+
+img.displayed {
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.assistant-pics {
+    margin: 125px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.content-text {
+    text-align: center;
+    margin: 125px auto;
+}
+
+.links {
+    margin-left: 350px;
+}
+
+.links a {
+    margin-left: 150px;
+    font-size: 130%;
+}
