@@ -125,3 +125,5 @@ security:
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/assistenter, roles: ROLE_USER }
         - { path: ^/utlegg, roles: ROLE_USER }
+
+        - { path: ^/sso, ips: [127.0.0.1, '%idp_server_ip%']}

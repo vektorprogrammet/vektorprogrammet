@@ -128,6 +128,11 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getResult();
     }
 
+    /**
+     * @param $username
+     *
+     * @return User
+     */
     public function findUserByUsername($username)
     {
         return $this->createQueryBuilder('User')
