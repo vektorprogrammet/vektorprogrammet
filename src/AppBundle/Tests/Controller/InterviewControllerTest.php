@@ -465,7 +465,7 @@ class InterviewControllerTest extends BaseWebTestCase
     {
         $client = $this->createAdminClient();
         $crawler = $this->goTo('/kontrollpanel/opptak/fordelt/2', $client);
-        $before = $crawler->filter('td:contains("Ingen svar")')->count();
+        $before = $crawler->filter('td:contains("Ikke satt opp")')->count();
 
         $crawler = $this->goTo("/kontrollpanel/intervju/settopp/6", $client);
         $saveButton = $crawler->filter('button#status_form_button');
@@ -477,7 +477,7 @@ class InterviewControllerTest extends BaseWebTestCase
         $client->followRedirect();
 
         $crawler = $this->goTo('/kontrollpanel/opptak/fordelt/2', $client);
-        $after = $crawler->filter('td:contains("Ingen svar")')->count();
+        $after = $crawler->filter('td:contains("Ikke satt opp")')->count();
         $this->assertEquals($before - 1, $after);
     }
 
