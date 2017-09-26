@@ -41,6 +41,7 @@ class SsoController extends Controller
             'name' => $user->getFullName(),
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
+            'companyEmail' => $user->getCompanyEmail(),
         ]);
     }
 }

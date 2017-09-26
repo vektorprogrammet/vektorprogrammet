@@ -214,6 +214,13 @@ specific_profile:
  requirements:
   id: \d+
 
+edit_user_company_email:
+  path: /bruker/vekorepost/endre/{id}
+  defaults: { _controller: AppBundle:Profile:editCompanyEmail }
+  methods: [GET, POST]
+  requirements:
+    id: \d+
+
 profile_edit_admin:
  path:   /kontrollpanel/profil/rediger/{id}
  defaults: { _controller: AppBundle:Profile:editProfileInformationAdmin }
