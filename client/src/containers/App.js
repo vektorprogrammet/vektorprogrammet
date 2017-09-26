@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import Header from './Header';
 import HomePage from './HomePage';
 import AssistantPage from './AssistantPage';
-//import TeamPage from './TeamPage';
+import TeamPage from './TeamPage';
 import AboutUsPage from './AboutUsPage';
 
 class App extends Component {
@@ -15,6 +15,7 @@ class App extends Component {
             <Route exact path='/' component={HomePage}/>
             <Route exact path='/assistenter' component={AssistantPage}/>
             <Route exact path='/om-oss' component={AboutUsPage}/>
+            <Route exact path='/team' component={TeamPage}/>
           </Switch>
         </div>
     );
