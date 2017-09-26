@@ -40,6 +40,8 @@ parameters:
 
     session.name: VPSESSID
 
+    idp_server_ip: 127.0.0.1
+
     # Webhook from GitHub to automatically deploy on push to master
 
 twig:

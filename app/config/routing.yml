@@ -287,7 +287,14 @@ assistant_history_delete:
  defaults: { _controller: AppBundle:AssistantHistory:delete }
  methods: [POST]
 
+##########################################
+#                SSO                     #
+##########################################
 
+sso_login:
+    path: /sso/login
+    defaults: { _controller: AppBundle:Sso:login}
+    methods: [POST]
 
 ##########################################
 #                Login                   #

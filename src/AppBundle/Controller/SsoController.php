@@ -1,0 +1,46 @@
+<?php
+
+namespace AppBundle\Controller;
+
+use Doctrine\ORM\NoResultException;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+
+class SsoController extends Controller
+{
+    public function loginAction(Request $request)
+    {
+        $response = new JsonResponse();
+
+        $username = $request->get('username');
+        $password = $request->get('password');
+
+        if (!$username || !$password) {
+            $response->setStatusCode(401);
+            $response->setContent('Username or password not provided');
+            return $response;
+        }
+
+        try {
+            $user = $this->getDoctrine()->getRepository('AppBundle:User')->findUserByUsername($username);
+        } catch (NoResultException $e) {
+            $response->setStatusCode(401);
+            $response->setContent('Username does not exist');
+            return $response;
+        }
+
+        $validPassword = $this->get('security.password_encoder')->isPasswordValid($user, $password);
+        if (!$validPassword) {
+            $response->setStatusCode(401);
+            $response->setContent('Wrong password');
+            return $response;
+        }
+
+        return new JsonResponse([
+            'name' => $user->getFullName(),
+            'username' => $user->getUsername(),
+            'email' => $user->getEmail(),
+        ]);
+    }
+}
