@@ -1,0 +1,29 @@
+.gradient-box{
+    height: 500px;
+    width: 100%;
+
+    padding: 100px 200px 100px 200px;
+
+    background: rgba(179,223,235,1);
+    background: -moz-radial-gradient(center, ellipse cover, rgba(179,223,235,1) 0%, rgba(110,206,235,1) 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(179,223,235,1)), color-stop(100%, rgba(110,206,235,1)));
+    background: -webkit-radial-gradient(center, ellipse cover, rgba(179,223,235,1) 0%, rgba(110,206,235,1) 100%);
+    background: -o-radial-gradient(center, ellipse cover, rgba(179,223,235,1) 0%, rgba(110,206,235,1) 100%);
+    background: -ms-radial-gradient(center, ellipse cover, rgba(179,223,235,1) 0%, rgba(110,206,235,1) 100%);
+    background: radial-gradient(ellipse at center, rgba(179,223,235,1) 0%, rgba(110,206,235,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3dfeb', endColorstr='#6eceeb', GradientType=1 );
+}
+
+h1, h3{
+    color:#fff;
+    margin:0;
+    padding:0;
+}
+
+h3 {
+    font-weight:normal;
+}
+
+Grid {
+    height: 500px;
+}
