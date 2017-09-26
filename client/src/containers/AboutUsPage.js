@@ -9,7 +9,7 @@ class AboutUsPage extends Component {
             <Grid divided='vertically'>
                 <Grid.Row columns={2}>
                     <Grid.Column width={10}>
-                        <p className="about-us-text">
+                        <p className="about-us-text" style={{marginTop: -4}}>
                             Vektorprogrammet arbeider for å øke interessen for matematikk og realfag blant elever i grunnskolen. Vi er en nasjonal studentorganisasjon som sender studenter med utmerket
                             realfagskompetanse til skoler for å hjelpe elevene i matematikktimene. Disse studentene har også gode pedagogiske evner og er gode rollemodeller – de er Norges realfagshelter.
                             <br/><br/>Da studentene er tilstede i skoletiden skiller vi oss derfor fra andre tiltak ved at elevenes barriere for å delta er ikke-eksisterende. Dette gjør at vi når ut til alle –
@@ -51,16 +51,16 @@ class AboutUsPage extends Component {
                         <p>Gå inn på denne siden her, finn et eller flere team du er interessert i. Hvis dette teamet tar opp nye medlemmer vil det være en knapp hvor du kan søke. Hvis det ikke er opptak kan du sende en mail til teamleder og si ifra at du er interessert.</p>
                         <h3>Hva er forskjellen på vektorassistent og teammedlem?</h3>
                         <p>Som vektorassistent vil man reise til ungdomsskolen som lærerassistent, mens som teammedlem er man med på å påvirke Vektorprogrammet som organisasjon. Som teammedlem blir man altså med i administrasjonen, og arbeidsoppgavene avhenger av hvilket team man er med i.</p>
-                        <h3>Går det ann å både være vektorassistent og med i team samtidig?</h3>
+                        <h3>Går det an å både være vektorassistent og med i team samtidig?</h3>
                         <p>Det er fullt mulig å være begge deler samtidig. Som vektorassistent vil man kun bli sendt ut 4 eller 8 ganger per semester. Dette gjør at arbeidsmengden er overkommelig, og kan fint kombineres med teamarbeid og studier.</p>
                         <h3>Jeg glemte søknadsfristen. Hva gjør jeg nå?</h3>
-                        <p>Gå til 'Opptak & kontak' i menyen og velg din region. Der finnes det ett kontaktskjema som du kan fylle ut, så finner vi ut av det sammen.</p>
+                        <p>Gå til 'Opptak & kontakt' i menyen og velg din region. Der finnes det ett kontaktskjema som du kan fylle ut, så finner vi ut av det sammen.</p>
                         <h3>I hvilke regioner holder Vektorprogrammet til?</h3>
                         <p>Trondheim, Oslo, Bergen, Ås og Tromsø</p>
                         <h3>Kan jeg være vektorassistent flere semestre?</h3>
                         <p>Ja, men du må huske å søke på nytt hvert semester! Du trenger ikke gå gjennom intervju og pedagogikk-kurs på nytt.</p>
                         <h3>Finner du ikke svar på det du lurer på?</h3>
-                        <p>Gå til 'Opptak & kontak' i menyen og velg din region. Der finnes det et kontaktskjema nederst som du kan fylle ut, så skal vi svare så raskt vi kan !</p>
+                        <p>Gå til 'Opptak & kontakt' i menyen og velg din region. Der finnes det et kontaktskjema nederst som du kan fylle ut, så skal vi svare så raskt vi kan !</p>
                     </div>
                 </Grid.Row>
                 <Grid.Row>
