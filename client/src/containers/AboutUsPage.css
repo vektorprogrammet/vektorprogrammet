@@ -1,8 +1,28 @@
 .about-us-text {
+    /*
     margin-right: 50px;
     margin-left: 150px;
     font-size: 130%;
     /*margin-top: 50px; TODO:Get this to work */
+    margin-top: 35px;
+    font-weight: 300;
+    width: 850px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 22px;
+}
+
+.header-text {
+    margin-left: 530px;
+    font-size: 40px;
+    font-family: "Roboto", Helvetica, Arial, sans-serif;
+    color: #333333;
+    /*display: flex; TODO: Fix scaling problem*/
+}
+
+.motivation-text {
+    font-size: 32px;
+    font-weight: 500;
 }
 
 .FAQ {

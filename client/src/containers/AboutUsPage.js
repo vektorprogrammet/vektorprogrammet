@@ -8,8 +8,11 @@ class AboutUsPage extends Component {
         return (
             <Grid divided='vertically'>
                 <Grid.Row columns={2}>
-                    <Grid.Column width={10}>
-                        <p className="about-us-text" style={{marginTop: -4}}>
+                    <Grid.Column width={11}>
+                        <h1 className="header-text">Om Vektorprogrammet</h1>
+                    </Grid.Column>
+                    <Grid.Column width={16}>
+                        <p className="about-us-text">
                             Vektorprogrammet arbeider for å øke interessen for matematikk og realfag blant elever i grunnskolen. Vi er en nasjonal studentorganisasjon som sender studenter med utmerket
                             realfagskompetanse til skoler for å hjelpe elevene i matematikktimene. Disse studentene har også gode pedagogiske evner og er gode rollemodeller – de er Norges realfagshelter.
                             <br/><br/>Da studentene er tilstede i skoletiden skiller vi oss derfor fra andre tiltak ved at elevenes barriere for å delta er ikke-eksisterende. Dette gjør at vi når ut til alle –
@@ -17,7 +20,13 @@ class AboutUsPage extends Component {
                         </p>
                     </Grid.Column>
                     <Grid.Column width={6}>
-                        <img src={'http://placehold.it/500x500'} style={{width:300,height:300}}/>
+                        <img src={'http://placehold.it/500x500'} style={{width:300,height:300, marginLeft: 870, marginTop: 40}}/>
+                    </Grid.Column>
+                    <Grid.Column width={6}>
+                        <h2 className="motivation-text">Motivere elever</h2>
+                        <p>
+
+                        </p>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
