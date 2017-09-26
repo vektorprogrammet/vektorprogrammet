@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\NewUserType;
+use AppBundle\Form\UserCompanyEmailType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\EditUserType;
@@ -263,5 +264,23 @@ class ProfileController extends Controller
             'form' => $form->createView(),
             'user' => $user,
         ));
+    }
+
+    public function editCompanyEmailAction(Request $request, User $user)
+    {
+        $form = $this->createForm(UserCompanyEmailType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            return $this->redirectToRoute('specific_profile', ['id' => $user->getId()]);
+        }
+
+        return $this->render('profile/edit_company_email.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
     }
 }

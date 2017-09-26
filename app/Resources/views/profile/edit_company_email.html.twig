@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Rediger Vektorepost | {{ user }}
+{% endblock %}
+
+{% block body %}
+    <p></p>
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+
+            <div class="row">
+                <div class="small-12 medium-12 large-12 columns">
+
+                    <h1> Redigerer Vektorepost | {{ user }} </h1>
+
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button type="submit" class="button">Lagre</button>
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+{% endblock %}

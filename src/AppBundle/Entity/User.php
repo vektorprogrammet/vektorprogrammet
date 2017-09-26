@@ -18,6 +18,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *      message="Denne Eposten er allerede i bruk.",
  *      groups={"create_user", "edit_user"}
  * )
+ * @UniqueEntity(
+ *      fields={"companyEmail"},
+ *      message="Denne Eposten er allerede i bruk."
+ * )
  *
  * @UniqueEntity(
  *      fields={"user_name"},
@@ -92,6 +96,12 @@ class User implements AdvancedUserInterface, \Serializable
      * @Assert\Email(groups={"admission", "create_user", "edit_user"}, message="Ikke gyldig e-post.")
      */
     private $email;
+
+    /**
+     * @ORM\Column(type="string", unique=true, nullable=true)
+     * @Assert\Email
+     */
+    private $companyEmail;
 
     /**
      * @ORM\Column(name="is_active", type="boolean")
@@ -630,5 +640,21 @@ class User implements AdvancedUserInterface, \Serializable
         }
 
         return $totalSum;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCompanyEmail()
+    {
+        return $this->companyEmail;
+    }
+
+    /**
+     * @param string $companyEmail
+     */
+    public function setCompanyEmail($companyEmail)
+    {
+        $this->companyEmail = $companyEmail;
     }
 }
