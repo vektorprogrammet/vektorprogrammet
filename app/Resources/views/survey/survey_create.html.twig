@@ -131,9 +131,9 @@
             },
 
             addAlternativeDeleteButton: function (alternative) {
-                var deleteButton = $('<i class="fa fa-times"></i>');
+                var deleteButton = $('<i class="fa fa-times delete-icon"></i>');
 
-                alternative.append($('<div class="small-1 columns"></div>').append(deleteButton));
+                alternative.append(deleteButton);
 
                 deleteButton.on('click', function (event) {
                     event.preventDefault();
@@ -222,6 +222,10 @@
             {{ form_errors(form.name) }}
             {{ form_widget(form.semester ) }}
             {{ form_errors(form.semester) }}
+            {{ form_row(form.showCustomFinishPage ) }}
+            {{ form_errors(form.showCustomFinishPage) }}
+            {{ form_row(form.finishPageContent ) }}
+            {{ form_errors(form.finishPageContent) }}
 
             <div
                     id="prototypes"
