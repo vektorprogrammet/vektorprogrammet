@@ -31,16 +31,28 @@ class RoleManagerTest extends KernelTestCase
         $this->roleManager = $kernel->getContainer()->get('app.roles');
 
         $this->mockUsers = [
+            // Assistants
             new RoleUserMock('assistant@gmail.com', Roles::ASSISTANT, Roles::ASSISTANT),
-            new RoleUserMock('kristoffer@stud.ntnu.no', Roles::ASSISTANT, Roles::TEAM_MEMBER),
             new RoleUserMock('aai@b.c', Roles::TEAM_MEMBER, Roles::ASSISTANT),
-            new RoleUserMock('team@gmail.com', Roles::TEAM_MEMBER, Roles::ASSISTANT),
-            new RoleUserMock('sortland@mail.com', Roles::TEAM_MEMBER, Roles::TEAM_MEMBER),
             new RoleUserMock('admin@gmail.com', Roles::TEAM_LEADER, Roles::ASSISTANT),
-            new RoleUserMock('aah@b.c', Roles::TEAM_LEADER, Roles::TEAM_LEADER),
-            new RoleUserMock('jan-per-gustavio@gmail.com', Roles::TEAM_LEADER, Roles::TEAM_LEADER), // Executive board member
-            new RoleUserMock('aaf@b.c', Roles::TEAM_MEMBER, Roles::TEAM_LEADER), // Executive board member
-            new RoleUserMock('superadmin@gmail.com', Roles::ADMIN, Roles::ASSISTANT),
+
+            // Team members
+            new RoleUserMock('kristoffer@stud.ntnu.no', Roles::ASSISTANT, Roles::TEAM_MEMBER),
+            new RoleUserMock('sortland@mail.com', Roles::TEAM_MEMBER, Roles::TEAM_MEMBER),
+            new RoleUserMock('aah@b.c', Roles::TEAM_LEADER, Roles::TEAM_MEMBER),
+
+            // Team leaders
+            new RoleUserMock('marte@mail.no', Roles::ASSISTANT, Roles::TEAM_LEADER),
+            new RoleUserMock('ida@stud.ntnu.no', Roles::TEAM_MEMBER, Roles::TEAM_LEADER),
+            new RoleUserMock('anna@mail.no', Roles::TEAM_LEADER, Roles::TEAM_LEADER),
+
+            // Executive board members
+            new RoleUserMock('angela@mail.no', Roles::ASSISTANT, Roles::TEAM_LEADER),
+            new RoleUserMock('aaf@b.c', Roles::TEAM_MEMBER, Roles::TEAM_LEADER),
+            new RoleUserMock('jan-per-gustavio@gmail.com', Roles::TEAM_LEADER, Roles::TEAM_LEADER),
+
+            // Admins
+            new RoleUserMock('superadmin@gmail.com', Roles::ADMIN, Roles::ADMIN),
             new RoleUserMock('petter@stud.ntnu.no', Roles::ADMIN, Roles::ADMIN),
         ];
     }
@@ -65,8 +77,8 @@ class RoleManagerTest extends KernelTestCase
 
     private function updateAllUserRoles()
     {
-        $realUsers = $this->em->getRepository('AppBundle:User')->findAll();
-        foreach ($realUsers as $user) {
+        foreach ($this->mockUsers as $mockUser) {
+            $user = $this->em->getRepository('AppBundle:User')->findUserByEmail($mockUser->getEmail());
             $this->roleManager->updateUserRole($user);
         }
     }
