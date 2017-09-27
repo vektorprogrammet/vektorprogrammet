@@ -3,6 +3,10 @@ services:
     class: AppBundle\Service\LogService
     arguments: ['@logger', '@app.slack_messenger']
 
+  app.google_api:
+      class: AppBundle\Google\GoogleAPI
+      arguments: ['%google_api%']
+
   app.email_sender:
     class: AppBundle\Service\EmailSender
     arguments: ['@mailer', '@twig', '@router', '@app.logger', '%default_from_email%', '%economy_email%']

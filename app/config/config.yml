@@ -5,6 +5,11 @@ imports:
     - { resource: "@AppBundle/Resources/config/services.yml" }
 
 parameters:
+  google_api:
+    client_id: '%google_api_client_id%'
+    client_secret: '%google_api_client_secret%'
+    refresh_token: '%google_api_refresh_token%'
+
   slack.notification_channel: '#notifications'
   slack.log_channel: '#website_logs'
   slack.disable_delivery: true
