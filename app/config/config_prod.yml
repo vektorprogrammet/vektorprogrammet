@@ -2,6 +2,8 @@ imports:
     - { resource: config.yml }
 
 parameters:
+    google_api:
+        disabled: false
     slack.disable_delivery: false
 
 #framework:

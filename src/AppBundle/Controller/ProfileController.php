@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\NewUserType;
-use AppBundle\Form\UserCompanyEmailType;
+use AppBundle\Form\Type\UserCompanyEmailType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\EditUserType;

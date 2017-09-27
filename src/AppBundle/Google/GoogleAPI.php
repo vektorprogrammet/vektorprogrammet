@@ -14,17 +14,23 @@ class GoogleAPI
     private $clientId;
     private $clientSecret;
     private $credentialsPath;
+    private $disabled;
 
     public function __construct(array $apiOptions)
     {
         $this->refreshToken    = $apiOptions['refresh_token'];
         $this->clientId        = $apiOptions['client_id'];
         $this->clientSecret    = $apiOptions['client_secret'];
+        $this->disabled    = $apiOptions['disabled'];
         $this->credentialsPath = __DIR__ . '/credentials.json';
     }
 
     public function getUsers($maxResults = null)
     {
+        if ($this->disabled) {
+            return [];
+        }
+
         $client  = $this->getClient();
         $service = new Google_Service_Directory($client);
 
@@ -42,6 +48,10 @@ class GoogleAPI
 
     public function getUser(string $companyEmail)
     {
+        if ($this->disabled) {
+            return null;
+        }
+
         $client  = $this->getClient();
         $service = new Google_Service_Directory($client);
 
@@ -62,6 +72,10 @@ class GoogleAPI
 
     public function createUser(User $user)
     {
+        if ($this->disabled) {
+            return null;
+        }
+
         $client  = $this->getClient();
         $service = new Google_Service_Directory($client);
 
@@ -82,6 +96,10 @@ class GoogleAPI
 
     public function updateUser(string $userKey, User $user)
     {
+        if ($this->disabled) {
+            return null;
+        }
+
         $client  = $this->getClient();
         $service = new Google_Service_Directory($client);
 
@@ -102,6 +120,10 @@ class GoogleAPI
 
     public function deleteUser(string $userKey)
     {
+        if ($this->disabled) {
+            return null;
+        }
+
         $client  = $this->getClient();
         $service = new Google_Service_Directory($client);
         $service->users->delete($userKey);

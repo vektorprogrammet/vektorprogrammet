@@ -7,6 +7,10 @@ services:
       class: AppBundle\Google\GoogleAPI
       arguments: ['%google_api%']
 
+  app.company_email_maker:
+    class: AppBundle\Service\CompanyEmailMaker
+    arguments: ['@doctrine.orm.default_entity_manager', '@app.logger']
+
   app.email_sender:
     class: AppBundle\Service\EmailSender
     arguments: ['@mailer', '@twig', '@router', '@app.logger', '%default_from_email%', '%economy_email%']
@@ -112,7 +116,7 @@ services:
 
   app.work_history_subscriber:
     class: AppBundle\EventSubscriber\WorkHistorySubscriber
-    arguments: ['@session', '@app.logger', '@security.authorization_checker', '@app.roles']
+    arguments: ['@session', '@app.logger', '@security.authorization_checker', '@app.roles', '@app.google_api', '@app.company_email_maker']
     tags:
         - { name: kernel.event_subscriber }
 

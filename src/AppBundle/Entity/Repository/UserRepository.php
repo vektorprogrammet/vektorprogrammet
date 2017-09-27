@@ -187,6 +187,18 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getOneOrNullResult();
     }
 
+    public function findAllCompanyEmails()
+    {
+        $results = $this->createQueryBuilder('user')
+            ->select('user.companyEmail')
+            ->where('user.companyEmail IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+        return array_map(function ($result) {
+            return $result['companyEmail'];
+        }, $results);
+    }
+
     /*
     These functions are used by UserProviderInterface
     */
