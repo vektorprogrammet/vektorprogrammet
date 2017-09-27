@@ -21,22 +21,20 @@ class CompanyEmailMaker
     {
         $allCompanyEmails = $this->em->getRepository('AppBundle:User')->findAllCompanyEmails();
         $allEmails = array_merge($allCompanyEmails, $blackList);
+        $firstName = strtolower($this->replaceNorwegianCharacters($user->getFirstName()));
+        $fullName = strtolower($this->replaceNorwegianCharacters($user->getFullName()));
 
-        $email = preg_replace('/\s+/', '.', $user->getFirstName()) . '@vektorprogrammet.no';
+        $email = preg_replace('/\s+/', '.', $firstName) . '@vektorprogrammet.no';
         if (array_search($email, $allEmails) !== false) {
-            $email = preg_replace('/\s+/', '.', $user->getFullName()) . '@vektorprogrammet.no';
+            $email = preg_replace('/\s+/', '.', $fullName) . '@vektorprogrammet.no';
         }
 
         $i = 2;
         while (array_search($email, $allEmails) !== false) {
-            $email = preg_replace('/\s+/', '.', $user->getFullName()) . $i .'@vektorprogrammet.no';
+            $email = preg_replace('/\s+/', '.', $fullName) . $i .'@vektorprogrammet.no';
             $i++;
         }
 
-        $email = strtolower($email);
-        $email = str_replace('æ', 'ae', $email);
-        $email = str_replace('ø', 'o', $email);
-        $email = str_replace('å', 'a', $email);
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->logger->alert("Failed to create email for $user. Invalid email: $email");
@@ -47,5 +45,17 @@ class CompanyEmailMaker
         $this->em->flush();
         $this->logger->info("Created company email, $email, for $user");
         return $email;
+    }
+
+    private function replaceNorwegianCharacters($string)
+    {
+        $string = str_replace('æ', 'ae', $string);
+        $string = str_replace('Æ', 'AE', $string);
+        $string = str_replace('ø', 'o', $string);
+        $string = str_replace('Ø', 'O', $string);
+        $string = str_replace('å', 'a', $string);
+        $string = str_replace('Å', 'Å', $string);
+
+        return $string;
     }
 }
