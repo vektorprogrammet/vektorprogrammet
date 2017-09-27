@@ -10,20 +10,25 @@
     margin-left: auto;
     margin-right: auto;
     font-size: 22px;
-}
-
-.header-text {
-    margin-left: 530px;
-    font-size: 40px;
-    font-family: "Roboto", Helvetica, Arial, sans-serif;
-    color: #333333;
-    /*display: flex; TODO: Fix scaling problem*/
+    font-style: normal;
+    line-height: 32px;
 }
 
 .motivation-text {
-    font-size: 32px;
-    font-weight: 500;
+    font-weight: 300;
+    width: 400px;
+    font-size: 20px;
+    line-height: 32px;
+    font-style: normal;
 }
+/*
+.header-text {
+    font-size: 40px;
+    font-family: "Roboto", Helvetica, Arial, sans-serif;
+    color: #333333;
+    display: flex; TODO: Fix scaling problem
+}
+*/
 
 .FAQ {
     margin-left: 50px;
