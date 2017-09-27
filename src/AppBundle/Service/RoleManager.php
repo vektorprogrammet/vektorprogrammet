@@ -181,7 +181,6 @@ class RoleManager
         }
 
         $role = $this->em->getRepository('AppBundle:Role')->findByRoleName($role);
-        $user->setRoles([$role]);
         $roleNeedsToUpdate = array_search($role, $user->getRoles()) === false;
 
         if ($roleNeedsToUpdate) {
