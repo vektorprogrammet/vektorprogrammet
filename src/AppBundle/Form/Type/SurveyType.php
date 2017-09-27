@@ -30,17 +30,17 @@ class SurveyType extends AbstractType
         ))
             
             ->add('showCustomFinishPage', ChoiceType::class, [
-                'label' => 'Sluttside',
+                'label' => 'Sluttside som vises etter undersøkelsen er besvart.',
                 'multiple' => false,
                 'expanded' => true,
                 'choices' => [
-                    false => 'Vis standard sluttside',
-                    true => 'Vis tilpasset sluttside',
+                    false => 'Standard',
+                    true => 'Tilpasset',
                 ]
             ])
             
             ->add('finishPageContent', CKEditorType::class, [
-                'label' => 'Tilpasset sluttside',
+                'label' => 'Tilpasset sluttside. Vises kun hvis "Tilpasset" er valgt over.',
             ])
 
         ->add('surveyQuestions', 'collection', array(
