@@ -13,6 +13,9 @@
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
                         <h3>Sett opp intervju</h3>
+                        <div class="float-right">
+                            Status: <span style="color: {{ interview.getInterviewStatusAsColor }}">{{ interview.interviewStatusAsString }}</span>
+                        </div>
                         <h5>Intervjuer</h5>
                         <p>{{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}</p>
                         <h5>Kandidat</h5>
