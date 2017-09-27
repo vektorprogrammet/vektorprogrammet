@@ -461,6 +461,26 @@ class InterviewControllerTest extends BaseWebTestCase
         $this->assertEquals($applicationsBefore, $applicationsAfter);
     }
 
+    public function testUpdateStatus()
+    {
+        $client = $this->createAdminClient();
+        $crawler = $this->goTo('/kontrollpanel/opptak/fordelt/2', $client);
+        $before = $crawler->filter('td:contains("Ikke satt opp")')->count();
+
+        $crawler = $this->goTo("/kontrollpanel/intervju/settopp/6", $client);
+        $saveButton = $crawler->filter('button#status_form_button');
+        $this->assertNotNull($saveButton);
+        $form = $saveButton->form();
+        $this->assertNotNull($form);
+        $form['status'] = 1;
+        $client->submit($form);
+        $client->followRedirect();
+
+        $crawler = $this->goTo('/kontrollpanel/opptak/fordelt/2', $client);
+        $after = $crawler->filter('td:contains("Ikke satt opp")')->count();
+        $this->assertEquals($before - 1, $after);
+    }
+
     /*
     Requires JQuery interaction, Symfony2 does not support that
 

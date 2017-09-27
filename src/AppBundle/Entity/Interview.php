@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use AppBundle\Type\InterviewStatusType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -106,7 +107,7 @@ class Interview
         $this->interviewAnswers = new ArrayCollection();
         $this->conducted = new \DateTime();
         $this->interviewed = false;
-        $this->interviewStatus = InterviewStatusType::PENDING;
+        $this->interviewStatus = InterviewStatusType::NO_CONTACT;
     }
 
     /**
@@ -389,6 +390,8 @@ class Interview
     public function getInterviewStatusAsString(): string
     {
         switch ($this->interviewStatus) {
+            case InterviewStatusType::NO_CONTACT:
+                return 'Ikke satt opp';
             case InterviewStatusType::PENDING:
                 return 'Ingen svar';
             case InterviewStatusType::ACCEPTED:
@@ -408,6 +411,8 @@ class Interview
     public function getInterviewStatusAsColor(): string
     {
         switch ($this->interviewStatus) {
+            case InterviewStatusType::NO_CONTACT:
+                return '#9999ff';
             case InterviewStatusType::PENDING:
                 return '#000000';
             case InterviewStatusType::ACCEPTED:
@@ -507,5 +512,17 @@ class Interview
     public function setCancelMessage(string $cancelMessage = null)
     {
         $this->cancelMessage = $cancelMessage;
+    }
+
+    /**
+     * @param int $newStatus
+     */
+    public function setStatus(int $newStatus)
+    {
+        if ($newStatus >= 0 && $newStatus <= 4) {
+            $this->interviewStatus = $newStatus;
+        } else {
+            throw new InvalidArgumentException('Invalid status');
+        }
     }
 }

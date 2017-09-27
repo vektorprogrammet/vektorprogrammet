@@ -1055,6 +1055,13 @@ interview_cancel_by_response:
     requirements:
       responseCode: \w+
 
+interview_edit_status:
+    path: kontrollpanel/intervju/status/{id}
+    defaults: { _controller: AppBundle:Interview:editStatus }
+    methods: [POST]
+    requirements:
+       id: \d+
+
 ##########################################
 #                File browser            #
 ##########################################

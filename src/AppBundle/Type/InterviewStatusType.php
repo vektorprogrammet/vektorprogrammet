@@ -8,4 +8,5 @@ abstract class InterviewStatusType
     const ACCEPTED = 1;
     const REQUEST_NEW_TIME = 2;
     const CANCELLED = 3;
+    const NO_CONTACT = 4;
 }
