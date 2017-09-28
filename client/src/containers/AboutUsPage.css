@@ -4,6 +4,7 @@
     margin-left: 150px;
     font-size: 130%;
     /*margin-top: 50px; TODO:Get this to work */
+
     margin-top: 35px;
     font-weight: 300;
     width: 850px;
@@ -13,18 +14,32 @@
     text-align: left;
     margin-left: auto;
     margin-right: auto;
-    flex: 1;
+    /*flex: 1;*/
 }
 
 .motivation-text {
     font-weight: 300;
-    width: 400px;
+    width: 200px;
     font-size: 20px;
     line-height: 32px;
     font-style: normal;
     margin-left: 325px;
     flex: 1;
 }
+
+.FAQ h1 {
+    font-size: 250%;
+    color:black;
+}
+
+
+.FAQ h3 {
+    font-size: 130%;
+    font-weight:bold;
+    color:black;
+}
+
+
 /*
 .header-text {
     font-size: 40px;
@@ -34,6 +49,7 @@
 }
 */
 
+
 .FAQ {
     margin-left: 50px;
     margin-right: 150px;
@@ -41,6 +57,7 @@
 
 .links {
     margin-left: 450px;
+    margin-top:60px;
 }
 
 .links a {
