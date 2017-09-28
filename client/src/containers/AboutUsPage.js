@@ -78,12 +78,26 @@ class AboutUsPage extends Component {
                     </div>
                 </Grid.Row>
                 <Grid.Row>
-                    <div id={"kontakt-info"}>
-                        Kontakt-info Kontakt-info Kontakt-info Kontakt-info Kontakt-info Kontakt-info
-                        Kontakt-info Kontakt-info Kontakt-info Kontakt-info Kontakt-info Kontakt-info
-                        Kontakt-info Kontakt-info Kontakt-info Kontakt-info Kontakt-info Kontakt-info
-                        Kontakt-info Kontakt-info Kontakt-info Kontakt-info Kontakt-info Kontakt-info
-                        Kontakt-info Kontakt-info Kontakt-info Kontakt-info Kontakt-info Kontakt-info
+                    <div id={"kontakt-info"} style={{marginLeft: 51}}>
+                        <section style={{justifyContent: 'center'}}>
+                            <ul style={{listStyle: 'none',margin: 0, display: 'inline-block'}}>
+                                <li style={{fontSize: 20, fontWeight: 700}}>
+                                    Kontakt:
+                                    <li style={{display: 'inline-block', fontSize: '17', marginLeft: 25}}>
+                                        <a href="mailto:NTNU@gmail.com" style={{color: '#2196f3', textDecoration: 'none'}}>Trondheim - NTNU</a>
+                                    </li>
+                                    <li style={{display: 'inline-block', fontSize: '17', marginLeft: '25'}}>
+                                        <a href="mailto:HIST@gmail.com" style={{color: '#2196f3', textDecoration: 'none'}}>Trondheim - HIST</a>
+                                    </li>
+                                    <li style={{display: 'inline-block', fontSize: '17', marginLeft: '25'}}>
+                                        <a href="mailto:NMBU@gmail.com" style={{color: '#2196f3', textDecoration: 'none'}}>Ås</a>
+                                    </li>
+                                    <li style={{display: 'inline-block', fontSize: '17', marginLeft: '25'}}>
+                                        <a href="mailto:UiO@gmail.com" style={{color: '#2196f3', textDecoration: 'none'}}>Oslo</a>
+                                    </li>
+                                </li>
+                            </ul>
+                        </section>
                     </div>
                 </Grid.Row>
             </Grid>
