@@ -11,7 +11,7 @@ class App extends Component {
     return (
         <div>
           <Header/>
-          <Switch>
+          <Switch>gi
             <Route exact path='/' component={HomePage}/>
             <Route exact path='/assistenter' component={AssistantPage}/>
             <Route exact path='/om-oss' component={AboutUsPage}/>
