@@ -6,14 +6,14 @@ import './AboutUsPage.css';
 
 const aboutStyle = {
     textAlign: 'center',
-    marginRight: 50,
+    marginRight: 40,
     color: '#333',
     fontSize: 40,
     fontWeight: 'bold'
 };
 
 const motivateStyle = {
-    textAlign: 'center',
+    textAlign: 'left',
     marginRight: 625,
     color: 'black',
     fontSize: 32,
@@ -37,26 +37,25 @@ class AboutUsPage extends Component {
                         </p>
                     </Grid.Column>
                 </Grid.Row>
-                <Grid>
+                <Grid style={{display: 'flex'}}>
                     <Grid.Row columns={1}>
                         <Grid.Column width={16}>
                             <h1 style={motivateStyle}>Motiverer elever</h1>
                         </Grid.Column>
                     </Grid.Row>
-                        <Grid.Row columns={2}>
-                        <Grid.Column width={8}>
+                    <Grid.Row columns={2} style={{display: 'flex'}}>
+                        <Grid.Column width={8} style={{flex: 1}}>
                             <p className="motivation-text">
                                 Vektorprogrammet ønsker å øke matematikkforståelsen blant elever i grunnskolen. Forståelse gir
                                 mestringsfølelse som fører til videre motivasjon. Siden matematikk er grunnlaget for alle
                                 realfag er målet at dette også skal føre til motivasjon og videre utforskning av realfagene.
                             </p>
                         </Grid.Column>
-                        <Grid.Column width={8}>
-                            <img src={'http://placehold.it/300x400'} style={{alignContent: 'center', marginTop: -70}}/>
+                        <Grid.Column width={8} style={{flex: 1}}>
+                            <img src={'http://placehold.it/300x400'} style={{marginLeft: 245, marginTop: -70, flex: 1}}/>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-
                 <Grid.Row>
                     <div className="links">
                         <a href={'#FAQ'}>FAQ</a>

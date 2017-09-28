@@ -7,11 +7,13 @@
     margin-top: 35px;
     font-weight: 300;
     width: 850px;
-    margin-left: auto;
-    margin-right: auto;
     font-size: 22px;
     font-style: normal;
     line-height: 32px;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+    flex: 1;
 }
 
 .motivation-text {
@@ -20,6 +22,8 @@
     font-size: 20px;
     line-height: 32px;
     font-style: normal;
+    margin-left: 325px;
+    flex: 1;
 }
 /*
 .header-text {
