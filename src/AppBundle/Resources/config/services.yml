@@ -120,6 +120,12 @@ services:
     tags:
         - { name: kernel.event_subscriber }
 
+  app.user_subscriber:
+    class: AppBundle\EventSubscriber\UserSubscriber
+    arguments: ['@app.logger', '@security.authorization_checker', '@app.roles', '@app.google_api', '@app.company_email_maker']
+    tags:
+        - { name: kernel.event_subscriber }
+
   app.receipt_subscriber:
     class: AppBundle\EventSubscriber\ReceiptSubscriber
     arguments: ['@app.logger', '@app.email_sender', '@session', '@security.token_storage']

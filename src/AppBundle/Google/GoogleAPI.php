@@ -106,9 +106,6 @@ class GoogleAPI
         $googleUser = new Google_Service_Directory_User();
         $googleUser->setPrimaryEmail($user->getCompanyEmail());
 
-        $password = bin2hex(random_bytes(15));
-        $googleUser->setPassword($password);
-
         $name = new Google_Service_Directory_UserName();
         $name->setGivenName($user->getFirstName());
         $name->setFamilyName($user->getLastName());

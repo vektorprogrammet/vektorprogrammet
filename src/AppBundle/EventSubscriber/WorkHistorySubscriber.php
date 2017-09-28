@@ -48,6 +48,7 @@ class WorkHistorySubscriber implements EventSubscriberInterface
                 array('logEditedEvent', 1),
                 array('updateUserRole', 0),
                 array('addUpdatedFlashMessage', -1),
+                array('updateGSuiteUser', -2),
             ),
             WorkHistoryEvent::DELETED => array(
                 array('logDeletedEvent', 1),
@@ -73,7 +74,6 @@ class WorkHistorySubscriber implements EventSubscriberInterface
             }
         }
     }
-
     public function addCreatedFlashMessage(WorkHistoryEvent $event)
     {
         $workHistory = $event->getWorkHistory();
