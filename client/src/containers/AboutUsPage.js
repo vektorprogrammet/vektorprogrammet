@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 /*import { Link } from 'react-router-dom';*/
 import { Grid } from 'semantic-ui-react';
 import './AboutUsPage.css';
-
+import bubble from '../images/bubble.png';
 
 const aboutStyle = {
     textAlign: 'center',
@@ -31,7 +31,7 @@ class AboutUsPage extends Component {
                         </p>
                     </Grid.Column>
                     <Grid.Column width={5}>
-                        <img src={'http://placehold.it/300x200'}/>
+                        <img src={bubble}/>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
