@@ -7,28 +7,22 @@ import './AboutUsPage.css';
 const aboutStyle = {
     textAlign: 'center',
     marginRight: 40,
+    marginLeft:65,
     color: '#333',
     fontSize: 40,
     fontWeight: 'bold'
 };
 
-const motivateStyle = {
-    textAlign: 'left',
-    marginRight: 625,
-    color: 'black',
-    fontSize: 32,
-    fontWeight: 500
-};
 
 class AboutUsPage extends Component {
     render() {
         return (
             <Grid divided='vertically'>
+                <Grid.Row width={16}>n
+                    <h1 style={aboutStyle}>Om Vektorprogrammet</h1>
+                </Grid.Row>
                 <Grid.Row columns={2}>
-                    <Grid.Column width={16}>
-                        <h1 style={aboutStyle}>Om Vektorprogrammet</h1>
-                    </Grid.Column>
-                    <Grid.Column width={16}>
+                    <Grid.Column width={10}>
                         <p className="about-us-text">
                             Vektorprogrammet arbeider for å øke interessen for matematikk og realfag blant elever i grunnskolen. Vi er en nasjonal studentorganisasjon som sender studenter med utmerket
                             realfagskompetanse til skoler for å hjelpe elevene i matematikktimene. Disse studentene har også gode pedagogiske evner og er gode rollemodeller – de er Norges realfagshelter.
@@ -36,26 +30,10 @@ class AboutUsPage extends Component {
                             ikke kun de som allerede er motiverte. <br/><br/>Vektorprogrammet sørger for at alle får hjelp i timen raskere og at undervisningen kan bli mer tilpasset de ulike elevgruppene.
                         </p>
                     </Grid.Column>
+                    <Grid.Column width={5}>
+                        <img src={'http://placehold.it/300x200'}/>
+                    </Grid.Column>
                 </Grid.Row>
-                <Grid style={{display: 'flex'}}>
-                    <Grid.Row columns={1}>
-                        <Grid.Column width={16}>
-                            <h1 style={motivateStyle}>Motiverer elever</h1>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={2} style={{display: 'flex'}}>
-                        <Grid.Column width={8} style={{flex: 1}}>
-                            <p className="motivation-text">
-                                Vektorprogrammet ønsker å øke matematikkforståelsen blant elever i grunnskolen. Forståelse gir
-                                mestringsfølelse som fører til videre motivasjon. Siden matematikk er grunnlaget for alle
-                                realfag er målet at dette også skal føre til motivasjon og videre utforskning av realfagene.
-                            </p>
-                        </Grid.Column>
-                        <Grid.Column width={8} style={{flex: 1}}>
-                            <img src={'http://placehold.it/300x400'} style={{marginLeft: 245, marginTop: -70, flex: 1}}/>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
                 <Grid.Row>
                     <div className="links">
                         <a href={'#FAQ'}>FAQ</a>
