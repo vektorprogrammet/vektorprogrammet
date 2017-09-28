@@ -1,11 +1,13 @@
+/*TODO: få det finere*/
+
 .header-text {
     text-align: center;
     margin: 1250px auto;
 }
 
 p {
-    font-size: 16px;
-    font-weight: 400;
+    font-size: 20px;
+    font-weight: 300;
     line-height: 26px;
     text-align: left;
 }
@@ -31,11 +33,10 @@ img.displayed {
     margin: 125px auto;
 }
 
-.links {
-    margin-left: 350px;
+.list-text {
+    text-align: left;
+    margin: 125px auto;
+    padding: 0 20px;
 }
 
-.links a {
-    margin-left: 150px;
-    font-size: 130%;
-}
+
