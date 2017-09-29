@@ -13,7 +13,7 @@ class AccountNumberType extends AbstractType
     {
         $builder
             ->add('account_number', 'text', array(
-                'label' => 'Kontonummer',
+                'label' => 'Endre ditt kontonummer. Alle dine utlegg vil bli refundert hit',
                 'required' => true,
                 'attr' => array('oninput' => 'validateBankAccountNumber(this)'),
             ));
