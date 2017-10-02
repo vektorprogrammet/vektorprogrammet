@@ -11,14 +11,13 @@ class AssistantPage extends Component {
         this.state={
             newsletterVisible: false,
             newsletterRevealed: false
-        }
+        };
         this.handleScroll = this.handleScroll.bind(this);
         this.onNewsletterPopUpClose = this.onNewsletterPopUpClose.bind(this);
     }
 
     handleScroll(){
-        console.log(document.body.scrollTop);
-        if (!this.state.newsletterRevealed && document.body.scrollTop > 800) { // TODO: justere litt på denne
+        if (!this.state.newsletterRevealed && window.pageYOffset > 800) { // TODO: justere litt på denne
             this.setState({newsletterVisible: true, newsletterRevealed: true});
         }
     }
