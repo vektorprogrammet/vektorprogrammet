@@ -42,7 +42,7 @@ class AssistantPage extends Component {
 
             {/* HEADER */}
             <Grid.Row columns={1}>
-                <Grid.Column width={12} className="header-text">
+                <Grid.Column width={12} className="assistant-header-text">
                     <Header as="h1">Assistenter</Header>
                     <p>Vektorassistent er et frivillig verv der du reiser til en ungdomsskole én dag i uka for å hjelpe til som
                     lærerassistent i matematikk. En stilling som vektorassistent varer i 4 eller 8 uker, og du kan selv
