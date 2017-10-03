@@ -2,6 +2,7 @@
 
 namespace AppBundle\EventSubscriber;
 
+use AppBundle\Event\TeamEvent;
 use AppBundle\Event\UserEvent;
 use AppBundle\Event\WorkHistoryEvent;
 use AppBundle\Google\GoogleAPI;
@@ -42,6 +43,12 @@ class GSuiteSubscriber implements EventSubscriberInterface
             UserEvent::COMPANY_EMAIL_EDITED  => array(
                 array('updateGSuiteUser', 0),
             ),
+            TeamEvent::CREATED => array(
+                array('createGSuiteTeam', 0),
+            ),
+            TeamEvent::EDITED => array(
+                array('editGSuiteTeam', 0),
+            )
         );
     }
 
@@ -71,5 +78,31 @@ class GSuiteSubscriber implements EventSubscriberInterface
                 $this->logger->info("New G Suite account created for {$user} with email {$user->getCompanyEmail()}");
             }
         }
+    }
+
+    public function createGSuiteTeam(TeamEvent $event)
+    {
+        $team = $event->getTeam();
+        $teamExists = $this->googleAPI->getGroup($team->getEmail()) !== null;
+
+        if (!$teamExists) {
+            $this->googleAPI->createGroup($team);
+            $this->logger->info("New G Suite group created for {$team}");
+        }
+    }
+
+    public function editGSuiteTeam(TeamEvent $event) {
+        $team = $event->getTeam();
+        $oldEmail = $event->getOldTeamEmail();
+        $teamExists = $this->googleAPI->getGroup($team->getEmail()) !== null;
+
+        if (!$teamExists) {
+            $this->googleAPI->createGroup($team);
+            $this->logger->info("New G Suite group created for {$team}");
+        } else {
+            $this->googleAPI->updateGroup($oldEmail, $team);
+            $this->logger->info("G Suite group for {$team} has been updated");
+        }
+
     }
 }

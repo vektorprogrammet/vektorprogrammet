@@ -2,6 +2,7 @@
 
 namespace AppBundle\Google;
 
+use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
 use Google_Client;
 use Google_Service_Directory;
@@ -25,6 +26,10 @@ class GoogleAPI
         $this->credentialsPath = __DIR__ . '/credentials.json';
     }
 
+    /**
+     * @param null $maxResults
+     * @return Google_Service_Directory_User[]
+     */
     public function getUsers($maxResults = null)
     {
         if ($this->disabled) {
@@ -46,6 +51,10 @@ class GoogleAPI
         return $results->getUsers();
     }
 
+    /**
+     * @param string $companyEmail
+     * @return Google_Service_Directory_User
+     */
     public function getUser(string $companyEmail)
     {
         if ($this->disabled) {
@@ -70,6 +79,10 @@ class GoogleAPI
         return null;
     }
 
+    /**
+     * @param User $user
+     * @return Google_Service_Directory_User
+     */
     public function createUser(User $user)
     {
         if ($this->disabled) {
@@ -94,6 +107,11 @@ class GoogleAPI
         return $service->users->insert($googleUser);
     }
 
+    /**
+     * @param string $userKey
+     * @param User $user
+     * @return Google_Service_Directory_User
+     */
     public function updateUser(string $userKey, User $user)
     {
         if ($this->disabled) {
@@ -115,6 +133,10 @@ class GoogleAPI
         return $service->users->update($userKey, $googleUser);
     }
 
+    /**
+     * @param string $userKey
+     * @return null
+     */
     public function deleteUser(string $userKey)
     {
         if ($this->disabled) {
@@ -125,6 +147,96 @@ class GoogleAPI
         $service = new Google_Service_Directory($client);
         $service->users->delete($userKey);
     }
+
+    /**
+     * @param null $maxResults
+     * @return \Google_Service_Directory_Group[]
+     */
+    public function getGroups($maxResults = null)
+    {
+        if ($this->disabled) {
+            return [];
+        }
+
+        $client  = $this->getClient();
+        $service = new Google_Service_Directory($client);
+
+        $optParams = array(
+            'customer' => 'my_customer',
+        );
+
+        if ($maxResults) {
+            $optParams['maxResults'] = $maxResults;
+        }
+        $results = $service->groups->listGroups($optParams);
+
+        return $results->getGroups();
+    }
+
+    /**
+     * @param string $teamEmail
+     * @return \Google_Service_Directory_Group
+     */
+    public function getGroup(string $teamEmail)
+    {
+        if ($this->disabled) {
+            return null;
+        }
+
+        $groups = $this->getGroups();
+        
+        foreach ($groups as $group) {
+            if ($group->getEmail() === $teamEmail) {
+                return $group;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param Team $team
+     * @return Google_Service_Directory_User
+     */
+    public function createGroup(Team $team)
+    {
+        if ($this->disabled) {
+            return null;
+        }
+
+        $client  = $this->getClient();
+        $service = new Google_Service_Directory($client);
+        
+        $googleGroup = new \Google_Service_Directory_Group();
+        $googleGroup->setName($team->getName());
+        $googleGroup->setEmail($team->getEmail());
+        $googleGroup->setDescription($team->getShortDescription());
+
+        return $service->groups->insert($googleGroup);
+    }
+
+    /**
+     * @param string $groupEmail
+     * @param Team $team
+     * @return Google_Service_Directory_User
+     */
+    public function updateGroup(string $groupEmail, Team $team)
+    {
+        if ($this->disabled) {
+            return null;
+        }
+
+        $client  = $this->getClient();
+        $service = new Google_Service_Directory($client);
+
+        $googleGroup = new \Google_Service_Directory_Group();
+        $googleGroup->setName($team->getName());
+        $googleGroup->setEmail($team->getEmail());
+        $googleGroup->setDescription($team->getShortDescription());
+
+        return $service->groups->update($groupEmail, $googleGroup);
+    }
+    
 
     private function getClient()
     {
