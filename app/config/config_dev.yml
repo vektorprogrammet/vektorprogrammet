@@ -59,4 +59,3 @@ doctrine:
         dbname: "%kernel.root_dir%/data/dev.db"
         user: root
         password: null
-        charset: UTF8
