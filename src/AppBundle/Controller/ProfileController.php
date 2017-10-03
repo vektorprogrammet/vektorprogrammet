@@ -200,6 +200,7 @@ class ProfileController extends Controller
     public function editProfileInformationAction(Request $request)
     {
         $user = $this->getUser();
+        $oldCompanyEmail = $user->getCompanyEmail();
 
         $form = $this->createForm(EditUserType::class, $user, array(
             'department' => $user->getDepartment(),
@@ -213,7 +214,7 @@ class ProfileController extends Controller
             $em->persist($user);
             $em->flush();
             
-            $this->get('event_dispatcher')->dispatch(UserEvent::EDITED, new UserEvent($user));
+            $this->get('event_dispatcher')->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
 
             return $this->redirect($this->generateUrl('profile'));
         }

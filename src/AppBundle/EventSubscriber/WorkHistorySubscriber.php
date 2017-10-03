@@ -3,31 +3,22 @@
 namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\WorkHistoryEvent;
-use AppBundle\Google\GoogleAPI;
-use AppBundle\Service\CompanyEmailMaker;
 use AppBundle\Service\RoleManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 class WorkHistorySubscriber implements EventSubscriberInterface
 {
     private $session;
     private $logger;
-    private $authorizationChecker;
     private $roleManager;
-    private $googleAPI;
-    private $emailMaker;
 
-    public function __construct(Session $session, LoggerInterface $logger, AuthorizationChecker $authorizationChecker, RoleManager $roleManager, GoogleAPI $googleAPI, CompanyEmailMaker $emailMaker)
+    public function __construct(Session $session, LoggerInterface $logger, RoleManager $roleManager)
     {
         $this->session = $session;
         $this->logger = $logger;
-        $this->authorizationChecker = $authorizationChecker;
         $this->roleManager = $roleManager;
-        $this->googleAPI = $googleAPI;
-        $this->emailMaker = $emailMaker;
     }
 
     /**
@@ -42,13 +33,11 @@ class WorkHistorySubscriber implements EventSubscriberInterface
                 array('logCreatedEvent', 1),
                 array('updateUserRole', 0),
                 array('addCreatedFlashMessage', -1),
-                array('createGSuiteUser', -2),
             ),
             WorkHistoryEvent::EDITED  => array(
                 array('logEditedEvent', 1),
                 array('updateUserRole', 0),
                 array('addUpdatedFlashMessage', -1),
-                array('updateGSuiteUser', -2),
             ),
             WorkHistoryEvent::DELETED => array(
                 array('logDeletedEvent', 1),
@@ -57,23 +46,6 @@ class WorkHistorySubscriber implements EventSubscriberInterface
         );
     }
 
-    public function createGSuiteUser(WorkHistoryEvent $event)
-    {
-        $user = $event->getWorkHistory()->getUser();
-        if (!$user->getCompanyEmail()) {
-            $emailsInUse = $this->googleAPI->getUsers();
-            $emailsInUse = array_map(function ($e) {
-                return $e->primaryEmail;
-            }, $emailsInUse);
-
-            $email = $this->emailMaker->setCompanyEmailFor($user, $emailsInUse);
-
-            if ($email !== null) {
-                $this->googleAPI->createUser($user);
-                $this->logger->info("New G Suite account created for {$user} with email {$user->getCompanyEmail()}");
-            }
-        }
-    }
     public function addCreatedFlashMessage(WorkHistoryEvent $event)
     {
         $workHistory = $event->getWorkHistory();

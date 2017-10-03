@@ -17,7 +17,7 @@ class UserEvent extends Event
      * @param User $user
      * @param string $oldEmail
      */
-    public function __construct(User $user, string $oldEmail)
+    public function __construct(User $user, $oldEmail)
     {
         $this->user = $user;
         $this->oldEmail = $oldEmail;
@@ -34,7 +34,7 @@ class UserEvent extends Event
     /**
      * @return string
      */
-    public function getOldEmail(): string
+    public function getOldEmail()
     {
         return $this->oldEmail;
     }

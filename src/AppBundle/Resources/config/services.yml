@@ -116,13 +116,19 @@ services:
 
   app.work_history_subscriber:
     class: AppBundle\EventSubscriber\WorkHistorySubscriber
-    arguments: ['@session', '@app.logger', '@security.authorization_checker', '@app.roles', '@app.google_api', '@app.company_email_maker']
+    arguments: ['@session', '@app.logger', '@app.roles']
     tags:
         - { name: kernel.event_subscriber }
 
   app.user_subscriber:
     class: AppBundle\EventSubscriber\UserSubscriber
-    arguments: ['@app.logger', '@security.authorization_checker', '@app.roles', '@app.google_api', '@app.company_email_maker']
+    arguments: ['@app.logger']
+    tags:
+        - { name: kernel.event_subscriber }
+
+  app.g_suite_subscriber:
+    class: AppBundle\EventSubscriber\GSuiteSubscriber
+    arguments: ['@app.logger', '@app.google_api', '@app.company_email_maker']
     tags:
         - { name: kernel.event_subscriber }
 
