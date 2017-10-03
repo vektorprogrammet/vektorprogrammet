@@ -91,7 +91,8 @@ class GSuiteSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function editGSuiteTeam(TeamEvent $event) {
+    public function editGSuiteTeam(TeamEvent $event)
+    {
         $team = $event->getTeam();
         $oldEmail = $event->getOldTeamEmail();
         $teamExists = $this->googleAPI->getGroup($team->getEmail()) !== null;
@@ -103,6 +104,5 @@ class GSuiteSubscriber implements EventSubscriberInterface
             $this->googleAPI->updateGroup($oldEmail, $team);
             $this->logger->info("G Suite group for {$team} has been updated");
         }
-
     }
 }
