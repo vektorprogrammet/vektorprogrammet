@@ -8,6 +8,7 @@ use Google_Client;
 use Google_Service_Directory;
 use Google_Service_Directory_User;
 use Google_Service_Directory_UserName;
+use Ramsey\Uuid\Uuid;
 
 class GoogleAPI
 {
@@ -135,12 +136,12 @@ class GoogleAPI
 
     /**
      * @param string $userKey
-     * @return null
+     * @return void
      */
     public function deleteUser(string $userKey)
     {
         if ($this->disabled) {
-            return null;
+            return;
         }
 
         $client  = $this->getClient();
@@ -196,7 +197,7 @@ class GoogleAPI
 
     /**
      * @param Team $team
-     * @return Google_Service_Directory_User
+     * @return \Google_Service_Directory_Group
      */
     public function createGroup(Team $team)
     {
@@ -206,7 +207,7 @@ class GoogleAPI
 
         $client  = $this->getClient();
         $service = new Google_Service_Directory($client);
-        
+
         $googleGroup = new \Google_Service_Directory_Group();
         $googleGroup->setName($team->getName());
         $googleGroup->setEmail($team->getEmail());
@@ -218,7 +219,7 @@ class GoogleAPI
     /**
      * @param string $groupEmail
      * @param Team $team
-     * @return Google_Service_Directory_User
+     * @return \Google_Service_Directory_Group
      */
     public function updateGroup(string $groupEmail, Team $team)
     {
@@ -236,7 +237,57 @@ class GoogleAPI
 
         return $service->groups->update($groupEmail, $googleGroup);
     }
-    
+
+    public function createTeamDrive(Team $team)
+    {
+        if ($this->disabled) {
+            return null;
+        }
+        $folderName = $team->getDepartment()->getShortName() . ' - ' . $team->getName();
+
+        $client  = $this->getClient();
+        $driveService = new \Google_Service_Drive($client);
+
+        $requestId = Uuid::uuid4()->toString();
+        $teamDriveMetadata = new \Google_Service_Drive_TeamDrive(array(
+            'name' => $folderName));
+        $teamDrive = $driveService->teamdrives->create($requestId, $teamDriveMetadata, array(
+            'fields' => 'id' ));
+
+        $permission = new \Google_Service_Drive_Permission();
+        $permission->setType('group');
+        $permission->setRole('writer');
+        $permission->setEmailAddress($team->getEmail());
+        $driveService->permissions->create($teamDrive->id, $permission, array(
+            'sendNotificationEmail' => false,
+            'supportsTeamDrives' => true,
+        ));
+
+        return $teamDrive;
+    }
+
+    public function getAllEmailsInUse()
+    {
+        $users = $this->getUsers();
+        $groups = $this->getGroups();
+
+        $emailsInUse = [];
+        foreach ($users as $user) {
+            foreach ($user->getEmails() as $email) {
+                $emailsInUse[] = $email['address'];
+            }
+        }
+
+        foreach ($groups as $group) {
+            $emailsInUse[] = $group->getEmail();
+            $aliases = $group->getAliases();
+            if ($aliases !== null) {
+                $emailsInUse = array_merge($emailsInUse, $aliases);
+            }
+        }
+
+        return $emailsInUse;
+    }
 
     private function getClient()
     {
