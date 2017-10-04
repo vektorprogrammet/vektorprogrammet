@@ -35,9 +35,6 @@ class GSuiteSubscriber implements EventSubscriberInterface
             WorkHistoryEvent::CREATED => array(
                 array('createGSuiteUser', 0),
             ),
-            WorkHistoryEvent::EDITED  => array(
-                array('updateGSuiteUser', 0),
-            ),
             UserEvent::EDITED => array(
                 array('updateGSuiteUser', 0),
             ),
