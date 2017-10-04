@@ -9,10 +9,10 @@ class TeamPage extends Component {
     return (
         <div>
             <GradientBox>
-                <Grid verticalAlign='middle' columns={2} center className="gradient-box-grid">
+                <Grid verticalAlign='middle' columns={2} className="gradient-box-grid">
                     <Grid.Row>
                         <Grid.Column>
-                            <div className="header-text">
+                            <div className="team-header-text">
                                 <h1>Vi får vektorprogrammet til å gå rundt!</h1>
                                 <h3>Teamene har ansvar for alt fra rekruttering til drift av nettsiden, sponsorer og lignende. Alle organisasjonelle oppgaver tas hånd om av frivillige teammedlemmer</h3>
                             </div>
