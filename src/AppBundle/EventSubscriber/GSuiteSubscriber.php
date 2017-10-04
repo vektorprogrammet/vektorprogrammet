@@ -116,6 +116,7 @@ class GSuiteSubscriber implements EventSubscriberInterface
         if (!$this->teamExists($oldEmail)) {
             $this->googleAPI->createGroup($team);
             $this->logger->info("New G Suite group created for *$department - $team*");
+            $this->createGSuiteTeamDrive($event);
         } else {
             $this->googleAPI->updateGroup($oldEmail, $team);
             $this->logger->info("G Suite group for *$department - $team* has been updated");
