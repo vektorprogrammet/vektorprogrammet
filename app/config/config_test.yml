@@ -4,6 +4,9 @@ imports:
 parameters:
     slack.disable_delivery: true
     google_api:
+        client_id: 'test_client_id'
+        client_secret: 'test_client_secret'
+        refresh_token: 'test_refresh_token'
         disabled: true
 
 framework:

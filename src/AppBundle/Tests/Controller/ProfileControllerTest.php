@@ -80,6 +80,12 @@ class ProfileControllerTest extends BaseWebTestCase
         // submit the form
         $client->submit($form);
 
+        // Assert a specific 302 status code
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+
+        // Follow the redirect
+        $crawler = $client->followRedirect();
+
         $crawler = $this->goTo('/profile/4', $client);
 
         // Assert that we have the correct profile user
@@ -160,7 +166,11 @@ class ProfileControllerTest extends BaseWebTestCase
         // submit the form
         $crawler = $client->submit($form);
 
-        $crawler = $this->goTo('/profile', $client);
+        // Assert a specific 302 status code
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+
+        // Follow the redirect
+        $crawler = $client->followRedirect();
 
         // Assert that we have the correct profile user
         $this->assertContains('Petter Johansen', $client->getResponse()->getContent());

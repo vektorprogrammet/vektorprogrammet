@@ -174,3 +174,9 @@ services:
         public: false
         tags:
           - { name: twig.extension }
+
+  app.unique_company_email_validator:
+    class: AppBundle\Validator\Constraints\UniqueCompanyEmailValidator
+    arguments: ['@doctrine.orm.entity_manager', '@app.google_api']
+    tags:
+        - { name: validator.constraint_validator }

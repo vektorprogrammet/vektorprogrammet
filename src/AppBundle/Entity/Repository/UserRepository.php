@@ -193,10 +193,9 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->select('user.companyEmail')
             ->where('user.companyEmail IS NOT NULL')
             ->getQuery()
-            ->getResult();
-        return array_map(function ($result) {
-            return $result['companyEmail'];
-        }, $results);
+            ->getScalarResult();
+
+        return array_column($results, 'companyEmail');
     }
 
     /*
