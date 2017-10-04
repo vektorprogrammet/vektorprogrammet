@@ -38,8 +38,6 @@ class MailingListControllerTest extends BaseWebTestCase
         $form['createWorkHistory[position]'] = 2;
         $form['createWorkHistory[startSemester]'] = 2;
         $client->submit($form);
-        $client->followRedirect();
-        $this->assertTrue($client->getResponse()->isSuccessful());
 
         $lengthTeamNew = $this->generateListCountChars($client, 'Team');
 
