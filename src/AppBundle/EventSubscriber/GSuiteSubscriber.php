@@ -55,13 +55,20 @@ class GSuiteSubscriber implements EventSubscriberInterface
     public function createGSuiteUser(WorkHistoryEvent $event)
     {
         $user = $event->getWorkHistory()->getUser();
-        if (!$user->getCompanyEmail()) {
+        $companyEmail = $user->getCompanyEmail();
+
+        if ($this->userExists($companyEmail)) {
+            return;
+        }
+
+        if (!$companyEmail) {
             $emailsInUse = $this->googleAPI->getAllEmailsInUse();
-            $email = $this->emailMaker->setCompanyEmailFor($user, $emailsInUse);
-            if ($email !== null) {
-                $this->googleAPI->createUser($user);
-                $this->logger->info("New G Suite account created for {$user} with email {$user->getCompanyEmail()}");
-            }
+            $this->emailMaker->setCompanyEmailFor($user, $emailsInUse);
+        }
+
+        if ($user->getCompanyEmail() !== null) {
+            $this->googleAPI->createUser($user);
+            $this->logger->info("New G Suite account created for *{$user}* with email *{$user->getCompanyEmail()}*");
         }
     }
 
@@ -71,9 +78,11 @@ class GSuiteSubscriber implements EventSubscriberInterface
         $team = $event->getWorkHistory()->getTeam();
         $department = $user->getDepartment();
 
-        if ($user->getCompanyEmail()) {
+        $alreadyInGroup = $this->googleAPI->userIsInGroup($user, $team);
+
+        if (!$alreadyInGroup && $user->getCompanyEmail()) {
             $this->googleAPI->addUserToGroup($user, $team);
-            $this->logger->info("$user added to G Suite group $department - $team");
+            $this->logger->info("$user added to G Suite group *$department - $team*");
         }
     }
 
@@ -83,41 +92,44 @@ class GSuiteSubscriber implements EventSubscriberInterface
         $oldEmail = $event->getOldEmail();
         if ($this->userExists($oldEmail)) {
             $this->googleAPI->updateUser($oldEmail, $user);
-            $this->logger->info("G Suite account for {$user} with email {$user->getCompanyEmail()} has been updated.");
+            $this->logger->info("G Suite account for *{$user}* with email *{$user->getCompanyEmail()}* has been updated.");
         }
     }
 
     public function createGSuiteTeam(TeamEvent $event)
     {
         $team = $event->getTeam();
+        $department = $team->getDepartment();
 
         if (!$this->teamExists($team)) {
             $this->googleAPI->createGroup($team);
-            $this->logger->info("New G Suite group created for {$team}");
+            $this->logger->info("New G Suite group created for *$department - $team*");
         }
     }
 
     public function editGSuiteTeam(TeamEvent $event)
     {
         $team = $event->getTeam();
+        $department = $team->getDepartment();
         $oldEmail = $event->getOldTeamEmail();
 
         if (!$this->teamExists($oldEmail)) {
             $this->googleAPI->createGroup($team);
-            $this->logger->info("New G Suite group created for {$team}");
+            $this->logger->info("New G Suite group created for *$department - $team*");
         } else {
             $this->googleAPI->updateGroup($oldEmail, $team);
-            $this->logger->info("G Suite group for {$team} has been updated");
+            $this->logger->info("G Suite group for *$department - $team* has been updated");
         }
     }
 
     public function createGSuiteTeamDrive(TeamEvent $event)
     {
         $team = $event->getTeam();
+        $department = $team->getDepartment();
 
         if (!$this->teamExists($team)) {
             $this->googleAPI->createTeamDrive($team);
-            $this->logger->info("New Team Drive created for {$team}");
+            $this->logger->info("New Team Drive created for *$department - $team*");
         }
     }
 

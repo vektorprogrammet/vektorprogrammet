@@ -205,13 +205,11 @@ class GoogleAPI
             return null;
         }
 
-        $teamName = $team->getDepartment()->getShortName() . ' - ' . $team->getName();
-
         $client  = $this->getClient();
         $service = new Google_Service_Directory($client);
 
         $googleGroup = new \Google_Service_Directory_Group();
-        $googleGroup->setName($teamName);
+        $googleGroup->setName($team->getName());
         $googleGroup->setEmail($team->getEmail());
         $googleGroup->setDescription($team->getShortDescription());
 
@@ -255,6 +253,39 @@ class GoogleAPI
         $member->setEmail($user->getCompanyEmail());
 
         $service->members->insert($team->getEmail(), $member);
+    }
+
+    /**
+     * @param Team $team
+     *
+     * @return \Google_Service_Directory_Member[]
+     */
+    public function getUsersInGroup(Team $team)
+    {
+        if ($this->disabled) {
+            return [];
+        }
+
+        $client  = $this->getClient();
+        $service = new Google_Service_Directory($client);
+
+        return $service->members->listMembers($team->getEmail())->getMembers();
+    }
+
+    public function userIsInGroup(User $user, Team $team)
+    {
+        if ($this->disabled) {
+            return false;
+        }
+
+        $usersInGroup = $this->getUsersInGroup($team);
+        foreach ($usersInGroup as $userInGroup) {
+            if ($userInGroup->getEmail() === $user->getCompanyEmail()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function createTeamDrive(Team $team)
