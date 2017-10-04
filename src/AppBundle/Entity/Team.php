@@ -28,6 +28,7 @@ class Team implements TeamInterface
     /**
      * @ORM\Column(type="string", nullable=true)
      * @Assert\Email(message="Ugyldig e-post")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være blankt.")
      * @CustomAssert\UniqueCompanyEmail
      */
     private $email;

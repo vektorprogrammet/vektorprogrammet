@@ -53,9 +53,9 @@ class UniqueCompanyEmailValidator extends ConstraintValidator
             ->getUnitOfWork()
             ->getOriginalEntityData($object);
 
-        if ($object instanceof User && $oldObject['companyEmail'] === $value) {
+        if ($object instanceof User && key_exists('companyEmail', $oldObject) && $oldObject['companyEmail'] === $value) {
             return false;
-        } elseif ($object instanceof Team && $oldObject['email'] === $value) {
+        } elseif ($object instanceof Team && key_exists('email', $oldObject) && $oldObject['email'] === $value) {
             return false;
         }
 
