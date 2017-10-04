@@ -2,12 +2,28 @@ import React, {Component} from 'react';
 /*import { Link } from 'react-router-dom';*/
 import { Image, Grid, Rail, Segment, List, Button, Header, Popup} from 'semantic-ui-react';
 import './AboutUsPage.css';
-import bubble from '../images/bubble.png';
+import ContactUsPopUp from '../components/ContactUsPopUp';
 
 class AboutUsPage extends Component {
+    constructor(props){
+        super(props);
+        this.state={
+            contactUsVisible: false,
+            contactUsRevealed: false
+        };
+        this.onContactUsPopUpClose = this.onContactUsPopUpClose.bind(this);
+    }
+
+    onContactUsPopUpClose(){
+        this.setState({contactUsVisible : false});
+    }
+
     render() {
         return (
             <Grid centered columns={2}>
+
+                <ContactUsPopUp show={this.state.contactUsVisible} onClose={this.onContactUsPopUpClose}/>
+
                 <Grid.Column>
                     <Segment>
                         <Grid >
@@ -112,24 +128,7 @@ class AboutUsPage extends Component {
                                     <List.Item
                                         icon='talk'
                                         content={
-                                            <Popup
-                                                trigger={<Button>Show flowing popup</Button>}
-                                                flowing
-                                                hoverable
-                                            >
-                                                <Grid centered divided columns={3}>
-                                                    <Grid.Column textAlign='center'>
-                                                        <Header as='h4'>Basic Plan</Header>
-                                                        <p><b>2</b> projects, $10 a month</p>
-                                                        <Button>Choose</Button>
-                                                    </Grid.Column>
-                                                    <Grid.Column textAlign='center'>
-                                                        <Header as='h4'>Business Plan</Header>
-                                                        <p><b>5</b> projects, $20 a month</p>
-                                                        <Button>Choose</Button>
-                                                    </Grid.Column>
-                                                </Grid>
-                                            </Popup>
+                                                <Button onClick={this.setState({contactUsVisible: true, contactUsRevealed: true})} positive>Kontakt oss nå!</Button>
                                         }
                                     />
                                     </List>
