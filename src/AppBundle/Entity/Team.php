@@ -30,6 +30,7 @@ class Team implements TeamInterface
      * @Assert\Email(message="Ugyldig e-post")
      * @Assert\NotBlank(message="Dette feltet kan ikke være blankt.")
      * @CustomAssert\UniqueCompanyEmail
+     * @CustomAssert\VektorEmail
      */
     private $email;
 

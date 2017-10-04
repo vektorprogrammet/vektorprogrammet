@@ -98,6 +98,7 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\Column(type="string", unique=true, nullable=true)
      * @Assert\Email
      * @CustomAssert\UniqueCompanyEmail
+     * @CustomAssert\VektorEmail
      */
     private $companyEmail;
 
