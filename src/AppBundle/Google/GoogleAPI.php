@@ -8,6 +8,7 @@ use Google_Client;
 use Google_Service_Directory;
 use Google_Service_Directory_User;
 use Google_Service_Directory_UserName;
+use Google_Service_Drive;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 
@@ -57,7 +58,7 @@ class GoogleAPI
             return [];
         }
 
-	    return $results->getUsers();
+        return $results->getUsers();
     }
 
     /**
@@ -419,7 +420,11 @@ class GoogleAPI
         $client = new Google_Client();
         $client->setClientId($this->clientId);
         $client->setClientSecret($this->clientSecret);
-        $client->setScopes(array( Google_Service_Directory::ADMIN_DIRECTORY_USER ));
+        $client->setScopes(array(
+            Google_Service_Directory::ADMIN_DIRECTORY_USER,
+            Google_Service_Directory::ADMIN_DIRECTORY_GROUP,
+            Google_Service_Drive::DRIVE
+        ));
 
         if (file_exists($this->credentialsPath)) {
             $accessToken = json_decode(file_get_contents($this->credentialsPath), true);
