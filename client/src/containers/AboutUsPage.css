@@ -1,31 +1,44 @@
-.about-us-text {
-    /*
-    margin-right: 50px;
-    margin-left: 150px;
-    font-size: 130%;
-    /*margin-top: 50px; TODO:Get this to work */
+:root {
+    --main-margin: 5px;
+}
 
+.about-us-header {
+    textAlign: 'center';
+    margin-left: var(--main-margin);
+    margin-right: var(--main-margin);
+    color: rgb(0,0,0);
+    fontSize: 40px;
+    fontWeight: 'bold';
+}
+
+/**************
+ About text
+ *************/
+.about-us-text {
     margin-top: 35px;
     font-weight: 300;
-    width: 850px;
-    font-size: 22px;
+    font-size: 20px;
     font-style: normal;
     line-height: 32px;
     text-align: left;
-    margin-left: auto;
-    margin-right: auto;
-    /*flex: 1;*/
+    margin-left: var(--main-margin);
+    margin-right: var(--main-margin);
 }
 
-.motivation-text {
+.text2 {
+    margin-top: 35px;
     font-weight: 300;
-    width: 200px;
     font-size: 20px;
-    line-height: 32px;
     font-style: normal;
-    margin-left: 325px;
-    flex: 1;
+    line-height: 32px;
+    text-align: left;
+    margin-left: var(--main-margin);
+    margin-right: var(--main-margin);
 }
+
+/*****************
+       FAQ
+*****************/
 
 .FAQ h1 {
     font-size: 250%;
@@ -39,28 +52,42 @@
     color:black;
 }
 
-
-/*
-.header-text {
-    font-size: 40px;
-    font-family: "Roboto", Helvetica, Arial, sans-serif;
-    color: #333333;
-    display: flex; TODO: Fix scaling problem
-}
-*/
-
-
 .FAQ {
-    margin-left: 50px;
-    margin-right: 150px;
+    margin-left: var(--main-margin);
+    margin-right: var(--main-margin);
 }
+
+/*****************
+    Images
+*****************/
+.image1{
+    display: block;
+    margin-left: var(--main-margin);
+    margin-right: var(--main-margin);
+    /*max-height: 100%;
+    max-width: 100%;
+    height: ??px;*/
+}
+
+.image2{
+    display: block;
+    margin-left: var(--main-margin);
+    margin-right: var(--main-margin);
+    /*max-height: 100%;
+    max-width: 100%;
+    height: ??px;*/
+}
+
+/******************
+     Links
+******************/
 
 .links {
-    margin-left: 450px;
-    margin-top:60px;
+    /*text-align: center;*/
+    /*margin-top:60px;*/
 }
 
 .links a {
-    margin-left: 150px;
-    font-size: 130%;
+    font-size: 50%;
 }
+
