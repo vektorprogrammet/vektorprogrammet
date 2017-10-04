@@ -5,7 +5,7 @@ services:
 
   app.google_api:
       class: AppBundle\Google\GoogleAPI
-      arguments: ['%google_api%']
+      arguments: ['%google_api%', '@app.logger']
 
   app.company_email_maker:
     class: AppBundle\Service\CompanyEmailMaker

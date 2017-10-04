@@ -8,6 +8,7 @@ use Google_Client;
 use Google_Service_Directory;
 use Google_Service_Directory_User;
 use Google_Service_Directory_UserName;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 
 class GoogleAPI
@@ -17,14 +18,16 @@ class GoogleAPI
     private $clientSecret;
     private $credentialsPath;
     private $disabled;
+    private $logger;
 
-    public function __construct(array $apiOptions)
+    public function __construct(array $apiOptions, LoggerInterface $logger)
     {
         $this->refreshToken    = $apiOptions['refresh_token'];
         $this->clientId        = $apiOptions['client_id'];
         $this->clientSecret    = $apiOptions['client_secret'];
         $this->disabled    = $apiOptions['disabled'];
         $this->credentialsPath = __DIR__ . '/credentials.json';
+        $this->logger = $logger;
     }
 
     /**
@@ -47,9 +50,14 @@ class GoogleAPI
         if ($maxResults) {
             $optParams['maxResults'] = $maxResults;
         }
-        $results = $service->users->listUsers($optParams);
+        try {
+            $results = $service->users->listUsers($optParams);
+        } catch (\Google_Service_Exception $e) {
+            $this->logServiceException($e, "getUsers()");
+            return [];
+        }
 
-        return $results->getUsers();
+	    return $results->getUsers();
     }
 
     /**
@@ -69,7 +77,12 @@ class GoogleAPI
             'customer' => 'my_customer',
         );
 
-        $results = $service->users->listUsers($optParams);
+        try {
+            $results = $service->users->listUsers($optParams);
+        } catch (\Google_Service_Exception $e) {
+            $this->logServiceException($e, "getUser('$companyEmail')");
+            return null;
+        }
 
         foreach ($results->getUsers() as $user) {
             if ($user->primaryEmail === $companyEmail) {
@@ -105,7 +118,13 @@ class GoogleAPI
         $name->setFullName($user->getFullName());
         $googleUser->setName($name);
 
-        return $service->users->insert($googleUser);
+        try {
+            $createdUser = $service->users->insert($googleUser);
+        } catch (\Google_Service_Exception $e) {
+            $this->logServiceException($e, "createUser() for $user");
+            return null;
+        }
+        return $createdUser;
     }
 
     /**
@@ -131,7 +150,14 @@ class GoogleAPI
         $name->setFullName($user->getFullName());
         $googleUser->setName($name);
 
-        return $service->users->update($userKey, $googleUser);
+        try {
+            $updatedUser = $service->users->update($userKey, $googleUser);
+        } catch (\Google_Service_Exception $e) {
+            $this->logServiceException($e, "updateUser() $userKey ($user)");
+            return null;
+        }
+
+        return $updatedUser;
     }
 
     /**
@@ -146,7 +172,11 @@ class GoogleAPI
 
         $client  = $this->getClient();
         $service = new Google_Service_Directory($client);
-        $service->users->delete($userKey);
+        try {
+            $service->users->delete($userKey);
+        } catch (\Google_Service_Exception $e) {
+            $this->logServiceException($e, "deleteUser('$userKey')");
+        }
     }
 
     /**
@@ -169,7 +199,12 @@ class GoogleAPI
         if ($maxResults) {
             $optParams['maxResults'] = $maxResults;
         }
-        $results = $service->groups->listGroups($optParams);
+        try {
+            $results = $service->groups->listGroups($optParams);
+        } catch (\Google_Service_Exception $e) {
+            $this->logServiceException($e, "getGroups()");
+            return [];
+        }
 
         return $results->getGroups();
     }
@@ -213,7 +248,14 @@ class GoogleAPI
         $googleGroup->setEmail($team->getEmail());
         $googleGroup->setDescription($team->getShortDescription());
 
-        return $service->groups->insert($googleGroup);
+        try {
+            $createdGroup = $service->groups->insert($googleGroup);
+        } catch (\Google_Service_Exception $e) {
+            $this->logServiceException($e, "createTeam(), *{$team->getDepartment()} - $team*");
+            return null;
+        }
+
+        return $createdGroup;
     }
 
     /**
@@ -235,7 +277,14 @@ class GoogleAPI
         $googleGroup->setEmail($team->getEmail());
         $googleGroup->setDescription($team->getShortDescription());
 
-        return $service->groups->update($groupEmail, $googleGroup);
+        try {
+            $updatedTeam =  $service->groups->update($groupEmail, $googleGroup);
+        } catch (\Google_Service_Exception $e) {
+            $this->logServiceException($e, "updateTeam('$groupEmail') for *{$team->getDepartment()} - $team*");
+            return null;
+        }
+
+        return $updatedTeam;
     }
 
     public function addUserToGroup(User $user, Team $team)
@@ -252,7 +301,11 @@ class GoogleAPI
         $member->setRole('MEMBER');
         $member->setEmail($user->getCompanyEmail());
 
-        $service->members->insert($team->getEmail(), $member);
+        try {
+            $service->members->insert($team->getEmail(), $member);
+        } catch (\Google_Service_Exception $e) {
+            $this->logServiceException($e, "addUserToGroup(), user *$user* to group *{$team->getDepartment()} - $team*");
+        }
     }
 
     /**
@@ -269,7 +322,14 @@ class GoogleAPI
         $client  = $this->getClient();
         $service = new Google_Service_Directory($client);
 
-        return $service->members->listMembers($team->getEmail())->getMembers();
+        try {
+            $members = $service->members->listMembers($team->getEmail())->getMembers();
+        } catch (\Google_Service_Exception $e) {
+            $this->logServiceException($e, "getUsersInGroup() from team *{$team->getDepartment()} - $team*");
+            return [];
+        }
+
+        return $members;
     }
 
     public function userIsInGroup(User $user, Team $team)
@@ -301,17 +361,29 @@ class GoogleAPI
         $requestId = Uuid::uuid4()->toString();
         $teamDriveMetadata = new \Google_Service_Drive_TeamDrive(array(
             'name' => $folderName));
-        $teamDrive = $driveService->teamdrives->create($requestId, $teamDriveMetadata, array(
-            'fields' => 'id' ));
+
+        try {
+            $teamDrive = $driveService->teamdrives->create($requestId, $teamDriveMetadata, array(
+                'fields' => 'id' ));
+        } catch (\Google_Service_Exception $e) {
+            $this->logServiceException($e, "createTeamDrive() for *$folderName*");
+            return null;
+        }
 
         $permission = new \Google_Service_Drive_Permission();
         $permission->setType('group');
         $permission->setRole('writer');
         $permission->setEmailAddress($team->getEmail());
-        $driveService->permissions->create($teamDrive->id, $permission, array(
-            'sendNotificationEmail' => false,
-            'supportsTeamDrives' => true,
-        ));
+
+        try {
+            $driveService->permissions->create($teamDrive->id, $permission, array(
+                'sendNotificationEmail' => false,
+                'supportsTeamDrives' => true,
+            ));
+        } catch (\Google_Service_Exception $e) {
+            $this->logServiceException($e, "granting drive persmissions for team *$folderName*");
+            return null;
+        }
 
         return $teamDrive;
     }
@@ -363,5 +435,16 @@ class GoogleAPI
         }
 
         return $client;
+    }
+
+    private function logServiceException(\Google_Service_Exception $exception, string $message)
+    {
+        $this->logger->critical(
+            "Google_Service_Exception caught: $message\n".
+            "`Code: " . $exception->getCode() . "`\n".
+            "```\n".
+            $exception->getMessage(). "\n".
+            "´´´"
+        );
     }
 }
