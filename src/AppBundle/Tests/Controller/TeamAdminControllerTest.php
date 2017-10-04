@@ -179,10 +179,9 @@ class TeamAdminControllerTest extends BaseWebTestCase
         $form['createTeam[name]'] = 'testteam1';
 
         // submit the form
-        $crawler = $client->submit($form);
+        $client->submit($form);
 
-        // Follow the redirect
-        $crawler = $client->followRedirect();
+        $crawler = $this->adminGoTo('/kontrollpanel/teamadmin/avdeling/1');
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Team")')->count());
@@ -240,10 +239,9 @@ class TeamAdminControllerTest extends BaseWebTestCase
         $form['createTeam[name]'] = 'testteam2';
 
         // submit the form
-        $crawler = $client->submit($form);
+        $client->submit($form);
 
-        // Follow the redirect
-        $crawler = $client->followRedirect();
+        $crawler = $this->adminGoTo('/kontrollpanel/teamadmin');
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Tea")')->count());
@@ -275,11 +273,9 @@ class TeamAdminControllerTest extends BaseWebTestCase
         $form['createWorkHistory[position]']->select(1);
         $form['createWorkHistory[startSemester]']->select(1);
 
-        // submit the form
-        $crawler = $client->submit($form);
+        $client->submit($form);
 
-        // Follow the redirect
-        $crawler = $client->followRedirect();
+        $crawler = $this->adminGoTo('/kontrollpanel/teamadmin/team/2');
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("IT")')->count());

@@ -3,6 +3,8 @@ imports:
 
 parameters:
     slack.disable_delivery: true
+    google_api:
+        disabled: true
 
 framework:
     test: ~

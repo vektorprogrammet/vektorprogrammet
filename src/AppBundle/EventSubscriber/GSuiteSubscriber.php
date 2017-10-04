@@ -70,7 +70,6 @@ class GSuiteSubscriber implements EventSubscriberInterface
         if (!$user->getCompanyEmail()) {
             $emailsInUse = $this->googleAPI->getAllEmailsInUse();
             $email = $this->emailMaker->setCompanyEmailFor($user, $emailsInUse);
-
             if ($email !== null) {
                 $this->googleAPI->createUser($user);
                 $this->logger->info("New G Suite account created for {$user} with email {$user->getCompanyEmail()}");

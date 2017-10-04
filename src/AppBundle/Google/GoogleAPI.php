@@ -268,6 +268,9 @@ class GoogleAPI
 
     public function getAllEmailsInUse()
     {
+        if ($this->disabled) {
+            return [];
+        }
         $users = $this->getUsers();
         $groups = $this->getGroups();
 
