@@ -33,7 +33,8 @@ class GSuiteSubscriber implements EventSubscriberInterface
     {
         return array(
             WorkHistoryEvent::CREATED => array(
-                array('createGSuiteUser', 0),
+                array('createGSuiteUser', 1),
+                array('addGSuiteUserToTeam', -1),
             ),
             UserEvent::EDITED => array(
                 array('updateGSuiteUser', 0),
@@ -51,16 +52,6 @@ class GSuiteSubscriber implements EventSubscriberInterface
         );
     }
 
-    public function updateGSuiteUser(UserEvent $event)
-    {
-        $user = $event->getUser();
-        $oldEmail = $event->getOldEmail();
-        if ($this->userExists($oldEmail)) {
-            $this->googleAPI->updateUser($oldEmail, $user);
-            $this->logger->info("G Suite account for {$user} with email {$user->getCompanyEmail()} has been updated.");
-        }
-    }
-
     public function createGSuiteUser(WorkHistoryEvent $event)
     {
         $user = $event->getWorkHistory()->getUser();
@@ -71,6 +62,28 @@ class GSuiteSubscriber implements EventSubscriberInterface
                 $this->googleAPI->createUser($user);
                 $this->logger->info("New G Suite account created for {$user} with email {$user->getCompanyEmail()}");
             }
+        }
+    }
+
+    public function addGSuiteUserToTeam(WorkHistoryEvent $event)
+    {
+        $user = $event->getWorkHistory()->getUser();
+        $team = $event->getWorkHistory()->getTeam();
+        $department = $user->getDepartment();
+
+        if ($user->getCompanyEmail()) {
+            $this->googleAPI->addUserToGroup($user, $team);
+            $this->logger->info("$user added to G Suite group $department - $team");
+        }
+    }
+
+    public function updateGSuiteUser(UserEvent $event)
+    {
+        $user = $event->getUser();
+        $oldEmail = $event->getOldEmail();
+        if ($this->userExists($oldEmail)) {
+            $this->googleAPI->updateUser($oldEmail, $user);
+            $this->logger->info("G Suite account for {$user} with email {$user->getCompanyEmail()} has been updated.");
         }
     }
 
