@@ -22,6 +22,13 @@ class LoadExecutiveBoardMemberData extends AbstractFixture implements OrderedFix
         $boardMember->setPosition('Medlem');
         $boardMember->setUser($this->getReference('user-10'));
         $manager->persist($boardMember);
+
+        $boardMember = new ExecutiveBoardMember();
+        $boardMember->setBoard($this->getReference('board'));
+        $boardMember->setPosition('Medlem');
+        $boardMember->setUser($this->getReference('user-angela'));
+        $manager->persist($boardMember);
+
         $manager->flush();
     }
 

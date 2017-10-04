@@ -31,6 +31,18 @@ class Survey implements \JsonSerializable
     protected $name;
 
     /**
+     * @var bool
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $showCustomFinishPage;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $finishPageContent;
+
+    /**
      * @var SurveyQuestion[]
      *
      * @ORM\ManyToMany(targetEntity="SurveyQuestion", cascade={"persist"})
@@ -106,6 +118,7 @@ class Survey implements \JsonSerializable
     public function __construct()
     {
         $this->surveyQuestions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->showCustomFinishPage = false;
     }
 
     /**
@@ -194,5 +207,37 @@ class Survey implements \JsonSerializable
         }
 
         return $surveyClone;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isShowCustomFinishPage()
+    {
+        return $this->showCustomFinishPage;
+    }
+
+    /**
+     * @param boolean $showCustomFinishPage
+     */
+    public function setShowCustomFinishPage($showCustomFinishPage)
+    {
+        $this->showCustomFinishPage = $showCustomFinishPage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFinishPageContent()
+    {
+        return $this->finishPageContent;
+    }
+
+    /**
+     * @param string $finishPageContent
+     */
+    public function setFinishPageContent($finishPageContent)
+    {
+        $this->finishPageContent = $finishPageContent;
     }
 }

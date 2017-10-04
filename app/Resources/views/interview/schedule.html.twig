@@ -13,6 +13,9 @@
                 <div class="row">
                     <div class="small-12 medium-12 large-12 columns">
                         <h3>Sett opp intervju</h3>
+                        <div class="float-right">
+                            Status: <span style="color: {{ interview.getInterviewStatusAsColor }}">{{ interview.interviewStatusAsString }}</span>
+                        </div>
                         <h5>Intervjuer</h5>
                         <p>{{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}</p>
                         <h5>Kandidat</h5>
@@ -83,6 +86,7 @@
 
                         {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
                         {{ form_widget(form.preview, {'attr': {'class': 'button tiny', 'formtarget': '_blank'}}) }}
+                        {{ form_widget(form.changeStatus, {'attr': {'class': 'button tiny', 'data-reveal-id': 'status-'~interview.id}}) }}
                         <div class="float-right">
                             {{ form_widget(form.saveAndSend, {'attr': {'class': 'button tiny'}}) }}
                         </div>
@@ -90,6 +94,23 @@
                     </div>
                 </div>
                 {{ form_end(form) }}
+                <div id="status-{{ interview.id }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+                    <h3 id="modalTitle">Endre status</h3>
+                    <form method="POST" action="{{ path('interview_edit_status', {id: interview.id}) }}">
+                        <select name="status" id="status">
+                            {% set s = interview.interviewStatusAsString %}
+                            <option value="4" {% if s == 'Ikke satt opp' %}selected{% endif %}>Ikke satt opp</option>
+                            <option value="0" {% if s == 'Ingen svar' %}selected{% endif %}>Ingen svar</option>
+                            <option value="1" {% if s == 'Akseptert' %}selected{% endif %}>Akseptert</option>
+                            <option value="2" {% if s == 'Ny tid ønskes' %}selected{% endif %}>Ny tid ønskes</option>
+                            <option value="3" {% if s == 'Kansellert' %}selected{% endif %}>Kansellert</option>
+                        </select>
+                        <p>OBS: Dette vil laste inn siden på nytt. Alle felter vil bli tilbakestilt.</p>
+                    <button id="status_form_button" type="submit" class="tiny success">Lagre</button>
+                    </form>
+                    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                </div>
+
             </div>
         </div>
     </div>

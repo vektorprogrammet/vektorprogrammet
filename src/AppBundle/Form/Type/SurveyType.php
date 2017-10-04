@@ -3,7 +3,9 @@
 namespace AppBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -20,21 +22,35 @@ class SurveyType extends AbstractType
                     ->setParameter('limit', new \DateTime('now -1 year'))
                     ->orderBy('s.semesterStartDate', 'DESC');
             },
-        ));
+        ))
 
-        $builder->add('name', 'text', array(
+        ->add('name', 'text', array(
             'label' => false,
             'attr' => array('placeholder' => 'Fyll inn tittel til undersøkelse'),
-        ));
+        ))
+            
+            ->add('showCustomFinishPage', ChoiceType::class, [
+                'label' => 'Sluttside som vises etter undersøkelsen er besvart.',
+                'multiple' => false,
+                'expanded' => true,
+                'choices' => [
+                    false => 'Standard',
+                    true => 'Tilpasset',
+                ]
+            ])
+            
+            ->add('finishPageContent', CKEditorType::class, [
+                'label' => 'Tilpasset sluttside. Vises kun hvis "Tilpasset" er valgt over.',
+            ])
 
-        $builder->add('surveyQuestions', 'collection', array(
+        ->add('surveyQuestions', 'collection', array(
             'type' => new SurveyQuestionType(),
             'allow_add' => true,
             'allow_delete' => true,
             'prototype_name' => '__q_prot__',
-        ));
+        ))
 
-        $builder->add('save', 'submit', array(
+        ->add('save', 'submit', array(
             'label' => 'Lagre',
         ));
     }
