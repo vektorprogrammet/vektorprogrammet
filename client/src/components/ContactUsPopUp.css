@@ -1,0 +1,39 @@
+/*TODO: Make it appear exactly in middle*/
+/*TODO: Start all names with "about"*/
+/*TODO: Style it up, it looks like crap now!*/
+.contactUsPopUp {
+    opacity: 0;
+    position: fixed;
+    text-align: center;
+    bottom: 300px;
+    right: 600px;
+    color: white;
+    background-color: rgb(33, 243, 50);
+    font-size: 10px;
+    font-weight: 200;
+    width: auto;
+    height: auto;
+    padding: 10px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.contactUsPopUp.visible {
+    opacity: 1;
+    middle: 0;
+    z-index: 1;
+}
+
+.contactUsPopuP-icon {
+    right: 10px;
+    /*position: fixed;*/
+}
+
+.contactUsPopUp-captchaImage {
+    width: 200px;
+    height: 60px;
+}
+
+.contactUsPopUp-message {
+    width: 300px;
+}

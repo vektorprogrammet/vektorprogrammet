@@ -1,0 +1,7 @@
+.testimonialRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+    margin: 10px 100px;
+}
