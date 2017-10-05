@@ -10,3 +10,11 @@
     margin: 0 10px;
     height: inherit;
 }
+
+.ui.card {
+    box-shadow: none;
+}
+
+.ui.card>.content {
+    border-top-width: 0px;
+}
