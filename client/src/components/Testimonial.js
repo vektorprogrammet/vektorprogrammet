@@ -12,10 +12,10 @@ export default class Testimonial extends Component {
 
                     <Card.Content>
                 <Card.Description className="testimonialText">
-                    Jeg liker det sosiale og det ikke sosiale og det alternative!
+                {this.props.testimonialText}
                 </Card.Description>
                     <p className="testimonialText">
-                        <Icon name="female"/> Alice
+                <Icon name={this.props.gender}/> {this.props.name}
                     </p>
                     </Card.Content>
 
