@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import { Image, Grid, Rail, Segment, List, Button} from 'semantic-ui-react';
+import { Image, Grid, Rail, Divider, List, Button} from 'semantic-ui-react';
 import './AboutUsPage.css';
 import ContactUsPopUp from '../components/ContactUsPopUp';
+import logo from '../images/logo_condensed.png';
 
 class AboutUsPage extends Component {
     constructor(props){
@@ -35,36 +36,37 @@ class AboutUsPage extends Component {
                 <Grid.Column>
                         <Grid>
                             <Grid.Row>
-                                <h1 className="about-us-header">Om Vektorprogrammet</h1>
+                                <h1 className="aboutUs-header">Om Vektorprogrammet</h1>
                             </Grid.Row>
                             <Grid.Row columns={2}>
                                 <Grid.Column>
                                     <div>
-                                        <p className="about-us-text">
+                                        <p className="aboutUs-text">
                                             Vektorprogrammet arbeider for å øke interessen for matematikk og realfag blant elever i grunnskolen. Vi er en nasjonal studentorganisasjon som sender studenter med utmerket
                                             realfagskompetanse til skoler for å hjelpe elevene i matematikktimene. Disse studentene har også gode pedagogiske evner og er gode rollemodeller – de er Norges realfagshelter.
                                             <br/><br/></p>
                                     </div>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <Image className="image1" src={"http://via.placeholder.com/350x350/"}/>
+                                    <Image className="aboutUs-image1" src={"http://via.placeholder.com/350x350/"}/>
                                 </Grid.Column>
                             </Grid.Row>
                             <Grid.Row columns={2}>
                                 <Grid.Column>
-                                    <Image className="image2" src={"http://via.placeholder.com/350x350/"}/>
+                                    <Image className="aboutUs-image2" src={"http://via.placeholder.com/350x350/"}/>
                                 </Grid.Column>
                                 <Grid.Column>
                                     <div>
-                                        <p className="text2">
+                                        <p className="aboutUs-text2">
                                             Da studentene er tilstede i skoletiden skiller vi oss derfor fra andre tiltak ved at elevenes barriere for å delta er ikke-eksisterende. Dette gjør at vi når ut til alle –
                                             ikke kun de som allerede er motiverte. <br/><br/>Vektorprogrammet sørger for at alle får hjelp i timen raskere og at undervisningen kan bli mer tilpasset de ulike elevgruppene.
                                         </p>
                                     </div>
                                 </Grid.Column>
                             </Grid.Row>
+                            <Divider fitted/>
                             <Grid.Row>
-                                <div id={"FAQ"} className="FAQ">
+                                <div id={"FAQ"} className="aboutUs-FAQ">
                                     <h1>Ofte stilte spørsmål</h1><br/>
                                     <h3>Er verv i Vektorprogrammet betalt?</h3>
                                     <p>Nei, Vektorprogrammet er en frivillig, studentdrevet organisasjon, der ingen verv er betalt i form av norske kroner. Du får derimot delta på sosiale arrangementer og muligheten til å påvirke en organisasjon som er den største av sitt slag.
@@ -100,6 +102,7 @@ class AboutUsPage extends Component {
                                     <p>Gå til 'Opptak & kontakt' i menyen og velg din region. Der finnes det et kontaktskjema nederst som du kan fylle ut, så skal vi svare så raskt vi kan !</p>
                                 </div>
                             </Grid.Row>
+                            <Divider fitted/>
                             <Grid.Row>
                                 <div id={"kontakt-info"} style={{marginLeft: 51}}>
                                     <section style={{justifyContent: 'center'}}>
