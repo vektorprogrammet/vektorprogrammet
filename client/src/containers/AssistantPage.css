@@ -1,7 +1,14 @@
 /*TODO: få det finere*/
 
-.assistant-header-text {
+.centered {
     text-align: center;
+}
+
+.leftAligned {
+    text-align: left;
+}
+
+.assistantHeaderText {
     margin: 1250px auto;
 }
 
@@ -12,8 +19,9 @@ p {
     text-align: left;
 }
 
-p.center {
-    text-align: center;
+h1 {
+    font-size: 40px;
+    font-weight: bold;
 }
 
 img.displayed {
@@ -22,21 +30,24 @@ img.displayed {
     margin-right: auto
 }
 
-.assistant-pics {
+.assistantPics {
     margin: 125px auto;
     padding: 0 20px;
-    text-align: center;
 }
 
-.content-text {
-    text-align: center;
+.assistantContentText {
     margin: 125px auto;
+    padding: 0 20px;
 }
 
-.list-text {
+.assistantListText {
     text-align: left;
     margin: 125px auto;
     padding: 0 20px;
 }
 
 
+
+.assistantApplicationForm {
+
+}

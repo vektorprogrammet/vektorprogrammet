@@ -14,3 +14,4 @@ applications:
     type: rest
     resource: @AppBundle/Controller/API/ApplicationController.php
 
+

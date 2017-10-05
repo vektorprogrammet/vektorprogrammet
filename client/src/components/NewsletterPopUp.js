@@ -9,10 +9,10 @@ class NewsletterPopUp extends Component {
             <div className={'newsletterPopUp' + (this.props.show ? ' visible' : '')}>
                 <Icon name={'remove'} onClick={this.props.onClose} className="newsletterIcon"/>
                 <br/>
-                <p>Du virker interessert i Vektorprogrammet. <br/> Vil du melde deg på vårt nyhetsbrev?</p>
+                <p className="newsletterText">Du virker interessert i Vektorprogrammet. <br/> Vil du melde deg på vårt nyhetsbrev?</p>
                 <Form>
-                    <Form.Input placeholder='Epostadresse' />
-                    <Button>Meld meg på!</Button>
+                    <Form.Input placeholder='Epostadresse' size='mini' />
+                    <Button size='mini'>Meld meg på!</Button>
                 </Form>
             </div>
         )

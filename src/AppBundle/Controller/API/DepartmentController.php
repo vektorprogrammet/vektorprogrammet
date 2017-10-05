@@ -55,4 +55,25 @@ class DepartmentController extends FOSRestController implements ClassResourceInt
     {
         return $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
     }
+
+    /**
+     * Gets all Departments
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     section="Department",
+     *     statusCodes={
+     *          200 = "Returned when successful",
+     *          404 = "Return when not found",
+     *          500 = "Internal server error"
+     *     }
+     * )
+     */
+
+    public function getFieldofstudiesAction(int $departmentId)
+    {
+        $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
+        return $this->getDoctrine()->getRepository('AppBundle:FieldOfStudy')->findByDepartment($department);
+    }
 }
