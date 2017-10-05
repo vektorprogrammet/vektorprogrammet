@@ -2,10 +2,10 @@
     opacity: 0;
     position: fixed;
     text-align: center;
-    bottom: 5px;
-    right: -100px;
+    bottom: 300px;
+    right: 600px;
     color: white;
-    background-color: rgb(33, 150, 243);
+    background-color: rgb(33, 243, 50);
     font-size: 10px;
     font-weight: 200;
     width: auto;
@@ -17,11 +17,11 @@
 
 .contactUsPopUp.visible {
     opacity: 1;
-    right: 0;
+    middle: 0;
     z-index: 1;
 }
 
 .contactUsIcon {
     right: 10px;
-    position: fixed;
+    /*position: fixed;*/
 }

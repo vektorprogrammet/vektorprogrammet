@@ -1,23 +1,31 @@
 import React, {Component} from 'react';
-/*import { Link } from 'react-router-dom';*/
-import { Image, Grid, Rail, Segment, List, Button, Header, Popup} from 'semantic-ui-react';
+import { Image, Grid, Rail, Segment, List, Button} from 'semantic-ui-react';
 import './AboutUsPage.css';
 import ContactUsPopUp from '../components/ContactUsPopUp';
 
 class AboutUsPage extends Component {
     constructor(props){
         super(props);
+
         this.state={
             contactUsVisible: false,
             contactUsRevealed: false
         };
         this.onContactUsPopUpClose = this.onContactUsPopUpClose.bind(this);
+        this.handleContactUsNowClick = this.handleContactUsNowClick.bind(this);
     }
 
     onContactUsPopUpClose(){
-        this.setState({contactUsVisible : false});
+        this.setState({
+            contactUsVisible : false
+        });
     }
-
+    handleContactUsNowClick(){
+        this.setState ({
+                contactUsVisible: true,
+                contactUsRevealed: true
+            });
+    }
     render() {
         return (
             <Grid centered columns={2}>
@@ -25,8 +33,7 @@ class AboutUsPage extends Component {
                 <ContactUsPopUp show={this.state.contactUsVisible} onClose={this.onContactUsPopUpClose}/>
 
                 <Grid.Column>
-                    <Segment>
-                        <Grid >
+                        <Grid>
                             <Grid.Row>
                                 <h1 className="about-us-header">Om Vektorprogrammet</h1>
                             </Grid.Row>
@@ -36,9 +43,7 @@ class AboutUsPage extends Component {
                                         <p className="about-us-text">
                                             Vektorprogrammet arbeider for å øke interessen for matematikk og realfag blant elever i grunnskolen. Vi er en nasjonal studentorganisasjon som sender studenter med utmerket
                                             realfagskompetanse til skoler for å hjelpe elevene i matematikktimene. Disse studentene har også gode pedagogiske evner og er gode rollemodeller – de er Norges realfagshelter.
-                                            <br/><br/>Da studentene er tilstede i skoletiden skiller vi oss derfor fra andre tiltak ved at elevenes barriere for å delta er ikke-eksisterende. Dette gjør at vi når ut til alle –
-                                            ikke kun de som allerede er motiverte. <br/><br/>Vektorprogrammet sørger for at alle får hjelp i timen raskere og at undervisningen kan bli mer tilpasset de ulike elevgruppene.
-                                        </p>
+                                            <br/><br/></p>
                                     </div>
                                 </Grid.Column>
                                 <Grid.Column>
@@ -52,9 +57,7 @@ class AboutUsPage extends Component {
                                 <Grid.Column>
                                     <div>
                                         <p className="text2">
-                                            Vektorprogrammet arbeider for å øke interessen for matematikk og realfag blant elever i grunnskolen. Vi er en nasjonal studentorganisasjon som sender studenter med utmerket
-                                            realfagskompetanse til skoler for å hjelpe elevene i matematikktimene. Disse studentene har også gode pedagogiske evner og er gode rollemodeller – de er Norges realfagshelter.
-                                            <br/><br/>Da studentene er tilstede i skoletiden skiller vi oss derfor fra andre tiltak ved at elevenes barriere for å delta er ikke-eksisterende. Dette gjør at vi når ut til alle –
+                                            Da studentene er tilstede i skoletiden skiller vi oss derfor fra andre tiltak ved at elevenes barriere for å delta er ikke-eksisterende. Dette gjør at vi når ut til alle –
                                             ikke kun de som allerede er motiverte. <br/><br/>Vektorprogrammet sørger for at alle får hjelp i timen raskere og at undervisningen kan bli mer tilpasset de ulike elevgruppene.
                                         </p>
                                     </div>
@@ -128,12 +131,11 @@ class AboutUsPage extends Component {
                                     <List.Item
                                         icon='talk'
                                         content={
-                                                <Button onClick={this.setState({contactUsVisible: true, contactUsRevealed: true})} positive>Kontakt oss nå!</Button>
+                                                <Button basic color='blue' onClick={this.handleContactUsNowClick}>Kontakt oss nå!</Button>
                                         }
                                     />
                                     </List>
                         </Rail>
-                    </Segment>
                 </Grid.Column>
             </Grid>
         )
