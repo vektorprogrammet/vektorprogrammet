@@ -104,21 +104,22 @@ class AboutUsPage extends Component {
                             </Grid.Row>
                             <Divider fitted/>
                             <Grid.Row>
-                                <div id={"kontakt-info"} style={{marginLeft: 51}}>
-                                    <section style={{justifyContent: 'center'}}>
-                                        <ul style={{listStyle: 'none',margin: 0, display: 'inline-block'}}>
+                                <div id={"kontakt-info"} style={{ marginLeft: 'var(--main-margin)',
+                                    marginRight: 'var(--main-margin)', marginTop: 20}}>
+                                    <section>
+                                        <ul style={{listStyle: 'none',margin: 0, display: 'inline-block', borderBottom: '1px solid #e0e0e0'}}>
                                             <li style={{fontSize: 20, fontWeight: 700}}>
                                                 Kontakt:
                                                 <li style={{display: 'inline-block', fontSize: '17', marginLeft: 25}}>
                                                     <a href="mailto:NTNU@gmail.com" style={{color: '#2196f3', textDecoration: 'none'}}>Trondheim - NTNU</a>
                                                 </li>
-                                                <li style={{display: 'inline-block', fontSize: '17', marginLeft: '25'}}>
+                                                <li style={{display: 'inline-block', fontSize: '17', marginLeft: 25}}>
                                                     <a href="mailto:HIST@gmail.com" style={{color: '#2196f3', textDecoration: 'none'}}>Trondheim - HIST</a>
                                                 </li>
-                                                <li style={{display: 'inline-block', fontSize: '17', marginLeft: '25'}}>
+                                                <li style={{display: 'inline-block', fontSize: '17', marginLeft: 25}}>
                                                     <a href="mailto:NMBU@gmail.com" style={{color: '#2196f3', textDecoration: 'none'}}>Ås</a>
                                                 </li>
-                                                <li style={{display: 'inline-block', fontSize: '17', marginLeft: '25'}}>
+                                                <li style={{display: 'inline-block', fontSize: '17', marginLeft: 25}}>
                                                     <a href="mailto:UiO@gmail.com" style={{color: '#2196f3', textDecoration: 'none'}}>Oslo</a>
                                                 </li>
                                             </li>
