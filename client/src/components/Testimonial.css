@@ -1,6 +1,7 @@
 .testimonialText {
     font-size: small;
     text-align: center;
+    width: inherit;
 }
 
 .ui.card.testimonial-card {
