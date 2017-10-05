@@ -18,7 +18,7 @@ export default class TestimonialRow extends Component {
                     testimonialText="Jeg er flink i matte, derfor er jeg vektor"
                     gender="male"
                     name="Bob"
-                    imagePath="https://via.placeholder.com/200x200"
+                    imagePath="https://vektorprogrammet.no/images/Profile%20photos/177.jpg?v=1498984893"
                     />
                 <Testimonial
                     testimonialText="Jeg liker å lære bort ting."
