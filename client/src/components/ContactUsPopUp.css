@@ -1,3 +1,6 @@
+/*TODO: Make it appear exactly in middle*/
+/*TODO: Start all names with "about"*/
+/*TODO: Style it up, it looks like crap now!*/
 .contactUsPopUp {
     opacity: 0;
     position: fixed;
@@ -21,7 +24,16 @@
     z-index: 1;
 }
 
-.contactUsIcon {
+.contactUsPopuP-icon {
     right: 10px;
     /*position: fixed;*/
+}
+
+.contactUsPopUp-captchaImage {
+    width: 200px;
+    height: 60px;
+}
+
+.contactUsPopUp-message {
+    width: 300px;
 }
