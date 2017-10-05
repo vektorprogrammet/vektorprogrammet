@@ -36,6 +36,10 @@ class GSuiteSubscriber implements EventSubscriberInterface
                 array('createGSuiteUser', 1),
                 array('addGSuiteUserToTeam', -1),
             ),
+            WorkHistoryEvent::EDITED => array(
+                array('createGSuiteUser', 1),
+                array('addGSuiteUserToTeam', -1),
+            ),
             UserEvent::EDITED => array(
                 array('updateGSuiteUser', 0),
             ),
