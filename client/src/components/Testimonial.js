@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Icon, Image } from 'semantic-ui-react'
+import { Card, Icon, Image } from 'semantic-ui-react';
 import './Testimonial.css';
 
 export default class Testimonial extends Component {
@@ -7,7 +7,7 @@ export default class Testimonial extends Component {
         return (
             <Card className="testimonial-card">
                 <div>
-                    <Image src='https://via.placeholder.com/200x200' shape="circular" centered size="small"/>
+                    <Image src={this.props.imagePath} shape="circular" centered size="small"/>
                 </div>
 
                     <Card.Content>
@@ -22,6 +22,6 @@ export default class Testimonial extends Component {
 
 
             </Card>
-        )
+        );
     }
 }
