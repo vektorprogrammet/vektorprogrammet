@@ -42,4 +42,14 @@ class TeamRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllEmails()
+    {
+        $result = $this->createQueryBuilder('team')
+            ->select('team.email')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_column($result, 'email');
+    }
 }

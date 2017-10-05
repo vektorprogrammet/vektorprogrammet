@@ -3,6 +3,14 @@ services:
     class: AppBundle\Service\LogService
     arguments: ['@logger', '@app.slack_messenger']
 
+  app.google_api:
+      class: AppBundle\Google\GoogleAPI
+      arguments: ['%google_api%', '@app.logger']
+
+  app.company_email_maker:
+    class: AppBundle\Service\CompanyEmailMaker
+    arguments: ['@doctrine.orm.default_entity_manager', '@app.logger']
+
   app.email_sender:
     class: AppBundle\Service\EmailSender
     arguments: ['@mailer', '@twig', '@router', '@app.logger', '%default_from_email%', '%economy_email%']
@@ -108,7 +116,19 @@ services:
 
   app.work_history_subscriber:
     class: AppBundle\EventSubscriber\WorkHistorySubscriber
-    arguments: ['@session', '@app.logger', '@security.authorization_checker', '@app.roles']
+    arguments: ['@session', '@app.logger', '@app.roles']
+    tags:
+        - { name: kernel.event_subscriber }
+
+  app.user_subscriber:
+    class: AppBundle\EventSubscriber\UserSubscriber
+    arguments: ['@app.logger']
+    tags:
+        - { name: kernel.event_subscriber }
+
+  app.g_suite_subscriber:
+    class: AppBundle\EventSubscriber\GSuiteSubscriber
+    arguments: ['@app.logger', '@app.google_api', '@app.company_email_maker']
     tags:
         - { name: kernel.event_subscriber }
 
@@ -154,3 +174,9 @@ services:
         public: false
         tags:
           - { name: twig.extension }
+
+  app.unique_company_email_validator:
+    class: AppBundle\Validator\Constraints\UniqueCompanyEmailValidator
+    arguments: ['@doctrine.orm.entity_manager', '@app.google_api']
+    tags:
+        - { name: validator.constraint_validator }

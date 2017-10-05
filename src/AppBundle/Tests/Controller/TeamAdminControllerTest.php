@@ -177,16 +177,16 @@ class TeamAdminControllerTest extends BaseWebTestCase
 
         // Change the value of a field
         $form['createTeam[name]'] = 'testteam1';
+        $form['createTeam[email]'] = 'testteam1@vektorprogrammet.no';
 
         // submit the form
-        $crawler = $client->submit($form);
+        $client->submit($form);
 
-        // Follow the redirect
         $crawler = $client->followRedirect();
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Team")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("testteam1")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("testteam1@vektorprogrammet.no")')->count());
 
         // USER
         $client = static::createClient(array(), array(
@@ -238,16 +238,16 @@ class TeamAdminControllerTest extends BaseWebTestCase
 
         // Change the value of a field
         $form['createTeam[name]'] = 'testteam2';
+        $form['createTeam[email]'] = 'testteam2@vektorprogrammet.no';
 
         // submit the form
-        $crawler = $client->submit($form);
+        $client->submit($form);
 
-        // Follow the redirect
         $crawler = $client->followRedirect();
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Tea")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("testteam2")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("testteam2@vektorprogrammet.no")')->count());
         $this->assertEquals(0, $crawler->filter('td:contains("testteam1")')->count());
     }
 
@@ -275,10 +275,8 @@ class TeamAdminControllerTest extends BaseWebTestCase
         $form['createWorkHistory[position]']->select(1);
         $form['createWorkHistory[startSemester]']->select(1);
 
-        // submit the form
-        $crawler = $client->submit($form);
+        $client->submit($form);
 
-        // Follow the redirect
         $crawler = $client->followRedirect();
 
         // Assert that we have the correct page

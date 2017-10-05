@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
@@ -13,7 +13,8 @@ class UserCompanyEmailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('companyEmail', EmailType::class, [
-            'label' => 'Vektorepost'
+            'label' => 'Vektorepost',
+            'required' => false
         ]);
     }
 

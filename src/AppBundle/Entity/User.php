@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Validator\Constraints as CustomAssert;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,10 +18,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *      fields={"email"},
  *      message="Denne Eposten er allerede i bruk.",
  *      groups={"create_user", "edit_user"}
- * )
- * @UniqueEntity(
- *      fields={"companyEmail"},
- *      message="Denne Eposten er allerede i bruk."
  * )
  *
  * @UniqueEntity(
@@ -100,6 +97,8 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @ORM\Column(type="string", unique=true, nullable=true)
      * @Assert\Email
+     * @CustomAssert\UniqueCompanyEmail
+     * @CustomAssert\VektorEmail
      */
     private $companyEmail;
 
