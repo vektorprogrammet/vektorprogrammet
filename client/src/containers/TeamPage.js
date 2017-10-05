@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Testimonial from '../components/Testimonial';
+import TestimonialRow from '../components/TestimonialRow';
 import {Grid} from 'semantic-ui-react';
 import GradientBox from '../components/GradientBox';
 import './TeamPage.css';
@@ -23,7 +23,7 @@ class TeamPage extends Component {
                     </Grid.Row>
                 </Grid>
             </GradientBox>
-            <Testimonial/>
+            <TestimonialRow/>
         </div>
     )
   }

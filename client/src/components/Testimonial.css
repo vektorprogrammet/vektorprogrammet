@@ -1,11 +1,12 @@
-.testimonial {
-    display: inline-block;
-    border-style: solid;
+.testimonialText {
+    font-size: small;
     text-align: center;
-    margin: auto;
+    width: inherit;
 }
 
-Image.testimonial {
-    display: inline;
-    float: none;
+.ui.card.testimonial-card {
+    width: 200px;
+    max-width: 200px;
+    margin: 0 10px;
+    height: inherit;
 }
