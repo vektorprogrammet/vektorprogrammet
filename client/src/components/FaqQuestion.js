@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './FaqQuestion.css';
 
-class FaqQuestion extends React.Component {
+class FaqQuestion extends Component {
     render() {
         return (
             <h3 className="faqQuestion">

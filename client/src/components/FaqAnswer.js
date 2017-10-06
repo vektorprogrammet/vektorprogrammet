@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import './FaqAnswer.css';
 
-class FaqAnswer extends React.Component {
+class FaqAnswer extends Component {
     render() {
         return (
-            <div>
+            <div className="faqAnswer">
                 <p>{this.props.faqAnswer}</p>
             </div>
         );
