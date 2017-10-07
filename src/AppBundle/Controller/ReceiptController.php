@@ -143,6 +143,8 @@ class ReceiptController extends Controller
             $this->get('event_dispatcher')->dispatch(ReceiptEvent::REFUNDED, new ReceiptEvent($receipt));
         } elseif ($status === Receipt::STATUS_CANCELLED) {
             $this->get('event_dispatcher')->dispatch(ReceiptEvent::CANCELLED, new ReceiptEvent($receipt));
+        } elseif ($status === Receipt::STATUS_PENDING) {
+            $this->get('event_dispatcher')->dispatch(ReceiptEvent::PENDING, new ReceiptEvent($receipt));
         }
 
         return $this->redirectToRoute('receipts_show_individual', ['user' => $receipt->getUser()->getId()]);
