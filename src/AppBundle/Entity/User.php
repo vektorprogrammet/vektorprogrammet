@@ -131,7 +131,6 @@ class User implements AdvancedUserInterface, \Serializable
     private $interviews;
 
     /**
-     * @var Receipt[]
      * @ORM\OneToMany(targetEntity="Receipt", mappedBy="user")
      */
     private $receipts;
@@ -142,7 +141,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->certificateRequests = new ArrayCollection();
         $this->isActive = false;
         $this->picture_path = 'images/defaultProfile.png';
-        $this->receipts = [];
+        $this->receipts = new ArrayCollection();
     }
 
     public function getId()
@@ -602,7 +601,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @return Receipt[]
+     * @return ArrayCollection
      */
     public function getReceipts()
     {
@@ -614,7 +613,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function addReceipt($receipt)
     {
-        array_push($this->receipts, $receipt);
+        $this->receipts->add($receipt);
     }
 
     /**

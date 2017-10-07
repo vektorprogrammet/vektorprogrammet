@@ -109,24 +109,11 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getResult();
     }
 
-    public function findAllUsersWithActiveReceipts()
+    public function findAllUsersWithReceipts()
     {
         return $this->createQueryBuilder('user')
             ->select('user')
             ->join('user.receipts', 'receipt')
-            ->where('receipt.status = :status')
-            ->setParameter('status', Receipt::STATUS_PENDING)
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function findAllUsersWithInactiveReceipts()
-    {
-        return $this->createQueryBuilder('user')
-            ->select('user')
-            ->join('user.receipts', 'receipt')
-            ->where('receipt.status != :status')
-            ->setParameter('status', Receipt::STATUS_PENDING)
             ->getQuery()
             ->getResult();
     }

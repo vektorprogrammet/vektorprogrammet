@@ -16,12 +16,15 @@ class ReceiptController extends Controller
 {
     public function showAction()
     {
-        $usersWithActiveReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithActiveReceipts();
-        $usersWithInactiveReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithInactiveReceipts();
+        $usersWithReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithReceipts();
+
+        $sorter = $this->container->get('app.sorter');
+
+        $sorter->sortUsersByReceiptSubmitTime($usersWithReceipts);
+        $sorter->sortUsersByReceiptStatus($usersWithReceipts);
 
         return $this->render('receipt_admin/show_receipts.html.twig', array(
-            'users_with_active_receipts' => $usersWithActiveReceipts,
-            'users_with_inactive_receipts' => $usersWithInactiveReceipts,
+            'users_with_receipts' => $usersWithReceipts,
             'current_user' => $this->getUser(),
         ));
     }

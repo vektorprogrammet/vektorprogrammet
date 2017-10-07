@@ -4,6 +4,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\Receipt;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Sorter
 {
@@ -30,7 +31,7 @@ class Sorter
      *
      * @return int
      */
-    protected function newestReceipt($receipt1, $receipt2)
+    public function newestReceipt($receipt1, $receipt2)
     {
         if ($receipt1->getSubmitDate() === $receipt2->getSubmitDate()) {
             return 0;
@@ -68,17 +69,17 @@ class Sorter
     }
 
     /**
-     * @param Receipt[] $receipts
-     *
-     * @return bool success
+     * @param ArrayCollection $receipts
      */
     public function sortReceiptsBySubmitTime(&$receipts)
     {
-        return usort($receipts, array($this, 'newestReceipt'));
+        $iterator = $receipts->getIterator();
+        $iterator->uasort(array($this,'newestReceipt'));
+        $receipts = new ArrayCollection(iterator_to_array($iterator));
     }
 
     /**
-     * @param Receipt[] $receipts
+     * @param ArrayCollection $receipts
      */
     public function sortReceiptsByStatus(&$receipts)
     {
@@ -91,6 +92,7 @@ class Sorter
                 array_push($nonPendingReceipts, $receipt);
             }
         }
-        $receipts = array_merge($pendingReceipts, $nonPendingReceipts);
+        $receiptElements = array_merge($pendingReceipts, $nonPendingReceipts);
+        $receipts = new ArrayCollection($receiptElements);
     }
 }

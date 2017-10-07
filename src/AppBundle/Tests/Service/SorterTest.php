@@ -3,6 +3,7 @@
 namespace AppBundle\Tests\Command;
 
 use AppBundle\Service\Sorter;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use AppBundle\Entity\Receipt;
 use AppBundle\Entity\User;
@@ -15,7 +16,7 @@ class SorterTest extends KernelTestCase
     /** @var  User[] */
     private $mockUsers;
 
-    /** @var  Receipt[] */
+    /** @var  ArrayCollection */
     private $mockReceipts;
 
     protected function setUp()
@@ -25,12 +26,12 @@ class SorterTest extends KernelTestCase
 
         $this->sorter = $kernel->getContainer()->get('app.sorter');
 
-        $this->mockReceipts = [
+        $this->mockReceipts = new ArrayCollection([
             new Receipt(),
             new Receipt(),
             new Receipt(),
             new Receipt(),
-        ];
+        ]);
 
         $this->mockUsers = [
             new User(),
