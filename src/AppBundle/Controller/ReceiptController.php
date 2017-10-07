@@ -32,7 +32,11 @@ class ReceiptController extends Controller
 
     public function showIndividualAction(User $user)
     {
-        $receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByUser($user);
+        $receipts = new ArrayCollection($this->getDoctrine()->getRepository('AppBundle:Receipt')->findByUser($user));
+
+        $sorter = $this->container->get('app.sorter');
+        $sorter->sortReceiptsBySubmitTime($receipts);
+        $sorter->sortReceiptsByStatus($receipts);
 
         return $this->render('receipt_admin/show_individual_receipts.html.twig', array(
             'user' => $user,

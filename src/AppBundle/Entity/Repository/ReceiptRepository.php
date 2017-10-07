@@ -16,28 +16,12 @@ class ReceiptRepository extends EntityRepository
      */
     public function findByUser(User $user)
     {
-        $receipts = $this->createQueryBuilder('receipt')
+        return $receipts = $this->createQueryBuilder('receipt')
             ->select('receipt')
             ->where('receipt.user = :user')
             ->setParameter('user', $user)
             ->getQuery()
             ->getResult();
-
-        usort($receipts, function (Receipt $a, Receipt $b) {
-            if ($a->getStatus() === Receipt::STATUS_PENDING && $b->getStatus() !== Receipt::STATUS_PENDING) {
-                return -1;
-            } elseif ($b->getStatus() === Receipt::STATUS_PENDING && $a->getStatus() !== Receipt::STATUS_PENDING) {
-                return 1;
-            } elseif ($a->getStatus() === Receipt::STATUS_REFUNDED && $b->getStatus() !== Receipt::STATUS_REFUNDED) {
-                return -1;
-            } elseif ($b->getStatus() === Receipt::STATUS_REFUNDED && $a->getStatus() !== Receipt::STATUS_REFUNDED) {
-                return 1;
-            } else {
-                return $a->getSubmitDate()->getTimestamp() - $b->getSubmitDate()->getTimestamp();
-            }
-        });
-
-        return $receipts;
     }
 
     /**
