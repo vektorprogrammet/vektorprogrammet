@@ -9,7 +9,7 @@ class ReceiptEvent extends Event
 {
     const CREATED = 'receipt.created';
     const REFUNDED = 'receipt.refunded';
-    const CANCELLED = 'receipt.cancelled';
+    const REJECTED = 'receipt.rejected';
     const PENDING = 'receipt.pending';
     const EDITED = 'receipt.edited';
     const DELETED = 'receipt.deleted';

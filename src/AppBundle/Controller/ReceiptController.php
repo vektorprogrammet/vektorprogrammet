@@ -127,7 +127,7 @@ class ReceiptController extends Controller
         $status = $request->get('status');
         if ($status !== Receipt::STATUS_PENDING &&
             $status !== Receipt::STATUS_REFUNDED &&
-            $status !== Receipt::STATUS_CANCELLED) {
+            $status !== Receipt::STATUS_REJECTED) {
             throw new BadRequestHttpException('Invalid status');
         }
 
@@ -141,8 +141,8 @@ class ReceiptController extends Controller
 
         if ($status === Receipt::STATUS_REFUNDED) {
             $this->get('event_dispatcher')->dispatch(ReceiptEvent::REFUNDED, new ReceiptEvent($receipt));
-        } elseif ($status === Receipt::STATUS_CANCELLED) {
-            $this->get('event_dispatcher')->dispatch(ReceiptEvent::CANCELLED, new ReceiptEvent($receipt));
+        } elseif ($status === Receipt::STATUS_REJECTED) {
+            $this->get('event_dispatcher')->dispatch(ReceiptEvent::REJECTED, new ReceiptEvent($receipt));
         } elseif ($status === Receipt::STATUS_PENDING) {
             $this->get('event_dispatcher')->dispatch(ReceiptEvent::PENDING, new ReceiptEvent($receipt));
         }

@@ -13,7 +13,7 @@ class Receipt
 {
     const STATUS_PENDING = 'pending';
     const STATUS_REFUNDED = 'refunded';
-    const STATUS_CANCELLED = 'cancelled';
+    const STATUS_REJECTED = 'rejected';
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")

@@ -5,6 +5,7 @@ namespace AppBundle\Tests\Controller;
 use AppBundle\Tests\BaseWebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Finder\Finder;
+use AppBundle\Entity\Receipt;
 
 class ReceiptControllerTest extends BaseWebTestCase
 {
@@ -63,21 +64,21 @@ class ReceiptControllerTest extends BaseWebTestCase
     public function testRefunded()
     {
         $client = $this->createTeamLeaderClient();
-        $client->request('POST', '/kontrollpanel/utlegg/status/2', ['status' => 'refunded']);
+        $client->request('POST', '/kontrollpanel/utlegg/status/2', ['status' => Receipt::STATUS_REFUNDED]);
         $this->assertEquals(302, $client->getResponse()->getStatusCode()); // Successful if redirect
     }
 
-    public function testCancel()
+    public function testRejected()
     {
         $client = $this->createTeamLeaderClient();
-        $client->request('POST', '/kontrollpanel/utlegg/status/2', ['status' => 'cancelled']);
+        $client->request('POST', '/kontrollpanel/utlegg/status/2', ['status' => Receipt::STATUS_REJECTED]);
         $this->assertEquals(302, $client->getResponse()->getStatusCode()); // Successful if redirect
     }
 
     public function testPeding()
     {
         $client = $this->createTeamLeaderClient();
-        $client->request('POST', '/kontrollpanel/utlegg/status/2', ['status' => 'pending']);
+        $client->request('POST', '/kontrollpanel/utlegg/status/2', ['status' => Receipt::STATUS_PENDING]);
         $this->assertEquals(302, $client->getResponse()->getStatusCode()); // Successful if redirect
     }
 

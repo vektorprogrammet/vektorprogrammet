@@ -43,10 +43,10 @@ class ReceiptSubscriber implements EventSubscriberInterface
                 array('sendRefundedEmail', 1),
                 array('addRefundedFlashMessage', 1)
             ),
-            ReceiptEvent::CANCELLED => array(
-                array('logCancelledEvent', 1),
-                array('sendCancelEmail', 1),
-                array('addCancelFlashMessage', 1)
+            ReceiptEvent::REJECTED => array(
+                array('logRejectedEvent', 1),
+                array('sendRejectedEmail', 1),
+                array('addRejectedFlashMessage', 1)
             ),
             ReceiptEvent::EDITED => array(
                 array('logEditedEvent', 1),
@@ -94,14 +94,14 @@ class ReceiptSubscriber implements EventSubscriberInterface
         $this->logger->info($user->getDepartment() . ": Receipt *$visualID* belonging to *$user* has been refunded by $loggedInUser.");
     }
 
-    public function logCancelledEvent(ReceiptEvent $event)
+    public function logRejectedEvent(ReceiptEvent $event)
     {
         $receipt = $event->getReceipt();
         $user = $receipt->getUser();
         $visualID = $receipt->getVisualId();
         $loggedInUser = $this->tokenStorage->getToken()->getUser();
 
-        $this->logger->info($user->getDepartment() . ": Receipt *$visualID* belonging to *$user* has been cancelled by $loggedInUser.");
+        $this->logger->info($user->getDepartment() . ": Receipt *$visualID* belonging to *$user* has been rejected by $loggedInUser.");
     }
 
     public function sendCreatedEmail(ReceiptEvent $event)
@@ -118,11 +118,11 @@ class ReceiptSubscriber implements EventSubscriberInterface
         $this->emailSender->sendPaidReceiptConfirmation($receipt);
     }
 
-    public function sendCancelEmail(ReceiptEvent $event)
+    public function sendRejectedEmail(ReceiptEvent $event)
     {
         $receipt = $event->getReceipt();
 
-        $this->emailSender->sendCancelReceiptConfirmation($receipt);
+        $this->emailSender->sendRejectedReceiptConfirmation($receipt);
     }
 
     public function addPendingFlashMessage()
@@ -141,11 +141,11 @@ class ReceiptSubscriber implements EventSubscriberInterface
         $this->session->getFlashBag()->add('success', $message);
     }
 
-    public function addCancelFlashMessage(ReceiptEvent $event)
+    public function addRejectedFlashMessage(ReceiptEvent $event)
     {
         $receipt = $event->getReceipt();
         $email = $receipt->getUser()->getEmail();
-        $message = "Utlegget ble markert som kansellert og bekreftelsesmail sendt til $email.";
+        $message = "Utlegget ble markert som avvist og epostvarsel sendt til $email.";
 
         $this->session->getFlashBag()->add('success', $message);
     }

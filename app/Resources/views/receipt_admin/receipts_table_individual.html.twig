@@ -37,8 +37,8 @@
                         <a class="text-warning" href="#" data-reveal-id="status-{{ receipt.id }}">Venter behandling...</a>
                     {% elseif receipt.status == 'refunded' %}
                         <a class="text-success" href="#" data-reveal-id="status-{{ receipt.id }}">Refundert</a>
-                    {% elseif receipt.status == 'cancelled' %}
-                        <a class="text-alert" href="#" data-reveal-id="status-{{ receipt.id }}">Kansellert</a>
+                    {% elseif receipt.status == 'rejected' %}
+                        <a class="text-alert" href="#" data-reveal-id="status-{{ receipt.id }}">Refusjon avvist</a>
                     {% endif %}
 
                         <div id="status-{{ receipt.id }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle"
@@ -53,14 +53,14 @@
                                     <option value="refunded"{% if receipt.status == 'refunded' %} selected{% endif %}>
                                         Refundert
                                     </option>
-                                    <option value="cancelled"{% if receipt.status == 'cancelled' %} selected{% endif %}>
-                                        Kansellert
+                                    <option value="rejected"{% if receipt.status == 'rejected' %} selected{% endif %}>
+                                        Refusjon avvist
                                     </option>
                                 </select>
                                 <p>Hvis utlegget endrer status til
                                     <span class="text-success">Refundert</span>
                                      eller
-                                    <span class="text-alert">Kansellert</span>
+                                    <span class="text-alert">Refusjon avvist</span>
                                      vil {{ receipt.user }} få en epostvarsling.
                                 </p>
                                 <button type="submit" class="tiny success button">Lagre</button>

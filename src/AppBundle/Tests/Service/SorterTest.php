@@ -45,7 +45,7 @@ class SorterTest extends KernelTestCase
 
         $this->mockReceipts[0]->setStatus(Receipt::STATUS_REFUNDED);
         $this->mockReceipts[1]->setStatus(Receipt::STATUS_PENDING);
-        $this->mockReceipts[2]->setStatus(Receipt::STATUS_CANCELLED);
+        $this->mockReceipts[2]->setStatus(Receipt::STATUS_REJECTED);
         $this->mockReceipts[3]->setStatus(Receipt::STATUS_PENDING);
 
         foreach ($this->mockReceipts as $receipt) {

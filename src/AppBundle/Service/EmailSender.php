@@ -76,22 +76,21 @@ class EmailSender
         );
     }
 
-    public function sendCancelReceiptConfirmation(Receipt $receipt)
+    public function sendRejectedReceiptConfirmation(Receipt $receipt)
     {
         $message = \Swift_Message::newInstance()
-                                 ->setSubject('Utlegget ditt har blitt kansellert')
+                                 ->setSubject('Refusjon for utlegget ditt har blitt avvist')
                                  ->setFrom($this->economyEmail)
                                  ->setReplyTo($this->economyEmail)
                                  ->setTo($receipt->getUser()->getEmail())
-                                 ->setBody($this->twig->render('receipt/cancel_email.txt.twig', array(
+                                 ->setBody($this->twig->render('receipt/rejected_email.txt.twig', array(
                                      'name' => $receipt->getUser()->getFullName(),
-                                     'account_number' => $receipt->getUser()->getAccountNumber(),
-                                     'receipt' => $receipt, )));
+                                     'receipt' => $receipt,)));
 
         $this->mailer->send($message);
 
         $this->logger->info(
-            "Confirmation for paid receipt sent to {$receipt->getUser()->getFullName()} at {$receipt->getUser()->getEmail()}"
+            "Notice for rejected receipt sent to {$receipt->getUser()->getFullName()} at {$receipt->getUser()->getEmail()}"
         );
     }
 
