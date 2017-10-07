@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Event\ReceiptEvent;
 use AppBundle\Form\Type\ReceiptType;
 use AppBundle\Role\Roles;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Receipt;
@@ -44,7 +45,11 @@ class ReceiptController extends Controller
         $receipt = new Receipt();
         $receipt->setUser($this->getUser());
 
-        $receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByUser($this->getUser());
+        $receipts = new ArrayCollection($this->getDoctrine()->getRepository('AppBundle:Receipt')->findByUser($this->getUser()));
+
+        $sorter = $this->container->get('app.sorter');
+        $sorter->sortReceiptsBySubmitTime($receipts);
+        $sorter->sortReceiptsByStatus($receipts);
 
         $form = $this->createForm(ReceiptType::class, $receipt);
 
