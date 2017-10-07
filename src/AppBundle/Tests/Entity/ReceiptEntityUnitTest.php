@@ -31,16 +31,6 @@ class ReceiptEntityUnitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($dateTime, $receipt->getSubmitDate());
     }
 
-    public function testSetId()
-    {
-        $id = 99999;
-        $receipt = new Receipt();
-
-        $receipt->setId($id);
-
-        $this->assertEquals($id, $receipt->getId());
-    }
-
     public function testSetPicturePath()
     {
         $picturePath = 'test';

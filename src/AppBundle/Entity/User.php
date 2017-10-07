@@ -142,6 +142,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->certificateRequests = new ArrayCollection();
         $this->isActive = false;
         $this->picture_path = 'images/defaultProfile.png';
+        $this->receipts = [];
     }
 
     public function getId()
@@ -603,11 +604,33 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @return Receipt[]
      */
-    public function getReceipts(): array
+    public function getReceipts()
     {
         return $this->receipts;
     }
 
+    /**
+     * @param Receipt
+     */
+    public function addReceipt($receipt)
+    {
+        array_push($this->receipts, $receipt);
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasPendingReceipts()
+    {
+        foreach ($this->receipts as $receipt) {
+            if ($receipt->getStatus() === Receipt::STATUS_PENDING) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Rename active -> pending (twig?)
     public function getTotalActiveReceiptSum(): float
     {
         $totalSum = 0.0;
@@ -620,6 +643,7 @@ class User implements AdvancedUserInterface, \Serializable
         return $totalSum;
     }
 
+    // TODO Rewrite to getTotalRefundedReceiptSum
     public function getTotalInactiveReceiptSum(): float
     {
         $totalSum = 0.0;
