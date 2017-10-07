@@ -651,25 +651,11 @@ class User implements AdvancedUserInterface, \Serializable
         return $num;
     }
 
-    // Rename active -> pending (twig?)
-    public function getTotalActiveReceiptSum(): float
+    public function getTotalPendingReceiptSum(): float
     {
         $totalSum = 0.0;
         foreach ($this->receipts as $receipt) {
             if ($receipt->getStatus() === Receipt::STATUS_PENDING) {
-                $totalSum += $receipt->getSum();
-            }
-        }
-
-        return $totalSum;
-    }
-
-    // TODO Rewrite to getTotalRefundedReceiptSum
-    public function getTotalInactiveReceiptSum(): float
-    {
-        $totalSum = 0.0;
-        foreach ($this->receipts as $receipt) {
-            if (!$receipt->getStatus() === Receipt::STATUS_PENDING) {
                 $totalSum += $receipt->getSum();
             }
         }
