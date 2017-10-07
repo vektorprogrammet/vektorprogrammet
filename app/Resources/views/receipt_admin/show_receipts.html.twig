@@ -34,6 +34,7 @@
                 <th> Navn</th>
                 <th> Email</th>
                 <th> Kontonummer</th>
+                <th></th>
             </tr>
 
             </thead>
@@ -41,10 +42,16 @@
             <tbody>
             {% for user in users_with_receipts %}
                 <tr>
-                    <td><a href="{{ path('receipts_show_individual', {'user': user.id}) }}"> {{ user.fullName }} </a></td>
+                    <td class="{{ user.hasPendingReceipts ? 'has-pending-receipts' : '' }}" ><a href="{{ path('receipts_show_individual', {'user': user.id}) }}"> {{ user.fullName }} </a></td>
 
                     <td> {{ user.email }}</td>
                     <td> {{ user.accountNumber }}</td>
+                    <td>
+                        {% if user.hasPendingReceipts %}
+                            <div class="number-of-pending-receipts-indicator has-tip" data-tooltip aria-haspopup="true" title="{{ user.numberOfPendingReceipts }} utlegg under behandling">
+                                {{ user.numberOfPendingReceipts }}</div>
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

@@ -917,3 +917,27 @@ ul.alternatives {
   max-width: 100%;
   overflow-x: auto;
 }
+
+.number-of-pending-receipts-indicator {
+  background-color:#f08a24;
+  color:#fff;
+  border-radius:12px;
+  display:block;
+  height:24px;
+  width:24px;
+  text-align:center;
+  line-height:24px;
+  font-weight:bold;
+  margin:-5px;
+  cursor:default !important;
+}
+
+.has-pending-receipts{
+  border-left:solid 2px #f08a24;
+  box-sizing:border-box;
+  display:block;
+}
+
+.number-of-pending-receipts-indicator.has-tip:hover {
+  color:#fff;
+}

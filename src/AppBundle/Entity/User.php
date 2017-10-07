@@ -621,12 +621,22 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function hasPendingReceipts()
     {
+        $numberOfPendingReceipts = $this->getNumberOfPendingReceipts();
+        return $numberOfPendingReceipts !== 0;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfPendingReceipts()
+    {
+        $num = 0;
         foreach ($this->receipts as $receipt) {
             if ($receipt->getStatus() === Receipt::STATUS_PENDING) {
-                return true;
+                $num++;
             }
         }
-        return false;
+        return $num;
     }
 
     // Rename active -> pending (twig?)
