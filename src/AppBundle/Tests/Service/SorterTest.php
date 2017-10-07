@@ -26,12 +26,12 @@ class SorterTest extends KernelTestCase
 
         $this->sorter = $kernel->getContainer()->get('app.sorter');
 
-        $this->mockReceipts = new ArrayCollection([
+        $this->mockReceipts = [
             new Receipt(),
             new Receipt(),
             new Receipt(),
             new Receipt(),
-        ]);
+        ];
 
         $this->mockUsers = [
             new User(),

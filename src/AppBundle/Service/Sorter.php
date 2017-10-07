@@ -4,7 +4,6 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\Receipt;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class Sorter
 {
@@ -16,8 +15,8 @@ class Sorter
      */
     protected function userWithNewestReceipt($user1, $user2)
     {
-        $user1Receipts = $user1->getReceipts();
-        $user2Receipts = $user2->getReceipts();
+        $user1Receipts = $user1->getReceipts()->toArray();
+        $user2Receipts = $user2->getReceipts()->toArray();
 
         $this->sortReceiptsBySubmitTime($user1Receipts);
         $this->sortReceiptsBySubmitTime($user2Receipts);
@@ -69,17 +68,17 @@ class Sorter
     }
 
     /**
-     * @param ArrayCollection $receipts
+     * @param Receipt[] $receipts
+     *
+     * @return bool success
      */
     public function sortReceiptsBySubmitTime(&$receipts)
     {
-        $iterator = $receipts->getIterator();
-        $iterator->uasort(array($this,'newestReceipt'));
-        $receipts = new ArrayCollection(iterator_to_array($iterator));
+        return usort($receipts, array($this,'newestReceipt'));
     }
 
     /**
-     * @param ArrayCollection $receipts
+     * @param Receipt[] $receipts
      */
     public function sortReceiptsByStatus(&$receipts)
     {
@@ -93,6 +92,6 @@ class Sorter
             }
         }
         $receiptElements = array_merge($pendingReceipts, $nonPendingReceipts);
-        $receipts = new ArrayCollection($receiptElements);
+        $receipts = $receiptElements;
     }
 }
