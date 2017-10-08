@@ -37,6 +37,7 @@ class SorterTest extends KernelTestCase
             new User(),
             new User(),
             new User(),
+            new User(), // has no receipts
         ];
 
         $this->mockReceipts[0]->setSubmitDate(new \DateTime('2015-09-05'));
@@ -61,8 +62,6 @@ class SorterTest extends KernelTestCase
 
         $user3Receipt->setSubmitDate(new \DateTime('2013-09-05'));
 
-        // Add receipts to users instead of setting users of the receipts
-        // with $user->addReceipt()
         $this->mockUsers[1]->addReceipt($user2Receipt);
         $this->mockUsers[2]->addReceipt($user3Receipt);
     }

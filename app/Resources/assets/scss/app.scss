@@ -921,7 +921,7 @@ ul.alternatives {
 .number-of-pending-receipts-indicator {
   background-color:#f08a24;
   color:#fff;
-  border-radius:12px;
+  border-radius:50%;
   display:block;
   height:24px;
   width:24px;
@@ -929,7 +929,7 @@ ul.alternatives {
   line-height:24px;
   font-weight:bold;
   margin:-5px;
-  cursor:default !important;
+  cursor:default;
 }
 
 .has-pending-receipts{

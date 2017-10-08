@@ -21,6 +21,18 @@ class Sorter
         $this->sortReceiptsBySubmitTime($user1Receipts);
         $this->sortReceiptsBySubmitTime($user2Receipts);
 
+        if (empty($user1Receipts) && empty($user2Receipts)) {
+            return 0;
+        }
+
+        if (empty($user1Receipts)) {
+            return 1;
+        }
+
+        if (empty($user2Receipts)) {
+            return -1;
+        }
+
         return $this->newestReceipt($user1Receipts[0], $user2Receipts[0]);
     }
 
