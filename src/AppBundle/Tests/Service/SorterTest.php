@@ -3,7 +3,6 @@
 namespace AppBundle\Tests\Command;
 
 use AppBundle\Service\Sorter;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use AppBundle\Entity\Receipt;
 use AppBundle\Entity\User;
@@ -16,7 +15,7 @@ class SorterTest extends KernelTestCase
     /** @var  User[] */
     private $mockUsers;
 
-    /** @var  ArrayCollection */
+    /** @var  Receipt[] */
     private $mockReceipts;
 
     protected function setUp()
@@ -66,26 +65,42 @@ class SorterTest extends KernelTestCase
         $this->mockUsers[2]->addReceipt($user3Receipt);
     }
 
-    public function testSortReceipts()
+    public function testSortReceiptsBySubmitTime()
     {
         $this->sorter->sortReceiptsBySubmitTime($this->mockReceipts);
-        $this->sorter->sortReceiptsByStatus($this->mockReceipts);
         $this->assertEquals(new \DateTime('2017-09-05'), $this->mockReceipts[0]->getSubmitDate());
-        $this->assertEquals(new \DateTime('2016-09-05'), $this->mockReceipts[1]->getSubmitDate());
-
-        $this->assertEquals(Receipt::STATUS_PENDING, $this->mockReceipts[0]->getStatus());
-        $this->assertEquals(Receipt::STATUS_REFUNDED, $this->mockReceipts[3]->getStatus());
+        $this->assertEquals(new \DateTime('2017-09-05'), $this->mockReceipts[1]->getSubmitDate());
+        $this->assertEquals(new \DateTime('2016-09-05'), $this->mockReceipts[2]->getSubmitDate());
+        $this->assertEquals(new \DateTime('2015-09-05'), $this->mockReceipts[3]->getSubmitDate());
     }
 
-    public function testSortUsers()
+    public function testSortReceiptsByStatus()
+    {
+        $this->sorter->sortReceiptsBySubmitTime($this->mockReceipts); // Sort them by submit time first, to get predictable results
+        $this->sorter->sortReceiptsByStatus($this->mockReceipts);
+        $this->assertEquals(Receipt::STATUS_PENDING, $this->mockReceipts[0]->getStatus());
+        $this->assertEquals(Receipt::STATUS_PENDING, $this->mockReceipts[1]->getStatus());
+        $this->assertEquals(Receipt::STATUS_REJECTED, $this->mockReceipts[2]->getStatus()); // Newer
+        $this->assertEquals(Receipt::STATUS_REFUNDED, $this->mockReceipts[3]->getStatus()); // Older
+    }
+
+    public function testSortUsersByReceiptSubmitTime()
     {
         $this->sorter->sortUsersByReceiptSubmitTime($this->mockUsers);
+
+        $this->assertEquals(new \DateTime(), $this->mockUsers[0]->getReceipts()[0]->getSubmitDate()); // Newest = now
+        $this->assertEquals($this->mockReceipts, $this->mockUsers[1]->getReceipts()->toArray()); // Newest = 2017
+        $this->assertEquals(new \DateTime('2013-09-05'), $this->mockUsers[2]->getReceipts()[0]->getSubmitDate()); // Newest = 2013
+        $this->assertEmpty($this->mockUsers[3]->getReceipts()->toArray()); // Fourth user has no receipts
+    }
+
+    public function testSortUsersByReceiptStatus()
+    {
+        $this->sorter->sortUsersByReceiptSubmitTime($this->mockUsers); // Sort by submit time to get predictable results
         $this->sorter->sortUsersByReceiptStatus($this->mockUsers);
-
-
-        $this->assertEquals(Receipt::STATUS_PENDING, $this->mockUsers[1]->getReceipts()[0]->getStatus());
-        $this->assertEquals(new \DateTime('2013-09-05'), $this->mockUsers[1]->getReceipts()[0]->getSubmitDate());
-
+        $this->assertEquals($this->mockReceipts, $this->mockUsers[0]->getReceipts()->toArray()); // Newer
+        $this->assertEquals(Receipt::STATUS_PENDING, $this->mockUsers[1]->getReceipts()[0]->getStatus()); // Older
         $this->assertEquals(Receipt::STATUS_REFUNDED, $this->mockUsers[2]->getReceipts()[0]->getStatus());
+        $this->assertEmpty($this->mockUsers[3]->getReceipts()->toArray()); // Fourth user has no receipts
     }
 }
