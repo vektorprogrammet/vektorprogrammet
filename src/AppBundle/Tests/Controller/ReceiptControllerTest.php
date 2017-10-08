@@ -66,6 +66,7 @@ class ReceiptControllerTest extends BaseWebTestCase
         $client = $this->createTeamLeaderClient();
         $client->request('POST', '/kontrollpanel/utlegg/status/2', ['status' => Receipt::STATUS_REFUNDED]);
         $this->assertEquals(302, $client->getResponse()->getStatusCode()); // Successful if redirect
+        $this->assertEquals(2, $client->followRedirect()->filter('a:contains("Refundert")')->count());
     }
 
     public function testRejected()
@@ -73,13 +74,15 @@ class ReceiptControllerTest extends BaseWebTestCase
         $client = $this->createTeamLeaderClient();
         $client->request('POST', '/kontrollpanel/utlegg/status/2', ['status' => Receipt::STATUS_REJECTED]);
         $this->assertEquals(302, $client->getResponse()->getStatusCode()); // Successful if redirect
+        $this->assertEquals(1, $client->followRedirect()->filter('a:contains("Refusjon avvist")')->count());
     }
 
-    public function testPeding()
+    public function testPending()
     {
         $client = $this->createTeamLeaderClient();
         $client->request('POST', '/kontrollpanel/utlegg/status/2', ['status' => Receipt::STATUS_PENDING]);
         $this->assertEquals(302, $client->getResponse()->getStatusCode()); // Successful if redirect
+        $this->assertEquals(2, $client->followRedirect()->filter('a:contains("Venter behandling...")')->count());
     }
 
     public function testEdit()
