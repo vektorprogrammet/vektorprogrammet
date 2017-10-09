@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import { Button, Form} from 'semantic-ui-react';
-import {DepartmentAPI} from '../api/DepartmentApi';
+import {Button, Form} from 'semantic-ui-react';
+import {DepartmentApi} from '../api/DepartmentApi';
+import {ApplicationApi} from '../api/ApplicationApi';
 
 class ApplicationForm extends Component {
 
@@ -8,7 +9,7 @@ class ApplicationForm extends Component {
         super(props);
         this.state = {
             departments:[],
-            department: '',
+            department: '1', // TODO: Endre på dette
             firstName : '',
             lastName : '',
             phone : '',
@@ -18,21 +19,25 @@ class ApplicationForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(){}
-    handleSubmit(){}
+    handleChange(application){
+        this.setState({[application.target.id]: application.target.value});
+    }
+
+    handleSubmit(){
+        const { departments, ...newState } = this.state; // Hmm...
+        ApplicationApi.post(newState);
+        //Gi tilbakemelding
+    }
 
     async componentDidMount() {
-        const department = DepartmentAPI.getAll(); // TODO: dropdown for å velge department
+        const department = DepartmentApi.getAll();
         this.setState({
             departments: await department,
         });
     }
 
     render() {
-
-        console.log(this.state.departments);
-
-        const department = this.state.departments.map(department =>{
+        const department = this.state.departments.map(department =>{ // TODO: vis kun hvis det er aktiv søkeperiode
             return (
                 <option key={department.id} value={department.id} >
                     {department.short_name}
@@ -41,27 +46,25 @@ class ApplicationForm extends Component {
         });
 
         return (
-            <Form>
+            <Form onSubmit={this.handleSubmit} >
                 <Form.Group widths='equal'>
-                    <Form.Field><input placeholder="Fornavn" value={this.state.firstName} onChange={this.handleChange}/></Form.Field>
-                    <Form.Field><input placeholder='Etternavn' value={this.state.lastName} onChange={this.handleChange}/></Form.Field>
+                    <Form.Field><input id="firstName" placeholder="Fornavn" value={this.state.firstName} onChange={this.handleChange} required/></Form.Field>
+                    <Form.Field><input id="lastName" placeholder='Etternavn' value={this.state.lastName} onChange={this.handleChange} required/></Form.Field>
                 </Form.Group>
 
                 <Form.Group widths='equal'>
-                    <Form.Field><input placeholder='Telefonnummer' value={this.state.phone} onChange={this.handleChange} type="number"/></Form.Field>
-                    <Form.Field><input placeholder='E-post' value={this.state.email} onChange={this.handleChange}/></Form.Field>
+                    <Form.Field><input id="phone" placeholder='Telefonnummer' value={this.state.phone} onChange={this.handleChange} type="number" required/></Form.Field>
+                    <Form.Field><input id="email" placeholder='E-post' value={this.state.email} onChange={this.handleChange} required/></Form.Field>
                 </Form.Group>
 
                 <Form.Group widths='equal'>
-                    <Form.Field><select label='Avdeling' value={this.state.department} onChange={this.handleChange}>
+                    <Form.Field><select id="department" label='Avdeling' value={this.state.department} onChange={this.handleChange}>
                         {department}
                     </select></Form.Field>
 
                 </Form.Group>
 
-                <Form.Field><textarea id='description' placeholder='Description' value={this.state.description} onChange={this.handleChange}/></Form.Field>
-                <Form.Field><input id='time' type="datetime-local" value={this.state.time} onChange={this.handleChange}/></Form.Field>
-                <Form.Field><Button id='submitBtn' onClick={this.handleSubmit} >Submit</Button></Form.Field>
+                <Form.Field><Button id='submitBtn'>Send inn</Button></Form.Field>
             </Form>
         )
     }

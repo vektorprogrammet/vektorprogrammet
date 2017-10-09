@@ -1,6 +1,6 @@
 import {apiEndpoint} from './Api';
 
-export const DepartmentAPI = {
+export const DepartmentApi = {
   getAll: async () => {
     const res = await fetch(`${apiEndpoint}/departments`);
     return res.json();

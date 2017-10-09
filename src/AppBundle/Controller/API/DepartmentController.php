@@ -57,12 +57,20 @@ class DepartmentController extends FOSRestController implements ClassResourceInt
     }
 
     /**
-     * Gets all Departments
+     * Gets Field of Studies by Department
      *
      * @return mixed
      *
      * @ApiDoc(
-     *     section="Department",
+     *     section="Field of study",
+     *     requirements={
+     *      {
+     *          "name"="departmentId",
+     *          "dataType"="integer",
+     *          "requirement"="\d+",
+     *          "description"="Department ID"
+     *      }
+     *     },
      *     statusCodes={
      *          200 = "Returned when successful",
      *          404 = "Return when not found",
