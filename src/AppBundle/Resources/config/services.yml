@@ -60,6 +60,9 @@ services:
     tags:
       - { name: twig.extension }
 
+  app.sorter:
+    class: AppBundle\Service\Sorter
+
   app.department_extension:
     class: AppBundle\Twig\Extension\DepartmentExtension
     arguments: ['@doctrine.orm.default_entity_manager']

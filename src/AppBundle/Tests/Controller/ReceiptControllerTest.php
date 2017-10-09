@@ -5,6 +5,7 @@ namespace AppBundle\Tests\Controller;
 use AppBundle\Tests\BaseWebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Finder\Finder;
+use AppBundle\Entity\Receipt;
 
 class ReceiptControllerTest extends BaseWebTestCase
 {
@@ -63,10 +64,25 @@ class ReceiptControllerTest extends BaseWebTestCase
     public function testRefunded()
     {
         $client = $this->createTeamLeaderClient();
-        $client->request('POST', '/kontrollpanel/utlegg/refunder/2');
+        $client->request('POST', '/kontrollpanel/utlegg/status/2', ['status' => Receipt::STATUS_REFUNDED]);
         $this->assertEquals(302, $client->getResponse()->getStatusCode()); // Successful if redirect
-        $client->request('POST', '/kontrollpanel/utlegg/refunder/2'); // Try again with same receipt
-        $this->assertEquals(400, $client->getResponse()->getStatusCode()); // Controller throws 400
+        $this->assertEquals(2, $client->followRedirect()->filter('a:contains("Refundert")')->count());
+    }
+
+    public function testRejected()
+    {
+        $client = $this->createTeamLeaderClient();
+        $client->request('POST', '/kontrollpanel/utlegg/status/2', ['status' => Receipt::STATUS_REJECTED]);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode()); // Successful if redirect
+        $this->assertEquals(1, $client->followRedirect()->filter('a:contains("Refusjon avvist")')->count());
+    }
+
+    public function testPending()
+    {
+        $client = $this->createTeamLeaderClient();
+        $client->request('POST', '/kontrollpanel/utlegg/status/2', ['status' => Receipt::STATUS_PENDING]);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode()); // Successful if redirect
+        $this->assertEquals(2, $client->followRedirect()->filter('a:contains("Venter behandling...")')->count());
     }
 
     public function testEdit()
@@ -125,7 +141,7 @@ class ReceiptControllerTest extends BaseWebTestCase
 
         // Make team leader refund the receipt
         $client = $this->createTeamLeaderClient();
-        $client->request('POST', '/kontrollpanel/utlegg/refunder/5');
+        $client->request('POST', '/kontrollpanel/utlegg/status/5', ['status' => 'refunded']);
 
         // Not allowed to edit refunded receipt
         $client = $this->createAssistantClient();
@@ -150,12 +166,12 @@ class ReceiptControllerTest extends BaseWebTestCase
 
         // Not allowed to refund
         $client = $this->createTeamMemberClient();
-        $client->request('POST', '/kontrollpanel/utlegg/refunder/6');
+        $client->request('POST', '/kontrollpanel/utlegg/status/6', ['status' => 'refunded']);
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
         // Make team leader refund the receipt
         $client = $this->createTeamLeaderClient();
-        $client->request('POST', '/kontrollpanel/utlegg/refunder/6');
+        $client->request('POST', '/kontrollpanel/utlegg/status/6', ['status' => 'refunded']);
 
         // Not allowed to edit refunded receipt
         $client = $this->createTeamMemberClient();
@@ -178,7 +194,7 @@ class ReceiptControllerTest extends BaseWebTestCase
 
         // Allowed to refund
         $client = $this->createTeamLeaderClient();
-        $client->request('POST', '/kontrollpanel/utlegg/refunder/7');
+        $client->request('POST', '/kontrollpanel/utlegg/status/7', ['status' => 'refunded']);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
 
         // Allowed to edit refunded receipt

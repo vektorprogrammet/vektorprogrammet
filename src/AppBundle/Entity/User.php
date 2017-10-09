@@ -140,7 +140,6 @@ class User implements AdvancedUserInterface, \Serializable
     private $interviews;
 
     /**
-     * @var Receipt[]
      * @ORM\OneToMany(targetEntity="Receipt", mappedBy="user")
      */
     private $receipts;
@@ -151,6 +150,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->certificateRequests = new ArrayCollection();
         $this->isActive = false;
         $this->picture_path = 'images/defaultProfile.png';
+        $this->receipts = new ArrayCollection();
     }
 
     public function getId()
@@ -343,7 +343,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @param string $account_number
+     * @param string $accountNumber
      */
     public function setAccountNumber($accountNumber)
     {
@@ -613,30 +613,49 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @return Receipt[]
+     * @return ArrayCollection
      */
-    public function getReceipts(): array
+    public function getReceipts()
     {
         return $this->receipts;
     }
 
-    public function getTotalActiveReceiptSum(): float
+    /**
+     * @param Receipt
+     */
+    public function addReceipt($receipt)
     {
-        $totalSum = 0.0;
-        foreach ($this->receipts as $receipt) {
-            if ($receipt->isActive()) {
-                $totalSum += $receipt->getSum();
-            }
-        }
-
-        return $totalSum;
+        $this->receipts->add($receipt);
     }
 
-    public function getTotalInactiveReceiptSum(): float
+    /**
+     * @return bool
+     */
+    public function hasPendingReceipts()
+    {
+        $numberOfPendingReceipts = $this->getNumberOfPendingReceipts();
+        return $numberOfPendingReceipts !== 0;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfPendingReceipts()
+    {
+        $num = 0;
+        foreach ($this->receipts as $receipt) {
+            if ($receipt->getStatus() === Receipt::STATUS_PENDING) {
+                $num++;
+            }
+        }
+        return $num;
+    }
+
+    public function getTotalPendingReceiptSum(): float
     {
         $totalSum = 0.0;
         foreach ($this->receipts as $receipt) {
-            if (!$receipt->isActive()) {
+            if ($receipt->getStatus() === Receipt::STATUS_PENDING) {
                 $totalSum += $receipt->getSum();
             }
         }

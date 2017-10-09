@@ -595,13 +595,6 @@ receipts_show:
   defaults: {_controller: AppBundle:Receipt:show }
   methods: [GET]
 
-receipts_refund:
-  path: /kontrollpanel/utlegg/refunder/{receipt}
-  defaults: { _controller: AppBundle:Receipt:refundedAdmin }
-  methods: [POST]
-  requirements:
-    receipts: \d+
-
 receipts_show_individual:
   path: /kontrollpanel/utlegg/{user}
   defaults: {_controller: AppBundle:Receipt:showIndividual }
@@ -618,6 +611,13 @@ receipt_edit:
   path: /utlegg/rediger/{receipt}
   defaults: {_controller: AppBundle:Receipt:edit }
   methods: [GET, POST]
+  requirements:
+    receipt: \d+
+
+receipt_edit_status:
+  path: /kontrollpanel/utlegg/status/{receipt}
+  defaults: {_controller: AppBundle:Receipt:editStatus }
+  methods: [POST]
   requirements:
     receipt: \d+
 
