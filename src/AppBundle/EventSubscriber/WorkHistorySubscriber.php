@@ -30,18 +30,18 @@ class WorkHistorySubscriber implements EventSubscriberInterface
     {
         return array(
             WorkHistoryEvent::CREATED => array(
-                array('logCreatedEvent', 1),
-                array('updateUserRole', 0),
+                array('logCreatedEvent', 10),
+                array('updateUserRole', 5),
                 array('addCreatedFlashMessage', -1),
             ),
             WorkHistoryEvent::EDITED  => array(
-                array('logEditedEvent', 1),
-                array('updateUserRole', 0),
+                array('logEditedEvent', 10),
+                array('updateUserRole', 5),
                 array('addUpdatedFlashMessage', -1),
             ),
             WorkHistoryEvent::DELETED => array(
-                array('logDeletedEvent', 1),
-                array('updateUserRole', 0),
+                array('logDeletedEvent', 10),
+                array('updateUserRole', 5),
             ),
         );
     }
