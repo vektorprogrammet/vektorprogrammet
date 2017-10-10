@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import TestimonialRow from '../components/TestimonialRow';
+import TeamOverview from '../components/TeamOverview'
 import {Grid} from 'semantic-ui-react';
 import GradientBox from '../components/GradientBox';
 import './TeamPage.css';
@@ -13,8 +14,8 @@ class TeamPage extends Component {
                     <Grid.Row>
                         <Grid.Column>
                             <div className="team-header-text">
-                                <h1>Vi får vektorprogrammet til å gå rundt!</h1>
-                                <h3>Teamene har ansvar for alt fra rekruttering til drift av nettsiden, sponsorer og lignende. Alle organisasjonelle oppgaver tas hånd om av frivillige teammedlemmer</h3>
+                                <h1 className="gradientBoxText">Vi får vektorprogrammet til å gå rundt!</h1>
+                                <h3 className="gradientBoxText">Teamene har ansvar for alt fra rekruttering til drift av nettsiden, sponsorer og lignende. Alle organisasjonelle oppgaver tas hånd om av frivillige teammedlemmer</h3>
                             </div>
                         </Grid.Column>
 
@@ -24,6 +25,7 @@ class TeamPage extends Component {
                 </Grid>
             </GradientBox>
             <TestimonialRow/>
+            <TeamOverview />
         </div>
     )
   }
