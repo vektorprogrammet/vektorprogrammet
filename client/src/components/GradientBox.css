@@ -14,7 +14,7 @@
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3dfeb', endColorstr='#6eceeb', GradientType=1 );
 }
 
-h1, h3{
+h1.gradientBoxText, h3.gradientBoxText {
     color:#fff;
     margin:0;
     padding:0;
