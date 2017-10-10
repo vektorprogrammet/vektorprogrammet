@@ -4,9 +4,6 @@ imports:
 parameters:
     slack.disable_delivery: false
 
-    gateway_sms:
-        disable_delivery: false
-
 #framework:
 #    validation:
 #        cache: apc

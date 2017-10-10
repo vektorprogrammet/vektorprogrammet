@@ -11,7 +11,7 @@ parameters:
 
   gateway_sms:
     api_token: '%gateway_api_token%'
-    disable_delivery: true
+    disable_delivery: '%sms_disable%'
     max_length: 1200
     country_code: '47'
 

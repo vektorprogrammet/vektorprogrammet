@@ -24,6 +24,7 @@ parameters:
     slack_endpoint: 'https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX'
 
     gateway_api_token: 'xxxxxxx'
+    sms_disable: true
 
     locale:            no
 
