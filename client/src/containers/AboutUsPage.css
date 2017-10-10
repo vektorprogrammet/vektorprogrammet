@@ -4,40 +4,6 @@
     --main-margin: 5px;
 }
 
-.aboutUs-header {
-    textAlign: 'center';
-    margin-left: var(--main-margin);
-    margin-right: var(--main-margin);
-    color: rgb(0,0,0);
-    fontSize: 40px;
-    fontWeight: 'bold';
-}
-
-/**************
- About text
- *************/
-.aboutUs-text {
-    margin-top: 35px;
-    font-weight: 300;
-    font-size: 20px;
-    font-style: normal;
-    line-height: 32px;
-    text-align: left;
-    margin-left: var(--main-margin);
-    margin-right: var(--main-margin);
-}
-
-.aboutUs-text2 {
-    margin-top: 35px;
-    font-weight: 300;
-    font-size: 20px;
-    font-style: normal;
-    line-height: 32px;
-    text-align: left;
-    margin-left: var(--main-margin);
-    margin-right: var(--main-margin);
-}
-
 /*****************
        FAQ
 *****************/
@@ -57,27 +23,6 @@
 .aboutUs-FAQ {
     margin-left: var(--main-margin);
     margin-right: var(--main-margin);
-}
-
-/*****************
-    Images
-*****************/
-.aboutUs-image1{
-    display: block;
-    margin-left: var(--main-margin);
-    margin-right: var(--main-margin);
-    /*max-height: 100%;
-    max-width: 100%;
-    height: ??px;*/
-}
-
-.aboutUs-image2{
-    display: block;
-    margin-left: var(--main-margin);
-    margin-right: var(--main-margin);
-    /*max-height: 100%;
-    max-width: 100%;
-    height: ??px;*/
 }
 
 /******************
