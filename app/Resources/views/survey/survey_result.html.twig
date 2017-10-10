@@ -208,7 +208,9 @@
                     var answerArray = answer.answerArray;
                     if (answerArray && answerArray.length > 0) {
                         for (var m = 0; m < answerArray.length; m++) {
+                          if (data[answer.question_id].hasOwnProperty(answerArray[m])) {
                             data[answer.question_id][answerArray[m]]++;
+                          }
                         }
                     } else if (answer.answer) {
                         data[answer.question_id][answer.answer]++;
