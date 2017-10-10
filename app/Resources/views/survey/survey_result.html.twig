@@ -204,7 +204,15 @@
             var answers = surveyData.answers;
             for (var k = 0; k < answers.length; k++) {
                 for (var l = 0; l < answers[k].length; l++) {
-                    data[answers[k][l].question_id][answers[k][l].answer]++;
+                    var answer = answers[k][l];
+                    var answerArray = answer.answerArray;
+                    if (answerArray) {
+                        for (var m = 0; m < answerArray.length; m++) {
+                            data[answer.question_id][answerArray[m]]++;
+                        }
+                    } else {
+                        data[answer.question_id][answer.answer]++;
+                    }
                 }
             }
             return data;
@@ -271,17 +279,39 @@
 
             // A submission is a survey that has been submitted with answers
             var submissions = surveyData.answers;
+            const filteredQuestionIds = Object.keys(filterObject);
 
             // Remove all submissions that doesn't match filter criteria
             var filteredSubmissions = submissions.filter(function (submission) {
-                for (var i = 0; i < submission.length; i++) {
-                    var answerObject = submission[i];
-                    var questionId = answerObject.question_id;
-                    if (filterObject.hasOwnProperty(questionId) && filterObject[questionId].indexOf(answerObject.answer) < 0) {
+                const answeredQuestionIds = submission.map(function(q){return q.question_id.toString()});
+                for (let i = 0; i < filteredQuestionIds.length; i++) {
+                    if (answeredQuestionIds.indexOf(filteredQuestionIds[i]) === -1) {
                         return false;
                     }
                 }
-                return true;
+                let hasAnsweredQuestion = false;
+                for (var i = 0; i < submission.length; i++) {
+                    var answerObject = submission[i];
+                    var questionId = answerObject.question_id;
+                    if (filterObject.hasOwnProperty(questionId)) {
+                        hasAnsweredQuestion = true;
+                        if (answerObject.hasOwnProperty('answerArray')) {
+                            var hasAnswer = false;
+                            for (var j = 0; j < answerObject.answerArray.length; j++) {
+                                if (filterObject[questionId].indexOf(answerObject.answerArray[j]) !== -1) {
+                                    hasAnswer = true;
+                                    break;
+                                }
+                            }
+                            if (!hasAnswer) {
+                                return false;
+                            }
+                        } else if (filterObject[questionId].indexOf(answerObject.answer) === -1) {
+                            return false;
+                        }
+                    }
+                }
+                return hasAnsweredQuestion;
             })
 
             // Create a new surveyData object with filtered submissions

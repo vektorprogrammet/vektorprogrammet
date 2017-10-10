@@ -32,7 +32,6 @@ class SurveyController extends Controller
 
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
-            $surveyTaken->removeEmojis();
             $surveyTaken->setTime(new \DateTime());
 
             if ($surveyTaken->isValid()) {
@@ -71,7 +70,6 @@ class SurveyController extends Controller
 
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
-            $surveyTaken->removeEmojis();
             $surveyTaken->setTime(new \DateTime());
 
             if ($surveyTaken->isValid()) {
