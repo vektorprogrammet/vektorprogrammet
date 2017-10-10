@@ -1,4 +1,4 @@
-/*TODO: It is not possible to access the other pages from this page, find out why*/
+/*TODO: It is not possible to access the other pages from this page, find out why. FOUND OUT, FIXED*/
 import React, {Component} from 'react';
 import {Grid, Divider} from 'semantic-ui-react';
 import './AboutUsPage.css';
@@ -9,8 +9,8 @@ import ListComponentAboutUs from '../components/ListComponentAboutUs';
 import MainTextAboutUs from '../components/MainTextAboutUs.js';
 
 class AboutUsPage extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             contactUsVisible: false,
             contactUsRevealed: false
@@ -55,6 +55,7 @@ class AboutUsPage extends Component {
 
         return (
             <Grid columns={3}>
+                <ContactUsPopUp show={this.state.contactUsVisible} onClose={this.onContactUsPopUpClose}/>
                 <Grid.Column width={2}>
                 </Grid.Column>
                 <Grid.Column width={10}>
@@ -67,9 +68,6 @@ class AboutUsPage extends Component {
                             </div>
                         </Grid.Row>
                         <Divider fitted/>
-                        <div className="fix" style={{marginTop: 500}}>
-                            <ContactUsPopUp show={this.state.contactUsVisible} onClose={this.onContactUsPopUpClose}/>
-                        </div>
                         <Grid.Row>
                             <div id={"kontakt-info"} className="contact-info">
                                 <ContactInformation/>
