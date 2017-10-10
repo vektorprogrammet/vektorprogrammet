@@ -86,11 +86,12 @@ class ProfileControllerTest extends BaseWebTestCase
         // Follow the redirect
         $crawler = $client->followRedirect();
 
+        $crawler = $this->goTo('/profile/4', $client);
+
         // Assert that we have the correct profile user
         $this->assertContains('Thomas Alm', $client->getResponse()->getContent());
         $this->assertContains('alm@mail.com', $client->getResponse()->getContent());
         $this->assertContains('Brukeren er aktiv', $client->getResponse()->getContent());
-        $this->assertContains('MIDT', $client->getResponse()->getContent());
         // Assert that we have the correct user level, department, and field of study
         $this->assertContains('Admin', $client->getResponse()->getContent());
         $this->assertContains('NTNU', $client->getResponse()->getContent());
@@ -98,7 +99,7 @@ class ProfileControllerTest extends BaseWebTestCase
 
         // Check the count for the different parameters
         $this->assertEquals(1, $crawler->filter('html:contains("NTNU")')->count());
-        $this->assertEquals(1, $crawler->filter('html:contains("Admin")')->count());
+        $this->assertEquals(1, $crawler->filter('html:contains("999 12 399")')->count());
         $this->assertEquals(1, $crawler->filter('html:contains("alm@mail.com")')->count());
         $this->assertEquals(1, $crawler->filter('html:contains("Brukeren er aktiv")')->count());
 

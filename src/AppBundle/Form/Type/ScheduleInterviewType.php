@@ -40,6 +40,9 @@ class ScheduleInterviewType extends AbstractType
             ->add('preview', 'submit', array(
                 'label' => 'Forhåndsvis'
             ))
+            ->add('changeStatus', 'button', array(
+                'label' => 'Endre status'
+            ))
         ;
     }
 

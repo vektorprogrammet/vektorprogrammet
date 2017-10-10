@@ -31,16 +31,6 @@ class ReceiptEntityUnitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($dateTime, $receipt->getSubmitDate());
     }
 
-    public function testSetId()
-    {
-        $id = 99999;
-        $receipt = new Receipt();
-
-        $receipt->setId($id);
-
-        $this->assertEquals($id, $receipt->getId());
-    }
-
     public function testSetPicturePath()
     {
         $picturePath = 'test';
@@ -61,13 +51,12 @@ class ReceiptEntityUnitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($sum, $receipt->getSum());
     }
 
-    public function testSetActive()
+    public function testSetStatus()
     {
-        $active = true;
         $receipt = new Receipt();
 
-        $receipt->setActive($active);
+        $receipt->setStatus(Receipt::STATUS_PENDING);
 
-        $this->assertEquals($active, $receipt->isActive());
+        $this->assertEquals(Receipt::STATUS_PENDING, $receipt->getStatus());
     }
 }

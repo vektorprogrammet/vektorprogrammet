@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Validator\Constraints as CustomAssert;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -94,6 +95,14 @@ class User implements AdvancedUserInterface, \Serializable
     private $email;
 
     /**
+     * @ORM\Column(type="string", unique=true, nullable=true)
+     * @Assert\Email
+     * @CustomAssert\UniqueCompanyEmail
+     * @CustomAssert\VektorEmail
+     */
+    private $companyEmail;
+
+    /**
      * @ORM\Column(name="is_active", type="boolean")
      */
     private $isActive;
@@ -131,7 +140,6 @@ class User implements AdvancedUserInterface, \Serializable
     private $interviews;
 
     /**
-     * @var Receipt[]
      * @ORM\OneToMany(targetEntity="Receipt", mappedBy="user")
      */
     private $receipts;
@@ -142,6 +150,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->certificateRequests = new ArrayCollection();
         $this->isActive = false;
         $this->picture_path = 'images/defaultProfile.png';
+        $this->receipts = new ArrayCollection();
     }
 
     public function getId()
@@ -223,6 +232,9 @@ class User implements AdvancedUserInterface, \Serializable
         $this->roles = $roles;
     }
 
+    /**
+     * @return Role[]
+     */
     public function getRoles()
     {
         if (is_array($this->roles)) {
@@ -331,7 +343,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @param string $account_number
+     * @param string $accountNumber
      */
     public function setAccountNumber($accountNumber)
     {
@@ -601,18 +613,49 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @return Receipt[]
+     * @return ArrayCollection
      */
-    public function getReceipts(): array
+    public function getReceipts()
     {
         return $this->receipts;
     }
 
-    public function getTotalActiveReceiptSum(): float
+    /**
+     * @param Receipt
+     */
+    public function addReceipt($receipt)
+    {
+        $this->receipts->add($receipt);
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasPendingReceipts()
+    {
+        $numberOfPendingReceipts = $this->getNumberOfPendingReceipts();
+        return $numberOfPendingReceipts !== 0;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfPendingReceipts()
+    {
+        $num = 0;
+        foreach ($this->receipts as $receipt) {
+            if ($receipt->getStatus() === Receipt::STATUS_PENDING) {
+                $num++;
+            }
+        }
+        return $num;
+    }
+
+    public function getTotalPendingReceiptSum(): float
     {
         $totalSum = 0.0;
         foreach ($this->receipts as $receipt) {
-            if ($receipt->isActive()) {
+            if ($receipt->getStatus() === Receipt::STATUS_PENDING) {
                 $totalSum += $receipt->getSum();
             }
         }
@@ -620,15 +663,19 @@ class User implements AdvancedUserInterface, \Serializable
         return $totalSum;
     }
 
-    public function getTotalInactiveReceiptSum(): float
+    /**
+     * @return string
+     */
+    public function getCompanyEmail()
     {
-        $totalSum = 0.0;
-        foreach ($this->receipts as $receipt) {
-            if (!$receipt->isActive()) {
-                $totalSum += $receipt->getSum();
-            }
-        }
+        return $this->companyEmail;
+    }
 
-        return $totalSum;
+    /**
+     * @param string $companyEmail
+     */
+    public function setCompanyEmail($companyEmail)
+    {
+        $this->companyEmail = $companyEmail;
     }
 }

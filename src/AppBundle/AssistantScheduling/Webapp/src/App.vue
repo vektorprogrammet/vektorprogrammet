@@ -70,6 +70,7 @@
                 return {
                   id: a.id,
                   name: a.name,
+                  email: a.email,
                   double: a.doublePosition,
                   selected: false,
                   preferredGroup: a.preferredGroup,

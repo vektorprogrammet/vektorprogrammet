@@ -40,6 +40,12 @@ class SurveyController extends Controller
                 $em->persist($surveyTaken);
                 $em->flush();
 
+                if ($survey->isShowCustomFinishPage()) {
+                    return $this->render('survey/finish_page.html.twig', [
+                        'content' => $survey->getFinishPageContent(),
+                    ]);
+                }
+
                 $this->addFlash('undersokelse-notice', 'Mottatt svar!');
             } else {
                 $this->addFlash('undersokelse-warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');

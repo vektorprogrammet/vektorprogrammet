@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Receipt;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -108,26 +109,20 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getResult();
     }
 
-    public function findAllUsersWithActiveReceipts()
+    public function findAllUsersWithReceipts()
     {
         return $this->createQueryBuilder('user')
             ->select('user')
             ->join('user.receipts', 'receipt')
-            ->where('receipt.active = true')
             ->getQuery()
             ->getResult();
     }
 
-    public function findAllUsersWithInactiveReceipts()
-    {
-        return $this->createQueryBuilder('user')
-            ->select('user')
-            ->join('user.receipts', 'receipt')
-            ->where('receipt.active = false')
-            ->getQuery()
-            ->getResult();
-    }
-
+    /**
+     * @param $username
+     *
+     * @return User
+     */
     public function findUserByUsername($username)
     {
         return $this->createQueryBuilder('User')
@@ -180,6 +175,17 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function findAllCompanyEmails()
+    {
+        $results = $this->createQueryBuilder('user')
+            ->select('user.companyEmail')
+            ->where('user.companyEmail IS NOT NULL')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_column($results, 'companyEmail');
     }
 
     /*

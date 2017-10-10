@@ -16,6 +16,7 @@ class LoadWorkHistoryData extends AbstractFixture implements OrderedFixtureInter
         $wh->setUser($this->getReference('user-1'));
         $wh->setStartSemester($this->getReference('semester-1'));
         $wh->setPosition($this->getReference('position-1'));
+        $wh->setIsTeamLeader(true);
         $manager->persist($wh);
 
         $wh = new WorkHistory();
@@ -23,6 +24,7 @@ class LoadWorkHistoryData extends AbstractFixture implements OrderedFixtureInter
         $wh->setUser($this->getReference('user-2'));
         $wh->setStartSemester($this->getReference('semester-1'));
         $wh->setPosition($this->getReference('position-2'));
+        $wh->setIsTeamLeader(true);
         $manager->persist($wh);
 
         $wh = new WorkHistory();
@@ -37,6 +39,7 @@ class LoadWorkHistoryData extends AbstractFixture implements OrderedFixtureInter
         $wh->setUser($this->getReference('user-12'));
         $wh->setStartSemester($this->getReference('semester-1'));
         $wh->setPosition($this->getReference('position-1'));
+        $wh->setIsTeamLeader(false);
         $manager->persist($wh);
 
         $wh = new WorkHistory();
@@ -75,6 +78,22 @@ class LoadWorkHistoryData extends AbstractFixture implements OrderedFixtureInter
         $whUserInTeam1->setStartSemester($this->getReference('semester-1'));
         $whUserInTeam1->setPosition($this->getReference('position-1'));
         $manager->persist($whUserInTeam1);
+
+        $wh = new WorkHistory();
+        $wh->setTeam($this->getReference('team-1'));
+        $wh->setUser($this->getReference('user-marte'));
+        $wh->setStartSemester($this->getReference('semester-1'));
+        $wh->setPosition($this->getReference('position-1'));
+        $wh->setIsTeamLeader(true);
+        $manager->persist($wh);
+
+        $wh = new WorkHistory();
+        $wh->setTeam($this->getReference('team-1'));
+        $wh->setUser($this->getReference('user-anna'));
+        $wh->setStartSemester($this->getReference('semester-1'));
+        $wh->setPosition($this->getReference('position-1'));
+        $wh->setIsTeamLeader(true);
+        $manager->persist($wh);
 
         $manager->flush();
 

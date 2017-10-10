@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -33,8 +34,16 @@ class CreateWorkHistoryType extends AbstractType
                         ->setParameter(1, $this->departmentId);
                 },
             ))
+            ->add('isTeamLeader', ChoiceType::class, array(
+                'choices' => [
+                    false => 'Medlem',
+                    true => 'Leder',
+                ],
+                'expanded' => true,
+                'label' => false,
+            ))
             ->add('position', 'entity', array(
-                'label' => 'Stilling',
+                'label' => 'Stillingstittel',
                 'class' => 'AppBundle:Position',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('p')

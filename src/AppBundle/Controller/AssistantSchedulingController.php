@@ -55,7 +55,8 @@ class AssistantSchedulingController extends Controller
             $availability['Friday'] = array_search($application->getFriday(), $availabilityBooleans);
 
             $assistant = new Assistant();
-            $assistant->setName($application->getUser()->getFirstName().' '.$application->getUser()->getLastName());
+            $assistant->setName($application->getUser()->getFullName());
+            $assistant->setEmail($application->getUser()->getEmail());
             $assistant->setDoublePosition($doublePosition);
             $assistant->setPreferredGroup($preferredGroup);
             $assistant->setAvailability($availability);
