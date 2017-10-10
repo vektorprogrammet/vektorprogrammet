@@ -162,6 +162,8 @@ class Survey implements \JsonSerializable
         foreach ($this->surveyQuestions as $q) {
             if (!$q->getOptional() && ($q->getType() == 'radio' || $q->getType() == 'list')) {
                 $ret['questions'][] = $q;
+            } elseif ($q->getType() == 'check') {
+                $ret['questions'][] = $q;
             }
         }
 

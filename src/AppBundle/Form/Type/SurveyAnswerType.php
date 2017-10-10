@@ -45,7 +45,7 @@ class SurveyAnswerType extends AbstractType
                     break;
                 case 'check': // This creates a set of checkboxes if the type is check
                     $choices = $this->createChoices($surveyAnswer);
-                    $form->add('answer', 'choice', array(
+                    $form->add('answerArray', 'choice', array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $choices,
@@ -106,11 +106,15 @@ class SurveyAnswerType extends AbstractType
 
                     // Add the new value to the choice array
                     // The data from the form is an array (because it's checkboxes) in this case
-                    $answers = array_combine($data['answer'], $data['answer']);
+                    if ($data['answerArray'] === null) {
+                        $answers = [];
+                    } else {
+                        $answers = array_combine($data['answerArray'], $data['answerArray']);
+                    }
                     $newChoices = array_merge($choices, $answers);
 
-                    $form->remove('answer');
-                    $form->add('answer', 'choice', array(
+                    $form->remove('answerArray');
+                    $form->add('answerArray', 'choice', array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $newChoices,
