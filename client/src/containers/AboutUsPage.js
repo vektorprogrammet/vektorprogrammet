@@ -1,4 +1,3 @@
-/*TODO: It is not possible to access the other pages from this page, find out why. FOUND OUT, FIXED*/
 import React, {Component} from 'react';
 import {Grid, Divider} from 'semantic-ui-react';
 import './AboutUsPage.css';

@@ -4,7 +4,6 @@ import './ContactInformation.css';
 export const ContactInfo = () => {
     return (
         <section>
-            /*TODO: Move the styling to css-file*/
             <ul className="unordered-list">
                 <li className="list-container">
                     Kontakt:

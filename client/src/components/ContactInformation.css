@@ -8,6 +8,8 @@
 .list-container {
     font-size: 20px;
     font-weight: 700;
+    margin-left: var(--main-margin);
+    margin-right: var(--main-margin);
 }
 
 .list-container li {
@@ -19,4 +21,5 @@
 .list-container a {
     color: #2196f3;
     text-decoration: none;
+    font-weight: 400;
 }
