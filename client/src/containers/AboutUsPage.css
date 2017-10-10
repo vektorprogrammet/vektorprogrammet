@@ -81,6 +81,15 @@
 }
 
 /******************
+     Contact info
+******************/
+.contact-info {
+    margin-left: var(--main-margin);
+    margin-right: var(--main-margin);
+    margin-top: 20px;
+}
+
+/******************
      Links
 ******************/
 

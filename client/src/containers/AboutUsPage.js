@@ -1,9 +1,10 @@
 /*TODO: It is not possible to access the other pages from this page, find out why*/
 import React, {Component} from 'react';
-import { Image, Grid, Rail, Divider, List, Button} from 'semantic-ui-react';
+import { Image, Grid, Divider, List, Button} from 'semantic-ui-react';
 import './AboutUsPage.css';
 import ContactUsPopUp from '../components/ContactUsPopUp';
 import Faq from '../components/Faq';
+import ContactInformation from '../components/ContactInformation';
 
 class AboutUsPage extends Component {
     constructor(props){
@@ -95,28 +96,8 @@ class AboutUsPage extends Component {
                             </Grid.Row>
                             <Divider fitted/>
                             <Grid.Row>
-                                <div id={"kontakt-info"} style={{ marginLeft: 'var(--main-margin)',
-                                    marginRight: 'var(--main-margin)', marginTop: 20}}>
-                                    <section>
-                                        /*TODO: Move the styling to css-file*/
-                                        <ul style={{listStyle: 'none',margin: 0, display: 'inline-block', borderBottom: '1px solid #e0e0e0'}}>
-                                            <li style={{fontSize: 20, fontWeight: 700}}>
-                                                Kontakt:
-                                                <li style={{display: 'inline-block', fontSize: '17', marginLeft: 25}}>
-                                                    <a href="mailto:NTNU@gmail.com" style={{color: '#2196f3', textDecoration: 'none'}}>Trondheim - NTNU</a>
-                                                </li>
-                                                <li style={{display: 'inline-block', fontSize: '17', marginLeft: 25}}>
-                                                    <a href="mailto:HIST@gmail.com" style={{color: '#2196f3', textDecoration: 'none'}}>Trondheim - HIST</a>
-                                                </li>
-                                                <li style={{display: 'inline-block', fontSize: '17', marginLeft: 25}}>
-                                                    <a href="mailto:NMBU@gmail.com" style={{color: '#2196f3', textDecoration: 'none'}}>Ås</a>
-                                                </li>
-                                                <li style={{display: 'inline-block', fontSize: '17', marginLeft: 25}}>
-                                                    <a href="mailto:UiO@gmail.com" style={{color: '#2196f3', textDecoration: 'none'}}>Oslo</a>
-                                                </li>
-                                            </li>
-                                        </ul>
-                                    </section>
+                                <div id={"kontakt-info"} className="contact-info">
+                                    <ContactInformation/>
                                 </div>
                             </Grid.Row>
                         </Grid>
