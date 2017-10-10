@@ -210,7 +210,7 @@
                         for (var m = 0; m < answerArray.length; m++) {
                             data[answer.question_id][answerArray[m]]++;
                         }
-                    } else {
+                    } else if (answer.answer) {
                         data[answer.question_id][answer.answer]++;
                     }
                 }
