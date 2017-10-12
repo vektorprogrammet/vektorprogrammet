@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,6 +36,31 @@ class Image
      */
     private $description;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="ImageGallery", mappedBy="images")
+     */
+    private $galleries;
+
+    public function __construct()
+    {
+        $this->galleries = new ArrayCollection();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getGalleries()
+    {
+        return $this->galleries;
+    }
+
+    /**
+     * @param mixed ArrayCollection
+     */
+    public function setGalleries($galleries)
+    {
+        $this->galleries = $galleries;
+    }
 
     /**
      * Get id

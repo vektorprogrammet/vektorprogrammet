@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,9 +23,7 @@ class ImageGallery
     private $id;
 
     /**
-     * @var array
-     *
-     * @ORM\Column(name="images", type="array")
+     * @ORM\ManyToMany(targetEntity="Image", inversedBy="galleries")
      */
     private $images;
 
@@ -49,6 +48,10 @@ class ImageGallery
      */
     private $description;
 
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -63,7 +66,7 @@ class ImageGallery
     /**
      * Set images
      *
-     * @param array $images
+     * @param ArrayCollection $images
      * @return ImageGallery
      */
     public function setImages($images)
@@ -76,11 +79,24 @@ class ImageGallery
     /**
      * Get images
      *
-     * @return array
+     * @return ArrayCollection
      */
     public function getImages()
     {
         return $this->images;
+    }
+
+    /**
+     * Add image
+     *
+     * @param Image $image
+     * @return ImageGallery
+     */
+    public function addImage($image)
+    {
+        $this->images->add($image);
+
+        return $this;
     }
 
     /**
