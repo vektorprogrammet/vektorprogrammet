@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Menu, Segment,  Button, Card, Image, List, Label, Tab } from 'semantic-ui-react'
+import { Header, Menu, Segment,  Button, Card, Image, List, Label, Tab } from 'semantic-ui-react'
 import './TeamOverview.css'
 
 export default class TeamOverview extends Component {
@@ -38,8 +38,15 @@ export default class TeamOverview extends Component {
             { menuItem: 'Bergen', render: () => <Tab.Pane>Bergen</Tab.Pane> },
             { menuItem: 'Ås', render: () => <Tab.Pane>Ås</Tab.Pane> },
             { menuItem: 'Tromsø', render: () => <Tab.Pane>Tromsø</Tab.Pane> },
+            { menuItem: 'Hovedstyret', render: () => <Tab.Pane>Hovbedstyret</Tab.Pane>},
         ];
-        return <Tab menu={{ fluid: true, widths: 5 }} panes={panes} />
+
+        return (
+                <Segment>
+                <Header as="h1" id="teamHeader">Team</Header>
+                <Tab menu={{ id:"regionMenu", compact:true, stackable:true, attached:false, secondary: true, pointing: true }} panes={panes} />
+                </Segment>
+        );
     }
 
 }

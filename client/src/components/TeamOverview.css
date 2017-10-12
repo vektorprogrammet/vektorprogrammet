@@ -14,3 +14,14 @@
     display: flex;
     justify-content: space-around;
 }
+
+#regionMenu {
+    border: none;
+    display: flex;
+    justify-content: center;
+}
+
+#teamHeader {
+    display: flex;
+    justify-content: center;
+}
