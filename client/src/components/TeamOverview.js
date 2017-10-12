@@ -5,29 +5,29 @@ import './TeamOverview.css'
 export default class TeamOverview extends Component {
     render() {
         const trondContent = (
-            <Card.Group>
+            <Card.Group className="teamCardGroup">
                 <Card>
-                    <Image src="https://vektorprogrammet.no/images/team_images/Skolekoord_size_bw.jpg" />
+                    <Image className="teamImage" src="https://vektorprogrammet.no/images/team_images/Skolekoord_size_bw.jpg" />
                     <Card.Content>
                         <Card.Header>Skolekoordinering!</Card.Header>
                         <Card.Meta>Har opptak</Card.Meta>
-                        <Card.Description className="TeamCardDesc">Vi er knutepunktet mellom skoler og assistenter.</Card.Description>
+                        <Card.Description className="teamCardDesc">Vi er knutepunktet mellom skoler og assistenter.</Card.Description>
                     </Card.Content>
                 </Card>
                 <Card>
-                    <Image src="https://vektorprogrammet.no/images/team_images/img_sponsor.jpg" />
+                    <Image className="teamImage" src="https://vektorprogrammet.no/images/team_images/img_sponsor.jpg" />
                     <Card.Content>
                         <Card.Header>Samarbeidskoordinatorer!</Card.Header>
                         <Card.Meta>Har opptak</Card.Meta>
-                        <Card.Description className="TeamCardDesc">Vi er knutepunktet mellom Vektor og næringslivet.</Card.Description>
+                        <Card.Description className="teamCardDesc">Vi er knutepunktet mellom Vektor og næringslivet.</Card.Description>
                     </Card.Content>
                 </Card>
                 <Card>
-                    <Image src="https://vektorprogrammet.no/images/team_images/itteam.jpg" />
+                    <Image className="teamImage" src="https://vektorprogrammet.no/images/team_images/itteam.jpg" />
                     <Card.Content>
                         <Card.Header>IT!</Card.Header>
                         <Card.Meta>Har opptak</Card.Meta>
-                        <Card.Description className="TeamCardDesc">Vi drifter og utvikler Vektorprogrammet.no.</Card.Description>
+                        <Card.Description className="teamCardDesc">Vi drifter og utvikler Vektorprogrammet.no.</Card.Description>
                     </Card.Content>
                 </Card>
             </Card.Group>

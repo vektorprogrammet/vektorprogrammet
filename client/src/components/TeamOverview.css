@@ -1,0 +1,16 @@
+.teamCardGroup {
+    justify-content: center;
+}
+
+.teamImage {
+    height: 200px;
+}
+
+.teamCardDesc {
+    font-size: 0.9em;
+}
+
+.teamCardContainer {
+    display: flex;
+    justify-content: space-around;
+}
