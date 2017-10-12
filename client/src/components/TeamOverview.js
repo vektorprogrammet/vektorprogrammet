@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Header, Menu, Segment,  Button, Card, Image, List, Label, Tab } from 'semantic-ui-react'
-import './TeamOverview.css'
+import { Header, Menu, Segment,  Button, Card, Image, List, Label, Tab } from 'semantic-ui-react';
+import './TeamOverview.css';
 
 export default class TeamOverview extends Component {
     render() {
