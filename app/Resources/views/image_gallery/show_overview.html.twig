@@ -1,0 +1,26 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}Bildegallerier{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <h1>Bildegallerier</h1>
+        </div>
+    </div>
+
+    {% for image_gallery in image_galleries %}
+        <div class="row">
+
+            <div class="small-12 medium-12 large-12 columns">
+                <hr>
+            </div>
+
+            <div class="small-12 medium-12 large-8 columns">
+                <h3><a href="{{ path('image_gallery_show_individual', {'id': image_gallery.id }) }}"> {{ image_gallery.title }} </a></h3>
+
+
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

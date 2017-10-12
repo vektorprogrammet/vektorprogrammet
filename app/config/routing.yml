@@ -937,6 +937,22 @@ school_capacity_edit:
         id: \d+
 
 ##########################################
+#              ImageGallery              #
+##########################################
+
+image_gallery_show_overview:
+  path: /kontrollpanel/bildegallerier
+  defaults: { _controller: AppBundle:ImageGallery:showOverview }
+  methods: [GET]
+
+image_gallery_show_individual:
+  path: /kontrollpanel/bildegallerier/galleri/{id}
+  defaults: { _controller: AppBundle:ImageGallery:showIndividual }
+  methods: [GET, POST]
+  requirements:
+    id: \d+
+
+##########################################
 #              Interview                 #
 ##########################################
 
