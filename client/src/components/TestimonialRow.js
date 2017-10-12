@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import './TestimonialRow.css';
 import Testimonial from './Testimonial';
+import { Segment } from 'semantic-ui-react';
 
 export default class TestimonialRow extends Component {
     render() {
         return (
-            <div className="testimonialRow">
+            <Segment className="testimonialRow">
                 <Testimonial
                     testimonialText="Jeg likte vektor fordi vi gjorde
                                      så mye gøy. En gang så dro vi på
@@ -26,7 +27,7 @@ export default class TestimonialRow extends Component {
                     name="Charlie"
                     imagePath="https://via.placeholder.com/200x200"
                     />
-            </div>
+            </Segment>
         );
     }
 }

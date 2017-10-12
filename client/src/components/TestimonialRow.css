@@ -3,6 +3,5 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-around;
-    align-items: flex-start;
-    margin: 10px 100px;
+    align-items: center;
 }
