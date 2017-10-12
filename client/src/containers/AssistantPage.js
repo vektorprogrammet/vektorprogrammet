@@ -4,7 +4,6 @@ import './AssistantPage.css';
 import NewsletterPopUp from '../components/NewsletterPopUp';
 import ApplicationForm from '../components/ApplicationForm';
 
-
 class AssistantPage extends Component {
 
     constructor(props){

@@ -9,5 +9,10 @@ export const DepartmentApi = {
   get: async (id) => {
     const res = await fetch(`${apiEndpoint}/departments/${id}`);
     return res.json();
+  },
+
+  getByActiveSemester: async () => {
+      const res = await fetch(`${apiEndpoint}/departments/admissions/active`);
+      return res.json();
   }
 };
