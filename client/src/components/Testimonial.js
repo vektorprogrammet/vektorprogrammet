@@ -6,7 +6,7 @@ export default class Testimonial extends Component {
     render() {
         return (
             <Card className="testimonial-card">
-                <div>
+                <div id="testimonialImageDiv">
                     <Image src={this.props.imagePath} shape="circular" centered size="small"/>
                 </div>
 

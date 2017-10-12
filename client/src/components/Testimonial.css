@@ -11,6 +11,10 @@
     height: inherit;
 }
 
+#testimonialImageDiv {
+    padding-top: 1em;
+}
+
 .ui.card {
     box-shadow: none;
 }
