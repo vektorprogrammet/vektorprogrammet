@@ -33,18 +33,18 @@ export default class TeamOverview extends Component {
             </Card.Group>
         );
         const panes = [
-            { menuItem: 'Trondheim', render: () => <Tab.Pane>{trondContent}</Tab.Pane> },
-            { menuItem: 'Oslo', render: () => <Tab.Pane>Oslo</Tab.Pane> },
-            { menuItem: 'Bergen', render: () => <Tab.Pane>Bergen</Tab.Pane> },
-            { menuItem: 'Ås', render: () => <Tab.Pane>Ås</Tab.Pane> },
-            { menuItem: 'Tromsø', render: () => <Tab.Pane>Tromsø</Tab.Pane> },
-            { menuItem: 'Hovedstyret', render: () => <Tab.Pane>Hovbedstyret</Tab.Pane>},
+            { menuItem: 'Trondheim', render: () => <Tab.Pane className="tabPaneContent">{trondContent}</Tab.Pane> },
+            { menuItem: 'Oslo', render: () => <Tab.Pane className="tabPaneContent">Oslo</Tab.Pane> },
+            { menuItem: 'Bergen', render: () => <Tab.Pane className="tabPaneContent">Bergen</Tab.Pane> },
+            { menuItem: 'Ås', render: () => <Tab.Pane className="tabPaneContent">Ås</Tab.Pane> },
+            { menuItem: 'Tromsø', render: () => <Tab.Pane className="tabPaneContent">Tromsø</Tab.Pane> },
+            { menuItem: 'Hovedstyret', render: () => <Tab.Pane className="tabPaneContent">Hovbedstyret</Tab.Pane>},
         ];
 
         return (
                 <Segment>
                 <Header as="h1" id="teamHeader">Team</Header>
-                <Tab menu={{ id:"regionMenu", compact:true, stackable:true, attached:false, secondary: true, pointing: true }} panes={panes} />
+                <Tab menu={{ id:"regionMenu", compact:true, stackable:true, attached:false, secondary: true, pointing: false }} panes={panes} />
                 </Segment>
         );
     }
