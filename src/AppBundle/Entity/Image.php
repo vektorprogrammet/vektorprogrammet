@@ -55,7 +55,7 @@ class Image
     }
 
     /**
-     * @param mixed ArrayCollection
+     * @param ArrayCollection
      */
     public function setGalleries($galleries)
     {
