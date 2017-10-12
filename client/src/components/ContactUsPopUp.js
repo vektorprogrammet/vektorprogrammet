@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './ContactUsPopUp.css';
 import { Form, Icon, Image } from 'semantic-ui-react';
 
-class NewsletterPopUp extends Component {
+class ContactUsPopUp extends Component {
 
     render() {
         return (
@@ -34,4 +34,4 @@ class NewsletterPopUp extends Component {
     }
 }
 
-export default NewsletterPopUp;
+export default ContactUsPopUp;

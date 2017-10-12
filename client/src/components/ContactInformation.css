@@ -1,0 +1,25 @@
+.unordered-list {
+    list-style: none;
+    margin: 0;
+    display: inline-block;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.list-container {
+    font-size: 20px;
+    font-weight: 700;
+    margin-left: var(--main-margin);
+    margin-right: var(--main-margin);
+}
+
+.list-container li {
+    display: inline-block;
+    font-size: 17px;
+    margin-left: 25px;
+}
+
+.list-container a {
+    color: #2196f3;
+    text-decoration: none;
+    font-weight: 400;
+}
