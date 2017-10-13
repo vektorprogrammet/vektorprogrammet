@@ -1,41 +1,35 @@
 import React, { Component } from 'react';
 import { Icon, Header, Menu, Segment,  Button, Card, Image, List, Label, Tab } from 'semantic-ui-react';
 import './TeamOverview.css';
+import TeamCard from './TeamCard';
 
 export default class TeamOverview extends Component {
     render() {
         const trondContent = (
             <Card.Group className="teamCardGroup">
-                <Card>
-                    <Image className="teamImage" src="https://vektorprogrammet.no/images/team_images/Skolekoord_size_bw.jpg" />
-                    <Card.Content>
-                        <Card.Header>Skolekoordinering!</Card.Header>
-                        <Card.Meta className="teamCardMeta">skolekoordinering.ntnu@vektorprogrammet.no</Card.Meta>
-                        <Card.Description className="teamCardDesc">Skolekoordinering fungerer som et bindeledd mellom skolene og vektorassistentene gjennom semesteret.	</Card.Description>
-                    </Card.Content>
-                </Card>
-                <Card>
-                    <Image className="teamImage" src="https://vektorprogrammet.no/images/team_images/img_sponsor.jpg" />
-                    <Card.Content>
-                        <Card.Header>Samarbeidskoordinatorer!</Card.Header>
-                        <Card.Meta className="teamCardMeta">sponsor.ntnu@vektorprogrammet.no</Card.Meta>
-                        <Card.Description className="teamCardDesc">Vektorprogrammets bindeledd til næringslivet, samarbeidspartnere og sponsorer.	</Card.Description>
-                    </Card.Content>
-                </Card>
-                <Card>
-                    <Image className="teamImage" src="https://vektorprogrammet.no/images/team_images/itteam.jpg" />
-                    <Card.Content>
-                        <Card.Header>IT!</Card.Header>
-                        <Card.Meta className="teamCardMeta">it@vektorprogrammet.no</Card.Meta>
-                        <Card.Description className="teamCardDesc">Vi drifter og utvikler Vektorprogrammet.no.</Card.Description>
-                    </Card.Content>
-                    <Card.Content extra className="teamCardExtra">
-                        <a>
-                            <Icon color="green" name='star' />
-                            Har opptak!
-                        </a>
-                    </Card.Content>
-                </Card>
+                <TeamCard
+                    imagePath="https://vektorprogrammet.no/images/team_images/Skolekoord_size_bw.jpg"
+                    name="Skolekoordinering"
+                    email="skolekoordinering.ntnu@vektorprogrammet.no"
+                    shortDesc="Skolekoordinering fungerer som et bindeledd mellom skolene og vektorassistentene gjennom semesteret."
+                    accept_application={false}
+                    />
+
+                <TeamCard
+                    imagePath="https://vektorprogrammet.no/images/team_images/img_sponsor.jpg"
+                    name="Samarbeidskoordinatorer"
+                    email="sponsor.ntnu@vektorprogrammet.no"
+                    shortDesc="Vektorprogrammets bindeledd til næringslivet, samarbeidspartnere og sponsorer."
+                    accept_application={false}
+                    />
+
+                <TeamCard
+                    imagePath="https://vektorprogrammet.no/images/team_images/itteam.jpg"
+                    name="IT"
+                    email="it@vektorprogrammet.no"
+                    shortDesc="Vi drifter og utvikler Vektorprogrammet.no."
+                    accept_application={true}
+                    />
             </Card.Group>
         );
         const panes = [
