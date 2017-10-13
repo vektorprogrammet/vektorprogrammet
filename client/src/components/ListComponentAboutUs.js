@@ -2,9 +2,6 @@ import React, {Component} from 'react';
 import {List, Button} from'semantic-ui-react';
 
 class ListComponentAboutUs extends Component{
-    constructor(props){
-        super(props);
-    }
     render() {
         return (
             <List size={"massive"}>
@@ -13,7 +10,7 @@ class ListComponentAboutUs extends Component{
                 <List.Item
                     icon='talk'
                     content={
-                        <Button basic color='blue' onClick={this.props.show}>Kontakt oss nå!</Button>
+                        <Button basic color='blue' onClick={this.props.onClick}>Kontakt oss nå!</Button>
                     }
                 />
             </List>

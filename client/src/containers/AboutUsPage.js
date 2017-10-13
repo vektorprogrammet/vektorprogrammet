@@ -5,30 +5,22 @@ import ContactUsPopUp from '../components/ContactUsPopUp';
 import Faq from '../components/Faq';
 import ContactInformation from '../components/ContactInformation';
 import ListComponentAboutUs from '../components/ListComponentAboutUs';
-import MainTextAboutUs from '../components/MainTextAboutUs.js';
+import MainTextAboutUs from '../components/MainTextAboutUs';
+
 
 class AboutUsPage extends Component {
     constructor() {
         super();
         this.state = {
-            contactUsVisible: false,
-            contactUsRevealed: false
+            showModal: false
         };
-        this.onContactUsPopUpClose = this.onContactUsPopUpClose.bind(this);
-        this.handleContactUsNowClick = this.handleContactUsNowClick.bind(this);
+        this.handleModal = this.handleModal.bind(this);
     }
 
-    onContactUsPopUpClose(){
-        this.setState({
-            contactUsVisible : false
-        });
-    }
-
-    handleContactUsNowClick(){
-        this.setState ({
-            contactUsVisible: true,
-            contactUsRevealed: true
-        });
+    handleModal() {
+        this.setState(prevState => ({
+            showModal: !prevState.showModal
+        }));
     }
 
     render() {
@@ -54,7 +46,7 @@ class AboutUsPage extends Component {
 
         return (
             <Grid columns={3}>
-                <ContactUsPopUp show={this.state.contactUsVisible} onClose={this.onContactUsPopUpClose}/>
+                <ContactUsPopUp show={this.state.showModal} onClose={this.handleModal}/>
                 <Grid.Column width={2}>
                 </Grid.Column>
                 <Grid.Column width={10}>
@@ -75,7 +67,7 @@ class AboutUsPage extends Component {
                     </Grid>
                 </Grid.Column>
                 <Grid.Column width={4}>
-                    <ListComponentAboutUs show ={this.handleContactUsNowClick}/>
+                    <ListComponentAboutUs onClick={this.handleModal} />
                 </Grid.Column>
             </Grid>
         )
