@@ -3,6 +3,7 @@ import { Icon, Header, Menu, Segment,  Button, Card, Image, List, Label, Tab } f
 import './TeamOverview.css';
 import TeamCard from './TeamCard';
 import {TeamApi} from '../api/TeamApi.js';
+import {DepartmentApi} from '../api/DepartmentApi.js';
 
 export default class TeamOverview extends Component {
 
@@ -15,18 +16,15 @@ export default class TeamOverview extends Component {
     }
 
     async componentDidMount() {
-        const allTeams = TeamApi.getAll();
+        const allTeams = DepartmentApi.getTeams(1);
         this.setState(
             {teams: await allTeams}
         );
     }
 
     render() {
-        this.state.teams.forEach( (team) => {
-            console.log(team);
-        });
-        const cardGroup = this.state.teams.map( (team) =>
-                                                <TeamCard
+        const trdCardGroup = this.state.teams.map( (team) =>
+                                                   <TeamCard key={team.name}
                                                 name={team.name}
                                                 email={team.email}
                                                 shortDesc={team.short_description}
@@ -36,7 +34,7 @@ export default class TeamOverview extends Component {
 
         const trondContent = (
             <Card.Group className="teamCardGroup">
-                {cardGroup}
+                {trdCardGroup}
             </Card.Group>
         );
         const panes = [
