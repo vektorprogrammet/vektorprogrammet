@@ -9,6 +9,9 @@ class ContactUsPopUp extends Component {
     };
 
     render() {
+        if (!this.props.show) {
+            return null;
+        }
         return (
             <div className={'backdrop' + (this.props.show ? ' visible' : '')} onClick={this.props.onClose}>
                 <div className={'contactUsPopUp' + (this.props.show ? ' visible' : '')} onClick={this.handlePropagation}>
