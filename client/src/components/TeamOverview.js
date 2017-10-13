@@ -2,34 +2,41 @@ import React, { Component } from 'react';
 import { Icon, Header, Menu, Segment,  Button, Card, Image, List, Label, Tab } from 'semantic-ui-react';
 import './TeamOverview.css';
 import TeamCard from './TeamCard';
+import {TeamApi} from '../api/TeamApi.js';
 
 export default class TeamOverview extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            teams:[]
+        };
+
+    }
+
+    async componentDidMount() {
+        const allTeams = TeamApi.getAll();
+        this.setState(
+            {teams: await allTeams}
+        );
+    }
+
     render() {
+        this.state.teams.forEach( (team) => {
+            console.log(team);
+        });
+        const cardGroup = this.state.teams.map( (team) =>
+                                                <TeamCard
+                                                name={team.name}
+                                                email={team.email}
+                                                shortDesc={team.short_description}
+                                                accept_application={team.accept_application}
+                                                />
+        );
+
         const trondContent = (
             <Card.Group className="teamCardGroup">
-                <TeamCard
-                    imagePath="https://vektorprogrammet.no/images/team_images/Skolekoord_size_bw.jpg"
-                    name="Skolekoordinering"
-                    email="skolekoordinering.ntnu@vektorprogrammet.no"
-                    shortDesc="Skolekoordinering fungerer som et bindeledd mellom skolene og vektorassistentene gjennom semesteret."
-                    accept_application={false}
-                    />
-
-                <TeamCard
-                    imagePath="https://vektorprogrammet.no/images/team_images/img_sponsor.jpg"
-                    name="Samarbeidskoordinatorer"
-                    email="sponsor.ntnu@vektorprogrammet.no"
-                    shortDesc="Vektorprogrammets bindeledd til næringslivet, samarbeidspartnere og sponsorer."
-                    accept_application={false}
-                    />
-
-                <TeamCard
-                    imagePath="https://vektorprogrammet.no/images/team_images/itteam.jpg"
-                    name="IT"
-                    email="it@vektorprogrammet.no"
-                    shortDesc="Vi drifter og utvikler Vektorprogrammet.no."
-                    accept_application={true}
-                    />
+                {cardGroup}
             </Card.Group>
         );
         const panes = [
