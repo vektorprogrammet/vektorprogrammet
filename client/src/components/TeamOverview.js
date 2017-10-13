@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, Menu, Segment,  Button, Card, Image, List, Label, Tab } from 'semantic-ui-react';
+import { Icon, Header, Menu, Segment,  Button, Card, Image, List, Label, Tab } from 'semantic-ui-react';
 import './TeamOverview.css';
 
 export default class TeamOverview extends Component {
@@ -10,24 +10,30 @@ export default class TeamOverview extends Component {
                     <Image className="teamImage" src="https://vektorprogrammet.no/images/team_images/Skolekoord_size_bw.jpg" />
                     <Card.Content>
                         <Card.Header>Skolekoordinering!</Card.Header>
-                        <Card.Meta>Har opptak</Card.Meta>
-                        <Card.Description className="teamCardDesc">Vi er knutepunktet mellom skoler og assistenter.</Card.Description>
+                        <Card.Meta className="teamCardMeta">skolekoordinering.ntnu@vektorprogrammet.no</Card.Meta>
+                        <Card.Description className="teamCardDesc">Skolekoordinering fungerer som et bindeledd mellom skolene og vektorassistentene gjennom semesteret.	</Card.Description>
                     </Card.Content>
                 </Card>
                 <Card>
                     <Image className="teamImage" src="https://vektorprogrammet.no/images/team_images/img_sponsor.jpg" />
                     <Card.Content>
                         <Card.Header>Samarbeidskoordinatorer!</Card.Header>
-                        <Card.Meta>Har opptak</Card.Meta>
-                        <Card.Description className="teamCardDesc">Vi er knutepunktet mellom Vektor og næringslivet.</Card.Description>
+                        <Card.Meta className="teamCardMeta">sponsor.ntnu@vektorprogrammet.no</Card.Meta>
+                        <Card.Description className="teamCardDesc">Vektorprogrammets bindeledd til næringslivet, samarbeidspartnere og sponsorer.	</Card.Description>
                     </Card.Content>
                 </Card>
                 <Card>
                     <Image className="teamImage" src="https://vektorprogrammet.no/images/team_images/itteam.jpg" />
                     <Card.Content>
                         <Card.Header>IT!</Card.Header>
-                        <Card.Meta>Har opptak</Card.Meta>
+                        <Card.Meta className="teamCardMeta">it@vektorprogrammet.no</Card.Meta>
                         <Card.Description className="teamCardDesc">Vi drifter og utvikler Vektorprogrammet.no.</Card.Description>
+                    </Card.Content>
+                    <Card.Content extra className="teamCardExtra">
+                        <a>
+                            <Icon color="green" name='star' />
+                            Har opptak!
+                        </a>
                     </Card.Content>
                 </Card>
             </Card.Group>

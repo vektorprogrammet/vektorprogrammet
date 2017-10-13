@@ -29,3 +29,13 @@
 .ui.attached.tabPaneContent {
     border: none;
 }
+
+.ui.card .meta, .ui.cards>.card .teamCardMeta {
+    font-family: menlo;
+    font-size: 0.65em;
+}
+
+.teamCardExtra {
+    display: flex;
+    justify-content: center;
+}
