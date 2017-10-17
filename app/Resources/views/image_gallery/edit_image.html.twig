@@ -14,9 +14,16 @@
             <hr>
         </div>
 
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="small-6 medium-6 large-6 columns">
             <img src="{{ image.path }}" alt="{{ image.description }}">
         </div>
+        <div class="small-6 medium-6 large-6 columns">
+            {{ form_start(form) }}
+                {{ form_row(form.description) }}
+                <button class="button success">Lagre</button>
+            {{ form_end(form) }}
+        </div>
     </div>
+
 
 {% endblock %}
