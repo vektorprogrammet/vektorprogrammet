@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import './NewsletterPopUp.css';
 import { Button, Form, Icon } from 'semantic-ui-react';
-//import {NewsletterApi} from '../api/NewsletterApi'; // TODO: Lage denne
+import Geolocation from '../components/Geolocation';
+import {NewsletterApi} from '../api/NewsletterApi';
 
 class NewsletterPopUp extends Component {
     constructor(props){
@@ -12,6 +13,7 @@ class NewsletterPopUp extends Component {
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.getClosestDepartment = this.getClosestDepartment.bind(this);
     }
 
     handleSubmit(){
@@ -20,6 +22,13 @@ class NewsletterPopUp extends Component {
 
     handleChange(newsletter){
         this.setState({[newsletter.target.id]: newsletter.target.value});
+    }
+
+    async getClosestDepartment(shortName){
+        const newsletterId = NewsletterApi.getByDepartmentShortName(shortName);
+        this.setState({
+            newsletterId: await newsletterId,
+        });
     }
 
     render() {
@@ -32,6 +41,7 @@ class NewsletterPopUp extends Component {
                     <Form.Field><input id='email' placeholder='E-post' value={this.state.email} onChange={this.handleChange} required/></Form.Field>
                     <Button size='mini'>Meld meg på!</Button>
                 </Form>
+                <Geolocation closestDepartment={ this.getClosestDepartment } />
             </div>
         )
     }
