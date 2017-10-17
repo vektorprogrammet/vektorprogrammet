@@ -16,10 +16,11 @@
                 <hr>
             </div>
 
-            <div class="small-12 medium-12 large-8 columns">
+            <div class="small-12 medium-12 large-12 columns">
                 <h3><a href="{{ path('image_gallery_show_individual', {'id': image_gallery.id }) }}"> {{ image_gallery.title }} </a></h3>
-
-
+                {% for key, image in image_gallery.images if key < 5 %}
+                    <img class="gallery-preview-image" src="{{ image.path }}" alt="{{ image.description }}">
+                {% endfor %}
             </div>
         </div>
     {% endfor %}

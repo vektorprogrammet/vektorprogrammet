@@ -9,4 +9,22 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <hr>
+        </div>
+
+        <div class="small-12 medium-12 large-12 columns">
+            <ul class="small-block-grid-3 medium-block-grid-4 large-block-grid-4">
+                {% for image in image_gallery.images %}
+                    <li class="image-gallery-grid-element">
+                        <a href="{{ path('image_edit', {'id': image.id}) }}">
+                            <img src="{{ image.path }}" alt="{{ image.description }}">
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
 {% endblock %}

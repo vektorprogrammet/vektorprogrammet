@@ -953,6 +953,17 @@ image_gallery_show_individual:
     id: \d+
 
 ##########################################
+#                  Image                 #
+##########################################
+
+image_edit:
+  path: /kontrollpanel/bildegallerier/rediger/{id}
+  defaults: { _controller: AppBundle:Image:editImage }
+  methods: [GET, POST]
+  requirements:
+    id: \d+
+
+##########################################
 #              Interview                 #
 ##########################################
 

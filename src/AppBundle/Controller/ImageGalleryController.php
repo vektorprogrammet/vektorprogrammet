@@ -11,7 +11,6 @@ class ImageGalleryController extends Controller
     public function showOverviewAction()
     {
         $imageGalleries = $this->getDoctrine()->getRepository('AppBundle:ImageGallery')->findAll();
-        dump($imageGalleries);
 
         return $this->render('image_gallery/show_overview.html.twig', array(
             'image_galleries' => $imageGalleries,

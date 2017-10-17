@@ -1,0 +1,22 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %} Rediger bilde {% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <h1>Rediger bilde</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <hr>
+        </div>
+
+        <div class="small-12 medium-12 large-12 columns">
+            <img src="{{ image.path }}" alt="{{ image.description }}">
+        </div>
+    </div>
+
+{% endblock %}
