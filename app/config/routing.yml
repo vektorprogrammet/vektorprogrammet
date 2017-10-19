@@ -952,13 +952,9 @@ image_gallery_show_individual:
   requirements:
     id: \d+
 
-##########################################
-#                  Image                 #
-##########################################
-
 image_edit:
   path: /kontrollpanel/bildegallerier/rediger/{id}
-  defaults: { _controller: AppBundle:Image:editImage }
+  defaults: { _controller: AppBundle:ImageGallery:editImage }
   methods: [GET, POST]
   requirements:
     id: \d+

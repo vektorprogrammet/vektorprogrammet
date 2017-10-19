@@ -15,16 +15,13 @@ class ImageGalleryType extends AbstractType
         $builder
             ->add('title', TextType::class, array(
             'label' => 'Tittel',
-            'required' => true,
             //'max_length' => 225
             ))
             ->add('description', TextareaType::class, array(
                 'label' => 'Beskrivelse',
-                'required' => true,
             ))
             ->add('referenceName', TextType::class, array(
                 'label' => 'Referansenavn',
-                'required' => true,
             ));
     }
 

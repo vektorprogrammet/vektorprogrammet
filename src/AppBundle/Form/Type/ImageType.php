@@ -13,7 +13,6 @@ class ImageType extends AbstractType
     {
         $builder->add('description', TextType::class, array(
             'label' => 'Beskrivelse',
-            'required' => true,
         ));
     }
 
