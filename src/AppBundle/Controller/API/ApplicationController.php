@@ -2,9 +2,14 @@
 
 namespace AppBundle\Controller\API;
 
+use AppBundle\Entity\Application;
+use AppBundle\Entity\FieldOfStudy;
+use AppBundle\Entity\User;
+use AppBundle\Form\Type\ApplicationType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\HttpFoundation\Request;
 
 class ApplicationController extends FOSRestController implements ClassResourceInterface
 {
@@ -72,8 +77,24 @@ class ApplicationController extends FOSRestController implements ClassResourceIn
      *     }
      * )
      */
-    public function postAction()
+    public function postAction(Request $request)
     {
+        $user = new User();
+        $application = new Application();
+
+        $user->setFirstName($request->request->get('application[user][firstName]'));
+        $user->setLastName($request->request->get('application[user][lastName]'));
+        $user->setEmail($request->request->get('application[user][email]'));
+        $user->setPhone($request->request->get('application[user][phone]'));
+        $user->setFieldOfStudy($request->request->get('application[user][fieldOfStudy]'));
+
+        $application->setUser($user);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($application);
+        $em->flush();
+
+        return $application;
     }
 
     /**

@@ -11,6 +11,11 @@ export const DepartmentApi = {
         return res.json();
     },
 
+    getByShortName: async(shortName) => {
+        const res = await fetch(`${apiEndpoint}/departments/${shortName}/shortname`);
+        return res.json();
+    },
+
     getByActiveSemester: async() => {
         const res = await fetch(`${apiEndpoint}/departments/admissions/active`);
         return res.json();

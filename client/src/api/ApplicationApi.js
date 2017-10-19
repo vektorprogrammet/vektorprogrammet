@@ -12,13 +12,14 @@ export const ApplicationApi = {
   },
 
   post: async(application) => {
-      await fetch(`${apiEndpoint}/applications`, {
+      const result = await fetch(`${apiEndpoint}/applications`, {
           headers: {
               'Content-Type': 'application/json'
           },
           method: "POST",
           body: JSON.stringify(application)
       });
+      console.log(result.json());
   },
 
   delete: async(id) => {

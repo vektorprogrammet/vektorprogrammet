@@ -4,10 +4,13 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as JMS;
+
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ApplicationRepository")
  * @ORM\Table(name="application")
+ * @JMS\ExclusionPolicy("all")
  */
 class Application
 {
@@ -15,6 +18,7 @@ class Application
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Expose()
      */
     private $id;
 
@@ -24,7 +28,7 @@ class Application
     private $semester;
 
     /**
-     * @ORM\Column(type="string" , length=20)
+     * @ORM\Column(type="string" , length=20, nullable=true)
      * @Assert\NotBlank(groups={"admission", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
      */
     private $yearOfStudy;
@@ -84,6 +88,7 @@ class Application
     /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
      * @Assert\Valid
+     * @JMS\Expose()
      */
     private $user;
 

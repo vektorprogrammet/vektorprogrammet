@@ -68,7 +68,6 @@ class Department
 
     /**
      * @ORM\OneToMany(targetEntity="FieldOfStudy", mappedBy="department", cascade={"remove"})
-     * @JMS\Exclude
      */
     private $fieldOfStudy;
 

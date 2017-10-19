@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * AppBundle\Entity\User.
@@ -24,6 +25,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *      message="Dette brukernavnet er allerede i bruk.",
  *      groups={"create_user", "username", "edit_user"}
  * )
+ * @JMS\ExclusionPolicy("all")
  */
 class User implements AdvancedUserInterface, \Serializable
 {
@@ -31,18 +33,21 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Expose()
      */
     private $id;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
+     * @JMS\Expose()
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
+     * @JMS\Expose()
      */
     private $firstName;
 
@@ -50,11 +55,12 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\ManyToOne(targetEntity="FieldOfStudy")
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Assert\Valid
+     * @JMS\Expose()
      */
     private $fieldOfStudy;
 
     /**
-     * @ORM\Column(name="gender", type="boolean")
+     * @ORM\Column(name="gender", type="boolean", nullable=true)
      * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $gender;
@@ -67,6 +73,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
+     * @JMS\Expose()
      */
     private $phone;
 
@@ -90,6 +97,7 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\Column(type="string", unique=true)
      * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
      * @Assert\Email(groups={"admission", "create_user", "edit_user"}, message="Ikke gyldig e-post.")
+     * @JMS\Expose()
      */
     private $email;
 

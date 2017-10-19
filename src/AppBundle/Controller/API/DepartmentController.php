@@ -40,7 +40,27 @@ class DepartmentController extends FOSRestController implements ClassResourceInt
     }
 
     /**
-     * Gets all Departments
+     * Get department by shortName
+     *
+     * @param string $shortName
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     section="Department",
+     *     statusCodes={
+     *          200 = "Returned when successful",
+     *          404 = "Return when not found",
+     *          500 = "Internal server error"
+     *     }
+     * )
+     */
+    public function getShortnameAction($shortName)
+    {
+        return $this->getDoctrine()->getRepository('AppBundle:Department')->findDepartmentByShortName($shortName);
+    }
+
+    /**
+     * Gets Department by shortName
      *
      * @return mixed
      *
@@ -56,36 +76,6 @@ class DepartmentController extends FOSRestController implements ClassResourceInt
     public function cgetAction()
     {
         return $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
-    }
-
-
-    /**
-     * Gets Field of Studies by Department
-     *
-     * @return mixed
-     *
-     * @ApiDoc(
-     *     section="Field of study",
-     *     requirements={
-     *      {
-     *          "name"="departmentId",
-     *          "dataType"="integer",
-     *          "requirement"="\d+",
-     *          "description"="Department ID"
-     *      }
-     *     },
-     *     statusCodes={
-     *          200 = "Returned when successful",
-     *          404 = "Return when not found",
-     *          500 = "Internal server error"
-     *     }
-     * )
-     */
-
-    public function getFieldofstudiesAction(int $departmentId)
-    {
-        $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
-        return $this->getDoctrine()->getRepository('AppBundle:FieldOfStudy')->findByDepartment($department);
     }
 
     /**
