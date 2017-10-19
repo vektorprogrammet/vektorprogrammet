@@ -20,6 +20,8 @@ class ImageType extends AbstractType
                 'label' => 'Last opp bilde',
                 'required' => false,
                 'data_class' => null,
+                'attr' => array('class' => 'show-for-sr'),
+                'label_attr' => array('class' => 'button'),
         ));
     }
 
