@@ -6,6 +6,7 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
             <h1>Bildegallerier</h1>
+            <hr>
             <p>Bildegallerier blir brukt for å samle bilder til bruk i nettsidens komponenter som f.eks bildekaruseller eller dekorative bildegrids.&nbsp
                 Alle bildegallerier skal ha et referansenavn, som gjør bildene tilgjengelige på vektorprogrammet.no sitt API.&nbsp
                 For eksempel vil et bildegalleri med referansenavn team kunne aksesseres på endpointet /team.
@@ -13,31 +14,39 @@
         </div>
     </div>
 
+    <section id="create-gallery-form">
+        <div class="row">
+            <div class="small-12 medium-12 large-12 columns">
+                <hr>
+                <h3>Opprett et nytt bildegalleri</h3>
+            </div>
+
+            <div class="small-12 medium-12 large-12 columns">
+                {{ form_start(form) }}
+                <div class="row">
+                    <div class="small-12 medium-6 large-6 columns">
+                        {{ form_row(form.title) }}
+                        {{ form_row(form.referenceName) }}
+                    </div>
+
+                    <div class="small-12 medium-6 large-6 columns">
+                        {{ form_row(form.description) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-12 medium-12 large-12 columns">
+                        <button class="button success">Opprett bildegalleri</button>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </section>
+
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            <hr>
-            <h3>Opprett et nytt bildegalleri</h3>
-        </div>
-
-        <div class="small-12 medium-12 large-12 columns">
-            {{ form_start(form) }}
-            <div class="row">
-                <div class="small-12 medium-6 large-6 columns">
-                    {{ form_row(form.title) }}
-                    {{ form_row(form.referenceName) }}
-                </div>
-
-                <div class="small-12 medium-6 large-6 columns">
-                    {{ form_row(form.description) }}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="small-12 medium-12 large-12 columns">
-                    <button class="button success">Opprett bildegalleri</button>
-                </div>
-            </div>
-            {{ form_end(form) }}
+            <a href="#" class="text-success" onclick="toggleForm()" id="toggle-form-link"><i class="fa fa-plus"></i> Opprett galleri</a>
         </div>
     </div>
 
@@ -56,4 +65,23 @@
             </div>
         </div>
     {% endfor %}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var formVisible = false;
+        var createGalleryForm = $('#create-gallery-form');
+        var toggleFormLink = $('#toggle-form-link')[0];
+        function toggleForm() {
+            if(formVisible) {
+                createGalleryForm.slideUp();
+                toggleFormLink.innerHTML = '<i class="fa fa-plus"></i> Opprett galleri';
+            } else {
+                createGalleryForm.slideDown();
+                toggleFormLink.innerHTML = '<i class="fa fa-minus"></i> Skjul';
+            }
+
+            formVisible = !formVisible;
+        }
+    </script>
 {% endblock %}
