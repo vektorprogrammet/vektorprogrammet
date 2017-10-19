@@ -6,6 +6,38 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
             <h1>Bildegallerier</h1>
+            <p>Bildegallerier blir brukt for å samle bilder til bruk i nettsidens komponenter som f.eks bildekaruseller eller dekorative bildegrids.&nbsp
+                Alle bildegallerier skal ha et referansenavn, som gjør bildene tilgjengelige på vektorprogrammet.no sitt API.&nbsp
+                For eksempel vil et bildegalleri med referansenavn team kunne aksesseres på endpointet /team.
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <hr>
+            <h3>Opprett et nytt bildegalleri</h3>
+        </div>
+
+        <div class="small-12 medium-12 large-12 columns">
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="small-12 medium-6 large-6 columns">
+                    {{ form_row(form.title) }}
+                    {{ form_row(form.referenceName) }}
+                </div>
+
+                <div class="small-12 medium-6 large-6 columns">
+                    {{ form_row(form.description) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="small-12 medium-12 large-12 columns">
+                    <button class="button success">Opprett bildegalleri</button>
+                </div>
+            </div>
+            {{ form_end(form) }}
         </div>
     </div>
 

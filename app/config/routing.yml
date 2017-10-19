@@ -940,10 +940,10 @@ school_capacity_edit:
 #              ImageGallery              #
 ##########################################
 
-image_gallery_show_overview:
+image_gallery_create:
   path: /kontrollpanel/bildegallerier
-  defaults: { _controller: AppBundle:ImageGallery:showOverview }
-  methods: [GET]
+  defaults: { _controller: AppBundle:ImageGallery:create }
+  methods: [GET, POST]
 
 image_gallery_show_individual:
   path: /kontrollpanel/bildegallerier/galleri/{id}

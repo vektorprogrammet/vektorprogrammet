@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * ImageGallery
@@ -31,6 +32,7 @@ class ImageGallery
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\NotBlank(message="Bildegalleriet mangler tittel.")
      */
     private $title;
 
@@ -38,6 +40,7 @@ class ImageGallery
      * @var string
      *
      * @ORM\Column(name="referenceName", type="string", length=255)
+     * @Assert\NotBlank(message="Bildegalleriet må ha et referansenavn.")
      */
     private $referenceName;
 
@@ -45,6 +48,7 @@ class ImageGallery
      * @var string
      *
      * @ORM\Column(name="description", type="text")
+     * @Assert\NotBlank(message="Bildegalleriet mangler beskrivelse.")
      */
     private $description;
 

@@ -26,6 +26,6 @@ class ImageType extends AbstractType
 
     public function getName()
     {
-        return 'imageDescription';
+        return 'image';
     }
 }
