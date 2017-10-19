@@ -959,6 +959,13 @@ image_edit:
   requirements:
     id: \d+
 
+image_upload:
+  path: /kontrollpanel/bildegallerier/galleri/{id}/ny
+  defaults: { _controller: AppBundle:ImageGallery:uploadImage }
+  methods: [GET, POST]
+  requirements:
+    id: \d+
+
 ##########################################
 #              Interview                 #
 ##########################################

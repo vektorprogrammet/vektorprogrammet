@@ -21,12 +21,14 @@ class FileUploader
      * @param string $signatureFolder
      * @param string $logoFolder
      * @param string $receiptFolder
+     * @param string $galleryImageFolder
      */
-    public function __construct(string $signatureFolder, string $logoFolder, string $receiptFolder)
+    public function __construct(string $signatureFolder, string $logoFolder, string $receiptFolder, string $galleryImageFolder)
     {
         $this->signatureFolder = $signatureFolder;
         $this->logoFolder = $logoFolder;
         $this->receiptFolder = $receiptFolder;
+        $this->galleryImageFolder = $galleryImageFolder;
     }
 
     /**
@@ -66,6 +68,24 @@ class FileUploader
         $fileType = explode('/', $mimeType)[0];
         if ($fileType === 'image') {
             return $this->uploadFile($file, $this->receiptFolder);
+        } else {
+            throw new BadRequestHttpException('Filtypen må være et bilde.');
+        }
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return string
+     */
+    public function uploadGalleryImage(Request $request)
+    {
+        $file = $this->getFileFromRequest($request);
+
+        $mimeType = $file->getMimeType();
+        $fileType = explode('/', $mimeType)[0];
+        if ($fileType === 'image') {
+            return $this->uploadFile($file, $this->galleryImageFolder);
         } else {
             throw new BadRequestHttpException('Filtypen må være et bilde.');
         }

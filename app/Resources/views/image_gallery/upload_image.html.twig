@@ -1,11 +1,11 @@
 {% extends 'adminBase.html.twig' %}
 
-{% block title %} Rediger bilde {% endblock %}
+{% block title %} Last opp bilde {% endblock %}
 
 {% block body %}
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            <h1>Rediger bilde</h1>
+            <h1>Last opp bilde</h1>
         </div>
     </div>
 
@@ -14,19 +14,15 @@
             <hr>
         </div>
 
+        {{ form_start(form) }}
         <div class="small-6 medium-6 large-6 columns">
-            <img src="{{ image.path }}" alt="{{ image.description }}">
+            {{ form_row(form.path) }}
         </div>
         <div class="small-6 medium-6 large-6 columns">
-            {{ form_start(form) }}
-                {{ form_row(form.description) }}
-                <div class="hide">
-                    {{ form_row(form.path) }}
-                </div>
-                <button class="button success">Lagre</button>
-            {{ form_end(form) }}
+            {{ form_row(form.description) }}
+            <button class="button success">Lagre</button>
         </div>
+        {{ form_end(form) }}
     </div>
-
 
 {% endblock %}

@@ -143,7 +143,7 @@ services:
 
   app.file_uploader:
       class: AppBundle\Service\FileUploader
-      arguments: ['%signature_images%', '%logo_images%', '%receipt_images%']
+      arguments: ['%signature_images%', '%logo_images%', '%receipt_images%', '%gallery_images%']
 
   security.login:
     class: AppBundle\Service\LoginManager

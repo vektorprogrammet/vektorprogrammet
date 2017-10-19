@@ -43,12 +43,43 @@ class ImageGalleryController extends Controller
         ));
     }
 
+    public function uploadImageAction(Request $request, ImageGallery $imageGallery)
+    {
+        $image = new Image();
+
+        $form = $this->createForm(ImageType::class, $image);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $path = $this->get('app.file_uploader')->uploadGalleryImage($request);
+            $image->setPath($path);
+
+            $imageGallery->addImage($image);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($image);
+            $em->persist($imageGallery);
+            $em->flush();
+
+            //$this->get('event_dispatcher')->dispatch(ImageGallery::CREATED, new ImageGalleryEvent($imageGallery));
+
+            return $this->redirectToRoute('image_gallery_show_individual', array('id' => $imageGallery->getId()));
+        }
+        return $this->render('image_gallery/upload_image.html.twig', array(
+            'image_gallery' => $imageGallery,
+            'form' => $form->createView(),
+        ));
+    }
+
     public function editImageAction(Request $request, Image $image)
     {
+        $oldPath = $image->getPath();
         $form = $this->createForm(ImageType::class, $image);
-
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $image->setPath($oldPath);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($image);
             $em->flush();
