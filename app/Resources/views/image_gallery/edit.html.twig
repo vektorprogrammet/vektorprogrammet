@@ -1,0 +1,73 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}{{ image_gallery.title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <h1 class="inline">{{ image_gallery.title }} <a href="#" onclick="toggleForm()" id="toggle-form-link" class="inherit-parent-margins"><i class="fa fa-pencil half-size-text"></i></a></h1>
+        </div>
+        <section class="hide" id="edit-gallery-form">
+            {{ form_start(form) }}
+                <div class="small-12 medium-5 large-5 columns">
+                    {{ form_row(form.title) }}
+                    {{ form_row(form.referenceName) }}
+                </div>
+
+                <div class="small-12 medium-7 large-7 columns">
+                    {{ form_row(form.description) }}
+                </div>
+
+                <div class="small-12 medium-12 large-12 columns">
+                    <button class="success small">Lagre endringer</button>
+                </div>
+            {{ form_end(form) }}
+        </section>
+    </div>
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <hr>
+        </div>
+        <div class="small-12 medium-12 large-12 columns">
+            <a href="{{ path('image_upload', { 'id': image_gallery.id }) }}"><i class="fa fa-plus"></i> Last opp nytt bilde</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <hr>
+        </div>
+
+        <div class="small-12 medium-12 large-12 columns">
+            <ul class="small-block-grid-3 medium-block-grid-4 large-block-grid-4">
+                {% for image in image_gallery.images %}
+                    <li class="image-gallery-grid-element">
+                        <a href="{{ path('image_edit', {'id': image.id}) }}">
+                            <img src="{{ image.path }}" alt="{{ image.description }}">
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var formVisible = false;
+        var editGalleryForm = $('#edit-gallery-form');
+        var toggleFormLink = $('#toggle-form-link')[0];
+        function toggleForm() {
+            if(formVisible) {
+                editGalleryForm.slideUp();
+                toggleFormLink.innerHTML = '<i class="fa fa-pencil half-size-text"></i>';
+            } else {
+                editGalleryForm.slideDown();
+                toggleFormLink.innerHTML = '<i class="fa fa-minus half-size-text"></i>';
+            }
+
+            formVisible = !formVisible;
+        }
+    </script>
+{% endblock %}

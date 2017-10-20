@@ -25,7 +25,7 @@ class ImageGalleryController extends Controller
 
             //$this->get('event_dispatcher')->dispatch(ImageGallery::CREATED, new ImageGalleryEvent($imageGallery));
 
-            return $this->redirectToRoute('image_gallery_show_individual', array('id' => $imageGallery->getId()));
+            return $this->redirectToRoute('image_gallery_edit', array('id' => $imageGallery->getId()));
         }
 
         $imageGalleries = $this->getDoctrine()->getRepository('AppBundle:ImageGallery')->findAll();
@@ -36,10 +36,24 @@ class ImageGalleryController extends Controller
         ));
     }
 
-    public function showIndividualAction(ImageGallery $imageGallery)
+    public function editAction(Request $request, ImageGallery $imageGallery)
     {
-        return $this->render('image_gallery/show_individual.html.twig', array(
+        $form = $this->createForm(ImageGalleryType::class, $imageGallery);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($imageGallery);
+            $em->flush();
+
+            //$this->get('event_dispatcher')->dispatch(ImageGallery::EDITED, new ImageGalleryEvent($imageGallery));
+
+            return $this->redirectToRoute('image_gallery_edit', array('id' => $imageGallery->getId()));
+        }
+
+        return $this->render('image_gallery/edit.html.twig', array(
             'image_gallery' => $imageGallery,
+            'form' => $form->createView(),
         ));
     }
 
@@ -63,7 +77,7 @@ class ImageGalleryController extends Controller
 
             //$this->get('event_dispatcher')->dispatch(ImageGallery::CREATED, new ImageGalleryEvent($imageGallery));
 
-            return $this->redirectToRoute('image_gallery_show_individual', array('id' => $imageGallery->getId()));
+            return $this->redirectToRoute('image_gallery_edit', array('id' => $imageGallery->getId()));
         }
         return $this->render('image_gallery/upload_image.html.twig', array(
             'image_gallery' => $imageGallery,

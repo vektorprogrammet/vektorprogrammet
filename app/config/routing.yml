@@ -945,9 +945,9 @@ image_gallery_create:
   defaults: { _controller: AppBundle:ImageGallery:create }
   methods: [GET, POST]
 
-image_gallery_show_individual:
+image_gallery_edit:
   path: /kontrollpanel/bildegallerier/galleri/{id}
-  defaults: { _controller: AppBundle:ImageGallery:showIndividual }
+  defaults: { _controller: AppBundle:ImageGallery:edit }
   methods: [GET, POST]
   requirements:
     id: \d+
