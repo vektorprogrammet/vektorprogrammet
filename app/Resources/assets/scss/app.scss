@@ -972,3 +972,13 @@ li.image-gallery-grid-element {
 .inherit-parent-margins {
   margin:inherit;
 }
+
+.upload-gallery-image-hack {
+  position:absolute;
+  left: 98px;
+  top:28px;
+  width:1px !important;
+  outline:none;
+  opacity:0;
+  pointer-events:none;
+}

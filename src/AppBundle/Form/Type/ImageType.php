@@ -18,9 +18,9 @@ class ImageType extends AbstractType
                 ))
             ->add('path', FileType::class, array(
                 'label' => 'Last opp bilde',
-                'required' => false,
+                'required' => $options['upload_required'],
                 'data_class' => null,
-                'attr' => array('class' => 'show-for-sr'),
+                'attr' => array('class' => 'upload-gallery-image-hack'),
                 'label_attr' => array('class' => 'button'),
         ));
     }
@@ -29,6 +29,7 @@ class ImageType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Image',
+            'upload_required' => true,
         ));
     }
 

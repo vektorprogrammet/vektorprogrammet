@@ -88,7 +88,7 @@ class ImageGalleryController extends Controller
     public function editImageAction(Request $request, Image $image)
     {
         $oldPath = $image->getPath();
-        $form = $this->createForm(ImageType::class, $image);
+        $form = $this->createForm(ImageType::class, $image, array('upload_required' => false));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
