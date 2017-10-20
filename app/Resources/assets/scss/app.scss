@@ -982,3 +982,24 @@ li.image-gallery-grid-element {
   opacity:0;
   pointer-events:none;
 }
+
+.show-on-hover {
+  transition:0.1s;
+  opacity:0;
+  &:hover {
+    opacity:1;
+  }
+}
+
+button.secretly-not-a-button {
+  background:none;
+  outline:none;
+  height:100%;
+  padding:inherit;
+  position:absolute;
+  font-size:inherit;
+}
+
+.position-relative {
+  position:relative;
+}
