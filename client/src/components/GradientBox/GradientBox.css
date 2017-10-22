@@ -1,37 +1,61 @@
-.gradient-box{
+.gradient-box {
     height: 500px;
     width: 100%;
 
-    padding: 100px 200px 100px 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    background: rgba(179,223,235,1);
-    background: -moz-radial-gradient(center, ellipse cover, rgba(179,223,235,1) 0%, rgba(110,206,235,1) 100%);
-    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(179,223,235,1)), color-stop(100%, rgba(110,206,235,1)));
-    background: -webkit-radial-gradient(center, ellipse cover, rgba(179,223,235,1) 0%, rgba(110,206,235,1) 100%);
-    background: -o-radial-gradient(center, ellipse cover, rgba(179,223,235,1) 0%, rgba(110,206,235,1) 100%);
-    background: -ms-radial-gradient(center, ellipse cover, rgba(179,223,235,1) 0%, rgba(110,206,235,1) 100%);
-    background: radial-gradient(ellipse at center, rgba(179,223,235,1) 0%, rgba(110,206,235,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3dfeb', endColorstr='#6eceeb', GradientType=1 );
+    background: rgba(179, 223, 235, 1);
+    background: -moz-radial-gradient(center, ellipse cover, rgba(179, 223, 235, 1) 0%, rgba(110, 206, 235, 1) 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(179, 223, 235, 1)), color-stop(100%, rgba(110, 206, 235, 1)));
+    background: -webkit-radial-gradient(center, ellipse cover, rgba(179, 223, 235, 1) 0%, rgba(110, 206, 235, 1) 100%);
+    background: -o-radial-gradient(center, ellipse cover, rgba(179, 223, 235, 1) 0%, rgba(110, 206, 235, 1) 100%);
+    background: -ms-radial-gradient(center, ellipse cover, rgba(179, 223, 235, 1) 0%, rgba(110, 206, 235, 1) 100%);
+    background: radial-gradient(ellipse at center, rgba(179, 223, 235, 1) 0%, rgba(110, 206, 235, 1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b3dfeb', endColorstr='#6eceeb', GradientType=1);
 }
 
 h1.gradientBoxText, h3.gradientBoxText {
-    color:#fff;
-    margin:0;
-    padding:0;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+h1.gradientBoxText {
+    padding-bottom: 3%;
 }
 
 h3 {
-    font-weight:normal;
+    font-weight: normal;
 }
 
-Grid {
-    height: 500px;
+.team-header-text {
+    width: 500px;
+    margin-left: -20%;
 }
 
-.team-header-text{
-    width:500px;
-}
+@media screen and (max-width: 700px) {
 
-.gradient-box-grid{
-    height:100%;
+    .gradient-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 400px;
+    }
+
+    .team-header-text {
+        width: 80%;
+        margin: 0;
+    }
+
+    h1.gradientBoxText {
+        font-size: 145%;
+
+    }
+
+    h3.gradientBoxText {
+        font-size: 90%;
+    }
+
 }
