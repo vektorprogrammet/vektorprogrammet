@@ -128,25 +128,4 @@ class DepartmentController extends FOSRestController implements ClassResourceInt
 
         return $departments;
     }
-
-
-    /**
-     * Gets teams belonging to specified department
-     *
-     * @return mixed
-     *
-     * @ApiDoc(
-     *     section="Team",
-     *     statusCodes={
-     *          200 = "Returned when successful",
-     *          404 = "Return when not found",
-     *          500 = "Internal server error"
-     *     }
-     * )
-     */
-    public function getTeamsAction($id) {
-        $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($id);
-        return $this->getDoctrine()->getRepository('AppBundle:Team')->findByDepartment($department);
-    }
-
 }
