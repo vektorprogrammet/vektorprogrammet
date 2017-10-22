@@ -1,4 +1,4 @@
-.logo{
+.logo {
     display: block;
     margin: 0 auto;
     max-height: 100%;
@@ -6,14 +6,18 @@
     height: 85px;
 }
 
+.ui.secondary.menu.main-navigation {
+    margin: 10px 0;
+}
+
 .main-navigation {
-    margin: 4px 0 8px;
+    display: flex;
+    justify-content: center;
 }
 
 .main-navigation a {
     font-size: 18px;
     color: #4A5155;
-    margin-right: 30px;
 }
 
 .main-navigation a:active {
@@ -21,5 +25,5 @@
 }
 
 .main-navigation a:active, .main-navigation a:hover {
-  color: #0071CD;
+    color: #0071CD;
 }
