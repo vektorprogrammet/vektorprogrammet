@@ -43,7 +43,12 @@ class AboutUsPage extends Component {
             {question: "Finner du ikke svar på det du lurer på?", answer: "Gå til 'Opptak & kontakt' i menyen og velg din region. Der finnes det et kontaktskjema nederst som du kan fylle ut, så skal vi svare så raskt vi kan !"},
 
         ];
-
+        const contactSchoolInfo = [
+            {school: "NTNU", place: "Trondheim - NTNU", email: "NTNU@gmail.com"},
+            {school: "HiST", place: "Trondheim - HiST", email: "HIST@gmail.com"},
+            {school: "NMBU", place: "Ås", email: "NMBU@gmail.com"},
+            {school: "UiO", place: "Oslo", email: "UiO@gmail.com"}
+         ];
         return (
             <div>
                 {/*Move to own css-file*/}
@@ -62,7 +67,7 @@ class AboutUsPage extends Component {
                             </Grid.Row>
                             <Grid.Row>
                                 <div id={"kontakt-info"} className="contact-info">
-                                    <ContactInformation/>
+                                    <ContactInformation contactInfo={contactSchoolInfo}/>
                                 </div>
                             </Grid.Row>
                         </Grid>
