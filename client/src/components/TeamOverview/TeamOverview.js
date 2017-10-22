@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Icon, Header, Menu, Segment, Button, Card, Image, List, Label, Tab} from 'semantic-ui-react';
+import {Header, Segment, Card, Tab} from 'semantic-ui-react';
 import './TeamOverview.css';
 import {TeamCard} from '../TeamCard';
 
