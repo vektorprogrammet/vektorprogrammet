@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {Icon, Header, Menu, Segment, Button, Card, Image, List, Label, Tab} from 'semantic-ui-react';
 import './TeamOverview.css';
-import TeamCard from './TeamCard';
-import {DepartmentApi} from '../api/DepartmentApi.js';
+import TeamCard from '../TeamCard';
 
 export default class TeamOverview extends Component {
 
