@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import TestimonialRow from '../components/TestimonialRow';
-import TeamOverview from '../components/TeamOverview'
+import TeamOverviewContainer from '../components/TeamOverview/TeamOverviewContainer'
 import {Grid} from 'semantic-ui-react';
 import GradientBox from '../components/GradientBox';
 import './TeamPage.css';
@@ -25,7 +25,7 @@ class TeamPage extends Component {
                 </Grid>
             </GradientBox>
             <TestimonialRow/>
-            <TeamOverview />
+            <TeamOverviewContainer />
         </div>
     )
   }

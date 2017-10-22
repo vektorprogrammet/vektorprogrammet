@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Icon, Header, Menu, Segment, Button, Card, Image, List, Label, Tab} from 'semantic-ui-react';
 import './TeamOverview.css';
-import TeamCard from '../TeamCard';
+import {TeamCard} from '../TeamCard';
 
 export default class TeamOverview extends Component {
 
@@ -51,7 +51,7 @@ export default class TeamOverview extends Component {
                     attached: false,
                     secondary: true,
                     pointing: false
-                }} panes={this.getPanes()}/>
+                }} panes={this.getPanes(this.props.departments)}/>
             </Segment>
         );
     }
