@@ -24,7 +24,7 @@ class ImageGallery
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Image", inversedBy="galleries")
+     * @ORM\OneToMany(targetEntity="Image", mappedBy="gallery")
      */
     private $images;
 
@@ -98,7 +98,7 @@ class ImageGallery
      */
     public function addImage($image)
     {
-        $this->images->add($image);
+        $image->setGallery($this);
 
         return $this;
     }

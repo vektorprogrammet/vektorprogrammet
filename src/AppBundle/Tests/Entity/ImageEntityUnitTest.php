@@ -8,13 +8,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class ImageEntityUnitTest extends \PHPUnit_Framework_TestCase
 {
-    public function testSetGalleries()
+    public function testSetGallery()
     {
-        $imageGalleries = new ArrayCollection([new ImageGallery(), new ImageGallery()]);
+        $imageGallery = new ImageGallery();
         $image = new Image();
-        $image->setGalleries($imageGalleries);
+        $image->setGallery($imageGallery);
 
-        $this->assertEquals($imageGalleries, $image->getGalleries());
+        $this->assertEquals($imageGallery, $image->getGallery());
     }
 
     public function testSetPath()

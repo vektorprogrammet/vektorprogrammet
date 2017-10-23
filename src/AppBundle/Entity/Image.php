@@ -40,29 +40,27 @@ class Image
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="ImageGallery", mappedBy="images")
+     * @var ImageGallery
+     *
+     * @ORM\ManyToOne(targetEntity="ImageGallery", inversedBy="images")
+     * @ORM\JoinColumn(name="gallery_id", referencedColumnName="id")
      */
-    private $galleries;
+    private $gallery;
 
-    public function __construct()
+    /**
+     * @return ImageGallery
+     */
+    public function getGallery()
     {
-        $this->galleries = new ArrayCollection();
+        return $this->gallery;
     }
 
     /**
-     * @return ArrayCollection
+     * @param ImageGallery
      */
-    public function getGalleries()
+    public function setGallery($gallery)
     {
-        return $this->galleries;
-    }
-
-    /**
-     * @param ArrayCollection
-     */
-    public function setGalleries($galleries)
-    {
-        $this->galleries = $galleries;
+        $this->gallery = $gallery;
     }
 
     /**

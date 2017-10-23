@@ -23,7 +23,7 @@ class ImageGalleryEntityUnitTest extends \PHPUnit_Framework_TestCase
         $imageGallery = new ImageGallery();
         $imageGallery->addImage($image);
 
-        $this->assertEquals($image, $imageGallery->getImages()[0]);
+        $this->assertEquals($image->getGallery(), $imageGallery);
     }
 
     public function testSetTitle()
