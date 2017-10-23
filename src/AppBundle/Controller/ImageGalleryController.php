@@ -108,4 +108,13 @@ class ImageGalleryController extends Controller
             'image' => $image,
         ));
     }
+
+    public function deleteImageAction(Request $request, Image $image)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($image);
+        $em->flush();
+
+        return $this->redirectToRoute('image_gallery_create');
+    }
 }

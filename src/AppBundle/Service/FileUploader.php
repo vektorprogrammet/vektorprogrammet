@@ -140,6 +140,17 @@ class FileUploader
         $this->deleteFile("$this->receiptFolder/$fileName");
     }
 
+    public function deleteGalleryImage(string $path)
+    {
+        if (empty($path)) {
+            return;
+        }
+
+        $fileName = $this->getFileNameFromPath($path);
+
+        $this->deleteFile("$this->galleryImageFolder/$fileName");
+    }
+
     public function deleteFile(string $path)
     {
         if (file_exists($path)) {

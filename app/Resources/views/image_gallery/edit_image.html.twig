@@ -23,8 +23,14 @@
                 <div class="hide">
                     {{ form_row(form.path) }}
                 </div>
-                <button class="button success">Lagre</button>
+                <button class="button success"><i class="fa fa-pencil"></i> Endre beskrivelse</button>
             {{ form_end(form) }}
+            <hr>
+            <form method="POST"
+                  onsubmit="return confirm('Vil du virkelig slette dette bildet?')"
+                  action="{{ path('image_delete', {'id': image.id}) }}">
+                    <button class="alert small"><i class="fa fa-trash"></i> Slett dette bildet</button>
+            </form>
         </div>
     </div>
 

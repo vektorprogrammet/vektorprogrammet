@@ -6,7 +6,7 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
             <form method="POST"
-                  onsubmit="return confirm('Vil du virkelig slette bildegalleriet {{ image_gallery.title }}? Hvis bildegalleriet brukes av funksjonalitet på nettsiden kan sletting føre til at dette slutter å fungere. Er du HELT sikker?')"
+                  onsubmit="return confirm('Vil du virkelig slette bildegalleriet {{ image_gallery.title }}? Hvis bildegalleriet brukes av funksjonalitet på nettsiden kan sletting føre til at dette slutter å fungere. Alle tilhørende bilder vil bli slettet. Er du HELT sikker?')"
                   action="">
                 <h1 class="inline position-relative">{{ image_gallery.title }}
                     <a onclick="toggleForm()" id="toggle-form-link" class="inherit-parent-margins"><i class="fa fa-pencil half-size-text"></i></a>&nbsp

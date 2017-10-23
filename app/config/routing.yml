@@ -966,6 +966,13 @@ image_upload:
   requirements:
     id: \d+
 
+image_delete:
+  path: /kontrollpanel/bildegallerier/galleri/bilde/slett/{id}
+  defaults: { _controller: AppBundle:ImageGallery:deleteImage }
+  methods: [POST]
+  requirements:
+    id: \d+
+
 ##########################################
 #              Interview                 #
 ##########################################

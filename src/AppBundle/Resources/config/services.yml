@@ -141,6 +141,12 @@ services:
     tags:
         - { name: kernel.event_subscriber }
 
+  app.image_subscriber:
+    class: AppBundle\EventSubscriber\ImageSubscriber
+    arguments: ['@app.file_uploader']
+    tags:
+        - { name: doctrine.event_subscriber }
+
   app.file_uploader:
       class: AppBundle\Service\FileUploader
       arguments: ['%signature_images%', '%logo_images%', '%receipt_images%', '%gallery_images%']
