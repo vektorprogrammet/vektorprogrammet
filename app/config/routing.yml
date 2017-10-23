@@ -952,6 +952,13 @@ image_gallery_edit:
   requirements:
     id: \d+
 
+image_gallery_delete:
+  path: /kontrollpanel/bildegallerier/galleri/slett/{id}
+  defaults: { _controller: AppBundle:ImageGallery:delete }
+  methods: [POST]
+  requirements:
+    id: \d+
+
 image_edit:
   path: /kontrollpanel/bildegallerier/rediger/{id}
   defaults: { _controller: AppBundle:ImageGallery:editImage }
@@ -967,7 +974,7 @@ image_upload:
     id: \d+
 
 image_delete:
-  path: /kontrollpanel/bildegallerier/galleri/bilde/slett/{id}
+  path: /kontrollpanel/bildegallerier/bilde/slett/{id}
   defaults: { _controller: AppBundle:ImageGallery:deleteImage }
   methods: [POST]
   requirements:

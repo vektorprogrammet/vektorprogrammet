@@ -24,7 +24,7 @@ class ImageGallery
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="Image", mappedBy="gallery")
+     * @ORM\OneToMany(targetEntity="Image", mappedBy="gallery", cascade={"remove"})
      */
     private $images;
 

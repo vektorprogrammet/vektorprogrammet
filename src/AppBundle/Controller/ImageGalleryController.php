@@ -85,6 +85,15 @@ class ImageGalleryController extends Controller
         ));
     }
 
+    public function deleteAction(ImageGallery $imageGallery)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($imageGallery);
+        $em->flush();
+
+        return $this->redirectToRoute('image_gallery_create');
+    }
+
     public function editImageAction(Request $request, Image $image)
     {
         $oldPath = $image->getPath();
@@ -109,7 +118,7 @@ class ImageGalleryController extends Controller
         ));
     }
 
-    public function deleteImageAction(Request $request, Image $image)
+    public function deleteImageAction(Image $image)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($image);
