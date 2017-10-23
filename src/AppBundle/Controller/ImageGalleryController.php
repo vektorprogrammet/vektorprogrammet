@@ -120,10 +120,12 @@ class ImageGalleryController extends Controller
 
     public function deleteImageAction(Image $image)
     {
+        $imageGallery = $image->getGallery();
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($image);
         $em->flush();
 
-        return $this->redirectToRoute('image_gallery_create');
+        return $this->redirectToRoute('image_gallery_edit', array('id' => $imageGallery->getId()));
     }
 }
