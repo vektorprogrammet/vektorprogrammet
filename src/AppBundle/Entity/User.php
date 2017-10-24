@@ -60,8 +60,9 @@ class User implements AdvancedUserInterface, \Serializable
     private $fieldOfStudy;
 
     /**
-     * @ORM\Column(name="gender", type="boolean", nullable=true)
+     * @ORM\Column(name="gender", type="boolean")
      * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
+     * @JMS\Expose
      */
     private $gender;
 

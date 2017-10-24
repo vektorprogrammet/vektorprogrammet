@@ -22,6 +22,7 @@ class ApplicationForm extends Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleDepartmentChange = this.handleDepartmentChange.bind(this);
+        this.handleFieldOfStudyChange = this.handleFieldOfStudyChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.showConfirmation = this.showConfirmation.bind(this);
         this.hideConfirmation = this.hideConfirmation.bind(this);
@@ -30,14 +31,25 @@ class ApplicationForm extends Component {
 
     handleChange(event){
         this.setState({[event.target.name]: event.target.value});
-        console.log(this.state['application[user][email]']);
+        console.log(event.target.value);
     }
 
     handleDepartmentChange(event){
         const id = event.target.value;
         const department = this.state.departments.find(department => department.id == id);
         const fieldOfStudies = department.field_of_study;
-        this.setState({fieldOfStudies});
+        this.setState({
+            department : department,
+            fieldOfStudies : fieldOfStudies
+        });
+    }
+
+    handleFieldOfStudyChange(event){
+        const id = event.target.value;
+        const fieldOfStudy = this.state.fieldOfStudies.find(fieldOfStudy => fieldOfStudy.id == id);
+        this.setState({
+            [event.target.name] : fieldOfStudy
+        })
     }
 
     handleSubmit(){
@@ -73,12 +85,12 @@ class ApplicationForm extends Component {
 
 
     render() {
-
         const departments = this.state.departments.map(department =>{
             return (
                 <option key={department.id} value={department.id} >
                     {department.short_name}
                 </option>
+
             );
         });
 
@@ -103,14 +115,14 @@ class ApplicationForm extends Component {
 
                     <Form.Group widths='equal'>
                         <Form.Field><input name="application[user][phone]" placeholder='Telefonnummer' value={this.state['application[user][phone]']} onChange={this.handleChange} type="number" required/></Form.Field>
-                        <Form.Field><input name="application[user][email]" placeholder='E-post' value={this.state.email} onChange={this.handleChange} required/></Form.Field>
+                        <Form.Field><input name="application[user][email]" placeholder='E-post' value={this.state['application[user][email]']} onChange={this.handleChange} required/></Form.Field>
                     </Form.Group>
 
                     <Form.Group widths='equal'>
                         <Form.Field><select name="department" label='Avdeling' value={this.state.department} onChange={this.handleDepartmentChange}>
                             {departments}
                         </select></Form.Field>
-                        <Form.Field><select name="application[user][fieldOfStudy]" label='Linje' value={this.state.fieldOfStudy} onChange={this.handleChange}>
+                        <Form.Field><select name="application[user][fieldOfStudy]" label='Linje' value={this.state['application[user][fieldOfStudy]']} onChange={this.handleFieldOfStudyChange}>
                             {fieldOfStudy}
                         </select></Form.Field>
 

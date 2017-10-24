@@ -88,6 +88,11 @@ class ApplicationController extends FOSRestController implements ClassResourceIn
         $user->setPhone($request->request->get('application[user][phone]'));
         $user->setFieldOfStudy($request->request->get('application[user][fieldOfStudy]'));
 
+        //Dummy data
+        $user->setGender(1);
+        $application->setYearOfStudy(1);
+        //
+
         $application->setUser($user);
 
         $em = $this->getDoctrine()->getManager();
