@@ -10,7 +10,6 @@ class ContactInfo extends Component {
             </li>
         );
         return (
-            /*TODO:Make looping Functionality that goes through an array with sponsors*/
             <section>
                 <ul className="unordered-list">
                     <li className="list-container">
