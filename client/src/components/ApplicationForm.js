@@ -10,6 +10,7 @@ class ApplicationForm extends Component {
     constructor(props){
         super(props);
         this.state = {
+            departments: [],
             department: '',
             confirmationBoxVisible: false,
             fieldOfStudies : [],
@@ -20,18 +21,27 @@ class ApplicationForm extends Component {
             'application[user][email]' : '',
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleDepartmentChange = this.handleDepartmentChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.showConfirmation = this.showConfirmation.bind(this);
         this.hideConfirmation = this.hideConfirmation.bind(this);
         this.getClosestDepartment = this.getClosestDepartment.bind(this);
     }
 
-    handleChange(application){
-        this.setState({[application.target.name]: application.target.value});
+    handleChange(event){
+        this.setState({[event.target.name]: event.target.value});
+        console.log(this.state['application[user][email]']);
+    }
+
+    handleDepartmentChange(event){
+        const id = event.target.value;
+        const department = this.state.departments.find(department => department.id == id);
+        const fieldOfStudies = department.field_of_study;
+        this.setState({fieldOfStudies});
     }
 
     handleSubmit(){
-        const { department, confirmationBoxVisible, fieldOfStudies, ...newState } = this.state; // Fjerner departments og...
+        const { department, departments, confirmationBoxVisible, fieldOfStudies, ...newState } = this.state; // Fjerner departments og...
         ApplicationApi.post(newState);
         this.showConfirmation();
         // TODO: sende mail
@@ -54,31 +64,52 @@ class ApplicationForm extends Component {
         });
     }
 
+    async componentDidMount(){
+        const departments = await DepartmentApi.getAll();
+        this.setState({
+            departments
+        });
+    }
+
 
     render() {
-        const fieldOfStudy = this.state.fieldOfStudies.map(fieldOfStudy =>{ // TODO: legg til departments
+
+        const departments = this.state.departments.map(department =>{
             return (
-                <option key={fieldOfStudy.id} value={fieldOfStudy} >
+                <option key={department.id} value={department.id} >
+                    {department.short_name}
+                </option>
+            );
+        });
+
+        const fieldOfStudy = this.state.fieldOfStudies.map(fieldOfStudy =>{
+            return (
+                <option key={fieldOfStudy.id} value={fieldOfStudy.id} >
                     {fieldOfStudy.name}
                 </option>
             );
         });
 
+
         return (
             <div>
                 <ConfirmationBox show={this.state.confirmationBoxVisible} onClose={this.hideConfirmation}/>
+                <Geolocation closestDepartment={ this.getClosestDepartment } />
                 <Form onSubmit={this.handleSubmit} >
                     <Form.Group widths='equal'>
-                        <Form.Field><input name="application[user][firstName]" placeholder="Fornavn" value={this.state.firstName} onChange={this.handleChange} required/></Form.Field>
-                        <Form.Field><input name="application[user][lastName]" placeholder='Etternavn' value={this.state.lastName} onChange={this.handleChange} required/></Form.Field>
+                        <Form.Field><input name="application[user][firstName]" placeholder="Fornavn" value={this.state['application[user][firstName']} onChange={this.handleChange} required/></Form.Field>
+                        <Form.Field><input name="application[user][lastName]" placeholder='Etternavn' value={this.state['application[user]lastName']} onChange={this.handleChange} required/></Form.Field>
                     </Form.Group>
 
                     <Form.Group widths='equal'>
-                        <Form.Field><input name="application[user][phone]" placeholder='Telefonnummer' value={this.state.phone} onChange={this.handleChange} type="number" required/></Form.Field>
+                        <Form.Field><input name="application[user][phone]" placeholder='Telefonnummer' value={this.state['application[user][phone]']} onChange={this.handleChange} type="number" required/></Form.Field>
                         <Form.Field><input name="application[user][email]" placeholder='E-post' value={this.state.email} onChange={this.handleChange} required/></Form.Field>
                     </Form.Group>
 
                     <Form.Group widths='equal'>
+                        <Form.Field><select name="department" label='Avdeling' value={this.state.department} onChange={this.handleDepartmentChange}>
+                            {departments}
+                        </select></Form.Field>
                         <Form.Field><select name="application[user][fieldOfStudy]" label='Linje' value={this.state.fieldOfStudy} onChange={this.handleChange}>
                             {fieldOfStudy}
                         </select></Form.Field>
@@ -87,8 +118,6 @@ class ApplicationForm extends Component {
 
                     <Form.Field><Button id='submitBtn'>Send inn</Button></Form.Field>
                 </Form>
-
-                <Geolocation closestDepartment={ this.getClosestDepartment } />
 
             </div>
         )

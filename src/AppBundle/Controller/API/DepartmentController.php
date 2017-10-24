@@ -60,7 +60,7 @@ class DepartmentController extends FOSRestController implements ClassResourceInt
     }
 
     /**
-     * Gets Department by shortName
+     * Gets all Departments
      *
      * @return mixed
      *
