@@ -53,7 +53,7 @@ class ApplicationForm extends Component {
     }
 
     handleSubmit(){
-        const { department, departments, confirmationBoxVisible, fieldOfStudies, ...newState } = this.state; // Fjerner departments og...
+        const { department, departments, confirmationBoxVisible, fieldOfStudies, ...newState } = this.state; // TODO: Lage objekt
         ApplicationApi.post(newState);
         this.showConfirmation();
         // TODO: sende mail
