@@ -11,8 +11,9 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
             <ul class="clean-list">
-                <li>Kontonummer: {{ user.accountNumber }}</li>
-                <li>Email: <a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
+                <li><b>Kontonummer:</b> {{ user.accountNumber }}</li>
+                <li><b>Email:</b> <a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
+                <li><b>Sum ubehandlet:</b> {{ user.totalPendingReceiptSum|number_format(2, ',', ' ') }} kr</li>
             </ul>
         </div>
     </div>

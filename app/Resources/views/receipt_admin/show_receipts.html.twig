@@ -34,6 +34,7 @@
                 <th> Navn</th>
                 <th> Email</th>
                 <th> Kontonummer</th>
+                <th> Sum ubehandlet</th>
                 <th></th>
             </tr>
 
@@ -46,9 +47,10 @@
 
                     <td> {{ user.email }}</td>
                     <td> {{ user.accountNumber }}</td>
+                    <td> {{ user.totalPendingReceiptSum|number_format(2, ',', ' ') }} kr</td>
                     <td>
                         {% if user.hasPendingReceipts %}
-                            <div class="number-of-pending-receipts-indicator has-tip" data-tooltip aria-haspopup="true" title="{{ user.numberOfPendingReceipts }} utlegg under behandling">
+                            <div class="number-of-pending-receipts-indicator has-tip" data-tooltip aria-haspopup="true" title="{{ user.numberOfPendingReceipts }} {{ user.numberOfPendingReceipts == 1 ? 'ubehandlet' : 'ubehandlede' }} utlegg">
                                 {{ user.numberOfPendingReceipts }}</div>
                         {% endif %}
                     </td>
