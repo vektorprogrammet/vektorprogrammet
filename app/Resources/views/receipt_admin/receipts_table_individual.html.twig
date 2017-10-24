@@ -7,7 +7,7 @@
         <th> Beskrivelse</th>
         <th> Sum</th>
         <th> Kvittering</th>
-        <th> Status (klikk for å endre)</th>
+        <th> Status {% if is_granted_team_leader() %}(klikk for å endre){% endif %}</th>
         <th colspan="2"></th>
     </tr>
 
@@ -31,16 +31,22 @@
                 </div>
             </td>
 
-            {% if is_granted_team_leader() %}
-                    <td>
-                    {% if receipt.status == 'pending' %}
-                        <a class="text-warning" href="#" data-reveal-id="status-{{ receipt.id }}">Venter behandling...</a>
-                    {% elseif receipt.status == 'refunded' %}
-                        <a class="text-success" href="#" data-reveal-id="status-{{ receipt.id }}">Refundert</a>
-                    {% elseif receipt.status == 'rejected' %}
-                        <a class="text-alert" href="#" data-reveal-id="status-{{ receipt.id }}">Refusjon avvist</a>
+                <td>
+                    {% if is_granted_team_leader() %}
+                        <a href="" data-reveal-id="status-{{ receipt.id }}">
+                    {% endif %}
+                        {% if receipt.status == 'pending' %}
+                            <span class="text-warning">Venter behandling...</span>
+                        {% elseif receipt.status == 'refunded' %}
+                            <span class="text-success">Refundert</span>
+                        {% elseif receipt.status == 'rejected' %}
+                            <span class="text-alert">Refusjon avvist</span>
+                        {% endif %}
+                    {% if is_granted_team_leader() %}
+                        </a>
                     {% endif %}
 
+                    {% if is_granted_team_leader() %}
                         <div id="status-{{ receipt.id }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle"
                              aria-hidden="true" role="dialog">
                             <h2>Endre status</h2>
@@ -67,16 +73,14 @@
                             </form>
                             <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         </div>
-                    </td>
+                    {% endif %}
+                </td>
 
                 <td><a href="{{ path('receipt_admin_edit', { 'receipt': receipt.id }) }}" class="button tiny">
                         <i class="fa fa-pencil"></i>
                         Rediger
                     </a></td>
                 <td>{% include 'receipt/delete_receipt_button.html.twig' %}</td>
-            {% else %}
-                <td colspan="3"></td>
-            {% endif %}
         </tr>
     {% endfor %}
     </tbody>
