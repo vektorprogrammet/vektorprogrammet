@@ -75,12 +75,15 @@
                         </div>
                     {% endif %}
                 </td>
-
+            {% if is_granted_team_leader() %}
                 <td><a href="{{ path('receipt_admin_edit', { 'receipt': receipt.id }) }}" class="button tiny">
                         <i class="fa fa-pencil"></i>
                         Rediger
                     </a></td>
                 <td>{% include 'receipt/delete_receipt_button.html.twig' %}</td>
+            {% else %}
+                <td colspan="2"></td>
+            {% endif %}
         </tr>
     {% endfor %}
     </tbody>
