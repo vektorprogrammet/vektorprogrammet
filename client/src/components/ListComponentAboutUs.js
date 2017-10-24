@@ -4,7 +4,8 @@ import {List, Button} from'semantic-ui-react';
 class ListComponentAboutUs extends Component{
     render() {
         return (
-            <List size={"massive"}>
+            <div>
+                <List size={"massive"}>
                 <List.Item icon='question circle' content={<a href={"#FAQ"}>FAQ</a>} />
                 <List.Item icon='envelope' content={<a href={"#kontakt-info"}>Kontaktinformasjon</a>} />
                 <List.Item
@@ -14,6 +15,7 @@ class ListComponentAboutUs extends Component{
                     }
                 />
             </List>
+            </div>
         );
     }
 }

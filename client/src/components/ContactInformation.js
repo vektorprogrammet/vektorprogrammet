@@ -1,28 +1,25 @@
-import React from 'react';
 import './ContactInformation.css';
+import React, {Component} from 'react';
 
-export const ContactInfo = () => {
-    return (
-        <section>
-            <ul className="unordered-list">
-                <li className="list-container">
-                    Kontakt:
-                    <li className="list-ntnu">
-                        <a href="mailto:NTNU@gmail.com">Trondheim - NTNU</a>
+{/*TODO: Fix styling, didn't work after implementing map function*/}
+class ContactInfo extends Component {
+    render() {
+        const contactInfo = this.props.contactInfo.map((item, index) =>
+            <li key={index} className={'list-'+item.school}>
+                <a href={'mailto:'+item.email}>{item.place}</a>
+            </li>
+        );
+        return (
+            <section>
+                <ul className="unordered-list">
+                    <li className="list-container">
+                        Kontakt:
+                        {contactInfo}
                     </li>
-                    <li className="list-hist">
-                        <a href="mailto:HIST@gmail.com">Trondheim - HIST</a>
-                    </li>
-                    <li className="list-nmbu">
-                        <a href="mailto:NMBU@gmail.com">Ås</a>
-                    </li>
-                    <li  className="list-uio">
-                        <a href="mailto:UiO@gmail.com">Oslo</a>
-                    </li>
-                </li>
-            </ul>
-        </section>
-    );
+                </ul>
+            </section>
+        );
+    }
 };
 
 export default ContactInfo;

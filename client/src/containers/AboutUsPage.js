@@ -43,33 +43,43 @@ class AboutUsPage extends Component {
             {question: "Finner du ikke svar på det du lurer på?", answer: "Gå til 'Opptak & kontakt' i menyen og velg din region. Der finnes det et kontaktskjema nederst som du kan fylle ut, så skal vi svare så raskt vi kan !"},
 
         ];
-
+        const contactSchoolInfo = [
+            {school: "NTNU", place: "Trondheim - NTNU", email: "NTNU@gmail.com"},
+            {school: "HiST", place: "Trondheim - HiST", email: "HIST@gmail.com"},
+            {school: "NMBU", place: "Ås", email: "NMBU@gmail.com"},
+            {school: "UiO", place: "Oslo", email: "UiO@gmail.com"}
+         ];
         return (
-            <Grid columns={3}>
-                <ContactUsPopUp show={this.state.showModal} onClose={this.handleModal}/>
-                <Grid.Column width={2}>
-                </Grid.Column>
-                <Grid.Column width={10}>
-                    <Grid>
-                        <MainTextAboutUs/>
-                        <Divider fitted/>
-                        <Grid.Row>
-                            <div id={"FAQ"} className="aboutUs-FAQ">
-                                <Faq questionsAndAnswers={faqQuestionsAndAnswers}/>
-                            </div>
-                        </Grid.Row>
-                        <Divider fitted/>
-                        <Grid.Row>
-                            <div id={"kontakt-info"} className="contact-info">
-                                <ContactInformation/>
-                            </div>
-                        </Grid.Row>
-                    </Grid>
-                </Grid.Column>
-                <Grid.Column width={4}>
-                    <ListComponentAboutUs onClick={this.handleModal} />
-                </Grid.Column>
-            </Grid>
+            <div>
+                {/*Move to own css-file*/}
+                <section style={{maxWidth: '100%', width: 3000, marginLeft: 'auto', marginRight: 'auto'}}>
+                <Grid columns={3} stackable={true}>
+                    <ContactUsPopUp show={this.state.showModal} onClose={this.handleModal}/>
+                    <Grid.Column width={2}>
+                    </Grid.Column>
+                    <Grid.Column width={9}>
+                        <Grid stackable={true}>
+                            <MainTextAboutUs/>
+                            <Grid.Row>
+                                <div id={"FAQ"} className="aboutUs-FAQ">
+                                    <Faq questionsAndAnswers={faqQuestionsAndAnswers}/>
+                                </div>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <div id={"kontakt-info"} className="contact-info">
+                                    <ContactInformation contactInfo={contactSchoolInfo}/>
+                                </div>
+                            </Grid.Row>
+                        </Grid>
+                    </Grid.Column>
+                    <Grid.Column width={4}>
+                        <div style={{alignContent: 'center', padding: '0 15px'}}>
+                            <ListComponentAboutUs onClick={this.handleModal} />
+                        </div>
+                    </Grid.Column>
+                </Grid>
+                </section>
+            </div>
         )
     }
 }

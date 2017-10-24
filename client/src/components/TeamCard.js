@@ -1,17 +1,16 @@
 import React, {Component} from 'react';
 import {Icon, Card, Image} from 'semantic-ui-react';
 
-export default class TeamCard extends Component {
-    render() {
-        const card = (
+export const TeamCard = props => {
+    return (
             <Card>
-                <Image className="teamImage" src={this.props.imagePath}/>
+                <Image className="teamImage" src={props.imagePath}/>
                 <Card.Content>
-                    <Card.Header>{this.props.name}</Card.Header>
-                    <Card.Meta className="teamCardMeta">{this.props.email}</Card.Meta>
-                    <Card.Description className="teamCardDesc">{this.props.shortDesc}</Card.Description>
+                    <Card.Header>{props.name}</Card.Header>
+                    <Card.Meta className="teamCardMeta">{props.email}</Card.Meta>
+                    <Card.Description className="teamCardDesc">{props.shortDesc}</Card.Description>
                 </Card.Content>
-                { this.props.accept_application &&
+                { props.accept_application &&
                 <Card.Content extra className="teamCardExtra">
                     <a>
                         <Icon color="green" name='star'/>
@@ -21,7 +20,4 @@ export default class TeamCard extends Component {
                 }
             </Card>
         );
-
-        return card;
-    }
 }

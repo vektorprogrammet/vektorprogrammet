@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
-import './FaqAnswer.css';
+import './Faq.css';
 
 class FaqAnswer extends Component {
     render() {
         return (
-            <div className="faqAnswer">
-                <p>{this.props.faqAnswer}</p>
-            </div>
+            <p className="faqAnswer">
+                {this.props.faqAnswer}
+            </p>
+
         );
     }
 }
