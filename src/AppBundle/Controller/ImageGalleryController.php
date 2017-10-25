@@ -8,6 +8,7 @@ use AppBundle\Form\Type\ImageGalleryType;
 use AppBundle\Form\Type\ImageType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Event\ImageGalleryEvent;
 
 class ImageGalleryController extends Controller
 {
@@ -23,7 +24,7 @@ class ImageGalleryController extends Controller
             $em->persist($imageGallery);
             $em->flush();
 
-            //$this->get('event_dispatcher')->dispatch(ImageGallery::CREATED, new ImageGalleryEvent($imageGallery));
+            $this->get('event_dispatcher')->dispatch(ImageGalleryEvent::CREATED, new ImageGalleryEvent($imageGallery));
 
             return $this->redirectToRoute('image_gallery_edit', array('id' => $imageGallery->getId()));
         }
@@ -46,7 +47,7 @@ class ImageGalleryController extends Controller
             $em->persist($imageGallery);
             $em->flush();
 
-            //$this->get('event_dispatcher')->dispatch(ImageGallery::EDITED, new ImageGalleryEvent($imageGallery));
+            $this->get('event_dispatcher')->dispatch(ImageGalleryEvent::EDITED, new ImageGalleryEvent($imageGallery));
 
             return $this->redirectToRoute('image_gallery_edit', array('id' => $imageGallery->getId()));
         }
@@ -75,7 +76,7 @@ class ImageGalleryController extends Controller
             $em->persist($imageGallery);
             $em->flush();
 
-            //$this->get('event_dispatcher')->dispatch(ImageGallery::CREATED, new ImageGalleryEvent($imageGallery));
+            $this->get('event_dispatcher')->dispatch(ImageGalleryEvent::IMAGE_ADDED, new ImageGalleryEvent($imageGallery));
 
             return $this->redirectToRoute('image_gallery_edit', array('id' => $imageGallery->getId()));
         }
@@ -90,6 +91,8 @@ class ImageGalleryController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($imageGallery);
         $em->flush();
+
+        $this->get('event_dispatcher')->dispatch(ImageGalleryEvent::DELETED, new ImageGalleryEvent($imageGallery));
 
         return $this->redirectToRoute('image_gallery_create');
     }
@@ -107,8 +110,6 @@ class ImageGalleryController extends Controller
             $em->persist($image);
             $em->flush();
 
-            //$this->get('event_dispatcher')->dispatch(ImageEvent::EDITED, new ImageEvent($image));
-
             return $this->redirectToRoute('image_edit', array('id' => $image->getId()));
         }
 
@@ -125,6 +126,8 @@ class ImageGalleryController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($image);
         $em->flush();
+
+        $this->get('event_dispatcher')->dispatch(ImageGalleryEvent::IMAGE_REMOVED, new ImageGalleryEvent($imageGallery));
 
         return $this->redirectToRoute('image_gallery_edit', array('id' => $imageGallery->getId()));
     }

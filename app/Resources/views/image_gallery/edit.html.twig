@@ -15,6 +15,16 @@
             </form>
             <p>{{ image_gallery.description }}</p>
         </div>
+
+        <div class="small-12 medium-12 large-12 columns">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div data-alert class="alert-box success radius">
+                    {{ flashMessage }}
+                    <a href="#" class="close">&times;</a>
+                </div>
+            {% endfor %}
+        </div>
+
         <section class="hide" id="edit-gallery-form">
             {{ form_start(form) }}
                 <div class="small-12 medium-5 large-5 columns">
@@ -77,5 +87,13 @@
 
             formVisible = !formVisible;
         }
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            $('.close').click(function () {
+                $(this).closest('.success').remove();
+            });
+        });
     </script>
 {% endblock %}

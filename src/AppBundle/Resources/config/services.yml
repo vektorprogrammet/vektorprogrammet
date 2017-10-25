@@ -141,6 +141,12 @@ services:
     tags:
         - { name: kernel.event_subscriber }
 
+  app.image_gallery_subscriber:
+    class: AppBundle\EventSubscriber\ImageGallerySubscriber
+    arguments: ['@app.logger', '@session']
+    tags:
+        - { name: kernel.event_subscriber }
+
   app.image_subscriber:
     class: AppBundle\EventSubscriber\ImageSubscriber
     arguments: ['@app.file_uploader']
