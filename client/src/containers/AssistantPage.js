@@ -127,20 +127,20 @@ class AssistantPage extends Component {
 
                     <Header as='h3'>Opptakskrav</Header>
                     <List bulleted>
-                        <List.Item>Du studerer på høgskole/universitet</List.Item>
-                        <List.Item>Du har hatt R1/P2 på videregående</List.Item>
-                        <List.Item>Du har tid til å dra til en ungdomsskole <br/>èn dag i uka (kl. 8-14)</List.Item>
+                        <List.Item className="HEY">Du studerer på høgskole/universitet</List.Item>
+                        <List.Item className="HEY">Du har hatt R1/P2 på videregående</List.Item>
+                        <List.Item className="HEY">Du har tid til å dra til en ungdomsskole <br/>èn dag i uka (kl. 8-14)</List.Item>
                     </List>
                 </Grid.Column>
 
                 <Grid.Column width={5} className="assistantListText2">
                     <Header as='h3'>Opptaksprosessen</Header>
                     <List ordered>
-                        <List.Item>Vektorprogrammet tar opp nye assistenter i starten av hvert semester</List.Item>
-                        <List.Item>Send inn søknad på <a href="">opptakssiden</a> til ditt universitet</List.Item>
-                        <List.Item>Møt opp på intervju (obligatorisk)</List.Item>
-                        <List.Item>Dra på et gratis pedagogikkurs arrangert av Vektorprogrammet</List.Item>
-                        <List.Item>Få tildelt en ungdomsskole som du og din vektorpartner skal dra til</List.Item>
+                        <List.Item className="HEY">Vektorprogrammet tar opp nye assistenter i starten av hvert semester</List.Item>
+                        <List.Item className="HEY">Send inn søknad på <a href="">opptakssiden</a> til ditt universitet</List.Item>
+                        <List.Item className="HEY">Møt opp på intervju (obligatorisk)</List.Item>
+                        <List.Item className="HEY">Dra på et gratis pedagogikkurs arrangert av Vektorprogrammet</List.Item>
+                        <List.Item className="HEY">Få tildelt en ungdomsskole som du og din vektorpartner skal dra til</List.Item>
                     </List>
                 </Grid.Column>
             </Grid.Row>
