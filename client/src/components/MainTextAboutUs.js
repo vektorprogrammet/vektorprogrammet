@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, Grid} from 'semantic-ui-react';
+import {Image, Grid, List, Button} from 'semantic-ui-react';
 import './MainTextAboutUs.css';
 
 
