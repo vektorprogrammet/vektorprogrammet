@@ -82,11 +82,19 @@ class ApplicationController extends FOSRestController implements ClassResourceIn
         $user = new User();
         $application = new Application();
 
-        $user->setFirstName($request->request->get('application[user][firstName]'));
-        $user->setLastName($request->request->get('application[user][lastName]'));
-        $user->setEmail($request->request->get('application[user][email]'));
-        $user->setPhone($request->request->get('application[user][phone]'));
-        $user->setFieldOfStudy($request->request->get('application[user][fieldOfStudy]'));
+        $fieldOfStudyId = $request->request->get('fieldOfStudyId');
+        $fieldOfStudy = $this->getDoctrine()->getRepository('AppBundle:FieldOfStudy')->find($fieldOfStudyId);
+
+        $departmentId = $request->request->get('departmentId');
+        $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
+
+        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
+
+        $user->setFirstName($request->request->get('firstName'));
+        $user->setLastName($request->request->get('lastName'));
+        $user->setEmail($request->request->get('email'));
+        $user->setPhone($request->request->get('phone'));
+        $user->setFieldOfStudy($fieldOfStudy);
 
         //Dummy data
         $user->setGender(1);
@@ -94,12 +102,13 @@ class ApplicationController extends FOSRestController implements ClassResourceIn
         //
 
         $application->setUser($user);
+        $application->setSemester($semester);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($application);
         $em->flush();
 
-        return $application;
+        return $application; // TODO: render ConfirmationBox
     }
 
     /**

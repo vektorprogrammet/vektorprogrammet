@@ -10,6 +10,7 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * @ORM\Table(name="department")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\DepartmentRepository")
+ * @JMS\ExclusionPolicy("all")
  */
 class Department
 {
@@ -17,18 +18,21 @@ class Department
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Expose()
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=250)
      * @Assert\NotBlank
+     * @JMS\Expose()
      */
     private $name;
 
     /**
      * @ORM\Column(name="short_name", type="string", length=50)
      * @Assert\NotBlank
+     * @JMS\Expose()
      */
     private $shortName;
 
@@ -36,18 +40,21 @@ class Department
      * @ORM\Column(type="string", length=250)
      * @Assert\NotBlank
      * @Assert\Email
+     * @JMS\Expose()
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=250)
      * @Assert\NotBlank
+     * @JMS\Expose()
      */
     protected $address;
 
     /**
      * @ORM\Column(type="string", length=250, nullable=true)
      * @Assert\NotBlank
+     * @JMS\Expose()
      */
     private $city;
 
@@ -62,24 +69,25 @@ class Department
      * @ORM\ManyToMany(targetEntity="School", inversedBy="departments")
      * @ORM\JoinTable(name="department_school")
      * @ORM\JoinColumn(onDelete="cascade")
-     * @JMS\Exclude
+     * @JMS\Expose()
      **/
     protected $schools;
 
     /**
      * @ORM\OneToMany(targetEntity="FieldOfStudy", mappedBy="department", cascade={"remove"})
+     * @JMS\Expose()
      */
     private $fieldOfStudy;
 
     /**
      * @ORM\OneToMany(targetEntity="Semester", mappedBy="department",  cascade={"remove"})
      * @ORM\OrderBy({"semesterStartDate" = "DESC"})
-     * @JMS\Exclude
      **/
     private $semesters;
 
     /**
      * @ORM\OneToMany(targetEntity="Team", mappedBy="department", cascade={"remove"})
+     * @JMS\Expose()
      **/
     private $teams;
 
