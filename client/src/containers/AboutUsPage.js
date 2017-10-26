@@ -12,7 +12,8 @@ class AboutUsPage extends Component {
     constructor() {
         super();
         this.state = {
-            showModal: false
+            showModal: false,
+            width: window.innerWidth
         };
         this.handleModal = this.handleModal.bind(this);
     }
@@ -21,6 +22,15 @@ class AboutUsPage extends Component {
         this.setState(prevState => ({
             showModal: !prevState.showModal
         }));
+    }
+
+    handleWindowSizeChange = () => {
+        console.log("Resizing :) :)");
+        this.setState({ width: window.innerWidth });
+    };
+
+    componentWillMount() {
+        window.addEventListener('resize', this.handleWindowSizeChange);
     }
 
     render() {
@@ -54,7 +64,7 @@ class AboutUsPage extends Component {
                 {/*TODO:Move to own css-file*/}
                 <section style={{maxWidth: '100%', width: 3000, marginLeft: 'auto', marginRight: 'auto'}}>
                 <Grid columns={3} stackable={true}>
-                    <ContactUsPopUp show={this.state.showModal} onClose={this.handleModal}/>
+                    <ContactUsPopUp windowWidth={this.state.width} show={this.state.showModal} onClose={this.handleModal}/>
                     <Grid.Column mobile={16} tablet={5} computer={4} /*width={4}*/>
                         {/*TODO:Move to own css-file*/}
                         <div style={{alignContent: 'center', padding: '0 15px'}}>
