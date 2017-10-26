@@ -66,14 +66,10 @@ class ImageGalleryController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $path = $this->get('app.file_uploader')->uploadGalleryImage($request);
-            $image->setPath($path);
-
-            $imageGallery->addImage($image);
+            $image->setGallery($imageGallery);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($image);
-            $em->persist($imageGallery);
             $em->flush();
 
             $this->get('event_dispatcher')->dispatch(ImageGalleryEvent::IMAGE_ADDED, new ImageGalleryEvent($imageGallery));

@@ -16,7 +16,7 @@ class ImageType extends AbstractType
             ->add('description', TextType::class, array(
                 'label' => 'Beskrivelse',
                 ))
-            ->add('path', FileType::class, array(
+            ->add('uploadedFile', FileType::class, array(
                 'label' => 'Last opp bilde',
                 'required' => $options['upload_required'],
                 'data_class' => null,

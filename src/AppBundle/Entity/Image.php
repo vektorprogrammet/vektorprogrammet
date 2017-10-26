@@ -2,8 +2,8 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -23,6 +23,11 @@ class Image
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var UploadedFile $uploadedFile
+     */
+    private $uploadedFile;
 
     /**
      * @var string
@@ -117,5 +122,21 @@ class Image
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @return UploadedFile
+     */
+    public function getUploadedFile()
+    {
+        return $this->uploadedFile;
+    }
+
+    /**
+     * @param UploadedFile $uploadedFile
+     */
+    public function setUploadedFile($uploadedFile)
+    {
+        $this->uploadedFile = $uploadedFile;
     }
 }

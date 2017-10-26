@@ -74,14 +74,12 @@ class FileUploader
     }
 
     /**
-     * @param Request $request
+     * @param UploadedFile $file
      *
      * @return string
      */
-    public function uploadGalleryImage(Request $request)
+    public function uploadGalleryImage(UploadedFile $file)
     {
-        $file = $this->getFileFromRequest($request);
-
         $mimeType = $file->getMimeType();
         $fileType = explode('/', $mimeType)[0];
         if ($fileType === 'image') {

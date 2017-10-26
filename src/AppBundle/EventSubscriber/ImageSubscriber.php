@@ -21,6 +21,7 @@ class ImageSubscriber implements EventSubscriber
     {
         return array(
             Events::preRemove,
+            Events::prePersist,
         );
     }
 
@@ -31,6 +32,19 @@ class ImageSubscriber implements EventSubscriber
         if ($entity instanceof Image) {
             $path = $entity->getPath();
             $this->fileUploader->deleteGalleryImage($path);
+        }
+    }
+
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+
+        if ($entity instanceof Image) {
+            $file = $entity->getUploadedFile();
+            if ($file) {
+                $path = $this->fileUploader->uploadGalleryImage($file);
+                $entity->setPath($path);
+            }
         }
     }
 }
