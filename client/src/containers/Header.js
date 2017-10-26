@@ -30,11 +30,11 @@ class Header extends Component {
                     </Link>
 
                     <Menu secondary className="main-navigation">
-                        <Menu.Item link><Link to={'/assistenter'}>Assistenter</Link></Menu.Item>
-                        <Menu.Item link><Link to={'/team'}>Team</Link></Menu.Item>
-                        <Menu.Item link><Link to={'/laerere'}>Lærere</Link></Menu.Item>
-                        <Menu.Item link><Link to={'/foreldre'}>Foreldre</Link></Menu.Item>
-                        <Menu.Item link><Link to={'/om-oss'}>Om oss</Link></Menu.Item>
+                        <Menu.Item link><Link className="menuLinks" to={'/assistenter'}>Assistenter</Link></Menu.Item>
+                        <Menu.Item link><Link className="menuLinks" to={'/team'}>Team</Link></Menu.Item>
+                        <Menu.Item link><Link className="menuLinks" to={'/laerere'}>Lærere</Link></Menu.Item>
+                        <Menu.Item link><Link className="menuLinks" to={'/foreldre'}>Foreldre</Link></Menu.Item>
+                        <Menu.Item link><Link className="menuLinks" to={'/om-oss'}>Om oss</Link></Menu.Item>
                     </Menu>
                 </Responsive>
 

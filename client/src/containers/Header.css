@@ -43,6 +43,14 @@
     color: #0071CD;
 }
 
+.menuLinks {
+    padding: 0.8em 0.9em;
+}
+
+.ui.secondary.menu .item {
+    padding: 0;
+}
+
 .burgerLinks {
     display: block;
     color: #fafeff;
