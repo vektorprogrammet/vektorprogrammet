@@ -38,16 +38,35 @@ img.displayed {
 .assistantContentText {
     margin: 125px auto;
     padding: 0 20px;
-}
-
-.assistantListText {
-    text-align: left;
-    margin: 125px auto;
-    padding: 0 20px;
+    margin-bottom: 20px;
 }
 
 
 
 .assistantApplicationForm {
+
+}
+.five.wide.column.assistantListText1, .five.wide.column.assistantListText2
+{
+    text-align: left;
+    margin: 25px auto;
+    padding: 0 20px;
+}
+.five.wide.column.assistantListText1
+{
+    margin-right: 5px;
+}
+.five.wide.column.assistantListText2
+{
+    margin-left: 5px;
+}
+
+
+.item
+{
+    font-size: 18px;
+    font-weight: 300;
+    margin-bottom: 5px;
+    font-family: 'Roboto', sans-serif;
 
 }

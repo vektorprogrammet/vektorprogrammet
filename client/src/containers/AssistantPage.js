@@ -123,8 +123,8 @@ class AssistantPage extends Component {
                     <Header as='h2'>Hvordan blir jeg Vektorassistent?</Header>
                 </Grid.Column>
 
-                <Grid.Column width={5} className="assistantListText">
-                    <Grid.Row columns={1}><br/><br/></Grid.Row>
+                <Grid.Column width={5} className="assistantListText1">
+
                     <Header as='h3'>Opptakskrav</Header>
                     <List bulleted>
                         <List.Item>Du studerer på høgskole/universitet</List.Item>
@@ -133,8 +133,7 @@ class AssistantPage extends Component {
                     </List>
                 </Grid.Column>
 
-                <Grid.Column width={5} className="assistantListText">
-                    <Grid.Row columns={1}><br/><br/></Grid.Row>
+                <Grid.Column width={5} className="assistantListText2">
                     <Header as='h3'>Opptaksprosessen</Header>
                     <List ordered>
                         <List.Item>Vektorprogrammet tar opp nye assistenter i starten av hvert semester</List.Item>
