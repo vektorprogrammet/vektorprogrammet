@@ -25,6 +25,7 @@
     font-weight: 200;
     width: auto;
     max-height: 500px;
+    height: 500px;
     border-radius: 3px;
     transition: 0.3s;
     position: fixed;
@@ -33,7 +34,28 @@
     transform: translate(-50%, -50%);
 }
 
+.contactUsPopUpMobile {
+    opacity: 0;
+    text-align: center;
+    color: blue;
+    background-color: blue;
+    font-size: 3px;
+    font-weight: 200;
+    width: auto;
+    max-height: 500px;
+    height: 500px;
+    border-radius: 3px;
+    transition: 0.3s;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 .contactUsPopUp.visible {
+    opacity: 1;
+    z-index: 1;
+}
+.contactUsPopUpMobile.visible {
     opacity: 1;
     z-index: 1;
 }
