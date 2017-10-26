@@ -1,6 +1,6 @@
 .top-header {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    padding: 5px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 5px 0 0 0;
 }
 
 .logo {
@@ -22,7 +22,17 @@
 }
 
 .ui.secondary.menu.main-navigation {
-    margin: 10px 0;
+    margin: 10px 0 0 0;
+}
+
+@media screen and (max-width: 768px) {
+    .top-header {
+        padding: 5px 0;
+    }
+
+    .ui.secondary.menu.main-navigation {
+        margin: 10px 0;
+    }
 }
 
 .main-navigation {
