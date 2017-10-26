@@ -6,10 +6,10 @@ class ListComponentAboutUs extends Component{
     render() {
         const width = window.innerWidth;
         const check = width < 770;
-        const idName = check ? 'horisontal' : '';
+        const idName = check ? 'aboutUs-horisontal' : 'Hello';
 
         return (
-            <List size={"massive"} id="mainList">
+            <List size={"massive"} id="aboutUs-listMain">
                 <List.Item icon='question circle' content={<a href={"#FAQ"}>FAQ</a>} id={idName}/>
                 <List.Item icon='envelope' content={<a href={"#kontakt-info"}>Kontaktinfo</a>} id={idName}/>
                 <List.Item

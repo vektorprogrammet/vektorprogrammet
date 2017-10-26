@@ -68,8 +68,9 @@ class AboutUsPage extends Component {
                     <ContactUsPopUp windowWidth={this.state.width} show={this.state.showModal} onClose={this.handleModal}/>
                     <Grid.Column mobile={16} tablet={5} computer={4} /*width={4}*/>
                         {/*TODO:Move to own css-file*/}
+                        <div >
                             <ListComponentAboutUs onClick={this.handleModal} />
-
+                        </div>
                     </Grid.Column>
                     <Grid.Column mobile={16} tablet={10} computer={9} /*width={9}*/>
                         <Grid stackable={true}>
