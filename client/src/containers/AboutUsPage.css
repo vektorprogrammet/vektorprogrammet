@@ -11,6 +11,11 @@
 .about-us-page {
     padding-top: 100px;
 }
+@media screen and (max-width: 767px) {
+    .about-us-page {
+        padding-top: 20px;
+    }
+}
 
 .about-us-main {
     width: 800px;
@@ -25,7 +30,7 @@
 
 
 .aboutUs-FAQ h3 {
-    font-size: 130%;
+    font-size: 19px;
     font-weight:bold;
     color:black;
 }

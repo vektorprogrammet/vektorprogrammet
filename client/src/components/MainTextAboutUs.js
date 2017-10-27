@@ -20,7 +20,7 @@ export const MainTextAboutUs = () => {
             {/*Move to own css-file*/}
             <Grid.Row columns={3} className={'main-text-about-us-section'}>
                 <Grid.Column width={9}>
-                    <h1 className="aboutUs-header">Motivere elever</h1>
+                    <h2 className="aboutUs-header">Motivere elever</h2>
                     <p className="aboutUs-text">
                       Vektorprogrammet ønsker å øke matematikkforståelsen blant elever i grunnskolen. Forståelse gir
                       mestringsfølelse som fører til videre motivasjon. Siden matematikk er grunnlaget for alle realfag
@@ -36,11 +36,11 @@ export const MainTextAboutUs = () => {
                       <Image className="aboutUs-image2" src={"http://via.placeholder.com/350x350/"}/>
                 </Responsive>
                 <Grid.Column width={9} floated={'right'}>
-                    <h1 className="aboutUs-header">Motivere studenter</h1>
+                    <h2 className="aboutUs-header">Motivere studenter</h2>
                     <p className="aboutUs-text">
                       Da studentene er tilstede i skoletiden skiller vi oss derfor fra andre tiltak ved at elevenes
                       barriere for å delta er ikke-eksisterende. Dette gjør at vi når ut til alle –
-                      ikke kun de som allerede er motiverte. <br/><br/>Vektorprogrammet sørger for at alle får hjelp i
+                      ikke kun de som allerede er motiverte. Vektorprogrammet sørger for at alle får hjelp i
                       timen raskere og at undervisningen kan bli mer tilpasset de ulike elevgruppene.
                     </p>
                 </Grid.Column>
@@ -50,7 +50,7 @@ export const MainTextAboutUs = () => {
             </Grid.Row>
             <Grid.Row columns={1}>
                 <Grid.Column width={16}>
-                     <h1  className="aboutUs-header">En forsmak til læreryrket</h1>
+                     <h2 className="aboutUs-header">En forsmak til læreryrket</h2>
                     <p className="aboutUs-text">
                       Siden studentene er tilstede i undervisningen får de en introduksjon til læreryrket. Mange som
                       studerer realfag vurderer en fremtid som lærer, og får gjennom oss muligheten til å få reell
