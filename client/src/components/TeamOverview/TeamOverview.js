@@ -35,7 +35,7 @@ export default class TeamOverview extends Component {
 
             panes.push(pane);
 
-        }.bind(this));
+        });
 
         return panes;
     }

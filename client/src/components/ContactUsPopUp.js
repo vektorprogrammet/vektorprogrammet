@@ -31,7 +31,7 @@ class ContactUsPopUp extends Component {
                     <Icon name={'remove'} onClick={this.props.onClose} className="contactUsPopUp-icon"/>
                     <div className="header-frame">
                         <h2>Kontakt vektor ved NTNU {isMobile ? 'Mobile' : 'Computer'}</h2>
-                        <img src={message}/>
+                        <img src={message} alt={'contact us'}/>
                     </div>
                     <Form style={{padding: '0 15px'}}>
                         <Form.Group widths='equal'>
@@ -42,7 +42,7 @@ class ContactUsPopUp extends Component {
                                 <br/>
                                 <Form.Input placeholder='Emne' />
                                 <br/>
-                                /*TODO: Get the captcha-functionality to work */
+                                {/*TODO: Get the captcha-functionality to work*/}
                                 <Image className="contactUsPopUp-captchaImage" src={"http://via.placeholder.com/100x50/"}/>
                                 <br/>
                                 <input/>

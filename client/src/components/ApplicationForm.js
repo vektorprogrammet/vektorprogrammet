@@ -38,7 +38,7 @@ class ApplicationForm extends Component {
         const application = {...this.state.application};
         const id = event.target.value;
         application.departmentId = id;
-        const department = this.state.departments.find(department => department.id == id);
+        const department = this.state.departments.find(department => department.id === id);
         this.setState({
             department,
             application

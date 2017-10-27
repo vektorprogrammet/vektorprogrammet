@@ -1,7 +1,7 @@
 import './ContactInformation.css';
 import React, {Component} from 'react';
 
-{/*TODO: Fix styling, didn't work after implementing map function*/}
+// TODO: Fix styling, didn't work after implementing map function
 class ContactInfo extends Component {
     render() {
         const contactInfo = this.props.contactInfo.map((item, index) =>
@@ -11,15 +11,12 @@ class ContactInfo extends Component {
         );
         return (
             <section>
-                <ul className="unordered-list">
-                    <li className="list-container">
-                        Kontakt:
-                        {contactInfo}
-                    </li>
+                <ul className="unordered-list list-container">
+                      Kontakt: {contactInfo}
                 </ul>
             </section>
         );
     }
-};
+}
 
 export default ContactInfo;

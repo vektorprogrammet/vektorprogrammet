@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Icon, Card, Image} from 'semantic-ui-react';
 
 export const TeamCard = ({imagePath, name, email, shortDesc, accept_application}) => {
@@ -20,4 +20,4 @@ export const TeamCard = ({imagePath, name, email, shortDesc, accept_application}
             }
         </Card>
     );
-}
+};
