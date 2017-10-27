@@ -45,6 +45,13 @@ class WorkHistory implements GroupMemberInterface
     private $deletedTeamName;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $isTeamLeader;
+
+    /**
      * @var Team
      *
      * @ORM\ManyToOne(targetEntity="Team", inversedBy="workHistories")
@@ -60,6 +67,11 @@ class WorkHistory implements GroupMemberInterface
      * @Assert\Valid
      **/
     protected $position;
+
+    public function __construct()
+    {
+        $this->isTeamLeader = false;
+    }
 
     public function __toString()
     {
@@ -240,5 +252,21 @@ class WorkHistory implements GroupMemberInterface
     public function getPositionName(): string
     {
         return $this->position->getName();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTeamLeader(): bool
+    {
+        return $this->isTeamLeader;
+    }
+
+    /**
+     * @param bool $isTeamLeader
+     */
+    public function setIsTeamLeader(bool $isTeamLeader)
+    {
+        $this->isTeamLeader = $isTeamLeader;
     }
 }

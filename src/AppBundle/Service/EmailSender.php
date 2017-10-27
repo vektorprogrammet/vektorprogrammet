@@ -61,8 +61,8 @@ class EmailSender
     {
         $message = \Swift_Message::newInstance()
             ->setSubject('Vi har tilbakebetalt penger for utlegget ditt')
-            ->setFrom($this->defaultEmail)
-            ->setReplyTo($this->defaultEmail)
+            ->setFrom($this->economyEmail)
+            ->setFrom(array($this->economyEmail => 'Økonomi - Vektorprogrammet'))
             ->setTo($receipt->getUser()->getEmail())
             ->setBody($this->twig->render('receipt/confirmation_email.txt.twig', array(
                 'name' => $receipt->getUser()->getFullName(),
@@ -73,6 +73,24 @@ class EmailSender
 
         $this->logger->info(
             "Confirmation for paid receipt sent to {$receipt->getUser()->getFullName()} at {$receipt->getUser()->getEmail()}"
+        );
+    }
+
+    public function sendRejectedReceiptConfirmation(Receipt $receipt)
+    {
+        $message = \Swift_Message::newInstance()
+                                 ->setSubject('Refusjon for utlegget ditt har blitt avvist')
+                                 ->setFrom(array($this->economyEmail => 'Økonomi - Vektorprogrammet'))
+                                 ->setReplyTo($this->economyEmail)
+                                 ->setTo($receipt->getUser()->getEmail())
+                                 ->setBody($this->twig->render('receipt/rejected_email.txt.twig', array(
+                                     'name' => $receipt->getUser()->getFullName(),
+                                     'receipt' => $receipt,)));
+
+        $this->mailer->send($message);
+
+        $this->logger->info(
+            "Notice for rejected receipt sent to {$receipt->getUser()->getFullName()} at {$receipt->getUser()->getEmail()}"
         );
     }
 

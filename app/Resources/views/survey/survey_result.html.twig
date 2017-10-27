@@ -204,7 +204,17 @@
             var answers = surveyData.answers;
             for (var k = 0; k < answers.length; k++) {
                 for (var l = 0; l < answers[k].length; l++) {
-                    data[answers[k][l].question_id][answers[k][l].answer]++;
+                    var answer = answers[k][l];
+                    var answerArray = answer.answerArray;
+                    if (answerArray && answerArray.length > 0) {
+                        for (var m = 0; m < answerArray.length; m++) {
+                          if (data[answer.question_id].hasOwnProperty(answerArray[m])) {
+                            data[answer.question_id][answerArray[m]]++;
+                          }
+                        }
+                    } else if (answer.answer) {
+                        data[answer.question_id][answer.answer]++;
+                    }
                 }
             }
             return data;
@@ -267,26 +277,57 @@
         }
 
         function filterSurveyData(surveyData, filterObject) {
-            var filteredSurveyData = {};
+          var filteredSurveyData = {};
 
-            // A submission is a survey that has been submitted with answers
-            var submissions = surveyData.answers;
+          // A submission is a survey that has been submitted with answers
+          var submissions = surveyData.answers;
+          const filteredQuestionIds = Object.keys(filterObject);
+
 
             // Remove all submissions that doesn't match filter criteria
             var filteredSubmissions = submissions.filter(function (submission) {
-                for (var i = 0; i < submission.length; i++) {
-                    var answerObject = submission[i];
-                    var questionId = answerObject.question_id;
-                    if (filterObject.hasOwnProperty(questionId) && filterObject[questionId].indexOf(answerObject.answer) < 0) {
-                        return false;
-                    }
+              const answeredQuestionIds = submission.map(function (q) {
+                return q.question_id.toString()
+              });
+              for (let i = 0; i < filteredQuestionIds.length; i++) {
+                if (answeredQuestionIds.indexOf(filteredQuestionIds[i]) === -1) {
+                  return false;
                 }
-                return true;
-            })
+              }
+              let hasAnsweredQuestion = false;
+              for (var i = 0; i < submission.length; i++) {
+                var answerObject = submission[i];
+                var questionId = answerObject.question_id;
+                if (filterObject.hasOwnProperty(questionId)) {
+                  hasAnsweredQuestion = true;
+                  if (answerObject.hasOwnProperty('answerArray') && answerObject.answerArray.length > 0) {
+                    var hasAnswer = false;
+                    for (var j = 0; j < answerObject.answerArray.length; j++) {
+                      if (filterObject[questionId].indexOf(answerObject.answerArray[j]) !== -1) {
+                        hasAnswer = true;
+                        break;
+                      }
+                    }
+                    if (!hasAnswer) {
+                      return false;
+                    }
+                  } else if (filterObject[questionId].indexOf(answerObject.answer) === -1) {
+                    return false;
+                  }
+                }
+              }
+              return hasAnsweredQuestion;
+            });
 
-            // Create a new surveyData object with filtered submissions
+
+          // Create a new surveyData object with filtered submissions
             var questions = surveyData.survey.questions;
+          if (typeof filteredQuestionIds === 'undefined' || filteredQuestionIds.length === 0) {
+            filteredSurveyData.answers = submissions;
+          } else {
             filteredSurveyData.answers = filteredSubmissions;
+          }
+
             filteredSurveyData.survey = {
                 questions: questions
             }

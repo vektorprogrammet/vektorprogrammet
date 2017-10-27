@@ -15,8 +15,7 @@ class CreateTeamType extends AbstractType
                 'label' => 'Navn',
             ))
             ->add('email', 'email', array(
-                'label' => 'E-post (valgfritt)',
-                'required' => false,
+                'label' => 'E-post',
             ))
             ->add('shortDescription', 'text', array(
                 'label' => ' ',

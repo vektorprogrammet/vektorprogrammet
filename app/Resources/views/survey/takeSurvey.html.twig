@@ -37,15 +37,20 @@
 
     {{ form_start(form) }} {#This is everything that is needed to show a form/survey#}
     {{ form_errors(form) }}
-    {% set QustionNumber = 1 %}
+    {% set QuestionNumber = 1 %}
     <h3>Velg skole</h3>
     {{ form_widget(form.school) }}
     <br/>
     {% for surveyAnswer in form.surveyAnswers %}
         <div class="row">
             <div class="small-12 medium-12 large-9 columns">
-                {{ QustionNumber }}. {{ form_row(surveyAnswer.answer) }}
-                {% set QustionNumber = QustionNumber +1 %}
+                {{ QuestionNumber }}.
+                {% if surveyAnswer.vars.value.surveyQuestion.type == 'check' %}
+                    {{ form_row(surveyAnswer.answerArray) }}
+                {% else %}
+                    {{ form_row(surveyAnswer.answer) }}
+                {% endif %}
+                {% set QuestionNumber = QuestionNumber + 1 %}
             </div>
         </div>
     {% endfor %}

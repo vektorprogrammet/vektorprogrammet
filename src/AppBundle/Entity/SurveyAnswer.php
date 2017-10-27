@@ -29,10 +29,20 @@ class SurveyAnswer implements \JsonSerializable
     protected $answer;
 
     /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $answerArray;
+
+    /**
      * @ORM\ManyToOne(targetEntity="SurveyTaken", inversedBy="surveyAnswers")
      * @ORM\JoinColumn(name="survey_taken_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $surveyTaken;
+
+    public function __construct()
+    {
+        $this->answerArray = [];
+    }
 
     /**
      * @return SurveyTaken
@@ -120,6 +130,22 @@ class SurveyAnswer implements \JsonSerializable
      */
     public function jsonSerialize()
     {
-        return array('question_id' => $this->surveyQuestion->getId(), 'answer' => $this->answer);
+        return array('question_id' => $this->surveyQuestion->getId(), 'answer' => $this->answer, 'answerArray' => $this->getAnswerArray());
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAnswerArray()
+    {
+        return $this->answerArray;
+    }
+
+    /**
+     * @param string[] $answerArray
+     */
+    public function setAnswerArray($answerArray)
+    {
+        $this->answerArray = $answerArray;
     }
 }

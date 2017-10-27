@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
@@ -29,6 +30,9 @@ class Team implements TeamInterface
     /**
      * @ORM\Column(type="string", nullable=true)
      * @Assert\Email(message="Ugyldig e-post")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være blankt.")
+     * @CustomAssert\UniqueCompanyEmail
+     * @CustomAssert\VektorEmail
      */
     private $email;
 

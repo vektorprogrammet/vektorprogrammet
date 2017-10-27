@@ -16,25 +16,30 @@ class ReceiptController extends Controller
 {
     public function showAction()
     {
-        $usersWithActiveReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithActiveReceipts();
-        $usersWithInactiveReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithInactiveReceipts();
+        $usersWithReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithReceipts();
+
+        $sorter = $this->container->get('app.sorter');
+
+        $sorter->sortUsersByReceiptSubmitTime($usersWithReceipts);
+        $sorter->sortUsersByReceiptStatus($usersWithReceipts);
 
         return $this->render('receipt_admin/show_receipts.html.twig', array(
-            'users_with_active_receipts' => $usersWithActiveReceipts,
-            'users_with_inactive_receipts' => $usersWithInactiveReceipts,
+            'users_with_receipts' => $usersWithReceipts,
             'current_user' => $this->getUser(),
         ));
     }
 
     public function showIndividualAction(User $user)
     {
-        $active_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findActiveByUser($user);
-        $inactive_receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findInactiveByUser($user);
+        $receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByUser($user);
+
+        $sorter = $this->container->get('app.sorter');
+        $sorter->sortReceiptsBySubmitTime($receipts);
+        $sorter->sortReceiptsByStatus($receipts);
 
         return $this->render('receipt_admin/show_individual_receipts.html.twig', array(
             'user' => $user,
-            'active_receipts' => $active_receipts,
-            'inactive_receipts' => $inactive_receipts,
+            'receipts' => $receipts,
         ));
     }
 
@@ -44,6 +49,10 @@ class ReceiptController extends Controller
         $receipt->setUser($this->getUser());
 
         $receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByUser($this->getUser());
+
+        $sorter = $this->container->get('app.sorter');
+        $sorter->sortReceiptsBySubmitTime($receipts);
+        $sorter->sortReceiptsByStatus($receipts);
 
         $form = $this->createForm(ReceiptType::class, $receipt);
 
@@ -79,7 +88,7 @@ class ReceiptController extends Controller
     {
         $user = $this->getUser();
 
-        $userCanEditReceipt = $user === $receipt->getUser() && $receipt->isActive();
+        $userCanEditReceipt = $user === $receipt->getUser() && $receipt->getStatus() === Receipt::STATUS_PENDING;
 
         if (!$userCanEditReceipt) {
             throw new AccessDeniedException();
@@ -124,6 +133,34 @@ class ReceiptController extends Controller
         ));
     }
 
+    public function editStatusAction(Request $request, Receipt $receipt)
+    {
+        $status = $request->get('status');
+        if ($status !== Receipt::STATUS_PENDING &&
+            $status !== Receipt::STATUS_REFUNDED &&
+            $status !== Receipt::STATUS_REJECTED) {
+            throw new BadRequestHttpException('Invalid status');
+        }
+
+        if ($status === $receipt->getStatus()) {
+            return $this->redirectToRoute('receipts_show_individual', ['user' => $receipt->getUser()->getId()]);
+        }
+
+        $receipt->setStatus($status);
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        if ($status === Receipt::STATUS_REFUNDED) {
+            $this->get('event_dispatcher')->dispatch(ReceiptEvent::REFUNDED, new ReceiptEvent($receipt));
+        } elseif ($status === Receipt::STATUS_REJECTED) {
+            $this->get('event_dispatcher')->dispatch(ReceiptEvent::REJECTED, new ReceiptEvent($receipt));
+        } elseif ($status === Receipt::STATUS_PENDING) {
+            $this->get('event_dispatcher')->dispatch(ReceiptEvent::PENDING, new ReceiptEvent($receipt));
+        }
+
+        return $this->redirectToRoute('receipts_show_individual', ['user' => $receipt->getUser()->getId()]);
+    }
+
     public function adminEditAction(Request $request, Receipt $receipt)
     {
         $form = $this->createForm(ReceiptType::class, $receipt, array(
@@ -165,40 +202,12 @@ class ReceiptController extends Controller
         ));
     }
 
-    public function refundedAdminAction(Receipt $receipt)
-    {
-        $user = $this->getUser();
-        $isTeamLeader = $this->get('app.roles')->userIsGranted($user, Roles::TEAM_LEADER);
-        if (!$isTeamLeader) {
-            throw new AccessDeniedException();
-        }
-
-        $alreadyRefunded = !$receipt->isActive();
-        if ($alreadyRefunded) {
-            throw new BadRequestHttpException();
-        }
-
-        $receipt->setActive(false);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($receipt);
-        $em->flush();
-
-        $this->get('event_dispatcher')->dispatch(ReceiptEvent::REFUNDED, new ReceiptEvent($receipt));
-
-        if ($user === $receipt->getUser()) {
-            return $this->redirectToRoute('receipt_create');
-        } else {
-            return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
-        }
-    }
-
     public function deleteAction(Request $request, Receipt $receipt)
     {
         $user = $this->getUser();
         $isTeamLeader = $this->get('app.roles')->userIsGranted($user, Roles::TEAM_LEADER);
 
-        $userCanDeleteReceipt = $isTeamLeader || ($user == $receipt->getUser() && $receipt->isActive());
+        $userCanDeleteReceipt = $isTeamLeader || ($user == $receipt->getUser() && $receipt->getStatus() === Receipt::STATUS_PENDING);
 
         if (!$userCanDeleteReceipt) {
             throw new AccessDeniedException();

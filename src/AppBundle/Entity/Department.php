@@ -435,7 +435,7 @@ class Department
     /**
      * @param string $slackChannel
      */
-    public function setSlackChannel(string $slackChannel)
+    public function setSlackChannel($slackChannel)
     {
         $this->slackChannel = $slackChannel;
     }

@@ -11,8 +11,9 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
             <ul class="clean-list">
-                <li>Kontonummer: {{ user.accountNumber }}</li>
-                <li>Email: <a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
+                <li><b>Kontonummer:</b> {{ user.accountNumber }}</li>
+                <li><b>Email:</b> <a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
+                <li><b>Sum ubehandlet:</b> {{ user.totalPendingReceiptSum|number_format(2, ',', ' ') }} kr</li>
             </ul>
         </div>
     </div>
@@ -27,14 +28,14 @@
         </div>
     </div>
 
-    {% if active_receipts is not empty %}
+    {% if receipts is not empty %}
         <div class="row">
             <div class="small-12 medium-12 large-12 columns">
                 <hr>
             </div>
 
             <div class="small-6 medium-6 large-6 columns">
-                <h3> Nye utlegg </h3>
+                <h3> Utlegg </h3>
             </div>
         </div>
 
@@ -43,34 +44,10 @@
 
                 <br>
 
-                {% include 'receipt_admin/receipts_table_individual.html.twig' with { 'receipts': active_receipts } %}
+                {% include 'receipt_admin/receipts_table_individual.html.twig' with { 'receipts': receipts } %}
             </div>
         </div>
 
-    {% endif %}
-
-    {% if inactive_receipts is not empty %}
-        <div class="row">
-            <div class="small-12 medium-12 large-12 columns">
-                <hr>
-            </div>
-
-            <div class="small-12 medium-12 large-8 columns">
-
-                <h3> Refunderte utlegg </h3>
-
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="small-12 medium-12 large-12 columns">
-
-                <br>
-
-                {% include 'receipt_admin/receipts_table_individual.html.twig' with { 'receipts': inactive_receipts } %}
-
-            </div>
-        </div>
     {% endif %}
 
 {% endblock %}

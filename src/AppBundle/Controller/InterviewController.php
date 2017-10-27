@@ -13,6 +13,7 @@ use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use InvalidArgumentException;
 
 /**
  * InterviewController is the controller responsible for interview actions,
@@ -407,5 +408,26 @@ class InterviewController extends Controller
             'interview' => $interview,
             'form' => $form->createView(),
         ));
+    }
+
+    /**
+     * @param Request $request
+     * @param Interview $interview
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function editStatusAction(Request $request, Interview $interview)
+    {
+        $status = intval($request->get('status'));
+        try {
+            $interview->setStatus($status);
+        } catch (InvalidArgumentException $e) {
+            throw new BadRequestHttpException();
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return $this->redirectToRoute('interview_schedule',
+            ['id' => $interview->getApplication()->getId()]);
     }
 }

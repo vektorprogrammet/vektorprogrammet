@@ -219,6 +219,13 @@ specific_profile:
  requirements:
   id: \d+
 
+edit_user_company_email:
+  path: /bruker/vekorepost/endre/{id}
+  defaults: { _controller: AppBundle:Profile:editCompanyEmail }
+  methods: [GET, POST]
+  requirements:
+    id: \d+
+
 profile_edit_admin:
  path:   /kontrollpanel/profil/rediger/{id}
  defaults: { _controller: AppBundle:Profile:editProfileInformationAdmin }
@@ -292,7 +299,14 @@ assistant_history_delete:
  defaults: { _controller: AppBundle:AssistantHistory:delete }
  methods: [POST]
 
+##########################################
+#                SSO                     #
+##########################################
 
+sso_login:
+    path: /sso/login
+    defaults: { _controller: AppBundle:Sso:login}
+    methods: [POST]
 
 ##########################################
 #                Login                   #
@@ -586,13 +600,6 @@ receipts_show:
   defaults: {_controller: AppBundle:Receipt:show }
   methods: [GET]
 
-receipts_refund:
-  path: /kontrollpanel/utlegg/refunder/{receipt}
-  defaults: { _controller: AppBundle:Receipt:refundedAdmin }
-  methods: [POST]
-  requirements:
-    receipts: \d+
-
 receipts_show_individual:
   path: /kontrollpanel/utlegg/{user}
   defaults: {_controller: AppBundle:Receipt:showIndividual }
@@ -609,6 +616,13 @@ receipt_edit:
   path: /utlegg/rediger/{receipt}
   defaults: {_controller: AppBundle:Receipt:edit }
   methods: [GET, POST]
+  requirements:
+    receipt: \d+
+
+receipt_edit_status:
+  path: /kontrollpanel/utlegg/status/{receipt}
+  defaults: {_controller: AppBundle:Receipt:editStatus }
+  methods: [POST]
   requirements:
     receipt: \d+
 
@@ -1045,6 +1059,13 @@ interview_cancel_by_response:
     methods: [GET, POST]
     requirements:
       responseCode: \w+
+
+interview_edit_status:
+    path: kontrollpanel/intervju/status/{id}
+    defaults: { _controller: AppBundle:Interview:editStatus }
+    methods: [POST]
+    requirements:
+       id: \d+
 
 ##########################################
 #                File browser            #
