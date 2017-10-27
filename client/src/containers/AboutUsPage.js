@@ -15,14 +15,13 @@ class AboutUsPage extends Component {
             showModal: false,
             width: window.innerWidth
         };
-        this.handleModal = this.handleModal.bind(this);
     }
 
-    handleModal() {
+    handleModal = () => {
         this.setState(prevState => ({
             showModal: !prevState.showModal
         }));
-    }
+    };
 
     handleWindowSizeChange = () => {
         console.log("Resizing :) :)");
@@ -87,7 +86,7 @@ class AboutUsPage extends Component {
                             </Grid.Row>
                         </Grid>
                     </Grid.Column>
-                    <Grid.Column mobile={0} tablet={1} computer={3} /*width={2}*/>
+                    <Grid.Column tablet={1} computer={3} /*width={2}*/>
                     </Grid.Column>
                 </Grid>
                 </section>

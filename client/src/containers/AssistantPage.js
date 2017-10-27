@@ -13,23 +13,21 @@ class AssistantPage extends Component {
             newsletterRevealed: false,
             width: window.innerWidth
         };
-        this.handleScroll = this.handleScroll.bind(this);
-        this.onNewsletterPopUpClose = this.onNewsletterPopUpClose.bind(this);
     }
 
-    handleScroll(){
+    handleScroll = () => {
         if (!this.state.newsletterRevealed && window.pageYOffset >= document.getElementById('newsletterTrigger').offsetTop) {
             this.setState({newsletterVisible: true, newsletterRevealed: true});
         }
-    }
+    };
 
-    onNewsletterPopUpClose(){
+    onNewsletterPopUpClose = () => {
         this.setState({newsletterVisible : false});
-    }
+    };
 
-    handleWindowSizeChange() {
+    handleWindowSizeChange = () => {
         this.setState({ width: window.innerWidth });
-    }
+    };
 
     componentWillMount() {
         window.addEventListener('scroll', this.handleScroll);

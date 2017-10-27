@@ -6,30 +6,27 @@ import {NewsletterApi} from '../api/NewsletterApi';
 
 class NewsletterPopUp extends Component {
     constructor(props){
-        super(props)
+        super(props);
         this.state = {
             email:'',
             newsletterId:''
         };
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.getClosestDepartment = this.getClosestDepartment.bind(this);
     }
 
-    handleSubmit(){
+    handleSubmit = () => {
   //      NewsletterApi.post(this.state.email); // TODO: finne ut av dette.
-    }
+    };
 
-    handleChange(newsletter){
+    handleChange = newsletter => {
         this.setState({[newsletter.target.id]: newsletter.target.value});
-    }
+    };
 
-    async getClosestDepartment(shortName){
-        const newsletterId = NewsletterApi.getByDepartmentShortName(shortName);
+    getClosestDepartment = async shortName => {
+        const newsletterId = await NewsletterApi.getByDepartmentShortName(shortName);
         this.setState({
-            newsletterId: await newsletterId,
+            newsletterId:  newsletterId,
         });
-    }
+    };
 
     render() {
         return (

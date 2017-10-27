@@ -11,15 +11,13 @@ class Header extends Component {
         this.state = {
             isOpen: false
         };
-
-        this.closeBurgerMenu = this.closeBurgerMenu.bind(this);
     }
 
-    closeBurgerMenu() {
+    closeBurgerMenu = () => {
         this.setState({
             isOpen: false
         });
-    }
+    };
 
     render() {
         return (
