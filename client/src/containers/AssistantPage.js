@@ -44,7 +44,7 @@ class AssistantPage extends Component {
       const isMobile = width <= 500;
 
     return (
-        <Grid>
+        <Grid className={'assistant-page'}>
             {isMobile ? '' : <NewsletterPopUp show={this.state.newsletterVisible} onClose={this.onNewsletterPopUpClose}/>}
             <Grid.Row columns={1}><br/><br/></Grid.Row>
 

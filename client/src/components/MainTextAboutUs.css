@@ -9,13 +9,12 @@
  About text
  *************/
 .aboutUs-text {
-    margin-top: 35px;
+    margin-top: 20px;
     font-style: normal;
     margin-left: var(--main-margin);
     margin-right: var(--main-margin);
     font-size: 20px;
     font-weight: 300;
-    line-height: 26px;
     text-align: left;
 }
 

@@ -60,36 +60,30 @@ class AboutUsPage extends Component {
          ];
         console.log(window.innerWidth);
         return (
-            <div>
-                {/*TODO:Move to own css-file*/}
-                <section style={{maxWidth: '100%', width: 3000, marginLeft: 'auto', marginRight: 'auto', marginTop: 80}}>
-                <Grid columns={3} stackable={true}>
-                    <ContactUsPopUp windowWidth={this.state.width} show={this.state.showModal} onClose={this.handleModal}/>
-                    <Grid.Column mobile={16} tablet={5} computer={4} /*width={4}*/>
-                        {/*TODO:Move to own css-file*/}
-                        <div >
-                            <ListComponentAboutUs onClick={this.handleModal} />
-                        </div>
-                    </Grid.Column>
-                    <Grid.Column mobile={16} tablet={10} computer={9} /*width={9}*/>
-                        <Grid stackable={true}>
-                            <MainTextAboutUs/>
-                            <Grid.Row>
-                                <div id={"FAQ"} className="aboutUs-FAQ">
-                                    <Faq questionsAndAnswers={faqQuestionsAndAnswers}/>
-                                </div>
-                            </Grid.Row>
-                            <Grid.Row>
-                                <div id={"kontakt-info"} className="contact-info">
-                                    <ContactInformation contactInfo={contactSchoolInfo}/>
-                                </div>
-                            </Grid.Row>
-                        </Grid>
-                    </Grid.Column>
-                    <Grid.Column tablet={1} computer={3} /*width={2}*/>
-                    </Grid.Column>
+            <div className="about-us-page">
+                <Grid columns={3}>
+                      <ContactUsPopUp windowWidth={this.state.width} show={this.state.showModal} onClose={this.handleModal}/>
+                      <Grid.Column mobile={16} tablet={5} computer={4}>
+                          <ListComponentAboutUs onClick={this.handleModal} />
+                      </Grid.Column>
+                      <Grid.Column mobile={16} tablet={11} computer={9}>
+                          <div className={'about-us-main'}>
+                              <Grid.Row>
+                                  <MainTextAboutUs/>
+                              </Grid.Row>
+                              <Grid.Row>
+                                  <div id={"FAQ"} className="aboutUs-FAQ">
+                                      <Faq questionsAndAnswers={faqQuestionsAndAnswers}/>
+                                  </div>
+                              </Grid.Row>
+                              <Grid.Row>
+                                  <div id={"kontakt-info"} className="contact-info">
+                                      <ContactInformation contactInfo={contactSchoolInfo}/>
+                                  </div>
+                              </Grid.Row>
+                          </div>
+                      </Grid.Column>
                 </Grid>
-                </section>
             </div>
         )
     }

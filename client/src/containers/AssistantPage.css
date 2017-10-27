@@ -12,19 +12,17 @@
     margin: 1250px auto;
 }
 
-p {
+.assistant-page p {
     font-size: 20px;
-    font-weight: 300;
-    line-height: 26px;
     text-align: left;
 }
 
-h1 {
+.assistant-page h1 {
     font-size: 40px;
     font-weight: bold;
 }
 
-img.displayed {
+.assistant-page  img.displayed {
     display: block;
     margin-left: auto;
     margin-right: auto

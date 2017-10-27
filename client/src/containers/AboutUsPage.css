@@ -8,6 +8,16 @@
        FAQ
 *****************/
 
+.about-us-page {
+    padding: 100px 1rem;
+}
+
+.about-us-main {
+    width: 960px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
 .aboutUs-FAQ h1 {
     font-size: 250%;
     color:black;
