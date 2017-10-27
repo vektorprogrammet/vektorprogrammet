@@ -28,13 +28,13 @@ class HomePage extends Component {
     return (
         <Grid className="homepage" padded>
           <Grid.Row className="hero-section">
-            <Grid.Column width={8}>
+            <Grid.Column mobile={16} tablet={8} computer={8}>
               <Image className="hero-image" src={hero} alt={'Vektorprogrammet'}/>
             </Grid.Column>
-            <Grid.Column width={8}>
+            <Grid.Column mobile={16} tablet={8} computer={8}>
               <div className="hero-content">
                 <h1>Vektorprogrammet</h1>
-                <p>- sender studenter til ungdomsskoler for å hjelpe til som <br />
+                <p>- sender studenter til ungdomsskoler for å hjelpe til som
                   assistentlærere i matematikkundervisningen</p>
                 <Link to={'/assistenter'}>
                   <Button color={'green'} className="hero-cta">LES MER OG BLI ASSISTENT</Button>
