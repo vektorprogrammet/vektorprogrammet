@@ -18,23 +18,28 @@
     text-align: left;
 }
 
-/*****************
-    Images
-*****************/
-.aboutUs-image1{
-    display: block;
-    margin-left: var(--main-margin);
-    margin-right: var(--main-margin);
-    /*max-height: 100%;
-    max-width: 100%;
-    height: ??px;*/
+.about-us-page .row.main-text-about-us-section {
+    padding-bottom: 150px;
 }
 
-.aboutUs-image2{
-    display: block;
-    margin-left: var(--main-margin);
-    margin-right: var(--main-margin);
-    /*max-height: 100%;
-    max-width: 100%;
-    height: ??px;*/
+@media screen and (max-width: 767px) {
+    .aboutUs-header {
+        font-size: 30px;
+    }
+
+    .aboutUs-text {
+        font-size: 18px;
+    }
+
+    .main-text-about-us img {
+        margin: 0 auto;
+    }
+
+    .ui.stackable.grid:not(.vertically)>.row.main-text-about-us-section {
+        padding-bottom: 50px;
+    }
+
+    .ui.stackable.grid:not(.vertically)>.row.main-text-about-us-section:first-of-type {
+        padding-top: 30px;
+    }
 }

@@ -1,12 +1,12 @@
 import React from 'react';
-import {Image, Grid} from 'semantic-ui-react';
+import {Image, Grid, Responsive} from 'semantic-ui-react';
 import './MainTextAboutUs.css';
 
 
 export const MainTextAboutUs = () => {
     return(
-        <Grid stackable={true}>
-          <Grid.Row style={{paddingBottom: 150}}>
+        <Grid stackable={true} className={'main-text-about-us'}>
+          <Grid.Row className={'main-text-about-us-section'}>
               <Grid.Column>
                   <h1 className="aboutUs-header">Om Vektorprogrammet</h1>
                   <p className="aboutUs-text">
@@ -18,7 +18,7 @@ export const MainTextAboutUs = () => {
               </Grid.Column>
           </Grid.Row>
             {/*Move to own css-file*/}
-            <Grid.Row columns={3} style={{paddingBottom: 150}}>
+            <Grid.Row columns={3} className={'main-text-about-us-section'}>
                 <Grid.Column width={9}>
                     <h1 className="aboutUs-header">Motivere elever</h1>
                     <p className="aboutUs-text">
@@ -31,10 +31,10 @@ export const MainTextAboutUs = () => {
                     <Image className="aboutUs-image1" src={"http://via.placeholder.com/350x350/"}/>
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row columns={3} style={{paddingBottom: 150}}>
-                <Grid.Column width={6}>
-                    <Image className="aboutUs-image2" src={"http://via.placeholder.com/350x350/"}/>
-                </Grid.Column>
+            <Grid.Row columns={3} className={'main-text-about-us-section'}>
+                <Responsive as={Grid.Column} width={6} minWidth={Responsive.onlyTablet.minWidth}>
+                      <Image className="aboutUs-image2" src={"http://via.placeholder.com/350x350/"}/>
+                </Responsive>
                 <Grid.Column width={9} floated={'right'}>
                     <h1 className="aboutUs-header">Motivere studenter</h1>
                     <p className="aboutUs-text">
@@ -44,6 +44,9 @@ export const MainTextAboutUs = () => {
                       timen raskere og at undervisningen kan bli mer tilpasset de ulike elevgruppene.
                     </p>
                 </Grid.Column>
+                <Responsive as={Grid.Column} width={6} maxWidth={Responsive.onlyTablet.minWidth}>
+                  <Image className="aboutUs-image2" src={"http://via.placeholder.com/350x350/"}/>
+                </Responsive>
             </Grid.Row>
             <Grid.Row columns={1}>
                 <Grid.Column width={16}>
@@ -55,7 +58,7 @@ export const MainTextAboutUs = () => {
                     </p>
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row columns={1} style={{paddingBottom: 150}}>
+            <Grid.Row columns={1} className={'main-text-about-us-section'}>
                 <Grid.Column width={16}>
                      <Image className="aboutUs-image2" src={"http://via.placeholder.com/950x335/"}/>
                 </Grid.Column>
