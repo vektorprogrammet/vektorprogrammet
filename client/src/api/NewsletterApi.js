@@ -11,8 +11,19 @@ export const NewsletterApi = {
         return res.json();
     },
 
-    getByDepartmentShortName: async (shortname) => {
-        const res = await fetch(`${apiEndpoint}/newsletters/${shortname}/department`);
+    post: async(postData) => {
+        const result = await fetch(`${apiEndpoint}/newsletters`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(postData)
+        });
+        console.log(result.json());
+    },
+
+    getByDepartment: async (id) => {
+        const res = await fetch(`${apiEndpoint}/newsletters/${id}/department`);
         return res.json();
     }
 };

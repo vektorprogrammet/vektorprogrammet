@@ -11,6 +11,7 @@ class AssistantPage extends Component {
         this.state={
             newsletterVisible: false,
             newsletterRevealed: false,
+            activeAdmission: false, // TODO: impolementere denne
             width: window.innerWidth
         };
     }
@@ -42,6 +43,8 @@ class AssistantPage extends Component {
   render() {
       const { width } = this.state.width;
       const isMobile = width <= 500;
+
+      const isActiveAdmission = this.state.activeAdmission;
 
     return (
         <Grid className={'assistant-page'}>
@@ -152,8 +155,15 @@ class AssistantPage extends Component {
 
             <Grid.Row columns={1}>
                 <Grid.Column width={9} className="assistantApplicationForm centered">
-                    <Header as='h3'>Send oss din søknad</Header>
-                    <ApplicationForm/>
+                    {!isActiveAdmission ?
+                        <Header as='h4'>Det er dessverre ingen aktiv søkeperiode</Header>
+                        :
+                        <div>
+                            <Header as='h3'>Send oss din søknad</Header>
+                            <ApplicationForm/>
+
+                        </div>
+                    }
                 </Grid.Column>
             </Grid.Row>
 

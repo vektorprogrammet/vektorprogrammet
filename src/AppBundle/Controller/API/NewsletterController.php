@@ -2,9 +2,11 @@
 
 namespace AppBundle\Controller\API;
 
+use AppBundle\Entity\Subscriber;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\HttpFoundation\Request;
 
 class NewsletterController extends FOSRestController implements ClassResourceInterface
 {
@@ -58,7 +60,7 @@ class NewsletterController extends FOSRestController implements ClassResourceInt
 
 
     /**
-     * Get Newsletter by Department Short name
+     * Get Newsletter by Department Id
      *
      * @return mixed
      *
@@ -66,9 +68,10 @@ class NewsletterController extends FOSRestController implements ClassResourceInt
      *     section="Newsletter",
      *     requirements={
      *      {
-     *          "name"="shortName",
-     *          "dataType"="string",
-     *          "description"="Department short name"
+     *          "name"="id",
+     *          "dataType"="integer",
+     *          "requirement"="\d+",
+     *          "description"="Newsletter ID"
      *      }
      *     },
      *     statusCodes={
@@ -79,10 +82,40 @@ class NewsletterController extends FOSRestController implements ClassResourceInt
      * )
      */
 
-    public function getDepartmentAction(string $shortName)
+    public function getDepartmentAction(int $id)
     {
-        $department = $this->getDoctrine()->getRepository('AppBundle:Department')->findDepartmentByShortName($shortName);
-        return $this->getDoctrine()->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department)->getId();
+        $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($id);
+        return $this->getDoctrine()->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
+    }
+
+    /**
+     * Creates a new Subscriber
+     *
+     * @return mixed
+     *
+     * @ApiDoc(
+     *     section="Subscriber",
+     *     statusCodes={
+     *          201 = "Returned when successful",
+     *          400 = "Bad request",
+     *          500 = "Internal server error"
+     *     }
+     * )
+     */
+    public function postAction(Request $request)
+    {
+        $subscriber = new Subscriber();
+        $newsletterId = $request->request->get('newsletterId');
+        $newsletter = $this->getDoctrine()->getRepository('AppBundle:Newsletter')->find($newsletterId);
+
+        $subscriber->setEmail($request->request->get('email'));
+        $subscriber->setNewsletter($newsletter);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($subscriber);
+        $em->flush();
+
+        return $subscriber;
     }
 
 }
