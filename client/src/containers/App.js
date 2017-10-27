@@ -5,6 +5,7 @@ import HomePage from './HomePage';
 import AssistantPage from './AssistantPage';
 import TeamPage from './TeamPage';
 import AboutUsPage from './AboutUsPage';
+import ContactPage from './ContactPage';
 
 class App extends Component {
   render() {
@@ -14,8 +15,9 @@ class App extends Component {
           <Switch>gi
             <Route exact path='/' component={HomePage}/>
             <Route exact path='/assistenter' component={AssistantPage}/>
-            <Route exact path='/om-oss' component={AboutUsPage}/>
             <Route exact path='/team' component={TeamPage}/>
+            <Route exact path='/om-oss' component={AboutUsPage}/>
+            <Route exact path='/kontakt' component={ContactPage}/>
           </Switch>
         </div>
     );

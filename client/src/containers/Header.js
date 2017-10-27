@@ -30,9 +30,10 @@ class Header extends Component {
                     <Menu secondary className="main-navigation">
                         <Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/assistenter'}>Assistenter</NavLink></Menu.Item>
                         <Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/team'}>Team</NavLink></Menu.Item>
-                        <Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/laerere'}>Lærere</NavLink></Menu.Item>
-                        <Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/foreldre'}>Foreldre</NavLink></Menu.Item>
+                        {/*<Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/laerere'}>Lærere</NavLink></Menu.Item>*/}
+                        {/*<Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/foreldre'}>Foreldre</NavLink></Menu.Item>*/}
                         <Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/om-oss'}>Om oss</NavLink></Menu.Item>
+                        <Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/kontakt'}>Kontakt</NavLink></Menu.Item>
                     </Menu>
                 </Responsive>
 
@@ -43,9 +44,10 @@ class Header extends Component {
                             <ul><NavLink activeClassName="active" className="burgerLinks" exact to={'/'}>Hjem</NavLink></ul>
                             <ul><NavLink activeClassName="active" className="burgerLinks" exact to={'/assistenter'}>Assistenter</NavLink></ul>
                             <ul><NavLink activeClassName="active" className="burgerLinks" exact to={'/team'}>Team</NavLink></ul>
-                            <ul><NavLink activeClassName="active" className="burgerLinks" exact to={'/laerere'}>Lærere</NavLink></ul>
-                            <ul><NavLink activeClassName="active" className="burgerLinks" exact to={'/foreldre'}>Foreldre</NavLink></ul>
+                            {/*<ul><NavLink activeClassName="active" className="burgerLinks" exact to={'/laerere'}>Lærere</NavLink></ul>*/}
+                            {/*<ul><NavLink activeClassName="active" className="burgerLinks" exact to={'/foreldre'}>Foreldre</NavLink></ul>*/}
                             <ul><NavLink activeClassName="active" className="burgerLinks" exact to={'/om-oss'}>Om oss</NavLink></ul>
+                            <ul><NavLink activeClassName="active" className="burgerLinks" exact to={'/kontakt'}>Kontakt</NavLink></ul>
                         </li>
                     </BurgerMenu>
                 </Responsive>
