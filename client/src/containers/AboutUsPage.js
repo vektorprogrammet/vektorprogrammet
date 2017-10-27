@@ -65,7 +65,7 @@ class AboutUsPage extends Component {
         console.log(window.innerWidth);
         return (
             <div className="about-us-page">
-                <Grid columns={3}>
+                <Grid columns={3} padded>
                       <ContactUsPopUp windowWidth={this.state.width} show={this.state.showModal} onClose={this.handleModal}/>
                       <Grid.Column mobile={16} tablet={5} computer={4}>
                           <ListComponentAboutUs onClick={this.handleModal} />

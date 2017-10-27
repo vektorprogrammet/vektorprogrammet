@@ -26,7 +26,7 @@ class HomePage extends Component {
 
   render() {
     return (
-        <Grid className="homepage">
+        <Grid className="homepage" padded>
           <Grid.Row className="hero-section">
             <Grid.Column width={8}>
               <Image className="hero-image" src={hero} alt={'Vektorprogrammet'}/>
