@@ -28,11 +28,11 @@ class Header extends Component {
                     </Link>
 
                     <Menu secondary className="main-navigation">
-                        <Menu.Item link><Link className="menuLinks" to={'/assistenter'}>Assistenter</Link></Menu.Item>
-                        <Menu.Item link><Link className="menuLinks" to={'/team'}>Team</Link></Menu.Item>
-                        <Menu.Item link><Link className="menuLinks" to={'/laerere'}>Lærere</Link></Menu.Item>
-                        <Menu.Item link><Link className="menuLinks" to={'/foreldre'}>Foreldre</Link></Menu.Item>
-                        <Menu.Item link><Link className="menuLinks" to={'/om-oss'}>Om oss</Link></Menu.Item>
+                        <Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/assistenter'}>Assistenter</NavLink></Menu.Item>
+                        <Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/team'}>Team</NavLink></Menu.Item>
+                        <Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/laerere'}>Lærere</NavLink></Menu.Item>
+                        <Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/foreldre'}>Foreldre</NavLink></Menu.Item>
+                        <Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/om-oss'}>Om oss</NavLink></Menu.Item>
                     </Menu>
                 </Responsive>
 

@@ -57,6 +57,11 @@
     padding: 0.8em 0.9em;
 }
 
+.menuLinks.active {
+    font-weight: 700;
+    color: #002776;
+}
+
 .ui.secondary.menu .item {
     padding: 0;
 }
