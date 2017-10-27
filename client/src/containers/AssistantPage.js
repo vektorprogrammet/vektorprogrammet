@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Grid, Header, List, Form } from 'semantic-ui-react';
+import { Grid, Header, List } from 'semantic-ui-react';
 import './AssistantPage.css';
 import NewsletterPopUp from '../components/NewsletterPopUp';
 import ApplicationForm from '../components/ApplicationForm';
@@ -27,13 +27,18 @@ class AssistantPage extends Component {
         this.setState({newsletterVisible : false});
     }
 
-    handleWindowSizeChange = () => {
+    handleWindowSizeChange() {
         this.setState({ width: window.innerWidth });
-    };
+    }
 
     componentWillMount() {
         window.addEventListener('scroll', this.handleScroll);
         window.addEventListener('resize', this.handleWindowSizeChange);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('resize', this.handleWindowSizeChange);
     }
 
   render() {
