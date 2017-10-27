@@ -126,3 +126,5 @@ security:
           #ROLE_USER = assistant user
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/utlegg, roles: ROLE_USER }
+
+        - { path: ^/api, role: ROLE_ADMIN }
