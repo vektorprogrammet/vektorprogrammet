@@ -32,6 +32,10 @@ class AboutUsPage extends Component {
         window.addEventListener('resize', this.handleWindowSizeChange);
     }
 
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleWindowSizeChange);
+    }
+
     render() {
         const faqQuestionsAndAnswers = [
             {question: "Er verv i Vektorprogrammet betalt?", answer: "Nei, Vektorprogrammet er en frivillig, studentdrevet organisasjon, der ingen verv er betalt i form av norske kroner. Du får derimot delta på sosiale arrangementer og muligheten til å påvirke en organisasjon som er den største av sitt slag."},
