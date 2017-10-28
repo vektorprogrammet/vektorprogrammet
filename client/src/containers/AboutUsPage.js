@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Grid} from 'semantic-ui-react';
+import {Link} from 'react-router-dom';
 import './AboutUsPage.css';
 import ContactUsPopUp from '../components/ContactUsPopUp';
 import Faq from '../components/Faq';
@@ -67,10 +68,10 @@ class AboutUsPage extends Component {
             <div className="about-us-page">
                 <Grid columns={3} padded>
                       <ContactUsPopUp windowWidth={this.state.width} show={this.state.showModal} onClose={this.handleModal}/>
-                      <Grid.Column mobile={16} tablet={5} computer={4}>
-                          <ListComponentAboutUs onClick={this.handleModal} />
-                      </Grid.Column>
-                      <Grid.Column mobile={16} tablet={11} computer={9}>
+                      {/*<Grid.Column mobile={16} tablet={5} computer={4}>*/}
+                          {/*<ListComponentAboutUs onClick={this.handleModal} />*/}
+                      {/*</Grid.Column>*/}
+                      <Grid.Column width={16}>
                           <div className={'about-us-main'}>
                               <Grid.Row>
                                   <MainTextAboutUs/>
@@ -82,7 +83,8 @@ class AboutUsPage extends Component {
                               </Grid.Row>
                               <Grid.Row>
                                   <div id={"kontakt-info"} className="contact-info">
-                                      <ContactInformation contactInfo={contactSchoolInfo}/>
+                                      <p>Noe du lurer på? <Link to={'/kontakt'}>Ta kontakt med oss!</Link></p>
+                                      {/*<ContactInformation contactInfo={contactSchoolInfo}/>*/}
                                   </div>
                               </Grid.Row>
                           </div>

@@ -6,14 +6,14 @@ import './MainTextAboutUs.css';
 export const MainTextAboutUs = () => {
     return(
         <Grid stackable={true} className={'main-text-about-us'}>
-          <Grid.Row className={'main-text-about-us-section'}>
+          <Grid.Row className={'main-text-about-us-section main-text-about-us-intro'}>
               <Grid.Column>
                   <h1 className="aboutUs-header">Om Vektorprogrammet</h1>
                   <p className="aboutUs-text">
                     Vektorprogrammet arbeider for å øke interessen for matematikk og realfag blant elever i grunnskolen. Vi
                     er en nasjonal studentorganisasjon som sender studenter med utmerket realfagskompetanse til skoler for å
                     hjelpe elevene i matematikktimene. Disse studentene har også gode pedagogiske evner og er gode
-                    rollemodeller – de er Norges realfagshelter.
+                    rollemodeller – <span className={'font-weight-normal'}>de er Norges realfagshelter.</span>
                   </p>
               </Grid.Column>
           </Grid.Row>
@@ -44,7 +44,7 @@ export const MainTextAboutUs = () => {
                       timen raskere og at undervisningen kan bli mer tilpasset de ulike elevgruppene.
                     </p>
                 </Grid.Column>
-                <Responsive as={Grid.Column} width={6} maxWidth={Responsive.onlyTablet.minWidth}>
+                <Responsive as={Grid.Column} width={6} {...Responsive.onlyMobile}>
                   <Image className="aboutUs-image2" src={"http://via.placeholder.com/350x350/"}/>
                 </Responsive>
             </Grid.Row>

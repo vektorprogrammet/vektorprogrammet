@@ -3,6 +3,7 @@
     padding: 8px 0;
     position: relative;
     z-index: 9999;
+    background: #ffffff;
 }
 
 .logo {

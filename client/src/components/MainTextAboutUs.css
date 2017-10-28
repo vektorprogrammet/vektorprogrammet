@@ -1,21 +1,21 @@
 .aboutUs-header {
-    margin-left: var(--main-margin);
-    margin-right: var(--main-margin);
-    color: rgb(0,0,0);
-    font-size: 33px;
+    font-size: 28px;
 }
 
 /**************
  About text
  *************/
-.aboutUs-text {
-    margin-top: 20px;
-    font-style: normal;
-    margin-left: var(--main-margin);
-    margin-right: var(--main-margin);
+.main-text-about-us-intro .aboutUs-header {
+    font-size: 34px;
+}
+
+.main-text-about-us-intro .aboutUs-text {
     font-size: 20px;
-    font-weight: 300;
-    text-align: left;
+}
+
+.aboutUs-text {
+    margin-top: 16px;
+    font-size: 18px;
 }
 
 .about-us-page .row.main-text-about-us-section {
@@ -23,12 +23,12 @@
 }
 
 @media screen and (max-width: 767px) {
-    .aboutUs-header {
-        font-size: 30px;
+    .main-text-about-us-intro .aboutUs-header {
+        font-size: 32px;
     }
 
-    .aboutUs-text {
-        font-size: 18px;
+    .main-text-about-us-intro .aboutUs-text {
+        font-size: 19px;
     }
 
     .main-text-about-us img {
