@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './HomePage.css';
-import {Button, Image, Grid} from 'semantic-ui-react';
+import {Button, Image, Grid, Responsive} from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import SponsorList from '../components/SponsorList';
 import {SponsorApi} from '../api/SponsorApi';
@@ -29,11 +29,16 @@ class HomePage extends Component {
         <Grid className="homepage" padded>
           <Grid.Row className="hero-section">
             <Grid.Column mobile={16} tablet={8} computer={8}>
+              <Responsive maxWidth={Responsive.onlyMobile.maxWidth}>
+                <h1>Vektorprogrammet</h1>
+              </Responsive>
               <Image className="hero-image" src={hero} alt={'Vektorprogrammet'}/>
             </Grid.Column>
             <Grid.Column mobile={16} tablet={8} computer={8}>
               <div className="hero-content">
-                <h1>Vektorprogrammet</h1>
+                <Responsive minWidth={Responsive.onlyMobile.maxWidth}>
+                  <h1>Vektorprogrammet</h1>
+                </Responsive>
                 <p>- sender studenter til ungdomsskoler for å hjelpe til som
                   assistentlærere i matematikkundervisningen</p>
                 <Link to={'/assistenter'}>
