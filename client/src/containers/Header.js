@@ -23,11 +23,11 @@ class Header extends Component {
         return (
             <div className="top-header">
                 <Responsive minWidth={Responsive.onlyTablet.minWidth}>
-                    <Link to={'/'}>
-                        <Image className="logo" src={logo}/>
-                    </Link>
 
                     <Menu secondary className="main-navigation">
+                        <Link to={'/'}>
+                            <Image className="logo" src={logo}/>
+                        </Link>
                         <Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/assistenter'}>Assistenter</NavLink></Menu.Item>
                         <Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/team'}>Team</NavLink></Menu.Item>
                         {/*<Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/laerere'}>Lærere</NavLink></Menu.Item>*/}
@@ -38,7 +38,7 @@ class Header extends Component {
                 </Responsive>
 
                 <Responsive {...Responsive.onlyMobile}>
-                        <Image className="mobile-logo" src={logo}/>
+                    <Image className="mobile-logo" src={logo}/>
                     <BurgerMenu isOpen={this.state.isOpen}>
                         <li className="linkGroup" onClick={this.closeBurgerMenu}>
                             <ul><NavLink activeClassName="active" className="burgerLinks" exact to={'/'}>Hjem</NavLink></ul>
