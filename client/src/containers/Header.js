@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link, NavLink} from 'react-router-dom';
 import {Image, Menu, Responsive} from 'semantic-ui-react';
-import logo from '../images/logo_condensed.png';
+import logo from '../images/vektor-logo.svg';
 import './Header.css';
 import {slide as BurgerMenu} from 'react-burger-menu';
 
