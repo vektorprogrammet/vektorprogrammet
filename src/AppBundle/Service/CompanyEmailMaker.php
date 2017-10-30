@@ -54,7 +54,7 @@ class CompanyEmailMaker
         $string = str_replace('ø', 'o', $string);
         $string = str_replace('Ø', 'O', $string);
         $string = str_replace('å', 'a', $string);
-        $string = str_replace('Å', 'Å', $string);
+        $string = str_replace('Å', 'A', $string);
 
         return $string;
     }
