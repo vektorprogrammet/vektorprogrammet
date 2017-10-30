@@ -65,6 +65,14 @@ class Image
     private $resolutions;
 
     /**
+     * Image constructor.
+     */
+    public function __construct()
+    {
+        $this->filters = array();
+    }
+
+    /**
      * @return ImageGallery
      */
     public function getGallery()
@@ -173,7 +181,7 @@ class Image
      */
     public function addFilter($filter)
     {
-        array_push($this->filters,$filter);
+        array_push($this->filters, $filter);
     }
 
     /**
