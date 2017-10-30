@@ -44,24 +44,6 @@ class ImageEntityUnitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($mockUploadedFile, $image->getUploadedFile());
     }
 
-    public function testSetFilters()
-    {
-        $image = new Image();
-        $filters = array('max_500px', 'square_300px');
-        $image->setFilters($filters);
-
-        $this->assertEquals($filters, $image->getFilters());
-    }
-
-    public function testAddFilter()
-    {
-        $image = new Image();
-        $filter = 'max_500px';
-        $image->addFilter($filter);
-
-        $this->assertEquals($filter, $image->getFilters()[0]);
-    }
-
     public function testSetResolutions()
     {
         $image = new Image();

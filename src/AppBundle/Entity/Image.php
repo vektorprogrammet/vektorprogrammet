@@ -53,24 +53,9 @@ class Image
     private $gallery;
 
     /**
-     * @var array $filters
-     *
-     * @ORM\Column(name="filters", type="array", nullable=true)
-     */
-    private $filters;
-
-    /**
      * @var array $resolutions
      */
     private $resolutions;
-
-    /**
-     * Image constructor.
-     */
-    public function __construct()
-    {
-        $this->filters = array();
-    }
 
     /**
      * @return ImageGallery
@@ -158,30 +143,6 @@ class Image
     public function setUploadedFile($uploadedFile)
     {
         $this->uploadedFile = $uploadedFile;
-    }
-
-    /**
-     * @return array
-     */
-    public function getFilters()
-    {
-        return $this->filters;
-    }
-
-    /**
-     * @param array $filters
-     */
-    public function setFilters($filters)
-    {
-        $this->filters = $filters;
-    }
-
-    /**
-     * @param string $filter
-     */
-    public function addFilter($filter)
-    {
-        array_push($this->filters, $filter);
     }
 
     /**
