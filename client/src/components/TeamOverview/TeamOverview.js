@@ -46,11 +46,11 @@ export default class TeamOverview extends Component {
                 <Header as="h1" id="teamHeader">Team</Header>
                 <Tab menu={{
                     id: "regionMenu",
-                    compact: true,
+                    compact: false,
                     stackable: true,
                     attached: false,
                     secondary: true,
-                    pointing: false
+                    pointing: true
                 }} panes={this.getPanes(this.props.departments)}/>
             </Segment>
         );
