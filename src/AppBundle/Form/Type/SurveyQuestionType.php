@@ -26,6 +26,7 @@ class SurveyQuestionType extends AbstractType
                 'text' => 'Text',
                 'radio' => 'Multiple choice',
                 'list' => 'Velg fra liste',
+                'check' => 'Checkboxes'
             ),
             'label' => 'Type',
         ));

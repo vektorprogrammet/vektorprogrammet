@@ -38,6 +38,7 @@ class SurveyTaken implements \JsonSerializable
     protected $survey;
 
     /**
+     * @var SurveyAnswer[]
      * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="surveyTaken", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $surveyAnswers;
@@ -66,7 +67,7 @@ class SurveyTaken implements \JsonSerializable
     public function removeNullAnswers()
     {
         foreach ($this->surveyAnswers as $answer) {
-            if ($answer->getAnswer() === null) {
+            if ($answer->getSurveyQuestion()->getType() !== 'check' && $answer->getAnswer() === null) {
                 $this->surveyAnswers->removeElement($answer);
             }
         }
@@ -146,18 +147,12 @@ class SurveyTaken implements \JsonSerializable
         foreach ($this->surveyAnswers as $a) {
             if (!$a->getSurveyQuestion()->getOptional() && ($a->getSurveyQuestion()->getType() == 'radio' || $a->getSurveyQuestion()->getType() == 'list')) {
                 $ret[] = $a;
+            } elseif ($a->getSurveyQuestion()->getType() == 'check') {
+                $ret[] = $a;
             }
         }
 
         return $ret;
-    }
-
-    public function removeEmojis()
-    {
-        foreach ($this->surveyAnswers as $answer) {
-            $answerNoEmojis = preg_replace('/([0-9#][\x{20E3}])|[\x{00ae}\x{00a9}\x{203C}\x{2047}\x{2048}\x{2049}\x{3030}\x{303D}\x{2139}\x{2122}\x{3297}\x{3299}][\x{FE00}-\x{FEFF}]?|[\x{2190}-\x{21FF}][\x{FE00}-\x{FEFF}]?|[\x{2300}-\x{23FF}][\x{FE00}-\x{FEFF}]?|[\x{2460}-\x{24FF}][\x{FE00}-\x{FEFF}]?|[\x{25A0}-\x{25FF}][\x{FE00}-\x{FEFF}]?|[\x{2600}-\x{27BF}][\x{FE00}-\x{FEFF}]?|[\x{2900}-\x{297F}][\x{FE00}-\x{FEFF}]?|[\x{2B00}-\x{2BF0}][\x{FE00}-\x{FEFF}]?|[\x{1F000}-\x{1F6FF}][\x{FE00}-\x{FEFF}]?/u', '', $answer->getAnswer());
-            $answer->setAnswer($answerNoEmojis);
-        }
     }
 
     public function isValid(): bool
@@ -168,7 +163,7 @@ class SurveyTaken implements \JsonSerializable
 
         foreach ($this->getSurveyAnswers() as $answer) {
             $question = $answer->getSurveyQuestion();
-            if (!$question->getOptional() && strlen($answer->getAnswer()) < 1) {
+            if (!$question->getOptional() && strlen($answer->getAnswer()) < 1 && $answer->getSurveyQuestion()->getType() !== 'check') {
                 return false;
             }
         }
