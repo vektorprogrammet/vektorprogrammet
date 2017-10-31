@@ -69,7 +69,6 @@ class Department
      * @ORM\ManyToMany(targetEntity="School", inversedBy="departments")
      * @ORM\JoinTable(name="department_school")
      * @ORM\JoinColumn(onDelete="cascade")
-     * @JMS\Expose()
      **/
     protected $schools;
 
@@ -86,10 +85,29 @@ class Department
     private $semesters;
 
     /**
+     * @var Team[]
      * @ORM\OneToMany(targetEntity="Team", mappedBy="department", cascade={"remove"})
-     * @JMS\Expose()
      **/
     private $teams;
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("teams")
+     */
+    public function serializeTeams()
+    {
+        $teams = [];
+        foreach ($this->teams as $team) {
+            $teams[] = [
+                'id' => $team->getId(),
+                'name' => $team->getName(),
+                'email' => $team->getEmail(),
+                'short_description' => $team->getShortDescription(),
+                'accept_application' => $team->getAcceptApplication()
+            ];
+        }
+        return $teams;
+    }
 
     /**
      * Constructor.
@@ -246,7 +264,7 @@ class Department
 
     public function __toString()
     {
-        return (string) $this->getShortName();
+        return (string)$this->getShortName();
     }
 
     /**
