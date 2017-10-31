@@ -56,7 +56,7 @@ class ImageGalleryEntityUnitTest extends \PHPUnit_Framework_TestCase
     public function testSetFilters()
     {
         $imageGallery = new ImageGallery();
-        $filters = array('max_500px', 'square_300px');
+        $filters = array('max_500px' => true, 'square_300px' => true);
         $imageGallery->setFilters($filters);
 
         $this->assertEquals($filters, $imageGallery->getFilters());
@@ -68,6 +68,6 @@ class ImageGalleryEntityUnitTest extends \PHPUnit_Framework_TestCase
         $filter = 'max_500px';
         $imageGallery->addFilter($filter);
 
-        $this->assertEquals($filter, $imageGallery->getFilters()[0]);
+        $this->assertEquals(true, $imageGallery->getFilters()[$filter]);
     }
 }

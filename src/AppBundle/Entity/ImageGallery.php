@@ -53,7 +53,7 @@ class ImageGallery
     private $description;
 
     /**
-     * @var array $filters
+     * @var ArrayCollection $filters
      *
      * @ORM\Column(name="filters", type="array")
      */
@@ -62,7 +62,7 @@ class ImageGallery
     public function __construct()
     {
         $this->images = new ArrayCollection();
-        $this->filters = array();
+        $this->filters = new ArrayCollection();
     }
 
     /**
@@ -186,7 +186,7 @@ class ImageGallery
      */
     public function setFilters($filters)
     {
-        $this->filters = $filters;
+        $this->filters = new ArrayCollection($filters);
     }
 
     /**
@@ -194,7 +194,7 @@ class ImageGallery
      */
     public function getFilters()
     {
-        return $this->filters;
+        return $this->filters->toArray();
     }
 
     /**
@@ -202,6 +202,6 @@ class ImageGallery
      */
     public function addFilter($filter)
     {
-        array_push($this->filters, $filter);
+        $this->filters->set($filter, true);
     }
 }

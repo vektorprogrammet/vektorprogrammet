@@ -39,6 +39,7 @@ class ImageGalleryController extends Controller
 
     public function editAction(Request $request, ImageGallery $imageGallery)
     {
+        $filters = $this->get('liip_imagine.filter.configuration')->all();
         $form = $this->createForm(ImageGalleryType::class, $imageGallery);
         $form->handleRequest($request);
 
@@ -54,6 +55,7 @@ class ImageGalleryController extends Controller
 
         return $this->render('image_gallery/edit.html.twig', array(
             'image_gallery' => $imageGallery,
+            'filters' => $filters,
             'form' => $form->createView(),
         ));
     }

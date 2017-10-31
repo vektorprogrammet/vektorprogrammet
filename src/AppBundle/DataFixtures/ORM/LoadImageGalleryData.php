@@ -15,6 +15,7 @@ class LoadImageGalleryData extends AbstractFixture implements OrderedFixtureInte
         $hyttetur->setTitle('Hyttetur våren 2017');
         $hyttetur->setDescription('Vektorprogrammets årlige hyttetur for teammedlemmer');
         $hyttetur->setReferenceName('hyttetur');
+        $hyttetur->setFilters(array('max_500px' => true, 'article_crop' => true));
         $hyttetur->addImage($this->getReference('hyttetur-1'));
         $hyttetur->addImage($this->getReference('hyttetur-2'));
         $hyttetur->addImage($this->getReference('hyttetur-3'));
@@ -33,6 +34,7 @@ class LoadImageGalleryData extends AbstractFixture implements OrderedFixtureInte
         $beste->setTitle('Vektorprogrammets beste bilder');
         $beste->setDescription('Kremen av kremen');
         $beste->setReferenceName('beste');
+        $beste->setFilters(array('max_500px' => true));
         $beste->addImage($this->getReference('beste-1'));
         $beste->addImage($this->getReference('beste-2'));
         $beste->addImage($this->getReference('beste-3'));
