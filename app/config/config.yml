@@ -5,6 +5,12 @@ imports:
     - { resource: "@AppBundle/Resources/config/services.yml" }
 
 parameters:
+  google_api:
+    client_id: '%google_api_client_id%'
+    client_secret: '%google_api_client_secret%'
+    refresh_token: '%google_api_refresh_token%'
+    disabled: true
+
   slack.notification_channel: '#notifications'
   slack.log_channel: '#website_logs'
   slack.disable_delivery: true
@@ -91,7 +97,10 @@ doctrine:
         dbname:   "%database_name%"
         user:     "%database_user%"
         password: "%database_password%"
-        charset:  UTF8
+        charset: utf8mb4
+        default_table_options:
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/data/data.db3"

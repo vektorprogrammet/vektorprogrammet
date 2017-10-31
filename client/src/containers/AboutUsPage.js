@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Grid, Form, Button} from 'semantic-ui-react';
+import {Grid} from 'semantic-ui-react';
+import {Link} from 'react-router-dom';
 import './AboutUsPage.css';
 import ContactUsPopUp from '../components/ContactUsPopUp';
 import Faq from '../components/Faq';
@@ -15,14 +16,13 @@ class AboutUsPage extends Component {
             showModal: false,
             width: window.innerWidth
         };
-        this.handleModal = this.handleModal.bind(this);
     }
 
-    handleModal() {
+    handleModal = () => {
         this.setState(prevState => ({
             showModal: !prevState.showModal
         }));
-    }
+    };
 
     handleWindowSizeChange = () => {
         console.log("Resizing :) :)");
@@ -31,6 +31,10 @@ class AboutUsPage extends Component {
 
     componentWillMount() {
         window.addEventListener('resize', this.handleWindowSizeChange);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleWindowSizeChange);
     }
 
     render() {
@@ -59,37 +63,33 @@ class AboutUsPage extends Component {
             {school: "NMBU", place: "Ås", email: "NMBU@gmail.com"},
             {school: "UiO", place: "Oslo", email: "UiO@gmail.com"}
          ];
+        console.log(window.innerWidth);
         return (
-            <div>
-                {/*TODO:Move to own css-file*/}
-                <section style={{maxWidth: '100%', width: 3000, marginLeft: 'auto', marginRight: 'auto'}}>
-                <Grid columns={3} stackable={true}>
-                    <ContactUsPopUp windowWidth={this.state.width} show={this.state.showModal} onClose={this.handleModal}/>
-                    <Grid.Column mobile={16} tablet={5} computer={4} /*width={4}*/>
-                        {/*TODO:Move to own css-file*/}
-                        <div style={{alignContent: 'center', padding: '0 15px'}}>
-                            <ListComponentAboutUs onClick={this.handleModal} />
-                        </div>
-                    </Grid.Column>
-                    <Grid.Column mobile={16} tablet={10} computer={9} /*width={9}*/>
-                        <Grid stackable={true}>
-                            <MainTextAboutUs/>
-                            <Grid.Row>
-                                <div id={"FAQ"} className="aboutUs-FAQ">
-                                    <Faq questionsAndAnswers={faqQuestionsAndAnswers}/>
-                                </div>
-                            </Grid.Row>
-                            <Grid.Row>
-                                <div id={"kontakt-info"} className="contact-info">
-                                    <ContactInformation contactInfo={contactSchoolInfo}/>
-                                </div>
-                            </Grid.Row>
-                        </Grid>
-                    </Grid.Column>
-                    <Grid.Column mobile={0} tablet={1} computer={3} /*width={2}*/>
-                    </Grid.Column>
+            <div className="about-us-page">
+                <Grid columns={3} padded>
+                      <ContactUsPopUp windowWidth={this.state.width} show={this.state.showModal} onClose={this.handleModal}/>
+                      {/*<Grid.Column mobile={16} tablet={5} computer={4}>*/}
+                          {/*<ListComponentAboutUs onClick={this.handleModal} />*/}
+                      {/*</Grid.Column>*/}
+                      <Grid.Column width={16}>
+                          <div className={'about-us-main'}>
+                              <Grid.Row>
+                                  <MainTextAboutUs/>
+                              </Grid.Row>
+                              <Grid.Row>
+                                  <div id={"FAQ"} className="aboutUs-FAQ">
+                                      <Faq questionsAndAnswers={faqQuestionsAndAnswers}/>
+                                  </div>
+                              </Grid.Row>
+                              <Grid.Row>
+                                  <div id={"kontakt-info"} className="contact-info">
+                                      <p>Noe du lurer på? <Link to={'/kontakt'}>Ta kontakt med oss!</Link></p>
+                                      {/*<ContactInformation contactInfo={contactSchoolInfo}/>*/}
+                                  </div>
+                              </Grid.Row>
+                          </div>
+                      </Grid.Column>
                 </Grid>
-                </section>
             </div>
         )
     }

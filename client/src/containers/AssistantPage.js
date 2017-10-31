@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Grid, Header, List, Form } from 'semantic-ui-react';
+import { Grid, Header, List } from 'semantic-ui-react';
 import './AssistantPage.css';
 import NewsletterPopUp from '../components/NewsletterPopUp';
 import ApplicationForm from '../components/ApplicationForm';
@@ -11,21 +11,20 @@ class AssistantPage extends Component {
         this.state={
             newsletterVisible: false,
             newsletterRevealed: false,
+            activeAdmission: false, // TODO: impolementere denne
             width: window.innerWidth
         };
-        this.handleScroll = this.handleScroll.bind(this);
-        this.onNewsletterPopUpClose = this.onNewsletterPopUpClose.bind(this);
     }
 
-    handleScroll(){
+    handleScroll = () => {
         if (!this.state.newsletterRevealed && window.pageYOffset >= document.getElementById('newsletterTrigger').offsetTop) {
             this.setState({newsletterVisible: true, newsletterRevealed: true});
         }
-    }
+    };
 
-    onNewsletterPopUpClose(){
+    onNewsletterPopUpClose = () => {
         this.setState({newsletterVisible : false});
-    }
+    };
 
     handleWindowSizeChange = () => {
         this.setState({ width: window.innerWidth });
@@ -36,12 +35,19 @@ class AssistantPage extends Component {
         window.addEventListener('resize', this.handleWindowSizeChange);
     }
 
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('resize', this.handleWindowSizeChange);
+    }
+
   render() {
       const { width } = this.state.width;
       const isMobile = width <= 500;
 
+      const isActiveAdmission = this.state.activeAdmission;
+
     return (
-        <Grid>
+        <Grid className={'assistant-page'}>
             {isMobile ? '' : <NewsletterPopUp show={this.state.newsletterVisible} onClose={this.onNewsletterPopUpClose}/>}
             <Grid.Row columns={1}><br/><br/></Grid.Row>
 
@@ -60,17 +66,17 @@ class AssistantPage extends Component {
             {/* SMÅ BILDER */}
             <Grid.Row columns={3}>
                 <Grid.Column width={4} className="assistantPics centered">
-                    <img className="displayed" src={'http://placehold.it/125x125'}/>
+                    <img className="displayed" src={'http://placehold.it/125x125'} alt={'Verv på CV'}/>
                     <Header as='h3'>Fint å ha på CVen</Header>
                     <p className="centered">Erfaring som arbeidsgivere setter pris på. Alle assistenter får en attest.</p>
                 </Grid.Column>
                 <Grid.Column width={4} className="assistantPics centered">
-                    <img className="displayed" src={'http://placehold.it/125x125'}/>
+                    <img className="displayed" src={'http://placehold.it/125x125'} alt={'Sosiale arrangementer'}/>
                     <Header as='h3'>Sosiale arrangementer</Header>
                     <p className="centered">Alle assistenter blir invitert til arrangementer som fester, populærforedrag, bowling, grilling i parken, gokart og paintball.</p>
                     </Grid.Column>
                 <Grid.Column width={4} className="assistantPics centered">
-                    <img className="displayed" src={'http://placehold.it/125x125'}/>
+                    <img className="displayed" src={'http://placehold.it/125x125'} alt={'Forbilde'}/>
                     <Header as='h3'>Vær et forbilde</Header>
                     <p className="centered">Her kommer en liten tekst om at vektorassistenter er superhelter i matteundervisningen.</p>
                 </Grid.Column>
@@ -123,25 +129,24 @@ class AssistantPage extends Component {
                     <Header as='h2'>Hvordan blir jeg Vektorassistent?</Header>
                 </Grid.Column>
 
-                <Grid.Column width={5} className="assistantListText">
-                    <Grid.Row columns={1}><br/><br/></Grid.Row>
+                <Grid.Column width={5} className="assistantListText1">
+
                     <Header as='h3'>Opptakskrav</Header>
                     <List bulleted>
-                        <List.Item>Du studerer på høgskole/universitet</List.Item>
-                        <List.Item>Du har hatt R1/P2 på videregående</List.Item>
-                        <List.Item>Du har tid til å dra til en ungdomsskole <br/>èn dag i uka (kl. 8-14)</List.Item>
+                        <List.Item className="liste1">Du studerer på høgskole/universitet</List.Item>
+                        <List.Item className="liste1">Du har hatt R1/P2 på videregående</List.Item>
+                        <List.Item className="liste1">Du har tid til å dra til en ungdomsskole <br/>èn dag i uka (kl. 8-14)</List.Item>
                     </List>
                 </Grid.Column>
 
-                <Grid.Column width={5} className="assistantListText">
-                    <Grid.Row columns={1}><br/><br/></Grid.Row>
+                <Grid.Column width={5} className="assistantListText2">
                     <Header as='h3'>Opptaksprosessen</Header>
                     <List ordered>
-                        <List.Item>Vektorprogrammet tar opp nye assistenter i starten av hvert semester</List.Item>
-                        <List.Item>Send inn søknad på <a href="">opptakssiden</a> til ditt universitet</List.Item>
-                        <List.Item>Møt opp på intervju (obligatorisk)</List.Item>
-                        <List.Item>Dra på et gratis pedagogikkurs arrangert av Vektorprogrammet</List.Item>
-                        <List.Item>Få tildelt en ungdomsskole som du og din vektorpartner skal dra til</List.Item>
+                        <List.Item className="liste1">Vektorprogrammet tar opp nye assistenter i starten av hvert semester</List.Item>
+                        <List.Item className="liste1">Send inn søknad på <a href="">opptakssiden</a> til ditt universitet</List.Item>
+                        <List.Item className="liste1">Møt opp på intervju (obligatorisk)</List.Item>
+                        <List.Item className="liste1">Dra på et gratis pedagogikkurs arrangert av Vektorprogrammet</List.Item>
+                        <List.Item className="liste1">Få tildelt en ungdomsskole som du og din vektorpartner skal dra til</List.Item>
                     </List>
                 </Grid.Column>
             </Grid.Row>
@@ -150,8 +155,15 @@ class AssistantPage extends Component {
 
             <Grid.Row columns={1}>
                 <Grid.Column width={9} className="assistantApplicationForm centered">
-                    <Header as='h3'>Send oss din søknad</Header>
-                    <ApplicationForm/>
+                    {!isActiveAdmission ?
+                        <Header as='h4'>Det er dessverre ingen aktiv søkeperiode</Header>
+                        :
+                        <div>
+                            <Header as='h3'>Send oss din søknad</Header>
+                            <ApplicationForm/>
+
+                        </div>
+                    }
                 </Grid.Column>
             </Grid.Row>
 

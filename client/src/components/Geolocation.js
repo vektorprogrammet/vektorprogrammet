@@ -49,9 +49,9 @@ class Geolocation extends Component {
         const state = this.state;
         if (this.getDistanceFromLatLonInKm(state.crd.latitude, state.crd.longitude, state.ntnu.latitude, state.ntnu.longitude) <=
         this.getDistanceFromLatLonInKm(state.crd.latitude, state.crd.longitude,state.uit.latitude, state.uit.longitude)){
-            this.setState({closestDepartment: 'NTNU'});
+            this.setState({closestDepartment: 0}); //ntnu
         } else {
-            this.setState({closestDepartment: 'UiT'});
+            this.setState({closestDepartment: 3}); // uit
         }
     }
 

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
+use AppBundle\Event\TeamEvent;
 use AppBundle\Event\WorkHistoryEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -128,6 +129,7 @@ class TeamAdminController extends Controller
     {
         // Find the department of the team
         $department = $team->getDepartment();
+        $oldTeamEmail = $team->getEmail();
 
         // Create the form
         $form = $this->createForm(new CreateTeamType($department), $team);
@@ -142,6 +144,8 @@ class TeamAdminController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($team);
                 $em->flush();
+                
+                $this->get('event_dispatcher')->dispatch(TeamEvent::EDITED, new TeamEvent($team, $oldTeamEmail));
 
                 return $this->redirect($this->generateUrl('teamadmin_show'));
             }
@@ -192,6 +196,8 @@ class TeamAdminController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($team);
                 $em->flush();
+                
+                $this->get('event_dispatcher')->dispatch(TeamEvent::CREATED, new TeamEvent($team, $team->getEmail()));
 
                 return $this->redirect($this->generateUrl('teamadmin_show'));
             }
@@ -232,7 +238,7 @@ class TeamAdminController extends Controller
 
         $em->remove($team);
         $em->flush();
-
+        
         return new JsonResponse(array(
             'success' => true,
         ));

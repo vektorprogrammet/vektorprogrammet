@@ -1,12 +1,23 @@
 /*TODO: Start all names with "about"*/
 
-:root {
-    --main-margin: 5px;
-}
-
 /*****************
        FAQ
 *****************/
+
+.about-us-page {
+    padding-top: 50px;
+}
+@media screen and (max-width: 767px) {
+    .about-us-page {
+        padding-top: 20px;
+    }
+}
+
+.about-us-main {
+    width: 900px;
+    max-width: 100%;
+    margin: 0 auto;
+}
 
 .aboutUs-FAQ h1 {
     font-size: 250%;
@@ -15,23 +26,20 @@
 
 
 .aboutUs-FAQ h3 {
-    font-size: 130%;
+    font-size: 19px;
     font-weight:bold;
     color:black;
-}
-
-.aboutUs-FAQ {
-    margin-left: var(--main-margin);
-    margin-right: var(--main-margin);
 }
 
 /******************
      Contact info
 ******************/
 .contact-info {
-    margin-left: var(--main-margin);
-    margin-right: var(--main-margin);
     margin-top: 15px;
+}
+
+.contact-info a {
+    font-weight: 700;
 }
 
 /******************
@@ -47,3 +55,8 @@
     font-size: 50%;
 }
 
+@media screen and (max-width: 767px) {
+    .about-us-page {
+        padding-top: 0;
+    }
+}

@@ -14,6 +14,7 @@ var exec = require('child_process').exec;
 var path = {
     dist: 'www/',
     src: 'app/Resources/assets/',
+    frontEnd: 'client/build',
     scheduling: {
         src: 'src/AppBundle/AssistantScheduling/Webapp'
     }
@@ -155,6 +156,11 @@ gulp.task('assistantSchedulingStaticFiles', ['buildAssistantSchedulingApp'], fun
         .pipe(gulp.dest('www/js/scheduling'));
     gulp.src(path.scheduling.src + '/dist/build.js.map')
         .pipe(gulp.dest('www/js/scheduling'));
+});
+
+gulp.task('frontEnd', function () {
+  gulp.src(path.frontEnd + '/static/**/*')
+      .pipe(gulp.dest('www/static/'));
 });
 
 

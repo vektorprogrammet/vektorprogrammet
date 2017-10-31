@@ -1,11 +1,23 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:300,400);
+@import url(https://fonts.googleapis.com/css?family=Montserrat:300,400,700&subset=latin);
 
 body {
-  margin: 8px 8px 0;
   padding: 0;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  color: #333333;
+  background: #fafdff;
 }
 
 h1, h2, h3, h4, h5 {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Lato', sans-serif;
+  line-height: 1.2;
+}
+
+p {
+  line-height: 1.6;
+  font-size: 17px;
+  font-weight: 300;
+}
+
+.font-weight-normal {
+  font-weight: 400;
 }

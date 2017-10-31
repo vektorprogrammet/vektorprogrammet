@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Event\UserEvent;
 use AppBundle\Form\Type\NewUserType;
+use AppBundle\Form\Type\UserCompanyEmailType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\EditUserType;
@@ -198,6 +200,7 @@ class ProfileController extends Controller
     public function editProfileInformationAction(Request $request)
     {
         $user = $this->getUser();
+        $oldCompanyEmail = $user->getCompanyEmail();
 
         $form = $this->createForm(EditUserType::class, $user, array(
             'department' => $user->getDepartment(),
@@ -210,6 +213,8 @@ class ProfileController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+            
+            $this->get('event_dispatcher')->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
 
             return $this->redirect($this->generateUrl('profile'));
         }
@@ -247,6 +252,7 @@ class ProfileController extends Controller
         $form = $this->createForm(EditUserType::class, $user, array(
             'department' => $user->getDepartment(),
         ));
+        $oldCompanyEmail = $user->getCompanyEmail();
 
         // Handle the form
         $form->handleRequest($request);
@@ -256,6 +262,8 @@ class ProfileController extends Controller
             $em->persist($user);
             $em->flush();
 
+            $this->get('event_dispatcher')->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
+
             return $this->redirect($this->generateUrl('specific_profile', array('id' => $user->getId())));
         }
 
@@ -263,5 +271,26 @@ class ProfileController extends Controller
             'form' => $form->createView(),
             'user' => $user,
         ));
+    }
+
+    public function editCompanyEmailAction(Request $request, User $user)
+    {
+        $oldCompanyEmail = $user->getCompanyEmail();
+        $form = $this->createForm(UserCompanyEmailType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->get('event_dispatcher')->dispatch(UserEvent::COMPANY_EMAIL_EDITED, new UserEvent($user, $oldCompanyEmail));
+
+            return $this->redirectToRoute('specific_profile', ['id' => $user->getId()]);
+        }
+
+        return $this->render('profile/edit_company_email.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
     }
 }

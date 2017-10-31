@@ -12,19 +12,17 @@
     margin: 1250px auto;
 }
 
-p {
+.assistant-page p {
     font-size: 20px;
-    font-weight: 300;
-    line-height: 26px;
     text-align: left;
 }
 
-h1 {
+.assistant-page h1 {
     font-size: 40px;
     font-weight: bold;
 }
 
-img.displayed {
+.assistant-page  img.displayed {
     display: block;
     margin-left: auto;
     margin-right: auto
@@ -38,16 +36,35 @@ img.displayed {
 .assistantContentText {
     margin: 125px auto;
     padding: 0 20px;
-}
-
-.assistantListText {
-    text-align: left;
-    margin: 125px auto;
-    padding: 0 20px;
+    margin-bottom: 20px;
 }
 
 
 
 .assistantApplicationForm {
+
+}
+.five.wide.column.assistantListText1, .five.wide.column.assistantListText2
+{
+    text-align: left;
+    margin: 25px auto;
+    padding: 0 20px;
+}
+.five.wide.column.assistantListText1
+{
+    margin-right: 5px;
+}
+.five.wide.column.assistantListText2
+{
+    margin-left: 5px;
+}
+
+
+.liste1
+{
+    font-size: 18px;
+    font-weight: 300;
+    margin-bottom: 5px;
+    font-family: 'Roboto', sans-serif;
 
 }

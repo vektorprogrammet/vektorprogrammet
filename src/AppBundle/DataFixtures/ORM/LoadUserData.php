@@ -23,6 +23,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user1 = new User();
         $user1->setActive('1');
         $user1->setEmail('petter@stud.ntnu.no');
+        $user1->setCompanyEmail('petter@vektorprogrammet.no');
         $user1->setFirstName('Petter');
         $user1->setLastName('Johansen');
         $user1->setGender('0');
@@ -218,35 +219,52 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $userInTeam1->setPicturePath('images/defaultProfile.png');
         $manager->persist($userInTeam1);
 
-        /*$user = new User();
+        $user = new User();
         $user->setActive('1');
-        $user->setEmail('j@b.c');
+        $user->setEmail('marte@mail.no');
         $user->setFirstName('Marte');
         $user->setLastName('Saghagen');
         $user->setGender('1');
         $user->setPhone('97623818');
         $user->setUserName('marte');
         $user->setPassword('123');
+        $user->addRole($this->getReference('role-3'));
+        $user->setFieldOfStudy($this->getReference('fos-1'));
+        $user->setPicturePath('images/defaultProfile.png');
+        $manager->persist($user);
+        $this->setReference('user-marte', $user);
+
+        $user = new User();
+        $user->setActive('1');
+        $user->setEmail('anna@mail.no');
+        $user->setFirstName('Anna');
+        $user->setLastName('Madeleine Goldsack');
+        $user->setGender('1');
+        $user->setPhone('98896056');
+        $user->setUserName('anna');
+        $user->setPassword('123');
         $user->addRole($this->getReference('role-2'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
         $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
+        $this->setReference('user-anna', $user);
 
         $user = new User();
         $user->setActive('1');
-        $user->setEmail('k@b.c');
+        $user->setEmail('angela@mail.no');
         $user->setFirstName('Angela');
         $user->setLastName('Maiken Johnsen');
         $user->setGender('1');
         $user->setPhone('91152489');
         $user->setUserName('angela');
         $user->setPassword('123');
-        $user->addRole($this->getReference('role-1'));
+        $user->addRole($this->getReference('role-3'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
         $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);
+        $this->setReference('user-angela', $user);
 
-        $user = new User();
+        /*$user = new User();
         $user->setActive('1');
         $user->setEmail('l@b.c');
         $user->setFirstName('Ingrid');
@@ -312,20 +330,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setUserName('chris');
         $user->setPassword('123');
         $user->addRole($this->getReference('role-1'));
-        $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('images/defaultProfile.png');
-        $manager->persist($user);
-
-        $user = new User();
-        $user->setActive('1');
-        $user->setEmail('q@b.c');
-        $user->setFirstName('Anna');
-        $user->setLastName('Madeleine Goldsack');
-        $user->setGender('1');
-        $user->setPhone('98896056');
-        $user->setUserName('anna');
-        $user->setPassword('123');
-        $user->addRole($this->getReference('role-2'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
         $user->setPicturePath('images/defaultProfile.png');
         $manager->persist($user);

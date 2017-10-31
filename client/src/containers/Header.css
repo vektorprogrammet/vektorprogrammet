@@ -1,3 +1,11 @@
+.top-header {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 8px 0;
+    position: relative;
+    z-index: 9999;
+    background: #ffffff;
+}
+
 .logo {
     display: block;
     margin: 0 auto;
@@ -6,8 +14,32 @@
     height: 85px;
 }
 
+.mobile-logo {
+    display: block;
+    margin: 0 auto;
+    max-height: 100%;
+    max-width: 100%;
+    width: 100px;
+}
+
 .ui.secondary.menu.main-navigation {
-    margin: 10px 0;
+    max-width: 1120px;
+    padding: 0 16px;
+    margin: 0 auto;
+}
+
+.ui.secondary.menu.main-navigation>a:first-of-type {
+    margin-right: auto;
+}
+
+@media screen and (max-width: 768px) {
+    .top-header {
+        padding: 5px 0;
+    }
+
+    .ui.secondary.menu.main-navigation {
+        margin: 10px 0;
+    }
 }
 
 .main-navigation {
@@ -27,3 +59,92 @@
 .main-navigation a:active, .main-navigation a:hover {
     color: #0071CD;
 }
+
+.menuLinks {
+    padding: 0.8em 0.9em;
+}
+
+.menuLinks.active {
+    font-weight: 700;
+    color: #002776;
+}
+
+.ui.secondary.menu .item {
+    padding: 0;
+}
+
+.burgerLinks {
+    display: block;
+    color: #fafeff;
+    padding: 10px 0;
+    padding-left: 10px;
+}
+
+.burgerLinks.active {
+    border-top: 2px solid #539ab2;
+    border-bottom: 2px solid #539ab2;
+    color: #3b6e7f;
+}
+
+.linkGroup {
+    padding: 10px;
+}
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+    position: absolute;
+    width: 24px;
+    height: 20px;
+    left: 20px;
+    top: 26px;
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+    background: #373a47;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+    height: 24px;
+    width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+    background: black;
+    height: 20px;
+    width: 4px;
+}
+
+/* General sidebar styles */
+.bm-menu {
+    background: #6fceee;
+    padding: 0;
+    font-size: 1.15em;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+    fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+    color: #b8b7ad;
+    padding: 0.8em;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+    background: rgba(0, 0, 0, 0.3);
+    top: 0;
+}
+
+.bm-menu-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    max-width: 80%;
+}
+

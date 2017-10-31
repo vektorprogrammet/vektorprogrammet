@@ -24,6 +24,9 @@ h1.gradientBoxText, h3.gradientBoxText {
 
 h1.gradientBoxText {
     padding-bottom: 3%;
+    font-family: Arial, Helvetica, 'Roboto', sans-serif;
+    font-weight: 900;
+    font-size: 36px;
 }
 
 h3 {
@@ -50,6 +53,7 @@ h3 {
     }
 
     h1.gradientBoxText {
+        font-weight: bold;
         font-size: 145%;
 
     }

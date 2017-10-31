@@ -1,0 +1,17 @@
+Hei {{ name }},
+
+Refusjon for utlegget ditt med ID: {{ receipt.visualId }} har blitt avvist.
+
+Det kan være flere grunner til dette:
+- Du har lagt ut for noe vi vanligvis ikke gir refusjon for
+- Utlegget er ikke godt nok beskrevet
+- Oppgitt sum stemmer ikke med kvitteringen
+
+Hvis du tror dette er en feil kan du registrere et nytt utlegg eller svare på denne eposten for å kontakte økonomiteamet.
+
+Dato registrert: {{ receipt.submitDate | date("d.m.Y H:i") }}
+Sum: {{ receipt.sum }}kr
+Beskrivelse av utlegget:
+"{{ receipt.description }}"
+
+Mvh. Vektorprogrammets økonomiteam

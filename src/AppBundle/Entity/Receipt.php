@@ -11,6 +11,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Receipt
 {
+    const STATUS_PENDING = 'pending';
+    const STATUS_REFUNDED = 'refunded';
+    const STATUS_REJECTED = 'rejected';
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -53,22 +56,18 @@ class Receipt
     private $sum;
 
     /**
-     * @var bool
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="string")
      */
-    private $active;
+    private $status;
 
     /**
      * @ORM\Column(name="visual_id", type="string", nullable=true)
      */
     private $visualId;
 
-    /**
-     * Receipt constructor.
-     */
     public function __construct()
     {
-        $this->active = true;
+        $this->status = self::STATUS_PENDING;
         $this->submitDate = new \DateTime();
         $this->receiptDate = new \DateTime();
         $currentTimeInMilliseconds = round(microtime(true) * 1000);
@@ -133,14 +132,6 @@ class Receipt
     }
 
     /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return string
      */
     public function getPicturePath()
@@ -189,22 +180,6 @@ class Receipt
     }
 
     /**
-     * @return boolean
-     */
-    public function isActive()
-    {
-        return $this->active;
-    }
-
-    /**
-     * @param boolean $active
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
-    }
-
-    /**
      * @return string
      */
     public function getVisualId(): string
@@ -218,5 +193,21 @@ class Receipt
     public function setVisualId(string $visualId)
     {
         $this->visualId = $visualId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
     }
 }

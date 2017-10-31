@@ -32,13 +32,18 @@ class SurveyController extends Controller
 
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
-            $surveyTaken->removeEmojis();
             $surveyTaken->setTime(new \DateTime());
 
             if ($surveyTaken->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($surveyTaken);
                 $em->flush();
+
+                if ($survey->isShowCustomFinishPage()) {
+                    return $this->render('survey/finish_page.html.twig', [
+                        'content' => $survey->getFinishPageContent(),
+                    ]);
+                }
 
                 $this->addFlash('undersokelse-notice', 'Mottatt svar!');
             } else {
@@ -65,7 +70,6 @@ class SurveyController extends Controller
 
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
-            $surveyTaken->removeEmojis();
             $surveyTaken->setTime(new \DateTime());
 
             if ($surveyTaken->isValid()) {

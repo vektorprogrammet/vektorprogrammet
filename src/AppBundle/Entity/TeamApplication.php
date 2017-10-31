@@ -33,6 +33,7 @@ class TeamApplication
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\Length(max=45, maxMessage="Dette feltet kan ikke inneholde mer enn 45 tegn")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     private $fieldOfStudy;

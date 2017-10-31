@@ -294,6 +294,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $crawler = $this->teamMemberGoTo('/kontrollpanel/opptak/fordelt');
 
         // We store these values, because we expect them to change soon
+        $count_no_setup = $crawler->filter('td:contains("Ikke satt opp")')->count();
         $count_no_answer = $crawler->filter('td:contains("Ingen svar")')->count();
         $count_status = $crawler->filter('td:contains('.$status.')')->count();
 
@@ -309,10 +310,12 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $client->enableProfiler();
         $client->submit($form);
 
+
         $response_code = $this->getResponseCodeFromEmail($client);
 
-        $client->followRedirect();
+        $crawler = $client->followRedirect();
         $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertEquals($count_no_answer + 1, $crawler->filter('td:contains("Ingen svar")')->count());
 
         $client = self::createAnonymousClient();
         $crawler = $this->goTo('/intervju/'.$response_code, $client);
@@ -344,7 +347,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $crawler = $this->teamMemberGoTo('/kontrollpanel/opptak/fordelt');
 
         // Verify that a change has taken place.
-        $this->assertEquals($count_no_answer - 1, $crawler->filter('td:contains("Ingen svar")')->count());
+        $this->assertEquals($count_no_setup - 1, $crawler->filter('td:contains("Ikke satt opp")')->count());
         $this->assertEquals($count_status + 1, $crawler->filter('td:contains('.$status.')')->count());
     }
 
