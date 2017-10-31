@@ -5,14 +5,18 @@
 {% block body %}
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            <form method="POST"
-                  onsubmit="return confirm('Vil du virkelig slette bildegalleriet {{ image_gallery.title }}? Hvis bildegalleriet brukes av funksjonalitet på nettsiden kan sletting føre til at dette slutter å fungere. Alle tilhørende bilder vil bli slettet. Er du HELT sikker?')"
-                  action="{{ path('image_gallery_delete', {'id': image_gallery.id}) }}">
-                <h1 class="inline position-relative">{{ image_gallery.title }}
-                    <a onclick="toggleForm()" id="toggle-form-link" class="inherit-parent-margins"><i class="fa fa-pencil half-size-text"></i></a>&nbsp
-                        <button class="secretly-not-a-button show-on-hover"><i class="fa fa-trash text-alert half-size-text"></i></button>
-                </h1>
-            </form>
+            {% if is_granted_team_leader() %}
+                <form method="POST"
+                      onsubmit="return confirm('Vil du virkelig slette bildegalleriet {{ image_gallery.title }}? Hvis bildegalleriet brukes av funksjonalitet på nettsiden kan sletting føre til at dette slutter å fungere. Alle tilhørende bilder vil bli slettet. Er du HELT sikker?')"
+                      action="{{ path('image_gallery_delete', {'id': image_gallery.id}) }}">
+                    <h1 class="inline position-relative">{{ image_gallery.title }}
+                        <a onclick="toggleForm()" id="toggle-form-link" class="inherit-parent-margins"><i class="fa fa-pencil half-size-text"></i></a>&nbsp
+                            <button class="secretly-not-a-button show-on-hover"><i class="fa fa-trash text-alert half-size-text"></i></button>
+                    </h1>
+                </form>
+            {% else %}
+                <h1>{{ image_gallery.title }}</h1>
+            {% endif %}
             <p>{{ image_gallery.description }}</p>
         </div>
 
@@ -25,45 +29,47 @@
             {% endfor %}
         </div>
 
-        <section class="hide" id="edit-gallery-form">
-            {{ form_start(form) }}
-                <div class="small-12 medium-7 large-7 columns">
-                    {{ form_row(form.title) }}
-                    {{ form_row(form.referenceName) }}
-                    {{ form_row(form.description) }}
-                </div>
+        {% if is_granted_team_leader() %}
+            <section class="hide" id="edit-gallery-form">
+                {{ form_start(form) }}
+                    <div class="small-12 medium-7 large-7 columns">
+                        {{ form_row(form.title) }}
+                        {{ form_row(form.referenceName) }}
+                        {{ form_row(form.description) }}
+                    </div>
 
-                <div class="small-12 medium-5 large-5 columns">
+                    <div class="small-12 medium-5 large-5 columns">
 
-                    {{ form_label(form.filters) }}
-                    <ul class="clean-list">
-                        {% for key, filterField in form.filters %}
-                            <li>
-                                {{ form_errors(filterField) }}
-                                {{ form_widget(filterField) }}
-                                {{ form_label(filterField) }}
-                            </li>
-                        {% else %}
-                            {% do form.filters.setRendered %}
-                        {% endfor %}
+                        {{ form_label(form.filters) }}
+                        <ul class="clean-list">
+                            {% for key, filterField in form.filters %}
+                                <li>
+                                    {{ form_errors(filterField) }}
+                                    {{ form_widget(filterField) }}
+                                    {{ form_label(filterField) }}
+                                </li>
+                            {% else %}
+                                {% do form.filters.setRendered %}
+                            {% endfor %}
 
-                        {% for key,filter in filters %}
-                            {% if key not in image_gallery.filters|keys %}
-                            <li class="unchecked_filter" data-filter="{{ key }}">
-                                {# The widget (input tag) can only be rendered once, we need to clone the rest with javascript #}
-                                {{ form_widget(form.filters.vars.prototype) }}
-                                {{ form_label(form.filters.vars.prototype) }}
-                            </li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                </div>
+                            {% for key,filter in filters %}
+                                {% if key not in image_gallery.filters|keys %}
+                                <li class="unchecked_filter" data-filter="{{ key }}">
+                                    {# The widget (input tag) can only be rendered once, we need to clone the rest with javascript #}
+                                    {{ form_widget(form.filters.vars.prototype) }}
+                                    {{ form_label(form.filters.vars.prototype) }}
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
 
-                <div class="small-12 medium-12 large-12 columns">
-                    <button class="success small">Lagre endringer</button>
-                </div>
-            {{ form_end(form) }}
-        </section>
+                    <div class="small-12 medium-12 large-12 columns">
+                        <button class="success small">Lagre endringer</button>
+                    </div>
+                {{ form_end(form) }}
+            </section>
+        {% endif %}
     </div>
 
     <div class="row">
@@ -95,54 +101,56 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-        var formVisible = false;
-        var editGalleryForm = $('#edit-gallery-form');
-        var toggleFormLink = $('#toggle-form-link')[0];
-        function toggleForm() {
-            if(formVisible) {
-                editGalleryForm.slideUp();
-                toggleFormLink.innerHTML = '<i class="fa fa-pencil half-size-text"></i>';
-            } else {
-                editGalleryForm.slideDown();
-                toggleFormLink.innerHTML = '<i class="fa fa-minus half-size-text"></i>';
+    {% if is_granted_team_leader() %}
+        <script>
+            var formVisible = false;
+            var editGalleryForm = $('#edit-gallery-form');
+            var toggleFormLink = $('#toggle-form-link')[0];
+            function toggleForm() {
+                if(formVisible) {
+                    editGalleryForm.slideUp();
+                    toggleFormLink.innerHTML = '<i class="fa fa-pencil half-size-text"></i>';
+                } else {
+                    editGalleryForm.slideDown();
+                    toggleFormLink.innerHTML = '<i class="fa fa-minus half-size-text"></i>';
+                }
+
+                formVisible = !formVisible;
+            }
+        </script>
+
+        <script>
+            function prettifyString(inString) {
+                var outString = inString.replace(/_/g, ' ');
+                return outString.charAt(0).toUpperCase() + outString.slice(1);
             }
 
-            formVisible = !formVisible;
-        }
-    </script>
+            var uncheckedFilters = document.getElementsByClassName('unchecked_filter');
+            var clonedInputTag = uncheckedFilters[0].getElementsByTagName('input')[0].cloneNode();
 
+            for(var i = 1; i < uncheckedFilters.length; i++) {
+                uncheckedFilters[i].prepend(clonedInputTag.cloneNode());
+            }
+
+            for(var i = 0; i < uncheckedFilters.length; i++) {
+                var filterName = uncheckedFilters[i].dataset.filter;
+
+                var label = uncheckedFilters[i].getElementsByTagName('label')[0];
+                label.htmlFor = label.htmlFor.replace('__name__', filterName);
+                label.innerHTML = prettifyString(filterName);
+
+                var input = uncheckedFilters[i].getElementsByTagName('input')[0];
+                input.id = input.id.replace('__name__', filterName);
+                input.name = input.name.replace('__name__', filterName);
+            }
+        </script>
+    {% endif %}
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             $('.close').click(function () {
                 $(this).closest('.success').remove();
             });
         });
-    </script>
-
-    <script>
-        function prettifyString(inString) {
-            var outString = inString.replace(/_/g, ' ');
-            return outString.charAt(0).toUpperCase() + outString.slice(1);
-        }
-
-        var uncheckedFilters = document.getElementsByClassName('unchecked_filter');
-        var clonedInputTag = uncheckedFilters[0].getElementsByTagName('input')[0].cloneNode();
-
-        for(var i = 1; i < uncheckedFilters.length; i++) {
-            uncheckedFilters[i].prepend(clonedInputTag.cloneNode());
-        }
-
-        for(var i = 0; i < uncheckedFilters.length; i++) {
-            var filterName = uncheckedFilters[i].dataset.filter;
-
-            var label = uncheckedFilters[i].getElementsByTagName('label')[0];
-            label.htmlFor = label.htmlFor.replace('__name__', filterName);
-            label.innerHTML = prettifyString(filterName);
-
-            var input = uncheckedFilters[i].getElementsByTagName('input')[0];
-            input.id = input.id.replace('__name__', filterName);
-            input.name = input.name.replace('__name__', filterName);
-        }
     </script>
 {% endblock %}

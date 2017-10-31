@@ -6,9 +6,11 @@ use AppBundle\Entity\ImageGallery;
 use AppBundle\Entity\Image;
 use AppBundle\Form\Type\ImageGalleryType;
 use AppBundle\Form\Type\ImageType;
+use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Event\ImageGalleryEvent;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ImageGalleryController extends Controller
 {
@@ -20,6 +22,11 @@ class ImageGalleryController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $userCanCreate = $this->get('app.roles')->userIsGranted($this->getUser(), Roles::TEAM_LEADER);
+            if (!$userCanCreate) {
+                throw new AccessDeniedException();
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($imageGallery);
             $em->flush();
@@ -44,6 +51,11 @@ class ImageGalleryController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $userCanCreate = $this->get('app.roles')->userIsGranted($this->getUser(), Roles::TEAM_LEADER);
+            if (!$userCanCreate) {
+                throw new AccessDeniedException();
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($imageGallery);
             $em->flush();
