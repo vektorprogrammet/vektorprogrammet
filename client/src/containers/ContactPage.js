@@ -1,36 +1,34 @@
 import React, {Component} from 'react';
 import './HomePage.css';
+import './ContactPage.css';
 import {Grid} from 'semantic-ui-react';
-import ContactInformation from '../components/ContactInformation';
+import ContactUsForm from "../components/ContactUsForm";
 
 class ContactPage extends Component {
-    constructor(props){
-        super(props);
-        this.state={
-            department: 'NTNU'
-        };
-    }
-
   render() {
-    const contactSchoolInfo = [
-        {place: "Trondheim - NTNU", email: "NTNU@gmail.com"},
-        {school: "HiST", place: "Trondheim - HiST", email: "HIST@gmail.com"},
-        {school: "NMBU", place: "Ås", email: "NMBU@gmail.com"},
-        {school: "UiO", place: "Oslo", email: "UiO@gmail.com"}
-    ];
     return (
-        <div className="about-us-page">
-          <p>This is the contact page!</p>
-          <Grid>
-            <Grid.Row>
-              <Grid.Column width={8}>
-                <p>Form goes here</p>
-              </Grid.Column>
-              <Grid.Column width={8}>
-                < ContactInformation />
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
+        <div className="contact-page">
+            <Grid centered>
+                <Grid.Row>
+                    <Grid.Column width={9}>
+                        <h1>Kontakt oss</h1>
+                        <p>Før du tar kontakt med oss, må du huske å sjekke ut <a href={"om-oss#FAQ"}>ofte stilte spørsmål!</a></p>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={2}>
+                    <Grid.Column width={5}>
+                        <ContactUsForm/>
+                    </Grid.Column>
+                    <Grid.Column width={8}>
+                        <Grid.Row>
+                            <p>Contact info</p>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <p>Map</p>
+                        </Grid.Row>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         </div>
     );
   }

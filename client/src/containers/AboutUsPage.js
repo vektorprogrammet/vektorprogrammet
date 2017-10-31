@@ -54,7 +54,7 @@ class AboutUsPage extends Component {
             {question: "I hvilke regioner holder Vektorprogrammet til?", answer: "Trondheim, Oslo, Bergen, Ås og Tromsø"},
             {question: "Kan jeg være vektorassistent flere semestre?", answer: "Ja, men du må huske å søke på nytt hvert semester! Du trenger ikke gå gjennom intervju og pedagogikk-kurs på nytt."},
             /*TODO: Fix question below so it fits with new web-page*/
-            {question: "Finner du ikke svar på det du lurer på?", answer: "Gå til 'Opptak & kontakt' i menyen og velg din region. Der finnes det et kontaktskjema nederst som du kan fylle ut, så skal vi svare så raskt vi kan !"},
+            {question: "Finner du ikke svar på det du lurer på?", answer: "Gå til 'Opptak & kontakt' i menyen og velg din region. Der finnes det et kontaktskjema nederst som du kan fylle ut, så skal vi svare så raskt vi kan!"},
 
         ];
         const contactSchoolInfo = [
