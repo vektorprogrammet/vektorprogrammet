@@ -1,0 +1,12 @@
+.team-page-overview {
+    margin: 150px auto 0;
+    padding: 0 16px;
+    width: 1120px;
+    max-width: 100%;
+}
+
+@media screen and (max-width: 767px) {
+    .team-page-overview {
+        margin-top: 75px;
+    }
+}

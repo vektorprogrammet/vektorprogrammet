@@ -43,7 +43,7 @@ export default class TeamOverview extends Component {
     render() {
         return (
             <Segment>
-                <Header as="h1" id="teamHeader">Team</Header>
+                <Header as="h1" id="teamHeader">Oversikt</Header>
                 <Tab menu={{
                     id: "regionMenu",
                     compact: false,

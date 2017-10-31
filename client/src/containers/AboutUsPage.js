@@ -7,6 +7,7 @@ import Faq from '../components/Faq';
 import ContactInformation from '../components/ContactInformation';
 import ListComponentAboutUs from '../components/ListComponentAboutUs';
 import MainTextAboutUs from '../components/MainTextAboutUs';
+import PageHeader from '../components/PageHeader';
 
 
 class AboutUsPage extends Component {
@@ -66,6 +67,17 @@ class AboutUsPage extends Component {
         console.log(window.innerWidth);
         return (
             <div className="about-us-page">
+                <div className="container">
+                <PageHeader>
+                    <h1>Om Vektorprogrammet</h1>
+                    <p>
+                        Vektorprogrammet arbeider for å øke interessen for matematikk og realfag blant elever i grunnskolen. Vi
+                        er en nasjonal studentorganisasjon som sender studenter med utmerket realfagskompetanse til skoler for å
+                        hjelpe elevene i matematikktimene. Disse studentene har også gode pedagogiske evner og er gode
+                        rollemodeller – <span className={'font-weight-normal'}>de er Norges realfagshelter.</span>
+                    </p>
+                </PageHeader>
+                </div>
                 <Grid columns={3} padded>
                       <ContactUsPopUp windowWidth={this.state.width} show={this.state.showModal} onClose={this.handleModal}/>
                       {/*<Grid.Column mobile={16} tablet={5} computer={4}>*/}

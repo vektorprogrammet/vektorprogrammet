@@ -40,3 +40,8 @@
     display: flex;
     justify-content: center;
 }
+
+.ui.card.team-card {
+    width: 290px;
+    max-width: 100%;
+}
