@@ -30,7 +30,6 @@ class ImageGalleryType extends AbstractType
                 'entry_type' => CheckboxType::class,
                 'entry_options' => array(
                     'required' => false,
-                    'allow_extra_fields' => true,
                 ),
                 'by_reference' => false,
                 'allow_delete' => true,

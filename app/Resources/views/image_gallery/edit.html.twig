@@ -43,6 +43,8 @@
                                 {{ form_widget(filterField) }}
                                 {{ form_label(filterField) }}
                             </li>
+                        {% else %}
+                            {% do form.filters.setRendered %}
                         {% endfor %}
 
                         {% for key,filter in filters %}
