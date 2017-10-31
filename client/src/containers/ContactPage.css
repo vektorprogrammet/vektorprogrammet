@@ -1,0 +1,8 @@
+.contact-page {
+    padding-top: 50px;
+}
+@media screen and (max-width: 767px) {
+    .contact-page {
+        padding-top: 20px;
+    }
+}
