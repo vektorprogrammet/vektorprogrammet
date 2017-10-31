@@ -23,7 +23,7 @@
     background-color: white;
     font-size: 10px;
     font-weight: 200;
-    width: auto;
+    width: 400px;
     max-height: 500px;
     height: 500px;
     border-radius: 3px;
@@ -41,7 +41,7 @@
     background-color: blue;
     font-size: 3px;
     font-weight: 200;
-    width: auto;
+    width: 400;
     max-height: 500px;
     height: 500px;
     border-radius: 3px;
@@ -60,6 +60,11 @@
     z-index: 1;
 }
 
+.contactUsPopUp-form {
+    width: 400px;
+    height: 800px;
+}
+
 .contactUsPopUp-icon {
     right: 1px;
     position: fixed;
@@ -67,12 +72,26 @@
 }
 
 .contactUsPopUp-captchaImage {
-    width: 200px;
-    height: 60px;
+    width: 210px;
+    height: 38px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
 }
 
 .contactUsPopUp-message {
-    width: 300px;
+    width: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+
+}
+
+.form-group {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    width:100px;
 }
 
 #message-btn {

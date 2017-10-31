@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Grid, Divider} from 'semantic-ui-react';
+import {Grid, Form, Button} from 'semantic-ui-react';
 import './AboutUsPage.css';
 import ContactUsPopUp from '../components/ContactUsPopUp';
 import Faq from '../components/Faq';
