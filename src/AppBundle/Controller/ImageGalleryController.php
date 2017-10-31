@@ -18,6 +18,7 @@ class ImageGalleryController extends Controller
     {
         $imageGallery = new ImageGallery();
 
+        $filters = $this->get('liip_imagine.filter.configuration')->all();
         $form = $this->createForm(ImageGalleryType::class, $imageGallery);
         $form->handleRequest($request);
 
@@ -40,6 +41,7 @@ class ImageGalleryController extends Controller
 
         return $this->render('image_gallery/show_overview.html.twig', array(
             'image_galleries' => $imageGalleries,
+            'filters' => $filters,
             'form' => $form->createView(),
         ));
     }

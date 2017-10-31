@@ -34,13 +34,23 @@
                 <div class="small-12 medium-12 large-12 columns">
                     {{ form_start(form) }}
                     <div class="row">
-                        <div class="small-12 medium-6 large-6 columns">
+                        <div class="small-12 medium-7 large-7 columns">
                             {{ form_row(form.title) }}
                             {{ form_row(form.referenceName) }}
+                            {{ form_row(form.description) }}
                         </div>
 
-                        <div class="small-12 medium-6 large-6 columns">
-                            {{ form_row(form.description) }}
+                        <div class="small-12 medium-5 large-5 columns">
+                            {{ form_label(form.filters) }}
+                            <ul class="clean-list">
+                                {% for key,filter in filters %}
+                                    <li class="unchecked_filter" data-filter="{{ key }}">
+                                        {# The widget (input tag) can only be rendered once, we need to clone the rest with javascript #}
+                                        {{ form_widget(form.filters.vars.prototype) }}
+                                        {{ form_label(form.filters.vars.prototype) }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         </div>
                     </div>
 
@@ -94,6 +104,32 @@
                 }
 
                 formVisible = !formVisible;
+            }
+        </script>
+
+        <script>
+            function prettifyString(inString) {
+                var outString = inString.replace(/_/g, ' ');
+                return outString.charAt(0).toUpperCase() + outString.slice(1);
+            }
+
+            var uncheckedFilters = document.getElementsByClassName('unchecked_filter');
+            var clonedInputTag = uncheckedFilters[0].getElementsByTagName('input')[0].cloneNode();
+
+            for(var i = 1; i < uncheckedFilters.length; i++) {
+                uncheckedFilters[i].prepend(clonedInputTag.cloneNode());
+            }
+
+            for(var i = 0; i < uncheckedFilters.length; i++) {
+                var filterName = uncheckedFilters[i].dataset.filter;
+
+                var label = uncheckedFilters[i].getElementsByTagName('label')[0];
+                label.htmlFor = label.htmlFor.replace('__name__', filterName);
+                label.innerHTML = prettifyString(filterName);
+
+                var input = uncheckedFilters[i].getElementsByTagName('input')[0];
+                input.id = input.id.replace('__name__', filterName);
+                input.name = input.name.replace('__name__', filterName);
             }
         </script>
     {% endif %}
