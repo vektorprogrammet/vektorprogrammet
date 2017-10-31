@@ -3,8 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,6 +13,8 @@ class ImageGalleryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $allFilters = $options['all_filters'];
+
         $builder
             ->add('title', TextType::class, array(
             'label' => 'Tittel',
@@ -25,15 +26,12 @@ class ImageGalleryType extends AbstractType
             ->add('referenceName', TextType::class, array(
                 'label' => 'Referansenavn',
             ))
-            ->add('filters', CollectionType::class, array(
+            ->add('filters', ChoiceType::class, array(
                 'label' => 'Filtere',
-                'entry_type' => CheckboxType::class,
-                'entry_options' => array(
-                    'required' => false,
-                ),
-                'by_reference' => false,
-                'allow_delete' => true,
-                'allow_add' => true,
+                'choices' => $allFilters,
+                'multiple' => true,
+                'expanded' => true,
+
             ));
     }
 
@@ -41,11 +39,12 @@ class ImageGalleryType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\ImageGallery',
+            'all_filters' => array(),
         ));
     }
 
     public function getName()
     {
-        return 'imageDescription';
+        return 'imageGallery';
     }
 }

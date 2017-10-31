@@ -202,6 +202,6 @@ class ImageGallery
      */
     public function addFilter($filter)
     {
-        $this->filters->set($filter, true);
+        $this->filters->add($filter);
     }
 }

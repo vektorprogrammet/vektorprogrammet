@@ -18,8 +18,12 @@ class ImageGalleryController extends Controller
     {
         $imageGallery = new ImageGallery();
 
-        $filters = $this->get('liip_imagine.filter.configuration')->all();
-        $form = $this->createForm(ImageGalleryType::class, $imageGallery);
+        $allFilters = array();
+        foreach ($this->get('liip_imagine.filter.configuration')->all() as $filterName => $filter) {
+            $allFilters[$filterName] = $filterName;
+        }
+
+        $form = $this->createForm(ImageGalleryType::class, $imageGallery, array('all_filters' => $allFilters));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -41,15 +45,19 @@ class ImageGalleryController extends Controller
 
         return $this->render('image_gallery/show_overview.html.twig', array(
             'image_galleries' => $imageGalleries,
-            'filters' => $filters,
+            'filters' => $allFilters,
             'form' => $form->createView(),
         ));
     }
 
     public function editAction(Request $request, ImageGallery $imageGallery)
     {
-        $filters = $this->get('liip_imagine.filter.configuration')->all();
-        $form = $this->createForm(ImageGalleryType::class, $imageGallery);
+        $allFilters = array();
+        foreach ($this->get('liip_imagine.filter.configuration')->all() as $filterName => $filter) {
+            $allFilters[$filterName] = $filterName;
+        }
+
+        $form = $this->createForm(ImageGalleryType::class, $imageGallery, array('all_filters' => $allFilters));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -69,7 +77,7 @@ class ImageGalleryController extends Controller
 
         return $this->render('image_gallery/edit.html.twig', array(
             'image_gallery' => $imageGallery,
-            'filters' => $filters,
+            'filters' => $allFilters,
             'form' => $form->createView(),
         ));
     }
