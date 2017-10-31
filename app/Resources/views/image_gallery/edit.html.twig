@@ -126,26 +126,28 @@
             }
 
             var uncheckedFilters = document.getElementsByClassName('unchecked_filter');
-            var clonedInputTag = uncheckedFilters[0].getElementsByTagName('input')[0].cloneNode();
+            if(uncheckedFilters.length > 0) {
+                var clonedInputTag = uncheckedFilters[0].getElementsByTagName('input')[0].cloneNode();
 
-            for(var i = 1; i < uncheckedFilters.length; i++) {
-                uncheckedFilters[i].prepend(clonedInputTag.cloneNode());
-            }
+                for (var i = 1; i < uncheckedFilters.length; i++) {
+                    uncheckedFilters[i].prepend(clonedInputTag.cloneNode());
+                }
 
-            for(var i = 0; i < uncheckedFilters.length; i++) {
-                var filterName = uncheckedFilters[i].dataset.filter;
+                for (var i = 0; i < uncheckedFilters.length; i++) {
+                    var filterName = uncheckedFilters[i].dataset.filter;
 
-                var label = uncheckedFilters[i].getElementsByTagName('label')[0];
-                label.htmlFor = label.htmlFor.replace('__name__', filterName);
-                label.innerHTML = prettifyString(filterName);
+                    var label = uncheckedFilters[i].getElementsByTagName('label')[0];
+                    label.htmlFor = label.htmlFor.replace('__name__', filterName);
+                    label.innerHTML = prettifyString(filterName);
 
-                var input = uncheckedFilters[i].getElementsByTagName('input')[0];
-                input.id = input.id.replace('__name__', filterName);
-                input.name = input.name.replace('__name__', filterName);
+                    var input = uncheckedFilters[i].getElementsByTagName('input')[0];
+                    input.id = input.id.replace('__name__', filterName);
+                    input.name = input.name.replace('__name__', filterName);
+                }
             }
         </script>
     {% endif %}
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             $('.close').click(function () {
