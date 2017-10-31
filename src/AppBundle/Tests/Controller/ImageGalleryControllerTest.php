@@ -136,9 +136,12 @@ class ImageGalleryControllerTest extends BaseWebTestCase
             }
         }
 
-        $directoryIsEmpty = count(glob('images/image_galleries/*')) === 0;
-        if ($directoryIsEmpty) {
+        $imageGalleryDirectoryIsEmpty = count(glob('images/image_galleries/*')) === 0;
+        $imageDirectoryIsEmpty = count(glob('images/*')) === 0;
+        if ($imageGalleryDirectoryIsEmpty) {
             rmdir('images/image_galleries');
+        }
+        if ($imageDirectoryIsEmpty) {
             rmdir('images');
         }
     }
