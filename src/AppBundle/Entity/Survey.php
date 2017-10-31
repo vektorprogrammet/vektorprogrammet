@@ -43,6 +43,12 @@ class Survey implements \JsonSerializable
     private $finishPageContent;
 
     /**
+     * @var bool
+     * @ORM\Column(type="boolean", nullable=false, options={"default" : false})
+     */
+    private $confidential;
+
+    /**
      * @var SurveyQuestion[]
      *
      * @ORM\ManyToMany(targetEntity="SurveyQuestion", cascade={"persist"})
@@ -119,6 +125,7 @@ class Survey implements \JsonSerializable
     {
         $this->surveyQuestions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->showCustomFinishPage = false;
+        $this->confidential = false;
     }
 
     /**
@@ -241,5 +248,21 @@ class Survey implements \JsonSerializable
     public function setFinishPageContent($finishPageContent)
     {
         $this->finishPageContent = $finishPageContent;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isConfidential(): bool
+    {
+        return $this->confidential;
+    }
+
+    /**
+     * @param boolean $confidential
+     */
+    public function setConfidential(bool $confidential)
+    {
+        $this->confidential = $confidential;
     }
 }
