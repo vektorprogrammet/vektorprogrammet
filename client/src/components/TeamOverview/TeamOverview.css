@@ -31,8 +31,9 @@
 }
 
 .ui.card .meta, .ui.cards>.card .teamCardMeta {
-    font-family: menlo;
-    font-size: 0.65em;
+    font-size: 0.9em;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .teamCardExtra {

@@ -7,7 +7,7 @@ export const TeamCard = ({imagePath, name, email, shortDesc, accept_application}
             <Image className="teamImage" src={imagePath}/>
             <Card.Content>
                 <Card.Header>{name}</Card.Header>
-                <Card.Meta className="teamCardMeta">{email}</Card.Meta>
+                <Card.Meta className="teamCardMeta"><a href={"mailto:"+email}>{email}</a></Card.Meta>
                 <Card.Description className="teamCardDesc">{shortDesc}</Card.Description>
             </Card.Content>
             { accept_application &&
