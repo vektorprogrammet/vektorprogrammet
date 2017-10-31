@@ -18,7 +18,6 @@ class ImageGalleryType extends AbstractType
         $builder
             ->add('title', TextType::class, array(
             'label' => 'Tittel',
-            //'max_length' => 225
             ))
             ->add('description', TextareaType::class, array(
                 'label' => 'Beskrivelse',

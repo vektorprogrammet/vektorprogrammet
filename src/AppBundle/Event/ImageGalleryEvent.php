@@ -16,7 +16,7 @@ class ImageGalleryEvent extends Event
     private $imageGallery;
 
     /**
-     * ReceiptEvent constructor.
+     * ImageGalleryEvent constructor.
      *
      * @param ImageGallery $imageGallery
      */
