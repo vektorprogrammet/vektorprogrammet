@@ -56,17 +56,41 @@
     font-weight: 500;
 }
 
-.main-navigation a:active, .main-navigation a:hover {
+.main-navigation a:active, .main-navigation a:hover, .menuLinks.active {
     color: #0071CD;
 }
 
 .menuLinks {
-    padding: 0.8em 0.9em;
+    padding: 14px 16px;
+    align-self: flex-end;
 }
 
 .menuLinks.active {
     font-weight: 700;
-    color: #002776;
+}
+
+.header-login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+a.header-login-link {
+    align-self: flex-start;
+    margin-left: auto;
+    display:block;
+    font-size: 14px;
+    padding: 0 16px;
+}
+
+a.header-login-link:hover {
+    color: inherit;
+    text-decoration: underline;
+}
+
+a.header-login-link.hide {
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .ui.secondary.menu .item {

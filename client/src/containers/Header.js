@@ -28,12 +28,15 @@ class Header extends Component {
                         <Link to={'/'}>
                             <Image className="logo" src={logo}/>
                         </Link>
-                        <Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/assistenter'}>Assistenter</NavLink></Menu.Item>
-                        <Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/team'}>Team</NavLink></Menu.Item>
-                        {/*<Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/laerere'}>Lærere</NavLink></Menu.Item>*/}
-                        {/*<Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/foreldre'}>Foreldre</NavLink></Menu.Item>*/}
-                        <Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/om-oss'}>Om oss</NavLink></Menu.Item>
-                        <Menu.Item link><NavLink activeClassName="active" className="menuLinks" exact to={'/kontakt'}>Kontakt</NavLink></Menu.Item>
+                        <NavLink activeClassName="active" className="menuLinks" exact to={'/assistenter'}>Assistenter</NavLink>
+                        <NavLink activeClassName="active" className="menuLinks" exact to={'/team'}>Team</NavLink>
+                        {/*<NavLink activeClassName="active" className="menuLinks" exact to={'/laerere'}>Lærere</NavLink>*/}
+                        {/*<NavLink activeClassName="active" className="menuLinks" exact to={'/foreldre'}>Foreldre</NavLink>*/}
+                        <NavLink activeClassName="active" className="menuLinks" exact to={'/om-oss'}>Om oss</NavLink>
+                        <div className="header-login-container">
+                            <NavLink activeClassName="hide" className="header-login-link" exact to={'/login'}>Logg inn</NavLink>
+                            <NavLink activeClassName="active" className="menuLinks" exact to={'/kontakt'}>Kontakt</NavLink>
+                        </div>
                     </Menu>
                 </Responsive>
 
