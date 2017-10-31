@@ -18,7 +18,7 @@ export const MainTextAboutUs = () => {
               </Grid.Column>
           </Grid.Row>
             {/*Move to own css-file*/}
-            <Grid.Row columns={3} className={'main-text-about-us-section'}>
+            <Grid.Row className={'main-text-about-us-section'}>
                 <Grid.Column width={9}>
                     <h2 className="aboutUs-header">Motivere elever</h2>
                     <p className="aboutUs-text">
@@ -27,28 +27,28 @@ export const MainTextAboutUs = () => {
                       er målet at dette også skal føre til motivasjon og videre utforskning av realfagene.
                     </p>
                 </Grid.Column>
-                <Grid.Column width={6} floated={'right'} style={{justifyContent: 'right'}}>
+                <Grid.Column width={6} floated={'right'}>
                     <Image className="aboutUs-image1" src={"http://via.placeholder.com/350x350/"}/>
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row columns={3} className={'main-text-about-us-section'}>
+            <Grid.Row className={'main-text-about-us-section'}>
                 <Responsive as={Grid.Column} width={6} minWidth={Responsive.onlyTablet.minWidth}>
                       <Image className="aboutUs-image2" src={"http://via.placeholder.com/350x350/"}/>
                 </Responsive>
                 <Grid.Column width={9} floated={'right'}>
                     <h2 className="aboutUs-header">Motivere studenter</h2>
                     <p className="aboutUs-text">
-                      Da studentene er tilstede i skoletiden skiller vi oss derfor fra andre tiltak ved at elevenes
-                      barriere for å delta er ikke-eksisterende. Dette gjør at vi når ut til alle –
-                      ikke kun de som allerede er motiverte. Vektorprogrammet sørger for at alle får hjelp i
-                      timen raskere og at undervisningen kan bli mer tilpasset de ulike elevgruppene.
+                      Vi har som mål at alle studentene skal sitte igjen mer motivert for videre studier etter å ha vært
+                      vektorassistent. Av erfaring vet vi at muligheten til å formidle egen kunnskap og se at deres
+                      arbeid gir elevene mestringsfølelse er en sterk motivasjonsfaktor. Videre arrangerer vi både
+                      sosiale og faglige arrangementer for å forsterke denne motivasjonen.
                     </p>
                 </Grid.Column>
                 <Responsive as={Grid.Column} width={6} {...Responsive.onlyMobile}>
                   <Image className="aboutUs-image2" src={"http://via.placeholder.com/350x350/"}/>
                 </Responsive>
             </Grid.Row>
-            <Grid.Row columns={1}>
+            <Grid.Row className={'main-text-about-us-section'}>
                 <Grid.Column width={16}>
                      <h2 className="aboutUs-header">En forsmak til læreryrket</h2>
                     <p className="aboutUs-text">
@@ -57,8 +57,6 @@ export const MainTextAboutUs = () => {
                       erfaring.
                     </p>
                 </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={1} className={'main-text-about-us-section'}>
                 <Grid.Column width={16}>
                      <Image className="aboutUs-image2" src={"http://via.placeholder.com/950x335/"}/>
                 </Grid.Column>
