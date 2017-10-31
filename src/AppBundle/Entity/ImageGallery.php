@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -11,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ImageGalleryRepository")
+ * @UniqueEntity("referenceName")
  */
 class ImageGallery
 {
@@ -39,7 +41,7 @@ class ImageGallery
     /**
      * @var string
      *
-     * @ORM\Column(name="referenceName", type="string", length=255)
+     * @ORM\Column(name="referenceName", type="string", length=255, unique=true)
      * @Assert\NotBlank(message="Bildegalleriet må ha et referansenavn.")
      */
     private $referenceName;

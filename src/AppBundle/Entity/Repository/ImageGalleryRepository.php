@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\ImageGallery;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,4 +13,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class ImageGalleryRepository extends EntityRepository
 {
+    /**
+     * @param string $referenceName
+     * @return ImageGallery
+     */
+    public function findByReferenceName($referenceName)
+    {
+        return $imageGallery = $this->createQueryBuilder('image_gallery')
+            ->select('image_gallery')
+            ->where('image_gallery.referenceName = :reference_name')
+            ->setParameter('reference_name', $referenceName)
+            ->getQuery()
+            ->getSingleResult();
+    }
 }
