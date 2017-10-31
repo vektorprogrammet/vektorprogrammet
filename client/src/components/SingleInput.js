@@ -1,9 +1,10 @@
 import React from 'react';
+import './ContactUsPopUp.css';
 
 const SingleInput = (props) => (
     <div className="form-group">
         <label className="form-label">{props.title}</label>
-        <input
+        <input unstackable
             className="form-input"
             name={props.name}
             type={props.inputType}

@@ -59,12 +59,10 @@
     margin-left: 5px;
 }
 
-
-.liste1
+.ui.ordered.list.assistantPageListe *, .ui.bulleted.list.assistantPageListe *
 {
     font-size: 18px;
     font-weight: 300;
     margin-bottom: 5px;
     font-family: 'Roboto', sans-serif;
-
 }
