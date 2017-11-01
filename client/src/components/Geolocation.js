@@ -23,7 +23,6 @@ class Geolocation extends Component {
 
             closestDepartment : ''
         };
-        this.handleClosestDepartment = this.handleClosestDepartment.bind(this);
     }
 
     async componentDidMount() {
@@ -49,7 +48,7 @@ class Geolocation extends Component {
         const state = this.state;
         if (this.getDistanceFromLatLonInKm(state.crd.latitude, state.crd.longitude, state.ntnu.latitude, state.ntnu.longitude) <=
         this.getDistanceFromLatLonInKm(state.crd.latitude, state.crd.longitude,state.uit.latitude, state.uit.longitude)){
-            this.setState({closestDepartment: 0}); //ntnu
+            this.setState({closestDepartment: 1}); //ntnu
         } else {
             this.setState({closestDepartment: 3}); // uit
         }
@@ -70,12 +69,12 @@ class Geolocation extends Component {
     };
 
     deg2rad = (deg) => {
-        return deg * (Math.PI/180)
+        return deg * (Math.PI/180);
     };
 
-    handleClosestDepartment(){
+    handleClosestDepartment = () =>{
         this.props.closestDepartment(this.state.closestDepartment);
-    }
+    };
 
     render() {
         return (

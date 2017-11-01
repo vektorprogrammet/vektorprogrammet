@@ -89,12 +89,13 @@ class NewsletterController extends FOSRestController implements ClassResourceInt
     }
 
     /**
-     * Creates a new Subscriber
+     * Creates a new Subscriber to Newsletter
      *
      * @return mixed
      *
      * @ApiDoc(
      *     section="Subscriber",
+     *
      *     statusCodes={
      *          201 = "Returned when successful",
      *          400 = "Bad request",
@@ -108,12 +109,19 @@ class NewsletterController extends FOSRestController implements ClassResourceInt
         $newsletterId = $request->request->get('newsletterId');
         $newsletter = $this->getDoctrine()->getRepository('AppBundle:Newsletter')->find($newsletterId);
 
+        $subscriber->setName($request->request->get('name'));
         $subscriber->setEmail($request->request->get('email'));
-        $subscriber->setNewsletter($newsletter);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($subscriber);
-        $em->flush();
+        $alreadySubscribed = count($this->getDoctrine()->getRepository('AppBundle:Subscriber')->
+            findByEmailAndNewsletter($subscriber->getEmail(), $newsletter)) > 0;
+
+        if (!$alreadySubscribed) {
+            $subscriber->setNewsletter($newsletter);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($subscriber);
+            $em->flush();
+        }
 
         return $subscriber;
     }

@@ -3,6 +3,7 @@ import { Grid, Header, List } from 'semantic-ui-react';
 import './AssistantPage.css';
 import NewsletterPopUp from '../components/NewsletterPopUp';
 import ApplicationForm from '../components/ApplicationForm';
+import {DepartmentApi} from '../api/DepartmentApi';
 
 class AssistantPage extends Component {
 
@@ -11,7 +12,7 @@ class AssistantPage extends Component {
         this.state={
             newsletterVisible: false,
             newsletterRevealed: false,
-            activeAdmission: false, // TODO: impolementere denne
+            activeAdmission: false,
             width: window.innerWidth
         };
     }
@@ -40,10 +41,16 @@ class AssistantPage extends Component {
         window.removeEventListener('resize', this.handleWindowSizeChange);
     }
 
+    async componentDidMount(){
+        const departmentsAdmission = await DepartmentApi.getByActiveSemester();
+        if (departmentsAdmission.length !== 0){
+            this.setState({activeAdmission :true});
+        }
+    }
+
   render() {
       const { width } = this.state.width;
       const isMobile = width <= 500;
-
       const isActiveAdmission = this.state.activeAdmission;
 
     return (
@@ -156,7 +163,7 @@ class AssistantPage extends Component {
             <Grid.Row columns={1}>
                 <Grid.Column width={9} className="assistantApplicationForm centered">
                     {!isActiveAdmission ?
-                        <Header as='h4'>Det er dessverre ingen aktiv søkeperiode</Header>
+                        <Header as='h4'>Det er dessverre ikke aktiv søkeperiode</Header>
                         :
                         <div>
                             <Header as='h3'>Send oss din søknad</Header>

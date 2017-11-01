@@ -3,23 +3,23 @@ import './NewsletterPopUp.css';
 import { Button, Form, Icon } from 'semantic-ui-react';
 import Geolocation from '../components/Geolocation';
 import {NewsletterApi} from '../api/NewsletterApi';
-import {DepartmentApi} from '../api/DepartmentApi';
 
 class NewsletterPopUp extends Component {
     constructor(props){
         super(props);
         this.state = {
-            department:'',
             newsletter:'',
+            departmentShortName:'',
             postData : {
+                name : '',
                 email : '',
                 newsletterId : ''
             }
         };
-        this.handleChange = this.handleChange.bind(this);
+        this.closestDepartment = this.closestDepartment.bind(this);
     }
 
-    handleSubmit() {
+    handleSubmit = () =>{
         const postData = {...this.state.postData};
         postData.newsletterId = this.state.newsletter.id;
         this.setState({
@@ -28,7 +28,7 @@ class NewsletterPopUp extends Component {
         NewsletterApi.post(this.state.postData);
     };
 
-    handleChange(event) {
+    handleChange = (event) => {
         const postData = {...this.state.postData};
         postData[event.target.name] = event.target.value;
         this.setState({
@@ -36,25 +36,27 @@ class NewsletterPopUp extends Component {
         });
     };
 
-    async getClosestDepartment(departmentId) {
+    async closestDepartment(departmentId){
         const newsletter = await NewsletterApi.getByDepartment(departmentId);
-        const department = await DepartmentApi.get(departmentId);
+        console.log(newsletter);
         this.setState({
             newsletter,
-            department
+            departmentShortName : newsletter.department.short_name
         });
     };
 
+
     render() {
-        const department = this.state.department.short_name;
+        const department = this.state.departmentShortName;
         return (
             <div className={'newsletterPopUp' + (this.props.show ? ' visible' : '')}>
-                <Geolocation closestDepartment={ this.getClosestDepartment } />
+                <Geolocation closestDepartment={ this.closestDepartment } />
 
                 <Icon name={'remove'} onClick={this.props.onClose} className="newsletterIcon"/>
                 <br/>
-                <p className="newsletterText">Du virker interessert i Vektorprogrammet. <br/> Vil du melde deg på {department} sitt nyhetsbrev?</p>
+                <p className="newsletterText">Du virker interessert i Vektorprogrammet. <br/> Vil du melde deg på <b>{department}</b> sitt nyhetsbrev?</p>
                 <Form onSubmit={this.handleSubmit}>
+                    <Form.Field><input name='name' placeholder='Navn' value={this.state.postData.name} onChange={this.handleChange} required/></Form.Field>
                     <Form.Field><input name='email' placeholder='E-post' value={this.state.postData.email} onChange={this.handleChange} required/></Form.Field>
                     <Button size='mini'>Meld meg på!</Button>
                 </Form>
