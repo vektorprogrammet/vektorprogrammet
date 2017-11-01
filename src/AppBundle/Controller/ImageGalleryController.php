@@ -32,6 +32,8 @@ class ImageGalleryController extends Controller
                 throw new AccessDeniedException();
             }
 
+            $imageGallery->setReferenceName(urlencode($imageGallery->getReferenceName()));
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($imageGallery);
             $em->flush();
@@ -65,6 +67,8 @@ class ImageGalleryController extends Controller
             if (!$userCanCreate) {
                 throw new AccessDeniedException();
             }
+
+            $imageGallery->setReferenceName(urlencode($imageGallery->getReferenceName()));
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($imageGallery);
