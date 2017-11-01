@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ImageType extends AbstractType
+class UploadImageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -18,7 +18,6 @@ class ImageType extends AbstractType
                 ))
             ->add('uploadedFile', FileType::class, array(
                 'label' => 'Last opp bilde',
-                'required' => $options['upload_required'],
                 'data_class' => null,
                 'attr' => array('class' => 'upload-gallery-image-hack'),
                 'label_attr' => array('class' => 'button'),
@@ -29,7 +28,6 @@ class ImageType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Image',
-            'upload_required' => true,
         ));
     }
 

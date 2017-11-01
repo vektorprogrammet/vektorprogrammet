@@ -26,6 +26,7 @@ class Image
 
     /**
      * @var UploadedFile $uploadedFile
+     * @Assert\NotBlank(groups={"upload"}, message="Du må laste opp et bilde")
      */
     private $uploadedFile;
 

@@ -4,8 +4,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ImageGallery;
 use AppBundle\Entity\Image;
+use AppBundle\Form\Type\EditImageType;
 use AppBundle\Form\Type\ImageGalleryType;
-use AppBundle\Form\Type\ImageType;
+use AppBundle\Form\Type\UploadImageType;
 use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -90,7 +91,7 @@ class ImageGalleryController extends Controller
     {
         $image = new Image();
 
-        $form = $this->createForm(ImageType::class, $image);
+        $form = $this->createForm(UploadImageType::class, $image);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -124,7 +125,7 @@ class ImageGalleryController extends Controller
     public function editImageAction(Request $request, Image $image)
     {
         $oldPath = $image->getPath();
-        $form = $this->createForm(ImageType::class, $image, array('upload_required' => false));
+        $form = $this->createForm(EditImageType::class, $image);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
