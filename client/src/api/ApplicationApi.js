@@ -19,7 +19,7 @@ export const ApplicationApi = {
           method: "POST",
           body: JSON.stringify(application)
       });
-      console.log(result.json());
+      return result;
   },
 
   delete: async(id) => {

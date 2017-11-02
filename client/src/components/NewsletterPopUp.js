@@ -8,8 +8,8 @@ class NewsletterPopUp extends Component {
     constructor(props){
         super(props);
         this.state = {
-            newsletter:'',
             departmentShortName:'',
+            submitted: false,
             postData : {
                 name : '',
                 email : '',
@@ -20,11 +20,7 @@ class NewsletterPopUp extends Component {
     }
 
     handleSubmit = () =>{
-        const postData = {...this.state.postData};
-        postData.newsletterId = this.state.newsletter.id;
-        this.setState({
-            postData
-        });
+        this.setState({submitted:true});
         NewsletterApi.post(this.state.postData);
     };
 
@@ -38,16 +34,19 @@ class NewsletterPopUp extends Component {
 
     async closestDepartment(departmentId){
         const newsletter = await NewsletterApi.getByDepartment(departmentId);
-        console.log(newsletter);
+        const postData = {...this.state.postData};
+        postData.newsletterId = newsletter.id;
         this.setState({
-            newsletter,
-            departmentShortName : newsletter.department.short_name
+            departmentShortName : newsletter.department.short_name,
+            postData
         });
     };
 
 
     render() {
         const department = this.state.departmentShortName;
+        const isSubmitted = this.state.submitted;
+
         return (
             <div className={'newsletterPopUp' + (this.props.show ? ' visible' : '')}>
                 <Geolocation closestDepartment={ this.closestDepartment } />
@@ -57,9 +56,10 @@ class NewsletterPopUp extends Component {
                 <p className="newsletterText">Du virker interessert i Vektorprogrammet. <br/> Vil du melde deg på <b>{department}</b> sitt nyhetsbrev?</p>
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Field><input name='name' placeholder='Navn' value={this.state.postData.name} onChange={this.handleChange} required/></Form.Field>
-                    <Form.Field><input name='email' placeholder='E-post' value={this.state.postData.email} onChange={this.handleChange} required/></Form.Field>
+                    <Form.Field><input name='email' placeholder='E-post' value={this.state.postData.email} onChange={this.handleChange} type="email" required/></Form.Field>
                     <Button size='mini'>Meld meg på!</Button>
                 </Form>
+                {isSubmitted ? <p className="newsletterSubmittedTxt">Takk!</p> : '' }
             </div>
         )
     }

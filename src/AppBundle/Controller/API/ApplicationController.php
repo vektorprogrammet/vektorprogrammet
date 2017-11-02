@@ -10,6 +10,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ApplicationController extends FOSRestController implements ClassResourceInterface
 {
@@ -108,7 +109,9 @@ class ApplicationController extends FOSRestController implements ClassResourceIn
         $em->persist($application);
         $em->flush();
 
-        return $application; // TODO: render ConfirmationBox
+        $response = new Response();
+        $response->setStatusCode(201);
+        return $response;
     }
 
     /**

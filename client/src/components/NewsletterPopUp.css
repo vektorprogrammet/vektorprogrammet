@@ -30,3 +30,17 @@ p.newsletterText {
     font-weight: 200;
     text-align: center;
 }
+
+p.newsletterSubmittedTxt {
+    font-size: 20px;
+    font-weight: 200;
+    right: 50px;
+    bottom: 10px;
+    position: fixed;
+    -webkit-animation: fadein 1s;
+}
+
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
