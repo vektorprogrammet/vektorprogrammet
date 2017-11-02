@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './NewsletterPopUp.css';
 import { Button, Form, Icon } from 'semantic-ui-react';
-import Geolocation from '../components/Geolocation';
+//import Geolocation from '../components/Geolocation';
 import {NewsletterApi} from '../api/NewsletterApi';
 
 class NewsletterPopUp extends Component {
@@ -16,7 +16,6 @@ class NewsletterPopUp extends Component {
                 newsletterId : ''
             }
         };
-        this.closestDepartment = this.closestDepartment.bind(this);
     }
 
     handleSubmit = () =>{
@@ -32,7 +31,8 @@ class NewsletterPopUp extends Component {
         });
     };
 
-    async closestDepartment(departmentId){
+    /*
+    closestDepartment = async (departmentId) => {
         const newsletter = await NewsletterApi.getByDepartment(departmentId);
         const postData = {...this.state.postData};
         postData.newsletterId = newsletter.id;
@@ -41,6 +41,17 @@ class NewsletterPopUp extends Component {
             postData
         });
     };
+    */
+
+    async componentDidMount(){
+        const newsletter = await NewsletterApi.getByDepartment(1); // NTNU
+        const postData = {...this.state.postData};
+        postData.newsletterId = newsletter.id;
+        this.setState({
+            departmentShortName : newsletter.department.short_name,
+            postData
+        });
+    }
 
 
     render() {
@@ -49,7 +60,7 @@ class NewsletterPopUp extends Component {
 
         return (
             <div className={'newsletterPopUp' + (this.props.show ? ' visible' : '')}>
-                <Geolocation closestDepartment={ this.closestDepartment } />
+                {/* <Geolocation closestDepartment={ this.closestDepartment } /> */}
 
                 <Icon name={'remove'} onClick={this.props.onClose} className="newsletterIcon"/>
                 <br/>
