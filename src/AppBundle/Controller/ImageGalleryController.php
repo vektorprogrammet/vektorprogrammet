@@ -8,10 +8,12 @@ use AppBundle\Form\Type\EditImageType;
 use AppBundle\Form\Type\ImageGalleryType;
 use AppBundle\Form\Type\UploadImageType;
 use AppBundle\Role\Roles;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Event\ImageGalleryEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ImageGalleryController extends Controller
@@ -160,7 +162,12 @@ class ImageGalleryController extends Controller
 
     public function getAction($referenceName)
     {
-        $imageGallery = $this->getDoctrine()->getRepository('AppBundle:ImageGallery')->findByReferenceName($referenceName);
+        try {
+            $imageGallery = $this->getDoctrine()->getRepository('AppBundle:ImageGallery')->findByReferenceName($referenceName);
+        } catch(NoResultException $exception) {
+            throw new NotFoundHttpException('No image gallery exists with reference name ' . $referenceName . '.');
+        }
+
         $imagineCacheManager = $this->get('liip_imagine.cache.manager');
 
         $imageEntities = $imageGallery->getImages();
