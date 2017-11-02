@@ -54,11 +54,6 @@ class Image
     private $gallery;
 
     /**
-     * @var array $resolutions
-     */
-    private $resolutions;
-
-    /**
      * @return ImageGallery
      */
     public function getGallery()
@@ -144,21 +139,5 @@ class Image
     public function setUploadedFile($uploadedFile)
     {
         $this->uploadedFile = $uploadedFile;
-    }
-
-    /**
-     * @return array
-     */
-    public function getResolutions()
-    {
-        return $this->resolutions;
-    }
-
-    /**
-     * @param array $resolutions
-     */
-    public function setResolutions($resolutions)
-    {
-        $this->resolutions = $resolutions;
     }
 }

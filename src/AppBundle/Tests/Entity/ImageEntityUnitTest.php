@@ -43,24 +43,4 @@ class ImageEntityUnitTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($mockUploadedFile, $image->getUploadedFile());
     }
-
-    public function testSetResolutions()
-    {
-        $image = new Image();
-        $resolutions = array(
-            array(
-                'x' => 400,
-                'y' => 300,
-                'path' => 'fakepath',
-            ),
-            array(
-                'x' => 200,
-                'y' => 400,
-                'path' => 'fakepath',
-            ),
-        );
-        $image->setResolutions($resolutions);
-
-        $this->assertEquals($resolutions, $image->getResolutions());
-    }
 }
