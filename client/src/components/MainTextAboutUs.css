@@ -22,6 +22,10 @@
     padding-bottom: 150px;
 }
 
+.about-us-page .row.main-text-about-us-section:first-of-type {
+    padding-top: 150px;
+}
+
 @media screen and (max-width: 767px) {
     .main-text-about-us-intro .aboutUs-header {
         font-size: 32px;

@@ -1,13 +1,15 @@
 import React from 'react';
-import {Icon, Card, Image} from 'semantic-ui-react';
+import {Icon, Card, Image, Responsive} from 'semantic-ui-react';
 
 export const TeamCard = ({imagePath, name, email, shortDesc, accept_application}) => {
     return (
-        <Card>
-            <Image className="teamImage" src={imagePath}/>
+        <Card className="team-card">
+            <Responsive minWidth={Responsive.onlyTablet.minWidth}>
+                <Image className="teamImage" src={imagePath}/>
+            </Responsive>
             <Card.Content>
                 <Card.Header>{name}</Card.Header>
-                <Card.Meta className="teamCardMeta">{email}</Card.Meta>
+                <Card.Meta className="teamCardMeta"><a href={"mailto:" + email}>{email}</a></Card.Meta>
                 <Card.Description className="teamCardDesc">{shortDesc}</Card.Description>
             </Card.Content>
             { accept_application &&

@@ -1,0 +1,26 @@
+.page-header {
+    padding-top: 50px;
+}
+
+.page-header h1 {
+    font-size: 34px;
+    text-align: center;
+}
+
+.page-header p {
+    font-size: 20px;
+}
+
+@media screen and (max-width: 767px) {
+    .page-header {
+        padding-top: 20px;
+    }
+
+    .page-header h1 {
+        font-size: 32px;
+    }
+
+    .page-header p {
+        font-size: 19px;
+    }
+}

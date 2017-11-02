@@ -21,3 +21,11 @@ p {
 .font-weight-normal {
   font-weight: 400;
 }
+
+.container {
+  display: block;
+  margin: 0 auto;
+  padding: 0 16px;
+  width: 900px;
+  max-width: 100%;
+}

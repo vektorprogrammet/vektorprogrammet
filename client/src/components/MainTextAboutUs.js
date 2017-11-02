@@ -6,17 +6,6 @@ import './MainTextAboutUs.css';
 export const MainTextAboutUs = () => {
     return(
         <Grid stackable={true} className={'main-text-about-us'}>
-          <Grid.Row className={'main-text-about-us-section main-text-about-us-intro'}>
-              <Grid.Column>
-                  <h1 className="aboutUs-header">Om Vektorprogrammet</h1>
-                  <p className="aboutUs-text">
-                    Vektorprogrammet arbeider for å øke interessen for matematikk og realfag blant elever i grunnskolen. Vi
-                    er en nasjonal studentorganisasjon som sender studenter med utmerket realfagskompetanse til skoler for å
-                    hjelpe elevene i matematikktimene. Disse studentene har også gode pedagogiske evner og er gode
-                    rollemodeller – <span className={'font-weight-normal'}>de er Norges realfagshelter.</span>
-                  </p>
-              </Grid.Column>
-          </Grid.Row>
             {/*Move to own css-file*/}
             <Grid.Row className={'main-text-about-us-section'}>
                 <Grid.Column width={9}>

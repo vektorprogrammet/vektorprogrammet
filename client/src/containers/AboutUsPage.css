@@ -4,15 +4,6 @@
        FAQ
 *****************/
 
-.about-us-page {
-    padding-top: 50px;
-}
-@media screen and (max-width: 767px) {
-    .about-us-page {
-        padding-top: 20px;
-    }
-}
-
 .about-us-main {
     width: 900px;
     max-width: 100%;

@@ -6,6 +6,7 @@ import AssistantPage from './AssistantPage';
 import TeamPage from './TeamPage';
 import AboutUsPage from './AboutUsPage';
 import ContactPage from './ContactPage';
+import LoginPage from './LoginPage';
 
 class App extends Component {
   render() {
@@ -18,6 +19,7 @@ class App extends Component {
             <Route exact path='/team' component={TeamPage}/>
             <Route exact path='/om-oss' component={AboutUsPage}/>
             <Route exact path='/kontakt' component={ContactPage}/>
+            <Route exact path='/login' component={LoginPage}/>
           </Switch>
         </div>
     );
