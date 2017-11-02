@@ -9,6 +9,7 @@ use AppBundle\Form\Type\ImageGalleryType;
 use AppBundle\Form\Type\UploadImageType;
 use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Event\ImageGalleryEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -155,5 +156,30 @@ class ImageGalleryController extends Controller
         $this->get('event_dispatcher')->dispatch(ImageGalleryEvent::IMAGE_REMOVED, new ImageGalleryEvent($imageGallery));
 
         return $this->redirectToRoute('image_gallery_edit', array('id' => $imageGallery->getId()));
+    }
+
+    public function getAction($referenceName)
+    {
+        $imageGallery = $this->getDoctrine()->getRepository('AppBundle:ImageGallery')->findByReferenceName($referenceName);
+        $imagineCacheManager = $this->get('liip_imagine.cache.manager');
+
+        $imageEntities = $imageGallery->getImages();
+        $images = array();
+        foreach ($imageEntities as $imageEntity) {
+            $image = array();
+            $paths = array();
+            $filters = $imageGallery->getFilters();
+
+            foreach ($filters as $filter) {
+                $paths[$filter] = $imagineCacheManager->getBrowserPath($imageEntity->getPath(), $filter);
+            }
+
+            $image['description'] = $imageEntity->getDescription();
+            $image['paths'] = $paths;
+
+            array_push($images, $image);
+        }
+
+        return new JsonResponse($images);
     }
 }
