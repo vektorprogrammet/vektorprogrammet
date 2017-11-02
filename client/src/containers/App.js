@@ -14,7 +14,7 @@ class App extends Component {
     return (
         <div>
           <Header/>
-          <Switch>gi
+          <Switch>
             <Route exact path='/' component={HomePage}/>
             <Route exact path='/assistenter' component={AssistantPage}/>
             <Route exact path='/team' component={TeamPage}/>
