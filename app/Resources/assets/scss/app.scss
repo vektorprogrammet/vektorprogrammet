@@ -985,7 +985,7 @@ li.image-gallery-grid-element {
 
 .show-on-hover {
   transition:0.1s;
-  opacity:0;
+  opacity:0.9;
   &:hover {
     opacity:1;
   }
@@ -995,7 +995,7 @@ button.secretly-not-a-button {
   background:none;
   outline:none;
   height:100%;
-  padding:inherit;
+  padding:0;
   position:absolute;
   font-size:inherit;
 }

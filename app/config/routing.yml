@@ -960,7 +960,7 @@ image_gallery_delete:
     id: \d+
 
 image_gallery_api_get:
-  path: /api/images/{referenceName}
+  path: /api/image_gallery/{referenceName}
   defaults: { _controller: AppBundle:ImageGallery:get }
 
 image_edit:
