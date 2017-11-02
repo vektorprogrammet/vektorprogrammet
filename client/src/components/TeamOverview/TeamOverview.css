@@ -44,4 +44,5 @@
 .ui.card.team-card {
     width: 290px;
     max-width: 100%;
+    margin: 1em auto;
 }
