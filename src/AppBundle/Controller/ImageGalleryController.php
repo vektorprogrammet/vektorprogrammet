@@ -164,7 +164,7 @@ class ImageGalleryController extends Controller
     {
         try {
             $imageGallery = $this->getDoctrine()->getRepository('AppBundle:ImageGallery')->findByReferenceName($referenceName);
-        } catch(NoResultException $exception) {
+        } catch (NoResultException $exception) {
             throw new NotFoundHttpException('No image gallery exists with reference name ' . $referenceName . '.');
         }
 
