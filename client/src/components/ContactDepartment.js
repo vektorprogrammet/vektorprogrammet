@@ -3,7 +3,7 @@ import {Grid} from 'semantic-ui-react';
 import './ContactDepartment.css';
 import ContactUsForm from './ContactUsForm';
 import ContactInformation from './ContactInformation';
-import MapWithLocation from './MapWithLocation';
+import MapContainer from './MapContainer';
 
 class ContactDepartment extends Component {
     render() {
@@ -25,7 +25,7 @@ class ContactDepartment extends Component {
                                 <ContactInformation address={this.props.address} email={this.props.email} />
                             </Grid.Row>
                             <Grid.Row>
-                                <MapWithLocation/>
+                                <MapContainer/>
                             </Grid.Row>
                         </Grid.Column>
                     </Grid.Row>
