@@ -79,6 +79,7 @@
                         <a href="{{ path('image_edit', {'id': image.id}) }}">
                             <img src="{{ asset(image.path | imagine_filter('max_500px')) }}" alt="{{ image.description }}">
                         </a>
+                        <p class="edit-image-text"><i class="fa fa-pencil"></i> Rediger bilde</p>
                     </li>
                 {% endfor %}
             </ul>

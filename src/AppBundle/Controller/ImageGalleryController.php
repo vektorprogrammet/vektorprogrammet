@@ -94,7 +94,7 @@ class ImageGalleryController extends Controller
     {
         $image = new Image();
 
-        $form = $this->createForm(UploadImageType::class, $image);
+        $form = $this->createForm(UploadImageType::class, $image, array('validation_groups' => array('image_gallery_upload')));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -137,6 +137,9 @@ class ImageGalleryController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($image);
             $em->flush();
+
+            $imageGallery = $image->getGallery();
+            $this->get('event_dispatcher')->dispatch(ImageGalleryEvent::IMAGE_EDITED, new ImageGalleryEvent($imageGallery));
 
             return $this->redirectToRoute('image_edit', array('id' => $image->getId()));
         }

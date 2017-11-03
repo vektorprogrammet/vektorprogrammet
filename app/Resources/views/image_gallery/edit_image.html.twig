@@ -5,7 +5,21 @@
 {% block body %}
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            <h1>Rediger bilde</h1>
+            <form method="POST"
+                  onsubmit="return confirm('Vil du virkelig slette dette bildet?')"
+                  action="{{ path('image_delete', {'id': image.id}) }}">
+                <h1 class="inline">Rediger bilde</h1>
+                <button class="alert small float-right"><i class="fa fa-trash"></i> Slett bilde</button>
+            </form>
+        </div>
+
+        <div class="small-12 medium-12 large-12 columns">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div data-alert class="alert-box success radius">
+                    {{ flashMessage }}
+                    <a href="#" class="close">&times;</a>
+                </div>
+            {% endfor %}
         </div>
     </div>
 
@@ -23,13 +37,18 @@
                 <button class="button success"><i class="fa fa-pencil"></i> Endre beskrivelse</button>
             {{ form_end(form) }}
             <hr>
-            <form method="POST"
-                  onsubmit="return confirm('Vil du virkelig slette dette bildet?')"
-                  action="{{ path('image_delete', {'id': image.id}) }}">
-                    <button class="alert small"><i class="fa fa-trash"></i> Slett dette bildet</button>
-            </form>
         </div>
     </div>
 
 
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            $('.close').click(function () {
+                $(this).closest('.success').remove();
+            });
+        });
+    </script>
 {% endblock %}

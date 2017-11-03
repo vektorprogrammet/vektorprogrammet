@@ -109,7 +109,7 @@ class ImageGalleryControllerTest extends BaseWebTestCase
     {
         $client = $this->createTeamMemberClient();
         $crawler = $client->request('GET', '/kontrollpanel/bildegallerier/rediger/1');
-        $form = $crawler->selectButton('Slett dette bildet')->form();
+        $form = $crawler->selectButton('Slett bilde')->form();
 
         $client->submit($form);
 

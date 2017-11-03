@@ -26,7 +26,7 @@ class Image
 
     /**
      * @var UploadedFile $uploadedFile
-     * @Assert\NotBlank(groups={"upload"}, message="Du må laste opp et bilde")
+     * @Assert\NotBlank(groups={"image_gallery_upload"}, message="Du må laste opp et bilde")
      */
     private $uploadedFile;
 
@@ -41,7 +41,7 @@ class Image
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255)
-     * @Assert\NotBlank(message="Bildet trenger en beskrivelse.")
+     * @Assert\NotBlank(groups={"image_gallery_upload", "Default"}, message="Bildet trenger en beskrivelse.")
      */
     private $description;
 

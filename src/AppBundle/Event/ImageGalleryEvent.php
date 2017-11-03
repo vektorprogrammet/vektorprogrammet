@@ -12,6 +12,7 @@ class ImageGalleryEvent extends Event
     const DELETED = 'imageGallery.deleted';
     const IMAGE_ADDED = 'imageGallery.imageAdded';
     const IMAGE_REMOVED = 'imageGallery.imageRemoved';
+    const IMAGE_EDITED = 'imageGallery.imageEdited';
 
     private $imageGallery;
 

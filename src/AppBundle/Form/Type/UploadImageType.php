@@ -28,6 +28,7 @@ class UploadImageType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Image',
+            'validation_groups' => array('image_gallery_upload', 'Image'),
         ));
     }
 

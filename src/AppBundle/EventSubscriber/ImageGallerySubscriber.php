@@ -39,6 +39,9 @@ class ImageGallerySubscriber implements EventSubscriberInterface
             ImageGalleryEvent::IMAGE_REMOVED => array(
                 array('addImageRemovedFlashMessage', 1),
             ),
+            ImageGalleryEvent::IMAGE_EDITED => array(
+                array('addImageEditedFlashMessage', 1),
+            ),
         );
     }
 
@@ -85,5 +88,10 @@ class ImageGallerySubscriber implements EventSubscriberInterface
     public function addImageRemovedFlashMessage()
     {
         $this->session->getFlashBag()->add('success', 'Bildet ble slettet.');
+    }
+
+    public function addImageEditedFlashMessage()
+    {
+        $this->session->getFlashBag()->add('success', 'Beskrivelsen har blitt endret.');
     }
 }

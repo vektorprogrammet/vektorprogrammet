@@ -952,6 +952,30 @@ img.gallery-preview-image {
 }
 
 li.image-gallery-grid-element {
+  position:relative;
+  overflow:hidden;
+  * {
+    transition:0.2s;
+  }
+  .edit-image-text {
+    opacity:0;
+    position:absolute;
+    text-align:center;
+    width:100%;
+    top:50%;
+    font-size:18px;
+    margin-top:-9px;
+    color:white;
+    pointer-events:none;
+    text-shadow:0 0 1px rgba(0,0,0,0.6), 0 1px 1px rgba(0,0,0,0.4);
+  }
+
+  img:hover {
+    filter: brightness(95%) grayscale(40%) blur(1px);
+  }
+  &:hover .edit-image-text {
+    opacity:1;
+  }
   padding: 2px;
 }
 
