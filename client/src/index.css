@@ -29,3 +29,7 @@ p {
   width: 900px;
   max-width: 100%;
 }
+
+.container.large {
+  width: 1120px;
+}

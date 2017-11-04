@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link, NavLink} from 'react-router-dom';
+import {Link, NavLink, withRouter} from 'react-router-dom';
 import {Image, Menu, Responsive} from 'semantic-ui-react';
 import logo from '../images/vektor-logo.svg';
 import './Header.css';
@@ -9,8 +9,15 @@ class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isOpen: false
+            isOpen: false,
+            fullWidth: props.location.pathname.indexOf('/dashboard') === 0
         };
+    }
+
+    componentWillMount() {
+      this.props.history.listen(location => {
+        this.setState({fullWidth: location.pathname.indexOf('/dashboard') === 0});
+      });
     }
 
     closeBurgerMenu = () => {
@@ -21,7 +28,7 @@ class Header extends Component {
 
     render() {
         return (
-            <div className="top-header">
+            <div className={this.state.fullWidth ? 'top-header full-width fixed' : 'top-header'}>
                 <Responsive minWidth={Responsive.onlyTablet.minWidth}>
 
                     <Menu secondary className="main-navigation">
@@ -30,11 +37,9 @@ class Header extends Component {
                         </Link>
                         <NavLink activeClassName="active" className="menuLinks" exact to={'/assistenter'}>Assistenter</NavLink>
                         <NavLink activeClassName="active" className="menuLinks" exact to={'/team'}>Team</NavLink>
-                        {/*<NavLink activeClassName="active" className="menuLinks" exact to={'/laerere'}>Lærere</NavLink>*/}
-                        {/*<NavLink activeClassName="active" className="menuLinks" exact to={'/foreldre'}>Foreldre</NavLink>*/}
                         <NavLink activeClassName="active" className="menuLinks" exact to={'/om-oss'}>Om oss</NavLink>
                         <div className="header-login-container">
-                            <NavLink activeClassName="hide" className="header-login-link" exact to={'/login'}>Logg inn</NavLink>
+                            <NavLink className="header-login-link" exact to={'/dashboard'}>Logg inn</NavLink>
                             <NavLink activeClassName="active" className="menuLinks" exact to={'/kontakt'}>Kontakt</NavLink>
                         </div>
                     </Menu>
@@ -47,10 +52,9 @@ class Header extends Component {
                             <ul><NavLink activeClassName="active" className="burgerLinks" exact to={'/'}>Hjem</NavLink></ul>
                             <ul><NavLink activeClassName="active" className="burgerLinks" exact to={'/assistenter'}>Assistenter</NavLink></ul>
                             <ul><NavLink activeClassName="active" className="burgerLinks" exact to={'/team'}>Team</NavLink></ul>
-                            {/*<ul><NavLink activeClassName="active" className="burgerLinks" exact to={'/laerere'}>Lærere</NavLink></ul>*/}
-                            {/*<ul><NavLink activeClassName="active" className="burgerLinks" exact to={'/foreldre'}>Foreldre</NavLink></ul>*/}
                             <ul><NavLink activeClassName="active" className="burgerLinks" exact to={'/om-oss'}>Om oss</NavLink></ul>
                             <ul><NavLink activeClassName="active" className="burgerLinks" exact to={'/kontakt'}>Kontakt</NavLink></ul>
+                            <ul><NavLink className="header-login-link" exact to={'/dashboard'}>Logg inn</NavLink></ul>
                         </li>
                     </BurgerMenu>
                 </Responsive>
@@ -59,4 +63,4 @@ class Header extends Component {
     }
 }
 
-export default Header;
+export default withRouter(props => <Header {...props}/>);

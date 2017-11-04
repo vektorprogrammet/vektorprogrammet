@@ -8,6 +8,7 @@ import AboutUsPage from './AboutUsPage';
 import ContactPage from './ContactPage';
 import LoginPage from './LoginPage';
 import ReceiptPage from './ReceiptPage';
+import DashboardPage from './DashboardPage';
 
 class App extends Component {
   render() {
@@ -22,6 +23,7 @@ class App extends Component {
             <Route exact path='/kontakt' component={ContactPage}/>
             <Route exact path='/login' component={LoginPage}/>
             <Route exact path='/utlegg' component={ReceiptPage}/>
+            <Route path='/dashboard' component={DashboardPage}/>
           </Switch>
         </div>
     );

@@ -6,6 +6,13 @@
     background: #ffffff;
 }
 
+.top-header.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
 .logo {
     display: block;
     margin: 0 auto;
@@ -28,11 +35,15 @@
     margin: 0 auto;
 }
 
+.full-width.fixed .ui.secondary.menu.main-navigation {
+    max-width: 100%;
+}
+
 .ui.secondary.menu.main-navigation>a:first-of-type {
     margin-right: auto;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
     .top-header {
         padding: 5px 0;
     }
