@@ -13,8 +13,6 @@ class ImageGalleryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $allFilters = $options['all_filters'];
-
         $builder
             ->add('title', TextType::class, array(
             'label' => 'Tittel',
@@ -24,13 +22,6 @@ class ImageGalleryType extends AbstractType
             ))
             ->add('referenceName', TextType::class, array(
                 'label' => 'Referansenavn',
-            ))
-            ->add('filters', ChoiceType::class, array(
-                'label' => 'Filtere',
-                'choices' => $allFilters,
-                'multiple' => true,
-                'expanded' => true,
-
             ));
     }
 
@@ -38,7 +29,6 @@ class ImageGalleryType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\ImageGallery',
-            'all_filters' => array(),
         ));
     }
 

@@ -39,18 +39,6 @@
                             {{ form_row(form.referenceName) }}
                             {{ form_row(form.description) }}
                         </div>
-
-                        <div class="small-12 medium-5 large-5 columns">
-                            {{ form_label(form.filters) }}
-                            {% for filter in form.filters %}
-                                {{ form_widget(filter) }}
-                                {{ form_label(filter) }}
-                                <br>
-                            {% else %}
-                                {% do form.filters.setRendered %}
-                                <p>Det finnes ingen filtere</p>
-                            {% endfor %}
-                        </div>
                     </div>
 
                     <div class="row">

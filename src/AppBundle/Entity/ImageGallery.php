@@ -54,17 +54,9 @@ class ImageGallery
      */
     private $description;
 
-    /**
-     * @var ArrayCollection $filters
-     *
-     * @ORM\Column(name="filters", type="array")
-     */
-    private $filters;
-
     public function __construct()
     {
         $this->images = new ArrayCollection();
-        $this->filters = new ArrayCollection();
     }
 
     /**
@@ -180,30 +172,5 @@ class ImageGallery
     public function getDescription()
     {
         return $this->description;
-    }
-
-
-    /**
-     * @param array $filters
-     */
-    public function setFilters($filters)
-    {
-        $this->filters = new ArrayCollection($filters);
-    }
-
-    /**
-     * @return array
-     */
-    public function getFilters()
-    {
-        return $this->filters->toArray();
-    }
-
-    /**
-     * @param string $filter
-     */
-    public function addFilter($filter)
-    {
-        $this->filters->add($filter);
     }
 }

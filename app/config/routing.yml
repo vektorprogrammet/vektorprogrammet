@@ -962,6 +962,7 @@ image_gallery_delete:
 image_gallery_api_get:
   path: /api/image_gallery/{referenceName}
   defaults: { _controller: AppBundle:ImageGallery:get }
+  methods: [GET]
 
 image_edit:
   path: /kontrollpanel/bildegallerier/rediger/{id}

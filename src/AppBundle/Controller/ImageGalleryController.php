@@ -9,6 +9,7 @@ use AppBundle\Form\Type\ImageGalleryType;
 use AppBundle\Form\Type\UploadImageType;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\NoResultException;
+use Liip\ImagineBundle\Exception\Imagine\Filter\NonExistingFilterException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,12 +23,7 @@ class ImageGalleryController extends Controller
     {
         $imageGallery = new ImageGallery();
 
-        $allFilters = array();
-        foreach ($this->get('liip_imagine.filter.configuration')->all() as $filterName => $filter) {
-            $allFilters[$filterName] = $filterName;
-        }
-
-        $form = $this->createForm(ImageGalleryType::class, $imageGallery, array('all_filters' => $allFilters));
+        $form = $this->createForm(ImageGalleryType::class, $imageGallery);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -51,19 +47,13 @@ class ImageGalleryController extends Controller
 
         return $this->render('image_gallery/show_overview.html.twig', array(
             'image_galleries' => $imageGalleries,
-            'filters' => $allFilters,
             'form' => $form->createView(),
         ));
     }
 
     public function editAction(Request $request, ImageGallery $imageGallery)
     {
-        $allFilters = array();
-        foreach ($this->get('liip_imagine.filter.configuration')->all() as $filterName => $filter) {
-            $allFilters[$filterName] = $filterName;
-        }
-
-        $form = $this->createForm(ImageGalleryType::class, $imageGallery, array('all_filters' => $allFilters));
+        $form = $this->createForm(ImageGalleryType::class, $imageGallery);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -85,7 +75,6 @@ class ImageGalleryController extends Controller
 
         return $this->render('image_gallery/edit.html.twig', array(
             'image_gallery' => $imageGallery,
-            'filters' => $allFilters,
             'form' => $form->createView(),
         ));
     }
@@ -163,8 +152,10 @@ class ImageGalleryController extends Controller
         return $this->redirectToRoute('image_gallery_edit', array('id' => $imageGallery->getId()));
     }
 
-    public function getAction($referenceName)
+    public function getAction(Request $request, $referenceName)
     {
+        $filter = $request->query->get('filter');
+
         try {
             $imageGallery = $this->getDoctrine()->getRepository('AppBundle:ImageGallery')->findByReferenceName($referenceName);
         } catch (NoResultException $exception) {
@@ -177,15 +168,13 @@ class ImageGalleryController extends Controller
         $images = array();
         foreach ($imageEntities as $imageEntity) {
             $image = array();
-            $paths = array();
-            $filters = $imageGallery->getFilters();
-
-            foreach ($filters as $filter) {
-                $paths[$filter] = $imagineCacheManager->getBrowserPath($imageEntity->getPath(), $filter);
-            }
-
             $image['description'] = $imageEntity->getDescription();
-            $image['paths'] = $paths;
+
+            try {
+                $image['path'] = $imagineCacheManager->getBrowserPath($imageEntity->getPath(), $filter);
+            } catch (NonExistingFilterException $exception) {
+                $image['path'] = $imageEntity->getPath();
+            }
 
             array_push($images, $image);
         }
