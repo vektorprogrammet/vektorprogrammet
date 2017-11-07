@@ -14,7 +14,6 @@
 
 .assistant-page p {
     font-size: 20px;
-    text-align: left;
 }
 
 .assistant-page h1 {
@@ -37,26 +36,15 @@
     margin: 125px auto;
     padding: 0 20px;
     margin-bottom: 20px;
+    margin-top: 50px;
 }
 
 
-
-.assistantApplicationForm {
-
-}
 .five.wide.column.assistantListText1, .five.wide.column.assistantListText2
 {
     text-align: left;
     margin: 25px auto;
     padding: 0 20px;
-}
-.five.wide.column.assistantListText1
-{
-    margin-right: 5px;
-}
-.five.wide.column.assistantListText2
-{
-    margin-left: 5px;
 }
 
 .ui.ordered.list.assistantPageListe *, .ui.bulleted.list.assistantPageListe *

@@ -37,7 +37,7 @@ p.newsletterSubmittedTxt {
     right: 50px;
     bottom: 10px;
     position: fixed;
-    -webkit-animation: fadein 1s;
+    -webkit-animation: fadein 0.5s;
 }
 
 @-webkit-keyframes fadein {

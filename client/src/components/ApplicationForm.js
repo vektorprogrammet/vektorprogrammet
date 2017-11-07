@@ -46,8 +46,8 @@ class ApplicationForm extends Component {
         if (response.ok){
             this.showConfirmation();
         }
-        // TODO: sende mail
     };
+
 
     showConfirmation = () =>{
         this.setState({confirmationBoxVisible : true});
