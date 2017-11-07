@@ -74,20 +74,20 @@ class AssistantPage extends Component {
             {/* SMÅ BILDER */}
                 <div className="container">
                     <Grid columns={3} padded>
-                        <Grid.Column width={4} className="assistantPics centered">
+                        <Grid.Column width={4} className="assistantPics one centered">
                             <img className="displayed" src={'http://placehold.it/125x125'} alt={'Verv på CV'}/>
                             <Header as='h3'>Fint å ha på CVen</Header>
                             <p className="centered">Erfaring som arbeidsgivere setter pris på. Alle assistenter får en
                                 attest.</p>
                         </Grid.Column>
-                        <Grid.Column width={4} className="assistantPics centered">
+                        <Grid.Column width={4} className="assistantPics two centered">
                             <img className="displayed" src={'http://placehold.it/125x125'}
                                  alt={'Sosiale arrangementer'}/>
                             <Header as='h3'>Sosiale arrangementer</Header>
                             <p className="centered">Alle assistenter blir invitert til arrangementer som fester,
                                 populærforedrag, bowling, grilling i parken, gokart og paintball.</p>
                         </Grid.Column>
-                        <Grid.Column width={4} className="assistantPics centered">
+                        <Grid.Column width={4} className="assistantPics three centered">
                             <img className="displayed" src={'http://placehold.it/125x125'} alt={'Forbilde'}/>
                             <Header as='h3'>Vær et forbilde</Header>
                             <p className="centered">Her kommer en liten tekst om at vektorassistenter er superhelter i
