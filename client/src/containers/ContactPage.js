@@ -7,11 +7,11 @@ import './ContactPage.css';
 class ContactPage extends Component {
   render() {
       const departments = [
-          {school: "NTNU", email: "ntnu@mail", adress: "abcveien 123"},
-          {school: "UiO", email: "uio@mail", adress: "abcveien 234"},
-          {school: "NMBU", email: "nmbu@mail", adress: "abcveien 567"},
-          {school: "Hist", email: "hist@mail", adress: "abcveien 890"},
-          {school: "Ås", email: "aas@mail", adress: "abcveien 123"}
+          {school: "NTNU", email: "ntnu@mail", adress: "abcveien 123", text: "Norges teknisk-naturvitenskapelig universitet "},
+          {school: "UiO", email: "uio@mail", adress: "abcveien 234", text: "Universitetet i Oslo"},
+          {school: "NMBU", email: "nmbu@mail", adress: "abcveien 567", text: "Norges miljø- og biovitenskapelige universitet"},
+          {school: "Hist", email: "hist@mail", adress: "abcveien 890", text: "Norges teknisk-naturvitenskapelige universitet"},
+          {school: "UiT", email: "uit@mail", adress: "abcveien 123", text: "Universitetet i Tromsø - Norges arktiske universitet"}
       ];
     return (
         <div className="contact-page">
