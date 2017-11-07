@@ -7,7 +7,6 @@ class ContactPage extends Component {
   render() {
     return (
         <div className="contact-page">
-            <DepartmentCardContainer/>
             <ContactDepartment school={'NTNU'} address={"abc veien 123"} email={"Olanordmann@gmail.com"} />
         </div>
     );
