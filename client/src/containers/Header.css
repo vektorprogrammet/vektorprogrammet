@@ -33,6 +33,7 @@
     max-width: 1120px;
     padding: 0 16px;
     margin: 0 auto;
+    position: relative;
 }
 
 .full-width.fixed .ui.secondary.menu.main-navigation {
@@ -105,10 +106,6 @@ a.header-login-link:hover {
 a.header-login-link.hide {
     visibility: hidden;
     pointer-events: none;
-}
-
-.ui.secondary.menu .item {
-    padding: 0;
 }
 
 .burgerLinks {

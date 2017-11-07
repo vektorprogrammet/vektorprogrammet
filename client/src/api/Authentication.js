@@ -1,7 +1,8 @@
-import {loginEndpoint} from '../api/Api';
+import {loginEndpoint, logoutEndpoint} from '../api/Api';
 
 export const Authentication = {
-    login: (username, password) => {
+    login: (payload) => {
+        const {username, password} = payload;
         return fetch(loginEndpoint, {
                 headers: {
                     'Content-Type': 'application/json'
@@ -10,6 +11,9 @@ export const Authentication = {
                 body: JSON.stringify({_username: username, _password: password})
             }
         )
-            // .catch(err => console.log("Hurhur"));
+    },
+
+    logout: () => {
+        return fetch(logoutEndpoint);
     }
 };

@@ -45,8 +45,9 @@ security:
                 #Added this line to prevent the SessionUnavailable Exception
                 #See here for explenation: http://stackoverflow.com/questions/32802932/symfony2-sessionunavailable-exception
             logout:
-                path:  /logout
-                target:  /
+                success_handler: app.security.authentication_handler
+#                path:  /logout
+#                target:  /
 
 
     # with these settings you can restrict or allow access for different parts
