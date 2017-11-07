@@ -7,7 +7,7 @@ import './Menu.css'
 
 export default ({user}) => {
   const style = {
-    top: '100px'
+    top: '104px'
   };
   return (
       <Menu vertical fixed={'left'} size={'huge'} style={style}>
