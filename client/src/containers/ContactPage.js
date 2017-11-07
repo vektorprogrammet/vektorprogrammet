@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './HomePage.css';
 import ContactDepartment from '../components/ContactDepartment';
-import DepartmentCardContainer from "../components/DepartmentCardContainer";
 
 class ContactPage extends Component {
   render() {
