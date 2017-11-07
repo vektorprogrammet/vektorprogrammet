@@ -1,38 +1,62 @@
 import React, {Component} from 'react';
-import {Grid} from 'semantic-ui-react';
+import {List, Button} from 'semantic-ui-react';
 import './ContactDepartment.css';
-import ContactUsForm from './ContactUsForm';
+import ContactUsPopUp from '../components/ContactUsPopUp';
+/*import ContactUsForm from './ContactUsForm';
+import {Grid} from 'semantic-ui-react';
 import ContactInformation from './ContactInformation';
-import MapContainer from './MapContainer';
+import MapContainer from './MapContainer';*/
 
 class ContactDepartment extends Component {
+    constructor() {
+        super();
+        this.state = {
+            showModal: false,
+            width: window.innerWidth
+        };
+    }
+
+    handleModal = () => {
+        this.setState(prevState => ({
+            showModal: !prevState.showModal
+        }));
+    };
+
+    handleWindowSizeChange = () => {
+        console.log("Resizing :) :)");
+        this.setState({ width: window.innerWidth });
+    };
+
+    componentWillMount() {
+        window.addEventListener('resize', this.handleWindowSizeChange);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleWindowSizeChange);
+    }
     render() {
+        const departments = this.props.departments.map((item, index) =>
+            <List.Item className={"contact-listSchool"} key={index}>
+                <h2>
+                    {item.school}
+                </h2>
+                <p >
+                    {item.email}
+                </p>
+                <p>
+                    {item.adress}
+                </p> <br/><br/>
+                <Button primary onClick={this.handleModal}>Kontakt oss!</Button>
+            </List.Item>
+        );
         return (
             <div className="contact-department">
-                <Grid centered>
-                    <Grid.Row>
-                        <Grid.Column width={9}>
-                            <h1> {this.props.school} - Kontakt oss</h1>
-                            <p>Før du tar kontakt med oss, må du huske å sjekke ut <a href={"om-oss#FAQ"}>ofte stilte spørsmål!</a></p>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={2}>
-                        <Grid.Column width={5}>
-                            <ContactUsForm/>
-                        </Grid.Column>
-                        <Grid.Column width={8}>
-                            <Grid.Row>
-                                <ContactInformation address={this.props.address} email={this.props.email} />
-                            </Grid.Row>
-                            <Grid.Row>
-                                <MapContainer/>
-                            </Grid.Row>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+                <ContactUsPopUp windowWidth={this.state.width} show={this.state.showModal} onClose={this.handleModal}/>
+                <List>
+                    {departments}
+                </List>
             </div>
         );
     }
 }
-
 export default ContactDepartment;
