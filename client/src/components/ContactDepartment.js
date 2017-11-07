@@ -37,16 +37,12 @@ class ContactDepartment extends Component {
     render() {
         const departments = this.props.departments.map((item, index) =>
             <List.Item className={"contact-listSchool"} key={index}>
-                <h2>
-                    {item.school}
-                </h2>
-                <p >
-                    {item.email}
-                </p>
-                <p>
-                    {item.adress}
-                </p> <br/><br/>
+                <h2>{item.school}</h2>
+                <p className={"contact-text"}>{item.text}</p>
+                <p >{item.email}</p>
+                <p>{item.adress}</p>
                 <Button primary onClick={this.handleModal}>Kontakt oss!</Button>
+                <br/><br/>
             </List.Item>
         );
         return (
