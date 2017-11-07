@@ -12,7 +12,7 @@ class DepartmentCardContainer extends Component {
             {school:"NMBU", logo: "https://via.placeholder.com/300x200"},
             {school:"Ås", logo: "https://via.placeholder.com/300x200"}];
         const departmentName = overview.map(item =>
-            <Grid.Column style={{paddingLeft: 50, paddingRight: 25}}>
+            <Grid.Column style={{paddingLeft: 45, paddingRight: 20}}>
                 <ChooseDepartment departmentName={item.school} logo={item.logo}/>
             </Grid.Column>
             );
@@ -20,7 +20,7 @@ class DepartmentCardContainer extends Component {
         return (
             <div className="card-container">
                 <Grid stackable>
-                    <Grid.Row columns={4} style={{paddingLeft: 100, paddingRight: 100, margin: '0 10px'}}>
+                    <Grid.Row columns={overview.length} style={{paddingLeft: 70, paddingRight: 70}}>
                         {departmentName}
                     </Grid.Row>
                 </Grid>

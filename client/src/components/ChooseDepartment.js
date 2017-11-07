@@ -24,7 +24,7 @@ class ChooseDepartment extends Component {
                             <Card.Meta>
                             </Card.Meta>
                             <Card.Description>
-                                Ta kontakt med {this.props.departmentName}
+                                Ta kontakt!
                             </Card.Description>
                         </Card.Content>
                         <Card.Content extra>
