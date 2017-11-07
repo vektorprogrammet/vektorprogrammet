@@ -77,22 +77,24 @@ class CrudLogger implements EventSubscriberInterface
         $this->logger->info("$className $name deleted by $loggedInUser");
     }
     
-    private function getUser() {
+    private function getUser()
+    {
         $loggedInUser = $this->tokenStorage->getToken()->getUser();
         if ($loggedInUser && $loggedInUser instanceof User) {
-            return $loggedInUser->getFullName();
+            $department = $loggedInUser->getDepartment()->getShortName();
+            return "*{$loggedInUser->getFullName()}* ($department)";
         }
         
         return "Anonymous";
     }
 
-    private function getObjectName($obj) {
+    private function getObjectName($obj)
+    {
         $name = "";
         if (method_exists($obj, '__toString')) {
-            $name = $obj->__toString();
+            $name = "`{$obj->__toString()}`";
         }
 
         return $name;
     }
-
 }
