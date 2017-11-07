@@ -8,21 +8,26 @@ import MapContainer from './MapContainer';*/
 
 class ContactDepartment extends Component {
     render() {
-        const schools = this.props.departments.map((item, index) =>
-            <List.Item className="contact-listSchool" key={index}>
-                <div>
+        const departments = this.props.departments.map((item, index) =>
+            <List.Item className={"contact-listSchool"} key={index}>
+                <h2>
                     {item.school}
-                </div>
+                </h2>
+                <p >
+                    {item.email}
+                </p>
+                <p>
+                    {item.adress}
+                </p> <br/><br/>
             </List.Item>
         );
         return (
             <div className="contact-department">
                 <List>
-                        {schools}
+                    {departments}
                 </List>
             </div>
         );
     }
 }
-
 export default ContactDepartment;
