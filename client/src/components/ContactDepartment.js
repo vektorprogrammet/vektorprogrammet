@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {List, Button, Grid} from 'semantic-ui-react';
+import {List, Button, Grid, Image} from 'semantic-ui-react';
 import './ContactDepartment.css';
 import ContactUsPopUp from '../components/ContactUsPopUp';
 /*import ContactUsForm from './ContactUsForm';
@@ -58,14 +58,14 @@ class ContactDepartment extends Component {
                     </List>
                 </Grid.Column>
                 <Grid.Column width={8}>
-
+                    <Image src={"http://via.placeholder.com/300x300/"}/>
                 </Grid.Column>
             </Grid.Row>
         );
         return (
             <div className="contact-department">
                 <ContactUsPopUp windowWidth={this.state.width} show={this.state.showModal} onClose={this.handleModal}/>
-                <Grid>
+                <Grid celled>
                     {departments}
                 </Grid>
             </div>
