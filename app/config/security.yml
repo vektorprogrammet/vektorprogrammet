@@ -38,6 +38,8 @@ security:
                 login_path: /login
                 check_path: /login_check
                 always_use_default_target_path: false
+                success_handler: app.security.authentication_handler
+                failure_handler: app.security.authentication_handler
                 default_target_path: /login/redirect
                 require_previous_session: false
                 #Added this line to prevent the SessionUnavailable Exception

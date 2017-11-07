@@ -5,17 +5,17 @@ import {Menu} from 'semantic-ui-react';
 
 import './Menu.css'
 
-export default () => {
+export default ({user}) => {
   const style = {
     top: '100px'
   };
   return (
       <Menu vertical fixed={'left'} size={'huge'} style={style}>
-        <NavLink activeClasName={'active'} exact to={'/dashboard'}>
+        <NavLink activeClassName={'active'} exact to={'/dashboard'}>
           <Menu.Item name='DASHBOARD' onClick={this.handleItemClick}/>
         </NavLink>
         <Menu.Item>
-          <Menu.Header>Ola Nordmann</Menu.Header>
+          <Menu.Header>{user.first_name} {user.last_name}</Menu.Header>
 
           <Menu.Menu>
             <NavLink to={'/dashboard/profil'}><Menu.Item name='Profil' onClick={this.handleItemClick}/></NavLink>

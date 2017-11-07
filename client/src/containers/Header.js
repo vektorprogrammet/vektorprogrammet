@@ -14,7 +14,7 @@ class Header extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
       this.props.history.listen(location => {
         this.setState({fullWidth: location.pathname.indexOf('/dashboard') === 0});
       });
@@ -27,6 +27,7 @@ class Header extends Component {
     };
 
     render() {
+        const user = this.props.user;
         return (
             <div className={this.state.fullWidth ? 'top-header full-width fixed' : 'top-header'}>
                 <Responsive minWidth={Responsive.onlyTablet.minWidth}>
@@ -38,10 +39,14 @@ class Header extends Component {
                         <NavLink activeClassName="active" className="menuLinks" exact to={'/assistenter'}>Assistenter</NavLink>
                         <NavLink activeClassName="active" className="menuLinks" exact to={'/team'}>Team</NavLink>
                         <NavLink activeClassName="active" className="menuLinks" exact to={'/om-oss'}>Om oss</NavLink>
-                        <div className="header-login-container">
-                            <NavLink className="header-login-link" exact to={'/dashboard'}>Logg inn</NavLink>
-                            <NavLink activeClassName="active" className="menuLinks" exact to={'/kontakt'}>Kontakt</NavLink>
-                        </div>
+                        {user && user.hasOwnProperty('first_name') ?
+                            <NavLink className="header-login-link" exact to={'/dashboard'}>
+                                {user.first_name + ' ' + user.last_name}
+                            </NavLink>
+                            :
+                            <NavLink className="header-login-link" exact to={'/login'}>Logg inn</NavLink>
+                        }
+                        <NavLink activeClassName="active" className="menuLinks" exact to={'/kontakt'}>Kontakt</NavLink>
                     </Menu>
                 </Responsive>
 

@@ -92,6 +92,9 @@ a.header-login-link {
     display:block;
     font-size: 14px;
     padding: 0 16px;
+    position: absolute;
+    top: 8px;
+    right: 16px;
 }
 
 a.header-login-link:hover {

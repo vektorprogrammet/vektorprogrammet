@@ -30,3 +30,8 @@ services:
         class: GuzzleHttp\Client
         arguments:
             - { timeout: 2 }
+
+    app.security.authentication_handler:
+        class: AppBundle\Security\AuthenticationHandler
+        public: false
+        arguments: ['@jms_serializer']

@@ -12,9 +12,13 @@ import {
 
 class DashboardPage extends Component {
   render() {
+      const MenuWithUser = (props) => {
+          return <Menu user={this.props.user} {...props} />
+      };
+      console.log(this.props.user);
     return (
         <div className="dashboard-page">
-          <Responsive as={Menu} minWidth={Responsive.onlyTablet.minWidth} />
+          <Responsive as={MenuWithUser} minWidth={Responsive.onlyTablet.minWidth} />
           <div className="dashboard-content">
             <Switch>
               <Route exact path='/dashboard' component={HomePage}/>
