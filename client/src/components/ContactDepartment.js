@@ -1,35 +1,25 @@
 import React, {Component} from 'react';
-import {Grid} from 'semantic-ui-react';
+import {List} from 'semantic-ui-react';
 import './ContactDepartment.css';
-import ContactUsForm from './ContactUsForm';
+/*import ContactUsForm from './ContactUsForm';
+import {Grid} from 'semantic-ui-react';
 import ContactInformation from './ContactInformation';
-import MapContainer from './MapContainer';
+import MapContainer from './MapContainer';*/
 
 class ContactDepartment extends Component {
     render() {
+        const schools = this.props.departments.map((item, index) =>
+            <List.Item className="contact-listSchool" key={index}>
+                <div>
+                    {item.school}
+                </div>
+            </List.Item>
+        );
         return (
             <div className="contact-department">
-                <Grid centered>
-                    <Grid.Row>
-                        <Grid.Column width={9}>
-                            <h1> {this.props.school} - Kontakt oss</h1>
-                            <p>Før du tar kontakt med oss, må du huske å sjekke ut <a href={"om-oss#FAQ"}>ofte stilte spørsmål!</a></p>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={2}>
-                        <Grid.Column width={5}>
-                            <ContactUsForm/>
-                        </Grid.Column>
-                        <Grid.Column width={8}>
-                            <Grid.Row>
-                                <ContactInformation address={this.props.address} email={this.props.email} />
-                            </Grid.Row>
-                            <Grid.Row>
-                                <MapContainer/>
-                            </Grid.Row>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+                <List>
+                        {schools}
+                </List>
             </div>
         );
     }

@@ -4,9 +4,16 @@ import ContactDepartment from '../components/ContactDepartment';
 
 class ContactPage extends Component {
   render() {
+      const departments = [
+          {school: "NTNU", email: "ntnu@mail"},
+          {school: "UiO", email: "ntnu@mail"},
+          {school: "NMBU"},
+          {school: "Hist"},
+          {school: "Ås"}
+      ];
     return (
         <div className="contact-page">
-            <ContactDepartment school={'NTNU'} address={"abc veien 123"} email={"Olanordmann@gmail.com"} />
+            <ContactDepartment departments={departments} />
         </div>
     );
   }
