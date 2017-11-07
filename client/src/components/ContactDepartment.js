@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {List, Button} from 'semantic-ui-react';
+import {List, Button, Grid} from 'semantic-ui-react';
 import './ContactDepartment.css';
 import ContactUsPopUp from '../components/ContactUsPopUp';
 /*import ContactUsForm from './ContactUsForm';
@@ -36,21 +36,38 @@ class ContactDepartment extends Component {
     }
     render() {
         const departments = this.props.departments.map((item, index) =>
-            <List.Item className={"contact-listSchool"} key={index}>
-                <h2>{item.school}</h2>
-                <p className={"contact-text"}>{item.text}</p>
-                <p >{item.email}</p>
-                <p>{item.adress}</p>
-                <Button primary onClick={this.handleModal}>Kontakt oss!</Button>
-                <br/><br/>
-            </List.Item>
+            <Grid.Row className={"contact-listSchool"} key={index}>
+                <Grid.Column width={8}>
+                    <List>
+                        <List.Item><h2>{item.school}</h2></List.Item>
+                        <List.Item><p className={"contact-text"}>{item.text}</p></List.Item>
+                        <List.Item>
+                            <List.Icon name='mail' />
+                            <List.Content>
+                                <a href={"mailto:" + item.email}><p >{item.email}</p></a>
+                            </List.Content>
+                        </List.Item>
+                        <List.Item>
+                            <List.Icon name='marker' />
+                            <List.Content>
+                                <p>{item.adress}</p>
+                            </List.Content>
+                        </List.Item>
+                        <List.Item><Button primary onClick={this.handleModal}>Kontakt oss!</Button></List.Item>
+                        <br/><br/>
+                    </List>
+                </Grid.Column>
+                <Grid.Column width={8}>
+
+                </Grid.Column>
+            </Grid.Row>
         );
         return (
             <div className="contact-department">
                 <ContactUsPopUp windowWidth={this.state.width} show={this.state.showModal} onClose={this.handleModal}/>
-                <List>
+                <Grid>
                     {departments}
-                </List>
+                </Grid>
             </div>
         );
     }
