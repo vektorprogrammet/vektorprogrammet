@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import {Header, Segment, Card, Tab} from 'semantic-ui-react';
+import {Header, Segment, Card, Tab, Loader, Dimmer} from 'semantic-ui-react';
 import './TeamOverview.css';
 import {TeamCard} from '../TeamCard';
 
 export default class TeamOverview extends Component {
-
     getPanes(departments) {
         const panes = [];
         departments.forEach(function (department) {
@@ -43,6 +42,9 @@ export default class TeamOverview extends Component {
     render() {
         return (
             <Segment>
+                <Dimmer active={this.props.dimmerActive} inverted>
+                    <Loader inverted/>
+                </Dimmer>
                 <Header as="h1" id="teamHeader">Oversikt</Header>
                 <Tab menu={{
                     id: "regionMenu",
