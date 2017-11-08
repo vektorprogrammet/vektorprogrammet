@@ -169,16 +169,20 @@ class AssistantPage extends Component {
         <Grid.Row columns={1}><br/><br/><br/></Grid.Row>
 
         {/* SØKEFORM */}
-        <div className="container">
-          <Grid.Row columns={1}>
-            <Grid.Column width={9} className="assistantApplicationForm centered">
-              <div>
-                <Header as='h3'>Send oss din søknad</Header>
-                <ApplicationFormContainer />
-              </div>
-            </Grid.Column>
-          </Grid.Row>
-        </div>
+        {this.props.application.hasOwnProperty('department') ?
+          <div>TAKK FOR SØKNADEN!</div>
+          :
+          <div className="container">
+            <Grid.Row columns={1}>
+              <Grid.Column width={9} className="assistantApplicationForm centered">
+                <div>
+                  <Header as='h3'>Send oss din søknad</Header>
+                  <ApplicationFormContainer/>
+                </div>
+              </Grid.Column>
+            </Grid.Row>
+          </div>
+        }
 
       </div>
 
@@ -188,6 +192,7 @@ class AssistantPage extends Component {
 
 const mapStateToProps = state => ({
   departments: state.departments,
+  application: state.application,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

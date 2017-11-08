@@ -1,64 +1,62 @@
 import React from 'react';
 import { Button, Form } from 'semantic-ui-react';
+import { Field, reduxForm, formValueSelector, change } from 'redux-form';
+import { connect } from 'react-redux';
 import DepartmentDropdown from './DepartmentDropdown';
 import FieldOfStudyDropdown from './FieldOfStudyDropdown';
+import { postApplication } from '../../actions/application';
 
-export default ({application, departments, onChange, onSubmit}) => {
-  const fieldOfStudies = application.department.hasOwnProperty('field_of_study') ? application.department.field_of_study : [];
+let ApplicationForm = ({departments, handleSubmit, selectedDepartment, clearFieldOfStudy, submitApplication}) => {
+  const fieldOfStudies = selectedDepartment ? selectedDepartment.field_of_study : [];
 
   return (
     <div>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={handleSubmit(values => {submitApplication(values)})}>
 
         <Form.Group widths='equal'>
           <Form.Field>
-            <input name="firstName" placeholder="Fornavn"
-                   value={application.firstName}
-                   onChange={onChange}
-                   required/>
+            <Field
+              name="firstName"
+              component="input"
+              type="text"
+              placeholder="Fornavn"
+              required/>
           </Form.Field>
           <Form.Field>
-            <input name="lastName"
-                   placeholder='Etternavn'
-                   value={application.lastName}
-                   onChange={onChange}
-                   required/>
+            <Field
+              name="lastName"
+              component="input"
+              type="text"
+              placeholder='Etternavn'
+              required/>
           </Form.Field>
         </Form.Group>
 
         <Form.Group widths='equal'>
           <Form.Field>
-            <input name="phone"
-                   placeholder='Telefonnummer'
-                   value={application.phone}
-                   onChange={onChange}
-                   type="number"
-                   required/>
+            <Field
+              name="phone"
+              placeholder='Telefonnummer'
+              component="input"
+              type="number"
+              required/>
           </Form.Field>
           <Form.Field>
-            <input name="email"
-                   placeholder='E-post'
-                   value={application.email}
-                   onChange={onChange}
-                   type="email"
-                   required/>
+            <Field
+              name="email"
+              component="input"
+              placeholder='E-post'
+              type="email"
+              required/>
           </Form.Field>
         </Form.Group>
 
         <Form.Group widths='equal'>
           <Form.Field>
-            <DepartmentDropdown
-              departments={departments}
-              value={application.department.id}
-              onChange={onChange}
-            />
+            <DepartmentDropdown departments={departments} onChange={clearFieldOfStudy} />
           </Form.Field>
           <Form.Field>
-            <FieldOfStudyDropdown
-              fieldOfStudies={fieldOfStudies}
-              value={application.fieldOfStudyId}
-              onChange={onChange}
-            />
+            <FieldOfStudyDropdown fieldOfStudies={fieldOfStudies}/>
           </Form.Field>
         </Form.Group>
 
@@ -66,4 +64,30 @@ export default ({application, departments, onChange, onSubmit}) => {
       </Form>
     </div>
   );
-}
+};
+
+const form = 'application';
+const selector = formValueSelector(form);
+
+ApplicationForm = reduxForm({
+  form,
+  enableReinitialize : true
+})(ApplicationForm);
+
+const mapStateToProps = state => ({
+  initialValues: {
+    department: state.departments[0]
+  },
+  selectedDepartment: selector(state, 'department'),
+});
+
+const mapDispatchToProps = dispatch => ({
+  clearFieldOfStudy: () => {
+    dispatch(change(form, 'fieldOfStudyId', ''))
+  },
+  submitApplication: application => {
+    dispatch(postApplication(application))
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ApplicationForm);

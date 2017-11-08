@@ -9,14 +9,18 @@ import App from './containers/App';
 import registerServiceWorker from './registerServiceWorker';
 import { userReducer } from './reducers/user';
 import { departmentReducer } from './reducers/department';
+import { applicationReducer } from './reducers/application';
 import rootSaga from './sagas';
+import { reducer as formReducer } from 'redux-form';
 
 const rootEl = document.getElementById('root');
 
 const sagaMiddleware = createSagaMiddleware();
 const reducers = combineReducers({
+  application: applicationReducer,
   departments: departmentReducer,
-  user: userReducer
+  user: userReducer,
+  form: formReducer
 });
 const store = createStore(
   reducers,

@@ -1,11 +1,12 @@
 import React from 'react';
+import {Field} from 'redux-form';
 
-export default ({fieldOfStudies, value, onChange}) => (
-  <select
+export default ({fieldOfStudies}) => (
+  <Field
+    component="select"
     name="fieldOfStudyId"
     label='Linje'
-    value={value}
-    onChange={onChange}>
+  >
     <option value="">Velg linje...</option>
 
     {fieldOfStudies.map(fieldOfStudy => (
@@ -14,5 +15,5 @@ export default ({fieldOfStudies, value, onChange}) => (
       </option>
     ))}
 
-  </select>
+  </Field>
 );
