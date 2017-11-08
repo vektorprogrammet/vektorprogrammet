@@ -1,17 +1,15 @@
 import React from 'react';
 import { Button, Form } from 'semantic-ui-react';
-import { Field, reduxForm, formValueSelector, change } from 'redux-form';
-import { connect } from 'react-redux';
+import { Field } from 'redux-form';
 import DepartmentDropdown from './DepartmentDropdown';
 import FieldOfStudyDropdown from './FieldOfStudyDropdown';
-import { postApplication } from '../../actions/application';
 
-let ApplicationForm = ({departments, handleSubmit, selectedDepartment, clearFieldOfStudy, submitApplication}) => {
+export default ({departments, onSubmit, selectedDepartment, departmentChange}) => {
   const fieldOfStudies = selectedDepartment ? selectedDepartment.field_of_study : [];
 
   return (
     <div>
-      <Form onSubmit={handleSubmit(values => {submitApplication(values)})}>
+      <Form onSubmit={onSubmit}>
 
         <Form.Group widths='equal'>
           <Form.Field>
@@ -53,7 +51,7 @@ let ApplicationForm = ({departments, handleSubmit, selectedDepartment, clearFiel
 
         <Form.Group widths='equal'>
           <Form.Field>
-            <DepartmentDropdown departments={departments} onChange={clearFieldOfStudy} />
+            <DepartmentDropdown departments={departments} onChange={departmentChange} />
           </Form.Field>
           <Form.Field>
             <FieldOfStudyDropdown fieldOfStudies={fieldOfStudies}/>
@@ -65,29 +63,3 @@ let ApplicationForm = ({departments, handleSubmit, selectedDepartment, clearFiel
     </div>
   );
 };
-
-const form = 'application';
-const selector = formValueSelector(form);
-
-ApplicationForm = reduxForm({
-  form,
-  enableReinitialize : true
-})(ApplicationForm);
-
-const mapStateToProps = state => ({
-  initialValues: {
-    department: state.departments[0]
-  },
-  selectedDepartment: selector(state, 'department'),
-});
-
-const mapDispatchToProps = dispatch => ({
-  clearFieldOfStudy: () => {
-    dispatch(change(form, 'fieldOfStudyId', ''))
-  },
-  submitApplication: application => {
-    dispatch(postApplication(application))
-  }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ApplicationForm);
