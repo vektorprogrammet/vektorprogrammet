@@ -83,4 +83,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     requestLogout,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(props => <Header {...props}/>));
+export default connect(mapStateToProps, mapDispatchToProps, null, {pure:false})(withRouter(props => <Header {...props}/>));
