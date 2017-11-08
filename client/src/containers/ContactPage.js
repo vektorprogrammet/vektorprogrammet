@@ -16,12 +16,10 @@ class ContactPage extends Component {
 
   render() {
     return (
-      <div className="contact-page">
+      <div className="contact-page large container">
         <Grid>
           <Grid.Column width={16}>
-            <div className="contact-main">
-              <ContactDepartment departments={this.props.departments}/>
-            </div>
+            <ContactDepartment departments={this.props.departments}/>
           </Grid.Column>
         </Grid>
       </div>

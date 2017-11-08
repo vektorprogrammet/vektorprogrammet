@@ -1,76 +1,61 @@
-import React, {Component} from 'react';
-import {List, Button, Grid, Image} from 'semantic-ui-react';
+import React, { Component } from 'react';
+import { List, Button, Grid, Image, Responsive } from 'semantic-ui-react';
 import './ContactDepartment.css';
 import ContactUsPopUp from '../components/ContactUsPopUp';
-/*import ContactUsForm from './ContactUsForm';
-import {Grid} from 'semantic-ui-react';
-import ContactInformation from './ContactInformation';
-import MapContainer from './MapContainer';*/
 
 class ContactDepartment extends Component {
-    constructor(props) {
-        super(props);
-        console.log(props);
-        this.state = {
-            showModal: false,
-            width: window.innerWidth
-        };
-    }
-
-    handleModal = () => {
-        this.setState(prevState => ({
-            showModal: !prevState.showModal
-        }));
+  constructor(props) {
+    super(props);
+    this.state = {
+      showModal: false,
     };
+  }
 
-    handleWindowSizeChange = () => {
-        console.log("Resizing :) :)");
-        this.setState({ width: window.innerWidth });
-    };
+  handleModal = () => {
+    this.setState(prevState => ({
+      showModal: !prevState.showModal,
+    }));
+  };
 
-    componentWillMount() {
-        window.addEventListener('resize', this.handleWindowSizeChange);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.handleWindowSizeChange);
-    }
-    render() {
-        const departments = this.props.departments.map((item, index) =>
-            <Grid.Row className={"contact-listSchool"} key={index}>
-                <Grid.Column width={8}>
-                    <List>
-                        <List.Item><h2>{item.short_name}</h2></List.Item>
-                        <List.Item><p className={"contact-text"}>{item.name}</p></List.Item>
-                        <List.Item>
-                            <List.Icon name='mail' />
-                            <List.Content>
-                                <a href={"mailto:" + item.email}><p >{item.email}</p></a>
-                            </List.Content>
-                        </List.Item>
-                        <List.Item>
-                            <List.Icon name='marker' />
-                            <List.Content>
-                                <p>{item.address}</p>
-                            </List.Content>
-                        </List.Item>
-                        <List.Item><Button primary onClick={this.handleModal}>Kontakt oss!</Button></List.Item>
-                        <br/><br/>
-                    </List>
-                </Grid.Column>
-                <Grid.Column width={8}>
-                    <Image src={"http://via.placeholder.com/300x300/"}/>
-                </Grid.Column>
-            </Grid.Row>
-        );
-        return (
-            <div className="contact-department">
-                <ContactUsPopUp windowWidth={this.state.width} show={this.state.showModal} onClose={this.handleModal}/>
-                <Grid celled>
-                    {departments}
-                </Grid>
-            </div>
-        );
-    }
+  render() {
+    const departments = this.props.departments.map((item, index) =>
+      <Grid.Row className={'contact-listSchool'} key={index}>
+        <Grid.Column mobile={16} tablet={8} computer={8} widescreen={8}>
+          <List>
+            <List.Item><h2>{item.short_name}</h2></List.Item>
+            <List.Item><p className={'contact-text'}>{item.name}</p></List.Item>
+            <List.Item>
+              <List.Icon name='mail' className={'contact-department-icon'}/>
+              <List.Content verticalAlign={'middle'}>
+                <p className={'font-weight-normal'}>
+                  <a href={'mailto:' + item.email}>{item.email}</a>
+                </p>
+              </List.Content>
+            </List.Item>
+            <List.Item>
+              <List.Icon name='marker' className={'contact-department-icon'}/>
+              <List.Content verticalAlign={'middle'}>
+                <p>{item.address}</p>
+              </List.Content>
+            </List.Item>
+            <List.Item><Button primary onClick={this.handleModal}>Kontakt oss!</Button></List.Item>
+            <br/><br/>
+          </List>
+        </Grid.Column>
+        <Responsive as={Grid.Column} width={8} minWidth={Responsive.onlyTablet.minWidth}>
+          <Image src={'http://via.placeholder.com/300x300/'}/>
+        </Responsive>
+      </Grid.Row>,
+    );
+    return (
+      <div className="contact-department">
+        <ContactUsPopUp show={this.state.showModal} onClose={this.handleModal}/>
+        <Grid>
+          {departments}
+        </Grid>
+      </div>
+    );
+  }
 }
+
 export default ContactDepartment;

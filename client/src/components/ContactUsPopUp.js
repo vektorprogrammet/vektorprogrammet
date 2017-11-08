@@ -23,14 +23,12 @@ class ContactUsPopUp extends Component {
         if (!this.props.show) {
             return null;
         }
-        const isMobile = this.props.windowWidth <= 500;
-        const contactUsPopCSS = isMobile ? ' contactUsPopUpMobile' : 'contactUsPopUp';
         return (
             <div className={'backdrop' + (this.props.show ? ' visible' : '')} onClick={this.props.onClose}>
-                <div className={contactUsPopCSS + (this.props.show ? ' visible' : '')} onClick={this.handlePropagation}>
+                <div className={'contactUsPopUp' + (this.props.show ? ' visible' : '')} onClick={this.handlePropagation}>
                     <Icon name={'remove'} onClick={this.props.onClose} className="contactUsPopUp-icon"/>
                     <div className="header-frame">
-                        <h2>Kontakt vektor ved NTNU {isMobile ? 'Mobile' : 'Computer'}</h2>
+                        <h2>Kontakt vektor ved NTNU</h2>
                         <img src={message} alt={'contact us'}/>
                     </div>
                     <Form style={{padding: '0 15px'}}>
