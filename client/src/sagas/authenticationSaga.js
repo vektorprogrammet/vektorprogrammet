@@ -11,7 +11,8 @@ function* loginSaga(action) {
     }
 
     const body = yield response.json();
-    const user = JSON.parse(body.user);
+    const user = body.user;
+
     yield put(setUser(user));
   } catch (e) {
     console.log(e);

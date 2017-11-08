@@ -32,7 +32,7 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
     public function onAuthenticationSuccess( Request $request, TokenInterface $token )
     {
         $jsonUser = $this->serializer->serialize($token->getUser(), 'json');
-        return new JsonResponse(["user" => $jsonUser]);
+        return new JsonResponse(["user" => json_decode($jsonUser)]);
     }
 
 	public function onLogoutSuccess( Request $request ) {

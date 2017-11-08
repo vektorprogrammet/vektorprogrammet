@@ -10,7 +10,9 @@ import './TeamPage.css';
 
 class TeamPage extends Component {
   componentDidMount() {
-    this.props.fetchDepartments();
+    if (!this.props.departments.length > 0) {
+      this.props.fetchDepartments();
+    }
   }
 
   render() {
