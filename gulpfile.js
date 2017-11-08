@@ -159,8 +159,8 @@ gulp.task('assistantSchedulingStaticFiles', ['buildAssistantSchedulingApp'], fun
 });
 
 gulp.task('frontEnd', function () {
-  gulp.src(path.frontEnd + '/static/**/*')
-      .pipe(gulp.dest('www/static/'));
+  gulp.src(path.frontEnd + '/**/*')
+      .pipe(gulp.dest('www/'));
 });
 
 
