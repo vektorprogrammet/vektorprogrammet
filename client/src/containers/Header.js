@@ -32,8 +32,6 @@ class Header extends Component {
     };
 
     render() {
-        const user = this.props.user;
-        const loggedIn = user && user.hasOwnProperty('first_name');
         return (
             <div className={this.state.fullWidth ? 'top-header full-width fixed' : 'top-header'}>
                 <Responsive minWidth={Responsive.onlyTablet.minWidth}>

@@ -16,7 +16,6 @@ class DashboardPage extends Component {
         const MenuWithUser = (props) => {
             return <Menu user={this.props.user} {...props} />;
         };
-        console.log(this.props.user);
         return (
             <div className="dashboard-page">
                 <Responsive as={MenuWithUser} minWidth={Responsive.onlyTablet.minWidth}/>

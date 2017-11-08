@@ -16,7 +16,7 @@ const UserMenu = ({user, history, logout}) => {
         </span>
     );
     return (
-        <Dropdown className="user-menu-logged-in" trigger={trigger} pointing='top middle' icon={null}>
+        <Dropdown className="user-menu-logged-in" trigger={trigger} pointing='top' icon={null}>
             <Dropdown.Menu>
                 <Dropdown.Item key='user' text='Dashboard' icon='user' onClick={() => {history.push('/dashboard')}} />
                 <Dropdown.Item key='settings' text='Innstillinger' icon='settings' />

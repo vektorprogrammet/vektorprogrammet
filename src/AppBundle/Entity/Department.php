@@ -109,6 +109,24 @@ class Department
         return $teams;
     }
 
+	/**
+	 * @JMS\VirtualProperty
+	 * @JMS\SerializedName("active_admission")
+	 */
+	public function activeAdmission()
+	{
+		$semester = $this->getCurrentSemester();
+		if (!$semester) {
+			return false;
+		}
+
+		$start = $semester->getAdmissionStartDate();
+		$end = $semester->getAdmissionEndDate();
+		$now = new \DateTime();
+
+		return $start < $now && $now < $end;
+	}
+
     /**
      * Constructor.
      */

@@ -1,9 +1,8 @@
 import {apiEndpoint} from './Api';
 
 export const DepartmentApi = {
-    getAll: async() => {
-        const res = await fetch(`${apiEndpoint}/departments`);
-        return res.json();
+    getAll: () => {
+        return fetch(`${apiEndpoint}/departments`);
     },
 
     get: async(id) => {
@@ -17,7 +16,6 @@ export const DepartmentApi = {
     },
 
     getByActiveSemester: async() => {
-        const res = await fetch(`${apiEndpoint}/departments/admissions/active`);
-        return res.json();
+        return fetch(`${apiEndpoint}/departments/admissions/active`);
     }
 };
