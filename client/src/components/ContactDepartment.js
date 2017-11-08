@@ -8,8 +8,9 @@ import ContactInformation from './ContactInformation';
 import MapContainer from './MapContainer';*/
 
 class ContactDepartment extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        console.log(props);
         this.state = {
             showModal: false,
             width: window.innerWidth
@@ -39,8 +40,8 @@ class ContactDepartment extends Component {
             <Grid.Row className={"contact-listSchool"} key={index}>
                 <Grid.Column width={8}>
                     <List>
-                        <List.Item><h2>{item.school}</h2></List.Item>
-                        <List.Item><p className={"contact-text"}>{item.text}</p></List.Item>
+                        <List.Item><h2>{item.short_name}</h2></List.Item>
+                        <List.Item><p className={"contact-text"}>{item.name}</p></List.Item>
                         <List.Item>
                             <List.Icon name='mail' />
                             <List.Content>
@@ -50,7 +51,7 @@ class ContactDepartment extends Component {
                         <List.Item>
                             <List.Icon name='marker' />
                             <List.Content>
-                                <p>{item.adress}</p>
+                                <p>{item.address}</p>
                             </List.Content>
                         </List.Item>
                         <List.Item><Button primary onClick={this.handleModal}>Kontakt oss!</Button></List.Item>
