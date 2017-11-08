@@ -1,10 +1,10 @@
 import React from 'react';
-import "./PageHeader.css";
+import './PageHeader.css';
 
-export default ({children}) => {
-    return (
-        <header className="page-header">
-            {children}
-        </header>
-    )
+export default ({children, className}) => {
+  return (
+    <header className={'page-header ' + className}>
+      {children}
+    </header>
+  );
 }

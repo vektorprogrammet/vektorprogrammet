@@ -1,57 +1,10 @@
-/*TODO: få det finere*/
-
-.centered {
-    text-align: center;
+.assistant-page section {
+    margin-top: 125px;
 }
 
-.leftAligned {
-    text-align: left;
-}
-
-.assistantHeaderText {
-    margin: 1250px auto;
-}
-
-.assistant-page p {
-    font-size: 20px;
-}
-
-.assistant-page h1 {
-    font-size: 40px;
-    font-weight: bold;
-}
-
-.assistant-page  img.displayed {
-    display: block;
-    margin-left: auto;
-    margin-right: auto
-}
-
-.assistantPics {
-    margin: 125px auto;
-    padding: 0 20px;
-}
-
-
-.assistantContentText {
-    margin: 125px auto;
-    padding: 0 20px;
-    margin-bottom: 20px;
-    margin-top: 50px;
-}
-
-
-.five.wide.column.assistantListText1, .five.wide.column.assistantListText2
+.assistant-page .ui.list .item
 {
-    text-align: left;
-    margin: 25px auto;
-    padding: 0 20px;
-}
-
-.ui.ordered.list.assistantPageListe *, .ui.bulleted.list.assistantPageListe *
-{
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 300;
     margin-bottom: 5px;
-    font-family: 'Roboto', sans-serif;
 }

@@ -1,0 +1,21 @@
+@media screen and (max-width: 767px) {
+    .feature:not(:first-of-type) {
+        margin-top: 50px;
+    }
+}
+
+.feature img {
+    width: 125px;
+    height: 125px;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.feature h3 {
+    font-size: 22px;
+}
+
+.feature p {
+    font-size: 15px;
+    font-weight: 400;
+}
