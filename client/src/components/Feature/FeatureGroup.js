@@ -7,7 +7,7 @@ import calendar from '../../images/calendar.svg';
 import graduation from '../../images/graduation.svg';
 
 export default () => (
-  <div className="large container assistant-page-features">
+  <div className="assistant-page-features">
     <Grid columns={3} padded>
       <Feature
         img={certificate}
