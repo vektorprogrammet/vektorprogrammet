@@ -1,23 +1,3 @@
-.aboutUs-header {
-    font-size: 28px;
-}
-
-/**************
- About text
- *************/
-.main-text-about-us-intro .aboutUs-header {
-    font-size: 34px;
-}
-
-.main-text-about-us-intro .aboutUs-text {
-    font-size: 20px;
-}
-
-.aboutUs-text {
-    margin-top: 16px;
-    font-size: 18px;
-}
-
 .about-us-page .row.main-text-about-us-section {
     padding-bottom: 150px;
 }
@@ -39,11 +19,15 @@
         margin: 0 auto;
     }
 
-    .ui.stackable.grid:not(.vertically)>.row.main-text-about-us-section {
+    .ui.stackable.grid>.row.main-text-about-us-section {
         padding-bottom: 35px;
     }
 
-    .ui.stackable.grid:not(.vertically)>.row.main-text-about-us-section:first-of-type {
+    .ui.stackable.grid>.row.main-text-about-us-section:first-of-type {
         padding-top: 30px;
+    }
+
+    .about-us-page .ui.stackable.grid>.row>.column {
+        padding: 1rem 0 !important;
     }
 }

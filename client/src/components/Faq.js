@@ -15,7 +15,6 @@ class Faq extends Component {
         return(
             <div>
                 <h1>Ofte stilte spørsmål og svar</h1>
-                <br/><br/>
                 {qsAndAs}
             </div>
         );

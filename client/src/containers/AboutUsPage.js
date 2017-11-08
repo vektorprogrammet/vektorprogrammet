@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import './AboutUsPage.css';
-import ContactUsPopUp from '../components/ContactUsPopUp';
 import Faq from '../components/Faq';
 import MainTextAboutUs from '../components/MainTextAboutUs';
 import PageHeader from '../components/PageHeader';
@@ -82,26 +81,16 @@ export default () => {
             rollemodeller – <span className={'medium-bold'}>de er Norges realfagshelter.</span>
           </p>
         </PageHeader>
-      </div>
-      <Grid columns={3} padded>
-        <Grid.Column width={16}>
-          <div className={'about-us-main'}>
-            <Grid.Row>
-              <MainTextAboutUs/>
-            </Grid.Row>
-            <Grid.Row>
-              <div id={'FAQ'} className="aboutUs-FAQ">
-                <Faq questionsAndAnswers={faqQuestionsAndAnswers}/>
-              </div>
-            </Grid.Row>
-            <Grid.Row>
-              <div id={'kontakt-info'} className="contact-info">
-                <p>Noe du lurer på? <Link to={'/kontakt'}>Ta kontakt med oss!</Link></p>
-              </div>
-            </Grid.Row>
+        <div className={'about-us-main'}>
+          <MainTextAboutUs/>
+          <div id={'FAQ'} className="aboutUs-FAQ">
+            <Faq questionsAndAnswers={faqQuestionsAndAnswers}/>
           </div>
-        </Grid.Column>
-      </Grid>
+          <div id={'kontakt-info'} className="contact-info">
+            <p>Noe du lurer på? <Link to={'/kontakt'}>Ta kontakt med oss!</Link></p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

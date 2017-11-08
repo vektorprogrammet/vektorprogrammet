@@ -5,6 +5,7 @@ import './HomePage.css';
 import { Grid } from 'semantic-ui-react';
 import { fetchDepartments } from '../actions/department';
 import ContactDepartment from '../components/ContactDepartment';
+import PageHeader from '../components/PageHeader';
 import './ContactPage.css';
 
 class ContactPage extends Component {
@@ -17,11 +18,10 @@ class ContactPage extends Component {
   render() {
     return (
       <div className="contact-page large container">
-        <Grid>
-          <Grid.Column width={16}>
-            <ContactDepartment departments={this.props.departments}/>
-          </Grid.Column>
-        </Grid>
+        <PageHeader>
+          <h1>Kontakt oss</h1>
+        </PageHeader>
+        <ContactDepartment departments={this.props.departments}/>
       </div>
     );
   }

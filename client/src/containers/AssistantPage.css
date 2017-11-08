@@ -2,6 +2,12 @@
     margin-top: 125px;
 }
 
+@media screen and (max-width: 767px) {
+    .assistant-page section {
+        margin-top: 75px;
+    }
+}
+
 .assistant-page .ui.list .item
 {
     font-size: 16px;
