@@ -81,12 +81,14 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
+     * @JMS\Expose()
      */
     private $accountNumber;
 
     /**
      * @ORM\Column(type="string", unique=true, nullable=true)
      * @Assert\NotBlank(groups={"username", "edit_user"}, message="Dette feltet kan ikke være tomt.")
+     * @JMS\Expose()
      */
     private $user_name;
 

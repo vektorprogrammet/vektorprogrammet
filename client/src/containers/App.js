@@ -15,6 +15,7 @@ import ContactPage from './ContactPage';
 import LoginPage from './LoginPage';
 import ReceiptPage from './ReceiptPage';
 import DashboardPage from './DashboardPage';
+import UserPage from './UserPage';
 
 class App extends Component {
   componentDidMount() {
@@ -34,6 +35,7 @@ class App extends Component {
           <Route exact path='/kontakt' component={ContactPage}/>
           <Route exact path='/login' component={LoginPage}/>
           <Route exact path='/utlegg' component={ReceiptPage}/>
+          <Route path='/bruker' component={UserPage}/>
           <Route path='/dashboard' component={DashboardPage}/>
         </Switch>
       </div>
