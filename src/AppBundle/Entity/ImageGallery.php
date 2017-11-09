@@ -35,6 +35,7 @@ class ImageGallery
      *
      * @ORM\Column(name="title", type="string", length=255)
      * @Assert\NotBlank(message="Bildegalleriet mangler tittel.")
+     * @Assert\Length(min = 1, max = 255, maxMessage="Tittelen kan maks være 255 tegn."))
      */
     private $title;
 
@@ -43,6 +44,7 @@ class ImageGallery
      *
      * @ORM\Column(name="referenceName", type="string", length=255, unique=true)
      * @Assert\NotBlank(message="Bildegalleriet må ha et referansenavn.")
+     * @Assert\Length(min = 1, max = 255, maxMessage="Referansenavnet kan maks være 255 tegn."))
      */
     private $referenceName;
 
@@ -51,6 +53,7 @@ class ImageGallery
      *
      * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank(message="Bildegalleriet mangler beskrivelse.")
+     * @Assert\Length(min = 1, max = 5000, maxMessage="Beskrivelsen kan maks være 5000 tegn."))
      */
     private $description;
 

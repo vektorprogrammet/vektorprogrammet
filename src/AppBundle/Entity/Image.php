@@ -42,6 +42,7 @@ class Image
      *
      * @ORM\Column(name="description", type="string", length=255)
      * @Assert\NotBlank(groups={"image_gallery_upload", "Default"}, message="Bildet trenger en beskrivelse.")
+     * @Assert\Length(min = 1, max = 255, maxMessage="Beskrivelsen kan maks være 255 tegn."))
      */
     private $description;
 
