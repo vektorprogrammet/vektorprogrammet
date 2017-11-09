@@ -153,6 +153,7 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @ORM\OneToMany(targetEntity="Receipt", mappedBy="user")
+     * @JMS\Expose()
      */
     private $receipts;
 
