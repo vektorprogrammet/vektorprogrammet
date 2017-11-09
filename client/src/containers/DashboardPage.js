@@ -1,34 +1,24 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
-import './DashboardPage.css';
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Switch, Route} from "react-router-dom";
+import "./DashboardPage.css";
+import Dashboard from "../components/Dashboard/Dashboard";
+import HomePage from "./HomePage";
+import Menu from "../components/Dashboard/Menu";
+import {Responsive} from "semantic-ui-react";
 
-import AboutUsPage from './AboutUsPage';
-import HomePage from './HomePage';
-import Menu from '../components/Dashboard/Menu';
+const DashboardPage = ({user}) => (
 
-import {
-    Responsive,
-} from 'semantic-ui-react';
-
-class DashboardPage extends Component {
-    render() {
-        const MenuWithUser = (props) => {
-            return <Menu user={this.props.user} {...props} />;
-        };
-        return (
-            <div className="dashboard-page">
-                <Responsive as={MenuWithUser} minWidth={Responsive.onlyTablet.minWidth}/>
-                <div className="dashboard-content">
-                    <Switch>
-                        <Route exact path='/dashboard' component={HomePage}/>
-                        <Route exact path='/dashboard/profil' component={AboutUsPage}/>
-                    </Switch>
-                </div>
-            </div>
-        );
-    }
-}
+  <div className="dashboard-page">
+      <Responsive as={Menu} user={user} minWidth={Responsive.onlyTablet.minWidth}/>
+      <div className="dashboard-content">
+          <Switch>
+              <Route exact path='/dashboard' render={() => <Dashboard user={user}/>}/>
+              <Route exact path='/dashboard/profil' render={() => <Dashboard user={user}/>}/>
+          </Switch>
+      </div>
+  </div>
+);
 
 const mapStateToProps = state => ({
     user: state.user,
