@@ -6,6 +6,7 @@ import { applicationReducer } from './reducers/application';
 import rootSaga from './sagas';
 import { reducer as formReducer } from 'redux-form';
 import { saveState, loadState } from './localStorage';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const reducers = combineReducers({
   application: applicationReducer,
@@ -18,7 +19,9 @@ const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
   reducers,
   persistedState,
-  applyMiddleware(sagaMiddleware),
+  composeWithDevTools(
+    applyMiddleware(sagaMiddleware),
+  )
 );
 sagaMiddleware.run(rootSaga);
 
