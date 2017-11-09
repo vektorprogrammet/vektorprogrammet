@@ -10,7 +10,7 @@ const ContactPage = ({departments}) => (
     <PageHeader>
       <h1>Kontakt oss</h1>
     </PageHeader>
-    <ContactDepartment departments={this.props.departments}/>
+    <ContactDepartment departments={departments}/>
   </div>
 );
 
