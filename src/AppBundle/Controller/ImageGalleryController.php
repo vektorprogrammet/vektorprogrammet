@@ -77,15 +77,9 @@ class ImageGalleryController extends Controller
         return $this->redirectToRoute('image_gallery_create');
     }
 
-    public function getAction(Request $request, $referenceName)
+    public function getAction(Request $request, ImageGallery $imageGallery)
     {
         $filter = $request->query->get('filter');
-
-        try {
-            $imageGallery = $this->getDoctrine()->getRepository('AppBundle:ImageGallery')->findByReferenceName($referenceName);
-        } catch (NoResultException $exception) {
-            throw new NotFoundHttpException('No image gallery exists with reference name ' . $referenceName . '.');
-        }
 
         $imagineCacheManager = $this->get('liip_imagine.cache.manager');
 
