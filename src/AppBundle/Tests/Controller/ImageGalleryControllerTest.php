@@ -121,14 +121,14 @@ class ImageGalleryControllerTest extends BaseWebTestCase
     {
         parent::tearDown();
 
-        $directoryExists = file_exists('images/image_galleries');
+        $directoryExists = file_exists('images/gallery_images');
         if (!$directoryExists) {
             return;
         }
 
         // Delete all new files
         $finder = new Finder();
-        $finder->files()->in('images/image_galleries');
+        $finder->files()->in('images/gallery_images');
         foreach ($finder as $file) {
             $fileIsNew = !in_array($file->getRealPath(), $this->imagePaths);
             if ($fileIsNew) {
@@ -136,11 +136,11 @@ class ImageGalleryControllerTest extends BaseWebTestCase
             }
         }
 
-        $imageGalleryDirectoryIsEmpty = count(glob('images/image_galleries/*')) === 0;
-        $imageDirectoryIsEmpty = count(glob('images/*')) === 0;
+        $imageGalleryDirectoryIsEmpty = count(glob('images/gallery_images/*')) === 0;
         if ($imageGalleryDirectoryIsEmpty) {
-            rmdir('images/image_galleries');
+            rmdir('images/gallery_images');
         }
+        $imageDirectoryIsEmpty = count(glob('images/*')) === 0;
         if ($imageDirectoryIsEmpty) {
             rmdir('images');
         }
