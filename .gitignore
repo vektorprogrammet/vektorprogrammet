@@ -49,6 +49,7 @@ crashlytics-build.properties
 /www/vendor/
 /www/css
 /www/static
+/www/media/
 
 #npm
 /node_modules/
