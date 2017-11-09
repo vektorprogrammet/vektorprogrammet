@@ -3,6 +3,7 @@ import React from 'react';
 import { Grid, Header } from 'semantic-ui-react';
 import './AssistantPage.css';
 import ApplicationFormContainer from './ApplicationFormContainer';
+import NewsletterFormContainer from './NewsletterFormContainer';
 import PageHeader from '../components/PageHeader';
 import FeatureGroup from '../components/Feature/FeatureGroup';
 
@@ -10,8 +11,15 @@ import AssistantInfo from '../components/AssistantPage/AssistantInfo';
 import TaskInfo from '../components/AssistantPage/TaskInfo';
 import AdmissionProcessInfo from '../components/AssistantPage/AdmissionProcessInfo';
 
+import { fetchDepartments } from '../actions/department';
 
-export default () => (
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { reduxForm, formValueSelector, change } from 'redux-form';
+
+
+//TODO: test om vi har aktiv søkeperiode.
+const AssistantPage = () => (
   <div className='assistant-page'>
     <PageHeader className="container">
       <h1>Assistenter</h1>
@@ -31,8 +39,7 @@ export default () => (
         <Grid.Row columns={1}>
           <Grid.Column width={9} className="assistantApplicationForm centered">
             <div>
-              <Header as='h3'>Send oss din søknad</Header>
-              <ApplicationFormContainer/>
+                <ApplicationFormContainer/>
             </div>
           </Grid.Column>
         </Grid.Row>
@@ -40,3 +47,10 @@ export default () => (
     </div>
   </div>
 );
+
+const mapStateToProps = state => ({
+    departments: state.departments.filter(d => d.active_admission),
+});
+
+
+export default AssistantPage;
