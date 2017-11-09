@@ -23,7 +23,10 @@ parameters:
 
     slack_endpoint: 'https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX'
 
-    locale:            en
+    gateway_api_token: 'xxxxxxx'
+    sms_disable: true
+
+    locale:            no
 
     # Sender email for user creation mails
     no_reply_email_user_creation: ~

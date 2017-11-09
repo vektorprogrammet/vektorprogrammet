@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Interview;
 use AppBundle\Event\InterviewConductedEvent;
+use AppBundle\Event\InterviewEvent;
 use AppBundle\Form\Type\ApplicationInterviewType;
 use AppBundle\Form\Type\AssignInterviewType;
 use AppBundle\Form\Type\CancelInterviewConfirmationType;
@@ -217,7 +218,7 @@ class InterviewController extends Controller
 
             // Send email if the send button was clicked
             if ($form->get('saveAndSend')->isClicked()) {
-                $this->get('app.interview.manager')->sendScheduleEmail($interview, $data);
+                $this->get('event_dispatcher')->dispatch(InterviewEvent::SCHEDULE, new InterviewEvent($interview, $data));
             }
 
             return $this->redirectToRoute('applications_show_assigned_by_semester', array('id' => $application->getSemester()->getId()));

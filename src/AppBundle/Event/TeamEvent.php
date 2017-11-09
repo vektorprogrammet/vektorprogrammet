@@ -5,7 +5,7 @@ namespace AppBundle\Event;
 use AppBundle\Entity\Team;
 use Symfony\Component\EventDispatcher\Event;
 
-class TeamEvent extends Event
+class TeamEvent extends Event implements CrudEvent
 {
     const CREATED = 'team.created';
     const EDITED = 'team.edited';
@@ -38,5 +38,25 @@ class TeamEvent extends Event
     public function getOldTeamEmail()
     {
         return $this->oldTeamEmail;
+    }
+
+    public function getObject()
+    {
+        return $this->getTeam();
+    }
+
+    public static function created(): string
+    {
+        return self::CREATED;
+    }
+
+    public static function updated(): string
+    {
+        return self::EDITED;
+    }
+
+    public static function deleted(): string
+    {
+        return self::DELETED;
     }
 }
