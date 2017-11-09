@@ -24,11 +24,6 @@ class ImageGalleryController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userCanCreate = $this->get('app.roles')->userIsGranted($this->getUser(), Roles::TEAM_LEADER);
-            if (!$userCanCreate) {
-                throw new AccessDeniedException();
-            }
-
             $imageGallery->setReferenceName(urlencode($imageGallery->getReferenceName()));
 
             $em = $this->getDoctrine()->getManager();
@@ -54,11 +49,6 @@ class ImageGalleryController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userCanCreate = $this->get('app.roles')->userIsGranted($this->getUser(), Roles::TEAM_LEADER);
-            if (!$userCanCreate) {
-                throw new AccessDeniedException();
-            }
-
             $imageGallery->setReferenceName(urlencode($imageGallery->getReferenceName()));
 
             $em = $this->getDoctrine()->getManager();

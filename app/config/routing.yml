@@ -972,14 +972,14 @@ image_edit:
     id: \d+
 
 image_upload:
-  path: /kontrollpanel/bildegallerier/galleri/{id}/ny
+  path: /kontrollpanel/bilde/upload/{id}
   defaults: { _controller: AppBundle:Image:upload }
   methods: [GET, POST]
   requirements:
     id: \d+
 
 image_delete:
-  path: /kontrollpanel/bilde/bilde/slett/{id}
+  path: /kontrollpanel/bilde/slett/{id}
   defaults: { _controller: AppBundle:Image:delete }
   methods: [POST]
   requirements:

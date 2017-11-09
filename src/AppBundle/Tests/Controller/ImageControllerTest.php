@@ -39,7 +39,7 @@ class ImageControllerTest extends BaseWebTestCase
     public function testUpload()
     {
         $client = $this->createTeamMemberClient();
-        $crawler = $client->request('GET', '/kontrollpanel/bildegallerier/galleri/1/ny');
+        $crawler = $client->request('GET', '/kontrollpanel/bilde/upload/1');
         $form = $crawler->selectButton('Lagre')->form();
         $imageFile = $this->createMockImage();
 
