@@ -965,22 +965,22 @@ image_gallery_api_get:
   methods: [GET]
 
 image_edit:
-  path: /kontrollpanel/bildegallerier/rediger/{id}
-  defaults: { _controller: AppBundle:ImageGallery:editImage }
+  path: /kontrollpanel/bilde/rediger/{id}
+  defaults: { _controller: AppBundle:Image:edit }
   methods: [GET, POST]
   requirements:
     id: \d+
 
 image_upload:
   path: /kontrollpanel/bildegallerier/galleri/{id}/ny
-  defaults: { _controller: AppBundle:ImageGallery:uploadImage }
+  defaults: { _controller: AppBundle:Image:upload }
   methods: [GET, POST]
   requirements:
     id: \d+
 
 image_delete:
-  path: /kontrollpanel/bildegallerier/bilde/slett/{id}
-  defaults: { _controller: AppBundle:ImageGallery:deleteImage }
+  path: /kontrollpanel/bilde/bilde/slett/{id}
+  defaults: { _controller: AppBundle:Image:delete }
   methods: [POST]
   requirements:
     id: \d+
