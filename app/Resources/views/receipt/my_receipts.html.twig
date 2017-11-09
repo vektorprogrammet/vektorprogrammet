@@ -65,10 +65,13 @@
                 <hr>
             </div>
 
-            <div class="small-12 medium-12 large-8 columns">
+            <div class="small-12 columns">
 
                 <h3>Mine utlegg</h3>
                 <a href="#receipt-form" class="text-success" onclick="toggleForm()"><i class="fa fa-plus"></i> Nytt utlegg</a>
+                {% if app.user.accountNumber %}
+                    <span class="float-right">Kontonummer: {{ app.user.accountNumber }}</span>
+                {% endif %}
 
             </div>
         </div>
