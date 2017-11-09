@@ -116,6 +116,9 @@ security:
         - { path: ^/kontrollpanel/hovedstyret/slett/bruker, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/utlegg/rediger, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/utlegg/status, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/bildegallerier, roles: ROLE_SUPER_ADMIN, method: POST }
+        - { path: ^/kontrollpanel/bildegallerier/galleri, roles: ROLE_SUPER_ADMIN, method: POST }
+        - { path: ^/kontrollpanel/bildegallerier/galleri/slett, roles: ROLE_SUPER_ADMIN }
 
           #ROLE_ADMIN = team user
         - { path: ^/profile/edit, roles: ROLE_ADMIN }
