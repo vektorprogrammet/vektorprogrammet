@@ -1,6 +1,7 @@
 import createSagaMiddleware from 'redux-saga';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { userReducer } from './reducers/user';
+import { sponsorReducer } from './reducers/sponsor';
 import { departmentReducer } from './reducers/department';
 import { applicationReducer } from './reducers/application';
 import rootSaga from './sagas';
@@ -11,6 +12,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 const reducers = combineReducers({
   application: applicationReducer,
   departments: departmentReducer,
+  sponsors: sponsorReducer,
   user: userReducer,
   form: formReducer,
 });
@@ -29,7 +31,8 @@ store.subscribe(() => {
   const state = store.getState();
   saveState({
     user: state.user,
-    departments: state.departments
+    departments: state.departments,
+    sponsors: state.sponsors,
   })
 });
 
