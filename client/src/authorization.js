@@ -7,7 +7,7 @@ const authorize = allowedRoles => {
   return WrappedComponent => {
     const WithAuthorization = props => {
       const {user} = props;
-      if (!user) {
+      if (!user || !user.isLoggedIn) {
         return <LoginPage {...props}/>;
       }
       if (allowedRoles.includes(user.role)) {
