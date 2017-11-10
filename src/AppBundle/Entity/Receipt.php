@@ -210,4 +210,9 @@ class Receipt
     {
         $this->status = $status;
     }
+
+    public function __toString()
+    {
+        return $this->visualId;
+    }
 }
