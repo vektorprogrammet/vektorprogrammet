@@ -1,9 +1,8 @@
-import React, {Component} from "react";
+import React from "react";
 import {connect} from "react-redux";
 import {Switch, Route} from "react-router-dom";
 import "./DashboardPage.css";
 import Dashboard from "../components/Dashboard/Dashboard";
-import HomePage from "./HomePage";
 import Menu from "../components/Dashboard/Menu";
 import {Responsive} from "semantic-ui-react";
 

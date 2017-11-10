@@ -1,9 +1,13 @@
-export const userReducer = (state = {}, action) => {
+const initialState = {
+  loggedIn: false
+};
+
+export const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_USER':
-      return action.payload;
+      return {...state, ...action.payload, loggedIn: true};
     case 'REMOVE_USER':
-      return {};
+      return {...initialState};
     default:
       return state;
   }

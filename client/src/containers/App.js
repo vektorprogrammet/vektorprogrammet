@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { fetchDepartments } from '../actions/department';
 import { fetchSponsors } from '../actions/sponsor';
+import Authorization from '../authorization';
 
 import Header from './Header';
 import HomePage from './HomePage';
@@ -16,6 +17,7 @@ import LoginPage from './LoginPage';
 import ReceiptPage from './ReceiptPage';
 import DashboardPage from './DashboardPage';
 import UserPage from './UserPage';
+import Error404 from '../components/Error/Error404';
 
 class App extends Component {
   componentDidMount() {
@@ -24,6 +26,11 @@ class App extends Component {
   }
 
   render() {
+    const Assistant = Authorization(['assistant', 'team_member', 'team_leader', 'admin']);
+    const TeamMember = Authorization(['team_member', 'team_leader', 'admin']);
+    const TeamLeader = Authorization(['team_leader', 'admin']);
+    const Admin = Authorization(['admin']);
+
     return (
       <div>
         <Header/>
@@ -35,8 +42,9 @@ class App extends Component {
           <Route exact path='/kontakt' component={ContactPage}/>
           <Route exact path='/login' component={LoginPage}/>
           <Route exact path='/utlegg' component={ReceiptPage}/>
-          <Route path='/bruker' component={UserPage}/>
-          <Route path='/dashboard' component={DashboardPage}/>
+          <Route exact path='/bruker' component={Assistant(UserPage)}/>
+          <Route path='/dashboard' component={Assistant(DashboardPage)}/>
+          <Route path='/' component={Error404}/>
         </Switch>
       </div>
     );
