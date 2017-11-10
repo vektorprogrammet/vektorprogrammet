@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import LoginPage from './containers/LoginPage';
 import Error403 from './components/Error/Error403';
 
-export default (allowedRoles) => {
+const authorize = allowedRoles => {
   return WrappedComponent => {
     const WithAuthorization = props => {
       const {user} = props;
@@ -22,3 +22,8 @@ export default (allowedRoles) => {
     })(WithAuthorization);
   };
 };
+
+export const Assistant = authorize(['assistant', 'team_member', 'team_leader', 'admin']);
+export const TeamMember = authorize(['team_member', 'team_leader', 'admin']);
+export const TeamLeader = authorize(['team_leader', 'admin']);
+export const Admin = authorize(['admin']);

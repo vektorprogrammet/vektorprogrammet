@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { fetchDepartments } from '../actions/department';
 import { fetchSponsors } from '../actions/sponsor';
-import Authorization from '../authorization';
+import { Assistant } from '../authorization';
 
 import Header from './Header';
 import HomePage from './HomePage';
@@ -26,11 +26,6 @@ class App extends Component {
   }
 
   render() {
-    const Assistant = Authorization(['assistant', 'team_member', 'team_leader', 'admin']);
-    const TeamMember = Authorization(['team_member', 'team_leader', 'admin']);
-    const TeamLeader = Authorization(['team_leader', 'admin']);
-    const Admin = Authorization(['admin']);
-
     return (
       <div>
         <Header/>
