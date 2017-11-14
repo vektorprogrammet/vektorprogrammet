@@ -297,4 +297,13 @@ class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase
             $this->assertNotEquals($team1, $team);
         }
     }
+
+    public function testSetLogoPath()
+    {
+        $department = new Department();
+        $fakePath = 'fake path';
+        $department->setLogoPath($fakePath);
+
+        $this->assertEquals($fakePath, $department->getLogoPath());
+    }
 }

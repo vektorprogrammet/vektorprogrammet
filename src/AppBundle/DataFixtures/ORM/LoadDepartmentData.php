@@ -29,6 +29,7 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $department1->addSchool($this->getReference('school-09'));
         $department1->setAddress('Høgskoleringen 5 7491 Trondheim');
         $department1->setCity('Trondheim');
+        $department1->setLogoPath('/images/department_images/ntnu.png');
         $manager->persist($department1);
 
         $department2 = new Department();
@@ -38,6 +39,7 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $department2->addSchool($this->getReference('school-3'));
         $department2->setAddress('*hist adresse*');
         $department2->setCity('Trondheim');
+        $department2->setLogoPath('/images/department_images/hist.png');
         $manager->persist($department2);
 
         $department3 = new Department();
@@ -47,6 +49,7 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $department3->addSchool($this->getReference('school-1'));
         $department3->setAddress('*NMBU adresse*');
         $department3->setCity('Ås');
+        $department3->setLogoPath('/images/department_images/nmbu.png');
         $manager->persist($department3);
 
         $department4 = new Department();
@@ -56,6 +59,7 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $department4->addSchool($this->getReference('school-2'));
         $department4->setAddress('*UiO adresse*');
         $department4->setCity('Oslo');
+        $department4->setLogoPath('/images/department_images/uio.png');
         $manager->persist($department4);
 
         $manager->flush();

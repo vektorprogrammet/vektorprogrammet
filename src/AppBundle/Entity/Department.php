@@ -81,6 +81,11 @@ class Department
     private $teams;
 
     /**
+     * @ORM\Column(type="string", length=250, nullable=true)
+     **/
+    private $logoPath;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -427,5 +432,21 @@ class Department
     public function setSlackChannel($slackChannel)
     {
         $this->slackChannel = $slackChannel;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogoPath()
+    {
+        return $this->logoPath;
+    }
+
+    /**
+     * @param string $logoPath
+     */
+    public function setLogoPath($logoPath)
+    {
+        $this->logoPath = $logoPath;
     }
 }
