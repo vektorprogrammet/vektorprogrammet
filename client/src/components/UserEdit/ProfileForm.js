@@ -15,8 +15,6 @@ const ProfileForm = ({onSubmit}) => (
           required
         />
       </Form.Field>
-    </Form.Group>
-    <Form.Group>
       <Form.Field width={16}>
         <label>Fornavn</label>
         <Field
@@ -37,8 +35,6 @@ const ProfileForm = ({onSubmit}) => (
           required
         />
       </Form.Field>
-    </Form.Group>
-    <Form.Group>
       <Form.Field width={16}>
         <label>E-post</label>
         <Field
@@ -60,8 +56,6 @@ const ProfileForm = ({onSubmit}) => (
           required
         />
       </Form.Field>
-    </Form.Group>
-    <Form.Group>
       <Form.Field width={16}>
         <label>Kontonummer</label>
         <Field

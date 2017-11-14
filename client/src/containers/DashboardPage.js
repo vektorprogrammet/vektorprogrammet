@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {Switch, Route} from "react-router-dom";
 import "./DashboardPage.css";
 import Dashboard from "../components/Dashboard/Dashboard";
+import UserPage from "./UserPage";
 import Menu from "../components/Dashboard/Menu";
 import {Responsive} from "semantic-ui-react";
 
@@ -14,6 +15,7 @@ const DashboardPage = ({user}) => (
           <Switch>
               <Route exact path='/dashboard' render={() => <Dashboard user={user}/>}/>
               <Route exact path='/dashboard/profil' render={() => <Dashboard user={user}/>}/>
+              <Route exact path='/dashboard/profil/endre' render={() => <UserPage user={user}/>}/>
           </Switch>
       </div>
   </div>

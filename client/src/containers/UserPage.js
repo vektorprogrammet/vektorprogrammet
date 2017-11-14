@@ -8,11 +8,13 @@ import './UserPage.css';
 
 const UserPage = ({user}) => (
   <div className="container user-page">
-    <PageHeader>
-      <h1 className="user-page-header">{user.first_name} {user.last_name}</h1>
-    </PageHeader>
-    <p className="user-page-subheader">Endre din profil</p>
-    <ProfileFormContainer/>
+    <header className="user-page-header">
+      <h1>{user.first_name} {user.last_name}</h1>
+      <p className="user-page-subheader">Endre din profil</p>
+    </header>
+    <div className="user-page-profile-form">
+      <ProfileFormContainer/>
+    </div>
   </div>
 );
 

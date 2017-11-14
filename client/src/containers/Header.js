@@ -15,14 +15,7 @@ class Header extends Component {
     super(props);
     this.state = {
       isOpen: false,
-      fullWidth: props.location.pathname.indexOf('/dashboard') === 0,
     };
-  }
-
-  componentDidMount() {
-    this.props.history.listen(location => {
-      this.setState({fullWidth: location.pathname.indexOf('/dashboard') === 0});
-    });
   }
 
   closeBurgerMenu = () => {
@@ -34,8 +27,7 @@ class Header extends Component {
   render() {
     return (
       <div>
-        {this.state.fullWidth && <div className={'header-push-content'}/>}
-        <div className={this.state.fullWidth ? 'top-header full-width fixed' : 'top-header'}>
+        <div className={'top-header'}>
           <Responsive minWidth={Responsive.onlyTablet.minWidth}>
 
             <Menu secondary className="main-navigation">

@@ -28,7 +28,10 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header/>
+        <Switch>
+          <Route path='/dashboard' render={() => <div></div>}/>
+          <Route path='/' component={Header}/>
+        </Switch>
         <Switch>
           <Route exact path='/' component={HomePage}/>
           <Route exact path='/assistenter' component={AssistantPage}/>

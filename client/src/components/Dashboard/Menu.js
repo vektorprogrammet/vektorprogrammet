@@ -6,11 +6,8 @@ import {Menu} from 'semantic-ui-react';
 import './Menu.css'
 
 export default ({user}) => {
-  const style = {
-    top: '104px'
-  };
   return (
-      <Menu vertical fixed={'left'} size={'huge'} style={style}>
+      <Menu vertical fixed={'left'} size={'huge'} inverted>
         <NavLink activeClassName={'active'} exact to={'/dashboard'}>
           <Menu.Item name='DASHBOARD' onClick={this.handleItemClick}/>
         </NavLink>
