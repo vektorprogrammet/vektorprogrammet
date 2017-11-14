@@ -4,7 +4,7 @@ import { userReducer } from './reducers/user';
 import { sponsorReducer } from './reducers/sponsor';
 import { departmentReducer } from './reducers/department';
 import { applicationReducer } from './reducers/application';
-import rootSaga from './sagas';
+import rootSaga from './sagas/sagas';
 import { reducer as formReducer } from 'redux-form';
 import { saveState, loadState } from './localStorage';
 import { composeWithDevTools } from 'redux-devtools-extension';

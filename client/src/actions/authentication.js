@@ -19,6 +19,6 @@ export const setUser = (user) => ({
 });
 
 export const removeUser = () => ({
-  type: SET_USER,
+  type: REMOVE_USER,
   payload: {}
 });

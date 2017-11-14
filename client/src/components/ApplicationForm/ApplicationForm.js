@@ -1,14 +1,15 @@
 import React from 'react';
-import { Button, Form } from 'semantic-ui-react';
+import { Button, Form, Header } from 'semantic-ui-react';
 import { Field } from 'redux-form';
-import DepartmentDropdown from './DepartmentDropdown';
-import FieldOfStudyDropdown from './FieldOfStudyDropdown';
+import DepartmentDropdown from '../Form/DepartmentDropdown';
+import FieldOfStudyDropdown from '../Form/FieldOfStudyDropdown';
 
 export default ({departments, onSubmit, selectedDepartment, departmentChange}) => {
   const fieldOfStudies = selectedDepartment ? selectedDepartment.field_of_study : [];
 
   return (
     <div>
+      <Header as='h3'>Send oss din søknad</Header>
       <Form onSubmit={onSubmit}>
 
         <Form.Group widths='equal'>

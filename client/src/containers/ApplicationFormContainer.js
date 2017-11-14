@@ -7,6 +7,8 @@ import { reduxForm, formValueSelector, change } from 'redux-form';
 import { fetchDepartments } from '../actions/department';
 import { postApplication } from '../actions/application';
 import ApplicationForm from '../components/ApplicationForm/ApplicationForm';
+// import ApplicationFormSubmitted from '../components/ApplicationForm/ApplicationFormSubmitted'; FIXME: Add this component to git
+
 
 class ApplicationFormContainer extends Component {
   componentDidMount() {
@@ -20,14 +22,23 @@ class ApplicationFormContainer extends Component {
   });
 
   render() {
-    return (
-      <ApplicationForm
-        departments={this.props.departments}
-        onSubmit={this.handleSubmit}
-        selectedDepartment={this.props.selectedDepartment}
-        departmentChange={this.props.clearFieldOfStudy}
-      />
-    );
+
+    // if(this.props.application.hasOwnProperty("firstName"))
+    // {
+    //   return (<ApplicationFormSubmitted/>);
+    // }
+    // else
+    // {
+        return (
+            <ApplicationForm
+                departments={this.props.departments}
+                onSubmit={this.handleSubmit}
+                selectedDepartment={this.props.selectedDepartment}
+                departmentChange={this.props.clearFieldOfStudy}
+            />
+        );
+    // }
+
   }
 }
 
@@ -40,10 +51,11 @@ ApplicationFormContainer = reduxForm({
 })(ApplicationFormContainer);
 
 const mapStateToProps = state => ({
-  departments: state.departments.filter(d => d.active_admission),
-  initialValues: {
-    department: state.departments.filter(d => d.active_admission)[0]
-  },
+    application: state.application,
+    departments: state.departments.filter(d => d.active_admission),
+    initialValues: {
+      department: state.departments.filter(d => d.active_admission)[0]
+    },
   selectedDepartment: selector(state, 'department'),
 });
 

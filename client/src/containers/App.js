@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { fetchDepartments } from '../actions/department';
 import { fetchSponsors } from '../actions/sponsor';
+import { Assistant } from '../authorization';
 
 import Header from './Header';
 import HomePage from './HomePage';
@@ -15,6 +16,8 @@ import ContactPage from './ContactPage';
 import LoginPage from './LoginPage';
 import ReceiptPage from './ReceiptPage';
 import DashboardPage from './DashboardPage';
+import UserPage from './UserPage';
+import Error404 from '../components/Error/Error404';
 
 class App extends Component {
   componentDidMount() {
@@ -34,7 +37,9 @@ class App extends Component {
           <Route exact path='/kontakt' component={ContactPage}/>
           <Route exact path='/login' component={LoginPage}/>
           <Route exact path='/utlegg' component={ReceiptPage}/>
-          <Route path='/dashboard' component={DashboardPage}/>
+          <Route exact path='/bruker' component={Assistant(UserPage)}/>
+          <Route path='/dashboard' component={Assistant(DashboardPage)}/>
+          <Route path='/' component={Error404}/>
         </Switch>
       </div>
     );

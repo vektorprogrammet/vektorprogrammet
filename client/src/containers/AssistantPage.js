@@ -11,7 +11,8 @@ import TaskInfo from '../components/AssistantPage/TaskInfo';
 import AdmissionProcessInfo from '../components/AssistantPage/AdmissionProcessInfo';
 
 
-export default () => (
+//TODO: test om vi har aktiv søkeperiode.
+const AssistantPage = () => (
   <div className='assistant-page'>
     <PageHeader className="container">
       <h1>Assistenter</h1>
@@ -31,8 +32,7 @@ export default () => (
         <Grid.Row columns={1}>
           <Grid.Column width={9} className="assistantApplicationForm centered">
             <div>
-              <Header as='h3'>Send oss din søknad</Header>
-              <ApplicationFormContainer/>
+                <ApplicationFormContainer/>
             </div>
           </Grid.Column>
         </Grid.Row>
@@ -40,3 +40,5 @@ export default () => (
     </div>
   </div>
 );
+
+export default AssistantPage;

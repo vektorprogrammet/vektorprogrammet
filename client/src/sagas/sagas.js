@@ -1,9 +1,9 @@
 import { all } from 'redux-saga/effects';
 
-import { watchLoginSaga, watchLogoutSaga } from './sagas/authenticationSaga';
-import * as sponsorSagas from './sagas/sponsorSaga';
-import * as departmentSagas from './sagas/departmentSaga';
-import * as applicationSagas from './sagas/applicationSaga';
+import { watchLoginSaga, watchLogoutSaga } from './authenticationSaga';
+import * as sponsorSagas from './sponsorSaga';
+import * as departmentSagas from './departmentSaga';
+import * as applicationSagas from './applicationSaga';
 
 export default function* rootSaga() {
   yield all([
