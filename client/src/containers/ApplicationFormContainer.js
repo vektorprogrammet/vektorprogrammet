@@ -7,7 +7,7 @@ import { reduxForm, formValueSelector, change } from 'redux-form';
 import { fetchDepartments } from '../actions/department';
 import { postApplication } from '../actions/application';
 import ApplicationForm from '../components/ApplicationForm/ApplicationForm';
-// import ApplicationFormSubmitted from '../components/ApplicationForm/ApplicationFormSubmitted'; FIXME: Add this component to git
+import ApplicationFormSubmitted from '../components/ApplicationForm/ApplicationFormSubmitted';
 
 
 class ApplicationFormContainer extends Component {
@@ -23,12 +23,12 @@ class ApplicationFormContainer extends Component {
 
   render() {
 
-    // if(this.props.application.hasOwnProperty("firstName"))
-    // {
-    //   return (<ApplicationFormSubmitted/>);
-    // }
-    // else
-    // {
+        if(this.props.application.hasOwnProperty("firstName"))
+        {
+          return (<ApplicationFormSubmitted/>);
+        }
+        else
+        {
         return (
             <ApplicationForm
                 departments={this.props.departments}
@@ -37,7 +37,7 @@ class ApplicationFormContainer extends Component {
                 departmentChange={this.props.clearFieldOfStudy}
             />
         );
-    // }
+        }
 
   }
 }
