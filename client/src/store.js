@@ -3,6 +3,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { userReducer } from './reducers/user';
 import { sponsorReducer } from './reducers/sponsor';
 import { departmentReducer } from './reducers/department';
+import { newsletterReducer } from './reducers/newsletter';
 import { applicationReducer } from './reducers/application';
 import rootSaga from './sagas/sagas';
 import { reducer as formReducer } from 'redux-form';
@@ -15,6 +16,7 @@ const reducers = combineReducers({
   sponsors: sponsorReducer,
   user: userReducer,
   form: formReducer,
+    newsletter: newsletterReducer
 });
 const persistedState = loadState();
 const sagaMiddleware = createSagaMiddleware();

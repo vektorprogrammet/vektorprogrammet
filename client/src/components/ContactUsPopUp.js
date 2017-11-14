@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import './ContactUsPopUp.css';
 import { Form, Icon, Image, Button} from 'semantic-ui-react';
-import message from '../images/message-icon.png';
+
+
 class ContactUsPopUp extends Component {
     /*TODO:Should this component have states? Or should it be higher up?*/
     constructor(props) {
@@ -27,11 +28,8 @@ class ContactUsPopUp extends Component {
             <div className={'backdrop' + (this.props.show ? ' visible' : '')} onClick={this.props.onClose}>
                 <div className={'contactUsPopUp' + (this.props.show ? ' visible' : '')} onClick={this.handlePropagation}>
                     <Icon name={'remove'} onClick={this.props.onClose} className="contactUsPopUp-icon"/>
-                    <div className="header-frame">
-                        <h2>Kontakt vektor ved {this.props.depName}</h2>
-                        <img src={message} alt={'contact us'}/>
-                    </div>
-                    <Form style={{padding: '0 15px'}}>
+                    <h1>Kontakt oss!</h1>
+                    <Form style={{padding: '5px 15px'}}>
                         <Form.Group widths='equal'>
                             <Form.Field>
                                 <Form.Input placeholder='Ditt navn' />
@@ -44,8 +42,7 @@ class ContactUsPopUp extends Component {
                                 <Image className="contactUsPopUp-captchaImage" src={"http://via.placeholder.com/100x50/"}/>
                                 <br/>
                                 <input/>
-                            </Form.Field>
-                            <Form.Field>
+                                <br/>
                                 <Form.TextArea id="text-area" placeholder='Melding' />
                                 <Button id="message-btn" primary>Send melding</Button>
                             </Form.Field>
