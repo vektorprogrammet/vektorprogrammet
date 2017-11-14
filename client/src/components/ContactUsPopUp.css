@@ -64,10 +64,11 @@
     height: 800px;
 }
 
-.contactUsPopUp-icon {
-    right: 1px;
+i.icon.contactUsPopUp-icon {
+    right: -4px;
     position: fixed;
     cursor: pointer;
+    font-size: 1.5rem;
 }
 
 .contactUsPopUp-captchaImage {
