@@ -16,7 +16,7 @@ export default ({user}) => {
 
           <Menu.Menu>
             <NavLink to={'/dashboard/profil'}><Menu.Item name='Profil' onClick={this.handleItemClick}/></NavLink>
-            <Menu.Item name='consumer' onClick={this.handleItemClick}/>
+            <NavLink to={'/dashboard/utlegg'}><Menu.Item name='Utlegg' onClick={this.handleItemClick}/></NavLink>
           </Menu.Menu>
         </Menu.Item>
 

@@ -14,7 +14,6 @@ import TeamPage from './TeamPage';
 import AboutUsPage from './AboutUsPage';
 import ContactPage from './ContactPage';
 import LoginPage from './LoginPage';
-import ReceiptPage from './ReceiptPage';
 import DashboardPage from './DashboardPage';
 import UserPage from './UserPage';
 import Error404 from '../components/Error/Error404';
@@ -39,7 +38,6 @@ class App extends Component {
           <Route exact path='/om-oss' component={AboutUsPage}/>
           <Route exact path='/kontakt' component={ContactPage}/>
           <Route exact path='/login' component={LoginPage}/>
-          <Route exact path='/utlegg' component={ReceiptPage}/>
           <Route exact path='/bruker' component={Assistant(UserPage)}/>
           <Route path='/dashboard' component={Assistant(DashboardPage)}/>
           <Route path='/' component={Error404}/>
