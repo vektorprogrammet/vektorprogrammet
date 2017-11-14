@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&subset=latin);
+@import url(https://fonts.googleapis.com/css?family=Montserrat:300,400,600,700&subset=latin);
 
 body {
     padding: 0;
@@ -19,15 +19,10 @@ h2 {
 p {
     line-height: 1.6;
     font-size: 18px;
-    font-weight: 300;
-}
-
-.font-weight-normal {
-    font-weight: 400;
 }
 
 .medium-bold {
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .container {
