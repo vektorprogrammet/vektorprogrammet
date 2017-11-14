@@ -28,7 +28,7 @@ class ContactUsPopUp extends Component {
                 <div className={'contactUsPopUp' + (this.props.show ? ' visible' : '')} onClick={this.handlePropagation}>
                     <Icon name={'remove'} onClick={this.props.onClose} className="contactUsPopUp-icon"/>
                     <div className="header-frame">
-                        <h2>Kontakt vektor ved NTNU</h2>
+                        <h2>Kontakt vektor ved {this.props.depName}</h2>
                         <img src={message} alt={'contact us'}/>
                     </div>
                     <Form style={{padding: '0 15px'}}>
