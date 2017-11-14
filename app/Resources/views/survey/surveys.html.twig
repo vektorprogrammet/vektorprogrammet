@@ -55,7 +55,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for survey in surveys %}
+                {% for survey in surveys if ((not survey.confidential) or is_granted_team_leader()) %}
                     <tr>
                         <td>{{ survey.name }} - {{ survey.semester }} - Antall svar: {{ survey.getTotalAnswered }}</td>
                         <td><a href="{{ path('survey_show', {'id': survey.id }) }}" class="button tiny">Vis

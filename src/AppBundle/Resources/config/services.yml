@@ -1,4 +1,8 @@
 services:
+  app.sms:
+    class: AppBundle\Sms\GatewayAPI
+    arguments: ['%gateway_sms%', '@app.logger']
+
   app.logger:
     class: AppBundle\Service\LogService
     arguments: ['@logger', '@app.slack_messenger']
@@ -107,7 +111,7 @@ services:
 
   app.interview_subscriber:
       class: AppBundle\EventSubscriber\InterviewSubscriber
-      arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.sbs_data', '@app.interview_notification_manager']
+      arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.sbs_data', '@app.interview_notification_manager', '@app.interview.manager', '@app.sms', '@router']
       tags:
         - { name: kernel.event_subscriber }
 
@@ -141,9 +145,27 @@ services:
     tags:
         - { name: kernel.event_subscriber }
 
+  app.image_gallery_subscriber:
+    class: AppBundle\EventSubscriber\ImageGallerySubscriber
+    arguments: ['@app.logger', '@session']
+    tags:
+        - { name: kernel.event_subscriber }
+
+  app.image_subscriber:
+    class: AppBundle\EventSubscriber\ImageSubscriber
+    arguments: ['@app.file_uploader']
+    tags:
+        - { name: doctrine.event_subscriber }
+
+  app.crud_logger:
+    class: AppBundle\EventSubscriber\CrudLogger
+    arguments: ['@app.logger', '@security.token_storage']
+    tags:
+        - { name: kernel.event_subscriber }
+
   app.file_uploader:
       class: AppBundle\Service\FileUploader
-      arguments: ['%signature_images%', '%logo_images%', '%receipt_images%']
+      arguments: ['%signature_images%', '%logo_images%', '%receipt_images%', '%gallery_images%']
 
   security.login:
     class: AppBundle\Service\LoginManager

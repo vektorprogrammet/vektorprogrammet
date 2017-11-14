@@ -38,6 +38,16 @@ class SurveyType extends AbstractType
                     true => 'Tilpasset',
                 ]
             ])
+
+            ->add('confidential', ChoiceType::class, array(
+                'label' => 'Resultater kan leses av',
+                'multiple' => false,
+                'expanded' => true,
+                'choices' => [
+                    false => 'Medlemmer og Ledere',
+                    true => 'Kun Ledere'
+                ]
+            ))
             
             ->add('finishPageContent', CKEditorType::class, [
                 'label' => 'Tilpasset sluttside. Vises kun hvis "Tilpasset" er valgt over.',

@@ -5,9 +5,11 @@ namespace AppBundle\Event;
 use AppBundle\Entity\User;
 use Symfony\Component\EventDispatcher\Event;
 
-class UserEvent extends Event
+class UserEvent extends Event implements CrudEvent
 {
+    const CREATED = 'user.created';
     const EDITED = 'user.edited';
+    const DELETED = 'user.deleted';
     const COMPANY_EMAIL_EDITED = 'user.company_email_edited';
 
     private $user;
@@ -37,5 +39,25 @@ class UserEvent extends Event
     public function getOldEmail()
     {
         return $this->oldEmail;
+    }
+
+    public function getObject()
+    {
+        return $this->getUser();
+    }
+
+    public static function created(): string
+    {
+        return self::CREATED;
+    }
+
+    public static function updated(): string
+    {
+        return self::EDITED;
+    }
+
+    public static function deleted(): string
+    {
+        return self::DELETED;
     }
 }

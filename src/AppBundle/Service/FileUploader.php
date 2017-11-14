@@ -21,12 +21,14 @@ class FileUploader
      * @param string $signatureFolder
      * @param string $logoFolder
      * @param string $receiptFolder
+     * @param string $galleryImageFolder
      */
-    public function __construct(string $signatureFolder, string $logoFolder, string $receiptFolder)
+    public function __construct(string $signatureFolder, string $logoFolder, string $receiptFolder, string $galleryImageFolder)
     {
         $this->signatureFolder = $signatureFolder;
         $this->logoFolder = $logoFolder;
         $this->receiptFolder = $receiptFolder;
+        $this->galleryImageFolder = $galleryImageFolder;
     }
 
     /**
@@ -66,6 +68,22 @@ class FileUploader
         $fileType = explode('/', $mimeType)[0];
         if ($fileType === 'image') {
             return $this->uploadFile($file, $this->receiptFolder);
+        } else {
+            throw new BadRequestHttpException('Filtypen må være et bilde.');
+        }
+    }
+
+    /**
+     * @param UploadedFile $file
+     *
+     * @return string
+     */
+    public function uploadGalleryImage(UploadedFile $file)
+    {
+        $mimeType = $file->getMimeType();
+        $fileType = explode('/', $mimeType)[0];
+        if ($fileType === 'image') {
+            return $this->uploadFile($file, $this->galleryImageFolder);
         } else {
             throw new BadRequestHttpException('Filtypen må være et bilde.');
         }
@@ -118,6 +136,17 @@ class FileUploader
         $fileName = $this->getFileNameFromPath($path);
 
         $this->deleteFile("$this->receiptFolder/$fileName");
+    }
+
+    public function deleteGalleryImage(string $path)
+    {
+        if (empty($path)) {
+            return;
+        }
+
+        $fileName = $this->getFileNameFromPath($path);
+
+        $this->deleteFile("$this->galleryImageFolder/$fileName");
     }
 
     public function deleteFile(string $path)

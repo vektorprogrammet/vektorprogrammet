@@ -23,19 +23,10 @@ class UserSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            UserEvent::EDITED => array(
-                array('logEdited', -2),
-            ),
             UserEvent::COMPANY_EMAIL_EDITED  => array(
                 array('logCompanyEmailEdited', 1),
             ),
         );
-    }
-
-    public function logEdited(UserEvent $event)
-    {
-        $user = $event->getUser();
-        $this->logger->info("$user edited.");
     }
 
     public function logCompanyEmailEdited(UserEvent $event)

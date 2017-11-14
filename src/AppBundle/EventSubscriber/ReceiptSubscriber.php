@@ -30,7 +30,6 @@ class ReceiptSubscriber implements EventSubscriberInterface
     {
         return array(
             ReceiptEvent::CREATED => array(
-                array('logCreatedEvent', 1),
                 array('sendCreatedEmail', 1),
                 array('addCreatedFlashMessage', 1)
             ),
@@ -49,23 +48,12 @@ class ReceiptSubscriber implements EventSubscriberInterface
                 array('addRejectedFlashMessage', 1)
             ),
             ReceiptEvent::EDITED => array(
-                array('logEditedEvent', 1),
                 array('addEditedFlashMessage', 1)
             ),
             ReceiptEvent::DELETED => array(
-                array('logDeletedEvent', 1),
                 array('addDeletedFlashMessage', 1)
             )
         );
-    }
-
-    public function logCreatedEvent(ReceiptEvent $event)
-    {
-        $receipt = $event->getReceipt();
-        $user = $receipt->getUser();
-        $visualId = $receipt->getVisualId();
-
-        $this->logger->info($user->getDepartment() . ": *$user* created a new receipt with id *$visualId*.");
     }
 
     public function addCreatedFlashMessage()
@@ -150,29 +138,9 @@ class ReceiptSubscriber implements EventSubscriberInterface
         $this->session->getFlashBag()->add('success', $message);
     }
 
-    public function logEditedEvent(ReceiptEvent $event)
-    {
-        $receipt = $event->getReceipt();
-        $owner = $receipt->getUser();
-        $visualID = $receipt->getVisualId();
-        $loggedInUser = $this->tokenStorage->getToken()->getUser();
-
-        $this->logger->info($owner->getDepartment() . ": Receipt *$visualID* belonging to $owner was edited by $loggedInUser.");
-    }
-
     public function addEditedFlashMessage()
     {
         $this->session->getFlashBag()->add('success', 'Endringene har blitt lagret.');
-    }
-
-    public function logDeletedEvent(ReceiptEvent $event)
-    {
-        $receipt = $event->getReceipt();
-        $owner = $receipt->getUser();
-        $visualID = $receipt->getVisualId();
-        $loggedInUser = $this->tokenStorage->getToken()->getUser();
-
-        $this->logger->info($owner->getDepartment() . ": Receipt *$visualID* belonging to $owner has been deleted by $loggedInUser.");
     }
 
     public function addDeletedFlashMessage()

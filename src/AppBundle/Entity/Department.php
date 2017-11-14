@@ -5,12 +5,10 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Table(name="department")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\DepartmentRepository")
- * @JMS\ExclusionPolicy("all")
  */
 class Department
 {
@@ -18,21 +16,18 @@ class Department
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Expose()
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=250)
      * @Assert\NotBlank
-     * @JMS\Expose()
      */
     private $name;
 
     /**
      * @ORM\Column(name="short_name", type="string", length=50)
      * @Assert\NotBlank
-     * @JMS\Expose()
      */
     private $shortName;
 
@@ -40,21 +35,18 @@ class Department
      * @ORM\Column(type="string", length=250)
      * @Assert\NotBlank
      * @Assert\Email
-     * @JMS\Expose()
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=250)
      * @Assert\NotBlank
-     * @JMS\Expose()
      */
     protected $address;
 
     /**
      * @ORM\Column(type="string", length=250, nullable=true)
      * @Assert\NotBlank
-     * @JMS\Expose()
      */
     private $city;
 
@@ -74,7 +66,6 @@ class Department
 
     /**
      * @ORM\OneToMany(targetEntity="FieldOfStudy", mappedBy="department", cascade={"remove"})
-     * @JMS\Expose()
      */
     private $fieldOfStudy;
 
@@ -85,47 +76,15 @@ class Department
     private $semesters;
 
     /**
-     * @var Team[]
      * @ORM\OneToMany(targetEntity="Team", mappedBy="department", cascade={"remove"})
      **/
     private $teams;
 
     /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("teams")
-     */
-    public function serializeTeams()
-    {
-        $teams = [];
-        foreach ($this->teams as $team) {
-            $teams[] = [
-                'id' => $team->getId(),
-                'name' => $team->getName(),
-                'email' => $team->getEmail(),
-                'short_description' => $team->getShortDescription(),
-                'accept_application' => $team->getAcceptApplication()
-            ];
-        }
-        return $teams;
-    }
-
-	/**
-	 * @JMS\VirtualProperty
-	 * @JMS\SerializedName("active_admission")
-	 */
-	public function activeAdmission()
-	{
-		$semester = $this->getCurrentSemester();
-		if (!$semester) {
-			return false;
-		}
-
-		$start = $semester->getAdmissionStartDate();
-		$end = $semester->getAdmissionEndDate();
-		$now = new \DateTime();
-
-		return $start < $now && $now < $end;
-	}
+     * @ORM\Column(name="logo_path", type="string", length=255, nullable=true)
+     * @Assert\Length(min = 1, max = 255, maxMessage="Path kan maks være 255 tegn."))
+     **/
+    private $logoPath;
 
     /**
      * Constructor.
@@ -282,7 +241,7 @@ class Department
 
     public function __toString()
     {
-        return (string)$this->getShortName();
+        return (string) $this->getShortName();
     }
 
     /**
@@ -474,5 +433,21 @@ class Department
     public function setSlackChannel($slackChannel)
     {
         $this->slackChannel = $slackChannel;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogoPath()
+    {
+        return $this->logoPath;
+    }
+
+    /**
+     * @param string $logoPath
+     */
+    public function setLogoPath($logoPath)
+    {
+        $this->logoPath = $logoPath;
     }
 }
