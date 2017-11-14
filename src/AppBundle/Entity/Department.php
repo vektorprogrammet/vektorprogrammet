@@ -81,7 +81,7 @@ class Department
     private $teams;
 
     /**
-     * @ORM\Column(type="string", length=250, nullable=true)
+     * @ORM\Column(name="logo_path", type="string", length=255, nullable=true)
      **/
     private $logoPath;
 
