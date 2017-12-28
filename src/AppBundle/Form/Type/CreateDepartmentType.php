@@ -26,11 +26,11 @@ class CreateDepartmentType extends AbstractType
             ->add('city', 'text', array(
                 'label' => 'By',
             ))
-            ->add('latitude', 'number', array(
+            ->add('latitude', 'text', array(
                 'label' => 'Latitude',
                 'required' => false
             ))
-            ->add('longitude', 'number', array(
+            ->add('longitude', 'text', array(
                 'label' => 'Longitude',
                 'required' => false
             ))

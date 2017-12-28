@@ -51,12 +51,14 @@ class Department
     private $city;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\Length(max=255)
      */
     private $latitude;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\Length(max=255)
      */
     private $longitude;
 
@@ -421,7 +423,7 @@ class Department
     }
 
     /**
-     * @return float
+     * @return string
      */
     public function getLatitude()
     {
@@ -429,7 +431,7 @@ class Department
     }
 
     /**
-     * @param float $latitude
+     * @param string $latitude
      */
     public function setLatitude($latitude)
     {
@@ -437,7 +439,7 @@ class Department
     }
 
     /**
-     * @return float
+     * @return string
      */
     public function getLongitude()
     {
@@ -445,7 +447,7 @@ class Department
     }
 
     /**
-     * @param float $longitude
+     * @param string $longitude
      */
     public function setLongitude($longitude)
     {
