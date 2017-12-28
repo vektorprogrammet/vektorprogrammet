@@ -12,10 +12,10 @@ class Version20171228151200 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
+        // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE department ADD latitude FLOAT(10,8) DEFAUL NULL');
-        $this->addSql('ALTER TABLE department ADD longitude FLOAT(10,8) DEFAUL NULL');
+        $this->addSql('ALTER TABLE department ADD latitude DOUBLE PRECISION DEFAULT NULL, ADD longitude DOUBLE PRECISION DEFAULT NULL');
     }
 
     /**
@@ -23,9 +23,9 @@ class Version20171228151200 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
+        // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE department DROP latitude');
-        $this->addSql('ALTER TABLE department DROP longitude');
+        $this->addSql('ALTER TABLE department DROP latitude, DROP longitude');
     }
 }
