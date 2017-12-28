@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\API;
 
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -124,11 +125,13 @@ class DepartmentController extends FOSRestController implements ClassResourceInt
      *
      * @return Department
      *
+     * @Rest\Get("/closestdepartment")
+     *
      * @ApiDoc(
      *     section="Department",
      *     statusCodes={
      *          200 = "Returned when successful",
-     *          204 = "No department"
+     *          204 = "No department",
      *          500 = "Internal server error"
      *     }
      * )

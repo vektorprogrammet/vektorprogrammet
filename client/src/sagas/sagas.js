@@ -10,6 +10,7 @@ export default function* rootSaga() {
     watchLoginSaga(),
     watchLogoutSaga(),
     departmentSagas.fetchDepartmentsSaga(),
+    departmentSagas.fetchClosestDepartmentSaga(),
     sponsorSagas.fetchSponsorsSaga(),
     applicationSagas.postApplicationSaga(),
   ]);

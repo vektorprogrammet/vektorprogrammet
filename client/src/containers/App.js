@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { fetchDepartments } from '../actions/department';
+import { fetchDepartments, fetchPreferredDepartment } from '../actions/department';
 import { fetchSponsors } from '../actions/sponsor';
 import { Assistant } from '../authorization';
 
@@ -22,6 +22,9 @@ class App extends Component {
   componentDidMount() {
     this.props.fetchDepartments();
     this.props.fetchSponsors();
+    if (this.props.preferredDepartment === null) {
+      this.props.fetchPreferredDepartment();
+    }
   }
 
   render() {
@@ -47,9 +50,14 @@ class App extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  preferredDepartment: state.preferredDepartment
+});
+
 const mapDispatchToProps = dispatch => bindActionCreators({
   fetchDepartments,
   fetchSponsors,
+  fetchPreferredDepartment,
 }, dispatch);
 
-export default connect(null, mapDispatchToProps, null, {pure: false})(App);
+export default connect(mapStateToProps, mapDispatchToProps, null, {pure: false})(App);
