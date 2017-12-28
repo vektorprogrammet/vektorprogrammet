@@ -26,6 +26,14 @@ class CreateDepartmentType extends AbstractType
             ->add('city', 'text', array(
                 'label' => 'By',
             ))
+            ->add('latitude', 'number', array(
+                'label' => 'Latitude',
+                'required' => false
+            ))
+            ->add('longitude', 'number', array(
+                'label' => 'Longitude',
+                'required' => false
+            ))
             ->add('slackChannel', 'text', array(
                 'label' => 'Privat Slack Channel',
                 'required' => false,
