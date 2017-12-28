@@ -118,4 +118,24 @@ class DepartmentController extends FOSRestController implements ClassResourceInt
 
         return $departments;
     }
+
+    /**
+     * Get the department closest by geolocation
+     *
+     * @return Department
+     *
+     * @ApiDoc(
+     *     section="Department",
+     *     statusCodes={
+     *          200 = "Returned when successful",
+     *          204 = "No department"
+     *          500 = "Internal server error"
+     *     }
+     * )
+     */
+    public function getGeoAction()
+    {
+        $_SERVER['HTTP_CLIENT_IP'] = '85.164.116.101';
+        return $this->get('app.geolocation')->findNearestDepartment();
+    }
 }
