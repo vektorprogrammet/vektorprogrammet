@@ -59,6 +59,18 @@ class Department
     private $city;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\Length(max=255)
+     */
+    private $latitude;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\Length(max=255)
+     */
+    private $longitude;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string", nullable=true)
@@ -89,6 +101,12 @@ class Department
      * @ORM\OneToMany(targetEntity="Team", mappedBy="department", cascade={"remove"})
      **/
     private $teams;
+
+    /**
+     * @ORM\Column(name="logo_path", type="string", length=255, nullable=true)
+     * @Assert\Length(min = 1, max = 255, maxMessage="Path kan maks være 255 tegn."))
+     **/
+    private $logoPath;
 
     /**
      * @JMS\VirtualProperty
@@ -451,6 +469,38 @@ class Department
         $this->city = $city;
     }
 
+    /**
+     * @return string
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * @param string $latitude
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * @param string $longitude
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+    }
+
     // Used for unit testing
     public function fromArray($data = array())
     {
@@ -474,5 +524,21 @@ class Department
     public function setSlackChannel($slackChannel)
     {
         $this->slackChannel = $slackChannel;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogoPath()
+    {
+        return $this->logoPath;
+    }
+
+    /**
+     * @param string $logoPath
+     */
+    public function setLogoPath($logoPath)
+    {
+        $this->logoPath = $logoPath;
     }
 }

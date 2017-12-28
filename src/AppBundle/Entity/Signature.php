@@ -32,6 +32,7 @@ class Signature
     /**
      * @ORM\Column(type="string", length=45)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
+     * @Assert\Length(min = 1, max = 45, maxMessage="Beskrivelsen kan maks være 45 tegn."))
      */
     private $description;
 

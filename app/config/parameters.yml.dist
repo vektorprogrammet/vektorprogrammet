@@ -23,7 +23,10 @@ parameters:
 
     slack_endpoint: 'https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX'
 
-    locale:            en
+    gateway_api_token: 'xxxxxxx'
+    sms_disable: true
+
+    locale:            no
 
     # Sender email for user creation mails
     no_reply_email_user_creation: ~
@@ -43,6 +46,9 @@ parameters:
     google_api_client_id: 'xxxxx'
     google_api_client_secret: 'xxxxx'
     google_api_refresh_token: 'xxxxx'
+
+    gateway_api_token: xxxxx
+    sms_disable: true
 
     # Webhook from GitHub to automatically deploy on push to master
 

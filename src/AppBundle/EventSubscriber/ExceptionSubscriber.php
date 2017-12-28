@@ -47,7 +47,15 @@ class ExceptionSubscriber implements EventSubscriberInterface
         if ($exception instanceof HttpException) {
             $this->logHttpException($exception);
         } else {
-            $this->logger->critical("Code 500: {$exception->getMessage()}");
+            $this->logger->critical(
+                "Code: {$exception->getCode()}\n" .
+                "File: {$exception->getFile()}\n" .
+                "Line: {$exception->getLine()}\n" .
+                "Message:\n" .
+                "```\n" .
+                "{$exception->getMessage()}\n" .
+                "```"
+            );
         }
     }
 

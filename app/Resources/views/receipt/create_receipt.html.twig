@@ -19,10 +19,19 @@
 
     <div class="row">
         <div class="small-8 medium-3 columns">
-            {{ form_row(form.user) }}
+            {% if app.user.accountNumber %}
+                <div id="accountNumberInfo">
+                    Ditt kontonummer er <span class="text-bold">{{ app.user.accountNumber }}</span> <span id="changeAccountNumber" class="text-link">Endre</span>
+                </div>
+                <div id="accountNumberForm" class="hide">
+                    {{ form_row(form.user) }}
+                </div>
+            {% else %}
+                {{ form_row(form.user) }}
+            {% endif %}
         </div>
     </div>
-
+<br>
     <div class="row">
         <div class="small-12 columns">
             <div>
@@ -38,3 +47,12 @@
     <br>
     <button class="button success">Be om refusjon</button>
 {{ form_end(form) }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        $('#changeAccountNumber').click(function() {
+          $('#accountNumberForm').show();
+          $('#accountNumberInfo').hide();
+        });
+    });
+</script>

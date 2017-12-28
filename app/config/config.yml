@@ -15,6 +15,12 @@ parameters:
   slack.log_channel: '#website_logs'
   slack.disable_delivery: true
 
+  gateway_sms:
+    api_token: '%gateway_api_token%'
+    disable_delivery: '%sms_disable%'
+    max_length: 1200
+    country_code: '47'
+
   # File upload parameters
   public_uploads: "Offentlige filer"
   private_uploads: "../Private filer"
@@ -39,6 +45,9 @@ parameters:
 
   # Team images
   team_images: 'images/team_images'
+
+  # Gallery images
+  gallery_images: 'images/gallery_images'
 
 framework:
     #esi:             ~
@@ -282,14 +291,29 @@ simple_things_form_extra:
 liip_imagine:
     resolvers:
        default:
-          web_path: ~
+          web_path:
+            web_root: '%kernel.root_dir%/../www'
+
+    loaders:
+      default:
+        filesystem:
+          data_root: '%kernel.root_dir%/../www'
+
+    cache: ~
+
     filter_sets:
-        cache: ~
+    # Note, when deleting filters, make sure that no ImageGalleries use those filters, as they won't be automatically removed
         article_crop:
             quality: 100
             filters:
                 relative_resize: { scale: 2.5 }
                 crop: { start: [10, 20], size: [120, 90] }
+        max_500px:
+            quality: 85
+            filters:
+              downscale:
+                max: [500, 500]
+
 
 nexy_slack:
     guzzle_service: guzzle.slack

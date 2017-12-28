@@ -23,3 +23,11 @@
 .text-bold {
   font-weight: bold;
 }
+
+.text-link {
+  color: $primary-color;
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

@@ -5,7 +5,7 @@ namespace AppBundle\Event;
 use AppBundle\Entity\Receipt;
 use Symfony\Component\EventDispatcher\Event;
 
-class ReceiptEvent extends Event
+class ReceiptEvent extends Event implements CrudEvent
 {
     const CREATED = 'receipt.created';
     const REFUNDED = 'receipt.refunded';
@@ -32,5 +32,25 @@ class ReceiptEvent extends Event
     public function getReceipt(): Receipt
     {
         return $this->receipt;
+    }
+
+    public function getObject()
+    {
+        return $this->getReceipt();
+    }
+
+    public static function created(): string
+    {
+        return self::CREATED;
+    }
+
+    public static function updated(): string
+    {
+        return self::EDITED;
+    }
+
+    public static function deleted(): string
+    {
+        return self::DELETED;
     }
 }

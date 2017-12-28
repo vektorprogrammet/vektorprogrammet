@@ -225,9 +225,12 @@ class ReceiptControllerTest extends BaseWebTestCase
             }
         }
 
-        $directoryIsEmpty = count(glob('images/receipts/*')) === 0;
-        if ($directoryIsEmpty) {
+        $receiptDirectoryIsEmpty = count(glob('images/receipts/*')) === 0;
+        if ($receiptDirectoryIsEmpty) {
             rmdir('images/receipts');
+        }
+        $imageDirectoryIsEmpty = count(glob('images/*')) === 0;
+        if ($imageDirectoryIsEmpty) {
             rmdir('images');
         }
     }

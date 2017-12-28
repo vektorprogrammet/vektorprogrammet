@@ -945,3 +945,85 @@ ul.alternatives {
 .delete-icon {
   position: absolute;
 }
+
+img.gallery-preview-image {
+  display:inline;
+  height:100px;
+}
+
+li.image-gallery-grid-element {
+  position:relative;
+  overflow:hidden;
+  * {
+    transition:0.2s;
+  }
+  .edit-image-text {
+    opacity:0;
+    position:absolute;
+    text-align:center;
+    width:100%;
+    top:50%;
+    font-size:18px;
+    margin-top:-9px;
+    color:white;
+    pointer-events:none;
+    text-shadow:0 0 1px rgba(0,0,0,0.6), 0 1px 1px rgba(0,0,0,0.4);
+  }
+
+  img:hover {
+    filter: brightness(95%) grayscale(40%) blur(1px);
+  }
+  &:hover .edit-image-text {
+    opacity:1;
+  }
+  padding: 2px;
+}
+
+#create-gallery-form {
+  display:none;
+}
+
+.inline {
+  display:inline;
+}
+
+.half-size-text {
+  font-size: 50%;
+  vertical-align:middle;
+  margin:inherit;
+}
+
+.inherit-parent-margins {
+  margin:inherit;
+}
+
+.upload-gallery-image-hack {
+  position:absolute;
+  left: 98px;
+  top:28px;
+  width:1px !important;
+  outline:none;
+  opacity:0;
+  pointer-events:none;
+}
+
+.show-on-hover {
+  transition:0.1s;
+  opacity:0.9;
+  &:hover {
+    opacity:1;
+  }
+}
+
+button.secretly-not-a-button {
+  background:none;
+  outline:none;
+  height:100%;
+  padding:0;
+  position:absolute;
+  font-size:inherit;
+}
+
+.position-relative {
+  position:relative;
+}

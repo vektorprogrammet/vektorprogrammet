@@ -1,0 +1,110 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}{{ image_gallery.title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            {% if is_granted_team_leader() %}
+                <form method="POST"
+                      onsubmit="return confirm('Vil du virkelig slette bildegalleriet {{ image_gallery.title }}? Hvis bildegalleriet brukes av funksjonalitet på nettsiden kan sletting føre til at dette slutter å fungere. Alle tilhørende bilder vil bli slettet. Er du HELT sikker?')"
+                      action="{{ path('image_gallery_delete', {'id': image_gallery.id}) }}">
+                    <h1 class="inline position-relative">{{ image_gallery.title }}
+                        <a onclick="toggleForm()" id="toggle-form-link" class="inherit-parent-margins"><i class="fa fa-pencil half-size-text"></i></a>&nbsp
+                            <button id="delete-gallery-button" class="secretly-not-a-button show-on-hover"><i class="fa fa-trash text-alert half-size-text"></i></button>
+                    </h1>
+                </form>
+            {% else %}
+                <h1>{{ image_gallery.title }}</h1>
+            {% endif %}
+            <p>{{ image_gallery.description }}</p>
+        </div>
+
+        <div class="small-12 medium-12 large-12 columns">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div data-alert class="alert-box success radius">
+                    {{ flashMessage }}
+                    <a href="#" class="close">&times;</a>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if is_granted_team_leader() %}
+            <section class="hide" id="edit-gallery-form" {% if not form.vars.valid %} style="display: block" {% endif %}>
+                {{ form_start(form) }}
+                    <div class="small-12 medium-7 large-7 columns">
+                        {{ form_row(form.title) }}
+                        {{ form_row(form.referenceName) }}
+                        {{ form_row(form.description) }}
+                    </div>
+
+                    <div class="small-12 medium-12 large-12 columns">
+                        <button class="success small">Lagre endringer</button>
+                    </div>
+                {{ form_end(form) }}
+            </section>
+        {% endif %}
+    </div>
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <hr>
+        </div>
+        <div class="small-12 medium-12 large-12 columns">
+            <a href="{{ path('image_upload', { 'id': image_gallery.id }) }}"><i class="fa fa-plus"></i> Last opp nytt bilde</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <hr>
+        </div>
+
+        <div class="small-12 medium-12 large-12 columns">
+            <ul class="small-block-grid-3 medium-block-grid-4 large-block-grid-4">
+                {% for image in image_gallery.images %}
+                    <li class="image-gallery-grid-element">
+                        <a href="{{ path('image_edit', {'id': image.id}) }}">
+                            <img src="{{ asset(image.path | imagine_filter('max_500px')) }}" alt="{{ image.description }}">
+                        </a>
+                        <p class="edit-image-text"><i class="fa fa-pencil"></i> Rediger bilde</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {% if is_granted_team_leader() %}
+        <script>
+            var editGalleryForm = $('#edit-gallery-form');
+            var toggleFormLink = $('#toggle-form-link');
+            var deleteGalleryButton = $('#delete-gallery-button');
+            function toggleForm() {
+                editGalleryForm.slideToggle(200, updateToggleFormLink);
+            }
+
+            function updateToggleFormLink() {
+                var formVisible = editGalleryForm.is(':visible');
+                if(formVisible) {
+                    toggleFormLink.html('<i class="fa fa-minus half-size-text"></i>');
+                    deleteGalleryButton.css('display', 'inline');
+                } else {
+                    toggleFormLink.html('<i class="fa fa-pencil half-size-text"></i>');
+                    deleteGalleryButton.css('display', 'none');
+                }
+            }
+
+            updateToggleFormLink();
+        </script>
+    {% endif %}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            $('.close').click(function () {
+                $(this).closest('.success').remove();
+            });
+        });
+    </script>
+{% endblock %}

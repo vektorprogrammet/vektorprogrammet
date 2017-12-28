@@ -1,0 +1,51 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %} Last opp bilde {% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <h1>Last opp bilde</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <hr>
+        </div>
+
+        {{ form_start(form) }}
+        <div class="small-6 medium-6 large-6 columns">
+            {{ form_row(form.uploadedFile) }}
+            <br>
+            <img src="#" id="image-preview" alt=" ">
+        </div>
+        <div class="small-6 medium-6 large-6 columns">
+            {{ form_row(form.description) }}
+            <button class="button success">Lagre</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#image-preview').attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#image_uploadedFile").change(function(){
+            readURL(this);
+        });
+    </script>
+{% endblock %}
