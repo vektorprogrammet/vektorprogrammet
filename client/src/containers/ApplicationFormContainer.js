@@ -6,6 +6,7 @@ import { reduxForm, formValueSelector, change } from 'redux-form';
 
 import { fetchDepartments } from '../actions/department';
 import { postApplication } from '../actions/application';
+import { getActiveDepartments } from '../selectors/department';
 import ApplicationForm from '../components/ApplicationForm/ApplicationForm';
 import ApplicationFormSubmitted from '../components/ApplicationForm/ApplicationFormSubmitted';
 
@@ -23,12 +24,9 @@ class ApplicationFormContainer extends Component {
 
   render() {
 
-        if(this.props.application.hasOwnProperty("firstName"))
-        {
+        if(this.props.application.hasOwnProperty("firstName")) {
           return (<ApplicationFormSubmitted/>);
         }
-        else
-        {
         return (
             <ApplicationForm
                 departments={this.props.departments}
@@ -37,8 +35,6 @@ class ApplicationFormContainer extends Component {
                 departmentChange={this.props.clearFieldOfStudy}
             />
         );
-        }
-
   }
 }
 
@@ -52,9 +48,9 @@ ApplicationFormContainer = reduxForm({
 
 const mapStateToProps = state => ({
     application: state.application,
-    departments: state.departments.filter(d => d.active_admission),
+    departments: getActiveDepartments(state),
     initialValues: {
-      department: state.departments.filter(d => d.active_admission)[0]
+      department: getActiveDepartments(state)[0]
     },
   selectedDepartment: selector(state, 'department'),
 });

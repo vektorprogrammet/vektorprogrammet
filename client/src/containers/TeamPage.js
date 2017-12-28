@@ -1,9 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 import {connect} from 'react-redux';
 
 import TeamOverview from '../components/TeamOverview/TeamOverview';
 import PageHeader from '../components/PageHeader';
+import {getSortedDepartments} from '../selectors/department';
 import './TeamPage.css';
 
 const TeamPage = ({departments}) => (
@@ -25,7 +26,7 @@ const TeamPage = ({departments}) => (
 );
 
 const mapStateToProps = state => ({
-  departments: state.departments
+  departments: getSortedDepartments(state)
 });
 
 export default connect(mapStateToProps)(TeamPage);

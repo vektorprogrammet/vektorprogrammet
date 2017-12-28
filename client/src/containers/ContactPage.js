@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { getSortedDepartments } from '../selectors/department';
 import './HomePage.css';
 import ContactDepartment from '../components/ContactDepartment';
 import PageHeader from '../components/PageHeader';
@@ -15,6 +16,6 @@ const ContactPage = ({departments}) => (
 );
 
 const mapStateToProps = state => ({
-  departments: state.departments,
+  departments: getSortedDepartments(state),
 });
 export default connect(mapStateToProps)(ContactPage);
