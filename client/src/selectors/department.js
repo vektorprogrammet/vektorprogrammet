@@ -40,3 +40,8 @@ export const getActiveDepartments = createSelector(
   [getSortedDepartments],
   (departments) => departments.filter(d => d.active_admission)
 );
+
+export const getInactiveDepartments = createSelector(
+  [getSortedDepartments],
+  (departments) => departments.filter(d => !d.active_admission)
+);

@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, change } from 'redux-form';
 
-import { fetchDepartments } from '../actions/department';
 import { postApplication } from '../actions/application';
 import { getActiveDepartments } from '../selectors/department';
 import ApplicationForm from '../components/ApplicationForm/ApplicationForm';
@@ -12,17 +11,14 @@ import ApplicationFormSubmitted from '../components/ApplicationForm/ApplicationF
 
 
 class ApplicationFormContainer extends Component {
-  componentDidMount() {
-    if (this.props.departments.length === 0) {
-      this.props.fetchDepartments();
-    }
-  }
-
   handleSubmit = this.props.handleSubmit(values => {
     this.props.postApplication(values)
   });
 
   render() {
+    if (this.props.activeDepartments.indexOf(this.props.selectedDepartment) === -1) {
+      // return <p>Newsletter</p>
+    }
 
         if(this.props.application.hasOwnProperty("firstName")) {
           return (<ApplicationFormSubmitted/>);
@@ -48,7 +44,8 @@ ApplicationFormContainer = reduxForm({
 
 const mapStateToProps = state => ({
     application: state.application,
-    departments: getActiveDepartments(state),
+    departments: state.departments,
+    activeDepartments: getActiveDepartments(state),
     initialValues: {
       department: getActiveDepartments(state)[0]
     },
@@ -58,7 +55,6 @@ const mapStateToProps = state => ({
 const clearFieldOfStudy = () => change(form, 'fieldOfStudyId', '');
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  fetchDepartments,
   postApplication,
   clearFieldOfStudy
 }, dispatch);

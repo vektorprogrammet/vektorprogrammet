@@ -22,7 +22,7 @@ export default () => (
       <List ordered className="assistantPageListe">
         <List.Item>Vektorprogrammet tar opp nye assistenter i starten av hvert semester</List.Item>
         <List.Item>Send inn søknad fra skjemaet lengre ned på denne siden</List.Item>
-        <List.Item>Møt opp på intervju (obligatorisk)</List.Item>
+        <List.Item>Møt opp på intervju slik at vi kan bli bedre kjent med deg</List.Item>
         <List.Item>Dra på et gratis pedagogikkurs arrangert av Vektorprogrammet</List.Item>
         <List.Item>Få tildelt en ungdomsskole som du og din vektorpartner skal dra til</List.Item>
       </List>

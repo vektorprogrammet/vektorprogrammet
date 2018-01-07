@@ -8,8 +8,8 @@ export default ({departments, onSubmit, selectedDepartment, departmentChange}) =
   const fieldOfStudies = selectedDepartment ? selectedDepartment.field_of_study : [];
 
   return (
-    <div>
-      <Header as='h3'>Send oss din søknad</Header>
+    <div className={'application-form'}>
+      <Header as='h3'>{selectedDepartment.active_admission ? 'Send oss din søknad' : 'Få påminnelse om opptak'}</Header>
       <Form onSubmit={onSubmit}>
 
         <Form.Group widths='equal'>
@@ -58,8 +58,15 @@ export default ({departments, onSubmit, selectedDepartment, departmentChange}) =
             <FieldOfStudyDropdown fieldOfStudies={fieldOfStudies}/>
           </Form.Field>
         </Form.Group>
+        {selectedDepartment.active_admission ?
+          <Form.Field><Button>Send inn</Button></Form.Field>
+        :
+          <div>
+            <p>{selectedDepartment.short_name} tar ikke imot søknader akkurat nå</p>
+          </div>
+        }
 
-        <Form.Field><Button>Send inn</Button></Form.Field>
+
       </Form>
     </div>
   );
