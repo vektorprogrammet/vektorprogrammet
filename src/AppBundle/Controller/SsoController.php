@@ -23,7 +23,7 @@ class SsoController extends Controller
         }
 
         try {
-            $user = $this->getDoctrine()->getRepository('AppBundle:User')->findUserByUsername($username);
+            $user = $this->getDoctrine()->getRepository('AppBundle:User')->findByUsernameOrEmail($username);
         } catch (NoResultException $e) {
             $response->setStatusCode(401);
             $response->setContent('Username does not exist');

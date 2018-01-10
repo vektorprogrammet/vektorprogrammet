@@ -134,6 +134,23 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     }
 
     /**
+     * @param $login
+     *
+     * @return User
+     */
+    public function findByUsernameOrEmail($login)
+    {
+        return $this->createQueryBuilder('User')
+                    ->select('User')
+                    ->where('User.user_name = :username')
+                    ->setParameter('username', $login)
+                    ->orWhere('User.email = :email')
+                    ->setParameter('email', $login)
+                    ->getQuery()
+                    ->getSingleResult();
+    }
+
+    /**
      * @param $email
      *
      * @return User
