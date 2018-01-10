@@ -146,6 +146,8 @@ class UserRepository extends EntityRepository implements UserProviderInterface
                     ->setParameter('username', $login)
                     ->orWhere('User.email = :email')
                     ->setParameter('email', $login)
+                    ->orWhere('User.companyEmail = :companyEmail')
+                    ->setParameter('companyEmail', $login)
                     ->getQuery()
                     ->getSingleResult();
     }
