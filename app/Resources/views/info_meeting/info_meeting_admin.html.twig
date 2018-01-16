@@ -7,7 +7,16 @@
         <div class="small-12 medium-12 large-12 columns">
             <h1 class="text-center">Legg til eller fjern Infomøte for {{ department.shortName }}</h1>
             {{ form_start(form) }}
-            {{ form_widget(form) }}
+            <div class="row">{{ form_row(form.time)}}</div>
+            <div class="row">{{ form_row(form.date)}}</div>
+            <div class="row">{{ form_row(form.room)}}</div>
+            <div class="row">{{ form_row(form.extra) }}</div>
+            <div class="row">
+                <div class="small-12 medium-12 large-12 columns">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.delete) }}
+                </div>
+            </div>
             {{ form_end(form) }}
         </div>
     </div>

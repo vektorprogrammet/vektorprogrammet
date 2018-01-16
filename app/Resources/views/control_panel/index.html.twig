@@ -1,6 +1,7 @@
 {% extends 'adminBase.html.twig' %}
 {% block title %}Kontrollpanel{% endblock %}
 {% block body %}
+    {% include "common/flash.html.twig" %}
     <div class="control-panel">
         <div class="sbs">
             {{ render(controller('AppBundle:ControlPanel:showSBS')) }}

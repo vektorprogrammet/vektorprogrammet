@@ -35,14 +35,15 @@ class EditInfoMeetingType extends AbstractType
                 'label' => 'Lagre'
             ))
             ->add('delete', 'submit', array(
-                'label' => 'Slett'
+                'label' => 'Slett',
+                'attr' => array('class' => 'alert button')
             ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\InfoMeeting',
+            'data_class' => null,
             'department' => 'AppBundle\Entity\Department'
         ));
     }
