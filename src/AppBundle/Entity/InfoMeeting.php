@@ -44,6 +44,29 @@ class InfoMeeting
     private $extra;
 
     /**
+     * @ORM\OneToOne(targetEntity="Department", cascade={"persist", "remove"}, inversedBy="infoMeeting")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     * @Assert\Valid
+     */
+    private $department;
+
+    /**
+     * @return mixed
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param mixed $department
+     */
+    public function setDepartment($department)
+    {
+        $this->department = $department;
+    }
+
+    /**
      * @return mixed
      */
     public function getId()
