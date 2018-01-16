@@ -1454,3 +1454,10 @@ show_info_meeting:
   methods: [GET, POST]
   requirements:
     id: \d+
+
+delete_info_meeting:
+  path: /kontrollpanel/infomøte/delete/{id}
+  defaults: {_controller: AppBundle:InfoMeeting:delete}
+  methods: [POST]
+  requirements:
+    id: \d+

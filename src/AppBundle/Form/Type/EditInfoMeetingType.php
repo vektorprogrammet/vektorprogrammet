@@ -33,10 +33,6 @@ class EditInfoMeetingType extends AbstractType
             ))
             ->add('save', 'submit', array(
                 'label' => 'Lagre'
-            ))
-            ->add('delete', 'submit', array(
-                'label' => 'Slett',
-                'attr' => array('class' => 'alert button')
             ));
     }
 

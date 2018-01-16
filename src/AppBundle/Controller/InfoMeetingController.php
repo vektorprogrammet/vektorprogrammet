@@ -38,14 +38,6 @@ class InfoMeetingController extends Controller
                 $this->addFlash('success', 'Møtet ble lagret!');
             }
 
-            if ($form->get('delete')->isClicked()) {
-                $department->setInfoMeeting(null);
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($department);
-                $em->flush();
-                $this->addFlash('success', 'Møtet ble slettet!');
-            }
-
             return $this->redirectToRoute('control_panel');
 
         }
@@ -54,5 +46,24 @@ class InfoMeetingController extends Controller
             array(
                 'department' => $department,
                 'form' => $form->createView()));
+    }
+
+    public function deleteAction(Request $request, Department $department)
+    {
+        $infoMeeting = $department->getInfoMeeting();
+        if ($infoMeeting !== null) {
+            $em = $this->getDoctrine()->getManager();
+
+            $department->setInfoMeeting(null);
+            $em->persist($department);
+
+            $em->remove($infoMeeting);
+
+            $em->flush();
+            $this->addFlash('success', 'Møtet ble slettet!');
+
+        }
+
+        return $this->redirectToRoute('control_panel');
     }
 }
