@@ -1449,6 +1449,8 @@ generate_all_mail_list:
 ##########################################
 
 show_info_meeting:
-  path: /kontrollpanel/infomøte/
+  path: /kontrollpanel/infomøte/{id}
   defaults: {_controller: AppBundle:Infomeeting:show}
   methods: [GET]
+  requirements:
+    id: \d+
