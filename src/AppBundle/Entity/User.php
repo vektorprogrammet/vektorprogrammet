@@ -53,6 +53,7 @@ class User implements AdvancedUserInterface, \Serializable
     private $firstName;
 
     /**
+     * @var FieldOfStudy
      * @ORM\ManyToOne(targetEntity="FieldOfStudy")
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Assert\Valid
@@ -153,6 +154,7 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @ORM\OneToMany(targetEntity="Receipt", mappedBy="user")
+     * @JMS\Expose()
      */
     private $receipts;
 
@@ -174,6 +176,15 @@ class User implements AdvancedUserInterface, \Serializable
 			default:
 				return 'user';
 		}
+	}
+
+	/**
+	 * @JMS\VirtualProperty
+	 * @JMS\SerializedName("department")
+	 */
+	public function department()
+	{
+		return $this->fieldOfStudy->getDepartment()->getId();
 	}
 
     public function __construct()

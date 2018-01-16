@@ -1,6 +1,3 @@
-client:
-    resource: "routing_client.yml"
-
 home:
  path: /
  defaults: { _controller: AppBundle:Home:show }

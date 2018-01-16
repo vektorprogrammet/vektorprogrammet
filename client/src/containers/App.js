@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { fetchDepartments } from '../actions/department';
+import { fetchDepartments, fetchPreferredDepartment } from '../actions/department';
 import { fetchSponsors } from '../actions/sponsor';
 import { Assistant } from '../authorization';
 
@@ -14,7 +14,6 @@ import TeamPage from './TeamPage';
 import AboutUsPage from './AboutUsPage';
 import ContactPage from './ContactPage';
 import LoginPage from './LoginPage';
-import ReceiptPage from './ReceiptPage';
 import DashboardPage from './DashboardPage';
 import UserPage from './UserPage';
 import Error404 from '../components/Error/Error404';
@@ -23,12 +22,18 @@ class App extends Component {
   componentDidMount() {
     this.props.fetchDepartments();
     this.props.fetchSponsors();
+    if (this.props.preferredDepartment === null) {
+      this.props.fetchPreferredDepartment();
+    }
   }
 
   render() {
     return (
       <div>
-        <Header/>
+        <Switch>
+          <Route path='/dashboard' render={() => <div></div>}/>
+          <Route path='/' component={Header}/>
+        </Switch>
         <Switch>
           <Route exact path='/' component={HomePage}/>
           <Route exact path='/assistenter' component={AssistantPage}/>
@@ -36,7 +41,6 @@ class App extends Component {
           <Route exact path='/om-oss' component={AboutUsPage}/>
           <Route exact path='/kontakt' component={ContactPage}/>
           <Route exact path='/login' component={LoginPage}/>
-          <Route exact path='/utlegg' component={ReceiptPage}/>
           <Route exact path='/bruker' component={Assistant(UserPage)}/>
           <Route path='/dashboard' component={Assistant(DashboardPage)}/>
           <Route path='/' component={Error404}/>
@@ -46,9 +50,14 @@ class App extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  preferredDepartment: state.preferredDepartment
+});
+
 const mapDispatchToProps = dispatch => bindActionCreators({
   fetchDepartments,
   fetchSponsors,
+  fetchPreferredDepartment,
 }, dispatch);
 
-export default connect(null, mapDispatchToProps, null, {pure: false})(App);
+export default connect(mapStateToProps, mapDispatchToProps, null, {pure: false})(App);

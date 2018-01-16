@@ -13,7 +13,7 @@ class ApplicationType extends AbstractType
     {
         // The fields that populate the form
         $builder
-            ->add('user', new CreateUserOnApplicationType(),array(
+            ->add('user', new CreateUserOnApplicationType($options['departmentId']),array(
                 'label' => '',
             ));
     }
@@ -24,6 +24,8 @@ class ApplicationType extends AbstractType
             'data_class' => 'AppBundle\Entity\Application',
             'user' => null,
             'allow_extra_fields' => true,
+            'departmentId' => null,
+            'environment' => 'prod',
         ));
     }
 

@@ -21,3 +21,7 @@ newsletters:
 receipts:
     type: rest
     resource: @AppBundle/Controller/API/ReceiptController.php
+
+users:
+    type: rest
+    resource: @AppBundle/Controller/API/UserController.php

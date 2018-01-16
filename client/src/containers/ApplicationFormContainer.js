@@ -4,31 +4,25 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, change } from 'redux-form';
 
-import { fetchDepartments } from '../actions/department';
 import { postApplication } from '../actions/application';
+import { getActiveDepartments } from '../selectors/department';
 import ApplicationForm from '../components/ApplicationForm/ApplicationForm';
 import ApplicationFormSubmitted from '../components/ApplicationForm/ApplicationFormSubmitted';
 
 
 class ApplicationFormContainer extends Component {
-  componentDidMount() {
-    if (this.props.departments.length === 0) {
-      this.props.fetchDepartments();
-    }
-  }
-
   handleSubmit = this.props.handleSubmit(values => {
     this.props.postApplication(values)
   });
 
   render() {
+    if (this.props.activeDepartments.indexOf(this.props.selectedDepartment) === -1) {
+      // return <p>Newsletter</p>
+    }
 
-        if(this.props.application.hasOwnProperty("firstName"))
-        {
+        if(this.props.application.hasOwnProperty("firstName")) {
           return (<ApplicationFormSubmitted/>);
         }
-        else
-        {
         return (
             <ApplicationForm
                 departments={this.props.departments}
@@ -37,8 +31,6 @@ class ApplicationFormContainer extends Component {
                 departmentChange={this.props.clearFieldOfStudy}
             />
         );
-        }
-
   }
 }
 
@@ -52,9 +44,10 @@ ApplicationFormContainer = reduxForm({
 
 const mapStateToProps = state => ({
     application: state.application,
-    departments: state.departments.filter(d => d.active_admission),
+    departments: state.departments,
+    activeDepartments: getActiveDepartments(state),
     initialValues: {
-      department: state.departments.filter(d => d.active_admission)[0]
+      department: getActiveDepartments(state)[0]
     },
   selectedDepartment: selector(state, 'department'),
 });
@@ -62,7 +55,6 @@ const mapStateToProps = state => ({
 const clearFieldOfStudy = () => change(form, 'fieldOfStudyId', '');
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  fetchDepartments,
   postApplication,
   clearFieldOfStudy
 }, dispatch);

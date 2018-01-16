@@ -38,16 +38,13 @@ security:
                 login_path: /login
                 check_path: /login_check
                 always_use_default_target_path: false
-                success_handler: app.security.authentication_handler
-                failure_handler: app.security.authentication_handler
                 default_target_path: /login/redirect
                 require_previous_session: false
                 #Added this line to prevent the SessionUnavailable Exception
                 #See here for explenation: http://stackoverflow.com/questions/32802932/symfony2-sessionunavailable-exception
             logout:
-                success_handler: app.security.authentication_handler
-#                path:  /logout
-#                target:  /
+                path:  /logout
+                target:  /
 
 
     # with these settings you can restrict or allow access for different parts
@@ -132,4 +129,5 @@ security:
           #ROLE_USER = assistant user
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/utlegg, roles: ROLE_USER }
+        - { path: ^/api/myreceipts, roles: ROLE_USER }
 

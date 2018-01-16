@@ -17,5 +17,9 @@ export const DepartmentApi = {
 
     getByActiveSemester: async() => {
         return fetch(`${apiEndpoint}/departments/admissions/active`);
+    },
+
+    getClosest: () => {
+        return fetch(`${apiEndpoint}/closestdepartment`);
     }
 };

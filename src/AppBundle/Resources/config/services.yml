@@ -11,6 +11,10 @@ services:
       class: AppBundle\Google\GoogleAPI
       arguments: ['%google_api%', '@app.logger']
 
+  app.geolocation:
+      class: AppBundle\Service\GeoLocation
+      arguments: ['%ipinfo_token%', '@doctrine.orm.entity_manager']
+
   app.company_email_maker:
     class: AppBundle\Service\CompanyEmailMaker
     arguments: ['@doctrine.orm.default_entity_manager', '@app.logger']

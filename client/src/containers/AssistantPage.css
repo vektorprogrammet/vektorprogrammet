@@ -13,3 +13,19 @@
     font-size: 16px;
     margin-bottom: 5px;
 }
+
+.assistant-page-application-form {
+    border-radius: 4px;
+    padding: 16px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.67);
+}
+
+.assistant-page-newsletter-form {
+    margin: 100px auto;
+    max-width: 500px;
+}
+
+.assistant-page-newsletter-form p {
+    font-size: 14px;
+}

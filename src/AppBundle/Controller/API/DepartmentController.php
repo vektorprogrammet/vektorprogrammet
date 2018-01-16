@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\API;
 
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -117,5 +118,27 @@ class DepartmentController extends FOSRestController implements ClassResourceInt
         }
 
         return $departments;
+    }
+
+    /**
+     * Get the department closest by geolocation
+     *
+     * @return Department
+     *
+     * @Rest\Get("/closestdepartment")
+     *
+     * @ApiDoc(
+     *     section="Department",
+     *     statusCodes={
+     *          200 = "Returned when successful",
+     *          204 = "No department",
+     *          500 = "Internal server error"
+     *     }
+     * )
+     */
+    public function getGeoAction()
+    {
+        $_SERVER['HTTP_CLIENT_IP'] = '85.164.116.101';
+        return $this->get('app.geolocation')->findNearestDepartment();
     }
 }

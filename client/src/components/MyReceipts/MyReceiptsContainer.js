@@ -6,7 +6,7 @@ export default class MyReceiptsContainer extends Component {
     state = {receipts: [] };
 
     async componentDidMount() {
-        this.setState({ receipts: await ReceiptApi.getAll() })
+        this.setState({ receipts: await ReceiptApi.getMyReceipts() })
     }
 
     render() {
