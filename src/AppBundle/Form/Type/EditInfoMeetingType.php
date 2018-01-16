@@ -8,12 +8,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditInfoMeetingType extends AbstractType
 {
-    private $department;
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->department = $options['department'];
-
         $builder
             ->add('time', 'text', array(
                 'label' => 'Tid',
@@ -39,8 +35,7 @@ class EditInfoMeetingType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => null,
-            'department' => 'AppBundle\Entity\Department'
+            'data_class' => null
         ));
     }
 }

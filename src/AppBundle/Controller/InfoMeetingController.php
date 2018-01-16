@@ -17,9 +17,7 @@ class InfoMeetingController extends Controller
             $infoMeeting = $department->getInfoMeeting();
         }
 
-        $form = $this->createForm(EditInfoMeetingType::class, array(
-            'department' => $department
-        ));
+        $form = $this->createForm(EditInfoMeetingType::class);
 
         $form->handleRequest($request);
 
