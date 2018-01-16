@@ -44,7 +44,7 @@ class InfoMeeting
     private $extra;
 
     /**
-     * @ORM\OneToOne(targetEntity="Department", cascade={"persist", "remove"}, inversedBy="infoMeeting")
+     * @ORM\OneToOne(targetEntity="Department", cascade={"persist"}, inversedBy="infoMeeting")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      * @Assert\Valid
      */
