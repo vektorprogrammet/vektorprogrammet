@@ -31,6 +31,14 @@
 
         </div>
     </div>
+    {% if department.infoMeeting is not null and semester is defined and semester is not null %}
+        {% set infoMeeting = department.infoMeeting %}
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <p class="text-center information-meeting">{{ infoMeeting }}</p>
+        </div>
+    </div>
+    {% endif %}
     <div class="admissioncontainer">
         <div class="row">
             <div class="small-12 medium-12 large-12 columns">

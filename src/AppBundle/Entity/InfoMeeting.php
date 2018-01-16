@@ -146,5 +146,9 @@ class InfoMeeting
         $this->extra = $extra;
     }
 
+    public function __toString()
+    {
+        return "Husk infomøte ".$this->date." kl. ".$this->time." i ".$this->room.". ".$this->extra;
+    }
 
 }

@@ -15,6 +15,9 @@ class InfoMeetingController extends Controller
     {
 
         $infoMeeting = new InfoMeeting();
+        if ($department->getInfoMeeting() !== null) {
+            $infoMeeting = $department->getInfoMeeting();
+        }
 
         $form = $this->createForm(EditInfoMeetingType::class, array(
             'department' => $department
