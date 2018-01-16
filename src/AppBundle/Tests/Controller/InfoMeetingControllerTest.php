@@ -37,11 +37,11 @@ class InfoMeetingControllerTest extends BaseWebTestCase
     public function testDeleteMeeting()
     {
         $client = $this->createTeamMemberClient();
-        $crawler = $this->goTo('/opptak/avdeling/3', $client);
+        $crawler = $this->goTo('/opptak/avdeling/4', $client);
 
         $before = $crawler->filter('p:contains("Husk infomøte")')->count();
 
-        $crawler = $this->goTo('/kontrollpanel/infomøte/3', $client);
+        $crawler = $this->goTo('/kontrollpanel/infomøte/4', $client);
 
         $deleteButton = $crawler->filter('button:contains("Slett")');
         $this->assertNotNull($deleteButton);
@@ -52,7 +52,7 @@ class InfoMeetingControllerTest extends BaseWebTestCase
         $client->submit($form);
         $client->followRedirect();
 
-        $crawler = $this->goTo('/opptak/avdeling/3', $client);
+        $crawler = $this->goTo('/opptak/avdeling/4', $client);
         $after = $crawler->filter('p:contains("Husk infomøte")')->count();
 
         $this->assertEquals($before - 1, $after);

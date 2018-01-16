@@ -20,17 +20,17 @@ class LoadInfoMeetingData extends AbstractFixture implements ContainerAwareInter
 
     public function load(ObjectManager $manager)
     {
-        $infoMeetingNMBU = new InfoMeeting();
-        $infoMeetingNMBU->setDate("03/02");
-        $infoMeetingNMBU->setTime("15:30");
-        $infoMeetingNMBU->setRoom("Parken");
-        $infoMeetingNMBU->setExtra("Det blir underholdning!");
-        $infoMeetingNMBU->setDepartment($this->getReference('dep-3'));
+        $infoMeetingUiO = new InfoMeeting();
+        $infoMeetingUiO->setDate("03/02");
+        $infoMeetingUiO->setTime("15:30");
+        $infoMeetingUiO->setRoom("Parken");
+        $infoMeetingUiO->setExtra("Det blir underholdning!");
+        $infoMeetingUiO->setDepartment($this->getReference('dep-4'));
 
-        $department = $this->getReference('dep-3');
-        $department->setInfoMeeting($infoMeetingNMBU);
+        $department = $this->getReference('dep-4');
+        $department->setInfoMeeting($infoMeetingUiO);
 
-        $manager->persist($infoMeetingNMBU);
+        $manager->persist($infoMeetingUiO);
         $manager->persist($department);
 
         $manager->flush();
