@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/control_panel.css') }}">
+{% endblock %}
+
 {% block topLine %}
     <div class="top-line admin-top-line"></div>
 {% endblock %}
@@ -25,6 +29,15 @@
     <br/>
 
 {% endblock %}
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="{{ asset_with_version('/js/foundation.min.js') }}"></script>
+    <script>
+        $(document).foundation();
+    </script>
+{% endblock %}
+
 
 {% block footer %}
     {% include 'base/admin/footer.html.twig' %}

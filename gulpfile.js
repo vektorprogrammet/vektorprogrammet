@@ -31,7 +31,7 @@ gulp.task('stylesProd', function () {
       .pipe(gulp.dest(dest))
 });
 
-gulp.task('scriptsProd', ['scriptsVendor'], function () {
+gulp.task('scriptsProd', function () {
   var dest = path.dist + 'js/';
   gulp.src(path.src + 'js/**/*.js')
       .pipe(plumber())
@@ -63,23 +63,12 @@ gulp.task('stylesDev', function () {
       .pipe(gulp.dest(dest))
 });
 
-gulp.task('scriptsDev', ['scriptsVendor'], function () {
+gulp.task('scriptsDev', function () {
   var dest = path.dist + 'js/';
   gulp.src(path.src + 'js/**/*.js')
       .pipe(plumber())
       .pipe(changed(dest))
       .pipe(gulp.dest(dest))
-});
-
-gulp.task('scriptsVendor', function () {
-  var dest = path.dist + 'js/';
-  return gulp.src([
-    'node_modules/modernizr/bin/modernizr.js',
-    'node_modules/jquery/dist/jquery.min.js',
-    'node_modules/foundation-sites/js/foundation.min.js'])
-      .pipe(concat('vendor.js'))
-      .pipe(uglify())
-      .pipe(gulp.dest(dest));
 });
 
 gulp.task('imagesDev', function () {
@@ -114,8 +103,6 @@ gulp.task('files', function () {
 });
 
 gulp.task('vendor', function () {
-  gulp.src('node_modules/slick-carousel/slick/**/*')
-      .pipe(gulp.dest('www/vendor/slick/'));
 
   gulp.src('node_modules/dropzone/**/*')
       .pipe(gulp.dest('www/vendor/dropzone/'));
@@ -123,24 +110,14 @@ gulp.task('vendor', function () {
   gulp.src(['node_modules/ckeditor/**/*', path.src + 'js/ckeditor/**/*'])
       .pipe(gulp.dest('www/vendor/ckeditor/'));
 
-  gulp.src('node_modules/material-design-lite/material.min.js')
-      .pipe(rename('material.js'))
-      .pipe(gulp.dest('www/js'));
+  gulp.src('node_modules/foundation-sites/js/foundation.min.js')
+    .pipe(gulp.dest('www/js'));
 
-  gulp.src('node_modules/getmdl-select/getmdl-select.min.js')
-      .pipe(gulp.dest('www/js'));
+  gulp.src('node_modules/bootstrap/dist/js/bootstrap.min.js')
+    .pipe(gulp.dest('www/js'));
 
-  gulp.src('node_modules/getmdl-select/getmdl-select.min.css')
-      .pipe(gulp.dest('www/css'));
-
-  gulp.src('node_modules/flexboxgrid/dist/flexboxgrid.min.css')
-      .pipe(gulp.dest('www/css'));
-
-  gulp.src('node_modules/material-components-web/dist/material-components-web.min.css')
-      .pipe(gulp.dest('www/css'));
-
-  gulp.src('node_modules/material-components-web/dist/material-components-web.min.js')
-      .pipe(gulp.dest('www/js'));
+  gulp.src('node_modules/jquery/dist/jquery.min.js')
+    .pipe(gulp.dest('www/js'));
 });
 
 gulp.task('buildAssistantSchedulingApp', function (cb) {
