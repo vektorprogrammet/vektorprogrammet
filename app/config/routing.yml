@@ -1443,3 +1443,12 @@ generate_all_mail_list:
   methods: [GET]
   requirements:
     id: \d+
+
+##########################################
+#              Infomeeting               #
+##########################################
+
+show_info_meeting:
+  path: /kontrollpanel/infomøte/
+  defaults: {_controller: AppBundle:Infomeeting:show}
+  methods: [GET]
