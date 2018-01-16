@@ -99,6 +99,27 @@ class Department
     private $logoPath;
 
     /**
+     * @ORM\OneToOne(targetEntity="InfoMeeting", mappedBy="department", cascade={"remove"})
+     */
+    private $infoMeeting;
+
+    /**
+     * @return mixed
+     */
+    public function getInfoMeeting()
+    {
+        return $this->infoMeeting;
+    }
+
+    /**
+     * @param mixed $infoMeeting
+     */
+    public function setInfoMeeting($infoMeeting)
+    {
+        $this->infoMeeting = $infoMeeting;
+    }
+
+    /**
      * Constructor.
      */
     public function __construct()
