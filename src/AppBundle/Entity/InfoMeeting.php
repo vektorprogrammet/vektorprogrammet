@@ -38,6 +38,12 @@ class InfoMeeting
     private $room;
 
     /**
+     * @ORM\Column(type="string", length=250)
+     * @Assert\NotBlank
+     */
+    private $extra;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -101,7 +107,21 @@ class InfoMeeting
         $this->room = $room;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getExtra()
+    {
+        return $this->extra;
+    }
 
+    /**
+     * @param mixed $extra
+     */
+    public function setExtra($extra)
+    {
+        $this->extra = $extra;
+    }
 
 
 }
