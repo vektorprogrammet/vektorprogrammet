@@ -64,7 +64,8 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
         $semester3->setYear(2015);
         $semester3->setDepartment($this->getReference('dep-3'));
         $semester3->setAdmissionStartDate(new \DateTime('2015-01-01'));
-        $semester3->setAdmissionEndDate(new \DateTime('2015-05-30'));
+        $semester3->setAdmissionEndDate(new \DateTime());
+        $semester3->getAdmissionEndDate()->modify('+1day');
         $semester3->setSemesterStartDate(new \DateTime('2015-01-01'));
         $semester3->setSemesterEndDate(new \DateTime('2015-07-31'));
         $manager->persist($semester3);
