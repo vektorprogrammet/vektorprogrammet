@@ -150,5 +150,4 @@ class InfoMeeting
     {
         return "Husk infomøte ".$this->date." kl. ".$this->time." i ".$this->room.". ".$this->extra;
     }
-
 }

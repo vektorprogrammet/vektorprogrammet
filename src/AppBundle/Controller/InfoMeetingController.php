@@ -8,12 +8,10 @@ use AppBundle\Form\Type\EditInfoMeetingType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-
 class InfoMeetingController extends Controller
 {
     public function showAction(Request $request, Department $department)
     {
-
         $infoMeeting = new InfoMeeting();
         if ($department->getInfoMeeting() !== null) {
             $infoMeeting = $department->getInfoMeeting();
@@ -25,7 +23,7 @@ class InfoMeetingController extends Controller
 
         $form->handleRequest($request);
 
-        if($form->isValid()) {
+        if ($form->isValid()) {
             $data = $form->getData();
 
             $infoMeeting->setTime($data['time']);
@@ -42,7 +40,6 @@ class InfoMeetingController extends Controller
             }
 
             return $this->redirectToRoute('control_panel');
-
         }
 
         return $this->render('info_meeting/info_meeting_admin.html.twig',
@@ -64,7 +61,6 @@ class InfoMeetingController extends Controller
 
             $em->flush();
             $this->addFlash('success', 'Møtet ble slettet!');
-
         }
 
         return $this->redirectToRoute('control_panel');
