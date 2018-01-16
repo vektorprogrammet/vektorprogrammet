@@ -3,4 +3,12 @@
 {% block title %}Infømøter{% endblock %}
 
 {% block body %}
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <h1 class="text-center">Legg til eller fjern Infomøte for {{ department.shortName }}</h1>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock %}
