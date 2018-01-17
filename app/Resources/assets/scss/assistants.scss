@@ -68,9 +68,13 @@
     }
   }
 
-  .next-admission {
-    color: #F44336;
-    font-weight: 400;
+  .application-header {
+    text-align: center;
+    margin: 32px 0;
+
+    .deadline {
+      text-decoration: underline;
+    }
   }
 }
 

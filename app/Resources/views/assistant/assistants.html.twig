@@ -16,7 +16,7 @@
                 velge hvilken ukedag som passer best for deg. </p>
         </header>
         <div class="container">
-            <section class="row">
+            <div class="row">
                 <div class="blurb col-xs-12 col-md-4">
                     <img src="{{ asset_with_version('images/certificate.svg') }}" alt="CV">
                     <h4>Fint å ha på CVen</h4>
@@ -34,7 +34,7 @@
                     <h4>Vær et forbilde</h4>
                     <p>Her kommer en liten tekst om at vektorassistenter er superhelter i matteundervisningen.</p>
                 </div>
-            </section>
+            </div>
         </div>
 
         <div class="small container">
@@ -95,6 +95,10 @@
                     </div>
 
                 </div>
+            </section>
+
+            <section id="application">
+                {% include 'admission/application_form.html.twig' %}
             </section>
         </div>
     </div>

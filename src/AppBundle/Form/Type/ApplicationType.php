@@ -4,6 +4,7 @@ namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -15,7 +16,17 @@ class ApplicationType extends AbstractType
         $builder
             ->add('user', new CreateUserOnApplicationType($options['departmentId']),array(
                 'label' => '',
-            ));
+            ))
+        ->add('yearOfStudy', ChoiceType::class, [
+        	'label' => 'Årstrinn',
+        	'choices' => [
+        		1 => 1,
+		        2 => 2,
+		        3 => 3,
+		        4 => 4,
+		        5 => 5
+	        ]
+        ]);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
