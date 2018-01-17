@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset_with_version('css/home.css') }}">
 {% endblock %}
 
@@ -12,17 +13,19 @@
 
     <section class="row hero">
         <div class="col-xs-12">
-            <div class="row container">
-                <div class="col-xs-6">
-                    <img class="hero-image" src="{{ 'images/blackboard.png' }}">
+            <div class="row hero-section">
+                <div class="col-xs-6 col-md-6">
+                    <h1 class="d-md-none mobile">Vektorprogrammet</h1>
+                    <img class="hero-image" src="{{ asset_with_version('images/blackboard.png') }}">
                 </div>
-                <div class="col-xs-6">
+                <div class="col-xs-6 col-md-6">
                     <div class="hero-content">
-                        <h1>Vektorprogrammet</h1>
-                        <p>- sender studenter til ungdomsskoler for å hjelpe til som <br>
-                            assistentlærere i matematikkundervisningen</p>
-                        <a class="mdc-button mdc-button--raised mdc-button--primary" href="{{ path('assistants') }}">
-                            Les mer og bli assistent
+                        <h1 class="d-none d-md-block">Vektorprogrammet</h1>
+                        <p>- sender studenter til ungdomsskoler for å hjelpe til som assistentlærere i matematikkundervisningen</p>
+                        <a href="{{ path('assistants') }}">
+                            <button class="btn btn-success cta-link">
+                                Les mer og bli assistent
+                            </button>
                         </a>
                     </div>
                 </div>
