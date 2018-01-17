@@ -1,3 +1,10 @@
 @import "../../../../node_modules/font-awesome/scss/font-awesome";
 @import "header";
 @import url(https://fonts.googleapis.com/css?family=Montserrat:300,400,600,700&subset=latin);
+@import url(https://fonts.googleapis.com/css?family=Lato:400,500&subset=latin);
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  color: #333333;
+  background: #fafdff;
+}
