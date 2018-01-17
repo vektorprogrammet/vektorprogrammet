@@ -42,26 +42,22 @@
 
 </head>
 <body>
-{% block topLine %}
-    <div class="top-line">
-        {# <p>Vektorprogrammet NTNU søker nye teammedlemmer! <a href="{{ path('article_show', {'id': 21}) }}">Les mer</a></p> #}
+<div class="container-fluid">
+    <div class="row">
+        {% block header %}
+            {% include 'base/header.html.twig' %}
+        {% endblock %}
     </div>
-{% endblock %}
+    {% block body %}
+        <p>
+            Content
+        </p>
+    {% endblock %}
 
-{% block header %}
-    {% include 'base/header.html.twig' %}
-{% endblock %}
-
-{% block body %}
-    <p>
-        Content
-    </p>
-{% endblock %}
-
-
-{% block footer %}
-    {% include 'base/footer.html.twig' %}
-{% endblock %}
+    {% block footer %}
+        {% include 'base/footer.html.twig' %}
+    {% endblock %}
+</div>
 
 <script>
     (function (i, s, o, g, r, a, m) {
@@ -82,6 +78,7 @@
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="{{ asset_with_version('/js/bootstrap.min.js') }}"></script>
 {% block javascripts %}{% endblock %}
 
