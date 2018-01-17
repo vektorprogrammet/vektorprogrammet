@@ -8,3 +8,41 @@ body {
   color: #333333;
   background: #fafdff;
 }
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Lato', sans-serif;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 28px;
+}
+
+p {
+  line-height: 1.6;
+  font-size: 18px;
+}
+
+.medium-bold {
+  font-weight: 600;
+}
+
+.container {
+  &.small {
+    max-width: 900px;
+  }
+}
+
+.page-header {
+  width: 900px;
+  max-width: 100%;
+  margin: 50px auto;
+  h1 {
+    text-align: center;
+    font-size: 34px;
+  }
+  .header-text {
+    font-size: 20px;
+  }
+}
