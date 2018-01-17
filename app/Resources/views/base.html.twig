@@ -1,4 +1,3 @@
-{% set isControlPanel = app.request.pathInfo | slice(0, 14) != '/kontrollpanel' %}
 <!DOCTYPE html>
 <!--[if IE 9]>
 <html class="lt-ie10" lang="no"> <![endif]-->
@@ -28,12 +27,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="#6FCEEE"><!-- iOS Safari -->
 
     <link rel="icon" type="image/x-icon" href="{{ asset_with_version('favicon.ico') }}"/>
-    {% block stylesheets %}
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
-        <link rel="stylesheet" href="{{ asset_with_version('css/app.css') }}">
-    {% endblock %}
-
-    {% block customStyles %}{% endblock %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset_with_version('css/app.css') }}">
+    {% block stylesheets %}{% endblock %}
 
     <script type="text/javascript">
         window.smartlook||(function(d) {
@@ -67,7 +63,6 @@
     {% include 'base/footer.html.twig' %}
 {% endblock %}
 
-
 <script>
     (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;
@@ -83,14 +78,12 @@
 
     ga('create', '{{ googleAnalyticsId }}', 'auto');
     ga('send', 'pageview');
-
 </script>
 
 
-{% block javascripts %}
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="{{ asset_with_version('/js/bootstrap.min.js') }}"></script>
-{% endblock %}
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="{{ asset_with_version('/js/bootstrap.min.js') }}"></script>
+{% block javascripts %}{% endblock %}
 
 </body>
 </html>
