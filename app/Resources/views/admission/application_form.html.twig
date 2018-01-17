@@ -1,4 +1,5 @@
 <h2>Søkndasskjema</h2>
+<br>
 <ul class="nav nav-tabs">
     {% for dep in get_departments() %}
         <li class="nav-item">
@@ -11,7 +12,7 @@
 
 {% if semester and date() < date(semester.admissionEndDate) %}
     <header class="application-header">
-        <h3>{{ department.city }}</h3>
+        <h4>{{ department.city }}</h4>
         <p>Søknadsfrist: <span class="deadline">
                                 {{ semester.admissionEndDate|date('d.m.Y') }}
                 kl. {{ semester.admissionEndDate|date('H:i') }}</span>
