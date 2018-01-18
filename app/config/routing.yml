@@ -1,8 +1,3 @@
-home:
- path: /
- defaults: { _controller: AppBundle:Home:show }
- methods: [GET]
-
 #FOSJsRoutingBundle/Resources/config/routing/routing bundle needs this
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
@@ -24,6 +19,10 @@ github_webook:
 ##########################################
 #             Static pages               #
 ##########################################
+home:
+ path: /
+ defaults: { _controller: AppBundle:Home:show }
+ methods: [GET]
 
 students:
  path: /studenter
@@ -45,6 +44,11 @@ about:
  defaults: { _controller: AppBundle:AboutVektor:show }
  methods: [GET]
 
+contact:
+ path: /kontakt
+ defaults: { _controller: AppBundle:Home:show }
+ methods: [GET]
+
 faq:
  path: /faq
  defaults: {_controller: AppBundle:AboutVektor:showFAQ}
@@ -54,6 +58,11 @@ admission:
  path: /opptak
  defaults: { _controller: AppBundle:Admission:show }
  methods: [GET, POST]
+
+application_confirmation:
+ path: /opptak/bekreftelse
+ defaults: { _controller: AppBundle:Admission:confirmation }
+ methods: [GET]
 
 # Updates static content
 # Not meant for rendering a page. Receives a post request and updates the database.
@@ -1450,8 +1459,11 @@ generate_all_mail_list:
     id: \d+
 
 assistants:
-    path: /assistenter
-    defaults: {_controller: AppBundle:Assistant:index}
+    path: /assistenter/{id}
+    defaults: {_controller: AppBundle:Assistant:index, id: null}
+    methods: [GET, POST]
+    requirements:
+        id: \d+
 
 team:
     path: /team

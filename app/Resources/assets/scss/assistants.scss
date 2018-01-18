@@ -3,11 +3,23 @@
     margin: 125px auto;
   }
 
+  h2 {
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
   .hero-image {
     background: top no-repeat;
     background-size: cover;
     height: 500px;
     width: 100%;
+  }
+
+  .teacher-img {
+    display: block;
+    width: 500px;
+    max-width: 100%;
+    margin: 50px auto;
   }
 
   .blurb {
@@ -32,23 +44,6 @@
     }
   }
 
-  .vektor-reminder-form {
-    background-color: #fff;
-    max-width: 100%;
-    width: 600px;
-    margin: 100px auto;
-    padding: 16px 20px 32px;
-    text-align: center;
-
-    .mdl-textfield {
-      width: 90%;
-    }
-
-    select {
-      margin: 16px;
-    }
-  }
-
   .flex-end {
     display: flex;
     flex-direction: column;
@@ -56,29 +51,30 @@
   }
 
   .requirements {
+    margin-top: 28px;
     display: flex;
     justify-content: center;
     h5 {
-      font-size: 20px;
-      font-weight: 500;
-      margin: 20px 0;
-    }
-    &>div {
-      width: 50%;
-      max-width: 100%;
+      font-size: 18px;
+      margin-bottom: 14px;
     }
     ul, ol {
       padding-left: 17px;
       li {
-        font-size: 18px;
-        font-weight: 300;
+        font-size: 16px;
+        line-height: 20px;
+        margin-bottom: 8px;
       }
     }
   }
 
-  .next-admission {
-    color: #F44336;
-    font-weight: 400;
+  .application-header {
+    text-align: center;
+    margin: 32px 0;
+
+    .deadline {
+      text-decoration: underline;
+    }
   }
 }
 

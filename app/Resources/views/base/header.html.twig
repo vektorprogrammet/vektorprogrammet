@@ -1,19 +1,16 @@
-<header class="row hide-for-small-only">
-    <div class="small-12 medium-12 columns">
-        {% include 'base/logo_link.html.twig' %}
-        {% include 'base/main_navigation.html.twig' %}
-    </div>
-</header>
-<!-- Mobile Navigation -->
-<div class="row show-for-small-only">
-    <div style="margin-bottom:30px; text-align: center" class="small-12 medium-3 columns"
-         data-equalizer-watch>
-        {% include 'base/logo_link.html.twig' %}
-    </div>
-</div>
-<div class="row">
-    <div class="small-12 show-for-small-only">
-        {% include 'base/mobile_navigation.html.twig' %}
+<div class="top-header">
+    <div class="container">
+        <nav class="main-navigation">
+            {% include 'base/logo_link.html.twig' %}
+            <div class="menu-items">
+                {{ include('base/user_dropdown.html.twig') }}
+                <div class="menu-links">
+                    {% include('base/menu_item.html.twig') with {route: 'assistants', name: 'Assistenter'} %}
+                    {% include('base/menu_item.html.twig') with {route: 'team', name: 'Team'} %}
+                    {% include('base/menu_item.html.twig') with {route: 'about', name: 'Om oss'} %}
+                    {% include('base/menu_item.html.twig') with {route: 'contact', name: 'Kontakt'} %}
+                </div>
+            </div>
+        </nav>
     </div>
 </div>
-<br/>

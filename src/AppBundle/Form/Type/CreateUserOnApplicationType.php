@@ -4,6 +4,7 @@ namespace AppBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -31,6 +32,13 @@ class CreateUserOnApplicationType extends AbstractType
             ->add('email', 'email', array(
                 'label' => 'E-post',
             ))
+	        ->add('gender', ChoiceType::class, array(
+	        	'choices' => [
+	        		0 => 'Mann',
+			       1 => 'Dame'
+		        ],
+		        'label' => 'Kjønn'
+	        ))
             ->add('fieldOfStudy', 'entity', array(
                 'label' => 'Linje',
                 'class' => 'AppBundle:FieldOfStudy',
