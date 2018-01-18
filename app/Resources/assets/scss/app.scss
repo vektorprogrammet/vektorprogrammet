@@ -1,5 +1,6 @@
 @import "../../../../node_modules/font-awesome/scss/font-awesome";
 @import "header";
+@import "about_us_page";
 @import url(https://fonts.googleapis.com/css?family=Montserrat:300,400,600,700&subset=latin);
 @import url(https://fonts.googleapis.com/css?family=Lato:400,500,700&subset=latin);
 
@@ -28,10 +29,11 @@ p {
   font-weight: 600;
 }
 
-.container {
-  &.small {
-    max-width: 900px;
-  }
+.content {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  width: 800px;
 }
 
 .text-center {
@@ -39,14 +41,25 @@ p {
 }
 
 .page-header {
-  width: 900px;
-  max-width: 100%;
-  margin: 50px auto 150px;
+  margin-top: 50px;
+  margin-bottom: 150px;
   h1 {
     text-align: center;
     font-size: 34px;
   }
-  .header-text {
+  p {
     font-size: 20px;
+  }
+
+  @media (max-width: 766px) {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    h1 {
+      font-size: 30px;
+    }
+
+    p {
+      font-size: 19px;
+    }
   }
 }
