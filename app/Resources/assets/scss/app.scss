@@ -1,6 +1,7 @@
 @import "../../../../node_modules/font-awesome/scss/font-awesome";
 @import "header";
 @import "about_us_page";
+@import "contact_page";
 @import url(https://fonts.googleapis.com/css?family=Montserrat:300,400,600,700&subset=latin);
 @import url(https://fonts.googleapis.com/css?family=Lato:400,500,700&subset=latin);
 
@@ -34,6 +35,10 @@ p {
   margin: 0 auto;
   max-width: 100%;
   width: 800px;
+
+  &.content-large {
+    width: 1000px;
+  }
 }
 
 .text-center {

@@ -2,6 +2,10 @@
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
 api:
 #    type: rest
     resource: "routing_api.yml"
@@ -42,11 +46,6 @@ businesses:
 about:
  path: /omvektor
  defaults: { _controller: AppBundle:AboutVektor:show }
- methods: [GET]
-
-contact:
- path: /kontakt
- defaults: { _controller: AppBundle:Home:show }
  methods: [GET]
 
 faq:
