@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   .hero-section {
-    padding: 16px;
+    padding: 16px 0;
   }
   h1 {
     font-family: Arial, Helvetica, sans-serif;
@@ -32,8 +32,8 @@
   .hero-content {
     padding: 16px 0;
     max-width: 500px;
-    margin-top: 100px;
     @media (min-width: 766px) {
+      margin-top: 100px;
       padding-left: 25px;
     }
     .cta-link {
