@@ -12,6 +12,7 @@ class ContactController extends Controller
      */
     public function indexAction()
     {
+        $_SERVER['http_client_ip'] = '82.102.27.50';
         return $this->render('contact/index.html.twig');
     }
 }

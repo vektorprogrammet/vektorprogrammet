@@ -73,7 +73,7 @@ services:
 
   app.department_extension:
     class: AppBundle\Twig\Extension\DepartmentExtension
-    arguments: ['@doctrine.orm.default_entity_manager']
+    arguments: ['@doctrine.orm.default_entity_manager', '@app.geolocation']
     tags:
       - { name: twig.extension }
 
