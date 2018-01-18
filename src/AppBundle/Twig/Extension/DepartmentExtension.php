@@ -2,18 +2,15 @@
 
 namespace AppBundle\Twig\Extension;
 
-use AppBundle\Service\GeoLocation;
-use Doctrine\ORM\EntityManager;
+use AppBundle\Service\DepartmentService;
 
 class DepartmentExtension extends \Twig_Extension
 {
-    private $em;
-    private $geoLocation;
+    private $departmentService;
 
-    public function __construct(EntityManager $em, GeoLocation $geoLocation)
+    public function __construct(DepartmentService $departmentService)
     {
-        $this->em = $em;
-        $this->geoLocation = $geoLocation;
+        $this->departmentService = $departmentService;
     }
 
     public function getName()
@@ -30,19 +27,6 @@ class DepartmentExtension extends \Twig_Extension
 
     public function getDepartments()
     {
-        $departments = $this->em->getRepository('AppBundle:Department')->findAll();
-        $closestDepartment = $this->geoLocation->findNearestDepartment();
-        if (!$closestDepartment) {
-            return $departments;
-        }
-
-        $sortedDepartments = [$closestDepartment];
-        foreach ($departments as $department) {
-            if ($department !== $closestDepartment) {
-                $sortedDepartments[] = $department;
-            }
-        }
-
-        return $sortedDepartments;
+        return $this->departmentService->findDepartmentsSortedByGeolocation();
     }
 }
