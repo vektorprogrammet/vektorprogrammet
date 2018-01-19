@@ -7,19 +7,20 @@
         <div class="small-12 medium-12 large-12 columns">
             <h1 class="text-center">Legg til eller fjern Infomøte for {{ department.shortName }}</h1>
             {{ form_start(form) }}
-            <div class="row">{{ form_row(form.time)}}</div>
-            <div class="row">{{ form_row(form.date)}}</div>
-            <div class="row">{{ form_row(form.room)}}</div>
+            <div class="row">{{ form_row(form.time) }}</div>
+            <div class="row">{{ form_row(form.date) }}</div>
+            <div class="row">{{ form_row(form.room) }}</div>
             <div class="row">{{ form_row(form.extra) }}</div>
             <div class="row">
                 <div class="small-12 medium-12 large-12 columns">
-                {{ form_widget(form.save) }}
-                {{ form_end(form) }}
-                <div class="delete_info_meeting">
-                    <form class="delete_info_meeting" method="post" action="{{ path('delete_info_meeting', {id:department.id}) }}">
-                        <button class="alert button">Slett</button>
-                    </form>
-                </div>
+                    <button class="button">Lagre</button>
+                    {{ form_end(form) }}
+                    <div class="delete_info_meeting">
+                        <form method="post"
+                              action="{{ path('delete_info_meeting', {id:department.id}) }}">
+                            <button class="alert button">Slett</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

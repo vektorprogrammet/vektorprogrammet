@@ -26,9 +26,6 @@ class EditInfoMeetingType extends AbstractType
             ->add('extra', 'text', array(
                 'label' => 'Ekstra',
                 'attr' => array('placeholder' => 'Det blir gratis pizza!')
-            ))
-            ->add('save', 'submit', array(
-                'label' => 'Lagre'
             ));
     }
 

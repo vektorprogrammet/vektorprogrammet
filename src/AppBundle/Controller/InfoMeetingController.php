@@ -30,12 +30,10 @@ class InfoMeetingController extends Controller
             $infoMeeting->setExtra($data['extra']);
             $infoMeeting->setDepartment($department);
 
-            if ($form->get('save')->isClicked()) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($infoMeeting);
-                $em->flush();
-                $this->addFlash('success', 'Møtet ble lagret!');
-            }
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($infoMeeting);
+            $em->flush();
+            $this->addFlash('success', 'Møtet ble lagret!');
 
             return $this->redirectToRoute('control_panel');
         }
