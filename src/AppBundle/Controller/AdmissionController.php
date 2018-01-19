@@ -108,6 +108,7 @@ class AdmissionController extends Controller
         $form = $this->createForm(new ApplicationExistingUserType(), $application, array(
             'validation_groups' => array('admission_existing'),
         ));
+        $form->remove('applicationPractical.teamInterest');
         $form->handleRequest($request);
 
         if ($form->isValid()) {

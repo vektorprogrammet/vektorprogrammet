@@ -373,7 +373,7 @@ class GoogleAPI
 
         $permission = new \Google_Service_Drive_Permission();
         $permission->setType('group');
-        $permission->setRole('writer');
+        $permission->setRole('owner');
         $permission->setEmailAddress($team->getEmail());
 
         try {
