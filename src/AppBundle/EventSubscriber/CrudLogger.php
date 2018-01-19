@@ -17,6 +17,7 @@ class CrudLogger implements EventSubscriberInterface
     {
         $this->logger = $logger;
         $this->tokenStorage = $tokenStorage;
+        $this->includeAllClassesIn(__DIR__ . '/../Event');
     }
 
     /**
@@ -96,5 +97,15 @@ class CrudLogger implements EventSubscriberInterface
         }
 
         return $name;
+    }
+
+    private function includeAllClassesIn($folder)
+    {
+	    $files = scandir($folder);
+	    foreach ($files as $file) {
+		    if (strlen($file) > 4 && substr($file,strlen($file)-4) === '.php') {
+			    include_once "$folder/$file";
+		    }
+	    }
     }
 }
