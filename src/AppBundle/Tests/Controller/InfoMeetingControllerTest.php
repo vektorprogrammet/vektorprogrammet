@@ -15,7 +15,7 @@ class InfoMeetingControllerTest extends BaseWebTestCase
 
         $crawler = $this->goTo('/kontrollpanel/infomøte/1', $client);
 
-        $saveButton = $crawler->filter('button#edit_info_meeting_save');
+        $saveButton = $crawler->filter('button:contains("Lagre")');
         $this->assertNotNull($saveButton);
 
         $form = $saveButton->form();
