@@ -17,17 +17,11 @@ class InfoMeetingController extends Controller
             $infoMeeting = $department->getInfoMeeting();
         }
 
-        $form = $this->createForm(EditInfoMeetingType::class);
+        $form = $this->createForm(EditInfoMeetingType::class, $infoMeeting);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $data = $form->getData();
-
-            $infoMeeting->setTime($data['time']);
-            $infoMeeting->setDate($data['date']);
-            $infoMeeting->setRoom($data['room']);
-            $infoMeeting->setExtra($data['extra']);
             $infoMeeting->setDepartment($department);
 
             $em = $this->getDoctrine()->getManager();
