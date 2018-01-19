@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_new.html.twig' %}
 
 {% block title %}
     Vektorprogrammet
@@ -12,16 +12,17 @@
 {% block body %}
 
     <section class="row hero">
-        <div class="col-xs-12 col-md-12">
+        <div class="container">
             <div class="row hero-section">
-                <div class="col-xs-6 col-md-6">
+                <div class="col-12 col-md-6">
                     <h1 class="d-md-none mobile">Vektorprogrammet</h1>
                     <img class="hero-image" src="{{ asset_with_version('images/blackboard.png') }}">
                 </div>
-                <div class="col-xs-6 col-md-6">
+                <div class="col-12 col-md-6">
                     <div class="hero-content">
                         <h1 class="d-none d-md-block">Vektorprogrammet</h1>
-                        <p>- sender studenter til ungdomsskoler for å hjelpe til som assistentlærere i matematikkundervisningen</p>
+                        <p>- sender studenter til ungdomsskoler for å hjelpe til som assistentlærere i
+                            matematikkundervisningen</p>
                         <a href="{{ path('assistants') }}">
                             <button class="btn btn-success cta-link">
                                 Les mer og bli assistent

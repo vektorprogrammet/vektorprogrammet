@@ -1,32 +1,16 @@
-{% set route = app.request.get('_route') %}
-<header class="row header">
-    <div class="col-xs-12">
-
-        <div class="row container">
-            <div class="col-xs-4 col-xs-offset-4">
-                <a href="{{ path('home') }}">
-                    <img class="logo" src="{{ asset_with_version('images/logo_condensed.png') }}">
-                </a>
+<div class="top-header">
+    <div class="container">
+        <nav class="main-navigation">
+            {% include 'base/logo_link.html.twig' %}
+            <div class="menu-items">
+                {{ include('base/user_dropdown.html.twig') }}
+                <div class="menu-links">
+                    {% include('base/menu_item.html.twig') with {route: 'assistants', name: 'Assistenter'} %}
+                    {% include('base/menu_item.html.twig') with {route: 'team', name: 'Team'} %}
+                    {% include('base/menu_item.html.twig') with {route: 'about', name: 'Om oss'} %}
+                    {% include('base/menu_item.html.twig') with {route: 'contact', name: 'Kontakt'} %}
+                </div>
             </div>
-            <div class="col-xs-4">
-                <a href="#" class="login-link">Logg inn</a>
-            </div>
-        </div>
-        <div class="row center-xs container navigation">
-            <div class="col-xs-12">
-                <nav class="main-navigation">
-                    <a class="{{ route == 'assistants' ? 'active' : '' }}"
-                       href="{{ path('assistants') }}">Assistenter</a>
-                    <a class="{{ route == 'team' ? 'active' : '' }}"
-                       href="{{ path('team') }}">Team</a>
-                    <a class="{{ route == 'teachers' ? 'active' : '' }}"
-                       href="{{ path('teachers') }}">Lærere</a>
-                    <a class="{{ route == 'parents' ? 'active' : '' }}"
-                       href="{{ path('parents') }}">Foreldre</a>
-                    <a class="{{ route == 'about_new' ? 'active' : '' }}"
-                       href="{{ path('about_new') }}">Om oss</a>
-                </nav>
-            </div>
-        </div>
+        </nav>
     </div>
-</header>
+</div>
