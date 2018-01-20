@@ -31,7 +31,7 @@
 
         </div>
     </div>
-    {% if department.infoMeeting is not null and semester is defined and semester is not null %}
+    {% if department.infoMeeting is not null and semester is defined and semester is not null and date() < date(department.infoMeeting.date) %}
         {% set infoMeeting = department.infoMeeting %}
     <div class="row">
         <div class="small-12 columns">
