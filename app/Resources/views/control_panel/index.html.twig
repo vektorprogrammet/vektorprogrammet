@@ -179,23 +179,6 @@
                 </div>
             </div>
 
-            <div class="small-4 medium-3 large-2 columns">
-                <div class="control-panel-item">
-                    <a data-dropdown="userEditInfoMeeting" aria-controls="userEditInfoMeeting" aria-expanded="false">
-                        <i class="fa fa-info-circle fa-3x"></i>
-                        <p>Infomøte</p>
-                    </a>
-                    <ul id="userEditInfoMeeting" class="f-dropdown mini" data-dropdown-content tabindex="-1" aria-hidden="true"
-                        aria-autoclose="false">
-                        {% for d in departments %}
-                            <li>
-                                <a href="{{ path('show_info_meeting', { 'id': d.id }) }}">{{ d.shortName }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-
             <hr/>
         </div>
 
@@ -217,7 +200,7 @@
                     <a href="{{ path('semester_show') }}">
                         <i class="fa fa-clock-o fa-3x"></i>
 
-                        <p>Semester</p>
+                        <p>Opptaksperiode</p>
                     </a>
                 </div>
             </div>
