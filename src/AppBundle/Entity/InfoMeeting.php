@@ -21,24 +21,28 @@ class InfoMeeting
     /**
      * @ORM\Column(type="date", length=250)
      * @Assert\NotBlank
+     * @Assert\Date()
      */
     private $date;
 
     /**
      * @ORM\Column(type="time", length=250)
      * @Assert\NotBlank
+     * @Assert\Time()
      */
     private $time;
 
     /**
      * @ORM\Column(type="string", length=250)
      * @Assert\NotBlank
+     * @Assert\Length(max=250)
      */
     private $room;
 
     /**
      * @ORM\Column(type="string", length=250)
      * @Assert\NotBlank
+     * @Assert\Length(max=250)
      */
     private $extra;
 
