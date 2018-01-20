@@ -22,7 +22,6 @@ class LoadInfoMeetingData extends AbstractFixture implements ContainerAwareInter
     {
         $infoMeetingUiO = new InfoMeeting();
         $infoMeetingUiO->setDate(new \DateTime('now'));
-        $infoMeetingUiO->setTime(new \DateTime('now'));
         $infoMeetingUiO->setRoom("Parken");
         $infoMeetingUiO->setExtra("Det blir underholdning!");
         $infoMeetingUiO->setDepartment($this->getReference('dep-4'));

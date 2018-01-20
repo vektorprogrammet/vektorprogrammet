@@ -2,12 +2,16 @@
 
 {% block title %}Infømøter{% endblock %}
 
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.min.css">
+{% endblock %}
+
 {% block body %}
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
             <h1 class="text-center">Legg til eller fjern Infomøte for {{ department.shortName }}</h1>
             {{ form_start(form) }}
-            <div class="row">{{ form_row(form.time) }}</div>
             <div class="row">{{ form_row(form.date) }}</div>
             <div class="row">{{ form_row(form.room) }}</div>
             <div class="row">{{ form_row(form.extra) }}</div>
@@ -26,3 +30,16 @@
         </div>
     </div>
 {% endblock %}
+
+{% block javascripts %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.min.js"></script>
+    <script>
+      jQuery('#edit_info_meeting_date').datetimepicker({
+        format: 'd.m.Y H:i',
+        lang: 'no',
+        step: 15
+      });
+    </script>
+{% endblock %}
+

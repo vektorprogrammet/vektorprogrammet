@@ -19,18 +19,11 @@ class InfoMeeting
     private $id;
 
     /**
-     * @ORM\Column(type="date", length=250)
+     * @ORM\Column(type="datetime", length=250)
      * @Assert\NotBlank
-     * @Assert\Date()
+     * @Assert\DateTime()
      */
     private $date;
-
-    /**
-     * @ORM\Column(type="time", length=250)
-     * @Assert\NotBlank
-     * @Assert\Time()
-     */
-    private $time;
 
     /**
      * @ORM\Column(type="string", length=250)
@@ -94,22 +87,6 @@ class InfoMeeting
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getTime()
-    {
-        return $this->time;
-    }
-
-    /**
-     * @param \DateTime $time
-     */
-    public function setTime($time)
-    {
-        $this->time = $time;
-    }
-
-    /**
      * @return string
      */
     public function getRoom()
@@ -143,8 +120,6 @@ class InfoMeeting
 
     public function __toString()
     {
-        $stringDate = date_format($this->date, 'Y-m-d');
-        $stringTime = date_format($this->time, 'H:i');
-        return "Husk infomøte ".$stringDate." kl. ".$stringTime." i ".$this->room.". ".$this->extra;
+        return "Infomøte " . $this->getDepartment();
     }
 }
