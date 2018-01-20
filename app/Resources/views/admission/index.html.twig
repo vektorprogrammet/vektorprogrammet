@@ -34,8 +34,14 @@
     {% if department.infoMeeting is not null and semester is defined and semester is not null %}
         {% set infoMeeting = department.infoMeeting %}
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <p class="text-center information-meeting">{{ infoMeeting }}</p>
+        <div class="small-12 columns">
+            <div class="information-meeting text-center">
+                <h2><i class="fa fa-info-circle"></i></h2>
+                <h3>Infomøte</h3>
+                <p>
+                    Husk infomøte <span class="text-bold">{{ infoMeeting.date|date('d. M')|lower }} kl. {{ infoMeeting.time|date('h:i') }}</span> i {{ infoMeeting.room }}. {{ infoMeeting.extra }}
+                </p>
+            </div>
         </div>
     </div>
     {% endif %}
