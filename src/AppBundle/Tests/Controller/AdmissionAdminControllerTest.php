@@ -218,7 +218,6 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $client->request('GET', '/kontrollpanel/opptak/4');
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testCancelInterview()

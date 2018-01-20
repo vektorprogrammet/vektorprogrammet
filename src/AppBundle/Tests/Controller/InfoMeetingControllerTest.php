@@ -8,53 +8,29 @@ class InfoMeetingControllerTest extends BaseWebTestCase
 {
     public function testCreateMeeting()
     {
-        $client = $this->createTeamMemberClient();
-        $crawler = $this->goTo('/opptak/avdeling/1', $client);
+        $crawler = $this->anonymousGoTo('/opptak/avdeling/1');
 
         $before = $crawler->filter('p:contains("Husk infomøte")')->count();
 
-        $crawler = $this->goTo('/kontrollpanel/infomøte/1', $client);
+        $crawler = $this->teamLeaderGoTo('/kontrollpanel/semesteradmin/update/2');
 
-        $saveButton = $crawler->filter('button:contains("Lagre")');
+        $this->assertEquals(1, $crawler->filter('h1:contains("Endre opptaksperiode")')->count());
+
+        $saveButton = $crawler->filter('button:contains("Endre")');
         $this->assertNotNull($saveButton);
 
         $form = $saveButton->form();
         $this->assertNotNull($form);
 
-        $form['edit_info_meeting[date]'] = "2018-05-06";
-        $form['edit_info_meeting[time]'] = '17:00';
-        $form['edit_info_meeting[room]'] = 'Parken';
-        $form['edit_info_meeting[extra]'] = 'Forvent mat og drikke!';
-        $client->submit($form);
-        $client->followRedirect();
+        $form['createSemester[infoMeeting][showOnPage]'] = true;
+        $form['createSemester[infoMeeting][date]'] = (new \DateTime())->modify('+1day')->format('d.m.Y H:i');
+        $form['createSemester[infoMeeting][room]'] = 'Parken';
+        $form['createSemester[infoMeeting][description]'] = 'Forvent mat og drikke!';
+        $this->createTeamLeaderClient()->submit($form);
 
-        $crawler = $this->goTo('/opptak/avdeling/1', $client);
+        $crawler = $this->anonymousGoTo('/opptak/avdeling/1');
         $after = $crawler->filter('p:contains("Husk infomøte")')->count();
 
         $this->assertEquals($before + 1, $after);
-    }
-
-    public function testDeleteMeeting()
-    {
-        $client = $this->createTeamMemberClient();
-        $crawler = $this->goTo('/opptak/avdeling/4', $client);
-
-        $before = $crawler->filter('p:contains("Husk infomøte")')->count();
-
-        $crawler = $this->goTo('/kontrollpanel/infomøte/4', $client);
-
-        $deleteButton = $crawler->filter('button:contains("Slett")');
-        $this->assertNotNull($deleteButton);
-
-        $form = $deleteButton->form();
-        $this->assertNotNull($form);
-
-        $client->submit($form);
-        $client->followRedirect();
-
-        $crawler = $this->goTo('/opptak/avdeling/4', $client);
-        $after = $crawler->filter('p:contains("Husk infomøte")')->count();
-
-        $this->assertEquals($before - 1, $after);
     }
 }

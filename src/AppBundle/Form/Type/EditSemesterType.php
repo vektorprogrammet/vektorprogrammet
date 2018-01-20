@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -11,22 +12,26 @@ class EditSemesterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('admissionStartDate', 'datetime', array(
+            ->add('admissionStartDate', DateTimeType::class, array(
                 'label' => 'Opptak starttidspunkt',
+                'format' => 'dd.MM.yyyy HH:mm',
                 'widget' => 'single_text',
-                'date_format' => 'yyyy-MM-dd  HH:mm:ss',
                 'attr' => array(
-                    'placeholder' => 'yyyy-MM-dd HH:mm:ss',
+                    'placeholder' => 'Klikk for å velge tidspunkt',
                 ),
             ))
-            ->add('admissionEndDate', 'datetime', array(
+            ->add('admissionEndDate', DateTimeType::class, array(
                 'label' => 'Opptak sluttidspunkt',
+                'format' => 'dd.MM.yyyy HH:mm',
                 'widget' => 'single_text',
-                'date_format' => 'yyyy-MM-dd  HH:mm:ss',
                 'attr' => array(
-                    'placeholder' => 'yyyy-MM-dd HH:mm:ss',
+                    'placeholder' => 'Klikk for å velge tidspunkt',
                 ),
             ))
+            ->add('infoMeeting', InfoMeetingType::class, [
+                'label' => 'Infomøte',
+                'required' => false
+            ])
             ->add('save', 'submit', array(
                 'label' => 'Endre',
             ));

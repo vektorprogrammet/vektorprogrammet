@@ -38,6 +38,17 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
         $currentSemester->getAdmissionEndDate()->modify('+1day');
         $manager->persist($currentSemester);
 
+        $uioCurrentSemester = new Semester();
+        $uioCurrentSemester->setSemesterTime($now->format('n') <= 7 ? 'Vår' : 'Høst');
+        $uioCurrentSemester->setYear($now->format('Y'));
+        $uioCurrentSemester->setDepartment($this->getReference('dep-4'));
+        $uioCurrentSemester->setAdmissionStartDate(new \DateTime());
+        $uioCurrentSemester->setAdmissionEndDate(new \DateTime());
+        $uioCurrentSemester->setStartAndEndDateByTime($uioCurrentSemester->getSemesterTime(), $uioCurrentSemester->getYear());
+        $uioCurrentSemester->getAdmissionStartDate()->modify('-1day');
+        $uioCurrentSemester->getAdmissionEndDate()->modify('+1day');
+        $manager->persist($uioCurrentSemester);
+
         $previousSemester = new Semester();
         $previousSemester->setSemesterTime($isSpring ? 'Høst' : 'Vår');
         $previousSemester->setYear($isSpring ? $now->format('Y') - 1 : $now->format('Y'));
@@ -74,7 +85,7 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
         $semester4->setYear(2015);
         $semester4->setDepartment($this->getReference('dep-4'));
         $semester4->setAdmissionStartDate(new \DateTime('2015-01-01'));
-        $semester4->setAdmissionEndDate(new \DateTime());
+        $semester4->setAdmissionEndDate(new \DateTime('2015-02-01'));
         $semester4->getAdmissionEndDate()->modify('+1day');
         $semester4->setSemesterStartDate(new \DateTime('2015-01-01'));
         $semester4->setSemesterEndDate(new \DateTime('2015-07-31'));
@@ -98,6 +109,7 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
         $this->addReference('semester-4', $semester4);
         $this->addReference('semester-5', $semester5);
         $this->addReference('semester-current', $currentSemester);
+        $this->addReference('uio-semester-current', $uioCurrentSemester);
         $this->addReference('semester-previous', $previousSemester);
     }
 

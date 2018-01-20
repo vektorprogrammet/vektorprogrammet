@@ -85,13 +85,13 @@ class SemesterControllerTest extends BaseWebTestCase
         $crawler = $client->click($link);
 
         // Assert that we have the correct amount of data
-        $this->assertEquals(1, $crawler->filter('h1:contains("Endre semester")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Endre opptaksperiode")')->count());
 
         $form = $crawler->selectButton('Endre')->form();
 
         // Change the value of a field
-        $form['createSemester[admissionStartDate]'] = '2015-08-04 10:30:00 ';
-        $form['createSemester[admissionEndDate]'] = '2015-09-02 10:40:00 ';
+        $form['createSemester[admissionStartDate]'] = '04.08.2015 10:30 ';
+        $form['createSemester[admissionEndDate]'] = '02.09.2015 10:40 ';
 
         // submit the form
         $client->submit($form);

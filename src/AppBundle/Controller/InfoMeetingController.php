@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\InfoMeeting;
 use AppBundle\Event\InfoMeetingEvent;
-use AppBundle\Form\Type\EditInfoMeetingType;
+use AppBundle\Form\Type\InfoMeetingType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,7 +20,7 @@ class InfoMeetingController extends Controller
             $infoMeeting = $department->getInfoMeeting();
         }
 
-        $form = $this->createForm(EditInfoMeetingType::class, $infoMeeting);
+        $form = $this->createForm(InfoMeetingType::class, $infoMeeting);
 
         $form->handleRequest($request);
 

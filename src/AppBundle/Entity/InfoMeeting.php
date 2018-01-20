@@ -19,48 +19,34 @@ class InfoMeeting
     private $id;
 
     /**
-     * @ORM\Column(type="datetime", length=250)
-     * @Assert\NotBlank
+     * @var bool
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $showOnPage;
+
+    /**
+     * @ORM\Column(type="datetime", length=250, nullable=true)
      * @Assert\DateTime()
      */
     private $date;
 
     /**
-     * @ORM\Column(type="string", length=250)
-     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=250, nullable=true)
      * @Assert\Length(max=250)
      */
     private $room;
 
     /**
-     * @ORM\Column(type="string", length=250)
-     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=250, nullable=true)
      * @Assert\Length(max=250)
      */
-    private $extra;
+    private $description;
 
     /**
-     * @ORM\OneToOne(targetEntity="Department", cascade={"persist"}, inversedBy="infoMeeting")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     * @Assert\Valid
+     * @ORM\Column(type="string", length=250, nullable=true)
+     * @Assert\Length(max=250)
      */
-    private $department;
-
-    /**
-     * @return Department
-     */
-    public function getDepartment()
-    {
-        return $this->department;
-    }
-
-    /**
-     * @param Department $department
-     */
-    public function setDepartment($department)
-    {
-        $this->department = $department;
-    }
+    private $link;
 
     /**
      * @return int
@@ -102,24 +88,60 @@ class InfoMeeting
         $this->room = $room;
     }
 
+    public function __toString()
+    {
+        return "Infomøte";
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowOnPage()
+    {
+        return $this->showOnPage;
+    }
+
+    /**
+     * @param bool $showOnPage
+     */
+    public function setShowOnPage($showOnPage)
+    {
+        $this->showOnPage = $showOnPage;
+    }
+
     /**
      * @return string
      */
-    public function getExtra()
+    public function getLink()
     {
-        return $this->extra;
+        return $this->link;
     }
 
     /**
-     * @param string $extra
+     * @param string $link
      */
-    public function setExtra($extra)
+    public function setLink($link)
     {
-        $this->extra = $extra;
+        if (strlen($link) > 0 && substr($link, 0, 4) !== 'http') {
+            $link = "http://$link";
+        }
+
+        $this->link = $link;
     }
 
-    public function __toString()
+    /**
+     * @return string
+     */
+    public function getDescription()
     {
-        return "Infomøte " . $this->getDepartment();
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
     }
 }
