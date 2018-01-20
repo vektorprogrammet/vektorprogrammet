@@ -15,11 +15,21 @@ security:
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        administrators:
-            entity: { class: AppBundle:User }
-        in_memory:
-            memory:
-                users:
+        chain_provider:
+            chain:
+                providers: [db_username, db_email, db_company_email]
+        db_username:
+            entity:
+                class: AppBundle:User
+                property: user_name
+        db_email:
+            entity:
+                class: AppBundle:User
+                property: email
+        db_company_email:
+            entity:
+                class: AppBundle:User
+                property: companyEmail
 
     # the main part of the security, where you can set up firewalls
     # for specific sections of your app
