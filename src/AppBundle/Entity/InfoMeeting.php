@@ -54,7 +54,7 @@ class InfoMeeting
     private $department;
 
     /**
-     * @return mixed
+     * @return Department
      */
     public function getDepartment()
     {
@@ -62,7 +62,7 @@ class InfoMeeting
     }
 
     /**
-     * @param mixed $department
+     * @param Department $department
      */
     public function setDepartment($department)
     {
@@ -70,7 +70,7 @@ class InfoMeeting
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId()
     {
@@ -78,7 +78,7 @@ class InfoMeeting
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      */
     public function setId($id)
     {
@@ -118,7 +118,7 @@ class InfoMeeting
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getRoom()
     {
@@ -126,7 +126,7 @@ class InfoMeeting
     }
 
     /**
-     * @param mixed $room
+     * @param string $room
      */
     public function setRoom($room)
     {
@@ -134,7 +134,7 @@ class InfoMeeting
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getExtra()
     {
@@ -142,7 +142,7 @@ class InfoMeeting
     }
 
     /**
-     * @param mixed $extra
+     * @param string $extra
      */
     public function setExtra($extra)
     {
