@@ -39,7 +39,7 @@
                 <h2><i class="fa fa-info-circle"></i></h2>
                 <h3>Infomøte</h3>
                 <p>
-                    Husk infomøte <span class="text-bold">{{ infoMeeting.date|date('d. M')|lower }} kl. {{ infoMeeting.time|date('h:i') }}</span> i {{ infoMeeting.room }}. {{ infoMeeting.extra }}
+                    Husk infomøte <span class="text-bold">{{ infoMeeting.date|date('d. M')|lower }} kl. {{ infoMeeting.date|date('H:i') }}</span> i {{ infoMeeting.room }}. {{ infoMeeting.extra }}
                 </p>
             </div>
         </div>
