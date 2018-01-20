@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -14,6 +15,17 @@ class ApplicationPracticalType extends AbstractType
             'label' => 'Er det noen dager som IKKE passer for deg?',
             'data_class' => 'AppBundle\Entity\Application',
         ));
+
+        $builder->add('yearOfStudy', ChoiceType::class, [
+            'label' => 'Årstrinn',
+            'choices' => [
+                1 => '1',
+                2 => '2',
+                3 => '3',
+                4 => '4',
+                5 => '5',
+            ],
+        ]);
 
         $builder->add('doublePosition', 'choice', array(
             'label' => 'Kunne du tenke deg enkel eller dobbel stilling?',

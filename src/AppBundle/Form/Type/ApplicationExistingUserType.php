@@ -10,17 +10,6 @@ class ApplicationExistingUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('yearOfStudy', 'choice', array(
-            'label' => 'Årstrinn',
-            'choices' => array(
-                1 => '1',
-                2 => '2',
-                3 => '3',
-                4 => '4',
-                5 => '5',
-            ),
-        ));
-
         $builder->add('applicationPractical', new ApplicationPracticalType(), array(
             'data_class' => 'AppBundle\Entity\Application',
         ));
