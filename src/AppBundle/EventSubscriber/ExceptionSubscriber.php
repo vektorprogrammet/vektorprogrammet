@@ -16,19 +16,22 @@ class ExceptionSubscriber implements EventSubscriberInterface
     private $logger;
     private $ts;
     private $router;
+    private $fileLogger;
 
     /**
      * ExceptionListener constructor.
      *
      * @param LoggerInterface $logger
-     * @param TokenStorage    $ts
+     * @param LoggerInterface $fileLogger
+     * @param TokenStorage $ts
      * @param RouterInterface $router
      */
-    public function __construct(LoggerInterface $logger, TokenStorage $ts, RouterInterface $router)
+    public function __construct(LoggerInterface $logger, LoggerInterface $fileLogger, TokenStorage $ts, RouterInterface $router)
     {
         $this->logger = $logger;
         $this->ts = $ts;
         $this->router = $router;
+        $this->fileLogger = $fileLogger;
     }
 
     public static function getSubscribedEvents()
@@ -48,6 +51,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
             $this->logHttpException($exception);
         } else {
             $this->logger->critical(
+                "User: {$this->getLoggedInUserName()}\n" .
                 "Code: {$exception->getCode()}\n" .
                 "File: {$exception->getFile()}\n" .
                 "Line: {$exception->getLine()}\n" .
@@ -55,6 +59,15 @@ class ExceptionSubscriber implements EventSubscriberInterface
                 "```\n" .
                 "{$exception->getMessage()}\n" .
                 "```"
+            );
+
+            $this->fileLogger->critical(
+                "User: {$this->getLoggedInUserName()}\n" .
+                "Code: {$exception->getCode()}\n" .
+                "File: {$exception->getFile()}\n" .
+                "Line: {$exception->getLine()}\n" .
+                "Message: {$exception->getMessage()}\n" .
+                $exception->getTraceAsString()
             );
         }
     }
