@@ -6,19 +6,21 @@ use AppBundle\Entity\InfoMeeting;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 class EditInfoMeetingType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('time', 'text', array(
+            ->add('time', TimeType::class, array(
                 'label' => 'Tid',
-                'attr' => array('placeholder' => '16:15')
+                'widget' => 'single_text',
             ))
-            ->add('date', 'text', array(
+            ->add('date', DateType::class, array(
                 'label' => 'Dato',
-                'attr' => array('placeholder' => '30/01')
+                'widget' => 'single_text',
             ))
             ->add('room', 'text', array(
                 'label' => 'Rom',

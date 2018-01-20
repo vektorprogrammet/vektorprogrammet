@@ -21,8 +21,8 @@ class LoadInfoMeetingData extends AbstractFixture implements ContainerAwareInter
     public function load(ObjectManager $manager)
     {
         $infoMeetingUiO = new InfoMeeting();
-        $infoMeetingUiO->setDate("03/02");
-        $infoMeetingUiO->setTime("15:30");
+        $infoMeetingUiO->setDate(new \DateTime('now'));
+        $infoMeetingUiO->setTime(new \DateTime('now'));
         $infoMeetingUiO->setRoom("Parken");
         $infoMeetingUiO->setExtra("Det blir underholdning!");
         $infoMeetingUiO->setDepartment($this->getReference('dep-4'));

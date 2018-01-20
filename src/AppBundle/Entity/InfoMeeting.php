@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,13 +19,13 @@ class InfoMeeting
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=250)
+     * @ORM\Column(type="date", length=250)
      * @Assert\NotBlank
      */
     private $date;
 
     /**
-     * @ORM\Column(type="string", length=250)
+     * @ORM\Column(type="time", length=250)
      * @Assert\NotBlank
      */
     private $time;
@@ -83,7 +82,7 @@ class InfoMeeting
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -91,7 +90,7 @@ class InfoMeeting
     }
 
     /**
-     * @param mixed $date
+     * @param \DateTime $date
      */
     public function setDate($date)
     {
@@ -99,7 +98,7 @@ class InfoMeeting
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getTime()
     {
@@ -107,7 +106,7 @@ class InfoMeeting
     }
 
     /**
-     * @param mixed $time
+     * @param \DateTime $time
      */
     public function setTime($time)
     {
@@ -148,6 +147,8 @@ class InfoMeeting
 
     public function __toString()
     {
-        return "Husk infomøte ".$this->date." kl. ".$this->time." i ".$this->room.". ".$this->extra;
+        $stringDate = date_format($this->date, 'Y-m-d');
+        $stringTime = date_format($this->time, 'H:i');
+        return "Husk infomøte ".$stringDate." kl. ".$stringTime." i ".$this->room.". ".$this->extra;
     }
 }

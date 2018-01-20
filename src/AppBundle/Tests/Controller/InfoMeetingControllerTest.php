@@ -21,7 +21,7 @@ class InfoMeetingControllerTest extends BaseWebTestCase
         $form = $saveButton->form();
         $this->assertNotNull($form);
 
-        $form['edit_info_meeting[date]'] = "05/06";
+        $form['edit_info_meeting[date]'] = "2018-05-06";
         $form['edit_info_meeting[time]'] = '17:00';
         $form['edit_info_meeting[room]'] = 'Parken';
         $form['edit_info_meeting[extra]'] = 'Forvent mat og drikke!';
