@@ -2,24 +2,20 @@
 
 namespace AppBundle\Event;
 
-use AppBundle\Entity\InfoMeeting;
+use AppBundle\Entity\Semester;
 use Symfony\Component\EventDispatcher\Event;
 
-class InfoMeetingEvent extends Event implements CrudEvent
+class SemesterEvent extends Event implements CrudEvent
 {
-    const CREATED = 'infoMeeting.created';
-    const EDITED = 'infoMeeting.edited';
-    const DELETED = 'infoMeeting.deleted';
+    const CREATED = 'semester.created';
+    const EDITED = 'semester.edited';
+    const DELETED = 'semester.deleted';
 
-    private $infoMeeting;
+    private $semester;
 
-    /**
-     * InfoMeetingEvent constructor.
-     * @param $infoMeeting
-     */
-    public function __construct($infoMeeting)
+    public function __construct(Semester $semester)
     {
-        $this->infoMeeting = $infoMeeting;
+        $this->semester = $semester;
     }
 
 
@@ -48,10 +44,10 @@ class InfoMeetingEvent extends Event implements CrudEvent
     }
 
     /**
-     * @return InfoMeeting
+     * @return Semester
      */
     public function getObject()
     {
-        return $this->infoMeeting;
+        return $this->semester;
     }
 }
