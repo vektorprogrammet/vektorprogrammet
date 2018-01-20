@@ -23,7 +23,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
+        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
         $this->assertEquals(0, $crawler->filter('td>a:contains("Slett")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Fordel")')->count());
     }
@@ -34,7 +34,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
+        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Slett")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Fordel")')->count());
     }
@@ -54,7 +54,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
+        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Sett opp")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Intervju")')->count());
     }
@@ -65,7 +65,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
+        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Sett opp")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Intervju")')->count());
     }
@@ -85,7 +85,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
+        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
         $this->assertEquals(0, $crawler->filter('td>a.button.tiny:contains("Slett")')->count());
         $this->assertGreaterThan(1, $crawler->filter('td>a.button.tiny:contains("Les intervju")')->count());
     }
@@ -96,7 +96,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
+        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
         $this->assertGreaterThan(1, $crawler->filter('td>a.button:contains("Les intervju")')->count());
         $this->assertGreaterThan(1, $crawler->filter('td>a.button:contains("Slett")')->count());
     }
