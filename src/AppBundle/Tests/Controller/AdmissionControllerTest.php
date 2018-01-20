@@ -95,7 +95,7 @@ class AdmissionControllerTest extends BaseWebTestCase
         $submitButton = $crawler->selectButton('Søk');
         $form = $submitButton->form();
 
-        $form['application[yearOfStudy]'] = 3;
+        $form['application[applicationPractical][yearOfStudy]'] = 3;
         $form['application[applicationPractical][days][monday]'] = 'Bra';
         $form['application[applicationPractical][days][tuesday]'] = 'Ikke';
         $form['application[applicationPractical][days][wednesday]'] = 'Bra';
