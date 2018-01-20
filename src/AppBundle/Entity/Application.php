@@ -121,6 +121,13 @@ class Application
     private $interview;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $specialNeeds;
+
+    /**
      * @var bool
      */
     private $wantsNewsletter;
@@ -139,6 +146,7 @@ class Application
         $this->english = false;
         $this->teamInterest = false;
         $this->wantsNewsletter = false;
+        $this->specialNeeds = '';
     }
 
     /**
@@ -464,5 +472,21 @@ class Application
     public function setSubstitute($substitute)
     {
         $this->substitute = $substitute;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSpecialNeeds()
+    {
+        return $this->specialNeeds;
+    }
+
+    /**
+     * @param string $specialNeeds
+     */
+    public function setSpecialNeeds($specialNeeds)
+    {
+        $this->specialNeeds = $specialNeeds;
     }
 }

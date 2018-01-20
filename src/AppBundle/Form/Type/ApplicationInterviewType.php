@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -28,6 +29,11 @@ class ApplicationInterviewType extends AbstractType
             'expanded' => true,
             'multiple' => true,
         ));
+
+        $builder->add('specialNeeds', TextType::class, [
+            'label' => 'Spesielle behov',
+            'required' => false
+        ]);
 
         $builder->add('interview', new InterviewType());
 
