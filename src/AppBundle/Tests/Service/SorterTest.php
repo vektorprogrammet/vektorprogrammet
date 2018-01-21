@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Tests\Command;
+namespace AppBundle\Tests\Service;
 
 use AppBundle\Service\Sorter;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -87,8 +87,11 @@ class SorterTest extends KernelTestCase
     public function testSortUsersByReceiptSubmitTime()
     {
         $this->sorter->sortUsersByReceiptSubmitTime($this->mockUsers);
+        
+        $firstDate = $this->mockUsers[0]->getReceipts()[0]->getSubmitDate();
+        $secondsSinceFirstDate = abs((new \DateTime())->getTimestamp() - $firstDate->getTimestamp());
 
-        $this->assertEquals(new \DateTime(), $this->mockUsers[0]->getReceipts()[0]->getSubmitDate()); // Newest = now
+        $this->assertLessThan(1, $secondsSinceFirstDate); // Newest = now
         $this->assertEquals($this->mockReceipts, $this->mockUsers[1]->getReceipts()->toArray()); // Newest = 2017
         $this->assertEquals(new \DateTime('2013-09-05'), $this->mockUsers[2]->getReceipts()[0]->getSubmitDate()); // Newest = 2013
         $this->assertEmpty($this->mockUsers[3]->getReceipts()->toArray()); // Fourth user has no receipts
