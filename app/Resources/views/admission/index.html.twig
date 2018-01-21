@@ -31,6 +31,7 @@
 
         </div>
     </div>
+    {% include 'info_meeting/info_meeting_component.html.twig' with {semester: department.currentSemester} %}
     <div class="admissioncontainer">
         <div class="row">
             <div class="small-12 medium-12 large-12 columns">
@@ -115,13 +116,13 @@
                     </div>
 
                     {% if form.wantsNewsletter is defined %}
-                    <div class="row">
-                        <div class="small-6 medium-4 large-4 columns large-offset-2">
+                        <div class="row">
+                            <div class="small-6 medium-4 large-4 columns large-offset-2">
                                 <div>
                                     {{ form_row(form.wantsNewsletter, { 'attr': {'tabindex': '10'}}) }}
                                 </div>
                             </div>
-                    </div>
+                        </div>
                     {% endif %}
 
                     <div class="row">
@@ -135,8 +136,8 @@
                     </div>
                     {{ form_end(form) }}
 
-                   {% include "admission/team_application_widget.html.twig" with {'teams': teams} %}
-                        <br>
+                    {% include "admission/team_application_widget.html.twig" with {'teams': teams} %}
+                    <br>
 
 
                 {% else %}
@@ -248,22 +249,22 @@
     {% include "statictext/js_loader_for_static_texts.html.twig" %}
 
     <script>
-        var $submitBtn = $('.vektor-button-inverted');
-        var $applicationForm = $('form[name="application"]');
-        $submitBtn.click(function () {
-            if ($applicationForm[0].checkValidity()) {
-                $submitBtn.attr("disabled", true);
-                $submitBtn.html("Sender...");
-                $applicationForm.submit();
-            }
-        });
+      var $submitBtn = $('.vektor-button-inverted');
+      var $applicationForm = $('form[name="application"]');
+      $submitBtn.click(function () {
+        if ($applicationForm[0].checkValidity()) {
+          $submitBtn.attr('disabled', true);
+          $submitBtn.html('Sender...');
+          $applicationForm.submit();
+        }
+      });
 
-        setTimeout(function () {
-            $(".admission-notice").fadeOut(1000);
-        }, 4000);
-        setTimeout(function () {
-            $(".contact-notice").fadeOut(1000);
-        }, 4000);
+      setTimeout(function () {
+        $('.admission-notice').fadeOut(1000);
+      }, 4000);
+      setTimeout(function () {
+        $('.contact-notice').fadeOut(1000);
+      }, 4000);
     </script>
 
 {% endblock %}
