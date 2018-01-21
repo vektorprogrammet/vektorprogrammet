@@ -16,7 +16,7 @@
 
                     {% if infoMeeting.room %} i {{ infoMeeting.room }}{% endif %}.
                     {{ infoMeeting.description }}
-                    {% if infoMeeting.link %} <a target="_blank" href="{{ infoMeeting.link }}">Les mer</a>{% endif %}
+                    {% if infoMeeting.link %} <a target="_blank" href="{{ infoMeeting.link }}" onclick="ga('send', 'event', 'Infomøte', 'Les mer', '{{ semester }}')">Les mer</a>{% endif %}
                 </p>
             </div>
         </div>
