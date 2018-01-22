@@ -33,7 +33,7 @@ class CreateInterviewType extends AbstractType
                     //->andWhere('d.id = :department')
                     ->orderBy('u.firstName')
                     ->setParameter('roles', $this->roles);
-                //->setParameter('department', $this->department);
+            //->setParameter('department', $this->department);
             },
             'group_by' => 'fieldOfStudy.department.shortName',
         ));
