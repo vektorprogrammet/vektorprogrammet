@@ -34,7 +34,7 @@ class ScheduleInterviewType extends AbstractType
                 'attr' => array('style' => 'display:none')
             ))
             ->add('saveAndSend', 'submit', array(
-                'label' => 'Lagre tidspunkt og send mail',
+                'label' => 'Send invitasjon på sms og e-post',
             ))
             ->add('preview', 'submit', array(
                 'label' => 'Forhåndsvis'
