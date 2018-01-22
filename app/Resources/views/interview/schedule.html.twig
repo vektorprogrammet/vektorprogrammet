@@ -4,6 +4,11 @@
     Sett opp intervju
 {% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.min.css">
+{% endblock %}
+
 {% block body %}
     <p></p>
 
@@ -120,4 +125,18 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.min.js"></script>
+    <script>
+        const options = {
+            format: 'd.m.Y H:i',
+            lang: 'no',
+            step: 15,
+        };
+
+        jQuery('#{{ form.datetime.vars.id }}').datetimepicker(options);
+    </script>
 {% endblock %}

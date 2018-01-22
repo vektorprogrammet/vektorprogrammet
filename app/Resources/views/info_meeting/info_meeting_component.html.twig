@@ -1,0 +1,24 @@
+{% if semester is not null and semester.infoMeeting and semester.infoMeeting.showOnPage and semester.infoMeeting.date and date() < date(semester.infoMeeting.date) %}
+    {% set infoMeeting = semester.infoMeeting %}
+    <div class="row">
+        <div class="small-12 columns">
+            <div class="information-meeting text-center">
+                <h2><i class="fa fa-info-circle"></i></h2>
+                <h3>Infomøte</h3>
+                <p>
+                    Husk infomøte
+
+                    {% if infoMeeting.date %}
+                        <span class="text-bold">
+                            {{ infoMeeting.date|date('d. M')|lower }} kl. {{ infoMeeting.date|date('H:i') }}
+                        </span>
+                    {% endif %}
+
+                    {% if infoMeeting.room %} i {{ infoMeeting.room }}{% endif %}.
+                    {{ infoMeeting.description }}
+                    {% if infoMeeting.link %} <a target="_blank" href="{{ infoMeeting.link }}" onclick="ga('send', 'event', 'Infomøte', 'Les mer', '{{ semester }}')">Les mer</a>{% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endif %}

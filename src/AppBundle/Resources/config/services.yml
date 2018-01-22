@@ -87,7 +87,7 @@ services:
 
   app.exception_subscriber:
     class: AppBundle\EventSubscriber\ExceptionSubscriber
-    arguments: ['@app.logger', '@security.token_storage', '@router']
+    arguments: ['@app.logger', '@logger', '@security.token_storage', '@router']
     tags:
       - { name: kernel.event_subscriber }
 

@@ -21,6 +21,7 @@
             <th data-sort="string">Språk</th>
             <th data-sort="int">Poeng</th>
             <th data-sort="string">Passende</th>
+            <th data-sort="string">Spesielle behov</th>
             <th colspan="3"></th>
         </tr>
         </thead>
@@ -46,12 +47,16 @@
                 {% if a.user != app.user and ( is_granted_team_leader() or a.interview.interviewer == app.user ) %}
                     <td>{{ a.interview.interviewScore.sum }}</td>
                     <td>{{ a.interview.interviewScore.suitableAssistant }}</td>
+                    <td>{% if a.interview.application.specialNeeds %}
+                            <i class="fa fa-2x fa-exclamation-triangle text-warning"></i>
+
+                        {% endif %}</td>
                     <td>
                         <a href="{{ path('interview_show', { 'id': a.id }) }}" class="button tiny"><i
                                     class="fa fa-list-ul"></i> Les intervju</a>
                     </td>
                 {% else %}
-                    <td colspan="3">
+                    <td colspan="4">
                         <span class="text-alert">Intervjuet er skjult</span>
                     </td>
                 {% endif %}

@@ -8,6 +8,7 @@
 @import "modules/colors";
 @import "modules/team.scss";
 @import "modules/interview_confirmation.scss";
+@import "modules/info_meeting.scss";
 
 // Or selectively include components
 // @import
@@ -1026,4 +1027,8 @@ button.secretly-not-a-button {
 
 .position-relative {
   position:relative;
+}
+
+#specialNeeds {
+  display: none;
 }

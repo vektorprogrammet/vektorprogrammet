@@ -18,7 +18,7 @@ class SemesterControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/kontrollpanel/semesteradmin/avdeling/1');
 
         // Assert that we have the correct amount of data
-        $this->assertEquals(1, $crawler->filter('h1:contains("Semester NTNU")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Opptaksperioder NTNU")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Vår 2013")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Høst 2015")')->count());
 
@@ -28,7 +28,7 @@ class SemesterControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/kontrollpanel/semesteradmin/avdeling/2');
 
         // Assert that we have the correct amount of data
-        $this->assertEquals(1, $crawler->filter('h1:contains("Semester HiST")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Opptaksperioder HiST")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Vår 2015")')->count());
 
         // Assert a specific 200 status code
@@ -85,13 +85,13 @@ class SemesterControllerTest extends BaseWebTestCase
         $crawler = $client->click($link);
 
         // Assert that we have the correct amount of data
-        $this->assertEquals(1, $crawler->filter('h1:contains("Endre semester")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Endre opptaksperiode")')->count());
 
         $form = $crawler->selectButton('Endre')->form();
 
         // Change the value of a field
-        $form['createSemester[admissionStartDate]'] = '2015-08-04 10:30:00 ';
-        $form['createSemester[admissionEndDate]'] = '2015-09-02 10:40:00 ';
+        $form['createSemester[admissionStartDate]'] = '04.08.2015 10:30 ';
+        $form['createSemester[admissionEndDate]'] = '02.09.2015 10:40 ';
 
         // submit the form
         $client->submit($form);
@@ -108,7 +108,7 @@ class SemesterControllerTest extends BaseWebTestCase
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        $this->assertEquals(1, $crawler->filter('h1:contains("Semester NTNU")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Opptaksperioder NTNU")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("2015-08-04")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("10:30:00")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("2015-09-02")')->count());
@@ -127,7 +127,7 @@ class SemesterControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/kontrollpanel/semesteradmin');
 
         // Assert that we have the correct amount of data
-        $this->assertEquals(1, $crawler->filter('h1:contains("Semester NTNU")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Opptaksperioder NTNU")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Vår 2013")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Høst 2015")')->count());
 

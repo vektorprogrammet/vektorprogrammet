@@ -1,0 +1,19 @@
+div.delete_info_meeting {
+  display: inline-block;
+}
+
+form.delete_info_meeting {
+  width: 100%;
+}
+
+.information-meeting {
+  padding: 16px;
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto 32px;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.1);
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+}

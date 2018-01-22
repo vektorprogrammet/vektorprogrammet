@@ -31,9 +31,7 @@
             <div class="row">
                 <div class="small-12 columns">
                     <div>
-                        {{ form_label(form.yearOfStudy) }}
-                        {{ form_errors(form.yearOfStudy) }}
-                        {{ form_widget(form.yearOfStudy) }}
+                        {{ form_row(form.applicationPractical.yearOfStudy) }}
                     </div>
                 </div>
             </div>
@@ -66,7 +64,12 @@
 
             <div class="row">
                 <div class="small-12 medium-12 large-12 columns">
-                    {{ form_row(form.applicationPractical.teamInterest) }}
+                    <label class="question-label">
+                        Kunne du tenke deg å jobbe med organiseringen av Vektorprogrammet?<br>
+                        Dette innebærer et verv i et at Vektorprogrammets team
+                    </label>
+                    {{ form_widget(form.applicationPractical.teamInterest) }}
+                    {{ form_errors(form.applicationPractical.teamInterest) }}
                 </div>
             </div>
 
