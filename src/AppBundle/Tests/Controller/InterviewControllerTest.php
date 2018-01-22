@@ -25,7 +25,7 @@ class InterviewControllerTest extends BaseWebTestCase
 
         $form['application[applicationPractical][doublePosition]']->select('1');
         $form['application[applicationPractical][preferredGroup]']->select('Bolk 1');
-        $form['application[applicationPractical][english]']->select('1');
+        $form['application[applicationPractical][language]']->select('Norsk');
 
         $form['application[interview][interviewAnswers][0][answer]'] = 'Test answer';
         $form['application[interview][interviewAnswers][1][answer]'] = 'Test answer';
@@ -58,7 +58,7 @@ class InterviewControllerTest extends BaseWebTestCase
 
         $form['application[applicationPractical][doublePosition]']->select('1');
         $form['application[applicationPractical][preferredGroup]']->select('Bolk 1');
-        $form['application[applicationPractical][english]']->select('1');
+        $form['application[applicationPractical][language]']->select('Norsk og engelsk');
 
         $form['application[interview][interviewAnswers][0][answer]'] = 'Test answer';
         $form['application[interview][interviewAnswers][1][answer]'] = 'Test answer';
