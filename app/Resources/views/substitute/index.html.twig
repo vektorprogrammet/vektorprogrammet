@@ -73,6 +73,7 @@
                     <th><span data-sort="string" class="has-tip" title="Onsdag"> O</span></th>
                     <th><span data-sort="string" class="has-tip" title="Torsdag"> T</span></th>
                     <th><span data-sort="string" class="has-tip" title="Fredag"> F</span></th>
+                    <th><span data-sort="string" class="has-tip" title="Pulje"> Pulje</span></th>
                     {% if is_granted_team_leader() %}
                         <th colspan="2"></th>
                     {% endif %}
@@ -94,6 +95,7 @@
                             <td>{{ sub.wednesday }}</td>
                             <td>{{ sub.thursday }}</td>
                             <td>{{ sub.friday }}</td>
+                            <td>{{ sub.preferredGroup }}</td>
                             {% if is_granted_team_leader() %}
                                 <td>
                                     <form method="POST"
