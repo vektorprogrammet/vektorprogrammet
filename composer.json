@@ -8,7 +8,7 @@
         }
     },
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.1",
         "symfony/symfony": "2.8.*",
         "doctrine/orm": "~2.2",
         "doctrine/dbal": "<2.5",
