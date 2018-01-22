@@ -17,11 +17,10 @@ class ScheduleInterviewType extends AbstractType
                 'label' => 'Mottaker',
             ))
             ->add('datetime', 'datetime', array(
-                'label' => false,
                 'widget' => 'single_text',
-                'date_format' => 'yyyy-MM-dd  HH:mm:ss',
+                'format' => 'dd.MM.yyyy HH:mm',
                 'label' => 'Tidspunkt',
-                'attr' => array('placeholder' => 'yyyy-MM-dd HH:mm:ss'),
+                'attr' => array('placeholder' => 'Klikk for å velge tidspunkt'),
             ))
             ->add('room', 'text', array(
                 'label' => 'Rom',
