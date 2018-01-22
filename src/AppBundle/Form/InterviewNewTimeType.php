@@ -14,7 +14,7 @@ class InterviewNewTimeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('newTimeMessage', TextareaType::class, array (
+            ->add('newTimeMessage', TextareaType::class, array(
                 'label' => 'Melding',
                 'attr' => array('rows' => '5'),
             ))

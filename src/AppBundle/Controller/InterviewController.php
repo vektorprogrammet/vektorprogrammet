@@ -348,7 +348,6 @@ class InterviewController extends Controller
      */
     public function requestNewTimeAction(Request $request, Interview $interview)
     {
-
         $form = $this->createForm(new InterviewNewTimeType(), $interview);
         $form->handleRequest($request);
 
@@ -368,8 +367,6 @@ class InterviewController extends Controller
             'interview' => $interview,
             'form' => $form->createView()
         ));
-
-
     }
 
     /**
