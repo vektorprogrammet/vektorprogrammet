@@ -34,8 +34,8 @@ class SubstituteControllerTest extends BaseWebTestCase
         $this->assertEquals(1, $crawler->filter('td:contains("Johansen")')->count());
 
         // Assert that we have the edit/delete buttons as admin
-        $this->assertEquals(1, $crawler->filter('button:contains("Slett")')->count());
-        $this->assertEquals(1, $crawler->filter('button:contains("Rediger")')->count());
+        $this->assertEquals(2, $crawler->filter('button:contains("Slett")')->count());
+        $this->assertEquals(2, $crawler->filter('button:contains("Rediger")')->count());
     }
 
     public function testIllegalCreateMethod()
