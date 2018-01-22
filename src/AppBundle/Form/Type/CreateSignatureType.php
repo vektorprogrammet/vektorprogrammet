@@ -11,7 +11,8 @@ class CreateSignatureType extends AbstractType
     {
         $builder
             ->add('description', 'text', array(
-                'label' => 'Beskrivelse (Feks. Leder, Vektorprogrammet)',
+                'label' => ' ',
+                'max_length' => 45,
             ))
             ->add('signature_path', 'file', array(
                 'required' => false,
