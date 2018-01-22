@@ -65,10 +65,10 @@ class Application
     private $substitute;
 
     /**
-     * @ORM\Column(type="boolean", options={"default"=false})
+     * @ORM\Column(type="string", nullable=true)
      * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
      */
-    private $english;
+    private $language;
 
     /**
      * @ORM\Column(type="boolean", options={"default"=false})
@@ -140,10 +140,8 @@ class Application
         $this->last_edited = new \DateTime();
         $this->created = new \DateTime();
         $this->substitute = false;
-        $this->english = false;
         $this->doublePosition = false;
         $this->previousParticipation = false;
-        $this->english = false;
         $this->teamInterest = false;
         $this->wantsNewsletter = false;
         $this->specialNeeds = '';
@@ -271,19 +269,19 @@ class Application
         $this->friday = $friday;
     }
     /**
-     * @return bool
+     * @return string
      */
-    public function getEnglish()
+    public function getLanguage()
     {
-        return $this->english;
+        return $this->language;
     }
 
     /**
-     * @param bool $english
+     * @param string $language
      */
-    public function setEnglish($english)
+    public function setLanguage($language)
     {
-        $this->english = $english;
+        $this->language = $language;
     }
 
     /**
