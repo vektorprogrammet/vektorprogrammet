@@ -37,7 +37,11 @@ class Interview
     protected $room;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", length=500, nullable=true)
+     * @Assert\Length(
+     *     max=500,
+     *     maxMessage= "Linken kan ikke være mer enn 500 tegn"
+     * )
      */
     protected $mapLink;
 

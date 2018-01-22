@@ -203,6 +203,7 @@ class InterviewController extends Controller
             // Update the scheduled time for the interview
             $interview->setScheduled($data['datetime']);
             $interview->setRoom($data['room']);
+            $interview->setMapLink($data['mapLink']);
             $interview->resetStatus();
 
             if ($form->get('preview')->isClicked()) {

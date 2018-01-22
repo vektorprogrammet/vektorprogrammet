@@ -111,6 +111,7 @@ class InterviewManager
                     array('message' => $data['message'],
                         'datetime' => $data['datetime'],
                         'room' => $data['room'],
+                        'mapLink' => $data['mapLink'],
                         'fromName' => $interview->getInterviewer()->getFirstName().' '.$interview->getInterviewer()->getLastName(),
                         'fromMail' => $data['from'],
                         'fromPhone' => $interview->getInterviewer()->getPhone(),
