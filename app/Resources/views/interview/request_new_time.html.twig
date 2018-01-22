@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 columns text-center">
+
+            <p>{{ interview.user }}</p>
+            <p>Intervju tid: {{ interview.scheduled | date("d.m.Y H:i") }}</p>
+
+            <p>Vennligst skriv inn hvilke tidspunkt som <em>ikke</em> passer, så vil vi snart ta kontakt.</p>
+
+            {{ form_start(form) }}
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
