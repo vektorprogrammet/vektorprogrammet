@@ -194,7 +194,11 @@ class Survey implements \JsonSerializable
             $questionText = $textQuestion->getQuestion();
             $textQAarray[$questionText] = array();
             foreach ($textQuestion->getAnswers() as $answer) {
-                $textQAarray[$questionText][] = array($answer->getAnswer(),$answer->getSurveyTaken()->getSchool()->getName());
+                $textQAarray[$questionText][] = array(
+                    'answerText' => $answer->getAnswer(),
+                    'schoolName' => $answer->getSurveyTaken()->getSchool()->getName()
+                );
+
             }
         }
 
