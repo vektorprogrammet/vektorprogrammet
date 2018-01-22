@@ -198,7 +198,6 @@ class Survey implements \JsonSerializable
                     'answerText' => $answer->getAnswer(),
                     'schoolName' => $answer->getSurveyTaken()->getSchool()->getName()
                 );
-
             }
         }
 
