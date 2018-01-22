@@ -37,6 +37,11 @@ class Interview
     protected $room;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $mapLink;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $conducted;
@@ -294,6 +299,23 @@ class Interview
     {
         $this->room = $room;
     }
+
+    /**
+     * @return string
+     */
+    public function getMapLink()
+    {
+        return $this->mapLink;
+    }
+
+    /**
+     * @param string mapLink
+     */
+    public function setMapLink($mapLink)
+    {
+        $this->mapLink = $mapLink;
+    }
+
 
     /**
      * Is the given User the interviewer of this Interview?
