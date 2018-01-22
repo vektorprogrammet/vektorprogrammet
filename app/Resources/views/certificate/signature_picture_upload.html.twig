@@ -16,7 +16,8 @@
             {{ form_start(form) }}
             <div class="row">
                 <div class="small-8 columns">
-                    {{ form_row(form.description) }}
+                    <label>Beskrivelse (Feks. Leder, Vektorprogrammet) </br> <span id="descriptionLength"></span> tegn igjen
+                        {{ form_row(form.description) }}</label>
                 </div>
             </div>
             {#<label for="form_signature_path">Age</label>#}
@@ -76,6 +77,23 @@
         setTimeout(function () {
             $('.alert-box').fadeOut(800);
         }, 1500)
+    </script>
+
+
+    <script>
+        var descriptionInput = document.getElementById('create_signature_description');
+        var descriptionLength = document.getElementById('descriptionLength');
+        function updateDescriptionLength() {
+            var charactersLeft = (45 - descriptionInput.value.length);
+            descriptionLength.innerHTML = charactersLeft;
+            if (charactersLeft <= 0) {
+                descriptionLength.style.color = 'red';
+            } else {
+                descriptionLength.style.color = 'black';
+            }
+        }
+        descriptionInput.addEventListener('keyup', updateDescriptionLength, false);
+        updateDescriptionLength()
     </script>
 
 {% endblock %}
