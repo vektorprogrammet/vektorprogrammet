@@ -103,7 +103,7 @@ class AdmissionControllerTest extends BaseWebTestCase
         $form['application[applicationPractical][days][friday]'] = 'Bra';
         $form['application[applicationPractical][doublePosition]'] = 0;
         $form['application[applicationPractical][preferredGroup]'] = 'Bolk 1';
-        $form['application[applicationPractical][english]'] = 1;
+        $form['application[applicationPractical][language]'] = 'Engelsk';
         $form['application[applicationPractical][teamInterest]'] = $teamInterest;
 
         self::createAssistantClient()->submit($form);
