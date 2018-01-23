@@ -8,6 +8,8 @@
 
 html.noscroll, body.noscroll {
   overflow: hidden;
+  position: relative;
+  height: 100%;
 }
 
 body {
