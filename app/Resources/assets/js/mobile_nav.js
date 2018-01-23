@@ -129,9 +129,11 @@ class SideNav {
     this.touchingSideNav = false;
 
     const translateX = Math.min(0, this.currentX - this.startX);
+    const distance = this.startX - this.currentX;
     this.sideNavContainerEl.style.transform = '';
 
-    if (translateX < 0) {
+
+    if (translateX < 0 && distance > 100) {
       this.hideSideNav();
     }
   }
