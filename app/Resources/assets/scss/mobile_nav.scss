@@ -1,9 +1,8 @@
 .header__menu-toggle {
   background: none;
   border: none;
-  width: 24px;
-  height: 24px;
-  padding: 0;
+  width: 40px;
+  height: 40px;
   margin: 0;
   color: #333;
   &:focus {
@@ -76,8 +75,9 @@
   background: none;
   border: none;
   color: #FFF;
-  width: 24px;
-  height: 24px;
+  width: 50px;
+  height: 50px;
+  text-align: left;
   padding: 0;
   margin: 0;
 }
@@ -96,7 +96,6 @@
 }
 
 .mobile-nav__content {
-  padding-top: 32px;
   flex: 1;
   list-style: none;
   padding: 0;
@@ -116,6 +115,7 @@
   }
 
   a {
+    display: block;
     color: #333;
     &.active, &:hover, &:active {
       font-weight: 700;
