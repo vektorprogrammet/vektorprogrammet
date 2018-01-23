@@ -1,0 +1,134 @@
+.header__menu-toggle {
+  background: none;
+  border: none;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  margin: 0;
+  color: #333;
+}
+
+.mobile-nav {
+  z-index: 1000;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.mobile-nav--visible {
+  pointer-events: auto;
+}
+
+.mobile-nav::before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity 0.3s cubic-bezier(0,0,0.3,1);
+}
+
+.mobile-nav__container {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  background: #FFF;
+  height: 100%;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.4);
+  transform: translateX(-102%);
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+.mobile-nav--animatable .mobile-nav__container {
+  transition: transform 0.13s cubic-bezier(0,0,0.3,1);
+}
+
+.mobile-nav--visible.mobile-nav--animatable .mobile-nav__container {
+  transition: transform 0.33s cubic-bezier(0,0,0.3,1);
+}
+
+.mobile-nav--visible::before {
+  opacity: 1;
+}
+
+.mobile-nav--visible .mobile-nav__container {
+  transform: none;
+}
+
+.mobile-nav__hide {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  background: none;
+  border: none;
+  color: #FFF;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  margin: 0;
+}
+
+.mobile-nav__header {
+  height: 175px;
+  background: #0071CD;
+  color: #FFF;
+  display: flex;
+  padding: 16px;
+  align-items: flex-end;
+  font-size: 24px;
+  a {
+    color: #FFF;
+  }
+}
+
+.mobile-nav__content {
+  padding-top: 32px;
+  flex: 1;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-nav__content li {
+  height: 48px;
+  line-height: 48px;
+  padding: 0 16px;
+
+  &:first-of-type {
+    margin-top: 16px;
+  }
+
+  a {
+    color: #333;
+    &.active, &:hover, &:active {
+      font-weight: 700;
+      color: #0071CD;
+      text-decoration: none;
+    }
+  }
+
+  &.text-danger {
+    a {
+      color: rgba(255, 53, 69, 0.6);
+    }
+  }
+
+  &.nav-title {
+    font-weight: 700;
+    font-size: 20px;
+  }
+}
