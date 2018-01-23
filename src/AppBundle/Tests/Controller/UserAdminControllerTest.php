@@ -33,48 +33,12 @@ class UserAdminControllerTest extends BaseWebTestCase
         $form['createUser[phone]'] = '22288222';
         $form['createUser[email]'] = 'fornavn2@mail.com';
         $form['createUser[fieldOfStudy]']->select(1);
-        $form['createUser[role]']->select('assistant');
 
         // submit the form
         $crawler = $client->submit($form);
 
         // Assert that the response is the correct redirect
         $this->assertTrue($client->getResponse()->isRedirection());
-
-        // Follow the redirect
-        $crawler = $client->followRedirect();
-    }
-
-    public function testCreateUserSuperadmin()
-    {
-
-        // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $crawler = $client->request('GET', '/kontrollpanel/brukeradmin/opprett/2');
-
-        // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opprett bruker")')->count());
-
-        $form = $crawler->selectButton('Opprett')->form();
-
-        // Change the value of a field
-        $form['createUser[firstName]'] = 'fornavn1';
-        $form['createUser[lastName]'] = 'etternavn1';
-        $form['createUser[gender]']->select(0);
-        $form['createUser[phone]'] = '66688666';
-        $form['createUser[email]'] = 'fornavn1@mail.com';
-        $form['createUser[fieldOfStudy]']->select(3);
-        $form['createUser[role]']->select('team_leader');
-
-        // submit the form
-        $crawler = $client->submit($form);
-
-        // Assert that the response is the correct redirect
-        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/brukeradmin'));
 
         // Follow the redirect
         $crawler = $client->followRedirect();
