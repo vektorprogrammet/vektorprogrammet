@@ -239,19 +239,19 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 
     public function findAssistants()
     {
-    	return $this->createQueryBuilder('user')
-		    ->join('user.assistantHistories', 'ah')
-		    ->distinct()
-		    ->getQuery()
-		    ->getResult();
+        return $this->createQueryBuilder('user')
+            ->join('user.assistantHistories', 'ah')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
     }
 
-	public function findTeamMembers()
-	{
-		return $this->createQueryBuilder('user')
-		            ->join('user.workHistories', 'wh')
-		            ->distinct()
-		            ->getQuery()
-		            ->getResult();
-	}
+    public function findTeamMembers()
+    {
+        return $this->createQueryBuilder('user')
+                    ->join('user.workHistories', 'wh')
+                    ->distinct()
+                    ->getQuery()
+                    ->getResult();
+    }
 }

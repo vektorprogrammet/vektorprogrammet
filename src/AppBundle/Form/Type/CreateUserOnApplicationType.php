@@ -10,7 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CreateUserOnApplicationType extends AbstractType
 {
-
     private $departmentId;
     public function __construct($departmentId)
     {
@@ -32,13 +31,13 @@ class CreateUserOnApplicationType extends AbstractType
             ->add('email', 'email', array(
                 'label' => 'E-post',
             ))
-	        ->add('gender', ChoiceType::class, array(
-	        	'choices' => [
-	        		0 => 'Mann',
-			       1 => 'Dame'
-		        ],
-		        'label' => 'Kjønn'
-	        ))
+            ->add('gender', ChoiceType::class, array(
+                'choices' => [
+                    0 => 'Mann',
+                   1 => 'Dame'
+                ],
+                'label' => 'Kjønn'
+            ))
             ->add('fieldOfStudy', 'entity', array(
                 'label' => 'Linje',
                 'class' => 'AppBundle:FieldOfStudy',

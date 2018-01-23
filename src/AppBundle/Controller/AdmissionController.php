@@ -131,6 +131,6 @@ class AdmissionController extends Controller
 
     public function confirmationAction()
     {
-    	return $this->render('admission/application_confirmation.html.twig');
+        return $this->render('admission/application_confirmation.html.twig');
     }
 }

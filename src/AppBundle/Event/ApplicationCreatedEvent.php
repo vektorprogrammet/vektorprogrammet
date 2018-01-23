@@ -29,5 +29,4 @@ class ApplicationCreatedEvent extends Event
     {
         return $this->application;
     }
-
 }

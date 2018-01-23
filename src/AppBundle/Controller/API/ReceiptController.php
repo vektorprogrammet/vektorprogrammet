@@ -25,7 +25,8 @@ class ReceiptController extends FOSRestController implements ClassResourceInterf
      *     }
      * )
      */
-    public function cgetAction() {
+    public function cgetAction()
+    {
         return $this->getDoctrine()->getRepository('AppBundle:Receipt')->findAll();
     }
 

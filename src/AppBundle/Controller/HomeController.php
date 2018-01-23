@@ -12,12 +12,12 @@ class HomeController extends Controller
 {
     public function showAction()
     {
-    	$assistantsCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findAssistants());
-    	$teamMembersCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findTeamMembers());
+        $assistantsCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findAssistants());
+        $teamMembersCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findTeamMembers());
 
         return $this->render('home/index.html.twig', [
-        	'assistantCount' => $assistantsCount + 100, // + Estimated number of assistants not registered in website
-	        'teamMemberCount' => $teamMembersCount + 20 // + Estimated number of team members not registered in website
+            'assistantCount' => $assistantsCount + 100, // + Estimated number of assistants not registered in website
+            'teamMemberCount' => $teamMembersCount + 20 // + Estimated number of team members not registered in website
         ]);
     }
 

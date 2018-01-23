@@ -14,18 +14,18 @@ class ApplicationType extends AbstractType
     {
         // The fields that populate the form
         $builder
-            ->add('user', new CreateUserOnApplicationType($options['departmentId']),array(
+            ->add('user', new CreateUserOnApplicationType($options['departmentId']), array(
                 'label' => '',
             ))
         ->add('yearOfStudy', ChoiceType::class, [
-        	'label' => 'Årstrinn',
-        	'choices' => [
-        		1 => 1,
-		        2 => 2,
-		        3 => 3,
-		        4 => 4,
-		        5 => 5
-	        ]
+            'label' => 'Årstrinn',
+            'choices' => [
+                1 => 1,
+                2 => 2,
+                3 => 3,
+                4 => 4,
+                5 => 5
+            ]
         ]);
     }
 

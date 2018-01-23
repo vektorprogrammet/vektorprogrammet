@@ -15,7 +15,8 @@ class DepartmentService
         $this->geoLocation = $geoLocation;
     }
     
-    public function findDepartmentsSortedByGeolocation() {
+    public function findDepartmentsSortedByGeolocation()
+    {
         $departments = $this->em->getRepository('AppBundle:Department')->findAll();
         $closestDepartment = $this->geoLocation->findNearestDepartment();
         if (!$closestDepartment) {
@@ -31,5 +32,4 @@ class DepartmentService
 
         return $sortedDepartments;
     }
-
 }

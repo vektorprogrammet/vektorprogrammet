@@ -13,58 +13,58 @@ class AssistantController extends Controller
 {
     public function indexAction(Request $request, Department $department = null)
     {
-	    $admissionManager = $this->get('app.application_admission');
-	    if (null === $department) {
+        $admissionManager = $this->get('app.application_admission');
+        if (null === $department) {
             $department = $this->get('app.geolocation')->findNearestDepartment();
-	    }
-	    if (!$department) {
-		    $department = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll()[0];
-	    }
+        }
+        if (!$department) {
+            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll()[0];
+        }
 
-	    $em = $this->getDoctrine()->getManager();
-	    $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
+        $em = $this->getDoctrine()->getManager();
+        $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
 
-	    $teams = $em->getRepository('AppBundle:Team')->findByOpenApplicationAndDepartment($department);
+        $teams = $em->getRepository('AppBundle:Team')->findByOpenApplicationAndDepartment($department);
 
-	    $application = new Application();
+        $application = new Application();
 
-	    $form = $this->createForm(ApplicationType::class, $application, array(
-		    'validation_groups' => array('admission'),
-		    'departmentId' => $department->getId(),
-		    'environment' => $this->get('kernel')->getEnvironment(),
-	    ));
+        $form = $this->createForm(ApplicationType::class, $application, array(
+            'validation_groups' => array('admission'),
+            'departmentId' => $department->getId(),
+            'environment' => $this->get('kernel')->getEnvironment(),
+        ));
 
-	    // Find the relevant newsletter, based on what department the user is applying for
-	    $newsletter = $em->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
+        // Find the relevant newsletter, based on what department the user is applying for
+        $newsletter = $em->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
 
-	    // If the department has no active newsletter, the checkbox is removed.
-	    if ($newsletter === null) {
-		    $form->remove('wantsNewsletter');
-	    }
+        // If the department has no active newsletter, the checkbox is removed.
+        if ($newsletter === null) {
+            $form->remove('wantsNewsletter');
+        }
 
-	    $form->handleRequest($request);
+        $form->handleRequest($request);
 
-	    if ($form->isValid()) {
-		    $admissionManager->setCorrectUser($application);
+        if ($form->isValid()) {
+            $admissionManager->setCorrectUser($application);
 
-		    if ($application->getUser()->hasBeenAssistant()) {
-			    return $this->redirectToRoute('admission_existing_user');
-		    }
+            if ($application->getUser()->hasBeenAssistant()) {
+                return $this->redirectToRoute('admission_existing_user');
+            }
 
-		    $application->setSemester($semester);
-		    $em->persist($application);
-		    $em->flush();
+            $application->setSemester($semester);
+            $em->persist($application);
+            $em->flush();
 
-		    $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+            $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
 
-		    return $this->redirectToRoute('application_confirmation');
-	    }
+            return $this->redirectToRoute('application_confirmation');
+        }
 
-	    return $this->render('assistant/assistants.html.twig', array(
-		    'department' => $department,
-		    'semester' => $semester,
-		    'teams' => $teams,
-		    'form' => $form->createView(),
-	    ));
+        return $this->render('assistant/assistants.html.twig', array(
+            'department' => $department,
+            'semester' => $semester,
+            'teams' => $teams,
+            'form' => $form->createView(),
+        ));
     }
 }
