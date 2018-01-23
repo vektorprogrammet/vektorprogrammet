@@ -6,14 +6,14 @@
 @import url(https://fonts.googleapis.com/css?family=Montserrat:300,400,600,700&subset=latin);
 @import url(https://fonts.googleapis.com/css?family=Lato:400,500,700&subset=latin);
 
+html.noscroll, body.noscroll {
+  overflow: hidden;
+}
+
 body {
   font-family: 'Montserrat', sans-serif;
   color: #333333;
   background: #fafdff;
-
-  &.noscroll {
-    overflow: hidden;
-  }
 }
 
 h1, h2, h3, h4, h5 {
