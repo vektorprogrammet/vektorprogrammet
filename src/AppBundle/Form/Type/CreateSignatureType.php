@@ -12,7 +12,7 @@ class CreateSignatureType extends AbstractType
         $builder
             ->add('description', 'text', array(
                 'label' => ' ',
-                'max_length' => 45,
+                'max_length' => 250,
             ))
             ->add('signature_path', 'file', array(
                 'required' => false,
