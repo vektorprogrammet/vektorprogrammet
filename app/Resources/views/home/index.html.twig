@@ -33,4 +33,26 @@
             </div>
         </div>
     </section>
+
+    <section class="members-info">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <p class="counter">
+                    <span class="text-bold count">{{ assistantCount }}</span><br> Assistenter
+                </p>
+                <p>Over <span class="text-bold">{{ assistantCount }}</span> studenter har hatt et verv som
+                    vektorassistent i Vektorprogrammet.</p>
+                <p><a href="{{ path('assistants') }}">Les mer om assistenter <i class="fa fa-chevron-right"></i></a></p>
+            </div>
+            <div class="col-12 col-md-6">
+                <p class="counter">
+                    <span class="text-bold count">{{ teamMemberCount }}</span><br> I team
+                </p>
+                <p>Over <span class="text-bold">{{ teamMemberCount }}</span> studenter har hatt et verv i et
+                    Vektorprogrammets mange team.</p>
+                <p><a href="{{ path('team') }}">Les mer om verv i team <i class="fa fa-chevron-right"></i></a></p>
+            </div>
+        </div>
+    </section>
+
 {% endblock %}

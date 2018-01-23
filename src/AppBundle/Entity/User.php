@@ -182,7 +182,7 @@ class User implements AdvancedUserInterface, \Serializable
 	 * @JMS\VirtualProperty
 	 * @JMS\SerializedName("department")
 	 */
-	public function department()
+	public function getDepartmentId()
 	{
 		return $this->fieldOfStudy->getDepartment()->getId();
 	}

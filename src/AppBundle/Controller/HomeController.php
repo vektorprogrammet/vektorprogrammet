@@ -4,13 +4,21 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Entity\User;
+use AppBundle\Entity\WorkHistory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class HomeController extends Controller
 {
     public function showAction()
     {
-        return $this->render('home/index.html.twig');
+    	$assistantsCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findAssistants());
+    	$teamMembersCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findTeamMembers());
+
+        return $this->render('home/index.html.twig', [
+        	'assistantCount' => $assistantsCount + 100, // + Estimated number of assistants not registered in website
+	        'teamMemberCount' => $teamMembersCount + 20 // + Estimated number of team members not registered in website
+        ]);
     }
 
     public function activeAdmissionAction()
