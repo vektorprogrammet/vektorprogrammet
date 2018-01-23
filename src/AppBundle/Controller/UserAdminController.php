@@ -24,8 +24,7 @@ class UserAdminController extends Controller
 
         $form = $this->createForm(CreateUserType::class, $user, array(
             'validation_groups' => array('create_user'),
-            'department' => $department,
-            'user_role' => $this->isGranted(Roles::TEAM_LEADER) ? Roles::TEAM_LEADER : Roles::TEAM_MEMBER,
+            'department' => $department
         ));
 
         // Handle the form
@@ -33,15 +32,9 @@ class UserAdminController extends Controller
 
         // The fields of the form is checked if they contain the correct information
         if ($form->isValid()) {
-            $roleAlias = $form->get('role')->getData();
-            if (!$this->get('app.roles')->loggedInUserCanCreateUserWithRole($roleAlias)) {
-                throw new BadRequestHttpException();
-            }
-
-            $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findByRoleName($this->get('app.roles')->mapAliasToRole($roleAlias));
+            $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findByRoleName(Roles::ASSISTANT);
             $user->addRole($role);
 
-            // Persist the user
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();

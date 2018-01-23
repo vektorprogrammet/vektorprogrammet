@@ -360,7 +360,7 @@ class InterviewControllerTest extends BaseWebTestCase
         $form = $crawler->selectButton('Lagre tidspunkt')->form();
 
         // Fill in the form
-        $form['scheduleInterview[datetime]'] = '2015-08-10 15:00:00';
+        $form['scheduleInterview[datetime]'] = '10.08.2015 15:00';
 
         // Submit the form
         $client->submit($form);
@@ -391,7 +391,7 @@ class InterviewControllerTest extends BaseWebTestCase
         $form = $crawler->selectButton('Lagre tidspunkt')->form();
 
         // Fill in the form
-        $form['scheduleInterview[datetime]'] = '2015-08-10 15:00:00';
+        $form['scheduleInterview[datetime]'] = '10.08.2015 15:00';
 
         // Submit the form
         $client->submit($form);
