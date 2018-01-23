@@ -10,6 +10,10 @@ body {
   font-family: 'Montserrat', sans-serif;
   color: #333333;
   background: #fafdff;
+
+  &.noscroll {
+    overflow: hidden;
+  }
 }
 
 h1, h2, h3, h4, h5 {

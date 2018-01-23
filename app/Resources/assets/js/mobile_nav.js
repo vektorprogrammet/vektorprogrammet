@@ -51,6 +51,7 @@ class SideNav {
     this.hideButtonEl = document.querySelector('.js-menu-hide');
     this.sideNavEl = document.querySelector('.js-mobile-nav');
     this.sideNavContainerEl = document.querySelector('.js-mobile-nav-container');
+    this.body = document.body;
     // Control whether the container's children can be focused
     // Set initial state to inert since the drawer is offscreen
     this.detabinator = new Detabinator(this.sideNavContainerEl);
@@ -162,6 +163,7 @@ class SideNav {
   }
 
   showSideNav () {
+    this.body.classList.add('noscroll');
     this.sideNavEl.classList.add('mobile-nav--animatable');
     this.sideNavEl.classList.add('mobile-nav--visible');
     this.detabinator.inert = false;
@@ -174,6 +176,7 @@ class SideNav {
   }
 
   hideSideNav () {
+    this.body.classList.remove('noscroll');
     this.sideNavEl.classList.add('mobile-nav--animatable');
     this.sideNavEl.classList.remove('mobile-nav--visible');
     this.detabinator.inert = true;
