@@ -12,7 +12,7 @@ class AdmissionControllerTest extends BaseWebTestCase
 
     public function testCreateWantNewsletterApplication()
     {
-        $path = '/kontrollpanel/nyhetsbrev/4';
+        $path = '/kontrollpanel/nyhetsbrev/abonnenter/4';
 
         $applicationsBefore = $this->countTableRows($path);
 
@@ -25,7 +25,7 @@ class AdmissionControllerTest extends BaseWebTestCase
 
     public function testCreateNotWantNewsletterApplication()
     {
-        $path = '/kontrollpanel/nyhetsbrev/4';
+        $path = '/kontrollpanel/nyhetsbrev/abonnenter/4';
 
         $applicationsBefore = $this->countTableRows($path);
 
