@@ -53,6 +53,7 @@ class ApplicationPracticalType extends AbstractType
             'choices' => array(
                 0 => 'Norsk',
                 1 => 'Engelsk',
+                2 => 'Begge',
             ),
             'expanded' => true,
             'multiple' => false,

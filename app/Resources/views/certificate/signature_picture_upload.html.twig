@@ -16,7 +16,7 @@
             {{ form_start(form) }}
             <div class="row">
                 <div class="small-8 columns">
-                    <label>Beskrivelse (Feks. Leder, Vektorprogrammet) </br> <span id="descriptionLength"></span> tegn igjen
+                    <label>Beskrivelse (Feks. Leder, Vektorprogrammet)
                         {{ form_row(form.description) }}</label>
                 </div>
             </div>
@@ -80,20 +80,5 @@
     </script>
 
 
-    <script>
-        var descriptionInput = document.getElementById('create_signature_description');
-        var descriptionLength = document.getElementById('descriptionLength');
-        function updateDescriptionLength() {
-            var charactersLeft = (45 - descriptionInput.value.length);
-            descriptionLength.innerHTML = charactersLeft;
-            if (charactersLeft <= 0) {
-                descriptionLength.style.color = 'red';
-            } else {
-                descriptionLength.style.color = 'black';
-            }
-        }
-        descriptionInput.addEventListener('keyup', updateDescriptionLength, false);
-        updateDescriptionLength()
-    </script>
 
 {% endblock %}
