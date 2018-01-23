@@ -24,11 +24,12 @@ class ModifySubstituteType extends AbstractType
             'label' => 'År',
         ));
 
-        $builder->add('english', 'choice', array(
-            'label' => 'Kan undervise på engelsk',
+        $builder->add('language', 'choice', array(
+            'label' => 'Ønsket undervisningsspråk',
             'choices' => array(
-                0 => 'Nei',
-                1 => 'Ja',
+                'Norsk' => 'Norsk',
+                'Engelsk' => 'Engelsk',
+                'Norsk og engelsk' => 'Norsk og engelsk',
             ),
             'expanded' => true,
             'multiple' => false,
