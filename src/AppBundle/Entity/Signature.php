@@ -30,7 +30,7 @@ class Signature
     private $signaturePath;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="string", length=250)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      * @Assert\Length(min = 1, max = 250, maxMessage="Beskrivelsen kan maks være 250 tegn."))
      */

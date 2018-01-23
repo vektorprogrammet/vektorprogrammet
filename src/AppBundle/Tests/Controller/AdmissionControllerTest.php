@@ -91,7 +91,6 @@ class AdmissionControllerTest extends BaseWebTestCase
     private function createAndSubmitForm_teamInterest(bool $teamInterest)
     {
         $crawler = $this->assistantGoTo('/opptak/eksisterende');
-
         $submitButton = $crawler->selectButton('Søk');
         $form = $submitButton->form();
 
