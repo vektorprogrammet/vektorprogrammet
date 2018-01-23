@@ -97,7 +97,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application3->setThursday('Bra');
         $application3->setFriday('Ikke');
         $application3->setHeardAboutFrom(array( 'Stand' ));
-        $application3->setEnglish(true);
+        $application3->setLanguage('Norsk og engelsk');
         $application3->setPreferredGroup('Bolk 1');
         $application3->setDoublePosition(true);
         $application3->setTeamInterest(true);
@@ -143,7 +143,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application4->setThursday('Bra');
         $application4->setFriday('Ikke');
         $application4->setHeardAboutFrom(array( 'Stand' ));
-        $application4->setEnglish(false);
+        $application4->setLanguage('Norsk');
         $application4->setPreferredGroup('Bolk 1');
         $application4->setDoublePosition(false);
 
@@ -196,7 +196,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application20->setThursday('Ikke');
         $application20->setFriday('Bra');
         $application20->setHeardAboutFrom(array( 'Stand' ));
-        $application20->setEnglish(true);
+        $application20->setLanguage('Norsk');
         $application20->setPreferredGroup('Bolk 1');
         $application20->setDoublePosition(true);
 
@@ -259,7 +259,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application->setThursday($randomArr[3] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
         $application->setFriday($randomArr[4] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
         $application->setHeardAboutFrom(array( 'Stand' ));
-        $application->setEnglish(mt_rand(0, 100) < 10 ? true : false);
+        $application->setLanguage($randomArr[0] || mt_rand(0, 100) < 20 ? 'Norsk' : 'Engelsk');
         $application->setPreferredGroup(mt_rand(0, 100) < 50 ? 'Bolk 1' : 'Bolk 2');
         $application->setDoublePosition(mt_rand(0, 100) < 10 ? true : false);
 
