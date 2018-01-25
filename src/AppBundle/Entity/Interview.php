@@ -102,7 +102,7 @@ class Interview
     /**
      * @ORM\Column(type="string")
      * @Assert\Length(max=250)
-     * @Assert\NotNull()
+     * @Assert\NotBlank()
      *
      * @var string
      */
