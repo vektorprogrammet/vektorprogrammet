@@ -30,8 +30,8 @@ class InterviewNewTimeType extends AbstractType
         ));
     }
 
-    public function getBlockPrefix()
+    public function getName()
     {
-        return 'app_bundle_interview_new_time_type';
+        return 'InterviewNewTime';
     }
 }
