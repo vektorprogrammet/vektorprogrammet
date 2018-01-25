@@ -100,8 +100,9 @@ class Interview
     private $cancelMessage;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string")
      * @Assert\Length(max=250)
+     * @Assert\NotNull()
      *
      * @var string
      */
