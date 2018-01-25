@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -10,39 +11,30 @@ class DaysType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $workChoices = array(
-            'Bra' => 'Passer bra',
-            'Ikke' => 'Passer ikke',
-        );
 
-        $builder->add('monday', 'choice', array(
+        $builder->add('monday', CheckboxType::class, array(
             'label' => 'Mandag',
-            'choices' => $workChoices,
-            'expanded' => true,
+            'required' => false,
         ));
 
-        $builder->add('tuesday', 'choice', array(
+        $builder->add('tuesday', CheckboxType::class, array(
             'label' => 'Tirsdag',
-            'choices' => $workChoices,
-            'expanded' => true,
+            'required' => false,
         ));
 
-        $builder->add('wednesday', 'choice', array(
+        $builder->add('wednesday', CheckboxType::class, array(
             'label' => 'Onsdag',
-            'choices' => $workChoices,
-            'expanded' => true,
+            'required' => false,
         ));
 
-        $builder->add('thursday', 'choice', array(
+        $builder->add('thursday', CheckboxType::class, array(
             'label' => 'Torsdag',
-            'choices' => $workChoices,
-            'expanded' => true,
+            'required' => false,
         ));
 
-        $builder->add('friday', 'choice', array(
+        $builder->add('friday', CheckboxType::class, array(
             'label' => 'Fredag',
-            'choices' => $workChoices,
-            'expanded' => true,
+            'required' => false,
         ));
     }
 

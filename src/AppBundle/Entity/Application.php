@@ -30,32 +30,32 @@ class Application
     private $yearOfStudy;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
+     * @ORM\Column(type="boolean")
+     * @var bool
      */
     private $monday;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
+     * @ORM\Column(type="boolean")
+     * @var bool
      */
     private $tuesday;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
+     * @ORM\Column(type="boolean")
+     * @var bool
      */
     private $wednesday;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
+     * @ORM\Column(type="boolean")
+     * @var bool
      */
     private $thursday;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
+     * @ORM\Column(type="boolean")
+     * @var bool
      */
     private $friday;
 
@@ -145,6 +145,11 @@ class Application
         $this->teamInterest = false;
         $this->wantsNewsletter = false;
         $this->specialNeeds = '';
+        $this->monday = true;
+        $this->tuesday = true;
+        $this->wednesday = true;
+        $this->thursday = true;
+        $this->friday = true;
     }
 
     /**
@@ -190,84 +195,86 @@ class Application
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getMonday()
+    public function isMonday(): bool
     {
         return $this->monday;
     }
 
     /**
-     * @param string $monday
+     * @param bool $monday
      */
-    public function setMonday($monday)
+    public function setMonday(bool $monday)
     {
         $this->monday = $monday;
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getTuesday()
+    public function isTuesday(): bool
     {
         return $this->tuesday;
     }
 
     /**
-     * @param string $tuesday
+     * @param bool $tuesday
      */
-    public function setTuesday($tuesday)
+    public function setTuesday(bool $tuesday)
     {
         $this->tuesday = $tuesday;
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getWednesday()
+    public function isWednesday(): bool
     {
         return $this->wednesday;
     }
 
     /**
-     * @param string $wednesday
+     * @param bool $wednesday
      */
-    public function setWednesday($wednesday)
+    public function setWednesday(bool $wednesday)
     {
         $this->wednesday = $wednesday;
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getThursday()
+    public function isThursday(): bool
     {
         return $this->thursday;
     }
 
     /**
-     * @param string $thursday
+     * @param bool $thursday
      */
-    public function setThursday($thursday)
+    public function setThursday(bool $thursday)
     {
         $this->thursday = $thursday;
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getFriday()
+    public function isFriday(): bool
     {
         return $this->friday;
     }
 
     /**
-     * @param string $friday
+     * @param bool $friday
      */
-    public function setFriday($friday)
+    public function setFriday(bool $friday)
     {
         $this->friday = $friday;
     }
+
+
     /**
      * @return string
      */

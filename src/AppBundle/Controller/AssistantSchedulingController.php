@@ -48,11 +48,11 @@ class AssistantSchedulingController extends Controller
 
             $availability = array();
             $availabilityBooleans = ['Ikke', 'Bra']; /* False, True */
-            $availability['Monday'] = array_search($application->getMonday(), $availabilityBooleans);
-            $availability['Tuesday'] = array_search($application->getTuesday(), $availabilityBooleans);
-            $availability['Wednesday'] = array_search($application->getWednesday(), $availabilityBooleans);
-            $availability['Thursday'] = array_search($application->getThursday(), $availabilityBooleans);
-            $availability['Friday'] = array_search($application->getFriday(), $availabilityBooleans);
+            $availability['Monday'] = array_search($application->isMonday(), $availabilityBooleans);
+            $availability['Tuesday'] = array_search($application->isTuesday(), $availabilityBooleans);
+            $availability['Wednesday'] = array_search($application->isWednesday(), $availabilityBooleans);
+            $availability['Thursday'] = array_search($application->isThursday(), $availabilityBooleans);
+            $availability['Friday'] = array_search($application->isFriday(), $availabilityBooleans);
 
             $assistant = new Assistant();
             $assistant->setName($application->getUser()->getFullName());
@@ -92,11 +92,11 @@ class AssistantSchedulingController extends Controller
         $schools = array();
         foreach ($schoolCapacities as $sc) {
             $capacityDays = array();
-            $capacityDays['Monday'] = $sc->getMonday();
-            $capacityDays['Tuesday'] = $sc->getTuesday();
-            $capacityDays['Wednesday'] = $sc->getWednesday();
-            $capacityDays['Thursday'] = $sc->getThursday();
-            $capacityDays['Friday'] = $sc->getFriday();
+            $capacityDays['Monday'] = $sc->isMonday();
+            $capacityDays['Tuesday'] = $sc->isTuesday();
+            $capacityDays['Wednesday'] = $sc->isWednesday();
+            $capacityDays['Thursday'] = $sc->isThursday();
+            $capacityDays['Friday'] = $sc->isFriday();
 
             $capacity = array();
             $capacity[1] = $capacityDays;

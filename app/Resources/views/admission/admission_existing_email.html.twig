@@ -23,11 +23,11 @@ Dobbel stilling: {{ application.doublePosition ? 'Ja' : 'Nei' }}
 Ønsket undervisningsspråk: {{ application.language }}
 
 Dager som passer
-Mandag: {{ application.monday }}
-Tirsdag: {{ application.tuesday }}
-Onsdag: {{ application.wednesday }}
-Torsdag: {{ application.thursday }}
-Fredag: {{ application.friday }}
+Mandag: {{ application.monday ? "Bra" : "Ikke" }}
+Tirsdag: {{ application.tuesday ? "Bra" : "Ikke" }}
+Onsdag: {{ application.wednesday ? "Bra" : "Ikke" }}
+Torsdag: {{ application.thursday ? "Bra" : "Ikke" }}
+Fredag: {{ application.friday ? "Bra" : "Ikke" }}
 
 ---
 

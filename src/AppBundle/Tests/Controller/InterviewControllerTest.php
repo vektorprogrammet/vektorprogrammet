@@ -17,11 +17,11 @@ class InterviewControllerTest extends BaseWebTestCase
         $form = $crawler->selectButton('Lagre')->form();
 
         // Fill in the form
-        $form['application[applicationPractical][days][monday]']->select('Bra');
-        $form['application[applicationPractical][days][tuesday]']->select('Bra');
-        $form['application[applicationPractical][days][wednesday]']->select('Ikke');
-        $form['application[applicationPractical][days][thursday]']->select('Bra');
-        $form['application[applicationPractical][days][friday]']->select('Ikke');
+        $form['application[applicationPractical][days][monday]']->tick();
+        $form['application[applicationPractical][days][tuesday]']->tick();
+        $form['application[applicationPractical][days][wednesday]']->untick();
+        $form['application[applicationPractical][days][thursday]']->tick();
+        $form['application[applicationPractical][days][friday]']->untick();
 
         $form['application[applicationPractical][doublePosition]']->select('1');
         $form['application[applicationPractical][preferredGroup]']->select('Bolk 1');
@@ -50,11 +50,11 @@ class InterviewControllerTest extends BaseWebTestCase
         $form = $crawler->selectButton('Lagre')->form();
 
         // Fill in the form
-        $form['application[applicationPractical][days][monday]']->select('Bra');
-        $form['application[applicationPractical][days][tuesday]']->select('Bra');
-        $form['application[applicationPractical][days][wednesday]']->select('Ikke');
-        $form['application[applicationPractical][days][thursday]']->select('Bra');
-        $form['application[applicationPractical][days][friday]']->select('Ikke');
+        $form['application[applicationPractical][days][monday]']->tick();
+        $form['application[applicationPractical][days][tuesday]']->tick();
+        $form['application[applicationPractical][days][wednesday]']->untick();
+        $form['application[applicationPractical][days][thursday]']->tick();
+        $form['application[applicationPractical][days][friday]']->untick();
 
         $form['application[applicationPractical][doublePosition]']->select('1');
         $form['application[applicationPractical][preferredGroup]']->select('Bolk 1');
