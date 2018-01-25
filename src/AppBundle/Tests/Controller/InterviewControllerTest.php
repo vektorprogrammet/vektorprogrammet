@@ -76,8 +76,8 @@ class InterviewControllerTest extends BaseWebTestCase
     private function verifyInterview($crawler)
     {
         $this->assertEquals(2, $crawler->filter('p:contains("Test answer")')->count());
-        $this->assertEquals(3, $crawler->filter('td:contains("Bra")')->count());
-        $this->assertEquals(2, $crawler->filter('td:contains("Ikke")')->count());
+        $this->assertEquals(2, $crawler->filter('td:contains("Bra")')->count());
+        $this->assertEquals(3, $crawler->filter('td:contains("Ikke")')->count());
         $this->assertGreaterThan(0, $crawler->filter('td:contains("5")')->count());
         $this->assertGreaterThan(0, $crawler->filter('td:contains("4")')->count());
         $this->assertGreaterThan(0, $crawler->filter('td:contains("6")')->count());

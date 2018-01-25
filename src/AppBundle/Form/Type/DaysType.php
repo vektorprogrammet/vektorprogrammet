@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -36,6 +37,60 @@ class DaysType extends AbstractType
             'label' => 'Fredag passer IKKE',
             'required' => false,
         ));
+
+        /* Invert the truth values */
+        $builder->get('monday')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($in) {
+                    return !$in; /* The object value displayed */
+                },
+                function ($in) {
+                    return !$in; /* The submitted value into the object */
+                }
+            ));
+
+
+        $builder->get('tuesday')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($in) {
+                    return !$in;
+                },
+                function ($in) {
+                    return !$in;
+                }
+            ));
+
+
+        $builder->get('wednesday')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($in) {
+                    return !$in;
+                },
+                function ($in) {
+                    return !$in;
+                }
+            ));
+
+
+        $builder->get('thursday')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($in) {
+                    return !$in;
+                },
+                function ($in) {
+                    return !$in;
+                }
+            ));
+
+        $builder->get('friday')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($in) {
+                    return !$in;
+                },
+                function ($in) {
+                    return !$in;
+                }
+            ));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
