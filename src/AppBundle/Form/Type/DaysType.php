@@ -12,7 +12,6 @@ class DaysType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder->add('monday', CheckboxType::class, array(
             'label' => 'Mandag passer IKKE',
             'required' => false,
