@@ -1093,7 +1093,7 @@ interview_accept_by_response:
 interview_request_new_time_by_response:
     path: /intervju/nytid/{responseCode}
     defaults: { _controller: AppBundle:Interview:requestNewTime }
-    methods: [POST]
+    methods: [GET, POST]
     requirements:
       reponseCode: \w+
 

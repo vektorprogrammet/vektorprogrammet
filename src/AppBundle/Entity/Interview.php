@@ -100,6 +100,15 @@ class Interview
     private $cancelMessage;
 
     /**
+     * @ORM\Column(type="string", length=2000)
+     * @Assert\Length(max=2000)
+     * @Assert\NotBlank()
+     *
+     * @var string
+     */
+    private $newTimeMessage;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -108,6 +117,7 @@ class Interview
         $this->conducted = new \DateTime();
         $this->interviewed = false;
         $this->interviewStatus = InterviewStatusType::NO_CONTACT;
+        $this->newTimeMessage = "";
     }
 
     /**
@@ -524,5 +534,21 @@ class Interview
         } else {
             throw new InvalidArgumentException('Invalid status');
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getNewTimeMessage(): string
+    {
+        return $this->newTimeMessage;
+    }
+
+    /**
+     * @param string $newTimeMessage
+     */
+    public function setNewTimeMessage(string $newTimeMessage)
+    {
+        $this->newTimeMessage = $newTimeMessage;
     }
 }
