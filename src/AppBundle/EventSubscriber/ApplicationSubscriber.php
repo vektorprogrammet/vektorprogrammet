@@ -108,10 +108,10 @@ class ApplicationSubscriber implements EventSubscriberInterface
         $application = $event->getApplication();
 
         $user = $application->getUser();
-
-        $this->logger->info("New application from {$user} registered");
-
+        
         $department = $user->getDepartment();
+
+        $this->logger->info("$department: New application from *$user* registered");
 
         $this->applicationData->setDepartment($department);
 
