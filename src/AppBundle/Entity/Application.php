@@ -30,31 +30,31 @@ class Application
     private $yearOfStudy;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default"=true}))
      * @var bool
      */
     private $monday;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default"=true}))
      * @var bool
      */
     private $tuesday;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default"=true}))
      * @var bool
      */
     private $wednesday;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default"=true}))
      * @var bool
      */
     private $thursday;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default"=true}))
      * @var bool
      */
     private $friday;
