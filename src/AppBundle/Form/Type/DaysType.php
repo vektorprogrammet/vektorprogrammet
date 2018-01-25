@@ -13,27 +13,27 @@ class DaysType extends AbstractType
     {
 
         $builder->add('monday', CheckboxType::class, array(
-            'label' => 'Mandag',
+            'label' => 'Mandag passer IKKE',
             'required' => false,
         ));
 
         $builder->add('tuesday', CheckboxType::class, array(
-            'label' => 'Tirsdag',
+            'label' => 'Tirsdag passer IKKE',
             'required' => false,
         ));
 
         $builder->add('wednesday', CheckboxType::class, array(
-            'label' => 'Onsdag',
+            'label' => 'Onsdag passer IKKE',
             'required' => false,
         ));
 
         $builder->add('thursday', CheckboxType::class, array(
-            'label' => 'Torsdag',
+            'label' => 'Torsdag passer IKKE',
             'required' => false,
         ));
 
         $builder->add('friday', CheckboxType::class, array(
-            'label' => 'Fredag',
+            'label' => 'Fredag passer IKKE',
             'required' => false,
         ));
     }
