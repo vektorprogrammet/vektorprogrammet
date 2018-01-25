@@ -100,7 +100,7 @@ class Interview
     private $cancelMessage;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=2000)
      * @Assert\Length(max=2000)
      * @Assert\NotBlank()
      *
