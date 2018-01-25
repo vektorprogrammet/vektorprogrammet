@@ -110,10 +110,10 @@ class ApplicationSubscriber implements EventSubscriberInterface
         $user = $application->getUser();
         
         $department = $user->getDepartment();
-
-        $this->logger->info("$department: New application from *$user* registered");
-
+        
         $this->applicationData->setDepartment($department);
+
+        $this->logger->info("$department: New application from *$user* registered. $department has *{$this->applicationData->getApplicationCount()}* applicants");
 
         $this->slackMessenger->notify("$department: Ny søknad fra *$user* registrert. $department har nå *{$this->applicationData->getApplicationCount()}* søkere: "
             .$this->router->generate('applications_show_by_semester', array('id' => $department->getCurrentOrLatestSemester()->getId()), RouterInterface::ABSOLUTE_URL));
