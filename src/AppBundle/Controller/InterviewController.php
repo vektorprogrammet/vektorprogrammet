@@ -348,6 +348,10 @@ class InterviewController extends Controller
      */
     public function requestNewTimeAction(Request $request, Interview $interview)
     {
+        if (!$interview->isPending()) {
+            throw $this->createNotFoundException();
+        }
+
         $form = $this->createForm(new InterviewNewTimeType(), $interview);
         $form->handleRequest($request);
 
