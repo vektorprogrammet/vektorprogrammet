@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use InvalidArgumentException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * InterviewController is the controller responsible for interview actions,
