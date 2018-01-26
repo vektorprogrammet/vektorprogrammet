@@ -33,6 +33,7 @@
         <td class="text-xs-right">{{ props.item.suitable }}</td>
         <td class="text-xs-right">{{ props.item.score }}</td>
         <td class="text-xs-right">{{ props.item.double }}</td>
+        <td class="text-xs-right">{{ props.item.language }}</td>
         <td class="text-xs-right">{{ props.item.monday }}</td>
         <td class="text-xs-right">{{ props.item.tuesday }}</td>
         <td class="text-xs-right">{{ props.item.wednesday }}</td>
@@ -70,6 +71,7 @@
           {text: 'Passer', value: 'suitable'},
           {text: 'Score', value: 'score'},
           {text: 'Dobbel stilling', value: 'double'},
+          {text: 'Språk', value: 'language'},
           {text: 'Mandag', value: 'monday'},
           {text: 'Tirsdag', value: 'tuesday'},
           {text: 'Onsdag', value: 'wednesday'},
