@@ -419,6 +419,10 @@ ul.alternatives {
   }
 }
 
+.interview-day:not(:last-of-type) .interview-days-checkbox[type="checkbox"] {
+  margin: 0;
+}
+
 .radio-grid {
   margin-left: 0;
   list-style-type: none;
