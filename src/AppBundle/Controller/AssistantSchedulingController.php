@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Application;
 use AppBundle\AssistantScheduling\Assistant;
 use AppBundle\AssistantScheduling\School;
+use AppBundle\Entity\SchoolCapacity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -47,12 +48,11 @@ class AssistantSchedulingController extends Controller
             }
 
             $availability = array();
-            $availabilityBooleans = ['Ikke', 'Bra']; /* False, True */
-            $availability['Monday'] = array_search($application->isMonday(), $availabilityBooleans);
-            $availability['Tuesday'] = array_search($application->isTuesday(), $availabilityBooleans);
-            $availability['Wednesday'] = array_search($application->isWednesday(), $availabilityBooleans);
-            $availability['Thursday'] = array_search($application->isThursday(), $availabilityBooleans);
-            $availability['Friday'] = array_search($application->isFriday(), $availabilityBooleans);
+            $availability['Monday'] = $application->isMonday();
+            $availability['Tuesday'] = $application->isTuesday();
+            $availability['Wednesday'] = $application->isWednesday();
+            $availability['Thursday'] = $application->isThursday();
+            $availability['Friday'] = $application->isFriday();
 
             $assistant = new Assistant();
             $assistant->setName($application->getUser()->getFullName());
@@ -86,17 +86,22 @@ class AssistantSchedulingController extends Controller
         return new JsonResponse(json_encode($schools));
     }
 
+	/**
+	 * @param SchoolCapacity[] $schoolCapacities
+	 *
+	 * @return array
+	 */
     private function generateSchoolsFromSchoolCapacities($schoolCapacities)
     {
         //Use schoolCapacities to create School objects for the SA-Algorithm
         $schools = array();
         foreach ($schoolCapacities as $sc) {
             $capacityDays = array();
-            $capacityDays['Monday'] = $sc->isMonday();
-            $capacityDays['Tuesday'] = $sc->isTuesday();
-            $capacityDays['Wednesday'] = $sc->isWednesday();
-            $capacityDays['Thursday'] = $sc->isThursday();
-            $capacityDays['Friday'] = $sc->isFriday();
+            $capacityDays['Monday'] = $sc->getMonday();
+            $capacityDays['Tuesday'] = $sc->getTuesday();
+            $capacityDays['Wednesday'] = $sc->getWednesday();
+            $capacityDays['Thursday'] = $sc->getThursday();
+            $capacityDays['Friday'] = $sc->getFriday();
 
             $capacity = array();
             $capacity[1] = $capacityDays;

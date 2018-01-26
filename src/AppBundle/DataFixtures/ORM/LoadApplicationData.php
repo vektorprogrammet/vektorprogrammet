@@ -253,11 +253,11 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application->setSemester($this->getReference('semester-current'));
         $randomArr = array( true, false, false, false, false );
         shuffle($randomArr);
-        $application->setMonday($randomArr[0] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
-        $application->setTuesday($randomArr[1] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
-        $application->setWednesday($randomArr[2] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
-        $application->setThursday($randomArr[3] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
-        $application->setFriday($randomArr[4] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
+        $application->setMonday($randomArr[0] || mt_rand(0, 100) < 20);
+        $application->setTuesday($randomArr[1] || mt_rand(0, 100) < 20);
+        $application->setWednesday($randomArr[2] || mt_rand(0, 100) < 20);
+        $application->setThursday($randomArr[3] || mt_rand(0, 100) < 20);
+        $application->setFriday($randomArr[4] || mt_rand(0, 100) < 20);
         $application->setHeardAboutFrom(array( 'Stand' ));
         $application->setLanguage($randomArr[0] || mt_rand(0, 100) < 20 ? 'Norsk' : 'Engelsk');
         $application->setPreferredGroup(mt_rand(0, 100) < 50 ? 'Bolk 1' : 'Bolk 2');
