@@ -158,34 +158,34 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $receipts;
 
-	/**
-	 * @JMS\VirtualProperty
-	 * @JMS\SerializedName("role")
-	 */
-	public function role()
-	{
-		switch ($this->roles[0]->getRole()) {
-			case 'ROLE_USER':
-				return 'assistant';
-			case 'ROLE_ADMIN':
-				return 'team_member';
-			case 'ROLE_SUPER_ADMIN':
-				return 'team_leader';
-			case 'ROLE_HIGHEST_ADMIN':
-				return 'admin';
-			default:
-				return 'user';
-		}
-	}
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("role")
+     */
+    public function role()
+    {
+        switch ($this->roles[0]->getRole()) {
+            case 'ROLE_USER':
+                return 'assistant';
+            case 'ROLE_ADMIN':
+                return 'team_member';
+            case 'ROLE_SUPER_ADMIN':
+                return 'team_leader';
+            case 'ROLE_HIGHEST_ADMIN':
+                return 'admin';
+            default:
+                return 'user';
+        }
+    }
 
-	/**
-	 * @JMS\VirtualProperty
-	 * @JMS\SerializedName("department")
-	 */
-	public function department()
-	{
-		return $this->fieldOfStudy->getDepartment()->getId();
-	}
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("department")
+     */
+    public function getDepartmentId()
+    {
+        return $this->fieldOfStudy->getDepartment()->getId();
+    }
 
     public function __construct()
     {

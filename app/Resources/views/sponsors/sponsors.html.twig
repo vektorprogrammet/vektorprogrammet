@@ -4,12 +4,14 @@
 
 <div class="row text-center">
     {% if large_sponsors is not empty %}
-        <h2>Hovedsponsorer</h2>
+        <div class="col-12">
+            <h2>Hovedsponsorer</h2>
+        </div>
         {% for sponsor in large_sponsors %}
-            <div class="small-12 medium-6 large-6 sponsor-column {{ loop.last? 'end':'' }} {% if (((large_sponsors|length) % 2) == 1) and loop.last %}medium-offset-3{% endif %} columns">
+            <div class="col-12 col-sm-6 sponsor-column {% if (((large_sponsors|length) % 2) == 1) %} offset-sm-3{% endif %}">
                 <a href="{{ sponsor.url }}">
-                    <span class="vertical-align-image-helper"></span><img class="sponsor-img-large"
-                                                                          src="{{ asset_with_version(sponsor.logoImagePath) }}">
+                    <img class="img-fluid sponsor-img-large"
+                         src="{{ asset_with_version(sponsor.logoImagePath) }}">
                 </a>
             </div>
         {% endfor %}
@@ -19,33 +21,16 @@
 
 <div class="row text-center">
     {% if medium_sponsors is not empty or small_sponsors is not empty %}
-        <h3>Sponsorer og partnere</h3>
+        <div class="col-12">
+            <h3>Sponsorer og partnere</h3>
+        </div>
     {% endif %}
-    {% for sponsor in medium_sponsors %}
-        <div class="small-6 medium-4 large-4 sponsor-column {{ loop.last? 'end':'' }}
-        {% if (((medium_sponsors|length) % 3) == 1) and loop.last %}medium-offset-4
-        {% elseif (((medium_sponsors|length) % 3) == 2) and loop.index == (medium_sponsors|length - 1) %}medium-offset-2
-        {% endif %} columns">
+    {% for sponsor in medium_sponsors | merge(small_sponsors) %}
+        <div class="col-6 col-md-4 sponsor-column">
             <a href="{{ sponsor.url }}">
-                <span class="vertical-align-image-helper"></span><img class="sponsor-img-{{ sponsor.size }}"
-                                                                      src="{{ asset_with_version(sponsor.logoImagePath) }}">
+                <img class="img-fluid sponsor-img-{{ sponsor.size }}"
+                     src="{{ asset_with_version(sponsor.logoImagePath) }}">
             </a>
         </div>
     {% endfor %}
 </div>
-
-<div class="row text-center">
-    {% for sponsor in small_sponsors %}
-        <div class="small-6 medium-3 large-3 sponsor-column {{ loop.last? 'end':'' }}
-        {% if (((small_sponsors|length) % 4) == 1) and loop.last %}small-12
-        {% elseif (((small_sponsors|length) % 4) == 2) and loop.index == (small_sponsors|length - 1) %}medium-offset-3
-        {% elseif (((small_sponsors|length) % 4) == 3) and loop.index == (small_sponsors|length - 2) %}medium-offset-1
-        {% endif %} columns">
-            <a href="{{ sponsor.url }}">
-                <span class="vertical-align-image-helper"></span><img class="sponsor-img-{{ sponsor.size }}"
-                                                                      src="{{ asset_with_version(sponsor.logoImagePath) }}">
-            </a>
-        </div>
-    {% endfor %}
-</div>
-

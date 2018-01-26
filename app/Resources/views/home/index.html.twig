@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_new.html.twig' %}
 
 {% block title %}
     Vektorprogrammet
@@ -12,16 +12,17 @@
 {% block body %}
 
     <section class="row hero">
-        <div class="col-xs-12 col-md-12">
+        <div class="container">
             <div class="row hero-section">
-                <div class="col-xs-6 col-md-6">
+                <div class="col-12 col-md-6">
                     <h1 class="d-md-none mobile">Vektorprogrammet</h1>
                     <img class="hero-image" src="{{ asset_with_version('images/blackboard.png') }}">
                 </div>
-                <div class="col-xs-6 col-md-6">
+                <div class="col-12 col-md-6">
                     <div class="hero-content">
                         <h1 class="d-none d-md-block">Vektorprogrammet</h1>
-                        <p>- sender studenter til ungdomsskoler for å hjelpe til som assistentlærere i matematikkundervisningen</p>
+                        <p>- sender studenter til ungdomsskoler for å hjelpe til som assistentlærere i
+                            matematikkundervisningen</p>
                         <a href="{{ path('assistants') }}">
                             <button class="btn btn-success cta-link">
                                 Les mer og bli assistent
@@ -32,4 +33,31 @@
             </div>
         </div>
     </section>
+
+    <section class="members-info">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <p class="counter">
+                    <span class="text-bold count">{{ assistantCount }}</span><br> Assistenter
+                </p>
+                <p>Over <span class="text-bold">{{ assistantCount }}</span> studenter har hatt et verv som
+                    vektorassistent i Vektorprogrammet.</p>
+                <p><a href="{{ path('assistants') }}">Les mer om assistenter <i class="fa fa-chevron-right"></i></a></p>
+            </div>
+            <div class="col-12 col-md-6">
+                <p class="counter">
+                    <span class="text-bold count">{{ teamMemberCount }}</span><br> I team
+                </p>
+                <p>Over <span class="text-bold">{{ teamMemberCount }}</span> studenter har hatt et verv i et
+                    Vektorprogrammets mange team.</p>
+                <p><a href="{{ path('team') }}">Les mer om verv i team <i class="fa fa-chevron-right"></i></a></p>
+            </div>
+        </div>
+    </section>
+
+    <section class="sponsors">
+        <hr>
+        {{ include('sponsors/sponsors.html.twig') }}
+    </section>
+
 {% endblock %}

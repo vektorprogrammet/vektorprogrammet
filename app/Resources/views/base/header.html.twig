@@ -1,6 +1,9 @@
 <div class="top-header">
     <div class="container">
-        <nav class="main-navigation">
+        <div class="d-md-none">
+            <button class="js-menu-show header__menu-toggle"><i class="fa fa-2x fa-bars"></i></button>
+        </div>
+        <nav class="main-navigation d-none d-md-flex">
             {% include 'base/logo_link.html.twig' %}
             <div class="menu-items">
                 {{ include('base/user_dropdown.html.twig') }}
@@ -14,3 +17,32 @@
         </nav>
     </div>
 </div>
+
+<aside class="js-mobile-nav mobile-nav">
+    <nav class="js-mobile-nav-container mobile-nav__container">
+        <button class="js-menu-hide mobile-nav__hide"><i class="fa fa-2x fa-times"></i></button>
+        <header class="mobile-nav__header">
+            <a href="{{ path('home') }}">Vektorprogrammet</a>
+        </header>
+        <ul class="mobile-nav__content">
+            <li>{% include('base/menu_item.html.twig') with {route: 'assistants', name: 'Assistenter'} %}</li>
+            <li>{% include('base/menu_item.html.twig') with {route: 'team', name: 'Team'} %}</li>
+            <li>{% include('base/menu_item.html.twig') with {route: 'about', name: 'Om oss'} %}</li>
+            <li>{% include('base/menu_item.html.twig') with {route: 'contact', name: 'Kontakt'} %}</li>
+            <hr>
+            {% if is_granted_assistant() %}
+                <li class="nav-title">{{ app.user }}</li>
+                {% if is_granted_team_member() %}
+                    <li>{% include 'base/menu_item.html.twig' with {route: 'control_panel', name: 'Kontrollpanel'} %}</li>
+                {% endif %}
+                <li>{% include 'base/menu_item.html.twig' with {route: 'profile', name: 'Profil'} %}</li>
+                <li>{% include 'base/menu_item.html.twig' with {route: 'receipt_create', name: 'Mine utlegg'} %}</li>
+                <li>{% include 'base/menu_item.html.twig' with {route: 'members_show', name: 'Assistenter'} %}</li>
+                <li class="text-danger">{% include 'base/menu_item.html.twig' with {route: 'logout', name: 'Logg ut'} %}</li>
+                <br>
+            {% else %}
+                <li>{% include('base/menu_item.html.twig') with {route: 'login_route', name: 'Logg inn'} %}</li>
+            {% endif %}
+        </ul>
+    </nav>
+</aside>

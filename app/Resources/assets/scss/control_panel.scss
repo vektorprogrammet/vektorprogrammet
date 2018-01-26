@@ -4,51 +4,12 @@
 @import "../../../../node_modules/font-awesome/scss/font-awesome";
 @import "partials/fonts";
 @import "partials/typography";
+@import "header";
+@import "mobile_nav";
 @import "modules/well";
 @import "modules/colors";
 @import "modules/team.scss";
 @import "modules/interview_confirmation.scss";
-
-// Or selectively include components
-// @import
-//   "foundation/components/accordion",
-//   "foundation/components/alert-boxes",
-//   "foundation/components/block-grid",
-//   "foundation/components/breadcrumbs",
-//   "foundation/components/button-groups",
-//   "foundation/components/buttons",
-//   "foundation/components/clearing",
-//   "foundation/components/dropdown",
-//   "foundation/components/dropdown-buttons",
-//   "foundation/components/flex-video",
-//   "foundation/components/forms",
-//   "foundation/components/grid",
-//   "foundation/components/inline-lists",
-//   "foundation/components/joyride",
-//   "foundation/components/keystrokes",
-//   "foundation/components/labels",
-//   "foundation/components/magellan",
-//   "foundation/components/orbit",
-//   "foundation/components/pagination",
-//   "foundation/components/panels",
-//   "foundation/components/pricing-tables",
-//   "foundation/components/progress-bars",
-//   "foundation/components/reveal",
-//   "foundation/components/side-nav",
-//   "foundation/components/split-buttons",
-//   "foundation/components/sub-nav",
-//   "foundation/components/switches",
-//   "foundation/components/tables",
-//   "foundation/components/tabs",
-//   "foundation/components/thumbs",
-//   "foundation/components/tooltips",
-//   "foundation/components/top-bar",
-//   "foundation/components/type",
-//   "foundation/components/offcanvas",
-//   "foundation/components/visibility";
-
-// Global
-// - - - - - - - - - - - - - - - - - - - - - - - - -
 
 body {
   background: $vektor-white;
@@ -143,61 +104,8 @@ body {
 // Header
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 
-.topbar {
-  width: 100%;
-  height: rem-calc(15);
-  background: $vektor-blue;
-  color: $vektor-white;
-  font-size: rem-calc(15);
-  margin-bottom: rem-calc(22);
-
-  .row, .columns {
-    height: rem-calc(30);
-  }
-
-  ul {
-    margin: $inline-list-top-margin $inline-list-opposite-margin 0 $inline-list-default-float-margin;
-    position: absolute;
-    bottom: 0.2rem;
-    right: 2rem + $column-gutter / 2;
-  }
-
-  li {
-    margin: 0 0.3rem 0 0;
-  }
-
-  i.fa-chevron-up, ul {
-    display: none;
-  }
-
-  .fa-chevron-up {
-    position: absolute;
-    bottom: 0;
-    right: $column-gutter / 2;
-  }
-
-  .fa-chevron-down {
-    position: absolute;
-    bottom: 0.9rem;
-    right: $column-gutter / 2;
-  }
-
-  &:hover {
-    height: rem-calc(30);
-    margin-bottom: rem-calc(7);
-
-    i.fa-chevron-down {
-      display: none;
-    }
-
-    i.fa-chevron-up, ul {
-      display: inherit;
-    }
-
-    ul {
-      font-size: 1.3rem;
-    }
-  }
+.top-header {
+  margin-bottom: 16px;
 }
 
 .arrow {
@@ -606,6 +514,7 @@ ul.alternatives {
       > a, .arrow {
         font-weight: bold;
         color: #dfdfdf;
+        font-family: "Lato", sans-serif;
 
         &:hover {
           color: #ffffff;

@@ -1,3 +1,5 @@
+@import "application_form";
+
 .assistants {
   section {
     margin: 125px auto;
@@ -65,15 +67,6 @@
         line-height: 20px;
         margin-bottom: 8px;
       }
-    }
-  }
-
-  .application-header {
-    text-align: center;
-    margin: 32px 0;
-
-    .deadline {
-      text-decoration: underline;
     }
   }
 }

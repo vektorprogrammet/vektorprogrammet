@@ -1,8 +1,16 @@
 @import "../../../../node_modules/font-awesome/scss/font-awesome";
 @import "header";
+@import "mobile_nav";
 @import "about_us_page";
+@import "contact_page";
 @import url(https://fonts.googleapis.com/css?family=Montserrat:300,400,600,700&subset=latin);
 @import url(https://fonts.googleapis.com/css?family=Lato:400,500,700&subset=latin);
+
+html.noscroll, body.noscroll {
+  overflow: hidden;
+  position: fixed;
+  height: 100%;
+}
 
 body {
   font-family: 'Montserrat', sans-serif;
@@ -20,6 +28,10 @@ h2 {
   font-size: 28px;
 }
 
+h3 {
+  font-size: 24px;
+}
+
 p {
   line-height: 1.6;
   font-size: 18px;
@@ -29,11 +41,19 @@ p {
   font-weight: 600;
 }
 
+.text-bold {
+  font-weight: 700;
+}
+
 .content {
   display: block;
   margin: 0 auto;
   max-width: 100%;
   width: 800px;
+
+  &.content-large {
+    width: 1000px;
+  }
 }
 
 .text-center {

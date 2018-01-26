@@ -7,13 +7,15 @@
         <div class="dropdown">
                         <span class="user-link dropdown-toggle" id="user-menu" data-toggle="dropdown"
                               aria-haspopup="true" aria-expanded="false">{{ app.user }}</span>
-            <div class="dropdown-menu" aria-labelledby="user-menu">
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-menu">
                 {% if is_granted_team_member() %}
                     {% include 'base/dropdown_item_link.html.twig' with {route: 'control_panel', name: 'Kontrollpanel'} %}
                     <div class="dropdown-divider"></div>
                 {% endif %}
                 {% include 'base/dropdown_item_link.html.twig' with {route: 'profile', name: 'Profil'} %}
                 {% include 'base/dropdown_item_link.html.twig' with {route: 'receipt_create', name: 'Mine utlegg'} %}
+                <div class="dropdown-divider"></div>
+                {% include 'base/dropdown_item_link.html.twig' with {route: 'members_show', name: 'Assistenter'} %}
                 <div class="dropdown-divider"></div>
                 {% include 'base/dropdown_item_link.html.twig' with {route: 'logout', name: 'Logg ut'} %}
             </div>
@@ -24,7 +26,7 @@
                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Logg inn
                     </span>
-            <div class="dropdown-menu login-form" aria-labelledby="loginForm">
+            <div class="dropdown-menu dropdown-menu-right login-form" aria-labelledby="loginForm">
                 <form action="{{ path('login_check') }}" method="POST" class="px-4 py-3">
                     <div class="form-group">
                         <input class="form-control" id="username" name="_username"

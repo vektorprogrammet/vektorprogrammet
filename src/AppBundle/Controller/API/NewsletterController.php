@@ -125,5 +125,4 @@ class NewsletterController extends FOSRestController implements ClassResourceInt
 
         return $subscriber;
     }
-
 }

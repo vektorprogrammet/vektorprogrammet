@@ -7,7 +7,8 @@ var gulp = require('gulp'),
     cssnano = require('gulp-cssnano'),
     rename = require('gulp-rename'),
     sass = require('gulp-sass'),
-    changed = require('gulp-changed');
+    changed = require('gulp-changed'),
+    babel = require('gulp-babel');
 
 var exec = require('child_process').exec;
 
@@ -36,6 +37,9 @@ gulp.task('scriptsProd', function () {
   gulp.src(path.src + 'js/**/*.js')
       .pipe(plumber())
       .pipe(changed(dest))
+      .pipe(babel({
+        presets: ['env']
+      }))
       .pipe(uglify())
       .pipe(gulp.dest(dest))
 });
@@ -68,6 +72,9 @@ gulp.task('scriptsDev', function () {
   gulp.src(path.src + 'js/**/*.js')
       .pipe(plumber())
       .pipe(changed(dest))
+      .pipe(babel({
+        presets: ['env']
+      }))
       .pipe(gulp.dest(dest))
 });
 
