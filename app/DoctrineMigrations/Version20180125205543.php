@@ -58,19 +58,19 @@ CHANGE friday friday TINYINT(1) DEFAULT \'1\' NOT NULL');
 
         $this->addSql('ALTER TABLE application CHANGE monday monday VARCHAR(255) DEFAULT NULL, CHANGE tuesday tuesday VARCHAR(255) DEFAULT NULL, CHANGE wednesday wednesday VARCHAR(255) DEFAULT NULL, CHANGE thursday thursday VARCHAR(255) DEFAULT NULL, CHANGE friday friday VARCHAR(255) DEFAULT NULL');
 
-        $this->addSql('UPDATE application SET monday="Bra" WHERE monday=1');
-        $this->addSql('UPDATE application SET monday="Ikke" WHERE monday=0');
+        $this->addSql('UPDATE application SET monday="Bra" WHERE monday="1"');
+        $this->addSql('UPDATE application SET monday="Ikke" WHERE monday="0"');
 
-        $this->addSql('UPDATE application SET tuesday="Bra" WHERE tuesday=1');
-        $this->addSql('UPDATE application SET tuesday="Ikke" WHERE tuesday=0');
+        $this->addSql('UPDATE application SET tuesday="Bra" WHERE tuesday="1"');
+        $this->addSql('UPDATE application SET tuesday="Ikke" WHERE tuesday="0"');
 
-        $this->addSql('UPDATE application SET wednesday="Bra" WHERE wednesday=1');
-        $this->addSql('UPDATE application SET wednesday="Ikke" WHERE wednesday=0');
+        $this->addSql('UPDATE application SET wednesday="Bra" WHERE wednesday="1"');
+        $this->addSql('UPDATE application SET wednesday="Ikke" WHERE wednesday="0"');
 
-        $this->addSql('UPDATE application SET thursday="Bra" WHERE thursday=1');
-        $this->addSql('UPDATE application SET thursday="Ikke" WHERE thursday=0');
+        $this->addSql('UPDATE application SET thursday="Bra" WHERE thursday="1"');
+        $this->addSql('UPDATE application SET thursday="Ikke" WHERE thursday="0"');
 
-        $this->addSql('UPDATE application SET friday="Bra" WHERE friday=1');
-        $this->addSql('UPDATE application SET friday="Ikke" WHERE friday=0');
+        $this->addSql('UPDATE application SET friday="Bra" WHERE friday="1"');
+        $this->addSql('UPDATE application SET friday="Ikke" WHERE friday="0"');
     }
 }
