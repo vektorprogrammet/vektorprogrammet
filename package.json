@@ -23,7 +23,8 @@
     "gulp-plumber": "^1.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^3.1.0",
-    "gulp-uglify": "^1.5.1"
+    "gulp-uglify": "^1.5.1",
+    "pre-commit": "^1.2.2"
   },
   "scripts": {
     "test": "./bin/phpunit --configuration app/phpunit.xml.dist",
@@ -44,13 +45,16 @@
     "build:prod": "gulp build:prod",
     "code-style": "./bin/php-cs-fixer fix src/ --dry-run --diff -vv",
     "code-style:win": ".\\bin\\php-cs-fixer fix src/ --dry-run --diff -vv",
-    "cs": "./bin/php-cs-fixer fix src/ -vv",
+    "cs": "./bin/php-cs-fixer fix src/ -vv || .\\bin\\php-cs-fixer fix src/ -vv",
     "cs:win": ".\\bin\\php-cs-fixer fix src/ -vv"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vektorprogrammet/webpage.git"
   },
+  "pre-commit": [
+    "cs"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
