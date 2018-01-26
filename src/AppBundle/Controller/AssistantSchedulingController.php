@@ -86,11 +86,11 @@ class AssistantSchedulingController extends Controller
         return new JsonResponse(json_encode($schools));
     }
 
-	/**
-	 * @param SchoolCapacity[] $schoolCapacities
-	 *
-	 * @return array
-	 */
+    /**
+     * @param SchoolCapacity[] $schoolCapacities
+     *
+     * @return array
+     */
     private function generateSchoolsFromSchoolCapacities($schoolCapacities)
     {
         //Use schoolCapacities to create School objects for the SA-Algorithm
