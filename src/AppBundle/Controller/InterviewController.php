@@ -353,7 +353,9 @@ class InterviewController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(new InterviewNewTimeType(), $interview);
+        $form = $this->createForm(new InterviewNewTimeType(), $interview, array(
+            "validation_groups" => array("newTimeRequest")
+        ));
         $form->handleRequest($request);
 
         if ($form->isValid()) {

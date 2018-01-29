@@ -102,7 +102,7 @@ class Interview
     /**
      * @ORM\Column(type="string", length=2000)
      * @Assert\Length(max=2000)
-     * @Assert\NotBlank(message="Meldingsboksen kan ikke være tom")
+     * @Assert\NotBlank(groups={"newTimeRequest"}, message="Meldingsboksen kan ikke være tom")
      *
      * @var string
      */
