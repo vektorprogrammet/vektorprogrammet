@@ -419,14 +419,10 @@ ul.alternatives {
   }
 }
 
-.radio-grid {
-  margin-left: 0;
-  list-style-type: none;
-  &>div>li{
-    margin-right: 1rem;
-    display:inline-block;
-  }
+.interview-day:not(:last-of-type) .interview-days-checkbox[type="checkbox"] {
+  margin: 0;
 }
+
 
 // Utils
 // - - - - - - - - - - - - - - - - - - - - - - - - -

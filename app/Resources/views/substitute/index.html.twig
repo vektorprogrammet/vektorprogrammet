@@ -89,11 +89,11 @@
                             <td>{{ sub.user.fieldOfStudy }}</td>
                             <td>{{ sub.yearOfStudy }}</td>
                             <td>{{ sub.language }}</td>
-                            <td>{{ sub.monday }}</td>
-                            <td>{{ sub.tuesday }}</td>
-                            <td>{{ sub.wednesday }}</td>
-                            <td>{{ sub.thursday }}</td>
-                            <td>{{ sub.friday }}</td>
+                            <td>{{ sub.monday ? "Bra" : "Ikke" }}</td>
+                            <td>{{ sub.tuesday ? "Bra" : "Ikke" }}</td>
+                            <td>{{ sub.wednesday ? "Bra" : "Ikke" }}</td>
+                            <td>{{ sub.thursday ? "Bra" : "Ikke" }}</td>
+                            <td>{{ sub.friday ? "Bra" : "Ikke" }}</td>
                             {% if is_granted_team_leader() %}
                                 <td>
                                     <form method="POST"
