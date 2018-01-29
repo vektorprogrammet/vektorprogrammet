@@ -71,13 +71,9 @@ services:
   app.sorter:
     class: AppBundle\Service\Sorter
 
-  app.department_service:
-    class: AppBundle\Service\DepartmentService
-    arguments: ['@doctrine.orm.entity_manager', '@app.geolocation']
-
   app.department_extension:
     class: AppBundle\Twig\Extension\DepartmentExtension
-    arguments: ['@app.department_service']
+    arguments: ['@app.geolocation', '@doctrine.orm.default_entity_manager']
     tags:
       - { name: twig.extension }
 

@@ -14,14 +14,12 @@ class AssistantController extends Controller
     public function indexAction(Request $request, Department $department = null)
     {
         $admissionManager = $this->get('app.application_admission');
+        $em = $this->getDoctrine()->getManager();
+        $departments = $em->getRepository('AppBundle:Department')->findAll();
         if (null === $department) {
-            $department = $this->get('app.geolocation')->findNearestDepartment();
-        }
-        if (!$department) {
-            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll()[0];
+            $department = $this->get('app.geolocation')->findNearestDepartment($departments);
         }
 
-        $em = $this->getDoctrine()->getManager();
         $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
 
         $teams = $em->getRepository('AppBundle:Team')->findByOpenApplicationAndDepartment($department);

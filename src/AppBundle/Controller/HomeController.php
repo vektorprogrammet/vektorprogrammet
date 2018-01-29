@@ -15,9 +15,13 @@ class HomeController extends Controller
         $assistantsCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findAssistants());
         $teamMembersCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findTeamMembers());
 
+        $departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+        $closestDepartment = $this->get('app.geolocation')->findNearestDepartment($departments);
+
         return $this->render('home/index.html.twig', [
             'assistantCount' => $assistantsCount + 100, // + Estimated number of assistants not registered in website
-            'teamMemberCount' => $teamMembersCount + 20 // + Estimated number of team members not registered in website
+            'teamMemberCount' => $teamMembersCount + 20, // + Estimated number of team members not registered in website
+            'closestDepartment' => $closestDepartment,
         ]);
     }
 

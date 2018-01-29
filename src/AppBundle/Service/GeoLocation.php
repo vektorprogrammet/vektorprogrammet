@@ -2,7 +2,9 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Department;
 use Doctrine\ORM\EntityManagerInterface;
+use Mpdf\Exception\InvalidArgumentException;
 
 class GeoLocation
 {
@@ -21,19 +23,18 @@ class GeoLocation
         $this->departmentRepo = $em->getRepository('AppBundle:Department');
     }
 
-    public function findNearestDepartment()
+    /**
+     * @param Department[] $departments
+     * @return Department
+     * @throws InvalidArgumentException
+     */
+    public function findNearestDepartment($departments)
     {
-        $ip = $this->clientIp();
-        if (!$ip) {
-            return null;
+        if (empty($departments)) {
+            throw new InvalidArgumentException('$departments cannot be empty');
         }
 
-        $coords = $this->findCoordinates($ip);
-        if (!$coords) {
-            return null;
-        }
-
-        return $this->findDepartmentClosestTo($coords);
+        return $this->sortDepartmentsByDistanceFromClient($departments)[0];
     }
 
     public function findDepartmentClosestTo($coords)
@@ -59,6 +60,38 @@ class GeoLocation
         }
 
         return $closestDepartment;
+    }
+
+    /**
+     * @param Department[] $departments
+     * @return array
+     */
+    public function sortDepartmentsByDistanceFromClient($departments)
+    {
+        //$ip = '193.157.161.108'; // UIO
+        //$ip = '158.39.3.40'; //NMBU
+        $ip = $this->clientIp();
+        $coords = $this->findCoordinates($ip);
+
+        if($coords === null) {
+            return $departments;
+        }
+        usort($departments, function (Department $a, Department $b) use ($coords) {
+            $fromLat = floatval($coords['lat']);
+            $fromLon = floatval($coords['lon']);
+
+            $aLat = floatval($a->getLatitude());
+            $aLon = floatval($a->getLongitude());
+            $aDistance = $this->distance($fromLat, $fromLon, $aLat, $aLon);
+
+            $bLat = floatval($b->getLatitude());
+            $bLon = floatval($b->getLongitude());
+            $bDistance = $this->distance($fromLat, $fromLon, $bLat, $bLon);
+
+            return $aDistance - $bDistance;
+        });
+
+        return $departments;
     }
 
     public function findCoordinates($ip)
