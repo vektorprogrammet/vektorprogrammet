@@ -23,8 +23,7 @@
     "gulp-plumber": "^1.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^3.1.0",
-    "gulp-uglify": "^1.5.1",
-    "pre-commit": "^1.2.2"
+    "gulp-uglify": "^1.5.1"
   },
   "scripts": {
     "test": "./bin/phpunit --configuration app/phpunit.xml.dist",
@@ -52,9 +51,6 @@
     "type": "git",
     "url": "git+https://github.com/vektorprogrammet/webpage.git"
   },
-  "pre-commit": [
-    "cs"
-  ],
   "author": "",
   "license": "ISC",
   "bugs": {
