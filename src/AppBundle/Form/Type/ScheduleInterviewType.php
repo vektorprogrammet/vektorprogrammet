@@ -26,7 +26,7 @@ class ScheduleInterviewType extends AbstractType
                 'label' => 'Rom',
             ))
             ->add('mapLink', 'text', array(
-                'label' => 'Link til rom på kart',
+                'label' => false,
                 'required' => false,
             ))
             ->add('message', 'textarea', array(

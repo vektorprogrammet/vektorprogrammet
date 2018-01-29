@@ -203,6 +203,14 @@ class InterviewController extends Controller
             // Update the scheduled time for the interview
             $interview->setScheduled($data['datetime']);
             $interview->setRoom($data['room']);
+            //Check if the link starts with http, i not it is added
+            if ($data['mapLink'] and ! (strpos( $data['mapLink'],'http')===0)){
+                $data['mapLink']='http://' . $data['mapLink'];
+            }
+            //Check if link is valid, @ to ignore warning when not getting response
+            if (! @get_headers($data['mapLink'])){
+                $data['mapLink'] = '';
+            }
             $interview->setMapLink($data['mapLink']);
             $interview->resetStatus();
 
