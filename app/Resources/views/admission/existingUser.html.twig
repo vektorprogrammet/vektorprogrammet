@@ -9,17 +9,7 @@
 {% form_theme form.applicationPractical.days 'form/components/days_checkbox.html.twig' %}
 
 {% block body %}
-    <div class="row">
-        <div class="small-12 columns">
-            {% for flashMessage in app.session.flashbag.get('admission-notice') %}
-                <div class="admission-notice">
-                    <div data-alert class="alert-box success radius">
-                        {{ flashMessage }}
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
+    {{ include('common/flash.html.twig') }}
     <div class="row">
         <div class="small-12 medium-6 medium-offset-3 columns">
 
