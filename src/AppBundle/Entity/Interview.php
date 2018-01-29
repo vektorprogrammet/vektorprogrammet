@@ -102,7 +102,7 @@ class Interview
     /**
      * @ORM\Column(type="string", length=2000)
      * @Assert\Length(max=2000)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Meldingsboksen kan ikke være tom")
      *
      * @var string
      */
@@ -547,7 +547,7 @@ class Interview
     /**
      * @param string $newTimeMessage
      */
-    public function setNewTimeMessage(string $newTimeMessage)
+    public function setNewTimeMessage($newTimeMessage)
     {
         $this->newTimeMessage = $newTimeMessage;
     }
