@@ -8,9 +8,17 @@
                 </div>
             </div>
         {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('warning') %}
+            <div class="admission-notice">
+                <div data-alert class="alert-box warning radius text-center">
+                    {{ flashMessage }}
+                    <a href="#" class="close">&times;</a>
+                </div>
+            </div>
+        {% endfor %}
         {% for flashMessage in app.session.flashbag.get('error') %}
             <div class="admission-notice">
-                <div data-alert class="alert-box danger radius text-center">
+                <div data-alert class="alert-box alert radius text-center">
                     {{ flashMessage }}
                     <a href="#" class="close">&times;</a>
                 </div>

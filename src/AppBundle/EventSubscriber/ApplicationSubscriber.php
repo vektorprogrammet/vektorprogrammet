@@ -100,7 +100,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
         $application = $event->getApplication();
         $message = "Søknaden din er registrert. En kvittering har blitt sendt til {$application->getUser()->getEmail()}. Lykke til!";
 
-        $this->session->getFlashBag()->add('admission-notice', $message);
+        $this->session->getFlashBag()->add('success', $message);
     }
 
     public function logApplication(ApplicationCreatedEvent $event)
