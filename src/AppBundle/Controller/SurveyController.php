@@ -196,7 +196,7 @@ class SurveyController extends Controller
     public function resultSurveyAction(Survey $survey)
     {
         return $this->render('survey/survey_result.html.twig', array(
-            'textAnswers' => $survey->getTextAnswerResults(),
+            'textAnswers' => $survey->getTextAnswerWithSchoolResults(),
             'survey' => $survey,
         ));
     }
