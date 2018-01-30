@@ -73,9 +73,9 @@
                     <th><span data-sort="string" class="has-tip" title="Onsdag"> O</span></th>
                     <th><span data-sort="string" class="has-tip" title="Torsdag"> T</span></th>
                     <th><span data-sort="string" class="has-tip" title="Fredag"> F</span></th>
-                    <th><span data-sort="string" class="has-tip" title="Pulje"> Pulje</span></th>
-                    <th><span data-sort="string" class="has-tip" title="Poeng"> Poeng</span></th>
-                    <th><span data-sort="string" class="has-tip" title="Passende"> Passende</span></th>
+                    <th><span data-sort="string"> Pulje</span></th>
+                    <th><span data-sort="string"> Poeng</span></th>
+                    <th><span data-sort="string"> Passende</span></th>
                     {% if is_granted_team_leader() %}
                         <th colspan="2"></th>
                     {% endif %}
@@ -98,12 +98,12 @@
                             <td>{{ sub.thursday }}</td>
                             <td>{{ sub.friday }}</td>
                             <td>{{ sub.preferredGroup }}</td>
-                            {% if sub.interview is not null %}
+                            {% if sub.interview is not null and sub.user != app.user and (is_granted_team_leader() or sub.interview.interviewer == app.user) %}
                                 <td>{{ sub.interview.interviewScore.getSum() }}</td>
                                 {% else %}
                                     <td colspan="1"></td>
                             {% endif %}
-                            {% if sub.interview is not null %}
+                            {% if sub.interview is not null and sub.user != app.user and (is_granted_team_leader() or sub.interview.interviewer == app.user) %}
                                 <td>{{ sub.interview.interviewScore.suitableAssistant }}</td>
                             {% else %}
                                 <td colspan="1"></td>
