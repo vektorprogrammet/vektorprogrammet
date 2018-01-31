@@ -2,10 +2,7 @@
 <br/>
 Tidspunkt: {{ datetime|date("d.m.y - G:i") }}.
 <br/>
-Rom: {%  if mapLink %}<a href="{{ mapLink }}">{{ room }}</a>
-    {% else %}
-{{ room }}
-    {% endif %}
+Rom: {{ room }}{% if mapLink %} (<a href="{{ mapLink }}">kart</a>){% endif %}
 <br/><br/>
 <p>For å akseptere eller kansellere intervjuet, gå inn på følgende link: <p/>
   <a href="{{ url('interview_response', { 'responseCode' : responseCode}) }}">

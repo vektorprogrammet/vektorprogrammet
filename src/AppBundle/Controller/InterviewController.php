@@ -195,23 +195,24 @@ class InterviewController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $data = $form->getData();
-
+        $data = $form->getData();
+        $mapLink = $data['mapLink'];
+        if ($form->isSubmitted()) {
+            if ($mapLink and ! (strpos($mapLink, 'http')===0)) {
+                $mapLink='http://' . $mapLink;
+            }
+        }
+        $invalidMapLink = $form->isSubmitted() && !empty($mapLink) && !$this->validateLink($mapLink);
+        if ($invalidMapLink) {
+            $this->addFlash('error', 'Kartlinken er ikke gyldig');
+        } elseif ($form->isValid() && !$invalidMapLink) {
             $interview->generateAndSetResponseCode();
 
             // Update the scheduled time for the interview
             $interview->setScheduled($data['datetime']);
             $interview->setRoom($data['room']);
-            //Check if the link starts with http, i not it is added
-            if ($data['mapLink'] and ! (strpos($data['mapLink'], 'http')===0)) {
-                $data['mapLink']='http://' . $data['mapLink'];
-            }
-            //Check if link is valid, @ to ignore warning when not getting response
-            if (! @get_headers($data['mapLink'])) {
-                $data['mapLink'] = '';
-            }
-            $interview->setMapLink($data['mapLink']);
+
+            $interview->setMapLink($mapLink);
             $interview->resetStatus();
 
             if ($form->get('preview')->isClicked()) {
@@ -237,6 +238,22 @@ class InterviewController extends Controller
             'form' => $form->createView(),
             'interview' => $interview,
             'application' => $application, ));
+    }
+
+    private function validateLink($link)
+    {
+        if (empty($link)) {
+            return false;
+        }
+
+        try {
+            $headers = @get_headers($link);
+            $statusCode = intval(explode(" ", $headers[0])[1]);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return $statusCode < 400;
     }
 
     /**

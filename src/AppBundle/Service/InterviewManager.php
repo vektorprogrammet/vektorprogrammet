@@ -200,6 +200,7 @@ Vennligst gi beskjed til meg hvis tidspunktet ikke passer.";
         return array(
             'datetime' => $interview->getScheduled(),
             'room' => $interview->getRoom(),
+            'mapLink' => $interview->getMapLink(),
             'message' => $message,
             'from' => $interview->getInterviewer()->getEmail(),
             'to' => $interview->getUser()->getEmail(),
