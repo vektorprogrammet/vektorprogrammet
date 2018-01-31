@@ -3,15 +3,10 @@
 <br/>
 Tidspunkt: {{ data['datetime']|date("d.m.y - G:i") }}.
 <br/>
-Rom: {%  if data['mapLink'] %}
-        <a href="{{ data['mapLink'] }}">{{ data['room'] }}</a>
-    {% else %}
-        {{ data['room'] }}
-    {% endif %}
+Rom: {{ data['room'] }}{% if data['mapLink'] %} (<a href="{{ data['mapLink'] }}">kart</a>){% endif %}
 
 <br/><br/>
-<p>For å akseptere eller kansellere intervjuet, gå inn på følgende link:
-<p/>
+<p>For å akseptere eller kansellere intervjuet, gå inn på følgende link:</p>
 <a href="{{ url('interview_response', { 'responseCode' : interview.responseCode}) }}">
     {{ app.request.httpHost ~ path('interview_response', {'responseCode' : interview.responseCode}) }}
 </a>
