@@ -51,6 +51,27 @@
                 </div>
 
                 <h5>Tid og sted</h5>
+                {% if interview.interviewStatusAsString == 'Ny tid ønskes' %}
+                    <div class="row">
+                        <div class="small-12 medium-6 columns">
+                            <div class="panel text-center">
+                                <p><i class="fa fa-2x fa-warning text-warning"></i></p>
+                                <p class="text-bold">{{ u.firstName }} har bedt om nytt tidspunkt for intervju.</p>
+                                <p>Følgende tider passer <span class="text-bold">ikke:</span><br>{{ u.firstName }}: <i>{{ interview.newTimeMessage }}</i></p>
+                            </div>
+                        </div>
+                    </div>
+                {% elseif interview.interviewStatusAsString == 'Kansellert' %}
+                    <div class="row">
+                        <div class="small-12 medium-6 columns">
+                            <div class="panel text-center">
+                                <p><i class="fa fa-2x fa-warning text-alert"></i></p>
+                                <p class="text-bold">{{ u.firstName }} har kansellert intervjuet.</p>
+                                <p><span class="text-bold">Begrunnelse:</span><br>{{ u.firstName }}: <i>{{ interview.cancelMessage }}</i></p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
 
                 {{ form_start(form) }}
                 <div class="row">
