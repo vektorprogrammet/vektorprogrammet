@@ -1,0 +1,20 @@
+{% block form_row %}
+    {% spaceless %}
+        <div class="interview-day">
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+        </div>
+    {% endspaceless %}
+{% endblock form_row %}
+
+{% block checkbox_widget -%}
+    {% spaceless %}
+        <input type="checkbox"
+               class="interview-days-checkbox"
+                {{ block('widget_attributes') }}
+                {% if value is defined %} value="{{ value }}"{% endif %}
+                {% if checked %} checked="checked"{% endif %}
+        />
+        {{ form_label(form) }}
+    {% endspaceless %}
+{%- endblock checkbox_widget %}

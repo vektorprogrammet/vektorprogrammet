@@ -39,8 +39,8 @@
                     <td>{{ application.preferredGroup ? application.preferredGroup : 'Ingen' }}</td>
                 </tr>
                 <tr>
-                    <td><b>Ønsker internasjonal skole</b></td>
-                    <td>{{ application.english ? 'Ja' : 'Nei' }}</td>
+                    <td><b>Ønsket undervisningsspråk</b></td>
+                    <td>{{ application.language}}</td>
                 </tr>
             </table>
 
@@ -49,23 +49,23 @@
             <table width="100%">
                 <tr>
                     <td><b>Mandag</b></td>
-                    <td>{{ application.monday }}</td>
+                    <td>{{ application.monday ? "Bra" : "Ikke" }}</td>
                 </tr>
                 <tr>
                     <td><b>Tirsdag</b></td>
-                    <td>{{ application.tuesday }}</td>
+                    <td>{{ application.tuesday ? "Bra" : "Ikke" }}</td>
                 </tr>
                 <tr>
                     <td><b>Onsdag</b></td>
-                    <td>{{ application.wednesday }}</td>
+                    <td>{{ application.wednesday ? "Bra" : "Ikke" }}</td>
                 </tr>
                 <tr>
                     <td><b>Torsdag</b></td>
-                    <td>{{ application.thursday }}</td>
+                    <td>{{ application.thursday ? "Bra" : "Ikke" }}</td>
                 </tr>
                 <tr>
                     <td><b>Fredag</b></td>
-                    <td>{{ application.friday }}</td>
+                    <td>{{ application.friday ? "Bra" : "Ikke" }}</td>
                 </tr>
             </table>
         </div>

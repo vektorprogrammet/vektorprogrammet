@@ -17,14 +17,17 @@ class ScheduleInterviewType extends AbstractType
                 'label' => 'Mottaker',
             ))
             ->add('datetime', 'datetime', array(
-                'label' => false,
                 'widget' => 'single_text',
-                'date_format' => 'yyyy-MM-dd  HH:mm:ss',
+                'format' => 'dd.MM.yyyy HH:mm',
                 'label' => 'Tidspunkt',
-                'attr' => array('placeholder' => 'yyyy-MM-dd HH:mm:ss'),
+                'attr' => array('placeholder' => 'Klikk for å velge tidspunkt'),
             ))
             ->add('room', 'text', array(
                 'label' => 'Rom',
+            ))
+            ->add('mapLink', 'text', array(
+                'label' => false,
+                'required' => false,
             ))
             ->add('message', 'textarea', array(
                 'label' => 'Melding',
@@ -35,7 +38,7 @@ class ScheduleInterviewType extends AbstractType
                 'attr' => array('style' => 'display:none')
             ))
             ->add('saveAndSend', 'submit', array(
-                'label' => 'Lagre tidspunkt og send mail',
+                'label' => 'Send invitasjon på sms og e-post',
             ))
             ->add('preview', 'submit', array(
                 'label' => 'Forhåndsvis'

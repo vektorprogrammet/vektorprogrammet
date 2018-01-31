@@ -11,12 +11,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CreateUserType extends AbstractType
 {
     private $department;
-    private $userRole;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->department = $options['department'];
-        $this->userRole = $options['user_role'];
 
         $builder
             ->add('firstName', 'text', array(
@@ -49,34 +47,13 @@ class CreateUserType extends AbstractType
                         ->setParameter(1, $this->department);
                 },
             ));
-
-        if ($this->userRole === Roles::TEAM_LEADER) {
-            $builder->add('role', 'choice', array(
-                'label' => 'Rolle',
-                'mapped' => false,
-                'choices' => array(
-                    Roles::ALIAS_ASSISTANT => 'Assistent',
-                    Roles::ALIAS_TEAM_MEMBER => 'Teammedlem',
-                    Roles::ALIAS_TEAM_LEADER => 'Teamleder',
-                ),
-            ));
-        } elseif ($this->userRole === Roles::TEAM_MEMBER) {
-            $builder->add('role', 'choice', array(
-                'label' => 'Rolle',
-                'mapped' => false,
-                'choices' => array(
-                    Roles::ALIAS_ASSISTANT => 'Assistent',
-                ),
-            ));
-        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
-            'department' => 'AppBundle\Entity\Department',
-            'user_role' => Roles::TEAM_MEMBER,
+            'department' => 'AppBundle\Entity\Department'
         ));
     }
 

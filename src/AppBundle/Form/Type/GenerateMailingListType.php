@@ -2,25 +2,21 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\Repository\SemesterRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class GenerateMailingListType extends AbstractType
 {
-    private $semesters;
-
-    public function __construct($semesters)
-    {
-        $this->semesters = $semesters;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('semester', 'entity', array(
                 'class' => 'AppBundle:Semester',
                 'label' => 'Velg semester',
-                'choices' => $this->semesters,
+                'query_builder' => function (SemesterRepository $sr) {
+                    return $sr->queryForAllSemestersOrderedByAge();
+                },
                 'required' => true,
             ))
             ->add('type', 'choice', array(

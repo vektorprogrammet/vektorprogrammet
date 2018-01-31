@@ -6,6 +6,7 @@ use AppBundle\Entity\Application;
 use AppBundle\Entity\Interview;
 use AppBundle\Event\InterviewConductedEvent;
 use AppBundle\Event\InterviewEvent;
+use AppBundle\Form\InterviewNewTimeType;
 use AppBundle\Form\Type\ApplicationInterviewType;
 use AppBundle\Form\Type\AssignInterviewType;
 use AppBundle\Form\Type\CancelInterviewConfirmationType;
@@ -15,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use InvalidArgumentException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * InterviewController is the controller responsible for interview actions,
@@ -195,14 +197,24 @@ class InterviewController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $data = $form->getData();
-
+        $data = $form->getData();
+        $mapLink = $data['mapLink'];
+        if ($form->isSubmitted()) {
+            if ($mapLink and ! (strpos($mapLink, 'http')===0)) {
+                $mapLink='http://' . $mapLink;
+            }
+        }
+        $invalidMapLink = $form->isSubmitted() && !empty($mapLink) && !$this->validateLink($mapLink);
+        if ($invalidMapLink) {
+            $this->addFlash('error', 'Kartlinken er ikke gyldig');
+        } elseif ($form->isValid()) {
             $interview->generateAndSetResponseCode();
 
             // Update the scheduled time for the interview
             $interview->setScheduled($data['datetime']);
             $interview->setRoom($data['room']);
+
+            $interview->setMapLink($mapLink);
             $interview->resetStatus();
 
             if ($form->get('preview')->isClicked()) {
@@ -228,6 +240,22 @@ class InterviewController extends Controller
             'form' => $form->createView(),
             'interview' => $interview,
             'application' => $application, ));
+    }
+
+    private function validateLink($link)
+    {
+        if (empty($link)) {
+            return false;
+        }
+
+        try {
+            $headers = @get_headers($link);
+            $statusCode = intval(explode(" ", $headers[0])[1]);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return $statusCode < 400;
     }
 
     /**
@@ -340,23 +368,38 @@ class InterviewController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param Interview $interview
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function requestNewTimeAction(Interview $interview)
+    public function requestNewTimeAction(Request $request, Interview $interview)
     {
-        $interview->requestNewTime();
+        if (!$interview->isPending()) {
+            throw $this->createNotFoundException();
+        }
 
-        $manager = $this->getDoctrine()->getManager();
-        $manager->persist($interview);
-        $manager->flush();
+        $form = $this->createForm(new InterviewNewTimeType(), $interview, array(
+            "validation_groups" => array("newTimeRequest")
+        ));
+        $form->handleRequest($request);
 
-        $this->get('app.interview.manager')->sendRescheduleEmail($interview);
+        if ($form->isValid()) {
+            $interview->requestNewTime();
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($interview);
+            $manager->flush();
 
-        $this->addFlash('success', 'Forespørsel har blitt sendt.');
+            $this->get('app.interview.manager')->sendRescheduleEmail($interview);
+            $this->addFlash('success', 'Forespørsel har blitt sendt.');
 
-        return $this->redirectToRoute('home');
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('interview/request_new_time.html.twig', array(
+            'interview' => $interview,
+            'form' => $form->createView()
+        ));
     }
 
     /**

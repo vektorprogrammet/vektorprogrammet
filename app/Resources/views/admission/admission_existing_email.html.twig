@@ -20,16 +20,16 @@ Kjønn: {{ user.gender == 1 ? 'Dame' : 'Mann' }}
 
 Dobbel stilling: {{ application.doublePosition ? 'Ja' : 'Nei' }}
 Ønsket bolk: {{ application.preferredGroup ? application.preferredGroup : 'Ingen' }}
-Ønsker internasjonal skole: {{ application.english ? 'Ja' : 'Nei' }}
+Ønsket undervisningsspråk: {{ application.language }}
 
 Dager som passer
-Mandag: {{ application.monday }}
-Tirsdag: {{ application.tuesday }}
-Onsdag: {{ application.wednesday }}
-Torsdag: {{ application.thursday }}
-Fredag: {{ application.friday }}
+Mandag: {{ application.monday ? "Bra" : "Ikke" }}
+Tirsdag: {{ application.tuesday ? "Bra" : "Ikke" }}
+Onsdag: {{ application.wednesday ? "Bra" : "Ikke" }}
+Torsdag: {{ application.thursday ? "Bra" : "Ikke" }}
+Fredag: {{ application.friday ? "Bra" : "Ikke" }}
 
 ---
 
 Mvh. Vektorprogrammet
-rekruttering@vektorprogrammet.no
+{{ user.department.email }}

@@ -304,8 +304,8 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $crawler = $this->goTo('/kontrollpanel/intervju/settopp/6', $client);
 
         // At this point we are about to send the email
-        $form['scheduleInterview[datetime]'] = '2015-08-10 15:00:00';
-        $form = $crawler->selectButton('Lagre tidspunkt og send mail')->form();
+        $form['scheduleInterview[datetime]'] = '10.08.2015 15:00';
+        $form = $crawler->selectButton('Send invitasjon på sms og e-post')->form();
         $client->enableProfiler();
         $client->submit($form);
 
@@ -321,7 +321,9 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         // Clicking a button on this page should trigger the mentioned change.
         $statusButton = $crawler->selectButton($button_text);
+        $this->assertNotNull($statusButton);
         $form = $statusButton->form();
+        $this->assertNotNull($form);
         $wantEmail = ($status === 'Ny tid ønskes' || $status === 'Kansellert');
         if ($wantEmail) {
             $client->enableProfiler();
@@ -330,6 +332,12 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         if ($status === 'Kansellert') {
             $client = $this->helperTestCancelConfirm($client, $response_code);
+        } elseif ($status === 'Ny tid ønskes') {
+            $crawler = $this->goTo('/intervju/nytid/'.$response_code, $client);
+            $form = $crawler->selectButton('Bekreft')->form();
+            $form['InterviewNewTime[newTimeMessage]'] = 'Test answer';
+            $client->enableProfiler();
+            $client->submit($form);
         }
 
         if ($wantEmail) {

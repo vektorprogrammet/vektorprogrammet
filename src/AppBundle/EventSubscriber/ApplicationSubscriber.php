@@ -100,7 +100,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
         $application = $event->getApplication();
         $message = "Søknaden din er registrert. En kvittering har blitt sendt til {$application->getUser()->getEmail()}. Lykke til!";
 
-        $this->session->getFlashBag()->add('admission-notice', $message);
+        $this->session->getFlashBag()->add('success', $message);
     }
 
     public function logApplication(ApplicationCreatedEvent $event)
@@ -108,12 +108,12 @@ class ApplicationSubscriber implements EventSubscriberInterface
         $application = $event->getApplication();
 
         $user = $application->getUser();
-
-        $this->logger->info("New application from {$user} registered");
-
+        
         $department = $user->getDepartment();
-
+        
         $this->applicationData->setDepartment($department);
+
+        $this->logger->info("$department: New application from *$user* registered. $department has *{$this->applicationData->getApplicationCount()}* applicants");
 
         $this->slackMessenger->notify("$department: Ny søknad fra *$user* registrert. $department har nå *{$this->applicationData->getApplicationCount()}* søkere: "
             .$this->router->generate('applications_show_by_semester', array('id' => $department->getCurrentOrLatestSemester()->getId()), RouterInterface::ABSOLUTE_URL));

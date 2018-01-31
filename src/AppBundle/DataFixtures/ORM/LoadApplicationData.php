@@ -20,11 +20,11 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application0->setPreviousParticipation(false);
         $application0->setYearOfStudy(1);
         $application0->setSemester($this->getReference('semester-current'));
-        $application0->setMonday('Ikke');
-        $application0->setTuesday('Ikke');
-        $application0->setWednesday('Ikke');
-        $application0->setThursday('Ikke');
-        $application0->setFriday('Bra');
+        $application0->setMonday(false);
+        $application0->setTuesday(false);
+        $application0->setWednesday(false);
+        $application0->setThursday(false);
+        $application0->setFriday(true);
         $application0->setSubstitute(true);
 
         $manager->persist($application0);
@@ -34,11 +34,11 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application1->setPreviousParticipation(true);
         $application1->setYearOfStudy(1);
         $application1->setSemester($this->getReference('semester-5'));
-        $application1->setMonday('Bra');
-        $application1->setTuesday('Ikke');
-        $application1->setWednesday('Bra');
-        $application1->setThursday('Ikke');
-        $application1->setFriday('Bra');
+        $application1->setMonday(true);
+        $application1->setTuesday(false);
+        $application1->setWednesday(true);
+        $application1->setThursday(false);
+        $application1->setFriday(true);
         $application0->setSubstitute(true);
 
         $manager->persist($application1);
@@ -48,11 +48,11 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application2->setPreviousParticipation(false);
         $application2->setYearOfStudy(1);
         $application2->setSemester($this->getReference('semester-1'));
-        $application2->setMonday('Bra');
-        $application2->setTuesday('Bra');
-        $application2->setWednesday('Ikke');
-        $application2->setThursday('Ikke');
-        $application2->setFriday('Bra');
+        $application2->setMonday(true);
+        $application2->setTuesday(true);
+        $application2->setWednesday(false);
+        $application2->setThursday(false);
+        $application2->setFriday(true);
         $application0->setSubstitute(true);
 
         $manager->persist($application2);
@@ -91,13 +91,13 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $interview3->setInterviewScore($intScore);
 
         // The interview practical
-        $application3->setMonday('Bra');
-        $application3->setTuesday('Bra');
-        $application3->setWednesday('Ikke');
-        $application3->setThursday('Bra');
-        $application3->setFriday('Ikke');
+        $application3->setMonday(true);
+        $application3->setTuesday(true);
+        $application3->setWednesday(false);
+        $application3->setThursday(true);
+        $application3->setFriday(false);
         $application3->setHeardAboutFrom(array( 'Stand' ));
-        $application3->setEnglish(true);
+        $application3->setLanguage('Norsk og engelsk');
         $application3->setPreferredGroup('Bolk 1');
         $application3->setDoublePosition(true);
         $application3->setTeamInterest(true);
@@ -137,13 +137,13 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $interview4->setInterviewScore($intScore);
 
         // The interview practical
-        $application4->setMonday('Bra');
-        $application4->setTuesday('Bra');
-        $application4->setWednesday('Ikke');
-        $application4->setThursday('Bra');
-        $application4->setFriday('Ikke');
+        $application4->setMonday(true);
+        $application4->setTuesday(true);
+        $application4->setWednesday(false);
+        $application4->setThursday(true);
+        $application4->setFriday(false);
         $application4->setHeardAboutFrom(array( 'Stand' ));
-        $application4->setEnglish(false);
+        $application4->setLanguage('Norsk');
         $application4->setPreferredGroup('Bolk 1');
         $application4->setDoublePosition(false);
 
@@ -190,13 +190,13 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application20->setYearOfStudy(1);
         $application20->setSemester($this->getReference('semester-current'));
 
-        $application20->setMonday('Ikke');
-        $application20->setTuesday('Ikke');
-        $application20->setWednesday('Ikke');
-        $application20->setThursday('Ikke');
-        $application20->setFriday('Bra');
+        $application20->setMonday(false);
+        $application20->setTuesday(false);
+        $application20->setWednesday(false);
+        $application20->setThursday(false);
+        $application20->setFriday(true);
         $application20->setHeardAboutFrom(array( 'Stand' ));
-        $application20->setEnglish(true);
+        $application20->setLanguage('Norsk');
         $application20->setPreferredGroup('Bolk 1');
         $application20->setDoublePosition(true);
 
@@ -284,13 +284,13 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application->setSemester($this->getReference('semester-current'));
         $randomArr = array( true, false, false, false, false );
         shuffle($randomArr);
-        $application->setMonday($randomArr[0] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
-        $application->setTuesday($randomArr[1] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
-        $application->setWednesday($randomArr[2] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
-        $application->setThursday($randomArr[3] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
-        $application->setFriday($randomArr[4] || mt_rand(0, 100) < 20 ? 'Bra' : 'Ikke');
+        $application->setMonday($randomArr[0] || mt_rand(0, 100) < 20);
+        $application->setTuesday($randomArr[1] || mt_rand(0, 100) < 20);
+        $application->setWednesday($randomArr[2] || mt_rand(0, 100) < 20);
+        $application->setThursday($randomArr[3] || mt_rand(0, 100) < 20);
+        $application->setFriday($randomArr[4] || mt_rand(0, 100) < 20);
         $application->setHeardAboutFrom(array( 'Stand' ));
-        $application->setEnglish(mt_rand(0, 100) < 10 ? true : false);
+        $application->setLanguage($randomArr[0] || mt_rand(0, 100) < 20 ? 'Norsk' : 'Engelsk');
         $application->setPreferredGroup(mt_rand(0, 100) < 50 ? 'Bolk 1' : 'Bolk 2');
         $application->setDoublePosition(mt_rand(0, 100) < 10 ? true : false);
 

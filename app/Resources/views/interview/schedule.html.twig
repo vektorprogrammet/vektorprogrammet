@@ -4,8 +4,13 @@
     Sett opp intervju
 {% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.min.css">
+{% endblock %}
+
 {% block body %}
-    <p></p>
+    {{ include('common/flash.html.twig') }}
 
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
@@ -55,13 +60,19 @@
                     <div class="small-12 medium-4 columns">
                         {{ form_row(form.room) }}
                     </div>
+                    <div class="small-12 medium-4 columns">
+                        <label>Link til kart (<a href="https://use.mazemap.com/" target="_blank" rel="noopener">MazeMap</a>)</label>
+                        {{ form_row(form.mapLink) }}
+                    </div>
+
+
 
                 </div>
                 <div class="row">
                     <div class="small-12 medium-4 columns end">
                         <div class="panel callout radius">
-                            <p>Format yyyy-MM-dd HH:mm:ss<br>Tidspunktet blir automatisk lagt til på slutten av
-                                e-posten.</p>
+                            <h3 class="text-center"><i class="fa fa-info-circle"></i></h3>
+                            <p>Tidspunkt og rom blir automatisk lagt til på slutten av e-posten.</p>
                         </div>
                     </div>
                 </div>
@@ -85,10 +96,10 @@
                     <div class="small-12 columns">
 
                         {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
-                        {{ form_widget(form.preview, {'attr': {'class': 'button tiny', 'formtarget': '_blank'}}) }}
+                        {{ form_widget(form.preview, {'attr': {'class': 'button tiny secondary', 'formtarget': '_blank'}}) }}
                         {{ form_widget(form.changeStatus, {'attr': {'class': 'button tiny', 'data-reveal-id': 'status-'~interview.id}}) }}
                         <div class="float-right">
-                            {{ form_widget(form.saveAndSend, {'attr': {'class': 'button tiny'}}) }}
+                            {{ form_widget(form.saveAndSend, {'attr': {'class': 'button small success'}}) }}
                         </div>
 
                     </div>
@@ -115,4 +126,18 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.min.js"></script>
+    <script>
+        const options = {
+            format: 'd.m.Y H:i',
+            lang: 'no',
+            step: 5,
+        };
+
+        jQuery('#{{ form.datetime.vars.id }}').datetimepicker(options);
+    </script>
 {% endblock %}

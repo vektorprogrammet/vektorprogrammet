@@ -145,4 +145,14 @@ class SemesterRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function queryForAllSemestersOrderedByAge()
+    {
+        return $this->createQueryBuilder('Semester')
+            ->select('Semester')
+            ->orderBy('Semester.semesterStartDate', 'DESC');
+    }
 }
