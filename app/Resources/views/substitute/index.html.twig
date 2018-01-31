@@ -100,15 +100,10 @@
                             <td>{{ sub.preferredGroup }}</td>
                             {% if sub.interview is not null and sub.user != app.user and (is_granted_team_leader() or sub.interview.interviewer == app.user) %}
                                 <td>{{ sub.interview.interviewScore.getSum() }}</td>
+                                <td>{{ sub.interview.interviewScore.suitableAssistant }}</td>
                                 {% else %}
                                     <td colspan="1"></td>
                             {% endif %}
-                            {% if sub.interview is not null and sub.user != app.user and (is_granted_team_leader() or sub.interview.interviewer == app.user) %}
-                                <td>{{ sub.interview.interviewScore.suitableAssistant }}</td>
-                            {% else %}
-                                <td colspan="1"></td>
-                            {% endif %}
-
                             {% if is_granted_team_leader() %}
                                 <td>
                                     <form method="POST"
