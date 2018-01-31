@@ -34,7 +34,7 @@ parameters:
     # Sender email for contact form mails
     no_reply_email_contact_form: ~
 
-    default_from_email: post@vektorprogrammet.no
+    default_from_email: vektorbot@vektorprogrammet.no
 
     economy_email: okonomi@vektorprogrammet.no
 
