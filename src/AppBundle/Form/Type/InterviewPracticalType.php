@@ -67,12 +67,13 @@ class InterviewPracticalType extends AbstractType
             'expanded' => true,
         ));
 
-        $builder->add('english', 'choice', array(
-            'label' => 'Vi har en internasjonal skole. Har du lyst til å undervise på engelsk?',
-            'help' => 'Det har ikke noe å si om du svarer ja eller nei på dette for om du blir tatt opp eller ikke.',
+        $builder->add('language', 'choice', array(
+            'label' => 'Vi har en internasjonal skole. Hvilke(t) språk ønsker du å undervise på?',
+            'help' => 'Det er ingen spesiell fordel å velge det ene fremfor det andre.',
             'choices' => array(
-                0 => 'Nei',
-                1 => 'Ja',
+                'Norsk' => 'Norsk',
+                'Engelsk' => 'Engelsk',
+                'Norsk og engelsk' => 'Norsk og engelsk',
             ),
             'expanded' => true,
             'multiple' => false,

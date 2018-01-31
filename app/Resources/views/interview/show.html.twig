@@ -74,11 +74,11 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td>{{ application.monday }}</td>
-                                <td>{{ application.tuesday }}</td>
-                                <td>{{ application.wednesday }}</td>
-                                <td>{{ application.thursday }}</td>
-                                <td>{{ application.friday }}</td>
+                                <td>{{ application.monday ? "Bra" : "Ikke" }}</td>
+                                <td>{{ application.tuesday ? "Bra" : "Ikke" }}</td>
+                                <td>{{ application.wednesday ? "Bra" : "Ikke" }}</td>
+                                <td>{{ application.thursday ? "Bra" : "Ikke" }}</td>
+                                <td>{{ application.friday ? "Bra" : "Ikke" }}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -116,11 +116,7 @@
                     <div class="small-12 medium-12 large-9 columns">
                         <label class="question-label">Vil du undervise på norsk skole eller internasjonal skole?</label>
                         <p>
-                            {% if application.english == 1 %}
-                                Engelsk
-                            {% else %}
-                                Norsk
-                            {% endif %}
+                            {{ application.language }}
                         </p>
                     </div>
                 </div>

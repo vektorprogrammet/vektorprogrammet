@@ -44,19 +44,24 @@ class AdmissionController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $admissionManager->setCorrectUser($application);
+            $alreadyApplied = $this->getDoctrine()->getRepository('AppBundle:Application')->findByEmailInSemester($application->getUser()->getEmail(), $semester);
+            if ($alreadyApplied) {
+                $this->addFlash('error', 'En søknad med denne e-postadressen har allerede blitt registrert');
+            } else {
+                $admissionManager->setCorrectUser($application);
 
-            if ($application->getUser()->hasBeenAssistant()) {
-                return $this->redirectToRoute('admission_existing_user');
+                if ($application->getUser()->hasBeenAssistant()) {
+                    return $this->redirectToRoute('admission_existing_user');
+                }
+
+                $application->setSemester($semester);
+                $em->persist($application);
+                $em->flush();
+
+                $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+
+                return $this->redirectToRoute('admission_show_specific_department', array('id' => $department->getId()));
             }
-
-            $application->setSemester($semester);
-            $em->persist($application);
-            $em->flush();
-
-            $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
-
-            return $this->redirectToRoute('admission_show_specific_department', array('id' => $department->getId()));
         }
 
         return $this->render('admission/index.html.twig', array(

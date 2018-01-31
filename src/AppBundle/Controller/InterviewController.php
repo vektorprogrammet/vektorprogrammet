@@ -6,6 +6,7 @@ use AppBundle\Entity\Application;
 use AppBundle\Entity\Interview;
 use AppBundle\Event\InterviewConductedEvent;
 use AppBundle\Event\InterviewEvent;
+use AppBundle\Form\InterviewNewTimeType;
 use AppBundle\Form\Type\ApplicationInterviewType;
 use AppBundle\Form\Type\AssignInterviewType;
 use AppBundle\Form\Type\CancelInterviewConfirmationType;
@@ -15,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use InvalidArgumentException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * InterviewController is the controller responsible for interview actions,
@@ -366,23 +368,38 @@ class InterviewController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param Interview $interview
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function requestNewTimeAction(Interview $interview)
+    public function requestNewTimeAction(Request $request, Interview $interview)
     {
-        $interview->requestNewTime();
+        if (!$interview->isPending()) {
+            throw $this->createNotFoundException();
+        }
 
-        $manager = $this->getDoctrine()->getManager();
-        $manager->persist($interview);
-        $manager->flush();
+        $form = $this->createForm(new InterviewNewTimeType(), $interview, array(
+            "validation_groups" => array("newTimeRequest")
+        ));
+        $form->handleRequest($request);
 
-        $this->get('app.interview.manager')->sendRescheduleEmail($interview);
+        if ($form->isValid()) {
+            $interview->requestNewTime();
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($interview);
+            $manager->flush();
 
-        $this->addFlash('success', 'Forespørsel har blitt sendt.');
+            $this->get('app.interview.manager')->sendRescheduleEmail($interview);
+            $this->addFlash('success', 'Forespørsel har blitt sendt.');
 
-        return $this->redirectToRoute('home');
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('interview/request_new_time.html.twig', array(
+            'interview' => $interview,
+            'form' => $form->createView()
+        ));
     }
 
     /**

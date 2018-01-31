@@ -32,7 +32,7 @@
                     <td>{{ a.user.email }}</td>
                     <td>{{ a.doublePosition ? 'Dobbel':'Enkel' }}</td>
                     <td>{{ a.preferredGroup }}</td>
-                    <td>{{ a.english ? 'Engelsk':'Norsk' }}</td>
+                    <td>{{ a.language }}</td>
                     <td><a class="button tiny" href="{{ path('admissionadmin_show_application', {'id': a.id}) }}">
                             <i class="fa fa-list-ul"></i>
                             Les søknad

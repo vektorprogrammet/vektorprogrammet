@@ -96,7 +96,10 @@ class ExceptionSubscriber implements EventSubscriberInterface
     private function getLoggedInUserName()
     {
         if ($this->ts->getToken() !== null && $this->ts->getToken()->getUser() !== null) {
-            return $this->ts->getToken()->getUser()->__toString();
+            $user = $this->ts->getToken()->getUser();
+            if (method_exists($user, '__toString')) {
+                return $this->ts->getToken()->getUser()->__toString();
+            }
         }
 
         return 'Anonymous User';

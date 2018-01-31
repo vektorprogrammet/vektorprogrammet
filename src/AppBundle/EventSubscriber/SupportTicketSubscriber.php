@@ -78,7 +78,7 @@ class SupportTicketSubscriber implements EventSubscriberInterface
     {
         $message = 'Kontaktforespørsel sendt, takk for henvendelsen!';
 
-        $this->session->getFlashBag()->add('contact-notice', $message);
+        $this->session->getFlashBag()->add('success', $message);
     }
 
     public function logEvent(SupportTicketCreatedEvent $event)

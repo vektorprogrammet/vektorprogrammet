@@ -17,15 +17,15 @@ class InterviewControllerTest extends BaseWebTestCase
         $form = $crawler->selectButton('Lagre')->form();
 
         // Fill in the form
-        $form['application[applicationPractical][days][monday]']->select('Bra');
-        $form['application[applicationPractical][days][tuesday]']->select('Bra');
-        $form['application[applicationPractical][days][wednesday]']->select('Ikke');
-        $form['application[applicationPractical][days][thursday]']->select('Bra');
-        $form['application[applicationPractical][days][friday]']->select('Ikke');
+        $form['application[applicationPractical][days][monday]']->tick();
+        $form['application[applicationPractical][days][tuesday]']->tick();
+        $form['application[applicationPractical][days][wednesday]']->untick();
+        $form['application[applicationPractical][days][thursday]']->tick();
+        $form['application[applicationPractical][days][friday]']->untick();
 
         $form['application[applicationPractical][doublePosition]']->select('1');
         $form['application[applicationPractical][preferredGroup]']->select('Bolk 1');
-        $form['application[applicationPractical][english]']->select('1');
+        $form['application[applicationPractical][language]']->select('Norsk');
 
         $form['application[interview][interviewAnswers][0][answer]'] = 'Test answer';
         $form['application[interview][interviewAnswers][1][answer]'] = 'Test answer';
@@ -50,15 +50,15 @@ class InterviewControllerTest extends BaseWebTestCase
         $form = $crawler->selectButton('Lagre')->form();
 
         // Fill in the form
-        $form['application[applicationPractical][days][monday]']->select('Bra');
-        $form['application[applicationPractical][days][tuesday]']->select('Bra');
-        $form['application[applicationPractical][days][wednesday]']->select('Ikke');
-        $form['application[applicationPractical][days][thursday]']->select('Bra');
-        $form['application[applicationPractical][days][friday]']->select('Ikke');
+        $form['application[applicationPractical][days][monday]']->tick();
+        $form['application[applicationPractical][days][tuesday]']->tick();
+        $form['application[applicationPractical][days][wednesday]']->untick();
+        $form['application[applicationPractical][days][thursday]']->tick();
+        $form['application[applicationPractical][days][friday]']->untick();
 
         $form['application[applicationPractical][doublePosition]']->select('1');
         $form['application[applicationPractical][preferredGroup]']->select('Bolk 1');
-        $form['application[applicationPractical][english]']->select('1');
+        $form['application[applicationPractical][language]']->select('Norsk og engelsk');
 
         $form['application[interview][interviewAnswers][0][answer]'] = 'Test answer';
         $form['application[interview][interviewAnswers][1][answer]'] = 'Test answer';
@@ -76,8 +76,8 @@ class InterviewControllerTest extends BaseWebTestCase
     private function verifyInterview($crawler)
     {
         $this->assertEquals(2, $crawler->filter('p:contains("Test answer")')->count());
-        $this->assertEquals(3, $crawler->filter('td:contains("Bra")')->count());
-        $this->assertEquals(2, $crawler->filter('td:contains("Ikke")')->count());
+        $this->assertEquals(2, $crawler->filter('td:contains("Bra")')->count());
+        $this->assertEquals(3, $crawler->filter('td:contains("Ikke")')->count());
         $this->assertGreaterThan(0, $crawler->filter('td:contains("5")')->count());
         $this->assertGreaterThan(0, $crawler->filter('td:contains("4")')->count());
         $this->assertGreaterThan(0, $crawler->filter('td:contains("6")')->count());
