@@ -7,6 +7,15 @@ services:
     class: AppBundle\Service\LogService
     arguments: ['@logger', '@app.slack_messenger']
 
+  app.google_service:
+      class: AppBundle\Google\GoogleService
+      abstract: true
+      arguments: ['%google_api%', '@app.logger']
+
+  app.google_gmail:
+      class: AppBundle\Google\Gmail
+      parent: app.google_service
+
   app.google_api:
       class: AppBundle\Google\GoogleAPI
       arguments: ['%google_api%', '@app.logger']

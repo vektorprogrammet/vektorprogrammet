@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Entity\SupportTicket;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class HomeController extends Controller
