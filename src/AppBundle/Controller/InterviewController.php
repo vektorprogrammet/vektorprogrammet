@@ -197,14 +197,24 @@ class InterviewController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $data = $form->getData();
-
+        $data = $form->getData();
+        $mapLink = $data['mapLink'];
+        if ($form->isSubmitted()) {
+            if ($mapLink and ! (strpos($mapLink, 'http')===0)) {
+                $mapLink='http://' . $mapLink;
+            }
+        }
+        $invalidMapLink = $form->isSubmitted() && !empty($mapLink) && !$this->validateLink($mapLink);
+        if ($invalidMapLink) {
+            $this->addFlash('error', 'Kartlinken er ikke gyldig');
+        } elseif ($form->isValid()) {
             $interview->generateAndSetResponseCode();
 
             // Update the scheduled time for the interview
             $interview->setScheduled($data['datetime']);
             $interview->setRoom($data['room']);
+
+            $interview->setMapLink($mapLink);
             $interview->resetStatus();
 
             if ($form->get('preview')->isClicked()) {
@@ -230,6 +240,22 @@ class InterviewController extends Controller
             'form' => $form->createView(),
             'interview' => $interview,
             'application' => $application, ));
+    }
+
+    private function validateLink($link)
+    {
+        if (empty($link)) {
+            return false;
+        }
+
+        try {
+            $headers = @get_headers($link);
+            $statusCode = intval(explode(" ", $headers[0])[1]);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return $statusCode < 400;
     }
 
     /**

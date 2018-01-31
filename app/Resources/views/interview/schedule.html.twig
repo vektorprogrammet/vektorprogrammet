@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block body %}
-    <p></p>
+    {{ include('common/flash.html.twig') }}
 
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
@@ -60,6 +60,12 @@
                     <div class="small-12 medium-4 columns">
                         {{ form_row(form.room) }}
                     </div>
+                    <div class="small-12 medium-4 columns">
+                        <label>Link til kart (<a href="https://use.mazemap.com/" target="_blank" rel="noopener">MazeMap</a>)</label>
+                        {{ form_row(form.mapLink) }}
+                    </div>
+
+
 
                 </div>
                 <div class="row">

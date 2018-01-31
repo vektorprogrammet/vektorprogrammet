@@ -25,6 +25,10 @@ class ScheduleInterviewType extends AbstractType
             ->add('room', 'text', array(
                 'label' => 'Rom',
             ))
+            ->add('mapLink', 'text', array(
+                'label' => false,
+                'required' => false,
+            ))
             ->add('message', 'textarea', array(
                 'label' => 'Melding',
                 'attr' => array('rows' => '5'),
