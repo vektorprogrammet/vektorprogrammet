@@ -20,7 +20,12 @@ class Gmail extends GoogleService implements MailerInterface
         $service = new \Google_Service_Gmail($client);
         $gmailMessage = $this->SwiftMessageToGmailMessage($message);
 
-        $res = $service->users_messages->send('vektorbot@vektorprogrammet.no', $gmailMessage);
+        try {
+            $res = $service->users_messages->send('vektorbot@vektorprogrammet.no', $gmailMessage);
+        } catch (\Google_Service_Exception $e) {
+            $this->logServiceException($e, "Failed to send email to");
+            return;
+        }
 
         if (array_search('SENT', $res->getLabelIds()) !== false) {
             $this->logger->info("Email sent to {$this->recipientsToHeader($message->getTo())}: `{$message->getSubject()}`");
