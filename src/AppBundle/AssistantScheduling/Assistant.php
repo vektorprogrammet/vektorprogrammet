@@ -301,6 +301,7 @@ class Assistant implements \JsonSerializable
             'score' => $this->score,
             'suitable' => $this->suitability,
             'previousParticipation' => $this->previousParticipation,
+            'language' => $this->application->getLanguage(),
         );
     }
 

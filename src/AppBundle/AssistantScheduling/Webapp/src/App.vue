@@ -80,7 +80,8 @@
                   tuesday: a.availability.Tuesday,
                   wednesday: a.availability.Wednesday,
                   thursday: a.availability.Thursday,
-                  friday: a.availability.Friday
+                  friday: a.availability.Friday,
+                  language: a.language,
                 }
               });
             });
