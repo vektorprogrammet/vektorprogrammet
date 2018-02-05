@@ -4,7 +4,7 @@
     {% include 'admission_admin/interviewed_applications/bulk_navigation.html.twig' with {'department': app.user.department} %}
 
     {# The table containing interviewed applications #}
-    <table width="100%" id="application-table">
+    <table width="100%" class="application-table">
         <thead>
         <tr>
             {% if is_granted_admin() %}
