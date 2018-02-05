@@ -4,6 +4,7 @@ namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -69,6 +70,12 @@ class ApplicationPracticalType extends AbstractType
         'expanded' => true,
         'multiple' => false,
         ));
+
+        $builder->add('preferredSchool', TextType::class, [
+            'label' => 'Er det en spesiell skole som du ønsker å besøke igjen?',
+            'required' => false
+        ]);
+
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
