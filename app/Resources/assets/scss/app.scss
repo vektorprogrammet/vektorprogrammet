@@ -835,10 +835,10 @@ ul.alternatives {
   th {
     user-select: none;
   }
-  .clickable {
-    cursor:pointer;
-  }
 }
+
+th[data-sort]{
+  cursor: pointer; }
 
 #receipt-form {
   display: none;
