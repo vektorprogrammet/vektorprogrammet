@@ -60,21 +60,21 @@
                 <thead>
 
                 <tr>
-                    <th data-sort="string" class="clickable"> Fornavn</th>
-                    <th data-sort="string" class="clickable"> Etternavn</th>
-                    <th data-sort="int" class="clickable"> Tlf</th>
-                    <th data-sort="string" class="clickable"> E-post</th>
-                    <th data-sort="string" class="clickable"> Linje</th>
+                    <th data-sort="string"> Fornavn</th>
+                    <th data-sort="string"> Etternavn</th>
+                    <th data-sort="int"> Tlf</th>
+                    <th data-sort="string"> E-post</th>
+                    <th data-sort="string"> Linje</th>
 
-                    <th data-sort="int" class="clickable"> År</th>
-                    <th data-sort="string" class="clickable"> Språk</th>
+                    <th data-sort="int"> År</th>
+                    <th data-sort="string"> Språk</th>
                     <th><span data-sort="string" class="has-tip" title="Mandag"> M</span></th>
                     <th><span data-sort="string" class="has-tip" title="Tirsdag"> T</span></th>
                     <th><span data-sort="string" class="has-tip" title="Onsdag"> O</span></th>
                     <th><span data-sort="string" class="has-tip" title="Torsdag"> T</span></th>
                     <th><span data-sort="string" class="has-tip" title="Fredag"> F</span></th>
-                    <th><span data-sort="string"> Pulje</span></th>
-                    <th><span data-sort="string"> Poeng</span></th>
+                    <th><span data-sort="string"> Bolk</span></th>
+                    <th><span data-sort="int"> Poeng</span></th>
                     <th><span data-sort="string"> Passende</span></th>
                     {% if is_granted_team_leader() %}
                         <th colspan="2"></th>
@@ -112,7 +112,7 @@
                                           action="{{ path('substitute_modify', { id: sub.id }) }}">
                                         <button type="submit"
                                                 class="button tiny">
-                                            <i class="fa"></i>
+                                            <i class="fa fa-pencil-square-o"></i>
                                             Rediger
                                         </button>
                                     </form>
