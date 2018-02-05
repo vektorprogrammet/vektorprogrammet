@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as CustomAssert;
 
 /**
  * @ORM\Entity
@@ -32,7 +32,7 @@ class InterviewAnswer
 
     /**
      * @ORM\Column(type="array", nullable=true)
-     * @Assert\NotBlank(groups={"interview"}, message="Dette feltet kan ikke være tomt.")
+     * @CustomAssert\InterviewAnswer(groups={"interview"})
      */
     protected $answer;
 
@@ -116,5 +116,25 @@ class InterviewAnswer
     public function getInterviewQuestion()
     {
         return $this->interviewQuestion;
+    }
+
+    public function __toString()
+    {
+        if (is_string($this->answer)) {
+            return $this->answer;
+        }
+        if (!is_array($this->answer)) {
+            return "";
+        }
+
+        $answerString = "";
+        foreach ($this->answer as $a) {
+            if (!empty($answerString)) {
+                $answerString .= ", ";
+            }
+            $answerString .= $a;
+        }
+
+        return $answerString;
     }
 }

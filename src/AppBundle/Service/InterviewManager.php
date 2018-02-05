@@ -62,17 +62,25 @@ class InterviewManager
      */
     public function initializeInterviewAnswers(Interview $interview)
     {
-        if ($interview->getInterviewed() || count($interview->getInterviewAnswers()) > 0) {
-            return $interview;
+        $existingAnswers = $interview->getInterviewAnswers();
+        if (!is_array($existingAnswers)) {
+            $existingAnswers = $existingAnswers->toArray();
         }
 
+        $existingQuestions = array_map(function (InterviewAnswer $interviewAnswer) {
+            return $interviewAnswer->getInterviewQuestion();
+        }, $existingAnswers);
+
         foreach ($interview->getInterviewSchema()->getInterviewQuestions() as $interviewQuestion) {
-            // Create a new answer object for the question
+            $interviewAlreadyHasQuestion = array_search($interviewQuestion, $existingQuestions) !== false;
+            if ($interviewAlreadyHasQuestion) {
+                continue;
+            }
+
             $answer = new InterviewAnswer();
             $answer->setInterview($interview);
             $answer->setInterviewQuestion($interviewQuestion);
 
-            // Add the answer object to the interview
             $interview->addInterviewAnswer($answer);
         }
 

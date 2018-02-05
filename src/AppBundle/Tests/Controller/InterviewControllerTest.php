@@ -7,7 +7,7 @@ use AppBundle\Tests\BaseWebTestCase;
 class InterviewControllerTest extends BaseWebTestCase
 {
     /**
-     * @param bool teamInterest
+     * @param bool $teamInterest
      * @param $client
      * @param $crawler
      */

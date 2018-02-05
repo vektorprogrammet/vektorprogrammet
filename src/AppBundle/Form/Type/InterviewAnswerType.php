@@ -59,64 +59,6 @@ class InterviewAnswerType extends AbstractType
                     ));
             }
         });
-
-        // If the user supplied a new value to a choice field, this new value must be added as one of the choices
-        // in order for the form to validate, as values other than the specified choices are not allowed.
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use (&$interviewAnswer) {
-            $form = $event->getForm();
-
-            // This is the data submitted in the form
-            $data = $event->getData();
-
-            // Remove and then add the form fields with the new choices.
-            switch ($interviewAnswer->getInterviewQuestion()->getType()) {
-                case 'list':
-                    $choices = $this->createChoices($interviewAnswer);
-
-                    // Add the new value to the choice array
-                    $choices[$data['answer']] = $data['answer'];
-
-                    $form->remove('answer');
-                    $form->add('answer', 'choice', array(
-                        'label' => $interviewAnswer->getInterviewQuestion()->getQuestion(),
-                        'help' => $interviewAnswer->getInterviewQuestion()->getHelp(),
-                        'choices' => $choices,
-                    ));
-
-                    break;
-                case 'radio':
-                    $choices = $this->createChoices($interviewAnswer);
-
-                    // Add the new value to the choice array
-                    $choices[$data['answer']] = $data['answer'];
-
-                    $form->remove('answer');
-                    $form->add('answer', 'choice', array(
-                        'label' => $interviewAnswer->getInterviewQuestion()->getQuestion(),
-                        'help' => $interviewAnswer->getInterviewQuestion()->getHelp(),
-                        'choices' => $choices,
-                        'expanded' => true,
-                    ));
-                    break;
-                case 'check':
-                    $choices = $this->createChoices($interviewAnswer);
-
-                    // Add the new value to the choice array
-                    // The data from the form is an array (because it's checkboxes) in this case
-                    $answers = array_combine($data['answer'], $data['answer']);
-                    $newChoices = array_merge($choices, $answers);
-
-                    $form->remove('answer');
-                    $form->add('answer', 'choice', array(
-                        'label' => $interviewAnswer->getInterviewQuestion()->getQuestion(),
-                        'help' => $interviewAnswer->getInterviewQuestion()->getHelp(),
-                        'choices' => $newChoices,
-                        'expanded' => true,
-                        'multiple' => true,
-                    ));
-                    break;
-            }
-        });
     }
 
     /**
