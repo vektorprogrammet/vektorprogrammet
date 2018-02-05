@@ -137,11 +137,7 @@
                 {% for interviewAnswer in interview.interviewAnswers %}
                     <label class="question-label">{{ interviewAnswer.interviewQuestion.question }}</label>
                     <p>
-                        {% for answer in interviewAnswer.answer %}
-                            {{ answer }}{% if not loop.last %}, {% endif %}
-                        {% else %}
-                            {{ interviewAnswer.answer }}
-                        {% endfor %}
+                        {{ interviewAnswer }}
                     </p>
                 {% endfor %}
 
@@ -151,7 +147,6 @@
                             Dette inneholder teamarbeid</label>
                         <p>
                             {{ application.teamInterest ? 'Ja' : 'Nei' }}
-
                         </p>
                     </div>
 
