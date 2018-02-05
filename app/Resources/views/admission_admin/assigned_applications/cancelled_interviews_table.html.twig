@@ -3,7 +3,7 @@
         <div id="cancelledApplicationsList" class="slide-group">
             {% if cancelledApplications is defined %}
                 {% if cancelledApplications|length %}
-                    <h5 class="">Kansellerte intervujer | Antall: {{ cancelledApplications|length }}</h5>
+                    <h5 class="">Kansellerte intervjuer | Antall: {{ cancelledApplications|length }}</h5>
                 {% endif %}
                 {% include 'admission_admin/assigned_table.html.twig' with {'applicants': cancelledApplications} %}
             {% endif %}

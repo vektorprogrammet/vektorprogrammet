@@ -2,7 +2,7 @@
     <div class="small-12 columns">
         <div id="allApplicantsList" class="slide-group">
             {% if applications|length %}
-                <h5 class="">Alle intervujer | Antall: {{ applications|length }}</h5>
+                <h5 class="">Alle intervjuer | Antall: {{ applications|length }}</h5>
             {% include 'admission_admin/assigned_table.html.twig' with {'applicants': applications} %}
             {% endif %}
         </div>

@@ -1,11 +1,11 @@
 {% if interviewDistributions|length > 0 %}
     <h3>Intervjufordeling</h3>
-    <table>
+    <table id="interview-distribution-table">
         <thead>
         <tr class="text-center">
-            <th>Navn</th>
-            <th class="text-center">Intervjuer igjen</th>
-            <th class="text-center">Totalt antall intervjuer</th>
+            <th data-sort="string">Navn</th>
+            <th class="text-center" data-sort="int">Intervjuer igjen</th>
+            <th class="text-center" data-sort="int">Totalt antall intervjuer</th>
         </tr>
         </thead>
 
