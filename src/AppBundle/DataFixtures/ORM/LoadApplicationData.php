@@ -227,6 +227,37 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
 
         $manager->persist($application20);
 
+        $application21 = new Application();
+        $application21->setUser($this->getReference('user-14'));
+        $application21->setPreviousParticipation(false);
+        $application21->setYearOfStudy(1);
+        $application21->setSemester($this->getReference('semester-current'));
+        $application21->setMonday('Ikke');
+        $application21->setTuesday('Ikke');
+        $application21->setWednesday('Ikke');
+        $application21->setThursday('Ikke');
+        $application21->setFriday('Bra');
+        $application21->setSubstitute(true);
+        $application21->setPreferredGroup("Bolk 1");
+        $interview21 = new Interview();
+        $interview21->setInterviewed(true);
+        $interview21->setInterviewer($this->getReference('user-2'));
+        $interview21->setInterviewSchema($this->getReference('ischema-1'));
+        $interview21->setUser($this->getReference('user-14'));
+        $interview21->setCancelled(false);
+        $application21->setInterview($interview21);
+
+        $intScore = new InterviewScore();
+        $intScore->setSuitability(6);
+        $intScore->setExplanatoryPower(5);
+        $intScore->setRoleModel(4);
+        $intScore->setSuitableAssistant('Ja');
+        $interview21->setInterviewScore($intScore);
+        $application21->setInterview($interview21);
+
+        $manager->persist($application21);
+        $manager->persist($interview21);
+
         for ($i = 0; $i < 100; ++ $i) {
             $user = $this->getReference('scheduling-user-' . $i);
             $this->createSchedulingApplication($user, $manager);
