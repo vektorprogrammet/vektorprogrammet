@@ -19,10 +19,10 @@ class UserRegistration
      *
      * @param \Twig_Environment $twig
      * @param EntityManager     $em
-     * @param \Swift_Mailer     $mailer
+     * @param MailerInterface     $mailer
      * @param LoggerInterface   $logger
      */
-    public function __construct(\Twig_Environment $twig, EntityManager $em, \Swift_Mailer $mailer, LoggerInterface $logger)
+    public function __construct(\Twig_Environment $twig, EntityManager $em, MailerInterface $mailer, LoggerInterface $logger)
     {
         $this->twig = $twig;
         $this->em = $em;
@@ -41,8 +41,8 @@ class UserRegistration
 
     public function createActivationEmail(User $user, $newUserCode)
     {
-        /** @var \Swift_Mime_Message $emailMessage */
-        $emailMessage = \Swift_Message::newInstance()
+        /** @var \Swift_Message $emailMessage */
+        $emailMessage = (new \Swift_Message())
             ->setSubject('Velkommen til vektorprogrammet')
             ->setFrom(array('vektorprogrammet@vektorprogrammet.no' => 'Vektorprogrammet'))
             ->setReplyTo($user->getFieldOfStudy()->getDepartment()->getEmail())
