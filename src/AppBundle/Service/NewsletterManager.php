@@ -15,11 +15,11 @@ class NewsletterManager
     /**
      * LetterManager constructor.
      *
-     * @param \Swift_Mailer     $mailer
+     * @param MailerInterface   $mailer
      * @param \Twig_Environment $twig
      * @param EntityManager     $em
      */
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, EntityManager $em)
+    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, EntityManager $em)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;

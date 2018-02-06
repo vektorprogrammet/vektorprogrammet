@@ -63,9 +63,9 @@ abstract class GoogleService
         $this->logger->critical(
             "Google_Service_Exception caught: $message\n".
             "`Code: " . $exception->getCode() . "`\n".
-            "```\n".
+            "```".
             $exception->getMessage(). "\n".
-            "´´´"
+            "```"
         );
     }
 }

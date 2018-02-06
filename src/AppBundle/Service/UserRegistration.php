@@ -63,8 +63,6 @@ class UserRegistration
         $this->em->flush();
 
         $this->mailer->send($this->createActivationEmail($user, $newUserCode));
-
-        $this->logger->info("Activation email sent to {$user} at {$user->getEmail()}");
     }
 
     public function getHashedCode(string $newUserCode): string
