@@ -3,6 +3,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\User;
+use AppBundle\Mailer\MailerInterface;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
@@ -19,7 +20,7 @@ class UserRegistration
      *
      * @param \Twig_Environment $twig
      * @param EntityManager     $em
-     * @param MailerInterface     $mailer
+     * @param MailerInterface   $mailer
      * @param LoggerInterface   $logger
      */
     public function __construct(\Twig_Environment $twig, EntityManager $em, MailerInterface $mailer, LoggerInterface $logger)
@@ -43,7 +44,7 @@ class UserRegistration
     {
         /** @var \Swift_Message $emailMessage */
         $emailMessage = (new \Swift_Message())
-            ->setSubject('Velkommen til vektorprogrammet')
+            ->setSubject('Velkommen til Vektorprogrammet!')
             ->setFrom(array('vektorprogrammet@vektorprogrammet.no' => 'Vektorprogrammet'))
             ->setReplyTo($user->getFieldOfStudy()->getDepartment()->getEmail())
             ->setTo($user->getEmail())

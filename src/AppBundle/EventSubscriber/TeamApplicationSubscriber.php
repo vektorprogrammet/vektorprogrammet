@@ -3,7 +3,7 @@
 namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\TeamApplicationCreatedEvent;
-use AppBundle\Service\MailerInterface;
+use AppBundle\Mailer\MailerInterface;
 use AppBundle\Service\SlackMessenger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

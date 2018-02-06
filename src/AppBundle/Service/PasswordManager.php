@@ -9,6 +9,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\PasswordReset;
+use AppBundle\Mailer\MailerInterface;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 
