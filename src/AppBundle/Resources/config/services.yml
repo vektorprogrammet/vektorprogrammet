@@ -7,9 +7,32 @@ services:
     class: AppBundle\Service\LogService
     arguments: ['@logger', '@app.slack_messenger']
 
+  app.google_service:
+      class: AppBundle\Google\GoogleService
+      abstract: true
+      arguments: ['%google_api%', '@app.logger']
+
+  app.google_gmail:
+      class: AppBundle\Google\Gmail
+      parent: app.google_service
+      calls:
+        - [setDefaultEmail, ['%default_from_email%']]
+
+  app.google_users:
+      class: AppBundle\Google\GoogleUsers
+      parent: app.google_service
+
+  app.google_groups:
+      class: AppBundle\Google\GoogleGroups
+      parent: app.google_service
+
+  app.google_drive:
+      class: AppBundle\Google\GoogleDrive
+      parent: app.google_service
+
   app.google_api:
       class: AppBundle\Google\GoogleAPI
-      arguments: ['%google_api%', '@app.logger']
+      arguments: ['%google_api%', '@app.google_users', '@app.google_groups']
 
   app.company_email_maker:
     class: AppBundle\Service\CompanyEmailMaker
@@ -135,7 +158,7 @@ services:
 
   app.g_suite_subscriber:
     class: AppBundle\EventSubscriber\GSuiteSubscriber
-    arguments: ['@app.logger', '@app.google_api', '@app.company_email_maker']
+    arguments: ['@app.logger', '@app.google_api', '@app.company_email_maker', '@app.google_users', '@app.google_groups', '@app.google_drive']
     tags:
         - { name: kernel.event_subscriber }
 
