@@ -6,6 +6,7 @@ use AppBundle\Entity\Application;
 use AppBundle\Entity\Interview;
 use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\User;
+use AppBundle\Mailer\MailerInterface;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;

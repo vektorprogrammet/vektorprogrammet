@@ -4,7 +4,7 @@ namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Service\ApplicationData;
-use AppBundle\Service\MailerInterface;
+use AppBundle\Mailer\MailerInterface;
 use AppBundle\Service\NewsletterManager;
 use AppBundle\Service\SlackMessenger;
 use Psr\Log\LoggerInterface;

@@ -2,7 +2,7 @@
 
 namespace AppBundle\Google;
 
-use AppBundle\Service\MailerInterface;
+use AppBundle\Mailer\MailerInterface;
 use Google_Service_Gmail_Message;
 
 class Gmail extends GoogleService implements MailerInterface

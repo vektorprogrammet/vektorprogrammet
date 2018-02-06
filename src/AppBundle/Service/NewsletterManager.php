@@ -4,6 +4,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Letter;
 use AppBundle\Entity\Subscriber;
+use AppBundle\Mailer\MailerInterface;
 use Doctrine\ORM\EntityManager;
 
 class NewsletterManager

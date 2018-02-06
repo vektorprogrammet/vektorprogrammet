@@ -6,7 +6,7 @@ use AppBundle\Event\InterviewConductedEvent;
 use AppBundle\Event\InterviewEvent;
 use AppBundle\Service\InterviewManager;
 use AppBundle\Service\InterviewNotificationManager;
-use AppBundle\Service\MailerInterface;
+use AppBundle\Mailer\MailerInterface;
 use AppBundle\Service\SbsData;
 use AppBundle\Sms\Sms;
 use AppBundle\Sms\SmsSender;
