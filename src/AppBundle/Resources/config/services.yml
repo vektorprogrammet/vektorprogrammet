@@ -60,7 +60,7 @@ services:
 
   app.newsletter.manager:
       class: AppBundle\Service\NewsletterManager
-      arguments: ['@swiftmailer.mailer.newsletter', '@twig', '@doctrine.orm.entity_manager']
+      arguments: ['@app.google_gmail', '@twig', '@doctrine.orm.entity_manager']
 
   app.password_manager:
       class: AppBundle\Service\PasswordManager
