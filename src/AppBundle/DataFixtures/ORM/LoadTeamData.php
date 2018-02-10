@@ -16,7 +16,7 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         $team1->setName('Styret');
         $team1->setEmail('styret@vektorprogrammet.no');
         $team1->setAcceptApplication(true);
-        $team1->setShortDescription('Dette her styret. Det er vi som tror vi bestemmer alt!');
+        $team1->setShortDescription('Dette her styret. Det er vi som tror vi bestemmer alt! Vi passer på at alle gjør som de blir bedt om ellers vanker kakestraff');
         $team1->setDescription('<table border="1" cellpadding="1" cellspacing="1" style="width:500px">
 	<tbody>
 		<tr>
