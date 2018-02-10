@@ -91,6 +91,7 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         $team7->setName('Skolekoordinering');
         $team7->setShortDescription('Skolekoordinering');
         $team7->setAcceptApplication(true);
+        $team7->setEmail('skolekoordinering.ntnu@vektorprogrammet.no');
         $manager->persist($team7);
 
         $team2 = new Team();
