@@ -7,9 +7,24 @@
 {% block javascripts %}
     {% include "statictext/js_loader_for_static_texts.html.twig" %}
     <script>
-        /* Team overview tabs */
+    /* Team overview tabs */
+
         // Make first tab active
         $('#team_overview_tabs a:first').tab("show");
+
+        // Make tab change when selector value changes
+        $('#team_overview_selector').on('change', function (e) {
+            let department = $(this).val();
+            $('#team_overview_tabs a[aria-controls="'+department+'"]').tab('show');
+        });
+
+        // Make selector value change when tab changes
+        $('#team_overview_tabs a').on('click', function (e) {
+            let department = $(this).attr('aria-controls');
+            $('#team_overview_selector').val(department);
+        });
+
+    /* --------- */
     </script>
 {% endblock %}
 
@@ -37,17 +52,24 @@
             <section class="row segment team-overview">
                 <h3 class="text-center" >Oversikt</h3>
 
-                <!-- Tabs -->
-                <ul id="team_overview_tabs" class="nav nav-tabs justify-content-center">
+                <!-- Tabs (visible on large screens) -->
+                <ul id="team_overview_tabs" class="nav nav-tabs justify-content-center d-none d-sm-inline-flex">
                     {% for key, department in departments %}
-                        <li role="presentation" class="nav-item"><a class="nav-link" href="#tab-{{ key }}" data-toggle="tab" aria-controls="tab-{{ key }}">{{ department }}</a></li>
+                        <li role="presentation" class="nav-item"><a class="nav-link" href="#{{ department }}" data-toggle="tab" aria-controls="{{ department }}">{{ department }}</a></li>
                     {% endfor %}
                 </ul>
+
+                <!-- Dropdown (visible on mobile) -->
+                <select class="form-control d-block d-sm-none" id="team_overview_selector">
+                    {% for key, department in departments %}
+                        <option value="{{ department }}">{{ department }}</option>
+                    {% endfor %}
+                </select>
 
                 <!-- Panes -->
                 <div class="tab-content">
                     {% for key, department in departments %}
-                        <div role="tabpanel" class="tab-pane fade in" id="tab-{{ key }}">
+                        <div role="tabpanel" class="tab-pane fade in" id="{{ department }}">
                             {{ department }} er den beste regionen
                         </div>
                     {% endfor %}
