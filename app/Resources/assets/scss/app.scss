@@ -107,18 +107,6 @@ footer {
   background-color: $dark-blue;
 }
 
-.fit-image{
-  img{
-    max-height:100%;
-    max-width:100%;
-  }
-}
-
-.vcenter {
-  display: flex;
-  align-items: center;
-}
-
 .segment {
   margin: 1rem 0;
   padding: 1em 1em;

@@ -110,21 +110,52 @@
 
 }
 
-.team-page{
-  h1{
+.team-page {
+  h1 {
     // Override page-header center alignment
     text-align: left !important;
   }
 
-  .page-cover{
+  .page-cover {
     @media (min-width: 767px) {
       max-height:500px;
     }
   }
 
-  .team-overview{
+  .team-overview {
     > * {
       width:100%; // But why do i need this tho
     }
+  }
+
+  .card {
+    display:inline-block;
+  }
+
+  .team-card {
+    h5 {
+      a {
+        color: #333 !important;
+      }
+    }
+
+    a[href^="mailto"] {
+      color:#777 !important;
+      font-size:14px;
+    }
+
+    p {
+      font-size: 15px;
+    }
+
+    width:290px;
+    max-width:100%;
+    box-shadow:0 1px 2px 0 rgba(34,36,38,.15);
+  }
+
+  .team-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }

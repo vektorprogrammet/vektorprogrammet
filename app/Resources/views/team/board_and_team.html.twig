@@ -48,29 +48,41 @@
                 <img class="img-fluid" src="{{ asset_with_version('images/departments_map.png') }}" alt="Kart med avdelinger">
             </div>
         </header>
-        <div class="content">
+        <div>
             <section class="row segment team-overview">
                 <h3 class="text-center" >Oversikt</h3>
 
                 <!-- Tabs (visible on large screens) -->
                 <ul id="team_overview_tabs" class="nav nav-tabs justify-content-center d-none d-sm-inline-flex">
-                    {% for key, department in departments %}
+                    {% for department in departments %}
                         <li role="presentation" class="nav-item"><a class="nav-link" href="#{{ department }}" data-toggle="tab" aria-controls="{{ department }}">{{ department }}</a></li>
                     {% endfor %}
                 </ul>
 
                 <!-- Dropdown (visible on mobile) -->
                 <select class="form-control d-block d-sm-none" id="team_overview_selector">
-                    {% for key, department in departments %}
+                    {% for department in departments %}
                         <option value="{{ department }}">{{ department }}</option>
                     {% endfor %}
                 </select>
 
                 <!-- Panes -->
                 <div class="tab-content">
-                    {% for key, department in departments %}
+                    {% for department in departments %}
                         <div role="tabpanel" class="tab-pane fade in" id="{{ department }}">
-                            {{ department }} er den beste regionen
+                            <div class="team-cards-container">
+                                {% for team in department.teams %}
+                                    <div class="card team-card mx-sm-4 my-sm-3 mx-1 my-0">
+                                        <a href="{{ path('team_page', {id: team.id}) }}"><img class="card-img-top" src="http://placehold.it/300x200" alt="Card image cap"></a>
+                                        <div class="card-block px-3 py-3">
+                                            <h5 class="card-title mb-0"><a href="{{ path('team_page', {id: team.id}) }}">{{ team }}</a></h5>
+                                            <a href="mailto:{{ team.email}}">{{ team.email }}</a>
+                                            <p class="mt-2" card-text">{{ team.shortDescription }}</p>
+                                            <a href="{{ path('team_page', {id: team.id}) }}" class="btn btn-primary">Les mer</a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
