@@ -1,0 +1,48 @@
+{% extends 'base_new.html.twig' %}
+
+{% block title %}
+    Styre og team
+{% endblock %}
+
+{% block javascripts %}
+    {% include "statictext/js_loader_for_static_texts.html.twig" %}
+{% endblock %}
+
+{% block body %}
+    <div class="team-page container">
+        <header class="page-cover row">
+            <div class=" col-md-6">
+
+                <h1>Styre og team</h1>
+                <p>Vektorprogrammet er en stor organisasjon med assistenter i 5 norske byer.
+                    Vi trenger derfor mange frivillige bak kulissene som kan få hjulene til å gå rundt.
+                    Uten vektorprogrammets {{ numberOfTeams }} team hadde dette aldri gått ann!
+                </p>
+                <p>
+                    Kunne du tenkt deg et team-verv hos oss?
+                    <br>
+                    <span class="font-weight-bold">Les mer om de ulike teamene nedenfor!</span>
+                </p>
+            </div>
+            <div class="col-md-5 offset-md-1">
+                <img class="img-fluid" src="{{ asset_with_version('images/departments_map.png') }}" alt="Kart med avdelinger">
+            </div>
+        </header>
+        <div class="content">
+            <section class="row segment team-overview">
+                <h3 class="text-center" >Oversikt</h3>
+            </section>
+
+            <section class="row">
+                <div class="col-md-6">
+                    <h2>Hovedstyret</h2>
+                    <p>Hovedstyret er det nasjonale styret i vektorprogrammet. De er et overordnet organ med ansvar for drifting av hele organisasjonen.</p>
+                </div>
+
+                <div class="col-md-5 offset-md-1">
+                    <img class="img-fluid" src="{{ asset_with_version('images/HS_square.jpg') }}" alt="Hoverstyret">
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

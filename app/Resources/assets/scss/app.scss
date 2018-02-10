@@ -4,6 +4,7 @@
 @import "mobile_nav";
 @import "about_us_page";
 @import "contact_page";
+@import "team";
 @import url(https://fonts.googleapis.com/css?family=Montserrat:300,400,600,700&subset=latin);
 @import url(https://fonts.googleapis.com/css?family=Lato:400,500,700&subset=latin);
 
@@ -61,14 +62,13 @@ p {
   text-align: center;
 }
 
-.page-header {
+.page-header, .page-cover {
   color: $dark-blue;
-  margin-top: 50px;
-  margin-bottom: 110px;
+
   h1 {
-    text-align: center;
     font-size: 34px;
   }
+
   p {
     font-size: 20px;
   }
@@ -86,9 +86,43 @@ p {
   }
 }
 
+.page-cover {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.page-header {
+  margin-top: 50px;
+  margin-bottom: 110px;
+
+  h1 {
+    text-align: center;
+  }
+}
+
 footer {
   margin-top: 64px;
   height: 400px;
   width: 100%;
   background-color: $dark-blue;
+}
+
+.fit-image{
+  img{
+    max-height:100%;
+    max-width:100%;
+  }
+}
+
+.vcenter {
+  display: flex;
+  align-items: center;
+}
+
+.segment {
+  margin: 1rem 0;
+  padding: 1em 1em;
+  border-radius:0.3rem;
+  box-shadow:0 1px 2px 0 rgba(34,36,38,.15);
+  border: 1px solid rgba(34,36,38,.15)
 }

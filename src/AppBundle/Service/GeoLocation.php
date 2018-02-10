@@ -73,7 +73,7 @@ class GeoLocation
         $ip = $this->clientIp();
         $coords = $this->findCoordinates($ip);
 
-        if($coords === null) {
+        if ($coords === null) {
             return $departments;
         }
         usort($departments, function (Department $a, Department $b) use ($coords) {

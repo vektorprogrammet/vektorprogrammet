@@ -109,3 +109,22 @@
   }
 
 }
+
+.team-page{
+  h1{
+    // Override page-header center alignment
+    text-align: left !important;
+  }
+
+  .page-cover{
+    @media (min-width: 767px) {
+      max-height:500px;
+    }
+  }
+
+  .team-overview{
+    h3 {
+      width:100%; // Why do i need this tho
+    }
+  }
+}
