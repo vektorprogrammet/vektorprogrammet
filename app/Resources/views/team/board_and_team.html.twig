@@ -6,6 +6,11 @@
 
 {% block javascripts %}
     {% include "statictext/js_loader_for_static_texts.html.twig" %}
+    <script>
+        /* Team overview tabs */
+        // Make first tab active
+        $('#team_overview_tabs a:first').tab("show");
+    </script>
 {% endblock %}
 
 {% block body %}
@@ -31,6 +36,22 @@
         <div class="content">
             <section class="row segment team-overview">
                 <h3 class="text-center" >Oversikt</h3>
+
+                <!-- Tabs -->
+                <ul id="team_overview_tabs" class="nav nav-tabs justify-content-center">
+                    {% for key, department in departments %}
+                        <li role="presentation" class="nav-item"><a class="nav-link" href="#tab-{{ key }}" data-toggle="tab" aria-controls="tab-{{ key }}">{{ department }}</a></li>
+                    {% endfor %}
+                </ul>
+
+                <!-- Panes -->
+                <div class="tab-content">
+                    {% for key, department in departments %}
+                        <div role="tabpanel" class="tab-pane fade in" id="tab-{{ key }}">
+                            {{ department }} er den beste regionen
+                        </div>
+                    {% endfor %}
+                </div>
             </section>
 
             <section class="row">

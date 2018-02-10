@@ -123,8 +123,8 @@
   }
 
   .team-overview{
-    h3 {
-      width:100%; // Why do i need this tho
+    > * {
+      width:100%; // But why do i need this tho
     }
   }
 }
