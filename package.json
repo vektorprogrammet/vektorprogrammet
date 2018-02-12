@@ -28,8 +28,8 @@
   "scripts": {
     "test": "./bin/phpunit --configuration app/phpunit.xml.dist",
     "test:win": ".\\bin\\phpunit --configuration app/phpunit.xml.dist",
-    "setup": "php ./composer.phar install -n && npm install && npm run setup:scheduling && npm run build:dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:schema:update --force --env=dev && php app/console doctrine:fixtures:load --env=dev -n",
-    "setup:win": "php .\\composer.phar install -n && npm install && npm run setup:scheduling:win && npm run build:dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:schema:update --force --env=dev && php app/console doctrine:fixtures:load --env=dev -n",
+    "setup": "php ./composer.phar install -n && npm install && npm run setup:scheduling && npm run build:dev  && php app/console doctrine:schema:drop --force --env=dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:fixtures:load --env=dev -n || npm run setup:win",
+    "setup:win": "php .\\composer.phar install -n && npm install && npm run setup:scheduling:win && npm run build:dev  && php app/console doctrine:schema:drop --force --env=dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:fixtures:load --env=dev -n",
     "setup:scheduling": "cd src/AppBundle/AssistantScheduling/Webapp && npm install",
     "setup:scheduling:win": "cd src\\AppBundle\\AssistantScheduling\\Webapp && npm install",
     "start": "concurrently --kill-others \"php app/console server:run --docroot=www\" \"npm run watch\"",
