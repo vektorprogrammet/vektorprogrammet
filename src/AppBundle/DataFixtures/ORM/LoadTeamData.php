@@ -15,7 +15,7 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         $team1->setDepartment($this->getReference('dep-1'));
         $team1->setName('Styret');
         $team1->setEmail('styret@vektorprogrammet.no');
-        $team1->setAcceptApplication(true);
+        $team1->setAcceptApplication(false);
         $team1->setShortDescription('Dette her styret. Det er vi som tror vi bestemmer alt! Vi passer på at alle gjør som de blir bedt om ellers vanker kakestraff');
         $team1->setDescription('<table border="1" cellpadding="1" cellspacing="1" style="width:500px">
 	<tbody>
@@ -76,7 +76,7 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         $team5->setDepartment($this->getReference('dep-1'));
         $team5->setName('Evaluering');
         $team5->setShortDescription('Evaluering');
-        $team5->setAcceptApplication(true);
+        $team5->setAcceptApplication(false);
         $manager->persist($team5);
 
         $team6 = new Team();
@@ -90,7 +90,7 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         $team7->setDepartment($this->getReference('dep-1'));
         $team7->setName('Skolekoordinering');
         $team7->setShortDescription('Skolekoordinering');
-        $team7->setAcceptApplication(true);
+        $team7->setAcceptApplication(false);
         $team7->setEmail('skolekoordinering.ntnu@vektorprogrammet.no');
         $manager->persist($team7);
 

@@ -1,4 +1,4 @@
-<div class="card team-card mx-sm-4 my-sm-3 mx-1 my-0">
+<div class="card team-card mx-sm-4 my-sm-3 mx-0 my-2">
     <a href="{{ path('team_page', {id: team.id}) }}"><img class="card-img-top" src="http://placehold.it/300x200" alt="Card image cap"></a>
     <div class="card-block px-3 py-3">
         <h5 class="card-title mb-0"><a href="{{ path('team_page', {id: team.id}) }}">{{ team }}</a></h5>
@@ -6,4 +6,9 @@
         <p class="mt-2" card-text">{{ team.shortDescription }}</p>
         <a href="{{ path('team_page', {id: team.id}) }}" class="btn btn-primary">Les mer</a>
     </div>
+    {% if team.acceptApplication %}
+        <div class="card-block px-3 py-3">
+            <a href="{{ path('team_page', {id: team.id}) }}" class="m-0"><i class="fa fa-star"></i> Har opptak!</a>
+        </div>
+    {% endif %}
 </div>

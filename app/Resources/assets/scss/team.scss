@@ -133,6 +133,38 @@
   }
 
   .team-card {
+    .card-block:first-of-type {
+      -webkit-box-flex: 1;
+      flex-grow: 1;
+    }
+
+    .card-block:nth-of-type(2) {
+      i {
+        color: #66bb6a;
+        transition: 0.3s;
+      }
+
+      a {
+        &:hover {
+          i {
+            color: #77d17b;
+          }
+          text-decoration:none !important;
+          color:#111;
+        }
+        color:#555;
+      }
+
+      transition: 0.1s;
+      flex-grow: 0;
+      border-top:solid 1px #eee;
+      text-align:center;
+    }
+
+    @media (max-width: 767px) {
+      width:100% !important;
+    }
+
     h5 {
       a {
         color: #333 !important;
@@ -148,6 +180,7 @@
       font-size: 15px;
     }
 
+    display:flex;
     width:290px;
     max-width:100%;
     box-shadow:0 1px 2px 0 rgba(34,36,38,.15);
