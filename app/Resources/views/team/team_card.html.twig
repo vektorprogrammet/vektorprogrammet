@@ -1,14 +1,17 @@
-<div class="card team-card mx-sm-4 my-sm-3 mx-0 my-2">
-    <a href="{{ path('team_page', {id: team.id}) }}"><img class="card-img-top" src="http://placehold.it/300x200" alt="Card image cap"></a>
+<div class="card team-card mx-sm-4 my-sm-4 mx-0 my-3">
     <div class="card-block px-3 py-3">
-        <h5 class="card-title mb-0"><a href="{{ path('team_page', {id: team.id}) }}">{{ team }}</a></h5>
-        <a class="team-email" href="mailto:{{ team.email}}">{{ team.email }}</a>
-        <p class="mt-2" card-text">{{ team.shortDescription }}</p>
-        <a href="{{ path('team_page', {id: team.id}) }}" class="btn btn-primary">Les mer</a>
+        <h5 class="card-title mb-0 text-uppercase text-center"><a href="{{ path('team_page', {id: team.id}) }}">{{ team }}</a></h5>
+    </div>
+    <hr class="my-0">
+    <div class="card-block px-3 py-3">
+        <p class="card-text">{{ team.shortDescription }}</p>
+        <p class="m-0 mb-1"><i class="big-icon m-0 mr-2 text-devil fa fa-envelope"></i><a class="team-email" href="mailto:{{ team.email}}">{{ team.email }}</a></p>
+        <p class="m-0"><i class="big-icon m-0 mr-2 text-devil fa fa-users"></i><span>{{ team.activeWorkHistories | length }} medlemmer</span></p>
     </div>
     {% if team.acceptApplication %}
-        <div class="card-block px-3 py-3">
-            <a href="{{ path('team_page', {id: team.id}) }}" class="m-0"><i class="fa fa-star"></i> Har opptak!</a>
+        <hr class="my-0">
+        <div class="card-block px-2 py-2">
+            <a href="{{ path('team_page', {id: team.id}) }}" class="m-0"><i class="text-success fa fa-star"></i> Har opptak!</a>
         </div>
     {% endif %}
 </div>

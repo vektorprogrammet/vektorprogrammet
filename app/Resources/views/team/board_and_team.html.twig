@@ -28,7 +28,7 @@
 
     /* Shorten team emails */
     let teamEmails = $('.team-email');
-    const maxEmailLength = 33;
+    const maxEmailLength = 29;
     teamEmails.each(function(i, teamEmail) {
         var email = $(this).text();
         if($(this).text().length > maxEmailLength){
@@ -59,22 +59,22 @@
                 </p>
             </div>
             <div class="col-md-5 offset-md-1">
-                <img class="img-fluid" src="{{ asset_with_version('images/departments_map.png') }}" alt="Kart med avdelinger">
+                <img class="img-fluid d-none d-sm-block" src="{{ asset_with_version('images/departments_map.png') }}" alt="Kart med avdelinger">
             </div>
         </header>
         <div>
-            <section class="row segment team-overview">
-                <h3 class="text-center" >Oversikt</h3>
+            <h2 class="text-center" >Våre team</h2>
+            <section class="row segment team-overview my-5 py-sm-5">
 
                 <!-- Tabs (visible on large screens) -->
-                <ul id="team_overview_tabs" class="nav nav-tabs justify-content-center d-none d-sm-inline-flex">
+                <ul id="team_overview_tabs" class="nav nav-tabs justify-content-center d-none d-sm-inline-flex mb-3">
                     {% for department in departments %}
                         <li role="presentation" class="nav-item"><a class="nav-link" href="#{{ department }}" data-toggle="tab" aria-controls="{{ department }}">{{ department }}</a></li>
                     {% endfor %}
                 </ul>
 
                 <!-- Dropdown (visible on mobile) -->
-                <select class="form-control d-block d-sm-none" id="team_overview_selector">
+                <select class="form-control d-block d-sm-none mb-3" id="team_overview_selector">
                     {% for department in departments %}
                         <option value="{{ department }}">{{ department }}</option>
                     {% endfor %}
@@ -95,14 +95,16 @@
             </section>
 
             <section class="row my-5">
-                <div class="col-md-6">
+                <div class="col-md-6 my-2">
                     <h2>Hovedstyret</h2>
                     <p>Hovedstyret er det nasjonale styret i vektorprogrammet. De er et overordnet organ med ansvar for drifting av hele organisasjonen.</p>
-                    <a href="{{ path('executive_board_page') }}" class="btn btn-primary">Les mer om hovedstyret</a>
+                    <a href="{{ path('executive_board_page') }}" class="btn btn-primary d-none d-sm-inline-block">Les mer om hovedstyret</a>
                 </div>
 
                 <div class="col-md-5 offset-md-1">
-                    <img class="img-fluid" src="{{ asset_with_version('images/HS_square.jpg') }}" alt="Hoverstyret">
+                    <img class="img-fluid my-2" src="{{ asset_with_version('images/HS_square.jpg') }}" alt="Hoverstyret">
+                    <!-- Push button under image on mobile -->
+                    <a href="{{ path('executive_board_page') }}" class="btn btn-primary d-block d-sm-none">Les mer om hovedstyret</a>
                 </div>
             </section>
         </div>

@@ -118,6 +118,11 @@
     text-align: left !important;
   }
 
+  h2 {
+    color: $dark-blue;
+    font-size:42px;
+  }
+
   .page-cover {
     @media (min-width: 767px) {
       max-height:500px;
@@ -135,32 +140,38 @@
   }
 
   .team-card {
-    .card-block:first-of-type {
-      -webkit-box-flex: 1;
-      flex-grow: 1;
+    .card-block {
+
+      &:nth-of-type(2) {
+        flex-grow: 1;
+      }
+
+      &:nth-of-type(3) {
+        i {
+          transition: 0.3s;
+          opacity:0.9;
+        }
+
+        a {
+          &:hover {
+            i {
+              opacity: 1;
+            }
+            text-decoration: none;
+            color: #111;
+          }
+          color: #555;
+        }
+
+        transition: 0.1s;
+        flex-grow: 0;
+        text-align: center;
+        font-size:16px;
+      }
     }
 
-    .card-block:nth-of-type(2) {
-      i {
-        color: #66bb6a;
-        transition: 0.3s;
-      }
-
-      a {
-        &:hover {
-          i {
-            color: #77d17b;
-          }
-          text-decoration:none !important;
-          color:#111;
-        }
-        color:#555;
-      }
-
-      transition: 0.1s;
-      flex-grow: 0;
-      border-top:solid 1px #eee;
-      text-align:center;
+    .big-icon {
+      font-size:22px;
     }
 
     @media (max-width: 767px) {
@@ -171,11 +182,6 @@
       a {
         color: #333 !important;
       }
-    }
-
-    a[href^="mailto"] {
-      color:#777 !important;
-      font-size:14px;
     }
 
     p {
