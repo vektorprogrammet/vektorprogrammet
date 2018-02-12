@@ -1,3 +1,5 @@
+@import "colors";
+
 .team {
   .mdc-tab-bar__indicator {
     background-color: #2196F3;
@@ -190,5 +192,43 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+  }
+}
+
+.individual-team-page {
+  .team-members{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .team-member {
+    a[href^="mailto"] {
+      color:#777 !important;
+      font-size:13px;
+    }
+
+    h5 a {
+      color: $dark-blue !important;
+      font-size:18px;
+    }
+
+    .position {
+      font-size:15px;
+    }
+
+    img{
+      transition: 0.2s;
+      opacity:0.9;
+      &:hover {
+        opacity:1;
+        box-shadow:0 1px 2px rgba(0,0,0,0.2);
+      }
+    }
+
+    display:inline-block;
+    width: 150px;
+    max-width: 100%;
+    text-align:center;
   }
 }

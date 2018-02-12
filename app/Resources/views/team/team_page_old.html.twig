@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ team.name }} - Vektorprogrammet
+{% endblock %}
+
+{% block facebookDescription %}
+    {{ team.shortDescription }}
+{% endblock %}
+
+
+
+{% block body %}
+
+    <div class="row">
+        <div class="small-12 columns">
+            <h1>{{ team.name }}</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-8 columns">
+            <p class="team-short-description">{{ team.shortDescription }} <br> {{ team.email }}</p>
+        </div>
+        <div class="small-4 columns">
+            {% if team.acceptApplication %}
+                <a href="{{ path('team_application',{id:team.id}) }}" class="button tiny"> Søk {{ team.name }}</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 columns">
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-7 columns team-description-column">
+            {{ team.description|safe_html }}
+        </div>
+        <div class="large-5 columns">
+            <h4>Medlemmer</h4>
+
+            <table>
+                {% for wh in workHistories | groupSort %}
+
+                    <tr>
+                        <td width="100">
+                            <img width="50" src="{{ asset_with_version(wh.user.picturePath) }}"/>
+                        </td>
+                        <td>
+                            {% if app.user %}
+                                <span><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{ wh.user }}</a></span>
+                            {% else %}
+                                <p> {{ wh.user }}  </p>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if wh.position is not null %}
+                                {{ wh.position }}<br/>
+                            {% endif %}
+                        </td>
+                        <td width="60">
+                            <a href="mailto:{{ wh.user.email }}">E-post</a><br/>
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+            </table>
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="small-4 columns">
+            {% if team.acceptApplication %}
+                <a href="{{ path('team_application',{id:team.id}) }}" class="button tiny"> Søk {{ team.name }}</a>
+                <br>
+                <br>
+            {% endif %}
+
+        </div>
+    </div>
+
+
+
+{% endblock %}
