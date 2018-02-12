@@ -1288,7 +1288,7 @@ newsletter_show_all:
   methods: [GET]
 
 newsletter_show_subscribers:
-  path: /kontrollpanel/nyhetsbrev/{id}
+  path: /kontrollpanel/nyhetsbrev/abonnenter/{id}
   defaults: { _controller: AppBundle:Subscriber:showSubscribers }
   methods: [GET]
   requirements:

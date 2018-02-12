@@ -6,6 +6,15 @@
             <h1>{{ department.shortName }} sine nyhetsbrev</h1>
         </div>
     </div>
+    <div class="row">
+        <div class="small-12 columns">
+            {% if not is_granted_team_leader() %}
+                <div class="panel callout radius inline-block">
+                    <p><i class="fa fa-info-circle" aria-hidden="true"></i> NB: Ta kontakt med team-leder for å sende nyhetsbrev</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
     {% if  is_granted_team_leader() %}
         <div class="row">
             <div class="small-12 columns">
@@ -29,12 +38,22 @@
                 </tr>
                 {% for newsletter in newsletters %}
                     <tr>
-                        <td>
-                            <a href="{{ path('newsletter_show_subscribers', {id: newsletter.id}) }}">{{ newsletter.name }}</a>
-                        </td>
-                        <td>
-                            <a href="{{ path('newsletter_show_subscribers', {id: newsletter.id}) }}">{{ newsletter.subscribers|length }}</a>
-                        </td>
+                        {% if is_granted_team_leader() %}
+                            <td>
+                                <a href="{{ path('newsletter_show_subscribers', {id: newsletter.id}) }}">{{ newsletter.name }}</a>
+                            </td>
+                            <td>
+                                <a href="{{ path('newsletter_show_subscribers', {id: newsletter.id}) }}">{{ newsletter.subscribers|length }}</a>
+                            </td>
+                        {% else %}
+                            <td>
+                                {{ newsletter.name }}
+                            </td>
+                            <td>
+                                {{ newsletter.subscribers|length }}
+                            </td> 
+                        {% endif %}
+                    
                         <td>
                             {% if  is_granted_team_leader() %}
                                 <a class="tiny button"
