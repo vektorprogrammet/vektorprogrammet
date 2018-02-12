@@ -37,6 +37,11 @@ class Letter
     private $content;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $excludeApplicants;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Newsletter", inversedBy="letters")
      */
     private $newsletter;
@@ -140,5 +145,21 @@ class Letter
     public function setRecipientCount($recipientCount)
     {
         $this->recipientCount = $recipientCount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExcludeApplicants()
+    {
+        return $this->excludeApplicants;
+    }
+
+    /**
+     * @param mixed $excludeApplicants
+     */
+    public function setExcludeApplicants($excludeApplicants)
+    {
+        $this->excludeApplicants = $excludeApplicants;
     }
 }

@@ -187,7 +187,7 @@ class ApplicationRepository extends EntityRepository
      * @param null $department
      * @param null $semester
      *
-     * @return array
+     * @return Application[]
      */
     public function findNewApplicants($department = null, $semester = null)
     {
@@ -233,7 +233,7 @@ class ApplicationRepository extends EntityRepository
      * @param Department $department
      * @param Semester   $semester
      *
-     * @return array
+     * @return Application[]
      */
     public function findExistingApplicants(Department $department, Semester $semester)
     {

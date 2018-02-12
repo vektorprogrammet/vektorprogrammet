@@ -86,6 +86,7 @@ class NewsletterController extends Controller
 
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('preview')->isClicked()) {
                 return $this->render('newsletter/mail_template.html.twig', array(
