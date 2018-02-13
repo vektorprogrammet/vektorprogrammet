@@ -8,6 +8,14 @@
     {{ team.shortDescription }}
 {% endblock %}
 
+{% block javascripts %}
+    <script>
+        $(".custom_html table").addClass("table table-bordered");
+
+        $(".custom_html img").removeAttr('style').addClass('img-fluid');
+    </script>
+{% endblock %}
+
 {% block body %}
     <div class="individual-team-page container">
         <header class="page-header row content">

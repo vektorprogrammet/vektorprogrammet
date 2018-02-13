@@ -44,6 +44,30 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
 	<li>Testing</li>
 	<li>Serveradministrering (Ubuntu)</li>
 </ul>
+
+<h3>I IT teamet ser vi etter følgende egenskaper</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Egenskap</th>
+            <th>Viktighet</th>
+            <th>Poeng</th>
+</tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Kodeferdighet</td>
+            <td>Veldig viktig</td>
+            <td>4</td>
+        </tr>
+        <tr>
+            <td>Intellij hax</td>
+            <td>Sykt viktig</td>
+            <td>1000</td>
+        </tr>
+    </tbody>
+</table>
+
 <p>&nbsp;</p>
 
 <p>Søknadsfrist: <strong>11. februar</strong></p>
