@@ -302,8 +302,8 @@ class NewsletterControllerTest extends BaseWebTestCase
         $messages = $mailCollector->getMessages();
 
         $found = false;
-        foreach ($messages as $message){
-            if (key($message->getTo()) ==  'assistant@gmail.com'){
+        foreach ($messages as $message) {
+            if (key($message->getTo()) ==  'assistant@gmail.com') {
                 $found = true;
             }
         }
@@ -332,8 +332,8 @@ class NewsletterControllerTest extends BaseWebTestCase
         $messages = $mailCollector->getMessages();
 
         $found = false;
-        foreach ($messages as $message){
-            if (key($message->getTo()) == 'assistant@gmail.com'){
+        foreach ($messages as $message) {
+            if (key($message->getTo()) == 'assistant@gmail.com') {
                 $found = true;
             }
         }

@@ -63,9 +63,9 @@ class NewsletterManager
         $department = $newsletter->getDepartment();
         $activeSemester = $this->em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
 
-        if($activeSemester and $excludeApplicants){
+        if ($activeSemester and $excludeApplicants) {
             $applications = $this->em->getRepository('AppBundle:Application')->findNewApplicants($department, $activeSemester);
-            $applicantMailAddresses = array_map(function(Application $application){
+            $applicantMailAddresses = array_map(function (Application $application) {
                 return $application->getUser()->getEmail();
             }, $applications);
         }
@@ -73,7 +73,7 @@ class NewsletterManager
         foreach ($newsletter->getSubscribers() as $subscriber) {
             $subscriberMail = $subscriber->getEmail();
 
-            if(in_array($subscriberMail, $applicantMailAddresses)){
+            if (in_array($subscriberMail, $applicantMailAddresses)) {
                 continue;
             }
             $recipients++;
@@ -102,6 +102,5 @@ class NewsletterManager
         $letter->setRecipientCount($recipients);
         $this->em->persist($letter);
         $this->em->flush();
-
     }
 }

@@ -141,5 +141,4 @@ class Letter
     {
         $this->recipientCount = $recipientCount;
     }
-
 }
