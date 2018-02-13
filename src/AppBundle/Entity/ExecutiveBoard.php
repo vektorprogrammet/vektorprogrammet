@@ -151,4 +151,9 @@ class ExecutiveBoard implements TeamInterface
     {
         return false;
     }
+
+    public function getActiveWorkHistories()
+    {
+        return $this->getWorkHistories();
+    }
 }

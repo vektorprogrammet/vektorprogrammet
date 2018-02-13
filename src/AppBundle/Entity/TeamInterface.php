@@ -10,4 +10,5 @@ interface TeamInterface
     public function getDescription();
     public function getAcceptApplication();
     public function getWorkHistories();
+    public function getActiveWorkHistories();
 }
