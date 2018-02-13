@@ -123,3 +123,11 @@ footer {
 .tooltip-inner{
   max-width: 350px;
 }
+
+.discreet-link {
+  color:inherit;
+  text-decoration: underline;
+  &:hover {
+    color:inherit;
+  }
+}

@@ -13,10 +13,14 @@
         <header class="page-header row content">
             <div class="col-md-12">
                 <h1>{{ team.name }}</h1>
-                <p>{{ team.shortDescription }}</p>
+                <p class="team-email text-center"><a href="mailto:{{ team.email}}">{{ team.email }}</a></p>
+                <p class="text-center">{{ team.shortDescription }}<!--
+                    -->{% if team.acceptApplication %}<!--
+                        -->&nbsp;<a class="medium-bold discreet-link" href="{{ path('team_application', {'id': team.id}) }}">Søk {{ team }}!</a></p>
+                    {% endif %}
             </div>
         </header>
-        <section class="team-members">
+        <section class="team-members mb-5">
             {% for activeWorkHistory in team.activeWorkHistories %}
                 {% set teamMember = activeWorkHistory.user %}
                 <div class="team-member mx-2 my-2 mx-md-4 my-md-3">
@@ -26,5 +30,15 @@
                 </div>
             {% endfor %}
         </section>
+        <section class="custom_html row content">
+            {{ team.description|safe_html }}
+        </section>
+        {% if team.acceptApplication %}
+            <section class="row content mt-5">
+                <div class="col-12 col-sm-8 offset-sm-2">
+                    <a class="apply-button btn btn-success btn-block p-4 text-uppercase medium-bold" href="{{ path('team_application', {'id': team.id}) }}">Søk {{ team }}!</a>
+                </div>
+            </section>
+        {% endif %}
     </div>
 {% endblock %}

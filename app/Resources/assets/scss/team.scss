@@ -146,7 +146,7 @@
         flex-grow: 1;
       }
 
-      &:nth-of-type(3) {
+      &:nth-of-type(4) {
         i {
           transition: 0.3s;
           opacity:0.9;
@@ -168,10 +168,14 @@
         text-align: center;
         font-size:16px;
       }
+
+      h5 {
+        font-size:17px;
+      }
     }
 
     .big-icon {
-      font-size:22px;
+      font-size:18px;
     }
 
     @media (max-width: 767px) {
@@ -208,6 +212,18 @@
     justify-content: center;
   }
 
+  .team-email {
+    font-size:18px;
+    margin-bottom:0.5rem;
+    a {
+      color:#777;
+    }
+  }
+
+  .apply-button {
+
+  }
+
   .team-member {
     a[href^="mailto"] {
       color:#777 !important;
@@ -236,5 +252,15 @@
     width: 150px;
     max-width: 100%;
     text-align:center;
+  }
+
+  .custom_html{
+    h1, h2 {
+      text-align:center;
+    }
+
+    * {
+      max-width:100%;
+    }
   }
 }

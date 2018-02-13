@@ -28,7 +28,7 @@
 
     /* Shorten team emails */
     let teamEmails = $('.team-email');
-    const maxEmailLength = 29;
+    const maxEmailLength = 26;
     teamEmails.each(function(i, teamEmail) {
         var email = $(this).text();
         if($(this).text().length > maxEmailLength){
@@ -103,7 +103,7 @@
 
                 <div class="col-md-5 offset-md-1">
                     <img class="img-fluid my-2" src="{{ asset_with_version('images/HS_square.jpg') }}" alt="Hoverstyret">
-                    <!-- Push button under image on mobile -->
+                        <!-- Push button under image on mobile -->
                     <a href="{{ path('executive_board_page') }}" class="btn btn-primary d-block d-sm-none">Les mer om hovedstyret</a>
                 </div>
             </section>
