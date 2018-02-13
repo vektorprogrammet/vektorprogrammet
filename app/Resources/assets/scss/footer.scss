@@ -1,0 +1,39 @@
+#footerContainer {
+  color: #fafdff;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+#footerContainer a {
+  color: #5189C8;
+}
+
+.footerElement {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.footerInfo p{
+  font-size: 105%;
+  margin: 3px;
+}
+
+#sponsorLinker a {
+  flex: 1 0 40%;
+  min-width: 142px;
+}
+
+.ikon {
+  margin-right: 4px;
+  color: #efefef;
+}
+
+#sponsorLinker {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}

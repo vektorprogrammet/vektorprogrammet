@@ -1,45 +1,67 @@
-<footer class="row vektor-footer">
-    <div class="col-xs-12">
+<footer>
 
-        <div class="row container">
 
-            <div class="col-xs-3">
-                <h4 class="mdl-mega-footer--heading">Følg oss</h4>
-                <ul class="mdl-mega-footer--link-list">
-                    <li><a href="https://www.facebook.com/vektorprogrammet">Facebook</a></li>
-                    <li><a href="https://instagram.com/vektorprogrammet/">Instagram</a></li>
-                </ul>
+    <div id="footerContainer">
+        <div class="footerElement">
+            <div class="footerInfo">
+                <p class="p"><i class="fa fa-at ikon"></i>styret@vektorprogrammet.no</p>
+                <p class="p"><i class="fa fa-facebook-square ikon"></i>
+                    <a href="https://www.facebook.com/vektorprogrammet/" target="_blank">NTNU&nbsp;</a>
+                    <a href="https://www.facebook.com/vektorprogrammetNMBU/" target="_blank">NMBU&nbsp;</a>
+                    <a href="https://www.facebook.com/Vektorprogrammet-UiO-1017596031601586/" target="_blank">UiO&nbsp;</a>
+                    <a href="https://www.facebook.com/VektorprogrammetBergen/" target="_blank">UiB&nbsp;</a>
+                    <a href="https://www.facebook.com/VektorUiT/" target="_blank">UiT</a></p>
+                <p class="p"><i class="fa fa-folder-open ikon"></i>OrgNr: 998744814</p>
+                <p class="p"><i class="fa fa-map-pin ikon"></i>Høgskoleringen 5,</p>
+                <p class="p">7491 Trondheim</p>
             </div>
-            <div class="col-xs-3">
-                <h4 class="mdl-mega-footer--heading">Kontakt oss</h4>
-                <ul class="mdl-mega-footer--link-list">
-                    {% for department in get_departments() %}
-                        <li><a href="{{ path('about_new') }}">{{ department }}</a></li>
-                    {% endfor %}
-                </ul>
+
+            <div class="footerInfo">
+                <h5><i class="fa fa-rocket ikon"></i>Sponsorer</h5>
+                <div id="sponsorLinker">
+                    <a href="https://www.tekna.no/" target="_blank">Tekna</a>
+                    <a href="https://www.matematikksenteret.no/" target="_blank">Matematikksenteret</a>
+                    <a href="https://www.ntnu.no/iv" target="_blank">NTNU IV</a>
+                    <a href="https://www.ntnu.no/ie" target="_blank">NTNU IE</a>
+                    <a href="https://www.ntnu.no/nv/sf" target="_blank">Samarbeidsforum</a>
+                    <a href="http://www.abelprisen.no/" target="_blank">Abelprisen</a>
+                    <a href="http://visiontech.no/" target="_blank">VisionTeck</a>
+                    <a href="https://www.ntnu.no/" target="_blank">NTNU rektorpotten</a>
+                    <a href="http://www.gjensidigestiftelsen.no/" target="_blank">Gjensidigestiftelsen</a>
+                    <a href="http://www.realfagsrekruttering.no/" target="_blank">Nasjonalt senter for realfagsutvikling</a>
+                    <a href="https://prosperastiftelsen.no/" target="_blank">Prospera</a>
+
+                </div>
             </div>
-            <div class="col-xs-3">
-                <h4 class="mdl-mega-footer--heading">For eksterne</h4>
-                <ul class="mdl-mega-footer--link-list">
-                    <li><a href="#">Ungdomsskoler</a></li>
-                    <li><a href="#">Samarbeidspartnere</a></li>
-                    <li><a href="#">Arbeidsgivere</a></li>
-                    <li><a href="#">Media</a></li>
-                </ul>
-            </div>
-            <div class="col-xs-3">
-                <h4 class="mdl-mega-footer--heading">Samarbeidspartnere</h4>
-                <ul class="mdl-mega-footer--link-list">
-                    {% for sponsor in get_sponsors() %}
-                        <li><a href="{{ sponsor.url }}">{{ sponsor.name }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
+
+            <div id="googleMap" style="width:250px;height:350px;"></div>
+
+            <script>
+                function myMap() {
+                    var locations = [
+                        [63.4195014,10.40195],
+                        [60.3878612,5.3195662],
+                        [59.6671086,10.765153],
+                        [69.1898477,17.6760827],
+                        [59.9399586,10.7195609]
+                    ];
+
+                    var mapProp= {
+                        center:new google.maps.LatLng(65.1195014,10.40195),
+                        zoom:4,
+                    };
+
+                    var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+                    for(var i=0;i<locations.length;i++){
+                        var marker = new google.maps.Marker({position: new google.maps.LatLng(locations[i][0],
+                            locations[i][1]),
+                            map: map});
+                        marker.setMap(map);
+                    }
+                }
+            </script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyesbQMyKVVbBgKVi2g6VX7mop2z96jBo&callback=myMap"></script>
         </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <p class="vektor-footer-createdby">Nettsiden er utviklet av Vektorprogrammets <a href="{{ path('team') }}">IT-team</a></p>
-            </div>
-        </div>
-    </div>
+
 </footer>
