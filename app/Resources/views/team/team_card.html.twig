@@ -7,7 +7,7 @@
         <p class="card-text">{{ team.shortDescription }}</p>
     </div>
     <div class="card-block px-3 pb-2">
-        <p class="m-0 mb-1"><i class="big-icon m-0 mr-2 text-devil fa fa-envelope"></i><a class="team-email" href="mailto:{{ team.email}}">{{ team.email }}</a></p>
+        <p class="team-email m-0 mb-1"><i class="big-icon m-0 mr-2 text-devil fa fa-envelope"></i><a href="mailto:{{ team.email}}">{{ team.email }}</a></p>
         <p class="m-0"><i class="big-icon m-0 mr-2 text-devil fa fa-users"></i><span>{{ team.activeWorkHistories | length }} medlemmer</span></p>
         <p class="text-right m-0 pt-1"><a class="p-2" href="{{ path('team_page', {id: team.id}) }}">Les mer <i class="fa fa-chevron-right"></i></a></p>
     </div>

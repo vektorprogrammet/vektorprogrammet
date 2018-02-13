@@ -23,22 +23,6 @@
             let department = $(this).attr('aria-controls');
             $('#team_overview_selector').val(department);
         });
-
-    /* --------- */
-
-    /* Shorten team emails */
-    let teamEmails = $('.team-email');
-    const maxEmailLength = 26;
-    teamEmails.each(function(i, teamEmail) {
-        var email = $(this).text();
-        if($(this).text().length > maxEmailLength){
-            $(this).text($(this).text().substring(0,maxEmailLength - 4) + '...'); // Shorten
-            /* Tooltip */
-            $(this).attr('title', email);
-            $(this).attr('data-placement', 'bottom');
-            $(this).tooltip();
-        }
-    });
     </script>
 {% endblock %}
 

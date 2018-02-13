@@ -205,6 +205,12 @@
   }
 }
 
+.team-email {
+  white-space:nowrap;
+  overflow: hidden;
+  text-overflow:ellipsis;
+}
+
 .individual-team-page {
   .team-members{
     display: flex;
@@ -213,11 +219,16 @@
   }
 
   .team-email {
-    font-size:18px;
-    margin-bottom:0.5rem;
     a {
       color:#777;
     }
+
+    @media (max-width: 767px) {
+      font-size:15px;
+    }
+
+    font-size:18px;
+    margin-bottom:0.5rem;
   }
 
   .team-member {
@@ -242,6 +253,10 @@
         opacity:1;
         box-shadow:0 1px 2px rgba(0,0,0,0.2);
       }
+    }
+
+    @media (max-width: 767px) {
+      width: 100px;
     }
 
     display:inline-block;
