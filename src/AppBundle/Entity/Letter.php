@@ -55,6 +55,7 @@ class Letter
     {
         $this->setNewsletter($newsletter);
         $this->setTimestamp(new \DateTime());
+        $this->setExcludeApplicants(0);
     }
 
     /**
