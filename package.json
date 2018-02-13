@@ -35,7 +35,7 @@
     "start": "concurrently --kill-others \"php app/console server:run --docroot=www\" \"npm run watch\"",
     "watch": "gulp",
     "watch:scheduling": "gulp watch:scheduling",
-    "db:reload": "php app/console doctrine:fixtures:load --env=dev",
+    "db:reload": "php app/console doctrine:fixtures:load -n --env=dev",
     "db:update": "php app/console doctrine:schema:update --force --env=dev",
     "build": "gulp build:dev",
     "compress-images": "gulp compressImages",
