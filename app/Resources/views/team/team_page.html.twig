@@ -8,6 +8,10 @@
     {{ team.shortDescription }}
 {% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/team.css') }}">
+{% endblock %}
+
 {% block javascripts %}
     <script>
         $(".custom_html table").addClass("table table-bordered");

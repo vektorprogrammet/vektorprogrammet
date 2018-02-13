@@ -1,8 +1,14 @@
 {% extends 'base_new.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/team.css') }}">
+{% endblock %}
+
 {% block body %}
     <header class="my-5 row content">
         <div class="col-md-12">
-            <h1 class="text-center text-dark-blue">Søk {{ team.name }}</h1>
+            <h1 class="text-center header-title text-dark-blue">Søk {{ team.name }}</h1>
+            <p class="text-center tiny-title">{{ team.department.city}}</p>
         </div>
     </header>
     <section class="row content">
