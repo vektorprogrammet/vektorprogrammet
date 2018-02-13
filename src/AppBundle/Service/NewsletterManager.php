@@ -54,15 +54,16 @@ class NewsletterManager
         }
     }
 
-    public function send(Letter $letter)
+    public function send(Letter $letter, $excludeApplicants)
     {
         $newsletter = $letter->getNewsletter();
         $applicantMailAddresses = array();
+        $recipients = 0;
 
         $department = $newsletter->getDepartment();
         $activeSemester = $this->em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
 
-        if($activeSemester and $letter->getExcludeApplicants()){
+        if($activeSemester and $excludeApplicants){
             $applications = $this->em->getRepository('AppBundle:Application')->findNewApplicants($department, $activeSemester);
             $applicantMailAddresses = array_map(function(Application $application){
                 return $application->getUser()->getEmail();
@@ -75,7 +76,7 @@ class NewsletterManager
             if(in_array($subscriberMail, $applicantMailAddresses)){
                 continue;
             }
-
+            $recipients++;
             $message = \Swift_Message::newInstance()
                 ->setSubject($letter->getTitle())
                 ->setFrom(array(
@@ -98,5 +99,9 @@ class NewsletterManager
 
             $this->mailer->send($message);
         }
+        $letter->setRecipientCount($recipients);
+        $this->em->persist($letter);
+        $this->em->flush();
+
     }
 }

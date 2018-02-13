@@ -96,12 +96,9 @@ class NewsletterController extends Controller
                     'unsubscribeCode' => '1234',
                 ));
             }
-            $letter->setRecipientCount(count($newsletter->getSubscribers()));
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($letter);
-            $manager->flush();
+            $excludeApplicants = $form['excludeApplicants']->getData();
 
-            $this->get('app.newsletter.manager')->send($letter);
+            $this->get('app.newsletter.manager')->send($letter, $excludeApplicants);
 
             return $this->render('newsletter/letter_sent_message.html.twig', array(
                 'letter' => $letter,
