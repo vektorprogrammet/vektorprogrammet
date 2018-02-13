@@ -66,6 +66,15 @@ p {
   text-align: center;
 }
 
+.page-header {
+  margin-top: 50px;
+  margin-bottom: 110px;
+
+  h1 {
+    text-align: center;
+  }
+}
+
 .page-header, .page-cover {
   color: $dark-blue;
 
@@ -77,7 +86,7 @@ p {
     font-size: 20px;
   }
 
-  @media (max-width: 766px) {
+  @media (max-width: 767px) {
     margin-top: 25px;
     margin-bottom: 25px;
     h1 {
@@ -93,15 +102,6 @@ p {
 .page-cover {
   margin-top: 50px;
   margin-bottom: 50px;
-}
-
-.page-header {
-  margin-top: 50px;
-  margin-bottom: 110px;
-
-  h1 {
-    text-align: center;
-  }
 }
 
 footer {
