@@ -1,13 +1,9 @@
 .contact-page {
   .page-header {
-    margin-bottom: 100px;
+    margin-bottom: 20px;
   }
   .department {
-    margin-top: 75px;
     padding-bottom: 75px;
-    &:not(:last-of-type) {
-      border-bottom: 2px solid #cdecf9;
-    }
 
     h2 {
       font-size: 35px;
@@ -21,7 +17,7 @@
       margin: 25px 0;
     }
 
-    button {
+    .contact-dep-btn {
       margin-top: 32px;
     }
 
