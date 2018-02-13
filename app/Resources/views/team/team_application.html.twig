@@ -1,28 +1,24 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_new.html.twig' %}
 {% block body %}
-    <div class="row">
-        <div class="small-12 columns">
-            {% include 'common/flash.html.twig' %}
+    <header class="my-5 row content">
+        <div class="col-md-12">
+            <h1 class="text-center text-dark-blue">Søk {{ team.name }}</h1>
         </div>
-    </div>
-    <div class="row">
-        <div class="small-12 columns">
-            <h1>Søk {{ team.name }}</h1>
-        </div>
-
+    </header>
+    <section class="row content">
         {{ form_start(form) }}
-        <div class="small-8 columns">
+        <div class="col-12">
             {{ form_row(form.name) }}
             {{ form_row(form.email) }}
             {{ form_row(form.yearOfStudy) }}
             {{ form_row(form.fieldOfStudy) }}
             {{ form_row(form.motivationText) }}
             {{ form_row(form.biography) }}
-            <button>Send</button>
+            <button class="btn btn-success btn-block p-4 mt-5 text-uppercase medium-bold">Send</button>
             <br>
             <br>
         </div>
         {{ form_end(form) }}
-    </div>
+    </section>
 
 {% endblock %}
