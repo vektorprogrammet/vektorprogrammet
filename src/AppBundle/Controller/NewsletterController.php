@@ -96,9 +96,8 @@ class NewsletterController extends Controller
                     'unsubscribeCode' => '1234',
                 ));
             }
-            $excludeApplicants = $form['excludeApplicants']->getData();
 
-            $this->get('app.newsletter.manager')->send($letter, $excludeApplicants);
+            $this->get('app.newsletter.manager')->send($letter);
 
             return $this->render('newsletter/letter_sent_message.html.twig', array(
                 'letter' => $letter,

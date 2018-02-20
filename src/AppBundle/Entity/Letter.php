@@ -41,6 +41,8 @@ class Letter
      */
     private $newsletter;
 
+    private $excludeApplicants;
+
     /**
      * Constructor.
      *
@@ -50,6 +52,7 @@ class Letter
     {
         $this->setNewsletter($newsletter);
         $this->setTimestamp(new \DateTime());
+        $this->setExcludeApplicants(false);
     }
 
     /**
@@ -133,12 +136,27 @@ class Letter
     {
         return $this->recipientCount;
     }
-
     /**
      * @param int $recipientCount
      */
     public function setRecipientCount($recipientCount)
     {
         $this->recipientCount = $recipientCount;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getExcludeApplicants()
+    {
+        return $this->excludeApplicants;
+    }
+
+    /**
+     * @param bool $excludeApplicants
+     */
+    public function setExcludeApplicants($excludeApplicants)
+    {
+        $this->excludeApplicants = $excludeApplicants;
     }
 }

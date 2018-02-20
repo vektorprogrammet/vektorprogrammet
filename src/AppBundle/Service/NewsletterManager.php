@@ -54,7 +54,7 @@ class NewsletterManager
         }
     }
 
-    public function send(Letter $letter, $excludeApplicants)
+    public function send(Letter $letter)
     {
         $newsletter = $letter->getNewsletter();
         $applicantMailAddresses = array();
@@ -63,7 +63,7 @@ class NewsletterManager
         $department = $newsletter->getDepartment();
         $activeSemester = $this->em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
 
-        if ($activeSemester and $excludeApplicants) {
+        if ($activeSemester and $letter->getExcludeApplicants()) {
             $applications = $this->em->getRepository('AppBundle:Application')->findNewApplicants($department, $activeSemester);
             $applicantMailAddresses = array_map(function (Application $application) {
                 return $application->getUser()->getEmail();

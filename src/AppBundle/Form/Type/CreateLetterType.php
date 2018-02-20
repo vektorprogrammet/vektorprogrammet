@@ -30,7 +30,6 @@ class CreateLetterType extends AbstractType
             ->add('excludeApplicants', 'checkbox', array(
                 'label' => 'Ekskluder søkere',
                 'required' => false,
-                'mapped' => false,
             ));
     }
 
