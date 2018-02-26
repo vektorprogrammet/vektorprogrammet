@@ -129,16 +129,6 @@
     }
   }
 
-  .team-overview {
-    > * {
-      width:100%; // But why do i need this tho
-    }
-  }
-
-  .card {
-    display:inline-block;
-  }
-
   .team-card {
     .card-block {
 
@@ -274,6 +264,10 @@
     * {
       max-width:100%;
     }
+  }
+
+  .apply-button {
+    margin: 80px auto;
   }
 }
 
