@@ -28,6 +28,7 @@
             <th>Etternavn</th>
             <th>E-post</th>
             <th>Mobil</th>
+            <th>Team</th>
         </tr>
         </thead>
         <tbody>
@@ -38,6 +39,10 @@
             <td>{{ application.user.lastName }}</td>
             <td>{{ application.user.email }}</td>
             <td>{{ application.user.phone }}</td>
+            <td>
+                <a href="" class="button tiny"><i
+                            class="fa fa-list-ul"></i> Vis team</a>
+            </td>
         </tr>
         {% endfor %}
         </tbody>

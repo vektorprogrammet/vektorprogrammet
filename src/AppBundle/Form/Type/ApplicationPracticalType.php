@@ -69,6 +69,21 @@ class ApplicationPracticalType extends AbstractType
         'expanded' => true,
         'multiple' => false,
         ));
+
+        $builder->add('interestedInTeam', 'choice', array(
+            'label' => 'Hvilket team er du eventuelt interessert i?',
+            'choices' => array(
+                'Eksport' => 'Eksport',
+                'Evaluering' => 'Evaluering',
+                'IT' => 'IT',
+                'Rekruttering' => 'Rekruttering',
+                'Skolekoordinering' => 'Skolekoordinering',
+                'Sponsor' => 'Sponsor',
+                'Styret' => 'Styret',
+            ),
+            'expanded' => true,
+            'multiple' => true,
+        ));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

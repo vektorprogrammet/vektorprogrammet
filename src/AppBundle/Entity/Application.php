@@ -120,6 +120,11 @@ class Application
     private $teamInterest;
 
     /**
+     * @ORM\Column(type="array")
+     */
+    private $interestedInTeam;
+
+    /**
      * @ORM\OneToOne(targetEntity="Interview", cascade={"persist", "remove"}, inversedBy="application")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      * @Assert\Valid
@@ -515,5 +520,21 @@ class Application
     public function setPreferredSchool($preferredSchool): void
     {
         $this->preferredSchool = $preferredSchool;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInterestedInTeam()
+    {
+        return $this->interestedInTeam;
+    }
+
+    /**
+     * @param mixed $interestedInTeam
+     */
+    public function setInterestedInTeam($interestedInTeam): void
+    {
+        $this->interestedInTeam = $interestedInTeam;
     }
 }
