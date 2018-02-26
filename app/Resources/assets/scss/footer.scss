@@ -3,7 +3,7 @@
   display: flex;
   width: 100%;
   flex-direction: column;
-  background-color: #023874;;
+  background-color: #023874;
 }
 
 #footerContainer a {
@@ -23,28 +23,33 @@
   margin: 3px;
 }
 
-#sponsorLinker a {
-  flex: 1 0 40%;
-  min-width: 142px;
-}
-
 .ikon {
   margin-right: 4px;
-  color: #efefef;
 }
 
-#sponsorLinker {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
+#sponsorLinker ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 996px) {
   #googleMap {
     display: none;
   }
   .footerInfo {
     margin-bottom: 30px;
+  }
+}
+@media screen and (max-width: 470px) {
+  .footerElement {
+    justify-content: space-between;
+    margin-left: 30px;
+  }
+}
+@media screen and (max-width: 335px) {
+  .footerElement {
+    margin-left: 1px;
+    font-size: 80%;
   }
 }

@@ -1,36 +1,31 @@
 <footer>
 
 
-    <div id="footerContainer">
+    <div id="footerContainer" class="container">
         <div class="footerElement">
             <div class="footerInfo">
-                <p class="p"><i class="fa fa-at ikon"></i>styret@vektorprogrammet.no</p>
-                <p class="p"><i class="fa fa-facebook-square ikon"></i>
-                    <a href="https://www.facebook.com/vektorprogrammet/" target="_blank">NTNU&nbsp;</a>
-                    <a href="https://www.facebook.com/vektorprogrammetNMBU/" target="_blank">NMBU&nbsp;</a>
-                    <a href="https://www.facebook.com/Vektorprogrammet-UiO-1017596031601586/" target="_blank">UiO&nbsp;</a>
-                    <a href="https://www.facebook.com/VektorprogrammetBergen/" target="_blank">UiB&nbsp;</a>
-                    <a href="https://www.facebook.com/VektorUiT/" target="_blank">UiT</a></p>
-                <p class="p"><i class="fa fa-folder-open ikon"></i>OrgNr: 998744814</p>
-                <p class="p"><i class="fa fa-map-pin ikon"></i>Høgskoleringen 5,</p>
-                <p class="p">7491 Trondheim</p>
+                <span id="footerLinker">
+                    <p class="p"><i class="fa fa-at ikon"></i>styret@vektorprogrammet.no</p>
+                    <p class="p"><i class="fa fa-facebook-square ikon"></i>
+                        <a href="https://www.facebook.com/vektorprogrammet/" target="_blank">NTNU&nbsp;</a>
+                        <a href="https://www.facebook.com/vektorprogrammetNMBU/" target="_blank">NMBU&nbsp;</a>
+                        <a href="https://www.facebook.com/Vektorprogrammet-UiO-1017596031601586/" target="_blank">UiO&nbsp;</a>
+                        <a href="https://www.facebook.com/VektorprogrammetBergen/" target="_blank">UiB&nbsp;</a>
+                        <a href="https://www.facebook.com/VektorUiT/" target="_blank">UiT</a></p>
+                    <p class="p"><i class="fa fa-folder-open ikon"></i>OrgNr: 998744814</p>
+                    <p class="p"><i class="fa fa-map-pin ikon"></i>Høgskoleringen 5,</p>
+                    <p class="p">7491 Trondheim</p>
+                </span>
             </div>
 
             <div class="footerInfo">
                 <h5><i class="fa fa-rocket ikon"></i>Sponsorer</h5>
                 <div id="sponsorLinker">
-                    <a href="https://www.tekna.no/" target="_blank">Tekna</a>
-                    <a href="https://www.matematikksenteret.no/" target="_blank">Matematikksenteret</a>
-                    <a href="https://www.ntnu.no/iv" target="_blank">NTNU IV</a>
-                    <a href="https://www.ntnu.no/ie" target="_blank">NTNU IE</a>
-                    <a href="https://www.ntnu.no/nv/sf" target="_blank">Samarbeidsforum</a>
-                    <a href="http://www.abelprisen.no/" target="_blank">Abelprisen</a>
-                    <a href="http://visiontech.no/" target="_blank">VisionTeck</a>
-                    <a href="https://www.ntnu.no/" target="_blank">NTNU rektorpotten</a>
-                    <a href="http://www.gjensidigestiftelsen.no/" target="_blank">Gjensidigestiftelsen</a>
-                    <a href="http://www.realfagsrekruttering.no/" target="_blank">Nasjonalt senter for realfagsutvikling</a>
-                    <a href="https://prosperastiftelsen.no/" target="_blank">Prospera</a>
-
+                    <ul>
+                        {% for sponsor in get_sponsors() %}
+                            <li><a href="{{ sponsor.url }}" target="_blank"> {{ sponsor.name }} </a> </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
 
