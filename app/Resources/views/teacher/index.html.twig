@@ -87,42 +87,41 @@
                 </section>
 
 
-                <section class="content-centered expand">
-                    <div class="jumbotron" id="jumbo">
-                        <h1>Søk om å få assistenter til din skole</h1>
+                <section>
+                    <div class="card px-2 px-sm-4 py-4 text-center" id="jumbo">
+                        <div class="card-body p-1 p-sm-3">
+                            <h2>Søk om å få assistenter til din skole</h2>
 
-                        <p>Ta kontakt med ansvarlig for skolekoordinering i din by for å sende inn en søknad om å få
-                            vektorassistenter til din skole:</p>
+                            <p>Ta kontakt med ansvarlig for skolekoordinering i din by for å sende inn en søknad om å få
+                                vektorassistenter til din skole:</p>
 
-                        <!-- <button type="button" class="btn btn-success btn-lg btn-block">Det er en knapp!</button>
- -->
-
-                        <table class="table table-hover table-responsive-md">
-                            <thead>
-                            <tr>
-                                <th>By</th>
-                                <th>E-post</th>
-                                <th>Kontakt</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for department in get_departments() %}
-                            <tr>
-                                <td>{{ department.city }}</td>
-                                <td>{{ department.email }}</td>
-                                <td><a href="{{ path('contact_department', {id: department.id}) }}">Kontakt {{ department.shortName }}</a></td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                            <table class="table table-hover table-responsive-md">
+                                <thead>
+                                <tr>
+                                    <th>By</th>
+                                    <th>E-post</th>
+                                    <th>Kontakt</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for department in get_departments() %}
+                                    <tr>
+                                        <td>{{ department.city }}</td>
+                                        <td><a href="mailto:{{ department.email }}">{{ department.email }}</a></td>
+                                        <td><a href="{{ path('contact_department', {id: department.id}) }}">Kontakt {{ department.shortName }}</a></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
 
 
-                        <hr class="my-4">
+                            <hr class="my-4">
 
 
-                        <div class="">
-                            <h5>Har ikke Vektorprogrammet etablert seg i din by ennå?</h5>
-                            <p>Ta kontakt med <a href="mailto:ekspansjon@vektorprogrammet.no">ekspansjon@vektorprogrammet.no</a> for å melde din interesse!</p>
+                            <div>
+                                <h5>Har ikke Vektorprogrammet etablert seg i din by ennå?</h5>
+                                <p>Ta kontakt med <a href="mailto:ekspansjon@vektorprogrammet.no">ekspansjon@vektorprogrammet.no</a> for å melde din interesse!</p>
+                            </div>
                         </div>
 
                     </div>
