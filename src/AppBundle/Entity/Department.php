@@ -39,7 +39,7 @@ class Department
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=250)
+     * @ORM\Column(type="string", length=250, nullable=true)
      * @Assert\NotBlank
      */
     protected $address;
