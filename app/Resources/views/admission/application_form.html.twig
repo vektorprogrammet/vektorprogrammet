@@ -1,17 +1,19 @@
-<div class="card">
-
-    <ul class="nav nav-tabs">
-        {% for dep in get_departments() %}
-            <li class="nav-item">
-                <a class="nav-link{{ dep == department ? ' active' }}"
-                   href="{{ path('assistants', {'id': dep.id}) }}#application">{{ dep.city }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+<div class="card py-2 py-sm-4">
+    <!-- Tabs (visible on large screens) -->
+    <div class="card-block pt-4 pb-1 pb-sm-4 d-none d-sm-inline-flex">
+        <ul class="nav nav-tabs justify-content-center w-100">
+            {% for dep in get_departments() %}
+                <li class="nav-item">
+                    <a class="nav-link{{ dep == department ? ' active' }}"
+                       href="{{ path('assistants', {'id': dep.id}) }}#application">{{ dep.city }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 
 
     {% if semester and date() < date(semester.admissionEndDate) %}
-        <header class="application-header">
+        <header class="text-center my-3">
             <h3>{{ department.city }}</h3>
             <h5>{{ department }}</h5>
 
@@ -58,12 +60,8 @@
 
         <div class="row">
             <div class="text-center mx-auto">
-                <br>
-                <br>
-                <button type="submit" tabindex="8" class="btn btn-lg btn-primary">Søk nå!</button>
-                <br>
-                <br><br>
-                <p>Har du vært assistent tidligere? <br>
+                <button type="submit" tabindex="8" class="btn btn-lg btn-primary my-5">Søk nå!</button>
+                <p class="py-2">Har du vært assistent tidligere? <br>
                     Da han du søke på nytt <a href="{{ path('admission_existing_user') }}">her</a> (krever innlogging)</p>
             </div>
         </div>
