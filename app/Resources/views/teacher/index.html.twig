@@ -107,7 +107,7 @@
                                 {% for department in get_departments() %}
                                     <tr>
                                         <td>{{ department.city }}</td>
-                                        <td><a href="mailto:{{ department.email }}">{{ department.email }}</a></td>
+                                        <td><a class="department-email" href="mailto:{{ department.email }}">{{ department.email }}</a></td>
                                         <td><a href="{{ path('contact_department', {id: department.id}) }}">Kontakt {{ department.shortName }}</a></td>
                                     </tr>
                                 {% endfor %}
@@ -120,7 +120,7 @@
 
                             <div>
                                 <h5>Har ikke Vektorprogrammet etablert seg i din by ennå?</h5>
-                                <p>Ta kontakt med <a href="mailto:ekspansjon@vektorprogrammet.no">ekspansjon@vektorprogrammet.no</a> for å melde din interesse!</p>
+                                <p>Ta kontakt med <a href="mailto:hovedstyret@vektorprogrammet.no">hovedstyret@vektorprogrammet.no</a> for å melde din interesse!</p>
                             </div>
                         </div>
 

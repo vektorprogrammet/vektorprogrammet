@@ -21,7 +21,7 @@
                                     <a href="mailto:{{ department.email }}">{{ department.email }}</a>
                                 </p>
                                 <p class="contact-info">
-                                    {% if department.address is not null %}
+                                    {% if department.address %}
                                         <i class="fa fa-map-marker"></i>
                                         {{ department.address }}
                                     {% endif %}

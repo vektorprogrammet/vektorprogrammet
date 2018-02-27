@@ -1,5 +1,4 @@
 @import "colors";
-@import "application_form";
 
 .teacher {
   section {
@@ -57,5 +56,9 @@
         font-size: 16px;
       }
     }
+  }
+
+  .department-email {
+    color: #333;
   }
 }
