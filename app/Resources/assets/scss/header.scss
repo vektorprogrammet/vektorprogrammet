@@ -60,12 +60,14 @@
     justify-content: space-between;
     margin-bottom: 2px;
     white-space: nowrap;
+    :last-child {
+      padding-right: 0;
+    }
   }
   .user-dropdown {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-right: 16px;
 
     .login-form {
       min-width: 300px;
