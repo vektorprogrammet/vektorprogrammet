@@ -86,6 +86,7 @@ class NewsletterController extends Controller
 
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('preview')->isClicked()) {
                 return $this->render('newsletter/mail_template.html.twig', array(
@@ -95,10 +96,6 @@ class NewsletterController extends Controller
                     'unsubscribeCode' => '1234',
                 ));
             }
-            $letter->setRecipientCount(count($newsletter->getSubscribers()));
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($letter);
-            $manager->flush();
 
             $this->get('app.newsletter.manager')->send($letter);
 

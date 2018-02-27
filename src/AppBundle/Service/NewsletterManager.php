@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Application;
 use AppBundle\Entity\Letter;
 use AppBundle\Entity\Subscriber;
 use AppBundle\Mailer\MailerInterface;
@@ -56,14 +57,32 @@ class NewsletterManager
     public function send(Letter $letter)
     {
         $newsletter = $letter->getNewsletter();
+        $applicantMailAddresses = array();
+        $recipients = 0;
+
+        $department = $newsletter->getDepartment();
+        $activeSemester = $this->em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
+
+        if ($activeSemester and $letter->getExcludeApplicants()) {
+            $applications = $this->em->getRepository('AppBundle:Application')->findNewApplicants($department, $activeSemester);
+            $applicantMailAddresses = array_map(function (Application $application) {
+                return $application->getUser()->getEmail();
+            }, $applications);
+        }
 
         foreach ($newsletter->getSubscribers() as $subscriber) {
+            $subscriberMail = $subscriber->getEmail();
+
+            if (in_array($subscriberMail, $applicantMailAddresses)) {
+                continue;
+            }
+            $recipients++;
             $message = \Swift_Message::newInstance()
                 ->setSubject($letter->getTitle())
                 ->setFrom(array(
                     $newsletter->getDepartment()->getEmail() => 'Vektorprogrammet',
                 ))
-                ->setTo($subscriber->getEmail())
+                ->setTo($subscriberMail)
                 ->setBody(
                     $this->twig->render(
                         'newsletter/mail_template.html.twig',
@@ -80,5 +99,8 @@ class NewsletterManager
 
             $this->mailer->send($message);
         }
+        $letter->setRecipientCount($recipients);
+        $this->em->persist($letter);
+        $this->em->flush();
     }
 }
