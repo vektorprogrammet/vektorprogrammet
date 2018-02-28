@@ -36,7 +36,10 @@
 
 @media screen and (max-width: 767px) {
   .top-header {
-    padding: 5px 0;
+    padding: 10px 0;
+    .container {
+      max-width: 100%;
+    }
   }
 
   .main-navigation {
