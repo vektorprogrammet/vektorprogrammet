@@ -4,23 +4,27 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Department;
 use Doctrine\ORM\EntityManagerInterface;
-use Mpdf\Exception\InvalidArgumentException;
+use InvalidArgumentException;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class GeoLocation
 {
     private $ipinfoToken;
     private $departmentRepo;
+    private $session;
 
     /**
      * GeoLocation constructor.
      *
      * @param string $ipinfoToken
      * @param EntityManagerInterface $em
+     * @param Session $session
      */
-    public function __construct(string $ipinfoToken, EntityManagerInterface $em)
+    public function __construct(string $ipinfoToken, EntityManagerInterface $em, Session $session)
     {
         $this->ipinfoToken = $ipinfoToken;
         $this->departmentRepo = $em->getRepository('AppBundle:Department');
+        $this->session = $session;
     }
 
     /**
@@ -96,6 +100,15 @@ class GeoLocation
 
     public function findCoordinates($ip)
     {
+        if (!$this->ipinfoToken) {
+            return null;
+        }
+
+        $coords = $this->session->get('coords');
+        if ($coords) {
+            return $coords;
+        }
+
         $response = file_get_contents("http://ipinfo.io/$ip?token={$this->ipinfoToken}");
         $location = json_decode($response, true);
         if (!isset($location['loc'])) {
@@ -107,10 +120,14 @@ class GeoLocation
             return null;
         }
 
-        return [
+        $coords = [
             'lat' => $coords[0],
             'lon' => $coords[1]
         ];
+
+        $this->session->set('coords', $coords);
+
+        return $coords;
     }
 
     public function distance(float $fromLat, float $fromLon, float $toLat, float $toLon)

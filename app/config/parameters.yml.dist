@@ -50,7 +50,7 @@ parameters:
     gateway_api_token: xxxxx
     sms_disable: true
 
-    ipinfo_token: 'xxxxx'
+    ipinfo_token: ''
 
     # Webhook from GitHub to automatically deploy on push to master
 
