@@ -15,7 +15,6 @@
 {% block javascripts %}
     <script>
         $(".custom_html table").addClass("table table-bordered");
-
         $(".custom_html img").addClass('img-fluid').css("height", "auto");
     </script>
 {% endblock %}
@@ -32,7 +31,7 @@
                     {% endif %}
             </div>
         </header>
-        <section class="team-members mb-5">
+        <section class="team-members">
             {% for activeWorkHistory in team.activeWorkHistories %}
                 {% set teamMember = activeWorkHistory.user %}
                 <div class="team-member mx-2 my-3 mx-sm-4">
