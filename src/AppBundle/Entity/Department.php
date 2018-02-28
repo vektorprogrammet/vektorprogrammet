@@ -40,7 +40,6 @@ class Department
 
     /**
      * @ORM\Column(type="string", length=250, nullable=true)
-     * @Assert\NotBlank
      */
     protected $address;
 
