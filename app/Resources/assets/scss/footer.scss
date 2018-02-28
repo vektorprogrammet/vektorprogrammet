@@ -1,56 +1,75 @@
-#footerContainer {
-  color: #fafdff;
-  display: flex;
+@import "colors";
+$text-color: #fafdff;
+$promo-color: #d6d8da;
+
+.main-footer {
+  color: $text-color;
+  margin-top: 64px;
+  padding-bottom: 32px;
+  min-height: 350px;
   width: 100%;
-  flex-direction: column;
-  background-color: #023874;
-}
-
-#footerContainer a {
-  color: #5189C8;
-}
-
-.footerElement {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  margin-top: 30px;
-  margin-bottom: 10px;
-}
-
-.footerInfo p{
-  font-size: 105%;
-  margin: 3px;
-}
-
-.ikon {
-  width:1em;
-  margin-right:.5em;
-}
-
-#sponsorLinker ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-@media screen and (max-width: 996px) {
-  #googleMap {
-    display: none;
+  background-color: $dark-blue;
+  padding-top: 0 !important; //Override old footer style. TODO: Remove this when foundation is removed
+  .row {
+    border-top: none !important; //Override old footer style. TODO: Remove this when foundation is removed
+    padding-top: 0 !important; //Override old footer style. TODO: Remove this when foundation is removed
   }
-  .footerInfo {
-    margin-bottom: 30px;
+  h5 {
+    color: $text-color;
   }
-}
-@media screen and (max-width: 470px) {
-  .footerElement {
-    justify-content: space-between;
-    margin-left: 30px;
+  a {
+    color: #5189C8;
   }
-}
-@media screen and (max-width: 335px) {
-  .footerElement {
-    margin-left: 1px;
-    font-size: 80%;
+  p{
+    font-size: 105%;
+    margin: 3px;
+  }
+  i {
+    width:1em;
+    margin-right:.5em;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    li {
+      margin-top: 3px;
+    }
+  }
+
+  .footer-column {
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .footer-content {
+    display: inline-block;
+    text-align: left;
+  }
+
+  .footer-promo {
+    margin-top: 64px;
+    font-size: 16px;
+    color: $promo-color;
+    a {
+      color: $promo-color;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .container {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .container {
+      max-width: 100%;
+    }
+    .footer-column {
+      text-align: left;
+    }
   }
 }
