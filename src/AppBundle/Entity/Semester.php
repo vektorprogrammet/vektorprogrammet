@@ -62,6 +62,12 @@ class Semester
     protected $semesterEndDate;
 
     /**
+     * @ORM\OneToOne(targetEntity="InfoMeeting", cascade={"remove", "persist"})
+     * @Assert\Valid
+     */
+    private $infoMeeting;
+
+    /**
      * Get id.
      *
      * @return int
@@ -136,7 +142,7 @@ class Semester
      *
      * @return Semester
      */
-    public function setDepartment(\AppBundle\Entity\Department $department = null)
+    public function setDepartment(Department $department = null)
     {
         $this->department = $department;
 
@@ -254,5 +260,21 @@ class Semester
 
         $this->setSemesterStartDate(date_create($year.'-'.$startMonth.'-01 00:00:00'));
         $this->setSemesterEndDate(date_create($year.'-'.$endMonth.'-31 23:59:59'));
+    }
+
+    /**
+     * @return InfoMeeting
+     */
+    public function getInfoMeeting()
+    {
+        return $this->infoMeeting;
+    }
+
+    /**
+     * @param InfoMeeting $infoMeeting
+     */
+    public function setInfoMeeting($infoMeeting)
+    {
+        $this->infoMeeting = $infoMeeting;
     }
 }

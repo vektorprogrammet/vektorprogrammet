@@ -28,10 +28,21 @@ class PasswordResetController extends Controller
 
         //Checks if the form is valid
         if ($form->isValid()) {
-            $passwordReset = $this->get('app.password_manager')->createPasswordResetEntity($form->get('email')->getData());
+            $email = $form->get('email')->getData();
+            $passwordReset = $this->get('app.password_manager')->createPasswordResetEntity($email);
 
             if ($passwordReset === null) {
-                $this->get('session')->getFlashBag()->add('errorMessage', '<em>Det finnes ingen brukere med denne e-postadressen</em>');
+                $errorMsg = "Det finnes ingen brukere med denne e-postadressen";
+                $ending   = '@vektorprogrammet.no';
+                if (strlen($email) > strlen($ending) && substr($email, strlen($email) - strlen($ending)) === $ending) {
+                    $errorMsg = 'Kan ikke resette passord med "@vektorprogrammet.no"-adresse. Prøv din private e-post';
+                    $this->get('app.logger')->info("Password reset rejected: Someone tried to reset password with a company email: $email");
+                }
+                $this->get('session')->getFlashBag()->add('errorMessage', "<em>$errorMsg</em>");
+            } elseif (!$passwordReset->getUser()->isActive()) {
+                $errorMsg = "Brukeren med denne e-postadressen er deaktivert. Ta kontakt med it@vektorprogrammet.no for å aktivere brukeren din.";
+                $this->get('session')->getFlashBag()->add('errorMessage', "<em>$errorMsg</em>");
+                $this->get('app.logger')->notice("Password reset rejected: Someone tried to reset the password for an inactive account: $email");
             } else {
                 $this->get('app.logger')->info("{$passwordReset->getUser()} requested a password reset");
                 $oldPasswordResets = $this->getDoctrine()->getRepository('AppBundle:PasswordReset')->findByUser($passwordReset->getUser());

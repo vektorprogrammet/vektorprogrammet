@@ -26,6 +26,7 @@ class CrudLogger implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
+        self::includeAllClassesIn(__DIR__ . '/../Event');
         $subscribedEvents = [];
         /**
          * @var CrudEvent $class
@@ -96,5 +97,15 @@ class CrudLogger implements EventSubscriberInterface
         }
 
         return $name;
+    }
+
+    private static function includeAllClassesIn($folder)
+    {
+        $files = scandir($folder);
+        foreach ($files as $file) {
+            if (strlen($file) > 4 && substr($file, strlen($file)-4) === '.php') {
+                include_once "$folder/$file";
+            }
+        }
     }
 }

@@ -6,7 +6,7 @@
 
 {# Form themes user to modify the templates of the various form components #}
 {% form_theme form 'form/interview_layout.html.twig' %}
-{% form_theme form.applicationPractical.days 'form/components/radio_grid_layout.html.twig' %}
+{% form_theme form.applicationPractical.days 'form/components/days_checkbox.html.twig' %}
 
 {% block body %}
     <p></p>
@@ -75,9 +75,13 @@
                 <div class="row">
                     <div class="small-12 columns">
                         <label class="question-label">{{ form.applicationPractical.days.vars.label }}</label>
-                        <ul class="radio-grid">
-                            {{ form_widget(form.applicationPractical.days) }}
-                        </ul>
+                        {{ form_row(form.applicationPractical.days) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-12 medium-12 large-4 columns">
+                        {{ form_row(form.applicationPractical.yearOfStudy) }}
                     </div>
                 </div>
 
@@ -98,8 +102,22 @@
                 </div>
 
                 <div class="row">
+                    <div class="small-12 medium-12 large-4 columns">
+                        <label class="question-label" for="specialNeedsToggle">Spesielle behov</label>
+                        <input type="checkbox" id="specialNeedsToggle">
+                        <label for="specialNeedsToggle">Assistenten har spesielle behov</label>
+                    </div>
+                </div>
+
+                <div class="row" id="specialNeeds">
                     <div class="small-12 medium-12 large-9 columns">
-                        {{ form_row(form.applicationPractical.english) }}
+                        {{ form_row(form.specialNeeds) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-12 medium-12 large-9 columns">
+                        {{ form_row(form.applicationPractical.language) }}
                     </div>
                 </div>
 
@@ -181,4 +199,30 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        const specialNeedsToggle = document.querySelector('#specialNeedsToggle');
+        const specialNeedsRow = $('#specialNeeds');
+        const specialNeedsInput = document.querySelector('#specialNeeds input');
+
+        specialNeedsToggle.addEventListener('change', toggleSpecialNeeds);
+
+        document.addEventListener('DOMContentLoaded', function() {
+          if (specialNeedsInput.value) {
+            specialNeedsToggle.checked = true;
+            toggleSpecialNeeds();
+          }
+        });
+
+        function toggleSpecialNeeds() {
+          if (specialNeedsToggle.checked) {
+            specialNeedsRow.slideDown();
+          } else {
+            specialNeedsRow.slideUp();
+            specialNeedsInput.value = '';
+          }
+        }
+    </script>
 {% endblock %}

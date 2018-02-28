@@ -6,11 +6,6 @@ app:
     resource: "@AppBundle/Controller/"
     type:     annotation
 
-api:
-#    type: rest
-    resource: "routing_api.yml"
-    prefix: /api
-
 #LiipImagineBundle
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
@@ -1106,7 +1101,7 @@ interview_accept_by_response:
 interview_request_new_time_by_response:
     path: /intervju/nytid/{responseCode}
     defaults: { _controller: AppBundle:Interview:requestNewTime }
-    methods: [POST]
+    methods: [GET, POST]
     requirements:
       reponseCode: \w+
 
@@ -1301,7 +1296,7 @@ newsletter_show_all:
   methods: [GET]
 
 newsletter_show_subscribers:
-  path: /kontrollpanel/nyhetsbrev/{id}
+  path: /kontrollpanel/nyhetsbrev/abonnenter/{id}
   defaults: { _controller: AppBundle:Subscriber:showSubscribers }
   methods: [GET]
   requirements:

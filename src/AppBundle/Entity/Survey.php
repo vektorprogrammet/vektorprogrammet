@@ -177,7 +177,7 @@ class Survey implements \JsonSerializable
         return $ret;
     }
 
-    public function getTextAnswerResults(): array
+    public function getTextAnswerWithSchoolResults(): array
     {
         $textQuestionArray = array();
         $textQAarray = array();
@@ -194,7 +194,13 @@ class Survey implements \JsonSerializable
             $questionText = $textQuestion->getQuestion();
             $textQAarray[$questionText] = array();
             foreach ($textQuestion->getAnswers() as $answer) {
-                $textQAarray[$questionText][] = $answer->getAnswer();
+                if ($answer->getSurveyTaken() === null || $answer->getSurveyTaken()->getSchool() === null) {
+                    continue;
+                }
+                $textQAarray[$questionText][] = array(
+                    'answerText' => $answer->getAnswer(),
+                    'schoolName' => $answer->getSurveyTaken()->getSchool()->getName()
+                );
             }
         }
 

@@ -17,9 +17,7 @@ class MailingListController extends Controller
      */
     public function showAction(Request $request)
     {
-        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemesters();
-
-        $form = $this->createForm(new GenerateMailingListType($semesters));
+        $form = $this->createForm(new GenerateMailingListType());
         $form->handleRequest($request);
 
         if ($form->isValid()) {

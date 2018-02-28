@@ -37,6 +37,15 @@ class Interview
     protected $room;
 
     /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     * @Assert\Length(
+     *     max=500,
+     *     maxMessage= "Linken kan ikke være mer enn 500 tegn"
+     * )
+     */
+    protected $mapLink;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $conducted;
@@ -100,6 +109,15 @@ class Interview
     private $cancelMessage;
 
     /**
+     * @ORM\Column(type="string", length=2000)
+     * @Assert\Length(max=2000)
+     * @Assert\NotBlank(groups={"newTimeRequest"}, message="Meldingsboksen kan ikke være tom")
+     *
+     * @var string
+     */
+    private $newTimeMessage;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -108,6 +126,7 @@ class Interview
         $this->conducted = new \DateTime();
         $this->interviewed = false;
         $this->interviewStatus = InterviewStatusType::NO_CONTACT;
+        $this->newTimeMessage = "";
     }
 
     /**
@@ -294,6 +313,23 @@ class Interview
     {
         $this->room = $room;
     }
+
+    /**
+     * @return string
+     */
+    public function getMapLink()
+    {
+        return $this->mapLink;
+    }
+
+    /**
+     * @param string mapLink
+     */
+    public function setMapLink($mapLink)
+    {
+        $this->mapLink = $mapLink;
+    }
+
 
     /**
      * Is the given User the interviewer of this Interview?
@@ -524,5 +560,21 @@ class Interview
         } else {
             throw new InvalidArgumentException('Invalid status');
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getNewTimeMessage(): string
+    {
+        return $this->newTimeMessage;
+    }
+
+    /**
+     * @param string $newTimeMessage
+     */
+    public function setNewTimeMessage($newTimeMessage)
+    {
+        $this->newTimeMessage = $newTimeMessage;
     }
 }

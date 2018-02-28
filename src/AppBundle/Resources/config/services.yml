@@ -7,9 +7,36 @@ services:
     class: AppBundle\Service\LogService
     arguments: ['@logger', '@app.slack_messenger']
 
+  app.mailer:
+    class: AppBundle\Mailer\Mailer
+    arguments: ['%kernel.environment%', '@app.google_gmail', '@mailer']
+
+  app.google_service:
+      class: AppBundle\Google\GoogleService
+      abstract: true
+      arguments: ['%google_api%', '@app.logger']
+
+  app.google_gmail:
+      class: AppBundle\Google\Gmail
+      parent: app.google_service
+      calls:
+        - [setDefaultEmail, ['%default_from_email%']]
+
+  app.google_users:
+      class: AppBundle\Google\GoogleUsers
+      parent: app.google_service
+
+  app.google_groups:
+      class: AppBundle\Google\GoogleGroups
+      parent: app.google_service
+
+  app.google_drive:
+      class: AppBundle\Google\GoogleDrive
+      parent: app.google_service
+
   app.google_api:
       class: AppBundle\Google\GoogleAPI
-      arguments: ['%google_api%', '@app.logger']
+      arguments: ['%google_api%', '@app.google_users', '@app.google_groups']
 
   app.geolocation:
       class: AppBundle\Service\GeoLocation
@@ -21,7 +48,7 @@ services:
 
   app.email_sender:
     class: AppBundle\Service\EmailSender
-    arguments: ['@mailer', '@twig', '@router', '@app.logger', '%default_from_email%', '%economy_email%']
+    arguments: ['@app.mailer', '@twig', '@router', '@app.logger', '%default_from_email%', '%economy_email%']
 
   app.slack_messenger:
     class: AppBundle\Service\SlackMessenger
@@ -29,7 +56,7 @@ services:
 
   app.user.registration:
     class: AppBundle\Service\UserRegistration
-    arguments: ['@twig', '@doctrine.orm.default_entity_manager', '@mailer', '@app.logger']
+    arguments: ['@twig', '@doctrine.orm.default_entity_manager', '@app.mailer', '@app.logger']
 
   app.roles:
     class: AppBundle\Service\RoleManager
@@ -37,15 +64,15 @@ services:
 
   app.interview.manager:
     class: AppBundle\Service\InterviewManager
-    arguments: ['@security.token_storage', '@security.authorization_checker', '@mailer', '@twig', '@app.logger', '@doctrine.orm.entity_manager']
+    arguments: ['@security.token_storage', '@security.authorization_checker', '@app.mailer', '@twig', '@app.logger', '@doctrine.orm.entity_manager']
 
   app.newsletter.manager:
       class: AppBundle\Service\NewsletterManager
-      arguments: ['@swiftmailer.mailer.newsletter', '@twig', '@doctrine.orm.entity_manager']
+      arguments: ['@app.mailer', '@twig', '@doctrine.orm.entity_manager']
 
   app.password_manager:
       class: AppBundle\Service\PasswordManager
-      arguments: ['@doctrine.orm.default_entity_manager', '@mailer', '@twig', '@app.logger']
+      arguments: ['@doctrine.orm.default_entity_manager', '@app.mailer', '@twig', '@app.logger']
 
   app.interview_notification_manager:
       class: AppBundle\Service\InterviewNotificationManager
@@ -91,19 +118,19 @@ services:
 
   app.exception_subscriber:
     class: AppBundle\EventSubscriber\ExceptionSubscriber
-    arguments: ['@app.logger', '@security.token_storage', '@router']
+    arguments: ['@app.logger', '@logger', '@security.token_storage', '@router']
     tags:
       - { name: kernel.event_subscriber }
 
   app.application_subscriber:
     class: AppBundle\EventSubscriber\ApplicationSubscriber
-    arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data', '@router', '@app.newsletter.manager']
+    arguments: ['@app.mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data', '@router', '@app.newsletter.manager']
     tags:
       - { name: kernel.event_subscriber }
 
   app.team_application_subscriber:
     class: AppBundle\EventSubscriber\TeamApplicationSubscriber
-    arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@router']
+    arguments: ['@app.mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@router']
     tags:
       - { name: kernel.event_subscriber }
 
@@ -115,7 +142,7 @@ services:
 
   app.interview_subscriber:
       class: AppBundle\EventSubscriber\InterviewSubscriber
-      arguments: ['@mailer', '@twig', '@session', '@app.logger', '@app.sbs_data', '@app.interview_notification_manager', '@app.interview.manager', '@app.sms', '@router']
+      arguments: ['@app.mailer', '@twig', '@session', '@app.logger', '@app.sbs_data', '@app.interview_notification_manager', '@app.interview.manager', '@app.sms', '@router']
       tags:
         - { name: kernel.event_subscriber }
 
@@ -139,7 +166,7 @@ services:
 
   app.g_suite_subscriber:
     class: AppBundle\EventSubscriber\GSuiteSubscriber
-    arguments: ['@app.logger', '@app.google_api', '@app.company_email_maker']
+    arguments: ['@app.logger', '@app.google_api', '@app.company_email_maker', '@app.google_users', '@app.google_groups', '@app.google_drive']
     tags:
         - { name: kernel.event_subscriber }
 

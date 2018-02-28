@@ -1,6 +1,7 @@
 {% extends 'adminBase.html.twig' %}
 {% block title %}Kontrollpanel{% endblock %}
 {% block body %}
+    {% include "common/flash.html.twig" %}
     <div class="control-panel">
         <div class="sbs">
             {{ render(controller('AppBundle:ControlPanel:showSBS')) }}
@@ -199,7 +200,7 @@
                     <a href="{{ path('semester_show') }}">
                         <i class="fa fa-clock-o fa-3x"></i>
 
-                        <p>Semester</p>
+                        <p>Opptaksperiode</p>
                     </a>
                 </div>
             </div>

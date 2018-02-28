@@ -17,7 +17,6 @@ class Team implements TeamInterface
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Groups({"list"})
      */
     protected $id;
 
@@ -38,7 +37,6 @@ class Team implements TeamInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Department", inversedBy="teams")
-     * @JMS\Exclude
      **/
     protected $department;
 
@@ -61,38 +59,8 @@ class Team implements TeamInterface
     /**
      * @var WorkHistory[]
      * @ORM\OneToMany(targetEntity="WorkHistory", mappedBy="team")
-     * @JMS\Exclude
      */
     private $workHistories;
-
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("department_id")
-     */
-    public function serializeDepartment()
-    {
-        return $this->getDepartment()->getId();
-    }
-
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("active_members")
-     */
-    public function serializeActiveMembers()
-    {
-        $activeMembers = [];
-        foreach ($this->workHistories as $workHistory) {
-            if ($workHistory->isActive()) {
-                $user = $workHistory->getUser();
-                $activeMembers[] = [
-                    'user_id' => $user->getId(),
-                    'name' => $user->getFullName(),
-                    'email' => $user->getEmail(),
-                ];
-            }
-        }
-        return $activeMembers;
-    }
 
     /**
      * @return bool
@@ -108,11 +76,6 @@ class Team implements TeamInterface
     public function setAcceptApplication($acceptApplication)
     {
         $this->acceptApplication = $acceptApplication;
-    }
-
-    public function __construct()
-    {
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function __toString()

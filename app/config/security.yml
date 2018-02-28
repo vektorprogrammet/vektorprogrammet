@@ -15,11 +15,21 @@ security:
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        administrators:
-            entity: { class: AppBundle:User }
-        in_memory:
-            memory:
-                users:
+        chain_provider:
+            chain:
+                providers: [db_username, db_email, db_company_email]
+        db_username:
+            entity:
+                class: AppBundle:User
+                property: user_name
+        db_email:
+            entity:
+                class: AppBundle:User
+                property: email
+        db_company_email:
+            entity:
+                class: AppBundle:User
+                property: companyEmail
 
     # the main part of the security, where you can set up firewalls
     # for specific sections of your app
@@ -54,7 +64,7 @@ security:
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         # require ROLE_ADMIN for /admin*
 
-          #ROLE_HIGHEST_ADMIN = superadmin user
+          #ROLE_HIGHEST_ADMIN = admin user
         - { path: ^/kontrollpanel/avdelingadmin/opprett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/avdelingadmin/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/semesteradmin/slett, roles: ROLE_HIGHEST_ADMIN }
@@ -64,7 +74,7 @@ security:
         - { path: ^/kontrollpanel/opptakadmin/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/bruker/vekorepost/endre, roles: ROLE_HIGHEST_ADMIN }
 
-          #ROLE_SUPER_ADMIN = admin user
+          #ROLE_SUPER_ADMIN = team leader
         - { path: ^/kontrollpanel/avdelingadmin/update, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/opprett/, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/brukeradmin/slett, roles: ROLE_SUPER_ADMIN }
@@ -98,6 +108,7 @@ security:
         - { path: ^/kontrollpanel/linjer, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/nyhetsbrev/opprett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/nyhetsbrev/send, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/nyhetsbrev/abonnenter, roles: ROLE_SUPER_ADMIN }
         - { path: ^/updatestaticcontent, roles: ROLE_SUPER_ADMIN }
         - { path: ^/signatures, roles: ROLE_SUPER_ADMIN }
         - { path: ^/profile/attest, roles: ROLE_SUPER_ADMIN }

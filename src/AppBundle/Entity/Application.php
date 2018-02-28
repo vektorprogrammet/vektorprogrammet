@@ -9,7 +9,6 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ApplicationRepository")
  * @ORM\Table(name="application")
- * @JMS\ExclusionPolicy("all")
  */
 class Application
 {
@@ -17,7 +16,6 @@ class Application
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Expose()
      */
     private $id;
 
@@ -29,37 +27,36 @@ class Application
     /**
      * @ORM\Column(type="string" , length=20)
      * @Assert\NotBlank(groups={"admission", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
-     * @JMS\Expose()
      */
     private $yearOfStudy;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
+     * @ORM\Column(type="boolean", options={"default"=true}))
+     * @var bool
      */
     private $monday;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
+     * @ORM\Column(type="boolean", options={"default"=true}))
+     * @var bool
      */
     private $tuesday;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
+     * @ORM\Column(type="boolean", options={"default"=true}))
+     * @var bool
      */
     private $wednesday;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
+     * @ORM\Column(type="boolean", options={"default"=true}))
+     * @var bool
      */
     private $thursday;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
+     * @ORM\Column(type="boolean", options={"default"=true}))
+     * @var bool
      */
     private $friday;
 
@@ -69,10 +66,10 @@ class Application
     private $substitute;
 
     /**
-     * @ORM\Column(type="boolean", options={"default"=false})
+     * @ORM\Column(type="string", nullable=true)
      * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
      */
-    private $english;
+    private $language;
 
     /**
      * @ORM\Column(type="boolean", options={"default"=false})
@@ -86,9 +83,14 @@ class Application
     private $preferredGroup;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\Length(max=255, maxMessage="Dette feltet kan ikke inneholde mer enn 255 tegn.")
+     */
+    private $preferredSchool;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
      * @Assert\Valid
-     * @JMS\Expose()
      */
     private $user;
 
@@ -126,6 +128,13 @@ class Application
     private $interview;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $specialNeeds;
+
+    /**
      * @var bool
      */
     private $wantsNewsletter;
@@ -138,12 +147,16 @@ class Application
         $this->last_edited = new \DateTime();
         $this->created = new \DateTime();
         $this->substitute = false;
-        $this->english = false;
         $this->doublePosition = false;
         $this->previousParticipation = false;
-        $this->english = false;
         $this->teamInterest = false;
         $this->wantsNewsletter = false;
+        $this->specialNeeds = '';
+        $this->monday = true;
+        $this->tuesday = true;
+        $this->wednesday = true;
+        $this->thursday = true;
+        $this->friday = true;
     }
 
     /**
@@ -189,98 +202,100 @@ class Application
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getMonday()
+    public function isMonday(): bool
     {
         return $this->monday;
     }
 
     /**
-     * @param string $monday
+     * @param bool $monday
      */
-    public function setMonday($monday)
+    public function setMonday(bool $monday)
     {
         $this->monday = $monday;
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getTuesday()
+    public function isTuesday(): bool
     {
         return $this->tuesday;
     }
 
     /**
-     * @param string $tuesday
+     * @param bool $tuesday
      */
-    public function setTuesday($tuesday)
+    public function setTuesday(bool $tuesday)
     {
         $this->tuesday = $tuesday;
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getWednesday()
+    public function isWednesday(): bool
     {
         return $this->wednesday;
     }
 
     /**
-     * @param string $wednesday
+     * @param bool $wednesday
      */
-    public function setWednesday($wednesday)
+    public function setWednesday(bool $wednesday)
     {
         $this->wednesday = $wednesday;
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getThursday()
+    public function isThursday(): bool
     {
         return $this->thursday;
     }
 
     /**
-     * @param string $thursday
+     * @param bool $thursday
      */
-    public function setThursday($thursday)
+    public function setThursday(bool $thursday)
     {
         $this->thursday = $thursday;
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getFriday()
+    public function isFriday(): bool
     {
         return $this->friday;
     }
 
     /**
-     * @param string $friday
+     * @param bool $friday
      */
-    public function setFriday($friday)
+    public function setFriday(bool $friday)
     {
         $this->friday = $friday;
     }
+
+
     /**
-     * @return bool
+     * @return string
      */
-    public function getEnglish()
+    public function getLanguage()
     {
-        return $this->english;
+        return $this->language;
     }
 
     /**
-     * @param bool $english
+     * @param string $language
      */
-    public function setEnglish($english)
+    public function setLanguage($language)
     {
-        $this->english = $english;
+        $this->language = $language;
     }
 
     /**
@@ -469,5 +484,37 @@ class Application
     public function setSubstitute($substitute)
     {
         $this->substitute = $substitute;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSpecialNeeds()
+    {
+        return $this->specialNeeds;
+    }
+
+    /**
+     * @param string $specialNeeds
+     */
+    public function setSpecialNeeds($specialNeeds)
+    {
+        $this->specialNeeds = $specialNeeds;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPreferredSchool()
+    {
+        return $this->preferredSchool;
+    }
+
+    /**
+     * @param mixed $preferredSchool
+     */
+    public function setPreferredSchool($preferredSchool): void
+    {
+        $this->preferredSchool = $preferredSchool;
     }
 }

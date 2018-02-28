@@ -76,11 +76,12 @@
                   preferredGroup: a.preferredGroup,
                   suitable: a.suitable,
                   score: a.previousParticipation ? 20 : a.score,
-                  monday: a.availability.Monday === 1,
-                  tuesday: a.availability.Tuesday === 1,
-                  wednesday: a.availability.Wednesday === 1,
-                  thursday: a.availability.Thursday === 1,
-                  friday: a.availability.Friday === 1
+                  monday: a.availability.Monday,
+                  tuesday: a.availability.Tuesday,
+                  wednesday: a.availability.Wednesday,
+                  thursday: a.availability.Thursday,
+                  friday: a.availability.Friday,
+                  language: a.language,
                 }
               });
             });

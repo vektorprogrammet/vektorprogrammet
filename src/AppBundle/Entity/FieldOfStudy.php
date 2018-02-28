@@ -8,7 +8,6 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * @ORM\Table(name="field_of_study")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\FieldOfStudyRepository")
- * @JMS\ExclusionPolicy("all")
  */
 class FieldOfStudy
 {
@@ -16,19 +15,16 @@ class FieldOfStudy
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Expose()
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=250)
-     * @JMS\Expose()
      */
     private $name;
 
     /**
      * @ORM\Column(name="short_name", type="string", length=50)
-     * @JMS\Expose()
      */
     private $shortName;
 

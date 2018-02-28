@@ -1,8 +1,0 @@
-.dashboard-page .ui.menu a.active .item {
-    color: #0071CD;
-    font-weight: 700;
-}
-
-.dashboard-page .ui.vertical.menu .menu a .item:hover, .dashboard-page .menu a .item:hover {
-    color: #0071CD;
-}

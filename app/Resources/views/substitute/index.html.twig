@@ -60,19 +60,22 @@
                 <thead>
 
                 <tr>
-                    <th data-sort="string" class="clickable"> Fornavn</th>
-                    <th data-sort="string" class="clickable"> Etternavn</th>
-                    <th data-sort="int" class="clickable"> Tlf</th>
-                    <th data-sort="string" class="clickable"> E-post</th>
-                    <th data-sort="string" class="clickable"> Linje</th>
+                    <th data-sort="string"> Fornavn</th>
+                    <th data-sort="string"> Etternavn</th>
+                    <th data-sort="int"> Tlf</th>
+                    <th data-sort="string"> E-post</th>
+                    <th data-sort="string"> Linje</th>
 
-                    <th data-sort="int" class="clickable"> År</th>
-                    <th data-sort="string" class="clickable"> Engelsk</th>
+                    <th data-sort="int"> År</th>
+                    <th data-sort="string"> Språk</th>
                     <th><span data-sort="string" class="has-tip" title="Mandag"> M</span></th>
                     <th><span data-sort="string" class="has-tip" title="Tirsdag"> T</span></th>
                     <th><span data-sort="string" class="has-tip" title="Onsdag"> O</span></th>
                     <th><span data-sort="string" class="has-tip" title="Torsdag"> T</span></th>
                     <th><span data-sort="string" class="has-tip" title="Fredag"> F</span></th>
+                    <th><span data-sort="string"> Bolk</span></th>
+                    <th><span data-sort="int"> Poeng</span></th>
+                    <th><span data-sort="string"> Passende</span></th>
                     {% if is_granted_team_leader() %}
                         <th colspan="2"></th>
                     {% endif %}
@@ -88,19 +91,28 @@
                             <td>{{ sub.user.email }}</td>
                             <td>{{ sub.user.fieldOfStudy }}</td>
                             <td>{{ sub.yearOfStudy }}</td>
-                            <td>{{ sub.english ? "Ja" : "Nei"}}</td>
-                            <td>{{ sub.monday }}</td>
-                            <td>{{ sub.tuesday }}</td>
-                            <td>{{ sub.wednesday }}</td>
-                            <td>{{ sub.thursday }}</td>
-                            <td>{{ sub.friday }}</td>
+
+                            <td>{{ sub.language }}</td>
+                            <td>{{ sub.monday ? "Bra" : "Ikke" }}</td>
+                            <td>{{ sub.tuesday ? "Bra" : "Ikke" }}</td>
+                            <td>{{ sub.wednesday ? "Bra" : "Ikke" }}</td>
+                            <td>{{ sub.thursday ? "Bra" : "Ikke" }}</td>
+                            <td>{{ sub.friday ? "Bra" : "Ikke" }}</td>
+                            <td>{{ sub.preferredGroup }}</td>
+                            {% if sub.interview is not null and sub.user != app.user and (is_granted_team_leader() or sub.interview.interviewer == app.user) %}
+                                <td>{{ sub.interview.interviewScore.getSum() }}</td>
+                                <td>{{ sub.interview.interviewScore.suitableAssistant }}</td>
+                                {% else %}
+                                    <td colspan="2"></td>
+                            {% endif %}
+
                             {% if is_granted_team_leader() %}
                                 <td>
                                     <form method="POST"
                                           action="{{ path('substitute_modify', { id: sub.id }) }}">
                                         <button type="submit"
                                                 class="button tiny">
-                                            <i class="fa"></i>
+                                            <i class="fa fa-pencil-square-o"></i>
                                             Rediger
                                         </button>
                                     </form>

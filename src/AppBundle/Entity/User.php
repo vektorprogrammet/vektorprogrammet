@@ -26,7 +26,6 @@ use JMS\Serializer\Annotation as JMS;
  *      message="Dette brukernavnet er allerede i bruk.",
  *      groups={"create_user", "username", "edit_user"}
  * )
- * @JMS\ExclusionPolicy("all")
  */
 class User implements AdvancedUserInterface, \Serializable
 {
@@ -34,21 +33,18 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Expose()
      */
     private $id;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
-     * @JMS\Expose()
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
-     * @JMS\Expose()
      */
     private $firstName;
 
@@ -57,14 +53,12 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\ManyToOne(targetEntity="FieldOfStudy")
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Assert\Valid
-     * @JMS\Expose()
      */
     private $fieldOfStudy;
 
     /**
      * @ORM\Column(name="gender", type="boolean")
      * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
-     * @JMS\Expose
      */
     private $gender;
 
@@ -76,20 +70,17 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
-     * @JMS\Expose()
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
-     * @JMS\Expose()
      */
     private $accountNumber;
 
     /**
      * @ORM\Column(type="string", unique=true, nullable=true)
      * @Assert\NotBlank(groups={"username", "edit_user"}, message="Dette feltet kan ikke være tomt.")
-     * @JMS\Expose()
      */
     private $user_name;
 
@@ -102,7 +93,6 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\Column(type="string", unique=true)
      * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
      * @Assert\Email(groups={"admission", "create_user", "edit_user"}, message="Ikke gyldig e-post.")
-     * @JMS\Expose()
      */
     private $email;
 
@@ -154,38 +144,8 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @ORM\OneToMany(targetEntity="Receipt", mappedBy="user")
-     * @JMS\Expose()
      */
     private $receipts;
-
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("role")
-     */
-    public function role()
-    {
-        switch ($this->roles[0]->getRole()) {
-            case 'ROLE_USER':
-                return 'assistant';
-            case 'ROLE_ADMIN':
-                return 'team_member';
-            case 'ROLE_SUPER_ADMIN':
-                return 'team_leader';
-            case 'ROLE_HIGHEST_ADMIN':
-                return 'admin';
-            default:
-                return 'user';
-        }
-    }
-
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("department")
-     */
-    public function getDepartmentId()
-    {
-        return $this->fieldOfStudy->getDepartment()->getId();
-    }
 
     public function __construct()
     {

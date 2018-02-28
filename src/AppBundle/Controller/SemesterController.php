@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
+use AppBundle\Event\SemesterEvent;
 use AppBundle\Form\Type\EditSemesterType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +25,7 @@ class SemesterController extends Controller
             $em->persist($semester);
             $em->flush();
 
+            $this->get('event_dispatcher')->dispatch(SemesterEvent::EDITED, new SemesterEvent($semester));
             return $this->redirectToRoute('semester_show');
         }
 
@@ -87,6 +89,8 @@ class SemesterController extends Controller
             $em->persist($semester);
             $em->flush();
 
+            $this->get('event_dispatcher')->dispatch(SemesterEvent::CREATED, new SemesterEvent($semester));
+
             return $this->redirectToRoute('semester_show');
         }
 
@@ -101,6 +105,8 @@ class SemesterController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($semester);
         $em->flush();
+
+        $this->get('event_dispatcher')->dispatch(SemesterEvent::DELETED, new SemesterEvent($semester));
 
         return new JsonResponse(array('success' => true));
     }

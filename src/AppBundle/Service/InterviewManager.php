@@ -6,6 +6,7 @@ use AppBundle\Entity\Application;
 use AppBundle\Entity\Interview;
 use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\User;
+use AppBundle\Mailer\MailerInterface;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
@@ -26,12 +27,12 @@ class InterviewManager
      *
      * @param TokenStorage                  $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param \Swift_Mailer                 $mailer
+     * @param MailerInterface               $mailer
      * @param \Twig_Environment             $twig
      * @param LoggerInterface               $logger
      * @param EntityManager                 $em
      */
-    public function __construct(TokenStorage $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, \Swift_Mailer $mailer, \Twig_Environment $twig, LoggerInterface $logger, EntityManager $em)
+    public function __construct(TokenStorage $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, MailerInterface $mailer, \Twig_Environment $twig, LoggerInterface $logger, EntityManager $em)
     {
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
@@ -62,17 +63,25 @@ class InterviewManager
      */
     public function initializeInterviewAnswers(Interview $interview)
     {
-        if ($interview->getInterviewed() || count($interview->getInterviewAnswers()) > 0) {
-            return $interview;
+        $existingAnswers = $interview->getInterviewAnswers();
+        if (!is_array($existingAnswers)) {
+            $existingAnswers = $existingAnswers->toArray();
         }
 
+        $existingQuestions = array_map(function (InterviewAnswer $interviewAnswer) {
+            return $interviewAnswer->getInterviewQuestion();
+        }, $existingAnswers);
+
         foreach ($interview->getInterviewSchema()->getInterviewQuestions() as $interviewQuestion) {
-            // Create a new answer object for the question
+            $interviewAlreadyHasQuestion = array_search($interviewQuestion, $existingQuestions) !== false;
+            if ($interviewAlreadyHasQuestion) {
+                continue;
+            }
+
             $answer = new InterviewAnswer();
             $answer->setInterview($interview);
             $answer->setInterviewQuestion($interviewQuestion);
 
-            // Add the answer object to the interview
             $interview->addInterviewAnswer($answer);
         }
 
@@ -111,6 +120,7 @@ class InterviewManager
                     array('message' => $data['message'],
                         'datetime' => $data['datetime'],
                         'room' => $data['room'],
+                        'mapLink' => $data['mapLink'],
                         'fromName' => $interview->getInterviewer()->getFirstName().' '.$interview->getInterviewer()->getLastName(),
                         'fromMail' => $data['from'],
                         'fromPhone' => $interview->getInterviewer()->getPhone(),
@@ -120,13 +130,6 @@ class InterviewManager
                 'text/html'
             );
         $this->mailer->send($message);
-
-        $this->logger->info(
-            "Schedule email sent to {$data['to']}\n".
-            "```\n".
-            "{$message->getBody()}\n".
-            '```'
-        );
     }
 
     /**
@@ -151,11 +154,6 @@ class InterviewManager
             );
 
         $this->mailer->send($message);
-
-        $this->logger->info(
-            "Schedule email sent to {$interview->getInterviewer()->getEmail()}\n".
-            'Request for new interview by '.$interview->getUser()
-        );
     }
 
     /**
@@ -177,11 +175,6 @@ class InterviewManager
             );
 
         $this->mailer->send($message);
-
-        $this->logger->info(
-            "Schedule email sent to {$interview->getInterviewer()->getEmail()}\n".
-            'Interview cancelled by '.$interview->getUser()
-        );
     }
 
     /**
@@ -199,6 +192,7 @@ Vennligst gi beskjed til meg hvis tidspunktet ikke passer.";
         return array(
             'datetime' => $interview->getScheduled(),
             'room' => $interview->getRoom(),
+            'mapLink' => $interview->getMapLink(),
             'message' => $message,
             'from' => $interview->getInterviewer()->getEmail(),
             'to' => $interview->getUser()->getEmail(),

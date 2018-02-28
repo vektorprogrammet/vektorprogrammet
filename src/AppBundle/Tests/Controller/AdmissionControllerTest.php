@@ -12,7 +12,7 @@ class AdmissionControllerTest extends BaseWebTestCase
 
     public function testCreateWantNewsletterApplication()
     {
-        $path = '/kontrollpanel/nyhetsbrev/4';
+        $path = '/kontrollpanel/nyhetsbrev/abonnenter/4';
 
         $applicationsBefore = $this->countTableRows($path);
 
@@ -25,7 +25,7 @@ class AdmissionControllerTest extends BaseWebTestCase
 
     public function testCreateNotWantNewsletterApplication()
     {
-        $path = '/kontrollpanel/nyhetsbrev/4';
+        $path = '/kontrollpanel/nyhetsbrev/abonnenter/4';
 
         $applicationsBefore = $this->countTableRows($path);
 
@@ -62,6 +62,23 @@ class AdmissionControllerTest extends BaseWebTestCase
         $this->assertEquals($applicationsBefore, $applicationsAfter);
     }
 
+
+    public function testCreateWithPreferredSchool()
+    {
+        $this->createAndSubmitForm_preferredSchool('');
+
+        $path = '/kontrollpanel/opptakadmin/soknad/110';
+
+        $applicationsBefore = $this->countTableRows($path);
+
+        $this->createAndSubmitForm_preferredSchool('Gimse');
+
+        $applicationsAfter = $this->countTableRows($path);
+
+        $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
+    }
+
+
     /**
      * @param string $testname
      * @param bool   $wantsNewsletter
@@ -91,21 +108,49 @@ class AdmissionControllerTest extends BaseWebTestCase
     private function createAndSubmitForm_teamInterest(bool $teamInterest)
     {
         $crawler = $this->assistantGoTo('/opptak/eksisterende');
-
         $submitButton = $crawler->selectButton('Søk');
         $form = $submitButton->form();
 
-        $form['application[yearOfStudy]'] = 3;
-        $form['application[applicationPractical][days][monday]'] = 'Bra';
-        $form['application[applicationPractical][days][tuesday]'] = 'Ikke';
-        $form['application[applicationPractical][days][wednesday]'] = 'Bra';
-        $form['application[applicationPractical][days][thursday]'] = 'Ikke';
-        $form['application[applicationPractical][days][friday]'] = 'Bra';
+        $form['application[applicationPractical][yearOfStudy]'] = 3;
+        $form['application[applicationPractical][days][monday]']->tick();
+        $form['application[applicationPractical][days][tuesday]']->untick();
+        $form['application[applicationPractical][days][wednesday]']->tick();
+        $form['application[applicationPractical][days][thursday]']->untick();
+        $form['application[applicationPractical][days][friday]']->tick();
         $form['application[applicationPractical][doublePosition]'] = 0;
         $form['application[applicationPractical][preferredGroup]'] = 'Bolk 1';
-        $form['application[applicationPractical][english]'] = 1;
+        $form['application[applicationPractical][language]'] = 'Engelsk';
         $form['application[applicationPractical][teamInterest]'] = $teamInterest;
 
         self::createAssistantClient()->submit($form);
+    }
+
+    /**
+     * @param string $preferredSchool
+     */
+    private function createAndSubmitForm_preferredSchool(string $preferredSchool)
+    {
+        $assistantClient = self::createClient(array(), array(
+            'PHP_AUTH_USER' => 'petjo',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $this->goTo('/opptak/eksisterende', $assistantClient);
+        $submitButton = $crawler->selectButton('Søk');
+        $form = $submitButton->form();
+
+        $form['application[applicationPractical][yearOfStudy]'] = 3;
+        $form['application[applicationPractical][days][monday]']->tick();
+        $form['application[applicationPractical][days][tuesday]']->untick();
+        $form['application[applicationPractical][days][wednesday]']->tick();
+        $form['application[applicationPractical][days][thursday]']->untick();
+        $form['application[applicationPractical][days][friday]']->tick();
+        $form['application[applicationPractical][doublePosition]'] = 0;
+        $form['application[applicationPractical][preferredGroup]'] = 'Bolk 1';
+        $form['application[applicationPractical][language]'] = 'Engelsk';
+        $form['application[applicationPractical][teamInterest]'] = '0';
+        $form['application[preferredSchool]'] = $preferredSchool;
+
+        $crawler = $assistantClient->submit($form);
     }
 }

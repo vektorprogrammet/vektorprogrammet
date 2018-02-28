@@ -2,7 +2,7 @@
 
 {% block applications %}
     {% include 'admission_admin/existing_applications/bulk_navigation.html.twig' %}
-    <table width="100%" id="application-table">
+    <table width="100%" class="application-table">
         <thead>
         <tr>
             {% if is_granted_admin() %}
@@ -12,10 +12,10 @@
             {# data-sort is used to sort the tables with stupidtable.js #}
             <th data-sort="string">Fornavn</th>
             <th data-sort="string">Etternavn</th>
-            <th>E-post</th>
-            <th>Dobbel Stilling</th>
-            <th>Bolk</th>
-            <th>Språk</th>
+            <th data-sort="string">E-post</th>
+            <th data-sort="string">Dobbel Stilling</th>
+            <th data-sort="string">Bolk</th>
+            <th data-sort="string">Språk</th>
             <th colspan="3"></th>
         </tr>
         </thead>
@@ -32,7 +32,7 @@
                     <td>{{ a.user.email }}</td>
                     <td>{{ a.doublePosition ? 'Dobbel':'Enkel' }}</td>
                     <td>{{ a.preferredGroup }}</td>
-                    <td>{{ a.english ? 'Engelsk':'Norsk' }}</td>
+                    <td>{{ a.language }}</td>
                     <td><a class="button tiny" href="{{ path('admissionadmin_show_application', {'id': a.id}) }}">
                             <i class="fa fa-list-ul"></i>
                             Les søknad

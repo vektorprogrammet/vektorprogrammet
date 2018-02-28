@@ -38,6 +38,25 @@ class ApplicationRepository extends EntityRepository
     }
 
     /**
+     * @param string     $email
+     * @param Semester $semester
+     *
+     * @return Application[]
+     */
+    public function findByEmailInSemester(string $email, Semester $semester)
+    {
+        return $this->createQueryBuilder('application')
+            ->select('application')
+            ->join('application.user', 'user')
+            ->where('user.email = :email')
+            ->andWhere('application.semester = :semester')
+            ->setParameter('email', $email)
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Finds all applications that have a conducted interview.
      *
      * @param null $department
@@ -168,7 +187,7 @@ class ApplicationRepository extends EntityRepository
      * @param null $department
      * @param null $semester
      *
-     * @return array
+     * @return Application[]
      */
     public function findNewApplicants($department = null, $semester = null)
     {
@@ -214,7 +233,7 @@ class ApplicationRepository extends EntityRepository
      * @param Department $department
      * @param Semester   $semester
      *
-     * @return array
+     * @return Application[]
      */
     public function findExistingApplicants(Department $department, Semester $semester)
     {

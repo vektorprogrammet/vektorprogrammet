@@ -3,6 +3,7 @@
 namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\TeamApplicationCreatedEvent;
+use AppBundle\Mailer\MailerInterface;
 use AppBundle\Service\SlackMessenger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -21,14 +22,14 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
     /**
      * ApplicationAdmissionSubscriber constructor.
      *
-     * @param \Swift_Mailer     $mailer
+     * @param MailerInterface   $mailer
      * @param \Twig_Environment $twig
      * @param Session           $session
      * @param LoggerInterface   $logger
      * @param SlackMessenger    $slackMessenger
      * @param RouterInterface   $router
      */
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, SlackMessenger $slackMessenger, RouterInterface $router)
+    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, SlackMessenger $slackMessenger, RouterInterface $router)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
@@ -73,8 +74,6 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
                 'team' => $team,
             )));
         $this->mailer->send($receipt);
-
-        $this->logger->info("Team application receipt sent to {$application->getEmail()}");
     }
 
     public function sendApplicationToTeamMail(TeamApplicationCreatedEvent $event)
@@ -95,8 +94,6 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
                 'application' => $application,
             )));
         $this->mailer->send($receipt);
-
-        $this->logger->info("Team application receipt sent to team at {$email}");
     }
 
     public function addFlashMessage()

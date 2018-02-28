@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script>
         function setSliders(listId, buttonId) {
             var $list = $('#' + listId);

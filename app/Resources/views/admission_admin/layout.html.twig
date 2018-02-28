@@ -17,14 +17,17 @@
         var AppAdmin = {
 
             // The html table containing the applications
-            appTable: $("#application-table"),
+            appTable: $(".application-table"),
+            distributionTable: $("#interview-distribution-table"),
 
             onReady: function () {
                 // Add sort functionality to the table containing the applications
                 AppAdmin.appTable.stupidtable();
+                AppAdmin.distributionTable.stupidtable();
 
                 // Add arrows after sorting the table
                 AppAdmin.appTable.on("aftertablesort", AppAdmin.addSortArrows);
+                AppAdmin.distributionTable.on("aftertablesort", AppAdmin.addSortArrows);
 
                 // Bind delete application functionality to each application delete button
                 AppAdmin.appTable.find(".deleteApplication").deleteablerow('admissionadmin_delete_application_by_id', {

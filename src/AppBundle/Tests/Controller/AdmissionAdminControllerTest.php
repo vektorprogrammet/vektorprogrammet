@@ -23,7 +23,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
+        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
         $this->assertEquals(0, $crawler->filter('td>a:contains("Slett")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Fordel")')->count());
     }
@@ -34,7 +34,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
+        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Slett")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Fordel")')->count());
     }
@@ -54,7 +54,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
+        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Sett opp")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Intervju")')->count());
     }
@@ -65,7 +65,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
+        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Sett opp")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Intervju")')->count());
     }
@@ -85,7 +85,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
+        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
         $this->assertEquals(0, $crawler->filter('td>a.button.tiny:contains("Slett")')->count());
         $this->assertGreaterThan(1, $crawler->filter('td>a.button.tiny:contains("Les intervju")')->count());
     }
@@ -96,7 +96,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
         $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Semester")')->count());
+        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
         $this->assertGreaterThan(1, $crawler->filter('td>a.button:contains("Les intervju")')->count());
         $this->assertGreaterThan(1, $crawler->filter('td>a.button:contains("Slett")')->count());
     }
@@ -218,7 +218,6 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $client->request('GET', '/kontrollpanel/opptak/4');
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testCancelInterview()
@@ -305,8 +304,8 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $crawler = $this->goTo('/kontrollpanel/intervju/settopp/6', $client);
 
         // At this point we are about to send the email
-        $form['scheduleInterview[datetime]'] = '2015-08-10 15:00:00';
-        $form = $crawler->selectButton('Lagre tidspunkt og send mail')->form();
+        $form['scheduleInterview[datetime]'] = '10.08.2015 15:00';
+        $form = $crawler->selectButton('Send invitasjon på sms og e-post')->form();
         $client->enableProfiler();
         $client->submit($form);
 
@@ -322,7 +321,9 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         // Clicking a button on this page should trigger the mentioned change.
         $statusButton = $crawler->selectButton($button_text);
+        $this->assertNotNull($statusButton);
         $form = $statusButton->form();
+        $this->assertNotNull($form);
         $wantEmail = ($status === 'Ny tid ønskes' || $status === 'Kansellert');
         if ($wantEmail) {
             $client->enableProfiler();
@@ -331,6 +332,12 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
         if ($status === 'Kansellert') {
             $client = $this->helperTestCancelConfirm($client, $response_code);
+        } elseif ($status === 'Ny tid ønskes') {
+            $crawler = $this->goTo('/intervju/nytid/'.$response_code, $client);
+            $form = $crawler->selectButton('Bekreft')->form();
+            $form['InterviewNewTime[newTimeMessage]'] = 'Test answer';
+            $client->enableProfiler();
+            $client->submit($form);
         }
 
         if ($wantEmail) {

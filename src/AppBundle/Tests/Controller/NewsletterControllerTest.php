@@ -69,7 +69,7 @@ class NewsletterControllerTest extends BaseWebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/1');
+        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/abonnenter/1');
 
         $this->assertTrue($client->getResponse()->isSuccessful());
 
@@ -82,15 +82,6 @@ class NewsletterControllerTest extends BaseWebTestCase
             'PHP_AUTH_USER' => 'team',
             'PHP_AUTH_PW' => '1234',
         ));
-
-        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/1');
-
-        $this->assertTrue($client->getResponse()->isSuccessful());
-
-        // Assert that we have the correct amount of data
-        $this->assertEquals(0, $crawler->filter('a:contains("Rediger nyhetsbrevet")')->count());
-        $this->assertEquals(0, $crawler->filter('button:contains("Slett nyhetsbrevet")')->count());
-        $this->assertEquals(0, $crawler->filter('button:contains("Slett")')->count());
     }
 
     public function testShowNewsletterPermission()
@@ -110,11 +101,11 @@ class NewsletterControllerTest extends BaseWebTestCase
         $this->assertEquals(1, $crawler->filter('th:contains("Vis på påmeldingsside")')->count());
 
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
+            'PHP_AUTH_USER' => 'admin',
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/1');
+        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/abonnenter/1');
 
         $this->assertTrue($client->getResponse()->isSuccessful());
 
@@ -177,7 +168,7 @@ class NewsletterControllerTest extends BaseWebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/3');
+        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/abonnenter/3');
 
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -208,7 +199,7 @@ class NewsletterControllerTest extends BaseWebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/3');
+        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/abonnenter/3');
 
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -252,7 +243,7 @@ class NewsletterControllerTest extends BaseWebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/3');
+        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/abonnenter/3');
 
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -268,7 +259,7 @@ class NewsletterControllerTest extends BaseWebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/1');
+        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/abonnenter/1');
 
         $deleteButtonsBefore = $crawler->selectButton('Slett')->count();
 
@@ -279,5 +270,65 @@ class NewsletterControllerTest extends BaseWebTestCase
         $deleteButtonsAfter = $crawler->selectButton('Slett')->count();
 
         $this->assertEquals($deleteButtonsAfter, $deleteButtonsBefore - 1);
+    }
+
+    public function testExcludeApplicant()
+    {
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'admin',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/send/1');
+        $button = $crawler->selectButton('Send');
+        $form = $button->form();
+        $form['app_bundle_create_letter_type[title]'] = 'Test';
+        $form['app_bundle_create_letter_type[excludeApplicants]']->tick();
+        $form['app_bundle_create_letter_type[content]'] = 'Test';
+
+        $client->enableProfiler();
+        $client->submit($form);
+
+        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+        $messages = $mailCollector->getMessages();
+
+        $found = false;
+        foreach ($messages as $message) {
+            if (key($message->getTo()) ==  'assistant@gmail.com') {
+                $found = true;
+            }
+        }
+
+        $this->assertNotTrue($found);
+    }
+
+    public function testIncludeApplicant()
+    {
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'admin',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/send/1');
+        $button = $crawler->selectButton('Send');
+        $form = $button->form();
+        $form['app_bundle_create_letter_type[title]'] = 'Test';
+        $form['app_bundle_create_letter_type[excludeApplicants]']->untick();
+        $form['app_bundle_create_letter_type[content]'] = 'Test';
+
+        $client->enableProfiler();
+        $client->submit($form);
+
+        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+        $messages = $mailCollector->getMessages();
+
+        $found = false;
+        foreach ($messages as $message) {
+            if (key($message->getTo()) == 'assistant@gmail.com') {
+                $found = true;
+            }
+        }
+
+        $this->assertTrue($found);
     }
 }
