@@ -1,3 +1,4 @@
+{% block application_form %}
 <div class="card py-2 py-sm-4">
     <!-- Tabs (visible on large screens) -->
     <div class="card-block pt-4 pb-1 pb-sm-4 d-none d-sm-inline-flex">
@@ -11,7 +12,17 @@
         </ul>
     </div>
 
+    <!-- Dropdown (visible on mobile) -->
+    <div class="card-block px-3 px-sm-0 my-2 my-sm-0">
+        <select class="form-control d-block d-sm-none" id="team-overview-selector" onchange="location = this.value + '#application'">
+            {% for dep in get_departments() %}
+                {% set dep_is_current = dep == department %}
+                <option {{ dep_is_current ? 'selected' : ''}} value="{{ dep.id }}">{{ dep.city }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
+    <div class="card-block px-3 px-sm-0 my-2 my-sm-0">
     {% if semester and date() < date(semester.admissionEndDate) %}
         <header class="text-center my-3">
             <h3>{{ department.city }}</h3>
@@ -67,7 +78,7 @@
         </div>
         {{ form_end(form) }}
     {% elseif department.currentSemester and date() < date(department.currentSemester.admissionStartDate) %}
-        <header class="application-header">
+        <header class="application-header text-center my-3">
             <h3>{{ department.city }}</h3>
             <h5>{{ department }}</h5>
             <p>Opptaket starer: <span class="deadline">
@@ -76,7 +87,7 @@
             </p>
         </header>
     {% else %}
-        <header class="application-header">
+        <header class="application-header text-center my-3">
             <h3>{{ department.city }}</h3>
             <h5>{{ department }}</h5>
         </header>
@@ -84,4 +95,6 @@
             <i class="fa fa-exclamation-circle text-warning"></i> Søker ikke etter nye assistenter akkurat nå
         </p>
     {% endif %}
+    </div>
 </div>
+{% endblock %}
