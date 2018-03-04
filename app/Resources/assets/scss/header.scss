@@ -63,10 +63,12 @@
     justify-content: space-between;
     margin-bottom: 2px;
     white-space: nowrap;
-    :last-child {
-      padding-right: 0;
-    }
   }
+
+  .menu-link:last-child {
+    padding-right: 0;
+  }
+
   .user-dropdown {
     display: flex;
     justify-content: flex-end;
