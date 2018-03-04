@@ -65,4 +65,8 @@ class AssistantController extends Controller
             'form' => $form->createView(),
         ));
     }
+
+    public function admissionAction(Request $request, Department $department) {
+      return $this->redirect($this->generateUrl('assistants', ['id' => $department->getId()]) . "#application");
+    }
 }

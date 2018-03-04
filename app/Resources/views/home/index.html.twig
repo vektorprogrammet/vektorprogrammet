@@ -13,7 +13,7 @@
     {% if closestDepartment.activeAdmission %}
         <section class="row urgent-box">
             <div class="main-navigation">
-                <p>Vektorprogrammet <span id="department-name">{{closestDepartment}}</span> søker nye assistenter! <span class="countdown"><span class="cd-number" id="cd-days"></span>d <span class="cd-number" id="cd-hours"></span>t <span class="cd-number" id="cd-minutes"></span>m <span class="cd-number" id="cd-seconds"></span>s</span> &#9&#9&#9 igjen av opptaket. <a href="{{ path('assistants', {'id': closestDepartment.id }) }}#application">Søk nå!</a></p>
+                <p>Vektorprogrammet <span id="department-name">{{closestDepartment}}</span> søker nye assistenter! <span class="countdown"><span class="cd-number" id="cd-days"></span>d <span class="cd-number" id="cd-hours"></span>t <span class="cd-number" id="cd-minutes"></span>m <span class="cd-number" id="cd-seconds"></span>s</span> &#9&#9&#9 igjen av opptaket. <a href="{{ path('admission_show_by_short_name', {'shortName': closestDepartment }) }}">Søk nå!</a></p>
             </div>
         </section>
     {% endif %}

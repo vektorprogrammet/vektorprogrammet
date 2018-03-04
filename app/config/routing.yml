@@ -431,21 +431,21 @@ admission_existing_user:
 
 admission_show_specific_department:
  path: /opptak/avdeling/{id}
- defaults: {_controller: AppBundle:Admission:show }
+ defaults: {_controller: AppBundle:Assistant:admission }
  methods: [GET, POST]
  requirements:
     id: \d+
 
 admission_show_by_short_name:
  path: /opptak/{shortName}
- defaults: {_controller: AppBundle:Admission:show }
- methods: [GET, POST]
+ defaults: {_controller: AppBundle:Assistant:admission }
+ methods: [GET]
  requirements:
     id: \w+
 
 admission_show_specific_department_by_name:
  path: /avdeling/{shortName}
- defaults: {_controller: AppBundle:Admission:show }
+ defaults: {_controller: AppBundle:Assistant:admission }
  methods: [GET, POST]
  requirements:
     id: \w+

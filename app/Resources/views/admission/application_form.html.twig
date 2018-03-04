@@ -6,7 +6,7 @@
             {% for dep in get_departments() %}
                 <li class="nav-item">
                     <a class="nav-link{{ dep == department ? ' active' }}"
-                       href="{{ path('assistants', {'id': dep.id}) }}#application">{{ dep.city }}</a>
+                       href="{{ path('admission_show_by_short_name', {'shortName': dep}) }}">{{ dep.city }}</a>
                 </li>
             {% endfor %}
         </ul>
@@ -14,10 +14,10 @@
 
     <!-- Dropdown (visible on mobile) -->
     <div class="card-block px-3 px-sm-0 my-2 my-sm-0">
-        <select class="form-control d-block d-sm-none" id="team-overview-selector" onchange="location = this.value + '#application'">
+        <select class="form-control d-block d-sm-none" id="team-overview-selector" onchange="location = this.value">
             {% for dep in get_departments() %}
                 {% set dep_is_current = dep == department %}
-                <option {{ dep_is_current ? 'selected' : ''}} value="{{ dep.id }}">{{ dep.city }}</option>
+                <option {{ dep_is_current ? 'selected' : ''}} value="{{ path('admission_show_by_short_name', {'shortName': dep }) }}">{{ dep.city }}</option>
             {% endfor %}
         </select>
     </div>
