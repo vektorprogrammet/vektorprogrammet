@@ -53,9 +53,3 @@ swiftmailer:
 doctrine:
     dbal:
         path: "%kernel.root_dir%/data/dev.db"
-        driver: pdo_sqlite
-        host: localhost
-        port: null
-        dbname: "%kernel.root_dir%/data/dev.db"
-        user: root
-        password: null
