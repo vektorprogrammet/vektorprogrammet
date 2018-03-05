@@ -1,5 +1,35 @@
 {% extends "base_new.html.twig" %}
 
+{% block title %}
+    Kontakt
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            /* Contact tabs */
+            changeDepartment({{ specific_department.id }});
+
+            // Make tab and department form field change when selector value changes
+            $('#department-box-selector').on('change', function () {
+                changeDepartment($(this).val());
+            });
+
+            // Make selector value and department form field change when tab changes
+            $('#department-box-tabs a').on('click', function() {
+                changeDepartment($(this).attr('aria-controls'));
+            });
+        });
+
+        function changeDepartment(id) {
+          $("#department-box-tabs a[aria-controls='"+id+"']").tab("show");
+          $('#department-box-selector').val(id);
+          $('#{{ form.department.vars.id }}').val(id); // Change hidden form element
+        }
+
+    </script>
+{% endblock %}
+
 {% block body %}
     {% for flashMessage in app.session.flashbag.get('success') %}
         <div class="contact-success alert alert-success" role="alert">
@@ -9,42 +39,63 @@
     <div class="contact-page">
         <div class="container">
             <header class="page-header"><h1>Kontakt oss</h1></header>
-            {% for department in get_departments() %}
-                <div class="card department">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <h2>{{ department.city }}</h2>
-                                <p class="department-name">{{ department.name }}</p>
-                                <p class="email contact-info">
-                                    <i class="fa fa-envelope"></i>
-                                    <a href="mailto:{{ department.email }}">{{ department.email }}</a>
-                                </p>
-                                <p class="contact-info">
-                                    {% if department.address %}
-                                        <i class="fa fa-map-marker"></i>
-                                        {{ department.address }}
-                                    {% endif %}
-                                </p>
-                                <a href="{{ path('contact_department', {id: department.id}) }}"
-                                   class="contact-dep-btn btn btn-outline-primary">Send melding
-                                    til {{ department.city }}
-                                </a>
-                            </div>
-                            <div class="col-12 col-md-6 d-none d-md-block">
-                                <div class="list-group list-group-flush">
-                                    {% for team in department.teams %}
-                                        <div class="list-group-item">
-                                            <h5 class="mb-1">{{ team.name }}</h5>
-                                            <p class="mb-0"><a href="mailto: {{ team.email }}"> {{ team.email }}</a></p>
-                                        </div>
-                                    {% endfor %}
+
+
+            <div class="department-box card py-2 py-sm-4">
+                <!-- Tabs (visible on large screens) -->
+                <div class="card-block pt-4 pb-1 pb-sm-4 d-none d-sm-inline-flex">
+                    <ul id="department-box-tabs" class="nav nav-tabs justify-content-center w-100">
+                        {% for department in get_departments() %}
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#{{ department }}" data-toggle="tab" aria-controls="{{ department.id }}">{{ department.city }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Dropdown (visible on mobile) -->
+                <div class="card-block px-3 px-sm-0 my-2 my-sm-0">
+                    <select class="form-control d-block d-sm-none" id="department-box-selector">
+                        {% for department in get_departments() %}
+                            <option value="{{ department.id }}">{{ department.city }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Panes -->
+                <div class="card-block tab-content px-3 px-sm-4 py-2 py-sm-4 mx-sm-4">
+                    {% for department in get_departments() %}
+                        <div role="tabpanel" class="tab-pane fade in" id="{{ department }}">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <h2 class="mb-0 text-dark-blue">{{ department.city }}</h2>
+                                    <p class="department-name">{{ department.name }}</p>
+                                    <p class="email contact-info">
+                                        <i class="fa fa-envelope"></i>
+                                        <a href="mailto:{{ department.email }}">{{ department.email }}</a>
+                                    </p>
+                                    <p class="contact-info">
+                                        {% if department.address %}
+                                            <i class="fa fa-map-marker"></i>
+                                            {{ department.address }}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div class="col-12 col-md-6 d-none d-md-block">
+                                    <div class="list-group list-group-flush">
+                                        {% for team in department.teams %}
+                                            <div class="list-group-item">
+                                                <h5 class="mb-1">{{ team.name }}</h5>
+                                                <p class="mb-0"><a href="mailto: {{ team.email }}"> {{ team.email }}</a></p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
+                            <h2 class="text-center contact-form-title text-dark-blue">Kontakt styret i {{ department.city }}</h2>
                         </div>
-                    </div>
+                    {% endfor %}
+                    {% include "contact/contact_form.html.twig" %}
                 </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

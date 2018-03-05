@@ -14,46 +14,41 @@ use Symfony\Component\HttpFoundation\Request;
 class ContactController extends Controller
 {
     /**
+     * @Route("/kontakt/avdeling/{id}", name="contact_department")
      * @Route("/kontakt", name="contact")
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function indexAction(Request $request)
-    {
-        $_SERVER['http_client_ip'] = '82.102.27.50';
-
-        return $this->render('contact/index.html.twig');
-    }
-
-    /**
-     * @Route("/kontakt/melding/{id}", requirements={"id" = "\d+"}, name="contact_department")
      * @Method({"GET", "POST"})
      * @param Request $request
-     * @param Department $department
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function contactAction(Request $request, Department $department)
+    public function indexAction(Request $request, Department $department = null)
     {
+        if($department === null) {
+            $department = $this->get('app.geolocation')
+                ->findNearestDepartment($this->getDoctrine()->getRepository('AppBundle:Department')->findAll());
+        }
+
         $supportTicket = new SupportTicket();
-        $form = $this->createForm(new SupportTicketType(), $supportTicket);
+        $supportTicket->setDepartment($department);
+        $form = $this->createForm(new SupportTicketType(), $supportTicket, array(
+            'department_repository' => $this->getDoctrine()->getRepository('AppBundle:Department'),
+        ));
         $form->remove('captcha');
 
         $form->handleRequest($request);
+        if ($form->isSubmitted() && $supportTicket->getDepartment() === null) {
+            $this->get('app.logger')->error("Could not send support ticket. Department was null.\n$supportTicket");
+        }
         if ($form->isValid()) {
-            $supportTicket->setDepartment($department);
             $this->get('event_dispatcher')
-                ->dispatch(SupportTicketCreatedEvent::NAME, new SupportTicketCreatedEvent($supportTicket));
+            ->dispatch(SupportTicketCreatedEvent::NAME, new SupportTicketCreatedEvent($supportTicket));
 
-            $this->addFlash('success', 'Meldingen ble sendt!');
-
-            return $this->redirectToRoute('contact');
+            return $this->redirectToRoute('contact_department', array('id' => $department->getId()));
         }
 
-        return $this->render('contact/contact_form.html.twig', array(
+        return $this->render('contact/index.html.twig', array(
             'form' => $form->createView(),
-            'department' => $department,
+            'specific_department' => $department,
         ));
     }
 }
