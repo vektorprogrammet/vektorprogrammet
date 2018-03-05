@@ -25,7 +25,6 @@ class HomeController extends Controller
     /**
      * @param Semester[] $semesters
      *
-     *
      * @return Department[]
      */
     private function getDepartmentsFromSemesters($semesters)
