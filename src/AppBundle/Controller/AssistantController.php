@@ -66,7 +66,8 @@ class AssistantController extends Controller
         ));
     }
 
-    public function admissionAction(Request $request, Department $department) {
-      return $this->redirect($this->generateUrl('assistants', ['id' => $department->getId()]) . "#application");
+    public function admissionAction(Request $request, Department $department)
+    {
+        return $this->redirect($this->generateUrl('assistants', ['id' => $department->getId()]) . "#application");
     }
 }
