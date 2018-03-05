@@ -10,13 +10,12 @@ class HomeController extends Controller
 {
     public function showAction()
     {
-
         return $this->render('home/index.html.twig');
     }
 
     public function activeAdmissionAction()
     {
-            $activeSemesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findSemestersWithActiveAdmission();
+        $activeSemesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findSemestersWithActiveAdmission();
         $activeDepartments = $this->getDepartmentsFromSemesters($activeSemesters);
 
         return $this->render('home/dep_with_active_admission.html.twig', array('departments' => $activeDepartments));
@@ -34,7 +33,6 @@ class HomeController extends Controller
             $department = $semester->getDepartment();
             if (!in_array($department, $departments)) {
                 $departments[] = $department;
-
             }
         }
 
