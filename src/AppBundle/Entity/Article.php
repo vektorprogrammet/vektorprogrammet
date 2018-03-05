@@ -24,11 +24,11 @@ class Article
      */
     protected $title;
 
-	/**
-	 *
-	 * @ORM\Column(type="string")
-	 */
-	protected $subtitle;
+    /**
+     *
+     * @ORM\Column(type="string")
+     */
+    protected $subtitle;
 
     /**
      * @ORM\Column(type="text")
