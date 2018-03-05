@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_new.html.twig' %}
 
 {% block title %}
     {{ team.name }} - Vektorprogrammet
@@ -8,80 +8,54 @@
     {{ team.shortDescription }}
 {% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/team.css') }}">
+{% endblock %}
 
+{% block javascripts %}
+    <script>
+        $(".custom_html table").addClass("table table-bordered");
+        $(".custom_html img").addClass('img-fluid').css("height", "auto");
+    </script>
+{% endblock %}
 
 {% block body %}
+    <div class="individual-team-page container">
+        <header class="page-header row content">
+            <div class="col-md-12">
+                <h1>{{ team.name }}</h1>
+                <p class="team-email text-center"><a href="mailto:{{ team.email}}">{{ team.email }}</a></p>
+                <p class="text-center">{{ team.shortDescription }}<!-- Remove spooky spaces
+                    -->{% if team.acceptApplication %}<!-- Remove spooky spaces
+                        -->&nbsp;<a class="medium-bold discreet-link" href="{{ path('team_application', {'id': team.id}) }}">Søk {{ team }}!</a></p>
+                    {% endif %}
+            </div>
+        </header>
+        <section class="team-members">
+            {% for activeWorkHistory in team.activeWorkHistories | groupSort %}
+                {% set teamMember = activeWorkHistory.user %}
+                <div class="team-member mx-2 my-3 mx-sm-4">
+                    {% if is_granted_assistant() %}
+                        <a href="{{ path('specific_profile', { 'id': teamMember.id }) }}"><img class="img-fluid rounded-circle mb-2 mb-sm-4" src="{{ asset_with_version(teamMember.picturePath) }}" alt="{{ teamMember }}"></a>
+                        <h5 class="m-0"><a href="{{ path('specific_profile', { 'id': teamMember.id }) }}">{{ teamMember }}</a></h5>
+                    {% else %}
+                        <img class="img-fluid rounded-circle mb-2 mb-sm-4" src="{{ asset_with_version(teamMember.picturePath) }}" alt="{{ teamMember }}">
+                        <h5 class="m-0">{{ teamMember }}</h5>
+                    {% endif %}
 
-    <div class="row">
-        <div class="small-12 columns">
-            <h1>{{ team.name }}</h1>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="small-8 columns">
-            <p class="team-short-description">{{ team.shortDescription }} <br> {{ team.email }}</p>
-        </div>
-        <div class="small-4 columns">
-            {% if team.acceptApplication %}
-                <a href="{{ path('team_application',{id:team.id}) }}" class="button tiny"> Søk {{ team.name }}</a>
-            {% endif %}
-        </div>
-    </div>
-    <div class="row">
-        <div class="small-12 columns">
-            <hr>
-        </div>
-    </div>
-    <div class="row">
-        <div class="large-7 columns team-description-column">
+                    <p class="position m-0">{{ activeWorkHistory.position }}</p>
+                </div>
+            {% endfor %}
+        </section>
+        <section class="custom_html row content">
             {{ team.description|safe_html }}
-        </div>
-        <div class="large-5 columns">
-            <h4>Medlemmer</h4>
-
-            <table>
-                {% for wh in workHistories | groupSort %}
-
-                    <tr>
-                        <td width="100">
-                            <img width="50" src="{{ asset_with_version(wh.user.picturePath) }}"/>
-                        </td>
-                        <td>
-                            {% if app.user %}
-                                <span><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{ wh.user }}</a></span>
-                            {% else %}
-                                <p> {{ wh.user }}  </p>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if wh.position is not null %}
-                                {{ wh.position }}<br/>
-                            {% endif %}
-                        </td>
-                        <td width="60">
-                            <a href="mailto:{{ wh.user.companyEmail }}">E-post</a><br/>
-                        </td>
-
-                    </tr>
-
-                {% endfor %}
-            </table>
-
-        </div>
-
+        </section>
+        {% if team.acceptApplication %}
+            <section class="row content">
+                <div class="col-12 col-sm-8 offset-sm-2">
+                    <a class="btn btn-success btn-block apply-button p-4 text-uppercase medium-bold" href="{{ path('team_application', {'id': team.id}) }}">Søk {{ team }}!</a>
+                </div>
+            </section>
+        {% endif %}
     </div>
-    <div class="row">
-        <div class="small-4 columns">
-            {% if team.acceptApplication %}
-                <a href="{{ path('team_application',{id:team.id}) }}" class="button tiny"> Søk {{ team.name }}</a>
-                <br>
-                <br>
-            {% endif %}
-
-        </div>
-    </div>
-
-
-
 {% endblock %}

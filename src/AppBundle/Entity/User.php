@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * AppBundle\Entity\User.
@@ -48,6 +49,7 @@ class User implements AdvancedUserInterface, \Serializable
     private $firstName;
 
     /**
+     * @var FieldOfStudy
      * @ORM\ManyToOne(targetEntity="FieldOfStudy")
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Assert\Valid
@@ -108,6 +110,7 @@ class User implements AdvancedUserInterface, \Serializable
     private $isActive;
 
     /**
+     * @var Role[]
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
      * @ORM\JoinColumn(onDelete="cascade")
      * @Assert\Valid

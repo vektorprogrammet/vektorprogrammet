@@ -1,0 +1,11 @@
+{% extends 'base_new.html.twig' %}
+
+{% block body %}
+    <div class="contact-form container">
+        <header class="page-header"><h1>Kontakt Vektor ved {{ department.shortName }}</h1></header>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+

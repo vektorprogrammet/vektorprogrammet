@@ -26,7 +26,6 @@ class SemesterController extends Controller
             $em->flush();
 
             $this->get('event_dispatcher')->dispatch(SemesterEvent::EDITED, new SemesterEvent($semester));
-            
             return $this->redirectToRoute('semester_show');
         }
 

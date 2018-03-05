@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/team.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="team">
+        <header class="content-centered page-intro">
+            <h1>Team</h1>
+            <p>Vektorassistent er et frivillig verv der du reiser til en ungdomsskole én dag i uka for å hjelpe til som
+                lærerassistent i matematikk. En stilling som vektorassistent varer i 4 eller 8 uker, og du kan selv
+                velge hvilken ukedag som passer best for deg. </p>
+        </header>
+
+        <section class="vektor-testemonial mdl-shadow--4dp">
+            <p class="testemonial-content">"Dette er en quote fra et teammedlem
+                som synes Vektorprogrammet er best!"</p>
+            <p class="testemonial-author">Kari, rekruttering 2016</p>
+        </section>
+
+        <section class="teams">
+            <nav id="department-tabs" class="mdc-tab-bar">
+                {% for department in get_departments() %}
+                    <a class="mdc-tab {{ loop.first ? 'mdc-tab--active' : '' }}"
+                       href="#{{ department }}"
+                       role="tab"
+                       aria-controls="{{ department }}">{{ department.city }}</a>
+                {% endfor %}
+                <span class="mdc-tab-bar__indicator"></span>
+            </nav>
+            <div class="panels container">
+                {% for department in get_departments() %}
+                    <div class="vektor-team panel {{ loop.first ? 'active' : '' }}" id="{{ department }}" role="tabpanel" aria-hidden="{{ loop.first ? 'false' : 'true' }}">
+                        <div class="row team-cards">
+                            {% for team in department.teams %}
+                                <div class="col-xs-3">
+                                    {% include 'team/team-card.html.twig' %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+      var dynamicTabBar = window.dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#department-tabs'));
+      var panels = document.querySelector('.panels');
+
+      dynamicTabBar.preventDefaultOnClick = true;
+      function updatePanel(index) {
+        var activePanel = panels.querySelector('.panel.active');
+        if (activePanel) {
+          activePanel.classList.remove('active');
+        }
+        var newActivePanel = panels.querySelector('.panel:nth-child(' + (index + 1) + ')');
+        if (newActivePanel) {
+          newActivePanel.classList.add('active');
+        }
+      }
+
+      dynamicTabBar.listen('MDCTabBar:change', function ({detail: tabs}) {
+        var nthChildIndex = tabs.activeTabIndex;
+        var scrollY = window.scrollY;
+
+        updatePanel(nthChildIndex);
+        window.scrollTo(0, scrollY);
+      });
+
+    </script>
+{% endblock %}

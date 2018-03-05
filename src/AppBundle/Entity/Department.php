@@ -158,6 +158,18 @@ class Department
         return $semester;
     }
 
+    public function activeAdmission()
+    {
+        $semester = $this->getCurrentSemester();
+        if (!$semester) {
+            return false;
+        }
+        $start = $semester->getAdmissionStartDate();
+        $end = $semester->getAdmissionEndDate();
+        $now = new \DateTime();
+        return $start < $now && $now < $end;
+    }
+
     /**
      * Get id.
      *

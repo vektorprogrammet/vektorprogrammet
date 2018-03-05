@@ -1,0 +1,286 @@
+@import "colors";
+
+.team {
+  .mdc-tab-bar__indicator {
+    background-color: #2196F3;
+  }
+  .panels {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 25px;
+    .panel {
+      display: none;
+      &.active {
+        display: block;
+      }
+    }
+  }
+
+  section {
+    margin: 100px auto;
+  }
+
+  .team-cards {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .team-card {
+    margin-bottom: 25px;
+    max-width: 100%;
+
+    .team-card__header {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      h2 {
+        align-self: flex-start;
+      }
+    }
+
+    .profiles {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin: 0 16px;
+
+      .profile-photo {
+        max-width: 100%;
+      }
+
+      .img-wrapper {
+        width: 25%;
+        margin: 0;
+      }
+    }
+
+    .mdc-card__supporting-text {
+      color: #666;
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+
+    .team-card__actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      a {
+        color: #2196f3;
+      }
+    }
+
+  }
+
+  .application-chip {
+    height: 26px;
+    line-height: 26px;
+    border-radius: 13px;
+    text-align: right;
+    background-color: #f7f7f7;
+    font-family: Roboto,Helvetica,Arial,sans-serif;
+    padding: 0 12px 0 0;
+    border: 0;
+    display: inline-block;
+    color: rgba(0,0,0,.87);
+    margin: 2px 0;
+    font-size: 0;
+    white-space: nowrap;
+
+    .application-chip__symbol {
+      width: 26px;
+      height: 26px;
+      line-height: 26px;
+      border-radius: 16px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 8px;
+      overflow: hidden;
+      text-align: center;
+      font-size: 18px;
+      background-color: #26a69a;
+      color: #fff;
+    }
+
+    .application-chip__text {
+      line-height: 26px;
+      font-size: 13px;
+      vertical-align: middle;
+      display: inline-block;
+    }
+  }
+
+}
+
+.team-page {
+  h1 {
+    // Override page-header center alignment
+    text-align: left !important;
+  }
+
+  h2 {
+    color: $dark-blue;
+    font-size:42px;
+  }
+
+  .page-cover {
+    @media (min-width: 767px) {
+      max-height:500px;
+    }
+  }
+
+  .team-card {
+    .card-block {
+
+      &:nth-of-type(2) {
+        flex-grow: 1;
+      }
+
+      &:nth-of-type(4) {
+        i {
+          transition: 0.3s;
+          opacity:0.9;
+        }
+
+        a {
+          &:hover {
+            i {
+              opacity: 1;
+            }
+            text-decoration: none;
+            color: #111;
+          }
+          color: #555;
+        }
+
+        transition: 0.1s;
+        flex-grow: 0;
+        text-align: center;
+        font-size:16px;
+      }
+
+      h5 {
+        font-size:17px;
+      }
+    }
+
+    .big-icon {
+      font-size:18px;
+    }
+
+    @media (max-width: 767px) {
+      width:100% !important;
+    }
+
+    h5 {
+      a {
+        color: #333 !important;
+      }
+    }
+
+    p {
+      font-size: 15px;
+    }
+
+    display:flex;
+    width:290px;
+    max-width:100%;
+    box-shadow:0 1px 2px 0 rgba(34,36,38,.15);
+  }
+
+  .team-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.team-email {
+  white-space:nowrap;
+  overflow: hidden;
+  text-overflow:ellipsis;
+}
+
+.individual-team-page {
+  .team-members{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 110px;
+    @media (max-width: 767px) {
+      margin-bottom: 25px;
+    }
+  }
+
+  .team-email {
+    a {
+      color:#777;
+    }
+
+    @media (max-width: 767px) {
+      font-size:15px;
+    }
+
+    font-size:18px;
+    margin-bottom:0.5rem;
+  }
+
+  .team-member {
+    a[href^="mailto"] {
+      color:#777 !important;
+      font-size:13px;
+    }
+
+    h5 a {
+      color: $dark-blue !important;
+      font-size:18px;
+    }
+
+    .position {
+      font-size:15px;
+      word-wrap: break-word;
+    }
+
+    img{
+      transition: 0.2s;
+      opacity:0.9;
+    }
+
+    a img:hover {
+      opacity:1;
+      box-shadow:0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    @media (max-width: 767px) {
+      width: 100px;
+    }
+
+    display:inline-block;
+    width: 150px;
+    max-width: 100%;
+    text-align:center;
+  }
+
+  .custom_html{
+    h1, h2 {
+      text-align:center;
+    }
+
+    * {
+      max-width:100%;
+    }
+  }
+
+  .apply-button {
+    margin: 80px auto;
+  }
+}
+
+.header-title{
+  font-size:34px;
+}
+
+.tiny-title {
+  font-size:18px;
+  color:#777;
+}

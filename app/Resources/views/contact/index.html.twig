@@ -1,0 +1,50 @@
+{% extends "base_new.html.twig" %}
+
+{% block body %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="contact-success alert alert-success" role="alert">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+    <div class="contact-page">
+        <div class="container">
+            <header class="page-header"><h1>Kontakt oss</h1></header>
+            {% for department in get_departments() %}
+                <div class="card department">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <h2>{{ department.city }}</h2>
+                                <p class="department-name">{{ department.name }}</p>
+                                <p class="email contact-info">
+                                    <i class="fa fa-envelope"></i>
+                                    <a href="mailto:{{ department.email }}">{{ department.email }}</a>
+                                </p>
+                                <p class="contact-info">
+                                    {% if department.address %}
+                                        <i class="fa fa-map-marker"></i>
+                                        {{ department.address }}
+                                    {% endif %}
+                                </p>
+                                <a href="{{ path('contact_department', {id: department.id}) }}"
+                                   class="contact-dep-btn btn btn-outline-primary">Send melding
+                                    til {{ department.city }}
+                                </a>
+                            </div>
+                            <div class="col-12 col-md-6 d-none d-md-block">
+                                <div class="list-group list-group-flush">
+                                    {% for team in department.teams %}
+                                        <div class="list-group-item">
+                                            <h5 class="mb-1">{{ team.name }}</h5>
+                                            <p class="mb-0"><a href="mailto: {{ team.email }}"> {{ team.email }}</a></p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

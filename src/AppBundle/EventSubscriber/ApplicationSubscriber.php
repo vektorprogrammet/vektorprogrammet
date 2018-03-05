@@ -109,9 +109,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
         $application = $event->getApplication();
 
         $user = $application->getUser();
-        
         $department = $user->getDepartment();
-        
         $this->applicationData->setDepartment($department);
 
         $this->logger->info("$department: New application from *$user* registered. $department has *{$this->applicationData->getApplicationCount()}* applicants");

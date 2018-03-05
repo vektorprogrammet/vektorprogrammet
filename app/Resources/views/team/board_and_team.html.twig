@@ -1,0 +1,107 @@
+{% extends 'base_new.html.twig' %}
+
+{% block title %}
+    Styre og team
+{% endblock %}
+
+{% block javascripts %}
+    {% include "statictext/js_loader_for_static_texts.html.twig" %}
+    <script>
+    /* Team overview tabs */
+
+        // Make first tab active
+        $('#team-overview-tabs a:first').tab("show");
+
+        // Make tab change when selector value changes
+        $('#team-overview-selector').on('change', function (e) {
+            let department = $(this).val();
+            $('#team-overview-tabs a[aria-controls="'+department+'"]').tab('show');
+        });
+
+        // Make selector value change when tab changes
+        $('#team-overview-tabs a').on('click', function (e) {
+            let department = $(this).attr('aria-controls');
+            $('#team-overview-selector').val(department);
+        });
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/team.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="team-page container">
+        <header class="page-cover row">
+            <div class=" col-md-6">
+
+                <h1>Styre og team</h1>
+                <p>Vektorprogrammet er en stor organisasjon med assistenter i 5 norske byer.
+                    Vi trenger derfor mange frivillige bak kulissene som kan få hjulene til å gå rundt.
+                    Uten vektorprogrammets {{ numberOfTeams }} team hadde dette aldri gått ann!
+                </p>
+                <p>
+                    Kunne du tenkt deg et team-verv hos oss?
+                    <br>
+                    <span class="font-weight-bold">Les mer om de ulike teamene nedenfor!</span>
+                </p>
+            </div>
+            <div class="col-md-5 offset-md-1">
+                <img class="img-fluid d-none d-md-block" src="{{ asset_with_version('images/departments_map.png') }}" alt="Kart med avdelinger">
+            </div>
+        </header>
+        <div>
+            <h2 class="text-center" >Våre team</h2>
+            <section class="row my-5">
+                <div class="col-12">
+                    <div class="team-overview card py-2 py-sm-4">
+                        <!-- Tabs (visible on large screens) -->
+                        <div class="card-block pt-4 pb-1 pb-sm-4 d-none d-sm-inline-flex">
+                            <ul id="team-overview-tabs" class="nav nav-tabs justify-content-center w-100">
+                                {% for department in departments %}
+                                    <li role="presentation" class="nav-item"><a class="nav-link" href="#{{ department }}" data-toggle="tab" aria-controls="{{ department }}">{{ department.city }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <!-- Dropdown (visible on mobile) -->
+                        <div class="card-block px-3 px-sm-0 my-2 my-sm-0">
+                            <select class="form-control d-block d-sm-none" id="team-overview-selector">
+                                {% for department in departments %}
+                                    <option value="{{ department }}">{{ department.city }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Panes -->
+                        <div class="card-block tab-content px-3 px-sm-0">
+                            {% for department in departments %}
+                                <div role="tabpanel" class="tab-pane fade in" id="{{ department }}">
+                                    <div class="team-cards-container">
+                                        {% for team in department.teams %}
+                                            {% include 'team/team_card.html.twig'%}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="row my-5">
+                <div class="col-md-6 my-2">
+                    <h2>Hovedstyret</h2>
+                    <p>Hovedstyret er det nasjonale styret i vektorprogrammet. De er et overordnet organ med ansvar for drifting av hele organisasjonen.</p>
+                    <a href="{{ path('executive_board_page') }}" class="btn btn-primary d-none d-sm-inline-block">Les mer om hovedstyret</a>
+                </div>
+
+                <div class="col-md-5 offset-md-1">
+                    <img class="img-fluid my-2" src="{{ asset_with_version('images/HS_square.jpg') }}" alt="Hoverstyret">
+                        <!-- Push button under image on mobile -->
+                    <a href="{{ path('executive_board_page') }}" class="btn btn-primary d-block d-sm-none">Les mer om hovedstyret</a>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

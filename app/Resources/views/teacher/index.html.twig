@@ -1,0 +1,136 @@
+{% extends 'base_new.html.twig' %}
+
+{% block title %}
+    Vektorprogrammet
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/teacher.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    <div class="teacher">
+        <div class="container">
+            <header class="row page-header">
+                <div class="col-12 col-lg-6 d-flex align-items-center">
+                    <div></div>
+                    <div>
+                        <h1 class="text-left">Vektorassistenter i skolen</h1>
+                        <p>Vektorprogrammet er en frivillig organisasjon som tilbyr ungdomsskoler i Norge hjelpelærere i
+                            matematikktimene. Her kan du enkelt søke om å få studenter til å hjelpe og motivere elevene
+                            i
+                            dine timer.</p>
+                        <a href="#jumbo">
+                            <button class="btn btn-success mb-5">
+                                Send inn søknad her
+                            </button>
+                        </a>
+                    </div>
+                    <div></div>
+                </div>
+                <div class="col-lg-5 offset-lg-1">
+                    <img class="hero-image" style="margin: 0 auto; display: block; width: 700px; max-width: 100%;"
+                         src="{{ 'images/teacher2.png' }}">
+                </div>
+            </header>
+        </div>
+
+
+        <div class="content">
+            <div class="col-12">
+
+
+                <section>
+                    <h2>Vektorassistenter i matteundervisning</h2>
+                    <p>Vektorprogrammet er Norges største organisasjon som arbeider for å øke interessen for matematikk
+                        og realfag blant elever i grunnskolen. Vi er en studentorganisasjon som sender ut dyktige og
+                        motiverte studenter til ungdomsskoler i norge.
+                    </p>
+                    <p>
+                        Studentene fungerer som lærerens assistenter og kan dermed bidra til at elevene raskere får
+                        hjelp i timen, og at undervisningen blir mer tilpasset de ulike elevgruppene. Vi har erfart at
+                        lærerne ofte har mye å gjøre i timene, og ofte ikke rekker å hjelpe alle elevene som står fast.
+                        Derfor er vi overbevist om at to assistenter kan forhindre mye hodebry for både lærere og
+                        elever.
+                        <br> Hvert år gjennomfører vi evalueringsundersøkelser, og i gjennomsnitt sier over 95% av
+                        lærerne at de er fornøyde med prosjektet og ønsker å delta videre.
+                    </p>
+                    <p>
+                        Alle assistentene har vært gjennom en intervjuprossess som gjør oss sikre på at de vil passe som
+                        assistentlærere og kan være gode forbilder for elevene. Dette er en unik mulighet til å få
+                        inn rollemodeller i klasserommet som kan være med å gi elevene mer motivasjon.
+                    </p>
+                </section>
+
+
+                <section>
+                    <h2>Enkelt å bruke assistenter i undervisningen</h2>
+                    <p>Som lærer står du fritt til å bruke assistentene slik du selv ønsker. Her er noen forslag vi har
+                        gode erfaringer med:</p>
+                    <div>
+                        <ul class="ml-2">
+                            <li>Hjelpe til med oppgaveløsing i
+                                klasserom
+                            </li>
+                            <li>Utfordre de sterkeste elevene med
+                                vanskeligere oppgaver
+                            </li>
+                            <li>Engasjere elever med matteleker,
+                                gåter og spill
+                            </li>
+                            <li>Alternativ undervisning med
+                                elever på grupperom
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+
+                <section>
+                    <div class="card px-2 px-sm-4 py-4 text-center" id="jumbo">
+                        <div class="card-body p-1 p-sm-3">
+                            <h2>Søk om å få assistenter til din skole</h2>
+
+                            <p>Ta kontakt med ansvarlig for skolekoordinering i din by for å sende inn en søknad om å få
+                                vektorassistenter til din skole:</p>
+
+                            <table class="table table-responsive-md">
+                                <thead>
+                                <tr>
+                                    <th>By</th>
+                                    <th>E-post</th>
+                                    <th>Kontakt</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for department in get_departments() %}
+                                    <tr>
+                                        <td>{{ department.city }}</td>
+                                        <td><a class="department-email" href="mailto:{{ department.email }}">{{ department.email }}</a></td>
+                                        <td><a href="{{ path('contact_department', {id: department.id}) }}">Kontakt {{ department.shortName }}</a></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+
+                            <hr class="my-4">
+
+
+                            <div>
+                                <h5>Har ikke Vektorprogrammet etablert seg i din by ennå?</h5>
+                                <p>Ta kontakt med <a href="mailto:hovedstyret@vektorprogrammet.no">hovedstyret@vektorprogrammet.no</a> for å melde din interesse!</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </section>
+
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

@@ -7,120 +7,124 @@ var gulp = require('gulp'),
     cssnano = require('gulp-cssnano'),
     rename = require('gulp-rename'),
     sass = require('gulp-sass'),
-    changed = require('gulp-changed');
+    changed = require('gulp-changed'),
+    babel = require('gulp-babel');
 
 var exec = require('child_process').exec;
 
 var path = {
     dist: 'www/',
     src: 'app/Resources/assets/',
+    frontEnd: 'client/build',
     scheduling: {
         src: 'src/AppBundle/AssistantScheduling/Webapp'
     }
 };
 
 gulp.task('stylesProd', function () {
-    var dest = path.dist + 'css/';
-    gulp.src(path.src + 'scss/**/*.scss')
-        .pipe(plumber())
-        .pipe(changed(dest))
-        .pipe(sass())
-        .pipe(autoprefixer())
-        .pipe(cssnano())
-        .pipe(gulp.dest(dest))
+  var dest = path.dist + 'css/';
+  gulp.src(path.src + 'scss/**/*.scss')
+      .pipe(plumber())
+      .pipe(changed(dest))
+      .pipe(sass())
+      .pipe(autoprefixer())
+      .pipe(cssnano())
+      .pipe(gulp.dest(dest))
 });
 
-gulp.task('scriptsProd', ['scriptsVendor'], function () {
-    var dest = path.dist + 'js/';
-    gulp.src(path.src + 'js/**/*.js')
-        .pipe(plumber())
-        .pipe(changed(dest))
-        .pipe(uglify())
-        .pipe(gulp.dest(dest))
+gulp.task('scriptsProd', function () {
+  var dest = path.dist + 'js/';
+  gulp.src(path.src + 'js/**/*.js')
+      .pipe(plumber())
+      .pipe(changed(dest))
+      .pipe(babel({
+        presets: ['env']
+      }))
+      .pipe(uglify())
+      .pipe(gulp.dest(dest))
 });
 
 gulp.task('imagesProd', function () {
-    var dest = path.dist + 'images/';
-    gulp.src(path.src + 'images/**/*')
-        .pipe(plumber())
-        .pipe(changed(dest))
-        .pipe(imagemin({
-            progressive: false,
-            interlaced: false,
-            optimizationLevel: 1
-        }))
-        .pipe(gulp.dest(dest))
+  var dest = path.dist + 'images/';
+  gulp.src(path.src + 'images/**/*')
+      .pipe(plumber())
+      .pipe(changed(dest))
+      .pipe(imagemin({
+        progressive: false,
+        interlaced: false,
+        optimizationLevel: 1
+      }))
+      .pipe(gulp.dest(dest))
 });
 
 gulp.task('stylesDev', function () {
-    var dest = path.dist + 'css/';
-    gulp.src(path.src + 'scss/**/*.scss')
-        .pipe(plumber())
-        .pipe(changed(dest))
-        .pipe(sass())
-        .pipe(autoprefixer())
-        .pipe(gulp.dest(dest))
+  var dest = path.dist + 'css/';
+  gulp.src(path.src + 'scss/**/*.scss')
+      .pipe(plumber())
+      .pipe(changed(dest))
+      .pipe(sass())
+      .pipe(autoprefixer())
+      .pipe(gulp.dest(dest))
 });
 
-gulp.task('scriptsDev', ['scriptsVendor'], function () {
-    var dest = path.dist + 'js/';
-    gulp.src(path.src + 'js/**/*.js')
-        .pipe(plumber())
-        .pipe(changed(dest))
-        .pipe(gulp.dest(dest))
-});
-
-gulp.task('scriptsVendor', function () {
-    var dest = path.dist + 'js/';
-    return gulp.src([
-      'node_modules/modernizr/bin/modernizr.js',
-      'node_modules/jquery/dist/jquery.min.js',
-      'node_modules/foundation-sites/js/foundation.min.js'])
-      .pipe(concat('vendor.js'))
-      .pipe(uglify())
-      .pipe(gulp.dest(dest));
+gulp.task('scriptsDev', function () {
+  var dest = path.dist + 'js/';
+  gulp.src(path.src + 'js/**/*.js')
+      .pipe(plumber())
+      .pipe(changed(dest))
+      .pipe(babel({
+        presets: ['env']
+      }))
+      .pipe(gulp.dest(dest))
 });
 
 gulp.task('imagesDev', function () {
-    var dest = path.dist + 'images/';
-    gulp.src(path.src + 'images/**/*')
-        .pipe(plumber())
-        .pipe(changed(dest))
-        .pipe(gulp.dest(dest))
+  var dest = path.dist + 'images/';
+  gulp.src(path.src + 'images/**/*')
+      .pipe(plumber())
+      .pipe(changed(dest))
+      .pipe(gulp.dest(dest))
 });
 
-gulp.task('compressImages', function(){
-    var dest = 'www/images/';
-    gulp.src('www/images/**/*')
-        .pipe(plumber())
-        .pipe(imagemin({
-            progressive: false,
-            interlaced: false,
-            optimizationLevel: 1
-        }))
-        .pipe(gulp.dest(dest))
+gulp.task('compressImages', function () {
+  var dest = 'www/images/';
+  gulp.src('www/images/**/*')
+      .pipe(plumber())
+      .pipe(imagemin({
+        progressive: false,
+        interlaced: false,
+        optimizationLevel: 1
+      }))
+      .pipe(gulp.dest(dest))
 });
 
-gulp.task('icons', function() {
+gulp.task('icons', function () {
   return gulp.src('node_modules/font-awesome/fonts/**.*')
-    .pipe(gulp.dest('www/fonts/'));
+      .pipe(gulp.dest('www/fonts/'));
 });
 
-gulp.task('files', function(){
-    gulp.src(path.src + 'files/*')
-        .pipe(changed('www/files/'))
-        .pipe(gulp.dest('www/files/'))
+gulp.task('files', function () {
+  gulp.src(path.src + 'files/*')
+      .pipe(changed('www/files/'))
+      .pipe(gulp.dest('www/files/'))
 });
 
-gulp.task('vendor', function(){
-    gulp.src('node_modules/slick-carousel/slick/**/*')
-        .pipe(gulp.dest('www/vendor/slick/'));
+gulp.task('vendor', function () {
 
-    gulp.src('node_modules/dropzone/**/*')
-        .pipe(gulp.dest('www/vendor/dropzone/'));
-  
-    gulp.src(['node_modules/ckeditor/**/*', path.src + 'js/ckeditor/**/*'])
-        .pipe(gulp.dest('www/vendor/ckeditor/'));
+  gulp.src('node_modules/dropzone/**/*')
+      .pipe(gulp.dest('www/vendor/dropzone/'));
+
+  gulp.src(['node_modules/ckeditor/**/*', path.src + 'js/ckeditor/**/*'])
+      .pipe(gulp.dest('www/vendor/ckeditor/'));
+
+  gulp.src('node_modules/foundation-sites/js/foundation.min.js')
+    .pipe(gulp.dest('www/js'));
+
+  gulp.src('node_modules/bootstrap/dist/js/bootstrap.min.js')
+    .pipe(gulp.dest('www/js'));
+
+  gulp.src('node_modules/jquery/dist/jquery.min.js')
+    .pipe(gulp.dest('www/js'));
 });
 
 gulp.task('buildAssistantSchedulingApp', function (cb) {
@@ -136,6 +140,11 @@ gulp.task('assistantSchedulingStaticFiles', ['buildAssistantSchedulingApp'], fun
         .pipe(gulp.dest('www/js/scheduling'));
     gulp.src(path.scheduling.src + '/dist/build.js.map')
         .pipe(gulp.dest('www/js/scheduling'));
+});
+
+gulp.task('frontEnd', function () {
+  gulp.src(path.frontEnd + '/**/*')
+      .pipe(gulp.dest('www/'));
 });
 
 

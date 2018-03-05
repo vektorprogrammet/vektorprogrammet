@@ -1,0 +1,27 @@
+sponsors:
+    type: rest
+    resource: @AppBundle/Controller/API/SponsorController.php
+
+departments:
+    type: rest
+    resource: @AppBundle/Controller/API/DepartmentController.php
+
+teams:
+    type: rest
+    resource: @AppBundle/Controller/API/TeamController.php
+
+applications:
+    type: rest
+    resource: @AppBundle/Controller/API/ApplicationController.php
+
+newsletters:
+    type: rest
+    resource: @AppBundle/Controller/API/NewsletterController.php
+
+receipts:
+    type: rest
+    resource: @AppBundle/Controller/API/ReceiptController.php
+
+users:
+    type: rest
+    resource: @AppBundle/Controller/API/UserController.php

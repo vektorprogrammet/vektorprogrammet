@@ -30,3 +30,4 @@ services:
         class: GuzzleHttp\Client
         arguments:
             - { timeout: 2 }
+

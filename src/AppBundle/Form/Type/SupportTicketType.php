@@ -12,10 +12,18 @@ class SupportTicketType extends AbstractType
     {
         $builder->add('name', 'text', array(
             'label' => false,
-            'attr' => array('placeholder' => 'Ditt navn'), ));
+            'attr' => array(
+                'placeholder' => 'Ditt navn',
+                'autocomplete' => 'name'
+            ),
+            ));
         $builder->add('email', 'email', array(
             'label' => false,
-            'attr' => array('placeholder' => 'Din E-post'), ));
+            'attr' => array(
+                'placeholder' => 'Din E-post',
+                'autocomplete' => 'email'
+            ),
+            ));
         $builder->add('subject', 'text', array(
             'label' => false,
             'attr' => array('placeholder' => 'Emne'), ));
@@ -27,7 +35,11 @@ class SupportTicketType extends AbstractType
                 'placeholder' => 'Melding',
             ),
         ));
-        $builder->add('submit', 'submit', array('label' => 'Send melding'));
+        $builder->add('submit', 'submit', array(
+            'label' => 'Send melding',
+            'attr' => array(
+                'class' => 'btn-primary'
+            )));
         $builder->add('captcha', 'captcha', array(
             'label' => ' ',
             'width' => 200,

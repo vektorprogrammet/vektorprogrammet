@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_new.html.twig' %}
 
 {% block title %}
     Om vektor
@@ -9,11 +9,119 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <div class="{{ element_editable() }}" id="omvektor">
-                {{ get_content('omvektor') | raw }}
+    <div class="about-us-page content">
+        <header class="page-header row">
+            <div class="col-12 col-md-12">
+
+                <h1>Om Vektorprogrammet</h1>
+                <p>Vektorprogrammet arbeider for å øke interessen for matematikk og realfag blant
+                    elever i grunnskolen. Vi er en nasjonal studentorganisasjon som sender studenter med utmerket
+                    realfagskompetanse til skoler for å hjelpe elevene i matematikktimene. Disse studentene har også
+                    gode pedagogiske evner og er gode rollemodeller – <span class="medium-bold">de er Norges realfagshelter.</span>
+                </p>
             </div>
+        </header>
+        <section class="row">
+            <div class="col-md-7">
+                <h2>Motivere elever</h2>
+                <p>Vektorprogrammet ønsker å øke matematikkforståelsen blant elever i
+                    grunnskolen. Forståelse gir mestringsfølelse som fører til videre motivasjon. Siden
+                    matematikk er grunnlaget for alle realfag er målet at dette også skal føre til
+                    motivasjon og videre utforskning av realfagene.</p>
+            </div>
+            <div class="col-md-4 offset-md-1">
+                <img class="img-fluid" src="http://via.placeholder.com/350x350/">
+            </div>
+        </section>
+        <section class="row">
+            <div class="col-sm-12 col-md-4 order-2 order-md-1">
+                <img class="img-fluid" src="http://via.placeholder.com/350x350/">
+            </div>
+            <div class="col-sm-12 col-md-7 offset-md-1 order-1 order-md-2">
+                <h2>Motivere studenter</h2>
+                <p>Vi har som mål at alle studentene skal sitte igjen mer motivert for
+                    videre studier etter å ha vært vektorassistent. Av erfaring vet vi at muligheten til å
+                    formidle egen kunnskap og se at deres arbeid gir elevene mestringsfølelse er en sterk
+                    motivasjonsfaktor. Videre arrangerer vi både sosiale og faglige arrangementer for å
+                    forsterke denne motivasjonen.</p></div>
+        </section>
+        <section class="row">
+            <div class="col-12">
+                <h2>En forsmak til læreryrket</h2>
+                <p>Siden studentene er tilstede i undervisningen får de en introduksjon
+                    til læreryrket. Mange som studerer realfag vurderer en fremtid som lærer, og får gjennom
+                    oss muligheten til å få reell erfaring.</p>
+            </div>
+            <div class="col-12">
+                <img class="img-fluid" src="http://via.placeholder.com/950x335/">
+            </div>
+        </section>
+        <div id="FAQ" class="faq">
+            <h2>Ofte stilte spørsmål og svar</h2>
+
+            <h5>Er verv i Vektorprogrammet betalt?</h5>
+            <p>Nei, Vektorprogrammet er en frivillig, studentdrevet organisasjon, der
+                ingen verv er betalt i form av norske kroner. Du får derimot delta på sosiale
+                arrangementer og muligheten til å påvirke en organisasjon som er den største av sitt
+                slag.</p>
+
+            <h5>Hvor stor er arbeidsmengden for en vektorassistent?</h5>
+            <p>Enkel stilling tilsvarer 4 skoledager på en ungdomsskole, fordelt over
+                4 uker. Dobbel stilling tilsvarer 8 skoledager fordelt over åtte uker. En vanlig
+                skoledag er som regel fra 08:00-14:00, og i tillegg kommer transporttid.</p>
+            <h5>Kan jeg bestemme hvilken dag jeg vil være vektorassistent?</h5>
+            <p>Ja, på intervju blir du spurt om hvilke(n) dag(er) som passer for deg.
+                Du vil ikke bli plassert på en dag du har sagt at du ikke kan.</p>
+            <h5>Får jeg en attest dersom jeg har vært vektorassistent?</h5>
+            <p>Ja, det gjør du. Disse deles normalt ut på avslutningen for
+                vektorassistentene det tilhørende semesteret, men dersom du av en eller annen grunn ikke
+                kunne delta, ta kontakt med ditt lokalstyre via mail. Vil du ha attest for tidligere
+                semester? Ta også kontakt med ditt lokalstyre på mail.</p>
+            <h5>Hva gjør jeg dersom klassen jeg skal være i ikke er tilstede eller
+                dersom det er feil i timeplanen jeg har fått fra Vektorprogrammet?</h5>
+            <p>Ta kontakt med din skolekoordinator og forklar situasjonen. Dette er
+                den personen du fikk skoledokumentene av.</p>
+            <h5>Får jeg noen ekstra utgifter av å være vektorassistent?</h5>
+            <p>Nei, Vektorprogrammet dekker bussbilletter, t-skjorte og
+                pedagogikk-kurs.</p>
+            <h5>Hva er pedagogikk-kurs?</h5>
+            <p>Alle nye vektorassistenter må delta på et pedagogikk-kurs i starten av
+                semesteret for å få en enkel innføring i hvordan man kan lære bort til andre på en god
+                måte.</p>
+            <h5>Jeg har vært vektorassistent før, må jeg på intervju eller
+                pedagogikk-kurs igjen?</h5>
+            <p>Nei, alle tidligere vektorassistenter trenger kun å søke via nettsiden.
+                For å få eventuelle bussbilletter må du møte opp på slutten av pedagogikk-kurset.</p>
+
+            <h5>Hvordan søker jeg team?</h5>
+            <p>Gå inn på denne siden her, finn et eller flere team du er interessert
+                i. Hvis dette teamet tar opp nye medlemmer vil det være en knapp hvor du kan søke. Hvis
+                det ikke er opptak kan du sende en mail til teamleder og si ifra at du er
+                interessert.</p>
+            <h5>Hva er forskjellen på vektorassistent og teammedlem?</h5>
+            <p>Som vektorassistent vil man reise til ungdomsskolen som lærerassistent,
+                mens som teammedlem er man med på å påvirke Vektorprogrammet som organisasjon. Som
+                teammedlem blir man altså med i administrasjonen, og arbeidsoppgavene avhenger av
+                hvilket team man er med i.</p>
+            <h5>Går det an å både være vektorassistent og med i team samtidig?</h5>
+            <p>Det er fullt mulig å være begge deler samtidig. Som vektorassistent vil
+                man kun bli sendt ut 4 eller 8 ganger per semester. Dette gjør at arbeidsmengden er
+                overkommelig, og kan fint kombineres med teamarbeid og studier.</p>
+            <h5>Jeg glemte søknadsfristen. Hva gjør jeg nå?</h5>
+            <p>Gå til 'Opptak &amp; kontakt' i menyen og velg din region. Der finnes
+                det ett kontaktskjema som du kan fylle ut, så finner vi ut av det sammen.</p>
+            <h5>I hvilke regioner holder Vektorprogrammet til?</h5>
+            <p>Trondheim, Oslo, Bergen, Ås og Tromsø</p>
+            <h5>Kan jeg være vektorassistent flere semestre?</h5>
+            <p>Ja, men du må huske å søke på nytt hvert semester! Du trenger ikke gå
+                gjennom intervju og pedagogikk-kurs på nytt.</p>
+            <div><h5>Finner du ikke svar på det du lurer på?</h5>
+                <p>Gå til 'Opptak &amp; kontakt' i menyen og velg din region. Der finnes
+                    det et kontaktskjema nederst som du kan fylle ut, så skal vi svare så raskt vi kan!</p>
+            </div>
+        </div>
+        <div class="contact-info">
+            <p class="medium-bold">Noe du lurer på? <a href="{{ path('contact') }}">Ta kontakt med oss!</a></p>
         </div>
     </div>
 {% endblock %}

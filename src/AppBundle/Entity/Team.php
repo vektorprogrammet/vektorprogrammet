@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use AppBundle\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Table(name="team")
@@ -75,11 +76,6 @@ class Team implements TeamInterface
     public function setAcceptApplication($acceptApplication)
     {
         $this->acceptApplication = $acceptApplication;
-    }
-
-    public function __construct()
-    {
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function __toString()
@@ -208,5 +204,22 @@ class Team implements TeamInterface
     public function getWorkHistories()
     {
         return $this->workHistories;
+    }
+
+    /**
+     * @return WorkHistory[]
+     */
+    public function getActiveWorkHistories()
+    {
+        $histories = [];
+
+        foreach ($this->workHistories as $wh) {
+            $semester = $wh->getUser()->getDepartment()->getCurrentOrLatestSemester();
+            if ($semester !== null && $wh->isActiveInSemester($semester)) {
+                $histories[] = $wh;
+            }
+        }
+
+        return $histories;
     }
 }

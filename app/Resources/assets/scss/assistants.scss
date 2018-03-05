@@ -1,0 +1,95 @@
+@import "colors";
+
+.assistants {
+  section {
+    margin: 125px auto;
+    @media (max-width: 1200px) {
+      margin: 110px auto;
+    }
+    @media (max-width: 992px) {
+      margin: 110px auto;
+    }
+    @media (max-width: 768px) {
+      margin: 80px auto;
+    }
+  }
+
+  h2 {
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  .hero-image {
+    background: top no-repeat;
+    background-size: cover;
+    height: 500px;
+    width: 100%;
+  }
+
+  .teacher-img {
+    display: block;
+    width: 500px;
+    max-width: 100%;
+    margin: 50px auto;
+  }
+
+  .blurb {
+    text-align: center;
+    padding: 0 20px;
+    @media (max-width: 767px) {
+      margin-top: 50px;
+      &:first-of-type {
+        margin-top: 0;
+      }
+    }
+
+    img {
+      width: 125px;
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    h4 {
+      font-size: 24px;
+      margin: 20px 0;
+    }
+
+    p {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 26px;
+    }
+  }
+
+  .flex-end {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .requirements {
+    margin-top: 28px;
+    display: flex;
+    justify-content: center;
+    h5 {
+      font-size: 18px;
+      margin-bottom: 14px;
+    }
+    ul, ol {
+      padding-left: 17px;
+      li {
+        font-size: 16px;
+        line-height: 20px;
+        margin-bottom: 8px;
+      }
+    }
+  }
+
+  #application h2 {
+    color: $dark-blue;
+    font-size: 42px;
+    margin-bottom: 32px;
+  }
+}
+
+

@@ -1,52 +1,43 @@
-<footer>
-    <div class="row">
-
-        <div class="small-12 medium-6 large-3 columns">
-
-            <h6><b>Følg oss:</b></h6>
-            <ul>
-
-                <li><a href="https://twitter.com/vektorprogram" target="_blank"> Twitter </a></li>
-                <li><a href="https://www.facebook.com/vektorprogrammet" target="_blank"> Facebook </a></li>
-                <li><a href="https://instagram.com/vektorprogrammet/" target="_blank"> Instagram </a></li>
-            </ul>
-
+<footer class="main-footer">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-6 col-md-4 footer-column">
+                <div class="footer-content">
+                    <p class="p"><i class="fa fa-envelope"></i>styret@vektorprogrammet.no</p>
+                    <p class="p"><i class="fa fa-facebook-square"></i><!--
+                            --><a href="https://www.facebook.com/vektorprogrammet/" target="_blank">NTNU&nbsp;</a>
+                        <a href="https://www.facebook.com/vektorprogrammetNMBU/" target="_blank">NMBU&nbsp;</a>
+                        <a href="https://www.facebook.com/Vektorprogrammet-UiO-1017596031601586/" target="_blank">UiO&nbsp;</a>
+                        <a href="https://www.facebook.com/VektorprogrammetBergen/" target="_blank">UiB&nbsp;</a>
+                        <a href="https://www.facebook.com/VektorUiT/" target="_blank">UiT</a></p>
+                    <p class="p"><i class="fa fa-folder-open"></i>OrgNr: 998744814</p>
+                    <p class="p"><i class="fa fa-map-pin"></i>Høgskoleringen 5,
+                        <br><i class="fa"></i>7491 Trondheim</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 footer-column">
+                <div class="footer-content">
+                    <h5>Sitemap</h5>
+                    <ul>
+                        <li><a href="{{ path('assistants') }}">Assistenter</a></li>
+                        <li><a href="{{ path('team') }}">Team</a></li>
+                        <li><a href="{{ path('teachers') }}">For skoler</a></li>
+                        <li><a href="{{ path('about_new') }}">Om oss</a></li>
+                        <li><a href="{{ path('contact') }}">Kontakt</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 footer-column">
+                <div class="footer-content">
+                    <h5>Sponsorer</h5>
+                    <ul>
+                        {% for sponsor in get_sponsors() %}
+                            <li><a href="{{ sponsor.url }}" target="_blank"> {{ sponsor.name }} </a> </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
-
-
-        <div class="small-12 medium-6 large-3 columns">
-            <h6><b>Kontakt:</b></h6>
-            <ul>
-                <li>styret@vektorprogrammet.no</li>
-                <li>Høgskoleringen 5</li>
-                <li>7491 Trondheim</li>
-                <li>Orgnummer: 998744814</li>
-                <li><br></li>
-                <li><a href="/files/kompendium.pdf">Last ned kompendium</a></li>
-            </ul>
-        </div>
-
-        <div class="small-12 medium-6 large-3 columns">
-            <h6><b>Hvor:</b></h6>
-            <ul>
-                {# embedded controller to render the departments  see department controller for the function getAllDepartmentsForTopbar #}
-                {{ render(controller(
-                'AppBundle:Department:getAllDepartmentsForTopbar'
-                )) }}
-            </ul>
-        </div>
-
-
-        <div class="small-12 medium-6 large-3 columns">
-            <h6><b>Sponsorer:</b></h6>
-            <ul style="display:inline-block">
-                {% for sponsor in get_sponsors() %}
-                    <li><a href="{{ sponsor.url }}" target="_blank"> {{ sponsor.name }} </a></li>
-                {% endfor %}
-            </ul>
-        </div>
-
     </div>
-
-
+    <p class="footer-promo text-center">Nettsiden driftes av Vektorprogrammets <a href="/it">IT-team</a>.</p>
 </footer>

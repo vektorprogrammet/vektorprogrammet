@@ -65,8 +65,8 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $department4->addSchool($this->getReference('school-2'));
         $department4->setAddress('*UiO adresse*');
         $department4->setCity('Oslo');
-        $department3->setLatitude('59.939942');
-        $department3->setLongitude('10.721170');
+        $department4->setLatitude('59.939942');
+        $department4->setLongitude('10.721170');
         $department4->setLogoPath('/images/department_images/uio.png');
         $manager->persist($department4);
 

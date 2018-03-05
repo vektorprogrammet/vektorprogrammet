@@ -1,0 +1,46 @@
+<div class="user-dropdown">
+    {% if app.user %}
+        <div>
+            <div style="background-image: url('{{ asset_with_version(app.user.picturePath) }}')"
+                 class="profile-picture"></div>
+        </div>
+        <div class="dropdown">
+                        <span class="user-link dropdown-toggle" id="user-menu" data-toggle="dropdown"
+                              aria-haspopup="true" aria-expanded="false">{{ app.user }}</span>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-menu">
+                {% if is_granted_team_member() %}
+                    {% include 'base/dropdown_item_link.html.twig' with {route: 'control_panel', name: 'Kontrollpanel'} %}
+                    <div class="dropdown-divider"></div>
+                {% endif %}
+                {% include 'base/dropdown_item_link.html.twig' with {route: 'profile', name: 'Profil'} %}
+                {% include 'base/dropdown_item_link.html.twig' with {route: 'receipt_create', name: 'Mine utlegg'} %}
+                <div class="dropdown-divider"></div>
+                {% include 'base/dropdown_item_link.html.twig' with {route: 'members_show', name: 'Assistenter'} %}
+                <div class="dropdown-divider"></div>
+                {% include 'base/dropdown_item_link.html.twig' with {route: 'logout', name: 'Logg ut'} %}
+            </div>
+        </div>
+    {% else %}
+        <div class="dropdown">
+                    <span class="user-link" id="loginForm"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Logg inn
+                    </span>
+            <div class="dropdown-menu dropdown-menu-right login-form" aria-labelledby="loginForm">
+                <form action="{{ path('login_check') }}" method="POST" class="px-4 py-3">
+                    <div class="form-group">
+                        <input class="form-control" id="username" name="_username"
+                               placeholder="Brukernavn / e-post">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="password" name="_password"
+                               placeholder="Passord">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Logg inn</button>
+                </form>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{ path('reset_password') }}">Glemt passord?</a>
+            </div>
+        </div>
+    {% endif %}
+</div>
