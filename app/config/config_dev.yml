@@ -49,7 +49,3 @@ assetic:
 
 swiftmailer:
   disable_delivery: true
-
-doctrine:
-    dbal:
-        path: "%kernel.root_dir%/data/dev.db"

@@ -106,6 +106,7 @@ doctrine:
         dbname:   "%database_name%"
         user:     "%database_user%"
         password: "%database_password%"
+        path:     "%database_path%"
         charset: utf8mb4
         default_table_options:
             charset: utf8mb4
