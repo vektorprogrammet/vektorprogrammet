@@ -70,7 +70,6 @@
 
 {% block javascripts %}
     {% if closestDepartment.activeAdmission %}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
         <script>
             function zeroPad(num, size) {
                 return (Math.pow(10, size) + ~~num).toString().substring(1);

@@ -125,6 +125,16 @@ gulp.task('vendor', function () {
 
   gulp.src('node_modules/jquery/dist/jquery.min.js')
     .pipe(gulp.dest('www/js'));
+
+  gulp.src([
+    'node_modules/jquery/dist/jquery.min.js',
+    'node_modules/popperjs/dist/popper.min.js',
+    'node_modules/bootstrap/dist/js/bootstrap.min.js',
+    'node_modules/moment/min/moment.min.js'
+  ])
+    .pipe(concat('vendor.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest(path.dist + 'js/'));
 });
 
 gulp.task('buildAssistantSchedulingApp', function (cb) {

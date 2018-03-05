@@ -30,7 +30,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="#6FCEEE"><!-- iOS Safari -->
 
     <link rel="icon" type="image/x-icon" href="{{ asset_with_version('favicon.ico') }}"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset_with_version('css/app.css') }}">
     {% block stylesheets %}{% endblock %}
 
@@ -72,9 +71,7 @@
 {% endif %}
 
 
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="{{ asset_with_version('/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset_with_version('/js/vendor.js') }}"></script>
 <script src="{{ asset_with_version('/js/mobile_nav.js') }}"></script>
 {% block javascripts %}{% endblock %}
 
