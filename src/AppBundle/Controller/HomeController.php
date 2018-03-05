@@ -34,6 +34,7 @@ class HomeController extends Controller
             $department = $semester->getDepartment();
             if (!in_array($department, $departments)) {
                 $departments[] = $department;
+
             }
         }
 
