@@ -150,7 +150,6 @@
             text-decoration: none;
             color: #111;
           }
-          color: #555;
         }
 
         transition: 0.1s;
@@ -165,17 +164,11 @@
     }
 
     .big-icon {
-      font-size:18px;
+      font-size: 13px;
     }
 
     @media (max-width: 767px) {
       width:100% !important;
-    }
-
-    h5 {
-      a {
-        color: #333 !important;
-      }
     }
 
     p {
@@ -193,12 +186,30 @@
     flex-wrap: wrap;
     justify-content: center;
   }
+
+  .card-footer {
+    .admission-star {
+      color: #3b97fa;
+    }
+    a {
+      font-weight: 600;
+      color: #a0a0a0;
+    }
+  }
 }
 
 .team-email {
+  margin-top: 20px;
   white-space:nowrap;
   overflow: hidden;
   text-overflow:ellipsis;
+  a {
+    font-size: 14px;
+  }
+}
+
+.member-count {
+  font-size: 14px;
 }
 
 .individual-team-page {
