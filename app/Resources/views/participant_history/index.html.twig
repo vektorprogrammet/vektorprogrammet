@@ -135,6 +135,7 @@
                             <th> Bolk</th>
                             <th> Dag</th>
                             <th></th>
+                            <th></th>
                         </tr>
 
                         </thead>
@@ -168,6 +169,16 @@
                                         >
                                             <button type="submit" class="button tiny alert"><i class="fa fa-trash"></i>
                                             </button>
+                                        </form>
+                                </td>
+                                <td>
+                                        <form
+                                                action="{{ path('assistant_history_edit', {id: ah.id}) }}"
+                                                method="GET"
+                                        >
+                                            <button type="submit" class="button tiny"><i class="fa fa-pencil"></i>
+                                            </button>
+
                                         </form>
                                     {% endif %}
                                 </td>
