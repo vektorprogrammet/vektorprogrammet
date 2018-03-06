@@ -6,12 +6,39 @@ use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class AssistantController extends Controller
 {
-    public function indexAction(Request $request, Department $department = null)
+    /**
+     * @Route("/opptak")
+     * @Route("/opptak/avdeling/{id}", name="admission_show_specific_department", requirements={"id"="\d+"})
+     * @Route("/opptak/{shortName}", name="admission_show_by_short_name", requirements={"shortName"="\w+"})
+     * @Route("/avdeling/{shortName}", name="admission_show_specific_department_by_name", requirements={"shortName"="\w+"})
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param Department $department
+     *
+     * @return Response
+     */
+    public function admissionAction(Request $request, Department $department = null)
+    {
+        return $this->indexAction($request, $department, true);
+    }
+
+    /**
+     * @param Request $request
+     * @param Department $department
+     * @param bool $scrollToAdmissionForm
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function indexAction(Request $request, Department $department = null, $scrollToAdmissionForm = false)
     {
         $admissionManager = $this->get('app.application_admission');
         $em = $this->getDoctrine()->getManager();
@@ -32,12 +59,8 @@ class AssistantController extends Controller
             'environment' => $this->get('kernel')->getEnvironment(),
         ));
 
-        // Find the relevant newsletter, based on what department the user is applying for
-        $newsletter = $em->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
-
-        // If the department has no active newsletter, the checkbox is removed.
-        if ($newsletter === null) {
-            $form->remove('wantsNewsletter');
+        if ($form->isSubmitted()) {
+            $scrollToAdmissionForm = true;
         }
 
         $form->handleRequest($request);
@@ -63,11 +86,16 @@ class AssistantController extends Controller
             'semester' => $semester,
             'teams' => $teams,
             'form' => $form->createView(),
+            'scroll_to_admission_form' => $scrollToAdmissionForm,
         ));
     }
 
-    public function admissionAction(Request $request, Department $department)
+    /**
+     * @Route("/assistenter/opptak/bekreftelse", name="application_confirmation")
+     * @return Response
+     */
+    public function confirmationAction()
     {
-        return $this->redirect($this->generateUrl('assistants', ['id' => $department->getId()]) . "#application");
+        return $this->render('admission/application_confirmation.html.twig');
     }
 }

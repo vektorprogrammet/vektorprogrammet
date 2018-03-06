@@ -67,12 +67,10 @@ class ApplicationSubscriber implements EventSubscriberInterface
     public function subscribeToCheckedNewsletter(ApplicationCreatedEvent $event)
     {
         $application = $event->getApplication();
-        if ($application->wantsNewsletter()) {
-            $department = $application->getUser()->getDepartment();
-            $fullName = $application->getUser()->getFullName();
-            $email = $application->getUser()->getEmail();
-            $this->newsletterManager->subscribeToCheckedNewsletter($department, $fullName, $email);
-        }
+        $department = $application->getUser()->getDepartment();
+        $fullName = $application->getUser()->getFullName();
+        $email = $application->getUser()->getEmail();
+        $this->newsletterManager->subscribeToCheckedNewsletter($department, $fullName, $email);
     }
 
     public function sendConfirmationMail(ApplicationCreatedEvent $event)

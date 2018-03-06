@@ -18,6 +18,7 @@ class ContactController extends Controller
      * @Route("/kontakt/avdeling/{id}", name="contact_department")
      * @Route("/kontakt", name="contact")
      * @Method({"GET", "POST"})
+     *
      * @param Request $request
      * @param Department $department
      *

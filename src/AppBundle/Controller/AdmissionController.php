@@ -134,9 +134,4 @@ class AdmissionController extends Controller
             'user' => $user,
         ));
     }
-
-    public function confirmationAction()
-    {
-        return $this->render('admission/application_confirmation.html.twig');
-    }
 }

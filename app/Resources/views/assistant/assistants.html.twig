@@ -107,3 +107,12 @@
     </div>
 {% endblock %}
 
+{% block javascripts %}
+    {% if scroll_to_admission_form %}
+        <script>
+            $('document').ready(function() {
+                window.location.hash = 'application';
+            });
+        </script>
+    {% endif %}
+{% endblock %}

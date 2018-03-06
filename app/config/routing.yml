@@ -48,16 +48,6 @@ faq:
  defaults: {_controller: AppBundle:AboutVektor:showFAQ}
  methods: [GET]
 
-admission:
- path: /opptak
- defaults: { _controller: AppBundle:Admission:show }
- methods: [GET, POST]
-
-application_confirmation:
- path: /opptak/bekreftelse
- defaults: { _controller: AppBundle:Admission:confirmation }
- methods: [GET]
-
 # Updates static content
 # Not meant for rendering a page. Receives a post request and updates the database.
 update_static_content:
@@ -428,27 +418,6 @@ admission_existing_user:
  path: /opptak/eksisterende
  defaults: {_controller: AppBundle:Admission:existingUserAdmission}
  methods: [GET, POST]
-
-admission_show_specific_department:
- path: /opptak/avdeling/{id}
- defaults: {_controller: AppBundle:Assistant:admission }
- methods: [GET, POST]
- requirements:
-    id: \d+
-
-admission_show_by_short_name:
- path: /opptak/{shortName}
- defaults: {_controller: AppBundle:Assistant:admission }
- methods: [GET]
- requirements:
-    id: \w+
-
-admission_show_specific_department_by_name:
- path: /avdeling/{shortName}
- defaults: {_controller: AppBundle:Assistant:admission }
- methods: [GET, POST]
- requirements:
-    id: \w+
 
 admission_contact:
  path: /opptakkontakt/{id}
