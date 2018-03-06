@@ -13,11 +13,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ContactController extends Controller
 {
+
     /**
      * @Route("/kontakt/avdeling/{id}", name="contact_department")
      * @Route("/kontakt", name="contact")
      * @Method({"GET", "POST"})
      * @param Request $request
+     * @param Department $department
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -43,7 +45,7 @@ class ContactController extends Controller
             $this->get('event_dispatcher')
             ->dispatch(SupportTicketCreatedEvent::NAME, new SupportTicketCreatedEvent($supportTicket));
 
-            return $this->redirectToRoute('contact_department', array('id' => $department->getId()));
+            return $this->redirectToRoute('contact_department', array('id' => $supportTicket->getDepartment()->getId()));
         }
 
         return $this->render('contact/index.html.twig', array(
