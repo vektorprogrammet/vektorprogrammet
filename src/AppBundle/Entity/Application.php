@@ -82,6 +82,12 @@ class Application
     private $preferredGroup;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\Length(max=255, maxMessage="Dette feltet kan ikke inneholde mer enn 255 tegn.")
+     */
+    private $preferredSchool;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
      * @Assert\Valid
      */
@@ -493,5 +499,21 @@ class Application
     public function setSpecialNeeds($specialNeeds)
     {
         $this->specialNeeds = $specialNeeds;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPreferredSchool()
+    {
+        return $this->preferredSchool;
+    }
+
+    /**
+     * @param mixed $preferredSchool
+     */
+    public function setPreferredSchool($preferredSchool): void
+    {
+        $this->preferredSchool = $preferredSchool;
     }
 }

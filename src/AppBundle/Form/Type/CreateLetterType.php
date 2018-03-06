@@ -26,6 +26,10 @@ class CreateLetterType extends AbstractType
                 ),
                 'label' => 'Innhold',
                 'attr' => array('class' => 'hide'), // Graceful loading, hides the textarea that is replaced by ckeditor
+            ))
+            ->add('excludeApplicants', 'checkbox', array(
+                'label' => 'Ekskluder søkere',
+                'required' => false,
             ));
     }
 

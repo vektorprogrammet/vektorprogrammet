@@ -26,10 +26,18 @@ class LoadSubscriberData extends AbstractFixture implements OrderedFixtureInterf
         $subscriber2->setUnsubscribeCode('12341234');
         $manager->persist($subscriber2);
 
+        $subscriber3 = new Subscriber();
+        $subscriber3->setName('Assistent Johansen');
+        $subscriber3->setEmail('assistant@gmail.com');
+        $subscriber3->setNewsletter($this->getReference('newsletter-interesseliste'));
+        $subscriber3->setUnsubscribeCode('1231234');
+        $manager->persist($subscriber3);
+
         $manager->flush();
 
         $this->addReference('subscriber', $subscriber);
         $this->addReference('subscriber2', $subscriber2);
+        $this->addReference('subscriber3', $subscriber3);
     }
 
     public function getOrder()

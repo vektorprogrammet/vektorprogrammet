@@ -42,6 +42,11 @@
                     <td><b>Ønsket undervisningsspråk</b></td>
                     <td>{{ application.language}}</td>
                 </tr>
+                {% if application.preferredSchool is not null %}  <tr>
+                    <td><b>Ønsket skole</b></td>
+                    <td>{{ application.preferredSchool}}</td>
+                </tr>
+                {% endif %}
             </table>
 
         </div>

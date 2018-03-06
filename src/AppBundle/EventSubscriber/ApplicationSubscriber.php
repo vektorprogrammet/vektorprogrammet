@@ -4,6 +4,7 @@ namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Service\ApplicationData;
+use AppBundle\Mailer\MailerInterface;
 use AppBundle\Service\NewsletterManager;
 use AppBundle\Service\SlackMessenger;
 use Psr\Log\LoggerInterface;
@@ -25,7 +26,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
     /**
      * ApplicationAdmissionSubscriber constructor.
      *
-     * @param \Swift_Mailer     $mailer
+     * @param MailerInterface   $mailer
      * @param \Twig_Environment $twig
      * @param Session           $session
      * @param LoggerInterface   $logger
@@ -34,7 +35,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
      * @param RouterInterface   $router
      * @param NewsletterManager $newsletterManager
      */
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, SlackMessenger $slackMessenger, ApplicationData $applicationData, RouterInterface $router, NewsletterManager $newsletterManager)
+    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, SlackMessenger $slackMessenger, ApplicationData $applicationData, RouterInterface $router, NewsletterManager $newsletterManager)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
