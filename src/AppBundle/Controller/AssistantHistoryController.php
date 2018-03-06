@@ -32,7 +32,7 @@ class AssistantHistoryController extends Controller
 
     public function editAction(Request $request, AssistantHistory $assistantHistory)
     {
-        if (!($this->isGranted(Roles::ADMIN) || $this->isGranted(Roles::TEAM_LEADER)) && $assistantHistory->getUser()->getDepartment() !== $this->getUser()->getDepartment()) {
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $assistantHistory->getUser()->getDepartment() !== $this->getUser()->getDepartment()) {
             $this->createAccessDeniedException();
         }
 
