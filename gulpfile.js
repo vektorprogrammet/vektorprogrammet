@@ -86,21 +86,11 @@ gulp.task('imagesDev', function () {
       .pipe(gulp.dest(dest))
 });
 
-gulp.task('compressImages', function () {
-  var dest = 'www/images/';
-  gulp.src('www/images/**/*')
-      .pipe(plumber())
-      .pipe(imagemin({
-        progressive: false,
-        interlaced: false,
-        optimizationLevel: 1
-      }))
-      .pipe(gulp.dest(dest))
-});
-
 gulp.task('icons', function () {
-  return gulp.src('node_modules/font-awesome/fonts/**.*')
+  gulp.src('node_modules/font-awesome/fonts/**.*')
       .pipe(gulp.dest('www/fonts/'));
+  gulp.src(path.src + 'fonts/**.*')
+    .pipe(gulp.dest('www/fonts/'));
 });
 
 gulp.task('files', function () {
