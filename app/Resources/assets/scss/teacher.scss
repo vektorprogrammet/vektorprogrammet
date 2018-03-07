@@ -1,6 +1,11 @@
 @import "colors";
 
 .teacher {
+  .link-to-application {
+    font-size: 18px;
+    color: $dark-blue;
+    font-weight: 600;
+  }
   section {
     margin: 125px auto;
     @media (max-width: 1200px) {
