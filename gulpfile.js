@@ -23,7 +23,7 @@ var path = {
 
 gulp.task('stylesProd', function () {
   var dest = path.dist + 'css/';
-  gulp.src(path.src + 'scss/**/*.scss')
+  gulp.src(path.src + 'scss/*.scss')
       .pipe(plumber())
       .pipe(changed(dest))
       .pipe(sass())
@@ -59,7 +59,7 @@ gulp.task('imagesProd', function () {
 
 gulp.task('stylesDev', function () {
   var dest = path.dist + 'css/';
-  gulp.src(path.src + 'scss/**/*.scss')
+  gulp.src(path.src + 'scss/*.scss')
       .pipe(plumber())
       .pipe(changed(dest))
       .pipe(sass())
@@ -158,7 +158,7 @@ gulp.task('frontEnd', function () {
 
 
 gulp.task('watch', function () {
-    gulp.watch(path.src + 'scss/**/*.scss', ['stylesDev']);
+    gulp.watch(path.src + 'scss/*.scss', ['stylesDev']);
     gulp.watch(path.src + 'js/**/*.js', ['scriptsDev']);
     gulp.watch(path.scheduling.src + '/**/*.vue', ['assistantSchedulingStaticFiles']);
     gulp.watch(path.src + 'images/*', ['imagesDev']);
