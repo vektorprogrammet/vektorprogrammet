@@ -14,48 +14,58 @@
 
 {% block javascripts %}
     <script>
-        $(".custom_html table").addClass("table table-bordered");
-        $(".custom_html img").addClass('img-fluid').css("height", "auto");
+      $('.custom_html table').addClass('table table-bordered');
+      $('.custom_html img').addClass('img-fluid').css('height', 'auto');
     </script>
 {% endblock %}
 
 {% block body %}
-    <div class="individual-team-page container">
-        <header class="page-header row content">
-            <div class="col-md-12">
-                <h1>{{ team.name }}</h1>
-                <p class="team-email text-center"><a href="mailto:{{ team.email}}">{{ team.email }}</a></p>
-                <p class="text-center">{{ team.shortDescription }}<!-- Remove spooky spaces
+    <div class="row individual-team-page">
+        <div class="container">
+            <header class="page-header row content">
+                <div class="col-md-12">
+                    <h1>{{ team.name }}</h1>
+                    <p class="team-email text-center"><a href="mailto:{{ team.email }}">{{ team.email }}</a></p>
+                    <p class="text-center">{{ team.shortDescription }}<!-- Remove spooky spaces
                     -->{% if team.acceptApplication %}<!-- Remove spooky spaces
-                        -->&nbsp;<a class="medium-bold discreet-link" href="{{ path('team_application', {'id': team.id}) }}">Søk {{ team }}!</a></p>
+                        -->&nbsp;<a class="medium-bold discreet-link"
+                                    href="{{ path('team_application', {'id': team.id}) }}">Søk {{ team }}!</a></p>
                     {% endif %}
-            </div>
-        </header>
-        <section class="team-members">
-            {% for activeWorkHistory in team.activeWorkHistories | groupSort %}
-                {% set teamMember = activeWorkHistory.user %}
-                <div class="team-member mx-2 my-3 mx-sm-4">
-                    {% if is_granted_assistant() %}
-                        <a href="{{ path('specific_profile', { 'id': teamMember.id }) }}"><img class="img-fluid rounded-circle mb-2 mb-sm-4" src="{{ asset_with_version(teamMember.picturePath) }}" alt="{{ teamMember }}"></a>
-                        <h5 class="m-0"><a href="{{ path('specific_profile', { 'id': teamMember.id }) }}">{{ teamMember }}</a></h5>
-                    {% else %}
-                        <img class="img-fluid rounded-circle mb-2 mb-sm-4" src="{{ asset_with_version(teamMember.picturePath) }}" alt="{{ teamMember }}">
-                        <h5 class="m-0">{{ teamMember }}</h5>
-                    {% endif %}
+                </div>
+            </header>
+            <section class="team-members">
+                {% for activeWorkHistory in team.activeWorkHistories | groupSort %}
+                    {% set teamMember = activeWorkHistory.user %}
+                    <div class="team-member mx-2 my-3 mx-sm-4">
+                        {% if is_granted_assistant() %}
+                            <a href="{{ path('specific_profile', { 'id': teamMember.id }) }}"><img
+                                        class="img-fluid rounded-circle mb-2 mb-sm-4"
+                                        src="{{ asset_with_version(teamMember.picturePath) }}"
+                                        alt="{{ teamMember }}"></a>
+                            <h5 class="m-0"><a
+                                        href="{{ path('specific_profile', { 'id': teamMember.id }) }}">{{ teamMember }}</a>
+                            </h5>
+                        {% else %}
+                            <img class="img-fluid rounded-circle mb-2 mb-sm-4"
+                                 src="{{ asset_with_version(teamMember.picturePath) }}" alt="{{ teamMember }}">
+                            <h5 class="m-0">{{ teamMember }}</h5>
+                        {% endif %}
 
-                    <p class="position m-0">{{ activeWorkHistory.position }}</p>
-                </div>
-            {% endfor %}
-        </section>
-        <section class="custom_html row content">
-            {{ team.description|safe_html }}
-        </section>
-        {% if team.acceptApplication %}
-            <section class="row content">
-                <div class="col-12 col-sm-8 offset-sm-2">
-                    <a class="btn btn-success btn-block apply-button p-4 text-uppercase medium-bold" href="{{ path('team_application', {'id': team.id}) }}">Søk {{ team }}!</a>
-                </div>
+                        <p class="position m-0">{{ activeWorkHistory.position }}</p>
+                    </div>
+                {% endfor %}
             </section>
-        {% endif %}
+            <section class="custom_html row content">
+                {{ team.description|safe_html }}
+            </section>
+            {% if team.acceptApplication %}
+                <section class="row content">
+                    <div class="col-12 col-sm-8 offset-sm-2">
+                        <a class="btn btn-success btn-block apply-button p-4 text-uppercase medium-bold"
+                           href="{{ path('team_application', {'id': team.id}) }}">Søk {{ team }}!</a>
+                    </div>
+                </section>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
