@@ -10,11 +10,10 @@
 
 {% block body %}
 
-    <div class="teacher">
+    <div class="row teacher">
         <div class="container">
             <header class="row page-header">
                 <div class="col-12 col-lg-6 d-flex align-items-center">
-                    <div></div>
                     <div>
                         <h1 class="text-left">Vektorassistenter i skolen</h1>
                         <p>Vektorprogrammet er en frivillig organisasjon som tilbyr ungdomsskoler i Norge hjelpelærere i
@@ -25,20 +24,13 @@
                             Send inn søknad her <i class="fa fa-chevron-right"></i>
                         </a>
                     </div>
-                    <div></div>
                 </div>
                 <div class="col-lg-5 offset-lg-1">
-                    <img class="hero-image" style="margin: 0 auto; display: block; width: 700px; max-width: 100%;"
+                    <img class="hero-image"
                          src="{{ 'images/teacher2.png' }}">
                 </div>
             </header>
-        </div>
-
-
-        <div class="content">
-            <div class="col-12">
-
-
+            <div class="content">
                 <section>
                     <h2>Vektorassistenter i matteundervisning</h2>
                     <p>Vektorprogrammet er Norges største organisasjon som arbeider for å øke interessen for matematikk
@@ -105,30 +97,26 @@
                                 {% for department in get_departments() %}
                                     <tr>
                                         <td>{{ department.city }}</td>
-                                        <td><a class="department-email" href="mailto:{{ department.email }}">{{ department.email }}</a></td>
-                                        <td><a href="{{ path('contact_department', {id: department.id}) }}">Kontakt {{ department.shortName }}</a></td>
+                                        <td><a class="department-email"
+                                               href="mailto:{{ department.email }}">{{ department.email }}</a></td>
+                                        <td>
+                                            <a href="{{ path('contact_department', {id: department.id}) }}">Kontakt {{ department.shortName }}</a>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
                             </table>
-
-
                             <hr class="my-4">
-
-
                             <div>
                                 <h5>Har ikke Vektorprogrammet etablert seg i din by ennå?</h5>
-                                <p>Ta kontakt med <a href="mailto:hovedstyret@vektorprogrammet.no">hovedstyret@vektorprogrammet.no</a> for å melde din interesse!</p>
+                                <p>Ta kontakt med <a href="mailto:hovedstyret@vektorprogrammet.no">hovedstyret@vektorprogrammet.no</a>
+                                    for å melde din interesse!</p>
                             </div>
                         </div>
 
                     </div>
-
-
                 </section>
-
             </div>
-
         </div>
     </div>
 {% endblock %}

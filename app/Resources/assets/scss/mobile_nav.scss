@@ -82,6 +82,10 @@
   margin: 0;
 }
 
+.mobile-nav__hide:focus {
+  outline: 0;
+}
+
 .mobile-nav__header {
   height: 150px;
   background: #0071CD;
