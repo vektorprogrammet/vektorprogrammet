@@ -8,81 +8,85 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class DbSubscriber implements EventSubscriber {
-	private $logger;
-	private $tokenStorage;
+class DbSubscriber implements EventSubscriber
+{
+    private $logger;
+    private $tokenStorage;
 
-	public function __construct(LoggerInterface $logger, TokenStorageInterface $tokenStorage) {
-		$this->logger = $logger;
-		$this->tokenStorage = $tokenStorage;
-	}
+    public function __construct(LoggerInterface $logger, TokenStorageInterface $tokenStorage)
+    {
+        $this->logger = $logger;
+        $this->tokenStorage = $tokenStorage;
+    }
 
-	/**
-	 * Returns an array of events this subscriber wants to listen to.
-	 *
-	 * @return array
-	 */
-	public function getSubscribedEvents() {
-		return array(
-			'postPersist',
-			'postUpdate',
-			'postRemove'
-		);
-	}
+    /**
+     * Returns an array of events this subscriber wants to listen to.
+     *
+     * @return array
+     */
+    public function getSubscribedEvents()
+    {
+        return array(
+            'postPersist',
+            'postUpdate',
+            'postRemove'
+        );
+    }
 
-	public function postUpdate(LifecycleEventArgs $args)
-	{
-		$obj = $args->getObject();
-		$className = get_class($obj);
-		$loggedInUser = $this->getUser();
-		$name = $this->getObjectName($obj);
+    public function postUpdate(LifecycleEventArgs $args)
+    {
+        $obj = $args->getObject();
+        $className = get_class($obj);
+        $loggedInUser = $this->getUser();
+        $name = $this->getObjectName($obj);
 
-		$this->logger->info("$className $name updated by $loggedInUser");
-	}
+        $this->logger->info("$className $name updated by $loggedInUser");
+    }
 
-	public function postPersist(LifecycleEventArgs $args)
-	{
-		$obj = $args->getObject();
-		$className = get_class($obj);
-		$loggedInUser = $this->getUser();
-		$name = $this->getObjectName($obj);
+    public function postPersist(LifecycleEventArgs $args)
+    {
+        $obj = $args->getObject();
+        $className = get_class($obj);
+        $loggedInUser = $this->getUser();
+        $name = $this->getObjectName($obj);
 
-		$this->logger->info("$className $name created by $loggedInUser");
-	}
+        $this->logger->info("$className $name created by $loggedInUser");
+    }
 
-	public function postRemove(LifecycleEventArgs $args) {
-		$obj = $args->getObject();
-		$className = get_class($obj);
-		$loggedInUser = $this->getUser();
-		$name = $this->getObjectName($obj);
+    public function postRemove(LifecycleEventArgs $args)
+    {
+        $obj = $args->getObject();
+        $className = get_class($obj);
+        $loggedInUser = $this->getUser();
+        $name = $this->getObjectName($obj);
 
-		$this->logger->info("$className $name deleted by $loggedInUser");
-	}
+        $this->logger->info("$className $name deleted by $loggedInUser");
+    }
 
-	private function getUser()
-	{
-		$user = "Anonymous";
-		$token = $this->tokenStorage->getToken();
-		if (!$token) {
-			return $user;
-		}
+    private function getUser()
+    {
+        $user = "Anonymous";
+        $token = $this->tokenStorage->getToken();
+        if (!$token) {
+            return $user;
+        }
 
-		$loggedInUser = $this->tokenStorage->getToken()->getUser();
-		if ($loggedInUser && $loggedInUser instanceof User) {
-			$department = $loggedInUser->getDepartment()->getShortName();
-			$user = "*{$loggedInUser->getFullName()}* ($department)";
-		}
+        $loggedInUser = $this->tokenStorage->getToken()->getUser();
+        if ($loggedInUser && $loggedInUser instanceof User) {
+            $department = $loggedInUser->getDepartment()->getShortName();
+            $user = "*{$loggedInUser->getFullName()}* ($department)";
+        }
 
-		return $user;
-	}
+        return $user;
+    }
 
-	private function getObjectName($obj)
-	{
-		$name = "";
-		if (method_exists($obj, '__toString')) {
-			$name = "`{$obj->__toString()}`";
-		}
+    private function getObjectName($obj)
+    {
+        $name = "";
+        if (method_exists($obj, '__toString')) {
+            $name = "`{$obj->__toString()}`";
+        }
 
-		return $name;
-	}
+        return $name;
+    }
 }

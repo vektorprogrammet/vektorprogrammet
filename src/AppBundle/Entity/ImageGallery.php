@@ -177,9 +177,8 @@ class ImageGallery
         return $this->description;
     }
 
-	public function __toString() {
-    	return $this->referenceName;
-	}
-
-
+    public function __toString()
+    {
+        return $this->referenceName;
+    }
 }
