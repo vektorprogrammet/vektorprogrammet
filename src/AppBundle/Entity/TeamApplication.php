@@ -196,7 +196,7 @@ class TeamApplication
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPhone()
     {
@@ -204,7 +204,7 @@ class TeamApplication
     }
 
     /**
-     * @param mixed $phone
+     * @param string $phone
      */
     public function setPhone($phone): void
     {
