@@ -63,8 +63,7 @@ class TeamApplication
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
-     * @Assert\Type(type="digit")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     private $phone;
 
