@@ -62,6 +62,13 @@ class TeamApplication
     private $team;
 
     /**
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\Type(type="digit")
+     */
+    private $phone;
+
+    /**
      * @return int
      */
     public function getId()
@@ -187,5 +194,21 @@ class TeamApplication
     public function setYearOfStudy($yearOfStudy)
     {
         $this->yearOfStudy = $yearOfStudy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone): void
+    {
+        $this->phone = $phone;
     }
 }
