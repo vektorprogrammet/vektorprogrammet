@@ -4,15 +4,13 @@
 @import "../../../../node_modules/font-awesome/scss/font-awesome";
 @import "partials/fonts";
 @import "partials/typography";
-@import "header";
-@import "footer";
-@import "mobile_nav";
 @import "modules/well";
 @import "modules/colors";
 @import "modules/team.scss";
 @import "modules/interview_confirmation.scss";
 
 body {
+  font-family: 'Lato', sans-serif;
   background: $vektor-white;
 }
 
