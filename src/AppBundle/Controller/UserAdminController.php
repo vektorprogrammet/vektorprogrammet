@@ -54,7 +54,7 @@ class UserAdminController extends Controller
     public function showAction()
     {
         // Finds all the departments
-        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+        $activeDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findActive();
 
         // Finds the department for the current logged in user
         $department = $this->getUser()->getDepartment();
@@ -65,7 +65,7 @@ class UserAdminController extends Controller
         return $this->render('user_admin/index.html.twig', array(
             'activeUsers' => $activeUsers,
             'inActiveUsers' => $inActiveUsers,
-            'departments' => $allDepartments,
+            'departments' => $activeDepartments,
             'department' => $department,
         ));
     }
@@ -73,7 +73,7 @@ class UserAdminController extends Controller
     public function showUsersByDepartmentAction(Department $department)
     {
         // Finds all the departments
-        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+        $activeDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findActive();
 
         $activeUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findAllActiveUsersByDepartment($department);
         $inActiveUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findAllInActiveUsersByDepartment($department);
@@ -82,7 +82,7 @@ class UserAdminController extends Controller
         return $this->render('user_admin/index.html.twig', array(
             'activeUsers' => $activeUsers,
             'inActiveUsers' => $inActiveUsers,
-            'departments' => $allDepartments,
+            'departments' => $activeDepartments,
             'department' => $department,
         ));
     }

@@ -40,7 +40,7 @@ class DepartmentController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $departments = $em->getRepository('AppBundle:Department')->findAll();
+        $departments = $em->getRepository('AppBundle:Department')->findActive();
 
         return $this->render('home/department_loop.html.twig', array(
             'departments' => $departments,
