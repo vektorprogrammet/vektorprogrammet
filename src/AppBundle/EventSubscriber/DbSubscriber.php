@@ -6,17 +6,22 @@ use AppBundle\Entity\User;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class DbSubscriber implements EventSubscriber
 {
     private $logger;
     private $tokenStorage;
+	private $request;
 
-    public function __construct(LoggerInterface $logger, TokenStorageInterface $tokenStorage)
+	public function __construct(LoggerInterface $logger, TokenStorageInterface $tokenStorage, RequestStack $request)
     {
         $this->logger = $logger;
         $this->tokenStorage = $tokenStorage;
+	    $this->request = $request;
     }
 
     /**
@@ -53,9 +58,10 @@ class DbSubscriber implements EventSubscriber
         $obj = $args->getObject();
         $className = get_class($obj);
         $loggedInUser = $this->getUser();
-        $objName = $this->getObjectName($obj);
+	    $objName = $this->getObjectName($obj);
+	    $path = $this->request->getCurrentRequest()->getPathInfo();
 
-        $this->logger->info("$className $objName $action by $loggedInUser");
+        $this->logger->info("Path: `$path`\n$className $objName $action by $loggedInUser");
     }
 
     private function getUser()

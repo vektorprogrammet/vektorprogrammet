@@ -186,7 +186,7 @@ services:
 
   app.db_subscriber:
     class: AppBundle\EventSubscriber\DbSubscriber
-    arguments: ['@app.logger', '@security.token_storage']
+    arguments: ['@app.logger', '@security.token_storage', '@request_stack']
     tags:
       - { name: doctrine.event_subscriber }
 
