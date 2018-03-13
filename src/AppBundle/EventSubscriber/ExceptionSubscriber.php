@@ -18,24 +18,24 @@ class ExceptionSubscriber implements EventSubscriberInterface
     private $ts;
     private $router;
     private $fileLogger;
-	private $requestStack;
+    private $requestStack;
 
-	/**
-	 * ExceptionListener constructor.
-	 *
-	 * @param LoggerInterface $logger
-	 * @param LoggerInterface $fileLogger
-	 * @param TokenStorage $ts
-	 * @param RouterInterface $router
-	 * @param RequestStack $requestStack
-	 */
+    /**
+     * ExceptionListener constructor.
+     *
+     * @param LoggerInterface $logger
+     * @param LoggerInterface $fileLogger
+     * @param TokenStorage $ts
+     * @param RouterInterface $router
+     * @param RequestStack $requestStack
+     */
     public function __construct(LoggerInterface $logger, LoggerInterface $fileLogger, TokenStorage $ts, RouterInterface $router, RequestStack $requestStack)
     {
         $this->logger = $logger;
         $this->ts = $ts;
         $this->router = $router;
         $this->fileLogger = $fileLogger;
-	    $this->requestStack = $requestStack;
+        $this->requestStack = $requestStack;
     }
 
     public static function getSubscribedEvents()

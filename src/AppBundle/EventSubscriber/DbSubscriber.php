@@ -15,13 +15,13 @@ class DbSubscriber implements EventSubscriber
 {
     private $logger;
     private $tokenStorage;
-	private $request;
+    private $request;
 
-	public function __construct(LoggerInterface $logger, TokenStorageInterface $tokenStorage, RequestStack $request)
+    public function __construct(LoggerInterface $logger, TokenStorageInterface $tokenStorage, RequestStack $request)
     {
         $this->logger = $logger;
         $this->tokenStorage = $tokenStorage;
-	    $this->request = $request;
+        $this->request = $request;
     }
 
     /**
@@ -58,8 +58,8 @@ class DbSubscriber implements EventSubscriber
         $obj = $args->getObject();
         $className = get_class($obj);
         $loggedInUser = $this->getUser();
-	    $objName = $this->getObjectName($obj);
-	    $path = $this->request->getCurrentRequest()->getPathInfo();
+        $objName = $this->getObjectName($obj);
+        $path = $this->request->getCurrentRequest()->getPathInfo();
 
         $this->logger->info("Path: `$path`\n$className $objName $action by $loggedInUser");
     }
