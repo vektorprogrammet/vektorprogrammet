@@ -69,6 +69,7 @@
                 </div>
             {% endif %}
 
+            <h5>Aktive team</h5>
             <table width="100%" id="table">
 
                 <thead>
@@ -81,32 +82,75 @@
 
                 <tbody>
                 {% for t in teams %}
-                    <tr>
-                        <td><a
-                                    href="{{ path('teamadmin_show_specific_team', { 'id': t.id }) }}"> {{ t.name }} </a>
-                        </td>
-                        <td>
-                            {{ t.email }}
-                        </td>
-                        {% if t.acceptApplication %}
-                            <td><span class="text-success">Åpent</span></td>
-                        {% else %}
-                            <td><span class="text-alert">Stengt</span></td>
-                        {% endif %}
-                        {% if is_granted_admin() %}
-                            <td class="float-right"><a href="#" id="{{ t.id }}" class="button tiny alert delete"><i
-                                            class="fa fa-trash-o"></i> Slett</a></td>
-                        {% endif %}
-                        {% if is_granted_team_leader() %}
-                            <td class="float-right"><a href="{{ path('teamadmin_update', { 'id': t.id }) }}"
-                                   class="button tiny float-right">Rediger</a>
+                    {% if t.isActive %}
+                        <tr>
+                            <td><a
+                                        href="{{ path('teamadmin_show_specific_team', { 'id': t.id }) }}"> {{ t.name }} </a>
                             </td>
-                        {% endif %}
-                    </tr>
+                            <td>
+                                {{ t.email }}
+                            </td>
+                            {% if t.acceptApplication %}
+                                <td><span class="text-success">Åpent</span></td>
+                            {% else %}
+                                <td><span class="text-alert">Stengt</span></td>
+                            {% endif %}
+                            {% if is_granted_admin() %}
+                                <td class="float-right"><a href="#" id="{{ t.id }}" class="button tiny alert delete"><i
+                                                class="fa fa-trash-o"></i> Slett</a></td>
+                            {% endif %}
+                            {% if is_granted_team_leader() %}
+                                <td class="float-right"><a href="{{ path('teamadmin_update', { 'id': t.id }) }}"
+                                       class="button tiny float-right">Rediger</a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endif %}
                 {% endfor %}
                 </tbody>
-
             </table>
+
+            <!-- Henter ut team som ikke er aktive -->
+            {% for t in teams if not t.isActive %}
+                <!-- Printer ut tablehead kun hvis iterasjonen går gjennom en gang, altså hvis det
+                 finnes minst ett inaktivt team-->
+                {% if loop.first %}
+                    <h5>Inaktive team</h5>
+                    <table width="100%" id="table">
+                        <thead>
+                            <tr>
+                                <th>Navn</th>
+                                <th>E-post</th>
+                                <th colspan="3">Opptak</th>
+                            </tr>
+                        </thead>
+                {% endif %}
+                        <tbody>
+                            <tr>
+                                <td><a
+                                            href="{{ path('teamadmin_show_specific_team', { 'id': t.id }) }}"> {{ t.name }} </a>
+                                </td>
+                                <td>
+                                    {{ t.email }}
+                                </td>
+                                {% if t.acceptApplication %}
+                                    <td><span class="text-success">Åpent</span></td>
+                                {% else %}
+                                    <td><span class="text-alert">Stengt</span></td>
+                                {% endif %}
+                                {% if is_granted_admin() %}
+                                    <td class="float-right"><a href="#" id="{{ t.id }}" class="button tiny alert delete"><i
+                                                    class="fa fa-trash-o"></i> Slett</a></td>
+                                {% endif %}
+                                {% if is_granted_team_leader() %}
+                                    <td class="float-right"><a href="{{ path('teamadmin_update', { 'id': t.id }) }}"
+                                                               class="button tiny float-right">Rediger</a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+            {% endfor %}
+                        </tbody>
+                    </table>
         </div>
     </div>
 

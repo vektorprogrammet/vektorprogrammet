@@ -40,15 +40,17 @@
                         </th>
                     </tr>
                     {% for team in department.teams %}
-                        <tr>
-                            <td><h6><a href="{{ path('team_page', {'id': team.id}) }}">{{ team.name }}</a></h6></td>
-                            <td><span class="team-short-description">{{ team.shortDescription }}</span></td>
-                            {% if team.acceptApplication %}
-                                <td> <a href="{{ path('team_application',{id:team.id}) }}" class="button tiny"> Søk</a></td>
-                            {% else %}
-                                <td>Opptak stengt</td>
-                            {% endif %}
-                        </tr>
+                        {% if team.isActive %}
+                            <tr>
+                                <td><h6><a href="{{ path('team_page', {'id': team.id}) }}">{{ team.name }}</a></h6></td>
+                                <td><span class="team-short-description">{{ team.shortDescription }}</span></td>
+                                {% if team.acceptApplication %}
+                                    <td> <a href="{{ path('team_application',{id:team.id}) }}" class="button tiny"> Søk</a></td>
+                                {% else %}
+                                    <td>Opptak stengt</td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
                     {% endfor %}
                 {% endfor %}
             </table>

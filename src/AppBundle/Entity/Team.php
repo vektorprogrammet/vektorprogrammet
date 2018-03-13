@@ -17,6 +17,7 @@ class Team implements TeamInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
+
     protected $id;
 
     /**
@@ -54,6 +55,28 @@ class Team implements TeamInterface
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $acceptApplication;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+     protected $isActive;
+
+    /**
+     * @return mixed
+     */
+    public function getisActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param mixed $isActive
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+    }
+
 
     /**
      * @var WorkHistory[]
