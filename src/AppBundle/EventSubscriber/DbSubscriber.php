@@ -6,9 +6,7 @@ use AppBundle\Entity\User;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class DbSubscriber implements EventSubscriber
@@ -59,7 +57,8 @@ class DbSubscriber implements EventSubscriber
         $className = get_class($obj);
         $loggedInUser = $this->getUser();
         $objName = $this->getObjectName($obj);
-        $path = $this->request->getCurrentRequest()->getPathInfo();
+        $request = $this->request->getMasterRequest();
+        $path = $request ? $request->getPathInfo() : '???';
 
         $this->logger->info("Path: `$path`\n$className $objName $action by $loggedInUser");
     }

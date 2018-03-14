@@ -50,7 +50,8 @@ class ExceptionSubscriber implements EventSubscriberInterface
     public function logException(GetResponseForExceptionEvent $event)
     {
         $exception = $event->getException();
-        $path = $this->requestStack->getCurrentRequest()->getPathInfo();
+        $request = $this->requestStack->getMasterRequest();
+        $path = $request ? $request->getPathInfo() : '???';
 
         if ($exception instanceof HttpException) {
             $this->logHttpException($exception);
