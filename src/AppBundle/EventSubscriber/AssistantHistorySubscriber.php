@@ -41,7 +41,6 @@ class AssistantHistorySubscriber implements EventSubscriberInterface
     {
         return array(
             AssistantHistoryCreatedEvent::NAME => array(
-                array('logEvent', 1),
                 array('sendActivationMail', 0),
                 array('addFlashMessage', -1),
             ),
@@ -75,12 +74,5 @@ class AssistantHistorySubscriber implements EventSubscriberInterface
         $message = "{$assistantHistory->getUser()} har blitt fordelt til {$assistantHistory->getSchool()}.";
 
         $this->session->getFlashBag()->add('success', $message);
-    }
-
-    public function logEvent(AssistantHistoryCreatedEvent $event)
-    {
-        $assistantHistory = $event->getAssistantHistory();
-
-        $this->logger->info("New assistant history with {$assistantHistory->getUser()} on school {$assistantHistory->getSchool()} created");
     }
 }
