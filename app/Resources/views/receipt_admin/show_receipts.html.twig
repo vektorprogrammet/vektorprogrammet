@@ -3,64 +3,73 @@
 {% block title %}Utlegg{% endblock %}
 
 {% block body %}
-<div class="row">
-    <div class="small-12 medium-12 large-12 columns">
-        <h1>Utlegg</h1>
-    </div>
-</div>
-
-<div class="row">
-
-    <div class="small-12 medium-12 large-12 columns">
-        <hr>
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <h1>Utlegg</h1>
+        </div>
     </div>
 
-    <div class="small-12 medium-12 large-8 columns">
-
-        <h3> Brukere med utlegg </h3>
-
+    <div class="row">
+        <div class="small-12 columns text-center">
+            <div class="panel callout radius">
+                <h3 class="text-faded">Utbetalt i {{ "now"|date("Y") }}</h3>
+                <p class="payout">{{ total_payout|number_format(2, ',', ' ') }} kr</p>
+            </div>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="small-12 medium-12 large-12 columns">
 
-        <br>
+    <div class="row">
 
-        <table width="100%">
+        <div class="small-12 medium-12 large-8 columns">
 
-            <thead>
+            <h3> Brukere med utlegg </h3>
 
-            <tr>
-                <th> Navn</th>
-                <th> Email</th>
-                <th> Kontonummer</th>
-                <th> Sum ubehandlet</th>
-                <th></th>
-            </tr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
 
-            </thead>
+            <br>
 
-            <tbody>
-            {% for user in users_with_receipts %}
+            <table width="100%">
+
+                <thead>
+
                 <tr>
-                    <td class="{{ user.hasPendingReceipts ? 'has-pending-receipts' : '' }}" ><a href="{{ path('receipts_show_individual', {'user': user.id}) }}"> {{ user.fullName }} </a></td>
-
-                    <td> {{ user.email }}</td>
-                    <td> {{ user.accountNumber }}</td>
-                    <td> {{ user.totalPendingReceiptSum|number_format(2, ',', ' ') }} kr</td>
-                    <td>
-                        {% if user.hasPendingReceipts %}
-                            <div class="number-of-pending-receipts-indicator has-tip" data-tooltip aria-haspopup="true" title="{{ user.numberOfPendingReceipts }} {{ user.numberOfPendingReceipts == 1 ? 'ubehandlet' : 'ubehandlede' }} utlegg">
-                                {{ user.numberOfPendingReceipts }}</div>
-                        {% endif %}
-                    </td>
+                    <th> Navn</th>
+                    <th> Email</th>
+                    <th> Kontonummer</th>
+                    <th> Sum ubehandlet</th>
+                    <th></th>
                 </tr>
-            {% endfor %}
-            </tbody>
 
-        </table>
+                </thead>
+
+                <tbody>
+                {% for user in users_with_receipts %}
+                    <tr>
+                        <td class="{{ user.hasPendingReceipts ? 'has-pending-receipts' : '' }}"><a
+                                    href="{{ path('receipts_show_individual', {'user': user.id}) }}"> {{ user.fullName }} </a>
+                        </td>
+
+                        <td> {{ user.email }}</td>
+                        <td> {{ user.accountNumber }}</td>
+                        <td> {{ user.totalPendingReceiptSum|number_format(2, ',', ' ') }} kr</td>
+                        <td>
+                            {% if user.hasPendingReceipts %}
+                                <div class="number-of-pending-receipts-indicator has-tip" data-tooltip
+                                     aria-haspopup="true"
+                                     title="{{ user.numberOfPendingReceipts }} {{ user.numberOfPendingReceipts == 1 ? 'ubehandlet' : 'ubehandlede' }} utlegg">
+                                    {{ user.numberOfPendingReceipts }}</div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
 
 
+        </div>
     </div>
-</div>
 {% endblock %}

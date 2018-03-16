@@ -17,6 +17,14 @@ class ReceiptController extends Controller
     public function showAction()
     {
         $usersWithReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithReceipts();
+        $refundedReceipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByStatus(Receipt::STATUS_REFUNDED);
+        $totalPayoutThisYear = array_reduce($refundedReceipts, function (int $carry, Receipt $receipt) {
+            if ($receipt->getReceiptDate()->format('Y') !== (new \DateTime())->format('Y')) {
+                return $carry;
+            }
+
+            return $carry + $receipt->getSum();
+        }, 0);
 
         $sorter = $this->container->get('app.sorter');
 
@@ -26,6 +34,7 @@ class ReceiptController extends Controller
         return $this->render('receipt_admin/show_receipts.html.twig', array(
             'users_with_receipts' => $usersWithReceipts,
             'current_user' => $this->getUser(),
+            'total_payout' => $totalPayoutThisYear,
         ));
     }
 
