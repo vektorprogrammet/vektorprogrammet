@@ -132,7 +132,7 @@ class TeamAdminController extends Controller
         $oldTeamEmail = $team->getEmail();
 
         // Create the form
-        $form = $this->createForm(new CreateTeamType($department), $team);
+        $form = $this->createForm(new CreateTeamType(), $team);
 
         // Handle the form
         $form->handleRequest($request);
@@ -182,7 +182,7 @@ class TeamAdminController extends Controller
         $team = new Team();
 
         // Create a new formType with the needed variables
-        $form = $this->createForm(new CreateTeamType($department), $team);
+        $form = $this->createForm(new CreateTeamType(), $team);
 
         // Handle the form
         $form->handleRequest($request);

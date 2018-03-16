@@ -30,12 +30,10 @@ class WorkHistorySubscriber implements EventSubscriberInterface
     {
         return array(
             WorkHistoryEvent::CREATED => array(
-                array('logCreatedEvent', 10),
                 array('updateUserRole', 5),
                 array('addCreatedFlashMessage', -1),
             ),
             WorkHistoryEvent::EDITED  => array(
-                array('logEditedEvent', 10),
                 array('updateUserRole', 5),
                 array('addUpdatedFlashMessage', -1),
             ),
@@ -66,40 +64,6 @@ class WorkHistorySubscriber implements EventSubscriberInterface
         $position = $workHistory->getPosition();
 
         $this->session->getFlashBag()->add('success', "$user i $team med stilling $position har blitt oppdatert.");
-    }
-
-    public function logCreatedEvent(WorkHistoryEvent $event)
-    {
-        $workHistory = $event->getWorkHistory();
-
-        $user = $workHistory->getUser();
-        $position = $workHistory->getPosition();
-        $team = $workHistory->getTeam();
-        $department = $team->getDepartment();
-
-        $startSemester = $workHistory->getStartSemester()->getName();
-        $endSemester = $workHistory->getEndSemester();
-
-        $endStr = $endSemester !== null ? 'to '.$endSemester->getName() : '';
-
-        $this->logger->info(" $user has joined $team ($department) as $position from $startSemester $endStr");
-    }
-
-    public function logEditedEvent(WorkHistoryEvent $event)
-    {
-        $workHistory = $event->getWorkHistory();
-
-        $user = $workHistory->getUser();
-        $position = $workHistory->getPosition();
-        $team = $workHistory->getTeam();
-        $department = $team->getDepartment();
-
-        $startSemester = $workHistory->getStartSemester()->getName();
-        $endSemester = $workHistory->getEndSemester();
-
-        $endStr = $endSemester !== null ? 'to '.$endSemester->getName() : '';
-
-        $this->logger->info("WorkHistory edited: $user has joined $team ($department) as $position from $startSemester $endStr");
     }
 
     public function logDeletedEvent(WorkHistoryEvent $event)

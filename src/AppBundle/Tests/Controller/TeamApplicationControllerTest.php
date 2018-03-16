@@ -182,6 +182,7 @@ class TeamApplicationControllerTest extends BaseWebTestCase
 
         $form['app_bundle_team_application_type[name]'] = 'Sondre';
         $form['app_bundle_team_application_type[email]'] = 'sondre@vektorprogrammet.no';
+        $form['app_bundle_team_application_type[phone]'] = '12345678';
         $form['app_bundle_team_application_type[yearOfStudy]'] = '3. klasse';
         $form['app_bundle_team_application_type[fieldOfStudy]'] = 'MTTK';
         $form['app_bundle_team_application_type[motivationText]'] = 'Jeg vil bli nestleder! Pls.';
