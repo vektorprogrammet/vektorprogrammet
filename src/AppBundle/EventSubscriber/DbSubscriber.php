@@ -2,6 +2,14 @@
 
 namespace AppBundle\EventSubscriber;
 
+use AppBundle\Entity\InterviewAnswer;
+use AppBundle\Entity\InterviewQuestion;
+use AppBundle\Entity\InterviewQuestionAlternative;
+use AppBundle\Entity\InterviewScore;
+use AppBundle\Entity\PasswordReset;
+use AppBundle\Entity\SurveyAnswer;
+use AppBundle\Entity\SurveyQuestion;
+use AppBundle\Entity\SurveyQuestionAlternative;
 use AppBundle\Entity\User;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
@@ -14,12 +22,23 @@ class DbSubscriber implements EventSubscriber
     private $logger;
     private $tokenStorage;
     private $request;
+    private $ignoredClasses;
 
     public function __construct(LoggerInterface $logger, TokenStorageInterface $tokenStorage, RequestStack $request)
     {
         $this->logger = $logger;
         $this->tokenStorage = $tokenStorage;
         $this->request = $request;
+        $this->ignoredClasses = [
+            InterviewAnswer::class,
+            InterviewQuestion::class,
+            InterviewQuestionAlternative::class,
+            InterviewScore::class,
+            PasswordReset::class,
+            SurveyAnswer::class,
+            SurveyQuestion::class,
+            SurveyQuestionAlternative::class,
+        ];
     }
 
     /**
@@ -55,6 +74,11 @@ class DbSubscriber implements EventSubscriber
     {
         $obj = $args->getObject();
         $className = get_class($obj);
+
+        if (in_array($className, $this->ignoredClasses)) {
+            return;
+        }
+
         $loggedInUser = $this->getUser();
         $objName = $this->getObjectName($obj);
         $request = $this->request->getMasterRequest();
