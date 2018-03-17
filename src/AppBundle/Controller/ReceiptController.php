@@ -157,7 +157,7 @@ class ReceiptController extends Controller
 
         $receipt->setStatus($status);
         if ($status === Receipt::STATUS_REFUNDED && !$receipt->getRefundDate()) {
-        	$receipt->setRefundDate(new \DateTime());
+            $receipt->setRefundDate(new \DateTime());
         }
 
         $em = $this->getDoctrine()->getManager();

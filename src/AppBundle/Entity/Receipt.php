@@ -37,9 +37,9 @@ class Receipt
      */
     private $receiptDate;
 
-	/**
-	 * @ORM\Column(type="datetime", nullable=true)
-	 */
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
     private $refundDate;
 
     /**
@@ -221,17 +221,19 @@ class Receipt
         return $this->visualId;
     }
 
-	/**
-	 * @return \DateTime
-	 */
-	public function getRefundDate() {
-		return $this->refundDate;
-	}
+    /**
+     * @return \DateTime
+     */
+    public function getRefundDate()
+    {
+        return $this->refundDate;
+    }
 
-	/**
-	 * @param \DateTime $refundDate
-	 */
-	public function setRefundDate( $refundDate ) {
-		$this->refundDate = $refundDate;
-	}
+    /**
+     * @param \DateTime $refundDate
+     */
+    public function setRefundDate($refundDate)
+    {
+        $this->refundDate = $refundDate;
+    }
 }
