@@ -19,7 +19,7 @@ class ReceiptController extends Controller
         $usersWithReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithReceipts();
         $refundedReceipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByStatus(Receipt::STATUS_REFUNDED);
         $totalPayoutThisYear = array_reduce($refundedReceipts, function (int $carry, Receipt $receipt) {
-            if ($receipt->getReceiptDate()->format('Y') !== (new \DateTime())->format('Y')) {
+            if (!$receipt->getRefundDate() || $receipt->getRefundDate()->format('Y') !== (new \DateTime())->format('Y')) {
                 return $carry;
             }
 
@@ -156,6 +156,10 @@ class ReceiptController extends Controller
         }
 
         $receipt->setStatus($status);
+        if ($status === Receipt::STATUS_REFUNDED && !$receipt->getRefundDate()) {
+        	$receipt->setRefundDate(new \DateTime());
+        }
+
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
