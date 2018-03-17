@@ -15,7 +15,7 @@ class Version20180317154305 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE receipt ADD refundDate DATETIME DEFAULT NULL');
-        $this->addSql('UPDATE receipt SET refundDate = receiptDate');
+        $this->addSql('UPDATE receipt SET refundDate = submitDate');
     }
 
     /**
