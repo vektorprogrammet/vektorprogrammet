@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Event\ReceiptEvent;
 use AppBundle\Form\Type\ReceiptType;
 use AppBundle\Role\Roles;
+use AppBundle\Service\ReceiptStatistics;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Receipt;
@@ -18,13 +19,9 @@ class ReceiptController extends Controller
     {
         $usersWithReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithReceipts();
         $refundedReceipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByStatus(Receipt::STATUS_REFUNDED);
-        $totalPayoutThisYear = array_reduce($refundedReceipts, function (int $carry, Receipt $receipt) {
-            if (!$receipt->getRefundDate() || $receipt->getRefundDate()->format('Y') !== (new \DateTime())->format('Y')) {
-                return $carry;
-            }
-
-            return $carry + $receipt->getSum();
-        }, 0);
+        $receiptStatistics = new ReceiptStatistics($refundedReceipts);
+        $totalPayoutThisYear = $receiptStatistics->totalPayoutIn((new \DateTime())->format('Y'));
+        $avgRefundTimeInHours = $receiptStatistics->averageRefundTimeInHours();
 
         $sorter = $this->container->get('app.sorter');
 
@@ -35,6 +32,7 @@ class ReceiptController extends Controller
             'users_with_receipts' => $usersWithReceipts,
             'current_user' => $this->getUser(),
             'total_payout' => $totalPayoutThisYear,
+            'avg_refund_time_in_hours' => $avgRefundTimeInHours
         ));
     }
 
