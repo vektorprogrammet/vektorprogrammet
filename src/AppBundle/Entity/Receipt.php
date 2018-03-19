@@ -38,6 +38,11 @@ class Receipt
     private $receiptDate;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $refundDate;
+
+    /**
      * @ORM\Column(name="picture_path", type="string", nullable=true)
      */
     private $picturePath;
@@ -214,5 +219,21 @@ class Receipt
     public function __toString()
     {
         return $this->visualId;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getRefundDate()
+    {
+        return $this->refundDate;
+    }
+
+    /**
+     * @param \DateTime $refundDate
+     */
+    public function setRefundDate($refundDate)
+    {
+        $this->refundDate = $refundDate;
     }
 }

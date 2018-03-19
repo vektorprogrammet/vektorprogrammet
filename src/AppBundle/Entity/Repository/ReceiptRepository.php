@@ -15,10 +15,25 @@ class ReceiptRepository extends EntityRepository
      */
     public function findByUser(User $user)
     {
-        return $receipts = $this->createQueryBuilder('receipt')
+        return $this->createQueryBuilder('receipt')
             ->select('receipt')
             ->where('receipt.user = :user')
             ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param string $status
+     *
+     * @return Receipt[]
+     */
+    public function findByStatus(string $status)
+    {
+        return $this->createQueryBuilder('receipt')
+            ->select('receipt')
+            ->where('receipt.status = :status')
+            ->setParameter('status', $status)
             ->getQuery()
             ->getResult();
     }
