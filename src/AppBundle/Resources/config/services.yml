@@ -45,7 +45,7 @@ services:
 
   app.geolocation:
       class: AppBundle\Service\GeoLocation
-      arguments: ['%ipinfo_token%', '@doctrine.orm.entity_manager', '@session', '@request_stack', '@app.logger']
+      arguments: ['%ipinfo_token%', '@doctrine.orm.entity_manager', '@session', '@request_stack']
 
   app.company_email_maker:
     class: AppBundle\Service\CompanyEmailMaker
