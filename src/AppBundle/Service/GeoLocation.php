@@ -111,6 +111,8 @@ class GeoLocation
     {
     	$this->logger->debug("Finding location for ip $ip");
 	    $ignoreGeo = $this->requestStack->getMasterRequest()->headers->get('ignore_geo');
+
+        $this->logger->debug("ignore_geo=$ignoreGeo");
         if (!$this->ipinfoToken || $ignoreGeo) {
         	$this->logger->debug("Ignoring geo location. ignore_geo=$ignoreGeo");
             return null;
