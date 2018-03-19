@@ -110,9 +110,9 @@ class GeoLocation
     public function findCoordinates($ip)
     {
     	$this->logger->debug("Finding location for ip $ip");
-	    $ignoreGeo = $this->requestStack->getMasterRequest()->headers->get('ignore_geo');
+	    $ignoreGeo = $this->requestStack->getMasterRequest()->headers->get('ignore-geo');
 	    if (!$ignoreGeo) {
-	    	$ignoreGeo = key_exists('HTTP_IGNORE_GEO', $_SERVER);
+//	    	$ignoreGeo = key_exists('HTTP_IGNORE_GEO', $_SERVER);
 	    }
 
         $this->logger->debug("ignore_geo=$ignoreGeo");
