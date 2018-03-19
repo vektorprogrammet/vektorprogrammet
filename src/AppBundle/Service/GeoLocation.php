@@ -5,6 +5,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Department;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class GeoLocation
@@ -12,19 +13,21 @@ class GeoLocation
     private $ipinfoToken;
     private $departmentRepo;
     private $session;
+	private $requestStack;
 
-    /**
+	/**
      * GeoLocation constructor.
      *
      * @param string $ipinfoToken
      * @param EntityManagerInterface $em
      * @param Session $session
      */
-    public function __construct(string $ipinfoToken, EntityManagerInterface $em, Session $session)
+    public function __construct(string $ipinfoToken, EntityManagerInterface $em, Session $session, RequestStack $requestStack)
     {
         $this->ipinfoToken = $ipinfoToken;
         $this->departmentRepo = $em->getRepository('AppBundle:Department');
         $this->session = $session;
+	    $this->requestStack = $requestStack;
     }
 
     /**
@@ -100,7 +103,8 @@ class GeoLocation
 
     public function findCoordinates($ip)
     {
-        if (!$this->ipinfoToken) {
+	    $ignoreGeo = $this->requestStack->getMasterRequest()->headers->get('ignore_geo');
+        if (!$this->ipinfoToken || $ignoreGeo) {
             return null;
         }
 

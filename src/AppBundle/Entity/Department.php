@@ -98,6 +98,11 @@ class Department
     private $logoPath;
 
     /**
+     * @ORM\Column(name="active", type="boolean", nullable=false, options={"default" : 1})
+     */
+    private $active;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -106,6 +111,7 @@ class Department
         $this->fieldOfStudy = new ArrayCollection();
         $this->semesters = new ArrayCollection();
         $this->teams = new ArrayCollection();
+        $this->active = true;
     }
 
     /**
@@ -504,5 +510,23 @@ class Department
     public function setLogoPath($logoPath)
     {
         $this->logoPath = $logoPath;
+    }
+
+
+    /**
+     * @return boolean $active
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+
+    /**
+     * @param boolean $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
     }
 }
