@@ -14,7 +14,7 @@
 
       // Make tab change when selector value changes
       $('#team-overview-selector').on('change', function (e) {
-        let department = $(this).val();
+        var department = $(this).val();
         if(department != null)
         {
             $('#team-overview-tabs a[aria-controls="' + department + '"]').tab('show');
@@ -27,8 +27,8 @@
 
       // Make selector value change when tab changes
       $('#team-overview-tabs a').on('click', function (e) {
-        let department = $(this).attr('aria-controls');
-          let department = $(this).val();
+        var department = $(this).attr('aria-controls');
+          var department = $(this).val();
           if(department != null)
           {
               $('#team-overview-selector').val(department);
