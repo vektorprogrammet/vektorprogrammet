@@ -50,7 +50,7 @@
                 <!-- Tabs (visible on large screens) -->
                 <div class="card-block pt-4 pb-1 pb-sm-4 d-none d-sm-inline-flex">
                     <ul id="department-box-tabs" class="nav nav-tabs justify-content-center w-100">
-                        {% for department in get_departments() %}
+                        {% for department in get_active_departments() %}
                             <li role="presentation" class="nav-item"><a class="nav-link" href="#{{ department }}" data-toggle="tab" aria-controls="{{ department.id }}">{{ department.city }}</a></li>
                         {% endfor %}
                     </ul>
@@ -59,7 +59,7 @@
                 <!-- Dropdown (visible on mobile) -->
                 <div class="card-block px-3 px-sm-0 my-2 my-sm-0">
                     <select class="form-control d-block d-sm-none" id="department-box-selector">
-                        {% for department in get_departments() %}
+                        {% for department in get_active_departments() %}
                             <option value="{{ department.id }}">{{ department.city }}</option>
                         {% endfor %}
                     </select>
@@ -67,7 +67,7 @@
 
                 <!-- Panes -->
                 <div class="card-block tab-content px-3 px-sm-4 py-2 py-sm-4 mx-sm-4">
-                    {% for department in get_departments() %}
+                    {% for department in get_active_departments() %}
                         <div role="tabpanel" class="tab-pane fade in" id="{{ department }}">
                             <div class="row">
                                 <div class="col-12 col-md-6">
