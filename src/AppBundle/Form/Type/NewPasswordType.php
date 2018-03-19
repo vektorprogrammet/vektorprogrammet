@@ -22,9 +22,7 @@ class NewPasswordType extends AbstractType
                         'minMessage' => 'Passordet må ha minst {{ limit }} tegn.',
                     )),
                 ),
-            ))
-            ->add('save', 'submit', array(
-                'label' => 'Lagre nytt passord', ));
+            ));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

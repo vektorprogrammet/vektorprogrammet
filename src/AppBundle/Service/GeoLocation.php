@@ -5,7 +5,6 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Department;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -15,10 +14,6 @@ class GeoLocation
     private $departmentRepo;
     private $session;
 	private $requestStack;
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
 
 	/**
      * GeoLocation constructor.
@@ -27,13 +22,12 @@ class GeoLocation
      * @param EntityManagerInterface $em
      * @param Session $session
      */
-    public function __construct(string $ipinfoToken, EntityManagerInterface $em, Session $session, RequestStack $requestStack, LoggerInterface $logger)
+    public function __construct(string $ipinfoToken, EntityManagerInterface $em, Session $session, RequestStack $requestStack)
     {
         $this->ipinfoToken = $ipinfoToken;
         $this->departmentRepo = $em->getRepository('AppBundle:Department');
         $this->session = $session;
 	    $this->requestStack = $requestStack;
-	    $this->logger = $logger;
     }
 
     /**
@@ -109,15 +103,8 @@ class GeoLocation
 
     public function findCoordinates($ip)
     {
-    	$this->logger->debug("Finding location for ip $ip");
 	    $ignoreGeo = $this->requestStack->getMasterRequest()->headers->get('ignore-geo');
-	    if (!$ignoreGeo) {
-//	    	$ignoreGeo = key_exists('HTTP_IGNORE_GEO', $_SERVER);
-	    }
-
-        $this->logger->debug("ignore_geo=$ignoreGeo");
         if (!$this->ipinfoToken || $ignoreGeo) {
-        	$this->logger->debug("Ignoring geo location. ignore_geo=$ignoreGeo");
             return null;
         }
 
@@ -143,8 +130,6 @@ class GeoLocation
         ];
 
         $this->session->set('coords', $coords);
-
-        $this->logger->debug("Found coordinates for $ip");
 
         return $coords;
     }
