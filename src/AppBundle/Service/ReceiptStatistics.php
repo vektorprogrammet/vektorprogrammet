@@ -50,7 +50,7 @@ class ReceiptStatistics
 
         $totalHours = array_reduce($receipts, function (int $carry, Receipt $receipt) {
             $diff = $receipt->getRefundDate()->diff($receipt->getSubmitDate());
-            return $carry + $diff->h + $diff->i/60;
+            return $carry + $diff->days * 24 + $diff->h + $diff->i/60;
         }, 0);
 
         return intval(round($totalHours/count($receipts)));
