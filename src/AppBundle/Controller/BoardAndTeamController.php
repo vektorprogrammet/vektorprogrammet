@@ -9,7 +9,7 @@ class BoardAndTeamController extends Controller
     public function showAction()
     {
         // Find all departments
-        $departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+        $departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findActive();
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
 
         $numberOfTeams = 0;
