@@ -28,15 +28,7 @@
       // Make selector value change when tab changes
       $('#team-overview-tabs a').on('click', function (e) {
         var department = $(this).attr('aria-controls');
-          var department = $(this).val();
-          if(department != null)
-          {
-              $('#team-overview-selector').val(department);
-          }
-          else
-          {
-              $('#team-overview-selector').val(department);
-          }
+          $('#team-overview-selector').val(department);
       });
     </script>
 {% endblock %}
@@ -99,7 +91,6 @@
                                         <option value="{{ department }}">{{ department.city }}</option>
                                     {% endfor %}
                                     <option value="Hovedstyret">Hovedstyret</option>
-                                    <!--TODO: Legge til Hovedstyret på dropdownen -->
                                 </select>
                             </div>
 
