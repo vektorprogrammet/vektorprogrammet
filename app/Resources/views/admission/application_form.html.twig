@@ -3,7 +3,7 @@
     <!-- Tabs (visible on large screens) -->
     <div class="card-block pt-4 pb-1 pb-sm-4 d-none d-sm-inline-flex">
         <ul class="nav nav-tabs justify-content-center w-100">
-            {% for dep in get_departments() %}
+            {% for dep in get_active_departments() %}
                 <li class="nav-item">
                     <a class="nav-link{{ dep == department ? ' active' }}"
                        href="{{ path('admission_show_by_short_name', {'shortName': dep}) }}">{{ dep.city }}</a>
@@ -15,7 +15,7 @@
     <!-- Dropdown (visible on mobile) -->
     <div class="card-block px-3 px-sm-0 my-2 my-sm-0">
         <select class="form-control d-block d-sm-none" id="team-overview-selector" onchange="location = this.value">
-            {% for dep in get_departments() %}
+            {% for dep in get_active_departments() %}
                 {% set dep_is_current = dep == department %}
                 <option {{ dep_is_current ? 'selected' : ''}} value="{{ path('admission_show_by_short_name', {'shortName': dep }) }}">{{ dep.city }}</option>
             {% endfor %}
