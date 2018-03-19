@@ -15,13 +15,28 @@
       // Make tab change when selector value changes
       $('#team-overview-selector').on('change', function (e) {
         let department = $(this).val();
-        $('#team-overview-tabs a[aria-controls="' + department + '"]').tab('show');
+        if(department != null)
+        {
+            $('#team-overview-tabs a[aria-controls="' + department + '"]').tab('show');
+        }
+        else
+        {
+            $('#team-overview-tabs a[aria-controls="Hovedstyret"]').tab('show');
+        }
       });
 
       // Make selector value change when tab changes
       $('#team-overview-tabs a').on('click', function (e) {
         let department = $(this).attr('aria-controls');
-        $('#team-overview-selector').val(department);
+          let department = $(this).val();
+          if(department != null)
+          {
+              $('#team-overview-selector').val(department);
+          }
+          else
+          {
+              $('#team-overview-selector').val(department);
+          }
       });
     </script>
 {% endblock %}
@@ -67,6 +82,13 @@
                                                                                     aria-controls="{{ department }}">{{ department.city }}</a>
                                         </li>
                                     {% endfor %}
+
+                                    <li>
+                                        <a class="nav-link"
+                                           href="#Hovedstyret"
+                                           data-toggle="tab"
+                                           aria-controls="Hovedstyret">Hovedstyret</a>
+                                    </li>
                                 </ul>
                             </div>
 
@@ -76,6 +98,8 @@
                                     {% for department in departments %}
                                         <option value="{{ department }}">{{ department.city }}</option>
                                     {% endfor %}
+                                    <option value="Hovedstyret">Hovedstyret</option>
+                                    <!--TODO: Legge til Hovedstyret på dropdownen -->
                                 </select>
                             </div>
 
@@ -90,26 +114,36 @@
                                         </div>
                                     </div>
                                 {% endfor %}
+                                <div role="tabpanel" class="tab-pane fade in" id = "Hovedstyret">
+                                    <div class="row mx-3 mt-3 mb-3">
+                                        <div class="col-md-7" >
+                                            <h2>Hovedstyret</h2>
+                                            <p>Hovedstyret er det nasjonale styret i vektorprogrammet.
+                                                De er et overordnet organ med ansvar for drifting av hele organisasjonen.</p>
+                                            <p class="team-email mb-0">
+                                                <i class="big-icon m-0 mr-2 text-devil icon-envelope"></i>
+                                                <a href="mailto:{{ board.email }}">{{ board.email }}</a>
+                                            </p>
+                                            <p class="m-0">
+                                                <i class="big-icon m-0 mr-2 text-devil icon-users"></i>
+                                                <span class="text-devil member-count"> {{ board.activeWorkHistories | length }} medlemmer</span>
+                                            </p>
+                                            <a href="{{ path('executive_board_page') }}" class="btn btn-primary d-none d-sm-inline-block mt-3">Les
+                                                mer om hovedstyret</a>
+                                        </div>
+
+
+                                        <div class="col-md-5" style="align-content: center">
+                                            <img class="img-fluid my-2" src="{{ asset_with_version('images/HS_square.jpg') }}"
+                                                 alt="Hoverstyret" style="align-self: center">
+                                            <!-- Push button under image on mobile -->
+                                            <a href="{{ path('executive_board_page') }}" class="btn btn-primary d-block d-sm-none">Les mer
+                                                om hovedstyret</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </section>
-
-                <section class="row my-5">
-                    <div class="col-md-6 my-2">
-                        <h2>Hovedstyret</h2>
-                        <p>Hovedstyret er det nasjonale styret i vektorprogrammet. De er et overordnet organ med ansvar
-                            for drifting av hele organisasjonen.</p>
-                        <a href="{{ path('executive_board_page') }}" class="btn btn-primary d-none d-sm-inline-block">Les
-                            mer om hovedstyret</a>
-                    </div>
-
-                    <div class="col-md-5 offset-md-1">
-                        <img class="img-fluid my-2" src="{{ asset_with_version('images/HS_square.jpg') }}"
-                             alt="Hoverstyret">
-                        <!-- Push button under image on mobile -->
-                        <a href="{{ path('executive_board_page') }}" class="btn btn-primary d-block d-sm-none">Les mer
-                            om hovedstyret</a>
                     </div>
                 </section>
             </div>
