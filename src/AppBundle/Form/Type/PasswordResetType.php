@@ -26,8 +26,6 @@ class PasswordResetType extends AbstractType
             ->add('email', 'email', array(
                 'label' => 'E-post',
                 'mapped' => false,
-            ))
-            ->add('save', 'submit', array(
-                'label' => 'Reset passord', ));
+            ));
     }
 }
