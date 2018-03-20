@@ -13,7 +13,14 @@
     {% if closestDepartment.activeAdmission %}
         <section class="row urgent-box">
             <div class="main-navigation">
-                <p>Vektorprogrammet <span id="department-name">{{closestDepartment}}</span> søker nye assistenter! <span class="countdown"><span class="cd-number" id="cd-days"></span>d <span class="cd-number" id="cd-hours"></span>t <span class="cd-number" id="cd-minutes"></span>m <span class="cd-number" id="cd-seconds"></span>s</span> &#9&#9&#9 igjen av opptaket. <a href="{{ path('admission_show_by_short_name', {'shortName': closestDepartment }) }}">Søk nå!</a></p>
+                <p>Vektorprogrammet <span id="department-name">{{ closestDepartment }}</span> søker nye assistenter!
+                    <span class="countdown"><span class="cd-number" id="cd-days"></span>d <span class="cd-number"
+                                                                                                id="cd-hours"></span>t <span
+                                class="cd-number" id="cd-minutes"></span>m <span class="cd-number"
+                                                                                 id="cd-seconds"></span>s</span>
+                    &#9&#9&#9 igjen av opptaket. <a
+                            href="{{ path('admission_show_by_short_name', {'shortName': closestDepartment }) }}">Søk
+                        nå!</a></p>
             </div>
         </section>
     {% endif %}
@@ -39,6 +46,42 @@
             </div>
         </div>
     </section>
+    {% if news %}
+        <div class="row news">
+            <div class="container">
+                <div id="newsCarousel" class="carousel slide" data-ride="carousel">
+                    <h2 class="text-center text-dark-blue">Nyheter</h2>
+                    <div class="carousel-inner">
+                        {% for article in news %}
+                            <div class="carousel-item{{ loop.first ? ' active' : '' }}">
+                                <img class="d-block w-100" src="{{ asset_with_version(article.imageLarge) }}"
+                                     alt="First slide">
+                                <div class="carousel-caption">
+                                    <div class="content">
+                                        <a href="{{ path('article_show', {'id': article.id}) }}">
+                                            <h4>{{ article.title|safe_html }}</h4>
+                                            <p>{{ article.article|striptags|split(' ')|slice(0,40)|join(' ')|safe_html }}...
+                                                <span class="medium-bold">LES MER <i class="icon-chevron-right"></i></span></p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% if news|length > 1 %}
+                        <ol class="carousel-indicators">
+                            {% for article in news %}
+                                <li data-target="#newsCarousel"
+                                    data-slide-to="{{ loop.index0 }}"
+                                    {% if loop.first %}class="active"{% endif %}></li>
+                            {% endfor %}
+                        </ol>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    {% endif %}
 
     <section class="members-info">
         <div class="row">
@@ -69,26 +112,32 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script>
+      $('.carousel').carousel({
+        interval: 10000
+      });
+    </script>
     {% if closestDepartment.activeAdmission %}
         <script>
-            function zeroPad(num, size) {
-                return (Math.pow(10, size) + ~~num).toString().substring(1);
-            }
+          function zeroPad(num, size) {
+            return (Math.pow(10, sie) + ~~num).toString().substring(1);
+          }
 
-            function updateCountDown() {
-                var admissionTimeStamp = {{ closestDepartment.currentSemester.admissionEndDate.timestamp }} * 1000;
-                var currentTimeStamp = + new Date();
+          function updateCountDown() {
+            var admissionTimeStamp = {{ closestDepartment.currentSemester.admissionEndDate.timestamp }} *
+            1000;
+            var currentTimeStamp = +new Date();
 
-                var millisUntilAdmission = Math.max(admissionTimeStamp - currentTimeStamp, 0);
+            var millisUntilAdmission = Math.max(admissionTimeStamp - currentTimeStamp, 0);
 
-                $('#cd-days').html(zeroPad(moment.duration(millisUntilAdmission).days(), 2));
-                $('#cd-hours').html(zeroPad(moment.duration(millisUntilAdmission).hours(), 2));
-                $('#cd-minutes').html(zeroPad(moment.duration(millisUntilAdmission).minutes(), 2));
-                $('#cd-seconds').html(zeroPad(moment.duration(millisUntilAdmission).seconds(), 2));
-            }
+            $('#cd-days').html(zeroPad(moment.duration(millisUntilAdmission).days(), 2));
+            $('#cd-hours').html(zeroPad(moment.duration(millisUntilAdmission).hours(), 2));
+            $('#cd-minutes').html(zeroPad(moment.duration(millisUntilAdmission).minutes(), 2));
+            $('#cd-seconds').html(zeroPad(moment.duration(millisUntilAdmission).seconds(), 2));
+          }
 
-            updateCountDown();
-            setInterval(updateCountDown, 1000);
+          updateCountDown();
+          setInterval(updateCountDown, 1000);
         </script>
     {% endif %}
 {% endblock %}

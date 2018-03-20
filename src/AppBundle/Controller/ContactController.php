@@ -49,9 +49,12 @@ class ContactController extends Controller
             return $this->redirectToRoute('contact_department', array('id' => $supportTicket->getDepartment()->getId()));
         }
 
+        $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
+
         return $this->render('contact/index.html.twig', array(
             'form' => $form->createView(),
             'specific_department' => $department,
+            'board' => $board,
         ));
     }
 }
