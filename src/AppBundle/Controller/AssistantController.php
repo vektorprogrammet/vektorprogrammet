@@ -16,9 +16,12 @@ class AssistantController extends Controller
 {
     /**
      * @Route("/opptak")
-     * @Route("/opptak/avdeling/{id}", name="admission_show_specific_department", requirements={"id"="\d+"})
-     * @Route("/opptak/{shortName}", name="admission_show_by_short_name", requirements={"shortName"="\w+"})
-     * @Route("/avdeling/{shortName}", name="admission_show_specific_department_by_name", requirements={"shortName"="\w+"})
+     * @Route("/opptak/avdeling/{id}", name="admission_show_specific_department",
+     *     requirements={"id"="\d+"})
+     * @Route("/opptak/{shortName}", name="admission_show_by_short_name",
+     *     requirements={"shortName"="\w+"})
+     * @Route("/avdeling/{shortName}", name="admission_show_specific_department_by_name",
+     *     requirements={"shortName"="\w+"})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -33,59 +36,65 @@ class AssistantController extends Controller
 
     /**
      * @param Request $request
-     * @param Department $department
+     * @param Department $specificDepartment
      * @param bool $scrollToAdmissionForm
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request, Department $department = null, $scrollToAdmissionForm = false)
+    public function indexAction(Request $request, Department $specificDepartment = null, $scrollToAdmissionForm = false)
     {
         $admissionManager = $this->get('app.application_admission');
         $em = $this->getDoctrine()->getManager();
         $departments = $em->getRepository('AppBundle:Department')->findAll();
-        if (null === $department) {
-            $department = $this->get('app.geolocation')->findNearestDepartment($departments);
+        if (null === $specificDepartment) {
+            $specificDepartment = $this->get('app.geolocation')->findNearestDepartment($departments);
         }
 
-        $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
-
-        $teams = $em->getRepository('AppBundle:Team')->findByOpenApplicationAndDepartment($department);
+        $teams = $em->getRepository('AppBundle:Team')->findByOpenApplicationAndDepartment($specificDepartment);
 
         $application = new Application();
 
-        $form = $this->createForm(ApplicationType::class, $application, array(
-            'validation_groups' => array('admission'),
-            'departmentId' => $department->getId(),
-            'environment' => $this->get('kernel')->getEnvironment(),
-        ));
+        $formViews = array();
 
-        if ($form->isSubmitted()) {
-            $scrollToAdmissionForm = true;
-        }
+        /** @var Department $department */
+        foreach ($departments as $department) {
+            $form = $this->createForm(ApplicationType::class, $application, array(
+                'validation_groups' => array('admission'),
+                'departmentId' => $department->getId(),
+                'environment' => $this->get('kernel')->getEnvironment(),
+            ));
 
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $admissionManager->setCorrectUser($application);
-
-            if ($application->getUser()->hasBeenAssistant()) {
-                return $this->redirectToRoute('admission_existing_user');
+            if ($form->isSubmitted()) {
+                $scrollToAdmissionForm = true;
             }
 
-            $application->setSemester($semester);
-            $em->persist($application);
-            $em->flush();
+            $form->handleRequest($request);
 
-            $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+            if ($form->isSubmitted() && $form->isValid()) {
+                $admissionManager->setCorrectUser($application);
 
-            return $this->redirectToRoute('application_confirmation');
+                if ($application->getUser()->hasBeenAssistant()) {
+                    return $this->redirectToRoute('admission_existing_user');
+                }
+
+                $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
+                $application->setSemester($semester);
+                $em->persist($application);
+                $em->flush();
+
+                $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+
+                return $this->redirectToRoute('application_confirmation');
+            }
+
+            $formViews[$department->getCity()] = $form->createView();
         }
 
+
         return $this->render('assistant/assistants.html.twig', array(
-            'department' => $department,
-            'semester' => $semester,
+            'specific_department' => $specificDepartment,
             'teams' => $teams,
-            'form' => $form->createView(),
+            'forms' => $formViews,
             'scroll_to_admission_form' => $scrollToAdmissionForm,
         ));
     }
