@@ -84,12 +84,12 @@
                                     <h2 class="mb-0 text-dark-blue">{{ department.city }}</h2>
                                     <p class="department-name">{{ department.name }}</p>
                                     <p class="email contact-info">
-                                        <i class="icon-envelope"></i>
+                                        <i class="text-devil icon-envelope"></i>
                                         <a href="mailto:{{ department.email }}">{{ department.email }}</a>
                                     </p>
-                                    <p class="contact-info">
+                                    <p class="text-devil contact-info">
                                         {% if department.address %}
-                                            <i class="icon-map-marker"></i>
+                                            <i class="text-devil icon-map-marker"></i>
                                             {{ department.address }}
                                         {% endif %}
                                     </p>
@@ -111,15 +111,16 @@
                     <div role="tabpanel" class="tab-pane fade in" id = "Hovedstyret">
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <h2>Hovedstyret</h2>
-                                <p>Hovedstyret er det nasjonale styret i vektorprogrammet.
+                                <h2 class="mb-0 text-dark-blue">{{ board.name }}</h2>
+                                <p class="department-name">Hovedstyret er det nasjonale styret i vektorprogrammet.
                                     De er et overordnet organ med ansvar for drifting av hele organisasjonen.</p>
-                                <p class="team-email mb-0">
-                                    <i class="big-icon m-0 mr-2 text-devil icon-envelope"></i>
-                                    <a href="mailto:{{ board.email }}">{{ board.getEmail() }}</a>
+
+                                <p class="email contact-info">
+                                    <i class="text-devil icon-envelope"></i>
+                                    <a href="mailto:{{ board.email }}"> {{ board.email }}</a>
                                 </p>
-                                <p class="m-0">
-                                    <i class="big-icon m-0 mr-2 text-devil icon-users"></i>
+                                <p class="contact-info">
+                                    <i class="text-devil icon-users"></i>
                                     <span class="text-devil member-count">{{ board.activeWorkHistories | length }} medlemmer</span>
                                 </p>
                                 <a href="{{ path('executive_board_page') }}" class="btn btn-primary d-none d-sm-inline-block mt-3">Les
@@ -130,7 +131,8 @@
                                 <div class="list-group list-group-flush">
                                     {% for member in board.users | groupSort %}
                                         <div class="list-group-item">
-                                            <h5 class="mb-1">{{ member.user.fullName }} - {{ member.position }}</h5>
+                                            <h5 class="mb-1">{{ member.user.fullName }}</h5>
+                                            <p class="mb-0 text-devil">{{ member.position }}</p>
                                             <p class="mb-0"><a href="mailto: {{ member.user.companyEmail }}"> {{ member.user.companyEmail }}</a></p>
                                         </div>
                                     {% endfor %}
