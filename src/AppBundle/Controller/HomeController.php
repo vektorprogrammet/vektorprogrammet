@@ -14,6 +14,7 @@ class HomeController extends Controller
     {
         $assistantsCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findAssistants());
         $teamMembersCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findTeamMembers());
+        $articles = $this->getDoctrine()->getRepository('AppBundle:Article')->findStickyAndLatestArticles();
 
         $departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
         $closestDepartment = $this->get('app.geolocation')->findNearestDepartment($departments);
@@ -22,6 +23,7 @@ class HomeController extends Controller
             'assistantCount' => $assistantsCount + 100, // + Estimated number of assistants not registered in website
             'teamMemberCount' => $teamMembersCount + 20, // + Estimated number of team members not registered in website
             'closestDepartment' => $closestDepartment,
+	        'news' => $articles
         ]);
     }
 
