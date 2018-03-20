@@ -98,7 +98,9 @@
                                     <div class="list-group list-group-flush">
                                         {% for team in department.teams %}
                                             <div class="list-group-item">
-                                                <h5 class="mb-1">{{ team.name }}</h5>
+                                                <a class="text-dark-blue" href={{ path('team_page', {'id': team.id}) }}>
+                                                    <h5 class="mb-1">{{ team.name }}</h5>
+                                                </a>
                                                 <p class="mb-0"><a href="mailto: {{ team.email }}"> {{ team.email }}</a></p>
                                             </div>
                                         {% endfor %}
@@ -131,7 +133,13 @@
                                 <div class="list-group list-group-flush">
                                     {% for member in board.users | groupSort %}
                                         <div class="list-group-item">
-                                            <h5 class="mb-1">{{ member.user.fullName }}</h5>
+                                            {% if is_granted_assistant() %}
+                                                <a class="text-dark-blue" href={{ path('specific_profile', {'id': member.user.id}) }}>
+                                                    <h5 class="mb-1">{{ member.user.fullName }}</h5>
+                                                </a>
+                                            {% else %}
+                                                <h5 class="mb-1">{{ member.user.fullName }}</h5>
+                                            {% endif %}
                                             <p class="mb-0 text-devil">{{ member.position }}</p>
                                             <p class="mb-0"><a href="mailto: {{ member.user.companyEmail }}"> {{ member.user.companyEmail }}</a></p>
                                         </div>
