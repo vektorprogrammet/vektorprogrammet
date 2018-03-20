@@ -128,7 +128,7 @@
 
                             <div class="col-12 col-md-6 d-none d-md-block">
                                 <div class="list-group list-group-flush">
-                                    {% for member in board.users %}
+                                    {% for member in board.users | groupSort %}
                                         <div class="list-group-item">
                                             <h5 class="mb-1">{{ member.user.fullName }} - {{ member.position }}</h5>
                                             <p class="mb-0"><a href="mailto: {{ member.user.companyEmail }}"> {{ member.user.companyEmail }}</a></p>
