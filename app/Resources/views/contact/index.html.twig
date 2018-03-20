@@ -27,11 +27,19 @@
         });
 
         function changeDepartment(id) {
+
+            if(id == "Hovedstyret")
+            {
+                $('#departmentForm').hide();
+            }
+            else
+            {
+                $('#departmentForm').show();
+            }
           $("#department-box-tabs a[aria-controls='"+id+"']").tab("show");
           $('#department-box-selector').val(id);
           $('#{{ form.department.vars.id }}').val(id); // Change hidden form element
         }
-
     </script>
 {% endblock %}
 
@@ -53,6 +61,7 @@
                         {% for department in get_active_departments() %}
                             <li role="presentation" class="nav-item"><a class="nav-link" href="#{{ department }}" data-toggle="tab" aria-controls="{{ department.id }}">{{ department.city }}</a></li>
                         {% endfor %}
+                        <li role="presentation" class="nav-item"><a class="nav-link" href="#Hovedstyret" data-toggle="tab" aria-controls="Hovedstyret">Hovedstyret</a></li>
                     </ul>
                 </div>
 
@@ -62,6 +71,7 @@
                         {% for department in get_active_departments() %}
                             <option value="{{ department.id }}">{{ department.city }}</option>
                         {% endfor %}
+                        <option value="Hovedstyret">Hovedstyret</option>
                     </select>
                 </div>
 
@@ -98,7 +108,37 @@
                             <h3 class="text-center contact-form-title text-dark-blue">Kontakt styret i {{ department.city }}</h3>
                         </div>
                     {% endfor %}
-                    {% include "contact/contact_form.html.twig" %}
+                    <div role="tabpanel" class="tab-pane fade in" id = "Hovedstyret">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <h2>Hovedstyret</h2>
+                                <p>Hovedstyret er det nasjonale styret i vektorprogrammet.
+                                    De er et overordnet organ med ansvar for drifting av hele organisasjonen.</p>
+                                <p class="team-email mb-0">
+                                    <i class="big-icon m-0 mr-2 text-devil icon-envelope"></i>
+                                    <a href="mailto:{{ board.email }}">{{ board.getEmail() }}</a>
+                                </p>
+                                <p class="m-0">
+                                    <i class="big-icon m-0 mr-2 text-devil icon-users"></i>
+                                    <span class="text-devil member-count">{{ board.activeWorkHistories | length }} medlemmer</span>
+                                </p>
+                                <a href="{{ path('executive_board_page') }}" class="btn btn-primary d-none d-sm-inline-block mt-3">Les
+                                    mer om hovedstyret</a>
+                            </div>
+
+                            <div class="col-12 col-md-6 d-none d-md-block">
+                                <div class="list-group list-group-flush">
+                                    {% for member in board.users %}
+                                        <div class="list-group-item">
+                                            <h5 class="mb-1">{{ member.user.fullName }} - {{ member.position }}</h5>
+                                            <p class="mb-0"><a href="mailto: {{ member.user.email }}"> {{ member.user.email }}</a></p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id = "departmentForm">{% include "contact/contact_form.html.twig" %}</div>
                 </div>
             </div>
         </div>
