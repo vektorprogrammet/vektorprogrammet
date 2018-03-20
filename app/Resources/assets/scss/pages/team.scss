@@ -294,3 +294,61 @@
   font-size:18px;
   color:#777;
 }
+
+.departments_map {
+  position:relative;
+
+  .city-line {
+    position: absolute;
+    overflow: visible;
+    svg {
+      overflow: visible;
+    }
+
+    .member-stats {
+      position:absolute;
+      text-align:right;
+      right: 150px;
+      top:32px;
+      h5 {
+        text-transform:uppercase;
+        margin-bottom:1px;
+        font-size:15px;
+      }
+
+      h6 {
+        margin:0;
+        font-size:14px;
+      }
+    }
+
+    &.up {
+      .city-polyline {
+        transform: scaleY(-1);
+      }
+      .member-stats {
+        top: -68px;
+      }
+    }
+
+    &.left {
+      .city-polyline {
+        transform: scaleX(-1);
+      }
+      .member-stats {
+        left:-151px;
+        right: auto;
+        text-align:left;
+        h6 {
+          margin-left:1px;
+        }
+      }
+    }
+
+    &.up.left {
+      .city-polyline {
+        transform: scale(-1, -1);
+      }
+    }
+  }
+}
