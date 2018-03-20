@@ -13,9 +13,9 @@ class GeoLocation
     private $ipinfoToken;
     private $departmentRepo;
     private $session;
-	private $requestStack;
+    private $requestStack;
 
-	/**
+    /**
      * GeoLocation constructor.
      *
      * @param string $ipinfoToken
@@ -27,7 +27,7 @@ class GeoLocation
         $this->ipinfoToken = $ipinfoToken;
         $this->departmentRepo = $em->getRepository('AppBundle:Department');
         $this->session = $session;
-	    $this->requestStack = $requestStack;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -103,7 +103,7 @@ class GeoLocation
 
     public function findCoordinates($ip)
     {
-	    $ignoreGeo = $this->requestStack->getMasterRequest()->headers->get('ignore-geo');
+        $ignoreGeo = $this->requestStack->getMasterRequest()->headers->get('ignore-geo');
         if (!$this->ipinfoToken || $ignoreGeo) {
             return null;
         }

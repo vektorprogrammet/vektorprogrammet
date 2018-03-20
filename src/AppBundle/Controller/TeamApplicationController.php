@@ -92,6 +92,4 @@ class TeamApplicationController extends Controller
             'team_name' => $team_name,
         ));
     }
-
-
 }

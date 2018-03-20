@@ -31,7 +31,7 @@ class NewsletterManager
     public function subscribeToCheckedNewsletter($department, $name, $email)
     {
         $newsletter = $this->em->getRepository('AppBundle:Newsletter')->findCheckedByDepartment($department);
-        if($newsletter !== null) {
+        if ($newsletter !== null) {
             $this->subscribe($newsletter, $name, $email);
         }
     }

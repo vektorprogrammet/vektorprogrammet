@@ -23,7 +23,7 @@ class HomeController extends Controller
             'assistantCount' => $assistantsCount + 100, // + Estimated number of assistants not registered in website
             'teamMemberCount' => $teamMembersCount + 20, // + Estimated number of team members not registered in website
             'closestDepartment' => $closestDepartment,
-	        'news' => $articles
+            'news' => $articles
         ]);
     }
 

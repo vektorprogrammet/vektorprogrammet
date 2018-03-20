@@ -26,7 +26,7 @@ class ContactController extends Controller
      */
     public function indexAction(Request $request, Department $department = null)
     {
-        if($department === null) {
+        if ($department === null) {
             $department = $this->get('app.geolocation')
                 ->findNearestDepartment($this->getDoctrine()->getRepository('AppBundle:Department')->findAll());
         }
