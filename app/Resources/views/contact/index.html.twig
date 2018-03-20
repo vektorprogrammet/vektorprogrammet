@@ -131,7 +131,7 @@
                                     {% for member in board.users %}
                                         <div class="list-group-item">
                                             <h5 class="mb-1">{{ member.user.fullName }} - {{ member.position }}</h5>
-                                            <p class="mb-0"><a href="mailto: {{ member.user.email }}"> {{ member.user.email }}</a></p>
+                                            <p class="mb-0"><a href="mailto: {{ member.user.companyEmail }}"> {{ member.user.companyEmail }}</a></p>
                                         </div>
                                     {% endfor %}
                                 </div>
