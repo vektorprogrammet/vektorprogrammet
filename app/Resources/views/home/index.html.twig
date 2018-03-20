@@ -60,7 +60,7 @@
                                     <div class="content">
                                         <a href="{{ path('article_show', {'id': article.id}) }}">
                                             <h4>{{ article.title|safe_html }}</h4>
-                                            <p>{{ article.article|striptags|split(' ')|slice(0,40)|join(' ') }}...
+                                            <p>{{ article.article|striptags|split(' ')|slice(0,40)|join(' ')|safe_html }}...
                                                 <span class="medium-bold">LES MER <i class="icon-chevron-right"></i></span></p>
                                         </a>
                                     </div>
