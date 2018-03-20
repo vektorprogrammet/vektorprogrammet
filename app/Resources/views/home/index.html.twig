@@ -120,13 +120,12 @@
     {% if closestDepartment.activeAdmission %}
         <script>
           function zeroPad(num, size) {
-            return (Math.pow(10, sie) + ~~num).toString().substring(1);
+            return (Math.pow(10, size) + num).toString().substring(1);
           }
 
           function updateCountDown() {
-            var admissionTimeStamp = {{ closestDepartment.currentSemester.admissionEndDate.timestamp }} *
-            1000;
-            var currentTimeStamp = +new Date();
+            var admissionTimeStamp = {{ closestDepartment.currentSemester.admissionEndDate.timestamp }} * 1000;
+            var currentTimeStamp = new Date();
 
             var millisUntilAdmission = Math.max(admissionTimeStamp - currentTimeStamp, 0);
 
