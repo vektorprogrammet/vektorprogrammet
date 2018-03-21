@@ -114,4 +114,11 @@
             });
         </script>
     {% endif %}
+
+    <script>
+        // Add tel type with javascript since symfony versions < 3.4 don't support it
+        $('document').ready(function() {
+            $('.type-tel input').get(0).type = 'tel';
+        });
+    </script>
 {% endblock %}
