@@ -80,7 +80,6 @@
                     {% elseif department.currentSemester and date() < date(department.currentSemester.admissionStartDate) %}
                         <header class="application-header text-center mt-3">
                             <h3>{{ department.city }}</h3>
-                            <h5>{{ department }}</h5>
                             <p>Opptaket starter: <span class="deadline">
                         {{ department.currentSemester.admissionStartDate|date('d.m.Y') }}
                                     kl. {{ department.currentSemester.admissionStartDate|date('H:i') }}</span>
@@ -89,7 +88,6 @@
                     {% else %}
                         <header class="application-header text-center mt-3">
                             <h3>{{ department.city }}</h3>
-                            <h5>{{ department }}</h5>
                         </header>
                         <p class="text-center">
                             <i class="icon-exclamation-circle text-warning"></i> Søker ikke etter nye assistenter akkurat nå
