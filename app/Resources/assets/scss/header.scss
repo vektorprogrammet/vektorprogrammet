@@ -6,15 +6,43 @@
   background: #ffffff;
 }
 
+.mobile-header-pusher {
+  height: 60px;
+  opacity: 0;
+}
+
 .mobile-header {
   z-index:1;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
   position: fixed;
+
+  .icon-bars {
+    color: $dark-blue;
+  }
+
+  .mobile-header-inner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .company-name {
+      text-align: center;
+      width: 100%;
+
+      font-weight: 400;
+      font-size: 24px;
+      color: $dark-blue;
+
+      @media (max-width: 350px) {
+        font-size: 20px;
+      }
+    }
+  }
 }
 
 .desktop-header {
   font-family: "Lato", sans-serif;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
