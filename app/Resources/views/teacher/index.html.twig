@@ -99,7 +99,7 @@
                                         <td><a class="department-email"
                                                href="mailto:{{ department.email }}">{{ department.email }}</a></td>
                                         <td>
-                                            <a href="{{ path('contact_department', {id: department.id}) }}">Kontakt {{ department.shortName }}</a>
+                                            <a href="{{ path('contact_department', {id: department.id}) }}">Kontakt {{ department.city }}</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
