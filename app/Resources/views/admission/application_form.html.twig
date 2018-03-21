@@ -55,6 +55,22 @@
                         </div>
 
                         <div class="row">
+                            <div class="form-group col-12 col-sm-4 col-md-3 offset-md-2">
+                                <div>
+                                    {{ form_row(form.user.gender, { 'attr': {'tabindex': '5'}}) }}
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-sm-4 col-md-3">
+                                {{ form_row(form.user.fieldOfStudy, { 'attr': {'tabindex': '6'}}) }}
+                            </div>
+                            <div class="form-group col-12 col-sm-4 col-md-2">
+                                <div>
+                                    {{ form_row(form.yearOfStudy, { 'attr': {'tabindex': '7'}}) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
                             <div class="text-center mx-auto">
                                 <button type="submit" tabindex="8" class="btn btn-lg btn-primary my-5">Søk nå!</button>
                                 <p class="pt-2 mb-0">Har du vært assistent tidligere? <br>
