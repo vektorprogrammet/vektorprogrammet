@@ -21,7 +21,7 @@ class TeamApplicationType extends AbstractType
                 'label' => 'Telefon',
             ))
             ->add('yearOfStudy', 'choice', array(
-                'label' => 'Studieår',
+                'label' => 'Årstrinn',
                 'choices' => array(
                     '1. klasse' => '1. klasse',
                     '2. klasse' => '2. klasse',

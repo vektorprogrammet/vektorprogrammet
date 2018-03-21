@@ -19,13 +19,13 @@ class ApplicationType extends AbstractType
             ))
         ->add('yearOfStudy', ChoiceType::class, [
             'label' => 'Årstrinn',
-            'choices' => [
-                1 => 1,
-                2 => 2,
-                3 => 3,
-                4 => 4,
-                5 => 5
-            ]
+            'choices' => array(
+                '1. klasse' => '1. klasse',
+                '2. klasse' => '2. klasse',
+                '3. klasse' => '3. klasse',
+                '4. klasse' => '4. klasse',
+                '5. klasse' => '5. klasse',
+            ),
         ]);
     }
 
