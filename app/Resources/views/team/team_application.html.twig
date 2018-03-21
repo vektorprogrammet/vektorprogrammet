@@ -16,7 +16,7 @@
         <div class="col-12">
             {{ form_row(form.name) }}
             {{ form_row(form.email) }}
-            {{ form_row(form.phone) }}
+            <div class="type-tel">{{ form_row(form.phone) }}</div>
             {{ form_row(form.yearOfStudy) }}
             {{ form_row(form.fieldOfStudy) }}
             {{ form_row(form.motivationText) }}
@@ -28,4 +28,14 @@
         {{ form_end(form) }}
     </section>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        // Add tel type with javascript since symfony versions < 3.4 don't support it
+        $('document').ready(function() {
+            console.log($('.type-tel input').get(0).type);
+            $('.type-tel input').get(0).type = 'tel';
+        });
+    </script>
 {% endblock %}

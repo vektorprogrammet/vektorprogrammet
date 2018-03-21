@@ -44,7 +44,7 @@
                 <div class="col-lg-5">
 
                     <h1>Styre og team</h1>
-                    <p>Vektorprogrammet er en stor organisasjon med assistenter i 5 norske byer.
+                    <p>Vektorprogrammet er en stor organisasjon med assistenter i {{ get_departments() | length }} norske byer.
                         Vi trenger derfor mange frivillige bak kulissene som kan få hjulene til å gå rundt.
                         Uten vektorprogrammets {{ numberOfTeams }} team hadde dette aldri gått ann!
                     </p>
@@ -60,22 +60,30 @@
                         {% for department in departments %}
                             {% if department.city == 'Trondheim'%}
                                 <div class="city-line up left" style="left:30.1%; top:56.9%;">
-                                    {% include 'team/city_line.html.twig' with {'department': department, 'department_stats': departmentStats[department.city]} only %}
+                                    {% include 'team/city_line.html.twig' with {'department': department,
+                                                                                'num_assistants': departmentStats[department.city]['numAssistants'],
+                                                                                'num_team_members': departmentStats[department.city]['numTeamMembers']} only %}
                                 </div>
                             {% endif %}
                             {% if department.city == 'Bergen'%}
                                 <div class="city-line up left" style="left:7.3%; top:78.1%;">
-                                    {% include 'team/city_line.html.twig' with {'department': department, 'department_stats': departmentStats[department.city]} only %}
+                                    {% include 'team/city_line.html.twig' with {'department': department,
+                                                                                'num_assistants': departmentStats[department.city]['numAssistants'],
+                                                                                'num_team_members': departmentStats[department.city]['numTeamMembers']} only %}
                                 </div>
                             {% endif %}
                             {% if department.city == 'Ås'%}
                                 <div class="city-line down right" style="left:24.1%; top:88.4%;">
-                                    {% include 'team/city_line.html.twig' with {'department': department, 'department_stats': departmentStats[department.city]} only %}
+                                    {% include 'team/city_line.html.twig' with {'department': department,
+                                                                                'num_assistants': departmentStats[department.city]['numAssistants'],
+                                                                                'num_team_members': departmentStats[department.city]['numTeamMembers']} only %}
                                 </div>
                             {% endif %}
                             {% if department.city == 'Oslo'%}
                                 <div class="city-line up right" style="left:24.1%; top:86%;">
-                                    {% include 'team/city_line.html.twig' with {'department': department, 'department_stats': departmentStats[department.city]} only %}
+                                    {% include 'team/city_line.html.twig' with {'department': department,
+                                                                                'num_assistants': departmentStats[department.city]['numAssistants'],
+                                                                                'num_team_members': departmentStats[department.city]['numTeamMembers']} only %}
                                 </div>
                             {% endif %}
                         {% endfor %}

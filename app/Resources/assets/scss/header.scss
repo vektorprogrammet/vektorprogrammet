@@ -1,12 +1,21 @@
 @import "colors";
 
 .top-header {
-  font-family: "Lato", sans-serif;
   width: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   padding: 8px 0;
-  position: relative;
   background: #ffffff;
+}
+
+.mobile-header {
+  z-index:1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: fixed;
+}
+
+.desktop-header {
+  font-family: "Lato", sans-serif;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
 .logo {

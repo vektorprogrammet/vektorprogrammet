@@ -1,9 +1,17 @@
-<div class="top-header">
+<div class="top-header mobile-header d-md-none">
     <div class="container">
-        <div class="d-md-none">
+        <div>
             <button class="js-menu-show header__menu-toggle"><i class="icon-bars"></i></button>
         </div>
-        <nav class="main-navigation d-none d-md-flex">
+    </div>
+</div>
+<!-- Spacer div for mobile header. Contains the same content to get the same width -->
+<div class="top-header d-md-none">
+    <button class="header__menu-toggle"><i class="icon-bars"></i></button>
+</div>
+<div class="top-header desktop-header d-none d-md-flex">
+    <div class="container">
+        <nav class="main-navigation">
             {% include 'base/logo_link.html.twig' %}
             <div class="menu-items">
                 {{ include('base/user_dropdown.html.twig') }}
