@@ -114,8 +114,26 @@
             });
         </script>
     {% endif %}
-
     <script>
+        $(document).ready(function() {
+            /* Contact tabs */
+            changeDepartment({{ specific_department.id }});
+
+            // Make tab and department form field change when selector value changes
+            $('#department-box-selector').on('change', function () {
+                changeDepartment($(this).val());
+            });
+
+            // Make selector value and department form field change when tab changes
+            $('#department-box-tabs a').on('click', function() {
+                changeDepartment($(this).attr('aria-controls'));
+            });
+        });
+
+        function changeDepartment(id) {
+            $("#department-box-tabs a[aria-controls='"+id+"']").tab("show");
+            $('#department-box-selector').val(id);
+        }
         // Add tel type with javascript since symfony versions < 3.4 don't support it
         $('document').ready(function() {
             $('.type-tel input').get(0).type = 'tel';

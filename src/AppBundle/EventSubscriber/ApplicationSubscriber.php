@@ -58,7 +58,6 @@ class ApplicationSubscriber implements EventSubscriberInterface
             ApplicationCreatedEvent::NAME => array(
                 array('logApplication', 1),
                 array('sendConfirmationMail', 0),
-                array('addFlashMessage', -1),
                 array('subscribeToCheckedNewsletter', -2),
             ),
         );
@@ -92,14 +91,6 @@ class ApplicationSubscriber implements EventSubscriberInterface
         $this->mailer->send($emailMessage);
 
         $this->logger->info("Application confirmation mail sent to {$application->getUser()->getEmail()}");
-    }
-
-    public function addFlashMessage(ApplicationCreatedEvent $event)
-    {
-        $application = $event->getApplication();
-        $message = "Søknaden din er registrert. En kvittering har blitt sendt til {$application->getUser()->getEmail()}. Lykke til!";
-
-        $this->session->getFlashBag()->add('success', $message);
     }
 
     public function logApplication(ApplicationCreatedEvent $event)

@@ -1,100 +1,88 @@
 {% block application_form %}
-<div class="card py-2 py-sm-4">
+<div class="department-box card py-2 py-sm-4">
     <!-- Tabs (visible on large screens) -->
     <div class="card-block pt-4 pb-1 pb-sm-4 d-none d-sm-inline-flex">
-        <ul class="nav nav-tabs justify-content-center w-100">
-            {% for dep in get_active_departments() %}
-                <li class="nav-item">
-                    <a class="nav-link{{ dep == department ? ' active' }}"
-                       href="{{ path('admission_show_by_short_name', {'shortName': dep}) }}">{{ dep.city }}</a>
-                </li>
+        <ul id="department-box-tabs" class="nav nav-tabs justify-content-center w-100">
+            {% for department in get_active_departments() %}
+                <li role="presentation" class="nav-item"><a class="nav-link" href="#{{ department }}" data-toggle="tab" aria-controls="{{ department.id }}">{{ department.city }}</a></li>
             {% endfor %}
         </ul>
     </div>
 
     <!-- Dropdown (visible on mobile) -->
     <div class="card-block px-3 px-sm-0 my-2 my-sm-0">
-        <select class="form-control d-block d-sm-none" id="team-overview-selector" onchange="location = this.value">
-            {% for dep in get_active_departments() %}
-                {% set dep_is_current = dep == department %}
-                <option {{ dep_is_current ? 'selected' : ''}} value="{{ path('admission_show_by_short_name', {'shortName': dep }) }}">{{ dep.city }}</option>
+        <select class="form-control d-block d-sm-none" id="department-box-selector">
+            {% for department in get_active_departments() %}
+                <option value="{{ department.id }}">{{ department.city }}</option>
             {% endfor %}
         </select>
     </div>
 
-    <div class="card-block px-3 px-sm-0 my-2 my-sm-0">
-    {% if semester and date() < date(semester.admissionEndDate) %}
-        <header class="text-center my-3">
-            <h3>{{ department.city }}</h3>
-            <h5>{{ department }}</h5>
+    <!-- Panes -->
+    <div class="card-block tab-content px-3 px-sm-4 py-2 py-sm-4 mx-sm-4">
+        {% for department in get_active_departments() %}
+            {% set form = forms[department.city] %}
+            {% form_theme form 'form/bootstrap_4_layout.html.twig' %}
+            <div role="tabpanel" class="tab-pane fade in" id="{{ department }}">
+                <div class="card-block px-3 px-sm-0 my-2 my-sm-0">
+                    {% if department.currentSemester and date() < date(department.currentSemester.admissionEndDate) %}
+                        <header class="text-center">
+                            <h3>{{ department.city }}</h3>
+                            <h5>{{ department }}</h5>
 
-            <p>Søknadsfrist: <span class="deadline">
-                                {{ semester.admissionEndDate|date('d.m.Y') }}
-                    kl. {{ semester.admissionEndDate|date('H:i') }}</span>
-            </p>
-        </header>
+                            <p>Søknadsfrist: <span class="deadline">
+                            {{ department.currentSemester.admissionEndDate|date('d.m.Y') }}
+                                    kl. {{ department.currentSemester.admissionEndDate|date('H:i') }}</span>
+                            </p>
+                        </header>
+                        {{ form_start(form) }}
+                        <div class="row">
+                            <div class="form-group col-12 col-sm-6 col-md-5 offset-md-1">
+                                {{ form_row(form.user.firstName, { 'attr': {'tabindex': '1'}}) }}
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-5">
+                                {{ form_row(form.user.lastName, { 'attr': {'tabindex': '2'}}) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-12 col-sm-6 col-md-5 offset-md-1">
+                                {{ form_row(form.user.email, { 'attr': {'tabindex': '3'}}) }}
+                            </div>
 
-        {{ form_start(form) }}
-        <div class="row">
-            <div class="col-xs-12 col-md-6 col-lg-4 offset-lg-2">
-                {{ form_row(form.user.firstName, { 'attr': {'tabindex': '1'}}) }}
-            </div>
-            <div class="col-xs-12 col-md-6 col-lg-4">
-                {{ form_row(form.user.lastName, { 'attr': {'tabindex': '2'}}) }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12 col-md-6 col-lg-4 offset-lg-2">
-                {{ form_row(form.user.email, { 'attr': {'tabindex': '3'}}) }}
-            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-5 type-tel">
+                                {{ form_row(form.user.phone, { 'attr': {'tabindex': '4'}}) }}
+                            </div>
+                        </div>
 
-            <div class="col-xs-12 col-md-6 col-lg-4 type-tel">
-                {{ form_row(form.user.phone, { 'attr': {'tabindex': '4'}}) }}
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-6 col-md-4 col-lg-3 offset-lg-2">
-                <div>
-                    {{ form_row(form.user.gender, { 'attr': {'tabindex': '5'}}) }}
+                        <div class="row">
+                            <div class="text-center mx-auto">
+                                <button type="submit" tabindex="8" class="btn btn-lg btn-primary my-5">Søk nå!</button>
+                                <p class="pt-2 mb-0">Har du vært assistent tidligere? <br>
+                                    Da han du søke på nytt <a href="{{ path('admission_existing_user') }}">her</a> (krever innlogging)</p>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    {% elseif department.currentSemester and date() < date(department.currentSemester.admissionStartDate) %}
+                        <header class="application-header text-center mt-3">
+                            <h3>{{ department.city }}</h3>
+                            <h5>{{ department }}</h5>
+                            <p>Opptaket starter: <span class="deadline">
+                        {{ department.currentSemester.admissionStartDate|date('d.m.Y') }}
+                                    kl. {{ department.currentSemester.admissionStartDate|date('H:i') }}</span>
+                            </p>
+                        </header>
+                    {% else %}
+                        <header class="application-header text-center mt-3">
+                            <h3>{{ department.city }}</h3>
+                            <h5>{{ department }}</h5>
+                        </header>
+                        <p class="text-center">
+                            <i class="icon-exclamation-circle text-warning"></i> Søker ikke etter nye assistenter akkurat nå
+                        </p>
+                    {% endif %}
                 </div>
             </div>
-            <div class="col-xs-6 col-md-4 col-lg-3">
-                {{ form_row(form.user.fieldOfStudy, { 'attr': {'tabindex': '6'}}) }}
-            </div>
-            <div class="col-xs-6 col-md-4 col-lg-2">
-                <div>
-                    {{ form_row(form.yearOfStudy, { 'attr': {'tabindex': '7'}}) }}
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="text-center mx-auto">
-                <button type="submit" tabindex="8" class="btn btn-lg btn-primary my-5">Søk nå!</button>
-                <p class="py-2">Har du vært assistent tidligere? <br>
-                    Da han du søke på nytt <a href="{{ path('admission_existing_user') }}">her</a> (krever innlogging)</p>
-            </div>
-        </div>
-        {{ form_end(form) }}
-    {% elseif department.currentSemester and date() < date(department.currentSemester.admissionStartDate) %}
-        <header class="application-header text-center my-3">
-            <h3>{{ department.city }}</h3>
-            <h5>{{ department }}</h5>
-            <p>Opptaket starer: <span class="deadline">
-                                    {{ department.currentSemester.admissionStartDate|date('d.m.Y') }}
-                    kl. {{ department.currentSemester.admissionStartDate|date('H:i') }}</span>
-            </p>
-        </header>
-    {% else %}
-        <header class="application-header text-center my-3">
-            <h3>{{ department.city }}</h3>
-            <h5>{{ department }}</h5>
-        </header>
-        <p class="text-center">
-            <i class="icon-exclamation-circle text-warning"></i> Søker ikke etter nye assistenter akkurat nå
-        </p>
-    {% endif %}
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
