@@ -25,7 +25,7 @@ class CreateUserOnApplicationType extends AbstractType
             ->add('lastName', 'text', array(
                 'label' => 'Etternavn',
             ))
-            ->add('phone', 'text', array(
+            ->add('phone', TelType::class, array(
                 'label' => 'Telefon',
             ))
             ->add('email', 'email', array(

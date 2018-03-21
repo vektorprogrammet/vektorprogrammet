@@ -17,7 +17,7 @@ class TeamApplicationType extends AbstractType
             ->add('email', 'email', array(
                 'label' => 'Email',
             ))
-            ->add('phone', 'text', array(
+            ->add('phone', TelType::class, array(
                 'label' => 'Telefon',
             ))
             ->add('yearOfStudy', 'choice', array(
