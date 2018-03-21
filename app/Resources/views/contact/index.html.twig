@@ -44,11 +44,7 @@
 {% endblock %}
 
 {% block body %}
-    {% for flashMessage in app.session.flashbag.get('success') %}
-        <div class="contact-success alert alert-success" role="alert">
-            {{ flashMessage }}
-        </div>
-    {% endfor %}
+    {% include 'common/flash.html.twig' %}
     <div class="row contact-page">
         <div class="container">
             <header class="page-header"><h1>Kontakt oss</h1></header>
