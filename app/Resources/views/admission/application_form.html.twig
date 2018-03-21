@@ -26,9 +26,8 @@
             <div role="tabpanel" class="tab-pane fade in" id="{{ department }}">
                 <div class="card-block px-3 px-sm-0 my-2 my-sm-0">
                     {% if department.currentSemester and date() < date(department.currentSemester.admissionEndDate) %}
-                        <header class="text-center">
+                        <header class="text-center mb-5">
                             <h3>{{ department.city }}</h3>
-                            <h5>{{ department }}</h5>
 
                             <p>Søknadsfrist: <span class="deadline">
                             {{ department.currentSemester.admissionEndDate|date('d.m.Y') }}
