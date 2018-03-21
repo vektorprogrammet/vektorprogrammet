@@ -58,11 +58,11 @@ class AssistantController extends Controller
 
         /** @var Department $department */
         foreach ($departments as $department) {
-            $form = $this->createForm(ApplicationType::class, $application, array(
+        	$form = $this->get('form.factory')->createNamedBuilder('application_'.$department->getId(), ApplicationType::class, $application, array(
                 'validation_groups' => array('admission'),
                 'departmentId' => $department->getId(),
                 'environment' => $this->get('kernel')->getEnvironment(),
-            ));
+            ))->getForm();
 
             if ($form->isSubmitted()) {
                 $scrollToAdmissionForm = true;
