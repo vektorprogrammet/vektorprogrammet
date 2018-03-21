@@ -114,7 +114,7 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <h2 class="mb-0 text-dark-blue">{{ board.name }}</h2>
-                                <p class="department-name">Hovedstyret er det nasjonale styret i vektorprogrammet.
+                                <p class="contact-info text-devil mt-2">Hovedstyret er det nasjonale styret i vektorprogrammet.
                                     De er et overordnet organ med ansvar for drifting av hele organisasjonen.</p>
 
                                 <p class="email contact-info">
@@ -125,7 +125,7 @@
                                     <i class="text-devil icon-users"></i>
                                     <span class="text-devil member-count">{{ board.activeWorkHistories | length }} medlemmer</span>
                                 </p>
-                                <a href="{{ path('executive_board_page') }}" class="btn btn-primary d-none d-sm-inline-block mt-3">Les
+                                <a href="{{ path('executive_board_page') }}" class="btn btn-outline-primary d-none d-sm-inline-block mt-3">Les
                                     mer om hovedstyret</a>
                             </div>
 
@@ -148,7 +148,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id = "departmentForm">{% include "contact/contact_form.html.twig" %}</div>
+                    <div id="departmentForm" class="content">{% include "contact/contact_form.html.twig" %}</div>
                 </div>
             </div>
         </div>

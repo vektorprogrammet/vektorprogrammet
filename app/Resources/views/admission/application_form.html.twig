@@ -26,9 +26,8 @@
             <div role="tabpanel" class="tab-pane fade in" id="{{ department }}">
                 <div class="card-block px-3 px-sm-0 my-2 my-sm-0">
                     {% if department.currentSemester and date() < date(department.currentSemester.admissionEndDate) %}
-                        <header class="text-center">
+                        <header class="text-center mb-5">
                             <h3>{{ department.city }}</h3>
-                            <h5>{{ department }}</h5>
 
                             <p>Søknadsfrist: <span class="deadline">
                             {{ department.currentSemester.admissionEndDate|date('d.m.Y') }}
@@ -86,7 +85,6 @@
                     {% elseif department.currentSemester and date() < date(department.currentSemester.admissionStartDate) %}
                         <header class="application-header text-center mt-3">
                             <h3>{{ department.city }}</h3>
-                            <h5>{{ department }}</h5>
                             <p>Opptaket starter: <span class="deadline">
                         {{ department.currentSemester.admissionStartDate|date('d.m.Y') }}
                                     kl. {{ department.currentSemester.admissionStartDate|date('H:i') }}</span>
@@ -95,7 +93,6 @@
                     {% else %}
                         <header class="application-header text-center mt-3">
                             <h3>{{ department.city }}</h3>
-                            <h5>{{ department }}</h5>
                         </header>
                         <p class="text-center">
                             <i class="icon-exclamation-circle text-warning"></i> Søker ikke etter nye assistenter akkurat nå
