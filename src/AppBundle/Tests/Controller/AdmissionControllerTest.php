@@ -6,34 +6,18 @@ use AppBundle\Tests\BaseWebTestCase;
 
 class AdmissionControllerTest extends BaseWebTestCase
 {
-    public function testShow()
+    public function testCreateApplication()
     {
-    }
-
-    public function testCreateWantNewsletterApplication()
-    {
-        $path = '/kontrollpanel/nyhetsbrev/abonnenter/4';
-
-        $applicationsBefore = $this->countTableRows($path);
-
-        $this->createAndSubmitForm('Love newsletters Peter', true);
-
-        $applicationsAfter = $this->countTableRows($path);
-
-        $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
-    }
-
-    public function testCreateNotWantNewsletterApplication()
-    {
-        $path = '/kontrollpanel/nyhetsbrev/abonnenter/4';
-
-        $applicationsBefore = $this->countTableRows($path);
-
-        $this->createAndSubmitForm('No newsletter Johnson', false);
-
-        $applicationsAfter = $this->countTableRows($path);
-
-        $this->assertEquals($applicationsBefore, $applicationsAfter);
+    	//TODO: Update to redesign
+//        $path = '/kontrollpanel/opptak';
+//
+//        $applicationsBefore = $this->countTableRows($path);
+//
+//        $this->createAndSubmitForm('Peter');
+//
+//        $applicationsAfter = $this->countTableRows($path);
+//
+//        $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
     }
 
     public function testCreateWantTeamInterest()
@@ -81,9 +65,8 @@ class AdmissionControllerTest extends BaseWebTestCase
 
     /**
      * @param string $testname
-     * @param bool   $wantsNewsletter
      */
-    private function createAndSubmitForm(string $testname, bool $wantsNewsletter)
+    private function createAndSubmitForm(string $testname)
     {
         $crawler = $this->assistantGoTo('/opptak/avdeling/1');
 
@@ -97,7 +80,6 @@ class AdmissionControllerTest extends BaseWebTestCase
         $form['application[user][fieldOfStudy]'] = 2;
         $form['application[user][gender]'] = 0;
         $form['application[yearOfStudy]'] = 4;
-        $form['application[wantsNewsletter]'] = $wantsNewsletter;
 
         self::createAssistantClient()->submit($form);
     }

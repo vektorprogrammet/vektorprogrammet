@@ -2,6 +2,11 @@
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
+admission_existing_user:
+ path: /opptak/eksisterende
+ defaults: {_controller: AppBundle:Admission:existingUserAdmission}
+ methods: [GET, POST]
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
@@ -413,11 +418,6 @@ articleadmin_saveImage:
 ##########################################
 #             Admission                  #
 ##########################################
-
-admission_existing_user:
- path: /opptak/eksisterende
- defaults: {_controller: AppBundle:Admission:existingUserAdmission}
- methods: [GET, POST]
 
 admission_contact:
  path: /opptakkontakt/{id}
