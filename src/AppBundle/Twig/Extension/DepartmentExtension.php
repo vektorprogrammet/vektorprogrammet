@@ -37,6 +37,7 @@ class DepartmentExtension extends \Twig_Extension
 
     public function getActiveDepartments()
     {
-        return $this->em->getRepository('AppBundle:Department')->findActive();
+        $departments = $this->em->getRepository('AppBundle:Department')->findActive();
+	    return $this->geoLocationService->sortDepartmentsByDistanceFromClient($departments);
     }
 }
