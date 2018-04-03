@@ -8,7 +8,7 @@ class AdmissionControllerTest extends BaseWebTestCase
 {
     public function testCreateApplication()
     {
-    	//TODO: Update to redesign
+        //TODO: Update to redesign
 //        $path = '/kontrollpanel/opptak';
 //
 //        $applicationsBefore = $this->countTableRows($path);
