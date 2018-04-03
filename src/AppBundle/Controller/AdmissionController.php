@@ -122,7 +122,7 @@ class AdmissionController extends Controller
 
             $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
 
-            return $this->redirectToRoute('admission_existing_user');
+            return $this->redirectToRoute('application_confirmation');
         }
 
         $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($user->getDepartment());
