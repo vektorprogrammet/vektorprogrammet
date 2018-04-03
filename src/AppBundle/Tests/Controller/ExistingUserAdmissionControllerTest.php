@@ -4,7 +4,7 @@ namespace AppBundle\Tests\Controller;
 
 use AppBundle\Tests\BaseWebTestCase;
 
-class AdmissionControllerTest extends BaseWebTestCase
+class ExistingUserAdmissionControllerTest extends BaseWebTestCase
 {
     public function testCreateApplication()
     {
@@ -89,7 +89,7 @@ class AdmissionControllerTest extends BaseWebTestCase
      */
     private function createAndSubmitForm_teamInterest(bool $teamInterest)
     {
-        $crawler = $this->assistantGoTo('/opptak/eksisterende');
+        $crawler = $this->assistantGoTo('/eksisterendeopptak');
         $submitButton = $crawler->selectButton('Søk');
         $form = $submitButton->form();
 
@@ -117,7 +117,7 @@ class AdmissionControllerTest extends BaseWebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $crawler = $this->goTo('/opptak/eksisterende', $assistantClient);
+        $crawler = $this->goTo('/eksisterendeopptak', $assistantClient);
         $submitButton = $crawler->selectButton('Søk');
         $form = $submitButton->form();
 
