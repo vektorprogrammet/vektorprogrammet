@@ -86,7 +86,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
             ->setSubject('Søknad - Vektorassistent')
             ->setFrom(array('rekruttering@vektorprogrammet.no' => 'Vektorprogrammet'))
             ->setTo($application->getUser()->getEmail())
-            ->setBody($this->twig->render($template, array('application' => $application)));
+            ->setBody($this->twig->render($template, array('application' => $application)), 'text/html');
 
         $this->mailer->send($emailMessage);
 
