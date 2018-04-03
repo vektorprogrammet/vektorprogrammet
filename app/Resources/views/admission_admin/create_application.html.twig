@@ -103,21 +103,11 @@
 
                 </div>
 
-                <div class="small-12 medium-6 large-3  columns end">
-
-                    <div>
-                        {{ form_label(form.captchaAdmission) }}
-                        {{ form_errors(form.captchaAdmission) }}
-                        {{ form_widget(form.captchaAdmission, { 'attr': {'tabindex': '8'}}) }}
-                    </div>
-
-                </div>
-
             </div>
 
             <div class="row">
                 <div class="small-12 medium-6 large-4 text-center large-offset-4 columns">
-                    {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted', 'tabindex': '9'}}) }}
+                    <button class="vektor-button-inverted" tabindex="9">Registrer</button>
                 </div>
             </div>
 
