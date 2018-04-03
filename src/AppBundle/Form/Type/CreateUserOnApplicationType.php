@@ -21,15 +21,19 @@ class CreateUserOnApplicationType extends AbstractType
         $builder
             ->add('firstName', 'text', array(
                 'label' => 'Fornavn',
+                'attr' => array('autocomplete' => 'given-name')
             ))
             ->add('lastName', 'text', array(
                 'label' => 'Etternavn',
+                'attr' => array('autocomplete' => 'family-name')
             ))
             ->add('phone', TelType::class, array(
                 'label' => 'Telefon',
+                'attr' => array('autocomplete' => 'tel')
             ))
             ->add('email', 'email', array(
                 'label' => 'E-post',
+                'attr' => array('autocomplete' => 'email')
             ))
             ->add('gender', ChoiceType::class, array(
                 'choices' => [
