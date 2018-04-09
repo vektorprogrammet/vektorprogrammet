@@ -20,8 +20,8 @@ class HomeController extends Controller
         $closestDepartment = $this->get('app.geolocation')->findNearestDepartment($departments);
 
         return $this->render('home/index.html.twig', [
-            'assistantCount' => $assistantsCount + 870, // + Estimated number of assistants not registered in website
-            'teamMemberCount' => $teamMembersCount + 20, // + Estimated number of team members not registered in website
+            'assistantCount' => $assistantsCount + 600, // + Estimated number of assistants not registered in website
+            'teamMemberCount' => $teamMembersCount + 160, // + Estimated number of team members not registered in website
             'closestDepartment' => $closestDepartment,
             'news' => $articles
         ]);
