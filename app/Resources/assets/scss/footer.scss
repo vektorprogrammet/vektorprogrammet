@@ -41,13 +41,22 @@ $promo-color: #d6d8da;
   }
 
   .footer-column {
-    margin-top: 32px;
+  margin-top: 32px;
     text-align: center;
   }
 
   .footer-content {
     display: inline-block;
     text-align: left;
+    max-width: 100%;
+    word-wrap: break-word;
+  }
+  
+  .footer-text {
+    color: #d6d8da;
+  }
+  .hvit {
+    color: white;
   }
 
   .footer-promo {
