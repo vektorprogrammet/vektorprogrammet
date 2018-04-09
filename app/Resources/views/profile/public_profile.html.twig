@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_new.html.twig' %}
 
 {% block javascripts %}
 
@@ -11,17 +11,17 @@
 
     <script>
 
-        $(document).ready(function () {
+      $(document).ready(function () {
 
-            $('.team, .assistent, .admin, .active, .deactive').genericAjax({
-                confirmation: {
-                    modal: $('#confirmModal'),
-                    acceptButton: $('#modalAccept'),
-                    cancelButton: $('#modalCancel')
-                }
-            });
-
+        $('.team, .assistent, .admin, .active, .deactive').genericAjax({
+          confirmation: {
+            modal: $('#confirmModal'),
+            acceptButton: $('#modalAccept'),
+            cancelButton: $('#modalCancel'),
+          },
         });
+
+      });
 
     </script>
 
@@ -33,82 +33,27 @@
 {% endblock %}
 
 {% block body %}
-    <br>
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col-12 col-lg-4">
 
-    <div class="row">
-        <div class="large-4 small-12 columns">
+                {% include 'profile/profile_picture.html.twig' %}
 
-            {% include 'profile/profile_picture.html.twig' %}
 
-            {% if is_granted_team_leader() %}
-                <div class="panel callout radius">
-                    <h3> Admin </h3>
-                    <ul class="side-nav" role="navigation" title="Link List">
-                        <li role="menuitem"><a href="{{ path('profile_edit_admin', { 'id': user.id }) }}">Rediger
-                                profil</a></li>
-                        <li role="menuitem"><a href="{{ path('profile_edit_photo', {'id': user.getId()}) }}">Rediger
-                                bilde</a></li>
-                        <li role="menuitem"><a href="{{ path('profile_certificate', { id: user.id} ) }}">Last
-                                ned attest</a></li>
-                        {% if is_granted_admin() and not user_is_granted_admin(user) %}
-                            <li role="menuitem">
-                                <a data-dropdown="drop1" aria-controls="drop1" aria-expanded="false">Rediger
-                                    rettighetsnivå</a>
-                                <ul id="drop1" class="f-dropdown" data-dropdown-content aria-hidden="true"
-                                    tabindex="-1">
 
-                                    <li><a href="#" name={{ user.id }} class="assistent"
-                                           id="assistant"> Assistent </a></li>
-                                    <li><a href="#" name={{ user.id }} class="team"
-                                           id="team_member"> Teammedlem </a></li>
-                                    <li><a href="#" name={{ user.id }} class="admin"
-                                           id="team_leader"> Teamleder </a></li>
-                                </ul>
-                            </li>
-                        {% endif %}
+                {% include 'profile/contact_info.html.twig' %}
 
-                        <li role="menuitem">
-                            <a data-dropdown="drop2" aria-controls="drop2" aria-expanded="false">Rediger
-                                aktivitetsnivå</a>
-                            <ul id="drop2" class="f-dropdown" data-dropdown-content aria-hidden="true"
-                                tabindex="-1">
-                                <li><a href="#" name={{ user.id }} class="active" id="profile_activate_user">
-                                        Aktiver bruker </a></li>
-                                <li><a href="#" name={{ user.id }} class="deactive"
-                                       id="profile_deactivate_user"> Deaktiver bruker </a></li>
-                            </ul>
-                        </li>
+            </div>
 
-                    </ul>
-                </div>
+            <div class="large-8 columns">
+                {% include 'profile/profile_header.html.twig' %}
 
-                <div class="panel callout radius">
+                {% include 'profile/assistant_history.html.twig' %}
 
-                    <h3> Brukerstatus </h3>
-
-                    {% if user.isActive == 1 %}
-                        <p> Brukeren er aktiv </p>
-                    {% else %}
-                        <p> Brukeren er inaktiv </p>
-                    {% endif %}
-
-                </div>
-
-            {% endif %}
-
-            {% include 'profile/contact_info.html.twig' %}
-
+                {% include 'profile/team_history.html.twig' %}
+            </div>
         </div>
 
-        <div class="large-8 columns">
-            {% include 'profile/profile_header.html.twig' %}
-
-            {% include 'profile/assistant_history.html.twig' %}
-
-            {% include 'profile/team_history.html.twig' %}
-        </div>
+        {% include 'common/confirmation_modal_generic.html.twig' %}
     </div>
-
-    {% include 'common/confirmation_modal_generic.html.twig' %}
-
 {% endblock %}

@@ -1,7 +1,7 @@
 <div class="row">
-    <div class="small-12 medium-12 large-12 columns">
+    <div class="col-12">
 
-        <h2> {{ user.firstName }} {{ user.lastName }} </h2>
+        <h1 class="text-dark-blue"> {{ user.firstName }} {{ user.lastName }} </h1>
         <h6 class="subheader">
             {% for r in user.roles %}
                 {{ r.name | replace({
@@ -12,8 +12,6 @@
                 }) }}
             {% endfor %}
         </h6>
-
-        <hr>
 
     </div>
 </div>
