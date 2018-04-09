@@ -80,12 +80,12 @@
                                     <h2 class="mb-0 text-dark-blue">{{ department.city }}</h2>
                                     <p class="department-name">{{ department.name }}</p>
                                     <p class="email contact-info">
-                                        <i class="text-devil icon-envelope"></i>
+                                        <i class="text-devil fa fa-envelope"></i>
                                         <a href="mailto:{{ department.email }}">{{ department.email }}</a>
                                     </p>
                                     <p class="text-devil contact-info">
                                         {% if department.address %}
-                                            <i class="text-devil icon-map-marker"></i>
+                                            <i class="text-devil fa fa-map-marker"></i>
                                             {{ department.address }}
                                         {% endif %}
                                     </p>
@@ -114,11 +114,11 @@
                                     De er et overordnet organ med ansvar for drifting av hele organisasjonen.</p>
 
                                 <p class="email contact-info">
-                                    <i class="text-devil icon-envelope"></i>
+                                    <i class="text-devil fa fa-envelope"></i>
                                     <a href="mailto:{{ board.email }}"> {{ board.email }}</a>
                                 </p>
                                 <p class="contact-info">
-                                    <i class="text-devil icon-users"></i>
+                                    <i class="text-devil fa fa-users"></i>
                                     <span class="text-devil member-count">{{ board.activeWorkHistories | length }} medlemmer</span>
                                 </p>
                                 <a href="{{ path('executive_board_page') }}" class="btn btn-outline-primary d-none d-sm-inline-block mt-3">Les
