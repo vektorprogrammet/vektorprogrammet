@@ -1033,6 +1033,11 @@ button.secretly-not-a-button {
   display: inline-block;
 }
 
+
+.textDisabled {
+  opacity: 0.4;
+}
+
 .checkbox label{
   display: inline;
 }
@@ -1044,3 +1049,4 @@ button.secretly-not-a-button {
 .text-faded {
   opacity: 0.8;
 }
+
