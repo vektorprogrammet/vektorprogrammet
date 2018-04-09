@@ -11,16 +11,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ExistingUserAdmissionController extends Controller
 {
-	/**
-	 * @Route("/eksisterendeopptak", name="admission_existing_user")
-	 * @Method({"GET", "POST"})
-	 *
-	 * @param Request $request
-	 *
-	 * @return null|\Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-	 * @throws \Doctrine\ORM\NoResultException
-	 * @throws \Doctrine\ORM\NonUniqueResultException
-	 */
+    /**
+     * @Route("/eksisterendeopptak", name="admission_existing_user")
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     *
+     * @return null|\Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function showAction(Request $request)
     {
         $user = $this->getUser();
