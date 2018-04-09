@@ -22,15 +22,12 @@ class ImageGallerySubscriber implements EventSubscriberInterface
     {
         return array(
             ImageGalleryEvent::CREATED => array(
-                array('logCreatedEvent', 1),
                 array('addCreatedFlashMessage', 1),
             ),
             ImageGalleryEvent::DELETED => array(
-                array('logDeletedEvent', 1),
                 array('addDeletedFlashMessage', 1),
             ),
             ImageGalleryEvent::EDITED => array(
-                array('logEditedEvent', 1),
                 array('addEditedFlashMessage', 1),
             ),
             ImageGalleryEvent::IMAGE_ADDED => array(
@@ -45,34 +42,16 @@ class ImageGallerySubscriber implements EventSubscriberInterface
         );
     }
 
-    public function logCreatedEvent(ImageGalleryEvent $event)
-    {
-        $imageGallery = $event->getImageGallery();
-        $this->logger->info('New image gallery *'. $imageGallery->getTitle() . '* on endpoint /api/image_gallery/' . $imageGallery->getReferenceName(). '.');
-    }
-
     public function addCreatedFlashMessage(ImageGalleryEvent $event)
     {
         $imageGallery = $event->getImageGallery();
         $this->session->getFlashBag()->add('success', 'Bildegalleriet er opprettet på endpointet /api/image_gallery/' . $imageGallery->getReferenceName() . '.');
     }
 
-    public function logDeletedEvent(ImageGalleryEvent $event)
-    {
-        $imageGallery = $event->getImageGallery();
-        $this->logger->info('Image gallery *'. $imageGallery->getTitle() . '* on endpoint /api/image_gallery/' . $imageGallery->getReferenceName(). ' has been deleted.');
-    }
-
     public function addDeletedFlashMessage(ImageGalleryEvent $event)
     {
         $imageGallery = $event->getImageGallery();
         $this->session->getFlashBag()->add('success', 'Bildegalleriet på endpointet /api/image_gallery/' . $imageGallery->getReferenceName() . ' har blitt slettet.');
-    }
-
-    public function logEditedEvent(ImageGalleryEvent $event)
-    {
-        $imageGallery = $event->getImageGallery();
-        $this->logger->info('Image gallery *'. $imageGallery->getTitle() . '* on endpoint /api/image_gallery/' . $imageGallery->getReferenceName(). ' was edited.');
     }
 
     public function addEditedFlashMessage()

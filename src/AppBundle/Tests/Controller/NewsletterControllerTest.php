@@ -271,4 +271,64 @@ class NewsletterControllerTest extends BaseWebTestCase
 
         $this->assertEquals($deleteButtonsAfter, $deleteButtonsBefore - 1);
     }
+
+    public function testExcludeApplicant()
+    {
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'admin',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/send/1');
+        $button = $crawler->selectButton('Send');
+        $form = $button->form();
+        $form['app_bundle_create_letter_type[title]'] = 'Test';
+        $form['app_bundle_create_letter_type[excludeApplicants]']->tick();
+        $form['app_bundle_create_letter_type[content]'] = 'Test';
+
+        $client->enableProfiler();
+        $client->submit($form);
+
+        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+        $messages = $mailCollector->getMessages();
+
+        $found = false;
+        foreach ($messages as $message) {
+            if (key($message->getTo()) ==  'assistant@gmail.com') {
+                $found = true;
+            }
+        }
+
+        $this->assertNotTrue($found);
+    }
+
+    public function testIncludeApplicant()
+    {
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'admin',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/send/1');
+        $button = $crawler->selectButton('Send');
+        $form = $button->form();
+        $form['app_bundle_create_letter_type[title]'] = 'Test';
+        $form['app_bundle_create_letter_type[excludeApplicants]']->untick();
+        $form['app_bundle_create_letter_type[content]'] = 'Test';
+
+        $client->enableProfiler();
+        $client->submit($form);
+
+        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+        $messages = $mailCollector->getMessages();
+
+        $found = false;
+        foreach ($messages as $message) {
+            if (key($message->getTo()) == 'assistant@gmail.com') {
+                $found = true;
+            }
+        }
+
+        $this->assertTrue($found);
+    }
 }

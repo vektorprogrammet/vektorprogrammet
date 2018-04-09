@@ -1,4 +1,9 @@
 services:
+  app.beta_redirecter:
+    class: AppBundle\Service\BetaRedirecter
+    arguments: ['@security.token_storage', '@app.roles']
+    tags:
+        - {name: kernel.event_listener, event: kernel.request}
   app.sms:
     class: AppBundle\Sms\GatewayAPI
     arguments: ['%gateway_sms%', '@app.logger']
@@ -114,7 +119,7 @@ services:
 
   app.exception_subscriber:
     class: AppBundle\EventSubscriber\ExceptionSubscriber
-    arguments: ['@app.logger', '@logger', '@security.token_storage', '@router']
+    arguments: ['@app.logger', '@logger', '@security.token_storage', '@router', '@request_stack']
     tags:
       - { name: kernel.event_subscriber }
 
@@ -184,11 +189,11 @@ services:
     tags:
         - { name: doctrine.event_subscriber }
 
-  app.crud_logger:
-    class: AppBundle\EventSubscriber\CrudLogger
-    arguments: ['@app.logger', '@security.token_storage']
+  app.db_subscriber:
+    class: AppBundle\EventSubscriber\DbSubscriber
+    arguments: ['@app.logger', '@security.token_storage', '@request_stack']
     tags:
-        - { name: kernel.event_subscriber }
+      - { name: doctrine.event_subscriber }
 
   app.file_uploader:
       class: AppBundle\Service\FileUploader

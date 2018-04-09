@@ -26,6 +26,14 @@
                 </tr>
                 <tr>
                     <td>
+                        <b>Telefon</b>
+                    </td>
+                    <td>
+                        {{ application.phone }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         <b>Studieår</b>
                     </td>
                     <td>
@@ -42,18 +50,18 @@
                 </tr>
                 <tr>
                     <td>
-                        <b>Motivasjon</b>
-                    </td>
-                    <td>
-                        {{ application.motivationText|replace({'\n':'<br>'})|safe_html }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
                         <b>Om søkeren</b>
                     </td>
                     <td>
                         {{ application.biography|replace({'\n':'<br>'})|safe_html }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Motivasjon</b>
+                    </td>
+                    <td>
+                        {{ application.motivationText|replace({'\n':'<br>'})|safe_html }}
                     </td>
                 </tr>
             </table>
