@@ -10,17 +10,17 @@
     </div>
     <div class="card-block px-3 pb-2">
         <p class="team-email mb-0">
-            <i class="big-icon m-0 mr-2 text-devil icon-envelope"></i>
+            <i class="big-icon m-0 mr-2 text-devil fa fa-envelope"></i>
             <a href="mailto:{{ team.email }}">{{ team.email }}</a>
         </p>
         <p class="m-0">
-            <i class="big-icon m-0 mr-2 text-devil icon-users"></i>
+            <i class="big-icon m-0 mr-2 text-devil fa fa-users"></i>
             <span class="text-devil member-count">{{ team.activeWorkHistories | length }} medlemmer</span>
         </p>
     </div>
     <div class="card-block px-2 py-2 card-footer">
         {% if team.acceptApplication %}
-            <a href="{{ path('team_page', {id: team.id}) }}" class="m-0"><i class="admission-star icon-star"></i> Søk nå!</a>
+            <a href="{{ path('team_page', {id: team.id}) }}" class="m-0"><i class="admission-star fa fa-star"></i> Søk nå!</a>
         {% else %}
             <a class="m-0" href="{{ path('team_page', {id: team.id}) }}">Les mer</a>
         {% endif %}
