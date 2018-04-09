@@ -59,16 +59,6 @@ class ApplicationPracticalType extends AbstractType
             'expanded' => true,
             'multiple' => false,
         ));
-
-        $builder->add('teamInterest', 'choice', array(
-        'label' => 'Legg til personen i teaminteresse-listen?',
-        'choices' => array(
-            0 => 'Nei',
-            1 => 'Ja',
-        ),
-        'expanded' => true,
-        'multiple' => false,
-        ));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

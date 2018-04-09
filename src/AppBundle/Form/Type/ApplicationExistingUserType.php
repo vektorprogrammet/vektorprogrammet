@@ -19,8 +19,6 @@ class ApplicationExistingUserType extends AbstractType
             'label' => 'Er det en spesiell skole som du ønsker å besøke igjen?',
             'required' => false
         ]);
-
-        $builder->add('save', 'submit', array('label' => 'Søk nå!'));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
