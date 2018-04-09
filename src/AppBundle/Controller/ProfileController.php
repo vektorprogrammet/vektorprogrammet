@@ -13,249 +13,261 @@ use AppBundle\Form\Type\EditUserPasswordType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class ProfileController extends Controller {
-	public function showAction() {
-		// Get the user currently signed in
-		$user = $this->getUser();
+class ProfileController extends Controller
+{
+    public function showAction()
+    {
+        // Get the user currently signed in
+        $user = $this->getUser();
 
-		$em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
 
-		// Fetch the assistant history of the user
-		$assistantHistory = $em->getRepository( 'AppBundle:AssistantHistory' )->findByUser( $user );
+        // Fetch the assistant history of the user
+        $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
 
-		// Find the work history of the user
-		$workHistory = $em->getRepository( 'AppBundle:WorkHistory' )->findByUser( $user );
+        // Find the work history of the user
+        $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
 
-		// Render the view
-		return $this->render( 'profile/profile.html.twig', array(
-			'user'             => $user,
-			'assistantHistory' => $assistantHistory,
-			'workHistory'      => $workHistory,
-		) );
-	}
+        // Render the view
+        return $this->render('profile/profile.html.twig', array(
+            'user'             => $user,
+            'assistantHistory' => $assistantHistory,
+            'workHistory'      => $workHistory,
+        ));
+    }
 
-	public function showSpecificProfileAction( User $user ) {
-		// If the user clicks their own public profile redirect them to their own profile site
-		if ( $user === $this->getUser() ) {
-			return $this->redirectToRoute( 'profile' );
-		}
+    public function showSpecificProfileAction(User $user)
+    {
+        // If the user clicks their own public profile redirect them to their own profile site
+        if ($user === $this->getUser()) {
+            return $this->redirectToRoute('profile');
+        }
 
-		$em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
 
-		// Fetch the assistant history of the user
-		$assistantHistory = $em->getRepository( 'AppBundle:AssistantHistory' )->findByUser( $user );
+        // Fetch the assistant history of the user
+        $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
 
-		// Find the work history of the user
-		$workHistory = $em->getRepository( 'AppBundle:WorkHistory' )->findByUser( $user );
+        // Find the work history of the user
+        $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
 
-		return $this->render( 'profile/profile.html.twig', array(
-			'user'             => $user,
-			'assistantHistory' => $assistantHistory,
-			'workHistory'      => $workHistory,
-		) );
-	}
+        return $this->render('profile/profile.html.twig', array(
+            'user'             => $user,
+            'assistantHistory' => $assistantHistory,
+            'workHistory'      => $workHistory,
+        ));
+    }
 
-	public function deactivateUserAction( User $user ) {
-		$user->setActive( false );
+    public function deactivateUserAction(User $user)
+    {
+        $user->setActive(false);
 
-		$em = $this->getDoctrine()->getManager();
-		$em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
 
-		return $this->redirectToRoute('specific_profile', ['id' => $user->getId()]);
-	}
+        return $this->redirectToRoute('specific_profile', ['id' => $user->getId()]);
+    }
 
-	public function activateUserAction( User $user ) {
-		$user->setActive( true );
+    public function activateUserAction(User $user)
+    {
+        $user->setActive(true);
 
-		$em = $this->getDoctrine()->getManager();
-		$em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
 
-		return $this->redirectToRoute('specific_profile', ['id' => $user->getId()]);
-	}
+        return $this->redirectToRoute('specific_profile', ['id' => $user->getId()]);
+    }
 
-	public function activateNewUserAction( Request $request, $newUserCode ) {
-		$user = $this->get( 'app.user.registration' )->activateUserByNewUserCode( $newUserCode );
+    public function activateNewUserAction(Request $request, $newUserCode)
+    {
+        $user = $this->get('app.user.registration')->activateUserByNewUserCode($newUserCode);
 
-		if ( $user === null ) {
-			return $this->render( 'error/error_message.html.twig', array(
-				'title'   => 'Koden er ugyldig',
-				'message' => 'Ugyldig kode eller brukeren er allerede opprettet',
-			) );
-		}
+        if ($user === null) {
+            return $this->render('error/error_message.html.twig', array(
+                'title'   => 'Koden er ugyldig',
+                'message' => 'Ugyldig kode eller brukeren er allerede opprettet',
+            ));
+        }
 
-		$form = $this->createForm( NewUserType::class, $user, array(
-			'validation_groups' => array( 'username' ),
-		) );
+        $form = $this->createForm(NewUserType::class, $user, array(
+            'validation_groups' => array( 'username' ),
+        ));
 
-		$form->handleRequest( $request );
+        $form->handleRequest($request);
 
-		if ( $form->isValid() ) {
-			$em = $this->getDoctrine()->getManager();
-			$em->persist( $user );
-			$em->flush();
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
 
-			$this->get( 'app.logger' )->info( "User $user activated with new user code" );
+            $this->get('app.logger')->info("User $user activated with new user code");
 
-			return $this->redirectToRoute( 'login_route' );
-		}
+            return $this->redirectToRoute('login_route');
+        }
 
-		return $this->render( 'new_user/create_new_user.html.twig', array(
-			'form' => $form->createView(),
-			'user' => $user,
-		) );
-	}
+        return $this->render('new_user/create_new_user.html.twig', array(
+            'form' => $form->createView(),
+            'user' => $user,
+        ));
+    }
 
-	public function changeRoleAction( Request $request, User $user ) {
-		$response = array();
+    public function changeRoleAction(Request $request, User $user)
+    {
+        $response = array();
 
-		$roleManager = $this->get( 'app.roles' );
-		$roleName    = $roleManager->mapAliasToRole( $request->request->get( 'role' ) );
+        $roleManager = $this->get('app.roles');
+        $roleName    = $roleManager->mapAliasToRole($request->request->get('role'));
 
-		if ( ! $roleManager->loggedInUserCanChangeRoleOfUsersWithRole( $user, $roleName ) ) {
-			throw new BadRequestHttpException();
-		}
+        if (! $roleManager->loggedInUserCanChangeRoleOfUsersWithRole($user, $roleName)) {
+            throw new BadRequestHttpException();
+        }
 
-		try {
-			$role = $this->getDoctrine()->getRepository( 'AppBundle:Role' )->findByRoleName( $roleName );
-			$user->setRoles( array( $role ) );
+        try {
+            $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findByRoleName($roleName);
+            $user->setRoles(array( $role ));
 
-			$em = $this->getDoctrine()->getManager();
-			$em->persist( $user );
-			$em->flush();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
 
-			$response['success'] = true;
-		} catch ( \Exception $e ) {
-			$response['success'] = false;
+            $response['success'] = true;
+        } catch (\Exception $e) {
+            $response['success'] = false;
 
-			$response['cause'] = 'Kunne ikke endre rettighetsnivå'; // if you want to see the exception message.
-		}
+            $response['cause'] = 'Kunne ikke endre rettighetsnivå'; // if you want to see the exception message.
+        }
 
-		// Send a response to ajax
-		return new JsonResponse( $response );
-	}
+        // Send a response to ajax
+        return new JsonResponse($response);
+    }
 
-	public function downloadCertificateAction( Request $request, User $user ) {
-		$em = $this->getDoctrine()->getManager();
+    public function downloadCertificateAction(Request $request, User $user)
+    {
+        $em = $this->getDoctrine()->getManager();
 
-		// Fetch the assistant history of the user
-		$assistantHistory = $em->getRepository( 'AppBundle:AssistantHistory' )->findByUser( $user );
+        // Fetch the assistant history of the user
+        $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
 
-		// Find the work history of the user
-		$workHistory = $em->getRepository( 'AppBundle:WorkHistory' )->findByUser( $user );
+        // Find the work history of the user
+        $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
 
-		// Find the signature of the user creating the certificate
-		$signature = $this->getDoctrine()->getRepository( 'AppBundle:Signature' )->findByUser( $this->getUser() );
+        // Find the signature of the user creating the certificate
+        $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($this->getUser());
 
-		// Find department
-		$department = $this->getUser()->getDepartment();
+        // Find department
+        $department = $this->getUser()->getDepartment();
 
-		if ( $signature === null ) {
-			return $this->redirectToRoute( 'certificate_signature_picture_upload' );
-		}
+        if ($signature === null) {
+            return $this->redirectToRoute('certificate_signature_picture_upload');
+        }
 
-		$html        = $this->renderView( 'certificate/certificate.html.twig', array(
-			'user'             => $user,
-			'assistantHistory' => $assistantHistory,
-			'workHistory'      => $workHistory,
-			'signature'        => $signature,
-			'department'       => $department,
-			'base_dir'         => $this->get( 'kernel' )->getRootDir() . '/../www' . $request->getBasePath(),
-		) );
-		$mpdfService = $this->get( 'tfox.mpdfport' );
+        $html        = $this->renderView('certificate/certificate.html.twig', array(
+            'user'             => $user,
+            'assistantHistory' => $assistantHistory,
+            'workHistory'      => $workHistory,
+            'signature'        => $signature,
+            'department'       => $department,
+            'base_dir'         => $this->get('kernel')->getRootDir() . '/../www' . $request->getBasePath(),
+        ));
+        $mpdfService = $this->get('tfox.mpdfport');
 
-		return $mpdfService->generatePdfResponse( $html );
-	}
+        return $mpdfService->generatePdfResponse($html);
+    }
 
-	public function editProfileInformationAction( Request $request ) {
-		$user            = $this->getUser();
-		$oldCompanyEmail = $user->getCompanyEmail();
+    public function editProfileInformationAction(Request $request)
+    {
+        $user            = $this->getUser();
+        $oldCompanyEmail = $user->getCompanyEmail();
 
-		$form = $this->createForm( EditUserType::class, $user, array(
-			'department'        => $user->getDepartment(),
-			'validation_groups' => array( 'edit_user' ),
-		) );
+        $form = $this->createForm(EditUserType::class, $user, array(
+            'department'        => $user->getDepartment(),
+            'validation_groups' => array( 'edit_user' ),
+        ));
 
-		$form->handleRequest( $request );
+        $form->handleRequest($request);
 
-		if ( $form->isValid() ) {
-			$em = $this->getDoctrine()->getManager();
-			$em->persist( $user );
-			$em->flush();
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
 
-			$this->get( 'event_dispatcher' )->dispatch( UserEvent::EDITED, new UserEvent( $user, $oldCompanyEmail ) );
+            $this->get('event_dispatcher')->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
 
-			return $this->redirect( $this->generateUrl( 'profile' ) );
-		}
+            return $this->redirect($this->generateUrl('profile'));
+        }
 
-		return $this->render( 'profile/edit_profile.html.twig', array(
-			'form' => $form->createView(),
-			'user' => $user,
-		) );
-	}
+        return $this->render('profile/edit_profile.html.twig', array(
+            'form' => $form->createView(),
+            'user' => $user,
+        ));
+    }
 
-	public function editProfilePasswordAction( Request $request ) {
-		$user = $this->getUser();
+    public function editProfilePasswordAction(Request $request)
+    {
+        $user = $this->getUser();
 
-		$form = $this->createForm( EditUserPasswordType::class, $user );
+        $form = $this->createForm(EditUserPasswordType::class, $user);
 
-		$form->handleRequest( $request );
+        $form->handleRequest($request);
 
-		if ( $form->isValid() ) {
-			$em = $this->getDoctrine()->getManager();
-			$em->persist( $user );
-			$em->flush();
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
 
-			return $this->redirect( $this->generateUrl( 'profile' ) );
-		}
+            return $this->redirect($this->generateUrl('profile'));
+        }
 
-		return $this->render( 'profile/edit_profile_password.html.twig', array(
-			'form' => $form->createView(),
-			'user' => $user,
-		) );
-	}
+        return $this->render('profile/edit_profile_password.html.twig', array(
+            'form' => $form->createView(),
+            'user' => $user,
+        ));
+    }
 
-	public function editProfileInformationAdminAction( Request $request, User $user ) {
-		$form            = $this->createForm( EditUserType::class, $user, array(
-			'department' => $user->getDepartment(),
-		) );
-		$oldCompanyEmail = $user->getCompanyEmail();
+    public function editProfileInformationAdminAction(Request $request, User $user)
+    {
+        $form            = $this->createForm(EditUserType::class, $user, array(
+            'department' => $user->getDepartment(),
+        ));
+        $oldCompanyEmail = $user->getCompanyEmail();
 
-		// Handle the form
-		$form->handleRequest( $request );
+        // Handle the form
+        $form->handleRequest($request);
 
-		if ( $form->isValid() ) {
-			$em = $this->getDoctrine()->getManager();
-			$em->persist( $user );
-			$em->flush();
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
 
-			$this->get( 'event_dispatcher' )->dispatch( UserEvent::EDITED, new UserEvent( $user, $oldCompanyEmail ) );
+            $this->get('event_dispatcher')->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
 
-			return $this->redirect( $this->generateUrl( 'specific_profile', array( 'id' => $user->getId() ) ) );
-		}
+            return $this->redirect($this->generateUrl('specific_profile', array( 'id' => $user->getId() )));
+        }
 
-		return $this->render( 'profile/edit_profile.html.twig', array(
-			'form' => $form->createView(),
-			'user' => $user,
-		) );
-	}
+        return $this->render('profile/edit_profile.html.twig', array(
+            'form' => $form->createView(),
+            'user' => $user,
+        ));
+    }
 
-	public function editCompanyEmailAction( Request $request, User $user ) {
-		$oldCompanyEmail = $user->getCompanyEmail();
-		$form            = $this->createForm( UserCompanyEmailType::class, $user );
-		$form->handleRequest( $request );
+    public function editCompanyEmailAction(Request $request, User $user)
+    {
+        $oldCompanyEmail = $user->getCompanyEmail();
+        $form            = $this->createForm(UserCompanyEmailType::class, $user);
+        $form->handleRequest($request);
 
-		if ( $form->isSubmitted() && $form->isValid() ) {
-			$em = $this->getDoctrine()->getManager();
-			$em->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
 
-			$this->get( 'event_dispatcher' )->dispatch( UserEvent::COMPANY_EMAIL_EDITED, new UserEvent( $user, $oldCompanyEmail ) );
+            $this->get('event_dispatcher')->dispatch(UserEvent::COMPANY_EMAIL_EDITED, new UserEvent($user, $oldCompanyEmail));
 
-			return $this->redirectToRoute( 'specific_profile', [ 'id' => $user->getId() ] );
-		}
+            return $this->redirectToRoute('specific_profile', [ 'id' => $user->getId() ]);
+        }
 
-		return $this->render( 'profile/edit_company_email.html.twig', [
-			'user' => $user,
-			'form' => $form->createView(),
-		] );
-	}
+        return $this->render('profile/edit_company_email.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
+    }
 }
