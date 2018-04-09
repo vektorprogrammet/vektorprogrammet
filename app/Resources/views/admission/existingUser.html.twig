@@ -12,55 +12,58 @@
 {% block body %}
     {{ include('common/flash.html.twig') }}
     <div class="row mt-3">
-        <div class="col-12 col-md-10 offset-md-1 col-lg-6 offset-lg-3">
+        <div class="container content section">
+            <h3 class="heading text-center my-3 text-dark-blue">Søk vektorassistent {{ department.shortName }} {{ semester.name }}</h3>
+            <div class="card py-2 py-sm-4 pb-sm-4 px-3">
+                <div class="card-block pt-4 pb-1 pb-sm-4 px-3 px-sm-4">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
 
-            {{ form_start(form) }}
-            {{ form_errors(form) }}
-
-            <h3>Søk vektorassistent {{ department.shortName }} {{ semester.name }}</h3>
-            <h6>Søknadsskjema for {{ user }} (Ikke deg? <a href="{{ path('logout') }}">Logg ut</a>)</h6>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <div>
-                        {{ form_row(form.applicationPractical.yearOfStudy) }}
+                    <h6>Søknadsskjema for {{ user }} (Ikke deg? <a href="{{ path('logout') }}">Logg ut</a>)</h6>
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-4">
+                            <div>
+                                {{ form_row(form.applicationPractical.yearOfStudy) }}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-12">
-                    <label class="question-label">Hvilke dager passer IKKE for deg?</label>
-                        {{ form_widget(form.applicationPractical.days) }}
-                </div>
-            </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <label class="question-label">Hvilke dager passer IKKE for deg?</label>
+                                {{ form_widget(form.applicationPractical.days) }}
+                        </div>
+                    </div>
 
-            <div class="row mt-2">
-                <div class="col-12">
-                    {{ form_row(form.applicationPractical.doublePosition) }}
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            {{ form_row(form.applicationPractical.doublePosition) }}
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            {{ form_row(form.applicationPractical.preferredGroup) }}
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            {{ form_row(form.applicationPractical.language) }}
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            {{ form_row(form.preferredSchool) }}
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <button class="btn btn-lg btn-primary">Søk nå!</button>
+                    </div>
+                    {{ form_end(form) }}
                 </div>
             </div>
-
-            <div class="row mt-2">
-                <div class="col-12">
-                    {{ form_row(form.applicationPractical.preferredGroup) }}
-                </div>
-            </div>
-
-            <div class="row mt-2">
-                <div class="col-12">
-                    {{ form_row(form.applicationPractical.language) }}
-                </div>
-            </div>
-
-            <div class="row mt-2">
-                <div class="col-12">
-                    {{ form_row(form.preferredSchool) }}
-                </div>
-            </div>
-
-            <div class="text-center mt-3">
-                <button class="btn btn-lg btn-primary">Søk nå!</button>
-            </div>
-            {{ form_end(form) }}
         </div>
     </div>
 
