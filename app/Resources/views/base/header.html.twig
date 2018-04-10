@@ -48,7 +48,9 @@
                 {% endif %}
                 <li>{% include 'base/menu_item.html.twig' with {route: 'profile', name: 'Profil'} %}</li>
                 <li>{% include 'base/menu_item.html.twig' with {route: 'receipt_create', name: 'Mine utlegg'} %}</li>
-                <li>{% include 'base/menu_item.html.twig' with {route: 'members_show', name: 'Assistenter'} %}</li>
+                {% if app.user.isActiveAssistant() %}
+                    <li>{% include 'base/menu_item.html.twig' with {route: 'my_partners', name: 'Mine vektorpartnere'} %}</li>
+                {% endif %}
                 <li class="text-danger">{% include 'base/menu_item.html.twig' with {route: 'logout', name: 'Logg ut'} %}</li>
                 <br>
             {% else %}

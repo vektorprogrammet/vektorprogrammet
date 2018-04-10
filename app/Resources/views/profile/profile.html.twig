@@ -28,7 +28,7 @@
                             <div class="card-title">
                                 <h3> Brukerstatus </h3>
                             </div>
-                            <p> Brukeren er {{ user.isActive ? 'aktiv' : 'inaktiv' }} aktiv </p>
+                            <p> Brukeren er {{ user.isActive ? 'aktiv' : 'inaktiv' }} </p>
                             {% if is_granted_admin() %}
                                 <form
                                         method="POST"
@@ -55,23 +55,9 @@
                     </div>
                 </div>
 
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <h3 class="text-dark-blue">Assistenthistorikk</h3>
-                        </div>
-                        {% include 'profile/assistant_history.html.twig' %}
-                    </div>
-                </div>
+                {% include 'profile/assistant_history.html.twig' %}
 
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <h3 class="text-dark-blue">Teamhistorikk</h3>
-                        </div>
-                        {% include 'profile/team_history.html.twig' %}
-                    </div>
-                </div>
+                {% include 'profile/team_history.html.twig' %}
 
             </div>
         </div>

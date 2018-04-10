@@ -25,17 +25,17 @@ home:
 
 students:
  path: /studenter
- defaults: { _controller: AppBundle:Students:show }
+ defaults: { _controller: AppBundle:Assistant:index }
  methods: [GET]
 
 schools:
  path: /skoler
- defaults: { _controller: AppBundle:Schools:show }
+ defaults: { _controller: AppBundle:Teacher:index }
  methods: [GET]
 
 businesses:
  path: /bedrifter
- defaults: { _controller: AppBundle:Businesses:show }
+ defaults: { _controller: AppBundle:AboutVektor:show }
  methods: [GET]
 
 about:
@@ -45,7 +45,7 @@ about:
 
 faq:
  path: /faq
- defaults: {_controller: AppBundle:AboutVektor:showFAQ}
+ defaults: {_controller: AppBundle:AboutVektor:show}
  methods: [GET]
 
 # Updates static content
@@ -261,16 +261,6 @@ profile_save_photo:
   methods: [GET, POST]
   requirements:
     id: \d+
-
-##########################################
-#               Members                  #
-##########################################
-
-members_show:
- path:   /profile/assistenter
- defaults: { _controller: AppBundle:Members:show }
- methods: [GET]
-
 
 ##########################################
 #          Participant History           #

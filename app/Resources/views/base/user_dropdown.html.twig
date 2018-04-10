@@ -14,8 +14,10 @@
                 {% endif %}
                 {% include 'base/dropdown_item_link.html.twig' with {route: 'profile', name: 'Profil'} %}
                 {% include 'base/dropdown_item_link.html.twig' with {route: 'receipt_create', name: 'Mine utlegg'} %}
-                <div class="dropdown-divider"></div>
-                {% include 'base/dropdown_item_link.html.twig' with {route: 'members_show', name: 'Assistenter'} %}
+                {% if app.user.isActiveAssistant() %}
+                    <div class="dropdown-divider"></div>
+                    {% include 'base/dropdown_item_link.html.twig' with {route: 'my_partners', name: 'Mine vektorpartnere'} %}
+                {% endif %}
                 <div class="dropdown-divider"></div>
                 {% include 'base/dropdown_item_link.html.twig' with {route: 'logout', name: 'Logg ut'} %}
             </div>

@@ -1,21 +1,14 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_new.html.twig' %}
 
 {% block title %}
     Vektorprogrammet - Error 500 Internal Server Error
 {% endblock %}
 
 {% block body %}
-    <div class="row error-500">
-        <div class="columns text-center">
-            {# Start fraction #}
-            <div style="display: inline-block">
-                <div style="border-bottom:1px solid; font-size:x-large; text-align:center;">500</div>
-                <div style="font-size:x-large; text-align:center;">0</div>
-            </div>
-            {# End fraction #}
-            <h6 style="margin: 0; padding:0">Det har oppstått en feil på serveren med feilkode 500. </h6>
-            <h6 style="margin: 0; padding:0">Send e-post til <a
-                        href="mailto:it@vektorprogrammet">it@vektorprogrammet.no</a> hvis problemet vedvarer.</h6>
-        </div>
+    <div class="page-header page-header-thin text-center container">
+        <h1>Oh oh...</h1>
+        <img class="img-fluid my-5 error-image" src="{{ asset_with_version('images/vektor_v_broken.png') }}" alt="vektor v broken">
+        <h4>Det har oppstått en feil på serveren med feilkode 500. </h4>
+        <h6 class="text-devil">Send e-post til <a href="mailto:it@vektorprogrammet">it@vektorprogrammet.no</a> hvis problemet vedvarer.</h6>
     </div>
 {% endblock %}

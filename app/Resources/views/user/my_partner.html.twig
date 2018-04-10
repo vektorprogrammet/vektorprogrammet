@@ -1,0 +1,57 @@
+{% extends "base_new.html.twig" %}
+
+{% block title %}
+    Vektorpartner
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/partners.css') }}">
+{% endblock %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="text-center">
+                    <h1 class="text-dark-blue mt-3">Mine vektorpartnere - {{ semester.name }}</h1>
+                </div>
+                <div class="content">
+                    {% for partnerInformation in partnerInformations %}
+                        <div class="row school mb-5">
+                            {% set assistantHistory = partnerInformation['assistantHistory'] %}
+                            {% set school = partnerInformation['school'] %}
+                            {% set partners = partnerInformation['partners'] %}
+                            <div class="col-12">
+                                <h2 class="text-center text-muted my-3">{{ school }} - {{ assistantHistory.day }}er</h2>
+                            </div>
+
+                            {% for group in [1,2] if assistantHistory.activeInGroup(group) %}
+                                <div class="col-12 col-md-6{{ not (assistantHistory.activeInGroup(1) and assistantHistory.activeInGroup(2)) ? ' offset-md-3':'' }}">
+                                    <h3 class="text-center my-3">Bolk {{ group }}</h3>
+                                    <div class="partners group-{{ group }}">
+                                        {% for partner in partners if partner.activeInGroup(group) %}
+                                            <div class="partner">
+                                                <img
+                                                        src="{{ asset_with_version(partner.user.picturePath) }}"
+                                                        alt="{{ partner.user }}"
+                                                        class="img-fluid rounded-circle mb-3">
+                                                <h5 class="mb-0">
+                                                    <a class="text-dark-blue"
+                                                       href="{{ path('specific_profile', {'id': partner.user.id}) }}">
+                                                        {{ partner.user }}
+                                                    </a>
+                                                </h5>
+                                                <p>{{ partner.user.phone }}</p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
