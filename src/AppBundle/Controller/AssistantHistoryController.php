@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\AssistantHistory;
-use AppBundle\Event\AssistantHistoryEditedEvent;
 use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Form\Type\CreateAssistantHistoryType;
@@ -40,7 +39,6 @@ class AssistantHistoryController extends Controller
         if ($form -> isValid()) {
             $em->persist($assistantHistory);
             $em->flush();
-            $this->get('event_dispatcher')->dispatch(AssistantHistoryEditedEvent::EDITED, new AssistantHistoryEditedEvent($assistantHistory));
             return $this->redirectToRoute('participanthistory_show');
         }
         return $this->render("participant_history/participant_history_edit.html.twig", array(
