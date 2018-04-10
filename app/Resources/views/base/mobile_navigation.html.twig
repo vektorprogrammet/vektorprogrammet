@@ -38,9 +38,6 @@
                             <li><a href='{{ path('control_panel') }}'>Kontrollpanel</a></li>
                         {% endif %}
                         <li><a href='{{ path('profile') }}'>Profil</a></li>
-                        {% if app.user.isActiveAssistant() %}
-                            <li><a href='{{ path('my_partners') }}'>Mine vektorpartnere</a></li>
-                        {% endif %}
                         <li><a href='{{ path('receipt_create')}}'>Mine utlegg</a></li>
                         <li><a href="{{ path('logout') }}">Logg ut</a></li>
                     </ul>
