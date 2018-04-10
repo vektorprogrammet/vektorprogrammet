@@ -23,10 +23,6 @@ $promo-color: #d6d8da;
   a {
     color: #5189C8;
   }
-  p{
-    font-size: 105%;
-    margin: 3px;
-  }
   i {
     width:1em;
     margin-right:.5em;
@@ -37,6 +33,10 @@ $promo-color: #d6d8da;
     padding: 0;
     li {
       margin-top: 3px;
+      @media (max-width: 350px) {
+        font-size: 15px;
+        
+      }
     }
   }
 
@@ -72,7 +72,7 @@ $promo-color: #d6d8da;
     }
   }
 
-  .org-info p{
+  .org-info li{
     white-space: nowrap;
   }
 

@@ -1,0 +1,16 @@
+@import "../colors";
+
+.article-department {
+  color: $vektor-blue;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+.vektor-blue-text {
+  color: $vektor-blue;
+}
+
+.article-body {
+  max-width: 800px;
+}
