@@ -101,6 +101,10 @@
                     Vektorprogrammets mange team.</p>
                 <p><a href="{{ path('team') }}">Les mer om verv i team <i class="fa fa-chevron-right"></i></a></p>
             </div>
+            <div class="col-4 col-md-6" id="admissionChart">
+                <p class="counter">Kjønnsfordeling</p>
+                <center><p>Av tidligere assistenter</p></center>
+            </div>
         </div>
     </section>
 
@@ -112,6 +116,9 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    {% include 'home/chart_script.html.twig' %}
     <script>
       $('.carousel').carousel({
         interval: 10000
