@@ -16,7 +16,7 @@ class AssistantHistoryData
         $this->assistantHistoryRepository = $em->getRepository('AppBundle:AssistantHistory');
         $user = $ts->getToken()->getUser();
         $departments = $em->getRepository('AppBundle:Department')->findAll();
-        if ($user == "anon."){
+        if ($user == "anon.") {
             $department =  $geoLocation->findNearestDepartment($departments);
         } else {
             $department = $ts->getToken()->getUser()->getDepartment();
