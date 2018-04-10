@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use JMS\Serializer\Annotation as JMS;
 
 /**
  * AppBundle\Entity\User.
@@ -460,6 +459,15 @@ class User implements AdvancedUserInterface, \Serializable
     public function hasBeenAssistant(): bool
     {
         return count($this->assistantHistories) > 0;
+    }
+
+    public function isActiveAssistant(): bool {
+    	foreach ($this->assistantHistories as $history) {
+    		if ($history->getSemester()->isActive()) {
+    			return true;
+		    }
+	    }
+    	return false;
     }
 
     /**

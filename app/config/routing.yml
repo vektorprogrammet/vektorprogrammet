@@ -263,16 +263,6 @@ profile_save_photo:
     id: \d+
 
 ##########################################
-#               Members                  #
-##########################################
-
-members_show:
- path:   /profile/assistenter
- defaults: { _controller: AppBundle:Members:show }
- methods: [GET]
-
-
-##########################################
 #          Participant History           #
 ##########################################
 
