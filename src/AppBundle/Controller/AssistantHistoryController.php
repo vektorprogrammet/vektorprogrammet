@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Event\AssistantHistoryEditedEvent;
-use AppBundle\Event\AssistantHistoryEventEdited;
 use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Form\Type\CreateAssistantHistoryType;
