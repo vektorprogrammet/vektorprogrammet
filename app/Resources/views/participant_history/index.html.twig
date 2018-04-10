@@ -162,24 +162,20 @@
                                 <td> {{ ah.day }}</td>
                                 <td>
                                     {% if is_granted_admin() or (is_granted_team_leader() and app.user.department == semester.department) %}
-                                        <form
-                                                action="{{ path('assistant_history_delete', {id: ah.id}) }}"
-                                                method="POST"
-                                                onsubmit="return confirm('Er du sikker på at du vil slette {{ ah.user }} fra {{ ah.school.name }} {{ ah.semester.name }}?')"
-                                        >
-                                            <button type="submit" class="button tiny alert"><i class="fa fa-trash"></i>
-                                            </button>
-                                        </form>
+                                    <form
+                                            action="{{ path('assistant_history_delete', {id: ah.id}) }}"
+                                            method="POST"
+                                            onsubmit="return confirm('Er du sikker på at du vil slette {{ ah.user }} fra {{ ah.school.name }} {{ ah.semester.name }}?')"
+                                    >
+                                        <button type="submit" class="button tiny alert"><i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
                                 </td>
                                 <td>
-                                        <form
-                                                action="{{ path('assistant_history_edit', {id: ah.id}) }}"
-                                                method="GET"
-                                        >
-                                            <button type="submit" class="button tiny"><i class="fa fa-pencil"></i>
-                                            </button>
-
-                                        </form>
+                                    <a type="submit" class="button tiny"
+                                       href="{{ path('assistant_history_edit',  {id: ah.id}) }}"><i
+                                                class="fa fa-pencil"></i>
+                                    </a>
                                     {% endif %}
                                 </td>
                             </tr>
