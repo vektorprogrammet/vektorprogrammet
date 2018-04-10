@@ -28,7 +28,7 @@
                             <div class="card-title">
                                 <h3> Brukerstatus </h3>
                             </div>
-                            <p> Brukeren er {{ user.isActive ? 'aktiv' : 'inaktiv' }} aktiv </p>
+                            <p> Brukeren er {{ user.isActive ? 'aktiv' : 'inaktiv' }} </p>
                             {% if is_granted_admin() %}
                                 <form
                                         method="POST"
