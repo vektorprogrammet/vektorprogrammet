@@ -11,10 +11,16 @@ class AssistantHistoryData
     private $assistantHistoryRepository;
     private $semester;
 
-    public function __construct(EntityManager $em, TokenStorage $ts)
+    public function __construct(EntityManager $em, TokenStorage $ts, GeoLocation $geoLocation)
     {
         $this->assistantHistoryRepository = $em->getRepository('AppBundle:AssistantHistory');
-        $department = $ts->getToken()->getUser()->getDepartment();
+        $user = $ts->getToken()->getUser();
+        $departments = $em->getRepository('AppBundle:Department')->findAll();
+        if ($user == "anon."){
+            $department =  $geoLocation->findNearestDepartment($departments);
+        } else {
+            $department = $ts->getToken()->getUser()->getDepartment();
+        }
         $this->semester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
     }
 

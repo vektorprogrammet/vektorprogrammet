@@ -217,7 +217,7 @@ services:
 
   assistant_history.data:
       class: AppBundle\Service\AssistantHistoryData
-      arguments: ['@doctrine.orm.default_entity_manager', '@security.token_storage']
+      arguments: ['@doctrine.orm.default_entity_manager', '@security.token_storage', '@app.geolocation']
 
   survey.manager:
         class: AppBundle\Service\SurveyManager
