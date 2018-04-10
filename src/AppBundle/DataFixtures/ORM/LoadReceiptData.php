@@ -42,6 +42,7 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
         );
         $receipt3->setSum(531);
         $receipt3->setStatus(Receipt::STATUS_REFUNDED);
+        $receipt3->setRefundDate(new \DateTime('2015-11-08'));
         $receipt3->setPicturePath('/images/receipt_images/teamsosialt.jpg');
         $manager->persist($receipt3);
 

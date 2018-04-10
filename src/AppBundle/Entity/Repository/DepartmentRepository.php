@@ -49,4 +49,13 @@ class DepartmentRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findActive()
+    {
+        return $this->createQueryBuilder('Department')
+            ->select('Department')
+            ->where('Department.active = true')
+            ->getQuery()
+            ->getResult();
+    }
 }

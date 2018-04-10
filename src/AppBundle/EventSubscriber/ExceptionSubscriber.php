@@ -4,6 +4,7 @@ namespace AppBundle\EventSubscriber;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -17,6 +18,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
     private $ts;
     private $router;
     private $fileLogger;
+    private $requestStack;
 
     /**
      * ExceptionListener constructor.
@@ -25,13 +27,15 @@ class ExceptionSubscriber implements EventSubscriberInterface
      * @param LoggerInterface $fileLogger
      * @param TokenStorage $ts
      * @param RouterInterface $router
+     * @param RequestStack $requestStack
      */
-    public function __construct(LoggerInterface $logger, LoggerInterface $fileLogger, TokenStorage $ts, RouterInterface $router)
+    public function __construct(LoggerInterface $logger, LoggerInterface $fileLogger, TokenStorage $ts, RouterInterface $router, RequestStack $requestStack)
     {
         $this->logger = $logger;
         $this->ts = $ts;
         $this->router = $router;
         $this->fileLogger = $fileLogger;
+        $this->requestStack = $requestStack;
     }
 
     public static function getSubscribedEvents()
@@ -46,13 +50,15 @@ class ExceptionSubscriber implements EventSubscriberInterface
     public function logException(GetResponseForExceptionEvent $event)
     {
         $exception = $event->getException();
+        $request = $this->requestStack->getMasterRequest();
+        $path = $request ? $request->getPathInfo() : '???';
 
         if ($exception instanceof HttpException) {
             $this->logHttpException($exception);
         } else {
             $this->logger->critical(
                 "User: {$this->getLoggedInUserName()}\n" .
-                "Code: {$exception->getCode()}\n" .
+                "Path: $path\n" .
                 "File: {$exception->getFile()}\n" .
                 "Line: {$exception->getLine()}\n" .
                 "Message:\n" .
@@ -63,7 +69,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
 
             $this->fileLogger->critical(
                 "User: {$this->getLoggedInUserName()}\n" .
-                "Code: {$exception->getCode()}\n" .
+                "Path: $path\n" .
                 "File: {$exception->getFile()}\n" .
                 "Line: {$exception->getLine()}\n" .
                 "Message: {$exception->getMessage()}\n" .

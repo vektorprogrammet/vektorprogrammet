@@ -62,6 +62,12 @@ class TeamApplication
     private $team;
 
     /**
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
+     */
+    private $phone;
+
+    /**
      * @return int
      */
     public function getId()
@@ -187,5 +193,21 @@ class TeamApplication
     public function setYearOfStudy($yearOfStudy)
     {
         $this->yearOfStudy = $yearOfStudy;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     */
+    public function setPhone($phone): void
+    {
+        $this->phone = $phone;
     }
 }
