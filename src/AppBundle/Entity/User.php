@@ -461,13 +461,14 @@ class User implements AdvancedUserInterface, \Serializable
         return count($this->assistantHistories) > 0;
     }
 
-    public function isActiveAssistant(): bool {
-    	foreach ($this->assistantHistories as $history) {
-    		if ($history->getSemester()->isActive()) {
-    			return true;
-		    }
-	    }
-    	return false;
+    public function isActiveAssistant(): bool
+    {
+        foreach ($this->assistantHistories as $history) {
+            if ($history->getSemester()->isActive()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

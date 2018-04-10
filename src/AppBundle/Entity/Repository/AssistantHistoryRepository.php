@@ -40,11 +40,11 @@ class AssistantHistoryRepository extends EntityRepository
             ->getResult();
     }
 
-	/**
-	 * @param $user
-	 *
-	 * @return AssistantHistory[]
-	 */
+    /**
+     * @param $user
+     *
+     * @return AssistantHistory[]
+     */
     public function findActiveAssistantHistoriesByUser($user)
     {
         $today = new \DateTime('now');

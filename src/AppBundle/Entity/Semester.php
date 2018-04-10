@@ -278,9 +278,10 @@ class Semester
         $this->infoMeeting = $infoMeeting;
     }
 
-    public function isActive(): bool {
-    	$now = new \DateTime();
+    public function isActive(): bool
+    {
+        $now = new \DateTime();
 
-    	return $this->getSemesterStartDate() < $now && $now < $this->getSemesterEndDate();
+        return $this->getSemesterStartDate() < $now && $now < $this->getSemesterEndDate();
     }
 }
