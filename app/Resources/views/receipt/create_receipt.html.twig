@@ -1,29 +1,29 @@
 {{ form_start(form) }}
+<div class="form-group">
     <div class="row">
-        <div class="small-12 medium-8 columns">
+        <div class="col-12 col-md-8">
             {{ form_row(form.description) }}
         </div>
     </div>
-
     <div class="row">
-        <div class="small-8 medium-3 columns">
+        <div class="col-8 col-md-3">
             {{ form_row(form.sum) }}
         </div>
     </div>
 
     <div class="row">
-        <div class="small-8 medium-12 columns">
+        <div class="col-8 col-md-12">
             {{ form_row(form.receiptDate) }}
         </div>
     </div>
 
     <div class="row">
-        <div class="small-8 medium-3 columns">
+        <div class="col-8 col-md-3">
             {% if app.user.accountNumber %}
                 <div id="accountNumberInfo">
                     Ditt kontonummer er <span class="text-bold">{{ app.user.accountNumber }}</span> <span id="changeAccountNumber" class="text-link">Endre</span>
                 </div>
-                <div id="accountNumberForm" class="hide">
+                <div id="accountNumberForm" class="d-none">
                     {{ form_row(form.user) }}
                 </div>
             {% else %}
@@ -33,19 +33,20 @@
     </div>
 <br>
     <div class="row">
-        <div class="small-12 columns">
+        <div class="col-12">
             <div>
                 {{ form_row(form.picturePath) }}
             </div>
         </div>
-        <div class="small-4 columns">
-            <div class="{{ receipt.picturePath is not null ? '' : 'hide' }}">
+        <div class="col-4">
+            <div class="{{ receipt.picturePath is not null ? '' : 'd-none' }}">
                 <img src="{{ asset(receipt.picturePath) }}" height="60px" id="receipt_picture">
             </div>
         </div>
     </div>
     <br>
-    <button class="button success">Be om refusjon</button>
+    <button class="btn btn-success">Be om refusjon</button>
+</div>
 {{ form_end(form) }}
 
 <script>

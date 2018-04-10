@@ -1,93 +1,78 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_new.html.twig' %}
 
 {% block title %}Utlegg{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/my_receipts.css') }}">
+{% endblock %}
+
 {% block body %}
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <h1>Utlegg</h1>
-            <hr>
-            <p>
-                Her kan du registrere utlegg du har gjort for vektorprogrammet som du ønsker å få refundert. For å få utlegget
-                refundert må du laste opp en kvittering som bekrefter utlegget ditt.
-            </p>
-            <h3>Hva kan jeg få refundert?</h3>
-            <p>
-                {% if is_granted_team_member() %}
-                    Du kan typisk få refusjon for bussbilletter til og fra skole, kaffeposer til stand, kake til arrangementer og lignende. Det er ellers
-                    lurt å høre med en leder om du kan få utlegget ditt refundert før du legger ut.
-                {% else %}
-                    Vi refunderer gjerne bussbilletter o.l. til og fra skolene. Hvis du har tenkt til å legge ut for noe annet kan det være lurt å
-                    høre med en leder om du kan få det refundert først.
-                {% endif %}
-                Om du har spørsmål kan du kontakte økonomiteamet på <a href="mailto:okonomi@vektorprogrammet.no">okonomi@vektorprogrammet.no</a>.
-            </p>
-        </div>
-    </div>
-
-    {% for flashMessage in app.session.flashbag.get('success') %}
-        <div class="row">
-            <div class="small-12 medium-12 large-12 columns">
-                <div data-alert class="alert-box success radius">
-                    {{ flashMessage }}
-                </div>
+    <section class="row">
+        <div class="container">
+            <div class="page-header">
+                <h1>Utlegg</h1>
+                <p>
+                    Her kan du registrere utlegg du har gjort for vektorprogrammet som du ønsker å få refundert. For å få refusjon
+                    må du laste opp en kvittering som bekrefter utlegget ditt.
+                </p>
             </div>
-        </div>
-    {% endfor %}
-
-    <section id="receipt-form">
-        <div class="row">
-
-            <div class="small-12 medium-12 large-12 columns">
-                <hr>
+            <div>
+                <h3 class="text-center">Hva kan jeg få refundert?</h3>
+                <p>
+                    {% if is_granted_team_member() %}
+                        Du kan typisk få refusjon for bussbilletter til og fra skole, kaffeposer til stand, kake til arrangementer og lignende. Det er ellers
+                        lurt å høre med en leder om du kan få utlegget ditt refundert før du legger ut.
+                    {% else %}
+                        Vi refunderer gjerne bussbilletter o.l. til og fra skolene. Hvis du har tenkt til å legge ut for noe annet kan det være lurt å
+                        høre med en leder om du kan få det refundert først.
+                    {% endif %}
+                    Om du har spørsmål kan du kontakte økonomiteamet på <a href="mailto:okonomi@vektorprogrammet.no">okonomi@vektorprogrammet.no</a>.
+                </p>
             </div>
-
-            <div class="small-12 medium-12 large-8 columns">
-
-                <h3> Registrer nytt utlegg </h3>
-
+            {% for flashMessage in app.session.flashbag.get('success') %}
+            <div data-alert class="alert alert-success">
+                {{ flashMessage }}
             </div>
-        </div>
-        <div class="row">
-            <div class="small-12 medium-12 large-12 columns">
-
-                <br>
-
-                {% include 'receipt/create_receipt.html.twig' with {'form': form, 'receipt': receipt} %}
-
-            </div>
+            {% endfor %}
         </div>
     </section>
 
-        <div class="row">
-
-            <div class="small-12 medium-12 large-12 columns">
-                <hr>
-            </div>
-
-            <div class="small-12 columns">
-
-                <h3>Mine utlegg</h3>
-                <a href="#receipt-form" class="text-success" onclick="toggleForm()"><i class="fa fa-plus"></i> Nytt utlegg</a>
-                {% if app.user.accountNumber %}
-                    <span class="float-right">Kontonummer: {{ app.user.accountNumber }}</span>
-                {% endif %}
-
-            </div>
+    <section class="row" id="receipt-form">
+        <div class="container">
+            <h3> Registrer nytt utlegg </h3>
+            {% include 'receipt/create_receipt.html.twig' with {'form': form, 'receipt': receipt} %}
         </div>
-        <div class="row">
-            <div class="small-12 medium-12 large-12 columns">
+    </section>
 
-                <br>
+    <div class="row">
 
-                {% if receipts %}
-                <div class="table-responsive">
-                    {% include 'receipt/my_receipts_table.html.twig' with {'receipts': receipts} %}
-                </div>
-                {% endif %}
-
-            </div>
+        <div class="small-12 medium-12 large-12 columns">
+            <hr>
         </div>
+
+        <div class="small-12 columns">
+
+            <h3>Mine utlegg</h3>
+            <a href="#receipt-form" class="text-success" onclick="toggleForm()"><i class="fa fa-plus"></i> Nytt utlegg</a>
+            {% if app.user.accountNumber %}
+                <span class="float-right">Kontonummer: {{ app.user.accountNumber }}</span>
+            {% endif %}
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+
+            <br>
+
+            {% if receipts %}
+            <div class="table-responsive">
+                {% include 'receipt/my_receipts_table.html.twig' with {'receipts': receipts} %}
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}

@@ -138,6 +138,14 @@
     {%- endif -%}
 {%- endblock choice_widget_expanded %}
 
+{% block file_widget %}
+    {% spaceless %}
+        <label class="btn btn-secondary">
+            Velg en fil<input type="file" hidden {{ block('widget_attributes') }}>
+        </label>
+    {% endspaceless %}
+{% endblock %}
+
 {# Labels #}
 
 {% block choice_label -%}
