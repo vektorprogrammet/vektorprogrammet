@@ -8,9 +8,6 @@ use Symfony\Component\EventDispatcher\Event;
 class AssistantHistoryEditedEvent extends Event implements CrudEvent
 {
     const CREATED = 'AssistantHistory.created';
-    const REFUNDED = 'AssistantHistory.refunded';
-    const REJECTED = 'AssistantHistory.rejected';
-    const PENDING = 'AssistantHistory.pending';
     const EDITED = 'AssistantHistory.edited';
     const DELETED = 'AssistantHistory.deleted';
 
