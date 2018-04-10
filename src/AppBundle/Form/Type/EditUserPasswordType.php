@@ -23,10 +23,7 @@ class EditUserPasswordType extends AbstractType
                     'minMessage' => 'Passordet må være på minst {{ limit }} tegn',
                     'maxMessage' => 'Passordet må være mindre enn {{ limit }} tegn langt',
                 ))
-            )))
-            ->add('save', 'submit', array(
-                'label' => 'Lagre',
-            ));
+            )));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

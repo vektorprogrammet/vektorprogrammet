@@ -1,37 +1,33 @@
 {% if assistantHistory is not empty %}
-    <div class="row">
-        <div class="col-12">
-            <h3 class="text-dark-blue">Assistenthistorikk</h3>
-            <div class="table-responsive">
-                <table class="table">
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th>Skole</th>
+                <th>Semester</th>
+            </tr>
+            </thead>
+            {% for as in assistantHistory %}
+                {% if as.semester is not null and as.school is not null %}
                     <tr>
-                        <th>Skole</th>
-                        <th>Semester</th>
+                        <td>
+                            {% if as.school is null %}
+                                skolen har blitt slettet
+                            {% else %}
+                                {{ as.getSchool.getName }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if as.semester is null %}
+                                semesteret har blitt slettet
+                            {% else %}
+                                {{ as.getSemester.getName }}
+                            {% endif %}
+                        </td>
                     </tr>
-                    {% for as in assistantHistory %}
-                        {% if as.semester is not null and as.school is not null %}
-                            <tr>
-                                <td>
-                                    {% if as.school is null %}
-                                        skolen har blitt slettet
-                                    {% else %}
-                                        {{ as.getSchool.getName }}
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if as.semester is null %}
-                                        semesteret har blitt slettet
-                                    {% else %}
-                                        {{ as.getSemester.getName }}
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endif %}
+                {% endif %}
 
-                    {% endfor %}
-                </table>
-            </div>
-
-        </div>
+            {% endfor %}
+        </table>
     </div>
 {% endif %}

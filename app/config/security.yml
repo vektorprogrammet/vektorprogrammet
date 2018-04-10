@@ -72,7 +72,7 @@ security:
         - { path: ^/kontrollpanel/skoleadmin/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/intervju/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/opptakadmin/slett, roles: ROLE_HIGHEST_ADMIN }
-        - { path: ^/bruker/vekorepost/endre, roles: ROLE_HIGHEST_ADMIN }
+        - { path: ^/kontrollpanel/bruker/vekorepost/endre, roles: ROLE_HIGHEST_ADMIN }
 
           #ROLE_SUPER_ADMIN = team leader
         - { path: ^/kontrollpanel/avdelingadmin/update, roles: ROLE_SUPER_ADMIN }
@@ -138,6 +138,7 @@ security:
         - { path: ^/kontrollpanel, role: ROLE_ADMIN }
 
           #ROLE_USER = assistant user
+        - { path: ^/profil, roles: ROLE_USER }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/utlegg, roles: ROLE_USER }
         - { path: ^/api/myreceipts, roles: ROLE_USER }

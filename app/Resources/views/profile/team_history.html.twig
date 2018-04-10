@@ -1,50 +1,46 @@
 {% if workHistory is not empty %}
-    <div class="row">
-        <div class="col-12">
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th>Team</th>
+                <th>Stilling</th>
+                <th>Start</th>
+                <th>Slutt</th>
+            </tr>
+            </thead>
+            {% for wh in workHistory %}
+                <tr>
+                    <td>
+                        {{ wh.teamName }}
+                    </td>
 
-            <h3 class="text-dark-blue">Teamhistorikk</h3>
-            <div class="table-responsive">
-                <table class="table">
-                    <tr>
-                        <th>Team</th>
-                        <th>Stilling</th>
-                        <th>Start</th>
-                        <th>Slutt</th>
-                    </tr>
-                    {% for wh in workHistory %}
-                        <tr>
-                            <td>
-                                {{ wh.teamName }}
-                            </td>
+                    <td>
+                        {% if wh.position is not null %}
+                            {{ wh.position.name }}
+                        {% else %}
+                            Stillingen er fjernet
+                        {% endif %}
+                    </td>
 
-                            <td>
-                                {% if wh.position is not null %}
-                                    {{ wh.position.name }}
-                                {% else %}
-                                    Stillingen er fjernet
-                                {% endif %}
-                            </td>
+                    <td>
+                        {% if wh.startSemester is null %}
+                            Ingen startsemester valgt
+                        {% else %}
+                            {{ wh.startSemester.name }}
+                        {% endif %}
+                    </td>
 
-                            <td>
-                                {% if wh.startSemester is null %}
-                                    Ingen startsemester valgt
-                                {% else %}
-                                    {{ wh.startSemester.name }}
-                                {% endif %}
-                            </td>
+                    <td>
+                        {% if wh.endSemester is not null %}
+                            {{ wh.endSemester.name }}
+                        {% else %}
+                            Fortsatt aktiv
+                        {% endif %}
+                    </td>
+                </tr>
 
-                            <td>
-                                {% if wh.endSemester is not null %}
-                                    {{ wh.endSemester.name }}
-                                {% else %}
-                                    Fortsatt aktiv
-                                {% endif %}
-                            </td>
-                        </tr>
-
-                    {% endfor %}
-                </table>
-            </div>
-        </div>
+            {% endfor %}
+        </table>
     </div>
 {% endif %}
