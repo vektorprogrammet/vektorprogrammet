@@ -37,10 +37,20 @@
         </div>
     </section>
 
-    <section class="row" id="receipt-form">
+    <section class="row">
         <div class="container">
-            <h3> Registrer nytt utlegg </h3>
-            {% include 'receipt/create_receipt.html.twig' with {'form': form, 'receipt': receipt} %}
+            <h3>Mine utlegg</h3>
+
+            <a class="text-success" onclick="toggleForm()"><i class="fa fa-plus"></i> Nytt utlegg</a>
+
+            {% if app.user.accountNumber %}
+            <span class="float-right">Kontonummer: {{ app.user.accountNumber }}</span>
+            {% endif %}
+
+            <div id="receipt-form">
+                <h3> Registrer nytt utlegg </h3>
+                {% include 'receipt/create_receipt.html.twig' with {'form': form, 'receipt': receipt} %}
+            </div>
         </div>
     </section>
 
@@ -48,16 +58,6 @@
 
         <div class="small-12 medium-12 large-12 columns">
             <hr>
-        </div>
-
-        <div class="small-12 columns">
-
-            <h3>Mine utlegg</h3>
-            <a href="#receipt-form" class="text-success" onclick="toggleForm()"><i class="fa fa-plus"></i> Nytt utlegg</a>
-            {% if app.user.accountNumber %}
-                <span class="float-right">Kontonummer: {{ app.user.accountNumber }}</span>
-            {% endif %}
-
         </div>
     </div>
     <div class="row">
@@ -97,9 +97,9 @@
 
         $("#receipt_picturePath").change(function () {
             if(this.value === ''){
-                $('#receipt_picture').parent().addClass('hide');
+                $('#receipt_picture').parent().addClass('d-none');
             } else {
-                $('#receipt_picture').parent().removeClass('hide');
+                $('#receipt_picture').parent().removeClass('d-none');
                 readURL(this);
             }
         });

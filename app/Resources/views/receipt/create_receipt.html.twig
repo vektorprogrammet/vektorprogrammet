@@ -37,8 +37,6 @@
             <div>
                 {{ form_row(form.picturePath) }}
             </div>
-        </div>
-        <div class="col-4">
             <div class="{{ receipt.picturePath is not null ? '' : 'd-none' }}">
                 <img src="{{ asset(receipt.picturePath) }}" height="60px" id="receipt_picture">
             </div>
