@@ -136,7 +136,7 @@ class ReceiptController extends Controller
         return $this->render('receipt/edit_receipt.html.twig', array(
             'form' => $form->createView(),
             'receipt' => $receipt,
-            'parent_template' => 'base.html.twig',
+            'parent_template' => 'base_new.html.twig',
         ));
     }
 

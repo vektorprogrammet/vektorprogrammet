@@ -8,62 +8,62 @@
 
 {% block body %}
 <div class="row">
-<div class="container">
-    <section>
-        <div class="page-header">
-            <h1>Utlegg</h1>
-            <p>
-                Her kan du registrere utlegg du har gjort for vektorprogrammet som du ønsker å få refundert. For å få refusjon
-                må du laste opp en kvittering som bekrefter utlegget ditt.
-            </p>
-        </div>
-        <div>
-            <h3 class="text-center">Hva kan jeg få refundert?</h3>
-            <p>
-                {% if is_granted_team_member() %}
-                    Du kan typisk få refusjon for bussbilletter til og fra skole, kaffeposer til stand, kake til arrangementer og lignende. Det er ellers
-                    lurt å høre med en leder om du kan få utlegget ditt refundert før du legger ut.
-                {% else %}
-                    Vi refunderer gjerne bussbilletter o.l. til og fra skolene. Hvis du har tenkt til å legge ut for noe annet kan det være lurt å
-                    høre med en leder om du kan få det refundert først.
-                {% endif %}
-                Om du har spørsmål kan du kontakte økonomiteamet på <a href="mailto:okonomi@vektorprogrammet.no">okonomi@vektorprogrammet.no</a>.
-            </p>
-        </div>
-        {% for flashMessage in app.session.flashbag.get('success') %}
-        <div data-alert class="alert alert-success">
-            {{ flashMessage }}
-        </div>
-        {% endfor %}
-    </section>
+    <div class="container">
+        <section>
+            <div class="page-header">
+                <h1>Utlegg</h1>
+                <p>
+                    Her kan du registrere utlegg du har gjort for vektorprogrammet som du ønsker å få refundert. For å få refusjon
+                    må du laste opp en kvittering som bekrefter utlegget ditt.
+                </p>
+            </div>
+            <div>
+                <h3 class="text-center">Hva kan jeg få refundert?</h3>
+                <p>
+                    {% if is_granted_team_member() %}
+                        Du kan typisk få refusjon for bussbilletter til og fra skole, kaffeposer til stand, kake til arrangementer og lignende. Det er ellers
+                        lurt å høre med en leder om du kan få utlegget ditt refundert før du legger ut.
+                    {% else %}
+                        Vi refunderer gjerne bussbilletter o.l. til og fra skolene. Hvis du har tenkt til å legge ut for noe annet kan det være lurt å
+                        høre med en leder om du kan få det refundert først.
+                    {% endif %}
+                    Om du har spørsmål kan du kontakte økonomiteamet på <a href="mailto:okonomi@vektorprogrammet.no">okonomi@vektorprogrammet.no</a>.
+                </p>
+            </div>
+            {% for flashMessage in app.session.flashbag.get('success') %}
+            <div data-alert class="alert alert-success">
+                {{ flashMessage }}
+            </div>
+            {% endfor %}
+        </section>
 
-    <br>
+        <br>
 
-    <section>
-        <h3 class="text-center">Mine utlegg</h3>
+        <section>
+            <h3 class="text-center">Mine utlegg</h3>
 
-        <button id="newReceiptLink" class="btn btn-link btn-text-link text-success"><i class="fa fa-plus"></i>&nbsp;<span>Nytt utlegg</span></button>
+            <button id="newReceiptLink" class="btn btn-link btn-text-link text-success"><i class="fa fa-plus"></i>&nbsp;<span>Nytt utlegg</span></button>
 
-        {% if app.user.accountNumber %}
-        <span class="float-right">Kontonummer: {{ app.user.accountNumber }}</span>
-        {% endif %}
+            {% if app.user.accountNumber %}
+            <span class="float-right">Kontonummer: {{ app.user.accountNumber }}</span>
+            {% endif %}
 
-        <div id="receipt-form">
-            <h3> Registrer nytt utlegg </h3>
-            {% include 'receipt/create_receipt.html.twig' with {'form': form, 'receipt': receipt} %}
-        </div>
-    </section>
+            <div id="receipt-form">
+                <h3> Registrer nytt utlegg </h3>
+                {% include 'receipt/create_receipt.html.twig' with {'form': form, 'receipt': receipt} %}
+            </div>
+        </section>
 
-    <br>
+        <br>
 
-    <section>
-        {% if receipts %}
-        <div class="table">
-            {% include 'receipt/my_receipts_table.html.twig' with {'receipts': receipts} %}
-        </div>
-        {% endif %}
-    </section>
-</div>
+        <section>
+            {% if receipts %}
+            <div class="table">
+                {% include 'receipt/my_receipts_table.html.twig' with {'receipts': receipts} %}
+            </div>
+            {% endif %}
+        </section>
+    </div>
 </div>
 {% endblock %}
 

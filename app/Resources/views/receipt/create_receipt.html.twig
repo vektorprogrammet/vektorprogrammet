@@ -5,18 +5,7 @@
             {{ form_row(form.sum) }}
             {{ form_row(form.receiptDate) }}
 
-            {% if app.user.accountNumber %}
-            <div id="accountNumberInfo">
-                Ditt kontonummer er <span class="text-bold">{{ app.user.accountNumber }}</span> <span id="changeAccountNumber" class="btn btn-text btn-text-link text-primary">Endre</span>
-            </div>
-            <div class="row" id="accountNumberForm">
-                <div class="col-12">
-                    {{ form_row(form.user) }}
-                </div>
-            </div>
-            {% else %}
-            {{ form_row(form.user) }}
-            {% endif %}
+            {% include 'receipt/account_number.html.twig' %}
 
             <br>
             {{ form_row(form.picturePath) }}
@@ -32,12 +21,3 @@
         </div>
     </div>
 {{ form_end(form) }}
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        $('#changeAccountNumber').click(function() {
-          $('#accountNumberForm').show();
-          $('#accountNumberInfo').hide();
-        });
-    });
-</script>
