@@ -7,79 +7,82 @@
 {% endblock %}
 
 {% block body %}
-    <section class="row">
-        <div class="container">
-            <div class="page-header">
-                <h1>Utlegg</h1>
-                <p>
-                    Her kan du registrere utlegg du har gjort for vektorprogrammet som du ønsker å få refundert. For å få refusjon
-                    må du laste opp en kvittering som bekrefter utlegget ditt.
-                </p>
-            </div>
-            <div>
-                <h3 class="text-center">Hva kan jeg få refundert?</h3>
-                <p>
-                    {% if is_granted_team_member() %}
-                        Du kan typisk få refusjon for bussbilletter til og fra skole, kaffeposer til stand, kake til arrangementer og lignende. Det er ellers
-                        lurt å høre med en leder om du kan få utlegget ditt refundert før du legger ut.
-                    {% else %}
-                        Vi refunderer gjerne bussbilletter o.l. til og fra skolene. Hvis du har tenkt til å legge ut for noe annet kan det være lurt å
-                        høre med en leder om du kan få det refundert først.
-                    {% endif %}
-                    Om du har spørsmål kan du kontakte økonomiteamet på <a href="mailto:okonomi@vektorprogrammet.no">okonomi@vektorprogrammet.no</a>.
-                </p>
-            </div>
-            {% for flashMessage in app.session.flashbag.get('success') %}
-            <div data-alert class="alert alert-success">
-                {{ flashMessage }}
-            </div>
-            {% endfor %}
+<div class="row">
+<div class="container">
+    <section>
+        <div class="page-header">
+            <h1>Utlegg</h1>
+            <p>
+                Her kan du registrere utlegg du har gjort for vektorprogrammet som du ønsker å få refundert. For å få refusjon
+                må du laste opp en kvittering som bekrefter utlegget ditt.
+            </p>
+        </div>
+        <div>
+            <h3 class="text-center">Hva kan jeg få refundert?</h3>
+            <p>
+                {% if is_granted_team_member() %}
+                    Du kan typisk få refusjon for bussbilletter til og fra skole, kaffeposer til stand, kake til arrangementer og lignende. Det er ellers
+                    lurt å høre med en leder om du kan få utlegget ditt refundert før du legger ut.
+                {% else %}
+                    Vi refunderer gjerne bussbilletter o.l. til og fra skolene. Hvis du har tenkt til å legge ut for noe annet kan det være lurt å
+                    høre med en leder om du kan få det refundert først.
+                {% endif %}
+                Om du har spørsmål kan du kontakte økonomiteamet på <a href="mailto:okonomi@vektorprogrammet.no">okonomi@vektorprogrammet.no</a>.
+            </p>
+        </div>
+        {% for flashMessage in app.session.flashbag.get('success') %}
+        <div data-alert class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+        {% endfor %}
+    </section>
+
+    <br>
+
+    <section>
+        <h3 class="text-center">Mine utlegg</h3>
+
+        <button id="newReceiptLink" class="btn btn-link btn-text-link text-success"><i class="fa fa-plus"></i>&nbsp;<span>Nytt utlegg</span></button>
+
+        {% if app.user.accountNumber %}
+        <span class="float-right">Kontonummer: {{ app.user.accountNumber }}</span>
+        {% endif %}
+
+        <div id="receipt-form">
+            <h3> Registrer nytt utlegg </h3>
+            {% include 'receipt/create_receipt.html.twig' with {'form': form, 'receipt': receipt} %}
         </div>
     </section>
 
-    <section class="row">
-        <div class="container">
-            <h3>Mine utlegg</h3>
+    <br>
 
-            <a class="text-success" onclick="toggleForm()"><i class="fa fa-plus"></i> Nytt utlegg</a>
-
-            {% if app.user.accountNumber %}
-            <span class="float-right">Kontonummer: {{ app.user.accountNumber }}</span>
-            {% endif %}
-
-            <div id="receipt-form">
-                <h3> Registrer nytt utlegg </h3>
-                {% include 'receipt/create_receipt.html.twig' with {'form': form, 'receipt': receipt} %}
-            </div>
+    <section>
+        {% if receipts %}
+        <div class="table">
+            {% include 'receipt/my_receipts_table.html.twig' with {'receipts': receipts} %}
         </div>
+        {% endif %}
     </section>
-
-    <div class="row">
-
-        <div class="small-12 medium-12 large-12 columns">
-            <hr>
-        </div>
-    </div>
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-
-            <br>
-
-            {% if receipts %}
-            <div class="table-responsive">
-                {% include 'receipt/my_receipts_table.html.twig' with {'receipts': receipts} %}
-            </div>
-            {% endif %}
-
-        </div>
-    </div>
+</div>
+</div>
 {% endblock %}
 
 {% block javascripts %}
     <script>
-        function toggleForm() {
-          $('#receipt-form').slideDown();
-        }
+        $('#newReceiptLink').on('click', function(){
+            var receiptForm = $('#receipt-form');
+            if(receiptForm.css('display') === 'none'){
+                $(this).removeClass('text-success').addClass('text-primary');
+                $(this).find('i').removeClass('fa-plus').addClass('fa-minus');
+                $(this).find('span').text('Skjul skjemaet');
+            } else {
+                $(this).removeClass('text-primary').addClass('text-success');
+                $(this).find('i').removeClass('fa-minus').addClass('fa-plus');
+                $(this).find('span').text('Nytt utlegg');
+            }
+            $(this).blur();
+            receiptForm.slideToggle();
+        });
     </script>
     <script>
         function readURL(input) {

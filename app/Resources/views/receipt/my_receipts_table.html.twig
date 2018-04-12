@@ -1,69 +1,79 @@
-<table width="100%" id="activeReceiptsTable">
-    <thead>
+<div class="table-responsive">
+    <table class="table " width="100%" id="activeReceiptsTable">
+        <thead class="thead-light">
 
-    <tr>
-        <th> Id</th>
-        <th> Utleggsdato</th>
-        <th> Beskrivelse</th>
-        <th> Sum</th>
-        <th> Kvittering</th>
-        <th>Status</th>
-        <th></th>
-    </tr>
-
-    </thead>
-
-    <tbody>
-    {% for receipt in receipts %}
         <tr>
-            <td> {{ receipt.visualId }}</td>
-            <td> {{ receipt.receiptDate|date('d.m.Y') }}</td>
-            <td> {{ receipt.description }} </td>
-            <td> {{ receipt.sum|number_format(2, ',', ' ') }} kr</td>
-            <td>
-                <a href="#" data-reveal-id="receipt-{{ receipt.id }}">Vis kvittering</a>
-
-                <div id="receipt-{{ receipt.id }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle"
-                     aria-hidden="true" role="dialog">
-                    <h2 id="modalTitle">Kvittering</h2>
-                    <img src="{{ asset_with_version(receipt.picturePath) }}">
-                    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                </div>
-            </td>
-            {% if receipt.status == 'pending' %}
-                <td class="text-warning">Til behandling...</td>
-            {% elseif receipt.status == 'refunded' %}
-                <td class="text-success">Refundert</td>
-            {% elseif receipt.status == 'rejected' %}
-                <td class="text-alert">Refusjon avvist</td>
-            {% endif %}
-
-            {% if receipt.status == 'pending' %}
-                <td>
-                    <form method="POST"
-                          onsubmit="return confirm('Vil du virkelig slette dette utlegget?')"
-                          action="{{ path('receipt_delete', { 'receipt': receipt.id }) }}">
-
-                        <div class="btn-group">
-                            <a href="{{ path('receipt_edit', { 'receipt': receipt.id }) }}">
-                                <button type="button" class="button-link table-action">
-                                    <i class="fa fa-pencil"></i>
-                                    <span class="text-primary action-label">rediger</span>
-                                </button>
-                            </a>
-                            <button type="submit"
-                                    class="button-link delete table-action">
-                                <i class="fa fa fa-trash text-alert"></i>
-                                <span class="text-alert action-label">slett</span>
-                            </button>
-                        </div>
-                    </form>
-                </td>
-            {% else %}
-                <td></td>
-            {% endif %}
+            <th> Id</th>
+            <th> Utleggsdato</th>
+            <th> Beskrivelse</th>
+            <th> Sum</th>
+            <th> Kvittering</th>
+            <th>Status</th>
+            <th></th>
         </tr>
-    {% endfor %}
-    </tbody>
 
-</table>
+        </thead>
+
+        <tbody>
+        {% for receipt in receipts %}
+            <tr>
+                <td> {{ receipt.visualId }}</td>
+                <td> {{ receipt.receiptDate|date('d.m.Y') }}</td>
+                <td> {{ receipt.description }} </td>
+                <td> {{ receipt.sum|number_format(2, ',', ' ') }} kr</td>
+                <td>
+                    <button class="btn btn-link btn-text-link" data-toggle="modal" data-target="#receipt-{{ receipt.id }}">Vis kvittering</button>
+
+                    <div id="receipt-{{ receipt.id }}" class="modal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="text-center">
+                                        <img class="img-fluid" src="{{ asset_with_version(receipt.picturePath) }}">
+                                        <br>
+                                        <button type="button" class="btn btn-secondary mt-3" data-dismiss="modal"><i class="fa fa-close"></i> Lukk</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+                {% if receipt.status == 'pending' %}
+                    <td class="text-warning "><span>Til behandling...</span></td>
+                {% elseif receipt.status == 'refunded' %}
+                    <td class="text-success ">Refundert</td>
+                {% elseif receipt.status == 'rejected' %}
+                    <td class="text-danger ">Refusjon avvist</td>
+                {% endif %}
+
+                {% if receipt.status == 'pending' %}
+                    <td>
+                        <form method="POST"
+                              onsubmit="return confirm('Vil du virkelig slette dette utlegget?')"
+                              action="{{ path('receipt_delete', { 'receipt': receipt.id }) }}">
+
+                            <div class="btn-group">
+                                <a href="{{ path('receipt_edit', { 'receipt': receipt.id }) }}">
+                                    <button type="button" class="btn btn-link py-0 text-primary table-action">
+                                        <i class="fa fa-pencil"></i>
+                                        <span class="action-label">rediger</span>
+                                    </button>
+                                </a>
+                                <button type="submit"
+                                        class="btn btn-link py-0 text-danger delete table-action">
+                                    <i class="fa fa-trash"></i>
+                                    <span class="action-label">slett</span>
+                                </button>
+                            </div>
+                        </form>
+                    </td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+</div>
