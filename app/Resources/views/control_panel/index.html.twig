@@ -6,30 +6,6 @@
         <div class="sbs">
             {{ render(controller('AppBundle:ControlPanel:showSBS')) }}
         </div>
-        <div class="row">
-            <h3>Artikkel</h3>
-
-            <div class="small-4 medium-3 large-2 columns">
-                <div class="control-panel-item">
-                    <a href="{{ path('articleadmin_show') }}">
-                        <i class="fa fa-sticky-note fa-3x"></i>
-
-                        <p>Artikler</p>
-                    </a>
-                </div>
-            </div>
-
-            <div class="small-4 medium-3 large-2 columns">
-                <div class="control-panel-item">
-                    <a href="{{ path('articleadmin_create') }}">
-                        <i class="fa fa-plus-square fa-3x"></i>
-
-                        <p>Ny artikkel</p>
-                    </a>
-                </div>
-            </div>
-            <hr/>
-        </div>
 
         <div class="row">
             <h3>Brukere</h3>
@@ -129,6 +105,16 @@
 
             <div class="small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">
+                    <a href="{{ path('semester_show') }}">
+                        <i class="fa fa-clock-o fa-3x"></i>
+
+                        <p>Opptaksperiode</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
                     <a href="{{ path('statistics_application_show') }}">
                         <i class="fa fa-bar-chart fa-3x"></i>
 
@@ -169,16 +155,31 @@
                 </div>
             </div>
 
+            <hr/>
+        </div>
+
+        <div class="row">
+            <h3>Artikkel</h3>
+
             <div class="small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">
-                    <a href="{{ path('newsletter_show_all') }}">
-                        <i class="fa fa-envelope fa-3x"></i>
+                    <a href="{{ path('articleadmin_show') }}">
+                        <i class="fa fa-sticky-note fa-3x"></i>
 
-                        <p>Nyhetsbrev</p>
+                        <p>Artikler</p>
                     </a>
                 </div>
             </div>
 
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('articleadmin_create') }}">
+                        <i class="fa fa-plus-square fa-3x"></i>
+
+                        <p>Ny artikkel</p>
+                    </a>
+                </div>
+            </div>
             <hr/>
         </div>
 
@@ -195,15 +196,6 @@
                 </div>
             </div>
 
-            <div class="small-4 medium-3 large-2 columns">
-                <div class="control-panel-item">
-                    <a href="{{ path('semester_show') }}">
-                        <i class="fa fa-clock-o fa-3x"></i>
-
-                        <p>Opptaksperiode</p>
-                    </a>
-                </div>
-            </div>
             {% if is_granted_team_leader() %}
                 <div class="small-4 medium-3 large-2 columns">
                     <div class="control-panel-item">
@@ -226,7 +218,15 @@
                 </div>
             </div>
 
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('newsletter_show_all') }}">
+                        <i class="fa fa-envelope fa-3x"></i>
 
+                        <p>Nyhetsbrev</p>
+                    </a>
+                </div>
+            </div>
 
             <hr/>
         </div>
