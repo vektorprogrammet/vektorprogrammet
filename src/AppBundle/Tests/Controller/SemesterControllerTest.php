@@ -64,7 +64,7 @@ class SemesterControllerTest extends BaseWebTestCase
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
 
         // Assert that the response is the correct redirect
-        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/semesteradmin'));
+        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/semesteradmin/avdeling/1'));
     }
 
     public function testUpdateSemester()
@@ -100,7 +100,7 @@ class SemesterControllerTest extends BaseWebTestCase
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
 
         // Assert that the response is the correct redirect
-        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/semesteradmin'));
+        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/semesteradmin/avdeling/1'));
 
         // Follow the redirect
         $crawler = $client->followRedirect();
