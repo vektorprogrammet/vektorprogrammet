@@ -47,7 +47,7 @@ class SemesterControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/kontrollpanel/semesteradmin/avdeling/opprett/1');
 
         // Assert that we have the correct amount of data
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opprett opptaksperiode")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Opprett semester")')->count());
 
         $form = $crawler->selectButton('Opprett')->form();
 
@@ -64,7 +64,7 @@ class SemesterControllerTest extends BaseWebTestCase
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
 
         // Assert that the response is the correct redirect
-        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/semesteradmin/avdeling/1'));
+        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/semesteradmin'));
     }
 
     public function testUpdateSemester()
@@ -100,7 +100,7 @@ class SemesterControllerTest extends BaseWebTestCase
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
 
         // Assert that the response is the correct redirect
-        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/semesteradmin/avdeling/1'));
+        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/semesteradmin'));
 
         // Follow the redirect
         $crawler = $client->followRedirect();

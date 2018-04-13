@@ -21,7 +21,7 @@ class CreateSemesterType extends AbstractType
             ->add('semesterTime', 'choice', array(
                 'choices' => array('Vår' => 'Vår', 'Høst' => 'Høst'),
                 'expanded' => true,
-                'label' => 'Semester',
+                'label' => 'Semester type',
                 'required' => true,
             ))
             ->add('year', 'choice', array(
