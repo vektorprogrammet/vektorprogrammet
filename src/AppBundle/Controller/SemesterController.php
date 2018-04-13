@@ -30,6 +30,7 @@ class SemesterController extends Controller
         return $this->render('semester_admin/edit_semester.html.twig', array(
             'form' => $form->createView(),
             'semesterName' => $semester->getName(),
+            'department' => $semester->getDepartment(),
         ));
     }
 
