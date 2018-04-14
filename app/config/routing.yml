@@ -282,6 +282,13 @@ assistant_history_delete:
  defaults: { _controller: AppBundle:AssistantHistory:delete }
  methods: [POST]
 
+assistant_history_edit:
+  path: /kontrollpanel/deltakerhistorikk/rediger/{id}
+  defaults: { _controller: AppBundle:AssistantHistory:edit }
+  methods: [GET, POST]
+  requirements:
+    id: \d+
+
 ##########################################
 #                SSO                     #
 ##########################################

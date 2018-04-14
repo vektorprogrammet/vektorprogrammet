@@ -24,12 +24,13 @@ class SemesterController extends Controller
             $em->persist($semester);
             $em->flush();
 
-            return $this->redirectToRoute('semester_show');
+            return $this->redirectToRoute('semester_show_by_department', array('id' => $semester->getDepartment()->getId()));
         }
 
         return $this->render('semester_admin/edit_semester.html.twig', array(
             'form' => $form->createView(),
             'semesterName' => $semester->getName(),
+            'department' => $semester->getDepartment(),
         ));
     }
 
@@ -87,11 +88,12 @@ class SemesterController extends Controller
             $em->persist($semester);
             $em->flush();
 
-            return $this->redirectToRoute('semester_show');
+            return $this->redirectToRoute('semester_show_by_department', array('id' => $department->getId()));
         }
 
         // Render the view
         return $this->render('semester_admin/create_semester.html.twig', array(
+            'department' => $department,
             'form' => $form->createView(),
         ));
     }

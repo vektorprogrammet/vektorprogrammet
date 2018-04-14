@@ -40,7 +40,7 @@
                         </div>
                     </div>
 
-                    <div class="row mt-2">
+                    <div class="row mt-2 doublePositionRow">
                         <div class="col-12">
                             {{ form_row(form.applicationPractical.preferredGroup) }}
                         </div>
@@ -84,6 +84,34 @@
         setTimeout(function () {
             $(".admission-notice").fadeOut(1000);
         }, 5000);
+
+        const singlePositionToggle = document.querySelector('#application_applicationPractical_doublePosition_0');
+        const doublePositionToggle = document.querySelector('#application_applicationPractical_doublePosition_1');
+        const bothGroups = document.querySelector('#application_applicationPractical_preferredGroup_0');
+        const group1 = document.querySelector('#application_applicationPractical_preferredGroup_1');
+        const group2 = document.querySelector('#application_applicationPractical_preferredGroup_2');
+        const doublePositionRow = document.querySelector('.doublePositionRow');
+        singlePositionToggle.addEventListener('change', toggleDoublePosition);
+        doublePositionToggle.addEventListener('change', toggleDoublePosition);
+
+        function toggleDoublePosition () {
+            if (doublePositionToggle.checked) {
+                bothGroups.checked=true;
+                bothGroups.setAttribute('disabled', 'disabled');
+                group1.setAttribute('disabled','disabled');
+                group2.setAttribute('disabled', 'disabled');
+                doublePositionRow.classList.add('textDisabled');
+            }
+            else {
+                bothGroups.removeAttribute('disabled');
+                group1.removeAttribute('disabled');
+                group2.removeAttribute('disabled');
+                doublePositionRow.classList.remove('textDisabled');
+            }
+        }
+
+
+
     </script>
 
 {% endblock %}
