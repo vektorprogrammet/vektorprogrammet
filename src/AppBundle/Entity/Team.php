@@ -57,7 +57,7 @@ class Team implements TeamInterface
     private $acceptApplication;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean")
      */
      protected $isActive;
 
@@ -103,6 +103,7 @@ class Team implements TeamInterface
     public function __construct()
     {
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->isActive = true;
     }
 
     public function __toString()
