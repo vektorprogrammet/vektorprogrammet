@@ -28,17 +28,13 @@
 
             <img src="{{ asset_with_version(article.imageLarge) }}" style="width:100%;"/>
 
-            <p class="article-department">Vektornyheter for
-                {% for department in article.departments %}
-                {{ department.shortName }}{% if not loop.last %}, {% endif %}{% else %}alle{% endfor %}:</p>
+            <h1 class="article-title mb-2 mt-5">{{ article.title|safe_html }}</h1>
 
-            <h1>{{ article.title|safe_html }}</h1>
-
-            <p class="vektor-blue-text"><strong>Skrevet
+            <p class="article-by vektor-blue-text mb-4"><strong>Skrevet
                     av:</strong> {{ article.author.firstName }} {{ article.author.lastName }}.
                 Publisert: {{ article.created|date("d.m.y — G:i") }}</p>
 
-            <div class="article-body ml-md-4">
+            <div class="article-body">
             {{ article.article|safe_html }}
             </div>
             {# Render the controller for the sidebar showing other articles #}
