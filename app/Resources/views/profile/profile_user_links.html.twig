@@ -5,7 +5,7 @@
             <p><a href="{{ path('profile_edit') }}">Rediger profil</a></p>
             <p><a href="{{ path('profile_edit_photo', {'id': user.getId()}) }}">Rediger
                     bilde</a></p>
-            <p><a href="{{ path('profile_edit_password') }}">Endre passord</a></p>
+            <p class="mb-0"><a href="{{ path('profile_edit_password') }}">Endre passord</a></p>
         </div>
 
     {% elseif is_granted_team_leader() %}
@@ -15,7 +15,7 @@
                     profil</a></p>
             <p><a href="{{ path('profile_edit_photo', {'id': user.getId()}) }}">Rediger
                     bilde</a></p>
-            <p><a href="{{ path('profile_certificate', { id: user.id} ) }}">Last
+            <p class="mb-0"><a href="{{ path('profile_certificate', { id: user.id} ) }}">Last
                     ned attest</a></p>
         </div>
     {% endif %}
