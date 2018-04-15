@@ -22,28 +22,30 @@
         </div>
     {% endfor %}
 
-    <div class="segment mt-4">
-    <article>
+    <div class="article">
+        <div class="segment mt-4">
+        <article>
 
-        <img src="{{ asset_with_version(article.imageLarge) }}" style="width:100%;"/>
+            <img src="{{ asset_with_version(article.imageLarge) }}" style="width:100%;"/>
 
-        <p class="article-department">Vektornyheter for
-            {% for department in article.departments %}
-            {{ department.shortName }}{% if not loop.last %}, {% endif %}{% else %}alle{% endfor %}:</p>
+            <p class="article-department">Vektornyheter for
+                {% for department in article.departments %}
+                {{ department.shortName }}{% if not loop.last %}, {% endif %}{% else %}alle{% endfor %}:</p>
 
-        <h1>{{ article.title|safe_html }}</h1>
+            <h1>{{ article.title|safe_html }}</h1>
 
-        <p class="vektor-blue-text"><strong>Skrevet
-                av:</strong> {{ article.author.firstName }} {{ article.author.lastName }}.
-            Publisert: {{ article.created|date("d.m.y — G:i") }}</p>
+            <p class="vektor-blue-text"><strong>Skrevet
+                    av:</strong> {{ article.author.firstName }} {{ article.author.lastName }}.
+                Publisert: {{ article.created|date("d.m.y — G:i") }}</p>
 
-        <div class="article-body ml-md-4">
-        {{ article.article|safe_html }}
+            <div class="article-body ml-md-4">
+            {{ article.article|safe_html }}
+            </div>
+            {# Render the controller for the sidebar showing other articles #}
+            {% render controller('AppBundle:Article:showOther', { 'excludeId': article.id }) %}
+
+        </article>
         </div>
-        {# Render the controller for the sidebar showing other articles #}
-        {% render controller('AppBundle:Article:showOther', { 'excludeId': article.id }) %}
-
-    </article>
     </div>
 
 {% endblock %}

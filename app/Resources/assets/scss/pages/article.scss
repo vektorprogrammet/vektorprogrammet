@@ -1,5 +1,10 @@
 @import "../colors";
 
+.article {
+  margin: 0 auto;
+  max-width: 1024px;
+}
+
 .article-department {
   color: $vektor-blue;
   font-weight: 600;
