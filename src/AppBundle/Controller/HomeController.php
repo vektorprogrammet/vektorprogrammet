@@ -19,14 +19,16 @@ class HomeController extends Controller
         $departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
         $closestDepartment = $this->get('app.geolocation')->findNearestDepartment($departments);
 
-        $assistantHistoryData = $this->get('assistant_history.data');
+        $femaleAssistantCount = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->numFemale();
+        $maleAssistantCount = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->numMale();
 
         return $this->render('home/index.html.twig', [
             'assistantCount' => $assistantsCount + 600, // + Estimated number of assistants not registered in website
             'teamMemberCount' => $teamMembersCount + 160, // + Estimated number of team members not registered in website
+            'femaleAssistantCount' => $femaleAssistantCount,
+            'maleAssistantCount' => $maleAssistantCount,
             'closestDepartment' => $closestDepartment,
             'news' => $articles,
-            'assistantHistoryData' => $assistantHistoryData
         ]);
     }
 

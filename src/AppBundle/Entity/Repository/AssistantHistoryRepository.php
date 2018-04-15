@@ -163,7 +163,7 @@ class AssistantHistoryRepository extends EntityRepository
      *
      * @return int
      */
-    public function numFemale(Semester $semester)
+    public function numFemaleBySemester(Semester $semester)
     {
         return $this->createQueryBuilder('ah')
             ->select('count(ah.id)')
@@ -180,7 +180,7 @@ class AssistantHistoryRepository extends EntityRepository
      *
      * @return int
      */
-    public function numMale(Semester $semester)
+    public function numMaleBySemester(Semester $semester)
     {
         return $this->createQueryBuilder('ah')
             ->select('count(ah.id)')
@@ -188,6 +188,26 @@ class AssistantHistoryRepository extends EntityRepository
             ->where('user.gender = 0')
             ->andWhere('ah.semester = :semester')
             ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function numFemale()
+    {
+        return $this->createQueryBuilder('ah')
+            ->select('count(ah.id)')
+            ->join('ah.user', 'user')
+            ->where('user.gender = 1')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function numMale()
+    {
+        return $this->createQueryBuilder('ah')
+            ->select('count(ah.id)')
+            ->join('ah.user', 'user')
+            ->where('user.gender = 0')
             ->getQuery()
             ->getSingleScalarResult();
     }

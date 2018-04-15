@@ -5,20 +5,18 @@
     }
     document.addEventListener('DOMContentLoaded', function () {
 
-        {% if assistantHistoryData.count %}
         var acceptedGenderData = {
             datasets: [{
-                data: [{{ assistantHistoryData.maleCount }}, {{ assistantHistoryData.femaleCount }}],
+                data: [{{ maleAssistantCount }}, {{ femaleAssistantCount }}],
                 backgroundColor: [getColor(0), getColor(4)]
             }],
             labels: [
-                'Gutt' + ' ({{ (assistantHistoryData.maleCount/assistantHistoryData.count*100)|round }} %)',
-                'Jente' + ' ({{ (assistantHistoryData.femaleCount/assistantHistoryData.count*100)|round }} %)'
+                'Gutt' + ' ({{ (maleAssistantCount/(maleAssistantCount + femaleAssistantCount)*100)|round }} %)',
+                'Jente' + ' ({{ (femaleAssistantCount/(maleAssistantCount + femaleAssistantCount)*100)|round }} %)'
             ]
         };
 
         renderChart(acceptedGenderData, 'Kjønnsfordeling', true);
-        {% endif %}
 
         function renderChart(data, label, legend) {
             var div = $('#admissionChart');

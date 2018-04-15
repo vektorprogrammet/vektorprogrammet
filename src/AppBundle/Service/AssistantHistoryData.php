@@ -41,12 +41,12 @@ class AssistantHistoryData
 
     public function getMaleCount(): int
     {
-        return $this->assistantHistoryRepository->numMale($this->semester);
+        return $this->assistantHistoryRepository->numMaleBySemester($this->semester);
     }
 
     public function getFemaleCount(): int
     {
-        return $this->assistantHistoryRepository->numFemale($this->semester);
+        return $this->assistantHistoryRepository->numFemaleBySemester($this->semester);
     }
 
     public function getPositionsCount(): int
