@@ -1,23 +1,33 @@
 {% extends 'adminBase.html.twig' %}
 
 {% block title %}
-    Opprett avdeling
+    Rediger assistenthistorie
 {% endblock %}
 
-{% form_theme form 'form/foundation_layout.html.twig' %}
-
 {% block body %}
-    <p></p>
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            <h1> Opprett avdeling </h1>
+
+            <h1> Rediger assistenthistorie </h1>
+
             <hr>
+
             <div class="row">
                 <div class="small-12 medium-12 large-12 columns">
+
                     {{ form_start(form) }}
+                    {{ form_row(form.Semester) }}
+                    {{ form_row(form.workdays) }}
+                    {{ form_row(form.School) }}
+                    {{ form_row(form.bolk) }}
+                    {{ form_row(form.day) }}
+                    {{ form_row(form.save, {'label': 'Lagre'}) }}
                     {{ form_end(form) }}
+
                 </div>
             </div>
+
+
         </div>
     </div>
 {% endblock %}

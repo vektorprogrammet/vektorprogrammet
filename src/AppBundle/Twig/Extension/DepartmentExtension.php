@@ -22,11 +22,17 @@ class DepartmentExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFunction('get_departments', array($this, 'getDepartments')),
+            new \Twig_SimpleFunction('get_active_departments', array($this, 'getActiveDepartments')),
         );
     }
 
     public function getDepartments()
     {
         return $this->em->getRepository('AppBundle:Department')->findAll();
+    }
+
+    public function getActiveDepartments()
+    {
+        return $this->em->getRepository('AppBundle:Department')->findActive();
     }
 }

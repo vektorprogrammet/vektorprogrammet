@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -22,6 +23,7 @@ class CreateDepartmentType extends AbstractType
             ))
             ->add('address', 'text', array(
                 'label' => 'Adresse:',
+                'required' => false
             ))
             ->add('city', 'text', array(
                 'label' => 'By',
@@ -38,6 +40,10 @@ class CreateDepartmentType extends AbstractType
                 'label' => 'Privat Slack Channel',
                 'required' => false,
                 'attr' => ['placeholder' => 'eks. #styret_REGION']
+            ))
+            ->add('active', CheckboxType::class, array(
+                'label' => 'Aktiv?',
+                'required' => false
             ))
             ->add('save', 'submit', array(
                 'label' => 'Opprett',

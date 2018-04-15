@@ -3,6 +3,13 @@
 
 {% block body %}
     <div class="row">
+        <div class="small-12 columns">
+            <a href="{{ path('receipts_show') }}">
+                <i class="fa fa-chevron-left"></i> Alle utlegg
+            </a>
+        </div>
+    </div>
+    <div class="row">
         <div class="small-12 medium-12 large-12 columns">
             <h1>Utlegg for <a href="{{ path('specific_profile', {'id': user.id}) }}">{{ user }}</a></h1>
         </div>

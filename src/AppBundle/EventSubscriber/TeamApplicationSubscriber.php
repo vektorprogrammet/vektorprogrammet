@@ -48,7 +48,6 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
     {
         return array(
             TeamApplicationCreatedEvent::NAME => array(
-                array('logEvent', 1),
                 array('sendConfirmationMail', 0),
                 array('sendApplicationToTeamMail', 0),
                 array('addFlashMessage', -1),
@@ -99,17 +98,5 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
     public function addFlashMessage()
     {
         $this->session->getFlashBag()->add('success', 'Søknaden er mottatt.');
-    }
-
-    public function logEvent(TeamApplicationCreatedEvent $event)
-    {
-        $application = $event->getTeamApplication();
-
-        $this->logger->info("New team({$application->getTeam()}) application from {$application->getName()} registered");
-
-        $department = $application->getTeam()->getDepartment();
-
-        $this->slackMessenger->notify("$department: *{$application->getName()}* har sendt en søknad til {$application->getTeam()}. Les søknaden her: "
-            .$this->router->generate('team_application_show', array('id' => $application->getId()), RouterInterface::ABSOLUTE_URL));
     }
 }

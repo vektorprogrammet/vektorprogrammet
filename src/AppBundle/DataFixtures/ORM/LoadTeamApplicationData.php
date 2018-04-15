@@ -14,6 +14,7 @@ class LoadTeamApplicationData extends AbstractFixture implements OrderedFixtureI
         $teamApplication1 = new TeamApplication();
         $teamApplication1->setName('Arnt Erik');
         $teamApplication1->setEmail('vektor@vektorprogrammet.no');
+        $teamApplication1->setPhone('12345678');
         $teamApplication1->setYearOfStudy('1. klasse');
         $teamApplication1->setFieldOfStudy('MTTK');
         $teamApplication1->setMotivationText('Motivert.');

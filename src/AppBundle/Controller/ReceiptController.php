@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Event\ReceiptEvent;
 use AppBundle\Form\Type\ReceiptType;
 use AppBundle\Role\Roles;
+use AppBundle\Service\ReceiptStatistics;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Receipt;
@@ -17,6 +18,10 @@ class ReceiptController extends Controller
     public function showAction()
     {
         $usersWithReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithReceipts();
+        $refundedReceipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByStatus(Receipt::STATUS_REFUNDED);
+        $receiptStatistics = new ReceiptStatistics($refundedReceipts);
+        $totalPayoutThisYear = $receiptStatistics->totalPayoutIn((new \DateTime())->format('Y'));
+        $avgRefundTimeInHours = $receiptStatistics->averageRefundTimeInHours();
 
         $sorter = $this->container->get('app.sorter');
 
@@ -26,6 +31,8 @@ class ReceiptController extends Controller
         return $this->render('receipt_admin/show_receipts.html.twig', array(
             'users_with_receipts' => $usersWithReceipts,
             'current_user' => $this->getUser(),
+            'total_payout' => $totalPayoutThisYear,
+            'avg_refund_time_in_hours' => $avgRefundTimeInHours
         ));
     }
 
@@ -147,6 +154,10 @@ class ReceiptController extends Controller
         }
 
         $receipt->setStatus($status);
+        if ($status === Receipt::STATUS_REFUNDED && !$receipt->getRefundDate()) {
+            $receipt->setRefundDate(new \DateTime());
+        }
+
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
