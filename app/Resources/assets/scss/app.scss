@@ -150,12 +150,15 @@ p {
   margin-top: -1px;
 }
 
-
 .textDisabled {
   opacity: 0.4;
 }
 
 .flex-grow {
   flex-grow: 1;
+}
+
+.profile-photo {
+  filter: grayscale(100%);
 }
 

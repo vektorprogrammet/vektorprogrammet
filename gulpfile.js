@@ -104,6 +104,9 @@ gulp.task('vendor', function () {
   gulp.src('node_modules/dropzone/**/*')
       .pipe(gulp.dest('www/vendor/dropzone/'));
 
+  gulp.src('node_modules/cropperjs/dist/*')
+    .pipe(gulp.dest('www/vendor/cropperjs/'));
+
   gulp.src(['node_modules/ckeditor/**/*', path.src + 'js/ckeditor/**/*'])
       .pipe(gulp.dest('www/vendor/ckeditor/'));
 

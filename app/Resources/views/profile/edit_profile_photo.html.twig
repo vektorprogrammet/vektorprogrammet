@@ -1,252 +1,127 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_new.html.twig' %}
 
 {% block title %}
     Velg profilbilde | {{ user.firstName }} {{ user.lastName }}
 {% endblock %}
 
-{% block javascripts %}
-
-    <script type="text/javascript" src="{{ asset_with_version('vendor/dropzone/dist/min/dropzone.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset_with_version('js/aviaryImageEditor.js') }}"></script>
-
-    <script>
-
-        // The Image Editor SDK object
-        // https://creativesdk.adobe.com/docs/web/#/articles/gettingstarted/index.html
-        var featherEditor = new Aviary.Feather({
-            apiKey: '4a1caf097b3d48e9b917e9f1bc430ad3',
-            fileFormat: 'jpg',
-            cropPresetsStrict: true,
-            onSave: function (imageID, newURL) {
-                saveImgToFile(imageID, newURL);
-
-            }
-        });
-
-        //Launch the editor
-        function launchEditor(event) {
-            event.preventDefault();
-            if ($("#profileImgHidden").attr('src') !== '') {
-                featherEditor.launch({
-                    forceCropPreset: ['Profile Preset', '400x400'],
-                    image: 'profileImgHidden'
-                });
-            }
-            else {
-                alert('Last opp et bilde!');
-            }
-            return true;
-        }
-
-        function onReady() {
-            // Bind editBtn to editor
-            $('#editImageBtn').on('click', launchEditor);
-        }
-
-        //Sends json request to server with the new image URL
-        function saveImgToFile(imageID, newURL) {
-            featherEditor.showWaitIndicator();
-            $.ajax({
-                type: "POST",
-                url: "{{ path('profile_save_response_from_editor', {'id': user.getId()}) }}",
-                data: JSON.stringify({
-                    aviaryURL: newURL,
-                }),
-                success: function (response) {
-                    if (response.success) {
-                        $("#profileImg").attr('src', response.localURL);
-                        $("#profileImgHidden").attr('src', response.localURL);
-                        featherEditor.close();
-                    } else {
-                        alert(response.cause);
-                        featherEditor.hideWaitIndicator();
-                    }
-                }
-            });
-        }
-
-        //If the user click the edit Button
-        function editBtnClick(event) {
-            event.preventDefault();
-            var elem = $(this).attr('id').substr(7);
-            if ($('#article_image' + elem).val() !== '') {
-                Article.launchEditor(elem);
-            }
-            else {
-                alert('Du må velge et bilde!')
-            }
-        }
-
-        //Configure the uploadzone
-        // http://www.dropzonejs.com/
-        Dropzone.options.dropzone = {
-            paramName: "img", // The name that will be used to transfer the file
-            dictDefaultMessage: "Slipp bildet her<br>(eller trykk for &aring velge)",
-            createImageThumbnails: false,
-            acceptedFiles: ".jpg,.jpeg",
-            complete: function (file) {
-                this.removeFile(file);
-            },
-            init: function () {
-                this.on("success", function (file, response) {
-                    $("#profileImg").attr('src', response.url + '?' + new Date().getTime());
-                    $("#profileImgHidden").attr('src', response.url + '?' + new Date().getTime());
-                });
-            }
-        };
-
-        $(document).ready(function () {
-            onReady();
-        });
-    </script>
-
-    <style>
-
-        #dropzone {
-            position: relative;
-            border-radius: 5px;
-            color: #686868;
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-            width: 300px;
-            cursor: pointer;
-            margin: 0px auto;
-            margin-top: 20px;
-            height: 300px;
-            background-color: #E5F2FA;
-            border: 4px dashed #6fceee;
-        }
-
-        #dropzone div {
-            position: absolute;
-            top: 40%;
-            right: 0;
-            bottom: 0;
-            left: 0;
-        }
-
-        #dropzone img {
-            border-radius: 10px;
-            vertical-align: middle;
-            max-width: 95%;
-            max-height: 95%;
-        }
-
-        #dropzone [type="file"] {
-            cursor: pointer;
-            position: absolute;
-            opacity: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-        }
-
-        #dropzone:hover {
-            border: 4px dashed #66abcc;
-            color: #323232;
-        }
-
-        #dropzone.dropped {
-            background: #222;
-            border: 10px solid #444;
-        }
-
-        .dz-file-preview {
-            display: none;
-        }
-
-        .bordered {
-            border-left: 1px solid #aaaaaa;
-        }
-
-        #profileImg {
-            width: 300px;
-            height: 300px;
-            margin: 0px auto;
-        }
-
-        #profileImg {
-            width: 300px;
-            height: 300px;
-            margin: 0px auto;
-        }
-
-        #profileImgHidden {
-            display: none;
-            float: left;
-        }
-
-
-    </style>
-
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('vendor/cropperjs/cropper.min.css') }}">
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/profile_photo.css') }}">
 {% endblock %}
 
 {% block body %}
-    <img id="profileImgHidden" src="{{ path }}"/>
-    <p></p>
-
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-
-            <div class="row">
-                <div class="small-12 medium-12 large-12 columns">
-
-                    <h1> Profilbilde </h1>
-
-                    <p>
-                        Velg profilbilde for {{ user.firstName }} {{ user.lastName }}
-                    </p>
-
-                    <p>
-                        <b>NB:</b> Du finner svart/hvitt filter ved å klikke på "Effects"->"Classic"->"B&W" inne i
-                        redigeringsprogrammet.
-                    </p>
-
-                    <hr>
-                    {% for flashMessage in app.session.flashbag.get('profile-notice') %}
-                        <div class="row">
-                            <div class="small-12 medium-12 large-12 columns">
-                                <div data-alert class="alert-box info radius">
-                                    {{ flashMessage }}
-                                    <a href="#" class="close">&times;</a>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-
-                    <div class="row">
-                        <div class="medium-6 columns text-center">
-                            <form action="{{ path('profile_upload_photo', {'id': user.getId()}) }}" class="dropzone"
-                                  id="dropzone" method="POST"></form>
-                        </div>
-                        <div class="medium-6 columns text-center bordered">
-
-                            <img id="profileImg" src="{{ asset_with_version(path) }}"/>
-                            <div class="row">
-                                <br>
-                                <a href="#" class="button small" id="editImageBtn">Rediger bilde</a>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="medium-12 columns text-center">
-                                <br>
-                                <a href="{{ path('profile_save_photo', {'id': user.getId()}) }}" class="button medium"
-                                   id="editImageBtn">Lagre</a>
-                            </div>
-                        </div>
-
-                    </div>
-                    <br>
-
-                    <hr>
-
+    <div class="container edit-profile-photo">
+        <h1>Last opp profilbilde{% if user != app.user %} for {{ user }}{% endif %}</h1>
+        <div id="app" style="display:none">
+            <div v-if="!photoLoaded">
+                <form action="{{ path('profile_upload_photo', {'id': user.getId()}) }}" class="dropzone"
+                      id="dropzone" method="POST">
+                </form>
+            </div>
+            <div v-if="photoLoaded && !croppedImg" class="crop-area">
+                <img id="filecrop">
+                <button @click="cropImage()" class="btn btn-primary mt-5">Neste</button>
+            </div>
+            <div v-if="photoLoaded && croppedImg">
+                <div class="preview">
+                    <img :src="previewImgUrl">
+                    <button @click="upload()" class="btn btn-primary mt-5" :disabled="uploading">Last opp</button>
                 </div>
             </div>
-
-
+            <p v-if="uploadError" class="text-center mt-5">
+                <span class="upload-error"><i class="fa fa-warning text-warning"></i> ${uploadError}</span>
+            </p>
         </div>
     </div>
-
 {% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script type="text/javascript" src="{{ asset_with_version('vendor/dropzone/dist/min/dropzone.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset_with_version('vendor/cropperjs/cropper.min.js') }}"></script>
+
+    <script>
+      new Vue({
+        el: '#app',
+        data: {
+          uploading: false,
+          photoLoaded: false,
+          showPreview: false,
+          cropper: null,
+          croppedImg: null,
+          uploadError: '',
+        },
+        delimiters: ['${', '}'],
+        mounted() {
+          Dropzone.options.dropzone = {
+            maxFilesize: 5,
+            autoProcessQueue: false,
+            paramName: 'img', // The name that will be used to transfer the file
+            dictDefaultMessage: 'Slipp bildet her<br>(eller trykk for &aring velge)',
+            createImageThumbnails: false,
+            acceptedFiles: 'image/*',
+            accept: function (file, done) {
+              this.photoLoaded = true;
+              this.showCrop(file);
+              done();
+            }.bind(this),
+          };
+
+          $('#app').show();
+        },
+        computed: {
+          previewImgUrl() {
+            if (!this.croppedImg) {
+              return '';
+            }
+
+            var urlCreator = window.URL || window.webkitURL;
+            return urlCreator.createObjectURL(this.croppedImg);
+          },
+        },
+        methods: {
+          showCrop(file) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+              $('#filecrop').attr('src', e.target.result);
+              this.cropper = new Cropper(document.querySelector('#filecrop'), {
+                aspectRatio: 1,
+                viewMode: 1,
+              });
+            }.bind(this);
+
+            reader.readAsDataURL(file);
+          },
+          cropImage() {
+            this.cropper.getCroppedCanvas().toBlob(function (blob) {
+              this.croppedImg = blob;
+            }.bind(this));
+          },
+          upload() {
+            this.cropper.getCroppedCanvas().toBlob(function (blob) {
+              var formData = new FormData();
+
+              formData.append('img', blob);
+
+            this.uploading = true;
+
+              $.ajax('{{ path('profile_upload_photo', {'id': user.getId()}) }}', {
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function () {
+                  window.location = '{{ path('specific_profile', {'id': user.id}) }}';
+                },
+                error: function () {
+                  this.uploadError = 'Noe gikk galt under opplasting av bildet. Vennligst prøv igjen';
+                }.bind(this),
+              });
+            }.bind(this));
+          },
+        },
+      });
+    </script>
+{% endblock %}
+

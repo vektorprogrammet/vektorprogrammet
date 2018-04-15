@@ -39,7 +39,7 @@
                     <div class="team-member mx-2 my-3 mx-sm-4">
                         {% if is_granted_assistant() %}
                             <a href="{{ path('specific_profile', { 'id': teamMember.id }) }}"><img
-                                        class="img-fluid rounded-circle mb-2 mb-sm-4"
+                                        class="img-fluid rounded-circle mb-2 mb-sm-4 profile-poto"
                                         src="{{ asset_with_version(teamMember.picturePath) }}"
                                         alt="{{ teamMember }}"></a>
                             <h5 class="m-0"><a
