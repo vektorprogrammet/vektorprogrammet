@@ -72,7 +72,7 @@ class ArticleAdminController extends Controller
                 $em->flush();
 
                 $this->addFlash(
-                    'article-notice',
+                    'success',
                     'Artikkelen har blitt publisert.'
                 );
 
@@ -118,7 +118,7 @@ class ArticleAdminController extends Controller
                 $em->flush();
 
                 $this->addFlash(
-                    'article-notice',
+                    'success',
                     'Endringene har blitt publisert.'
                 );
 
