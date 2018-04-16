@@ -36,19 +36,15 @@
     {% block stylesheets %}{% endblock %}
 
 </head>
-<body>
-<div class="container-fluid body">
-    <div class="row">
-        {% block header %}
-            {% include 'base/header.html.twig' %}
-        {% endblock %}
-    </div>
+<body class="body">
+    {% block header %}
+        {% include 'base/header.html.twig' %}
+    {% endblock %}
     {% block body %}
         <p>
             Content
         </p>
     {% endblock %}
-</div>
 {% block footer %}
     {% include 'base/footer.html.twig' %}
 {% endblock %}

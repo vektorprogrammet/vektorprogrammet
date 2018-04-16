@@ -12,12 +12,12 @@
                     <div class="card-body">
                         <div class="card-title">
                             {% if app.user == user %}
-                            <h1> Redigerer din profil </h1>
+                                <h1 class="text-dark-blue"> Redigerer din profil </h1>
                             {% else %}
-                            <h1> Redigerer profil </h1>
-                            <p>
-                                Redigerer profilen til {{ user.firstName }} {{ user.lastName }}
-                            </p>
+                                <h1 class="text-dark-blue"> Redigerer profil </h1>
+                                <p>
+                                    Redigerer profilen til {{ user }}
+                                </p>
                             {% endif %}
                         </div>
 
@@ -32,7 +32,6 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
 
 {% block javascripts %}

@@ -26,7 +26,8 @@
   }
 
   .preview img {
-    max-width: 400px;
+    width: 400px;
+    max-width: 100%;
     max-height: 400px;
     filter: grayscale(100%);
   }

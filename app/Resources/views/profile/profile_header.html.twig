@@ -1,8 +1,7 @@
-<div class="row">
-    <div class="col-12">
-
-        <h1 class="text-dark-blue"> {{ user.firstName }} {{ user.lastName }} </h1>
-        <h6 class="subheader">
+<div class="card">
+    <div class="card-body">
+        <h1 class="text-dark-blue card-title"> {{ user.firstName }} {{ user.lastName }} </h1>
+        <h6>
             {% for r in user.roles %}
                 {{ r.name | replace({
                     'User': 'Assistent',
@@ -12,6 +11,5 @@
                 }) }}
             {% endfor %}
         </h6>
-
     </div>
 </div>

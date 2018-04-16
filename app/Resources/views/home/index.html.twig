@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block body %}
+    <div class="container-fluid">
     {% if closestDepartment.activeAdmission %}
         <section class="row urgent-box">
             <div class="main-navigation">
@@ -46,9 +47,11 @@
             </div>
         </div>
     </section>
+    </div>
+    <div class="container">
     {% if news %}
         <div class="row news">
-            <div class="container">
+            <div class="col-12">
                 <div id="newsCarousel" class="carousel slide" data-ride="carousel">
                     <h2 class="text-center text-dark-blue">Nyheter</h2>
                     <div class="carousel-inner">
@@ -112,6 +115,7 @@
         <hr>
         {{ include('sponsors/sponsors.html.twig') }}
     </section>
+    </div>
 
 {% endblock %}
 

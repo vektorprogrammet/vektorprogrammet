@@ -11,28 +11,28 @@
 
 {% block body %}
     <div class="container edit-profile-photo">
-        <h1>Last opp profilbilde{% if user != app.user %} for {{ user }}{% endif %}</h1>
-        <div id="app" style="display:none">
-            <div v-if="!photoLoaded">
-                <form action="{{ path('profile_upload_photo', {'id': user.getId()}) }}" class="dropzone"
-                      id="dropzone" method="POST">
-                </form>
-            </div>
-            <div v-if="photoLoaded && !croppedImg" class="crop-area">
-                <img id="filecrop">
-                <button @click="cropImage()" class="btn btn-primary mt-5">Neste</button>
-            </div>
-            <div v-if="photoLoaded && croppedImg">
-                <div class="preview">
-                    <img :src="previewImgUrl">
-                    <button @click="upload()" class="btn btn-primary mt-5" :disabled="uploading">Last opp</button>
+            <h1>Last opp profilbilde{% if user != app.user %} for {{ user }}{% endif %}</h1>
+            <div id="app" style="display:none">
+                <div v-if="!photoLoaded">
+                    <form action="{{ path('profile_upload_photo', {'id': user.getId()}) }}" class="dropzone"
+                          id="dropzone" method="POST">
+                    </form>
                 </div>
+                <div v-if="photoLoaded && !croppedImg" class="crop-area">
+                    <img id="filecrop">
+                    <button @click="cropImage()" class="btn btn-primary mt-5">Neste</button>
+                </div>
+                <div v-if="photoLoaded && croppedImg">
+                    <div class="preview">
+                        <img :src="previewImgUrl">
+                        <button @click="upload()" class="btn btn-primary mt-5" :disabled="uploading">Last opp</button>
+                    </div>
+                </div>
+                <p v-if="uploadError" class="text-center mt-5">
+                    <span class="upload-error"><i class="fa fa-warning text-warning"></i> ${uploadError}</span>
+                </p>
             </div>
-            <p v-if="uploadError" class="text-center mt-5">
-                <span class="upload-error"><i class="fa fa-warning text-warning"></i> ${uploadError}</span>
-            </p>
         </div>
-    </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -104,7 +104,7 @@
 
               formData.append('img', blob);
 
-            this.uploading = true;
+              this.uploading = true;
 
               $.ajax('{{ path('profile_upload_photo', {'id': user.getId()}) }}', {
                 method: 'POST',

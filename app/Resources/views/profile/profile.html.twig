@@ -14,11 +14,7 @@
         <div class="row mt-3 mt-md-5">
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="d-block d-md-none mb-3">
-                    <div class="card">
-                        <div class="card-body">
-                            {% include 'profile/profile_header.html.twig' %}
-                        </div>
-                    </div>
+                    {% include 'profile/profile_header.html.twig' %}
                 </div>
                 {% include 'profile/profile_user_links.html.twig' %}
 
@@ -33,7 +29,7 @@
                                 <form
                                         method="POST"
                                         action="{{ path(user.isActive ? 'profile_deactivate_user' : 'profile_activate_user', {id: user.id}) }}"
-                                        onsubmit="return confirm('Er du sikker?')">
+                                        onsubmit="return confirm('Er du sikker?');">
                                     <button type="submit"
                                             class="btn btn-link p-0">{{ user.isActive ? 'Deaktiver' : 'Aktiver' }}</button>
                                 </form>
@@ -47,12 +43,7 @@
 
             <div class="col-12 col-md-6 col-lg-8">
                 <div class="d-none d-md-block">
-                    <div class="card">
-                        <div class="card-body">
-
-                            {% include 'profile/profile_header.html.twig' %}
-                        </div>
-                    </div>
+                    {% include 'profile/profile_header.html.twig' %}
                 </div>
 
                 {% include 'profile/assistant_history.html.twig' %}

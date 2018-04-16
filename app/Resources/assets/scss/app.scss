@@ -107,6 +107,19 @@ p {
   }
 }
 
+.card-title h1, h1.card-title {
+  font-size: 36px;
+
+  @media (max-width: 992px) {
+    font-size: 28px;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 24px;
+  }
+}
+
+
 .page-cover {
   margin-top: 50px;
   margin-bottom: 50px;
