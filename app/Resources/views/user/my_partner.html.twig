@@ -13,9 +13,9 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="text-center">
-                    <h1 class="text-dark-blue mt-3">Mine vektorpartnere - {{ semester.name }}</h1>
-                </div>
+                <h1 class="text-center text-dark-blue mt-3">
+                    {{ partnerCount == 1 ? 'Min vektorpartner' : 'Mine vektorpartnere' }} - {{ semester.name }}
+                </h1>
                 <div class="content">
                     {% for partnerInformation in partnerInformations %}
                         <div class="row school mb-5">
@@ -35,14 +35,14 @@
                                                 <img
                                                         src="{{ asset_with_version(partner.user.picturePath) }}"
                                                         alt="{{ partner.user }}"
-                                                        class="img-fluid rounded-circle mb-3">
+                                                        class="img-fluid rounded-circle mb-3 profile-photo">
                                                 <h5 class="mb-0">
                                                     <a class="text-dark-blue"
                                                        href="{{ path('specific_profile', {'id': partner.user.id}) }}">
                                                         {{ partner.user }}
                                                     </a>
                                                 </h5>
-                                                <p>{{ partner.user.phone }}</p>
+                                                <p><i class="fa fa-phone"></i> {{ partner.user.phone }}</p>
                                             </div>
                                         {% endfor %}
                                     </div>
@@ -51,6 +51,19 @@
                         </div>
                     {% endfor %}
                 </div>
+                {% if partnerCount > 0 %}
+                    <div class="contact-partner text-center">
+                        <p>
+                            <i class="fa fa-info-circle text-dark-blue"></i>
+                        </p>
+                        <p>
+                        <span class="take-contact">
+                            Ta kontakt med {{ partnerCount == 1 ? 'din vektorpartner' : 'dine vektorpartnere' }} før dere skal ut til skolen!
+                        </span>
+                        </p>
+                    </div>
+
+                {% endif %}
             </div>
         </div>
     </div>

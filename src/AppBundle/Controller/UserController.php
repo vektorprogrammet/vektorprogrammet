@@ -24,6 +24,7 @@ class UserController extends Controller
         }
 
         $partnerInformations = [];
+        $partnerCount = 0;
 
         foreach ($activeAssistantHistories as $activeHistory) {
             $schoolHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesBySchool($activeHistory->getSchool());
@@ -39,6 +40,7 @@ class UserController extends Controller
                 if ($activeHistory->activeInGroup(1) && $sh->activeInGroup(1) ||
                     $activeHistory->activeInGroup(2) && $sh->activeInGroup(2)) {
                     $partners[] = $sh;
+                    $partnerCount++;
                 }
             }
             $partnerInformations[] = [
@@ -51,7 +53,8 @@ class UserController extends Controller
         $semester = $this->getUser()->getDepartment()->getCurrentSemester();
         return $this->render('user/my_partner.html.twig', [
             'partnerInformations' => $partnerInformations,
-            'semester' => $semester
+            'partnerCount' => $partnerCount,
+            'semester' => $semester,
         ]);
     }
 }
