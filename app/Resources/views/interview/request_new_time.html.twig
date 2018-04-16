@@ -1,20 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_new.html.twig' %}
 
 {% block header %}
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="small-12 columns text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                {% include 'interview/interview_invitation_header.html.twig' %}
 
-            <p>{{ interview.user }}</p>
-            <p>Intervju tid: {{ interview.scheduled | date("d.m.Y H:i") }}</p>
+                <p class="mt-5">Vennligst skriv inn hvilke tidspunkt som <b>ikke</b> passer, så tar vi snart kontakt.</p>
 
-            <p>Vennligst skriv inn hvilke tidspunkt som <b>ikke</b> passer, så vil vi snart ta kontakt.</p>
+                {{ form_start(form) }}
+                {{ form_row(form.newTimeMessage) }}
+                <button class="btn btn-secondary mt-3">Be om nytt tidspunkt</button>
+                {{ form_end(form) }}
 
-            {{ form_start(form) }}
-            {{ form_end(form) }}
-
+            </div>
         </div>
     </div>
 {% endblock %}

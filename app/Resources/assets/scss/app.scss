@@ -175,3 +175,25 @@ p {
   filter: grayscale(100%);
 }
 
+.info-border-bottom {
+  padding-bottom: 5px;
+  border-bottom: 3px solid $dark-blue;
+}
+
+.pagination {
+  span {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+
+    &.current {
+      color: #666;
+      background: #ebebeb;
+    }
+  }
+}

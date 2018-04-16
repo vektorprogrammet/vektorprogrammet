@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_new.html.twig' %}
 
 {% block title %}
     Fant ingen assistenthistorie
@@ -8,13 +8,15 @@
 {% endblock %}
 
 {% block body %}
-    <br>
-    <br>
-    <br>
-    <h5 class="text-center">Fant ingen assistenthistorikk for din bruker ({{ user }}). Kontakt
-        webansvarlig@vektorprogrammet.no hvis dette ikke er riktig. </h5>
-    <p class="text-center">Har du ikke vært assistent tidligere kan du søke fra skjemaet <a
-                href="{{ path('admission_show_specific_department', {'id': user.fieldOfStudy.department.id}) }}">her</a>
-    </p>
-    <br>
+    <div class="container">
+        <br>
+        <br>
+        <br>
+        <h5 class="text-center">Fant ingen assistenthistorikk for din bruker ({{ user }}). Kontakt
+            webansvarlig@vektorprogrammet.no hvis dette ikke er riktig. </h5>
+        <p class="text-center">Har du ikke vært assistent tidligere kan du søke fra skjemaet <a
+                    href="{{ path('admission_show_specific_department', {'id': user.fieldOfStudy.department.id}) }}">her</a>
+        </p>
+        <br>
+    </div>
 {% endblock %}

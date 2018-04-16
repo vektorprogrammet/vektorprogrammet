@@ -1,36 +1,40 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_new.html.twig' %}
 
 {% block header %}
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="small-12 columns text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                {% include 'interview/interview_invitation_header.html.twig' %}
 
-            <p>{{ interview.user }}</p>
-            <p>Intervjutid: {{ interview.scheduled | date("d.m.Y H:i") }}</p>
-            <p>Hei! Du har blitt innkalt til intervju med Vektorprogrammet. For å akseptere, vennligst trykk på:</p>
+                <h3 class="mt-5">Hei {{ interview.user }}!</h3>
+                <p class="mb-0">Du har blitt innkalt til intervju med Vektorprogrammet.</p>
+                <p>For å akseptere tidspunktet, vennligst trykk på:</p>
 
-            <form method="POST"
-                  action="{{ path('interview_accept_by_response', {responseCode:interview.responseCode}) }}">
-                <button class="success button">Godta</button>
-            </form>
+                <form method="POST"
+                      action="{{ path('interview_accept_by_response', {responseCode:interview.responseCode}) }}">
+                    <button class="btn btn-lg btn-success my-3">Godta</button>
+                </form>
 
-            <p>
-                <small class="text-bold">Hvis det ikke passer, eller hvis du ønsker å kansellere intervjuet, trykk på:
-                </small>
-            </p>
+                <p class="mt-5">
+                    <small class="text-bold">Hvis det ikke passer, eller hvis du ønsker å kansellere intervjuet, trykk
+                        på:
+                    </small>
+                </p>
 
-            <div class="negative_btn_container">
-            <form method="POST"
-                  action="{{ path('interview_request_new_time_by_response', {responseCode:interview.responseCode}) }}">
-                <button class="interview_negative_button tiny warning button">Be om ny tid</button>
-            </form>
-            <form method="POST"
-                  action="{{ path('interview_cancel_by_response', {responseCode:interview.responseCode}) }}"
-                  onsubmit="return confirm('Er du sikker på at du vil kansellere intervjuet?')">
-                <button class="interview_negative_button tiny alert button">Kanseller</button>
-            </form>
+                <div class="d-flex justify-content-center">
+                    <form method="POST"
+                          action="{{ path('interview_request_new_time_by_response', {responseCode:interview.responseCode}) }}">
+                        <button class="btn btn-link btn-sm">Be om ny tid</button>
+                    </form>
+                    <form method="POST"
+                          action="{{ path('interview_cancel_by_response', {responseCode:interview.responseCode}) }}"
+                          onsubmit="return confirm('Er du sikker på at du vil kansellere intervjuet?');">
+                        <button class="btn btn-sm btn-link ml-3">Kanseller</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

@@ -1,24 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_new.html.twig' %}
 
 {% block header %}
 {% endblock %}
 
 {% block body %}
+    <div class="container">
     <div class="row">
-        <div class="small-12 columns text-center">
-
-            <p>{{ interview.user }}</p>
-            <p>Intervju tid: {{ interview.scheduled | date("d.m.Y H:i") }}</p>
-
-            <p>Så leit at du ønsker å kansellere intervjuet. Vi hadde satt stor pris på om du kunne gitt oss en kort
+        <div class="col-12 text-center">
+            {% include 'interview/interview_invitation_header.html.twig' %}
+            <p class="mt-5">Så leit at du ønsker å kansellere intervjuet. Vi hadde satt stor pris på om du kunne gitt oss en kort
             tilbakemelding på hvorfor du valgte å kansellere.</p>
 
             {{ form_start(form) }}
             {{ form_row(form.message) }}
-            {{ form_widget(form.cancel, {'attr': {'class': 'alert button tiny'}}) }}
+            <button class="btn btn-danger mt-3">Kanseller</button>
             {{ form_end(form) }}
-
         </div>
+    </div>
     </div>
 {% endblock %}
 
