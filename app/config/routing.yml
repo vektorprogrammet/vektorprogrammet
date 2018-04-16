@@ -342,12 +342,19 @@ reset_password_confirmation:
 #               Article                  #
 ##########################################
 
-article:
-  path: /artikkel
+news:
+  path: /nyheter
   defaults: { _controller: AppBundle:Article:show }
   methods: [GET]
 
 article_show:
+  path: /nyhet/{id}
+  defaults: { _controller: AppBundle:Article:showSpecific }
+  methods: [GET]
+  requirements:
+    id: \d+
+
+old_article_show:
   path: /artikkel/{id}
   defaults: { _controller: AppBundle:Article:showSpecific }
   methods: [GET]
@@ -355,7 +362,7 @@ article_show:
     id: \d+
 
 article_filter:
-  path: /artikkel/{department}
+  path: /nyheter/{department}
   defaults: { _controller: AppBundle:Article:showFilter }
   methods: [GET]
 
