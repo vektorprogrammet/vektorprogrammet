@@ -12,10 +12,12 @@
         <div class="card-body">
             <p><a href="{{ path('profile_edit_photo', {'id': user.getId()}) }}">Rediger
                     bilde</a></p>
-            <p><a href="{{ path('profile_edit_admin', { 'id': user.id }) }}">Rediger
+            <p class="mb-0"><a href="{{ path('profile_edit_admin', { 'id': user.id }) }}">Rediger
                     profil</a></p>
-            <p class="mb-0"><a href="{{ path('profile_certificate', { id: user.id} ) }}">Last
-                    ned attest</a></p>
+            {% if user.hasBeenAssistant %}
+                <p class="mb-0 mt-3"><a href="{{ path('profile_certificate', { id: user.id} ) }}">Last
+                        ned attest</a></p>
+            {% endif %}
         </div>
     {% endif %}
 </div>
