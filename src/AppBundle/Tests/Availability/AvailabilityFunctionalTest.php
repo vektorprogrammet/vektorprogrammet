@@ -97,9 +97,9 @@ class AvailabilityFunctionalTest extends WebTestCase
             array('/laerere'),
             array('/omvektor'),
             array('/kontakt'),
-            array('/artikkel'),
-            array('/artikkel/ntnu'),
-            array('/artikkel/1'),
+            array('/nyheter'),
+            array('/nyheter/ntnu'),
+            array('/nyhet/1'),
         );
     }
 

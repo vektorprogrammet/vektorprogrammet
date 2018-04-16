@@ -334,7 +334,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
             $client = $this->helperTestCancelConfirm($client, $response_code);
         } elseif ($status === 'Ny tid ønskes') {
             $crawler = $this->goTo('/intervju/nytid/'.$response_code, $client);
-            $form = $crawler->selectButton('Bekreft')->form();
+            $form = $crawler->selectButton('Be om nytt tidspunkt')->form();
             $form['InterviewNewTime[newTimeMessage]'] = 'Test answer';
             $client->enableProfiler();
             $client->submit($form);

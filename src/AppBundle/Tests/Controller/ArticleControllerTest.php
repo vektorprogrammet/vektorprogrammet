@@ -10,7 +10,7 @@ class ArticleControllerTest extends BaseWebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/artikkel');
+        $crawler = $client->request('GET', '/nyheter');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -24,7 +24,7 @@ class ArticleControllerTest extends BaseWebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/artikkel/ntnu');
+        $crawler = $client->request('GET', '/nyheter/ntnu');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -38,7 +38,7 @@ class ArticleControllerTest extends BaseWebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/artikkel/4');
+        $crawler = $client->request('GET', '/nyhet/4');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());

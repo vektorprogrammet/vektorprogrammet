@@ -1,4 +1,4 @@
-{% extends 'base_new.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}{{ article.title }}{% endblock %}
 {% block facebookImage %}{{ article.imageSmall|replace({" ": "%20"}) }}{% endblock %}
@@ -11,18 +11,7 @@
 
 {% block body %}
 
-    {% for flashMessage in app.session.flashbag.get('article-notice') %}
-        <div class="row">
-            <div class="small-12 medium-12 large-12 columns">
-                <div data-alert class="alert-box success radius">
-                    {{ flashMessage }}
-                    <a href="#" class="close">&times;</a>
-                </div>
-            </div>
-        </div>
-    {% endfor %}
-
-    <div class="article">
+    <div class="article container">
         <div class="segment mt-4">
         <article>
 
