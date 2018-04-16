@@ -11,110 +11,112 @@
 
 {% block body %}
     <div class="container-fluid">
-    {% if closestDepartment.activeAdmission %}
-        <section class="row urgent-box">
-            <div class="main-navigation">
-                <p>Vektorprogrammet <span id="department-name">{{ closestDepartment }}</span> søker nye assistenter!
-                    <span class="countdown"><span class="cd-number" id="cd-days"></span>d <span class="cd-number"
-                                                                                                id="cd-hours"></span>t <span
-                                class="cd-number" id="cd-minutes"></span>m <span class="cd-number"
-                                                                                 id="cd-seconds"></span>s</span>
-                    &#9&#9&#9 igjen av opptaket. <a
-                            href="{{ path('admission_show_by_short_name', {'shortName': closestDepartment }) }}">Søk
-                        nå!</a></p>
+        {% if closestDepartment.activeAdmission %}
+            <section class="row urgent-box">
+                <div class="main-navigation">
+                    <p>Vektorprogrammet <span id="department-name">{{ closestDepartment }}</span> søker nye assistenter!
+                        <span class="countdown"><span class="cd-number" id="cd-days"></span>d <span class="cd-number"
+                                                                                                    id="cd-hours"></span>t <span
+                                    class="cd-number" id="cd-minutes"></span>m <span class="cd-number"
+                                                                                     id="cd-seconds"></span>s</span>
+                        &#9&#9&#9 igjen av opptaket. <a
+                                href="{{ path('admission_show_by_short_name', {'shortName': closestDepartment }) }}">Søk
+                            nå!</a></p>
+                </div>
+            </section>
+        {% endif %}
+        <section class="row hero">
+            <div class="container">
+                <div class="row hero-section">
+                    <div class="col-12 col-md-6">
+                        <h1 class="d-md-none mobile">Vektorprogrammet</h1>
+                        <img class="hero-image" src="{{ asset_with_version('images/blackboard.png') }}">
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="hero-content">
+                            <h1 class="d-none d-md-block">Vektorprogrammet</h1>
+                            <p>- sender studenter til ungdomsskoler for å hjelpe til som lærerens assistent i
+                                matematikkundervisningen</p>
+                            <a href="{{ path('assistants') }}">
+                                <button class="btn btn-success cta-link">
+                                    Les mer og bli assistent
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
-    {% endif %}
-    <section class="row hero">
-        <div class="container">
-            <div class="row hero-section">
-                <div class="col-12 col-md-6">
-                    <h1 class="d-md-none mobile">Vektorprogrammet</h1>
-                    <img class="hero-image" src="{{ asset_with_version('images/blackboard.png') }}">
-                </div>
-                <div class="col-12 col-md-6">
-                    <div class="hero-content">
-                        <h1 class="d-none d-md-block">Vektorprogrammet</h1>
-                        <p>- sender studenter til ungdomsskoler for å hjelpe til som lærerens assistent i
-                            matematikkundervisningen</p>
-                        <a href="{{ path('assistants') }}">
-                            <button class="btn btn-success cta-link">
-                                Les mer og bli assistent
-                            </button>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
     </div>
     <div class="container">
-    {% if news %}
-        <div class="row news">
-            <div class="col-12">
-                <div id="newsCarousel" class="carousel slide" data-ride="carousel">
-                    <h2 class="text-center text-dark-blue">Nyheter</h2>
-                    <div class="carousel-inner">
-                        {% for article in news %}
-                            <div class="carousel-item{{ loop.first ? ' active' : '' }}">
-                                <img class="d-block w-100" src="{{ asset_with_version(article.imageLarge) }}"
-                                     alt="First slide">
-                                <div class="carousel-caption">
-                                    <div class="content">
-                                        <a href="{{ path('article_show', {'id': article.id}) }}">
-                                            <h4>{{ article.title|safe_html }}</h4>
-                                            <p>{{ article.article|striptags|split(' ')|slice(0,40)|join(' ')|safe_html }}...
-                                                <span class="medium-bold">LES MER <i class="fa fa-chevron-right"></i></span></p>
-                                        </a>
+        {% if news %}
+            <div class="row news">
+                <div class="col-12">
+                    <div id="newsCarousel" class="carousel slide" data-ride="carousel">
+                        <h2 class="text-center text-dark-blue">Nyheter</h2>
+                        <div class="carousel-inner">
+                            {% for article in news %}
+                                <div class="carousel-item{{ loop.first ? ' active' : '' }}">
+                                    <img class="d-block w-100" src="{{ asset_with_version(article.imageLarge) }}"
+                                         alt="First slide">
+                                    <div class="carousel-caption">
+                                        <div class="content text-dark-blue">
+                                            <a href="{{ path('article_show', {'id': article.id}) }}">
+                                                <h4>{{ article.title|safe_html }}</h4>
+                                            </a>
+                                            <p>{{ article.article|striptags|split(' ')|slice(0,40)|join(' ')|safe_html }}... <a class="medium-bold"
+                                                       href="{{ path('article_show', {'id': article.id}) }}">LES MER <i
+                                                            class="fa fa-chevron-right"></i></a></p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endfor %}
-                        {% if news|length > 1 %}
-                        <ol class="carousel-indicators">
-                            {% for article in news %}
-                                <li data-target="#newsCarousel"
-                                    data-slide-to="{{ loop.index0 }}"
-                                    {% if loop.first %}class="active"{% endif %}></li>
                             {% endfor %}
-                        </ol>
-                        {% endif %}
+                            {% if news|length > 1 %}
+                                <ol class="carousel-indicators">
+                                    {% for article in news %}
+                                        <li data-target="#newsCarousel"
+                                            data-slide-to="{{ loop.index0 }}"
+                                            {% if loop.first %}class="active"{% endif %}></li>
+                                    {% endfor %}
+                                </ol>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <hr>
-    {% endif %}
+            <hr>
+        {% endif %}
 
-    <section class="members-info">
-        <div class="row">
-            <div class="col-12 col-md-6">
-                <p class="counter">
-                    <span class="text-bold count">{{ assistantCount }}</span><br> Assistenter
-                </p>
-                <p>Over <span class="text-bold">{{ assistantCount }}</span> studenter har hatt et verv som
-                    vektorassistent i Vektorprogrammet.</p>
-                <p><a href="{{ path('assistants') }}">Les mer om assistenter <i class="fa fa-chevron-right"></i></a></p>
+        <section class="members-info">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <p class="counter">
+                        <span class="text-bold count">{{ assistantCount }}</span><br> Assistenter
+                    </p>
+                    <p>Over <span class="text-bold">{{ assistantCount }}</span> studenter har hatt et verv som
+                        vektorassistent i Vektorprogrammet.</p>
+                    <p><a href="{{ path('assistants') }}">Les mer om assistenter <i class="fa fa-chevron-right"></i></a>
+                    </p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <p class="counter">
+                        <span class="text-bold count">{{ teamMemberCount }}</span><br> I team
+                    </p>
+                    <p>Over <span class="text-bold">{{ teamMemberCount }}</span> studenter har hatt et verv i et
+                        Vektorprogrammets mange team.</p>
+                    <p><a href="{{ path('team') }}">Les mer om verv i team <i class="fa fa-chevron-right"></i></a></p>
+                </div>
+                <div class="col-12 col-md-6 offset-md-3" id="admissionChart">
+                    <p class="counter">Kjønnsfordeling</p>
+                    <center><p>Av tidligere assistenter</p></center>
+                </div>
             </div>
-            <div class="col-12 col-md-6">
-                <p class="counter">
-                    <span class="text-bold count">{{ teamMemberCount }}</span><br> I team
-                </p>
-                <p>Over <span class="text-bold">{{ teamMemberCount }}</span> studenter har hatt et verv i et
-                    Vektorprogrammets mange team.</p>
-                <p><a href="{{ path('team') }}">Les mer om verv i team <i class="fa fa-chevron-right"></i></a></p>
-            </div>
-            <div class="col-12 col-md-6 offset-md-3" id="admissionChart">
-                <p class="counter">Kjønnsfordeling</p>
-                <center><p>Av tidligere assistenter</p></center>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="sponsors">
-        <hr>
-        {{ include('sponsors/sponsors.html.twig') }}
-    </section>
+        <section class="sponsors">
+            <hr>
+            {{ include('sponsors/sponsors.html.twig') }}
+        </section>
     </div>
 
 {% endblock %}
@@ -125,7 +127,7 @@
     {% include 'home/chart_script.html.twig' %}
     <script>
       $('.carousel').carousel({
-        interval: 10000
+        interval: 10000,
       });
     </script>
     {% if closestDepartment.activeAdmission %}
@@ -135,7 +137,8 @@
           }
 
           function updateCountDown() {
-            var admissionTimeStamp = {{ closestDepartment.currentSemester.admissionEndDate.timestamp }} * 1000;
+            var admissionTimeStamp = {{ closestDepartment.currentSemester.admissionEndDate.timestamp }} *
+            1000;
             var currentTimeStamp = new Date();
 
             var millisUntilAdmission = Math.max(admissionTimeStamp - currentTimeStamp, 0);
