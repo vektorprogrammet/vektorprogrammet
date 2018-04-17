@@ -29,7 +29,7 @@
         <div class="col-6 col-md-4 sponsor-column">
             <a href="{{ sponsor.url }}">
                 <img class="img-fluid sponsor-img-{{ sponsor.size }}"
-                     src="{{ asset(sponsor.logoImagePath | imagine_filter('sponsor'))) }}">
+                     src="{{ asset(sponsor.logoImagePath | imagine_filter('sponsor')) }}">
             </a>
         </div>
     {% endfor %}
