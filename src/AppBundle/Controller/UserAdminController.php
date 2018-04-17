@@ -100,33 +100,6 @@ class UserAdminController extends Controller
         return $this->redirectToRoute('useradmin_filter_users_by_department', array('id' => $user->getDepartment()->getId()));
     }
 
-    public function activateNewUserAction(Request $request, $newUserCode)
-    {
-        $user = $this->get('app.user.registration')->activateUserByNewUserCode($newUserCode);
-
-        $form = $this->createForm(new NewUserType(), $user);
-
-        $form->handleRequest($request);
-
-        //Checks if the form is valid
-        if ($form->isValid()) {
-            //Updates the database
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-
-            //renders the login page, with a feedback message so that the user knows that the new password was stored.
-            $feedback = 'Logg inn med din nye bruker';
-
-            return $this->render('Login/login.html.twig', array('message' => $feedback, 'error' => null, 'last_username' => $user->getUserName()));
-        }
-        //Render reset_password twig with the form.
-        return $this->render('new_user/create_new_user.html.twig', array(
-            'form' => $form->createView(),
-            'user' => $user,
-        ));
-    }
-
     public function sendActivationMailAction(User $user)
     {
         $this->get('app.user.registration')->sendActivationCode($user);

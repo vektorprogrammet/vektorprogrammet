@@ -1,0 +1,23 @@
+<div class="card">
+    <img class="card-img-top profile-photo" src="{{ asset(user.picturePath | imagine_filter('profile_img')) }}"/>
+    {% if app.user == user %}
+        <div class="card-body">
+            <p><a href="{{ path('profile_edit_photo', {'id': user.getId()}) }}">Rediger
+                    bilde</a></p>
+            <p><a href="{{ path('profile_edit') }}">Rediger profil</a></p>
+            <p class="mb-0"><a href="{{ path('profile_edit_password') }}">Endre passord</a></p>
+        </div>
+
+    {% elseif is_granted_team_leader() %}
+        <div class="card-body">
+            <p><a href="{{ path('profile_edit_photo', {'id': user.getId()}) }}">Rediger
+                    bilde</a></p>
+            <p class="mb-0"><a href="{{ path('profile_edit_admin', { 'id': user.id }) }}">Rediger
+                    profil</a></p>
+            {% if user.hasBeenAssistant %}
+                <p class="mb-0 mt-3"><a href="{{ path('profile_certificate', { id: user.id} ) }}">Last
+                        ned attest</a></p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>

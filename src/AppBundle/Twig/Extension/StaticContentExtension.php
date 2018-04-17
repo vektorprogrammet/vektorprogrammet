@@ -3,16 +3,15 @@
 namespace AppBundle\Twig\Extension;
 
 use AppBundle\Entity\StaticContent;
+use Doctrine\ORM\EntityManager;
 
 class StaticContentExtension extends \Twig_Extension
 {
-    protected $doctrine;
-    protected $securityContext;
+    private $em;
 
-    public function __construct($doctrine, $securityContext)
+    public function __construct(EntityManager $em)
     {
-        $this->doctrine = $doctrine;
-        $this->securityContext = $securityContext;
+        $this->em = $em;
     }
 
     public function getName()
@@ -24,42 +23,27 @@ class StaticContentExtension extends \Twig_Extension
     {
         return array(
             'get_content' => new \Twig_Function_Method($this, 'getContent'),
-            'element_editable' => new \Twig_Function_Method($this, 'elementEditable'),
         );
     }
 
-    public function getContent($html_element_id)
+    public function getContent($htmlId)
     {
-        $content = $this->doctrine
-            ->getEntityManager()
+        if (!$htmlId) {
+            return '';
+        }
+
+        $content = $this->em
             ->getRepository('AppBundle:StaticContent')
-            ->findOneByHtmlId($html_element_id);
+            ->findOneByHtmlId($htmlId);
         if (!$content) {
-            //Makes new record for requested htmlID
-            $newStaticContent = new StaticContent();
-            $newStaticContent->setHtmlId($html_element_id);
-            $newStaticContent->setHtml('Dette er en ny statisk tekst for: '.$html_element_id);
+            $content = new StaticContent();
+            $content->setHtmlId($htmlId);
+            $content->setHtml('Dette er en ny statisk tekst for: ' . $htmlId);
 
-            $em = $this->doctrine->getEntityManager();
-            $em->persist($newStaticContent);
-            $em->flush();
-
-            return 'Dette er en ny statisk tekst for: '.$html_element_id;
+            $this->em->persist($content);
+            $this->em->flush();
         }
 
         return $content->getHtml();
-    }
-
-    /**
-     * Returns 'editable' if current user is allowed to edit static content,
-     * else returns empty string.
-     */
-    public function elementEditable()
-    {
-        if ($this->securityContext->isGranted('ROLE_ADMIN')) {
-            return 'editable';
-        } else {
-            return '';
-        }
     }
 }

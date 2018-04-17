@@ -6,47 +6,6 @@ use AppBundle\Tests\BaseWebTestCase;
 
 class NewsletterControllerTest extends BaseWebTestCase
 {
-    public function testShowWithActiveAdmission()
-    {
-        $client = static::createClient();
-
-        $crawler = $client->request('GET', '/opptak/avdeling/1');
-
-        // Assert a specific 200 status code
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        // Assert that we have the correct amount of data
-        $this->assertEquals(0, $crawler->filter('p:contains("Du kan melde deg på ")')->count());
-    }
-
-    public function testShowWithoutActiveAdmission()
-    {
-        $client = static::createClient();
-
-        $crawler = $client->request('GET', '/opptak/avdeling/2');
-
-        // Assert a specific 200 status code
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        // Assert that we have the correct amount of data
-        $this->assertEquals(0, $crawler->filter('p:contains("Du kan melde deg på ")')->count());
-        $this->assertEquals(1, $crawler->filter('h4:contains("har ikke aktiv søkeperiode")')->count());
-    }
-
-    public function testShowWithActiveNewsletter()
-    {
-        $client = static::createClient();
-
-        $crawler = $client->request('GET', '/opptak/avdeling/3');
-
-        // Assert a specific 200 status code
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        // Assert that we have the correct amount of data
-        $this->assertEquals(1, $crawler->filter('p:contains("Du kan melde deg på ")')->count());
-        $this->assertEquals(1, $crawler->filter('h4:contains("har ikke aktiv søkeperiode")')->count());
-    }
-
     public function testNewsletterLinkInControlPanel()
     {
         $client = static::createClient(array(), array(
@@ -144,37 +103,6 @@ class NewsletterControllerTest extends BaseWebTestCase
         $this->assertEquals(1, $crawler->selectButton('Aktiv')->count());
         $this->assertEquals('Aktiver', $allButtons->eq(0)->html());
         $this->assertEquals('Aktiv', $allButtons->eq(1)->html());
-    }
-
-    public function testSubscribeOnAdmissionPage()
-    {
-        $client = static::createClient();
-
-        $crawler = $client->request('GET', '/opptak/avdeling/3');
-
-        // Assert a specific 200 status code
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $button = $crawler->selectButton('Registrer');
-
-        $form = $button->form();
-
-        $form['app_bundle_subscribe_to_newsletter_type[name]'] = 'Karl';
-        $form['app_bundle_subscribe_to_newsletter_type[email]'] = 'user@user.com';
-
-        $client->submit($form);
-
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'nmbu',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $crawler = $client->request('GET', '/kontrollpanel/nyhetsbrev/abonnenter/3');
-
-        // Assert a specific 200 status code
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        $this->assertEquals(1, $crawler->filter('td:contains("Karl")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("user@user.com")')->count());
     }
 
     public function testSubscribePage()

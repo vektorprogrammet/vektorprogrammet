@@ -48,6 +48,7 @@ class User implements AdvancedUserInterface, \Serializable
     private $firstName;
 
     /**
+     * @var FieldOfStudy
      * @ORM\ManyToOne(targetEntity="FieldOfStudy")
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Assert\Valid
@@ -108,6 +109,7 @@ class User implements AdvancedUserInterface, \Serializable
     private $isActive;
 
     /**
+     * @var Role[]
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
      * @ORM\JoinColumn(onDelete="cascade")
      * @Assert\Valid
@@ -457,6 +459,16 @@ class User implements AdvancedUserInterface, \Serializable
     public function hasBeenAssistant(): bool
     {
         return count($this->assistantHistories) > 0;
+    }
+
+    public function isActiveAssistant(): bool
+    {
+        foreach ($this->assistantHistories as $history) {
+            if ($history->getSemester()->isActive()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

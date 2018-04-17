@@ -43,6 +43,10 @@ services:
       class: AppBundle\Google\GoogleAPI
       arguments: ['%google_api%', '@app.google_users', '@app.google_groups']
 
+  app.geolocation:
+      class: AppBundle\Service\GeoLocation
+      arguments: ['%ipinfo_token%', '@doctrine.orm.entity_manager', '@session', '@request_stack']
+
   app.company_email_maker:
     class: AppBundle\Service\CompanyEmailMaker
     arguments: ['@doctrine.orm.default_entity_manager', '@app.logger']
@@ -101,7 +105,7 @@ services:
 
   app.department_extension:
     class: AppBundle\Twig\Extension\DepartmentExtension
-    arguments: ['@doctrine.orm.default_entity_manager']
+    arguments: ['@app.geolocation', '@doctrine.orm.default_entity_manager']
     tags:
       - { name: twig.extension }
 
@@ -197,7 +201,7 @@ services:
 
   app.file_uploader:
       class: AppBundle\Service\FileUploader
-      arguments: ['%signature_images%', '%logo_images%', '%receipt_images%', '%gallery_images%']
+      arguments: ['%signature_images%', '%logo_images%', '%receipt_images%', '%gallery_images%', '%profile_photos%']
 
   security.login:
     class: AppBundle\Service\LoginManager
@@ -213,7 +217,7 @@ services:
 
   assistant_history.data:
       class: AppBundle\Service\AssistantHistoryData
-      arguments: ['@doctrine.orm.default_entity_manager', '@security.token_storage']
+      arguments: ['@doctrine.orm.default_entity_manager', '@security.token_storage', '@app.geolocation']
 
   survey.manager:
         class: AppBundle\Service\SurveyManager

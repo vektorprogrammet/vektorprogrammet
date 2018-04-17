@@ -11,10 +11,16 @@ class AssistantHistoryData
     private $assistantHistoryRepository;
     private $semester;
 
-    public function __construct(EntityManager $em, TokenStorage $ts)
+    public function __construct(EntityManager $em, TokenStorage $ts, GeoLocation $geoLocation)
     {
         $this->assistantHistoryRepository = $em->getRepository('AppBundle:AssistantHistory');
-        $department = $ts->getToken()->getUser()->getDepartment();
+        $user = $ts->getToken()->getUser();
+        $departments = $em->getRepository('AppBundle:Department')->findAll();
+        if ($user == "anon.") {
+            $department =  $geoLocation->findNearestDepartment($departments);
+        } else {
+            $department = $ts->getToken()->getUser()->getDepartment();
+        }
         $this->semester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
     }
 
@@ -35,12 +41,12 @@ class AssistantHistoryData
 
     public function getMaleCount(): int
     {
-        return $this->assistantHistoryRepository->numMale($this->semester);
+        return $this->assistantHistoryRepository->numMaleBySemester($this->semester);
     }
 
     public function getFemaleCount(): int
     {
-        return $this->assistantHistoryRepository->numFemale($this->semester);
+        return $this->assistantHistoryRepository->numFemaleBySemester($this->semester);
     }
 
     public function getPositionsCount(): int

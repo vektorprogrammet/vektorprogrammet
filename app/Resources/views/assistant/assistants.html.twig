@@ -1,0 +1,99 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/assistants.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid assistants">
+        <div class="content">
+            <header class="row page-header">
+                <div class="col-12">
+                    {% include 'statictext/static_content.html.twig' with {'id': 'assistants-header'} %}
+                </div>
+            </header>
+        </div>
+        <section class="container">
+            <div class="row">
+                <div class="blurb col-xs-12 col-md-4">
+                    <img src="{{ asset_with_version('images/graduation.svg') }}" alt="CV">
+                    {% include 'statictext/static_content.html.twig' with {'id': 'assistants-role-model'} %}
+                </div>
+                <div class="blurb col-xs-12 col-md-4">
+                    <img src="{{ asset_with_version('images/calendar.svg') }}" alt="CV">
+                    {% include 'statictext/static_content.html.twig' with {'id': 'assistants-social'} %}
+                </div>
+                <div class="blurb col-xs-12 col-md-4">
+                    <img src="{{ asset_with_version('images/certificate.svg') }}" alt="CV">
+                    {% include 'statictext/static_content.html.twig' with {'id': 'assistants-cv'} %}
+                </div>
+            </div>
+        </section>
+
+        <div class="content">
+
+            <section>
+                {% include 'statictext/static_content.html.twig' with {'id': 'assistants-teacher'} %}
+                <img src="{{ asset_with_version('images/teacher.png') }}" class="teacher-img">
+                {% include 'statictext/static_content.html.twig' with {'id': 'assistants-teacher-2'} %}
+
+            </section>
+            <section>
+                {% include 'statictext/static_content.html.twig' with {'id': 'assistants-tasks'} %}
+            </section>
+
+            <section>
+                <h2>Hvordan blir jeg Vektorassistent?</h2>
+                <div class="row requirements">
+                    <div class="col-xs-12 col-md-6">
+                        {% include 'statictext/static_content.html.twig' with {'id': 'assistants-admission-requirements'} %}
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        {% include 'statictext/static_content.html.twig' with {'id': 'assistants-admission-process'} %}
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="application">
+                <h2>Søk nå!</h2>
+                {% include 'admission/application_form.html.twig' %}
+            </section>
+
+            <p class="medium-bold text-center">Har du noen spørsmål? Sjekk ut
+                <a href="/omvektor#FAQ">ofte stilte spørsmål og svar</a>.
+            </p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {% if scroll_to_admission_form %}
+        <script>
+            $('document').ready(function() {
+                window.location.hash = 'application';
+            });
+        </script>
+    {% endif %}
+    <script>
+        $(document).ready(function() {
+            /* Contact tabs */
+            changeDepartment({{ specific_department.id }});
+
+            // Make tab and department form field change when selector value changes
+            $('#department-box-selector').on('change', function () {
+                changeDepartment($(this).val());
+            });
+
+            // Make selector value and department form field change when tab changes
+            $('#department-box-tabs a').on('click', function() {
+                changeDepartment($(this).attr('aria-controls'));
+            });
+        });
+
+        function changeDepartment(id) {
+            $("#department-box-tabs a[aria-controls='"+id+"']").tab("show");
+            $('#department-box-selector').val(id);
+        }
+    </script>
+{% endblock %}

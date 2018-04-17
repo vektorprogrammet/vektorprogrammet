@@ -1,0 +1,48 @@
+<script>
+    function getColor(i) {
+        var colors = ["#36A2EB", "#4BC0C0", "#9F65AD", "#FFCE56", "#FF6384", "#737373", "#D07054", "#D97DB5"];
+        return colors[i % colors.length];
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var acceptedGenderData = {
+            datasets: [{
+                data: [{{ maleAssistantCount }}, {{ femaleAssistantCount }}],
+                backgroundColor: [getColor(0), getColor(4)]
+            }],
+            labels: [
+                'Gutt' + ' ({{ (maleAssistantCount/(maleAssistantCount + femaleAssistantCount)*100)|round }} %)',
+                'Jente' + ' ({{ (femaleAssistantCount/(maleAssistantCount + femaleAssistantCount)*100)|round }} %)'
+            ]
+        };
+
+        renderChart(acceptedGenderData, 'Kjønnsfordeling', true);
+
+        function renderChart(data, label, legend) {
+            var div = $('#admissionChart');
+
+            // The pie chart will be painted on the canvas
+            var canvas = $('<canvas id="chart"></canvas>');
+
+            div.append(canvas);
+
+            // Paint the chart to the canvases using Chart.js
+            ctx = $('#chart');
+            var chart = new Chart(ctx, {
+               type: 'doughnut',
+                data: data,
+                options: {
+                    legend: {
+                        display: legend
+                    },
+                    circumference: Math.PI,
+                    rotation: -Math.PI,
+                    tooltips: {
+                        enabled: false
+                    }
+            }});
+
+        }
+
+    })
+</script>

@@ -1,12 +1,14 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Vektorprogrammet - Error 404 Not Found
+{% endblock %}
+
 {% block body %}
-    <div class="row text-center">
+    <div class="page-header page-header-thin text-center container">
         <h1>Oops, du har funnet en nullvektor!</h1>
-
-        <img src="{{ asset('images/404.png') }}" alt="404 image">
-
+        <img class="img-fluid my-5" src="{{ asset_with_version('images/404.png') }}" alt="404 image">
         <h4>Vi kan dessverre ikke finne siden du leter etter.</h4>
-        <h6> Sjekk at du har stavet alt riktig eller <a href="{{ path('home') }}">ta turen til startsiden</a>.</h6>
+        <h6 class="text-devil"> Sjekk at du har stavet alt riktig eller <a href="{{ path('home') }}">ta turen til startsiden</a>.</h6>
     </div>
 {% endblock %}

@@ -41,12 +41,12 @@ class ProfileControllerTest extends BaseWebTestCase
         $this->assertContains('alm@mail.com', $client->getResponse()->getContent());
         $this->assertContains('Brukeren er aktiv', $client->getResponse()->getContent());
         // Assert that we have the correct user level and department
-        $this->assertContains('Admin', $client->getResponse()->getContent());
+        $this->assertContains('Teammedlem', $client->getResponse()->getContent());
         $this->assertContains('NTNU', $client->getResponse()->getContent());
 
         // Check the count for the different parameters
         $this->assertEquals(1, $crawler->filter('html:contains("NTNU")')->count());
-        $this->assertEquals(1, $crawler->filter('html:contains("Admin")')->count());
+        $this->assertEquals(1, $crawler->filter('html:contains("Teammedlem")')->count());
         $this->assertEquals(1, $crawler->filter('html:contains("alm@mail.com")')->count());
         $this->assertEquals(1, $crawler->filter('html:contains("Brukeren er aktiv")')->count());
 
@@ -93,7 +93,7 @@ class ProfileControllerTest extends BaseWebTestCase
         $this->assertContains('alm@mail.com', $client->getResponse()->getContent());
         $this->assertContains('Brukeren er aktiv', $client->getResponse()->getContent());
         // Assert that we have the correct user level, department, and field of study
-        $this->assertContains('Admin', $client->getResponse()->getContent());
+        $this->assertContains('Teammedlem', $client->getResponse()->getContent());
         $this->assertContains('NTNU', $client->getResponse()->getContent());
         $this->assertContains('MIDT', $client->getResponse()->getContent());
 
@@ -149,10 +149,7 @@ class ProfileControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/profil/rediger');
 
         // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains(" Redigerer profil ")')->count());
-
-        // Assert that we have the correct user
-        $this->assertEquals(1, $crawler->filter('p:contains("Petter Johansen")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains(" Redigerer din profil ")')->count());
 
         $form = $crawler->selectButton('Lagre')->form();
 

@@ -28,7 +28,7 @@ class SemesterControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/kontrollpanel/semesteradmin/avdeling/2');
 
         // Assert that we have the correct amount of data
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opptaksperioder HiST")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Opptaksperioder UiB")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Vår 2015")')->count());
 
         // Assert a specific 200 status code

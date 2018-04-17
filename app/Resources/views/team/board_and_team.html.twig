@@ -1,0 +1,175 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Styre og team
+{% endblock %}
+
+{% block javascripts %}
+    {% include "statictext/js_loader_for_static_texts.html.twig" %}
+    <script>
+      /* Team overview tabs */
+
+      // Make first tab active
+      $('#team-overview-tabs a:first').tab('show');
+
+      // Make tab change when selector value changes
+      $('#team-overview-selector').on('change', function (e) {
+        var department = $(this).val();
+        if (department != null) {
+          $('#team-overview-tabs a[aria-controls="' + department + '"]').tab('show');
+        }
+        else {
+          $('#team-overview-tabs a[aria-controls="Hovedstyret"]').tab('show');
+        }
+      });
+
+      // Make selector value change when tab changes
+      $('#team-overview-tabs a').on('click', function (e) {
+        var department = $(this).attr('aria-controls');
+        $('#team-overview-selector').val(department);
+      });
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/team.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="team-page container">
+        <header class="page-cover row">
+            <div class="col-lg-5">
+                {% include 'statictext/static_content.html.twig' with {'id': 'teams-header'} %}
+                {#<img class="img-fluid d-none d-md-block"
+                     src="{{ asset_with_version('images/organizationstructure.svg') }}" alt="Struktur av vektor"> TODO: Fix this before displaying#}
+
+            </div>
+
+
+            <div class="col-lg-4 offset-lg-2">
+                <div class="departments_map d-none d-lg-block">
+
+                    {% for department in departments %}
+                        {% if department.city == 'Trondheim' %}
+                            <div class="city-line up left" style="left:30.1%; top:56.9%;">
+                                {% include 'team/city_line.html.twig' with {'department': department,
+                                'num_assistants': departmentStats[department.city]['numAssistants'],
+                                'num_team_members': departmentStats[department.city]['numTeamMembers']} only %}
+                            </div>
+                        {% endif %}
+                        {% if department.city == 'Bergen' %}
+                            <div class="city-line up left" style="left:7.3%; top:78.1%;">
+                                {% include 'team/city_line.html.twig' with {'department': department,
+                                'num_assistants': departmentStats[department.city]['numAssistants'],
+                                'num_team_members': departmentStats[department.city]['numTeamMembers']} only %}
+                            </div>
+                        {% endif %}
+                        {% if department.city == 'Ås' %}
+                            <div class="city-line down right" style="left:24.1%; top:88.4%;">
+                                {% include 'team/city_line.html.twig' with {'department': department,
+                                'num_assistants': departmentStats[department.city]['numAssistants'],
+                                'num_team_members': departmentStats[department.city]['numTeamMembers']} only %}
+                            </div>
+                        {% endif %}
+                        {% if department.city == 'Oslo' %}
+                            <div class="city-line up right" style="left:24.1%; top:86%;">
+                                {% include 'team/city_line.html.twig' with {'department': department,
+                                'num_assistants': departmentStats[department.city]['numAssistants'],
+                                'num_team_members': departmentStats[department.city]['numTeamMembers']} only %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <img class="img-fluid"
+                         src="{{ asset_with_version('images/departments_map.png') }}" alt="Kart med avdelinger">
+                </div>
+
+            </div>
+        </header>
+        <br>
+        <br>
+        <div>
+            <h2 class="text-center">Våre team</h2>
+            <section class="row my-5">
+                <div class="col-12">
+                    <div class="team-overview card py-2 py-sm-4">
+                        <!-- Tabs (visible on large screens) -->
+                        <div class="card-block pt-4 pb-1 pb-sm-4 d-none d-sm-inline-flex">
+                            <ul id="team-overview-tabs" class="nav nav-tabs justify-content-center w-100">
+                                {% for department in departments %}
+                                    <li role="presentation" class="nav-item"><a class="nav-link"
+                                                                                href="#{{ department }}"
+                                                                                data-toggle="tab"
+                                                                                aria-controls="{{ department }}">{{ department.city }}</a>
+                                    </li>
+                                {% endfor %}
+
+                                <li role="presentation" class="nav-item">
+                                    <a class="nav-link"
+                                       href="#Hovedstyret"
+                                       data-toggle="tab"
+                                       aria-controls="Hovedstyret">Hovedstyret</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Dropdown (visible on mobile) -->
+                        <div class="card-block px-3 px-sm-0 my-2 my-sm-0">
+                            <select class="form-control d-block d-sm-none" id="team-overview-selector">
+                                {% for department in departments %}
+                                    <option value="{{ department }}">{{ department.city }}</option>
+                                {% endfor %}
+                                <option value="Hovedstyret">Hovedstyret</option>
+                            </select>
+                        </div>
+
+                        <!-- Panes -->
+                        <div class="card-block tab-content px-3 px-sm-0">
+                            {% for department in departments %}
+                                <div role="tabpanel" class="tab-pane fade in" id="{{ department }}">
+                                    <div class="team-cards-container">
+                                        {% for team in department.teams %}
+                                            {% include 'team/team_card.html.twig' %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div role="tabpanel" class="tab-pane fade in" id="Hovedstyret">
+                                <div class="row mx-3 mt-3 mb-3">
+                                    <div class="col-md-7">
+                                        <h2>Hovedstyret</h2>
+                                        <p>Hovedstyret er det nasjonale styret i vektorprogrammet.
+                                            De er et overordnet organ med ansvar for drifting av hele
+                                            organisasjonen.</p>
+                                        <p class="team-email mb-0">
+                                            <i class="big-icon m-0 mr-2 text-devil fa fa-envelope"></i>
+                                            <a href="mailto:{{ board.email }}">{{ board.email }}</a>
+                                        </p>
+                                        <p class="m-0">
+                                            <i class="big-icon m-0 mr-2 text-devil fa fa-users"></i>
+                                            <span class="text-devil member-count"> {{ board.activeWorkHistories | length }}
+                                                medlemmer</span>
+                                        </p>
+                                        <a href="{{ path('executive_board_page') }}"
+                                           class="btn btn-outline-primary d-none d-sm-inline-block mt-3">Les
+                                            mer om hovedstyret</a>
+                                    </div>
+
+
+                                    <div class="col-md-5" style="align-content: center">
+                                        <img class="img-fluid my-2"
+                                             src="{{ asset_with_version('images/HS_square.jpg') }}"
+                                             alt="Hoverstyret" style="align-self: center">
+                                        <!-- Push button under image on mobile -->
+                                        <a href="{{ path('executive_board_page') }}"
+                                           class="btn btn-primary d-block d-sm-none">Les mer
+                                            om hovedstyret</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

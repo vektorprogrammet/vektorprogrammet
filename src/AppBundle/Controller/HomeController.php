@@ -4,13 +4,32 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Entity\User;
+use AppBundle\Entity\WorkHistory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class HomeController extends Controller
 {
     public function showAction()
     {
-        return $this->render('home/index.html.twig');
+        $assistantsCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findAssistants());
+        $teamMembersCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findTeamMembers());
+        $articles = $this->getDoctrine()->getRepository('AppBundle:Article')->findStickyAndLatestArticles();
+
+        $departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+        $closestDepartment = $this->get('app.geolocation')->findNearestDepartment($departments);
+
+        $femaleAssistantCount = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->numFemale();
+        $maleAssistantCount = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->numMale();
+
+        return $this->render('home/index.html.twig', [
+            'assistantCount' => $assistantsCount + 600, // + Estimated number of assistants not registered in website
+            'teamMemberCount' => $teamMembersCount + 160, // + Estimated number of team members not registered in website
+            'femaleAssistantCount' => $femaleAssistantCount,
+            'maleAssistantCount' => $maleAssistantCount,
+            'closestDepartment' => $closestDepartment,
+            'news' => $articles,
+        ]);
     }
 
     public function activeAdmissionAction()

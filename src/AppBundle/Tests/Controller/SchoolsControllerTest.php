@@ -16,9 +16,7 @@ class SchoolsControllerTest extends BaseWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // Assert that we have the correct amount of data
-        $this->assertEquals(1, $crawler->filter('h1:contains("For skoler")')->count());
-        $this->assertEquals(1, $crawler->filter('h1:contains("Kontakt")')->count());
-        $this->assertEquals(1, $crawler->filter('strong:contains("Generelle henvendelser rettes til:")')->count());
-        $this->assertEquals(1, $crawler->filter('p:contains("kunne drive Vektorprogrammet er det helt essensielt med samarbeidsavtaler med skoler...")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Vektorassistenter i skolen")')->count());
+        $this->assertEquals(1, $crawler->filter('p:contains("Vektorprogrammet er Norges største organisasjon som arbeider for å øke interessen for ")')->count());
     }
 }

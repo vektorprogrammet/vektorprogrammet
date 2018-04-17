@@ -5,6 +5,7 @@ namespace AppBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class EditUserPasswordType extends AbstractType
 {
@@ -15,10 +16,14 @@ class EditUserPasswordType extends AbstractType
                 'first_name' => 'Passord',
                 'second_name' => 'Gjenta_passord',
                 'type' => 'password',
-            ))
-            ->add('save', 'submit', array(
-                'label' => 'Lagre',
-            ));
+                'invalid_message' => 'Passordene må være like',
+                'constraints' => array(new Assert\Length(array(
+                    'min' => 8,
+                    'max' => 64,
+                    'minMessage' => 'Passordet må være på minst {{ limit }} tegn',
+                    'maxMessage' => 'Passordet må være mindre enn {{ limit }} tegn langt',
+                ))
+            )));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

@@ -1,37 +1,41 @@
-<div class="row">
-    <div class="small-12 columns">
-        {% for flashMessage in app.session.flashbag.get('success') %}
-            <div class="admission-notice">
-                <div data-alert class="alert-box success radius text-center">
-                    {{ flashMessage }}
-                    <a href="#" class="close">&times;</a>
-                </div>
-            </div>
-        {% endfor %}
-        {% for flashMessage in app.session.flashbag.get('warning') %}
-            <div class="admission-notice">
-                <div data-alert class="alert-box warning radius text-center">
-                    {{ flashMessage }}
-                    <a href="#" class="close">&times;</a>
-                </div>
-            </div>
-        {% endfor %}
-        {% for flashMessage in app.session.flashbag.get('error') %}
-            <div class="admission-notice">
-                <div data-alert class="alert-box alert radius text-center">
-                    {{ flashMessage }}
-                    <a href="#" class="close">&times;</a>
-                </div>
-            </div>
-        {% endfor %}
+{% for flashMessage in app.session.flashbag.get('success') %}
+    <div class="admission-notice">
+        <div data-alert class="alert alert-success text-center">
+            {{ flashMessage }}
+            <a href="#" class="close">&times;</a>
+        </div>
     </div>
-</div>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('info') %}
+    <div class="admission-notice">
+        <div data-alert class="alert alert-info text-center">
+            {{ flashMessage }}
+            <a href="#" class="close">&times;</a>
+        </div>
+    </div>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('warning') %}
+    <div class="admission-notice">
+        <div data-alert class="alert alert-warning text-center">
+            {{ flashMessage }}
+            <a href="#" class="close">&times;</a>
+        </div>
+    </div>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('danger') %}
+    <div class="admission-notice">
+        <div data-alert class="alert alert-danger text-center">
+            {{ flashMessage }}
+            <a href="#" class="close">&times;</a>
+        </div>
+    </div>
+{% endfor %}
 {% block javascripts -%}
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            $('.close').click(function () {
-                $(this).closest('.admission-notice').remove();
-            });
+      document.addEventListener('DOMContentLoaded', function () {
+        $('.close').click(function () {
+          $(this).closest('.admission-notice').remove();
         });
+      });
     </script>
 {% endblock %}

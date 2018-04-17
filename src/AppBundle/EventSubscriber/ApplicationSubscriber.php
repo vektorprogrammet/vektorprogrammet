@@ -58,7 +58,6 @@ class ApplicationSubscriber implements EventSubscriberInterface
             ApplicationCreatedEvent::NAME => array(
                 array('logApplication', 1),
                 array('sendConfirmationMail', 0),
-                array('addFlashMessage', -1),
                 array('subscribeToCheckedNewsletter', -2),
             ),
         );
@@ -67,12 +66,10 @@ class ApplicationSubscriber implements EventSubscriberInterface
     public function subscribeToCheckedNewsletter(ApplicationCreatedEvent $event)
     {
         $application = $event->getApplication();
-        if ($application->wantsNewsletter()) {
-            $department = $application->getUser()->getDepartment();
-            $fullName = $application->getUser()->getFullName();
-            $email = $application->getUser()->getEmail();
-            $this->newsletterManager->subscribeToCheckedNewsletter($department, $fullName, $email);
-        }
+        $department = $application->getUser()->getDepartment();
+        $fullName = $application->getUser()->getFullName();
+        $email = $application->getUser()->getEmail();
+        $this->newsletterManager->subscribeToCheckedNewsletter($department, $fullName, $email);
     }
 
     public function sendConfirmationMail(ApplicationCreatedEvent $event)
@@ -89,19 +86,11 @@ class ApplicationSubscriber implements EventSubscriberInterface
             ->setSubject('Søknad - Vektorassistent')
             ->setFrom(array('rekruttering@vektorprogrammet.no' => 'Vektorprogrammet'))
             ->setTo($application->getUser()->getEmail())
-            ->setBody($this->twig->render($template, array('application' => $application)));
+            ->setBody($this->twig->render($template, array('application' => $application)), 'text/html');
 
         $this->mailer->send($emailMessage);
 
         $this->logger->info("Application confirmation mail sent to {$application->getUser()->getEmail()}");
-    }
-
-    public function addFlashMessage(ApplicationCreatedEvent $event)
-    {
-        $application = $event->getApplication();
-        $message = "Søknaden din er registrert. En kvittering har blitt sendt til {$application->getUser()->getEmail()}. Lykke til!";
-
-        $this->session->getFlashBag()->add('success', $message);
     }
 
     public function logApplication(ApplicationCreatedEvent $event)
@@ -109,9 +98,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
         $application = $event->getApplication();
 
         $user = $application->getUser();
-        
         $department = $user->getDepartment();
-        
         $this->applicationData->setDepartment($department);
 
         $this->logger->info("$department: New application from *$user* registered. $department has *{$this->applicationData->getApplicationCount()}* applicants");

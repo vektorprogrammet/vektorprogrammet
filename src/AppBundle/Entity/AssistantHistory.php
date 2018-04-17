@@ -54,6 +54,11 @@ class AssistantHistory
      */
     protected $day;
 
+    public function activeInGroup($group): bool
+    {
+        return strpos($this->bolk, "Bolk $group") !== false;
+    }
+
     /**
      * Set user.
      *

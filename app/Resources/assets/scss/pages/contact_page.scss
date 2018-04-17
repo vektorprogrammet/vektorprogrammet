@@ -1,0 +1,53 @@
+.contact-page {
+  .page-header {
+    margin-bottom: 20px;
+  }
+  .department-box {
+    margin-bottom: 25px;
+
+    h2 {
+      font-size: 30px;
+    }
+
+    .department-name {
+      color: #808080;
+    }
+
+    .email {
+      margin: 25px 0 10px;
+    }
+
+    .contact-dep-btn {
+      margin-top: 32px;
+    }
+
+    .department-img-wrapper {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+    }
+
+    .contact-info {
+      font-size: 15px;
+    }
+  }
+
+  .list-group {
+    h5 {
+      font-size: 16px;
+    }
+    p {
+      a {
+        color: #495057;
+      }
+    font-size: 14px;
+    }
+  }
+
+  .contact-form-title {
+    margin-top:2em;
+    margin-bottom:1em;
+  }
+}

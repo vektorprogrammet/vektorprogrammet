@@ -6,69 +6,55 @@
 
 
 {% block body %}
+    <head>
+        <link rel="stylesheet" rel="stylesheet" type="text/css" href="{{ asset_with_version('css/pages/members.css') }}">
+    </head>
+    <h1 class="text-center mt-3">Assistenter {{ department.shortName }} {{ semester.name }}</h1>
 
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+    {% for group, schools in groups %}
+        <div class="card mx-3 my-5 px-2 px-sm-4 py-4">
 
-            <div class="row">
-                <div class="small-12 medium-12 large-12 columns">
-                    <h1>Assistenter {{ department.shortName }} {{ semester.name }}</h1>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="small-12 medium-12 large-12 columns">
-                    {% for group, schools in groups %}
-                        <hr>
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <h3>{{ schools ? group : null }}</h3>
-                                {% for school, days in schools %}
-                                    <div class="row">
-                                        <div class="small-11 small-centered columns">
-                                            <h4>{{ school }}</h4>
-                                            <div class="small-12 columns">
-                                                <table width="100%" id="table">
-                                                    <thead>
-                                                    <tr>
-                                                        <th width="15%"> Dag</th>
-                                                        <th width="30%"> Navn</th>
-                                                        <th width="15%"> Tlf</th>
-                                                        <th width="40%"> E-post</th>
-                                                    </tr>
-                                                    </thead>
+        <h3 class="card-title text-center">{{ schools ? group : null }}</h3>
+            <hr/>
+        {% for school, days in schools %}
+            <h4>{{ school }}</h4>
+            <table class="table table-hover table-sm table-responsive-md borderless">
+                <thead>
+                <tr>
+                    <th width="15%"> Dag</th>
+                    <th width="30%"> Navn</th>
+                    <th width="15%"> Tlf</th>
+                    <th width="40%"> E-post</th>
+                </tr>
+                </thead>
 
 
-                                                    <tbody class="users">
-                                                    {% for day, users in days %}
+                <tbody class="users">
+                {% for day, users in days %}
 
-                                                        {% for user in users %}
-                                                            {% if user.fieldOfStudy is not null %}
-                                                                <tr class={{ user.fieldOfStudy.department.id }}>
-                                                                    <td>{{ day }}</td>
-                                                                    <td>
-                                                                        <a href='{{ path('specific_profile', { 'id': user.id }) }}'>{{ user.firstName }} {{ user.lastName }}</a>
-                                                                    </td>
-                                                                    <td> {{ user.phone }} </td>
-                                                                    <td> {{ user.email }} </td>
-                                                                </tr>
-                                                            {% endif %}
-                                                        {% endfor %}{#Users#}
-                                                    {% endfor %}{#Days#}
-                                                    </tbody>
-                                                </table>
+                    {% for user in users %}
+                        {% if user.fieldOfStudy is not null %}
+                            <tr class={{ user.fieldOfStudy.department.id }}>
+                                <td>{{ day }}</td>
+                                <td>
+                                    <a href='{{ path('specific_profile', { 'id': user.id }) }}'>{{ user.firstName }} {{ user.lastName }}</a>
+                                </td>
+                                <td> {{ user.phone }} </td>
+                                <td> {{ user.email }} </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}{#Users#}
+                {% endfor %}{#Days#}
+                </tbody>
+            </table>
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endfor %}{#Schools#}
-                            </div>
-                        </div>
-                    {% endfor %}{#Groups#}
-                </div>
-            </div>
+        {% endfor %}{#Schools#}
 
-        </div>
+
     </div>
+    {% endfor %}{#Groups#}
+
+
+
 
 {% endblock %}

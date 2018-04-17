@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Vektorprogrammet
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/teacher.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="teacher container">
+        <header class="row page-header">
+            <div class="col-12 col-lg-6 d-flex align-items-center">
+                <div>
+                    {% include 'statictext/static_content.html.twig' with {'id': 'teacher-header'} %}
+                    <a href="#jumbo" class="link-to-application">
+                        Send inn søknad her <i class="fa fa-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5 offset-lg-1">
+                <img class="hero-image"
+                     src="{{ 'images/teacher2.png' }}">
+            </div>
+        </header>
+        <div class="content">
+            <section>
+                {% include 'statictext/static_content.html.twig' with {'id': 'teacher-assistants-in-class'} %}
+            </section>
+            <section>
+                {% include 'statictext/static_content.html.twig' with {'id': 'teacher-how-to-use'} %}
+            </section>
+
+
+            <section>
+                <div class="card px-2 px-sm-4 py-4 text-center" id="jumbo">
+                    <div class="card-body p-1 p-sm-3">
+                        <h2>Søk om å få assistenter til din skole</h2>
+
+                        <p>Ta kontakt med ansvarlig for skolekoordinering i din by for å sende inn en søknad om å få
+                            vektorassistenter til din skole:</p>
+
+                        <table class="table table-responsive-md">
+                            <thead>
+                            <tr>
+                                <th>By</th>
+                                <th>E-post</th>
+                                <th>Kontakt</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for department in get_active_departments() %}
+                                <tr>
+                                    <td>{{ department.city }}</td>
+                                    <td><a class="department-email"
+                                           href="mailto:{{ department.email }}">{{ department.email }}</a></td>
+                                    <td>
+                                        <a href="{{ path('contact_department', {id: department.id}) }}">Kontakt {{ department.city }}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <hr class="my-4">
+                        <div>
+                            <h5>Har ikke Vektorprogrammet etablert seg i din by ennå?</h5>
+                            <p>Ta kontakt med <a href="mailto:hovedstyret@vektorprogrammet.no">hovedstyret@vektorprogrammet.no</a>
+                                for å melde din interesse!</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}
