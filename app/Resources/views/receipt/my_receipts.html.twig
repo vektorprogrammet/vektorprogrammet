@@ -8,8 +8,8 @@
 
 {% block body %}
     <div class="container">
-            <section>
-                <div class="page-header">
+            <section class="content">
+                <div class="page-header mb-5">
                     <h1>Utlegg</h1>
                     <p>
                         Her kan du registrere utlegg du har gjort for vektorprogrammet som du ønsker å få refundert. For
@@ -31,23 +31,18 @@
                                 href="mailto:okonomi@vektorprogrammet.no">okonomi@vektorprogrammet.no</a>.
                     </p>
                 </div>
-                {% for flashMessage in app.session.flashbag.get('success') %}
-                    <div data-alert class="alert alert-success">
-                        {{ flashMessage }}
-                    </div>
-                {% endfor %}
             </section>
 
             <br>
 
-            <section>
+            <section class="mt-5">
                 <h3 class="text-center">Mine utlegg</h3>
 
                 <button id="newReceiptLink" class="btn btn-link btn-text-link text-success"><i class="fa fa-plus"></i>&nbsp;<span>Nytt utlegg</span>
                 </button>
 
                 <div id="receipt-form">
-                    <h3> Registrer nytt utlegg </h3>
+                    <h3 class="mt-3"> Registrer nytt utlegg </h3>
                     {% include 'receipt/create_receipt.html.twig' with {'form': form, 'receipt': receipt} %}
                 </div>
             </section>
