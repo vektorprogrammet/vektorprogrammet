@@ -13,11 +13,7 @@
         <header class="row page-header">
             <div class="col-12 col-lg-6 d-flex align-items-center">
                 <div>
-                    <h1 class="text-left">Vektorassistenter i skolen</h1>
-                    <p>Vektorprogrammet er en frivillig organisasjon som tilbyr ungdomsskoler i Norge hjelpelærere i
-                        matematikktimene. Her kan du enkelt søke om å få studenter til å hjelpe og motivere elevene
-                        i
-                        dine timer.</p>
+                    {% include 'statictext/static_content.html.twig' with {'id': 'teacher-header'} %}
                     <a href="#jumbo" class="link-to-application">
                         Send inn søknad her <i class="fa fa-chevron-right"></i>
                     </a>
@@ -30,47 +26,10 @@
         </header>
         <div class="content">
             <section>
-                <h2>Vektorassistenter i matteundervisning</h2>
-                <p>Vektorprogrammet er Norges største organisasjon som arbeider for å øke interessen for matematikk
-                    og realfag blant elever i grunnskolen. Vi er en studentorganisasjon som sender ut dyktige og
-                    motiverte studenter til ungdomsskoler i norge.
-                </p>
-                <p>
-                    Studentene fungerer som lærerens assistenter og kan dermed bidra til at elevene raskere får
-                    hjelp i timen, og at undervisningen blir mer tilpasset de ulike elevgruppene. Vi har erfart at
-                    lærerne ofte har mye å gjøre i timene, og ofte ikke rekker å hjelpe alle elevene som står fast.
-                    Derfor er vi overbevist om at to assistenter kan forhindre mye hodebry for både lærere og
-                    elever.
-                    <br> Hvert år gjennomfører vi evalueringsundersøkelser, og i gjennomsnitt sier over 95% av
-                    lærerne at de er fornøyde med prosjektet og ønsker å delta videre.
-                </p>
-                <p>
-                    Alle assistentene har vært gjennom en intervjuprossess som gjør oss sikre på at de vil passe som
-                    assistentlærere og kan være gode forbilder for elevene. Dette er en unik mulighet til å få
-                    inn rollemodeller i klasserommet som kan være med å gi elevene mer motivasjon.
-                </p>
+                {% include 'statictext/static_content.html.twig' with {'id': 'teacher-assistants-in-class'} %}
             </section>
-
-
             <section>
-                <h2>Enkelt å bruke assistenter i undervisningen</h2>
-                <p>Assistentene kan brukes som hjelp i undervisningen. Her er noen forslag vi har
-                    gode erfaringer med:</p>
-                <div>
-                    <ul class="ml-2">
-                        <li>Hjelpe til med oppgaveløsing i
-                            klasserom
-                        </li>
-                        <li>Utfordre de sterkeste elevene med
-                            vanskeligere oppgaver
-                        </li>
-                        <li>Engasjere elever med matteleker,
-                            gåter og spill
-                        </li>
-                        <li>Arbeid med elever på grupperom
-                        </li>
-                    </ul>
-                </div>
+                {% include 'statictext/static_content.html.twig' with {'id': 'teacher-how-to-use'} %}
             </section>
 
 

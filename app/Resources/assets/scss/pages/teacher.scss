@@ -1,6 +1,14 @@
 @import "../colors";
 
 .teacher {
+  ul {
+    margin-left: 0.5rem;
+  }
+  .page-header{
+    h1 {
+      text-align: left;
+    }
+  }
   .link-to-application {
     font-size: 18px;
     color: $dark-blue;

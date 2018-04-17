@@ -43,6 +43,14 @@ p {
   font-size: 18px;
 }
 
+strong {
+  font-weight: 600;
+}
+
+strong strong {
+  font-weight: 700;
+}
+
 .medium-bold {
   font-weight: 600;
 }
