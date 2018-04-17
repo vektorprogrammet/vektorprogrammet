@@ -26,28 +26,24 @@ liip_imagine:
 
         article_featured:
             quality: 85
-            format: jpg
             filters:
               downscale:
                 max: [900, 900]
 
         profile_img:
             quality: 85
-            format: jpg
             filters:
               downscale:
                 max: [400, 400]
 
         profile_img_small:
             quality: 85
-            format: jpg
             filters:
               downscale:
                 max: [175, 175]
 
         profile_img_tiny:
             quality: 85
-            format: jpg
             filters:
               downscale:
                 max: [40, 40]
