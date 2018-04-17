@@ -1,5 +1,5 @@
 <div class="card">
-    <img class="card-img-top profile-photo" src="{{ asset_with_version(user.picturePath) }}"/>
+    <img class="card-img-top profile-photo" src="{{ asset(user.picturePath | imagine_filter('profile_img')) }}"/>
     {% if app.user == user %}
         <div class="card-body">
             <p><a href="{{ path('profile_edit_photo', {'id': user.getId()}) }}">Rediger

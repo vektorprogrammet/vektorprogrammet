@@ -1,7 +1,7 @@
 <div class="user-dropdown">
     {% if app.user %}
         <div>
-            <div style="background-image: url('{{ asset_with_version(app.user.picturePath) }}')"
+            <div style="background-image: url('{{ asset(app.user.picturePath | imagine_filter('profile_img_tiny')) }}')"
                  class="profile-picture profile-photo"></div>
         </div>
         <div class="dropdown">

@@ -39,7 +39,7 @@
                         {% if is_granted_assistant() %}
                             <a href="{{ path('specific_profile', { 'id': teamMember.id }) }}"><img
                                         class="img-fluid rounded-circle mb-2 mb-sm-4 profile-photo"
-                                        src="{{ asset_with_version(teamMember.picturePath) }}"
+                                        src="{{ asset(teamMember.picturePath | imagine_filter('profile_img_small')) }}"
                                         alt="{{ teamMember }}"></a>
                             <h5 class="m-0"><a
                                         href="{{ path('specific_profile', { 'id': teamMember.id }) }}">{{ teamMember }}</a>
