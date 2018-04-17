@@ -1,9 +1,9 @@
 services:
-  app.beta_redirecter:
-    class: AppBundle\Service\BetaRedirecter
-    arguments: ['@security.token_storage', '@app.roles']
-    tags:
-        - {name: kernel.event_listener, event: kernel.request}
+#  app.beta_redirecter:
+#    class: AppBundle\Service\BetaRedirecter
+#    arguments: ['@security.token_storage', '@app.roles']
+#    tags:
+#        - {name: kernel.event_listener, event: kernel.request}
   app.sms:
     class: AppBundle\Sms\GatewayAPI
     arguments: ['%gateway_sms%', '@app.logger']
