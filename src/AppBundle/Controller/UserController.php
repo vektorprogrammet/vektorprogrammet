@@ -2,8 +2,11 @@
 
 namespace AppBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class UserController extends Controller
 {
@@ -56,5 +59,36 @@ class UserController extends Controller
             'partnerCount' => $partnerCount,
             'semester' => $semester,
         ]);
+    }
+
+    /**
+     * @Route("profil/mode/{mode}", name="content_mode")
+     * @Method("POST")
+     * @param Request $request
+     * @param string $mode
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function changeContentModeAction(Request $request, string $mode)
+    {
+        if (!$this->get('app.role_extension')->userCanEditPage()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if ($mode !== 'read-mode' && $mode !== 'edit-mode') {
+            throw new BadRequestHttpException('Invalid mode');
+        }
+
+        $isEditMode = $mode === 'edit-mode';
+
+        if ($isEditMode) {
+            $this->get('app.content_mode')->changeToEditMode();
+        } else {
+            $this->get('app.content_mode')->changeToReadMode();
+        }
+
+        $this->addFlash($isEditMode ? 'warning' : 'info', $isEditMode ? 'Du er nå i redigeringsmodus' : 'Du er nå i lesemodus');
+
+        return $this->redirect($request->headers->get('referer'));
     }
 }

@@ -1,0 +1,7 @@
+{% set showEdit = can_edit_page() and is_edit_mode() %}
+{% if showEdit %}
+    <p class="my-0 text-center"><i class="fa fa-2x fa-pencil text-warning"></i></p>
+{% endif %}
+<div{% if showEdit %} class="editable"{% endif %} id="{{ id }}">
+    {{ get_content(id) | safe_html }}
+</div>

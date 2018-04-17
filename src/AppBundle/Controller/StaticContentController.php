@@ -18,8 +18,11 @@ class StaticContentController extends Controller
      */
     public function updateAction(Request $request)
     {
+        if (!$this->get('app.role_extension')->userCanEditPage()) {
+            throw $this->createAccessDeniedException();
+        }
+
         $htmlId = $request->get('editorID');
-        dump($htmlId);
         $newContent = $request->get('editabledata', '');
         if (!$htmlId) {
             throw new BadRequestHttpException("Invalid htmlID $htmlId");

@@ -10,6 +10,17 @@
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-menu">
                 {% if is_granted_team_member() %}
                     {% include 'base/dropdown_item_link.html.twig' with {route: 'control_panel', name: 'Kontrollpanel'} %}
+                    {% if can_edit_page() %}
+                        {% if is_edit_mode() %}
+                            <form method="POST" action="{{ path('content_mode', {'mode': 'read-mode'}) }}">
+                                <button class="dropdown-item btn btn-link alert-warning">Redigeringsmodus</button>
+                            </form>
+                        {% else %}
+                            <form method="POST" action="{{ path('content_mode', {'mode': 'edit-mode'}) }}">
+                                <button class="dropdown-item btn btn-link alert-info">Lesemodus</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
                     <div class="dropdown-divider"></div>
                 {% endif %}
                 {% include 'base/dropdown_item_link.html.twig' with {route: 'profile', name: 'Profil'} %}

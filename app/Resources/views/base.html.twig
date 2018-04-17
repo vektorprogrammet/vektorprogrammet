@@ -72,6 +72,17 @@
 
 <script src="{{ asset_with_version('/js/vendor.js') }}"></script>
 <script src="{{ asset_with_version('/js/mobile_nav.js') }}"></script>
+    {% if can_edit_page() and is_edit_mode() %}
+        <script> var url = "{{ path('update_static_content') }}" </script>
+        <script src="{{ asset_with_version('vendor/ckeditor/ckeditor.js') }}"></script>
+        <script src="{{ asset_with_version('vendor/ckeditor/adapters/jquery.js') }}"></script>
+        <script src="{{ asset_with_version('js/ckeditor/createCkeditorInstances.js') }}"></script>
+        <script type="text/javascript">
+          $(document).ready(function () {
+            createCkeditorInstances();
+          });
+        </script>
+    {% endif %}
 {% block javascripts %}{% endblock %}
 
 </body>

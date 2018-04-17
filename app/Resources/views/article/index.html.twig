@@ -58,9 +58,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <div class="{{ element_editable() }} vektor-box" id="vektor_i_media">
-                            {{ get_content('vektor_i_media') | raw }}
-                        </div>
+                        {% include 'statictext/static_content.html.twig' with {'id': 'vektor_i_media'} %}
                     </div>
                 </div>
             </div>

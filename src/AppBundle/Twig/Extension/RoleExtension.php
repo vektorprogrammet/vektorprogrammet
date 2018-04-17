@@ -36,10 +36,12 @@ class RoleExtension extends \Twig_Extension
             'is_granted_team_member' => new \Twig_Function_Method($this, 'isGrantedTeamMember'),
             'is_granted_team_leader' => new \Twig_Function_Method($this, 'isGrantedTeamLeader'),
             'is_granted_admin' => new \Twig_Function_Method($this, 'isGrantedAdmin'),
+            'can_edit_page' => new \Twig_Function_Method($this, 'userCanEditPage'),
             'user_is_granted_assistant' => new \Twig_Function_Method($this, 'userIsGrantedAssistant'),
             'user_is_granted_team_member' => new \Twig_Function_Method($this, 'userIsGrantedTeamMember'),
             'user_is_granted_team_leader' => new \Twig_Function_Method($this, 'userIsGrantedTeamLeader'),
             'user_is_granted_admin' => new \Twig_Function_Method($this, 'userIsGrantedAdmin'),
+            'user_is_in_executive_board' => new \Twig_Function_Method($this, 'userIsInExecutiveBoard'),
         );
     }
 
@@ -90,5 +92,27 @@ class RoleExtension extends \Twig_Extension
     public function userIsGrantedAdmin(User $user)
     {
         return $this->roleManager->userIsGranted($user, Roles::ADMIN);
+    }
+
+    public function userIsInExecutiveBoard(User $user)
+    {
+        return $this->roleManager->userIsInExecutiveBoard($user);
+    }
+
+    public function userCanEditPage(User $user = null)
+    {
+        if ($user === null) {
+            $token = $this->tokenStorage->getToken();
+            if (!$token) {
+                return false;
+            }
+            $user = $token->getUser();
+        }
+
+        if (!$user || !is_object($user) || get_class($user) !== User::class) {
+            return false;
+        }
+
+        return $this->roleManager->userIsGranted($user, Roles::ADMIN) || $this->roleManager->userIsInExecutiveBoard($user);
     }
 }
