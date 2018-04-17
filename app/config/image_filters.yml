@@ -25,31 +25,29 @@ liip_imagine:
                 max: [500, 500]
 
         article_featured:
-            quality: 90
+            quality: 85
+            format: jpg
             filters:
               downscale:
                 max: [900, 900]
 
         profile_img:
-            quality: 90
+            quality: 85
+            format: jpg
             filters:
               downscale:
                 max: [400, 400]
 
         profile_img_small:
-            quality: 90
+            quality: 85
+            format: jpg
             filters:
               downscale:
                 max: [175, 175]
 
         profile_img_tiny:
-            quality: 50
+            quality: 85
+            format: jpg
             filters:
               downscale:
-                max: [30, 30]
-
-        team_description:
-            quality: 90
-            filters:
-              downscale:
-                max: [800, 800]
+                max: [40, 40]
