@@ -39,20 +39,7 @@
     <div class="team-page container">
         <header class="page-cover row">
             <div class="col-lg-5">
-
-                <h1>Styre og team</h1>
-                <p>Vektorprogrammet er en stor organisasjon med assistenter i {{ get_departments() | length }} norske
-                    byer.
-                    Vi trenger derfor mange frivillige bak kulissene som kan få hjulene til å gå rundt.
-                    Uten vektorprogrammets {{ numberOfTeams }} team hadde dette aldri gått ann!
-                </p>
-                <p>
-                    Kunne du tenkt deg et team-verv hos oss?
-                    <br>
-                    <span class="font-weight-bold">Les mer om de ulike teamene nedenfor!</span>
-
-                </p>
-
+                {% include 'statictext/static_content.html.twig' with {'id': 'teams-header'} %}
                 {#<img class="img-fluid d-none d-md-block"
                      src="{{ asset_with_version('images/organizationstructure.svg') }}" alt="Struktur av vektor"> TODO: Fix this before displaying#}
 
