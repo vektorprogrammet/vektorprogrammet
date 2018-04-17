@@ -27,11 +27,11 @@
                 {% if semester is not null and semester.infoMeeting and semester.infoMeeting.showOnPage and semester.infoMeeting.date and date() < date(semester.infoMeeting.date) %}
                     {% set infoMeeting = closestDepartment.currentSemester.infoMeeting %}
                     <div class="infomeeting-banner">
-                        Husk infomøte {{ infoMeeting.date|date('d. M')|lower }} kl. {{ infoMeeting.date|date('H:i') }} i rom {% if infoMeeting.link %} {{ infoMeeting.room }} {% endif %}.
-                        <a target="_blank" href="{{ infoMeeting.link }}"
+                        Husk infomøte {{ infoMeeting.date|date('d. M')|lower }} kl. {{ infoMeeting.date|date('H:i') }} {% if infoMeeting.room %}i rom  {{ infoMeeting.room }} {% endif %}.
+                        {% if infoMeeting.link %}<a target="_blank" href="{{ infoMeeting.link }}"
                            onclick="ga('send', 'event', 'Infomøte', 'Les mer - forside', '{{ closestDepartment.currentSemester }}')">
                             Les mer
-                        </a>
+                        </a>{% endif %}
                     </div>
                 {% endif %}
             </section>
