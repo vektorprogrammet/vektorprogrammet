@@ -46,6 +46,18 @@
                 {% if is_granted_team_member() %}
                     <li>{% include 'base/menu_item.html.twig' with {route: 'control_panel', name: 'Kontrollpanel'} %}</li>
                 {% endif %}
+                {% if can_edit_page() %}
+                    {% if is_edit_mode() %}
+                        <form method="POST" action="{{ path('content_mode', {'mode': 'read-mode'}) }}">
+                            <button class="menu-link btn btn-link alert-warning text-left w-100">Redigeringsmodus</button>
+                        </form>
+                    {% else %}
+                        <form method="POST" action="{{ path('content_mode', {'mode': 'edit-mode'}) }}">
+                            <button class="menu-link btn btn-link alert-info text-left w-100">Lesemodus</button>
+                        </form>
+                    {% endif %}
+                    <br>
+                {% endif %}
                 <li>{% include 'base/menu_item.html.twig' with {route: 'profile', name: 'Profil'} %}</li>
                 <li>{% include 'base/menu_item.html.twig' with {route: 'receipt_create', name: 'Mine utlegg'} %}</li>
                 {% if app.user.isActiveAssistant() %}

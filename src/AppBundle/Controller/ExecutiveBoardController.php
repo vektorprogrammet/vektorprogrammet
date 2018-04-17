@@ -53,6 +53,8 @@ class ExecutiveBoardController extends Controller
             $em->persist($member);
             $em->flush();
 
+            $this->get('app.roles')->updateUserRole($member->getUser());
+
             return $this->redirect($this->generateUrl('executive_board_show'));
         }
 
@@ -66,6 +68,8 @@ class ExecutiveBoardController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($member);
         $em->flush();
+
+        $this->get('app.roles')->updateUserRole($member->getUser());
 
         return $this->redirect($this->generateUrl('executive_board_show'));
     }
