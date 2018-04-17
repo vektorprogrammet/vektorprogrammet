@@ -9,9 +9,7 @@
         <div class="content">
             <header class="row page-header">
                 <div class="col-12">
-
-                    <h1>Assistenter</h1>
-                    <p>Vektorassistent er et frivillig verv der du reiser til en ungdomsskole én dag i uka for å hjelpe til som <span class="medium-bold">lærerassistent i matematikk</span>. En stilling som vektorassistent varer i 4 eller 8 uker, og du kan selv velge hvilken ukedag som passer best for deg. </p>
+                    {% include 'statictext/static_content.html.twig' with {'id': 'assistants-header'} %}
                 </div>
             </header>
         </div>
@@ -19,21 +17,15 @@
             <div class="row">
                 <div class="blurb col-xs-12 col-md-4">
                     <img src="{{ asset_with_version('images/graduation.svg') }}" alt="CV">
-                    <h4>Vær et forbilde</h4>
-                    <p>Som vektorassistent er du med på å gjøre matte gøy. Ditt engasjement kan
-                    bidra til økt motivasjon og lærelyst. Bli med og gjør en forskjell!</p>
+                    {% include 'statictext/static_content.html.twig' with {'id': 'assistants-role-model'} %}
                 </div>
                 <div class="blurb col-xs-12 col-md-4">
                     <img src="{{ asset_with_version('images/calendar.svg') }}" alt="CV">
-                    <h4>Sosiale arrangementer</h4>
-                    <p>Alle assistenter blir invitert til arrangementer som fester, populærforedrag, bowling, grilling i
-                        parken,
-                        gokart og paintball.</p>
+                    {% include 'statictext/static_content.html.twig' with {'id': 'assistants-social'} %}
                 </div>
                 <div class="blurb col-xs-12 col-md-4">
                     <img src="{{ asset_with_version('images/certificate.svg') }}" alt="CV">
-                    <h4>Fint å ha på CVen</h4>
-                    <p>Erfaring som arbeidsgivere setter pris på. Alle assistenter får en attest.</p>
+                    {% include 'statictext/static_content.html.twig' with {'id': 'assistants-cv'} %}
                 </div>
             </div>
         </section>
@@ -41,73 +33,23 @@
         <div class="content">
 
             <section>
-                <h2>Lærerassistent i matematikk</h2>
-                <p>Vektorprogrammet er en studentorganisasjon som sender realfagssterke studenter til grunnskolen for å
-                    hjelpe elevene med matematikk i skoletiden. Vi ser etter deg som lengter etter en mulighet til å
-                    lære
-                    bort kunnskapene du sitter med og ønsker å ta del i et sterkt sosialt fellesskap. Etter å ha vært
-                    vektorassistent kommer du til å sitte igjen med mange gode erfaringer og nye venner på tvers av
-                    trinn og
-                    linje.
-                </p>
+                {% include 'statictext/static_content.html.twig' with {'id': 'assistants-teacher'} %}
                 <img src="{{ asset_with_version('images/teacher.svg') }}" class="teacher-img">
-                <p>I tillegg vil du få muligheten til å delta på mange sosiale arrangementer, alt fra fest og
-                    grilling til spillkveld. Samtidig arrangerer vi populærforedrag som er til for å øke motivasjonen
-                    din
-                    for videre studier. Vi har hatt besøk av blant annet Andreas Wahl, Jo Røislien, Knut Jørgen Røed
-                    Ødegaard og James Grime.
-                </p>
+                {% include 'statictext/static_content.html.twig' with {'id': 'assistants-teacher-2'} %}
 
             </section>
             <section>
-                <h2>Arbeidsoppgaver</h2>
-                {#<p class="text-warning">#}
-                    {#Her trenger vi en tekst som forklarer hva en assistent gjør ute på skolen (får en gruppe elever på#}
-                    {#grupperom,#}
-                    {#hjelpe til med oppgaveløsing i klasserom osv.) Husk å få med at man samarbeider med en lærer og at#}
-                    {#man#}
-                    {#alltid blir sendt ut sammen med en annen vektorassistent. Også noen ord om hvor mye barn og lærere#}
-                    {#setter#}
-                    {#pris på vektorassistenter (motivasjon, bedre hjelp til oppgaveløsing, de sterke elevene får#}
-                    {#spennende og#}
-                    {#utfordrende oppgaver osv.)</p>#}
-                {#<p>En vektorassistent er ute 4 eller 8 ganger på en ungdomsskole i nærområdet. De står selv fritt til#}
-                    {#velge hvilke ukedag de vil ut på og setter av denne dagen mellom 8-15 til å bidra til#}
-                    {#matteundervisningen på ungdomsskolen.#}
-                    {#Vektorassistentente får varierte oppgaver på skolen; som gå rundt i klasserommet og hjelpe elever#}
-                    {#med oppgaver eller få en mindre gruppe med elever de kan undervise. De bidrar også mye med å#}
-                    {#inspirere ungdomsskoleelever til å like matematikk/realfag.</p>#}
-                <p>
-                    Som vektorassistent er du ute én dag i uka, i 4 eller 8 uker, på en ungdomsskole i nærområdet. Vi
-                    tilpasser timeplanen slik at du selv kan bestemme hvilken dag som passer best. Vektorassistenter
-                    blir sendt ut i par, slik at du alltid kan ha noen å støtte deg på.
-                    Oppgavene dine vil variere fra å gå rundt i klasserommet og hjelpe elever med oppgaver, til å
-                    gjennomgå utvalgte temaer i mindre grupper. Det er læreren som bestemmer hva som skal bli
-                    gjennomgått. Dette arbeidet blir satt stor pris på av både barn og lærere!
-
-                </p>
+                {% include 'statictext/static_content.html.twig' with {'id': 'assistants-tasks'} %}
             </section>
 
             <section>
                 <h2>Hvordan blir jeg Vektorassistent?</h2>
                 <div class="row requirements">
                     <div class="col-xs-12 col-md-6">
-                        <h5>Opptakskrav</h5>
-                        <ul>
-                            <li>Du studerer på høgskole/universitet</li>
-                            <li>Du har hatt R1/S2 på videregående</li>
-                            <li>Du har tid til å dra til en ungdomsskole <br>én dag i uka (kl. 8-14)</li>
-                        </ul>
+                        {% include 'statictext/static_content.html.twig' with {'id': 'assistants-admission-requirements'} %}
                     </div>
                     <div class="col-xs-12 col-md-6">
-                        <h5>Opptaksprosessen</h5>
-                        <ol>
-                            <li>Vektorprogrammet tar opp nye assistenter i starten av hvert semester</li>
-                            <li>Send inn søknad fra skjemaet lengre ned på denne siden</li>
-                            <li>Møt opp på intervju slik at vi kan bli bedre kjent med deg</li>
-                            <li>Dra på et gratis pedagogikkurs arrangert av Vektorprogrammet</li>
-                            <li>Få tildelt en ungdomsskole som du og din vektorpartner skal dra til</li>
-                        </ol>
+                        {% include 'statictext/static_content.html.twig' with {'id': 'assistants-admission-process'} %}
                     </div>
 
                 </div>
