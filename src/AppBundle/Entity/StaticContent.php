@@ -94,9 +94,8 @@ class StaticContent
         return $this->html;
     }
 
-	public function __toString() {
-    	return $this->htmlId;
-	}
-
-
+    public function __toString()
+    {
+        return $this->htmlId;
+    }
 }
