@@ -24,12 +24,6 @@ liip_imagine:
               downscale:
                 max: [500, 500]
 
-        sponsor:
-            quality: 90
-            filters:
-              downscale:
-                max: [350, 350]
-
         article_featured:
             quality: 90
             filters:

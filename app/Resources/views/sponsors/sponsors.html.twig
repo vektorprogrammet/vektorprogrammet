@@ -11,7 +11,7 @@
             <div class="col-12 col-sm-6 sponsor-column {% if (((large_sponsors|length) % 2) == 1) %} offset-sm-3{% endif %}">
                 <a href="{{ sponsor.url }}">
                     <img class="img-fluid sponsor-img-large"
-                         src="{{ asset(sponsor.logoImagePath | imagine_filter('sponsor')) }}">
+                         src="{{ asset_with_version(sponsor.logoImagePath) }}">
                 </a>
             </div>
         {% endfor %}
@@ -29,7 +29,7 @@
         <div class="col-6 col-md-4 sponsor-column">
             <a href="{{ sponsor.url }}">
                 <img class="img-fluid sponsor-img-{{ sponsor.size }}"
-                     src="{{ asset(sponsor.logoImagePath | imagine_filter('sponsor')) }}">
+                     src="{{ asset_with_version(sponsor.logoImagePath) }}">
             </a>
         </div>
     {% endfor %}
