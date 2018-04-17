@@ -23,6 +23,16 @@
                                 href="{{ path('admission_show_by_short_name', {'shortName': closestDepartment }) }}">Søk
                             nå!</a></p>
                 </div>
+                {% if closestDepartment.currentSemester.infoMeeting.showOnPage %}
+                    {% set infoMeeting = closestDepartment.currentSemester.infoMeeting %}
+                    <div>
+                        Husk infomøte {{ infoMeeting.date|date('d. M')|lower }} kl. {{ infoMeeting.date|date('H:i') }} i rom {{ infoMeeting.room }}.
+                        <a target="_blank" href="{{ infoMeeting.link }}"
+                           onclick="ga('send', 'event', 'Infomøte', 'Les mer', '{{ closestDepartment.currentSemester }}')">
+                            Les mer
+                        </a>
+                    </div>
+                {% endif %}
             </section>
         {% endif %}
         <section class="row hero">

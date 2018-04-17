@@ -119,6 +119,8 @@
 }
 
 .urgent-box{
+  display: flex;
+  flex-direction: column;
   background: $vektor-blue;
   padding:10px;
   text-align:center;
