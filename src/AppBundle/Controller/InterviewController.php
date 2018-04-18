@@ -353,7 +353,7 @@ class InterviewController extends Controller
     /**
      * @param Interview $interview
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function acceptByResponseCodeAction(Interview $interview)
     {
@@ -362,9 +362,7 @@ class InterviewController extends Controller
         $manager->persist($interview);
         $manager->flush();
 
-        $this->addFlash('success', 'Intervjuet ble akseptert.');
-
-        return $this->redirectToRoute('home');
+        return $this->render('interview/invitation_confirmed.html.twig', array('interview' => $interview));
     }
 
     /**
@@ -391,9 +389,8 @@ class InterviewController extends Controller
             $manager->flush();
 
             $this->get('app.interview.manager')->sendRescheduleEmail($interview);
-            $this->addFlash('success', 'Forespørsel har blitt sendt.');
 
-            return $this->redirectToRoute('home');
+            return $this->render('interview/new_interview_time_requested.html.twig');
         }
 
         return $this->render('interview/request_new_time.html.twig', array(
@@ -443,9 +440,7 @@ class InterviewController extends Controller
 
             $this->get('app.interview.manager')->sendCancelEmail($interview);
 
-            $this->addFlash('success', 'Intervjuet ble kansellert.');
-
-            return $this->redirectToRoute('home');
+            return $this->render('interview/invitation_cancelled.html.twig');
         }
 
         return $this->render('interview/response_confirm_cancel.html.twig', array(
