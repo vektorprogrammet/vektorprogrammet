@@ -12,6 +12,7 @@ use AppBundle\Form\Type\EditUserType;
 use AppBundle\Form\Type\EditUserPasswordType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ProfileController extends Controller
 {
@@ -100,9 +101,13 @@ class ProfileController extends Controller
             $em->persist($user);
             $em->flush();
 
+            $token = new UsernamePasswordToken($user, null, 'secured_area', $user->getRoles());
+            $this->get('security.token_storage')->setToken($token);
+            $this->get('session')->set('_security_secured_area', serialize($token));
+
             $this->get('app.logger')->info("User $user activated with new user code");
 
-            return $this->redirectToRoute('login_route');
+            return $this->redirectToRoute('profile');
         }
 
         return $this->render('new_user/create_new_user.html.twig', array(

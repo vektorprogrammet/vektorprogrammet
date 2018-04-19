@@ -1138,7 +1138,7 @@ public_files:
      file_path: .+
 
 ##########################################
-#                Subsitute               #
+#               Substitute               #
 ##########################################
 
 substitute_show:
