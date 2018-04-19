@@ -1,8 +1,0 @@
-{% extends 'base.html.twig' %}
-
-{% block body %}
-    <div class="page-header text-center">
-        <h1>Akseptert!</h1>
-        <p>Takk for at du aksepterte intervjutiden. Da sees vi {{ interview.conducted | date("d. M") }}, klokka {{ interview.conducted | date("H:m") }} i {{ interview.room }}!</p>
-    </div>
-{% endblock %}

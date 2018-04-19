@@ -345,6 +345,9 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
             $this->assertEquals(1, $mailCollector->getMessageCount());
         }
 
+        $client->followRedirect();
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
         $crawler = $this->teamMemberGoTo('/kontrollpanel/opptak/fordelt');
 
         // Verify that a change has taken place.
