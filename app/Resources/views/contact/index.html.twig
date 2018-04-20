@@ -42,13 +42,25 @@
 {% endblock %}
 
 {% block body %}
+
     <div class="container-fluid">
         <div class="row contact-page">
             <div class="container">
-                <header class="page-header"><h1>Kontakt oss</h1></header>
+                <header class="page-header">
+                    <div class = "row page-cover">
+                    <div class="col-lg-5">
+                        {% include 'statictext/static_content.html.twig' with {'id': 'contact-header'} %}
+                    </div>
+                    <div class="col-lg-4 offset-lg-2 d-flex flex-column justify-content-center">
+                        <img class="img-fluid"
+                             src="{{ asset_with_version('images/organizationstructure.png') }}" alt="Kart med avdelinger">
+                    </div>
+                    </div>
 
+                </header>
 
-                <div class="department-box card py-2 py-sm-4">
+                <h2 class="text-center">Kontakt oss</h2>
+                <div class="department-box card py-2 py-sm-4 my-5">
                     <!-- Tabs (visible on large screens) -->
                     <div class="card-block pt-4 pb-1 pb-sm-4 d-none d-sm-inline-flex">
                         <ul id="department-box-tabs" class="nav nav-tabs justify-content-center w-100">

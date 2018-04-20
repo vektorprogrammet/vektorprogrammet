@@ -46,7 +46,7 @@
                             </h5>
                         {% else %}
                             <img class="img-fluid rounded-circle mb-2 mb-sm-4 profile-photo"
-                                 src="{{ asset_with_version(teamMember.picturePath) }}" alt="{{ teamMember }}">
+                                 src="{{ asset_with_version(teamMember.picturePath | imagine_filter('profile_img_small')) }}" alt="{{ teamMember }}">
                             <h5 class="m-0">{{ teamMember }}</h5>
                         {% endif %}
 

@@ -40,7 +40,7 @@ liip_imagine:
             quality: 85
             filters:
               downscale:
-                max: [175, 175]
+                max: [200, 200]
 
         profile_img_tiny:
             quality: 85
