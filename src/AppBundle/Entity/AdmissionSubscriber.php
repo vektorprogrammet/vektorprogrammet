@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\AdmissionSubscriberRepository")
- * @ORM\Table(name="subscriber")
+ * @ORM\Table(name="admission_subscriber")
  *
  * @UniqueEntity(
  *      fields={"unsubscribeCode"}
@@ -99,9 +99,9 @@ class AdmissionSubscriber
         $this->timestamp = $timestamp;
     }
 
-	/**
-	 * @return string
-	 */
+    /**
+     * @return string
+     */
     public function getUnsubscribeCode()
     {
         return $this->unsubscribeCode;
@@ -115,17 +115,19 @@ class AdmissionSubscriber
         $this->unsubscribeCode = $unsubscribeCode;
     }
 
-	/**
-	 * @return Department
-	 */
-	public function getDepartment() {
-		return $this->department;
-	}
+    /**
+     * @return Department
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
 
-	/**
-	 * @param Department $department
-	 */
-	public function setDepartment( $department ): void {
-		$this->department = $department;
-	}
+    /**
+     * @param Department $department
+     */
+    public function setDepartment($department): void
+    {
+        $this->department = $department;
+    }
 }

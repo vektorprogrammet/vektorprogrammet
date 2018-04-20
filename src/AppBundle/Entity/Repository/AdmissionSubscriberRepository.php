@@ -2,27 +2,56 @@
 
 namespace AppBundle\Entity\Repository;
 
-use AppBundle\Entity\Newsletter;
-use AppBundle\Entity\Subscriber;
+use AppBundle\Entity\AdmissionSubscriber;
+use AppBundle\Entity\Department;
 use Doctrine\ORM\EntityRepository;
 
 class AdmissionSubscriberRepository extends EntityRepository
 {
+
     /**
-     * @param string     $email
-     * @param Newsletter $newsletter
+     * @param Department $department
      *
-     * @return Subscriber[]
+     * @return AdmissionSubscriber[]
      */
-    public function findByEmailAndNewsletter(string $email, Newsletter $newsletter)
+    public function findByDepartment(Department $department)
+    {
+        return $this->createQueryBuilder('subscriber')
+                    ->select('subscriber')
+                    ->andWhere('subscriber.department = :department')
+                    ->setParameter('department', $department)
+                    ->getQuery()
+                    ->getResult();
+    }
+    /**
+     * @param string $email
+     * @param Department $department
+     *
+     * @return AdmissionSubscriber
+     */
+    public function findByEmailAndDepartment(string $email, Department $department)
     {
         return $this->createQueryBuilder('subscriber')
             ->select('subscriber')
             ->where('subscriber.email = :email')
-            ->andWhere('subscriber.newsletter = :newsletter')
+            ->andWhere('subscriber.department = :department')
             ->setParameter('email', $email)
-            ->setParameter('newsletter', $newsletter)
+            ->setParameter('department', $department)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return AdmissionSubscriber
+     */
+    public function findByUnsubscribeCode(string $code)
+    {
+        return $this->createQueryBuilder('subscriber')
+            ->where('subscriber.unsubscribeCode = :code')
+            ->setParameter('code', $code)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }
