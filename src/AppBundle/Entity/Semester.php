@@ -289,6 +289,6 @@ class Semester
     {
         $now = new \DateTime();
 
-        return $this->getSemesterStartDate() < $now && $now < $this->getSemesterEndDate();
+        return $this->getAdmissionStartDate() < $now && $now < $this->getAdmissionEndDate();
     }
 }
