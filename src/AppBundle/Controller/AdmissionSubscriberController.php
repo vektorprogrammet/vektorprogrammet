@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\AdmissionSubscriber;
+use AppBundle\Entity\Department;
+use AppBundle\Form\Type\AdmissionSubscriberType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -10,6 +12,39 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AdmissionSubscriberController extends Controller
 {
+    /**
+     * @Route("/interesseliste/{shortName}", name="interest_list", requirements={"shortName"="\w+"})
+     * @Route("/interesseliste/{id}", name="interest_list_by_id", requirements={"id"="\d+"})
+     *
+     * @param Request $request
+     * @param Department $department
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function subscribePageAction(Request $request, Department $department)
+    {
+        $subscriber = new AdmissionSubscriber();
+        $subscriber->setDepartment($department);
+
+        $form = $this->createForm(AdmissionSubscriberType::class, $subscriber);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($subscriber);
+            $em->flush();
+
+            $this->addFlash('success', $subscriber->getEmail().' har blitt meldt på interesselisten. Du vil få en e-post når opptaket starter');
+
+            return $this->redirectToRoute('interest_list', ['shortName' => $department->getShortName()]);
+        }
+
+        return $this->render('admission_subscriber/subscribe_page.html.twig', [
+            'department' => $department,
+            'form' => $form->createView()
+        ]);
+    }
+
     /**
      * @Route("/opptak/notification", name="admission_subscribe")
      *
