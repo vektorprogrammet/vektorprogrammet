@@ -26,18 +26,12 @@ class SendAdmissionNotificationsCommand extends ContainerAwareCommand
             ->setName('app:admission:send_notifications')
             ->setDescription('Sends notifications about active admission period to subscribers');
     }
-    /**
-     * This method is executed before the the execute() method. It's main purpose
-     * is to initialize the variables used in the rest of the command methods.
-     */
+
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->notifier = $this->getContainer()->get('app.admission_notifier');
     }
-    /**
-     * This method is executed after initialize(). It usually contains the logic
-     * to execute to complete this command task.
-     */
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->notifier->sendAdmissionNotifications();
