@@ -1,0 +1,35 @@
+{% extends "adminBase.html.twig" %}
+
+{% block title %}
+    Stand
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="small-12 columns">
+            {% if is_granted_team_leader() %}
+                {% include 'common/department_semester_dropdowns.html.twig' with {
+                'path': 'stand_by_semester',
+                'parameterName': 'id',
+                'currentSemester': semester
+                } %}
+            {% endif %}
+            <h1>Stand</h1>
+            <p>Her vil du finne informasjon som kan være nyttig når man står på stand</p>
+            <hr>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-4 medium-3 large-2 columns text-center">
+            <a href="{{ path('interest_list', {shortName: semester.department.shortName}) }}">
+                <p>
+                    <i class="fa fa-2x fa-list"></i>
+                    <br>
+                    Interesseliste for {{ semester.department.city }}
+                </p>
+            </a>
+        </div>
+    </div>
+{% endblock %}

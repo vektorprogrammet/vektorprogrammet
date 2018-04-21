@@ -146,11 +146,17 @@
 
             <div class="small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">
-                    <a href="{{ path('surveys') }}">
-                        <i class="fa fa-comment fa-3x"></i>
+                    <a href="{{ path('stand') }}">
+                        <i class="fa fa-bullhorn fa-3x"></i>
 
-                        <p>Undersøkelser</p>
+                        <p>Stand</p>
                     </a>
+                </div>
+            </div>
+
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+
                 </div>
             </div>
 
@@ -226,12 +232,19 @@
                     </a>
                 </div>
             </div>
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('surveys') }}">
+                        <i class="fa fa-comment fa-3x"></i>
 
-            <hr/>
+                        <p>Undersøkelser</p>
+                    </a>
+                </div>
+            </div>
+
         </div>
-
+        <br>
         <div class="row">
-            <h3>Diverse</h3>
 
             <div class="small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">
@@ -263,8 +276,6 @@
                         </a>
                     </div>
                 </div>
-            {% endif %}
-            {% if is_granted_team_leader() %}
                 <div class="small-4 medium-3 large-2 columns">
                     <div class="control-panel-item">
                         <a href="{{ path('school_allocation') }}">
