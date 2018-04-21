@@ -29,6 +29,10 @@ services:
         class: AppBundle\Service\ContentModeManager
         arguments: ['@session']
 
+    app.admission_notifier:
+        class: AppBundle\Service\AdmissionNotifier
+        arguments: ['@doctrine.orm.default_entity_manager', '@app.email_sender', '@app.logger']
+
     app.content_mode_twig_extension:
         class: AppBundle\Twig\Extension\ContentModeExtension
         arguments: ['@app.content_mode']

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Department;
 use Doctrine\ORM\EntityRepository;
 
 class DepartmentRepository extends EntityRepository
@@ -50,6 +51,9 @@ class DepartmentRepository extends EntityRepository
             ->getResult();
     }
 
+    /**
+     * @return Department[]
+     */
     public function findActive()
     {
         return $this->createQueryBuilder('Department')

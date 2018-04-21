@@ -96,4 +96,97 @@
             $('#department-box-selector').val(id);
         }
     </script>
+
+    <script>
+      (function addEventListeners() {
+          var inputs = document.querySelectorAll('.subscribe-input');
+          for (var i = 0; i < inputs.length; i++) {
+            var input = inputs[i];
+            input.addEventListener('focus', clearErrors);
+            input.addEventListener('blur', validate);
+            input.addEventListener('keyup', enterSubmit);
+          }
+        })();
+
+        function clearErrors() {
+          var input = this.parentNode.querySelector('input');
+          if (!input) {
+            return;
+          }
+          input.classList.remove('is-invalid');
+        }
+
+        function validate(target) {
+          if (target.target) {
+            target = target.target;
+          }
+          if (!target.parentNode) {
+            alert("Noe gikk galt");
+            return false;
+          }
+          var input = target.parentNode.querySelector('input');
+          var error = target.parentNode.querySelector('.invalid-feedback');
+          if (!input || !error) {
+            alert("Noe gikk galt");
+            return false;
+          }
+          var email = input.value;
+          if (!email) {
+            setError(input, 'E-post må fylles ut');
+            return false;
+          }
+
+          return true;
+        }
+
+        function enterSubmit(e) {
+          if (e.keyCode === 13) {
+            e.target.parentNode.querySelector('button').click();
+          }
+        }
+
+        function subscribe(department, target) {
+          if (!validate(target)) {
+            return;
+          }
+
+          var email = target.parentNode.querySelector('input').value;
+          $.ajax({
+            type: "POST",
+            url: "{{ path('admission_subscribe') }}",
+            data: {
+              department: department,
+              email: email
+            },
+            success: function () {
+              setComplete(target)
+            },
+            error: function(err) {
+              if (err.responseText.indexOf("Dette er ikke en gylid e-postadresse") !== -1) {
+                setError(target, 'Dette er ikke en gylid e-postadresse');
+              } else {
+                setError(target, 'Det har skjedd en feil under registrering av e-postadressen. Vennligst prøv igjen.')
+              }
+            },
+            dataType: "json"
+          });
+        }
+        function setComplete(element) {
+          $(element).parent('.form-group').html("<div class='text-center'>" +
+            "<i class='fa fa-3x fa-check text-success'></i>" +
+            "<p>Vi sender deg en melding når opptaket starter!</p>" +
+            "</div>")
+        }
+        function setError(element, message) {
+          var input = element.parentNode.querySelector('input');
+          var error = element.parentNode.querySelector('.invalid-feedback');
+          if (!input || !error) {
+            alert("Noe gikk galt");
+            return false;
+          }
+
+          input.classList.add('is-invalid');
+          error.innerHTML = message;
+        }
+    </script>
 {% endblock %}

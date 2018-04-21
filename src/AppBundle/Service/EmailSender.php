@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\SupportTicket;
 use AppBundle\Entity\Receipt;
 use AppBundle\Mailer\MailerInterface;
@@ -90,6 +91,18 @@ class EmailSender
                                      'accountNumber' => $receipt->getUser()->getAccountNumber(),
                                      'receipt' => $receipt, )), 'text/html')
                                  ->setContentType('text/html');
+
+        $this->mailer->send($message);
+    }
+
+    public function sendAdmissionStartedNotification(AdmissionSubscriber $subscriber)
+    {
+        $message = \Swift_Message::newInstance()
+             ->setSubject('Opptak for vektorassistenter har åpnet!')
+             ->setFrom($this->defaultEmail)
+             ->setTo($subscriber->getEmail())
+             ->setBody($this->twig->render('admission/notification_email.html.twig', array('department' => $subscriber->getDepartment(), 'subscriber' => $subscriber)))
+             ->setContentType('text/html');
 
         $this->mailer->send($message);
     }
