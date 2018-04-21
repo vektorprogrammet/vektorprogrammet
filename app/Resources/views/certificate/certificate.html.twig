@@ -8540,23 +8540,26 @@
             position: absolute;
             bottom: 0;
         }
+        td {
+
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="flex-container">
+    <div class="flex-container" style="padding: 5px 15px;">
 
         <div class="top">
 
             <div class="row" style="margin-bottom: 50px">
-                <div class="small-12 columns" style="text-align: center">
-                    <h2>Attest - Vektorprogrammet</h2>
+                <div class="small-12 columns" style="text-align: center;">
+                    <h1 style="font-size: 25px;">Attest - Vektorprogrammet</h1>
                 </div>
             </div>
 
             <div class="row">
                 <div class="small-12 columns">
-                    <p style="font-weight: bold">{{ user }} har vært deltagende i Vektorprogrammet
+                    <p style="font-weight: bold; margin-bottom: 15px;">{{ user }} har vært deltagende i Vektorprogrammet
                         ved {{ user.fieldOfStudy.department.shortName }} som vektorassistent.</p>
                 </div>
             </div>
@@ -8571,19 +8574,19 @@
                             elevene.
                         </p>
                         <br>
-                        <h3>Assistentoversikt</h3>
+                        <h3 style="margin-top: 20px; margin-bottom: 5px; font-size: 20px;">Assistentoversikt</h3>
                         <table style="width:60%;">
                             <tr>
-                                <th style="width:120px;">Skole</th>
-                                <th style="width:100px;">Semester</th>
-                                <th style="text-align: center; width:100px;">Antall Dager</th>
+                                <th style="width:120px;padding:8px;">Skole</th>
+                                <th style="width:100px;padding:8px;">Semester</th>
+                                <th style="text-align: center; width:100px;padding:8px;">Antall Dager</th>
                             </tr>
                             {% for as in assistantHistory %}
                                 {% if as.semester is not null and as.school is not null %}
                                     <tr>
-                                        <td>{{ as.getSchool.getName }}</td>
-                                        <td>{{ as.getSemester.name }}</td>
-                                        <td style="text-align: center">{{ as.workdays }}</td>
+                                        <td style="padding:5px 8px;">{{ as.getSchool.getName }}</td>
+                                        <td style="padding:5px 8px;">{{ as.getSemester.name }}</td>
+                                        <td style="text-align: center;padding:5px 8px;">{{ as.workdays }}</td>
                                     </tr>
                                 {% else %}
                                     <tr>
@@ -8606,7 +8609,7 @@
 
             <div class="row" style="">
                 <div class="small-12 columns">
-                    <p style="font-weight: bold">På vegne av Vektorprogrammet.</p>
+                    <p style="font-weight: bold; margin-top:15px; margin-bottom: 15px;">På vegne av Vektorprogrammet.</p>
                 </div>
             </div>
 
@@ -8620,18 +8623,19 @@
             <div class="row">
                 <div class="small-12 columns">
                     <p style="font-weight: bold">{{ app.user }}</p>
-                    <p>{{ signature.description }}</p>
+                    <p style="margin-top: 5px;">{{ signature.description }}</p>
                 </div>
             </div>
 
             <br>
             <br>
-            <hr>
+            <hr style="margin-top: 32px;">
+            <br>
             <br>
             <div class="row">
                 <img src="{{ base_dir ~ asset('images/vektor.png') }}" alt=""
                      style="float:right; margin-left: 20px; margin-top: -8px">
-                <div class="address" style="text-align: left; font-size: 14px; margin-left: 14px;">
+                <div class="address" style="text-align: left; font-size: 14px;">
 
                     Vektorprogrammet <br/>
                     NT-fakultetet, NTNU <br/>

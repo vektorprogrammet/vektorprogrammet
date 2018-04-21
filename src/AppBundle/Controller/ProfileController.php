@@ -13,6 +13,7 @@ use AppBundle\Form\Type\EditUserPasswordType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use TFox\MpdfPortBundle\Response\PDFResponse;
 
 class ProfileController extends Controller
 {
@@ -174,9 +175,9 @@ class ProfileController extends Controller
             'department'       => $department,
             'base_dir'         => $this->get('kernel')->getRootDir() . '/../www' . $request->getBasePath(),
         ));
-        $mpdfService = $this->get('tfox.mpdfport');
+        $mpdfService = $this->get('t_fox_mpdf_port.pdf');
 
-        return $mpdfService->generatePdfResponse($html);
+        return new PDFResponse($mpdfService->generatePdf($html));
     }
 
     public function editProfileInformationAction(Request $request)
