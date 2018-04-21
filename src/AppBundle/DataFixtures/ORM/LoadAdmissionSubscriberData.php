@@ -19,9 +19,10 @@ class LoadAdmissionSubscriberData extends AbstractFixture implements OrderedFixt
                 $subscriber->setTimestamp($date);
                 $subscriber->setEmail("sub$i.$j@vektorprogrammet.no");
                 $manager->persist($subscriber);
-                $manager->flush();
             }
         }
+
+        $manager->flush();
     }
 
     public function getOrder()
