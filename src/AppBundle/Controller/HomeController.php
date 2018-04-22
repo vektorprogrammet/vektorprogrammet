@@ -10,17 +10,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class HomeController extends Controller
 {
-    public function showAction()
-    {
-        $assistantsCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findAssistants());
-        $teamMembersCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findTeamMembers());
-        $articles = $this->getDoctrine()->getRepository('AppBundle:Article')->findStickyAndLatestArticles();
+    public function showAction() {
+	        $assistantsCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findAssistants());
+	        $teamMembersCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findTeamMembers());
+	        $articles = $this->getDoctrine()->getRepository('AppBundle:Article')->findStickyAndLatestArticles();
 
         $departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
         $closestDepartment = $this->get('app.geolocation')->findNearestDepartment($departments);
 
         $femaleAssistantCount = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->numFemale();
-        $maleAssistantCount = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->numMale();
+$maleAssistantCount = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->numMale();
 
         return $this->render('home/index.html.twig', [
             'assistantCount' => $assistantsCount + 600, // + Estimated number of assistants not registered in website
