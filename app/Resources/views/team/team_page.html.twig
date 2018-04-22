@@ -15,7 +15,11 @@
 {% block javascripts %}
     <script>
       $('.custom_html table').addClass('table table-bordered');
-      $('.custom_html img').addClass('img-fluid').css('height', 'auto');
+      $('.custom_html img')
+        .addClass('img-fluid')
+        .css('height', 'auto')
+        .css('margin-left', '0')
+        .css('margin-right', '0');
     </script>
 {% endblock %}
 
