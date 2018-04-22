@@ -272,6 +272,7 @@
   }
 
   .custom_html{
+    overflow-wrap: break-word;
     h1, h2 {
       text-align:center;
     }
@@ -283,6 +284,9 @@
 
   .apply-button {
     margin: 80px auto;
+    @media (max-width: 350px) {
+      font-size: 13px;
+    }
   }
 }
 
