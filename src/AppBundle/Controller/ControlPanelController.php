@@ -8,7 +8,7 @@ class ControlPanelController extends Controller
 {
     public function showAction()
     {
-        $departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+        $departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findActive();
 
         // Return the view to be rendered
         return $this->render('control_panel/index.html.twig', array(

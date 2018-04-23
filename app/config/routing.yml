@@ -1,11 +1,10 @@
-home:
- path: /
- defaults: { _controller: AppBundle:Home:show }
- methods: [GET]
-
 #FOSJsRoutingBundle/Resources/config/routing/routing bundle needs this
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
 
 #LiipImagineBundle
 _liip_imagine:
@@ -19,20 +18,24 @@ github_webook:
 ##########################################
 #             Static pages               #
 ##########################################
+home:
+ path: /
+ defaults: { _controller: AppBundle:Home:show }
+ methods: [GET]
 
 students:
  path: /studenter
- defaults: { _controller: AppBundle:Students:show }
+ defaults: { _controller: AppBundle:Assistant:index }
  methods: [GET]
 
 schools:
  path: /skoler
- defaults: { _controller: AppBundle:Schools:show }
+ defaults: { _controller: AppBundle:Teacher:index }
  methods: [GET]
 
 businesses:
  path: /bedrifter
- defaults: { _controller: AppBundle:Businesses:show }
+ defaults: { _controller: AppBundle:AboutVektor:show }
  methods: [GET]
 
 about:
@@ -42,13 +45,8 @@ about:
 
 faq:
  path: /faq
- defaults: {_controller: AppBundle:AboutVektor:showFAQ}
+ defaults: {_controller: AppBundle:AboutVektor:show}
  methods: [GET]
-
-admission:
- path: /opptak
- defaults: { _controller: AppBundle:Admission:show }
- methods: [GET, POST]
 
 # Updates static content
 # Not meant for rendering a page. Receives a post request and updates the database.
@@ -215,7 +213,7 @@ specific_profile:
   id: \d+
 
 edit_user_company_email:
-  path: /bruker/vekorepost/endre/{id}
+  path: /kontrollpanel/bruker/vekorepost/endre/{id}
   defaults: { _controller: AppBundle:Profile:editCompanyEmail }
   methods: [GET, POST]
   requirements:
@@ -250,30 +248,6 @@ profile_upload_photo:
   requirements:
     id: \d+
 
-profile_save_response_from_editor:
-  path: /profil/rediger/profilbilde/saveEditorResponse/{id}
-  defaults: { _controller: AppBundle:ProfilePhoto:saveProfilePhotoEditorResponse }
-  methods: [POST]
-  requirements:
-    id: \d+
-
-profile_save_photo:
-  path: /profil/rediger/profilbilde/save/{id}
-  defaults: { _controller: AppBundle:ProfilePhoto:saveProfilePhoto }
-  methods: [GET, POST]
-  requirements:
-    id: \d+
-
-##########################################
-#               Members                  #
-##########################################
-
-members_show:
- path:   /assistenter
- defaults: { _controller: AppBundle:Members:show }
- methods: [GET]
-
-
 ##########################################
 #          Participant History           #
 ##########################################
@@ -293,6 +267,13 @@ assistant_history_delete:
  path: /kontrollpanel/deltakerhistorikk/slett/{id}
  defaults: { _controller: AppBundle:AssistantHistory:delete }
  methods: [POST]
+
+assistant_history_edit:
+  path: /kontrollpanel/deltakerhistorikk/rediger/{id}
+  defaults: { _controller: AppBundle:AssistantHistory:edit }
+  methods: [GET, POST]
+  requirements:
+    id: \d+
 
 ##########################################
 #                SSO                     #
@@ -347,12 +328,19 @@ reset_password_confirmation:
 #               Article                  #
 ##########################################
 
-article:
-  path: /artikkel
+news:
+  path: /nyheter
   defaults: { _controller: AppBundle:Article:show }
   methods: [GET]
 
 article_show:
+  path: /nyhet/{id}
+  defaults: { _controller: AppBundle:Article:showSpecific }
+  methods: [GET]
+  requirements:
+    id: \d+
+
+old_article_show:
   path: /artikkel/{id}
   defaults: { _controller: AppBundle:Article:showSpecific }
   methods: [GET]
@@ -360,7 +348,7 @@ article_show:
     id: \d+
 
 article_filter:
-  path: /artikkel/{department}
+  path: /nyheter/{department}
   defaults: { _controller: AppBundle:Article:showFilter }
   methods: [GET]
 
@@ -412,40 +400,6 @@ articleadmin_saveImage:
   options:
     expose: true
 
-##########################################
-#             Admission                  #
-##########################################
-
-admission_existing_user:
- path: /opptak/eksisterende
- defaults: {_controller: AppBundle:Admission:existingUserAdmission}
- methods: [GET, POST]
-
-admission_show_specific_department:
- path: /opptak/avdeling/{id}
- defaults: {_controller: AppBundle:Admission:show }
- methods: [GET, POST]
- requirements:
-    id: \d+
-
-admission_show_by_short_name:
- path: /opptak/{shortName}
- defaults: {_controller: AppBundle:Admission:show }
- methods: [GET, POST]
- requirements:
-    id: \w+
-
-admission_show_specific_department_by_name:
- path: /avdeling/{shortName}
- defaults: {_controller: AppBundle:Admission:show }
- methods: [GET, POST]
- requirements:
-    id: \w+
-
-admission_contact:
- path: /opptakkontakt/{id}
- defaults: {_controller: AppBundle:Admission:contact }
- methods: [GET, POST]
 
 ##########################################
 #            AdmissionAdmin              #
@@ -1175,7 +1129,7 @@ public_files:
      file_path: .+
 
 ##########################################
-#                Substitute               #
+#               Substitute               #
 ##########################################
 
 substitute_show:
@@ -1301,7 +1255,7 @@ newsletter_show_all:
   methods: [GET]
 
 newsletter_show_subscribers:
-  path: /kontrollpanel/nyhetsbrev/{id}
+  path: /kontrollpanel/nyhetsbrev/abonnenter/{id}
   defaults: { _controller: AppBundle:Subscriber:showSubscribers }
   methods: [GET]
   requirements:
@@ -1456,3 +1410,22 @@ generate_all_mail_list:
   methods: [GET]
   requirements:
     id: \d+
+
+assistants:
+    path: /assistenter/{id}
+    defaults: {_controller: AppBundle:Assistant:index, id: null}
+    methods: [GET, POST]
+    requirements:
+        id: \d+
+
+team:
+    path: /team
+    defaults: { _controller: AppBundle:BoardAndTeam:show }
+
+teachers:
+    path: /laerere
+    defaults: { _controller: AppBundle:Teacher:index }
+
+about_new:
+    path: /om
+    defaults: { _controller: AppBundle:AboutVektor:show }

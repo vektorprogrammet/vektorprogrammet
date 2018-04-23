@@ -1,12 +1,14 @@
-<div class="panel callout radius">
-    <h6>Avdeling: {{ user.department }}</h6>
-    <h6>Linje: {{ user.fieldOfStudy }}</h6>
-    <h6>Telefon: {{ user.phone|slice(0,3) }} {{ user.phone|slice(3,2) }} {{ user.phone|slice(5,3) }}</h6>
-    <h6>E-post: {{ user.email }}</h6>
-    {% if user.companyEmail or is_granted_admin() %}
-        <h6>
-            Vektorepost: {{ user.companyEmail }}
-            {% if is_granted_admin() %}(<a href="{{ path('edit_user_company_email', {id: user.id}) }}">endre</a>){% endif %}
-        </h6>
-    {% endif %}
+<div class="card mt-3">
+    <div class="card-body">
+        <h6>Avdeling: {{ user.department }}</h6>
+        <h6>Linje: {{ user.fieldOfStudy }}</h6>
+        <h6>Telefon: {{ user.phone|slice(0,3) }} {{ user.phone|slice(3,2) }} {{ user.phone|slice(5,3) }}</h6>
+        <h6 class="mb-0">E-post: {{ user.email }}</h6>
+        {% if user.companyEmail or is_granted_admin() %}
+            <h6 class="mb-0 mt-2">
+                Vektorepost: {{ user.companyEmail }}
+                {% if is_granted_admin() %}(<a href="{{ path('edit_user_company_email', {id: user.id}) }}">endre</a>){% endif %}
+            </h6>
+        {% endif %}
+    </div>
 </div>

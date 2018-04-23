@@ -8,27 +8,13 @@ class DepartmentControllerTest extends BaseWebTestCase
 {
     public function testShow()
     {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $crawler = $client->request('GET', '/kontrollpanel/avdelingadmin');
-
-        // Assert a specific 200 status code
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->adminGoTo('/kontrollpanel/avdelingadmin');
 
         // Assert that we have the correct department data
-        $this->assertContains('Norges teknisk-naturvitenskapelige universitet', $client->getResponse()->getContent());
-        $this->assertContains('Høgskolen i Sør-Trønderlag', $client->getResponse()->getContent());
-        $this->assertContains('Norges miljø- og biovitenskapelige universitet', $client->getResponse()->getContent());
-        $this->assertContains('Universitetet i Oslo', $client->getResponse()->getContent());
-
-        // Assert that we have the correct amount of data
-        $this->assertEquals(1, $crawler->filter('html:contains("Norges teknisk-naturvitenskapelige universitet")')->count());
-        $this->assertEquals(1, $crawler->filter('html:contains("Norges miljø- og biovitenskapelige universitet")')->count());
-        $this->assertEquals(1, $crawler->filter('html:contains("Høgskolen i Sør-Trønderlag")')->count());
-        $this->assertEquals(1, $crawler->filter('html:contains("Universitetet i Oslo")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("Norges teknisk-naturvitenskapelige universitet")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("Universitetet i Bergen")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("Norges miljø- og biovitenskapelige universitet")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("Universitetet i Oslo")')->count());
     }
 
     public function testCreateDepartment()

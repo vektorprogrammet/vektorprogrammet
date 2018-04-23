@@ -6,6 +6,7 @@ use AppBundle\Event\InterviewConductedEvent;
 use AppBundle\Event\InterviewEvent;
 use AppBundle\Service\InterviewManager;
 use AppBundle\Service\InterviewNotificationManager;
+use AppBundle\Mailer\MailerInterface;
 use AppBundle\Service\SbsData;
 use AppBundle\Sms\Sms;
 use AppBundle\Sms\SmsSender;
@@ -27,7 +28,7 @@ class InterviewSubscriber implements EventSubscriberInterface
     private $router;
 
     public function __construct(
-        \Swift_Mailer $mailer,
+        MailerInterface $mailer,
         \Twig_Environment $twig,
         Session $session,
         LoggerInterface $logger,
@@ -85,8 +86,6 @@ class InterviewSubscriber implements EventSubscriberInterface
                 'interviewer' => $interviewer,
             )));
         $this->mailer->send($emailMessage);
-
-        $this->logger->info("Interview receipt sent to {$application->getUser()} at {$application->getUser()->getEmail()}");
     }
 
     public function addFlashMessage(InterviewConductedEvent $event)

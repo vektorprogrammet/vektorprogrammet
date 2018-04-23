@@ -1,0 +1,82 @@
+@import "../colors";
+
+.teacher {
+  ul {
+    margin-left: 0.5rem;
+  }
+  .page-header{
+    h1 {
+      text-align: left;
+    }
+  }
+  .link-to-application {
+    font-size: 18px;
+    color: $dark-blue;
+    font-weight: 600;
+  }
+  .hero-image {
+    margin: 0 auto;
+    display: block;
+    width: 700px;
+    max-width: 100%;
+    @media (max-width: 992px) {
+      margin-top: 32px;
+    }
+  }
+  section {
+    margin: 125px auto;
+    @media (max-width: 1200px) {
+      margin: 110px auto;
+    }
+    @media (max-width: 768px) {
+      margin: 80px auto;
+    }
+  }
+
+  h2 {
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  ul, ol {
+    padding-left: 17px;
+    li {
+      font-size: 18px;
+    }
+  }
+
+  td {
+
+  }
+
+  table {
+    margin: 32px 0;
+  }
+
+  .inline-list {
+    display: inline-block;
+    li {
+      display: inline-block;
+    }
+  }
+
+  .expand {
+    p {
+      font-size: 18px;
+    }
+    .expand-contact {
+      h4 {
+        margin-bottom: 0;
+        font-size: 18px;
+      }
+      p {
+        margin-top: 0;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .department-email {
+    color: #333;
+  }
+}

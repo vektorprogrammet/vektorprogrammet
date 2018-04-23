@@ -16,9 +16,7 @@ class StudentsControllerTest extends BaseWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // Assert that we have the correct amount of data
-        $this->assertEquals(1, $crawler->filter('h1:contains("For studenter")')->count());
-        $this->assertEquals(1, $crawler->filter('h1:contains("Kontakt")')->count());
-        $this->assertEquals(1, $crawler->filter('strong:contains("Generelle henvendelser rettes til:")')->count());
-        $this->assertEquals(1, $crawler->filter('p:contains("studenter@vektorprogrammet.no")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Assistenter")')->count());
+        $this->assertEquals(1, $crawler->filter('p:contains("Vektorprogrammet er en studentorganisasjon som sender realfagssterke studenter")')->count());
     }
 }

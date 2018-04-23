@@ -51,7 +51,7 @@ class StaticContent
      *
      * @param string $htmlId
      *
-     * @return Static_content
+     * @return StaticContent
      */
     public function setHtmlId($htmlId)
     {
@@ -75,7 +75,7 @@ class StaticContent
      *
      * @param string $html
      *
-     * @return Static_content
+     * @return StaticContent
      */
     public function setHtml($html)
     {
@@ -92,5 +92,10 @@ class StaticContent
     public function getHtml()
     {
         return $this->html;
+    }
+
+    public function __toString()
+    {
+        return $this->htmlId;
     }
 }

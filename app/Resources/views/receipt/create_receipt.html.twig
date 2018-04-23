@@ -1,58 +1,23 @@
 {{ form_start(form) }}
-    <div class="row">
-        <div class="small-12 medium-8 columns">
+    <div class="row mb-5">
+        <div class="col-12 col-sm-6">
             {{ form_row(form.description) }}
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="small-8 medium-3 columns">
             {{ form_row(form.sum) }}
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="small-8 medium-12 columns">
             {{ form_row(form.receiptDate) }}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="small-8 medium-3 columns">
-            {% if app.user.accountNumber %}
-                <div id="accountNumberInfo">
-                    Ditt kontonummer er <span class="text-bold">{{ app.user.accountNumber }}</span> <span id="changeAccountNumber" class="text-link">Endre</span>
-                </div>
-                <div id="accountNumberForm" class="hide">
-                    {{ form_row(form.user) }}
-                </div>
-            {% else %}
-                {{ form_row(form.user) }}
-            {% endif %}
+            {% include 'receipt/account_number.html.twig' %}
+
+            <br>
+            {{ form_row(form.picturePath) }}
+
+            <button class="btn btn-success">Be om refusjon</button>
+        </div>
+        <div class="col-12 col-sm-6 d-flex flex-column">
+            <div class="flex-grow"></div>
+            <div class="{{ receipt.picturePath is not null ? '' : 'd-none' }}">
+                <img class="img-fluid" src="{{ asset(receipt.picturePath) }}" id="receipt_picture">
+            </div>
+            <div class="flex-grow"></div>
         </div>
     </div>
-<br>
-    <div class="row">
-        <div class="small-12 columns">
-            <div>
-                {{ form_row(form.picturePath) }}
-            </div>
-        </div>
-        <div class="small-4 columns">
-            <div class="{{ receipt.picturePath is not null ? '' : 'hide' }}">
-                <img src="{{ asset(receipt.picturePath) }}" height="60px" id="receipt_picture">
-            </div>
-        </div>
-    </div>
-    <br>
-    <button class="button success">Be om refusjon</button>
 {{ form_end(form) }}
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        $('#changeAccountNumber').click(function() {
-          $('#accountNumberForm').show();
-          $('#accountNumberInfo').hide();
-        });
-    });
-</script>

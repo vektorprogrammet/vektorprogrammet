@@ -1,5 +1,5 @@
 {% if yourApplications|length > 0 %}
-    <h5 class="">Dine Intervjuer | Antall: {{ yourApplications|length }}</h5>
+    <h5 class="">Dine intervjuer | Antall: {{ yourApplications|length }}</h5>
     {% include 'admission_admin/assigned_table.html.twig' with {'applicants': yourApplications} %}
     <hr>
 {% endif %}

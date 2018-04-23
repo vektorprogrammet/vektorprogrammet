@@ -1,11 +1,15 @@
 {% extends 'adminBase.html.twig' %}
 
-
 {% block title %}
     Opprett semester
 {% endblock %}
 
 {% form_theme form 'form/foundation_layout.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.min.css">
+{% endblock %}
 
 {% block body %}
     <p></p>
@@ -13,7 +17,7 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
 
-            <h1> Opprett semester </h1>
+            <h1> Opprett semester {{ department }}</h1>
 
             <hr>
 
@@ -28,24 +32,23 @@
 
                 </div>
 
-                <div class="small-12 medium-12 large-6 columns">
-                    <div class="panel callout radius">
-
-                        <h2> Format </h2>
-
-                        <p>
-
-                            Bruk formatet yyyy-MM-dd HH:mm:ss <br/>
-
-                            Eksempel: 2015-10-03 10:30:00 <br/>
-
-                        </p>
-
-                    </div>
-                </div>
             </div>
 
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.min.js"></script>
+    <script>
+        const options = {
+            format: 'd.m.Y H:i',
+            lang: 'no',
+            step: 1,
+        };
+
+        jQuery('#{{ form.admissionStartDate.vars.id }}').datetimepicker(options);
+        jQuery('#{{ form.admissionEndDate.vars.id }}').datetimepicker(options);
+    </script>
 {% endblock %}

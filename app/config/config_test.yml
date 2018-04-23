@@ -30,7 +30,11 @@ doctrine:
         connections:
             default:
                 driver:  pdo_sqlite
+                host: localhost
+                port: null
                 user:    test
+                password: null
                 path:    %kernel.root_dir%/cache/test/test.db
+                dbname: "%%kernel.root_dir%/cache/test/test.db"
                 #memory: true
                 charset: utf8

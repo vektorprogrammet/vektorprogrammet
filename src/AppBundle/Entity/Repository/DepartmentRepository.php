@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Department;
 use Doctrine\ORM\EntityRepository;
 
 class DepartmentRepository extends EntityRepository
@@ -46,6 +47,18 @@ class DepartmentRepository extends EntityRepository
         $this->createQueryBuilder('Department')
             ->select('Department')
             ->distinct()
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Department[]
+     */
+    public function findActive()
+    {
+        return $this->createQueryBuilder('Department')
+            ->select('Department')
+            ->where('Department.active = true')
             ->getQuery()
             ->getResult();
     }

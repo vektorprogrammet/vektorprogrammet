@@ -1,34 +1,9 @@
 {% extends 'adminBase.html.twig' %}
 {% block title %}Kontrollpanel{% endblock %}
 {% block body %}
-    {% include "common/flash.html.twig" %}
     <div class="control-panel">
         <div class="sbs">
             {{ render(controller('AppBundle:ControlPanel:showSBS')) }}
-        </div>
-        <div class="row">
-            <h3>Artikkel</h3>
-
-            <div class="small-4 medium-3 large-2 columns">
-                <div class="control-panel-item">
-                    <a href="{{ path('articleadmin_show') }}">
-                        <i class="fa fa-sticky-note fa-3x"></i>
-
-                        <p>Artikler</p>
-                    </a>
-                </div>
-            </div>
-
-            <div class="small-4 medium-3 large-2 columns">
-                <div class="control-panel-item">
-                    <a href="{{ path('articleadmin_create') }}">
-                        <i class="fa fa-plus-square fa-3x"></i>
-
-                        <p>Ny artikkel</p>
-                    </a>
-                </div>
-            </div>
-            <hr/>
         </div>
 
         <div class="row">
@@ -115,7 +90,7 @@
 
 
         <div class="row">
-            <h3>Opptak & Undersøkelse</h3>
+            <h3>Opptak</h3>
 
             <div class="small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">
@@ -123,6 +98,16 @@
                         <i class="fa fa-upload fa-3x"></i>
 
                         <p>Opptak</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('semester_show') }}">
+                        <i class="fa fa-clock-o fa-3x"></i>
+
+                        <p>Opptaksperiode</p>
                     </a>
                 </div>
             </div>
@@ -161,24 +146,45 @@
 
             <div class="small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">
-                    <a href="{{ path('surveys') }}">
-                        <i class="fa fa-comment fa-3x"></i>
+                    <a href="{{ path('stand') }}">
+                        <i class="fa fa-bullhorn fa-3x"></i>
 
-                        <p>Undersøkelser</p>
+                        <p>Stand</p>
                     </a>
                 </div>
             </div>
 
             <div class="small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">
-                    <a href="{{ path('newsletter_show_all') }}">
-                        <i class="fa fa-envelope fa-3x"></i>
 
-                        <p>Nyhetsbrev</p>
+                </div>
+            </div>
+
+            <hr/>
+        </div>
+
+        <div class="row">
+            <h3>Artikkel</h3>
+
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('articleadmin_show') }}">
+                        <i class="fa fa-sticky-note fa-3x"></i>
+
+                        <p>Artikler</p>
                     </a>
                 </div>
             </div>
 
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('articleadmin_create') }}">
+                        <i class="fa fa-plus-square fa-3x"></i>
+
+                        <p>Ny artikkel</p>
+                    </a>
+                </div>
+            </div>
             <hr/>
         </div>
 
@@ -195,15 +201,6 @@
                 </div>
             </div>
 
-            <div class="small-4 medium-3 large-2 columns">
-                <div class="control-panel-item">
-                    <a href="{{ path('semester_show') }}">
-                        <i class="fa fa-clock-o fa-3x"></i>
-
-                        <p>Opptaksperiode</p>
-                    </a>
-                </div>
-            </div>
             {% if is_granted_team_leader() %}
                 <div class="small-4 medium-3 large-2 columns">
                     <div class="control-panel-item">
@@ -226,13 +223,28 @@
                 </div>
             </div>
 
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('newsletter_show_all') }}">
+                        <i class="fa fa-envelope fa-3x"></i>
 
+                        <p>Nyhetsbrev</p>
+                    </a>
+                </div>
+            </div>
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('surveys') }}">
+                        <i class="fa fa-comment fa-3x"></i>
 
-            <hr/>
+                        <p>Undersøkelser</p>
+                    </a>
+                </div>
+            </div>
+
         </div>
-
+        <br>
         <div class="row">
-            <h3>Diverse</h3>
 
             <div class="small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">
@@ -264,8 +276,6 @@
                         </a>
                     </div>
                 </div>
-            {% endif %}
-            {% if is_granted_team_leader() %}
                 <div class="small-4 medium-3 large-2 columns">
                     <div class="control-panel-item">
                         <a href="{{ path('school_allocation') }}">

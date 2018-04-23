@@ -22,7 +22,7 @@ function validateBankAccountNumber(field){
 
     // Invalid MOD11
     var remainder = cross % 11;
-    if ((11 - remainder) != numbers[numbers.length - 1]){
+    if (((11 - remainder) % 11) !== parseInt(numbers[numbers.length - 1])){
         field.setCustomValidity('Ugyldig bankkontonummer. Sjekk at alle sifrene er korrekte');
         return false;
     }

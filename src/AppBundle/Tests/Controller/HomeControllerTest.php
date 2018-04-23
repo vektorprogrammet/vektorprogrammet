@@ -8,17 +8,9 @@ class HomeControllerTest extends BaseWebTestCase
 {
     public function testShow()
     {
-        $client = static::createClient();
+        $crawler = $this->goTo('/');
 
-        $crawler = $client->request('GET', '/');
-
-        // Assert that we have the correct amount of data
-        $this->assertEquals(1, $crawler->filter('h1:contains("KVIFOR MATEMATIKK ER DET VIKTIGASTE DU")')->count());
+        $this->assertEquals(1, $crawler->filter('h4:contains("KVIFOR MATEMATIKK ER DET VIKTIGASTE DU")')->count());
         $this->assertEquals(1, $crawler->filter('h2:contains("Hovedsponsorer")')->count());
-        $this->assertEquals(1, $crawler->filter('a:contains("Les mer om vektorprogrammet")')->count());
-        $this->assertEquals(1, $crawler->filter('a:contains("Last ned kompendium")')->count());
-
-        // Assert a specific 200 status code
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 }

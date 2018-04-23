@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ApplicationRepository")
@@ -80,6 +81,12 @@ class Application
      * @ORM\Column(type="string", nullable=true)
      */
     private $preferredGroup;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\Length(max=255, maxMessage="Dette feltet kan ikke inneholde mer enn 255 tegn.")
+     */
+    private $preferredSchool;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
@@ -493,5 +500,21 @@ class Application
     public function setSpecialNeeds($specialNeeds)
     {
         $this->specialNeeds = $specialNeeds;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPreferredSchool()
+    {
+        return $this->preferredSchool;
+    }
+
+    /**
+     * @param mixed $preferredSchool
+     */
+    public function setPreferredSchool($preferredSchool): void
+    {
+        $this->preferredSchool = $preferredSchool;
     }
 }

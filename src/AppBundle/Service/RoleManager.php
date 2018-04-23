@@ -134,7 +134,7 @@ class RoleManager
         }
     }
 
-    private function userIsInExecutiveBoard(User $user)
+    public function userIsInExecutiveBoard(User $user)
     {
         $executiveBoardMember = $this->em->getRepository('AppBundle:ExecutiveBoardMember')->findByUser($user);
 

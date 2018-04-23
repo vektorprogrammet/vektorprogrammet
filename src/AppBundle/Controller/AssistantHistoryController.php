@@ -5,6 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Form\Type\CreateAssistantHistoryType;
+use Symfony\Component\HttpFoundation\Request;
 
 class AssistantHistoryController extends Controller
 {
@@ -24,5 +26,23 @@ class AssistantHistoryController extends Controller
         );
 
         return $this->redirectToRoute('participanthistory_show');
+    }
+
+    public function editAction(Request $request, AssistantHistory $assistantHistory)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $department = $assistantHistory->getUser()->getDepartment();
+        $form = $this->createForm(new CreateAssistantHistoryType($department), $assistantHistory);
+        $form->handleRequest($request);
+
+        if ($form -> isValid()) {
+            $em->persist($assistantHistory);
+            $em->flush();
+            return $this->redirectToRoute('participanthistory_show');
+        }
+        return $this->render("participant_history/participant_history_edit.html.twig", array(
+            "form"=>$form->createView()
+        ));
     }
 }

@@ -62,8 +62,7 @@ class GatewayAPI implements SmsSender
             "SMS sent\n" .
             "```\n" .
             "To: $recipientsString\n" .
-            "Sender: {$sms->getSender()}" .
-            "Message: {$sms->getMessage()}" .
+            "Sender: {$sms->getSender()}\n" .
             "```\n";
         $this->logger->info($logMessage);
     }

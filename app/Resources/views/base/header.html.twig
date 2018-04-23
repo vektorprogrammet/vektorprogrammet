@@ -1,19 +1,73 @@
-<header class="row hide-for-small-only">
-    <div class="small-12 medium-12 columns">
-        {% include 'base/logo_link.html.twig' %}
-        {% include 'base/main_navigation.html.twig' %}
-    </div>
-</header>
-<!-- Mobile Navigation -->
-<div class="row show-for-small-only">
-    <div style="margin-bottom:30px; text-align: center" class="small-12 medium-3 columns"
-         data-equalizer-watch>
-        {% include 'base/logo_link.html.twig' %}
+<div class="top-header mobile-header d-md-none">
+    <div class="container">
+        <div class="mobile-header-inner">
+            <button class="js-menu-show header__menu-toggle"><i class="fa fa-bars text-dark-blue"></i></button>
+            <div class="company-name">Vektorprogrammet</div>
+        </div>
     </div>
 </div>
-<div class="row">
-    <div class="small-12 show-for-small-only">
-        {% include 'base/mobile_navigation.html.twig' %}
+<!-- Spacer div for mobile header. Contains the same content to get the same width and height -->
+<div class="mobile-header-pusher d-md-none">
+    <button class="header__menu-toggle"><i class="fa fa-bars"></i></button>
+</div>
+<div class="top-header desktop-header d-none d-md-flex">
+    <div class="container">
+        <nav class="main-navigation">
+            {% include 'base/logo_link.html.twig' %}
+            <div class="menu-items">
+                {{ include('base/user_dropdown.html.twig') }}
+                <div class="menu-links">
+                    {% include('base/menu_item.html.twig') with {route: 'assistants', name: 'Assistenter'} %}
+                    {% include('base/menu_item.html.twig') with {route: 'team', name: 'Team'} %}
+                    {% include('base/menu_item.html.twig') with {route: 'teachers', name: 'For skoler'} %}
+                    {% include('base/menu_item.html.twig') with {route: 'about', name: 'Om oss'} %}
+                    {% include('base/menu_item.html.twig') with {route: 'contact', name: 'Kontakt'} %}
+                </div>
+            </div>
+        </nav>
     </div>
 </div>
-<br/>
+
+<aside class="js-mobile-nav mobile-nav">
+    <nav class="js-mobile-nav-container mobile-nav__container">
+        <button class="js-menu-hide mobile-nav__hide"><i class="fa fa-times"></i></button>
+        <header class="mobile-nav__header">
+            <a href="{{ path('home') }}">Vektorprogrammet</a>
+        </header>
+        <ul class="mobile-nav__content">
+            <li>{% include('base/menu_item.html.twig') with {route: 'assistants', name: 'Assistenter'} %}</li>
+            <li>{% include('base/menu_item.html.twig') with {route: 'team', name: 'Team'} %}</li>
+            <li>{% include('base/menu_item.html.twig') with {route: 'teachers', name: 'For skoler'} %}</li>
+            <li>{% include('base/menu_item.html.twig') with {route: 'about', name: 'Om oss'} %}</li>
+            <li>{% include('base/menu_item.html.twig') with {route: 'contact', name: 'Kontakt'} %}</li>
+            <hr>
+            {% if is_granted_assistant() %}
+                <li class="nav-title">{{ app.user }}</li>
+                {% if is_granted_team_member() %}
+                    <li>{% include 'base/menu_item.html.twig' with {route: 'control_panel', name: 'Kontrollpanel'} %}</li>
+                {% endif %}
+                {% if can_edit_page() %}
+                    {% if is_edit_mode() %}
+                        <form method="POST" action="{{ path('content_mode', {'mode': 'read-mode'}) }}">
+                            <button class="menu-link btn btn-link alert-warning text-left w-100">Redigeringsmodus</button>
+                        </form>
+                    {% else %}
+                        <form method="POST" action="{{ path('content_mode', {'mode': 'edit-mode'}) }}">
+                            <button class="menu-link btn btn-link alert-info text-left w-100">Lesemodus</button>
+                        </form>
+                    {% endif %}
+                    <br>
+                {% endif %}
+                <li>{% include 'base/menu_item.html.twig' with {route: 'profile', name: 'Profil'} %}</li>
+                <li>{% include 'base/menu_item.html.twig' with {route: 'receipt_create', name: 'Mine utlegg'} %}</li>
+                {% if app.user.isActiveAssistant() %}
+                    <li>{% include 'base/menu_item.html.twig' with {route: 'my_partners', name: 'Mine vektorpartnere'} %}</li>
+                {% endif %}
+                <li class="text-danger">{% include 'base/menu_item.html.twig' with {route: 'logout', name: 'Logg ut'} %}</li>
+                <br>
+            {% else %}
+                <li>{% include('base/menu_item.html.twig') with {route: 'login_route', name: 'Logg inn'} %}</li>
+            {% endif %}
+        </ul>
+    </nav>
+</aside>

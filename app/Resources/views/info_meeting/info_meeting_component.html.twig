@@ -1,7 +1,7 @@
 {% if semester is not null and semester.infoMeeting and semester.infoMeeting.showOnPage and semester.infoMeeting.date and date() < date(semester.infoMeeting.date) %}
     {% set infoMeeting = semester.infoMeeting %}
     <div class="row">
-        <div class="small-12 columns">
+        <div class="col-12">
             <div class="information-meeting text-center">
                 <h2><i class="fa fa-info-circle"></i></h2>
                 <h3>Infomøte</h3>

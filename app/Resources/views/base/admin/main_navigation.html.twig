@@ -4,15 +4,6 @@
             <ul>
                 <li><a href="{{ path('control_panel') }}">Kontrollpanel</a></li>
                 <li>
-                    <a href="#" data-dropdown="articleDropDown" data-options="is_hover:true; hover_timeout:200">Artikkel
-                        <i class="fa fa-chevron-down"></i></a>
-
-                    <ul id="articleDropDown" class="f-dropdown mini" data-dropdown-content>
-                        <li><a href="{{ path('articleadmin_show') }}">Artikler</a></li>
-                        <li><a href="{{ path('articleadmin_create') }}">Ny artikkel</a></li>
-                    </ul>
-                </li>
-                <li>
                     <a href="#" data-dropdown="usersDropDown" data-options="is_hover:true; hover_timeout:200">Brukere
                         <i class="fa fa-chevron-down"></i></a>
 
@@ -28,11 +19,12 @@
                 </li>
                 <li>
                     <a href="#" data-dropdown="admissionDropDown"
-                       data-options="is_hover:true; hover_timeout:200">Opptak & Undersøkelse <i
+                       data-options="is_hover:true; hover_timeout:200">Opptak <i
                                 class="fa fa-chevron-down"></i> </a>
 
                     <ul id="admissionDropDown" class="f-dropdown very-small" data-dropdown-content>
                         <li><a href="{{ path('admissionadmin_show') }}">Opptak</a></li>
+                        <li><a href="{{ path('semester_show') }}">Opptaksperiode</a></li>
                         <li>
                             <a href="{{ path('statistics_application_show') }}">Opptaksstatistikk</a>
                         </li>
@@ -40,8 +32,16 @@
                         {% if is_granted_team_leader() %}
                             <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
                         {% endif %}
-                        <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
-                        <li><a href="{{ path('newsletter_show_all') }}">Nyhetsbrev</a></li>
+                        <li><a href="{{ path('stand') }}">Stand</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" data-dropdown="articleDropDown" data-options="is_hover:true; hover_timeout:200">Artikkel
+                        <i class="fa fa-chevron-down"></i></a>
+
+                    <ul id="articleDropDown" class="f-dropdown mini" data-dropdown-content>
+                        <li><a href="{{ path('articleadmin_show') }}">Artikler</a></li>
+                        <li><a href="{{ path('articleadmin_create') }}">Ny artikkel</a></li>
                     </ul>
                 </li>
                 <li>
@@ -50,11 +50,12 @@
 
                     <ul id="miscDropDown" class="f-dropdown mini" data-dropdown-content>
                         <li><a href="{{ path('departmentadmin_show') }}">Avdeling</a></li>
-                        <li><a href="{{ path('semester_show') }}">Opptaksperiode</a></li>
                         {% if is_granted_team_leader() %}
                             <li><a href="{{ path('show_field_of_studies') }}">Linjer</a></li>
                         {% endif %}
                         <li><a href="{{ path('schooladmin_show') }}">Skole</a></li>
+                        <li><a href="{{ path('newsletter_show_all') }}">Nyhetsbrev</a></li>
+                        <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
                         <li><a href="{{ path('sponsors_edit') }}">Sponsorer</a></li>
                         <li><a href="{{ path('receipts_show') }}">Utlegg</a></li>
                         {% if is_granted_team_leader() %}

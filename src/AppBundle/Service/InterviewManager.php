@@ -6,6 +6,7 @@ use AppBundle\Entity\Application;
 use AppBundle\Entity\Interview;
 use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\User;
+use AppBundle\Mailer\MailerInterface;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
@@ -26,12 +27,12 @@ class InterviewManager
      *
      * @param TokenStorage                  $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param \Swift_Mailer                 $mailer
+     * @param MailerInterface               $mailer
      * @param \Twig_Environment             $twig
      * @param LoggerInterface               $logger
      * @param EntityManager                 $em
      */
-    public function __construct(TokenStorage $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, \Swift_Mailer $mailer, \Twig_Environment $twig, LoggerInterface $logger, EntityManager $em)
+    public function __construct(TokenStorage $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, MailerInterface $mailer, \Twig_Environment $twig, LoggerInterface $logger, EntityManager $em)
     {
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
@@ -129,13 +130,6 @@ class InterviewManager
                 'text/html'
             );
         $this->mailer->send($message);
-
-        $this->logger->info(
-            "Schedule email sent to {$data['to']}\n".
-            "```\n".
-            "{$message->getBody()}\n".
-            '```'
-        );
     }
 
     /**
@@ -160,11 +154,6 @@ class InterviewManager
             );
 
         $this->mailer->send($message);
-
-        $this->logger->info(
-            "Schedule email sent to {$interview->getInterviewer()->getEmail()}\n".
-            'Request for new interview by '.$interview->getUser()
-        );
     }
 
     /**
@@ -186,11 +175,6 @@ class InterviewManager
             );
 
         $this->mailer->send($message);
-
-        $this->logger->info(
-            "Schedule email sent to {$interview->getInterviewer()->getEmail()}\n".
-            'Interview cancelled by '.$interview->getUser()
-        );
     }
 
     /**

@@ -74,9 +74,10 @@ class SupportTicketSubscriber implements EventSubscriberInterface
         $this->slackMessenger->messageDepartment($message, $supportTicket->getDepartment());
     }
 
-    public function addFlashMessage()
+    public function addFlashMessage(SupportTicketCreatedEvent $event)
     {
-        $message = 'Kontaktforespørsel sendt, takk for henvendelsen!';
+        $supportTicket = $event->getSupportTicket();
+        $message = 'Kontaktforespørsel sendt til '.$supportTicket->getDepartment()->getEmail().', takk for henvendelsen!';
 
         $this->session->getFlashBag()->add('success', $message);
     }

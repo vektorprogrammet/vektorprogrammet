@@ -1,0 +1,22 @@
+@import "../colors";
+
+.article {
+  margin: 0 auto;
+  max-width: 1024px;
+}
+
+.article-title {
+  font-size: 2rem;
+}
+
+.article-by {
+  font-size: 12px
+}
+
+.vektor-blue-text {
+  color: $vektor-blue;
+}
+
+.article-body {
+  max-width: 800px;
+}

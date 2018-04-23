@@ -2,8 +2,10 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\SupportTicket;
 use AppBundle\Entity\Receipt;
+use AppBundle\Mailer\MailerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Router;
 
@@ -16,7 +18,7 @@ class EmailSender
     private $economyEmail;
     private $router;
 
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, Router $router, LoggerInterface $logger, string $defaultEmail, string $economyEmail)
+    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, Router $router, LoggerInterface $logger, string $defaultEmail, string $economyEmail)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
@@ -35,11 +37,6 @@ class EmailSender
             ->setTo($supportTicket->getDepartment()->getEmail())
             ->setBody($this->twig->render('admission/contactEmail.txt.twig', array('contact' => $supportTicket)));
         $this->mailer->send($message);
-
-        $this->logger->info(
-            "Support ticket from {$supportTicket->getName()} sent to department {$supportTicket->getDepartment()} ".
-            "at {$supportTicket->getDepartment()->getEmail()}"
-        );
     }
 
     public function sendSupportTicketReceipt(SupportTicket $supportTicket)
@@ -51,10 +48,6 @@ class EmailSender
             ->setTo($supportTicket->getEmail())
             ->setBody($this->twig->render('admission/receiptEmail.txt.twig', array('contact' => $supportTicket)));
         $this->mailer->send($receipt);
-
-        $this->logger->info(
-            "Support ticket receipt sent to {$supportTicket->getName()} at {$supportTicket->getEmail()}"
-        );
     }
 
     public function sendPaidReceiptConfirmation(Receipt $receipt)
@@ -70,10 +63,6 @@ class EmailSender
                 'receipt' => $receipt, )));
 
         $this->mailer->send($message);
-
-        $this->logger->info(
-            "Confirmation for paid receipt sent to {$receipt->getUser()->getFullName()} at {$receipt->getUser()->getEmail()}"
-        );
     }
 
     public function sendRejectedReceiptConfirmation(Receipt $receipt)
@@ -88,10 +77,6 @@ class EmailSender
                                      'receipt' => $receipt,)));
 
         $this->mailer->send($message);
-
-        $this->logger->info(
-            "Notice for rejected receipt sent to {$receipt->getUser()->getFullName()} at {$receipt->getUser()->getEmail()}"
-        );
     }
 
     public function sendReceiptCreatedNotification(Receipt $receipt)
@@ -108,9 +93,17 @@ class EmailSender
                                  ->setContentType('text/html');
 
         $this->mailer->send($message);
+    }
 
-        $this->logger->info(
-            "Receipt created email sent to $this->economyEmail"
-        );
+    public function sendAdmissionStartedNotification(AdmissionSubscriber $subscriber)
+    {
+        $message = \Swift_Message::newInstance()
+             ->setSubject('Opptak for vektorassistenter har åpnet!')
+             ->setFrom($this->defaultEmail)
+             ->setTo($subscriber->getEmail())
+             ->setBody($this->twig->render('admission/notification_email.html.twig', array('department' => $subscriber->getDepartment(), 'subscriber' => $subscriber)))
+             ->setContentType('text/html');
+
+        $this->mailer->send($message);
     }
 }

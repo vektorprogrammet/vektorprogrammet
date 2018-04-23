@@ -15,11 +15,8 @@ class InterviewNewTimeType extends AbstractType
     {
         $builder
             ->add('newTimeMessage', TextareaType::class, array(
-                'label' => 'Melding',
+                'label' => false,
                 'attr' => array('rows' => '5'),
-            ))
-            ->add('send', SubmitType::class, array(
-                'label' => 'Bekreft',
             ));
     }
 

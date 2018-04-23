@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\StaticContent;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,4 +13,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class StaticContentRepository extends EntityRepository
 {
+    /**
+     * @param string $htmlId
+     *
+     * @return StaticContent
+     */
+    public function findOneByHtmlId(string $htmlId)
+    {
+        return $this->createQueryBuilder('sc')
+            ->where('sc.htmlId = :htmlId')
+            ->setParameter('htmlId', $htmlId)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

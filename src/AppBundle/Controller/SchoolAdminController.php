@@ -68,13 +68,13 @@ class SchoolAdminController extends Controller
 
     public function showUsersByDepartmentSuperadminAction(Department $department)
     {
-        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+        $activeDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findActive();
 
         $users = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersByDepartment($department);
 
         // Return the view with suitable variables
         return $this->render('school_admin/all_users.html.twig', array(
-            'departments' => $allDepartments,
+            'departments' => $activeDepartments,
             'users' => $users,
         ));
     }
@@ -84,7 +84,7 @@ class SchoolAdminController extends Controller
         $user = $this->getUser();
 
         // Finds all the departments
-        $allDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
+        $activeDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findActive();
 
         // Find the department of the user
         $department = $user->getFieldOfStudy()->getDepartment();
@@ -94,7 +94,7 @@ class SchoolAdminController extends Controller
 
         // Return the view with suitable variables
         return $this->render('school_admin/all_users.html.twig', array(
-            'departments' => $allDepartments,
+            'departments' => $activeDepartments,
             'users' => $users,
         ));
     }

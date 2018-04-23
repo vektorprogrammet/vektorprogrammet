@@ -10,8 +10,7 @@ services:
     app.twig_extension:
         class: AppBundle\Twig\Extension\StaticContentExtension
         arguments:
-              doctrine: "@doctrine"
-              securityContext: "@security.context"
+              doctrine: "@doctrine.orm.default_entity_manager"
         tags:
             - { name: twig.extension }
 
@@ -26,7 +25,22 @@ services:
         class: AppBundle\Role\ReversedRoleHierarchy
         arguments: ["%security.role_hierarchy.roles%"]
 
+    app.content_mode:
+        class: AppBundle\Service\ContentModeManager
+        arguments: ['@session']
+
+    app.admission_notifier:
+        class: AppBundle\Service\AdmissionNotifier
+        arguments: ['@doctrine.orm.default_entity_manager', '@app.email_sender', '@app.logger']
+
+    app.content_mode_twig_extension:
+        class: AppBundle\Twig\Extension\ContentModeExtension
+        arguments: ['@app.content_mode']
+        tags:
+            - { name: twig.extension }
+
     guzzle.slack:
         class: GuzzleHttp\Client
         arguments:
             - { timeout: 2 }
+

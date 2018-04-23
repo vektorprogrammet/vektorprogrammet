@@ -1,0 +1,28 @@
+<div class="card team-card mx-sm-4 my-sm-4 mx-0 my-2">
+    <div class="card-block px-3 py-3">
+        <h5 class="card-title mb-0 text-uppercase text-center">
+            <a class="text-dark-blue" href="{{ path('team_page', {id: team.id}) }}">{{ team | split(' ')[0] }}</a>
+        </h5>
+    </div>
+    <hr class="my-0">
+    <div class="card-block px-3 py-3">
+        <p class="card-text">{{ team.shortDescription }}</p>
+    </div>
+    <div class="card-block px-3 pb-2">
+        <p class="team-email mb-0">
+            <i class="big-icon m-0 mr-2 text-devil fa fa-envelope"></i>
+            <a href="mailto:{{ team.email }}">{{ team.email }}</a>
+        </p>
+        <p class="m-0">
+            <i class="big-icon m-0 mr-2 text-devil fa fa-users"></i>
+            <span class="text-devil member-count">{{ team.activeWorkHistories | length }} medlemmer</span>
+        </p>
+    </div>
+    <div class="card-block px-2 py-2 card-footer">
+        {% if team.acceptApplication %}
+            <a href="{{ path('team_page', {id: team.id}) }}" class="m-0"><i class="admission-star fa fa-star"></i> Søk nå!</a>
+        {% else %}
+            <a class="m-0" href="{{ path('team_page', {id: team.id}) }}">Les mer</a>
+        {% endif %}
+    </div>
+</div>
