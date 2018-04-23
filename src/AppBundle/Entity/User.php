@@ -37,6 +37,11 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string")
+     */
+    private $test;
+
+    /**
+     * @ORM\Column(type="string")
      * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $lastName;
