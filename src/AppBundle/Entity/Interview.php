@@ -63,6 +63,12 @@ class Interview
     protected $interviewer; // Unidirectional, may turn out to be bidirectional
 
     /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="interviews")
+     * @ORM\JoinColumn(name="coInterviewer_id", referencedColumnName="id")
+     */
+    protected $coInterviewer;
+
+    /**
      * @ORM\OneToMany(targetEntity="InterviewAnswer", mappedBy="interview", cascade={"persist", "remove"})
      * @Assert\Valid
      */
@@ -161,6 +167,30 @@ class Interview
     public function getInterviewSchema()
     {
         return $this->interviewSchema;
+    }
+
+    /**
+     * Get coInterviewer.
+     *
+     * @return User
+     */
+    public function getCoInterviewer()
+    {
+        return $this->coInterviewer;
+    }
+
+    /**
+     * Set interviewer.
+     *
+     * @param User $interviewer
+     *
+     * @return Interview
+     */
+    public function setCoInterviewer(User $coInterviewer = null)
+    {
+        $this->coInterviewer = $coInterviewer;
+
+        return $this;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Application;
+use AppBundle\Entity\Interview;
 use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Role\Roles;
@@ -77,7 +78,7 @@ class AdmissionAdminController extends Controller
             'semester' => $semester,
             'interviewDistributions' => $interviewDistributions,
             'cancelledApplications' => $cancelledApplications,
-            'yourApplications' => $applicationsAssignedToUser,
+            'yourApplications' => $applicationsAssignedToUser
         ));
     }
 

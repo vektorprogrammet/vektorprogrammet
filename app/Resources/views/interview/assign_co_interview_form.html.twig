@@ -1,0 +1,21 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Legg til medintervjuer
+{% endblock %}
+
+{% block body %}
+    {{ include('common/flash.html.twig') }}
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <div class="panel">
+                <h3>Legg til medintervjuer</h3>
+                <hr>
+                {{ form_start(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
