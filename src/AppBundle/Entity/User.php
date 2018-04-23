@@ -35,10 +35,10 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $id;
 
-	/**
-	 * @ORM\Column(type="string")
-	 */
-	private $test;
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $test;
 
     /**
      * @ORM\Column(type="string")
