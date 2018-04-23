@@ -2,45 +2,30 @@
 
 namespace AppBundle\Form\Type;
 
-use AppBundle\Entity\Semester;
+use AppBundle\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Doctrine\ORM\EntityRepository;
+
 
 class AddCoInterviewerType extends AbstractType
 {
-    private $startDate;
-    private $endDate;
-    private $department;
+    private $teamUsers;
 
-    public function __construct(Semester $semester)
+    public function __construct($teamUsers)
     {
-        $this->startDate = $semester->getSemesterStartDate();
-        $this->endDate = $semester->getSemesterEndDate();
-        $this->department = $semester->getDepartment();
+        $this->teamUsers = $teamUsers;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('user', 'entity', array(
-                'label' => 'Teammedlemmer',
-                'class' => 'AppBundle:User',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('user')
-                        ->select('user')
-                        ->join('user.workHistories', 'wh')
-                        ->join('user.fieldOfStudy', 'fos')
-                        ->where('fos.department = :department')
-                        ->join('wh.startSemester', 'ss')
-                        ->andWhere('ss.semesterStartDate <= :startDate')
-                        ->leftJoin('wh.endSemester', 'se')
-                        ->andWhere('wh.endSemester is NULL OR se.semesterEndDate >= :endDate')
-                        ->setParameter('startDate', $this->startDate)
-                        ->setParameter('endDate', $this->endDate)
-                        ->setParameter('department', $this->department);
-                },
+            ->add('user', EntityType::class, array (
+                'class' => User::class,
+                'label' => 'Medintervjuer',
+                'choices' => $this->teamUsers,
+                'by_reference' => false,
             ))
             ->add('save', SubmitType::class, array(
                 'label' => 'Legg til'

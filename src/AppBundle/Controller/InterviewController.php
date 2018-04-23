@@ -494,7 +494,9 @@ class InterviewController extends Controller
     public function adminAssignCoInterviewerAction(Request $request, Interview $interview)
     {
         $semester = $interview->getApplication()->getSemester();
-        $form = $this->createForm(new AddCoInterviewerType($semester));
+        $teamUsers = $this->getDoctrine()->getRepository('AppBundle:User')
+            ->findUsersWithWorkHistoryInSemester($semester);
+        $form = $this->createForm(new AddCoInterviewerType($teamUsers));
         $form->handleRequest($request);
 
         if ($form->isValid()) {
