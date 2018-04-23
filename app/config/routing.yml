@@ -248,20 +248,6 @@ profile_upload_photo:
   requirements:
     id: \d+
 
-profile_save_response_from_editor:
-  path: /profil/rediger/profilbilde/saveEditorResponse/{id}
-  defaults: { _controller: AppBundle:ProfilePhoto:saveProfilePhotoEditorResponse }
-  methods: [POST]
-  requirements:
-    id: \d+
-
-profile_save_photo:
-  path: /profil/rediger/profilbilde/save/{id}
-  defaults: { _controller: AppBundle:ProfilePhoto:saveProfilePhoto }
-  methods: [GET, POST]
-  requirements:
-    id: \d+
-
 ##########################################
 #          Participant History           #
 ##########################################
@@ -414,14 +400,6 @@ articleadmin_saveImage:
   options:
     expose: true
 
-##########################################
-#             Admission                  #
-##########################################
-
-admission_contact:
- path: /opptakkontakt/{id}
- defaults: {_controller: AppBundle:Admission:contact }
- methods: [GET, POST]
 
 ##########################################
 #            AdmissionAdmin              #
