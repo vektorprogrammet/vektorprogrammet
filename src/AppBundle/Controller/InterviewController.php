@@ -7,6 +7,7 @@ use AppBundle\Entity\Interview;
 use AppBundle\Event\InterviewConductedEvent;
 use AppBundle\Event\InterviewEvent;
 use AppBundle\Form\InterviewNewTimeType;
+use AppBundle\Form\Type\AddCoInterviewerType;
 use AppBundle\Form\Type\ApplicationInterviewType;
 use AppBundle\Form\Type\AssignInterviewType;
 use AppBundle\Form\Type\CancelInterviewConfirmationType;
@@ -477,5 +478,50 @@ class InterviewController extends Controller
 
         return $this->redirectToRoute('interview_schedule',
             ['id' => $interview->getApplication()->getId()]);
+    }
+
+    public function assignCoInterviewerAction(Interview $interview)
+    {
+        if ($this->getUser() != $interview->getInterviewer()) {
+            $interview->setCoInterviewer($this->getUser());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($interview);
+            $em->flush();
+            $this->get('event_dispatcher')->dispatch(InterviewEvent::COASSIGN, new InterviewEvent($interview));
+        }
+        return $this->redirectToRoute('applications_show_assigned');
+    }
+
+    public function adminAssignCoInterviewerAction(Request $request, Interview $interview)
+    {
+        $semester = $interview->getApplication()->getSemester();
+        $teamUsers = $this->getDoctrine()->getRepository('AppBundle:User')
+            ->findUsersWithWorkHistoryInSemester($semester);
+        $form = $this->createForm(new AddCoInterviewerType($teamUsers));
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $user = $data['user'];
+            $interview->setCoInterviewer($user);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($interview);
+            $em->flush();
+            return $this->redirectToRoute('applications_show_assigned');
+        }
+
+        return $this->render('interview/assign_co_interview_form.html.twig', array(
+            'form' => $form->createView(),
+            'interview' => $interview
+        ));
+    }
+
+    public function clearCoInterviewerAction(Interview $interview)
+    {
+        $interview->setCoInterviewer(null);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($interview);
+        $em->flush();
+        return $this->redirectToRoute('applications_show_assigned');
     }
 }
