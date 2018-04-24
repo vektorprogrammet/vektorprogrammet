@@ -67,6 +67,13 @@
 
     </script>
 
+    <script src="{{ asset_with_version('js/csvGenerator.js') }}"></script>
+    <script>
+        $('.csv_download_button').click(function(){
+           downloadCSV($(this).data('table-id'), ';');
+        });
+    </script>
+
 {% endblock %}
 
 {% block title %}
@@ -104,8 +111,10 @@
 
             <div class="small-12 medium-12 large-8 columns">
 
-                <h3> Assistent historie <span
-                            style="float:right;font-size: 80%;">Antall: {{ assistantHistories|length }}</span></h3>
+                <h3> Assistent historie &nbsp;
+                    <button class="button tiny csv_download_button" data-table-id="assistantTable"><i class="fa fa-download"></i> Last ned CSV</button>
+                    <span style="float:right;font-size: 80%;">Antall: {{ assistantHistories|length }}</span>
+                </h3>
 
             </div>
 
@@ -199,8 +208,10 @@
 
             <div class="small-12 medium-12 large-8 columns">
 
-                <h3> Arbeidshistorie <span
-                            style="float:right;font-size: 80%;">Antall: {{ workHistories|length }}</span></h3>
+                <h3> Arbeidshistorie &nbsp;
+                    <button class="button tiny csv_download_button" data-table-id="workTable"><i class="fa fa-download"></i> Last ned CSV</button>
+                    <span style="float:right;font-size: 80%;">Antall: {{ workHistories|length }}</span>
+                </h3>
 
             </div>
 
