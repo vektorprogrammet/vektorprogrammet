@@ -45,3 +45,9 @@ function downloadCSV(tableId, separator){
 
     link.click();
 }
+
+$(document).ready(function(){
+    $('.csv_download_button').click(function(){
+        downloadCSV($(this).data('table-id'), ';');
+    });
+});

@@ -1346,7 +1346,7 @@ executive_board_show:
  methods: [GET]
 
 executive_board_add_user_to_board:
- path: /kontrollpanel/hovedstyret/nytt_medlem
+ path: /kontrollpanel/hovedstyret/nytt_medlem/{id}
  defaults: {_controller: AppBundle:ExecutiveBoard:addUserToBoard }
  methods: [GET, POST]
  requirements:

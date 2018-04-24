@@ -9,6 +9,13 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CreateExecutiveBoardMemberType extends AbstractType
 {
+    private $departmentId;
+
+    public function __construct($departmentId)
+    {
+        $this->departmentId = $departmentId;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -19,15 +26,39 @@ class CreateExecutiveBoardMemberType extends AbstractType
                     return $er->createQueryBuilder('u')
                         ->Join('u.fieldOfStudy', 'fos')
                         ->Join('fos.department', 'd')
-                        ->addOrderBy('d.name')
+                        ->where('d = :department')
+                        ->setParameter('department', $this->departmentId)
                         ->addOrderBy('u.firstName', 'ASC');
                 },
                 'choice_label' => function ($value, $key, $index) {
-                    return $value->getFullName().' - '.$value->getDepartment();
+                    return $value->getFullName();
                 },
             ))
             ->add('position', 'text', array(
                 'label' => 'Stilling',
+            ))
+            ->add('startSemester', 'entity', array(
+                'label' => 'Start semester',
+                'class' => 'AppBundle:Semester',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('s')
+                        ->orderBy('s.semesterStartDate', 'DESC')
+                        ->join('s.department', 'd')
+                        ->where('d.id = ?1')
+                        ->setParameter(1, $this->departmentId);
+                },
+            ))
+            ->add('endSemester', 'entity', array(
+                'label' => 'Slutt semester (Valgfritt)',
+                'class' => 'AppBundle:Semester',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('s')
+                        ->orderBy('s.semesterStartDate', 'DESC')
+                        ->join('s.department', 'd')
+                        ->where('d.id = ?1')
+                        ->setParameter(1, $this->departmentId);
+                },
+                'required' => false,
             ));
     }
 

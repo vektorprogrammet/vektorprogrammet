@@ -37,6 +37,20 @@ class ExecutiveBoardMember implements GroupMemberInterface
     private $position;
 
     /**
+     * @var Semester
+     * @ORM\ManyToOne(targetEntity="Semester")
+     * @Assert\Valid
+     */
+    protected $startSemester;
+
+    /**
+     * @var Semester
+     * @ORM\ManyToOne(targetEntity="Semester")
+     * @Assert\Valid
+     */
+    protected $endSemester;
+
+    /**
      * ExecutiveBoardMember constructor.
      */
     public function __construct()
@@ -126,5 +140,46 @@ class ExecutiveBoardMember implements GroupMemberInterface
     public function getPositionName(): string
     {
         return $this->position;
+    }
+
+    /**
+     * @param Semester $startSemester
+     *
+     * @return ExecutiveBoardMember
+     */
+    public function setStartSemester($startSemester) {
+        $this->startSemester = $startSemester;
+        return $this;
+    }
+
+    /**
+     * @return Semester
+     */
+    public function getStartSemester() {
+        return $this->startSemester;
+    }
+
+    /**
+     * @param Semester $endSemester
+     *
+     * @return ExecutiveBoardMember
+     */
+    public function setEndSemester($endSemester) {
+        $this->endSemester = $endSemester;
+        return $this;
+    }
+
+    /**
+     * @return Semester | null
+     */
+    public function getEndSemester() {
+        return $this->endSemester;
+    }
+
+    public function isActive() {
+        $now = new \DateTime();
+        $termEndsInFuture = $this->getEndSemester() === null || $this->getEndSemester()->getSemesterEndDate() > $now;
+        $termStartedInPast = $this->getStartSemester() !== null && $this->getStartSemester()->getSemesterStartDate() < $now;
+        return $termEndsInFuture && $termStartedInPast;
     }
 }

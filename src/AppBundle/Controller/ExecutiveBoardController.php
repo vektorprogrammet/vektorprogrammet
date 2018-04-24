@@ -2,12 +2,16 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Department;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\CreateExecutiveBoardType;
 use AppBundle\Form\Type\CreateExecutiveBoardMemberType;
 use AppBundle\Entity\ExecutiveBoard;
 use AppBundle\Entity\ExecutiveBoardMember;
+use Symfony\Component\HttpFoundation\Response;
 
 class ExecutiveBoardController extends Controller
 {
@@ -25,13 +29,25 @@ class ExecutiveBoardController extends Controller
     public function showAdminAction()
     {
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
+        $members = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoardMember')->findAll();
+        $activeMembers = [];
+        $inactiveMembers = [];
+        foreach($members as $member){
+            if($member->isActive()){
+                array_push($activeMembers, $member);
+            } else {
+                array_push($inactiveMembers, $member);
+            }
+        }
 
         return $this->render(':executive_board:index.html.twig', array(
-            'board' => $board,
+            'board_name' => $board->getName(),
+            'active_members' => $activeMembers,
+            'inactive_members' => $inactiveMembers,
         ));
     }
 
-    public function addUserToBoardAction(Request $request)
+    public function addUserToBoardAction(Request $request, Department $department)
     {
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
 
@@ -40,7 +56,7 @@ class ExecutiveBoardController extends Controller
         $member->setUser($this->getUser());
 
         // Create a new formType with the needed variables
-        $form = $this->createForm(new CreateExecutiveBoardMemberType(), $member);
+        $form = $this->createForm(new CreateExecutiveBoardMemberType($department), $member);
 
         // Handle the form
         $form->handleRequest($request);
@@ -58,7 +74,9 @@ class ExecutiveBoardController extends Controller
             return $this->redirect($this->generateUrl('executive_board_show'));
         }
 
-        return $this->render('executive_board/create_member.html.twig', array(
+        $city = $department->getCity();
+        return $this->render('executive_board/member.html.twig', array(
+            'heading' => "Legg til hovedstyremedlem fra avdeling $city",
             'form' => $form->createView(),
         ));
     }
@@ -102,6 +120,38 @@ class ExecutiveBoardController extends Controller
         }
 
         return $this->render('executive_board/update_executive_board.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * @Route("/kontrollpanel/hovedstyret/rediger_medlem/{id}", name="edit_executive_board_member_history", requirements={"id"="\d+"})
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param ExecutiveBoardMember $member
+     *
+     * @return Response
+     */
+    public function editMemberHistory(Request $request, ExecutiveBoardMember $member)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $form = $this->createForm(new CreateExecutiveBoardMemberType($member->getUser()->getDepartment()), $member);
+        $user = $member->getUser();
+        $form->handleRequest($request); // Sets user to null
+        $member->setUser($user);
+
+        if ($form->isValid()) {
+            $em->persist($member);
+            $em->flush();
+            return $this->redirectToRoute('executive_board_show');
+        }
+
+        $form->remove('user');
+        $memberName = $member->getUser()->getFullName();
+        return $this->render("executive_board/member.html.twig", array(
+            'heading' => "Rediger medlemshistorikken til $memberName",
             'form' => $form->createView(),
         ));
     }
