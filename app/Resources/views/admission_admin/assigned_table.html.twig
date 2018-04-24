@@ -64,12 +64,17 @@
             {% else %}
                 <td>
                     {% if a.interview.getCoInterviewer() == null %}
-                    <div class="row">
-                        <div class="small-12 columns">
-                            <a href="{{ path('interview_assign_co_interviewer', { 'id': a.interview.id }) }}" class="button tiny"><i
-                                        class="fa fa-share-alt"></i> Legg meg til som medintervjuer</a>
+                    <form method="POST" action="{{ path('interview_assign_co_interviewer', { id: a.interview.id }) }}">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <button type="submit"
+                                        class="button tiny">
+                                    <i class="fa fa-share-alt"></i>
+                                    Legg meg til som medintervjuer
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                     {% endif %}
                 </td>
                 <td colspan="3"></td>

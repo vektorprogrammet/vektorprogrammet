@@ -952,7 +952,7 @@ interview_admin_assign_co_interviewer:
 interview_assign_co_interviewer:
  path: /kontrollpanel/intervju/assign_co_interviewer/{id}
  defaults: { _controller: AppBundle:Interview:assignCoInterviewer }
- methods: [GET, POST]
+ methods: [POST]
  requirements:
   id: \d+
 
