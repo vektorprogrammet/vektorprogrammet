@@ -60,7 +60,7 @@ class Team implements TeamInterface
     /**
      * @ORM\Column(type="boolean")
      */
-     protected $isActive;
+    protected $isActive;
 
     /**
      * @return mixed
