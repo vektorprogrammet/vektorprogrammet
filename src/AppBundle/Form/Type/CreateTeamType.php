@@ -29,7 +29,7 @@ class CreateTeamType extends AbstractType
                 'label' => 'Ta i mot søknader?',
                 'required' => false,
             ))
-            ->add('isActive', 'checkbox', array(
+            ->add('active', 'checkbox', array(
                 'label' => 'Aktivt team',
                 'required' => false,
             ))

@@ -25,7 +25,7 @@ class BoardAndTeamControllerTest extends BaseWebTestCase
         $client = self::createAdminClient();
         $crawler = $this->goTo('/kontrollpanel/teamadmin/update/2', $client);
         $form = $crawler->selectButton('Lagre')->form();
-        $form['createTeam[isActive]']->untick();
+        $form['createTeam[active]']->untick();
         $client->submit($form);
 
         $crawler = $this->goTo('/team#NTNU');
