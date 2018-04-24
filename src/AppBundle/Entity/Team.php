@@ -18,7 +18,6 @@ class Team implements TeamInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-
     protected $id;
 
     /**
