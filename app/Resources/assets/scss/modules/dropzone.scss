@@ -1,0 +1,32 @@
+.dropzone {
+  position: relative;
+  border-radius: 5px;
+  color: #686868;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+  cursor: pointer;
+  height: 300px;
+  background-color: #E5F2FA;
+  border: 4px dashed #6fceee;
+}
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  svg {
+    display: none;
+  }
+}
+
+.dropzone:hover {
+  border: 4px dashed #66abcc;
+  color: #323232;
+}
+
+.dropzone.dropped {
+  background: #222;
+  border: 10px solid #444;
+}

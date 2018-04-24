@@ -31,7 +31,7 @@
                     {% for row in pagination[1:]|batch(2) %}
                         <div class="row">
                             {% for column in row %}
-                                {% set images = [column.imageMedium, column.imageSmall] %}
+                                {% set images = [column.imageLarge, column.imageSmall] %}
                                 <div class="article-box col-12 {{ cycle(columns, loop.parent.loop.index0+loop.index0) }}">
                                     <a href="{{ path('article_show', { 'id': column.id }) }}">
                                         <img src="{{ asset_with_version(cycle(images, loop.parent.loop.index0+loop.index0)) }}">

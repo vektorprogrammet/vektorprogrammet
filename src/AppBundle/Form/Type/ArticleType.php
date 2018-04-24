@@ -4,6 +4,7 @@ namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ArticleType extends AbstractType
 {
@@ -29,27 +30,16 @@ class ArticleType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
             ))
-            ->add('imageLarge', 'text', array(
-                'label' => 'Hovedbilde',
-                'attr' => array('placeholder' => 'Klikk for å velge bilde'),
-            ))
-            ->add('imageMedium', 'text', array(
-                'label' => 'Medium bilde',
-                'attr' => array('placeholder' => 'Klikk for å velge bilde'),
-            ))
-            ->add('imageSmall', 'text', array(
-                'label' => 'Lite bilde',
-                'attr' => array('placeholder' => 'Klikk for å velge bilde'),
-            ))
             ->add('sticky', 'checkbox', array(
                 'required' => false,
-            ))
-            ->add('preview', 'submit', array(
-                'label' => 'Forhåndsvis',
-            ))
-            ->add('publish', 'submit', array(
-                'label' => 'Publiser',
             ));
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults([
+            'allow_extra_fields' => true
+        ]);
     }
 
     public function getName()
