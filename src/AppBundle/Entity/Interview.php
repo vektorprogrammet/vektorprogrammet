@@ -179,6 +179,18 @@ class Interview
     }
 
     /**
+     * Is the given User the co-interviewer of this Interview?
+     *
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function isCoInterviewer(User $user = null)
+    {
+        return $user && $this->getCoInterviewer() && $user->getId() == $this->getCoInterviewer()->getId();
+    }
+
+    /**
      * Set interviewer.
      *
      * @param User $interviewer

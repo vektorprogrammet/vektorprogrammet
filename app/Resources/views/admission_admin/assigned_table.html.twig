@@ -37,7 +37,7 @@
             <td>{{ a.interview.room }}</td>
             <td>{{ a.interview.interviewer }}</td>
 
-            {% if a.interview.coInterviewer  %}
+            {% if a.interview.coInterviewer or is_granted_team_leader() %}
                 <td>{{ a.interview.coInterviewer }}</td>
             {% else %}
                 <td>
@@ -75,9 +75,23 @@
                     <div class="row">
                         <div class="small-12 columns">
                             <a href="{{ path('interview_admin_assign_co_interviewer', { 'id': a.interview.id }) }}" class="button tiny"><i
-                                        class="fa fa-share-alt"></i> Legg til medintervjuer</a>
+                                        class="fa fa-share-alt"></i> Rediger medintervjuer</a>
                         </div>
                     </div>
+                </td>
+            {% elseif a.interview.isCoInterviewer(app.user) %}
+                <td>
+                    <form method="POST" action="{{ path('interview_clear_co_interviewer', { id: a.interview.id }) }}">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <button type="submit"
+                                        class="button warning tiny">
+                                    <i class="fa fa-share-alt"></i>
+                                    Fjern medintervjuer
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </td>
             {% endif %}
         </tr>

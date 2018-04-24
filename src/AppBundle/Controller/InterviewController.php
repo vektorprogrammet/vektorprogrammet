@@ -510,7 +510,17 @@ class InterviewController extends Controller
         }
 
         return $this->render('interview/assign_co_interview_form.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'interview' => $interview
         ));
+    }
+
+    public function clearCoInterviewerAction(Interview $interview)
+    {
+        $interview->setCoInterviewer(null);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($interview);
+        $em->flush();
+        return $this->redirectToRoute('applications_show_assigned');
     }
 }
