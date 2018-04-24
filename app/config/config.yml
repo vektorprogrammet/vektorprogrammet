@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: image_filters.yml }
     - { resource: "@AppBundle/Resources/config/services.yml" }
 
 parameters:
@@ -288,33 +289,6 @@ fm_elfinder:
 # Provides help text functionality to forms
 simple_things_form_extra:
     help_extension: true
-
-liip_imagine:
-    resolvers:
-       default:
-          web_path:
-            web_root: '%kernel.root_dir%/../www'
-
-    loaders:
-      default:
-        filesystem:
-          data_root: '%kernel.root_dir%/../www'
-
-    cache: ~
-
-    filter_sets:
-    # Note, when deleting filters, make sure that no ImageGalleries use those filters, as they won't be automatically removed
-        article_crop:
-            quality: 100
-            filters:
-                relative_resize: { scale: 2.5 }
-                crop: { start: [10, 20], size: [120, 90] }
-        max_500px:
-            quality: 85
-            filters:
-              downscale:
-                max: [500, 500]
-
 
 nexy_slack:
     guzzle_service: guzzle.slack

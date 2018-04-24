@@ -47,9 +47,6 @@ class EditUserType extends AbstractType
                 'label' => 'Kontonummer',
                 'required' => false,
                 'attr' => array('oninput' => 'validateBankAccountNumber(this)'),
-            ))
-            ->add('save', 'submit', array(
-                'label' => 'Lagre',
             ));
     }
 

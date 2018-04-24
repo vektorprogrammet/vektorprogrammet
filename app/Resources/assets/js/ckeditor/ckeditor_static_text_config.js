@@ -15,38 +15,38 @@ CKEDITOR.editorConfig = function(config){
 
     // The toolbar groups arrangement
     config.toolbarGroups = [
-        //{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
-        //{ name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
+        { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
+        { name: 'editing',     groups: [ 'find', 'selection' ] },
         { name: 'links' },
         { name: 'insert' },
-        //{ name: 'forms' },
-        //{ name: 'tools'},
+        { name: 'forms' },
+        { name: 'tools'},
         { name: 'document',	   groups: ['Sourcedialog', 'mode', 'document', 'doctools' ] },
-         //'/',  <= when uncommented this will put the following controls on a new line in the interface
-        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup'] },
-        { name: 'paragraph', groups: [ 'list'] },
         { name: 'others', groups: [ 'Inlinesave', 'Inlinecancel'] },
-        { name: 'styles' }
+         '/',
+        { name: 'styles' },
+        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup'] },
+        { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'justifyleft','justifycenter','justifyright','justifyblock', 'bidi'] },
 
-        //{ name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
+        // { name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
 
-        //{ name: 'colors' }
+        { name: 'colors', groups: [ 'TextColor','BGColor' ] }
         //{ name: 'about' }
     ];
 
     //Removing some buttons that is not needed (?).
     //For a list of the names of the buttons: (may be incomplete..)
     //http://ckeditor.com/forums/CKEditor/Complete-list-of-toolbar-items
-    config.removeButtons = 'Underline,Subscript,Superscript,Anchor,Table,SpecialChar,HorizontalRule';
+    // config.removeButtons = 'Underline,Subscript,Superscript,Anchor,Table,SpecialChar,HorizontalRule';
 
     // Set the most common block elements.
-    config.format_tags = 'p;h1;h2;h3;pre';
+    config.format_tags = 'p;h1;h2;h3;h4;h5;pre';
 
     //Enable plugins
     config.extraPlugins = 'sourcedialog,inlinesave,inlinecancel';
 
     // Simplify the dialog windows.
-    config.removeDialogTabs = 'image:advanced;link:advanced';
+    // config.removeDialogTabs = 'image:advanced;link:advanced';
 
     //UI color
     config.uiColor = '#008CBA';

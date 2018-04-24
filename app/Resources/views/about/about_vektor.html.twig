@@ -1,18 +1,46 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Om vektor
+    Om Vektorprogrammet
 {% endblock %}
 
-{% block javascripts %}
-    {% include "statictext/js_loader_for_static_texts.html.twig" %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/about_us_page.css') }}">
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <div class="{{ element_editable() }}" id="omvektor">
-                {{ get_content('omvektor') | raw }}
+    <div class="container-fluid">
+        <div class="about-us-page content">
+            <header class="page-header row">
+                <div class="col-12">
+                    {% include 'statictext/static_content.html.twig' with {'id': 'about-header'} %}
+                </div>
+            </header>
+            <section class="row">
+                <div class="col-md-7">
+                    {% include 'statictext/static_content.html.twig' with {'id': 'about-motivate-children'} %}
+                </div>
+                <div class="col-md-4 offset-md-1">
+                    <img class="img-fluid" src="{{ asset_with_version('images/tormedmer.jpg') }}">
+                </div>
+            </section>
+            <section class="row">
+                <div class="col-sm-12 col-md-6 order-2 order-md-1  d-none d-md-block">
+                    <img class="img-fluid" src="{{ asset_with_version('images/membersV18.JPG') }}">
+                </div>
+                <div class="col-sm-12 col-md-6 order-md-2">
+                    {% include 'statictext/static_content.html.twig' with {'id': 'about-motivate-students'} %}
+            </section>
+            <section class="row">
+                <div class="col-12">
+                    {% include 'statictext/static_content.html.twig' with {'id': 'about-try-teaching'} %}
+                </div>
+                <div class="col-12  d-none d-md-block">
+                    <img src="{{ asset_with_version('images/nett.jpg') }}" class="img-fluid">
+                </div>
+            </section>
+            <div id="FAQ" class="faq">
+                {% include 'statictext/static_content.html.twig' with {'id': 'about-faq'} %}
             </div>
         </div>
     </div>

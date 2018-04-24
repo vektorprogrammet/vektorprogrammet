@@ -255,4 +255,22 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $this->getEntityName() === $class
         || is_subclass_of($class, $this->getEntityName());
     }
+
+    public function findAssistants()
+    {
+        return $this->createQueryBuilder('user')
+            ->join('user.assistantHistories', 'ah')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findTeamMembers()
+    {
+        return $this->createQueryBuilder('user')
+                    ->join('user.workHistories', 'wh')
+                    ->distinct()
+                    ->getQuery()
+                    ->getResult();
+    }
 }

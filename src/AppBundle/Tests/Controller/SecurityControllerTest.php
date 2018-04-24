@@ -57,7 +57,7 @@ class SecurityControllerTest extends BaseWebTestCase
 
         $crawler = $client->request('GET', '/login');
 
-        $form = $crawler->selectButton('login')->form();
+        $form = $crawler->selectButton('Logg inn')->form();
 
         // Change the value of a field
         $form['_username'] = $username;

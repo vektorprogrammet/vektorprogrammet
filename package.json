@@ -4,18 +4,23 @@
   "description": "This is the source code for vektorprogrammets new homepage.",
   "main": " ",
   "dependencies": {
+    "bootstrap": "^4.0.0-beta.3",
     "ckeditor": "4.5.10",
+    "cropperjs": "^1.3.5",
     "dropzone": "4.3.0",
     "font-awesome": "4.6.3",
     "foundation-sites": "5.5.3",
-    "jquery": "1.12.4",
-    "modernizr": "3.3.1",
-    "slick-carousel": "1.6.0"
+    "jquery": "^3.3.1",
+    "moment": "^2.21.0",
+    "popper.js": "^1.12.9"
   },
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "concurrently": "^3.1.0",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",
+    "gulp-babel": "^7.0.0",
     "gulp-changed": "^1.3.0",
     "gulp-concat": "^2.6.0",
     "gulp-cssnano": "^2.0.1",
@@ -28,8 +33,8 @@
   "scripts": {
     "test": "./bin/phpunit --configuration app/phpunit.xml.dist",
     "test:win": ".\\bin\\phpunit --configuration app/phpunit.xml.dist",
-    "setup": "php ./composer.phar install -n && npm install && npm run setup:scheduling && npm run build:dev  && php app/console doctrine:schema:drop --force --env=dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:fixtures:load --env=dev -n || npm run setup:win",
-    "setup:win": "php .\\composer.phar install -n && npm install && npm run setup:scheduling:win && npm run build:dev  && php app/console doctrine:schema:drop --force --env=dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:fixtures:load --env=dev -n",
+    "setup": "php ./composer.phar install -n && npm install && npm run setup:scheduling && npm run build:dev && php app/console doctrine:schema:drop --force --env=dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:schema:update --force --env=dev && php app/console doctrine:fixtures:load --env=dev -n",
+    "setup:win": "php .\\composer.phar install -n && npm install && npm run setup:scheduling:win && npm run build:dev && php app/console doctrine:schema:drop --force --env=dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:schema:update --force --env=dev && php app/console doctrine:fixtures:load --env=dev -n",
     "setup:scheduling": "cd src/AppBundle/AssistantScheduling/Webapp && npm install",
     "setup:scheduling:win": "cd src\\AppBundle\\AssistantScheduling\\Webapp && npm install",
     "start": "concurrently --kill-others \"php app/console server:run --docroot=www 0.0.0.0:8000\" \"npm run watch\"",

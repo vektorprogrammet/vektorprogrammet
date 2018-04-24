@@ -61,13 +61,13 @@ class ApplicationPracticalType extends AbstractType
         ));
 
         $builder->add('teamInterest', 'choice', array(
-        'label' => 'Legg til personen i teaminteresse-listen?',
-        'choices' => array(
-            0 => 'Nei',
-            1 => 'Ja',
-        ),
-        'expanded' => true,
-        'multiple' => false,
+            'label' => 'Legg til personen i teaminteresse-listen?',
+            'choices' => array(
+                0 => 'Nei',
+                1 => 'Ja',
+            ),
+            'expanded' => true,
+            'multiple' => false,
         ));
     }
 

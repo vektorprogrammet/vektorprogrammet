@@ -4,76 +4,75 @@
     Vektorprogrammet - Opptak
 {% endblock %}
 
-{# Form themes user to modify the templates of the various form components #}
-{% form_theme form 'form/interview_layout.html.twig' %}
-{% form_theme form.applicationPractical.days 'form/components/days_checkbox.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/existing_admission.css') }}">
+{% endblock %}
+
 
 {% block body %}
-    {{ include('common/flash.html.twig') }}
-    <div class="row">
-        <div class="small-12 medium-6 medium-offset-3 columns">
+    <div class="container content section mt-3">
+        <h3 class="heading text-center my-3 text-dark-blue">Søk
+            vektorassistent {{ department.shortName }} {{ semester.name }}</h3>
+        <div class="card py-2 py-sm-4 pb-sm-4 px-3">
+            <div class="card-block pt-4 pb-1 pb-sm-4 px-3 px-sm-4">
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
 
-            {{ form_start(form) }}
-            {{ form_errors(form) }}
-
-            <h3>Søk vektorassistent {{ department.shortName }} {{ semester.name }}</h3>
-            <h6>Søknadsskjema for {{ user }} (Ikke deg? <a href="{{ path('logout') }}">Logg ut</a>)</h6>
-            <div class="row">
-                <div class="small-12 columns">
-                    <div>
-                        {{ form_row(form.applicationPractical.yearOfStudy) }}
+                <h6>Søknadsskjema for {{ user }} (Ikke deg? <a href="{{ path('logout') }}">Logg ut</a>)</h6>
+                <div class="row mt-3">
+                    <div class="col-12 col-sm-4">
+                        <div>
+                            {{ form_row(form.applicationPractical.yearOfStudy) }}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="small-12 columns">
-                    <label class="question-label">Hvilke dager passer IKKE for deg?</label>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <label class="question-label">Hvilke dager passer IKKE for deg?</label>
                         {{ form_widget(form.applicationPractical.days) }}
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="small-12 medium-12 large-12 columns">
-                    {{ form_row(form.applicationPractical.doublePosition) }}
+                <div class="row mt-2">
+                    <div class="col-12">
+                        {{ form_row(form.applicationPractical.doublePosition) }}
+                    </div>
                 </div>
-            </div>
 
-            <div class="row doublePositionRow">
-                <div class="small-12 medium-12 large-12 columns">
-                    {{ form_row(form.applicationPractical.preferredGroup) }}
+                <div class="row mt-2 doublePositionRow">
+                    <div class="col-12">
+                        {{ form_row(form.applicationPractical.preferredGroup) }}
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="small-12 medium-12 large-12 columns">
-                    {{ form_row(form.applicationPractical.language) }}
+                <div class="row mt-2">
+                    <div class="col-12">
+                        {{ form_row(form.applicationPractical.language) }}
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="small-12 medium-12 large-12 columns">
-                    <label class="question-label">
-                        Kunne du tenke deg å jobbe med organiseringen av Vektorprogrammet?<br>
-                        Dette innebærer et verv i et at Vektorprogrammets team
-                    </label>
-                    {{ form_widget(form.applicationPractical.teamInterest) }}
-                    {{ form_errors(form.applicationPractical.teamInterest) }}
+                <div class="row mt-2">
+                    <div class="col-12">
+                        {{ form_row(form.preferredSchool) }}
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="small-12 medium-12 large-12 columns">
-                    {{ form_row(form.preferredSchool) }}
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <label class="question-label">
+                            Kunne du tenke deg å jobbe med organiseringen av Vektorprogrammet?<br>
+                            Dette innebærer et verv i et at Vektorprogrammets team
+                        </label>
+                        {{ form_widget(form.applicationPractical.teamInterest) }}
+                        {{ form_errors(form.applicationPractical.teamInterest) }}
+                    </div>
                 </div>
-            </div>
 
-            <div class="class">
-                <div class="text-center">
-                    {{ form_widget(form.save, {'attr': {'class': 'vektor-button-inverted'}}) }}
+                <div class="text-center mt-3">
+                    <button class="btn btn-lg btn-primary">Søk nå!</button>
                 </div>
-                <br>
+                {{ form_end(form) }}
             </div>
-            {{ form_end(form) }}
         </div>
     </div>
 
@@ -82,44 +81,43 @@
 {% block javascripts %}
 
     <script>
-        var $submitBtn = $('.vektor-button-inverted');
-        var $applicationForm = $('form[name="application"]');
-        $submitBtn.click(function () {
-            if ($applicationForm[0].checkValidity()) {
-                $submitBtn.attr("disabled", true);
-                $submitBtn.html("Sender...");
-                $applicationForm.submit();
-            }
-        });
-        setTimeout(function () {
-            $(".admission-notice").fadeOut(1000);
-        }, 5000);
-
-        const singlePositionToggle = document.querySelector('#application_applicationPractical_doublePosition_0');
-        const doublePositionToggle = document.querySelector('#application_applicationPractical_doublePosition_1');
-        const bothGroups = document.querySelector('#application_applicationPractical_preferredGroup_0');
-        const group1 = document.querySelector('#application_applicationPractical_preferredGroup_1');
-        const group2 = document.querySelector('#application_applicationPractical_preferredGroup_2');
-        const doublePositionRow = document.querySelector('.doublePositionRow');
-        singlePositionToggle.addEventListener('change', toggleDoublePosition);
-        doublePositionToggle.addEventListener('change', toggleDoublePosition);
-
-        function toggleDoublePosition () {
-            if (doublePositionToggle.checked) {
-                bothGroups.checked=true;
-                bothGroups.setAttribute('disabled', 'disabled');
-                group1.setAttribute('disabled','disabled');
-                group2.setAttribute('disabled', 'disabled');
-                doublePositionRow.classList.add('textDisabled');
-            }
-            else {
-                bothGroups.removeAttribute('disabled');
-                group1.removeAttribute('disabled');
-                group2.removeAttribute('disabled');
-                doublePositionRow.classList.remove('textDisabled');
-            }
+      var $submitBtn = $('.vektor-button-inverted');
+      var $applicationForm = $('form[name="application"]');
+      $submitBtn.click(function () {
+        if ($applicationForm[0].checkValidity()) {
+          $submitBtn.attr('disabled', true);
+          $submitBtn.html('Sender...');
+          $applicationForm.submit();
         }
+      });
+      setTimeout(function () {
+        $('.admission-notice').fadeOut(1000);
+      }, 5000);
 
+      const singlePositionToggle = document.querySelector('#application_applicationPractical_doublePosition_0');
+      const doublePositionToggle = document.querySelector('#application_applicationPractical_doublePosition_1');
+      const bothGroups = document.querySelector('#application_applicationPractical_preferredGroup_0');
+      const group1 = document.querySelector('#application_applicationPractical_preferredGroup_1');
+      const group2 = document.querySelector('#application_applicationPractical_preferredGroup_2');
+      const doublePositionRow = document.querySelector('.doublePositionRow');
+      singlePositionToggle.addEventListener('change', toggleDoublePosition);
+      doublePositionToggle.addEventListener('change', toggleDoublePosition);
+
+      function toggleDoublePosition() {
+        if (doublePositionToggle.checked) {
+          bothGroups.checked = true;
+          bothGroups.setAttribute('disabled', 'disabled');
+          group1.setAttribute('disabled', 'disabled');
+          group2.setAttribute('disabled', 'disabled');
+          doublePositionRow.classList.add('textDisabled');
+        }
+        else {
+          bothGroups.removeAttribute('disabled');
+          group1.removeAttribute('disabled');
+          group2.removeAttribute('disabled');
+          doublePositionRow.classList.remove('textDisabled');
+        }
+      }
 
 
     </script>

@@ -5,7 +5,7 @@
     See Vektorprogrammet\app\Resources\views\about\about_vektor.html.twig for a small example on how to use it
 #}
 
-{% if is_granted_team_leader() %}
+{% if is_granted_admin() %}
     <script> var dump_file = "{{ path('update_static_content') }}" </script>
     <script src="{{ asset_with_version('vendor/ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset_with_version('vendor/ckeditor/adapters/jquery.js') }}"></script>

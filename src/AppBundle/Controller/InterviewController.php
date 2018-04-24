@@ -7,6 +7,7 @@ use AppBundle\Entity\Interview;
 use AppBundle\Event\InterviewConductedEvent;
 use AppBundle\Event\InterviewEvent;
 use AppBundle\Form\InterviewNewTimeType;
+use AppBundle\Form\Type\AddCoInterviewerType;
 use AppBundle\Form\Type\ApplicationInterviewType;
 use AppBundle\Form\Type\AssignInterviewType;
 use AppBundle\Form\Type\CancelInterviewConfirmationType;
@@ -353,7 +354,7 @@ class InterviewController extends Controller
     /**
      * @param Interview $interview
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function acceptByResponseCodeAction(Interview $interview)
     {
@@ -362,9 +363,12 @@ class InterviewController extends Controller
         $manager->persist($interview);
         $manager->flush();
 
-        $this->addFlash('success', 'Intervjuet ble akseptert.');
-
-        return $this->redirectToRoute('home');
+        $formattedDate = $interview->getScheduled()->format('d. M');
+        $formattedTime = $interview->getScheduled()->format('H:i');
+        $room = $interview->getRoom();
+        $this->addFlash('title', 'Akseptert!');
+        $this->addFlash('message', "Takk for at du aksepterte intervjutiden. Da sees vi $formattedDate klokka $formattedTime i $room!");
+        return $this->redirectToRoute('confirmation');
     }
 
     /**
@@ -391,9 +395,10 @@ class InterviewController extends Controller
             $manager->flush();
 
             $this->get('app.interview.manager')->sendRescheduleEmail($interview);
-            $this->addFlash('success', 'Forespørsel har blitt sendt.');
 
-            return $this->redirectToRoute('home');
+            $this->addFlash('title', 'Notert');
+            $this->addFlash('message', 'Vi tar kontakt med deg når vi har funnet en ny intervjutid.');
+            return $this->redirectToRoute('confirmation');
         }
 
         return $this->render('interview/request_new_time.html.twig', array(
@@ -443,9 +448,9 @@ class InterviewController extends Controller
 
             $this->get('app.interview.manager')->sendCancelEmail($interview);
 
-            $this->addFlash('success', 'Intervjuet ble kansellert.');
-
-            return $this->redirectToRoute('home');
+            $this->addFlash('title', 'Kansellert');
+            $this->addFlash('message', 'Du har kansellert intervjuet ditt.');
+            return $this->redirectToRoute('confirmation');
         }
 
         return $this->render('interview/response_confirm_cancel.html.twig', array(
@@ -473,5 +478,50 @@ class InterviewController extends Controller
 
         return $this->redirectToRoute('interview_schedule',
             ['id' => $interview->getApplication()->getId()]);
+    }
+
+    public function assignCoInterviewerAction(Interview $interview)
+    {
+        if ($this->getUser() != $interview->getInterviewer()) {
+            $interview->setCoInterviewer($this->getUser());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($interview);
+            $em->flush();
+            $this->get('event_dispatcher')->dispatch(InterviewEvent::COASSIGN, new InterviewEvent($interview));
+        }
+        return $this->redirectToRoute('applications_show_assigned');
+    }
+
+    public function adminAssignCoInterviewerAction(Request $request, Interview $interview)
+    {
+        $semester = $interview->getApplication()->getSemester();
+        $teamUsers = $this->getDoctrine()->getRepository('AppBundle:User')
+            ->findUsersWithWorkHistoryInSemester($semester);
+        $form = $this->createForm(new AddCoInterviewerType($teamUsers));
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $user = $data['user'];
+            $interview->setCoInterviewer($user);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($interview);
+            $em->flush();
+            return $this->redirectToRoute('applications_show_assigned');
+        }
+
+        return $this->render('interview/assign_co_interview_form.html.twig', array(
+            'form' => $form->createView(),
+            'interview' => $interview
+        ));
+    }
+
+    public function clearCoInterviewerAction(Interview $interview)
+    {
+        $interview->setCoInterviewer(null);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($interview);
+        $em->flush();
+        return $this->redirectToRoute('applications_show_assigned');
     }
 }

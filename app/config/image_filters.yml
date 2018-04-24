@@ -1,0 +1,49 @@
+liip_imagine:
+    resolvers:
+       default:
+          web_path:
+            web_root: '%kernel.root_dir%/../www'
+
+    loaders:
+      default:
+        filesystem:
+          data_root: '%kernel.root_dir%/../www'
+
+    cache: ~
+
+    filter_sets:
+    # Note, when deleting filters, make sure that no ImageGalleries use those filters, as they won't be automatically removed
+        article_crop:
+            quality: 100
+            filters:
+                relative_resize: { scale: 2.5 }
+                crop: { start: [10, 20], size: [120, 90] }
+        max_500px:
+            quality: 85
+            filters:
+              downscale:
+                max: [500, 500]
+
+        article_featured:
+            quality: 85
+            filters:
+              downscale:
+                max: [900, 900]
+
+        profile_img:
+            quality: 85
+            filters:
+              downscale:
+                max: [400, 400]
+
+        profile_img_small:
+            quality: 85
+            filters:
+              downscale:
+                max: [200, 200]
+
+        profile_img_tiny:
+            quality: 85
+            filters:
+              downscale:
+                max: [40, 40]

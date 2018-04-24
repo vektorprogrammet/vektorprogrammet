@@ -1,0 +1,29 @@
+.about-us-page {
+  section {
+    margin-top: 130px;
+    margin-bottom: 130px;
+    @media (max-width: 766px) {
+      margin-top: 50px;
+      margin-bottom: 50px;
+    }
+  }
+
+  .faq {
+    h2 {
+      text-align: center;
+    }
+    h5 {
+      margin-top: 25px;
+      @media (min-width: 767px) {
+        margin-top: 50px;
+      }
+    }
+  }
+
+  .contact-info {
+    margin-top: 32px;
+    a {
+      font-weight: 700;
+    }
+  }
+}

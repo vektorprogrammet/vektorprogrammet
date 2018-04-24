@@ -121,9 +121,9 @@
                     {% for s in semesters %}
                         <tr>
                             <td> {{ s.name }} </td>
-                            <td> {{ s.admissionStartDate|date('Y-m-d') }} </br>
+                            <td> {{ s.admissionStartDate|date('d. M Y') }} </br>
                                 Kl. {{ s.admissionStartDate|date('H:i:s') }}</td>
-                            <td> {{ s.admissionEndDate|date('Y-m-d') }} </br>
+                            <td> {{ s.admissionEndDate|date('d. M Y') }} </br>
                                 Kl. {{ s.admissionEndDate|date('H:i:s') }}</td>
 
                             {% if is_granted_team_leader() %}

@@ -197,7 +197,6 @@ class Survey implements \JsonSerializable
                 if ($answer->getSurveyTaken() === null || $answer->getSurveyTaken()->getSchool() === null) {
                     continue;
                 }
-                
                 $textQAarray[$questionText][] = array(
                     'answerText' => $answer->getAnswer(),
                     'schoolName' => $answer->getSurveyTaken()->getSchool()->getName()

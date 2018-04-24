@@ -1,9 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends "base.html.twig" %}
 
 {% block body %}
-    <br>
-    <h1 class="text-center">Takk for din søknad</h1>
-    <br>
-    <br>
-    <br>
+    <div class="page-header text-center">
+        <h1>
+            Søknad mottatt!
+        </h1>
+        <p class="text-center">Du vil om bli kontaktet på e-post av {{ team_name }}-ansvarlig med informasjon om prosessen videre.</p>
+    </div>
 {% endblock %}

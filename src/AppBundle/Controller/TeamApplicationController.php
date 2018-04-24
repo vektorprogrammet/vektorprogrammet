@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class TeamApplicationController extends Controller
 {
@@ -69,12 +71,25 @@ class TeamApplicationController extends Controller
 
             $this->get('event_dispatcher')->dispatch(TeamApplicationCreatedEvent::NAME, new TeamApplicationCreatedEvent($teamApplication));
 
-            return $this->redirectToRoute('team_application', array('id' => $team->getId()));
+            return $this->redirectToRoute('team_application_confirmation', array(
+                'team_name' => $team->getName(),
+            ));
         }
 
         return $this->render('team/team_application.html.twig', array(
             'team' => $team,
             'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * @Route("/team/application/bekreftelse/{team_name}", name="team_application_confirmation")
+     * @return Response
+     */
+    public function confirmationAction($team_name)
+    {
+        return $this->render('team/confirmation.html.twig', array(
+            'team_name' => $team_name,
         ));
     }
 }

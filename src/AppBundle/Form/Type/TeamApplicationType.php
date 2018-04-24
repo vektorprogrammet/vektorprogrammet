@@ -17,11 +17,11 @@ class TeamApplicationType extends AbstractType
             ->add('email', 'email', array(
                 'label' => 'Email',
             ))
-            ->add('phone', 'integer', array(
+            ->add('phone', TelType::class, array(
                 'label' => 'Telefon',
             ))
             ->add('yearOfStudy', 'choice', array(
-                'label' => 'Studieår',
+                'label' => 'Årstrinn',
                 'choices' => array(
                     '1. klasse' => '1. klasse',
                     '2. klasse' => '2. klasse',

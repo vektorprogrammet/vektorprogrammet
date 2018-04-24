@@ -1,0 +1,29 @@
+<div class="team-card mdc-card">
+    <div class="team-card__header mdc-card__primary">
+        <h2 class="mdc-card__title">{{ team }}</h2>
+    </div>
+
+    <div class="profiles">
+        {% for wh in team.activeWorkHistories %}
+            <div class="img-wrapper">
+                <img class="profile-photo" src="{{ wh.user.picturePath }}" alt="{{ wh.user }}">
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="mdc-card__supporting-text">
+        {{ team.shortDescription }}
+    </div>
+    <div class="team-card__actions mdc-card__actions mdc-card--border">
+        <a class="mdc-button mdc-button--colored"
+           href="{{ path('team_page', {id: team.id}) }}">
+            Les mer
+        </a>
+        {% if team.acceptApplication %}
+            <span class="application-chip mdc-chip mdc-chip--contact">
+                <span class="application-chip__symbol mdc-chip__contact mdc-color--teal-400 mdc-color-text--white">!</span>
+                <span class="application-chip__text mdc-chip__text">Har opptak</span>
+            </span>
+        {% endif %}
+    </div>
+</div>
