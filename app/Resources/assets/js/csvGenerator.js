@@ -1,8 +1,9 @@
 /**
  * @param {string} tableId
+ * @param {string} separator
  * @returns {string}
  */
-function getCSVFromTable(tableId){
+function getCSVFromTable(tableId, separator){
     let csv = '';
     let arr = [];
     let skipIndexes = [];
@@ -14,16 +15,16 @@ function getCSVFromTable(tableId){
         }
         else arr.push($.trim($(this).text()));
     });
-    csv += arr.join(',');
+    csv += arr.join(separator);
 
     $('#'+tableId+' tr').each(function(){
         if($(this).children('th').length !== 0) return true; // Skip th row
-        csv += '\n';
+        csv += '\r\n';
         arr = [];
         $(this).children('td').each(function(index){
             if(skipIndexes.indexOf(index) === -1) arr.push('"'+$.trim(this.innerText)+'"');
         });
-        csv += arr.join(',');
+        csv += arr.join(separator);
     });
 
     return csv;
@@ -31,9 +32,10 @@ function getCSVFromTable(tableId){
 
 /**
  * @param {string} tableId
+ * @param {string} separator
  */
-function downloadCSV(tableId){
-    const csv = getCSVFromTable(tableId);
+function downloadCSV(tableId, separator){
+    const csv = getCSVFromTable(tableId, separator);
     const encodedUri = encodeURI(csv);
     const link = document.createElement("a");
     link.style.visibility = 'hidden';
