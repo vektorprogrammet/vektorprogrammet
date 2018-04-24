@@ -67,6 +67,9 @@ class InterviewSubscriber implements EventSubscriberInterface
                 array('sendScheduleEmail', 0),
                 array('sendScheduleSms', 0),
             ),
+            InterviewEvent::COASSIGN => array(
+                array('sendCoAssignedEmail', 0)
+            )
         );
     }
 
@@ -165,5 +168,19 @@ class InterviewSubscriber implements EventSubscriberInterface
         $sms->setRecipients([$phoneNumber]);
 
         $this->smsSender->send($sms);
+    }
+
+    public function sendCoAssignedEmail(InterviewEvent $event)
+    {
+        $interview = $event->getInterview();
+        $emailMessage = \Swift_Message::newInstance()
+            ->setSubject('Vektorprogrammet intervju')
+            ->setFrom(array('vektorbot@vektorprogrammet.no' => 'Vektorprogrammet'))
+            ->setTo($interview->getInterviewer()->getEmail())
+            ->setReplyTo($interview->getCoInterviewer()->getEmail())
+            ->setBody($this->twig->render('interview/co_interviewer_email.html.twig',array(
+                'interview' => $interview
+            )));
+        $this->mailer->send($emailMessage);
     }
 }

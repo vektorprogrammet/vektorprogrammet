@@ -487,6 +487,7 @@ class InterviewController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($interview);
             $em->flush();
+            $this->get('event_dispatcher')->dispatch(InterviewEvent::COASSIGN, new InterviewEvent($interview));
         }
         return $this->redirectToRoute('applications_show_assigned');
     }
