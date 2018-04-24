@@ -37,7 +37,25 @@
             <td>{{ a.interview.room }}</td>
             <td>{{ a.interview.interviewer }}</td>
 
-            <td>{{ a.interview.coInterviewer }}</td>
+            {% if a.interview.coInterviewer  %}
+                <td>{{ a.interview.coInterviewer }}</td>
+            {% else %}
+                <td>
+                    {% if a.interview.getCoInterviewer() == null %}
+                        <form method="POST" action="{{ path('interview_assign_co_interviewer', { id: a.interview.id }) }}">
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <button type="submit"
+                                            class="button tiny">
+                                        <i class="fa fa-share-alt"></i>
+                                        Legg meg til som medintervjuer
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    {% endif %}
+                </td>
+            {% endif %}
 
             <td style="color: {{ a.interview.getInterviewStatusAsColor() }}">
                 {{ a.interview.getInterviewStatusAsString() }}
@@ -61,23 +79,6 @@
                         </div>
                     </div>
                 </td>
-            {% else %}
-                <td>
-                    {% if a.interview.getCoInterviewer() == null %}
-                    <form method="POST" action="{{ path('interview_assign_co_interviewer', { id: a.interview.id }) }}">
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <button type="submit"
-                                        class="button tiny">
-                                    <i class="fa fa-share-alt"></i>
-                                    Legg meg til som medintervjuer
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    {% endif %}
-                </td>
-                <td colspan="3"></td>
             {% endif %}
         </tr>
     {% endfor %}
