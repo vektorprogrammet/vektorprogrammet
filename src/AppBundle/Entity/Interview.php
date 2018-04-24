@@ -63,8 +63,7 @@ class Interview
     protected $interviewer; // Unidirectional, may turn out to be bidirectional
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="interviews")
-     * @ORM\JoinColumn(name="coInterviewer_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="User")
      */
     protected $coInterviewer;
 
