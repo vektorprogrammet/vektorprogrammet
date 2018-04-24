@@ -19,6 +19,7 @@ class Version20180424193317 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE article ADD published TINYINT(1) DEFAULT NULL, DROP imageMedium');
+        $this->addSql('UPDATE article SET published=1 WHERE published IS NULL');
     }
 
     /**
