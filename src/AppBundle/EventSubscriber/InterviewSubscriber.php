@@ -178,7 +178,7 @@ class InterviewSubscriber implements EventSubscriberInterface
             ->setFrom(array('vektorbot@vektorprogrammet.no' => 'Vektorprogrammet'))
             ->setTo($interview->getInterviewer()->getEmail())
             ->setReplyTo($interview->getCoInterviewer()->getEmail())
-            ->setBody($this->twig->render('interview/co_interviewer_email.html.twig',array(
+            ->setBody($this->twig->render('interview/co_interviewer_email.html.twig', array(
                 'interview' => $interview
             )));
         $this->mailer->send($emailMessage);
