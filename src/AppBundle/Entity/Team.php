@@ -59,22 +59,22 @@ class Team implements TeamInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $isActive;
+    protected $active;
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function getisActive()
+    public function isActive()
     {
-        return $this->isActive;
+        return $this->active;
     }
 
     /**
-     * @param mixed $isActive
+     * @param bool $active
      */
-    public function setIsActive($isActive)
+    public function setActive(bool $active)
     {
-        $this->isActive = $isActive;
+        $this->active = $active;
     }
 
 
@@ -103,7 +103,7 @@ class Team implements TeamInterface
 
     public function __construct()
     {
-        $this->isActive = true;
+        $this->active = true;
     }
 
     public function __toString()
