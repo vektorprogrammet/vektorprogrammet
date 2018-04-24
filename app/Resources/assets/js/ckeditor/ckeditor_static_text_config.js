@@ -43,7 +43,9 @@ CKEDITOR.editorConfig = function(config){
     config.format_tags = 'p;h1;h2;h3;h4;h5;pre';
 
     //Enable plugins
-    config.extraPlugins = 'sourcedialog,inlinesave,inlinecancel';
+    config.extraPlugins = 'sourcedialog,inlinesave,inlinecancel,justify';
+
+  config.justifyClasses = [ 'AlignLeft', 'AlignCenter', 'AlignRight', 'AlignJustify' ];
 
     // Simplify the dialog windows.
     // config.removeDialogTabs = 'image:advanced;link:advanced';
