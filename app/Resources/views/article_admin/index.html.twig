@@ -96,7 +96,7 @@
                                 <span class="text-warning">Kladd</span>
                             {% endif %}
                         </td>
-                        <td>{{ a.title|safe_html }}</td>
+                        <td><a href="{{ path(a.published ? 'article_show' : 'article_show_draft', {'id': a.id}) }}">{{ a.title|safe_html }}</a></td>
                         <td>{{ a.updated|date("d.m.y - G:i") }}</td>
                         <td>{{ a.author.firstName }} {{ a.author.lastName }}</td>
 

@@ -2,14 +2,12 @@
 
 namespace AppBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Entity\Article;
 use AppBundle\Form\Type\ArticleType;
-use AppBundle\Form\Type\CropImageType;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * ArticleAdminController is the controller responsible for the administrative article actions,
@@ -47,6 +45,17 @@ class ArticleAdminController extends Controller
     }
 
     /**
+     * @Route("/kontrollpanel/artikkel/kladd/{id}", name="article_show_draft")
+     * @param Article $article
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showDraftAction(Article $article)
+    {
+        return $this->render('article/show.html.twig', array('article' => $article, 'isDraft' => true));
+    }
+
+    /**
      * Shows and handles the submission of the article creation form.
      *
      * @param Request $request
@@ -57,7 +66,6 @@ class ArticleAdminController extends Controller
     {
         $article       = new Article();
         $form          = $this->createForm(new ArticleType(), $article);
-        $cropImageForm = $this->createForm(new CropImageType());
 
         $form->handleRequest($request);
 
@@ -66,11 +74,13 @@ class ArticleAdminController extends Controller
 
             // Set the author to the currently logged in user
             $article->setAuthor($this->getUser());
-            $draft = $request->request->get('draft');
-            $article->setPublished(!$draft);
 
             $imageSmall = $this->get('app.file_uploader')->uploadArticleImage($request, 'imgsmall');
             $imageLarge = $this->get('app.file_uploader')->uploadArticleImage($request, 'imglarge');
+            if (!$imageSmall || !$imageLarge) {
+                return new JsonResponse("Error", 400);
+            }
+
             $article->setImageSmall($imageSmall);
             $article->setImageLarge($imageLarge);
 
@@ -93,7 +103,6 @@ class ArticleAdminController extends Controller
             'article'       => $article,
             'title'         => 'Legg til en ny artikkel',
             'form'          => $form->createView(),
-            'cropImageForm' => $cropImageForm->createView(),
         ));
     }
 
@@ -113,8 +122,6 @@ class ArticleAdminController extends Controller
 
         if ($form->isValid()) {
             $em      = $this->getDoctrine()->getManager();
-            $draft = $request->request->get('draft');
-            $article->setPublished(!$draft);
 
             $imageSmall = $this->get('app.file_uploader')->uploadArticleImage($request, 'imgsmall');
             if ($imageSmall) {

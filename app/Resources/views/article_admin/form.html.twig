@@ -73,11 +73,11 @@
                 </div>
                 <div class="footer">
                     <div class="row">
-                        <div class="small-8 columns">
-                            <button class="tiny button" onclick="this.form.setAttribute('data-draft', 'true');">Lagre kladd</button>
+                        <div class="small-6 medium-2 medium-offset-8 large-offset-9 columns">
+                            {{ form_widget(form.published) }}
                         </div>
-                        <div class="small-4 columns">
-                            <button class="tiny button right">Publiser</button>
+                        <div class="small-6 medium-2 large-1 columns">
+                            <button class="tiny button right">Lagre</button>
                         </div>
                     </div>
                 </div>
@@ -142,10 +142,7 @@
           var form = $("[name='{{ form.vars.name }}']");
           form.submit(function (e) {
             e.preventDefault();
-            var draft = e.target.getAttribute('data-draft');
-            setTimeout(function() {
-                this.upload(draft);
-            }.bind(this), 100)
+            this.upload();
           }.bind(this));
           $('#app').show();
         },
@@ -198,17 +195,13 @@
 
             reader.readAsDataURL(file);
           },
-          upload(draft) {
+          upload() {
             if (!this.smallPhotoSrc || !this.largePhotoSrc) {
               return alert('Du må velge bilder');
             }
 
             var form = document.querySelector('form[name="{{ form.vars.name }}"]');
             var formData = new FormData(form);
-
-            if (draft && draft !== 'false') {
-                formData.append('draft', 'draft');
-            }
 
             var newSmallPhoto = this.smallCropper && this.smallCropper.getCroppedCanvas() !== null;
             var newLargePhoto = this.largeCropper && this.largeCropper.getCroppedCanvas() !== null;
@@ -218,21 +211,21 @@
                 this.smallCropper.getCroppedCanvas().toBlob(function (smallBlob) {
                   formData.append('imglarge', largeBlob);
                   formData.append('imgsmall', smallBlob);
-                  this.submit(formData, draft);
+                  this.submit(formData);
                 }.bind(this), 'image/jpeg');
               }.bind(this), 'image/jpeg');
             } else if (newSmallPhoto) {
               this.smallCropper.getCroppedCanvas().toBlob(function (smallBlob) {
                 formData.append('imgsmall', smallBlob);
-                return this.submit(formData, draft);
+                return this.submit(formData);
               }.bind(this), 'image/jpeg');
             } else if (newLargePhoto) {
               this.largeCropper.getCroppedCanvas().toBlob(function (largeBlob) {
                 formData.append('imglarge', largeBlob);
-                return this.submit(formData, draft);
+                return this.submit(formData);
               }.bind(this), 'image/jpeg');
             } else {
-              return this.submit(formData, draft);
+              return this.submit(formData);
             }
           },
           submit(formData) {
