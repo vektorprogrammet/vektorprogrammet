@@ -2,7 +2,7 @@
 
 namespace AppBundle\Entity;
 
-interface GroupMemberInterface
+interface TeamMembershipInterface
 {
 
     /**

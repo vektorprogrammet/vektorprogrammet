@@ -2,7 +2,7 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Entity\GroupMemberInterface;
+use AppBundle\Entity\TeamMembershipInterface;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Receipt;
 
@@ -171,9 +171,9 @@ class Sorter
     /**
      * Order: "leder" < "nestleder" < "aaa" < "zzz"
      *
-     * @param GroupMemberInterface[] $teamMemberships
+     * @param TeamMembershipInterface[] $teamMemberships
      *
-     * @return GroupMemberInterface[]
+     * @return TeamMembershipInterface[]
      */
     public function sortTeamMembershipsByPosition(&$teamMemberships)
     {
@@ -181,8 +181,8 @@ class Sorter
     }
 
     /**
-     * @param GroupMemberInterface $teamMembership1
-     * @param GroupMemberInterface $teamMembership2
+     * @param TeamMembershipInterface $teamMembership1
+     * @param TeamMembershipInterface $teamMembership2
      *
      * @return int -1, 0, 1
      */

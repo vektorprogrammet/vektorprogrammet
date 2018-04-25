@@ -2,7 +2,7 @@
 
 namespace AppBundle\Twig\Extension;
 
-use AppBundle\Entity\GroupMemberInterface;
+use AppBundle\Entity\TeamMembershipInterface;
 
 class GroupSortExtension extends \Twig_Extension
 {
@@ -19,9 +19,9 @@ class GroupSortExtension extends \Twig_Extension
      * Returns a sorted list with "Leder" and "Nestleder" in the first and second
      * position, respectively.
      *
-     * @param GroupMemberInterface[] $group
+     * @param TeamMembershipInterface[] $group
      *
-     * @return GroupMemberInterface[]
+     * @return TeamMembershipInterface[]
      */
     public function groupSortFilter($group): array
     {
@@ -43,7 +43,7 @@ class GroupSortExtension extends \Twig_Extension
         return array_merge($leaders, $members);
     }
 
-    private function positionsCompare(GroupMemberInterface $a, GroupMemberInterface $b)
+    private function positionsCompare(TeamMembershipInterface $a, TeamMembershipInterface $b)
     {
         return strcmp(strtolower($a->getPositionName()), strtolower($b->getPositionName()));
     }

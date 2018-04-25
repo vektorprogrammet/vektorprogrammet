@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="team_membership")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\TeamMembershipRepository")
  */
-class TeamMembership implements GroupMemberInterface
+class TeamMembership implements TeamMembershipInterface
 {
     /**
      * @ORM\Column(type="integer")
