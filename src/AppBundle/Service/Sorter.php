@@ -135,7 +135,7 @@ class Sorter
     private function sortUsersByActivePositions(&$users, $getActiveTeamMembershipsFunction)
     {
         usort($users, function ($user1, $user2) use ($getActiveTeamMembershipsFunction) {
-            // Get workhistories
+            // Get teammemberships
             $teamMemberships1 = call_user_func(array($user1, $getActiveTeamMembershipsFunction));
             $teamMemberships2 = call_user_func(array($user2, $getActiveTeamMembershipsFunction));
 

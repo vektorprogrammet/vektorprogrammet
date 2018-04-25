@@ -27,14 +27,18 @@ class ProfileController extends Controller
         // Fetch the assistant history of the user
         $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
 
-        // Find the work history of the user
-        $teamMembership = $em->getRepository('AppBundle:TeamMembership')->findByUser($user);
+        // Find the team history of the user
+        $teamMemberships = $em->getRepository('AppBundle:TeamMembership')->findByUser($user);
+
+        // Find the executive board history of the user
+        $executiveBoardMemberships = $em->getRepository('AppBundle:ExecutiveBoardMembership')->findByUser($user);
 
         // Render the view
         return $this->render('profile/profile.html.twig', array(
-            'user'             => $user,
-            'assistantHistory' => $assistantHistory,
-            'teamMembership'      => $teamMembership,
+            'user'                      => $user,
+            'assistantHistory'          => $assistantHistory,
+            'teamMemberships'            => $teamMemberships,
+            'executiveBoardMemberships'  => $executiveBoardMemberships,
         ));
     }
 
@@ -51,12 +55,17 @@ class ProfileController extends Controller
         $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
 
         // Find the work history of the user
-        $teamMembership = $em->getRepository('AppBundle:TeamMembership')->findByUser($user);
+        $teamMemberships = $em->getRepository('AppBundle:TeamMembership')->findByUser($user);
 
+        // Find the executive board history of the user
+        $executiveBoardMemberships = $em->getRepository('AppBundle:ExecutiveBoardMembership')->findByUser($user);
+
+        // Render the view
         return $this->render('profile/profile.html.twig', array(
-            'user'             => $user,
-            'assistantHistory' => $assistantHistory,
-            'teamMembership'      => $teamMembership,
+            'user'                      => $user,
+            'assistantHistory'          => $assistantHistory,
+            'teamMemberships'            => $teamMemberships,
+            'executiveBoardMemberships'  => $executiveBoardMemberships,
         ));
     }
 

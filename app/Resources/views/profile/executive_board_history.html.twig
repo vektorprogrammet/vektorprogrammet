@@ -1,30 +1,24 @@
-{% if teamMemberships is not empty %}
+{% if executiveBoardMemberships is not empty %}
     <div class="card mt-3">
         <div class="card-body">
             <div class="card-title">
-                <h3 class="text-dark-blue">Teamhistorikk</h3>
+                <h3 class="text-dark-blue">Medlem i hovedstyret</h3>
             </div>
             <div class="table-responsive">
                 <table class="table">
                     <thead class="thead-light">
                     <tr>
-                        <th>Team</th>
                         <th>Stilling</th>
                         <th>Start</th>
                         <th>Slutt</th>
                     </tr>
                     </thead>
-                    {% for tm in teamMemberships %}
+                    {% for tm in executiveBoardMemberships %}
                         <tr>
-                            <td>
-                                {{ tm.teamName }}
-                            </td>
 
                             <td>
                                 {% if tm.position is not null %}
-                                    {{ tm.position.name }}
-                                {% else %}
-                                    Stillingen er fjernet
+                                    {{ tm.position }}
                                 {% endif %}
                             </td>
 
