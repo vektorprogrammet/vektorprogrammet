@@ -59,7 +59,7 @@
                                     {{ executiveBoardMember.position }}{% if not loop.last %},{% endif %}
                                 {% endfor %}
                             {% elseif type == 'team'%}
-                                {% for teamHistory in user.workHistories %}
+                                {% for teamHistory in user.teamMemberships %}
                                     {{ teamHistory.position }}{% if not loop.last %},{% endif %}
                                 {% endfor %}
                             {% endif %}

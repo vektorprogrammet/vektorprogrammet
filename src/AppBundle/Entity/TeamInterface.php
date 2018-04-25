@@ -9,6 +9,6 @@ interface TeamInterface
     public function getShortDescription();
     public function getDescription();
     public function getAcceptApplication();
-    public function getWorkHistories();
-    public function getActiveWorkHistories();
+    public function getTeamMemberships();
+    public function getActiveTeamMemberships();
 }

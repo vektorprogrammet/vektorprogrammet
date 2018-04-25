@@ -14,7 +14,7 @@ use Doctrine\ORM\NoResultException;
 
 class UserRepository extends EntityRepository implements UserProviderInterface
 {
-    public function findUsersWithWorkHistoryInSemester(Semester $semester)
+    public function findUsersWithTeamMembershipInSemester(Semester $semester)
     {
         $startDate = $semester->getSemesterStartDate();
         $endDate = $semester->getSemesterEndDate();
@@ -22,7 +22,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 
         return $this->createQueryBuilder('user')
             ->select('user')
-            ->join('user.workHistories', 'wh')
+            ->join('user.teamMemberships', 'wh')
             ->join('user.fieldOfStudy', 'fos')
             ->where('fos.department = :department')
             ->join('wh.startSemester', 'ss')
@@ -268,7 +268,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     public function findTeamMembers()
     {
         return $this->createQueryBuilder('user')
-                    ->join('user.workHistories', 'wh')
+                    ->join('user.teamMemberships', 'wh')
                     ->distinct()
                     ->getQuery()
                     ->getResult();

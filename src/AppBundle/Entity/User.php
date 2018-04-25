@@ -127,10 +127,10 @@ class User implements AdvancedUserInterface, \Serializable
     private $assistantHistories;
 
     /**
-     * @var WorkHistory[]
-     * @ORM\OneToMany(targetEntity="WorkHistory", mappedBy="user")
+     * @var TeamMembership[]
+     * @ORM\OneToMany(targetEntity="TeamMembership", mappedBy="user")
      */
-    private $workHistories;
+    private $teamMemberships;
 
     /**
      * @var ExecutiveBoardMember[]
@@ -616,11 +616,11 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @return WorkHistory[]
+     * @return TeamMembership[]
      */
-    public function getWorkHistories()
+    public function getTeamMemberships()
     {
-        return $this->workHistories;
+        return $this->teamMemberships;
     }
 
     /**
@@ -732,27 +732,27 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @return WorkHistory[]
+     * @return TeamMembership[]
      */
-    public function getActiveWorkHistories()
+    public function getActiveTeamMemberships()
     {
-        $activeWorkHistories = [];
-        foreach ($this->workHistories as $workHistory) {
-            if ($workHistory->isActive()) {
-                array_push($activeWorkHistories, $workHistory);
+        $activeTeamMemberships = [];
+        foreach ($this->teamMemberships as $teamMembership) {
+            if ($teamMembership->isActive()) {
+                array_push($activeTeamMemberships, $teamMembership);
             }
         }
-        return $activeWorkHistories;
+        return $activeTeamMemberships;
     }
 
     /**
-     * @param WorkHistory[] $workHistories
+     * @param TeamMembership[] $teamMemberships
      *
      * @return User
      */
-    public function setWorkHistories(array $workHistories)
+    public function setTeamMemberships(array $teamMemberships)
     {
-        $this->workHistories = $workHistories;
+        $this->teamMemberships = $teamMemberships;
         return $this;
     }
 }

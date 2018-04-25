@@ -2,7 +2,7 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Entity\WorkHistory;
+use AppBundle\Entity\TeamMembership;
 use AppBundle\Entity\Team;
 
 class FilterService
@@ -11,17 +11,17 @@ class FilterService
     /**
      * Keeps only workhistories from $team
      *
-     * @param WorkHistory[] $workHistories
+     * @param TeamMembership[] $teamMemberships
      * @param Team $team
      *
-     * @return WorkHistory[]
+     * @return TeamMembership[]
      */
-    public function filterWorkHistoriesByTeam($workHistories, $team)
+    public function filterTeamMembershipsByTeam($teamMemberships, $team)
     {
         $filtered = [];
-        foreach ($workHistories as $workHistory) {
-            if ($workHistory->getTeam() === $team) {
-                array_push($filtered, $workHistory);
+        foreach ($teamMemberships as $teamMembership) {
+            if ($teamMembership->getTeam() === $team) {
+                array_push($filtered, $teamMembership);
             }
         }
         return $filtered;

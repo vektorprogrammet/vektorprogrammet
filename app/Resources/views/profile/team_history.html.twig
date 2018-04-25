@@ -1,4 +1,4 @@
-{% if workHistory is not empty %}
+{% if teamMembership is not empty %}
     <div class="card mt-3">
         <div class="card-body">
             <div class="card-title">
@@ -14,31 +14,31 @@
                         <th>Slutt</th>
                     </tr>
                     </thead>
-                    {% for wh in workHistory %}
+                    {% for tm in teamMembership %}
                         <tr>
                             <td>
-                                {{ wh.teamName }}
+                                {{ tm.teamName }}
                             </td>
 
                             <td>
-                                {% if wh.position is not null %}
-                                    {{ wh.position.name }}
+                                {% if tm.position is not null %}
+                                    {{ tm.position.name }}
                                 {% else %}
                                     Stillingen er fjernet
                                 {% endif %}
                             </td>
 
                             <td>
-                                {% if wh.startSemester is null %}
+                                {% if tm.startSemester is null %}
                                     Ingen startsemester valgt
                                 {% else %}
-                                    {{ wh.startSemester.name }}
+                                    {{ tm.startSemester.name }}
                                 {% endif %}
                             </td>
 
                             <td>
-                                {% if wh.endSemester is not null %}
-                                    {{ wh.endSemester.name }}
+                                {% if tm.endSemester is not null %}
+                                    {{ tm.endSemester.name }}
                                 {% else %}
                                     Fortsatt aktiv
                                 {% endif %}

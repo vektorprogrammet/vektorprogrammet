@@ -4,7 +4,7 @@ namespace AppBundle\Tests\Entity;
 
 use AppBundle\Entity\ExecutiveBoardMember;
 use AppBundle\Entity\Position;
-use AppBundle\Entity\WorkHistory;
+use AppBundle\Entity\TeamMembership;
 use AppBundle\Twig\Extension\GroupSortExtension;
 
 class GroupSortExtensionUnitTest extends \PHPUnit_Framework_TestCase
@@ -28,12 +28,12 @@ class GroupSortExtensionUnitTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testWorkHistories()
+    public function testTeamMemberships()
     {
         $members = array();
         $positions = ['Sekretær', 'Medlem', 'Leder', 'Økonomi', 'Assistent', 'Medlem', 'Nestleder'];
         for ($x = 0; $x < 7; ++$x) {
-            $member = new WorkHistory();
+            $member = new TeamMembership();
             $position = new Position();
             $position->setName($positions[$x]);
             $member->setPosition($position);

@@ -125,43 +125,43 @@ class Sorter
      */
     public function sortUsersByActiveTeamPosition(&$users)
     {
-        $this->sortUsersByActivePositions($users, 'getActiveWorkHistories');
+        $this->sortUsersByActivePositions($users, 'getActiveTeamMemberships');
     }
 
     /**
      * @param User[] $users
-     * @param string $getActiveWorkHistoriesFunction
+     * @param string $getActiveTeamMembershipsFunction
      */
-    private function sortUsersByActivePositions(&$users, $getActiveWorkHistoriesFunction)
+    private function sortUsersByActivePositions(&$users, $getActiveTeamMembershipsFunction)
     {
-        usort($users, function ($user1, $user2) use ($getActiveWorkHistoriesFunction) {
+        usort($users, function ($user1, $user2) use ($getActiveTeamMembershipsFunction) {
             // Get workhistories
-            $workHistories1 = call_user_func(array($user1, $getActiveWorkHistoriesFunction));
-            $workHistories2 = call_user_func(array($user2, $getActiveWorkHistoriesFunction));
+            $teamMemberships1 = call_user_func(array($user1, $getActiveTeamMembershipsFunction));
+            $teamMemberships2 = call_user_func(array($user2, $getActiveTeamMembershipsFunction));
 
             // Check if empty or null
-            if ($workHistories2 === null || empty($workHistories2)) {
-                if ($workHistories1 === null || empty($workHistories1)) {
+            if ($teamMemberships2 === null || empty($teamMemberships2)) {
+                if ($teamMemberships1 === null || empty($teamMemberships1)) {
                     return 0; // Both null or empty
                 }
-                return -1; // If 2 is empty, but not 1: 1 comes first
-            } elseif ($workHistories1 === null || empty($workHistories1)) {
+                return -1; // If 2 is empty, but not 1:TeamMember 1 comes first
+            } elseif ($teamMemberships1 === null || empty($teamMemberships1)) {
                 return 1; // If 1 is empty, but not 2: 2 comes first
             }
 
             // Sort workhistories by position
-            $this->sortWorkHistoriesByPosition($workHistories1);
-            $this->sortWorkHistoriesByPosition($workHistories2);
+            $this->sortTeamMembershipsByPosition($teamMemberships1);
+            $this->sortTeamMembershipsByPosition($teamMemberships2);
 
             $cmp = 0;
-            for ($i = 0; $i < min(count($workHistories1), count($workHistories2)); $i++) {
-                $cmp = $this->compareWorkHistories($workHistories1[$i], $workHistories2[$i]);
+            for ($i = 0; $i < min(count($teamMemberships1), count($teamMemberships2)); $i++) {
+                $cmp = $this->compareTeamMemberships($teamMemberships1[$i], $teamMemberships2[$i]);
                 if ($cmp !== 0) {
                     return $cmp; // Non equal positions
                 }
             }
-            if (count($workHistories1) === count($workHistories2)) {
-                return count($workHistories2) - count($workHistories1);
+            if (count($teamMemberships1) === count($teamMemberships2)) {
+                return count($teamMemberships2) - count($teamMemberships1);
             } else {
                 return $cmp;
             }
@@ -171,24 +171,24 @@ class Sorter
     /**
      * Order: "leder" < "nestleder" < "aaa" < "zzz"
      *
-     * @param GroupMemberInterface[] $workHistories
+     * @param GroupMemberInterface[] $teamMemberships
      *
      * @return GroupMemberInterface[]
      */
-    public function sortWorkHistoriesByPosition(&$workHistories)
+    public function sortTeamMembershipsByPosition(&$teamMemberships)
     {
-        usort($workHistories, array($this, 'compareWorkHistories'));
+        usort($teamMemberships, array($this, 'compareTeamMemberships'));
     }
 
     /**
-     * @param GroupMemberInterface $workHistory1
-     * @param GroupMemberInterface $workHistory2
+     * @param GroupMemberInterface $teamMembership1
+     * @param GroupMemberInterface $teamMembership2
      *
      * @return int -1, 0, 1
      */
-    private function compareWorkHistories($workHistory1, $workHistory2)
+    private function compareTeamMemberships($teamMembership1, $teamMembership2)
     {
-        return $this->comparePositions($workHistory1->getPositionName(), $workHistory2->getPositionName());
+        return $this->comparePositions($teamMembership1->getPositionName(), $teamMembership2->getPositionName());
     }
 
     /**

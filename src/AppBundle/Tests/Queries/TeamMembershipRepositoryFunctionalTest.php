@@ -4,7 +4,7 @@ namespace AppBundle\Tests\Queries;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class WorkHistoryRepositoryFunctionalTest extends KernelTestCase
+class TeamMembershipRepositoryFunctionalTest extends KernelTestCase
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -23,10 +23,10 @@ class WorkHistoryRepositoryFunctionalTest extends KernelTestCase
     }
 
     // A test to check whether the method finds the active work histories given the $today variable, and that the user has the same ID as the given user
-    public function testFindActiveWorkHistoriesByUser()
+    public function testFindActiveTeamMembershipsByUser()
     {
 
-//		$workhistories = $this->em->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByUser(1);
+//		$workhistories = $this->em->getRepository('AppBundle:TeamMembership')->findActiveTeamMembershipsByUser(1);
 
 //		$today = new \DateTime('now');
 
@@ -38,9 +38,9 @@ class WorkHistoryRepositoryFunctionalTest extends KernelTestCase
     }
 
     // A test to check whether the method finds the active work histories given the $today variable
-    /*	public function testFindActiveWorkHistories(){
+    /*	public function testFindActiveTeamMemberships(){
 
-            $workhistories = $this->em->getRepository('AppBundle:WorkHistory')->findActiveWorkHistories();
+            $workhistories = $this->em->getRepository('AppBundle:TeamMembership')->findActiveTeamMemberships();
 
             $today = new \DateTime('now');
 

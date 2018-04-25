@@ -28,13 +28,13 @@ class ProfileController extends Controller
         $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
 
         // Find the work history of the user
-        $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
+        $teamMembership = $em->getRepository('AppBundle:TeamMembership')->findByUser($user);
 
         // Render the view
         return $this->render('profile/profile.html.twig', array(
             'user'             => $user,
             'assistantHistory' => $assistantHistory,
-            'workHistory'      => $workHistory,
+            'teamMembership'      => $teamMembership,
         ));
     }
 
@@ -51,12 +51,12 @@ class ProfileController extends Controller
         $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
 
         // Find the work history of the user
-        $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
+        $teamMembership = $em->getRepository('AppBundle:TeamMembership')->findByUser($user);
 
         return $this->render('profile/profile.html.twig', array(
             'user'             => $user,
             'assistantHistory' => $assistantHistory,
-            'workHistory'      => $workHistory,
+            'teamMembership'      => $teamMembership,
         ));
     }
 
@@ -155,7 +155,7 @@ class ProfileController extends Controller
         $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
 
         // Find the work history of the user
-        $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
+        $teamMembership = $em->getRepository('AppBundle:TeamMembership')->findByUser($user);
 
         // Find the signature of the user creating the certificate
         $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($this->getUser());
@@ -170,7 +170,7 @@ class ProfileController extends Controller
         $html        = $this->renderView('certificate/certificate.html.twig', array(
             'user'             => $user,
             'assistantHistory' => $assistantHistory,
-            'workHistory'      => $workHistory,
+            'teamMembership'      => $teamMembership,
             'signature'        => $signature,
             'department'       => $department,
             'base_dir'         => $this->get('kernel')->getRootDir() . '/../www' . $request->getBasePath(),

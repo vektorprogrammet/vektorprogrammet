@@ -155,14 +155,14 @@ class RoleManager
     {
         $department = $user->getDepartment();
         $semester = $department->getCurrentOrLatestSemester();
-        $workHistories = $user->getWorkHistories();
+        $teamMemberships = $user->getTeamMemberships();
 
         if ($semester === null) {
             return false;
         }
 
-        foreach ($workHistories as $workHistory) {
-            if ($workHistory->isActiveInSemester($semester) && $workHistory->isTeamLeader() === $teamLeader) {
+        foreach ($teamMemberships as $teamMembership) {
+            if ($teamMembership->isActiveInSemester($semester) && $teamMembership->isTeamLeader() === $teamLeader) {
                 return true;
             }
         }

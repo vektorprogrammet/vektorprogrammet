@@ -160,8 +160,8 @@ services:
       tags:
         - { name: kernel.event_subscriber }
 
-  app.work_history_subscriber:
-    class: AppBundle\EventSubscriber\WorkHistorySubscriber
+  app.team_membership_subscriber:
+    class: AppBundle\EventSubscriber\TeamMembershipSubscriber
     arguments: ['@session', '@app.logger', '@app.roles']
     tags:
         - { name: kernel.event_subscriber }

@@ -28,7 +28,7 @@ class ExecutiveBoardController extends Controller
         // (So for example "Leder" comes before "Sekretær" if the user has multiple positions)
         foreach ($users as $user) {
             $executiveBoardMembers = $user->getActiveExecutiveBoardMembers();
-            $sorter->sortWorkHistoriesByPosition($executiveBoardMembers);
+            $sorter->sortTeamMembershipsByPosition($executiveBoardMembers);
             $user->setExecutiveBoardMembers($executiveBoardMembers);
         }
 
@@ -64,7 +64,7 @@ class ExecutiveBoardController extends Controller
     {
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
 
-        // Create a new WorkHistory entity
+        // Create a new TeamMembership entity
         $member = new ExecutiveBoardMember();
         $member->setUser($this->getUser());
 
@@ -128,7 +128,7 @@ class ExecutiveBoardController extends Controller
             // Render the boardpage as a preview
             return $this->render('team/team_page.html.twig', array(
                 'team' => $board,
-                'workHistories' => $board->getMembers(),
+                'teamMemberships' => $board->getMembers(),
             ));
         }
 

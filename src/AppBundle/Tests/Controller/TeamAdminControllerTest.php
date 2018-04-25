@@ -271,9 +271,9 @@ class TeamAdminControllerTest extends BaseWebTestCase
         $form = $crawler->selectButton('Opprett')->form();
 
         // Change the value of a field
-        $form['createWorkHistory[user]']->select(1);
-        $form['createWorkHistory[position]']->select(1);
-        $form['createWorkHistory[startSemester]']->select(1);
+        $form['createTeamMembership[user]']->select(1);
+        $form['createTeamMembership[position]']->select(1);
+        $form['createTeamMembership[startSemester]']->select(1);
 
         $client->submit($form);
 

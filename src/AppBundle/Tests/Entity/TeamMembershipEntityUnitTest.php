@@ -2,13 +2,13 @@
 
 namespace AppBundle\Tests\Entity;
 
-use AppBundle\Entity\WorkHistory;
+use AppBundle\Entity\TeamMembership;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\Position;
 use DateTime;
 
-class WorkHistoryEntityUnitTest extends \PHPUnit_Framework_TestCase
+class TeamMembershipEntityUnitTest extends \PHPUnit_Framework_TestCase
 {
     // Check whether the setStartDate function is working correctly
     /*public function testSetStartDate(){
@@ -17,7 +17,7 @@ class WorkHistoryEntityUnitTest extends \PHPUnit_Framework_TestCase
         $today = new DateTime("now");
 
         // new entity
-        $wh = new WorkHistory();
+        $wh = new TeamMembership();
 
         // Use the setStartDate method
         $wh->setStartDate($today);
@@ -34,7 +34,7 @@ class WorkHistoryEntityUnitTest extends \PHPUnit_Framework_TestCase
             $today = new DateTime("now");
 
             // new entity
-            $wh = new WorkHistory();
+            $wh = new TeamMembership();
 
             // Use the setStartDate method
             $wh->setEndDate($today);
@@ -49,7 +49,7 @@ class WorkHistoryEntityUnitTest extends \PHPUnit_Framework_TestCase
     {
 
         // new entity
-        $wh = new WorkHistory();
+        $wh = new TeamMembership();
 
         // dummy entity
         $user = new User();
@@ -67,7 +67,7 @@ class WorkHistoryEntityUnitTest extends \PHPUnit_Framework_TestCase
     {
 
         // new entity
-        $wh = new WorkHistory();
+        $wh = new TeamMembership();
 
         // dummy entity
         $team = new Team();
@@ -85,7 +85,7 @@ class WorkHistoryEntityUnitTest extends \PHPUnit_Framework_TestCase
     {
 
         // new entity
-        $wh = new WorkHistory();
+        $wh = new TeamMembership();
 
         // dummy entity
         $position = new Position();

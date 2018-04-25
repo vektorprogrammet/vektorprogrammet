@@ -19,9 +19,9 @@ class TeamController extends Controller
         // Sort all the users' team histories by position
         // (So for example "Leder" comes before "Sekretær" if the user has multiple positions)
         foreach ($users as $user) {
-            $activeTeamHistories = $filterService->filterWorkHistoriesByTeam($user->getActiveWorkHistories(), $team);
-            $sorter->sortWorkHistoriesByPosition($activeTeamHistories);
-            $user->setWorkHistories($activeTeamHistories);
+            $activeTeamHistories = $filterService->filterTeamMembershipsByTeam($user->getActiveTeamMemberships(), $team);
+            $sorter->sortTeamMembershipsByPosition($activeTeamHistories);
+            $user->setTeamMemberships($activeTeamHistories);
         }
 
         return $this->render('team/team_page.html.twig', array(

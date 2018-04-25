@@ -142,7 +142,7 @@ class ExecutiveBoard implements TeamInterface
         return $this->members;
     }
 
-    public function getWorkHistories()
+    public function getTeamMemberships()
     {
         return $this->members;
     }
@@ -155,17 +155,17 @@ class ExecutiveBoard implements TeamInterface
     /**
      * @return ExecutiveBoardMember[]
      */
-    public function getActiveWorkHistories()
+    public function getActiveTeamMemberships()
     {
-        $activeWorkHistories = [];
+        $activeTeamMemberships = [];
 
-        foreach ($this->getWorkHistories() as $workHistory) {
-            if ($workHistory->isActive()) {
-                array_push($activeWorkHistories, $workHistory);
+        foreach ($this->getTeamMemberships() as $teamMembership) {
+            if ($teamMembership->isActive()) {
+                array_push($activeTeamMemberships, $teamMembership);
             }
         }
 
-        return $activeWorkHistories;
+        return $activeTeamMemberships;
     }
 
     /**
@@ -175,7 +175,7 @@ class ExecutiveBoard implements TeamInterface
     {
         $activeUsers = [];
 
-        foreach ($this->getActiveWorkHistories() as $activeExecutiveBoardHistory) {
+        foreach ($this->getActiveTeamMemberships() as $activeExecutiveBoardHistory) {
             if (!in_array($activeExecutiveBoardHistory->getUser(), $activeUsers)) {
                 array_push($activeUsers, $activeExecutiveBoardHistory->getUser());
             }

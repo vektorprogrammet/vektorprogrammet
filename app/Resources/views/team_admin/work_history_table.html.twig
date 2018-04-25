@@ -16,29 +16,29 @@
     </thead>
 
     <tbody>
-    {% for wh in workHistories %}
+    {% for tm in teamMemberships %}
 
         <tr>
-            <td><a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'> {{ wh.user.firstName }} </a></td>
-            <td> {{ wh.user.lastName }} </td>
+            <td><a href='{{ path('specific_profile', { 'id': tm.user.id }) }}'> {{ tm.user.firstName }} </a></td>
+            <td> {{ tm.user.lastName }} </td>
             <td>
 
-                {% if wh.position is not null %}
-                    {{ wh.position.name }}
+                {% if tm.position is not null %}
+                    {{ tm.position.name }}
                 {% else %}
                     Stilling er fjernet.
                 {% endif %}
 
             </td>
-            <td> {{ wh.startSemester.name }} </td>
+            <td> {{ tm.startSemester.name }} </td>
 
             {% if is_granted_team_leader() %}
-                <td><a href="{{ path('teamadmin_update_workhistory', { 'id': wh.id }) }}"
+                <td><a href="{{ path('teamadmin_update_team_membership', { 'id': tm.id }) }}"
                        class="button tiny">Rediger</a></td>
             {% endif %}
 
             {% if is_granted_admin() %}
-                <td><a href="#" id="{{ wh.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i>
+                <td><a href="#" id="{{ tm.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i>
                         Slett</a></td>
             {% endif %}
 

@@ -57,10 +57,10 @@ class Team implements TeamInterface
     private $acceptApplication;
 
     /**
-     * @var WorkHistory[]
-     * @ORM\OneToMany(targetEntity="WorkHistory", mappedBy="team")
+     * @var TeamMembership[]
+     * @ORM\OneToMany(targetEntity="TeamMembership", mappedBy="team")
      */
-    private $workHistories;
+    private $teamMemberships;
 
     /**
      * @return bool
@@ -199,21 +199,21 @@ class Team implements TeamInterface
     }
 
     /**
-     * @return WorkHistory[]
+     * @return TeamMembership[]
      */
-    public function getWorkHistories()
+    public function getTeamMemberships()
     {
-        return $this->workHistories;
+        return $this->teamMemberships;
     }
 
     /**
-     * @return WorkHistory[]
+     * @return TeamMembership[]
      */
-    public function getActiveWorkHistories()
+    public function getActiveTeamMemberships()
     {
         $histories = [];
 
-        foreach ($this->workHistories as $wh) {
+        foreach ($this->teamMemberships as $wh) {
             $semester = $wh->getUser()->getDepartment()->getCurrentOrLatestSemester();
             if ($semester !== null && $wh->isActiveInSemester($semester)) {
                 $histories[] = $wh;
@@ -230,9 +230,9 @@ class Team implements TeamInterface
     {
         $activeUsers = [];
 
-        foreach ($this->getActiveWorkHistories() as $activeWorkHistory) {
-            if (!in_array($activeWorkHistory->getUser(), $activeUsers)) {
-                array_push($activeUsers, $activeWorkHistory->getUser());
+        foreach ($this->getActiveTeamMemberships() as $activeTeamMembership) {
+            if (!in_array($activeTeamMembership->getUser(), $activeUsers)) {
+                array_push($activeUsers, $activeTeamMembership->getUser());
             }
         }
 
