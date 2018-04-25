@@ -79,7 +79,7 @@
                         </div>
                         <div class="small-6 medium-2 large-1 columns">
                             <br>
-                            <button class="tiny button right">Lagre</button>
+                            <button id="submitBtn" class="tiny button right">Lagre</button>
                         </div>
                     </div>
                 </div>
@@ -118,10 +118,8 @@
         data: {
           smallPhotoSrc: '{{ asset_with_version(article.imageSmall) }}',
           largePhotoSrc: '{{ asset_with_version(article.imageLarge) }}',
-          showPreview: false,
           largeCropper: null,
           smallCropper: null,
-          uploadError: '',
         },
         delimiters: ['${', '}'],
         mounted() {
@@ -149,16 +147,6 @@
             }.bind(this), 100)
           }.bind(this));
           $('#app').show();
-        },
-        computed: {
-          previewImgUrl() {
-            if (!this.croppedImg) {
-              return '';
-            }
-
-            var urlCreator = window.URL || window.webkitURL;
-            return urlCreator.createObjectURL(this.croppedImg);
-          },
         },
         methods: {
           showSmallCrop(file) {
@@ -211,28 +199,38 @@
             var newLargePhoto = this.largeCropper && this.largeCropper.getCroppedCanvas() !== null;
 
             if (newSmallPhoto && newLargePhoto) {
-              this.largeCropper.getCroppedCanvas().toBlob(function (largeBlob) {
-                this.smallCropper.getCroppedCanvas().toBlob(function (smallBlob) {
-                  formData.append('imglarge', largeBlob);
-                  formData.append('imgsmall', smallBlob);
-                  this.submit(formData);
-                }.bind(this), 'image/jpeg');
-              }.bind(this), 'image/jpeg');
+              this.uploadSmallAndLargeImages(formData);
             } else if (newSmallPhoto) {
-              this.smallCropper.getCroppedCanvas().toBlob(function (smallBlob) {
-                formData.append('imgsmall', smallBlob);
-                return this.submit(formData);
-              }.bind(this), 'image/jpeg');
+              this.uploadSmallImageOnly(formData);
             } else if (newLargePhoto) {
-              this.largeCropper.getCroppedCanvas().toBlob(function (largeBlob) {
-                formData.append('imglarge', largeBlob);
-                return this.submit(formData);
-              }.bind(this), 'image/jpeg');
+              this.uploadLargeImageOnly(formData);
             } else {
-              return this.submit(formData);
+              this.submit(formData);
             }
           },
+          uploadSmallAndLargeImages(formData) {
+            this.largeCropper.getCroppedCanvas().toBlob(function (largeBlob) {
+              this.smallCropper.getCroppedCanvas().toBlob(function (smallBlob) {
+                formData.append('imglarge', largeBlob);
+                formData.append('imgsmall', smallBlob);
+                this.submit(formData);
+              }.bind(this), 'image/jpeg');
+            }.bind(this), 'image/jpeg');
+          },
+          uploadSmallImageOnly(formData) {
+            this.smallCropper.getCroppedCanvas().toBlob(function (smallBlob) {
+              formData.append('imgsmall', smallBlob);
+              return this.submit(formData);
+            }.bind(this), 'image/jpeg');
+          },
+          uploadLargeImageOnly(formData) {
+            this.largeCropper.getCroppedCanvas().toBlob(function (largeBlob) {
+              formData.append('imglarge', largeBlob);
+              return this.submit(formData);
+            }.bind(this), 'image/jpeg');
+          },
           submit(formData) {
+            $('#submitBtn').attr('disabled', true);
             $.ajax('{% if (article.id) %}{{ path('articleadmin_edit', {'id': article.id}) }}{% else %}{{ path('articleadmin_create') }}{% endif %}', {
               method: 'POST',
               data: formData,
@@ -242,6 +240,7 @@
                 window.location = '{{ path('articleadmin_show') }}';
               },
               error: function () {
+                $('#submitBtn').removeAttr('disabled');
                 alert('Noe gikk galt under opplasting av artikkelen. Har du fylt ut alle feltene?');
               }.bind(this),
             });
