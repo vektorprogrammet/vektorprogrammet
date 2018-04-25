@@ -22,25 +22,14 @@ class StandController extends Controller
             $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
         }
         $subscribers = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')->findByDepartment($semester->getDepartment());
-        $subData = [];
-        $now = new \DateTime();
-        foreach ($subscribers as $subscriber) {
-            $days = $subscriber->getTimestamp()->diff($now)->days;
-            if ($days > 30) {
-                continue;
-            }
+        $subscribersInSemester = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')->findBySemester($semester);
 
-            $date = $subscriber->getTimestamp()->format('Y-m-d');
-            if (!isset($subData[$date])) {
-                $subData[$date] = 0;
-            }
-            $subData[$date]++;
-        }
-        ksort($subData);
+        $subData = $this->get('app.admission_subscriber_statistics')->generateGraphDataFromSubscribersInSemester($subscribersInSemester, $semester);
 
         return $this->render('stand_admin/stand.html.twig', [
             'semester' => $semester,
             'subscribers' => $subscribers,
+            'subscribers_in_semester' => $subscribersInSemester,
             'subData' => $subData,
         ]);
     }
