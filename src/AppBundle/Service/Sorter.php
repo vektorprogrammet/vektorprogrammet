@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\GroupMemberInterface;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Receipt;
 
@@ -105,5 +106,122 @@ class Sorter
         }
         $receiptElements = array_merge($pendingReceipts, $nonPendingReceipts);
         $receipts = $receiptElements;
+    }
+
+    /**
+     * Sorts "leder" og "nestleder" first and the rest in alphabetical order
+     *
+     * @param User[] $users
+     */
+    public function sortUsersByActiveExecutiveBoardPosition(&$users)
+    {
+        $this->sortUsersByActivePositions($users, 'getActiveExecutiveBoardMembers');
+    }
+
+    /**
+     * Sorts "leder" og "nestleder" first and the rest in alphabetical order
+     *
+     * @param User[] $users
+     */
+    public function sortUsersByActiveTeamPosition(&$users)
+    {
+        $this->sortUsersByActivePositions($users, 'getActiveWorkHistories');
+    }
+
+    /**
+     * @param User[] $users
+     * @param string $getActiveWorkHistoriesFunction
+     */
+    private function sortUsersByActivePositions(&$users, $getActiveWorkHistoriesFunction)
+    {
+        usort($users, function ($user1, $user2) use ($getActiveWorkHistoriesFunction) {
+            // Get workhistories
+            $workHistories1 = call_user_func(array($user1, $getActiveWorkHistoriesFunction));
+            $workHistories2 = call_user_func(array($user2, $getActiveWorkHistoriesFunction));
+
+            // Check if empty or null
+            if ($workHistories2 === null || empty($workHistories2)) {
+                if ($workHistories1 === null || empty($workHistories1)) {
+                    return 0; // Both null or empty
+                }
+                return -1; // If 2 is empty, but not 1: 1 comes first
+            } elseif ($workHistories1 === null || empty($workHistories1)) {
+                return 1; // If 1 is empty, but not 2: 2 comes first
+            }
+
+            // Sort workhistories by position
+            $this->sortWorkHistoriesByPosition($workHistories1);
+            $this->sortWorkHistoriesByPosition($workHistories2);
+
+            $cmp = 0;
+            for ($i = 0; $i < min(count($workHistories1), count($workHistories2)); $i++) {
+                $cmp = $this->compareWorkHistories($workHistories1[$i], $workHistories2[$i]);
+                if ($cmp !== 0) {
+                    return $cmp; // Non equal positions
+                }
+            }
+            if (count($workHistories1) === count($workHistories2)) {
+                return count($workHistories2) - count($workHistories1);
+            } else {
+                return $cmp;
+            }
+        });
+    }
+
+    /**
+     * Order: "leder" < "nestleder" < "aaa" < "zzz"
+     *
+     * @param GroupMemberInterface[] $workHistories
+     *
+     * @return GroupMemberInterface[]
+     */
+    public function sortWorkHistoriesByPosition(&$workHistories)
+    {
+        usort($workHistories, array($this, 'compareWorkHistories'));
+    }
+
+    /**
+     * @param GroupMemberInterface $workHistory1
+     * @param GroupMemberInterface $workHistory2
+     *
+     * @return int -1, 0, 1
+     */
+    private function compareWorkHistories($workHistory1, $workHistory2)
+    {
+        return $this->comparePositions($workHistory1->getPositionName(), $workHistory2->getPositionName());
+    }
+
+    /**
+     * Order: "leder" < "nestleder" < "aaa" < "zzz"
+     *
+     * @param string $position1
+     * @param string $position2
+     *
+     * @return int -1, 0, 1
+     */
+    private function comparePositions($position1, $position2)
+    {
+        // Normalize
+        $position1 = strtolower($position1);
+        $position2 = strtolower($position2);
+
+        if ($position1 === $position2) {
+            return 0;
+        }
+
+        if ($position1 === 'leder') {
+            return -1;
+        }
+        if ($position2 === 'leder') {
+            return 1;
+        }
+        if ($position1 === 'nestleder') {
+            return -1;
+        }
+        if ($position2 === 'nestleder') {
+            return 1;
+        }
+
+        return strcmp($position1, $position2);
     }
 }

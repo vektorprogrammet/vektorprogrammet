@@ -45,7 +45,7 @@ class ExecutiveBoard implements TeamInterface
      * @var ExecutiveBoardMember[]
      * @ORM\OneToMany(targetEntity="ExecutiveBoardMember", mappedBy="board")
      */
-    private $users;
+    private $members;
 
     public function __toString()
     {
@@ -137,14 +137,14 @@ class ExecutiveBoard implements TeamInterface
     /**
      * @return ExecutiveBoardMember[]
      */
-    public function getUsers()
+    public function getMembers()
     {
-        return $this->users;
+        return $this->members;
     }
 
     public function getWorkHistories()
     {
-        return $this->users;
+        return $this->members;
     }
 
     public function getAcceptApplication()
@@ -152,8 +152,35 @@ class ExecutiveBoard implements TeamInterface
         return false;
     }
 
+    /**
+     * @return ExecutiveBoardMember[]
+     */
     public function getActiveWorkHistories()
     {
-        return $this->getWorkHistories();
+        $activeWorkHistories = [];
+
+        foreach ($this->getWorkHistories() as $workHistory) {
+            if ($workHistory->isActive()) {
+                array_push($activeWorkHistories, $workHistory);
+            }
+        }
+
+        return $activeWorkHistories;
+    }
+
+    /**
+     * @return User[]
+     */
+    public function getActiveUsers()
+    {
+        $activeUsers = [];
+
+        foreach ($this->getActiveWorkHistories() as $activeExecutiveBoardHistory) {
+            if (!in_array($activeExecutiveBoardHistory->getUser(), $activeUsers)) {
+                array_push($activeUsers, $activeExecutiveBoardHistory->getUser());
+            }
+        }
+
+        return $activeUsers;
     }
 }

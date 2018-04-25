@@ -127,9 +127,16 @@ class User implements AdvancedUserInterface, \Serializable
     private $assistantHistories;
 
     /**
+     * @var WorkHistory[]
      * @ORM\OneToMany(targetEntity="WorkHistory", mappedBy="user")
      */
     private $workHistories;
+
+    /**
+     * @var ExecutiveBoardMember[]
+     * @ORM\OneToMany(targetEntity="ExecutiveBoardMember", mappedBy="user")
+     */
+    private $executiveBoardMembers;
 
     /**
      * @ORM\OneToMany(targetEntity="CertificateRequest", mappedBy="user")
@@ -689,5 +696,63 @@ class User implements AdvancedUserInterface, \Serializable
     public function setCompanyEmail($companyEmail)
     {
         $this->companyEmail = $companyEmail;
+    }
+
+    /**
+     * @param ExecutiveBoardMember[] $executiveBoardMembers
+     *
+     * @return User
+     */
+    public function setExecutiveBoardMembers($executiveBoardMembers)
+    {
+        $this->executiveBoardMembers = $executiveBoardMembers;
+        return $this;
+    }
+
+    /**
+     * @return ExecutiveBoardMember[]
+     */
+    public function getExecutiveBoardMembers()
+    {
+        return $this->executiveBoardMembers;
+    }
+
+    /**
+     * @return ExecutiveBoardMember[]
+     */
+    public function getActiveExecutiveBoardMembers()
+    {
+        $activeExecutiveBoardMembers = [];
+        foreach ($this->executiveBoardMembers as $executiveBoardMember) {
+            if ($executiveBoardMember->isActive()) {
+                array_push($activeExecutiveBoardMembers, $executiveBoardMember);
+            }
+        }
+        return $activeExecutiveBoardMembers;
+    }
+
+    /**
+     * @return WorkHistory[]
+     */
+    public function getActiveWorkHistories()
+    {
+        $activeWorkHistories = [];
+        foreach ($this->workHistories as $workHistory) {
+            if ($workHistory->isActive()) {
+                array_push($activeWorkHistories, $workHistory);
+            }
+        }
+        return $activeWorkHistories;
+    }
+
+    /**
+     * @param WorkHistory[] $workHistories
+     *
+     * @return User
+     */
+    public function setWorkHistories(array $workHistories)
+    {
+        $this->workHistories = $workHistories;
+        return $this;
     }
 }

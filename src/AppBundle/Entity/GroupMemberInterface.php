@@ -4,6 +4,14 @@ namespace AppBundle\Entity;
 
 interface GroupMemberInterface
 {
+
+    /**
+     * @return User
+     */
     public function getUser(): User;
-    public function getPositionName(): string;
+
+    /**
+     * @return string | null
+     */
+    public function getPositionName();
 }

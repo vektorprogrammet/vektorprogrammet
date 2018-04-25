@@ -222,4 +222,20 @@ class Team implements TeamInterface
 
         return $histories;
     }
+
+    /**
+     * @return User[]
+     */
+    public function getActiveUsers()
+    {
+        $activeUsers = [];
+
+        foreach ($this->getActiveWorkHistories() as $activeWorkHistory) {
+            if (!in_array($activeWorkHistory->getUser(), $activeUsers)) {
+                array_push($activeUsers, $activeWorkHistory->getUser());
+            }
+        }
+
+        return $activeUsers;
+    }
 }

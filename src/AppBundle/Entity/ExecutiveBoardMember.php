@@ -19,20 +19,21 @@ class ExecutiveBoardMember implements GroupMemberInterface
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="executiveBoardMembers")
      * @Assert\Valid
      **/
     private $user;
 
     /**
      * @var ExecutiveBoard
-     * @ORM\ManyToOne(targetEntity="ExecutiveBoard", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="ExecutiveBoard", inversedBy="members")
      **/
     private $board;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Assert\Valid
+     *
      **/
     private $position;
 
@@ -122,9 +123,9 @@ class ExecutiveBoardMember implements GroupMemberInterface
     }
 
     /**
-     * @return string
+     * @return string | null
      */
-    public function getPosition(): string
+    public function getPosition()
     {
         return $this->position;
     }
@@ -137,7 +138,10 @@ class ExecutiveBoardMember implements GroupMemberInterface
         $this->position = $position;
     }
 
-    public function getPositionName(): string
+    /**
+     * @return string | null
+     */
+    public function getPositionName()
     {
         return $this->position;
     }
@@ -147,7 +151,8 @@ class ExecutiveBoardMember implements GroupMemberInterface
      *
      * @return ExecutiveBoardMember
      */
-    public function setStartSemester($startSemester) {
+    public function setStartSemester($startSemester)
+    {
         $this->startSemester = $startSemester;
         return $this;
     }
@@ -155,7 +160,8 @@ class ExecutiveBoardMember implements GroupMemberInterface
     /**
      * @return Semester
      */
-    public function getStartSemester() {
+    public function getStartSemester()
+    {
         return $this->startSemester;
     }
 
@@ -164,7 +170,8 @@ class ExecutiveBoardMember implements GroupMemberInterface
      *
      * @return ExecutiveBoardMember
      */
-    public function setEndSemester($endSemester) {
+    public function setEndSemester($endSemester)
+    {
         $this->endSemester = $endSemester;
         return $this;
     }
@@ -172,11 +179,13 @@ class ExecutiveBoardMember implements GroupMemberInterface
     /**
      * @return Semester | null
      */
-    public function getEndSemester() {
+    public function getEndSemester()
+    {
         return $this->endSemester;
     }
 
-    public function isActive() {
+    public function isActive()
+    {
         $now = new \DateTime();
         $termEndsInFuture = $this->getEndSemester() === null || $this->getEndSemester()->getSemesterEndDate() > $now;
         $termStartedInPast = $this->getStartSemester() !== null && $this->getStartSemester()->getSemesterStartDate() < $now;

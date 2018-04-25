@@ -18,11 +18,24 @@ class ExecutiveBoardController extends Controller
     public function showAction()
     {
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
-        $executiveBoardMembers = $board->getUsers();
+
+        $sorter = $this->get('app.sorter');
+
+        $users = $board->getActiveUsers();
+        $sorter->sortUsersByActiveExecutiveBoardPosition($users);
+
+        // Sort all the users' executive board histories by position
+        // (So for example "Leder" comes before "Sekretær" if the user has multiple positions)
+        foreach ($users as $user) {
+            $executiveBoardMembers = $user->getActiveExecutiveBoardMembers();
+            $sorter->sortWorkHistoriesByPosition($executiveBoardMembers);
+            $user->setExecutiveBoardMembers($executiveBoardMembers);
+        }
 
         return $this->render('team/team_page.html.twig', array(
-            'team' => $board,
-            'workHistories' => $executiveBoardMembers,
+            'team'  => $board,
+            'users' => $users,
+            'type' => 'board',
         ));
     }
 
@@ -32,8 +45,8 @@ class ExecutiveBoardController extends Controller
         $members = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoardMember')->findAll();
         $activeMembers = [];
         $inactiveMembers = [];
-        foreach($members as $member){
-            if($member->isActive()){
+        foreach ($members as $member) {
+            if ($member->isActive()) {
                 array_push($activeMembers, $member);
             } else {
                 array_push($inactiveMembers, $member);
@@ -115,7 +128,7 @@ class ExecutiveBoardController extends Controller
             // Render the boardpage as a preview
             return $this->render('team/team_page.html.twig', array(
                 'team' => $board,
-                'workHistories' => $board->getUsers(),
+                'workHistories' => $board->getMembers(),
             ));
         }
 
