@@ -31,8 +31,10 @@ class AdmissionSubscriberController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($subscriber);
-            $em->flush();
+            if (!$em->getRepository('AppBundle:AdmissionSubscriber')->findByEmailAndDepartment($subscriber->getEmail(), $department)) {
+                $em->persist($subscriber);
+                $em->flush();
+            }
 
             $this->addFlash('success', $subscriber->getEmail().' har blitt meldt på interesselisten. Du vil få en e-post når opptaket starter');
 
