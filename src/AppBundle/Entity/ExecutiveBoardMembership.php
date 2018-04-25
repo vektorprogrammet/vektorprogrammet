@@ -6,10 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="executive_board_member")
- * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ExecutiveBoardMemberRepository")
+ * @ORM\Table(name="executive_board_membership")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ExecutiveBoardMembershipRepository")
  */
-class ExecutiveBoardMember implements GroupMemberInterface
+class ExecutiveBoardMembership implements GroupMemberInterface
 {
     /**
      * @ORM\Column(type="integer")
@@ -19,7 +19,7 @@ class ExecutiveBoardMember implements GroupMemberInterface
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="executiveBoardMembers")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="executiveBoardMemberships")
      * @Assert\Valid
      **/
     private $user;
@@ -52,7 +52,7 @@ class ExecutiveBoardMember implements GroupMemberInterface
     protected $endSemester;
 
     /**
-     * ExecutiveBoardMember constructor.
+     * ExecutiveBoardMembership constructor.
      */
     public function __construct()
     {
@@ -79,7 +79,7 @@ class ExecutiveBoardMember implements GroupMemberInterface
      *
      * @param User $user
      *
-     * @return ExecutiveBoardMember
+     * @return ExecutiveBoardMembership
      */
     public function setUser(User $user = null)
     {
@@ -103,7 +103,7 @@ class ExecutiveBoardMember implements GroupMemberInterface
      *
      * @param ExecutiveBoard $board
      *
-     * @return ExecutiveBoardMember
+     * @return ExecutiveBoardMembership
      */
     public function setBoard(ExecutiveBoard $board = null)
     {
@@ -149,7 +149,7 @@ class ExecutiveBoardMember implements GroupMemberInterface
     /**
      * @param Semester $startSemester
      *
-     * @return ExecutiveBoardMember
+     * @return ExecutiveBoardMembership
      */
     public function setStartSemester($startSemester)
     {
@@ -168,7 +168,7 @@ class ExecutiveBoardMember implements GroupMemberInterface
     /**
      * @param Semester $endSemester
      *
-     * @return ExecutiveBoardMember
+     * @return ExecutiveBoardMembership
      */
     public function setEndSemester($endSemester)
     {

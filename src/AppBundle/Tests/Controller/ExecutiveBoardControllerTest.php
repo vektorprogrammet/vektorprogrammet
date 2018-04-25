@@ -52,8 +52,8 @@ class ExecutiveBoardControllerTest extends BaseWebTestCase
         $form = $crawler->selectButton('Lagre')->form();
 
         // Change the value of a field
-        $form['createExecutiveBoardMember[user]']->select(1);
-        $form['createExecutiveBoardMember[position]'] = 'Leder';
+        $form['createExecutiveBoardMembership[user]']->select(1);
+        $form['createExecutiveBoardMembership[position]'] = 'Leder';
 
         // submit the form
         $client->submit($form);

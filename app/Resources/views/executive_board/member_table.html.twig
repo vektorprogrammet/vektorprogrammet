@@ -23,7 +23,7 @@
             <td> {{ m.user.email }} </td>
             <td> {{ m.user.fieldOfStudy }} </td>
             <td> {{ m.user.department }} </td>
-            <td> <a href="{{ path('edit_executive_board_member_history', {'id': m.id}) }}" class="button tiny">
+            <td> <a href="{{ path('edit_executive_board_membership', {'id': m.id}) }}" class="button tiny">
                     <i class="fa fa-pencil"></i> Rediger
                 </a></td>
             {% if is_granted_admin() %}

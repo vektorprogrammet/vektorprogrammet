@@ -115,7 +115,7 @@ class Sorter
      */
     public function sortUsersByActiveExecutiveBoardPosition(&$users)
     {
-        $this->sortUsersByActivePositions($users, 'getActiveExecutiveBoardMembers');
+        $this->sortUsersByActivePositions($users, 'getActiveExecutiveBoardMemberships');
     }
 
     /**

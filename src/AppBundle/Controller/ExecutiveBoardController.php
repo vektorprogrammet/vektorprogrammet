@@ -8,9 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\CreateExecutiveBoardType;
-use AppBundle\Form\Type\CreateExecutiveBoardMemberType;
+use AppBundle\Form\Type\CreateExecutiveBoardMembershipType;
 use AppBundle\Entity\ExecutiveBoard;
-use AppBundle\Entity\ExecutiveBoardMember;
+use AppBundle\Entity\ExecutiveBoardMembership;
 use Symfony\Component\HttpFoundation\Response;
 
 class ExecutiveBoardController extends Controller
@@ -27,9 +27,9 @@ class ExecutiveBoardController extends Controller
         // Sort all the users' executive board histories by position
         // (So for example "Leder" comes before "Sekretær" if the user has multiple positions)
         foreach ($users as $user) {
-            $executiveBoardMembers = $user->getActiveExecutiveBoardMembers();
-            $sorter->sortTeamMembershipsByPosition($executiveBoardMembers);
-            $user->setExecutiveBoardMembers($executiveBoardMembers);
+            $executiveBoardMemberships = $user->getActiveExecutiveBoardMemberships();
+            $sorter->sortTeamMembershipsByPosition($executiveBoardMemberships);
+            $user->setExecutiveBoardMemberships($executiveBoardMemberships);
         }
 
         return $this->render('team/team_page.html.twig', array(
@@ -42,7 +42,7 @@ class ExecutiveBoardController extends Controller
     public function showAdminAction()
     {
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
-        $members = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoardMember')->findAll();
+        $members = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoardMembership')->findAll();
         $activeMembers = [];
         $inactiveMembers = [];
         foreach ($members as $member) {
@@ -65,11 +65,11 @@ class ExecutiveBoardController extends Controller
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
 
         // Create a new TeamMembership entity
-        $member = new ExecutiveBoardMember();
+        $member = new ExecutiveBoardMembership();
         $member->setUser($this->getUser());
 
         // Create a new formType with the needed variables
-        $form = $this->createForm(new CreateExecutiveBoardMemberType($department), $member);
+        $form = $this->createForm(new CreateExecutiveBoardMembershipType($department), $member);
 
         // Handle the form
         $form->handleRequest($request);
@@ -94,7 +94,7 @@ class ExecutiveBoardController extends Controller
         ));
     }
 
-    public function removeUserFromBoardByIdAction(ExecutiveBoardMember $member)
+    public function removeUserFromBoardByIdAction(ExecutiveBoardMembership $member)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($member);
@@ -138,19 +138,19 @@ class ExecutiveBoardController extends Controller
     }
 
     /**
-     * @Route("/kontrollpanel/hovedstyret/rediger_medlem/{id}", name="edit_executive_board_member_history", requirements={"id"="\d+"})
+     * @Route("/kontrollpanel/hovedstyret/rediger_medlem/{id}", name="edit_executive_board_membership", requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
-     * @param ExecutiveBoardMember $member
+     * @param ExecutiveBoardMembership $member
      *
      * @return Response
      */
-    public function editMemberHistory(Request $request, ExecutiveBoardMember $member)
+    public function editMemberHistory(Request $request, ExecutiveBoardMembership $member)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $form = $this->createForm(new CreateExecutiveBoardMemberType($member->getUser()->getDepartment()), $member);
+        $form = $this->createForm(new CreateExecutiveBoardMembershipType($member->getUser()->getDepartment()), $member);
         $user = $member->getUser();
         $form->handleRequest($request); // Sets user to null
         $member->setUser($user);

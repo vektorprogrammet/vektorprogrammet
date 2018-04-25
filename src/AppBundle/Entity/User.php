@@ -133,10 +133,10 @@ class User implements AdvancedUserInterface, \Serializable
     private $teamMemberships;
 
     /**
-     * @var ExecutiveBoardMember[]
-     * @ORM\OneToMany(targetEntity="ExecutiveBoardMember", mappedBy="user")
+     * @var ExecutiveBoardMembership[]
+     * @ORM\OneToMany(targetEntity="ExecutiveBoardMembership", mappedBy="user")
      */
-    private $executiveBoardMembers;
+    private $executiveBoardMemberships;
 
     /**
      * @ORM\OneToMany(targetEntity="CertificateRequest", mappedBy="user")
@@ -699,36 +699,36 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @param ExecutiveBoardMember[] $executiveBoardMembers
+     * @param ExecutiveBoardMembership[] $executiveBoardMemberships
      *
      * @return User
      */
-    public function setExecutiveBoardMembers($executiveBoardMembers)
+    public function setExecutiveBoardMemberships($executiveBoardMemberships)
     {
-        $this->executiveBoardMembers = $executiveBoardMembers;
+        $this->executiveBoardMemberships = $executiveBoardMemberships;
         return $this;
     }
 
     /**
-     * @return ExecutiveBoardMember[]
+     * @return ExecutiveBoardMembership[]
      */
-    public function getExecutiveBoardMembers()
+    public function getExecutiveBoardMemberships()
     {
-        return $this->executiveBoardMembers;
+        return $this->executiveBoardMemberships;
     }
 
     /**
-     * @return ExecutiveBoardMember[]
+     * @return ExecutiveBoardMembership[]
      */
-    public function getActiveExecutiveBoardMembers()
+    public function getActiveExecutiveBoardMemberships()
     {
-        $activeExecutiveBoardMembers = [];
-        foreach ($this->executiveBoardMembers as $executiveBoardMember) {
-            if ($executiveBoardMember->isActive()) {
-                array_push($activeExecutiveBoardMembers, $executiveBoardMember);
+        $activeExecutiveBoardMemberships = [];
+        foreach ($this->executiveBoardMemberships as $executiveBoardMembership) {
+            if ($executiveBoardMembership->isActive()) {
+                array_push($activeExecutiveBoardMemberships, $executiveBoardMembership);
             }
         }
-        return $activeExecutiveBoardMembers;
+        return $activeExecutiveBoardMemberships;
     }
 
     /**

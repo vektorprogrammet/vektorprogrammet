@@ -42,8 +42,8 @@ class ExecutiveBoard implements TeamInterface
     private $shortDescription;
 
     /**
-     * @var ExecutiveBoardMember[]
-     * @ORM\OneToMany(targetEntity="ExecutiveBoardMember", mappedBy="board")
+     * @var ExecutiveBoardMembership[]
+     * @ORM\OneToMany(targetEntity="ExecutiveBoardMembership", mappedBy="board")
      */
     private $members;
 
@@ -135,7 +135,7 @@ class ExecutiveBoard implements TeamInterface
     }
 
     /**
-     * @return ExecutiveBoardMember[]
+     * @return ExecutiveBoardMembership[]
      */
     public function getMembers()
     {
@@ -153,7 +153,7 @@ class ExecutiveBoard implements TeamInterface
     }
 
     /**
-     * @return ExecutiveBoardMember[]
+     * @return ExecutiveBoardMembership[]
      */
     public function getActiveTeamMemberships()
     {

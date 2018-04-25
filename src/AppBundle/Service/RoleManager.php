@@ -136,9 +136,9 @@ class RoleManager
 
     public function userIsInExecutiveBoard(User $user)
     {
-        $executiveBoardMember = $this->em->getRepository('AppBundle:ExecutiveBoardMember')->findByUser($user);
+        $executiveBoardMembership = $this->em->getRepository('AppBundle:ExecutiveBoardMembership')->findByUser($user);
 
-        return !empty($executiveBoardMember);
+        return !empty($executiveBoardMembership);
     }
 
     private function userIsTeamLeader(User $user)

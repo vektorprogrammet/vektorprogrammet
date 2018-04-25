@@ -2,7 +2,7 @@
 
 namespace AppBundle\Tests\Entity;
 
-use AppBundle\Entity\ExecutiveBoardMember;
+use AppBundle\Entity\ExecutiveBoardMembership;
 use AppBundle\Entity\Position;
 use AppBundle\Entity\TeamMembership;
 use AppBundle\Twig\Extension\GroupSortExtension;
@@ -14,7 +14,7 @@ class GroupSortExtensionUnitTest extends \PHPUnit_Framework_TestCase
         $members = array();
         $positions = ['Medlem', 'Leder', 'Økonomi', 'Assistent', 'Medlem', 'Nestleder'];
         for ($x = 0; $x < 6; ++$x) {
-            $member = new ExecutiveBoardMember();
+            $member = new ExecutiveBoardMembership();
             $member->setPosition($positions[$x]);
             $members[] = $member;
         }

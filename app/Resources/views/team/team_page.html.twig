@@ -55,8 +55,8 @@
 
                         <p class="position m-0">
                             {% if type == 'board' %}
-                                {% for executiveBoardMember in user.executiveBoardMembers %}
-                                    {{ executiveBoardMember.position }}{% if not loop.last %},{% endif %}
+                                {% for executiveBoardMembership in user.executiveBoardMemberships %}
+                                    {{ executiveBoardMembership.position }}{% if not loop.last %},{% endif %}
                                 {% endfor %}
                             {% elseif type == 'team'%}
                                 {% for teamHistory in user.teamMemberships %}

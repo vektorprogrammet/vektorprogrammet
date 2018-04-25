@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class CreateExecutiveBoardMemberType extends AbstractType
+class CreateExecutiveBoardMembershipType extends AbstractType
 {
     private $departmentId;
 
@@ -65,12 +65,12 @@ class CreateExecutiveBoardMemberType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\ExecutiveBoardMember',
+            'data_class' => 'AppBundle\Entity\ExecutiveBoardMembership',
         ));
     }
 
     public function getName()
     {
-        return 'createExecutiveBoardMember';
+        return 'createExecutiveBoardMembership';
     }
 }

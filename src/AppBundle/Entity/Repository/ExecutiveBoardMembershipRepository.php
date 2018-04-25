@@ -5,7 +5,7 @@ namespace AppBundle\Entity\Repository;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
-class ExecutiveBoardMemberRepository extends EntityRepository
+class ExecutiveBoardMembershipRepository extends EntityRepository
 {
     public function findByUser(User $user)
     {
