@@ -78,8 +78,8 @@ class MailingListController extends Controller
     public function showAllAction(Semester $semester)
     {
         $assistantUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithAssistantHistoryInSemester($semester);
-        $workingUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithTeamMembershipInSemester($semester);
-        $users = array_merge($assistantUsers, $workingUsers);
+        $teamUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithTeamMembershipInSemester($semester);
+        $users = array_unique(array_merge($assistantUsers, $teamUsers));
 
         return $this->render('mailing_list/mailinglist_show.html.twig', array(
             'users' => $users,
