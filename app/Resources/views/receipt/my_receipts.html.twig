@@ -61,7 +61,7 @@
 
 {% block javascripts %}
     <script>
-      $('#newReceiptLink').on('click', function () {
+      function toggleReceiptForm() {
         var receiptForm = $('#receipt-form');
         if (receiptForm.css('display') === 'none') {
           $(this).removeClass('text-success').addClass('text-primary');
@@ -74,7 +74,12 @@
         }
         $(this).blur();
         receiptForm.slideToggle();
-      });
+      }
+      $('#newReceiptLink').on('click', toggleReceiptForm);
+
+      {% if not form.vars.valid %}
+        toggleReceiptForm();
+      {% endif %}
     </script>
     <script>
       function readURL(input) {
