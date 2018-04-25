@@ -13,7 +13,7 @@ class ArticleType extends AbstractType
     {
         $builder
             ->add('title', 'text', array(
-                'label' => false,
+                'label' => 'Tittel',
                 'attr' => array('placeholder' => 'Fyll inn tittel her'),
             ))
             ->add('article', 'ckeditor', array(

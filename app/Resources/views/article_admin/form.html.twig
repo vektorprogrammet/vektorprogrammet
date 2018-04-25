@@ -40,6 +40,7 @@
                     </div>
                 </div>
             </div>
+            <br>
 
             {{ form_start(form) }}
             {{ form_errors(form) }}
@@ -74,9 +75,10 @@
                 <div class="footer">
                     <div class="row">
                         <div class="small-6 medium-2 medium-offset-8 large-offset-9 columns">
-                            {{ form_widget(form.published) }}
+                            {{ form_row(form.published) }}
                         </div>
                         <div class="small-6 medium-2 large-1 columns">
+                            <br>
                             <button class="tiny button right">Lagre</button>
                         </div>
                     </div>
@@ -142,7 +144,9 @@
           var form = $("[name='{{ form.vars.name }}']");
           form.submit(function (e) {
             e.preventDefault();
-            this.upload();
+            setTimeout(function() {
+                this.upload();
+            }.bind(this), 100)
           }.bind(this));
           $('#app').show();
         },

@@ -24,11 +24,17 @@ liip_imagine:
               downscale:
                 max: [500, 500]
 
-        article_featured:
+        article_large:
             quality: 85
             filters:
               downscale:
                 max: [900, 900]
+
+        article_small:
+            quality: 85
+            filters:
+              downscale:
+                max: [500, 500]
 
         profile_img:
             quality: 85

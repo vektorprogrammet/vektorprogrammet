@@ -23,7 +23,7 @@
         <div class="segment mt-4">
         <article>
 
-            <img src="{{ asset_with_version(article.imageLarge) }}" style="width:100%;"/>
+            <img src="{{ asset(article.imageLarge | imagine_filter('article_large')) }}" style="width:100%;"/>
 
             <h1 class="article-title mb-2 mt-5">{{ article.title|safe_html }}</h1>
 
