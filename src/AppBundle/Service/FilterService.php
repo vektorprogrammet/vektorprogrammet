@@ -21,7 +21,7 @@ class FilterService
         $filtered = [];
         foreach ($teamMemberships as $teamMembership) {
             if ($teamMembership->getTeam() === $team) {
-                array_push($filtered, $teamMembership);
+                $filtered[] = $teamMembership;
             }
         }
         return $filtered;

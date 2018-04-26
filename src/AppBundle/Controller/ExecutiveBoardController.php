@@ -32,9 +32,9 @@ class ExecutiveBoardController extends Controller
         $inactiveMembers = [];
         foreach ($members as $member) {
             if ($member->isActive()) {
-                array_push($activeMembers, $member);
+                $activeMembers[] = $member;
             } else {
-                array_push($inactiveMembers, $member);
+                $inactiveMembers[] = $member;
             }
         }
 

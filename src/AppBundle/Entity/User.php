@@ -726,7 +726,7 @@ class User implements AdvancedUserInterface, \Serializable
         if ($this->executiveBoardMemberships !== null) {
             foreach ($this->executiveBoardMemberships as $executiveBoardMembership) {
                 if ($executiveBoardMembership->isActive()) {
-                    array_push($activeExecutiveBoardMemberships, $executiveBoardMembership);
+                    $activeExecutiveBoardMemberships[] = $executiveBoardMembership;
                 }
             }
         }
@@ -742,7 +742,7 @@ class User implements AdvancedUserInterface, \Serializable
         if ($this->teamMemberships !== null) {
             foreach ($this->teamMemberships as $teamMembership) {
                 if ($teamMembership->isActive()) {
-                    array_push($activeTeamMemberships, $teamMembership);
+                    $activeTeamMemberships[] = $teamMembership;
                 }
             }
         }
@@ -779,10 +779,10 @@ class User implements AdvancedUserInterface, \Serializable
         $boardMemberships = [];
         foreach ($memberships as $membership) {
             if ($membership->getTeam()->getType() == 'team') {
-                array_push($teamMemberships, $membership);
+                $teamMemberships[] = $membership;
             }
             if ($membership->getTeam()->getType() == 'executive_board') {
-                array_push($boardMemberships, $membership);
+                $boardMemberships[] = $membership;
             }
         }
 

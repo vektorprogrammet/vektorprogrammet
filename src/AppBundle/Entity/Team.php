@@ -237,7 +237,7 @@ class Team implements TeamInterface
 
         foreach ($this->getActiveTeamMemberships() as $activeTeamMembership) {
             if (!in_array($activeTeamMembership->getUser(), $activeUsers)) {
-                array_push($activeUsers, $activeTeamMembership->getUser());
+                $activeUsers[] = $activeTeamMembership->getUser();
             }
         }
 

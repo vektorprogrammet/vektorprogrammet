@@ -166,7 +166,7 @@ class ExecutiveBoard implements TeamInterface
 
         foreach ($this->getTeamMemberships() as $teamMembership) {
             if ($teamMembership->isActive()) {
-                array_push($activeTeamMemberships, $teamMembership);
+                $activeTeamMemberships[] = $teamMembership;
             }
         }
 
@@ -182,7 +182,7 @@ class ExecutiveBoard implements TeamInterface
 
         foreach ($this->getActiveTeamMemberships() as $activeExecutiveBoardHistory) {
             if (!in_array($activeExecutiveBoardHistory->getUser(), $activeUsers)) {
-                array_push($activeUsers, $activeExecutiveBoardHistory->getUser());
+                $activeUsers[] = $activeExecutiveBoardHistory->getUser();
             }
         }
 
