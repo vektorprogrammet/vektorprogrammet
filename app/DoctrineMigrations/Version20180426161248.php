@@ -31,10 +31,6 @@ class Version20180426161248 extends AbstractMigration
         $this->addSql('ALTER TABLE team_membership ADD CONSTRAINT FK_B826A040DD842E46 FOREIGN KEY (position_id) REFERENCES position (id) ON DELETE SET NULL');
         $this->addSql('DROP TABLE executive_board_member');
         $this->addSql('DROP TABLE work_history');
-        $this->addSql('ALTER TABLE receipt CHANGE description description VARCHAR(255) NOT NULL');
-        $this->addSql('ALTER TABLE interview DROP FOREIGN KEY FK_CF1D3C348F5D2CA9');
-        $this->addSql('DROP INDEX IDX_CF1D3C348F5D2CA9 ON interview');
-        $this->addSql('ALTER TABLE interview DROP coInterviewer_id');
     }
 
     /**
@@ -56,9 +52,5 @@ class Version20180426161248 extends AbstractMigration
         $this->addSql('ALTER TABLE work_history ADD CONSTRAINT FK_F271C869DD842E46 FOREIGN KEY (position_id) REFERENCES position (id) ON DELETE SET NULL');
         $this->addSql('DROP TABLE executive_board_membership');
         $this->addSql('DROP TABLE team_membership');
-        $this->addSql('ALTER TABLE interview ADD coInterviewer_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE interview ADD CONSTRAINT FK_CF1D3C348F5D2CA9 FOREIGN KEY (coInterviewer_id) REFERENCES user (id)');
-        $this->addSql('CREATE INDEX IDX_CF1D3C348F5D2CA9 ON interview (coInterviewer_id)');
-        $this->addSql('ALTER TABLE receipt CHANGE description description VARCHAR(5000) NOT NULL');
     }
 }
