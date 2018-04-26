@@ -132,10 +132,13 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
 
     /**
      * @param string $position
+     *
+     * @return ExecutiveBoardMembership $this
      */
     public function setPosition($position)
     {
         $this->position = $position;
+        return $this;
     }
 
     /**

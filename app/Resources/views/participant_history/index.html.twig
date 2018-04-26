@@ -72,7 +72,7 @@
 {% endblock %}
 
 {% block title %}
-    Deltakerhistorie
+    Deltakerhistorikk
 {% endblock %}
 
 {% block body %}
@@ -81,7 +81,7 @@
 <div class="row">
     <div class="small-12 medium-12 large-12 columns">
 
-        <h1>Deltakerhistorie {{ semester.department }}</h1>
+        <h1>Deltakerhistorikk {{ semester.department }}</h1>
 
         <hr>
 
@@ -106,7 +106,7 @@
 
             <div class="small-12 medium-12 large-8 columns">
 
-                <h3> Assistenthistorie &nbsp;
+                <h3> Assistenthistorikk &nbsp;
                     <button class="button tiny csv_download_button" data-table-id="assistantTable"><i class="fa fa-download"></i> Last ned CSV</button>
                     <span style="float:right;font-size: 80%;">Antall: {{ assistantHistories|length }}</span>
                 </h3>
@@ -203,7 +203,7 @@
 
             <div class="small-12 medium-12 large-8 columns">
 
-                <h3> Arbeidshistorie &nbsp;
+                <h3> Teamhistorikk &nbsp;
                     <button class="button tiny csv_download_button" data-table-id="workTable"><i class="fa fa-download"></i> Last ned CSV</button>
                     <span style="float:right;font-size: 80%;">Antall: {{ teamMemberships|length }}</span>
                 </h3>

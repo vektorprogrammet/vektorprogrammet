@@ -36,9 +36,9 @@ class TeamPositionSortExtension extends \Twig_Extension
      * @param User[] $users
      * @param TeamInterface $team
      *
-     * @return array
+     * @return User[]
      */
-    public function teamPositionSortFilter($users, TeamInterface $team): array
+    public function teamPositionSortFilter($users, TeamInterface $team)
     {
         // Filter out any other team memberships and sort them by importance
         foreach ($users as $user) {

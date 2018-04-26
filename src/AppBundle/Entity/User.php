@@ -723,9 +723,11 @@ class User implements AdvancedUserInterface, \Serializable
     public function getActiveExecutiveBoardMemberships()
     {
         $activeExecutiveBoardMemberships = [];
-        foreach ($this->executiveBoardMemberships as $executiveBoardMembership) {
-            if ($executiveBoardMembership->isActive()) {
-                array_push($activeExecutiveBoardMemberships, $executiveBoardMembership);
+        if ($this->executiveBoardMemberships !== null) {
+            foreach ($this->executiveBoardMemberships as $executiveBoardMembership) {
+                if ($executiveBoardMembership->isActive()) {
+                    array_push($activeExecutiveBoardMemberships, $executiveBoardMembership);
+                }
             }
         }
         return $activeExecutiveBoardMemberships;
@@ -737,9 +739,11 @@ class User implements AdvancedUserInterface, \Serializable
     public function getActiveTeamMemberships()
     {
         $activeTeamMemberships = [];
-        foreach ($this->teamMemberships as $teamMembership) {
-            if ($teamMembership->isActive()) {
-                array_push($activeTeamMemberships, $teamMembership);
+        if ($this->teamMemberships !== null) {
+            foreach ($this->teamMemberships as $teamMembership) {
+                if ($teamMembership->isActive()) {
+                    array_push($activeTeamMemberships, $teamMembership);
+                }
             }
         }
         return $activeTeamMemberships;
