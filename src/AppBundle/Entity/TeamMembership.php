@@ -167,7 +167,7 @@ class TeamMembership implements TeamMembershipInterface
      *
      * @return TeamMembership
      */
-    public function setStartSemester(\AppBundle\Entity\Semester $startSemester = null)
+    public function setStartSemester(Semester $startSemester = null)
     {
         $this->startSemester = $startSemester;
 
@@ -191,7 +191,7 @@ class TeamMembership implements TeamMembershipInterface
      *
      * @return TeamMembership
      */
-    public function setEndSemester(\AppBundle\Entity\Semester $endSemester = null)
+    public function setEndSemester(Semester $endSemester = null)
     {
         $this->endSemester = $endSemester;
 
@@ -249,6 +249,9 @@ class TeamMembership implements TeamMembershipInterface
         $this->deletedTeamName = $deletedTeamName;
     }
 
+    /**
+     * @return string
+     */
     public function getPositionName(): string
     {
         return $this->position->getName();

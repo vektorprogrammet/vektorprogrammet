@@ -38,7 +38,7 @@ class TeamPositionSortExtensionUnitTest extends \PHPUnit_Framework_TestCase
         for ($x = 0; $x < 7; ++$x) {
             $user = new User();
             $membership = new ExecutiveBoardMembership();
-            $membership->setPosition($positions[$x])
+            $membership->setPositionName($positions[$x])
                        ->setBoard($board)
                        ->setStartSemester($this->activeSemester);
             $user->setExecutiveBoardMemberships(array($membership));

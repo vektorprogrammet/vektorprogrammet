@@ -55,7 +55,7 @@ class ExecutiveBoardControllerTest extends BaseWebTestCase
 
         // Change the value of a field
         $form['createExecutiveBoardMembership[user]']->select(1);
-        $form['createExecutiveBoardMembership[position]'] = 'Leder';
+        $form['createExecutiveBoardMembership[positionName]'] = 'Leder';
         $form['createExecutiveBoardMembership[startSemester]']->select(1);
 
         // submit the form
@@ -95,7 +95,7 @@ class ExecutiveBoardControllerTest extends BaseWebTestCase
         // Select and populate form
         $crawler = $this->teamLeaderGoTo('/kontrollpanel/hovedstyret/rediger_medlem/1');
         $form = $crawler->selectButton('Lagre')->form();
-        $form['createExecutiveBoardMembership[position]'] = 'Testposisjon';
+        $form['createExecutiveBoardMembership[positionName]'] = 'Testposisjon';
 
         // Submit form
         $client = $this->createTeamLeaderClient();

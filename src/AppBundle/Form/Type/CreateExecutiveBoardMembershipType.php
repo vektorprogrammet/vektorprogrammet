@@ -34,7 +34,7 @@ class CreateExecutiveBoardMembershipType extends AbstractType
                     return $value->getFullName();
                 },
             ))
-            ->add('position', 'text', array(
+            ->add('positionName', 'text', array(
                 'label' => 'Stilling',
             ))
             ->add('startSemester', 'entity', array(

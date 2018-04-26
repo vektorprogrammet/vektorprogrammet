@@ -13,7 +13,7 @@ class LoadExecutiveBoardMembershipData extends AbstractFixture implements Ordere
     {
         $boardMember = new ExecutiveBoardMembership();
         $boardMember->setBoard($this->getReference('board'));
-        $boardMember->setPosition('Leder');
+        $boardMember->setPositionName('Leder');
         $boardMember->setUser($this->getReference('user-20'));
         $boardMember->setStartSemester($this->getReference('semester-1'));
         $boardMember->setEndSemester($this->getReference('semester-2'));
@@ -21,14 +21,14 @@ class LoadExecutiveBoardMembershipData extends AbstractFixture implements Ordere
 
         $boardMember = new ExecutiveBoardMembership();
         $boardMember->setBoard($this->getReference('board'));
-        $boardMember->setPosition('Medlem');
+        $boardMember->setPositionName('Medlem');
         $boardMember->setUser($this->getReference('user-10'));
         $boardMember->setStartSemester($this->getReference('semester-3'));
         $manager->persist($boardMember);
 
         $boardMember = new ExecutiveBoardMembership();
         $boardMember->setBoard($this->getReference('board'));
-        $boardMember->setPosition('Medlem');
+        $boardMember->setPositionName('Medlem');
         $boardMember->setUser($this->getReference('user-angela'));
         $boardMember->setStartSemester($this->getReference('semester-previous'));
         $boardMember->setEndSemester($this->getReference('semester-current'));

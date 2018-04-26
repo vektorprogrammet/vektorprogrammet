@@ -35,7 +35,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
      * @Assert\Valid
      *
      **/
-    private $position;
+    private $positionName;
 
     /**
      * @var Semester
@@ -56,7 +56,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
      */
     public function __construct()
     {
-        $this->position = '';
+        $this->positionName = '';
     }
 
     public function __toString()
@@ -125,38 +125,30 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
     /**
      * @return string | null
      */
-    public function getPosition()
+    public function getPositionName()
     {
-        return $this->position;
+        return $this->positionName;
     }
 
     /**
-     * @param string $position
+     * @param string $positionName
      *
      * @return ExecutiveBoardMembership $this
      */
-    public function setPosition($position)
+    public function setPositionName($positionName)
     {
-        $this->position = $position;
+        $this->positionName = $positionName;
         return $this;
     }
 
     /**
-     * @return string | null
-     */
-    public function getPositionName()
-    {
-        return $this->position;
-    }
-
-    /**
-     * @param Semester $startSemester
+     * @param \AppBundle\Entity\Semester $semester
      *
-     * @return ExecutiveBoardMembership
+     * @return \AppBundle\Entity\ExecutiveBoardMembership
      */
-    public function setStartSemester($startSemester)
+    public function setStartSemester(Semester $semester = null)
     {
-        $this->startSemester = $startSemester;
+        $this->startSemester = $semester;
         return $this;
     }
 
@@ -169,18 +161,18 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
     }
 
     /**
-     * @param Semester $endSemester
+     * @param \AppBundle\Entity\Semester $semester
      *
-     * @return ExecutiveBoardMembership
+     * @return \AppBundle\Entity\ExecutiveBoardMembership
      */
-    public function setEndSemester($endSemester)
+    public function setEndSemester(Semester $semester = null)
     {
-        $this->endSemester = $endSemester;
+        $this->endSemester = $semester;
         return $this;
     }
 
     /**
-     * @return Semester | null
+     * @return \AppBundle\Entity\Semester | null
      */
     public function getEndSemester()
     {
@@ -190,13 +182,13 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
     public function isActive()
     {
         $now = new \DateTime();
-        $termEndsInFuture = $this->getEndSemester() === null || $this->getEndSemester()->getSemesterEndDate() > $now;
-        $termStartedInPast = $this->getStartSemester() !== null && $this->getStartSemester()->getSemesterStartDate() < $now;
+        $termEndsInFuture = $this->endSemester === null || $this->endSemester->getSemesterEndDate() > $now;
+        $termStartedInPast = $this->startSemester !== null && $this->startSemester->getSemesterStartDate() < $now;
         return $termEndsInFuture && $termStartedInPast;
     }
 
     /**
-     * @return TeamInterface
+     * @return \AppBundle\Entity\TeamInterface
      */
     public function getTeam()
     {
