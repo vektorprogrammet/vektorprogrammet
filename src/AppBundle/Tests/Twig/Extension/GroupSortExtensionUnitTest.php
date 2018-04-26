@@ -5,7 +5,7 @@ namespace AppBundle\Tests\Entity;
 use AppBundle\Entity\ExecutiveBoardMembership;
 use AppBundle\Entity\Position;
 use AppBundle\Entity\TeamMembership;
-use AppBundle\Twig\Extension\GroupSortExtension;
+use AppBundle\Twig\Extension\TeamPositionSortExtension;
 
 class GroupSortExtensionUnitTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,7 +19,7 @@ class GroupSortExtensionUnitTest extends \PHPUnit_Framework_TestCase
             $members[] = $member;
         }
 
-        $groupSorter = new GroupSortExtension();
+        $groupSorter = new TeamPositionSortExtension();
 
         $sortedMembers = $groupSorter->groupSortFilter($members);
         $sortedPositions = ['Leder', 'Nestleder', 'Assistent', 'Medlem', 'Medlem', 'Økonomi'];
@@ -40,7 +40,7 @@ class GroupSortExtensionUnitTest extends \PHPUnit_Framework_TestCase
             $members[] = $member;
         }
 
-        $groupSorter = new GroupSortExtension();
+        $groupSorter = new TeamPositionSortExtension();
 
         $sortedMembers = $groupSorter->groupSortFilter($members);
         $sortedPositions = ['Leder', 'Nestleder', 'Assistent', 'Medlem', 'Medlem', 'Sekretær', 'Økonomi'];

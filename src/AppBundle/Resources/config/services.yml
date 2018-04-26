@@ -227,7 +227,7 @@ services:
         arguments: ['@doctrine.orm.default_entity_manager', '@form.factory']
 
   app.group_sorter_extension:
-    class: AppBundle\Twig\Extension\GroupSortExtension
+    class: AppBundle\Twig\Extension\TeamPositionSortExtension
     public: false
     arguments: ['@app.sorter', '@app.filter_service']
     tags:
