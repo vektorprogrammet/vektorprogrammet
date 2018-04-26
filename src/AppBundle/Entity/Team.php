@@ -165,10 +165,14 @@ class Team implements TeamInterface
 
     /**
      * @param string $email
+     *
+     * @return $this|\AppBundle\Entity\Team
      */
     public function setEmail($email)
     {
         $this->email = $email;
+
+        return $this;
     }
 
     /**
@@ -181,10 +185,14 @@ class Team implements TeamInterface
 
     /**
      * @param string $description
+     *
+     * @return \AppBundle\Entity\Team
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /**
@@ -197,10 +205,14 @@ class Team implements TeamInterface
 
     /**
      * @param string $shortDescription
+     *
+     * @return \AppBundle\Entity\Team
      */
     public function setShortDescription($shortDescription)
     {
         $this->shortDescription = $shortDescription;
+
+        return $this;
     }
 
     /**

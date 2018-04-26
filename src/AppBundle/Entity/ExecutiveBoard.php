@@ -101,10 +101,14 @@ class ExecutiveBoard implements TeamInterface
 
     /**
      * @param string $email
+     *
+     * @return $this|\AppBundle\Entity\ExecutiveBoard
      */
     public function setEmail($email)
     {
         $this->email = $email;
+
+        return $this;
     }
 
     /**
@@ -117,10 +121,14 @@ class ExecutiveBoard implements TeamInterface
 
     /**
      * @param string $description
+     *
+     * @return \AppBundle\Entity\ExecutiveBoard
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /**
@@ -133,10 +141,14 @@ class ExecutiveBoard implements TeamInterface
 
     /**
      * @param string $shortDescription
+     *
+     * @return \AppBundle\Entity\ExecutiveBoard
      */
     public function setShortDescription($shortDescription)
     {
         $this->shortDescription = $shortDescription;
+
+        return $this;
     }
 
     /**
@@ -147,11 +159,17 @@ class ExecutiveBoard implements TeamInterface
         return $this->boardMemberships;
     }
 
+    /**
+     * @return \AppBundle\Entity\ExecutiveBoardMembership[]
+     */
     public function getTeamMemberships()
     {
         return $this->boardMemberships;
     }
 
+    /**
+     * @return bool
+     */
     public function getAcceptApplication()
     {
         return false;
