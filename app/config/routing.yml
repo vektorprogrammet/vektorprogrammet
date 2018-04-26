@@ -942,6 +942,26 @@ image_delete:
 ##########################################
 #              Interview                 #
 ##########################################
+interview_clear_co_interviewer:
+ path: /kontrollpanel/intervju/interview_clear_co_interviewer/{id}
+ defaults: { _controller: AppBundle:Interview:clearCoInterviewer }
+ methods: [POST]
+ requirements:
+  id: \d+
+
+interview_admin_assign_co_interviewer:
+ path: /kontrollpanel/intervju/admin_assign_co_interviewer/{id}
+ defaults: { _controller: AppBundle:Interview:adminAssignCoInterviewer }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+interview_assign_co_interviewer:
+ path: /kontrollpanel/intervju/assign_co_interviewer/{id}
+ defaults: { _controller: AppBundle:Interview:assignCoInterviewer }
+ methods: [POST]
+ requirements:
+  id: \d+
 
 interview_conduct:
  path: /kontrollpanel/intervju/conduct/{id}

@@ -1,0 +1,38 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Legg til medintervjuer
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/assign_co_interviewer.css') }}">
+{% endblock %}
+
+{% block body %}
+    {{ include('common/flash.html.twig') }}
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <div class="panel">
+                <h3>Rediger medintervjuer</h3>
+                <hr>
+                {{ form_start(form) }}
+                {{ form_end(form) }}
+                <div class="clear-button">
+                    <form method="POST" action="{{ path('interview_clear_co_interviewer', { id: interview.id }) }}">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <button type="submit"
+                                        class="button warning tiny">
+                                    <i class="fa fa-share-alt"></i>
+                                    Fjern medintervjuer
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

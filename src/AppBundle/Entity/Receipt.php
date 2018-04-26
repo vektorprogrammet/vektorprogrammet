@@ -48,8 +48,9 @@ class Receipt
     private $picturePath;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=5000)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
+     * @Assert\Length(max="5000", maxMessage="Maks 5000 tegn")
      */
     private $description;
 

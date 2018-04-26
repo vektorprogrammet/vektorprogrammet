@@ -12,6 +12,8 @@ class ExecutiveBoardMembershipRepository extends EntityRepository
         return $this->createQueryBuilder('bm')
             ->where('bm.user = :user')
             ->setParameter('user', $user)
+            ->leftJoin('bm.startSemester', 's')
+            ->addOrderBy('s.semesterEndDate', 'DESC')
             ->getQuery()
             ->getResult();
     }
