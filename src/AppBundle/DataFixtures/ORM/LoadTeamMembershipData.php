@@ -11,95 +11,95 @@ class LoadTeamMembershipData extends AbstractFixture implements OrderedFixtureIn
 {
     public function load(ObjectManager $manager)
     {
-        $wh = new TeamMembership();
-        $wh->setTeam($this->getReference('team-1'));
-        $wh->setUser($this->getReference('user-1'));
-        $wh->setStartSemester($this->getReference('semester-1'));
-        $wh->setPosition($this->getReference('position-1'));
-        $wh->setIsTeamLeader(true);
-        $manager->persist($wh);
+        $tm = new TeamMembership();
+        $tm->setTeam($this->getReference('team-1'));
+        $tm->setUser($this->getReference('user-1'));
+        $tm->setStartSemester($this->getReference('semester-1'));
+        $tm->setPosition($this->getReference('position-1'));
+        $tm->setIsTeamLeader(true);
+        $manager->persist($tm);
 
-        $wh = new TeamMembership();
-        $wh->setTeam($this->getReference('team-1'));
-        $wh->setUser($this->getReference('user-2'));
-        $wh->setStartSemester($this->getReference('semester-1'));
-        $wh->setPosition($this->getReference('position-2'));
-        $wh->setIsTeamLeader(true);
-        $manager->persist($wh);
+        $tm = new TeamMembership();
+        $tm->setTeam($this->getReference('team-1'));
+        $tm->setUser($this->getReference('user-2'));
+        $tm->setStartSemester($this->getReference('semester-1'));
+        $tm->setPosition($this->getReference('position-2'));
+        $tm->setIsTeamLeader(true);
+        $manager->persist($tm);
 
-        $wh = new TeamMembership();
-        $wh->setTeam($this->getReference('team-1'));
-        $wh->setUser($this->getReference('user-3'));
-        $wh->setStartSemester($this->getReference('semester-1'));
-        $wh->setPosition($this->getReference('position-1'));
-        $manager->persist($wh);
+        $tm = new TeamMembership();
+        $tm->setTeam($this->getReference('team-1'));
+        $tm->setUser($this->getReference('user-3'));
+        $tm->setStartSemester($this->getReference('semester-1'));
+        $tm->setPosition($this->getReference('position-1'));
+        $manager->persist($tm);
 
-        $wh = new TeamMembership();
-        $wh->setTeam($this->getReference('team-2'));
-        $wh->setUser($this->getReference('user-12'));
-        $wh->setStartSemester($this->getReference('semester-1'));
-        $wh->setPosition($this->getReference('position-1'));
-        $wh->setIsTeamLeader(false);
-        $manager->persist($wh);
+        $tm = new TeamMembership();
+        $tm->setTeam($this->getReference('team-2'));
+        $tm->setUser($this->getReference('user-12'));
+        $tm->setStartSemester($this->getReference('semester-1'));
+        $tm->setPosition($this->getReference('position-1'));
+        $tm->setIsTeamLeader(false);
+        $manager->persist($tm);
 
-        $wh = new TeamMembership();
-        $wh->setTeam($this->getReference('team-1'));
-        $wh->setUser($this->getReference('user-4'));
-        $wh->setStartSemester($this->getReference('semester-1'));
-        $wh->setPosition($this->getReference('position-1'));
-        $manager->persist($wh);
+        $tm = new TeamMembership();
+        $tm->setTeam($this->getReference('team-1'));
+        $tm->setUser($this->getReference('user-4'));
+        $tm->setStartSemester($this->getReference('semester-1'));
+        $tm->setPosition($this->getReference('position-1'));
+        $manager->persist($tm);
 
-        $wh = new TeamMembership();
-        $wh->setTeam($this->getReference('team-1'));
-        $wh->setUser($this->getReference('user-13'));
-        $wh->setStartSemester($this->getReference('semester-1'));
-        $wh->setEndSemester($this->getReference('semester-1'));
-        $wh->setPosition($this->getReference('position-1'));
-        $manager->persist($wh);
+        $tm = new TeamMembership();
+        $tm->setTeam($this->getReference('team-1'));
+        $tm->setUser($this->getReference('user-13'));
+        $tm->setStartSemester($this->getReference('semester-1'));
+        $tm->setEndSemester($this->getReference('semester-1'));
+        $tm->setPosition($this->getReference('position-1'));
+        $manager->persist($tm);
 
-        $wh2 = new TeamMembership();
-        $wh2->setTeam($this->getReference('team-2'));
-        $wh2->setUser($this->getReference('user-2'));
-        $wh2->setStartSemester($this->getReference('semester-1'));
-        $wh2->setPosition($this->getReference('position-2'));
-        $manager->persist($wh2);
+        $tm2 = new TeamMembership();
+        $tm2->setTeam($this->getReference('team-2'));
+        $tm2->setUser($this->getReference('user-2'));
+        $tm2->setStartSemester($this->getReference('semester-1'));
+        $tm2->setPosition($this->getReference('position-2'));
+        $manager->persist($tm2);
 
-        $wh3 = new TeamMembership();
-        $wh3->setTeam($this->getReference('team-1'));
-        $wh3->setUser($this->getReference('user-4'));
-        $wh3->setStartSemester($this->getReference('semester-1'));
-        $wh3->setEndSemester($this->getReference('semester-1'));
-        $wh3->setPosition($this->getReference('position-2'));
-        $manager->persist($wh3);
+        $tm3 = new TeamMembership();
+        $tm3->setTeam($this->getReference('team-1'));
+        $tm3->setUser($this->getReference('user-4'));
+        $tm3->setStartSemester($this->getReference('semester-1'));
+        $tm3->setEndSemester($this->getReference('semester-1'));
+        $tm3->setPosition($this->getReference('position-2'));
+        $manager->persist($tm3);
 
-        $whUserInTeam1 = new TeamMembership();
-        $whUserInTeam1->setTeam($this->getReference('team-1'));
-        $whUserInTeam1->setUser($this->getReference('userInTeam1'));
-        $whUserInTeam1->setStartSemester($this->getReference('semester-1'));
-        $whUserInTeam1->setPosition($this->getReference('position-1'));
-        $manager->persist($whUserInTeam1);
+        $tmUserInTeam1 = new TeamMembership();
+        $tmUserInTeam1->setTeam($this->getReference('team-1'));
+        $tmUserInTeam1->setUser($this->getReference('userInTeam1'));
+        $tmUserInTeam1->setStartSemester($this->getReference('semester-1'));
+        $tmUserInTeam1->setPosition($this->getReference('position-1'));
+        $manager->persist($tmUserInTeam1);
 
-        $wh = new TeamMembership();
-        $wh->setTeam($this->getReference('team-1'));
-        $wh->setUser($this->getReference('user-marte'));
-        $wh->setStartSemester($this->getReference('semester-1'));
-        $wh->setPosition($this->getReference('position-1'));
-        $wh->setIsTeamLeader(true);
-        $manager->persist($wh);
+        $tm = new TeamMembership();
+        $tm->setTeam($this->getReference('team-1'));
+        $tm->setUser($this->getReference('user-marte'));
+        $tm->setStartSemester($this->getReference('semester-1'));
+        $tm->setPosition($this->getReference('position-1'));
+        $tm->setIsTeamLeader(true);
+        $manager->persist($tm);
 
-        $wh = new TeamMembership();
-        $wh->setTeam($this->getReference('team-1'));
-        $wh->setUser($this->getReference('user-anna'));
-        $wh->setStartSemester($this->getReference('semester-1'));
-        $wh->setPosition($this->getReference('position-1'));
-        $wh->setIsTeamLeader(true);
-        $manager->persist($wh);
+        $tm = new TeamMembership();
+        $tm->setTeam($this->getReference('team-1'));
+        $tm->setUser($this->getReference('user-anna'));
+        $tm->setStartSemester($this->getReference('semester-1'));
+        $tm->setPosition($this->getReference('position-1'));
+        $tm->setIsTeamLeader(true);
+        $manager->persist($tm);
 
         $manager->flush();
 
-        $this->addReference('wh-1', $wh);
-        $this->addReference('wh-2', $wh2);
-        $this->addReference('wh-3', $wh3);
+        $this->addReference('tm-1', $tm);
+        $this->addReference('tm-2', $tm2);
+        $this->addReference('tm-3', $tm3);
     }
 
     public function getOrder()
