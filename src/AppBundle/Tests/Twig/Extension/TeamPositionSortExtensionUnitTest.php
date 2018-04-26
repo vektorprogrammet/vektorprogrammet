@@ -41,7 +41,7 @@ class TeamPositionSortExtensionUnitTest extends \PHPUnit_Framework_TestCase
             $membership->setPositionName($positions[$x])
                        ->setBoard($board)
                        ->setStartSemester($this->activeSemester);
-            $user->setExecutiveBoardMemberships(array($membership));
+            $user->setMemberships(array($membership));
             $users[] = $user;
         }
 
@@ -69,7 +69,7 @@ class TeamPositionSortExtensionUnitTest extends \PHPUnit_Framework_TestCase
             $membership->setPosition($position)
                 ->setTeam($team)
                 ->setStartSemester($this->activeSemester);
-            $user->setTeamMemberships(array($membership));
+            $user->setMemberships(array($membership));
             $users[] = $user;
         }
 

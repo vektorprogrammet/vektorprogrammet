@@ -699,17 +699,6 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @param ExecutiveBoardMembership[] $executiveBoardMemberships
-     *
-     * @return User
-     */
-    public function setExecutiveBoardMemberships($executiveBoardMemberships)
-    {
-        $this->executiveBoardMemberships = $executiveBoardMemberships;
-        return $this;
-    }
-
-    /**
      * @return ExecutiveBoardMembership[]
      */
     public function getExecutiveBoardMemberships()
@@ -750,17 +739,6 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @param TeamMembership[] $teamMemberships
-     *
-     * @return User
-     */
-    public function setTeamMemberships(array $teamMemberships)
-    {
-        $this->teamMemberships = $teamMemberships;
-        return $this;
-    }
-
-    /**
      * @return TeamMembershipInterface[]
      */
     public function getActiveMemberships()
@@ -786,8 +764,8 @@ class User implements AdvancedUserInterface, \Serializable
             }
         }
 
-        $this->setTeamMemberships($teamMemberships);
-        $this->setExecutiveBoardMemberships($boardMemberships);
+        $this->teamMemberships = $teamMemberships;
+        $this->executiveBoardMemberships = $boardMemberships;
 
         return $this;
     }
