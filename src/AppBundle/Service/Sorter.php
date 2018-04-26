@@ -110,34 +110,16 @@ class Sorter
 
     /**
      * Sorts "leder" og "nestleder" first and the rest in alphabetical order
+     * Note! This function does not care WHICH teams the user is active in
      *
      * @param User[] $users
      */
-    public function sortUsersByActiveExecutiveBoardPosition(&$users)
+    public function sortUsersByActivePositions(&$users)
     {
-        $this->sortUsersByActivePositions($users, 'getActiveExecutiveBoardMemberships');
-    }
-
-    /**
-     * Sorts "leder" og "nestleder" first and the rest in alphabetical order
-     *
-     * @param User[] $users
-     */
-    public function sortUsersByActiveTeamPosition(&$users)
-    {
-        $this->sortUsersByActivePositions($users, 'getActiveTeamMemberships');
-    }
-
-    /**
-     * @param User[] $users
-     * @param string $getActiveTeamMembershipsFunction
-     */
-    private function sortUsersByActivePositions(&$users, $getActiveTeamMembershipsFunction)
-    {
-        usort($users, function ($user1, $user2) use ($getActiveTeamMembershipsFunction) {
-            // Get teammemberships
-            $teamMemberships1 = call_user_func(array($user1, $getActiveTeamMembershipsFunction));
-            $teamMemberships2 = call_user_func(array($user2, $getActiveTeamMembershipsFunction));
+        usort($users, function ($user1, $user2) {
+            // Get team memberships
+            $teamMemberships1 = $user1->getActiveMemberships();
+            $teamMemberships2 = $user2->getActiveMemberships();
 
             // Check if empty or null
             if ($teamMemberships2 === null || empty($teamMemberships2)) {
@@ -149,7 +131,7 @@ class Sorter
                 return 1; // If 1 is empty, but not 2: 2 comes first
             }
 
-            // Sort workhistories by position
+            // Sort team memberships by position
             $this->sortTeamMembershipsByPosition($teamMemberships1);
             $this->sortTeamMembershipsByPosition($teamMemberships2);
 
@@ -160,7 +142,8 @@ class Sorter
                     return $cmp; // Non equal positions
                 }
             }
-            if (count($teamMemberships1) === count($teamMemberships2)) {
+            // If tied, prioritize those with the most positions
+            if (count($teamMemberships1) !== count($teamMemberships2)) {
                 return count($teamMemberships2) - count($teamMemberships1);
             } else {
                 return $cmp;
@@ -169,11 +152,9 @@ class Sorter
     }
 
     /**
-     * Order: "leder" < "nestleder" < "aaa" < "zzz"
+     * Order: "leder" < "nestleder" < "aaa" < "zzz" < ""
      *
      * @param TeamMembershipInterface[] $teamMemberships
-     *
-     * @return TeamMembershipInterface[]
      */
     public function sortTeamMembershipsByPosition(&$teamMemberships)
     {
@@ -184,7 +165,7 @@ class Sorter
      * @param TeamMembershipInterface $teamMembership1
      * @param TeamMembershipInterface $teamMembership2
      *
-     * @return int -1, 0, 1
+     * @return int
      */
     private function compareTeamMemberships($teamMembership1, $teamMembership2)
     {
@@ -192,12 +173,12 @@ class Sorter
     }
 
     /**
-     * Order: "leder" < "nestleder" < "aaa" < "zzz"
+     * Order: "leder" < "nestleder" < "aaa" < "zzz" < ""
      *
      * @param string $position1
      * @param string $position2
      *
-     * @return int -1, 0, 1
+     * @return int
      */
     private function comparePositions($position1, $position2)
     {
@@ -205,10 +186,12 @@ class Sorter
         $position1 = strtolower($position1);
         $position2 = strtolower($position2);
 
+        // Test equality first to simplify logic below
         if ($position1 === $position2) {
             return 0;
         }
 
+        // Special cases
         if ($position1 === 'leder') {
             return -1;
         }
@@ -221,7 +204,14 @@ class Sorter
         if ($position2 === 'nestleder') {
             return 1;
         }
+        if ($position2 === '') {
+            return -1;
+        }
+        if ($position1 === '') {
+            return 1;
+        }
 
+        // General compare
         return strcmp($position1, $position2);
     }
 }

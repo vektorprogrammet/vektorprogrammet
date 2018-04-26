@@ -14,4 +14,9 @@ interface TeamMembershipInterface
      * @return string | null
      */
     public function getPositionName();
+
+    /**
+     * @return TeamInterface
+     */
+    public function getTeam();
 }

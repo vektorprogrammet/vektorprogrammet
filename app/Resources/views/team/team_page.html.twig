@@ -37,7 +37,7 @@
                 </div>
             </header>
             <section class="team-members">
-                {% for user in users %}
+                {% for user in team.activeUsers | team_position_sort(team) %}
                     <div class="team-member mx-2 my-3 mx-sm-4">
                         {% if is_granted_assistant() %}
                             <a href="{{ path('specific_profile', { 'id': user.id }) }}"><img
@@ -54,15 +54,9 @@
                         {% endif %}
 
                         <p class="position m-0">
-                            {% if type == 'board' %}
-                                {% for executiveBoardMembership in user.executiveBoardMemberships %}
-                                    {{ executiveBoardMembership.position }}{% if not loop.last %},{% endif %}
-                                {% endfor %}
-                            {% elseif type == 'team'%}
-                                {% for teamHistory in user.teamMemberships %}
-                                    {{ teamHistory.position }}{% if not loop.last %},{% endif %}
-                                {% endfor %}
-                            {% endif %}
+                            {% for membership in user.activeMemberships %}
+                                {{ membership.positionName }}{% if not loop.last %},{% endif %}
+                            {% endfor %}
                         </p>
                     </div>
                 {% endfor %}

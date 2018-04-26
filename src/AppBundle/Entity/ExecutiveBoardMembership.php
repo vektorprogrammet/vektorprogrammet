@@ -26,7 +26,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
 
     /**
      * @var ExecutiveBoard
-     * @ORM\ManyToOne(targetEntity="ExecutiveBoard", inversedBy="members")
+     * @ORM\ManyToOne(targetEntity="ExecutiveBoard", inversedBy="boardMemberships")
      **/
     private $board;
 
@@ -190,5 +190,13 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
         $termEndsInFuture = $this->getEndSemester() === null || $this->getEndSemester()->getSemesterEndDate() > $now;
         $termStartedInPast = $this->getStartSemester() !== null && $this->getStartSemester()->getSemesterStartDate() < $now;
         return $termEndsInFuture && $termStartedInPast;
+    }
+
+    /**
+     * @return TeamInterface
+     */
+    public function getTeam()
+    {
+        return $this->board;
     }
 }

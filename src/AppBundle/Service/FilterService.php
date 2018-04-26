@@ -2,19 +2,19 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Entity\TeamMembership;
-use AppBundle\Entity\Team;
+use AppBundle\Entity\TeamInterface;
+use AppBundle\Entity\TeamMembershipInterface;
 
 class FilterService
 {
 
     /**
-     * Keeps only workhistories from $team
+     * Returns only memberships in $team
      *
-     * @param TeamMembership[] $teamMemberships
-     * @param Team $team
+     * @param TeamMembershipInterface[] $teamMemberships
+     * @param TeamInterface $team
      *
-     * @return TeamMembership[]
+     * @return TeamMembershipInterface[]
      */
     public function filterTeamMembershipsByTeam($teamMemberships, $team)
     {

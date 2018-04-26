@@ -83,6 +83,11 @@ class Team implements TeamInterface
         return (string) $this->getName();
     }
 
+    public function getType()
+    {
+        return 'team';
+    }
+
     /**
      * Get id.
      *

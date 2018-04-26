@@ -755,4 +755,36 @@ class User implements AdvancedUserInterface, \Serializable
         $this->teamMemberships = $teamMemberships;
         return $this;
     }
+
+    /**
+     * @return TeamMembershipInterface[]
+     */
+    public function getActiveMemberships()
+    {
+        return array_merge($this->getActiveTeamMemberships(), $this->getActiveExecutiveBoardMemberships());
+    }
+
+    /**
+     * @param TeamMembershipInterface[] $memberships
+     *
+     * @return User $this
+     */
+    public function setMemberships($memberships)
+    {
+        $teamMemberships = [];
+        $boardMemberships = [];
+        foreach ($memberships as $membership) {
+            if ($membership->getTeam()->getType() == 'team') {
+                array_push($teamMemberships, $membership);
+            }
+            if ($membership->getTeam()->getType() == 'executive_board') {
+                array_push($boardMemberships, $membership);
+            }
+        }
+
+        $this->setTeamMemberships($teamMemberships);
+        $this->setExecutiveBoardMemberships($boardMemberships);
+
+        return $this;
+    }
 }

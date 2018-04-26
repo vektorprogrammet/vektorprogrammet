@@ -45,11 +45,16 @@ class ExecutiveBoard implements TeamInterface
      * @var ExecutiveBoardMembership[]
      * @ORM\OneToMany(targetEntity="ExecutiveBoardMembership", mappedBy="board")
      */
-    private $members;
+    private $boardMemberships;
 
     public function __toString()
     {
         return (string) $this->getName();
+    }
+
+    public function getType()
+    {
+        return 'executive_board';
     }
 
     /**
@@ -137,14 +142,14 @@ class ExecutiveBoard implements TeamInterface
     /**
      * @return ExecutiveBoardMembership[]
      */
-    public function getMembers()
+    public function getBoardMemberships()
     {
-        return $this->members;
+        return $this->boardMemberships;
     }
 
     public function getTeamMemberships()
     {
-        return $this->members;
+        return $this->boardMemberships;
     }
 
     public function getAcceptApplication()

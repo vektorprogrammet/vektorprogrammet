@@ -229,6 +229,7 @@ services:
   app.group_sorter_extension:
     class: AppBundle\Twig\Extension\GroupSortExtension
     public: false
+    arguments: ['@app.sorter', '@app.filter_service']
     tags:
       - { name: twig.extension }
 

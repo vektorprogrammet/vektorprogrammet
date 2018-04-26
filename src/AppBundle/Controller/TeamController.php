@@ -10,24 +10,8 @@ class TeamController extends Controller
     {
         $team = $this->getDoctrine()->getRepository('AppBundle:Team')->find($id);
 
-        $sorter = $this->get('app.sorter');
-        $filterService = $this->get('app.filter_service');
-
-        $users = $team->getActiveUsers();
-        $sorter->sortUsersByActiveTeamPosition($users);
-
-        // Sort all the users' team histories by position
-        // (So for example "Leder" comes before "Sekretær" if the user has multiple positions)
-        foreach ($users as $user) {
-            $activeTeamHistories = $filterService->filterTeamMembershipsByTeam($user->getActiveTeamMemberships(), $team);
-            $sorter->sortTeamMembershipsByPosition($activeTeamHistories);
-            $user->setTeamMemberships($activeTeamHistories);
-        }
-
         return $this->render('team/team_page.html.twig', array(
             'team'  => $team,
-            'users' => $users,
-            'type' => 'team',
         ));
     }
 
