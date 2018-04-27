@@ -57,7 +57,7 @@ class Team implements TeamInterface
     private $acceptApplication;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default"=true})
      */
     protected $active;
 
