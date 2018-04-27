@@ -37,7 +37,7 @@ class Image
      */
     private $path;
 
-	private $test;
+    private $test;
 
     /**
      * @var string
