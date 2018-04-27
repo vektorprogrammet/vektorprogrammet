@@ -28,7 +28,7 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
         $manager->persist($semester1);
 
         $currentSemester = new Semester();
-        $currentSemester->setSemesterTime($now->format('n') <= 7 ? 'Vår' : 'Høst');
+        $currentSemester->setSemesterTime($isSpring ? 'Vår' : 'Høst');
         $currentSemester->setYear($now->format('Y'));
         $currentSemester->setDepartment($this->getReference('dep-1'));
         $currentSemester->setAdmissionStartDate(new \DateTime());
@@ -39,7 +39,7 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
         $manager->persist($currentSemester);
 
         $uioCurrentSemester = new Semester();
-        $uioCurrentSemester->setSemesterTime($now->format('n') <= 7 ? 'Vår' : 'Høst');
+        $uioCurrentSemester->setSemesterTime($isSpring ? 'Vår' : 'Høst');
         $uioCurrentSemester->setYear($now->format('Y'));
         $uioCurrentSemester->setDepartment($this->getReference('dep-4'));
         $uioCurrentSemester->setAdmissionStartDate(new \DateTime());

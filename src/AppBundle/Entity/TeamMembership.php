@@ -6,10 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="work_history")
- * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\WorkHistoryRepository")
+ * @ORM\Table(name="team_membership")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\TeamMembershipRepository")
  */
-class WorkHistory implements GroupMemberInterface
+class TeamMembership implements TeamMembershipInterface
 {
     /**
      * @ORM\Column(type="integer")
@@ -19,7 +19,7 @@ class WorkHistory implements GroupMemberInterface
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="workHistories")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="teamMemberships")
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Assert\Valid
      **/
@@ -54,7 +54,7 @@ class WorkHistory implements GroupMemberInterface
     /**
      * @var Team
      *
-     * @ORM\ManyToOne(targetEntity="Team", inversedBy="workHistories")
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="teamMemberships")
      * @ORM\JoinColumn(onDelete="SET NULL")
      **/
     protected $team;
@@ -93,7 +93,7 @@ class WorkHistory implements GroupMemberInterface
      *
      * @param \AppBundle\Entity\User $user
      *
-     * @return WorkHistory
+     * @return TeamMembership
      */
     public function setUser(\AppBundle\Entity\User $user = null)
     {
@@ -117,7 +117,7 @@ class WorkHistory implements GroupMemberInterface
      *
      * @param \AppBundle\Entity\Team $team
      *
-     * @return WorkHistory
+     * @return TeamMembership
      */
     public function setTeam(\AppBundle\Entity\Team $team = null)
     {
@@ -141,7 +141,7 @@ class WorkHistory implements GroupMemberInterface
      *
      * @param \AppBundle\Entity\Position $position
      *
-     * @return WorkHistory
+     * @return TeamMembership
      */
     public function setPosition(\AppBundle\Entity\Position $position = null)
     {
@@ -165,9 +165,9 @@ class WorkHistory implements GroupMemberInterface
      *
      * @param \AppBundle\Entity\Semester $startSemester
      *
-     * @return WorkHistory
+     * @return TeamMembership
      */
-    public function setStartSemester(\AppBundle\Entity\Semester $startSemester = null)
+    public function setStartSemester(Semester $startSemester = null)
     {
         $this->startSemester = $startSemester;
 
@@ -189,9 +189,9 @@ class WorkHistory implements GroupMemberInterface
      *
      * @param \AppBundle\Entity\Semester $endSemester
      *
-     * @return WorkHistory
+     * @return TeamMembership
      */
-    public function setEndSemester(\AppBundle\Entity\Semester $endSemester = null)
+    public function setEndSemester(Semester $endSemester = null)
     {
         $this->endSemester = $endSemester;
 
@@ -215,10 +215,10 @@ class WorkHistory implements GroupMemberInterface
      */
     public function isActiveInSemester(Semester $semester)
     {
-        $semesterStartLaterThanWorkHistory = $semester->getSemesterStartDate() >= $this->getStartSemester()->getSemesterStartDate();
-        $semesterEndsBeforeWorkHistory = $this->getEndSemester() === null || $semester->getSemesterEndDate() <= $this->getEndSemester()->getSemesterEndDate();
+        $semesterStartLaterThanTeamMembership = $semester->getSemesterStartDate() >= $this->getStartSemester()->getSemesterStartDate();
+        $semesterEndsBeforeTeamMembership = $this->getEndSemester() === null || $semester->getSemesterEndDate() <= $this->getEndSemester()->getSemesterEndDate();
 
-        return $semesterStartLaterThanWorkHistory && $semesterEndsBeforeWorkHistory;
+        return $semesterStartLaterThanTeamMembership && $semesterEndsBeforeTeamMembership;
     }
 
     public function isActive()
@@ -249,6 +249,9 @@ class WorkHistory implements GroupMemberInterface
         $this->deletedTeamName = $deletedTeamName;
     }
 
+    /**
+     * @return string
+     */
     public function getPositionName(): string
     {
         return $this->position->getName();

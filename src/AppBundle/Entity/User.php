@@ -127,9 +127,16 @@ class User implements AdvancedUserInterface, \Serializable
     private $assistantHistories;
 
     /**
-     * @ORM\OneToMany(targetEntity="WorkHistory", mappedBy="user")
+     * @var TeamMembership[]
+     * @ORM\OneToMany(targetEntity="TeamMembership", mappedBy="user")
      */
-    private $workHistories;
+    private $teamMemberships;
+
+    /**
+     * @var ExecutiveBoardMembership[]
+     * @ORM\OneToMany(targetEntity="ExecutiveBoardMembership", mappedBy="user")
+     */
+    private $executiveBoardMemberships;
 
     /**
      * @ORM\OneToMany(targetEntity="CertificateRequest", mappedBy="user")
@@ -609,11 +616,11 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @return WorkHistory[]
+     * @return TeamMembership[]
      */
-    public function getWorkHistories()
+    public function getTeamMemberships()
     {
-        return $this->workHistories;
+        return $this->teamMemberships;
     }
 
     /**
@@ -689,5 +696,77 @@ class User implements AdvancedUserInterface, \Serializable
     public function setCompanyEmail($companyEmail)
     {
         $this->companyEmail = $companyEmail;
+    }
+
+    /**
+     * @return ExecutiveBoardMembership[]
+     */
+    public function getExecutiveBoardMemberships()
+    {
+        return $this->executiveBoardMemberships;
+    }
+
+    /**
+     * @return ExecutiveBoardMembership[]
+     */
+    public function getActiveExecutiveBoardMemberships()
+    {
+        $activeExecutiveBoardMemberships = [];
+        if ($this->executiveBoardMemberships !== null) {
+            foreach ($this->executiveBoardMemberships as $executiveBoardMembership) {
+                if ($executiveBoardMembership->isActive()) {
+                    $activeExecutiveBoardMemberships[] = $executiveBoardMembership;
+                }
+            }
+        }
+        return $activeExecutiveBoardMemberships;
+    }
+
+    /**
+     * @return TeamMembership[]
+     */
+    public function getActiveTeamMemberships()
+    {
+        $activeTeamMemberships = [];
+        if ($this->teamMemberships !== null) {
+            foreach ($this->teamMemberships as $teamMembership) {
+                if ($teamMembership->isActive()) {
+                    $activeTeamMemberships[] = $teamMembership;
+                }
+            }
+        }
+        return $activeTeamMemberships;
+    }
+
+    /**
+     * @return TeamMembershipInterface[]
+     */
+    public function getActiveMemberships()
+    {
+        return array_merge($this->getActiveTeamMemberships(), $this->getActiveExecutiveBoardMemberships());
+    }
+
+    /**
+     * @param TeamMembershipInterface[] $memberships
+     *
+     * @return User $this
+     */
+    public function setMemberships($memberships)
+    {
+        $teamMemberships = [];
+        $boardMemberships = [];
+        foreach ($memberships as $membership) {
+            if ($membership->getTeam()->getType() == 'team') {
+                $teamMemberships[] = $membership;
+            }
+            if ($membership->getTeam()->getType() == 'executive_board') {
+                $boardMemberships[] = $membership;
+            }
+        }
+
+        $this->teamMemberships = $teamMemberships;
+        $this->executiveBoardMemberships = $boardMemberships;
+
+        return $this;
     }
 }

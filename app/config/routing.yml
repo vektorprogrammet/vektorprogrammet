@@ -700,9 +700,9 @@ teamadmin_show_specific_team:
  defaults: {_controller: AppBundle:TeamAdmin:showSpecificTeam }
  methods: [GET]
 
-teamadmin_update_workhistory:
+teamadmin_update_team_membership:
  path: /kontrollpanel/teamadmin/oppdater/teamhistorie/{id}
- defaults: {_controller: AppBundle:TeamAdmin:updateWorkHistory }
+ defaults: {_controller: AppBundle:TeamAdmin:updateTeamMembership }
  methods: [GET, POST]
  requirements:
     id: \d+
@@ -1366,7 +1366,7 @@ executive_board_show:
  methods: [GET]
 
 executive_board_add_user_to_board:
- path: /kontrollpanel/hovedstyret/nytt_medlem
+ path: /kontrollpanel/hovedstyret/nytt_medlem/{id}
  defaults: {_controller: AppBundle:ExecutiveBoard:addUserToBoard }
  methods: [GET, POST]
  requirements:

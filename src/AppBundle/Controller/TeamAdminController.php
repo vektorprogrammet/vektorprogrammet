@@ -4,14 +4,14 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
 use AppBundle\Event\TeamEvent;
-use AppBundle\Event\WorkHistoryEvent;
+use AppBundle\Event\TeamMembershipEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Team;
 use AppBundle\Form\Type\CreateTeamType;
-use AppBundle\Entity\WorkHistory;
-use AppBundle\Form\Type\CreateWorkHistoryType;
+use AppBundle\Entity\TeamMembership;
+use AppBundle\Form\Type\CreateTeamMembershipType;
 
 class TeamAdminController extends Controller
 {
@@ -30,24 +30,24 @@ class TeamAdminController extends Controller
         ));
     }
 
-    public function updateWorkHistoryAction(Request $request, WorkHistory $workHistory)
+    public function updateTeamMembershipAction(Request $request, TeamMembership $teamMembership)
     {
-        $department = $workHistory->getTeam()->getDepartment();
+        $department = $teamMembership->getTeam()->getDepartment();
 
-        $form = $this->createForm(new CreateWorkHistoryType($department), $workHistory);
+        $form = $this->createForm(new CreateTeamMembershipType($department), $teamMembership);
 
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($workHistory);
+            $em->persist($teamMembership);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(WorkHistoryEvent::EDITED, new WorkHistoryEvent($workHistory));
+            $this->get('event_dispatcher')->dispatch(TeamMembershipEvent::EDITED, new TeamMembershipEvent($teamMembership));
 
-            return $this->redirect($this->generateUrl('teamadmin_show_specific_team', array('id' => $workHistory->getTeam()->getId())));
+            return $this->redirect($this->generateUrl('teamadmin_show_specific_team', array('id' => $teamMembership->getTeam()->getId())));
         }
 
-        return $this->render('team_admin/create_work_history.html.twig', array(
+        return $this->render('team_admin/create_team_membership.html.twig', array(
                 'form' => $form->createView(),
             ));
     }
@@ -57,13 +57,13 @@ class TeamAdminController extends Controller
         // Find the department of the team
         $department = $team->getDepartment();
 
-        // Create a new WorkHistory entity
-        $workHistory = new WorkHistory();
-        $workHistory->setUser($this->getUser());
-        $workHistory->setPosition($this->getDoctrine()->getRepository('AppBundle:Position')->findOneBy(array('name' => 'Medlem')));
+        // Create a new TeamMembership entity
+        $teamMembership = new TeamMembership();
+        $teamMembership->setUser($this->getUser());
+        $teamMembership->setPosition($this->getDoctrine()->getRepository('AppBundle:Position')->findOneBy(array('name' => 'Medlem')));
 
         // Create a new formType with the needed variables
-        $form = $this->createForm(new CreateWorkHistoryType($department), $workHistory);
+        $form = $this->createForm(new CreateTeamMembershipType($department), $teamMembership);
 
         // Handle the form
         $form->handleRequest($request);
@@ -71,36 +71,36 @@ class TeamAdminController extends Controller
         if ($form->isValid()) {
 
             //set the team of the department
-            $workHistory->setTeam($team);
+            $teamMembership->setTeam($team);
 
             // Persist the team to the database
             $em = $this->getDoctrine()->getManager();
-            $em->persist($workHistory);
+            $em->persist($teamMembership);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(WorkHistoryEvent::CREATED, new WorkHistoryEvent($workHistory));
+            $this->get('event_dispatcher')->dispatch(TeamMembershipEvent::CREATED, new TeamMembershipEvent($teamMembership));
 
             return $this->redirect($this->generateUrl('teamadmin_show_specific_team', array('id' => $team->getId())));
         }
 
-        return $this->render('team_admin/create_work_history.html.twig', array(
+        return $this->render('team_admin/create_team_membership.html.twig', array(
                 'form' => $form->createView(),
             ));
     }
 
     public function showSpecificTeamAction(Team $team)
     {
-        // Find all WorkHistory entities based on team
-        $activeWorkHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeam($team);
-        $inActiveWorkHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findInActiveWorkHistoriesByTeam($team);
-        usort($activeWorkHistories, array($this, 'sortWorkHistoriesByEndDate'));
-        usort($inActiveWorkHistories, array($this, 'sortWorkHistoriesByEndDate'));
+        // Find all TeamMembership entities based on team
+        $activeTeamMemberships = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findActiveTeamMembershipsByTeam($team);
+        $inActiveTeamMemberships = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findInActiveTeamMembershipsByTeam($team);
+        usort($activeTeamMemberships, array($this, 'sortTeamMembershipsByEndDate'));
+        usort($inActiveTeamMemberships, array($this, 'sortTeamMembershipsByEndDate'));
 
         $user = $this->getUser();
-        $currentUserWorkHistory = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByUser($user);
+        $currentUserTeamMembership = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findActiveTeamMembershipsByUser($user);
         $isUserInTeam = false;
-        foreach ($currentUserWorkHistory as $wh) {
-            if (in_array($wh, $activeWorkHistories)) {
+        foreach ($currentUserTeamMembership as $wh) {
+            if (in_array($wh, $activeTeamMemberships)) {
                 $isUserInTeam = true;
             }
         }
@@ -108,19 +108,19 @@ class TeamAdminController extends Controller
         // Return the view with suitable variables
         return $this->render('team_admin/specific_team.html.twig', array(
             'team' => $team,
-            'activeWorkHistories' => $activeWorkHistories,
-            'inActiveWorkHistories' => $inActiveWorkHistories,
+            'activeTeamMemberships' => $activeTeamMemberships,
+            'inActiveTeamMemberships' => $inActiveTeamMemberships,
             'isUserInTeam' => $isUserInTeam,
         ));
     }
 
     /**
-     * @param WorkHistory $a
-     * @param WorkHistory $b
+     * @param TeamMembership $a
+     * @param TeamMembership $b
      *
      * @return bool
      */
-    private function sortWorkHistoriesByEndDate($a, $b)
+    private function sortTeamMembershipsByEndDate($a, $b)
     {
         return $a->getStartSemester()->getSemesterStartDate() < $b->getStartSemester()->getSemesterStartDate();
     }
@@ -149,11 +149,11 @@ class TeamAdminController extends Controller
 
                 return $this->redirect($this->generateUrl('teamadmin_show'));
             }
-            $workHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeam($team);
+            $teamMemberships = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findActiveTeamMembershipsByTeam($team);
             // Render the teampage as a preview
             return $this->render('team/team_page.html.twig', array(
                 'team' => $team,
-                'workHistories' => $workHistories,
+                'teamMemberships' => $teamMemberships,
             ));
         }
 
@@ -204,7 +204,7 @@ class TeamAdminController extends Controller
             // Render the teampage as a preview
             return $this->render('team/team_page.html.twig', array(
                 'team' => $team,
-                'workHistories' => [],
+                'teamMemberships' => [],
             ));
         }
 
@@ -214,13 +214,13 @@ class TeamAdminController extends Controller
         ));
     }
 
-    public function removeUserFromTeamByIdAction(WorkHistory $workHistory)
+    public function removeUserFromTeamByIdAction(TeamMembership $teamMembership)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($workHistory);
+        $em->remove($teamMembership);
         $em->flush();
 
-        $this->get('event_dispatcher')->dispatch(WorkHistoryEvent::DELETED, new WorkHistoryEvent($workHistory));
+        $this->get('event_dispatcher')->dispatch(TeamMembershipEvent::DELETED, new TeamMembershipEvent($teamMembership));
 
         return new JsonResponse(array(
             'success' => true,
@@ -231,9 +231,9 @@ class TeamAdminController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        foreach ($team->getWorkHistories() as $workHistory) {
-            $workHistory->setDeletedTeamName($team->getName());
-            $em->persist($workHistory);
+        foreach ($team->getTeamMemberships() as $teamMembership) {
+            $teamMembership->setDeletedTeamName($team->getName());
+            $em->persist($teamMembership);
         }
 
         $em->remove($team);
