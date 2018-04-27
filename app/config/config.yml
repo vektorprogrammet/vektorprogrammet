@@ -154,6 +154,7 @@ ivory_ck_editor:
             filebrowserBrowseRoute: elfinder
             filebrowserBrowseRouteParameters:
                 instance: default
+            extraPlugins: "justify"
         basic_config:
             toolbar: basic
         standard_config:
