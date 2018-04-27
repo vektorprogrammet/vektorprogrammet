@@ -110,13 +110,15 @@
                 </tbody>
             </table>
 
+            {% set anyInactive = false %}
             <!-- Henter ut team som ikke er aktive -->
             {% for t in teams if not t.isActive %}
                 <!-- Printer ut tablehead kun hvis iterasjonen går gjennom en gang, altså hvis det
                  finnes minst ett inaktivt team-->
                 {% if loop.first %}
+                    {% set anyInactive = true %}
                     <h5>Inaktive team</h5>
-                    <table width="100%" id="table">
+                    <table width="100%">
                         <thead>
                             <tr>
                                 <th>Navn</th>
@@ -124,8 +126,8 @@
                                 <th colspan="3">Opptak</th>
                             </tr>
                         </thead>
-                {% endif %}
                         <tbody>
+                {% endif %}
                             <tr>
                                 <td><a
                                             href="{{ path('teamadmin_show_specific_team', { 'id': t.id }) }}"> {{ t.name }} </a>
@@ -149,8 +151,10 @@
                                 {% endif %}
                             </tr>
             {% endfor %}
+                        {% if anyInactive %}
                         </tbody>
                     </table>
+                    {% endif %}
         </div>
     </div>
 
