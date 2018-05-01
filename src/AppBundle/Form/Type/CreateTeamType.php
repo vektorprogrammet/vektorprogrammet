@@ -29,6 +29,10 @@ class CreateTeamType extends AbstractType
                 'label' => 'Ta i mot søknader?',
                 'required' => false,
             ))
+            ->add('active', 'checkbox', array(
+                'label' => 'Aktivt team',
+                'required' => false,
+            ))
             ->add('description', 'ckeditor', array(
                 'required' => false,
                 'config' => array(

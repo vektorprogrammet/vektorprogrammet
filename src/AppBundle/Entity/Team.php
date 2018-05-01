@@ -57,6 +57,28 @@ class Team implements TeamInterface
     private $acceptApplication;
 
     /**
+     * @ORM\Column(type="boolean", options={"default"=true})
+     */
+    protected $active;
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive(bool $active)
+    {
+        $this->active = $active;
+    }
+
+
+    /**
      * @var TeamMembership[]
      * @ORM\OneToMany(targetEntity="TeamMembership", mappedBy="team")
      */
@@ -76,6 +98,12 @@ class Team implements TeamInterface
     public function setAcceptApplication($acceptApplication)
     {
         $this->acceptApplication = $acceptApplication;
+    }
+
+
+    public function __construct()
+    {
+        $this->active = true;
     }
 
     public function __toString()

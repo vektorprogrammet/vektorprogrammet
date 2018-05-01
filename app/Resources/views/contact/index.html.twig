@@ -107,7 +107,7 @@
                                     </div>
                                     <div class="col-12 col-md-6 d-none d-md-block">
                                         <div class="list-group list-group-flush">
-                                            {% for team in department.teams %}
+                                            {% for team in department.teams if team.isActive %}
                                                 <div class="list-group-item">
                                                     <a class="text-dark-blue"
                                                        href={{ path('team_page', {'id': team.id}) }}>
