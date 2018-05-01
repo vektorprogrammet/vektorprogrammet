@@ -2,6 +2,7 @@
 
 namespace AppBundle\EventSubscriber;
 
+use AppBundle\Entity\AdmissionNotification;
 use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\InterviewQuestion;
 use AppBundle\Entity\InterviewQuestionAlternative;
@@ -38,6 +39,7 @@ class DbSubscriber implements EventSubscriber
             SurveyAnswer::class,
             SurveyQuestion::class,
             SurveyQuestionAlternative::class,
+            AdmissionNotification::class,
         ];
     }
 

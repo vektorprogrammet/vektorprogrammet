@@ -30,13 +30,12 @@ class AdmissionSubscriberController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            if (!$em->getRepository('AppBundle:AdmissionSubscriber')->findByEmailAndDepartment($subscriber->getEmail(), $department)) {
-                $em->persist($subscriber);
-                $em->flush();
+            try {
+                $this->get('app.admission_notifier')->createSubscription($department, $subscriber->getEmail());
+                $this->addFlash('success', $subscriber->getEmail().' har blitt meldt på interesselisten. Du vil få en e-post når opptaket starter');
+            } catch (\InvalidArgumentException $e) {
+                $this->addFlash('danger', 'Kunne ikke melde '.$subscriber->getEmail().' på interesselisten. Vennligst prøv igjen.');
             }
-
-            $this->addFlash('success', $subscriber->getEmail().' har blitt meldt på interesselisten. Du vil få en e-post når opptaket starter');
 
             return $this->redirectToRoute('interest_list', ['shortName' => $department->getShortName()]);
         }
@@ -66,19 +65,10 @@ class AdmissionSubscriberController extends Controller
             return new JsonResponse("Invalid department", 400);
         }
 
-        $subscriber = new AdmissionSubscriber();
-        $subscriber->setDepartment($department);
-        $subscriber->setEmail($email);
-
-        $errors = $this->get('validator')->validate($subscriber);
-        if (count($errors) > 0) {
-            return new JsonResponse((string) $errors, 400);
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        if (!$em->getRepository('AppBundle:AdmissionSubscriber')->findByEmailAndDepartment($email, $department)) {
-            $em->persist($subscriber);
-            $em->flush();
+        try {
+            $this->get('app.admission_notifier')->createSubscription($department, $email);
+        } catch (\InvalidArgumentException $e) {
+            return new JsonResponse($e->getMessage(), 400);
         }
 
         return new JsonResponse(null, 201);
