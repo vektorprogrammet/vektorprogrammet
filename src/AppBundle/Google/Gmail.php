@@ -9,10 +9,12 @@ class Gmail extends GoogleService implements MailerInterface
 {
     private $defaultEmail;
 
-    public function send(\Swift_Message $message)
+    public function send(\Swift_Message $message, bool $disableLogging = false)
     {
         if ($this->disabled) {
-            $this->logger->info("Google API disabled. Did not send email to {$this->recipientsToHeader($message->getTo())}: `{$message->getSubject()}`");
+            if (!$disableLogging) {
+                $this->logger->info("Google API disabled. Did not send email to {$this->recipientsToHeader($message->getTo())}: `{$message->getSubject()}`");
+            }
             return;
         }
         
@@ -29,7 +31,7 @@ class Gmail extends GoogleService implements MailerInterface
             return;
         }
 
-        if (array_search('SENT', $res->getLabelIds()) !== false) {
+        if (array_search('SENT', $res->getLabelIds()) !== false && !$disableLogging) {
             $this->logger->info("Email sent to {$this->recipientsToHeader($message->getTo())}: `{$message->getSubject()}`");
         } else {
             $this->logger->notice("Failed to send email to {$this->recipientsToHeader($message->getTo())}: `{$message->getSubject()}`");

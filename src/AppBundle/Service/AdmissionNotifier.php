@@ -4,26 +4,55 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\AdmissionNotification;
+use AppBundle\Entity\AdmissionSubscriber;
+use AppBundle\Entity\Department;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AdmissionNotifier
 {
-    /**
-     * @var EntityManager
-     */
     private $em;
-    /**
-     * @var EmailSender
-     */
     private $emailSender;
     private $logger;
+    private $validator;
+    private $sendLimit;
 
-    public function __construct(EntityManager $em, EmailSender $emailSender, LoggerInterface $logger)
+    public function __construct(EntityManager $em, EmailSender $emailSender, LoggerInterface $logger, ValidatorInterface $validator, int $sendLimit)
     {
         $this->em = $em;
         $this->emailSender = $emailSender;
         $this->logger = $logger;
+        $this->validator = $validator;
+        $this->sendLimit = $sendLimit;
+    }
+
+    /**
+     * @param Department $department
+     * @param string $email
+     * @param bool $fromApplication
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function createSubscription(Department $department, string $email, bool $fromApplication = false)
+    {
+        $alreadySubscribed = $this->em->getRepository('AppBundle:AdmissionSubscriber')->findByEmailAndDepartment($email, $department);
+        if ($alreadySubscribed) {
+            return;
+        }
+
+        $subscriber = new AdmissionSubscriber();
+        $subscriber->setDepartment($department);
+        $subscriber->setEmail($email);
+        $subscriber->setFromApplication($fromApplication);
+
+        $errors = $this->validator->validate($subscriber);
+        if (count($errors) > 0) {
+            throw new \InvalidArgumentException((string) $errors);
+        }
+
+        $this->em->persist($subscriber);
+        $this->em->flush();
     }
 
     public function sendAdmissionNotifications()
@@ -35,16 +64,31 @@ class AdmissionNotifier
                 if (!$semester || !$semester->hasActiveAdmission()) {
                     continue;
                 }
+
+                $applicationEmails = $this->em->getRepository('AppBundle:Application')->findEmailsBySemester($semester);
                 $subscribers = $this->em->getRepository('AppBundle:AdmissionSubscriber')->findByDepartment($department);
+                $notificationEmails = $this->em->getRepository('AppBundle:AdmissionNotification')->findBySemester($semester);
+
+                $notificationsSent = 0;
                 foreach ($subscribers as $subscriber) {
-                    $alreadyNotified = $this->em->getRepository('AppBundle:AdmissionNotification')->findBySubscriberAndSemester($subscriber, $semester);
-                    if (!$alreadyNotified) {
-                        $this->emailSender->sendAdmissionStartedNotification($subscriber);
-                        $notification = new AdmissionNotification();
-                        $notification->setSemester($semester);
-                        $notification->setSubscriber($subscriber);
-                        $this->em->persist($notification);
+                    if ($notificationsSent > $this->sendLimit) {
+                        break;
                     }
+                    $hasApplied = array_search($subscriber->getEmail(), $applicationEmails) !== false;
+                    $alreadyNotified = array_search($subscriber->getEmail(), $notificationEmails) !== false;
+                    if ($hasApplied || $alreadyNotified) {
+                        continue;
+                    }
+
+                    $this->emailSender->sendAdmissionStartedNotification($subscriber);
+                    $notification = new AdmissionNotification();
+                    $notification->setSemester($semester);
+                    $notification->setSubscriber($subscriber);
+                    $this->em->persist($notification);
+                    $notificationsSent++;
+                }
+                if ($notificationsSent > 0) {
+                    $this->logger->info("*$notificationsSent* admission notification emails sent to subscribers in *" . $department->getCity() . "*");
                 }
             }
         } catch (\Exception $e) {

@@ -17,8 +17,12 @@ class Mailer implements MailerInterface
         }
     }
 
-    public function send(\Swift_Message $message)
+    public function send(\Swift_Message $message, bool $disableLogging = false)
     {
-        $this->mailer->send($message);
+        if ($this->mailer instanceof Gmail) {
+            $this->mailer->send($message, $disableLogging);
+        } else {
+            $this->mailer->send($message);
+        }
     }
 }

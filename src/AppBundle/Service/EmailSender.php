@@ -104,6 +104,6 @@ class EmailSender
              ->setBody($this->twig->render('admission/notification_email.html.twig', array('department' => $subscriber->getDepartment(), 'subscriber' => $subscriber)))
              ->setContentType('text/html');
 
-        $this->mailer->send($message);
+        $this->mailer->send($message, true);
     }
 }

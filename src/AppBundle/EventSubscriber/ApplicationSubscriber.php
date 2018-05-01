@@ -3,6 +3,7 @@
 namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\ApplicationCreatedEvent;
+use AppBundle\Service\AdmissionNotifier;
 use AppBundle\Service\ApplicationData;
 use AppBundle\Mailer\MailerInterface;
 use AppBundle\Service\NewsletterManager;
@@ -21,21 +22,20 @@ class ApplicationSubscriber implements EventSubscriberInterface
     private $slackMessenger;
     private $applicationData;
     private $router;
-    private $newsletterManager;
+    private $admissionNotifier;
 
     /**
      * ApplicationAdmissionSubscriber constructor.
      *
-     * @param MailerInterface   $mailer
+     * @param MailerInterface $mailer
      * @param \Twig_Environment $twig
-     * @param Session           $session
-     * @param LoggerInterface   $logger
-     * @param SlackMessenger    $slackMessenger
-     * @param ApplicationData   $applicationData
-     * @param RouterInterface   $router
-     * @param NewsletterManager $newsletterManager
+     * @param Session $session
+     * @param LoggerInterface $logger
+     * @param SlackMessenger $slackMessenger
+     * @param ApplicationData $applicationData
+     * @param RouterInterface $router
      */
-    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, SlackMessenger $slackMessenger, ApplicationData $applicationData, RouterInterface $router, NewsletterManager $newsletterManager)
+    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, SlackMessenger $slackMessenger, ApplicationData $applicationData, RouterInterface $router, AdmissionNotifier $admissionNotifier)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
@@ -44,7 +44,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
         $this->slackMessenger = $slackMessenger;
         $this->applicationData = $applicationData;
         $this->router = $router;
-        $this->newsletterManager = $newsletterManager;
+        $this->admissionNotifier = $admissionNotifier;
     }
 
     /**
@@ -56,20 +56,23 @@ class ApplicationSubscriber implements EventSubscriberInterface
     {
         return array(
             ApplicationCreatedEvent::NAME => array(
-                array('logApplication', 1),
-                array('sendConfirmationMail', 0),
-                array('subscribeToCheckedNewsletter', -2),
+                array( 'logApplication', 1 ),
+                array( 'sendConfirmationMail', 0 ),
+                array( 'createAdmissionSubscriber', - 2 ),
             ),
         );
     }
 
-    public function subscribeToCheckedNewsletter(ApplicationCreatedEvent $event)
+    public function createAdmissionSubscriber(ApplicationCreatedEvent $event)
     {
         $application = $event->getApplication();
         $department = $application->getUser()->getDepartment();
-        $fullName = $application->getUser()->getFullName();
         $email = $application->getUser()->getEmail();
-        $this->newsletterManager->subscribeToCheckedNewsletter($department, $fullName, $email);
+        try {
+            $this->admissionNotifier->createSubscription($department, $email, true);
+        } catch (\Exception $e) {
+            // Ignore
+        }
     }
 
     public function sendConfirmationMail(ApplicationCreatedEvent $event)
@@ -83,10 +86,10 @@ class ApplicationSubscriber implements EventSubscriberInterface
 
         // Send a confirmation email with a copy of the application
         $emailMessage = \Swift_Message::newInstance()
-            ->setSubject('Søknad - Vektorassistent')
-            ->setFrom(array('rekruttering@vektorprogrammet.no' => 'Vektorprogrammet'))
-            ->setTo($application->getUser()->getEmail())
-            ->setBody($this->twig->render($template, array('application' => $application)), 'text/html');
+                                      ->setSubject('Søknad - Vektorassistent')
+                                      ->setFrom(array( 'rekruttering@vektorprogrammet.no' => 'Vektorprogrammet' ))
+                                      ->setTo($application->getUser()->getEmail())
+                                      ->setBody($this->twig->render($template, array( 'application' => $application )), 'text/html');
 
         $this->mailer->send($emailMessage);
 
@@ -104,6 +107,6 @@ class ApplicationSubscriber implements EventSubscriberInterface
         $this->logger->info("$department: New application from *$user* registered. $department has *{$this->applicationData->getApplicationCount()}* applicants");
 
         $this->slackMessenger->notify("$department: Ny søknad fra *$user* registrert. $department har nå *{$this->applicationData->getApplicationCount()}* søkere: "
-            .$this->router->generate('applications_show_by_semester', array('id' => $department->getCurrentOrLatestSemester()->getId()), RouterInterface::ABSOLUTE_URL));
+                                       . $this->router->generate('applications_show_by_semester', array( 'id' => $department->getCurrentOrLatestSemester()->getId() ), RouterInterface::ABSOLUTE_URL));
     }
 }

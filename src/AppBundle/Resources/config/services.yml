@@ -132,7 +132,7 @@ services:
 
   app.application_subscriber:
     class: AppBundle\EventSubscriber\ApplicationSubscriber
-    arguments: ['@app.mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data', '@router', '@app.newsletter.manager']
+    arguments: ['@app.mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data', '@router', '@app.admission_notifier']
     tags:
       - { name: kernel.event_subscriber }
 

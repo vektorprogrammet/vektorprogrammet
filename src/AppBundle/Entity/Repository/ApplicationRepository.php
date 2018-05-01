@@ -18,7 +18,7 @@ use Doctrine\ORM\EntityRepository;
 class ApplicationRepository extends EntityRepository
 {
     /**
-     * @param User     $user
+     * @param User $user
      * @param Semester $semester
      *
      * @return Application|null
@@ -37,8 +37,23 @@ class ApplicationRepository extends EntityRepository
             ->getOneOrNullResult();
     }
 
+    public function findEmailsBySemester(Semester $semester)
+    {
+        $res = $this->createQueryBuilder('application')
+            ->select('user.email')
+            ->join('application.user', 'user')
+            ->where('application.semester = :semester')
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getArrayResult();
+
+        return array_map(function ($row) {
+            return $row["email"];
+        }, $res);
+    }
+
     /**
-     * @param string     $email
+     * @param string $email
      * @param Semester $semester
      *
      * @return Application[]
@@ -76,12 +91,12 @@ class ApplicationRepository extends EntityRepository
 
         if (null !== $department) {
             $qb->andWhere('d = :department')
-                ->setParameter('department', $department);
+               ->setParameter('department', $department);
         }
 
         if (null !== $semester) {
             $qb->andWhere('sem = :semester')
-                ->setParameter('semester', $semester);
+               ->setParameter('semester', $semester);
         }
 
         return $qb->getQuery()->getResult();
@@ -103,12 +118,12 @@ class ApplicationRepository extends EntityRepository
 
         if (null !== $department) {
             $qb->andWhere('d = :department')
-                ->setParameter('department', $department);
+               ->setParameter('department', $department);
         }
 
         if (null !== $semester) {
             $qb->andWhere('sem = :semester')
-                ->setParameter('semester', $semester);
+               ->setParameter('semester', $semester);
         }
 
         return $qb->getQuery()->getResult();
@@ -135,14 +150,14 @@ class ApplicationRepository extends EntityRepository
 
         if (null !== $semester) {
             $qb->andWhere('sem = :semester')
-                ->setParameter('semester', $semester);
+               ->setParameter('semester', $semester);
         }
 
         return $qb->getQuery()->getResult();
     }
 
     /**
-     * @param User     $user
+     * @param User $user
      * @param Semester $semester
      *
      * @return Application[]
@@ -204,12 +219,12 @@ class ApplicationRepository extends EntityRepository
 
         if (null !== $department) {
             $qb->andWhere('d = :department')
-                ->setParameter('department', $department);
+               ->setParameter('department', $department);
         }
 
         if (null !== $semester) {
             $qb->andWhere('sem = :semester')
-                ->setParameter('semester', $semester);
+               ->setParameter('semester', $semester);
         }
 
         return $qb->getQuery()->getResult();
@@ -231,7 +246,7 @@ class ApplicationRepository extends EntityRepository
 
     /**
      * @param Department $department
-     * @param Semester   $semester
+     * @param Semester $semester
      *
      * @return Application[]
      */
@@ -351,7 +366,7 @@ class ApplicationRepository extends EntityRepository
 
     /**
      * @param Semester $semester
-     * @param int      $gender
+     * @param int $gender
      *
      * @return int
      */
@@ -425,8 +440,8 @@ class ApplicationRepository extends EntityRepository
 		WHERE d.id = :department
 
 		')
-            ->setParameter('department', $department)
-            ->getSingleScalarResult();
+                         ->setParameter('department', $department)
+                         ->getSingleScalarResult();
 
         return $numUsers;
     }
