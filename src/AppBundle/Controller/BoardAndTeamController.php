@@ -23,7 +23,7 @@ class BoardAndTeamController extends Controller
             $currentOrLatestSemester = $department->getCurrentOrLatestSemester();
             $userRepository = $this->getDoctrine()->getRepository('AppBundle:User');
             $departmentStats[$department->getCity()] = array(
-                'numTeamMembers' => sizeof($userRepository->findUsersWithWorkHistoryInSemester($currentOrLatestSemester)),
+                'numTeamMembers' => sizeof($userRepository->findUsersWithTeamMembershipInSemester($currentOrLatestSemester)),
                 'numAssistants' => sizeof($userRepository->findUsersWithAssistantHistoryInSemester($currentOrLatestSemester)),
             );
         }

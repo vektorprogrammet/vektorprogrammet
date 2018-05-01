@@ -16,9 +16,9 @@ class ParticipantHistoryControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/kontrollpanel/deltakerhistorikk');
 
         // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("Deltakerhistorie")')->count());
-        $this->assertEquals(1, $crawler->filter('h3:contains("Arbeidshistorie")')->count());
-        $this->assertEquals(1, $crawler->filter('h3:contains("Assistent historie")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Deltakerhistorikk")')->count());
+        $this->assertEquals(1, $crawler->filter('h3:contains("Teamhistorikk")')->count());
+        $this->assertEquals(1, $crawler->filter('h3:contains("Assistenthistorikk")')->count());
 
         // Assert that we have the correct data
         $this->assertContains('Petter Johansen', $client->getResponse()->getContent());

@@ -73,6 +73,7 @@ security:
         - { path: ^/kontrollpanel/intervju/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/opptakadmin/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/bruker/vekorepost/endre, roles: ROLE_HIGHEST_ADMIN }
+        - { path: ^/kontrollpanel/hovedstyret/slett/bruker, roles: ROLE_SUPER_ADMIN }
 
           #ROLE_SUPER_ADMIN = team leader
         - { path: ^/kontrollpanel/avdelingadmin/update, roles: ROLE_SUPER_ADMIN }
@@ -125,7 +126,6 @@ security:
         - { path: ^/kontrollpanel/hovedstyret, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/hovedstyret/nytt_medlem, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/hovedstyret/oppdater, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/hovedstyret/slett/bruker, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/utlegg/rediger, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/utlegg/status, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/bildegallerier, roles: ROLE_SUPER_ADMIN, method: POST }

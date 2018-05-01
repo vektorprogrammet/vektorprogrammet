@@ -21,7 +21,7 @@
                     <div class="row">
                         <div class="article-box col-12">
                             <a href="{{ path('article_show', { 'id': pagination|first.id }) }}">
-                                <img src="{{ asset_with_version(pagination|first.imageLarge) }}"/>
+                                <img src="{{ asset(pagination|first.imageLarge | imagine_filter('article_large')) }}"/>
                             </a>
                             <h4><a href="{{ path('article_show', { 'id': pagination|first.id }) }}">
                                     {{ pagination|first.title|safe_html }}</a></h4>
@@ -31,10 +31,10 @@
                     {% for row in pagination[1:]|batch(2) %}
                         <div class="row">
                             {% for column in row %}
-                                {% set images = [column.imageMedium, column.imageSmall] %}
+                                {% set images = [column.imageLarge, column.imageSmall] %}
                                 <div class="article-box col-12 {{ cycle(columns, loop.parent.loop.index0+loop.index0) }}">
                                     <a href="{{ path('article_show', { 'id': column.id }) }}">
-                                        <img src="{{ asset_with_version(cycle(images, loop.parent.loop.index0+loop.index0)) }}">
+                                        <img src="{{ asset(cycle(images, loop.parent.loop.index0+loop.index0) | imagine_filter('article_small')) }}">
                                     </a>
                                     <h5><a href="{{ path('article_show', { 'id': column.id }) }}">
                                             {{ column.title|safe_html }}</a></h5>

@@ -1,0 +1,45 @@
+<table width="100%" id="{{ table_id }}">
+
+    <thead>
+    <tr>
+        <th> Fornavn</th>
+        <th> Etternavn</th>
+        <th> Stilling</th>
+        <th> Tlf</th>
+        <th> E-post</th>
+        <th> Linje</th>
+        <th> Avdeling</th>
+        <th></th>
+        {% if is_granted_admin() %}<th></th>{% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for m in members %}
+        <tr>
+            <td><a href='{{ path('specific_profile', { 'id': m.user.id }) }}'>{{ m.user.firstName }}</a></td>
+            <td> {{ m.user.lastName }} </td>
+            <td> {{ m.positionName }}</td>
+            <td> {{ m.user.phone }} </td>
+            <td> {{ m.user.email }} </td>
+            <td> {{ m.user.fieldOfStudy }} </td>
+            <td> {{ m.user.department }} </td>
+            <td> <a href="{{ path('edit_executive_board_membership', {'id': m.id}) }}" class="button tiny">
+                    <i class="fa fa-pencil"></i> Rediger
+                </a></td>
+            {% if is_granted_admin() %}
+                <td>
+                    <form method="POST"
+                          onsubmit="return confirm('Vil du virkelig fjerne brukeren {{ m.user.firstName }} {{ m.user.lastName }}?')"
+                          action="{{ path('executive_board_remove_user_from_board_by_id', { id: m.id }) }}">
+                        <button type="submit"
+                                class="button tiny alert">
+                            <i class="fa fa-trash"></i>
+                            Slett
+                        </button>
+                    </form>
+                </td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

@@ -2,31 +2,36 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\ExecutiveBoardMember;
+use AppBundle\Entity\ExecutiveBoardMembership;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadExecutiveBoardMemberData extends AbstractFixture implements OrderedFixtureInterface
+class LoadExecutiveBoardMembershipData extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $boardMember = new ExecutiveBoardMember();
+        $boardMember = new ExecutiveBoardMembership();
         $boardMember->setBoard($this->getReference('board'));
-        $boardMember->setPosition('Leder');
+        $boardMember->setPositionName('Leder');
         $boardMember->setUser($this->getReference('user-20'));
+        $boardMember->setStartSemester($this->getReference('semester-1'));
+        $boardMember->setEndSemester($this->getReference('semester-2'));
         $manager->persist($boardMember);
 
-        $boardMember = new ExecutiveBoardMember();
+        $boardMember = new ExecutiveBoardMembership();
         $boardMember->setBoard($this->getReference('board'));
-        $boardMember->setPosition('Medlem');
+        $boardMember->setPositionName('Medlem');
         $boardMember->setUser($this->getReference('user-10'));
+        $boardMember->setStartSemester($this->getReference('semester-3'));
         $manager->persist($boardMember);
 
-        $boardMember = new ExecutiveBoardMember();
+        $boardMember = new ExecutiveBoardMembership();
         $boardMember->setBoard($this->getReference('board'));
-        $boardMember->setPosition('Medlem');
+        $boardMember->setPositionName('Medlem');
         $boardMember->setUser($this->getReference('user-angela'));
+        $boardMember->setStartSemester($this->getReference('semester-previous'));
+        $boardMember->setEndSemester($this->getReference('semester-current'));
         $manager->persist($boardMember);
 
         $manager->flush();

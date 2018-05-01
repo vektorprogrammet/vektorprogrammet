@@ -2,13 +2,13 @@
 
 namespace AppBundle\EventSubscriber;
 
-use AppBundle\Event\WorkHistoryEvent;
+use AppBundle\Event\TeamMembershipEvent;
 use AppBundle\Service\RoleManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class WorkHistorySubscriber implements EventSubscriberInterface
+class TeamMembershipSubscriber implements EventSubscriberInterface
 {
     private $session;
     private $logger;
@@ -29,63 +29,63 @@ class WorkHistorySubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            WorkHistoryEvent::CREATED => array(
+            TeamMembershipEvent::CREATED => array(
                 array('updateUserRole', 5),
                 array('addCreatedFlashMessage', -1),
             ),
-            WorkHistoryEvent::EDITED  => array(
+            TeamMembershipEvent::EDITED  => array(
                 array('updateUserRole', 5),
                 array('addUpdatedFlashMessage', -1),
             ),
-            WorkHistoryEvent::DELETED => array(
+            TeamMembershipEvent::DELETED => array(
                 array('logDeletedEvent', 10),
                 array('updateUserRole', 5),
             ),
         );
     }
 
-    public function addCreatedFlashMessage(WorkHistoryEvent $event)
+    public function addCreatedFlashMessage(TeamMembershipEvent $event)
     {
-        $workHistory = $event->getWorkHistory();
+        $teamMembership = $event->getTeamMembership();
 
-        $team = $workHistory->getTeam();
-        $user = $workHistory->getUser();
-        $position = $workHistory->getPosition();
+        $team = $teamMembership->getTeam();
+        $user = $teamMembership->getUser();
+        $position = $teamMembership->getPosition();
 
         $this->session->getFlashBag()->add('success', "$user har blitt lagt til i $team som $position.");
     }
 
-    public function addUpdatedFlashMessage(WorkHistoryEvent $event)
+    public function addUpdatedFlashMessage(TeamMembershipEvent $event)
     {
-        $workHistory = $event->getWorkHistory();
+        $teamMembership = $event->getTeamMembership();
 
-        $team = $workHistory->getTeam();
-        $user = $workHistory->getUser();
-        $position = $workHistory->getPosition();
+        $team = $teamMembership->getTeam();
+        $user = $teamMembership->getUser();
+        $position = $teamMembership->getPosition();
 
         $this->session->getFlashBag()->add('success', "$user i $team med stilling $position har blitt oppdatert.");
     }
 
-    public function logDeletedEvent(WorkHistoryEvent $event)
+    public function logDeletedEvent(TeamMembershipEvent $event)
     {
-        $workHistory = $event->getWorkHistory();
+        $teamMembership = $event->getTeamMembership();
 
-        $user = $workHistory->getUser();
-        $position = $workHistory->getPosition();
-        $team = $workHistory->getTeam();
+        $user = $teamMembership->getUser();
+        $position = $teamMembership->getPosition();
+        $team = $teamMembership->getTeam();
         $department = $team->getDepartment();
 
-        $startSemester = $workHistory->getStartSemester()->getName();
-        $endSemester = $workHistory->getEndSemester();
+        $startSemester = $teamMembership->getStartSemester()->getName();
+        $endSemester = $teamMembership->getEndSemester();
 
         $endStr = $endSemester !== null ? 'to '.$endSemester->getName() : '';
 
-        $this->logger->info("WorkHistory deleted: $user (position: $position), active from $startSemester $endStr, was deleted from $team ($department)");
+        $this->logger->info("TeamMembership deleted: $user (position: $position), active from $startSemester $endStr, was deleted from $team ($department)");
     }
 
-    public function updateUserRole(WorkHistoryEvent $event)
+    public function updateUserRole(TeamMembershipEvent $event)
     {
-        $user = $event->getWorkHistory()->getUser();
+        $user = $event->getTeamMembership()->getUser();
 
         $this->roleManager->updateUserRole($user);
     }

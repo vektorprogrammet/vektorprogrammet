@@ -63,7 +63,7 @@ class MailingListController extends Controller
      */
     public function showTeamAction(Semester $semester)
     {
-        $users = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithWorkHistoryInSemester($semester);
+        $users = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithTeamMembershipInSemester($semester);
 
         return $this->render('mailing_list/mailinglist_show.html.twig', array(
             'users' => $users,
@@ -78,7 +78,7 @@ class MailingListController extends Controller
     public function showAllAction(Semester $semester)
     {
         $assistantUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithAssistantHistoryInSemester($semester);
-        $workingUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithWorkHistoryInSemester($semester);
+        $workingUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findUsersWithTeamMembershipInSemester($semester);
         $users = array_merge($assistantUsers, $workingUsers);
 
         return $this->render('mailing_list/mailinglist_show.html.twig', array(

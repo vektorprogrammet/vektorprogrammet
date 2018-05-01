@@ -4,7 +4,7 @@
     </div>
 
     <div class="profiles">
-        {% for wh in team.activeWorkHistories %}
+        {% for wh in team.activeTeamMemberships %}
             <div class="img-wrapper">
                 <img class="profile-photo" src="{{ wh.user.picturePath }}" alt="{{ wh.user }}">
             </div>

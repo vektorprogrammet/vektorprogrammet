@@ -34,9 +34,9 @@ class MailingListControllerTest extends BaseWebTestCase
 
         $crawler = $this->goTo('/kontrollpanel/teamadmin/team/nytt_medlem/2', $client);
         $form = $crawler->selectButton('Opprett')->form();
-        $form['createWorkHistory[user]'] = $userID;
-        $form['createWorkHistory[position]'] = 2;
-        $form['createWorkHistory[startSemester]'] = 2;
+        $form['createTeamMembership[user]'] = $userID;
+        $form['createTeamMembership[position]'] = 2;
+        $form['createTeamMembership[startSemester]'] = 2;
         $client->submit($form);
         $client->followRedirect();
         $this->assertTrue($client->getResponse()->isSuccessful());

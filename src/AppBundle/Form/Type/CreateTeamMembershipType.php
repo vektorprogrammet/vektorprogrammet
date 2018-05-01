@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class CreateWorkHistoryType extends AbstractType
+class CreateTeamMembershipType extends AbstractType
 {
     private $departmentId;
 
@@ -81,12 +81,12 @@ class CreateWorkHistoryType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\WorkHistory',
+            'data_class' => 'AppBundle\Entity\TeamMembership',
         ));
     }
 
     public function getName()
     {
-        return 'createWorkHistory';
+        return 'createTeamMembership';
     }
 }

@@ -35,7 +35,7 @@ class ArticleController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')->findAllArticles();
+        $articles = $em->getRepository('AppBundle:Article')->findAllPublishedArticles();
 
         $departments = $em->getRepository('AppBundle:Department')->findAllDepartments();
 
@@ -92,6 +92,9 @@ class ArticleController extends Controller
      */
     public function showSpecificAction(Article $article)
     {
+        if (!$article->isPublished()) {
+            throw $this->createNotFoundException();
+        }
         return $this->render('article/show.html.twig', array('article' => $article));
     }
 

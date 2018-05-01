@@ -26,13 +26,13 @@ class ParticipantHistoryController extends Controller
         }
 
         // Find all work histories by department
-        $workHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findWorkHistoriesByDepartment($department);
+        $teamMemberships = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findTeamMembershipsByDepartment($department);
 
         // Find all assistantHistories by department
         $assistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findAssistantHistoriesByDepartment($department, $semester);
 
         return $this->render('participant_history/index.html.twig', array(
-            'workHistories' => $workHistories,
+            'teamMemberships' => $teamMemberships,
             'assistantHistories' => $assistantHistories,
             'semester' => $semester,
         ));
