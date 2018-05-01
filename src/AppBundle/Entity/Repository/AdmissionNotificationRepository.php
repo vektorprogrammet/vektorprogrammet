@@ -29,7 +29,7 @@ class AdmissionNotificationRepository extends EntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findBySemester(Semester $semester)
+    public function findEmailsBySemester(Semester $semester)
     {
         $res = $this->createQueryBuilder('notification')
             ->select('subscriber.email')

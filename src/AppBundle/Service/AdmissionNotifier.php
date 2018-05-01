@@ -67,7 +67,7 @@ class AdmissionNotifier
 
                 $applicationEmails = $this->em->getRepository('AppBundle:Application')->findEmailsBySemester($semester);
                 $subscribers = $this->em->getRepository('AppBundle:AdmissionSubscriber')->findByDepartment($department);
-                $notificationEmails = $this->em->getRepository('AppBundle:AdmissionNotification')->findBySemester($semester);
+                $notificationEmails = $this->em->getRepository('AppBundle:AdmissionNotification')->findEmailsBySemester($semester);
 
                 $notificationsSent = 0;
                 foreach ($subscribers as $subscriber) {
