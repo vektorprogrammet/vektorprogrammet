@@ -23,17 +23,17 @@
     <div class="row">
         <div class="small-12 columns">
             <h3 class="mb-0">Interesseliste</h3>
-            <p class="text-faded">Antall påmeldte: {{ subscribers|length }}</p>
-        </div>
-        <div class="small-12 columns">
-            <canvas id="admissionSubscribersChart" width="400" height="125"></canvas>
-        </div>
-        <div class="small-12 columns text-center">
-            <h4 class="my-32px">
+            <p class="text-faded">
+                Totalt antall påmeldte: <strong>{{ subscribers|length }}</strong><br>
+                Antall påmeldte {{ semester.name }}: <strong>{{ subscribers_in_semester|length }}</strong><br>
                 <a href="{{ path('interest_list', {shortName: semester.department.shortName}) }}">
                     Påmeldingsside for {{ semester.department.city }}
                 </a>
-            </h4>
+            </p>
+        </div>
+        <div class="small-12 columns">
+            <h4 class="text-center">Påmeldte {{ semester.name }} - {{ semester.department.city }}</h4>
+            <canvas id="admissionSubscribersChart" width="400" height="125"></canvas>
         </div>
         <hr>
     </div>

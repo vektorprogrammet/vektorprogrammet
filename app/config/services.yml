@@ -33,6 +33,9 @@ services:
         class: AppBundle\Service\AdmissionNotifier
         arguments: ['@doctrine.orm.default_entity_manager', '@app.email_sender', '@app.logger']
 
+    app.admission_subscriber_statistics:
+        class: AppBundle\Service\AdmissionSubscriberStatistics
+
     app.content_mode_twig_extension:
         class: AppBundle\Twig\Extension\ContentModeExtension
         arguments: ['@app.content_mode']
