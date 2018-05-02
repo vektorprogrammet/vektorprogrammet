@@ -236,7 +236,7 @@ class Department
      */
     public function getShortName()
     {
-        return $this->shortName;
+        return $this->city;
     }
 
     /**
