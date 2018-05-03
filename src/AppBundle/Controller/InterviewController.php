@@ -35,6 +35,9 @@ class InterviewController extends Controller
      */
     public function conductAction(Request $request, Application $application)
     {
+        $department = $this->getUser()->getDepartment();
+        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByDepartment($department);
+
         if ($this->getUser() === $application->getUser()) {
             return $this->render('error/control_panel_error.html.twig', array('error' => 'Du kan ikke intervjue deg selv'));
         }
@@ -49,12 +52,16 @@ class InterviewController extends Controller
 
         $form = $this->createForm(new ApplicationInterviewType(), $application, array(
             'validation_groups' => array('interview'),
+            'teams' => $teams,
         ));
+
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $isNewInterview = !$interview->getInterviewed();
             $interview->setCancelled(false);
+
+            dump($form->getData());
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($interview);
@@ -72,6 +79,8 @@ class InterviewController extends Controller
 
         return $this->render('interview/conduct.html.twig', array(
             'application' => $application,
+            'department' => $department,
+            'teams' => $teams,
             'form' => $form->createView(),
         ));
     }

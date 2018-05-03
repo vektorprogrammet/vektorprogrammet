@@ -28,7 +28,7 @@
             <th>Etternavn</th>
             <th>E-post</th>
             <th>Mobil</th>
-            <th>Team</th>
+            <th>Teaminteresse</th>
         </tr>
         </thead>
         <tbody>
@@ -40,8 +40,10 @@
             <td>{{ application.user.email }}</td>
             <td>{{ application.user.phone }}</td>
             <td>
-                <a href="" class="button tiny"><i
-                            class="fa fa-list-ul"></i> Vis team</a>
+                <button class="button tiny" id="button1" onclick="showTeams()" style="width: 100px"> Vis team</button>
+                {% for interested in application.heardAboutFrom %}
+                    <div style="display:none" id="teams">{{ interested }}</div>
+                {% endfor %}
             </td>
         </tr>
         {% endfor %}
@@ -49,4 +51,21 @@
     </table>
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        const teamsRow = $('#teams');
+        function showTeams() {
+            let x = document.getElementById("teams");
+            if (x.style.display === "none") {
+                teamsRow.slideDown();
+                document.getElementById("button1").innerText="Skjult team";
+            } else {
+                teamsRow.slideUp();
+                document.getElementById("button1").innerText="Vis team";
+            }
+        }
+    </script>
+
 {% endblock %}

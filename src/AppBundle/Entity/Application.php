@@ -120,6 +120,10 @@ class Application
     private $teamInterest;
 
     /**
+     * @ORM\OneToMany(
+     *       targetEntity="AppBundle\Entity\Team",
+     *       cascade={"persist"}
+     * )
      * @ORM\Column(type="array")
      */
     private $interestedInTeam;
