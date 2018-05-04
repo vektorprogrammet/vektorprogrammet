@@ -213,23 +213,18 @@ class ApplicationData
         $applicants = $this->applicationRepository->findBy(array('semester' => $this->semester));
 
         foreach ($applicants as $applicant) {
-
             $allHeardAboutFrom = $applicant->getHeardAboutFrom();
 
-            if($allHeardAboutFrom == null)
-            {
+            if ($allHeardAboutFrom == null) {
                 $allHeardAboutFrom = array(0=>"Ingen");
             }
 
-            for ($i = 0; $i < count($allHeardAboutFrom); $i++)
-            {
+            for ($i = 0; $i < count($allHeardAboutFrom); $i++) {
                 $currentHeardAboutFrom = $allHeardAboutFrom[$i];
 
-                if(array_key_exists($currentHeardAboutFrom, $heardAbout))
-                {
+                if (array_key_exists($currentHeardAboutFrom, $heardAbout)) {
                     ++$heardAbout[$currentHeardAboutFrom];
-                }
-                else {
+                } else {
                     $heardAbout[$currentHeardAboutFrom] = 1;
                 }
             }
