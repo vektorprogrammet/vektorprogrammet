@@ -13,22 +13,15 @@ class CertificateController extends Controller
 {
     public function showAction()
     {
+        // Finds all the the certificate requests
+        $certificateRequests = $this->getDoctrine()->getRepository('AppBundle:CertificateRequest')->findAll();
+        $department = $this->getUser()->getDepartment();
+        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
 
-        // Only ROLE_SUPER_ADMIN can view this
-        if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
-
-            // Finds all the the certificate requests
-            $certificateRequests = $this->getDoctrine()->getRepository('AppBundle:CertificateRequest')->findAll();
-            $department = $this->getUser()->getDepartment();
-            $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
-
-            return $this->render('certificate/index.html.twig', array(
-                'certificateRequests' => $certificateRequests,
-                'currentSemester' => $currentSemester,
-            ));
-        } else {
-            return $this->redirect($this->generateUrl('home'));
-        }
+        return $this->render('certificate/index.html.twig', array(
+            'certificateRequests' => $certificateRequests,
+            'currentSemester' => $currentSemester,
+        ));
     }
 
     public function deleteAction(Request $request)

@@ -266,16 +266,16 @@
                 </div>
             </div>
 
-            {% if is_granted_team_leader() %}
-                <div class="small-4 medium-3 large-2 columns">
-                    <div class="control-panel-item">
-                        <a href="{{ path('certificate_show') }}">
-                            <i class="fa fa-sticky-note-o fa-3x"></i>
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('certificate_show') }}">
+                        <i class="fa fa-sticky-note-o fa-3x"></i>
 
-                            <p>Attest</p>
-                        </a>
-                    </div>
+                        <p>Attest</p>
+                    </a>
                 </div>
+            </div>
+            {% if is_granted_team_leader() %}
                 <div class="small-4 medium-3 large-2 columns">
                     <div class="control-panel-item">
                         <a href="{{ path('school_allocation') }}">
