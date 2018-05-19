@@ -79,7 +79,7 @@
                     <td>{{ a.user.email }}</td>
                     <td>{{ a.school }}</td>
                     <td>{{ a.user.fieldOfStudy }}</td>
-                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    {% if is_granted_team_member() %}
                         <td>
                             <a href="{{ path('profile_certificate', { 'id': a.user.id }) }}" class="button tiny">
                                 <i class="fa fa-download"></i> Last ned
