@@ -1398,16 +1398,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.59",
+            "version": "v0.60",
             "source": {
                 "type": "git",
                 "url": "https://github.com/google/google-api-php-client-services.git",
-                "reference": "1dbfb1e7ff596c9fe17f4ba8e6a74bb073adbe0f"
+                "reference": "80404044884da8ed7e6fcbd4fa96e2ad7db46e94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/1dbfb1e7ff596c9fe17f4ba8e6a74bb073adbe0f",
-                "reference": "1dbfb1e7ff596c9fe17f4ba8e6a74bb073adbe0f",
+                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/80404044884da8ed7e6fcbd4fa96e2ad7db46e94",
+                "reference": "80404044884da8ed7e6fcbd4fa96e2ad7db46e94",
                 "shasum": ""
             },
             "require": {
@@ -1431,7 +1431,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2018-05-14T00:23:02+00:00"
+            "time": "2018-05-19T00:23:51+00:00"
         },
         {
             "name": "google/auth",
@@ -2235,16 +2235,16 @@
         },
         {
             "name": "jms/serializer",
-            "version": "1.11.0",
+            "version": "1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/serializer.git",
-                "reference": "e7c53477ff55c21d1b1db7d062edc050a24f465f"
+                "reference": "1ea5e0ba68b6b38c327eb3adf5888ac74b587e9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/e7c53477ff55c21d1b1db7d062edc050a24f465f",
-                "reference": "e7c53477ff55c21d1b1db7d062edc050a24f465f",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/1ea5e0ba68b6b38c327eb3adf5888ac74b587e9c",
+                "reference": "1ea5e0ba68b6b38c327eb3adf5888ac74b587e9c",
                 "shasum": ""
             },
             "require": {
@@ -2284,7 +2284,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.11-dev"
+                    "dev-1.x": "1.11-dev"
                 }
             },
             "autoload": {
@@ -2294,7 +2294,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "Apache-2.0"
+                "MIT"
             ],
             "authors": [
                 {
@@ -2315,20 +2315,20 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2018-02-04T17:48:54+00:00"
+            "time": "2018-05-25T17:01:33+00:00"
         },
         {
             "name": "jms/serializer-bundle",
-            "version": "2.4.0",
+            "version": "2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSSerializerBundle.git",
-                "reference": "507d2359857226b3188f6de96dae7e33584c1445"
+                "reference": "73bad761515fabae3cb52bde7c73484081a91118"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/507d2359857226b3188f6de96dae7e33584c1445",
-                "reference": "507d2359857226b3188f6de96dae7e33584c1445",
+                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/73bad761515fabae3cb52bde7c73484081a91118",
+                "reference": "73bad761515fabae3cb52bde7c73484081a91118",
                 "shasum": ""
             },
             "require": {
@@ -2389,7 +2389,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2018-05-20T07:28:26+00:00"
+            "time": "2018-05-25T10:56:25+00:00"
         },
         {
             "name": "knplabs/knp-components",
@@ -4323,6 +4323,61 @@
             "time": "2018-04-26T10:06:28+00:00"
         },
         {
+            "name": "symfony/polyfill-ctype",
+            "version": "v1.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-ctype.git",
+                "reference": "7cc359f1b7b80fc25ed7796be7d96adc9b354bae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/7cc359f1b7b80fc25ed7796be7d96adc9b354bae",
+                "reference": "7cc359f1b7b80fc25ed7796be7d96adc9b354bae",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Ctype\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                },
+                {
+                    "name": "Gert de Pagter",
+                    "email": "BackEndTea@gmail.com"
+                }
+            ],
+            "description": "Symfony polyfill for ctype functions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "ctype",
+                "polyfill",
+                "portable"
+            ],
+            "time": "2018-04-30T19:57:29+00:00"
+        },
+        {
             "name": "symfony/polyfill-intl-icu",
             "version": "v1.8.0",
             "source": {
@@ -4842,16 +4897,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.39",
+            "version": "v2.8.41",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "9b75ffe7b3adf2dad279e968787b71f829c1c404"
+                "reference": "24fc640d544a67869a4106de5fc303c597398629"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/9b75ffe7b3adf2dad279e968787b71f829c1c404",
-                "reference": "9b75ffe7b3adf2dad279e968787b71f829c1c404",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/24fc640d544a67869a4106de5fc303c597398629",
+                "reference": "24fc640d544a67869a4106de5fc303c597398629",
                 "shasum": ""
             },
             "require": {
@@ -4860,6 +4915,7 @@
                 "php": ">=5.3.9",
                 "psr/log": "~1.0",
                 "symfony/polyfill-apcu": "~1.1",
+                "symfony/polyfill-ctype": "~1.8",
                 "symfony/polyfill-intl-icu": "~1.0",
                 "symfony/polyfill-mbstring": "~1.0",
                 "symfony/polyfill-php54": "~1.0",
@@ -4977,7 +5033,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2018-04-30T05:53:09+00:00"
+            "time": "2018-05-25T12:03:11+00:00"
         },
         {
             "name": "tfox/mpdf-port-bundle",
