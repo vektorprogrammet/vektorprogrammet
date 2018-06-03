@@ -1398,16 +1398,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.60",
+            "version": "v0.61",
             "source": {
                 "type": "git",
                 "url": "https://github.com/google/google-api-php-client-services.git",
-                "reference": "80404044884da8ed7e6fcbd4fa96e2ad7db46e94"
+                "reference": "f7221039fda179b3f5096a6272b38706f2a6fcd0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/80404044884da8ed7e6fcbd4fa96e2ad7db46e94",
-                "reference": "80404044884da8ed7e6fcbd4fa96e2ad7db46e94",
+                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/f7221039fda179b3f5096a6272b38706f2a6fcd0",
+                "reference": "f7221039fda179b3f5096a6272b38706f2a6fcd0",
                 "shasum": ""
             },
             "require": {
@@ -1431,7 +1431,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2018-05-19T00:23:51+00:00"
+            "time": "2018-05-26T00:23:39+00:00"
         },
         {
             "name": "google/auth",
@@ -1987,16 +1987,16 @@
         },
         {
             "name": "intervention/image",
-            "version": "2.4.1",
+            "version": "2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Intervention/image.git",
-                "reference": "3603dbcc9a17d307533473246a6c58c31cf17919"
+                "reference": "e82d274f786e3d4b866a59b173f42e716f0783eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/image/zipball/3603dbcc9a17d307533473246a6c58c31cf17919",
-                "reference": "3603dbcc9a17d307533473246a6c58c31cf17919",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/e82d274f786e3d4b866a59b173f42e716f0783eb",
+                "reference": "e82d274f786e3d4b866a59b173f42e716f0783eb",
                 "shasum": ""
             },
             "require": {
@@ -2016,7 +2016,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.3-dev"
+                    "dev-master": "2.4-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -2053,7 +2053,7 @@
                 "thumbnail",
                 "watermark"
             ],
-            "time": "2017-09-21T16:29:17+00:00"
+            "time": "2018-05-29T14:19:03+00:00"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -2235,22 +2235,22 @@
         },
         {
             "name": "jms/serializer",
-            "version": "1.12.0",
+            "version": "1.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/serializer.git",
-                "reference": "1ea5e0ba68b6b38c327eb3adf5888ac74b587e9c"
+                "reference": "93d6e03fcb71d45854cc44b5a84d645c02c5d763"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/1ea5e0ba68b6b38c327eb3adf5888ac74b587e9c",
-                "reference": "1ea5e0ba68b6b38c327eb3adf5888ac74b587e9c",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/93d6e03fcb71d45854cc44b5a84d645c02c5d763",
+                "reference": "93d6e03fcb71d45854cc44b5a84d645c02c5d763",
                 "shasum": ""
             },
             "require": {
                 "doctrine/annotations": "^1.0",
                 "doctrine/instantiator": "^1.0.3",
-                "jms/metadata": "~1.1",
+                "jms/metadata": "^1.3",
                 "jms/parser-lib": "1.*",
                 "php": "^5.5|^7.0",
                 "phpcollection/phpcollection": "~0.1",
@@ -2315,7 +2315,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2018-05-25T17:01:33+00:00"
+            "time": "2018-06-01T12:10:12+00:00"
         },
         {
             "name": "jms/serializer-bundle",
@@ -2898,25 +2898,28 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.7.0",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e"
+                "reference": "478465659fd987669df0bd8a9bf22a8710e5f1b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e",
-                "reference": "3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/478465659fd987669df0bd8a9bf22a8710e5f1b6",
+                "reference": "478465659fd987669df0bd8a9bf22a8710e5f1b6",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6 || ^7.0"
+                "php": "^7.1"
+            },
+            "replace": {
+                "myclabs/deep-copy": "self.version"
             },
             "require-dev": {
                 "doctrine/collections": "^1.0",
                 "doctrine/common": "^2.6",
-                "phpunit/phpunit": "^4.1"
+                "phpunit/phpunit": "^7.1"
             },
             "type": "library",
             "autoload": {
@@ -2939,7 +2942,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-10-19T19:58:43+00:00"
+            "time": "2018-05-29T17:25:09+00:00"
         },
         {
             "name": "nelmio/api-doc-bundle",
@@ -5476,21 +5479,66 @@
             "time": "2016-08-30T16:08:34+00:00"
         },
         {
-            "name": "friendsofphp/php-cs-fixer",
-            "version": "v2.2.19",
+            "name": "composer/xdebug-handler",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "2de0ac9c1d0d48a9b969814f43698223c6e03d6d"
+                "url": "https://github.com/composer/xdebug-handler.git",
+                "reference": "c919dc6c62e221fc6406f861ea13433c0aa24f08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/2de0ac9c1d0d48a9b969814f43698223c6e03d6d",
-                "reference": "2de0ac9c1d0d48a9b969814f43698223c6e03d6d",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/c919dc6c62e221fc6406f861ea13433c0aa24f08",
+                "reference": "c919dc6c62e221fc6406f861ea13433c0aa24f08",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.2 || ^7.0",
+                "psr/log": "^1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Composer\\XdebugHandler\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "John Stevenson",
+                    "email": "john-stevenson@blueyonder.co.uk"
+                }
+            ],
+            "description": "Restarts a process without xdebug.",
+            "keywords": [
+                "Xdebug",
+                "performance"
+            ],
+            "time": "2018-04-11T15:42:36+00:00"
+        },
+        {
+            "name": "friendsofphp/php-cs-fixer",
+            "version": "v2.2.20",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
+                "reference": "f1631f0747ad2a9dd3de8d7873b71f6573f8d0c2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/f1631f0747ad2a9dd3de8d7873b71f6573f8d0c2",
+                "reference": "f1631f0747ad2a9dd3de8d7873b71f6573f8d0c2",
                 "shasum": ""
             },
             "require": {
                 "composer/semver": "^1.4",
+                "composer/xdebug-handler": "^1.0",
                 "doctrine/annotations": "^1.2",
                 "ext-json": "*",
                 "ext-tokenizer": "*",
@@ -5514,7 +5562,7 @@
             "require-dev": {
                 "johnkary/phpunit-speedtrap": "^1.0.1 || ^2.0 || ^3.0",
                 "justinrainbow/json-schema": "^5.0",
-                "keradus/cli-executor": "^1.0",
+                "keradus/cli-executor": "^1.1",
                 "mikey179/vfsstream": "^1.6",
                 "php-coveralls/php-coveralls": "^1.0.2",
                 "phpunit/phpunit": "^4.8.35 || ^5.4.3",
@@ -5522,6 +5570,8 @@
             },
             "suggest": {
                 "ext-mbstring": "For handling non-UTF8 characters in cache signature.",
+                "php-cs-fixer/phpunit-constraint-isidenticalstring": "For IsIdenticalString constraint.",
+                "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "For XmlMatchesXsd constraint.",
                 "symfony/polyfill-mbstring": "When enabling `ext-mbstring` is not possible."
             },
             "bin": [
@@ -5536,7 +5586,6 @@
                     "tests/Test/AbstractFixerTestCase.php",
                     "tests/Test/AbstractIntegrationCaseFactory.php",
                     "tests/Test/AbstractIntegrationTestCase.php",
-                    "tests/Test/Constraint/SameStringsConstraint.php",
                     "tests/Test/IntegrationCase.php",
                     "tests/Test/IntegrationCaseFactory.php",
                     "tests/Test/IntegrationCaseFactoryInterface.php",
@@ -5559,7 +5608,7 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
-            "time": "2018-03-20T18:04:00+00:00"
+            "time": "2018-06-02T17:26:04+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
