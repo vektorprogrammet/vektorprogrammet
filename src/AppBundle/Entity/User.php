@@ -51,6 +51,7 @@ class User implements AdvancedUserInterface, \Serializable
      * @var FieldOfStudy
      * @ORM\ManyToOne(targetEntity="FieldOfStudy")
      * @ORM\JoinColumn(onDelete="SET NULL")
+     * @Assert\NotBlank(groups={"admission"}, message="Dette feltet kan ikke være tomt.")
      * @Assert\Valid
      */
     private $fieldOfStudy;
