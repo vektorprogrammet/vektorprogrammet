@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ArticleRepository")
@@ -21,11 +22,13 @@ class Article
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt")
      */
     protected $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt")
      */
     protected $article;
 
@@ -33,11 +36,6 @@ class Article
      * @ORM\Column(type="string")
      */
     protected $imageLarge;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $imageMedium;
 
     /**
      * @ORM\Column(type="string")
@@ -60,6 +58,12 @@ class Article
     protected $sticky;
 
     /**
+     * @var bool
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $published;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Department")
      * @ORM\JoinTable(name="articles_departments",
      *      joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
@@ -79,6 +83,7 @@ class Article
         $this->departments = new ArrayCollection();
         $this->setCreated(new \DateTime());
         $this->setUpdated(new \DateTime());
+        $this->published = false;
     }
 
     /**
@@ -169,30 +174,6 @@ class Article
     public function getImageLarge()
     {
         return $this->imageLarge;
-    }
-
-    /**
-     * Set imageMedium.
-     *
-     * @param string $imageMedium
-     *
-     * @return Article
-     */
-    public function setImageMedium($imageMedium)
-    {
-        $this->imageMedium = $imageMedium;
-
-        return $this;
-    }
-
-    /**
-     * Get imageMedium.
-     *
-     * @return string
-     */
-    public function getImageMedium()
-    {
-        return $this->imageMedium;
     }
 
     /**
@@ -347,5 +328,21 @@ class Article
     public function getSticky()
     {
         return $this->sticky;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPublished(): bool
+    {
+        return $this->published;
+    }
+
+    /**
+     * @param bool $published
+     */
+    public function setPublished(bool $published): void
+    {
+        $this->published = $published;
     }
 }

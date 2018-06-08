@@ -107,7 +107,7 @@
                                     </div>
                                     <div class="col-12 col-md-6 d-none d-md-block">
                                         <div class="list-group list-group-flush">
-                                            {% for team in department.teams %}
+                                            {% for team in department.teams if team.isActive %}
                                                 <div class="list-group-item">
                                                     <a class="text-dark-blue"
                                                        href={{ path('team_page', {'id': team.id}) }}>
@@ -139,7 +139,7 @@
                                     </p>
                                     <p class="contact-info">
                                         <i class="text-devil fa fa-users"></i>
-                                        <span class="text-devil member-count">{{ board.activeWorkHistories | length }}
+                                        <span class="text-devil member-count">{{ board.activeUsers | length }}
                                             medlemmer</span>
                                     </p>
                                     <a href="{{ path('executive_board_page') }}"
@@ -149,19 +149,23 @@
 
                                 <div class="col-12 col-md-6 d-none d-md-block">
                                     <div class="list-group list-group-flush">
-                                        {% for member in board.users | groupSort %}
+                                        {% for user in board.activeUsers | team_position_sort(board) %}
                                             <div class="list-group-item">
                                                 {% if is_granted_assistant() %}
                                                     <a class="text-dark-blue"
-                                                       href={{ path('specific_profile', {'id': member.user.id}) }}>
-                                                        <h5 class="mb-1">{{ member.user.fullName }}</h5>
+                                                       href={{ path('specific_profile', {'id': user.id}) }}>
+                                                        <h5 class="mb-1">{{ user.fullName }}</h5>
                                                     </a>
                                                 {% else %}
-                                                    <h5 class="mb-1">{{ member.user.fullName }}</h5>
+                                                    <h5 class="mb-1">{{ user.fullName }}</h5>
                                                 {% endif %}
-                                                <p class="mb-0 text-devil">{{ member.position }}</p>
+                                                <p class="mb-0 text-devil">
+                                                    {% for membership in user.activeMemberships %}
+                                                        {{ membership.positionName }}{% if not loop.last %},{% endif %}
+                                                    {% endfor %}
+                                                </p>
                                                 <p class="mb-0"><a
-                                                            href="mailto: {{ member.user.companyEmail }}"> {{ member.user.companyEmail }}</a>
+                                                            href="mailto: {{ user.companyEmail }}"> {{ user.companyEmail }}</a>
                                                 </p>
                                             </div>
                                         {% endfor %}

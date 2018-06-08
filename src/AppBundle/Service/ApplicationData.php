@@ -64,6 +64,7 @@ class ApplicationData
         return $this->applicationRepository->numOfApplications($this->semester);
     }
 
+
     public function getCount(): int
     {
         return $this->getApplicationCount();
@@ -204,5 +205,30 @@ class ApplicationData
     public function getDepartment(): Department
     {
         return $this->department;
+    }
+
+    public function getHeardAboutFrom(): array
+    {
+        $heardAbout = array();
+        $applicants = $this->applicationRepository->findBy(array('semester' => $this->semester));
+
+        foreach ($applicants as $applicant) {
+            $allHeardAboutFrom = $applicant->getHeardAboutFrom();
+
+            if ($allHeardAboutFrom == null) {
+                $allHeardAboutFrom = array(0=>"Ingen");
+            }
+
+            for ($i = 0; $i < count($allHeardAboutFrom); $i++) {
+                $currentHeardAboutFrom = $allHeardAboutFrom[$i];
+
+                if (array_key_exists($currentHeardAboutFrom, $heardAbout)) {
+                    ++$heardAbout[$currentHeardAboutFrom];
+                } else {
+                    $heardAbout[$currentHeardAboutFrom] = 1;
+                }
+            }
+        }
+        return $heardAbout;
     }
 }

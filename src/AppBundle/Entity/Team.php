@@ -57,10 +57,32 @@ class Team implements TeamInterface
     private $acceptApplication;
 
     /**
-     * @var WorkHistory[]
-     * @ORM\OneToMany(targetEntity="WorkHistory", mappedBy="team")
+     * @ORM\Column(type="boolean", options={"default"=true})
      */
-    private $workHistories;
+    protected $active;
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive(bool $active)
+    {
+        $this->active = $active;
+    }
+
+
+    /**
+     * @var TeamMembership[]
+     * @ORM\OneToMany(targetEntity="TeamMembership", mappedBy="team")
+     */
+    private $teamMemberships;
 
     /**
      * @return bool
@@ -78,9 +100,20 @@ class Team implements TeamInterface
         $this->acceptApplication = $acceptApplication;
     }
 
+
+    public function __construct()
+    {
+        $this->active = true;
+    }
+
     public function __toString()
     {
         return (string) $this->getName();
+    }
+
+    public function getType()
+    {
+        return 'team';
     }
 
     /**
@@ -160,10 +193,14 @@ class Team implements TeamInterface
 
     /**
      * @param string $email
+     *
+     * @return $this|\AppBundle\Entity\Team
      */
     public function setEmail($email)
     {
         $this->email = $email;
+
+        return $this;
     }
 
     /**
@@ -176,10 +213,14 @@ class Team implements TeamInterface
 
     /**
      * @param string $description
+     *
+     * @return \AppBundle\Entity\Team
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /**
@@ -192,28 +233,32 @@ class Team implements TeamInterface
 
     /**
      * @param string $shortDescription
+     *
+     * @return \AppBundle\Entity\Team
      */
     public function setShortDescription($shortDescription)
     {
         $this->shortDescription = $shortDescription;
+
+        return $this;
     }
 
     /**
-     * @return WorkHistory[]
+     * @return TeamMembership[]
      */
-    public function getWorkHistories()
+    public function getTeamMemberships()
     {
-        return $this->workHistories;
+        return $this->teamMemberships;
     }
 
     /**
-     * @return WorkHistory[]
+     * @return TeamMembership[]
      */
-    public function getActiveWorkHistories()
+    public function getActiveTeamMemberships()
     {
         $histories = [];
 
-        foreach ($this->workHistories as $wh) {
+        foreach ($this->teamMemberships as $wh) {
             $semester = $wh->getUser()->getDepartment()->getCurrentOrLatestSemester();
             if ($semester !== null && $wh->isActiveInSemester($semester)) {
                 $histories[] = $wh;
@@ -221,5 +266,21 @@ class Team implements TeamInterface
         }
 
         return $histories;
+    }
+
+    /**
+     * @return User[]
+     */
+    public function getActiveUsers()
+    {
+        $activeUsers = [];
+
+        foreach ($this->getActiveTeamMemberships() as $activeTeamMembership) {
+            if (!in_array($activeTeamMembership->getUser(), $activeUsers)) {
+                $activeUsers[] = $activeTeamMembership->getUser();
+            }
+        }
+
+        return $activeUsers;
     }
 }

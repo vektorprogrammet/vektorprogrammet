@@ -28,18 +28,19 @@ class MailingListControllerTest extends BaseWebTestCase
 
         // Get a user email and add user to a team
         $userID = 22;
-        $user = $this->em->getRepository('AppBundle:User')->find($userID);
-        $this->assertNotNull($user);
-        $userEmailLength = strlen($user->getEmail());
 
         $crawler = $this->goTo('/kontrollpanel/teamadmin/team/nytt_medlem/2', $client);
         $form = $crawler->selectButton('Opprett')->form();
-        $form['createWorkHistory[user]'] = $userID;
-        $form['createWorkHistory[position]'] = 2;
-        $form['createWorkHistory[startSemester]'] = 2;
+        $form['createTeamMembership[user]'] = $userID;
+        $form['createTeamMembership[position]'] = 2;
+        $form['createTeamMembership[startSemester]'] = 2;
         $client->submit($form);
         $client->followRedirect();
         $this->assertTrue($client->getResponse()->isSuccessful());
+
+        $user = $this->em->getRepository('AppBundle:User')->find($userID);
+        $this->assertNotNull($user);
+        $userEmailLength = strlen($user->getCompanyEmail());
 
         $lengthTeamNew = $this->generateListCountChars($client, 'Team');
 
@@ -61,7 +62,8 @@ class MailingListControllerTest extends BaseWebTestCase
         $lengthTeam = $this->generateListCountChars($client, 'Team');
         $lengthAll = $this->generateListCountChars($client, 'Alle');
 
-        $this->assertEquals($lengthAssistants + $lengthTeam, $lengthAll);
+        $this->assertGreaterThan($lengthAssistants, $lengthAll);
+        $this->assertGreaterThan($lengthTeam, $lengthAll);
     }
 
     /**

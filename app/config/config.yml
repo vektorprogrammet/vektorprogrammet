@@ -22,6 +22,8 @@ parameters:
     max_length: 1200
     country_code: '47'
 
+  daily_admission_notifier_limit: 666
+
   # File upload parameters
   public_uploads: "Offentlige filer"
   private_uploads: "../Private filer"
@@ -154,6 +156,7 @@ ivory_ck_editor:
             filebrowserBrowseRoute: elfinder
             filebrowserBrowseRouteParameters:
                 instance: default
+            extraPlugins: "justify"
         basic_config:
             toolbar: basic
         standard_config:

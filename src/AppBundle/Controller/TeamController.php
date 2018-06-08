@@ -2,18 +2,21 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Role\Roles;
+use AppBundle\Entity\Team;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TeamController extends Controller
 {
-    public function showAction($id)
+    public function showAction(Team $team)
     {
-        $team = $this->getDoctrine()->getRepository('AppBundle:Team')->find($id);
-        $workHistories = $this->getDoctrine()->getRepository('AppBundle:WorkHistory')->findActiveWorkHistoriesByTeam($team);
+        if (!$team->isActive() && !$this->isGranted(Roles::TEAM_MEMBER)) {
+            throw new NotFoundHttpException('Team not found');
+        }
 
         return $this->render('team/team_page.html.twig', array(
-            'team' => $team,
-            'workHistories' => $workHistories,
+            'team'  => $team,
         ));
     }
 

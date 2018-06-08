@@ -120,7 +120,7 @@
                             {% for department in departments %}
                                 <div role="tabpanel" class="tab-pane fade in" id="{{ department }}">
                                     <div class="team-cards-container">
-                                        {% for team in department.teams %}
+                                        {% for team in department.teams if team.isActive %}
                                             {% include 'team/team_card.html.twig' %}
                                         {% endfor %}
                                     </div>
@@ -139,7 +139,7 @@
                                         </p>
                                         <p class="m-0">
                                             <i class="big-icon m-0 mr-2 text-devil fa fa-users"></i>
-                                            <span class="text-devil member-count"> {{ board.activeWorkHistories | length }}
+                                            <span class="text-devil member-count"> {{ board.activeUsers | length }}
                                                 medlemmer</span>
                                         </p>
                                         <a href="{{ path('executive_board_page') }}"

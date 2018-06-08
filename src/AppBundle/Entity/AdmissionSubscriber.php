@@ -36,6 +36,7 @@ class AdmissionSubscriber
     private $timestamp;
 
     /**
+     * @var Department
      * @ORM\ManyToOne(targetEntity="Department")
      */
     private $department;
@@ -46,15 +47,15 @@ class AdmissionSubscriber
     private $unsubscribeCode;
 
     /**
-     * Constructor.
-     *
-     * @param Department $department
+     * @ORM\Column(type="boolean", options={"default"=false})
      */
-    public function __construct(Department $department = null)
+    private $fromApplication;
+
+    public function __construct()
     {
+        $this->fromApplication = false;
         $this->timestamp = new \DateTime();
         $this->unsubscribeCode = bin2hex(openssl_random_pseudo_bytes(12));
-        $this->setDepartment($department);
     }
 
     /**
@@ -129,5 +130,26 @@ class AdmissionSubscriber
     public function setDepartment($department): void
     {
         $this->department = $department;
+    }
+
+    public function __toString()
+    {
+        return $this->department->getCity();
+    }
+
+    /**
+     * @return bool
+     */
+    public function getFromApplication()
+    {
+        return $this->fromApplication;
+    }
+
+    /**
+     * @param bool $fromApplication
+     */
+    public function setFromApplication($fromApplication): void
+    {
+        $this->fromApplication = $fromApplication;
     }
 }

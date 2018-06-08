@@ -4,7 +4,7 @@ namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\TeamEvent;
 use AppBundle\Event\UserEvent;
-use AppBundle\Event\WorkHistoryEvent;
+use AppBundle\Event\TeamMembershipEvent;
 use AppBundle\Google\GoogleAPI;
 use AppBundle\Google\GoogleDrive;
 use AppBundle\Google\GoogleGroups;
@@ -40,11 +40,11 @@ class GSuiteSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            WorkHistoryEvent::CREATED => array(
+            TeamMembershipEvent::CREATED => array(
                 array('createGSuiteUser', 1),
                 array('addGSuiteUserToTeam', -1),
             ),
-            WorkHistoryEvent::EDITED => array(
+            TeamMembershipEvent::EDITED => array(
                 array('createGSuiteUser', 1),
                 array('addGSuiteUserToTeam', -1),
             ),
@@ -64,9 +64,9 @@ class GSuiteSubscriber implements EventSubscriberInterface
         );
     }
 
-    public function createGSuiteUser(WorkHistoryEvent $event)
+    public function createGSuiteUser(TeamMembershipEvent $event)
     {
-        $user = $event->getWorkHistory()->getUser();
+        $user = $event->getTeamMembership()->getUser();
         $companyEmail = $user->getCompanyEmail();
 
         if ($this->userExists($companyEmail)) {
@@ -84,10 +84,10 @@ class GSuiteSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function addGSuiteUserToTeam(WorkHistoryEvent $event)
+    public function addGSuiteUserToTeam(TeamMembershipEvent $event)
     {
-        $user = $event->getWorkHistory()->getUser();
-        $team = $event->getWorkHistory()->getTeam();
+        $user = $event->getTeamMembership()->getUser();
+        $team = $event->getTeamMembership()->getTeam();
         $department = $user->getDepartment();
 
         $alreadyInGroup = $this->groupService->userIsInGroup($user, $team);

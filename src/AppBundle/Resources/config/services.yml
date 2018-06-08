@@ -103,6 +103,9 @@ services:
   app.sorter:
     class: AppBundle\Service\Sorter
 
+  app.filter_service:
+    class: AppBundle\Service\FilterService
+
   app.department_extension:
     class: AppBundle\Twig\Extension\DepartmentExtension
     arguments: ['@app.geolocation', '@doctrine.orm.default_entity_manager']
@@ -129,7 +132,7 @@ services:
 
   app.application_subscriber:
     class: AppBundle\EventSubscriber\ApplicationSubscriber
-    arguments: ['@app.mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data', '@router', '@app.newsletter.manager']
+    arguments: ['@app.mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data', '@router', '@app.admission_notifier']
     tags:
       - { name: kernel.event_subscriber }
 
@@ -157,8 +160,8 @@ services:
       tags:
         - { name: kernel.event_subscriber }
 
-  app.work_history_subscriber:
-    class: AppBundle\EventSubscriber\WorkHistorySubscriber
+  app.team_membership_subscriber:
+    class: AppBundle\EventSubscriber\TeamMembershipSubscriber
     arguments: ['@session', '@app.logger', '@app.roles']
     tags:
         - { name: kernel.event_subscriber }
@@ -201,7 +204,7 @@ services:
 
   app.file_uploader:
       class: AppBundle\Service\FileUploader
-      arguments: ['%signature_images%', '%logo_images%', '%receipt_images%', '%gallery_images%', '%profile_photos%']
+      arguments: ['%signature_images%', '%logo_images%', '%receipt_images%', '%gallery_images%', '%profile_photos%', '%article_images%']
 
   security.login:
     class: AppBundle\Service\LoginManager
@@ -224,8 +227,9 @@ services:
         arguments: ['@doctrine.orm.default_entity_manager', '@form.factory']
 
   app.group_sorter_extension:
-    class: AppBundle\Twig\Extension\GroupSortExtension
+    class: AppBundle\Twig\Extension\TeamPositionSortExtension
     public: false
+    arguments: ['@app.sorter', '@app.filter_service']
     tags:
       - { name: twig.extension }
 

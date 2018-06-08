@@ -1,179 +1,8 @@
 {% extends 'adminBase.html.twig' %}
-
-{% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset_with_version('js/optionbox.js') }}"></script>
-    <!-- Load Aviary widget code -->
-    <script type="text/javascript" src="{{ asset_with_version('js/aviaryImageEditor.js') }}"></script>
-
-    <script>
-
-        /**
-         * Define the Aviary SDK Component
-         */
-        var featherEditor = new Aviary.Feather({
-            apiKey: '4a1caf097b3d48e9b917e9f1bc430ad3',
-            fileFormat: 'jpg',
-            cropPresetsStrict: true,
-            onSave: function (imageID, newURL) {
-                var img = document.getElementById(imageID);
-                img.src = newURL;
-            }
-        });
-
-        /**
-         * This object organizes the javascript used by this twig and the twigs extending it
-         *
-         * It holds the default image sizes used by the cropper function, see loadImages().
-         *
-         * The onReady function is called when the document is ready.
-         */
-
-        Article = {
-
-            //Launches the editor with all tools
-            launchEditor: function (id) {
-                featherEditor.launch({
-                    tools: 'all',
-                    image: 'img' + id,
-                    onSave: Article.saveImg
-                });
-                return true;
-            },
-
-            //Launches the editor with crop preset
-            launchEditorCrop: function (id, preset) {
-                var allPresets = {
-                    Small: ['Small Preset', '500x300'],
-                    Medium: ['Medium Preset', '715x300'],
-                    Large: ['Large Preset', '1024x326']
-                };
-                featherEditor.launch({
-                    tools: 'enhance',
-                    forceCropPreset: allPresets[preset],
-                    image: 'img' + id,
-                    onSave: Article.saveImgCrop
-                });
-                return true;
-            },
-
-
-            onReady: function () {
-
-                //Define all input fields
-                var inputs = $("input[id^='article_image']");
-
-                // Load the toggle box used to group functionality (bilder/publisering etc)
-                $(".option-box").optionbox();
-
-                // Bind elfinder to each of the image url text inputs
-                inputs.on("click", Article.openElfinder);
-
-                // Bind onchange when the user select one photo to be shown everywhere
-                $("#article_imageAll").change(Article.selectAllChange);
-
-                //Bind changes in input fields to img tag and make sure they are the correct value after startup
-                inputs.on("change", Article.imgLocationChange);
-                inputs.each(function () {
-                    if ($(this).attr('id') !== 'article_imageAll') {
-                        $(this).trigger('change');
-                    }
-                });
-                // Bind editBtn to editor
-                $("a[id^='editBtn']").on('click', Article.editBtnClick);
-                $("a[id^='cropBtn']").on('click', Article.cropBtnClick);
-
-            },
-
-            openElfinder: function () {
-                var childWin = window.open("{{ path('elfinder') }}/article_form?id=" + this.id, "popupWindow", "height=450, width=900");
-            },
-
-            selectAllChange: function (event) {
-                event.preventDefault();
-                var v = $("input[id^='article_imageAll']").val();
-                setValue(v, "article_imageSmall");
-                setValue(v, "article_imageMedium");
-                setValue(v, "article_imageLarge");
-            },
-
-            imgLocationChange: function (event) {
-                event.preventDefault();
-                var elem = $(this).attr('id').substr(13);
-                var new_src = $(this).val();
-                if (new_src !== "") {
-                    new_src += '?' + new Date().getTime();
-                }
-                $('#img' + elem).removeAttr("src").attr('src', new_src);
-                if (elem !== 'All') {
-                    $('#imgPreview' + elem).removeAttr("src").attr('src', new_src);
-                }
-            },
-
-            editBtnClick: function (event) {
-                event.preventDefault();
-                var elem = $(this).attr('id').substr(7);
-                if ($('#article_image' + elem).val() !== '') {
-                    Article.launchEditor(elem);
-                }
-                else {
-                    alert('Du må velge et bilde!')
-                }
-            },
-
-            cropBtnClick: function (event) {
-                event.preventDefault();
-                var elem = $(this).attr('id').substr(7);
-                if ($('#article_image' + elem).val() !== '') {
-                    Article.launchEditorCrop(elem, elem);
-                }
-                else {
-                    alert('Du må velge et bilde!')
-                }
-            },
-
-            saveImg: function (imageID, newURL) {
-                Article.saveImgToFile(imageID, newURL, false);
-            },
-
-            saveImgCrop: function (imageID, newURL) {
-                Article.saveImgToFile(imageID, newURL, true);
-            },
-
-            saveImgToFile: function (imageID, newURL, _crop) {
-                featherEditor.showWaitIndicator();
-                var filename_split = $('#article_image' + imageID.substr(3)).val().split('/');
-                var _name = filename_split[filename_split.length - 1];
-                $.ajax({
-                    type: "POST",
-                    url: "{{ path('articleadmin_saveImage') }}",
-                    data: JSON.stringify({
-                        aviaryURL: newURL,
-                        imageType: imageID.substr(3),
-                        cropped: _crop,
-                        filename: _name.substr(0, _name.length - 4)
-                    }),
-                    success: function (response) {
-                        if (response.success) {
-                            setValue(response.localURL, 'article_image' + response.imageType);
-                            featherEditor.close();
-                        } else {
-                            alert(response.cause);
-                            featherEditor.hideWaitIndicator();
-                        }
-                    }
-                });
-            }
-        };
-
-        $(document).ready(Article.onReady);
-
-        function setValue(value, element_id) {
-            $((element_id ? '[id="' + element_id + '"]' : '')).val(value);
-            $((element_id ? '[id="' + element_id + '"]' : '')).trigger('change');
-        }
-    </script>
-
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/modules/dropzone.css') }}">
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/admin/article.css') }}">
+    <link rel="stylesheet" href="{{ asset_with_version('vendor/cropperjs/cropper.min.css') }}">
 {% endblock %}
 
 {% block title %}
@@ -181,164 +10,43 @@
 {% endblock %}
 
 {% block body %}
-
     <div class="row">
         <p></p>
         <div class="small-12 medium-12 large-12 columns">
             <h1>{{ title }}</h1>
 
             <hr>
+            <div id="app" style="display: none">
+                <div class="row">
+                    <div class="small-12 medium-5 columns">
+                        <h3>Lite bilde</h3>
+                        <span v-if="smallPhotoSrc" @click="smallPhotoSrc = ''" class="text-link">Rediger</span>
+                        <form v-show="!smallPhotoSrc" action="/" id="dropsmall" class="dropzone" method="POST">
+                        </form>
+                        <div v-show="smallPhotoSrc" class="crop-area">
+                            <img id="imgsmall" :src="smallPhotoSrc"/>
+                        </div>
+
+                    </div>
+                    <div class="small-12 medium-7 columns">
+                        <h3>Stort bilde</h3>
+                        <span v-if="largePhotoSrc" @click="largePhotoSrc = ''" class="text-link">Rediger</span>
+                        <form v-show="!largePhotoSrc" action="/" id="droplarge" class="dropzone" method="POST">
+                        </form>
+                        <div v-show="largePhotoSrc" class="crop-area">
+                            <img id="imglarge" :src="largePhotoSrc">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <br>
 
             {{ form_start(form) }}
             {{ form_errors(form) }}
 
             {{ form_row(form.title) }}
             {{ form_row(form.article) }}
-
-
-            <div class="option-box">
-                <h5>Velg bilder</h5>
-                <div class="content">
-                    <div class="row">
-                        <div class="medium-4 medium-offset-1 columns text-center">
-                            <h4>Velg et bilde</h4>
-                        </div>
-                        <div class="medium-2 columns text-center">
-                            <h5>...eller...</h5>
-                        </div>
-                        <div class="medium-4 columns text-center left">
-                            <h4>Velg individuelle bilder</h4>
-                        </div>
-                        <div class="row">
-                            <br><br><br>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="medium-6 medium-offset-6 columns">
-                            <div class="row">
-                                <div class="medium-10 medium-offset-2 columns clearfix">
-                                    <span class="left">
-                                        Hovedbilde&nbsp;
-                                    </span>
-                                    <span class="has-tip left"
-                                          title="Hovedbilde, vises over selve artikkelen og på nyhetssiden. Bildestørrelse: Bredde: 1024px, Høyde: 326px">
-                                        (?)
-                                    </span>
-                                </div>
-                                <div class="medium-6 medium-offset-2 columns">
-                                    {{ form_errors(form.imageLarge) }}
-                                    {{ form_widget(form.imageLarge) }}
-                                </div>
-                                <div class="medium-2 columns left">
-                                    <a href="#" class="button tiny" id="editBtnLarge">Rediger</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                    </div>
-                    <div class="row">
-                        <div class="medium-6 columns">
-                            <div class="row">
-                                <div class="medium-10 medium-offset-2 columns">
-                                    <span class="left">
-                                        Bilde&nbsp;
-                                    </span>
-                                    <span class="has-tip left"
-                                          title="Velg et bilde som skal brukes over alt.">
-                                        (?)
-                                    </span>
-                                </div>
-
-                                <div class="medium-6 medium-offset-2 columns left">
-                                    <input id="article_imageAll" type="text" placeholder="Klikk for å velge bilde">
-                                </div>
-                                <div class="medium-2 columns left">
-                                    <a href="#" class="button tiny" id="editBtnAll">Rediger</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="medium-6 columns">
-                            <div class="row">
-                                <div class="medium-10 medium-offset-2 columns clearfix">
-                                    <span class="left">
-                                        Medium bilde&nbsp;
-                                    </span>
-                                    <span class="has-tip left"
-                                          title="Medium bilde, brukes på forsiden. Bildestørrelse: Bredde: 715px, Høyde: 300px">
-                                        (?)
-                                    </span>
-                                </div>
-                                <div class="medium-6 medium-offset-2 columns">
-                                    {{ form_errors(form.imageMedium) }}
-                                    {{ form_widget(form.imageMedium) }}
-                                </div>
-                                <div class="medium-2 columns left">
-                                    <a href="#" class="button tiny" id="editBtnMedium">Rediger</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="medium-6 columns medium-offset-6">
-                            <div class="row">
-                                <div class="medium-10 medium-offset-2 columns clearfix">
-                                    <span class="left">
-                                        Lite bilde&nbsp;
-                                    </span>
-                                    <span class="has-tip left"
-                                          title="Lite bilde, brukes av regionsnyhetene på opptaksiden og nyhetsiden. Bildestørrelse: Bredde: 500px, Høyde: 300px ">
-                                        (?)
-                                    </span>
-                                </div>
-                                <div class="medium-6 medium-offset-2 columns">
-                                    {{ form_errors(form.imageSmall) }}
-                                    {{ form_widget(form.imageSmall) }}
-                                </div>
-                                <div class="medium-2 columns left">
-                                    <a href="#" class="button tiny" id="editBtnSmall">Rediger</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-
-            <div class="option-box">
-                <h5>Tilpass bildestørrelser</h5>
-                <div class="content">
-                    <div class="row">
-                        <div class="medium-3 columns text-center">
-                            <a href="#" class="button tiny" id="cropBtnSmall">Tilpass</a>
-                        </div>
-                        <div class="medium-4 columns text-center">
-                            <a href="#" class="button tiny" id="cropBtnMedium">Tilpass</a>
-                        </div>
-                        <div class="medium-5 columns text-center">
-                            <a href="#" class="button tiny" id="cropBtnLarge">Tilpass</a>
-                        </div>
-                        <br><br>
-                    </div>
-                    <div class="row">
-                        <div class="medium-3 columns text-center">
-                            <img src="" style="width:200px;height:120px;" id="imgPreviewSmall"/>
-                        </div>
-                        <div class="medium-4 columns text-center">
-                            <img src="" style="width:286px;height:120px;" id="imgPreviewMedium"/>
-                        </div>
-                        <div class="medium-5 columns text-center">
-                            <img src="" style="width:440px;height:140px;" id="imgPreviewLarge"/>
-                        </div>
-                    </div>
-                    <!-- Hidden image containers. Editor is affected by displaysize of image, therefore they are displayed hidden in full size-->
-                    <img style="display:none;max-width:none;" src="" id="imgAll"/>
-                    <img style="display:none;max-width:none;" src="" id="imgLarge"/>
-                    <img style="display:none;max-width:none;" src="" id="imgMedium"/>
-                    <img style="display:none;max-width:none;" src="" id="imgSmall"/>
-                </div>
-            </div>
 
             <div class="option-box">
                 <h5>Publisering</h5>
@@ -366,56 +74,178 @@
                 </div>
                 <div class="footer">
                     <div class="row">
-                        <div class="small-8 columns">
-                            {{ form_widget(form.preview, {'attr': {'class': 'button tiny', 'formtarget': '_blank'}}) }}
+                        <div class="small-6 medium-2 medium-offset-8 large-offset-9 columns">
+                            {{ form_row(form.published) }}
                         </div>
-                        <div class="small-4 columns">
-                            {{ form_widget(form.publish, {'attr': {'class': 'button tiny right'}}) }}
+                        <div class="small-6 medium-2 large-1 columns">
+                            <br>
+                            <button id="submitBtn" class="tiny button right">Lagre</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             {{ form_end(form) }}
-
-            <div id="cropModal" class="reveal-modal small" data-reveal aria-labelledby="cropImageModal"
-                 aria-hidden="true" role="dialog">
-                <h4>Crop</h4>
-                {{ form_start(cropImageForm) }}
-                <div class="row">
-                    <div class="small-9 columns">
-                        {{ form_row(cropImageForm.image) }}
-                    </div>
-                    <div class="small-3 columns">
-                        <a href="#" class="button tiny right" id="loadImage">Last inn</a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="small-12 columns">
-                        <div class="img-container-large">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="small-7 columns">
-                        <div class="img-container-medium">
-                        </div>
-                    </div>
-                    <div class="small-5 columns">
-                        <div class="img-container-small">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="small-12 columns">
-                        {{ form_widget(cropImageForm.crop, {'attr': {'class': 'button tiny right'}}) }}
-                    </div>
-                </div>
-                <div class="results"></div>
-                {{ form_end(cropImageForm) }}
-                <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-            </div>
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset_with_version('js/optionbox.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script type="text/javascript" src="{{ asset_with_version('vendor/dropzone/dist/min/dropzone.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset_with_version('vendor/cropperjs/cropper.min.js') }}"></script>
+    <script>
+      var dropzoneOptions = {
+        maxFilesize: 5,
+        maxFiles: 1,
+        init: function () {
+          this.on('maxfilesexceeded', function (file) {
+            this.removeAllFiles();
+            this.addFile(file);
+          });
+        },
+        autoProcessQueue: false,
+        paramName: 'img',
+        dictDefaultMessage: 'Slipp bildet her<br>(eller trykk for &aring velge)',
+        createImageThumbnails: false,
+        acceptedFiles: 'image/*',
+      };
+      new Vue({
+        el: '#app',
+        data: {
+          smallPhotoSrc: '{{ asset_with_version(article.imageSmall) }}',
+          largePhotoSrc: '{{ asset_with_version(article.imageLarge) }}',
+          largeCropper: null,
+          smallCropper: null,
+        },
+        delimiters: ['${', '}'],
+        mounted() {
+          Dropzone.options.dropsmall = {
+            ...dropzoneOptions,
+            accept: function (file, done) {
+              this.showSmallCrop(file);
+              done();
+            }.bind(this),
+          };
+
+          Dropzone.options.droplarge = {
+            ...dropzoneOptions,
+            accept: function (file, done) {
+              this.showLargeCrop(file);
+              done();
+            }.bind(this),
+          };
+
+          var form = $("[name='{{ form.vars.name }}']");
+          form.submit(function (e) {
+            e.preventDefault();
+            setTimeout(function() {
+                this.upload();
+            }.bind(this), 100)
+          }.bind(this));
+          $('#app').show();
+        },
+        methods: {
+          showSmallCrop(file) {
+            var id = '#imgsmall';
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+              this.smallPhotoSrc = e.target.result;
+              setTimeout(function () {
+                if (this.smallCropper) {
+                  return;
+                }
+                this.smallCropper = new Cropper(document.querySelector(id), {
+                  aspectRatio: 1.8,
+                  viewMode: 1,
+                });
+              }.bind(this), 100);
+            }.bind(this);
+
+            reader.readAsDataURL(file);
+          },
+          showLargeCrop(file) {
+            var id = '#imglarge';
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+              this.largePhotoSrc = e.target.result;
+              setTimeout(function () {
+                if (this.largeCropper) {
+                  return;
+                }
+                this.largeCropper = new Cropper(document.querySelector(id), {
+                  aspectRatio: 2.6,
+                  viewMode: 1,
+                });
+              }.bind(this), 100);
+            }.bind(this);
+
+            reader.readAsDataURL(file);
+          },
+          upload() {
+            if (!this.smallPhotoSrc || !this.largePhotoSrc) {
+              return alert('Du må velge bilder');
+            }
+
+            var form = document.querySelector('form[name="{{ form.vars.name }}"]');
+            var formData = new FormData(form);
+
+            var newSmallPhoto = this.smallCropper && this.smallCropper.getCroppedCanvas() !== null;
+            var newLargePhoto = this.largeCropper && this.largeCropper.getCroppedCanvas() !== null;
+
+            if (newSmallPhoto && newLargePhoto) {
+              this.uploadSmallAndLargeImages(formData);
+            } else if (newSmallPhoto) {
+              this.uploadSmallImageOnly(formData);
+            } else if (newLargePhoto) {
+              this.uploadLargeImageOnly(formData);
+            } else {
+              this.submit(formData);
+            }
+          },
+          uploadSmallAndLargeImages(formData) {
+            this.largeCropper.getCroppedCanvas().toBlob(function (largeBlob) {
+              this.smallCropper.getCroppedCanvas().toBlob(function (smallBlob) {
+                formData.append('imglarge', largeBlob);
+                formData.append('imgsmall', smallBlob);
+                this.submit(formData);
+              }.bind(this), 'image/jpeg');
+            }.bind(this), 'image/jpeg');
+          },
+          uploadSmallImageOnly(formData) {
+            this.smallCropper.getCroppedCanvas().toBlob(function (smallBlob) {
+              formData.append('imgsmall', smallBlob);
+              return this.submit(formData);
+            }.bind(this), 'image/jpeg');
+          },
+          uploadLargeImageOnly(formData) {
+            this.largeCropper.getCroppedCanvas().toBlob(function (largeBlob) {
+              formData.append('imglarge', largeBlob);
+              return this.submit(formData);
+            }.bind(this), 'image/jpeg');
+          },
+          submit(formData) {
+            $('#submitBtn').attr('disabled', true);
+            $.ajax('{% if (article.id) %}{{ path('articleadmin_edit', {'id': article.id}) }}{% else %}{{ path('articleadmin_create') }}{% endif %}', {
+              method: 'POST',
+              data: formData,
+              processData: false,
+              contentType: false,
+              success: function () {
+                window.location = '{{ path('articleadmin_show') }}';
+              },
+              error: function () {
+                $('#submitBtn').removeAttr('disabled');
+                alert('Noe gikk galt under opplasting av artikkelen. Har du fylt ut alle feltene?');
+              }.bind(this),
+            });
+          },
+        },
+      });
+    </script>
 {% endblock %}

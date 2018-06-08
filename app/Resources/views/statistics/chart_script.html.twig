@@ -70,11 +70,21 @@
                 color: getColor(3)
             }
         ];
+        var heardAbout = [
+            {% for heardAbout in applicationData.heardAboutFrom|keys %}
+            {
+                label: '{{ heardAbout }}' + ' ({{ (applicationData.heardAboutFrom[heardAbout]/applicationData.count*100)|round }} %)',
+                value: {{ applicationData.heardAboutFrom[heardAbout] }},
+                color: getColor({{ loop.index0 }})
+            },
+            {% endfor %}
+        ];
 
         renderChart(fieldOfStudyData, 'Studie', $applicationCharts, false);
         renderChart(studyYearData, 'Studieår', $applicationCharts, true);
         renderChart(genderData, 'Kjønn', $applicationCharts, true);
         renderChart(applicantsData, 'Nye/Gamle Søkere', $applicationCharts, true);
+        renderChart(heardAbout, 'Hørt om vektor gjennom', $applicationCharts, true);
         renderChart(admissionData, 'Opptak', $admissionCharts, true);
         {% endif %}
 

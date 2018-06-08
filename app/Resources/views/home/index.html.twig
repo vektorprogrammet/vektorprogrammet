@@ -67,7 +67,7 @@
                         <div class="carousel-inner">
                             {% for article in news %}
                                 <div class="carousel-item{{ loop.first ? ' active' : '' }}">
-                                    <img class="d-block w-100" src="{{ asset(article.imageLarge | imagine_filter('article_featured')) }}"
+                                    <img class="d-block w-100" src="{{ asset(article.imageLarge | imagine_filter('article_large')) }}"
                                          alt="First slide">
                                     <div class="carousel-caption">
                                         <div class="content text-dark-blue">

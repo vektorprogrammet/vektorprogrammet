@@ -4,6 +4,7 @@ namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
 use Doctrine\ORM\EntityRepository;
 
 class AdmissionSubscriberRepository extends EntityRepository
@@ -16,13 +17,38 @@ class AdmissionSubscriberRepository extends EntityRepository
      */
     public function findByDepartment(Department $department)
     {
-        return $this->createQueryBuilder('subscriber')
-                    ->select('subscriber')
-                    ->andWhere('subscriber.department = :department')
-                    ->setParameter('department', $department)
-                    ->getQuery()
-                    ->getResult();
+        return $this
+            ->createQueryBuilder('subscriber')
+            ->select('subscriber')
+            ->where('subscriber.department = :department')
+            ->setParameter('department', $department)
+            ->getQuery()
+            ->getResult();
     }
+
+    /**
+     * @param Semester $semester
+     *
+     * @return AdmissionSubscriber[]
+     *
+     */
+    public function findBySemester(Semester $semester)
+    {
+        $department = $semester->getDepartment();
+
+        return $this
+            ->createQueryBuilder('subscriber')
+            ->select('subscriber')
+            ->where('subscriber.department = :department')
+            ->andWhere('subscriber.timestamp > :semesterStart')
+            ->andWhere('subscriber.timestamp < :semesterEnd')
+            ->setParameter('department', $department)
+            ->setParameter('semesterStart', $semester->getSemesterStartDate())
+            ->setParameter('semesterEnd', $semester->getSemesterEndDate())
+            ->getQuery()
+            ->getResult();
+    }
+
     /**
      * @param string $email
      * @param Department $department
@@ -31,7 +57,8 @@ class AdmissionSubscriberRepository extends EntityRepository
      */
     public function findByEmailAndDepartment(string $email, Department $department)
     {
-        return $this->createQueryBuilder('subscriber')
+        return $this
+            ->createQueryBuilder('subscriber')
             ->select('subscriber')
             ->where('subscriber.email = :email')
             ->andWhere('subscriber.department = :department')
@@ -48,7 +75,8 @@ class AdmissionSubscriberRepository extends EntityRepository
      */
     public function findByUnsubscribeCode(string $code)
     {
-        return $this->createQueryBuilder('subscriber')
+        return $this
+            ->createQueryBuilder('subscriber')
             ->where('subscriber.unsubscribeCode = :code')
             ->setParameter('code', $code)
             ->getQuery()

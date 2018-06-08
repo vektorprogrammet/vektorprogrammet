@@ -73,6 +73,7 @@ security:
         - { path: ^/kontrollpanel/intervju/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/opptakadmin/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/bruker/vekorepost/endre, roles: ROLE_HIGHEST_ADMIN }
+        - { path: ^/kontrollpanel/hovedstyret/slett/bruker, roles: ROLE_SUPER_ADMIN }
 
           #ROLE_SUPER_ADMIN = team leader
         - { path: ^/kontrollpanel/avdelingadmin/update, roles: ROLE_SUPER_ADMIN }
@@ -111,8 +112,6 @@ security:
         - { path: ^/kontrollpanel/nyhetsbrev/send, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/nyhetsbrev/abonnenter, roles: ROLE_SUPER_ADMIN }
         - { path: ^/updatestaticcontent, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/signatures, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/profile/attest, roles: ROLE_SUPER_ADMIN }
         - { path: ^/profile/aktiv, roles: ROLE_SUPER_ADMIN }
         - { path: ^/profile/deaktiv, roles: ROLE_SUPER_ADMIN }
         - { path: ^/profile/rolle/endre, roles: ROLE_SUPER_ADMIN }
@@ -121,11 +120,9 @@ security:
         - { path: ^/kontrollpanel/vikar/rediger, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/vikar/slett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/vikar/opprett, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/attest/lastned, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/hovedstyret, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/hovedstyret/nytt_medlem, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/hovedstyret/oppdater, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/hovedstyret/slett/bruker, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/utlegg/rediger, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/utlegg/status, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/bildegallerier, roles: ROLE_SUPER_ADMIN, method: POST }
@@ -133,6 +130,9 @@ security:
         - { path: ^/kontrollpanel/bildegallerier/galleri/slett, roles: ROLE_SUPER_ADMIN }
 
           #ROLE_ADMIN = team user
+        - { path: ^/signatures, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/attest/lastned, roles: ROLE_ADMIN }
+        - { path: ^/profile/attest, roles: ROLE_ADMIN }
         - { path: ^/profile/edit, roles: ROLE_ADMIN }
         - { path: ^/efconnect, role: ROLE_ADMIN }
         - { path: ^/elfinder, role: ROLE_ADMIN }
