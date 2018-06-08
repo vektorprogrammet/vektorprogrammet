@@ -51,7 +51,7 @@ security:
                 default_target_path: /login/redirect
                 require_previous_session: false
                 #Added this line to prevent the SessionUnavailable Exception
-                #See here for explenation: http://stackoverflow.com/questions/32802932/symfony2-sessionunavailable-exception
+                #See here for explanation: http://stackoverflow.com/questions/32802932/symfony2-sessionunavailable-exception
             logout:
                 path:  /logout
                 target:  /
