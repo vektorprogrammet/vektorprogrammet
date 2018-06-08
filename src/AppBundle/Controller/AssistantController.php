@@ -64,11 +64,12 @@ class AssistantController extends Controller
                 'environment' => $this->get('kernel')->getEnvironment(),
             ))->getForm();
 
+            $form->handleRequest($request);
+
             if ($form->isSubmitted()) {
                 $scrollToAdmissionForm = true;
+                $specificDepartment = $department;
             }
-
-            $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $admissionManager->setCorrectUser($application);
@@ -89,7 +90,6 @@ class AssistantController extends Controller
 
             $formViews[$department->getCity()] = $form->createView();
         }
-
 
         return $this->render('assistant/assistants.html.twig', array(
             'specific_department' => $specificDepartment,
