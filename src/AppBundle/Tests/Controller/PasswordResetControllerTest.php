@@ -46,22 +46,26 @@ class PasswordResetControllerTest extends BaseWebTestCase
         $client->submit($form);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
 
-        // Try logging in with new pass
-        $this->loginNewPassword();
-
-        /*
-         * Trying the same trick with a wrong password, such as the old one puts the
-         * client in an infinite redirect loop
-         */
+        $this->assertTrue($this->loginSuccessful(self::newPass));
+        $this->assertFalse($this->loginSuccessful(self::oldPass));
     }
 
-    private function loginNewPassword()
+    /**
+     * @param string $password
+     *
+     * @return bool login successful
+     */
+    private function loginSuccessful($password)
     {
-        $client = $this->createClient(array(), array(
-            'PHP_AUTH_USER' => self::username,
-            'PHP_AUTH_PW' => self::newPass,
-        ));
-        $crawler = $this->goTo('/', $client);
-        $this->assertEquals(0, $crawler->filter('nav span:contains("Logg inn")')->count());
+        $crawler = $this->anonymousGoTo('/login');
+
+        $form = $crawler->selectButton('Logg inn')->form();
+        $form['_username'] = self::username;
+        $form['_password'] = $password;
+        $client = $this->createAnonymousClient();
+        $client->submit($form);
+
+        $crawler = $client->request('GET', '/');
+        return $crawler->filter('nav span:contains("Logg inn")')->count() == 0;
     }
 }
