@@ -1398,16 +1398,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.62",
+            "version": "v0.63",
             "source": {
                 "type": "git",
                 "url": "https://github.com/google/google-api-php-client-services.git",
-                "reference": "a3c342e711aaf61f83b1ef9de7a6685446a409e7"
+                "reference": "a009a33246e90bf1f60f745f8e47039ac5a87fdf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/a3c342e711aaf61f83b1ef9de7a6685446a409e7",
-                "reference": "a3c342e711aaf61f83b1ef9de7a6685446a409e7",
+                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/a009a33246e90bf1f60f745f8e47039ac5a87fdf",
+                "reference": "a009a33246e90bf1f60f745f8e47039ac5a87fdf",
                 "shasum": ""
             },
             "require": {
@@ -1431,7 +1431,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2018-05-31T00:23:15+00:00"
+            "time": "2018-06-07T00:22:54+00:00"
         },
         {
             "name": "google/auth",
@@ -1874,6 +1874,7 @@
                 "elfinder",
                 "filemanager"
             ],
+            "abandoned": true,
             "time": "2018-03-06T09:13:27+00:00"
         },
         {
@@ -2898,16 +2899,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.8.0",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "478465659fd987669df0bd8a9bf22a8710e5f1b6"
+                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/478465659fd987669df0bd8a9bf22a8710e5f1b6",
-                "reference": "478465659fd987669df0bd8a9bf22a8710e5f1b6",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
+                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
                 "shasum": ""
             },
             "require": {
@@ -2942,7 +2943,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2018-05-29T17:25:09+00:00"
+            "time": "2018-06-11T23:09:50+00:00"
         },
         {
             "name": "nelmio/api-doc-bundle",
