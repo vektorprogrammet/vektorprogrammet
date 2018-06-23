@@ -6,21 +6,6 @@ use AppBundle\Tests\BaseWebTestCase;
 
 class ExistingUserAdmissionControllerTest extends BaseWebTestCase
 {
-    public function testCreateApplication()
-    {
-        //TODO: Update to redesign
-        // Move to assistant controller test
-//        $path = '/kontrollpanel/opptak';
-//
-//        $applicationsBefore = $this->countTableRows($path);
-//
-//        $this->createAndSubmitForm('Peter');
-//
-//        $applicationsAfter = $this->countTableRows($path);
-//
-//        $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
-    }
-
     public function testCreateWithPreferredSchool()
     {
         $this->createAndSubmitForm_preferredSchool('');
@@ -36,27 +21,6 @@ class ExistingUserAdmissionControllerTest extends BaseWebTestCase
         $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
     }
 
-
-    /**
-     * @param string $testname
-     */
-    private function createAndSubmitForm(string $testname)
-    {
-        $crawler = $this->assistantGoTo('/opptak/avdeling/1');
-
-        $submitButton = $crawler->selectButton('Søk');
-        $form = $submitButton->form();
-
-        $form['application[user][firstName]'] = $testname;
-        $form['application[user][lastName]'] = $testname;
-        $form['application[user][email]'] = 'test@vektorprogrammet.no';
-        $form['application[user][phone]'] = '99887766';
-        $form['application[user][fieldOfStudy]'] = 2;
-        $form['application[user][gender]'] = 0;
-        $form['application[yearOfStudy]'] = 4;
-
-        self::createAssistantClient()->submit($form);
-    }
     /**
      * @param string $preferredSchool
      */

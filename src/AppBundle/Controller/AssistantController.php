@@ -28,6 +28,8 @@ class AssistantController extends Controller
      * @param Department $department
      *
      * @return Response
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function admissionAction(Request $request, Department $department = null)
     {
@@ -40,6 +42,8 @@ class AssistantController extends Controller
      * @param bool $scrollToAdmissionForm
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function indexAction(Request $request, Department $specificDepartment = null, $scrollToAdmissionForm = false)
     {
