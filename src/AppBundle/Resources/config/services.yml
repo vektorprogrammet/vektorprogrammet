@@ -245,3 +245,9 @@ services:
     arguments: ['@doctrine.orm.entity_manager', '@app.google_api']
     tags:
         - { name: validator.constraint_validator }
+
+  app.application_email_validator:
+    class: AppBundle\Validator\Constraints\ApplicationEmailValidator
+    arguments: ['@app.application_admission']
+    tags:
+        - { name: validator.constraint_validator }
