@@ -19,19 +19,55 @@ class AssistantControllerTest extends BaseWebTestCase
         $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
     }
 
-    private function createAndSubmitForm()
+    public function testSameEmailCanOnlyBeUsedOnceInASemester()
     {
-        $crawler = $this->anonymousGoTo('/opptak/avdeling/1');
+        $path = '/kontrollpanel/opptak';
 
-        $form = $crawler->filter('form[name="application_1"] button:contains("Søk")')->form();
+        $applicationsBefore = $this->countTableRows($path);
 
-        $form['application_1[user][firstName]'] = 'test';
-        $form['application_1[user][lastName]'] = 'mctest';
-        $form['application_1[user][email]'] = 'test@vektorprogrammet.no';
-        $form['application_1[user][phone]'] = '99887766';
-        $form['application_1[user][gender]'] = 0;
-        $form['application_1[user][fieldOfStudy]'] = 2;
-        $form['application_1[yearOfStudy]'] = '1. klasse';
+        $this->createAndSubmitForm();
+        $this->createAndSubmitForm();
+
+        $applicationsAfter = $this->countTableRows($path);
+
+        $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
+    }
+
+    public function testSameEmailCanBeUsedInMultipleDepartments()
+    {
+        $firstDepartmentId = 1;
+        $firstSemesterId = 2;
+        $secondDepartmentId = 4;
+        $secondDepartmentFieldOfStudyId = 5;
+        $secondSemesterId = 3;
+        $path = '/kontrollpanel/opptak';
+
+        $applicationsBeforeFirstDepartment = $this->countTableRows("$path/$firstSemesterId");
+        $applicationsBeforeSecondDepartment = $this->countTableRows("$path/$secondSemesterId");
+
+        $this->createAndSubmitForm($firstDepartmentId);
+        $this->createAndSubmitForm($secondDepartmentId, $secondDepartmentFieldOfStudyId);
+
+        $applicationsAfterFirstDepartment = $this->countTableRows("$path/$firstSemesterId");
+        $applicationsAfterSecondDepartment = $this->countTableRows("$path/$secondSemesterId");
+
+        $this->assertEquals($applicationsBeforeFirstDepartment + 1, $applicationsAfterFirstDepartment);
+        $this->assertEquals($applicationsBeforeSecondDepartment + 1, $applicationsAfterSecondDepartment);
+    }
+
+    private function createAndSubmitForm(int $departmentId = 1, int $fieldOfStudyId = 2)
+    {
+        $crawler = $this->anonymousGoTo("/opptak/avdeling/$departmentId");
+
+        $form = $crawler->filter("form[name='application_$departmentId'] button:contains('Søk')")->form();
+
+        $form["application_${departmentId}[user][firstName]"] = 'test';
+        $form["application_${departmentId}[user][lastName]"] = 'mctest';
+        $form["application_${departmentId}[user][email]"] = 'test@vektorprogrammet.no';
+        $form["application_${departmentId}[user][phone]"] = '99887766';
+        $form["application_${departmentId}[user][gender]"] = 0;
+        $form["application_${departmentId}[user][fieldOfStudy]"] = $fieldOfStudyId;
+        $form["application_${departmentId}[yearOfStudy]"] = '1. klasse';
 
         $this->createAnonymousClient()->submit($form);
     }
