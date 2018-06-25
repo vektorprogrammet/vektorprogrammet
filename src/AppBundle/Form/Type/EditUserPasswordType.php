@@ -17,13 +17,18 @@ class EditUserPasswordType extends AbstractType
                 'second_name' => 'Gjenta_passord',
                 'type' => 'password',
                 'invalid_message' => 'Passordene må være like',
-                'constraints' => array(new Assert\Length(array(
-                    'min' => 8,
-                    'max' => 64,
-                    'minMessage' => 'Passordet må være på minst {{ limit }} tegn',
-                    'maxMessage' => 'Passordet må være mindre enn {{ limit }} tegn langt',
-                ))
-            )));
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'min' => 8,
+                        'max' => 64,
+                        'minMessage' => 'Passordet må være på minst {{ limit }} tegn',
+                        'maxMessage' => 'Passordet må være mindre enn {{ limit }} tegn langt',
+                    )),
+                    new Assert\NotBlank(array(
+                        'message' => 'Dette feltet kan ikke være tomt'
+                    )),
+                ),
+            ));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

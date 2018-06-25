@@ -51,7 +51,7 @@ class User implements AdvancedUserInterface, \Serializable
      * @var FieldOfStudy
      * @ORM\ManyToOne(targetEntity="FieldOfStudy")
      * @ORM\JoinColumn(onDelete="SET NULL")
-     * @Assert\NotBlank(groups={"admission"}, message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotBlank(groups={"admission", "edit_user", "create_user"}, message="Dette feltet kan ikke være tomt.")
      * @Assert\Valid
      */
     private $fieldOfStudy;
@@ -86,6 +86,7 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
+     * @Assert\NotBlank(groups={"username", "edit_user"}, message="Dette feltet kan ikke være tomt.")
      */
     private $password;
 
