@@ -72,7 +72,7 @@ class ExecutiveBoardController extends Controller
         }
 
         $city = $department->getCity();
-        return $this->render('executive_board/create_executive_board_member.html.twig', array(
+        return $this->render('executive_board/member.html.twig', array(
             'heading' => "Legg til hovedstyremedlem fra avdeling $city",
             'form' => $form->createView(),
         ));
@@ -145,7 +145,7 @@ class ExecutiveBoardController extends Controller
         }
 
         $memberName = $user->getFullName();
-        return $this->render("executive_board/create_executive_board_member.html.twig", array(
+        return $this->render("executive_board/member.html.twig", array(
             'heading' => "Rediger medlemshistorikken til $memberName",
             'form' => $form->createView(),
         ));

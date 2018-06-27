@@ -50,7 +50,6 @@ class TeamMembership implements TeamMembershipInterface
      * @var bool
      *
      * @ORM\Column(type="boolean")
-     * @Assert\Type("bool")
      * @Assert\NotNull(message="Dette feltet kan ikke være tomt")
      */
     private $isTeamLeader;
