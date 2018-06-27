@@ -22,12 +22,14 @@ class TeamMembership implements TeamMembershipInterface
      * @ORM\ManyToOne(targetEntity="User", inversedBy="teamMemberships")
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Assert\Valid
+     * @Assert\NotNull(message="Dette feltet kan ikke være tomt")
      **/
     protected $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="Semester")
      * @Assert\Valid
+     * @Assert\NotNull(message="Dette feltet kan ikke være tomt")
      */
     protected $startSemester;
 
@@ -48,6 +50,8 @@ class TeamMembership implements TeamMembershipInterface
      * @var bool
      *
      * @ORM\Column(type="boolean")
+     * @Assert\Type("bool")
+     * @Assert\NotNull(message="Dette feltet kan ikke være tomt")
      */
     private $isTeamLeader;
 
@@ -65,6 +69,7 @@ class TeamMembership implements TeamMembershipInterface
      * @ORM\ManyToOne(targetEntity="Position")
      * @ORM\JoinColumn(name="position_id", referencedColumnName="id", onDelete="SET NULL")
      * @Assert\Valid
+     * @Assert\NotNull(message="Dette feltet kan ikke være tomt")
      **/
     protected $position;
 
@@ -268,7 +273,7 @@ class TeamMembership implements TeamMembershipInterface
     /**
      * @param bool $isTeamLeader
      */
-    public function setIsTeamLeader(bool $isTeamLeader)
+    public function setIsTeamLeader($isTeamLeader)
     {
         $this->isTeamLeader = $isTeamLeader;
     }

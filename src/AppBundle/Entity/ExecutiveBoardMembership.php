@@ -21,6 +21,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="executiveBoardMemberships")
      * @Assert\Valid
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      **/
     private $user;
 
@@ -33,7 +34,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Assert\Valid
-     *
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      **/
     private $positionName;
 
@@ -41,6 +42,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
      * @var Semester
      * @ORM\ManyToOne(targetEntity="Semester")
      * @Assert\Valid
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $startSemester;
 
