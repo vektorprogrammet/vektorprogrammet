@@ -17,7 +17,7 @@ services:
     app.twig_sponsors_extension:
         class: AppBundle\Twig\Extension\SponsorsExtension
         arguments:
-             doctrine: "@doctrine"
+             doctrine: "@doctrine.orm.default_entity_manager"
         tags:
             - { name: twig.extension }
 

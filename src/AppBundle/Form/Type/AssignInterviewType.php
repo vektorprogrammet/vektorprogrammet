@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class AssignInterviewType extends AbstractType
@@ -21,12 +22,12 @@ class AssignInterviewType extends AbstractType
     {
         $builder->add('interview', new CreateInterviewType($this->roles, $this->department));
 
-        $builder->add('save', 'submit', array(
+        $builder->add('save', SubmitType::class, array(
             'label' => 'Lagre',
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'application';
     }

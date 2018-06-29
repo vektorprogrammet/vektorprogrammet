@@ -45,7 +45,7 @@ class TeamApplicationController extends Controller
 
     public function deleteTeamApplicationByIdAction(TeamApplication $teamApplication)
     {
-        $manager = $this->getDoctrine()->getEntityManager();
+        $manager = $this->getDoctrine()->getManager();
 
         $manager->remove($teamApplication);
         $manager->flush();

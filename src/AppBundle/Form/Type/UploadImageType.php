@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UploadImageType extends AbstractType
 {
@@ -24,7 +24,7 @@ class UploadImageType extends AbstractType
         ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Image',
@@ -32,7 +32,7 @@ class UploadImageType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'image';
     }

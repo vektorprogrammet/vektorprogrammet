@@ -3,6 +3,10 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class SponsorType extends AbstractType
@@ -21,13 +25,13 @@ class SponsorType extends AbstractType
         $builder
             ->setAction($this->router->generate('sponsors_update', array('id' => $this->id)))
             ->setMethod('POST')
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'label' => 'Sponsornavn',
             ))
-            ->add('url', 'text', array(
+            ->add('url', TextType::class, array(
                 'label' => 'Sponsors hjemmeside',
             ))
-            ->add('size', 'choice', array(
+            ->add('size', ChoiceType::class, array(
                 'required' => true,
                 'label' => 'Størrelse',
                 'choices' => array(
@@ -38,20 +42,20 @@ class SponsorType extends AbstractType
                 'multiple' => false,
                 'expanded' => true,
             ))
-            ->add('logoImagePath', 'file', array(
+            ->add('logoImagePath', FileType::class, array(
                 'required' => false,
                 'data_class' => null,
                 'label' => 'Last opp ny logo',
             ))
-            ->add('save', 'submit', array(
+            ->add('save', SubmitType::class, array(
                 'label' => 'Lagre',
             ))
-            ->add('delete', 'submit', array(
+            ->add('delete', SubmitType::class, array(
                 'label' => 'Slett',
             ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'sponsor';
     }

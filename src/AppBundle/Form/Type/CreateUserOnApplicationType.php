@@ -3,10 +3,13 @@
 namespace AppBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateUserOnApplicationType extends AbstractType
 {
@@ -19,11 +22,11 @@ class CreateUserOnApplicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName', 'text', array(
+            ->add('firstName', TextType::class, array(
                 'label' => 'Fornavn',
                 'attr' => array('autocomplete' => 'given-name')
             ))
-            ->add('lastName', 'text', array(
+            ->add('lastName', TextType::class, array(
                 'label' => 'Etternavn',
                 'attr' => array('autocomplete' => 'family-name')
             ))
@@ -31,7 +34,7 @@ class CreateUserOnApplicationType extends AbstractType
                 'label' => 'Telefon',
                 'attr' => array('autocomplete' => 'tel')
             ))
-            ->add('email', 'email', array(
+            ->add('email', EmailType::class, array(
                 'label' => 'E-post',
                 'attr' => array('autocomplete' => 'email')
             ))
@@ -42,7 +45,7 @@ class CreateUserOnApplicationType extends AbstractType
                 ],
                 'label' => 'Kjønn'
             ))
-            ->add('fieldOfStudy', 'entity', array(
+            ->add('fieldOfStudy', EntityType::class, array(
                 'label' => 'Linje',
                 'class' => 'AppBundle:FieldOfStudy',
                 'query_builder' => function (EntityRepository $er) {
@@ -55,14 +58,14 @@ class CreateUserOnApplicationType extends AbstractType
             ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'createUser';
     }

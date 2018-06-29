@@ -2,11 +2,13 @@
 
 namespace AppBundle\Form\Type;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateTeamMembershipType extends AbstractType
 {
@@ -20,7 +22,7 @@ class CreateTeamMembershipType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('user', 'entity', array(
+            ->add('user', EntityType::class, array(
                 'label' => 'Bruker',
                 'class' => 'AppBundle:User',
                 'query_builder' => function (EntityRepository $er) {
@@ -42,7 +44,7 @@ class CreateTeamMembershipType extends AbstractType
                 'expanded' => true,
                 'label' => false,
             ))
-            ->add('position', 'entity', array(
+            ->add('position', EntityType::class, array(
                 'label' => 'Stillingstittel',
                 'class' => 'AppBundle:Position',
                 'query_builder' => function (EntityRepository $er) {
@@ -50,7 +52,7 @@ class CreateTeamMembershipType extends AbstractType
                         ->orderBy('p.name', 'ASC');
                 },
             ))
-            ->add('startSemester', 'entity', array(
+            ->add('startSemester', EntityType::class, array(
                 'label' => 'Start semester',
                 'class' => 'AppBundle:Semester',
                 'query_builder' => function (EntityRepository $er) {
@@ -61,7 +63,7 @@ class CreateTeamMembershipType extends AbstractType
                         ->setParameter(1, $this->departmentId);
                 },
             ))
-            ->add('endSemester', 'entity', array(
+            ->add('endSemester', EntityType::class, array(
                 'label' => 'Slutt semester (Valgfritt)',
                 'class' => 'AppBundle:Semester',
                 'query_builder' => function (EntityRepository $er) {
@@ -73,19 +75,19 @@ class CreateTeamMembershipType extends AbstractType
                 },
                 'required' => false,
             ))
-            ->add('save', 'submit', array(
+            ->add('save', SubmitType::class, array(
                 'label' => 'Opprett',
             ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\TeamMembership',
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'createTeamMembership';
     }

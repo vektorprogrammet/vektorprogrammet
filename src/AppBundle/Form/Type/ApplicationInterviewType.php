@@ -3,9 +3,11 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ApplicationInterviewType extends AbstractType
 {
@@ -15,7 +17,7 @@ class ApplicationInterviewType extends AbstractType
             'data_class' => 'AppBundle\Entity\Application',
         ));
 
-        $builder->add('heardAboutFrom', 'choice', array(
+        $builder->add('heardAboutFrom', ChoiceType::class, array(
             'label' => 'Hvor hørte du om Vektorprogrammet?',
             'choices' => array(
                 'Blesting' => 'Blesting',
@@ -37,23 +39,23 @@ class ApplicationInterviewType extends AbstractType
 
         $builder->add('interview', new InterviewType());
 
-        $builder->add('save', 'submit', array(
+        $builder->add('save', SubmitType::class, array(
             'label' => 'Lagre kladd',
         ));
 
-        $builder->add('saveAndSend', 'submit', array(
+        $builder->add('saveAndSend', SubmitType::class, array(
             'label' => 'Lagre og send kvittering',
         ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Application',
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'application';
     }

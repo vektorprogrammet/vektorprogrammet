@@ -38,7 +38,7 @@ class SponsorsController extends Controller
         $sponsor = $this->getDoctrine()->getRepository('AppBundle:Sponsor')
             ->find($id);
         //Get the entity manager
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         if (array_key_exists('delete', $request->request->get('sponsor'))) { //Delete the sponsor object from the database
             $em->remove($sponsor);
         } else { //Update the sponsor object in the database
@@ -68,7 +68,7 @@ class SponsorsController extends Controller
     public function sponsorsAddAction()
     {
         $sponsor = new Sponsor();
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $em->persist($sponsor);
         $em->flush();
 

@@ -3,8 +3,9 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InterviewPracticalType extends AbstractType
 {
@@ -15,7 +16,7 @@ class InterviewPracticalType extends AbstractType
             'Ikke' => 'Ikke',
         );
 
-        $builder->add('doublePosition', 'choice', array(
+        $builder->add('doublePosition', ChoiceType::class, array(
             'label' => 'Kunne du tenke deg dobbelt stilling? Altså en gang i uka i 8 uker?',
             'help' => 'Info om når bolkene er. Det teller ikke negativt dersom man ikke ønsker det, viktig at intervjuobjektet skjønner dette.',
             'choices' => array(
@@ -26,7 +27,7 @@ class InterviewPracticalType extends AbstractType
             'multiple' => false,
         ));
 
-        $builder->add('preferredGroup', 'choice', array(
+        $builder->add('preferredGroup', ChoiceType::class, array(
             'label' => 'Har du et ønske om bolk?',
             'choices' => array(
                 null => 'Ingen',
@@ -37,37 +38,37 @@ class InterviewPracticalType extends AbstractType
             'multiple' => false,
         ));
 
-        $builder->add('monday', 'choice', array(
+        $builder->add('monday', ChoiceType::class, array(
             'label' => 'Mandag',
             'choices' => $workChoices,
             'expanded' => true,
         ));
 
-        $builder->add('tuesday', 'choice', array(
+        $builder->add('tuesday', ChoiceType::class, array(
             'label' => 'Tirsdag',
             'choices' => $workChoices,
             'expanded' => true,
         ));
 
-        $builder->add('wednesday', 'choice', array(
+        $builder->add('wednesday', ChoiceType::class, array(
             'label' => 'Onsdag',
             'choices' => $workChoices,
             'expanded' => true,
         ));
 
-        $builder->add('thursday', 'choice', array(
+        $builder->add('thursday', ChoiceType::class, array(
             'label' => 'Torsdag',
             'choices' => $workChoices,
             'expanded' => true,
         ));
 
-        $builder->add('friday', 'choice', array(
+        $builder->add('friday', ChoiceType::class, array(
             'label' => 'Fredag',
             'choices' => $workChoices,
             'expanded' => true,
         ));
 
-        $builder->add('language', 'choice', array(
+        $builder->add('language', ChoiceType::class, array(
             'label' => 'Vi har en internasjonal skole. Hvilke(t) språk ønsker du å undervise på?',
             'help' => 'Det er ingen spesiell fordel å velge det ene fremfor det andre.',
             'choices' => array(
@@ -79,7 +80,7 @@ class InterviewPracticalType extends AbstractType
             'multiple' => false,
         ));
 
-        $builder->add('heardAboutFrom', 'choice', array(
+        $builder->add('heardAboutFrom', ChoiceType::class, array(
             'label' => 'Hvor hørte du om Vektorprogrammet?',
             'choices' => array(
                 'Blesting' => 'Blesting',
@@ -95,14 +96,14 @@ class InterviewPracticalType extends AbstractType
         ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\InterviewPractical',
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'interviewPractical';
     }

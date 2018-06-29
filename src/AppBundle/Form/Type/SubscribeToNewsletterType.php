@@ -3,6 +3,8 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -11,10 +13,10 @@ class SubscribeToNewsletterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'label' => 'Navn',
             ))
-            ->add('email', 'email', array(
+            ->add('email', EmailType::class, array(
                 'label' => 'E-post',
             ));
     }
@@ -26,7 +28,7 @@ class SubscribeToNewsletterType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'app_bundle_subscribe_to_newsletter_type';
     }

@@ -3,7 +3,10 @@
 namespace AppBundle\Form\Type;
 
 use AppBundle\Role\Roles;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,26 +20,26 @@ class CreateUserType extends AbstractType
         $this->department = $options['department'];
 
         $builder
-            ->add('firstName', 'text', array(
+            ->add('firstName', TextType::class, array(
                 'label' => 'Fornavn',
             ))
-            ->add('lastName', 'text', array(
+            ->add('lastName', TextType::class, array(
                 'label' => 'Etternavn',
             ))
-            ->add('gender', 'choice', array(
+            ->add('gender', ChoiceType::class, array(
                 'label' => 'Kjønn',
                 'choices' => array(
                     0 => 'Mann',
                     1 => 'Dame',
                 ),
             ))
-            ->add('phone', 'text', array(
+            ->add('phone', TextType::class, array(
                 'label' => 'Telefon',
             ))
-            ->add('email', 'text', array(
+            ->add('email', TextType::class, array(
                 'label' => 'E-post',
             ))
-            ->add('fieldOfStudy', 'entity', array(
+            ->add('fieldOfStudy', EntityType::class, array(
                 'label' => 'Linje',
                 'class' => 'AppBundle:FieldOfStudy',
                 'query_builder' => function (EntityRepository $er) {
@@ -57,7 +60,7 @@ class CreateUserType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'createUser';
     }

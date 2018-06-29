@@ -2,7 +2,11 @@
 
 namespace AppBundle\Form\Type;
 
+use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -11,13 +15,13 @@ class CreateLetterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', 'text', array(
+            ->add('title', TextType::class, array(
                 'label' => 'Emne',
             ))
-            ->add('preview', 'submit', array(
+            ->add('preview', SubmitType::class, array(
                 'label' => 'Forhåndsvis',
             ))
-            ->add('content', 'ckeditor', array(
+            ->add('content', CKEditorType::class, array(
                 'required' => false,
                 'config' => array(
                     'height' => 500,
@@ -27,7 +31,7 @@ class CreateLetterType extends AbstractType
                 'label' => 'Innhold',
                 'attr' => array('class' => 'hide'), // Graceful loading, hides the textarea that is replaced by ckeditor
             ))
-            ->add('excludeApplicants', 'checkbox', array(
+            ->add('excludeApplicants', CheckboxType::class, array(
                 'label' => 'Ekskluder søkere',
                 'required' => false,
             ));
@@ -40,7 +44,7 @@ class CreateLetterType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'app_bundle_create_letter_type';
     }

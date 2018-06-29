@@ -3,6 +3,12 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class ScheduleInterviewType extends AbstractType
@@ -10,46 +16,46 @@ class ScheduleInterviewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('from', 'email', array(
+            ->add('from', EmailType::class, array(
                 'label' => 'Avsender',
             ))
-            ->add('to', 'email', array(
+            ->add('to', EmailType::class, array(
                 'label' => 'Mottaker',
             ))
-            ->add('datetime', 'datetime', array(
+            ->add('datetime', DateTimeType::class, array(
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
                 'label' => 'Tidspunkt',
                 'attr' => array('placeholder' => 'Klikk for å velge tidspunkt'),
             ))
-            ->add('room', 'text', array(
+            ->add('room', TextType::class, array(
                 'label' => 'Rom',
             ))
-            ->add('mapLink', 'text', array(
+            ->add('mapLink', TextType::class, array(
                 'label' => false,
                 'required' => false,
             ))
-            ->add('message', 'textarea', array(
+            ->add('message', TextareaType::class, array(
                 'label' => 'Melding',
                 'attr' => array('rows' => '5'),
             ))
-            ->add('save', 'submit', array(
+            ->add('save', SubmitType::class, array(
                 'label' => 'Lagre tidspunkt',
                 'attr' => array('style' => 'display:none')
             ))
-            ->add('saveAndSend', 'submit', array(
+            ->add('saveAndSend', SubmitType::class, array(
                 'label' => 'Send invitasjon på sms og e-post',
             ))
-            ->add('preview', 'submit', array(
+            ->add('preview', SubmitType::class, array(
                 'label' => 'Forhåndsvis'
             ))
-            ->add('changeStatus', 'button', array(
+            ->add('changeStatus', ButtonType::class, array(
                 'label' => 'Endre status'
             ))
         ;
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'scheduleInterview';
     }

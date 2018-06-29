@@ -3,27 +3,30 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateSchoolType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'label' => 'Navn',
             ))
-            ->add('contactPerson', 'text', array(
+            ->add('contactPerson', TextType::class, array(
                 'label' => 'Kontaktperson',
             ))
-            ->add('phone', 'text', array(
+            ->add('phone', TextType::class, array(
                 'label' => 'Telefon',
             ))
-            ->add('email', 'text', array(
+            ->add('email', TextType::class, array(
                 'label' => 'E-post',
             ))
-            ->add('international', 'choice', array(
+            ->add('international', ChoiceType::class, array(
                 'label' => 'Skolen er internasjonal',
                 'choices' => array(
                     true => 'Ja',
@@ -32,19 +35,19 @@ class CreateSchoolType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
             ))
-            ->add('save', 'submit', array(
+            ->add('save', SubmitType::class, array(
                 'label' => 'Opprett',
             ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\School',
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'createSchool';
     }

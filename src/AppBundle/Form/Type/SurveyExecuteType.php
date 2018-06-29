@@ -3,17 +3,18 @@
 namespace AppBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SurveyExecuteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //$department  $options["data"]->getSemester()->getDepartent();
         $semester = $builder->getData()->getSurvey()->getSemester();
-        $builder->add('school', 'entity', array(
+        $builder->add('school', EntityType::class, array(
             'label' => 'School',
             'placeholder' => 'Velg Skole',
             'class' => 'AppBundle:School',
@@ -26,21 +27,21 @@ class SurveyExecuteType extends AbstractType
                     ->setParameter('semester', $semester);
             },
         ));
-        $builder->add('surveyAnswers', 'collection', array('type' => new SurveyAnswerType()));
+        $builder->add('surveyAnswers', CollectionType::class, array('type' => new SurveyAnswerType()));
 
-        $builder->add('save', 'submit', array(
+        $builder->add('save', SubmitType::class, array(
             'label' => 'Send inn',
         ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\SurveyTaken',
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'surveyTaken';
     }

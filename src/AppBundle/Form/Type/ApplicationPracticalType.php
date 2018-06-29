@@ -5,13 +5,13 @@ namespace AppBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ApplicationPracticalType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('days', new DaysType(), array(
+        $builder->add('days', DaysType::class, array(
             'label' => 'Er det noen dager som IKKE passer for deg?',
             'data_class' => 'AppBundle\Entity\Application',
         ));
@@ -27,7 +27,7 @@ class ApplicationPracticalType extends AbstractType
             ],
         ]);
 
-        $builder->add('doublePosition', 'choice', array(
+        $builder->add('doublePosition', ChoiceType::class, array(
             'label' => 'Kunne du tenke deg enkel eller dobbel stilling?',
             'choices' => array(
                 0 => '4 uker',
@@ -37,7 +37,7 @@ class ApplicationPracticalType extends AbstractType
             'multiple' => false,
         ));
 
-        $builder->add('preferredGroup', 'choice', array(
+        $builder->add('preferredGroup', ChoiceType::class, array(
             'label' => 'Er det noen tidspunkt i løpet av semesteret du ikke kan delta på?',
             'choices' => array(
                 null => 'Kan hele semesteret',
@@ -48,7 +48,7 @@ class ApplicationPracticalType extends AbstractType
             'multiple' => false,
         ));
 
-        $builder->add('language', 'choice', array(
+        $builder->add('language', ChoiceType::class, array(
             'label' => 'Vil du undervise på norsk skole eller internasjonal skole?',
             'choices' => array(
                 'Norsk' => 'Norsk',
@@ -60,7 +60,7 @@ class ApplicationPracticalType extends AbstractType
             'multiple' => false,
         ));
 
-        $builder->add('teamInterest', 'choice', array(
+        $builder->add('teamInterest', ChoiceType::class, array(
             'label' => 'Legg til personen i teaminteresse-listen?',
             'choices' => array(
                 0 => 'Nei',
@@ -71,7 +71,7 @@ class ApplicationPracticalType extends AbstractType
         ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Application',
@@ -79,7 +79,7 @@ class ApplicationPracticalType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'application';
     }

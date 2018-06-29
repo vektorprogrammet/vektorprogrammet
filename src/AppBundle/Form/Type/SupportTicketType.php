@@ -4,10 +4,16 @@ namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Repository\DepartmentRepository;
+use Gregwar\CaptchaBundle\Type\CaptchaType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SupportTicketType extends AbstractType
 {
@@ -17,34 +23,34 @@ class SupportTicketType extends AbstractType
          * @var DepartmentRepository $departmentRepository
          */
         $departmentRepository = $options['department_repository'];
-        $builder->add('name', 'text', array(
+        $builder->add('name', TextType::class, array(
             'label' => 'Ditt navn',
             'attr' => array(
                 'autocomplete' => 'name'
             ),
             ));
-        $builder->add('email', 'email', array(
+        $builder->add('email', EmailType::class, array(
             'label' => 'Din e-post',
             'attr' => array(
                 'autocomplete' => 'email'
             ),
             ));
-        $builder->add('subject', 'text', array(
+        $builder->add('subject', TextType::class, array(
             'label' => 'Emne'));
-        $builder->add('department', 'hidden', array(
+        $builder->add('department', HiddenType::class, array(
             'label' => false));
-        $builder->add('body', 'textarea', array(
+        $builder->add('body', TextareaType::class, array(
             'label' => 'Melding',
             'attr' => array(
                 'rows' => '9',
             ),
         ));
-        $builder->add('submit', 'submit', array(
+        $builder->add('submit', SubmitType::class, array(
             'label' => 'Send melding',
             'attr' => array(
                 'class' => 'btn-primary'
             )));
-        $builder->add('captcha', 'captcha', array(
+        $builder->add('captcha', CaptchaType::class, array(
             'label' => ' ',
             'width' => 200,
             'height' => 50,
@@ -66,7 +72,7 @@ class SupportTicketType extends AbstractType
         ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\SupportTicket',
@@ -74,7 +80,7 @@ class SupportTicketType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'support_ticket';
     }
