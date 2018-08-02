@@ -496,7 +496,7 @@ class InterviewController extends Controller
     {
         $semester = $interview->getApplication()->getSemester();
         $teamUsers = $this->getDoctrine()->getRepository('AppBundle:User')
-            ->findUsersWithWorkHistoryInSemester($semester);
+            ->findUsersWithTeamMembershipInSemester($semester);
         $form = $this->createForm(new AddCoInterviewerType($teamUsers));
         $form->handleRequest($request);
 
