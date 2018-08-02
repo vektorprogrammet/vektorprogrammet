@@ -201,7 +201,7 @@ class InterviewController extends Controller
         $data = $form->getData();
         $mapLink = $data['mapLink'];
         if ($form->isSubmitted()) {
-            if ($mapLink and ! (strpos($mapLink, 'http')===0)) {
+            if ($mapLink && !(strpos($mapLink, 'http')===0)) {
                 $mapLink='http://' . $mapLink;
             }
         }
@@ -250,7 +250,7 @@ class InterviewController extends Controller
         }
 
         try {
-            $headers = @get_headers($link);
+            $headers = get_headers($link);
             $statusCode = intval(explode(" ", $headers[0])[1]);
         } catch (\Exception $e) {
             return false;
@@ -496,7 +496,7 @@ class InterviewController extends Controller
     {
         $semester = $interview->getApplication()->getSemester();
         $teamUsers = $this->getDoctrine()->getRepository('AppBundle:User')
-            ->findUsersWithWorkHistoryInSemester($semester);
+            ->findUsersWithTeamMembershipInSemester($semester);
         $form = $this->createForm(new AddCoInterviewerType($teamUsers));
         $form->handleRequest($request);
 
