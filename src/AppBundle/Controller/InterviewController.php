@@ -201,7 +201,7 @@ class InterviewController extends Controller
         $data = $form->getData();
         $mapLink = $data['mapLink'];
         if ($form->isSubmitted()) {
-            if ($mapLink and ! (strpos($mapLink, 'http')===0)) {
+            if ($mapLink && !(strpos($mapLink, 'http')===0)) {
                 $mapLink='http://' . $mapLink;
             }
         }
