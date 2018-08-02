@@ -250,7 +250,7 @@ class InterviewController extends Controller
         }
 
         try {
-            $headers = @get_headers($link);
+            $headers = get_headers($link);
             $statusCode = intval(explode(" ", $headers[0])[1]);
         } catch (\Exception $e) {
             return false;
