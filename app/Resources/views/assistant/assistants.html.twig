@@ -162,8 +162,8 @@
               setComplete(target)
             },
             error: function(err) {
-              if (err.responseText.indexOf("Dette er ikke en gylid e-postadresse") !== -1) {
-                setError(target, 'Dette er ikke en gylid e-postadresse');
+              if (err.responseText.indexOf("Dette er ikke en gyldig e-postadresse") !== -1) {
+                setError(target, 'Dette er ikke en gyldig e-postadresse');
               } else {
                 setError(target, 'Det har skjedd en feil under registrering av e-postadressen. Vennligst prøv igjen.')
               }

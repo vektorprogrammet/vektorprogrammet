@@ -28,6 +28,8 @@ class AssistantController extends Controller
      * @param Department $department
      *
      * @return Response
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function admissionAction(Request $request, Department $department = null)
     {
@@ -40,6 +42,8 @@ class AssistantController extends Controller
      * @param bool $scrollToAdmissionForm
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function indexAction(Request $request, Department $specificDepartment = null, $scrollToAdmissionForm = false)
     {
@@ -64,11 +68,12 @@ class AssistantController extends Controller
                 'environment' => $this->get('kernel')->getEnvironment(),
             ))->getForm();
 
+            $form->handleRequest($request);
+
             if ($form->isSubmitted()) {
                 $scrollToAdmissionForm = true;
+                $specificDepartment = $department;
             }
-
-            $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $admissionManager->setCorrectUser($application);
@@ -89,7 +94,6 @@ class AssistantController extends Controller
 
             $formViews[$department->getCity()] = $form->createView();
         }
-
 
         return $this->render('assistant/assistants.html.twig', array(
             'specific_department' => $specificDepartment,

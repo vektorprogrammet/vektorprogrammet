@@ -26,7 +26,7 @@ class AdmissionSubscriber
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="E-post må fylles inn")
-     * @Assert\Email(message="Dette er ikke en gylid e-postadresse")
+     * @Assert\Email(message="Dette er ikke en gyldig e-postadresse")
      */
     private $email;
 

@@ -76,7 +76,8 @@ class AdmissionNotifier
                     }
                     $hasApplied = array_search($subscriber->getEmail(), $applicationEmails) !== false;
                     $alreadyNotified = array_search($subscriber->getEmail(), $notificationEmails) !== false;
-                    if ($hasApplied || $alreadyNotified) {
+                    $subscribedMoreThanOneYearAgo = $subscriber->getTimestamp()->diff(new \DateTime())->y >= 1;
+                    if ($hasApplied || $alreadyNotified || $subscribedMoreThanOneYearAgo) {
                         continue;
                     }
 
@@ -86,6 +87,8 @@ class AdmissionNotifier
                     $notification->setSubscriber($subscriber);
                     $this->em->persist($notification);
                     $notificationsSent++;
+
+                    usleep(50 * 1000); // 50ms
                 }
                 if ($notificationsSent > 0) {
                     $this->logger->info("*$notificationsSent* admission notification emails sent to subscribers in *" . $department->getCity() . "*");
