@@ -22,6 +22,24 @@
 
     <div class="row">
         <div class="small-12 columns">
+            <h3 class="mb-0">Søknader</h3>
+            <p class="text-faded">
+                Totalt antall søknader: <strong>{{ applications|length }}</strong><br>
+                Antall søknader {{ semester.name }}: <strong>{{ applications_in_semester|length }}</strong><br>
+                <a href="{{ path('admission_show_by_short_name', {shortName: semester.department.shortName}) }}">
+                    Søknadsskjema for {{ semester.department.city }}
+                </a>
+            </p>
+        </div>
+        <div class="small-12 columns">
+            <h4 class="text-center">Søknader {{ semester.name }} - {{ semester.department.city }}</h4>
+            <canvas id="applicationsChart" width="400" height="125"></canvas>
+        </div>
+        <hr>
+    </div>
+
+    <div class="row">
+        <div class="small-12 columns">
             <h3 class="mb-0">Interesseliste</h3>
             <p class="text-faded">
                 Totalt antall påmeldte: <strong>{{ subscribers|length }}</strong><br>
@@ -42,8 +60,8 @@
 {% block javascripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
     <script>
-      var ctx = document.getElementById('admissionSubscribersChart').getContext('2d');
-      new Chart(ctx, {
+      var subCtx = document.getElementById('admissionSubscribersChart').getContext('2d');
+      new Chart(subCtx, {
         type: 'line',
         data: {
           labels: [{% for date, subCount in subData %}'{{ date|date('d.M') }}'{% if not loop.last %}, {% endif %}{% endfor %}],
@@ -65,6 +83,29 @@
           },
         },
       });
+
+      var appCtx = document.getElementById('applicationsChart').getContext('2d');
+      new Chart(appCtx, {
+          type: 'line',
+          data: {
+              labels: [{% for date, appCount in appData %}'{{ date|date('d.M') }}'{% if not loop.last %}, {% endif %}{% endfor %}],
+              datasets: [{
+                  label: 'Antall påmeldte',
+                  data: [{% for appCount in appData %}{{ appCount }}{% if not loop.last %}, {% endif %}{% endfor %}],
+                  backgroundColor: 'rgba(0, 0, 0, 0)',
+                  borderColor: 'rgba(0,134,179,1)',
+                  borderWidth: 1,
+              }],
+          },
+          options: {
+              scales: {
+                  yAxes: [{
+                      ticks: {
+                          beginAtZero: true,
+                      },
+                  }],
+              },
+          },
+      });
     </script>
 {% endblock %}
-
