@@ -20,11 +20,6 @@ class ProfileController extends Controller
 {
     public function showAction()
     {
-        $isGrantedAssistant = ($this->getUser() !== null && $this->get('app.roles')->userIsGranted($this->getUser(), Roles::ASSISTANT));
-        if (!$isGrantedAssistant) {
-            throw $this->createAccessDeniedException();
-        }
-
         // Get the user currently signed in
         $user = $this->getUser();
 
