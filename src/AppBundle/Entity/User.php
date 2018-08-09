@@ -174,11 +174,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function getDepartment()
     {
-        $fos = $this->getFieldOfStudy();
-        if ($fos !== null) {
-            return $fos->getDepartment();
-        }
-        return null;
+        return $this->getFieldOfStudy()->getDepartment();
     }
 
     public function getGender()

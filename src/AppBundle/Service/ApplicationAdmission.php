@@ -53,14 +53,17 @@ class ApplicationAdmission
 
     public function userHasAlreadyApplied(User $user)
     {
-        $department = $user->getDepartment();
-        if ($department !== null) {
-            $semester = $this->em->getRepository('AppBundle:Semester')
-                ->findSemesterWithActiveAdmissionByDepartment($user->getDepartment());
-            return $this->userHasAlreadyAppliedInSemester($user, $semester);
+        $fos = $user->getFieldOfStudy();
+        if ($fos === null) {
+            /* User has no field of study, and hence no department, so we
+            cannot know if he/she has already applied in the current semester,
+            as this depends on the department. */
+            return false;
         }
-
-        return false; // User has no department so we cannot know if he/she has already applied
+        $department = $fos->getDepartment();
+        $semester = $this->em->getRepository('AppBundle:Semester')
+            ->findSemesterWithActiveAdmissionByDepartment($department);
+        return $this->userHasAlreadyAppliedInSemester($user, $semester);
     }
 
     public function userHasAlreadyAppliedInSemester(User $user, Semester $semester)
