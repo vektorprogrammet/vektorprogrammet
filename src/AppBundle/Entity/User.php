@@ -172,7 +172,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @return Department
      */
-    public function getDepartment()
+    public function getDepartment(): Department
     {
         return $this->getFieldOfStudy()->getDepartment();
     }
