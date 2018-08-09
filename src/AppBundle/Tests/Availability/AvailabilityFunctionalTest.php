@@ -100,6 +100,7 @@ class AvailabilityFunctionalTest extends WebTestCase
             array('/nyheter'),
             array('/nyheter/ntnu'),
             array('/nyhet/1'),
+            array('/profile/1'),
         );
     }
 
@@ -107,7 +108,6 @@ class AvailabilityFunctionalTest extends WebTestCase
     {
         return array(
             array('/profile'),
-            array('/profile/1'),
         );
     }
 

@@ -139,8 +139,8 @@ security:
         - { path: ^/kontrollpanel, role: ROLE_ADMIN }
 
           #ROLE_USER = assistant user
-        - { path: ^/profil, roles: ROLE_USER }
-        - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/profil/rediger, roles: ROLE_USER }
+        - { path: ^/profile$, roles: ROLE_USER }
         - { path: ^/utlegg, roles: ROLE_USER }
         - { path: ^/api/myreceipts, roles: ROLE_USER }
 
