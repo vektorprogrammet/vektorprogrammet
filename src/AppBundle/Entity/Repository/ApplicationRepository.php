@@ -478,4 +478,35 @@ class ApplicationRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param Department $department
+     *
+     * @return Application[]
+     */
+    public function findByDepartment(Department $department)
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->join('a.semester', 's')
+            ->where('s.department = :department')
+            ->setParameter('department', $department)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param Semester $semester
+     *
+     * @return Application[]
+     */
+    public function findBySemester(Semester $semester)
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.semester = :semester')
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getResult();
+    }
 }

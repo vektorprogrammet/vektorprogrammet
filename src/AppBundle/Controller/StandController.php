@@ -21,16 +21,28 @@ class StandController extends Controller
         if ($semester === null) {
             $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
         }
-        $subscribers = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')->findByDepartment($semester->getDepartment());
-        $subscribersInSemester = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')->findBySemester($semester);
+        $department = $semester->getDepartment();
 
-        $subData = $this->get('app.admission_subscriber_statistics')->generateGraphDataFromSubscribersInSemester($subscribersInSemester, $semester);
+        $admissionStatistics = $this->get('app.admission_statistics');
+
+        $subscribers = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')->findByDepartment($department);
+        $subscribersInSemester = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')->findBySemester($semester);
+        $subData = $admissionStatistics->generateGraphDataFromSubscribersInSemester($subscribersInSemester, $semester);
+
+
+        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findByDepartment($department);
+        $applicationsInSemester = $this->getDoctrine()->getRepository('AppBundle:Application')->findBySemester($semester);
+        $appData = $admissionStatistics->generateGraphDataFromApplicationsInSemester($applicationsInSemester, $semester);
+
 
         return $this->render('stand_admin/stand.html.twig', [
             'semester' => $semester,
             'subscribers' => $subscribers,
             'subscribers_in_semester' => $subscribersInSemester,
             'subData' => $subData,
+            'applications' => $applications,
+            'applications_in_semester' => $applicationsInSemester,
+            'appData' => $appData,
         ]);
     }
 }
