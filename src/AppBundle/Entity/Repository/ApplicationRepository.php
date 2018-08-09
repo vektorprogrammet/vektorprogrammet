@@ -58,7 +58,7 @@ class ApplicationRepository extends EntityRepository
      *
      * @return Application[]
      */
-    public function findByEmailInSemester(string $email, Semester $semester)
+    public function findByEmailInSemester($email, Semester $semester)
     {
         return $this->createQueryBuilder('application')
             ->select('application')
