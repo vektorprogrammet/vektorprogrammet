@@ -50,8 +50,9 @@ class AssistantController extends Controller
         $admissionManager = $this->get('app.application_admission');
         $em = $this->getDoctrine()->getManager();
         $departments = $em->getRepository('AppBundle:Department')->findAll();
+        $departments = $this->get('app.geolocation')->sortDepartmentsByDistanceFromClient($departments);
         if (null === $specificDepartment) {
-            $specificDepartment = $this->get('app.geolocation')->findNearestDepartment($departments);
+            $specificDepartment = $departments[0];
         }
 
         $teams = $em->getRepository('AppBundle:Team')->findByOpenApplicationAndDepartment($specificDepartment);
@@ -97,6 +98,7 @@ class AssistantController extends Controller
 
         return $this->render('assistant/assistants.html.twig', array(
             'specific_department' => $specificDepartment,
+            'departments' => $departments,
             'teams' => $teams,
             'forms' => $formViews,
             'scroll_to_admission_form' => $scrollToAdmissionForm,

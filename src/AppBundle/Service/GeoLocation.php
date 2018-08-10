@@ -5,6 +5,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Department;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
+use Symfony\Component\Debug\Exception\ContextErrorException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -14,6 +15,7 @@ class GeoLocation
     private $departmentRepo;
     private $session;
     private $requestStack;
+    private $logger;
 
     /**
      * GeoLocation constructor.
@@ -21,13 +23,16 @@ class GeoLocation
      * @param string $ipinfoToken
      * @param EntityManagerInterface $em
      * @param Session $session
+     * @param RequestStack $requestStack
+     * @param LogService $logger
      */
-    public function __construct(string $ipinfoToken, EntityManagerInterface $em, Session $session, RequestStack $requestStack)
+    public function __construct(string $ipinfoToken, EntityManagerInterface $em, Session $session, RequestStack $requestStack, LogService $logger)
     {
         $this->ipinfoToken = $ipinfoToken;
         $this->departmentRepo = $em->getRepository('AppBundle:Department');
         $this->session = $session;
         $this->requestStack = $requestStack;
+        $this->logger = $logger;
     }
 
     /**
@@ -75,8 +80,9 @@ class GeoLocation
      */
     public function sortDepartmentsByDistanceFromClient($departments)
     {
-        //$ip = '193.157.161.108'; // UIO
-        //$ip = '158.39.3.40'; //NMBU
+        //$ip = '158.39.3.40'; // Oslo
+        //$ip = '129.241.56.201'; // Trondheim
+
         $ip = $this->clientIp();
         $coords = $this->findCoordinates($ip);
 
@@ -113,14 +119,25 @@ class GeoLocation
             return $coords;
         }
 
-        $response = file_get_contents("http://ipinfo.io/$ip?token={$this->ipinfoToken}");
+        try {
+            $response = file_get_contents("http://ipinfo.io/$ip?token={$this->ipinfoToken}");
+        } catch (ContextErrorException $exception) {
+            $this->logger->warning("Could not get location from 
+            ipinfo.io. The page returned an error.\nError:\n
+            {$exception->getMessage()}");
+            return null;
+        }
         $location = json_decode($response, true);
         if (!isset($location['loc'])) {
+            $this->logger->warning("Could not get location from 
+            ipinfo.io.\nResponse:\n$response");
             return null;
         }
 
         $coords = explode(',', $location['loc']);
         if (count($coords) !== 2) {
+            $this->logger->warning("Could not find lat/lon in location 
+                object. \nLocation:\n$location");
             return null;
         }
 
