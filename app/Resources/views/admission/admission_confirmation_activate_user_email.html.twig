@@ -9,12 +9,6 @@
 
 <br>
 
-{% if new_user_code %}
-    <p>Du kan se status på søknaden din ved å følge denne linken: {{ url('profile_activate_with_user_code', {'newUserCode': new_user_code}) }}</p>
-
-    <br>
-{% endif %}
-
 <p>Her er søknaden vi har mottatt, om noe skulle være feil må du ta kontakt med oss:</p>
 <ul style="list-style-type: none">
     <li><b>Navn:</b> {{ user.firstName | capitalize }} {{ user.lastName | capitalize }}</li>

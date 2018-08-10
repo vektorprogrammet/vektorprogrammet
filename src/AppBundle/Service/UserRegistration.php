@@ -37,6 +37,9 @@ class UserRegistration
         $hashedNewUserCode = hash('sha512', $newUserCode, false);
         $user->setNewUserCode($hashedNewUserCode);
 
+	    $this->em->persist($user);
+	    $this->em->flush();
+
         return $newUserCode;
     }
 
@@ -59,9 +62,6 @@ class UserRegistration
     public function sendActivationCode(User $user)
     {
         $newUserCode = $this->setNewUserCode($user);
-
-        $this->em->persist($user);
-        $this->em->flush();
 
         $this->mailer->send($this->createActivationEmail($user, $newUserCode));
     }
