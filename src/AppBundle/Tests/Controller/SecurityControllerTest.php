@@ -42,7 +42,7 @@ class SecurityControllerTest extends BaseWebTestCase
     {
         $client = $this->login('assistent', '1234');
 
-        $this->assertTrue($client->getResponse()->isRedirect('/profile'));
+        $this->assertTrue($client->getResponse()->isRedirect('/min-side'));
     }
 
     /**

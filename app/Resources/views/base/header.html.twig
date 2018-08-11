@@ -58,6 +58,7 @@
                     {% endif %}
                     <br>
                 {% endif %}
+                <li>{% include 'base/menu_item.html.twig' with {route: 'my_page', name: 'Min side'} %}</li>
                 <li>{% include 'base/menu_item.html.twig' with {route: 'profile', name: 'Profil'} %}</li>
                 <li>{% include 'base/menu_item.html.twig' with {route: 'receipt_create', name: 'Mine utlegg'} %}</li>
                 {% if app.user.isActiveAssistant() %}

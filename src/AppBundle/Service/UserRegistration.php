@@ -37,8 +37,8 @@ class UserRegistration
         $hashedNewUserCode = hash('sha512', $newUserCode, false);
         $user->setNewUserCode($hashedNewUserCode);
 
-	    $this->em->persist($user);
-	    $this->em->flush();
+        $this->em->persist($user);
+        $this->em->flush();
 
         return $newUserCode;
     }

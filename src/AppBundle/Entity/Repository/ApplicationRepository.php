@@ -37,6 +37,21 @@ class ApplicationRepository extends EntityRepository
             ->getOneOrNullResult();
     }
 
+    /**
+     * @param User $user
+     *
+     * @return Application|null
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findActiveByUser(User $user)
+    {
+        $department = $user->getDepartment();
+        $semester = $department->getCurrentOrLatestSemester();
+
+        return $this->findByUserInSemester($user, $semester);
+    }
+
     public function findEmailsBySemester(Semester $semester)
     {
         $res = $this->createQueryBuilder('application')

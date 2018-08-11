@@ -4,7 +4,7 @@
         <h6>
             {% for r in user.roles %}
                 {{ r.name | replace({
-                    'User': 'Assistent',
+                    'User': user.isActiveAssistant ? 'Assistent': 'Bruker',
                     'Admin': 'Teammedlem',
                     'Superadmin': 'Teamleder',
                     'Highest admin': 'Admin'

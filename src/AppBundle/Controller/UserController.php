@@ -12,6 +12,26 @@ class UserController extends Controller
 {
 
     /**
+     * @Route("/min-side", name="my_page")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function myPageAction()
+    {
+        $user = $this->getUser();
+        $semester = $user->getDepartment()->getCurrentOrLatestSemester();
+        $activeApplication = $this->getDoctrine()->getRepository('AppBundle:Application')->findByUserInSemester($user, $semester);
+        $applicationStatus = null;
+        if (null !== $activeApplication) {
+            $applicationStatus = $this->get('app.application_manager')->getApplicationStatus($activeApplication);
+        }
+        return $this->render('my_page/my_page.html.twig', [
+            "active_application" => $activeApplication,
+            "application_status" => $applicationStatus
+        ]);
+    }
+
+    /**
      * @Route("/profil/partnere", name="my_partners")
      *
      * @return \Symfony\Component\HttpFoundation\Response

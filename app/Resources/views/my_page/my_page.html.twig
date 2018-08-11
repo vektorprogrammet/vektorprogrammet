@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="content">
+            <header class="row page-header">
+                <div class="col-12 text-center">
+                    <h1>Min side</h1>
+                    <img class="profile-photo rounded-circle" src="{{ asset(app.user.picturePath | imagine_filter('profile_img_small')) }}">
+                    <br>
+                    <br>
+                    <p class="fs-16 mb-0">Du er logget inn som</p>
+                    <p class="mt-0 text-bold">{{ app.user }}</p>
+                </div>
+            </header>
+        </div>
+    </div>
+    {% if active_application %}
+        <section class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 offset-lg-3">
+                    {% include 'my_page/applications.html.twig' with {application: active_application} %}
+                </div>
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}

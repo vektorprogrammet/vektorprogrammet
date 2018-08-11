@@ -15,27 +15,27 @@ class ApplicationSubscriber implements EventSubscriberInterface
     private $twig;
     private $logger;
     private $admissionNotifier;
-	/**
-	 * @var UserRegistration
-	 */
-	private $userRegistrationService;
+    /**
+     * @var UserRegistration
+     */
+    private $userRegistrationService;
 
-	/**
-	 * ApplicationAdmissionSubscriber constructor.
-	 *
-	 * @param MailerInterface $mailer
-	 * @param \Twig_Environment $twig
-	 * @param LoggerInterface $logger
-	 * @param AdmissionNotifier $admissionNotifier
-	 * @param UserRegistration $userRegistrationService
-	 */
+    /**
+     * ApplicationAdmissionSubscriber constructor.
+     *
+     * @param MailerInterface $mailer
+     * @param \Twig_Environment $twig
+     * @param LoggerInterface $logger
+     * @param AdmissionNotifier $admissionNotifier
+     * @param UserRegistration $userRegistrationService
+     */
     public function __construct(MailerInterface $mailer, \Twig_Environment $twig, LoggerInterface $logger, AdmissionNotifier $admissionNotifier, UserRegistration $userRegistrationService)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->logger = $logger;
         $this->admissionNotifier = $admissionNotifier;
-	    $this->userRegistrationService = $userRegistrationService;
+        $this->userRegistrationService = $userRegistrationService;
     }
 
     /**
@@ -71,7 +71,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
         $user = $application->getUser();
         $newUserCode = null;
         if (!$user->getPassword()) {
-	        $newUserCode = $this->userRegistrationService->setNewUserCode($user);
+            $newUserCode = $this->userRegistrationService->setNewUserCode($user);
         }
 
         $template = 'admission/admission_email.html.twig';
@@ -85,8 +85,8 @@ class ApplicationSubscriber implements EventSubscriberInterface
                                       ->setReplyTo($application->getSemester()->getDepartment()->getEmail())
                                       ->setTo($application->getUser()->getEmail())
                                       ->setBody($this->twig->render($template, array(
-	                                      'application'   => $application,
-	                                      'new_user_code' => $newUserCode
+                                          'application'   => $application,
+                                          'new_user_code' => $newUserCode
                                       )), 'text/html');
 
         $this->mailer->send($emailMessage);

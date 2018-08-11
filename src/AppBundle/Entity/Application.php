@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Type\InterviewStatusType;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as CustomAssert;
@@ -122,6 +123,7 @@ class Application
     private $teamInterest;
 
     /**
+     * @var Interview
      * @ORM\OneToOne(targetEntity="Interview", cascade={"persist", "remove"}, inversedBy="application")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      * @Assert\Valid
@@ -517,5 +519,55 @@ class Application
     public function setPreferredSchool($preferredSchool): void
     {
         $this->preferredSchool = $preferredSchool;
+    }
+
+    public function getStatusProgress(): int
+    {
+        if ($this->interview === null) {
+            return 1;
+        } elseif ($this->interview->getInterviewed()) {
+            return 4;
+        }
+
+        switch ($this->interview->getInterviewStatus()) {
+            case InterviewStatusType::NO_CONTACT:
+                return 1;
+            case InterviewStatusType::REQUEST_NEW_TIME:
+            case InterviewStatusType::PENDING:
+                return 2;
+            case InterviewStatusType::ACCEPTED:
+                return 3;
+            case InterviewStatusType::CANCELLED:
+                return -1;
+            default: return 0;
+        }
+    }
+
+    public function getProgressPercent(): int
+    {
+        return (int) $this->getStatusProgress()/5*100;
+    }
+
+    public function getStatusText()
+    {
+        if ($this->interview === null) {
+            return "Søknad mottatt";
+        } elseif ($this->interview->getInterviewed()) {
+            return "Intervju gjennomført";
+        }
+
+        switch ($this->interview->getInterviewStatus()) {
+            case InterviewStatusType::NO_CONTACT:
+                return "Søknad mottatt";
+            case InterviewStatusType::CANCELLED:
+                return "Kansellert";
+            case InterviewStatusType::PENDING:
+                return "Invitert til intervju";
+            case InterviewStatusType::ACCEPTED:
+                return "Intervjutidspunkt godtatt";
+            case InterviewStatusType::REQUEST_NEW_TIME:
+                return "Venter på nytt intervjutidspunkt";
+            default: return "";
+        }
     }
 }
