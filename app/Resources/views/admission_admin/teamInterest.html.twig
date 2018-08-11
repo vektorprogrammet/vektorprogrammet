@@ -31,7 +31,8 @@
 
 <div class="row">
     <div class="small-12 columns">
-        <a class="button tiny" href="#" data-reveal-id="myModal">Få liste med e-postadresser</a>
+        <h2>Personer som kunne tenkt seg teamverv</h2>
+        <a class="button tiny" href="#" data-reveal-id="myModal">Vis liste med e-postadresser</a>
 
         <div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
             <p>{% for application in teamInterest %} {{ application.user.email }}; {% endfor %}</p>
@@ -40,7 +41,7 @@
     </div>
 </div>
 
-<div class="row team-interest-table">
+<div class="row team-interest-user-table">
     <div class="small-12 columns">
     <table width="100%" class="application-table">
         <thead>
@@ -49,7 +50,7 @@
             <th>Etternavn</th>
             <th>E-post</th>
             <th>Mobil</th>
-            <th>Teaminteresse</th>
+            <th>Team</th>
         </tr>
         </thead>
         <tbody>
@@ -61,10 +62,13 @@
             <td>{{ application.user.email }}</td>
             <td>{{ application.user.phone }}</td>
             <td>
-                <button class="button tiny" id="button1" onclick="showTeams()" style="width: 100px"> Vis team</button>
-                {% for interested in application.heardAboutFrom %}
-                    <div style="display:none" id="teams">{{ interested }}</div>
-                {% endfor %}
+                {% if application.teamInterest and application.potentialTeams is not empty %}
+                    {% for team in application.potentialTeams %}
+                        <a href="{{ path('team_page', {'id' : team.id}) }}">{{ team }}</a>{{ loop.last ? '' : ',' }}
+                    {% endfor %}
+                {% else %}
+                    Ingen team oppgitt
+                {% endif %}
             </td>
         </tr>
         {% endfor %}
@@ -72,21 +76,4 @@
     </table>
     </div>
 </div>
-{% endblock %}
-
-{% block javascripts %}
-    <script>
-        const teamsRow = $('#teams');
-        function showTeams() {
-            let x = document.getElementById("teams");
-            if (x.style.display === "none") {
-                teamsRow.slideDown();
-                document.getElementById("button1").innerText="Skjult team";
-            } else {
-                teamsRow.slideUp();
-                document.getElementById("button1").innerText="Vis team";
-            }
-        }
-    </script>
-
 {% endblock %}
