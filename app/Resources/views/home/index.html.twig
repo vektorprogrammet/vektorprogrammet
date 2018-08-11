@@ -153,7 +153,7 @@
 
             var millisUntilAdmission = Math.max(admissionTimeStamp - currentTimeStamp, 0);
 
-            $('#cd-days').html(zeroPad(moment.duration(millisUntilAdmission).days(), 2));
+            $('#cd-days').html(zeroPad(Math.floor(moment.duration(millisUntilAdmission).asDays()), 2));
             $('#cd-hours').html(zeroPad(moment.duration(millisUntilAdmission).hours(), 2));
             $('#cd-minutes').html(zeroPad(moment.duration(millisUntilAdmission).minutes(), 2));
             $('#cd-seconds').html(zeroPad(moment.duration(millisUntilAdmission).seconds(), 2));
