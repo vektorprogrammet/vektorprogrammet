@@ -31,6 +31,35 @@
 
 <div class="row">
     <div class="small-12 columns">
+        <h2>Team med interessenter</h2>
+        <table width="100%" class="team-table">
+            <thead>
+            <tr>
+                <th>Team</th>
+                <th>Antall interessenter</th>
+                <th>Interessenter</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for team in teams %}
+                <tr>
+                    <td> <a href="{{ path('team_page', {'id' : team.id}) }}">{{ team }}</a></td>
+                    <td>{{ team.potentialMembers | length }}</td>
+                    <td>
+                        {% for application in team.potentialMembers %}
+                            <a href='{{ path('specific_profile', { 'id': application.user.id }) }}'>{{ application.user }}</a><br>
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-12 columns">
         <h2>Personer som kunne tenkt seg teamverv</h2>
         <a class="button tiny" href="#" data-reveal-id="myModal">Vis liste med e-postadresser</a>
 

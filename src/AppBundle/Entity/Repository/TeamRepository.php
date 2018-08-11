@@ -52,4 +52,13 @@ class TeamRepository extends EntityRepository
 
         return array_column($result, 'email');
     }
+
+    public function findByTeamInterest()
+    {
+        return $this->createQueryBuilder('team')
+            ->select('team')
+            ->join('team.potentialMembers', 'application')
+            ->getQuery()
+            ->getResult();
+    }
 }
