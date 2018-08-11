@@ -27,7 +27,7 @@ class ApplicationManager
             return new ApplicationStatus(
                 ApplicationStatus::ASSIGNED_TO_SCHOOL,
                 "Tatt opp som vektorassistent",
-                "Ta kontakt med din vektorpartner og dra ut til skolen"
+                "Ta kontakt med dine vektorpartnere og dra ut til skolen"
             );
         } elseif ($interview->getInterviewed()) {
             return new ApplicationStatus(

@@ -18,7 +18,11 @@
     {% if active_application %}
         <section class="container">
             <div class="row">
-                {% if active_application.interview.interviewed %}
+                {% if app.user.isActiveAssistant %}
+                    <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                        {% include 'my_page/my_partners.html.twig' with {application: active_application} %}
+                    </div>
+                {% elseif active_application.interview.interviewed %}
                     <div class="col-12 col-lg-6 mb-3 mb-lg-0">
                         {% include 'my_page/interview_result.html.twig' with {application: active_application} %}
                     </div>

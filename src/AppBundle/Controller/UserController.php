@@ -25,9 +25,12 @@ class UserController extends Controller
         if (null !== $activeApplication) {
             $applicationStatus = $this->get('app.application_manager')->getApplicationStatus($activeApplication);
         }
+        $activeAssistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesByUser($user);
+
         return $this->render('my_page/my_page.html.twig', [
             "active_application" => $activeApplication,
-            "application_status" => $applicationStatus
+            "application_status" => $applicationStatus,
+            "active_assistant_histories" => $activeAssistantHistories
         ]);
     }
 
