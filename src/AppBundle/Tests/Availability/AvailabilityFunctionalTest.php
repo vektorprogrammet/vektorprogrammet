@@ -92,34 +92,22 @@ class AvailabilityFunctionalTest extends WebTestCase
     {
         return array(
             array('/'),
+            array('/assistenter'),
+            array('/team'),
+            array('/laerere'),
             array('/omvektor'),
-            array('/styretogteam'),
-            array('/studenter'),
-            array('/skoler'),
-            array('/bedrifter'),
-            array('/artikkel'),
-            array('/artikkel/ntnu'),
-            array('/artikkel/hist'),
-            array('/artikkel/nmbu'),
-            array('/artikkel/uio'),
-            array('/artikkel/uib'),
-            array('/artikkel/1'),
-            array('/artikkel/2'),
-            array('/artikkel/3'),
-            array('/artikkel/4'),
-            array('/artikkel/5'),
-            array('/artikkel/6'),
-            array('/artikkel/7'),
-            array('/artikkel/8'),
+            array('/kontakt'),
+            array('/nyheter'),
+            array('/nyheter/ntnu'),
+            array('/nyhet/1'),
+            array('/profile/1'),
         );
     }
 
     public function userUrlProvider()
     {
         return array(
-            array('/assistenter'),
             array('/profile'),
-            array('/profile/1'),
         );
     }
 

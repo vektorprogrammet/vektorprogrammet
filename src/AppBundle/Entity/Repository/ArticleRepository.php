@@ -23,12 +23,13 @@ class ArticleRepository extends EntityRepository
     public function findLatestArticles($limit = null, $excludeId = null)
     {
         $qb = $this->createQueryBuilder('a')
-            ->select('a')
-            ->addOrderBy('a.created', 'DESC');
+                   ->select('a')
+                   ->where('a.published = true')
+                   ->addOrderBy('a.created', 'DESC');
 
         if (false === is_null($excludeId)) {
-            $qb->where('a.id != :article_id')
-                ->setParameter('article_id', $excludeId);
+            $qb->andWhere('a.id != :article_id')
+               ->setParameter('article_id', $excludeId);
         }
 
         if (false === is_null($limit)) {
@@ -49,11 +50,12 @@ class ArticleRepository extends EntityRepository
     public function findLatestArticlesByDepartment($department, $limit = null)
     {
         $qb = $this->createQueryBuilder('a')
-            ->select('a')
-            ->join('a.departments', 'd')
-            ->where('d.id = :department_id')
-            ->addOrderBy('a.created', 'DESC')
-            ->setParameter('department_id', $department);
+                   ->select('a')
+                   ->join('a.departments', 'd')
+                   ->where('d.id = :department_id')
+                   ->andWhere('a.published = true')
+                   ->addOrderBy('a.created', 'DESC')
+                   ->setParameter('department_id', $department);
 
         if (false === is_null($limit)) {
             $qb->setMaxResults($limit);
@@ -79,12 +81,14 @@ class ArticleRepository extends EntityRepository
         $d->modify('-30days');
 
         $qb = $this->createQueryBuilder('a')
-            ->select('a')
-            ->where('a.created > :date')
-            ->orWhere('a.sticky = 1')
-            ->addOrderBy('a.sticky', 'DESC')
-            ->addOrderBy('a.created', 'DESC')
-            ->setParameter('date', $d);
+                   ->select('a')
+                   ->where('a.published = true')
+                   ->andWhere('a.created > :date')
+                   ->orWhere('a.sticky = 1')
+                   ->andWhere('a.published = true')
+                   ->addOrderBy('a.sticky', 'DESC')
+                   ->addOrderBy('a.created', 'DESC')
+                   ->setParameter('date', $d);
 
         if (false === is_null($limit)) {
             $qb->setMaxResults($limit);
@@ -103,8 +107,16 @@ class ArticleRepository extends EntityRepository
     public function findAllArticles()
     {
         return $this->createQueryBuilder('a')
-            ->select('a')
-            ->addOrderBy('a.created', 'DESC');
+                    ->select('a')
+                    ->addOrderBy('a.created', 'DESC');
+    }
+
+    public function findAllPublishedArticles()
+    {
+        return $this->createQueryBuilder('a')
+                    ->select('a')
+                    ->where('a.published = true')
+                    ->addOrderBy('a.created', 'DESC');
     }
 
     /**
@@ -118,11 +130,13 @@ class ArticleRepository extends EntityRepository
     public function findAllArticlesByDepartments($departments)
     {
         return $this->createQueryBuilder('a')
-            ->select('a')
-            ->addOrderBy('a.created', 'DESC')
-            ->leftJoin('a.departments', 'd')
-            ->where('d.shortName IN (:department_sns)')
-            ->orWhere('SIZE(a.departments) = 0')
-            ->setParameter('department_sns', $departments);
+                    ->select('a')
+                    ->addOrderBy('a.created', 'DESC')
+                    ->leftJoin('a.departments', 'd')
+                    ->where('a.published = true')
+                    ->andWhere('d.shortName IN (:department_sns)')
+                    ->orWhere('SIZE(a.departments) = 0')
+                    ->andWhere('a.published = true')
+                    ->setParameter('department_sns', $departments);
     }
 }

@@ -5,33 +5,33 @@
 {% endblock %}
 
 {% block body %}
-    <p></p>
-
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-
-            <div class="row">
-                <div class="small-12 medium-12 large-12 columns">
-
-                    <h1> Redigerer profil </h1>
-
-                    <p>
-                        Redigerer profilen til {{ user.firstName }} {{ user.lastName }}
-                    </p>
-
-                    <hr>
-
-                    {{ form_start(form) }}
-                    {{ form_widget(form) }}
-                    {{ form_end(form) }}
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            {% if app.user == user %}
+                                <h1 class="text-dark-blue"> Redigerer din profil </h1>
+                            {% else %}
+                                <h1 class="text-dark-blue"> Redigerer profil </h1>
+                                <p>
+                                    Redigerer profilen til {{ user }}
+                                </p>
+                            {% endif %}
+                        </div>
 
 
+                        {{ form_start(form) }}
+                        {{ form_rest(form) }}
+                        <button class="btn btn-lg btn-primary mt-3">Lagre</button>
+                        {{ form_end(form) }}
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
-
 {% endblock %}
 
 {% block javascripts %}

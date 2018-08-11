@@ -24,6 +24,7 @@ class NewUserType extends AbstractType
                     'min' => 8,
                     'max' => 64,
                     'minMessage' => 'Passordet må være på minst {{ limit }} tegn',
+                    'maxMessage' => 'Passordet må være på maks {{ limit }} tegn',
                     'groups' => array('username'),
                 ))),
             ))

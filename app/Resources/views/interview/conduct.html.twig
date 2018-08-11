@@ -91,7 +91,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row doublePositionRow">
                     <div class="small-12 medium-12 large-9 columns">
                         {{form_label(form.applicationPractical.preferredGroup, null, {'label_attr': {'class': 'question-label'}})}}
                         <span class="question-help">Dette kan være f.eks reise, studietur, lab, annet obligatorisk opplegg eller liknende.</span>
@@ -213,7 +213,17 @@
         const specialNeedsRow = $('#specialNeeds');
         const specialNeedsInput = document.querySelector('#specialNeeds input');
 
+        const singlePositionToggle = document.querySelector('#application_applicationPractical_doublePosition_0');
+        const doublePositionToggle = document.querySelector('#application_applicationPractical_doublePosition_1');
+        const bothGroups = document.querySelector('#application_applicationPractical_preferredGroup_0');
+        const group1 = document.querySelector('#application_applicationPractical_preferredGroup_1');
+        const group2 = document.querySelector('#application_applicationPractical_preferredGroup_2');
+
+        const doublePositionRow = document.querySelector('.doublePositionRow');
+
         specialNeedsToggle.addEventListener('change', toggleSpecialNeeds);
+        singlePositionToggle.addEventListener('change', toggleDoublePosition);
+        doublePositionToggle.addEventListener('change', toggleDoublePosition);
 
         document.addEventListener('DOMContentLoaded', function() {
           if (specialNeedsInput.value) {
@@ -230,6 +240,21 @@
             specialNeedsInput.value = '';
           }
         }
+
+        function toggleDoublePosition () {
+          if (doublePositionToggle.checked) {
+              bothGroups.checked=true;
+              bothGroups.setAttribute('disabled','disabled');
+              group1.setAttribute('disabled','disabled');
+              group2.setAttribute('disabled','disabled');
+              doublePositionRow.classList.add('textDisabled');
+          } else {
+              bothGroups.removeAttribute('disabled');
+              group1.removeAttribute('disabled');
+              group2.removeAttribute('disabled');
+              doublePositionRow.classList.remove('textDisabled');
+          }
+        }
+
     </script>
 {% endblock %}
-

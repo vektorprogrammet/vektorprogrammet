@@ -1,25 +1,27 @@
 {% set user = application.user %}
-Søknad mottatt {{ "now" | date("d.m.y H:i") }} på www.vektorprogrammet.no.
+<p>Hei, {{ user.firstName | capitalize }}.</p>
+<p>Takk for din søknad til stilling som vektorassistent!</p>
 
----
+<br>
 
-Hei, {{ user.firstName }}.
-Takk for din søknad til stilling som vektorassistent!
+<p>Vi kontakter deg på denne e-postadressen innen et par dager etter søknadsfristen for å sette opp et intervju. Du vil også få beskjed på sms.</p>
+<p>Vi gleder oss til å møte deg!</p>
 
-Vi vil kontakte deg på denne e-postadressen innen et par dager etter søknadsfristen for å sette opp et obligatorisk intervju.
-Vi gleder oss til å møte deg!
+<br>
 
----
+<p>Her er søknaden vi har mottatt, om noe skulle være feil må du ta kontakt med oss:</p>
+<ul style="list-style-type: none">
+    <li><b>Navn:</b> {{ user.firstName | capitalize }} {{ user.lastName | capitalize }}</li>
+    <li><b>E-post:</b> {{ user.email }}</li>
+    <li><b>Telefon:</b> {{ user.phone }}</li>
+    <li><b>Linje:</b> {{ user.fieldOfStudy.name }} ({{ user.fieldOfStudy.shortName }})</li>
+    <li><b>År:</b> {{ application.yearOfStudy }}</li>
+    <li><b>Kjønn:</b> {{ user.gender == 1 ? 'Dame' : 'Mann' }}</li>
+</ul>
 
-Her er søknaden vi har mottatt, om noe skulle være feil må du ta kontakt med oss:
-Navn: {{ user.firstName }} {{ user.lastName }}
-E-post: {{ user.email }}
-Telefon: {{ user.phone }}
-Linje: {{ user.fieldOfStudy.name }} ({{ user.fieldOfStudy.shortName }})
-År: {{ application.yearOfStudy }}
-Kjønn: {{ user.gender == 1 ? 'Dame' : 'Mann' }}
+<p>Søknaden ble mottatt den {{ "now" | date("j. F Y") }} klokken {{ "now" | date("H:i") }} på <a href="https://vektorprogrammet.no">vektorprogrammet.no</a>.</p>
 
----
+<br>
 
-Mvh. Vektorprogrammet
-{{ user.department.email }}
+<p>Mvh. Vektorprogrammet</p>
+<p>{{ user.department.email }}</p>

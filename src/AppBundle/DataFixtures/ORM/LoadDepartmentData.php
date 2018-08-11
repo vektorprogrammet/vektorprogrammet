@@ -35,14 +35,14 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $manager->persist($department1);
 
         $department2 = new Department();
-        $department2->setName('Høgskolen i Sør-Trønderlag');
-        $department2->setShortName('HiST');
-        $department2->setEmail('HiST@mail.com');
+        $department2->setName('Universitetet i Bergen');
+        $department2->setShortName('UiB');
+        $department2->setEmail('UiB@mail.com');
         $department2->addSchool($this->getReference('school-3'));
-        $department2->setAddress('*hist adresse*');
-        $department2->setCity('Trondheim');
-        $department2->setLatitude('63.428915');
-        $department2->setLongitude('10.389787');
+        $department2->setAddress('*UiB adresse*');
+        $department2->setCity('Bergen');
+        $department2->setLatitude('60.387639');
+        $department2->setLongitude('5.321523');
         $department2->setLogoPath('/images/department_images/hist.png');
         $manager->persist($department2);
 
@@ -65,8 +65,8 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $department4->addSchool($this->getReference('school-2'));
         $department4->setAddress('*UiO adresse*');
         $department4->setCity('Oslo');
-        $department3->setLatitude('59.939942');
-        $department3->setLongitude('10.721170');
+        $department4->setLatitude('59.939942');
+        $department4->setLongitude('10.721170');
         $department4->setLogoPath('/images/department_images/uio.png');
         $manager->persist($department4);
 

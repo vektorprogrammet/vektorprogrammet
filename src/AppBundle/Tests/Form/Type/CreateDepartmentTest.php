@@ -43,10 +43,11 @@ class CreateDepartmentTest extends TypeTestCase
                     'shortName' => 'UiØ',
                     'email' => 'uiø@mail.com',
                     'address' => 'Ormvegen 12',
+                    'active' => false,
                 ),
             ),
             array(
-                'data' => array(),
+                'data' => array('active' => true),
             ),
             array(
                 'data' => array(
@@ -54,6 +55,7 @@ class CreateDepartmentTest extends TypeTestCase
                     'shortName' => null,
                     'email' => null,
                     'address' => null,
+                    'active' => true,
                 ),
             ),
         );

@@ -1,4 +1,9 @@
 services:
+#  app.beta_redirecter:
+#    class: AppBundle\Service\BetaRedirecter
+#    arguments: ['@security.token_storage', '@app.roles']
+#    tags:
+#        - {name: kernel.event_listener, event: kernel.request}
   app.sms:
     class: AppBundle\Sms\GatewayAPI
     arguments: ['%gateway_sms%', '@app.logger']
@@ -37,6 +42,10 @@ services:
   app.google_api:
       class: AppBundle\Google\GoogleAPI
       arguments: ['%google_api%', '@app.google_users', '@app.google_groups']
+
+  app.geolocation:
+      class: AppBundle\Service\GeoLocation
+      arguments: ['%ipinfo_token%', '@doctrine.orm.entity_manager', '@session', '@request_stack']
 
   app.company_email_maker:
     class: AppBundle\Service\CompanyEmailMaker
@@ -94,9 +103,12 @@ services:
   app.sorter:
     class: AppBundle\Service\Sorter
 
+  app.filter_service:
+    class: AppBundle\Service\FilterService
+
   app.department_extension:
     class: AppBundle\Twig\Extension\DepartmentExtension
-    arguments: ['@doctrine.orm.default_entity_manager']
+    arguments: ['@app.geolocation', '@doctrine.orm.default_entity_manager']
     tags:
       - { name: twig.extension }
 
@@ -114,13 +126,13 @@ services:
 
   app.exception_subscriber:
     class: AppBundle\EventSubscriber\ExceptionSubscriber
-    arguments: ['@app.logger', '@logger', '@security.token_storage', '@router']
+    arguments: ['@app.logger', '@logger', '@security.token_storage', '@router', '@request_stack']
     tags:
       - { name: kernel.event_subscriber }
 
   app.application_subscriber:
     class: AppBundle\EventSubscriber\ApplicationSubscriber
-    arguments: ['@app.mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data', '@router', '@app.newsletter.manager']
+    arguments: ['@app.mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data', '@router', '@app.admission_notifier']
     tags:
       - { name: kernel.event_subscriber }
 
@@ -148,8 +160,8 @@ services:
       tags:
         - { name: kernel.event_subscriber }
 
-  app.work_history_subscriber:
-    class: AppBundle\EventSubscriber\WorkHistorySubscriber
+  app.team_membership_subscriber:
+    class: AppBundle\EventSubscriber\TeamMembershipSubscriber
     arguments: ['@session', '@app.logger', '@app.roles']
     tags:
         - { name: kernel.event_subscriber }
@@ -184,15 +196,15 @@ services:
     tags:
         - { name: doctrine.event_subscriber }
 
-  app.crud_logger:
-    class: AppBundle\EventSubscriber\CrudLogger
-    arguments: ['@app.logger', '@security.token_storage']
+  app.db_subscriber:
+    class: AppBundle\EventSubscriber\DbSubscriber
+    arguments: ['@app.logger', '@security.token_storage', '@request_stack']
     tags:
-        - { name: kernel.event_subscriber }
+      - { name: doctrine.event_subscriber }
 
   app.file_uploader:
       class: AppBundle\Service\FileUploader
-      arguments: ['%signature_images%', '%logo_images%', '%receipt_images%', '%gallery_images%']
+      arguments: ['%signature_images%', '%logo_images%', '%receipt_images%', '%gallery_images%', '%profile_photos%', '%article_images%']
 
   security.login:
     class: AppBundle\Service\LoginManager
@@ -208,15 +220,16 @@ services:
 
   assistant_history.data:
       class: AppBundle\Service\AssistantHistoryData
-      arguments: ['@doctrine.orm.default_entity_manager', '@security.token_storage']
+      arguments: ['@doctrine.orm.default_entity_manager', '@security.token_storage', '@app.geolocation']
 
   survey.manager:
         class: AppBundle\Service\SurveyManager
         arguments: ['@doctrine.orm.default_entity_manager', '@form.factory']
 
   app.group_sorter_extension:
-    class: AppBundle\Twig\Extension\GroupSortExtension
+    class: AppBundle\Twig\Extension\TeamPositionSortExtension
     public: false
+    arguments: ['@app.sorter', '@app.filter_service']
     tags:
       - { name: twig.extension }
 
@@ -230,5 +243,11 @@ services:
   app.unique_company_email_validator:
     class: AppBundle\Validator\Constraints\UniqueCompanyEmailValidator
     arguments: ['@doctrine.orm.entity_manager', '@app.google_api']
+    tags:
+        - { name: validator.constraint_validator }
+
+  app.application_email_validator:
+    class: AppBundle\Validator\Constraints\ApplicationEmailValidator
+    arguments: ['@app.application_admission']
     tags:
         - { name: validator.constraint_validator }

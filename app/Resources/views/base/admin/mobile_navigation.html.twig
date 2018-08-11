@@ -24,13 +24,6 @@
                 <!-- Right Nav Section -->
                 <ul class="right">
                     <li><a href="{{ path('control_panel') }}">Kontrollpanel</a></li>
-                    <li class="has-dropdown">
-                        <a href="#">Artikkel</a>
-                        <ul class="dropdown">
-                            <li><a href="{{ path('articleadmin_show') }}">Artikler</a></li>
-                            <li><a href="{{ path('articleadmin_create') }}">Ny artikkel</a></li>
-                        </ul>
-                    </li>
 
                     <li class="has-dropdown">
                         <a href="{{ path('useradmin_show') }}">Brukere</a>
@@ -45,9 +38,10 @@
                     </li>
 
                     <li class="has-dropdown">
-                        <a href="#">Opptak & Undersøkelse</a>
+                        <a href="#">Opptak</a>
                         <ul class="dropdown">
                             <li><a href="{{ path('admissionadmin_show') }}">Opptak</a></li>
+                            <li><a href="{{ path('semester_show') }}">Opptaksperiode</a></li>
                             <li>
                                 <a href="{{ path('statistics_application_show') }}">Opptaksstatistikk</a>
                             </li>
@@ -55,8 +49,15 @@
                             {% if is_granted_team_leader() %}
                                 <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
                             {% endif %}
-                            <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
-                            <li><a href="{{ path('newsletter_show_all') }}">Nyhetsbrev</a></li>
+                            <li><a href="{{ path('stand') }}">Stand</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="has-dropdown">
+                        <a href="#">Artikkel</a>
+                        <ul class="dropdown">
+                            <li><a href="{{ path('articleadmin_show') }}">Artikler</a></li>
+                            <li><a href="{{ path('articleadmin_create') }}">Ny artikkel</a></li>
                         </ul>
                     </li>
 
@@ -64,8 +65,9 @@
                         <a href="#">Diverse</a>
                         <ul class="dropdown">
                             <li><a href="{{ path('departmentadmin_show') }}">Avdeling</a></li>
-                            <li><a href="{{ path('semester_show') }}">Opptaksperiode</a></li>
                             <li><a href="{{ path('schooladmin_show') }}">Skole</a></li>
+                            <li><a href="{{ path('newsletter_show_all') }}">Nyhetsbrev</a></li>
+                            <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
                             <li><a href="{{ path('sponsors_edit') }}">Sponsorer</a></li>
                             <li><a href="{{ path('receipts_show') }}">Utlegg</a></li>
                             {%  if is_granted_team_leader() %}

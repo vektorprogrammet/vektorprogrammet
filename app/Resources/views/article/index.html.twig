@@ -2,63 +2,63 @@
 
 {% block title %}Nyheter{% endblock %}
 
-{% block javascripts %}
-    <script src="{{ asset_with_version('vendor/ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset_with_version('vendor/ckeditor/adapters/jquery.js') }}"></script>
-    {% include "statictext/js_loader_for_static_texts.html.twig" %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/news.css') }}">
 {% endblock %}
 
 {% block body %}
-    <p></p>
-
-    <div class="row">
-        <div class="small-12 medium-9 large-9 columns">
-            {% if pagination|first %}
-                <div class="row">
-                    <div class="article-box small-12 medium-12 large-12 columns">
-                        <a href="{{ path('article_show', { 'id': pagination|first.id }) }}">
-                            <img src="{{ asset_with_version(pagination|first.imageLarge) }}"/>
-                        </a>
-                        <h4><a href="{{ path('article_show', { 'id': pagination|first.id }) }}">
-                                {{ pagination|first.title|safe_html }}</a></h4>
-                    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-9 col-lg-9">
+                <div class="page-header mb-5">
+                    <h1>Nyheter</h1>
                 </div>
-                {% set columns = ['medium-7 large-7', 'medium-5 large-5'] %}
-                {% for row in pagination[1:]|batch(2) %}
-                    <div class="row">
-                        {% for column in row %}
-                            {% set images = [column.imageMedium, column.imageSmall] %}
-                            <div class="article-box small-12 {{ cycle(columns, loop.parent.loop.index0+loop.index0) }} columns">
-                                <a href="{{ path('article_show', { 'id': column.id }) }}">
-                                    <img data-interchange="[{{ asset_with_version(column.imageMedium) }}, (default)], [{{ asset_with_version(cycle(images, loop.parent.loop.index0+loop.index0)) }}, (medium)]">
-                                    <noscript><img
-                                                src="{{ asset_with_version(cycle(images, loop.parent.loop.index0+loop.index0)) }}">
-                                    </noscript>
-                                </a>
-                                <h5><a href="{{ path('article_show', { 'id': column.id }) }}">
-                                        {{ column.title|safe_html }}</a></h5>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>Ingen artikler tilgjengelig</p>
-            {% endif %}
-            <div class="row" style="text-align: center">
-                {{ knp_pagination_render(pagination) }}
             </div>
         </div>
-
-        <div class="small-12 medium-3 large-3 columns">
-            <div class="row">
-                <div class="small-12 medium-12 large-12 columns">
-                    {% include('article/department_filter.html.twig') %}
+        <div class="row">
+            <div class="col-12 col-md-9 col-lg-9">
+                {% if pagination|first %}
+                    <div class="row">
+                        <div class="article-box col-12">
+                            <a href="{{ path('article_show', { 'id': pagination|first.id }) }}">
+                                <img src="{{ asset(pagination|first.imageLarge | imagine_filter('article_large')) }}"/>
+                            </a>
+                            <h4><a href="{{ path('article_show', { 'id': pagination|first.id }) }}">
+                                    {{ pagination|first.title|safe_html }}</a></h4>
+                        </div>
+                    </div>
+                    {% set columns = ['col-md-7 col-lg-7', 'col-md-5 col-lg-5'] %}
+                    {% for row in pagination[1:]|batch(2) %}
+                        <div class="row">
+                            {% for column in row %}
+                                {% set images = [column.imageLarge, column.imageSmall] %}
+                                <div class="article-box col-12 {{ cycle(columns, loop.parent.loop.index0+loop.index0) }}">
+                                    <a href="{{ path('article_show', { 'id': column.id }) }}">
+                                        <img src="{{ asset(cycle(images, loop.parent.loop.index0+loop.index0) | imagine_filter('article_small')) }}">
+                                    </a>
+                                    <h5><a href="{{ path('article_show', { 'id': column.id }) }}">
+                                            {{ column.title|safe_html }}</a></h5>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Ingen artikler tilgjengelig</p>
+                {% endif %}
+                <div class="row text-center">
+                    {{ knp_pagination_render(pagination) }}
                 </div>
             </div>
-            <div class="row">
-                <div class="small-12 medium-12 large-12 columns">
-                    <div class="{{ element_editable() }} vektor-box" id="vektor_i_media">
-                        {{ get_content('vektor_i_media') | raw }}
+
+            <div class="col-12 col-md-3 col-lg-3">
+                <div class="row">
+                    <div class="col-12">
+                        {% include('article/department_filter.html.twig') %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        {% include 'statictext/static_content.html.twig' with {'id': 'vektor_i_media'} %}
                     </div>
                 </div>
             </div>

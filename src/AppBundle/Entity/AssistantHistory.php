@@ -26,12 +26,14 @@ class AssistantHistory
     /**
      * @ORM\ManyToOne(targetEntity="Semester")
      * @ORM\JoinColumn(onDelete="SET NULL")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      **/
     protected $semester;
 
     /**
      * @ORM\ManyToOne(targetEntity="School", inversedBy="assistantHistories")
      * @ORM\JoinColumn(onDelete="SET NULL")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      **/
     protected $school;
 
@@ -53,6 +55,11 @@ class AssistantHistory
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $day;
+
+    public function activeInGroup($group): bool
+    {
+        return strpos($this->bolk, "Bolk $group") !== false;
+    }
 
     /**
      * Set user.

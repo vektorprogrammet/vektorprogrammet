@@ -11,6 +11,7 @@ class ApplicationCreatedEvent extends Event
 
     private $application;
 
+
     /**
      * ApplicationAdmissionEvent constructor.
      *

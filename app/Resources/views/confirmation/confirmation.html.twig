@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="page-header text-center">
+        {% for title in app.session.flashbag.get('title') %}
+            <h1>{{ title }}</h1>
+        {% endfor %}
+        {% for message in app.session.flashBag.get('message') %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endblock %}

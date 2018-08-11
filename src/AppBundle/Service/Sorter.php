@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\TeamMembershipInterface;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Receipt;
 
@@ -105,5 +106,112 @@ class Sorter
         }
         $receiptElements = array_merge($pendingReceipts, $nonPendingReceipts);
         $receipts = $receiptElements;
+    }
+
+    /**
+     * Sorts "leder" og "nestleder" first and the rest in alphabetical order
+     * Note! This function does not care WHICH teams the user is active in
+     *
+     * @param User[] $users
+     */
+    public function sortUsersByActivePositions(&$users)
+    {
+        usort($users, function ($user1, $user2) {
+            // Get team memberships
+            $teamMemberships1 = $user1->getActiveMemberships();
+            $teamMemberships2 = $user2->getActiveMemberships();
+
+            // Check if empty or null
+            if ($teamMemberships2 === null || empty($teamMemberships2)) {
+                if ($teamMemberships1 === null || empty($teamMemberships1)) {
+                    return 0; // Both null or empty
+                }
+                return -1; // If 2 is empty, but not 1:TeamMember 1 comes first
+            } elseif ($teamMemberships1 === null || empty($teamMemberships1)) {
+                return 1; // If 1 is empty, but not 2: 2 comes first
+            }
+
+            // Sort team memberships by position
+            $this->sortTeamMembershipsByPosition($teamMemberships1);
+            $this->sortTeamMembershipsByPosition($teamMemberships2);
+
+            $cmp = 0;
+            for ($i = 0; $i < min(count($teamMemberships1), count($teamMemberships2)); $i++) {
+                $cmp = $this->compareTeamMemberships($teamMemberships1[$i], $teamMemberships2[$i]);
+                if ($cmp !== 0) {
+                    return $cmp; // Non equal positions
+                }
+            }
+            // If tied, prioritize those with the most positions
+            if (count($teamMemberships1) !== count($teamMemberships2)) {
+                return count($teamMemberships2) - count($teamMemberships1);
+            } else {
+                return $cmp;
+            }
+        });
+    }
+
+    /**
+     * Order: "leder" < "nestleder" < "aaa" < "zzz" < ""
+     *
+     * @param TeamMembershipInterface[] $teamMemberships
+     */
+    public function sortTeamMembershipsByPosition(&$teamMemberships)
+    {
+        usort($teamMemberships, array($this, 'compareTeamMemberships'));
+    }
+
+    /**
+     * @param TeamMembershipInterface $teamMembership1
+     * @param TeamMembershipInterface $teamMembership2
+     *
+     * @return int
+     */
+    private function compareTeamMemberships($teamMembership1, $teamMembership2)
+    {
+        return $this->comparePositions($teamMembership1->getPositionName(), $teamMembership2->getPositionName());
+    }
+
+    /**
+     * Order: "leder" < "nestleder" < "aaa" < "zzz" < ""
+     *
+     * @param string $position1
+     * @param string $position2
+     *
+     * @return int
+     */
+    private function comparePositions($position1, $position2)
+    {
+        // Normalize
+        $position1 = strtolower($position1);
+        $position2 = strtolower($position2);
+
+        // Test equality first to simplify logic below
+        if ($position1 === $position2) {
+            return 0;
+        }
+
+        // Special cases
+        if ($position1 === 'leder') {
+            return -1;
+        }
+        if ($position2 === 'leder') {
+            return 1;
+        }
+        if ($position1 === 'nestleder') {
+            return -1;
+        }
+        if ($position2 === 'nestleder') {
+            return 1;
+        }
+        if ($position2 === '') {
+            return -1;
+        }
+        if ($position1 === '') {
+            return 1;
+        }
+
+        // General compare
+        return strcmp($position1, $position2);
     }
 }

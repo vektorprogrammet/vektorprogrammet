@@ -1,0 +1,93 @@
+@import "colors";
+$text-color: #fafdff;
+$promo-color: #d6d8da;
+
+.main-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  color: $text-color;
+  margin-top: 64px;
+  min-height: 400px;
+  width: 100%;
+  background-color: $dark-blue;
+  padding-top: 0 !important; //Override old footer style. TODO: Remove this when foundation is removed
+  .row {
+    border-top: none !important; //Override old footer style. TODO: Remove this when foundation is removed
+    padding-top: 0 !important; //Override old footer style. TODO: Remove this when foundation is removed
+  }
+  h5 {
+    color: $text-color;
+  }
+  a {
+    color: #5189C8;
+  }
+  i {
+    width:1em;
+    margin-right:.5em;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    li {
+      margin-top: 3px;
+      @media (max-width: 350px) {
+        font-size: 15px;
+        
+      }
+    }
+  }
+
+  .footer-column {
+  margin-top: 32px;
+    text-align: center;
+  }
+
+  .footer-content {
+    display: inline-block;
+    text-align: left;
+    max-width: 100%;
+    word-wrap: break-word;
+  }
+  
+  .footer-text {
+    color: #d6d8da;
+  }
+  .hvit {
+    color: white;
+  }
+
+  .footer-promo {
+    margin: 64px 0 0;
+    padding: 25px;
+    background-color: #022346;
+    font-size: 16px;
+    color: $promo-color;
+    a {
+      color: $promo-color;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+  }
+
+  .org-info li{
+    white-space: nowrap;
+  }
+
+  @media (max-width: 992px) {
+    .container {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .container {
+      max-width: 100%;
+    }
+    .footer-column {
+      text-align: left;
+    }
+  }
+}

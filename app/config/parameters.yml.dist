@@ -1,11 +1,12 @@
 # This file is a "template" of what your parameters.yml file should look like
 parameters:
-    database_driver:   pdo_mysql
-    database_host:     127.0.0.1
+    database_driver:   pdo_sqlite
+    database_host:     localhost
     database_port:     ~
     database_name:     symfony
     database_user:     root
     database_password: ~
+    database_path: "%kernel.root_dir%/data/dev.db"
     # You should uncomment this if you want use pdo_sqlite
     # database_path: "%kernel.root_dir%/data.db3"
 
@@ -50,9 +51,10 @@ parameters:
     gateway_api_token: xxxxx
     sms_disable: true
 
+    ipinfo_token: ''
+
     # Webhook from GitHub to automatically deploy on push to master
 
 twig:
     globals:
         googleAnalyticsId: ~
-        smartlookID: ~

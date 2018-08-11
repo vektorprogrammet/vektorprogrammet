@@ -4,5 +4,5 @@ namespace AppBundle\Mailer;
 
 interface MailerInterface
 {
-    public function send(\Swift_Message $message);
+    public function send(\Swift_Message $message, bool $disableLogging = false);
 }

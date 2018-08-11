@@ -28,6 +28,8 @@ class Sponsor
     protected $url;
 
     /**
+     * Available sizes: "small", "medium" and "large"
+     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $size;

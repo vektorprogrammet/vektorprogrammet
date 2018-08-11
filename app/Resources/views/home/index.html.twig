@@ -6,113 +6,161 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" type="text/css" href="{{ asset_with_version('vendor/slick/slick.css') }}"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset_with_version('vendor/slick/slick-theme.css') }}"/>
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/home.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        {% if closestDepartment.activeAdmission %}
+            <section class="row urgent-box">
+                <div class="main-navigation">
+                    <p>Vektorprogrammet <span id="department-name">{{ closestDepartment }}</span> søker nye assistenter!
+                        <span class="countdown"><span class="cd-number" id="cd-days"></span>d <span class="cd-number"
+                                                                                                    id="cd-hours"></span>t <span
+                                    class="cd-number" id="cd-minutes"></span>m <span class="cd-number"
+                                                                                     id="cd-seconds"></span>s</span>
+                        &#9&#9&#9 igjen av opptaket. <a
+                                href="{{ path('admission_show_by_short_name', {'shortName': closestDepartment }) }}">Søk
+                            nå!</a></p>
+                </div>
+                {% set semester = closestDepartment.currentSemester %}
+                {% if semester is not null and semester.infoMeeting and semester.infoMeeting.showOnPage and semester.infoMeeting.date and date() < date(semester.infoMeeting.date) %}
+                    {% set infoMeeting = closestDepartment.currentSemester.infoMeeting %}
+                    <div class="infomeeting-banner">
+                        Husk infomøte {{ infoMeeting.date|date('d. M')|lower }} kl. {{ infoMeeting.date|date('H:i') }} {% if infoMeeting.room %}i rom  {{ infoMeeting.room }} {% endif %}.
+                        {% if infoMeeting.link %}<a target="_blank" href="{{ infoMeeting.link }}"
+                           onclick="ga('send', 'event', 'Infomøte', 'Les mer - forside', '{{ closestDepartment.currentSemester }}')">
+                            Les mer
+                        </a>{% endif %}
+                    </div>
+                {% endif %}
+            </section>
+        {% endif %}
+        <section class="row hero">
+            <div class="container">
+                <div class="row hero-section">
+                    <div class="col-12 col-md-6">
+                        <h1 class="d-md-none mobile">Vektorprogrammet</h1>
+                        <img class="hero-image" src="{{ asset_with_version('images/blackboard.png') }}">
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="hero-content">
+                            <h1 class="d-none d-md-block">Vektorprogrammet</h1>
+                            {% include 'statictext/static_content.html.twig' with {'id': 'home-tagline'} %}
+                            <a href="{{ path('assistants') }}">
+                                <button class="btn btn-success cta-link">
+                                    Les mer og bli assistent
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="container">
+        {% if news %}
+            <div class="row news">
+                <div class="col-12">
+                    <div id="newsCarousel" class="carousel slide" data-ride="carousel">
+                        <h2 class="text-center text-dark-blue">Nyheter</h2>
+                        <div class="carousel-inner">
+                            {% for article in news %}
+                                <div class="carousel-item{{ loop.first ? ' active' : '' }}">
+                                    <img class="d-block w-100" src="{{ asset(article.imageLarge | imagine_filter('article_large')) }}"
+                                         alt="First slide">
+                                    <div class="carousel-caption">
+                                        <div class="content text-dark-blue">
+                                            <a href="{{ path('article_show', {'id': article.id}) }}">
+                                                <h4>{{ article.title|safe_html }}</h4>
+                                            </a>
+                                            <p>{{ article.article|striptags|split(' ')|slice(0,40)|join(' ')|safe_html }}... <a class="medium-bold"
+                                                       href="{{ path('article_show', {'id': article.id}) }}">LES MER <i
+                                                            class="fa fa-chevron-right"></i></a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% if news|length > 1 %}
+                                <ol class="carousel-indicators">
+                                    {% for article in news %}
+                                        <li data-target="#newsCarousel"
+                                            data-slide-to="{{ loop.index0 }}"
+                                            {% if loop.first %}class="active"{% endif %}></li>
+                                    {% endfor %}
+                                </ol>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        {% endif %}
+
+        <section class="members-info">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <p class="counter">
+                        <span class="text-bold count">{{ assistantCount }}</span><br> Assistenter
+                    </p>
+                    <p>Over <span class="text-bold">{{ assistantCount }}</span> studenter har hatt et verv som
+                        vektorassistent i Vektorprogrammet.</p>
+                    <p><a href="{{ path('assistants') }}">Les mer om assistenter <i class="fa fa-chevron-right"></i></a>
+                    </p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <p class="counter">
+                        <span class="text-bold count">{{ teamMemberCount }}</span><br> I team
+                    </p>
+                    <p>Over <span class="text-bold">{{ teamMemberCount }}</span> studenter har hatt et verv i et
+                        Vektorprogrammets mange team.</p>
+                    <p><a href="{{ path('team') }}">Les mer om verv i team <i class="fa fa-chevron-right"></i></a></p>
+                </div>
+                <div class="col-12 col-md-6 offset-md-3" id="admissionChart">
+                    <p class="counter">Kjønnsfordeling</p>
+                    <center><p>Av tidligere assistenter</p></center>
+                </div>
+            </div>
+        </section>
+
+        <section class="sponsors">
+            <hr>
+            {{ include('sponsors/sponsors.html.twig') }}
+        </section>
+    </div>
+
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset_with_version('vendor/slick/slick.min.js') }}"></script>
-    {% include "statictext/js_loader_for_static_texts.html.twig" %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    {% include 'home/chart_script.html.twig' %}
     <script>
-        $(document).ready(function () {
-            $('.news-carousel').slick({
-                arrows: false,
-                dots: true,
-                autoplay: true,
-                autoplaySpeed: 5000,
-                responsive: [
-                    {
-                        breakpoint: 640,
-                        settings: {
-                            arrows: false,
-                            dots: true
-                        }
-                    }
-                ]
-            });
-
-            $('.news-carousel').on('beforeChange', function (event, slick, currentSlide, nextSlide) {
-                var text = $('#news-carousel-text-' + nextSlide);
-                text.show().siblings(text.prop('tagName')).hide();
-            });
-        });
+      $('.carousel').carousel({
+        interval: 10000,
+      });
     </script>
-{% endblock %}
+    {% if closestDepartment.activeAdmission %}
+        <script>
+          function zeroPad(num, size) {
+            return (Math.pow(10, size) + num).toString().substring(1);
+          }
 
-{% block body %}
-    {% include "common/flash.html.twig" %}
+          function updateCountDown() {
+            var admissionTimeStamp = {{ closestDepartment.currentSemester.admissionEndDate.timestamp }} *
+            1000;
+            var currentTimeStamp = new Date();
 
-    <div class="row">
-        <div class="small-12 columns">
-            {% render controller('AppBundle:Home:activeAdmission') %}
-        </div>
-    </div>
-    <div class="row">
-        {% render controller('AppBundle:Article:showCarousel') %}
-    </div>
+            var millisUntilAdmission = Math.max(admissionTimeStamp - currentTimeStamp, 0);
 
-    <br/>
-    <br/>
+            $('#cd-days').html(zeroPad(Math.floor(moment.duration(millisUntilAdmission).asDays()), 2));
+            $('#cd-hours').html(zeroPad(moment.duration(millisUntilAdmission).hours(), 2));
+            $('#cd-minutes').html(zeroPad(moment.duration(millisUntilAdmission).minutes(), 2));
+            $('#cd-seconds').html(zeroPad(moment.duration(millisUntilAdmission).seconds(), 2));
+          }
 
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <div class="row">
-                <div class="small-12 medium-4 large-4 columns  text-center">
-                    <div class="home-icon-container">
-                        <a href="{{ path('students') }}"><i class="fa fa-graduation-cap fa-5x"
-                                                            id="fa-calculator"></i></a>
-                        <div class="{{ element_editable() }}" id="vektor_for_studenter">
-                            {{ get_content('vektor_for_studenter') | raw }}
-                        </div>
-                    </div>
-                </div>
-                <div class="small-12 medium-4 large-4 columns text-center">
-                    <div class="home-icon-container">
-                        <a href="{{ path('businesses') }}"><i class="fa fa-briefcase fa-5x" id="fa-briefcase"></i></a>
-                        <div class="{{ element_editable() }}" id="vektor_for_bedrifter">
-                            {{ get_content('vektor_for_bedrifter') | raw }}
-                        </div>
-                    </div>
-                </div>
-                <div class="small-12 medium-4 large-4 columns  text-center">
-                    <div class="home-icon-container">
-                        <a href="{{ path('schools') }}"><i class="fa fa-user-secret fa-5x" id="fa-paperclip"></i></a>
-                        <div class="{{ element_editable() }}" id="vektor_for_laerere">
-                            {{ get_content('vektor_for_laerere') | raw }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="small-12 medium-12 large-12 columns text-center">
-                    <h1 class="banner-heading">
-                        <div class="{{ element_editable() }}" id="banner_one">
-                            {{ get_content('banner_one') | raw }}
-                        </div>
-                    </h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="small-12 medium-6 large-6 columns">
-                    <div class="{{ element_editable() }}" id="infobox_one">
-                        {{ get_content('infobox_one') | raw }}
-                    </div>
-                </div>
-                <div class="small-12 medium-6 large-6 columns">
-                    <div class="{{ element_editable() }}" id="infobox_two">
-                        {{ get_content('infobox_two') | raw }}
-                    </div>
-                    <a href="{{ path('about') }} " class="vektor-button tiny">Les mer om vektorprogrammet</a>
-                </div>
-            </div>
-            <br/>
-            <br/>
-
-            {% block sponsor_logos %}
-                {% include("sponsors/sponsors.html.twig") %}
-            {% endblock %}
-
-        </div>
-    </div>
+          updateCountDown();
+          setInterval(updateCountDown, 1000);
+        </script>
+    {% endif %}
 {% endblock %}

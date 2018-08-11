@@ -1,35 +1,36 @@
 {% set user = application.user %}
-Søknad mottatt {{ "now" | date("d.m.y H:i") }} på www.vektorprogrammet.no.
+<p>Hei, {{ user.firstName }}.</p>
+<p>Takk for at du vil fortsette som vektorassistent!</p>
 
----
+<br>
 
-Hei, {{ user.firstName }}.
-Takk for din søknad til stilling som vektorassistent!
+<p>Siden du har vært vektorassistent før trenger du ikke å møte på intervju igjen. Vi kontakter deg på denne e-postadressen noen dager etter søknadsfristen med informasjon om hvilken skole du har blitt plassert på.</p>
 
-Vi vil kontakte deg på denne e-postadressen noen dager etter søknadsfristen med informasjon om hvilken skole du har blitt plassert på.
+<br>
 
----
+<p>Her er søknaden vi har mottatt, om noe skulle være feil kan du sende inn søknaden på nytt eller ta kontakt med oss:</p>
+<ul style="list-style-type: none">
+    <li><b>Navn:</b> {{ user.firstName }} {{ user.lastName }}</li>
+    <li><b>E-post:</b> {{ user.email }}</li>
+    <li><b>Telefon:</b> {{ user.phone }}</li>
+    <li><b>Linje:</b> {{ user.fieldOfStudy.name }} ({{ user.fieldOfStudy.shortName }})</li>
+    <li><b>År:</b> {{ application.yearOfStudy }}</li>
+    <li><b>Kjønn:</b> {{ user.gender == 1 ? 'Dame' : 'Mann' }}</li>
+    <li><b>Dobbel stilling:</b> {{ application.doublePosition ? 'Ja' : 'Nei' }}</li>
+    <li><b>Ønsket bolk:</b> {{ application.preferredGroup ? application.preferredGroup : 'Ingen' }}</li>
+    <li><b>Ønsket undervisningsspråk:</b> {{ application.language }}</li>
+</ul>
 
-Her er søknaden vi har mottatt, om noe skulle være feil kan du sende inn søknaden på nytt eller ta kontakt med oss:
-Navn: {{ user.firstName }} {{ user.lastName }}
-E-post: {{ user.email }}
-Telefon: {{ user.phone }}
-Linje: {{ user.fieldOfStudy.name }} ({{ user.fieldOfStudy.shortName }})
-År: {{ application.yearOfStudy }}
-Kjønn: {{ user.gender == 1 ? 'Dame' : 'Mann' }}
+Dager som passer:
+<ul style="list-style-type: none">
+    {% if application.monday %} <li><b>Mandag</b></li>{% endif %}
+    {% if application.tuesday %}<li><b>Tirsdag</b></li>{% endif %}
+    {% if application.wednesday %}<li><b>Onsdag</b></li>{% endif %}
+    {% if application.thursday %}<li><b>Torsdag</b></li>{% endif %}
+    {% if application.friday %}<li><b>Fredag</b></li>{% endif %}
+</ul>
 
-Dobbel stilling: {{ application.doublePosition ? 'Ja' : 'Nei' }}
-Ønsket bolk: {{ application.preferredGroup ? application.preferredGroup : 'Ingen' }}
-Ønsket undervisningsspråk: {{ application.language }}
+<p>Søknaden ble mottatt den {{ "now" | date("j. F Y") }} klokken {{ "now" | date("H:i") }} på <a href="https://vektorprogrammet.no">vektorprogrammet.no</a>.</p>
 
-Dager som passer
-Mandag: {{ application.monday ? "Bra" : "Ikke" }}
-Tirsdag: {{ application.tuesday ? "Bra" : "Ikke" }}
-Onsdag: {{ application.wednesday ? "Bra" : "Ikke" }}
-Torsdag: {{ application.thursday ? "Bra" : "Ikke" }}
-Fredag: {{ application.friday ? "Bra" : "Ikke" }}
-
----
-
-Mvh. Vektorprogrammet
-{{ user.department.email }}
+<p>Mvh. Vektorprogrammet</p>
+<p>{{ user.department.email }}</p>

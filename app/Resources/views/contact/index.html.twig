@@ -1,0 +1,178 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    Kontakt
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/contact_page.css') }}">
+{% endblock %}
+
+
+{% block javascripts %}
+    <script>
+      $(document).ready(function () {
+        /* Contact tabs */
+        changeDepartment({{ specific_department.id }});
+
+        // Make tab and department form field change when selector value changes
+        $('#department-box-selector').on('change', function () {
+          changeDepartment($(this).val());
+        });
+
+        // Make selector value and department form field change when tab changes
+        $('#department-box-tabs a').on('click', function () {
+          changeDepartment($(this).attr('aria-controls'));
+        });
+      });
+
+      function changeDepartment(id) {
+
+        if (id == 'Hovedstyret') {
+          $('#departmentForm').hide();
+        }
+        else {
+          $('#departmentForm').show();
+        }
+        $('#department-box-tabs a[aria-controls=\'' + id + '\']').tab('show');
+        $('#department-box-selector').val(id);
+        $('#{{ form.department.vars.id }}').val(id); // Change hidden form element
+      }
+    </script>
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row contact-page">
+            <div class="container">
+                <header class="page-header">
+                    <div class = "row page-cover">
+                    <div class="col-lg-5">
+                        {% include 'statictext/static_content.html.twig' with {'id': 'contact-header'} %}
+                    </div>
+                    <div class="col-lg-4 offset-lg-2 d-flex flex-column justify-content-center">
+                        <img class="img-fluid"
+                             src="{{ asset_with_version('images/organizationstructure.png') }}" alt="Kart med avdelinger">
+                    </div>
+                    </div>
+
+                </header>
+
+                <h2 class="text-center">Kontakt oss</h2>
+                <div class="department-box card py-2 py-sm-4 my-5">
+                    <!-- Tabs (visible on large screens) -->
+                    <div class="card-block pt-4 pb-1 pb-sm-4 d-none d-sm-inline-flex">
+                        <ul id="department-box-tabs" class="nav nav-tabs justify-content-center w-100">
+                            {% for department in get_active_departments() %}
+                                <li role="presentation" class="nav-item"><a class="nav-link" href="#{{ department }}"
+                                                                            data-toggle="tab"
+                                                                            aria-controls="{{ department.id }}">{{ department.city }}</a>
+                                </li>
+                            {% endfor %}
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#Hovedstyret"
+                                                                        data-toggle="tab" aria-controls="Hovedstyret">Hovedstyret</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Dropdown (visible on mobile) -->
+                    <div class="card-block px-3 px-sm-0 my-2 my-sm-0">
+                        <select class="form-control d-block d-sm-none" id="department-box-selector">
+                            {% for department in get_active_departments() %}
+                                <option value="{{ department.id }}">{{ department.city }}</option>
+                            {% endfor %}
+                            <option value="Hovedstyret">Hovedstyret</option>
+                        </select>
+                    </div>
+
+                    <!-- Panes -->
+                    <div class="card-block tab-content px-3 px-sm-4 py-2 py-sm-4 mx-sm-4">
+                        {% for department in get_active_departments() %}
+                            <div role="tabpanel" class="tab-pane fade in" id="{{ department }}">
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <h2 class="mb-0 text-dark-blue">{{ department.city }}</h2>
+                                        <p class="department-name">{{ department.name }}</p>
+                                        <p class="email contact-info">
+                                            <i class="text-devil fa fa-envelope"></i>
+                                            <a href="mailto:{{ department.email }}">{{ department.email }}</a>
+                                        </p>
+                                        <p class="text-devil contact-info">
+                                            {% if department.address %}
+                                                <i class="text-devil fa fa-map-marker"></i>
+                                                {{ department.address }}
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    <div class="col-12 col-md-6 d-none d-md-block">
+                                        <div class="list-group list-group-flush">
+                                            {% for team in department.teams if team.isActive %}
+                                                <div class="list-group-item">
+                                                    <a class="text-dark-blue"
+                                                       href={{ path('team_page', {'id': team.id}) }}>
+                                                        <h5 class="mb-1">{{ team.name }}</h5>
+                                                    </a>
+                                                    <p class="mb-0"><a
+                                                                href="mailto: {{ team.email }}"> {{ team.email }}</a>
+                                                    </p>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <h3 class="text-center contact-form-title text-dark-blue">Kontakt styret
+                                    i {{ department.city }}</h3>
+                            </div>
+                        {% endfor %}
+                        <div role="tabpanel" class="tab-pane fade in" id="Hovedstyret">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <h2 class="mb-0 text-dark-blue">{{ board.name }}</h2>
+                                    <p class="contact-info text-devil mt-2">Hovedstyret er det nasjonale styret i
+                                        vektorprogrammet.
+                                        De er et overordnet organ med ansvar for drifting av hele organisasjonen.</p>
+
+                                    <p class="email contact-info">
+                                        <i class="text-devil fa fa-envelope"></i>
+                                        <a href="mailto:{{ board.email }}"> {{ board.email }}</a>
+                                    </p>
+                                    <p class="contact-info">
+                                        <i class="text-devil fa fa-users"></i>
+                                        <span class="text-devil member-count">{{ board.activeUsers | length }}
+                                            medlemmer</span>
+                                    </p>
+                                    <a href="{{ path('executive_board_page') }}"
+                                       class="btn btn-outline-primary d-none d-sm-inline-block mt-3">Les
+                                        mer om hovedstyret</a>
+                                </div>
+
+                                <div class="col-12 col-md-6 d-none d-md-block">
+                                    <div class="list-group list-group-flush">
+                                        {% for user in board.activeUsers | team_position_sort(board) %}
+                                            <div class="list-group-item">
+                                                <a class="text-dark-blue"
+                                                   href={{ path('specific_profile', {'id': user.id}) }}>
+                                                    <h5 class="mb-1">{{ user.fullName }}</h5>
+                                                </a>
+                                                <p class="mb-0 text-devil">
+                                                    {% for membership in user.activeMemberships %}
+                                                        {{ membership.positionName }}{% if not loop.last %},{% endif %}
+                                                    {% endfor %}
+                                                </p>
+                                                <p class="mb-0"><a
+                                                            href="mailto: {{ user.companyEmail }}"> {{ user.companyEmail }}</a>
+                                                </p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="departmentForm" class="content">{% include "contact/contact_form.html.twig" %}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

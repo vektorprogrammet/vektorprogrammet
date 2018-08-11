@@ -74,6 +74,7 @@ class SlackMessenger
     {
         if (!$this->disableDelivery) {
             try {
+                $message->setText($message->getText());
                 $this->slackClient->sendMessage($message);
             } catch (\Exception $e) {
                 $this->logger->error("Sending message to Slack failed! {$e->getMessage()}");

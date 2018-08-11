@@ -11,12 +11,9 @@ class CancelInterviewConfirmationType extends AbstractType
     {
         $builder
             ->add('message', 'textarea', array(
-                'label' => 'Melding',
+                'label' => false,
                 'attr' => array('rows' => '5'),
                 'required' => false,
-            ))
-            ->add('cancel', 'submit', array(
-                'label' => 'Kanseller',
             ));
     }
 

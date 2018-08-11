@@ -126,7 +126,7 @@ class ReceiptControllerTest extends BaseWebTestCase
         $client = $this->createAnonymousClient();
         $client->request('GET', '/utlegg');
         $crawler = $client->followRedirect();
-        $this->assertEquals(1, $crawler->filter('button:contains("login")')->count());
+        $this->assertGreaterThanOrEqual(1, $crawler->filter('button:contains("Logg inn")')->count());
     }
 
     public function testAssistantPermissions()

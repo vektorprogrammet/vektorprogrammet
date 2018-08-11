@@ -14,7 +14,7 @@ use Doctrine\ORM\NoResultException;
 
 class UserRepository extends EntityRepository implements UserProviderInterface
 {
-    public function findUsersWithWorkHistoryInSemester(Semester $semester)
+    public function findUsersWithTeamMembershipInSemester(Semester $semester)
     {
         $startDate = $semester->getSemesterStartDate();
         $endDate = $semester->getSemesterEndDate();
@@ -22,13 +22,13 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 
         return $this->createQueryBuilder('user')
             ->select('user')
-            ->join('user.workHistories', 'wh')
+            ->join('user.teamMemberships', 'tm')
             ->join('user.fieldOfStudy', 'fos')
             ->where('fos.department = :department')
-            ->join('wh.startSemester', 'ss')
+            ->join('tm.startSemester', 'ss')
             ->andWhere('ss.semesterStartDate <= :startDate')
-            ->leftJoin('wh.endSemester', 'se')
-            ->andWhere('wh.endSemester is NULL OR se.semesterEndDate >= :endDate')
+            ->leftJoin('tm.endSemester', 'se')
+            ->andWhere('tm.endSemester is NULL OR se.semesterEndDate >= :endDate')
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
             ->setParameter('department', $department)
@@ -254,5 +254,23 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     {
         return $this->getEntityName() === $class
         || is_subclass_of($class, $this->getEntityName());
+    }
+
+    public function findAssistants()
+    {
+        return $this->createQueryBuilder('user')
+            ->join('user.assistantHistories', 'ah')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findTeamMembers()
+    {
+        return $this->createQueryBuilder('user')
+                    ->join('user.teamMemberships', 'tm')
+                    ->distinct()
+                    ->getQuery()
+                    ->getResult();
     }
 }

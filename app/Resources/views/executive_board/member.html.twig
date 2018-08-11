@@ -1,0 +1,36 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Hovedstyret
+{% endblock %}
+
+{% form_theme form 'form/foundation_layout.html.twig' %}
+
+
+{% block body %}
+    <p></p>
+
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+
+            <h2> {{ heading }} </h2>
+
+            <hr>
+
+            <div class="row">
+                <div class="small-12 medium-12 large-6 columns">
+
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button class="button tiny success" type="submit">Lagre</button>
+                    {{ form_end(form) }}
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+{% endblock %}

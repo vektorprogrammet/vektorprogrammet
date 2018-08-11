@@ -2,21 +2,42 @@
 
 namespace AppBundle\Entity;
 
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class SupportTicket
 {
+
+    /**
+     * @var string $name
+     * @Assert\NotBlank()
+     */
     private $name;
 
+    /**
+     * @var string $email
+     * @Assert\NotBlank()
+     * @Assert\Email()
+     */
     private $email;
 
+    /**
+     * @var string $subject
+     * @Assert\NotBlank()
+     */
     private $subject;
 
+    /**
+     * @var string $body
+     * @Assert\NotBlank()
+     */
     private $body;
 
+    /**
+     * @var Department $department
+     *
+     * @Assert\NotNull(message="Klarte ikke sende melding til denne avdelingen. Send oss en mail isteden.")
+     * @Assert\Valid()
+     */
     private $department;
 
     public function getName()
@@ -59,14 +80,6 @@ class SupportTicket
         $this->body = $body;
     }
 
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata->addPropertyConstraint('name', new NotBlank());
-        $metadata->addPropertyConstraint('email', new Email());
-        $metadata->addPropertyConstraint('subject', new NotBlank());
-        $metadata->addPropertyConstraint('subject', new Length(array('max' => 50)));
-        $metadata->addPropertyConstraint('body', new Length(array('min' => 5)));
-    }
 
     // Used for unit testing the forms
     public function fromArray($data = array())
@@ -91,5 +104,15 @@ class SupportTicket
     public function setDepartment(Department $department)
     {
         $this->department = $department;
+    }
+
+    public function __toString()
+    {
+        return
+           "Name: $this->name\n" .
+           "Email: $this->email\n" .
+           "Subject: $this->subject\n" .
+           "Body: $this->body\n" .
+           "Department: $this->department";
     }
 }

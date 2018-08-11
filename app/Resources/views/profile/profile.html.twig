@@ -4,79 +4,55 @@
     Profil | {{ user.firstName }} {{ user.lastName }}
 {% endblock %}
 
-
-{% block javascripts %}
-
-    {# Easy routing with FOSJsRouting bundle #}
-    <script src="{{ asset_with_version('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-    {# We need the deletetablerow.js file #}
-    <script src="{{ asset_with_version('js/genericAjax.js') }}"></script>
-
-    <script>
-
-        $(document).ready(function () {
-            $('.requestCertificate').genericAjax({
-                confirmation: {
-                    modal: $('#confirmModal'),
-                    acceptButton: $('#modalAccept'),
-                    cancelButton: $('#modalCancel')
-                }
-            });
-        });
-
-
-    </script>
-
-
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/profile.css') }}">
 {% endblock %}
 
+
 {% block body %}
-    <br>
-    <div class="row">
-        <div class="large-4 medium-12 small-12 columns">
+    <div class="container">
+        <div class="row mt-3 mt-md-5">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="d-block d-md-none mb-3">
+                    {% include 'profile/profile_header.html.twig' %}
+                </div>
+                {% include 'profile/profile_user_links.html.twig' %}
 
-            {% include 'profile/profile_picture.html.twig' %}
+                {% if is_granted_team_leader() %}
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h3> Brukerstatus </h3>
+                            </div>
+                            <p class="mb-0"> Brukeren er {{ user.isActive ? 'aktiv' : 'inaktiv' }} </p>
+                            {% if is_granted_admin() %}
+                                <form
+                                        method="POST"
+                                        action="{{ path(user.isActive ? 'profile_deactivate_user' : 'profile_activate_user', {id: user.id}) }}"
+                                        onsubmit="return confirm('Er du sikker?');">
+                                    <button type="submit"
+                                            class="btn btn-link p-0">{{ user.isActive ? 'Deaktiver' : 'Aktiver' }}</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
 
-            <div class="panel callout radius">
-                <ul class="side-nav" role="navigation" title="Link List">
-                    <li role="menuitem"><a href="{{ path('profile_edit') }}">Rediger profil</a></li>
-                    <li role="menuitem"><a href="{{ path('profile_edit_photo', {'id': user.getId()}) }}">Rediger
-                            bilde</a></li>
-                    <li role="menuitem"><a href="{{ path('profile_edit_password') }}">Endre passord</a></li>
-                    {#<li role="menuitem"><a href="#" id="certificate_request" class="requestCertificate">Send attest
-                            forespørsel</a></li>#}
-
-                    {% if is_granted_team_leader() %}
-                        <li role="menuitem"><a href="{{ path('profile_certificate', { id: user.id} ) }}">Last ned
-                                attest</a></li>
-                    {% endif %}
-
-                </ul>
+                {% include 'profile/contact_info.html.twig' %}
             </div>
 
-            {% include 'profile/contact_info.html.twig' %}
+            <div class="col-12 col-md-6 col-lg-8">
+                <div class="d-none d-md-block">
+                    {% include 'profile/profile_header.html.twig' %}
+                </div>
 
+                {% include 'profile/executive_board_history.html.twig' %}
 
-        </div>
+                {% include 'profile/assistant_history.html.twig' %}
 
-        <div class="large-8 columns">
-            {% include 'profile/profile_header.html.twig' %}
+                {% include 'profile/team_history.html.twig' %}
 
-            {% include 'profile/assistant_history.html.twig' %}
-
-            {% include 'profile/team_history.html.twig' %}
-
+            </div>
         </div>
     </div>
-
-    <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
-         aria-hidden="true" role="dialog">
-        <h2 id="modalMessage">Er du sikker på at du vil utføre handlingen?</h2>
-        <ul class="inline-list">
-            <a id="modalAccept" href="#" class="button tiny">Ja</a>
-            <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
-        </ul>
-    </div>
-
 {% endblock %}

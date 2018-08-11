@@ -28,7 +28,7 @@ class SemesterControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/kontrollpanel/semesteradmin/avdeling/2');
 
         // Assert that we have the correct amount of data
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opptaksperioder HiST")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Opptaksperioder UiB")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Vår 2015")')->count());
 
         // Assert a specific 200 status code
@@ -54,8 +54,8 @@ class SemesterControllerTest extends BaseWebTestCase
         // Change the value of a field
         $form['createSemester[semesterTime]']->select('Vår');
         $form['createSemester[year]']->select('2017');
-        $form['createSemester[admissionStartDate]'] = '2017-01-04 10:30:00 ';
-        $form['createSemester[admissionEndDate]'] = '2017-02-02 10:30:00 ';
+        $form['createSemester[admissionStartDate]'] = '04.08.2015 10:30 ';
+        $form['createSemester[admissionEndDate]'] = '02.09.2015 10:40 ';
 
         // submit the form
         $client->submit($form);
@@ -64,7 +64,7 @@ class SemesterControllerTest extends BaseWebTestCase
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
 
         // Assert that the response is the correct redirect
-        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/semesteradmin'));
+        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/semesteradmin/avdeling/1'));
     }
 
     public function testUpdateSemester()
@@ -100,7 +100,7 @@ class SemesterControllerTest extends BaseWebTestCase
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
 
         // Assert that the response is the correct redirect
-        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/semesteradmin'));
+        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/semesteradmin/avdeling/1'));
 
         // Follow the redirect
         $crawler = $client->followRedirect();
@@ -108,10 +108,10 @@ class SemesterControllerTest extends BaseWebTestCase
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opptaksperioder NTNU")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("2015-08-04")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Opptaksperioder")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("4. Aug 2015")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("10:30:00")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("2015-09-02")')->count());
+        $this->assertEquals(1, $crawler->filter('td:contains("2. Sep 2015")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("10:40:00")')->count());
     }
 

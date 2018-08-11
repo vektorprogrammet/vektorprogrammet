@@ -1,0 +1,38 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Interesseliste - {{ department.city }}{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3 text-center mt-3 mt-md-5">
+                <img src="{{ asset_with_version('images/vektor.png') }}" alt="Vektorprogrammet">
+                <div class="page-header mb-5">
+                    <h1>Interesseliste {{ department.city }}</h1>
+                    <p>Meld deg på interesselisten for å få en påminnelse når opptaket for vektorassistenter starter i {{ department.city }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                {{ form_start(form) }}
+                {{ form_row(form.email) }}
+                <button class="btn btn-success">Meld deg på interesseliste</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block javascripts %}
+    <script>
+        setTimeout(function() {
+            $('.alert').slideUp();
+        }, 7000)
+    </script>
+{% endblock %}
+

@@ -26,7 +26,7 @@ class Survey implements \JsonSerializable
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feletet kan ikke være tomt.")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $name;
 
@@ -45,6 +45,7 @@ class Survey implements \JsonSerializable
     /**
      * @var bool
      * @ORM\Column(type="boolean", nullable=false, options={"default" : false})
+     * @Assert\NotNull(message="Dette feltet kan ikke være tomt.")
      */
     private $confidential;
 
@@ -197,7 +198,6 @@ class Survey implements \JsonSerializable
                 if ($answer->getSurveyTaken() === null || $answer->getSurveyTaken()->getSchool() === null) {
                     continue;
                 }
-                
                 $textQAarray[$questionText][] = array(
                     'answerText' => $answer->getAnswer(),
                     'schoolName' => $answer->getSurveyTaken()->getSchool()->getName()
@@ -268,7 +268,7 @@ class Survey implements \JsonSerializable
     /**
      * @param boolean $confidential
      */
-    public function setConfidential(bool $confidential)
+    public function setConfidential($confidential)
     {
         $this->confidential = $confidential;
     }

@@ -1,0 +1,45 @@
+{% if executiveBoardMemberships is not empty %}
+    <div class="card mt-3">
+        <div class="card-body">
+            <div class="card-title">
+                <h3 class="text-dark-blue">Medlem i hovedstyret</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>Stilling</th>
+                        <th>Start</th>
+                        <th>Slutt</th>
+                    </tr>
+                    </thead>
+                    {% for tm in executiveBoardMemberships %}
+                        <tr>
+
+                            <td>
+                                {{ tm.positionName }}
+                            </td>
+
+                            <td>
+                                {% if tm.startSemester is null %}
+                                    Ingen startsemester valgt
+                                {% else %}
+                                    {{ tm.startSemester.name }}
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if tm.endSemester is not null %}
+                                    {{ tm.endSemester.name }}
+                                {% else %}
+                                    Fortsatt aktiv
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endif %}

@@ -112,8 +112,7 @@
                         <th> Opptak start</th>
                         <th> Opptak slutt</th>
                         {% if is_granted_team_leader() %}
-                            <th></th>
-                            <th></th>
+                            <th colspan="{{ is_granted_admin() ? 2 : 1 }}"></th>
                         {% endif %}
                     </tr>
                     </thead>
@@ -122,21 +121,18 @@
                     {% for s in semesters %}
                         <tr>
                             <td> {{ s.name }} </td>
-                            <td> {{ s.admissionStartDate|date('Y-m-d') }} </br>
+                            <td> {{ s.admissionStartDate|date('d. M Y') }} </br>
                                 Kl. {{ s.admissionStartDate|date('H:i:s') }}</td>
-                            <td> {{ s.admissionEndDate|date('Y-m-d') }} </br>
+                            <td> {{ s.admissionEndDate|date('d. M Y') }} </br>
                                 Kl. {{ s.admissionEndDate|date('H:i:s') }}</td>
 
                             {% if is_granted_team_leader() %}
-
+                                <td><a href="{{ path('semester_update', { 'id': s.id }) }}" class="button tiny"><i class="fa fa-pencil"></i> Rediger</a>
+                                </td>
                                 {% if is_granted_admin() %}
                                     <td><a href="#" id="{{ s.id }}" class="button tiny alert delete"><i
                                                     class="fa fa-trash-o"></i> Slett</a></td>
                                 {% endif %}
-
-                                <td><a href="{{ path('semester_update', { 'id': s.id }) }}" class="button tiny">Rediger</a>
-                                </td>
-
                             {% endif %}
                         </tr>
                     {% endfor %}

@@ -4,10 +4,12 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as CustomAssert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ApplicationRepository")
  * @ORM\Table(name="application")
+ * @CustomAssert\ApplicationEmail(groups={"admission"})
  */
 class Application
 {

@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class NewPasswordType extends AbstractType
 {
@@ -21,10 +22,9 @@ class NewPasswordType extends AbstractType
                         'min' => 8,
                         'minMessage' => 'Passordet må ha minst {{ limit }} tegn.',
                     )),
+                    new NotBlank(),
                 ),
-            ))
-            ->add('save', 'submit', array(
-                'label' => 'Lagre nytt passord', ));
+            ));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

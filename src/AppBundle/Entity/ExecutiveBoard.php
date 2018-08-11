@@ -42,14 +42,19 @@ class ExecutiveBoard implements TeamInterface
     private $shortDescription;
 
     /**
-     * @var ExecutiveBoardMember[]
-     * @ORM\OneToMany(targetEntity="ExecutiveBoardMember", mappedBy="board")
+     * @var ExecutiveBoardMembership[]
+     * @ORM\OneToMany(targetEntity="ExecutiveBoardMembership", mappedBy="board")
      */
-    private $users;
+    private $boardMemberships;
 
     public function __toString()
     {
         return (string) $this->getName();
+    }
+
+    public function getType()
+    {
+        return 'executive_board';
     }
 
     /**
@@ -96,10 +101,14 @@ class ExecutiveBoard implements TeamInterface
 
     /**
      * @param string $email
+     *
+     * @return $this|\AppBundle\Entity\ExecutiveBoard
      */
     public function setEmail($email)
     {
         $this->email = $email;
+
+        return $this;
     }
 
     /**
@@ -112,10 +121,14 @@ class ExecutiveBoard implements TeamInterface
 
     /**
      * @param string $description
+     *
+     * @return \AppBundle\Entity\ExecutiveBoard
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /**
@@ -128,27 +141,69 @@ class ExecutiveBoard implements TeamInterface
 
     /**
      * @param string $shortDescription
+     *
+     * @return \AppBundle\Entity\ExecutiveBoard
      */
     public function setShortDescription($shortDescription)
     {
         $this->shortDescription = $shortDescription;
+
+        return $this;
     }
 
     /**
-     * @return ExecutiveBoardMember[]
+     * @return ExecutiveBoardMembership[]
      */
-    public function getUsers()
+    public function getBoardMemberships()
     {
-        return $this->users;
+        return $this->boardMemberships;
     }
 
-    public function getWorkHistories()
+    /**
+     * @return \AppBundle\Entity\ExecutiveBoardMembership[]
+     */
+    public function getTeamMemberships()
     {
-        return $this->users;
+        return $this->boardMemberships;
     }
 
+    /**
+     * @return bool
+     */
     public function getAcceptApplication()
     {
         return false;
+    }
+
+    /**
+     * @return ExecutiveBoardMembership[]
+     */
+    public function getActiveTeamMemberships()
+    {
+        $activeTeamMemberships = [];
+
+        foreach ($this->getTeamMemberships() as $teamMembership) {
+            if ($teamMembership->isActive()) {
+                $activeTeamMemberships[] = $teamMembership;
+            }
+        }
+
+        return $activeTeamMemberships;
+    }
+
+    /**
+     * @return User[]
+     */
+    public function getActiveUsers()
+    {
+        $activeUsers = [];
+
+        foreach ($this->getActiveTeamMemberships() as $activeExecutiveBoardHistory) {
+            if (!in_array($activeExecutiveBoardHistory->getUser(), $activeUsers)) {
+                $activeUsers[] = $activeExecutiveBoardHistory->getUser();
+            }
+        }
+
+        return $activeUsers;
     }
 }

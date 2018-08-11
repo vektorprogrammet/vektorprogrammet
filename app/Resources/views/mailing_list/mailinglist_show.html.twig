@@ -1,1 +1,1 @@
-<pre>{% for u in users %}{{ u.email }}, {% endfor %}</pre>
+<pre>{% for u in users %}{{ u.companyEmail ? u.companyEmail : u.email }}{% if not loop.last %}, {% endif %}{% endfor %}</pre>

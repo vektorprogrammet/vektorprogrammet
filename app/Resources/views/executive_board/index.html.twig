@@ -1,69 +1,71 @@
 {% extends 'adminBase.html.twig' %}
 
 {% block title %}
-    {{ board.name }}
+    {{ board_name }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset_with_version('js/csvGenerator.js') }}"></script>
 {% endblock %}
 
 {% block body %}
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            <h1> {{ board.name }} </h1>
+            <h1> {{ board_name }} </h1>
             <hr>
-                <div class="row">
-                    <div class="small-12 medium-12 large-6 columns">
-                        <ul class="inline-list">
-                            <li>
-                                <a href="{{ path('executive_board_add_user_to_board' )}}"
-                                   class="button tiny">Legg til ny bruker</a>
-                            </li>
+            <div class="row">
+                <div class="small-12 medium-12 large-6 columns">
+                    <ul class="inline-list">
+                        <li>
+                            <div class="control-panel-item">
+                                {% if is_granted_team_leader() %}
+                                    <a class="button tiny" data-dropdown="superadminCreateUser" aria-controls="superadminCreateUser" aria-expanded="false">
+                                        <i class="fa fa-user-plus"></i> Legg til nytt medlem
+                                    </a>
+                                    <ul id="superadminCreateUser" class="f-dropdown mini" data-dropdown-content tabindex="-1"
+                                        aria-hidden="true"
+                                        aria-autoclose="false" tabindex="-1">
 
-                            <li>
-                                <a href="{{ path('executive_board_update' )}}"
-                                   class="button tiny">Rediger</a>
-                            </li>
-                        </ul>
-                    </div>
+                                        {% for d in get_active_departments() %}
+
+                                            <li>
+                                                <a href="{{ path('executive_board_add_user_to_board', { 'id': d.id }) }}">{{ d.shortName }}</a>
+                                            </li>
+
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        </li>
+
+                        <li>
+                            <a href="{{ path('executive_board_update' )}}"
+                               class="button tiny"><i class="fa fa-pencil"></i> Rediger info</a>
+                        </li>
+                    </ul>
                 </div>
+            </div>
+            <div class="row">
+                <div class="small-12 medium-12 large-12 columns">
+                    <hr>
+                    <h3>Aktive medlemmer &nbsp;
+                        <button class="button tiny csv_download_button" data-table-id="activeMemberTable"><i class="fa fa-download"></i> Last ned CSV</button>
+                    </h3>
 
-            <table width="100%" id="table">
-
-                <thead>
-                <tr>
-                    <th> Fornavn</th>
-                    <th> Etternavn</th>
-                    <th> Stilling</th>
-                    <th> Tlf</th>
-                    <th> E-post</th>
-                    <th> Linje</th>
-                    <th> Avdeling</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for m in board.users %}
-                    <tr>
-                        <td><a href='{{ path('specific_profile', { 'id': m.user.id }) }}'>{{ m.user.firstName }}</a></td>
-                        <td> {{ m.user.lastName }} </td>
-                        <td> {{ m.position }}</td>
-                        <td> {{ m.user.phone }} </td>
-                        <td> {{ m.user.email }} </td>
-                        <td> {{ m.user.fieldOfStudy }} </td>
-                        <td> {{ m.user.department }} </td>
-                        <td>
-                            <form method="POST"
-                                  onsubmit="return confirm('Vil du virkelig fjerne brukeren {{ m.user.firstName }} {{ m.user.lastName }}?')"
-                                  action="{{ path('executive_board_remove_user_from_board_by_id', { id: m.id }) }}">
-                                <button type="submit"
-                                        class="button tiny alert">
-                                    <i class="fa fa-trash"></i>
-                                    Slett
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                    <hr>
+                    {%  include(':executive_board:member_table.html.twig') with {'members': active_members, 'table_id': 'activeMemberTable'} %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 medium-12 large-12 columns">
+                        <hr>
+                        <h3>Tidligere medlemmer &nbsp;
+                            <button class="button tiny csv_download_button" data-table-id="inactiveMemberTable"><i class="fa fa-download"></i> Last ned CSV</button>
+                        </h3>
+                        <hr>
+                    {%  include(':executive_board:member_table.html.twig') with {'members': inactive_members, 'table_id': 'inactiveMemberTable'} %}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

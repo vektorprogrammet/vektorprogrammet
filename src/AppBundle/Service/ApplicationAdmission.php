@@ -4,6 +4,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManager;
@@ -49,6 +50,29 @@ class ApplicationAdmission
 
         return $application;
     }
+
+    public function userHasAlreadyApplied(User $user)
+    {
+        $fos = $user->getFieldOfStudy();
+        if ($fos === null) {
+            /* User has no field of study, and hence no department, so we
+            cannot know if he/she has already applied in the current semester,
+            as this depends on the department. */
+            return false;
+        }
+        $department = $fos->getDepartment();
+        $semester = $this->em->getRepository('AppBundle:Semester')
+            ->findSemesterWithActiveAdmissionByDepartment($department);
+        return $this->userHasAlreadyAppliedInSemester($user, $semester);
+    }
+
+    public function userHasAlreadyAppliedInSemester(User $user, Semester $semester)
+    {
+        $existingApplications = $this->em->getRepository('AppBundle:Application')->findByEmailInSemester($user->getEmail(), $semester);
+
+        return count($existingApplications) > 0;
+    }
+
 
     public function setCorrectUser(Application $application)
     {

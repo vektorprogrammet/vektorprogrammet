@@ -39,16 +39,16 @@
     </script>
 
     <script>
-        var $oldWorkHistories = $('#oldWorkHistories');
-        var $oldWorkHistoriesButton = $('#oldWorkHistoriesButton');
-        $oldWorkHistoriesButton.on('click', function () {
-            $oldWorkHistories.slideToggle(400);
-            if ($oldWorkHistoriesButton.html() == "Vis gamle medlemmer") {
-                $oldWorkHistoriesButton.html("Skjul gamle medlemmer");
-                $oldWorkHistoriesButton.addClass('alert').removeClass('success');
-            } else if ($oldWorkHistoriesButton.html() == "Skjul gamle medlemmer") {
-                $oldWorkHistoriesButton.addClass('success').removeClass('alert');
-                $oldWorkHistoriesButton.html("Vis gamle medlemmer");
+        var $oldTeamMemberships = $('#oldTeamMemberships');
+        var $oldTeamMembershipsButton = $('#oldTeamMembershipsButton');
+        $oldTeamMembershipsButton.on('click', function () {
+            $oldTeamMemberships.slideToggle(400);
+            if ($oldTeamMembershipsButton.html() == "Vis gamle medlemmer") {
+                $oldTeamMembershipsButton.html("Skjul gamle medlemmer");
+                $oldTeamMembershipsButton.addClass('alert').removeClass('success');
+            } else if ($oldTeamMembershipsButton.html() == "Skjul gamle medlemmer") {
+                $oldTeamMembershipsButton.addClass('success').removeClass('alert');
+                $oldTeamMembershipsButton.html("Vis gamle medlemmer");
             }
         });
     </script>
@@ -61,9 +61,6 @@
 {% endblock %}
 
 {% block body %}
-    {% include 'common/flash.html.twig' %}
-    <p></p>
-
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
 
@@ -101,13 +98,13 @@
             <hr>
 
             <h3>Aktive medlemmer</h3>
-            {% include 'team_admin/work_history_table.html.twig' with {'workHistories' : activeWorkHistories} %}
+            {% include 'team_admin/team_membership_table.html.twig' with {'teamMemberships' : activeTeamMemberships} %}
 
-            <div id="oldWorkHistories">
+            <div id="oldTeamMemberships">
                 <h3>Team historikk</h3>
-                {% include 'team_admin/work_history_table.html.twig' with {'workHistories' : inActiveWorkHistories} %}
+                {% include 'team_admin/team_membership_table.html.twig' with {'teamMemberships' : inActiveTeamMemberships} %}
             </div>
-            <button id="oldWorkHistoriesButton" class="button tiny success">Vis gamle medlemmer</button>
+            <button id="oldTeamMembershipsButton" class="button tiny success">Vis gamle medlemmer</button>
         </div>
     </div>
 

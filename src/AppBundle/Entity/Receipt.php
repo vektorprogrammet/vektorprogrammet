@@ -38,13 +38,19 @@ class Receipt
     private $receiptDate;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $refundDate;
+
+    /**
      * @ORM\Column(name="picture_path", type="string", nullable=true)
      */
     private $picturePath;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=5000)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
+     * @Assert\Length(max="5000", maxMessage="Maks 5000 tegn")
      */
     private $description;
 
@@ -214,5 +220,21 @@ class Receipt
     public function __toString()
     {
         return $this->visualId;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getRefundDate()
+    {
+        return $this->refundDate;
+    }
+
+    /**
+     * @param \DateTime $refundDate
+     */
+    public function setRefundDate($refundDate)
+    {
+        $this->refundDate = $refundDate;
     }
 }

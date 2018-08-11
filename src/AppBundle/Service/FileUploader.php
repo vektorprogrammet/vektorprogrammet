@@ -2,7 +2,7 @@
 
 namespace AppBundle\Service;
 
-use Ivory\CKEditorBundle\Exception\Exception;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -14,6 +14,12 @@ class FileUploader
     private $signatureFolder;
     private $logoFolder;
     private $receiptFolder;
+    private $profilePhotoFolder;
+    private $galleryImageFolder;
+    /**
+     * @var string
+     */
+    private $articleFolder;
 
     /**
      * FileUploader constructor.
@@ -22,13 +28,17 @@ class FileUploader
      * @param string $logoFolder
      * @param string $receiptFolder
      * @param string $galleryImageFolder
+     * @param string $profilePhotoFolder
+     * @param string $articleFolder
      */
-    public function __construct(string $signatureFolder, string $logoFolder, string $receiptFolder, string $galleryImageFolder)
+    public function __construct(string $signatureFolder, string $logoFolder, string $receiptFolder, string $galleryImageFolder, string $profilePhotoFolder, string $articleFolder)
     {
         $this->signatureFolder = $signatureFolder;
         $this->logoFolder = $logoFolder;
         $this->receiptFolder = $receiptFolder;
         $this->galleryImageFolder = $galleryImageFolder;
+        $this->profilePhotoFolder = $profilePhotoFolder;
+        $this->articleFolder = $articleFolder;
     }
 
     /**
@@ -84,6 +94,47 @@ class FileUploader
         $fileType = explode('/', $mimeType)[0];
         if ($fileType === 'image') {
             return $this->uploadFile($file, $this->galleryImageFolder);
+        } else {
+            throw new BadRequestHttpException('Filtypen må være et bilde.');
+        }
+    }
+
+    /**
+ * @param Request $request
+ *
+ * @return string
+ */
+    public function uploadProfileImage(Request $request)
+    {
+        $file = $this->getFileFromRequest($request);
+
+        $mimeType = $file->getMimeType();
+        $fileType = explode('/', $mimeType)[0];
+        if ($fileType === 'image') {
+            return $this->uploadFile($file, $this->profilePhotoFolder);
+        } else {
+            throw new BadRequestHttpException('Filtypen må være et bilde.');
+        }
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @param string $id
+     *
+     * @return string
+     */
+    public function uploadArticleImage(Request $request, string $id)
+    {
+        $file = $this->getFileFromRequest($request, $id);
+        if (!$file) {
+            return null;
+        }
+
+        $mimeType = $file->getMimeType();
+        $fileType = explode('/', $mimeType)[0];
+        if ($fileType === 'image') {
+            return $this->uploadFile($file, $this->articleFolder);
         } else {
             throw new BadRequestHttpException('Filtypen må være et bilde.');
         }
@@ -149,6 +200,17 @@ class FileUploader
         $this->deleteFile("$this->galleryImageFolder/$fileName");
     }
 
+    public function deleteProfileImage(string $path)
+    {
+        if (empty($path)) {
+            return;
+        }
+
+        $fileName = $this->getFileNameFromPath($path);
+
+        $this->deleteFile("$this->profilePhotoFolder/$fileName");
+    }
+
     public function deleteFile(string $path)
     {
         if (file_exists($path)) {
@@ -158,11 +220,16 @@ class FileUploader
         }
     }
 
-    private function getFileFromRequest(Request $request)
+    private function getFileFromRequest(Request $request, $id = null)
     {
-        $fileKey = current($request->files->keys());
+        $fileKey = $id !== null ? $id : current($request->files->keys());
+        $file = $request->files->get($fileKey);
 
-        return current($request->files->get($fileKey));
+        if (is_array($file)) {
+            return current($file);
+        }
+
+        return $file;
     }
 
     private function generateRandomFileNameWithExtension(string $fileExtension)

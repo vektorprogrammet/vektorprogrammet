@@ -39,8 +39,7 @@ class Department
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=250)
-     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=250, nullable=true)
      */
     protected $address;
 
@@ -77,26 +76,36 @@ class Department
     protected $schools;
 
     /**
-     * @ORM\OneToMany(targetEntity="FieldOfStudy", mappedBy="department", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="FieldOfStudy", mappedBy="department",
+     *     cascade={"remove"})
      */
     private $fieldOfStudy;
 
     /**
-     * @ORM\OneToMany(targetEntity="Semester", mappedBy="department",  cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="Semester", mappedBy="department",
+     *     cascade={"remove"})
      * @ORM\OrderBy({"semesterStartDate" = "DESC"})
      **/
     private $semesters;
 
     /**
-     * @ORM\OneToMany(targetEntity="Team", mappedBy="department", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="Team", mappedBy="department",
+     *     cascade={"remove"})
      **/
     private $teams;
 
     /**
      * @ORM\Column(name="logo_path", type="string", length=255, nullable=true)
-     * @Assert\Length(min = 1, max = 255, maxMessage="Path kan maks være 255 tegn."))
+     * @Assert\Length(min = 1, max = 255, maxMessage="Path kan maks være 255
+     *     tegn."))
      **/
     private $logoPath;
+
+    /**
+     * @ORM\Column(name="active", type="boolean", nullable=false,
+     *     options={"default" : 1})
+     */
+    private $active;
 
     /**
      * Constructor.
@@ -107,6 +116,7 @@ class Department
         $this->fieldOfStudy = new ArrayCollection();
         $this->semesters = new ArrayCollection();
         $this->teams = new ArrayCollection();
+        $this->active = true;
     }
 
     /**
@@ -157,6 +167,18 @@ class Department
         }
 
         return $semester;
+    }
+
+    public function activeAdmission()
+    {
+        $semester = $this->getCurrentSemester();
+        if (!$semester) {
+            return false;
+        }
+        $start = $semester->getAdmissionStartDate();
+        $end = $semester->getAdmissionEndDate();
+        $now = new \DateTime();
+        return $start < $now && $now < $end;
     }
 
     /**
@@ -493,5 +515,23 @@ class Department
     public function setLogoPath($logoPath)
     {
         $this->logoPath = $logoPath;
+    }
+
+
+    /**
+     * @return boolean $active
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+
+    /**
+     * @param boolean $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
     }
 }

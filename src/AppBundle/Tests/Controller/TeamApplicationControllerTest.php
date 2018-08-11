@@ -12,25 +12,18 @@ class TeamApplicationControllerTest extends BaseWebTestCase
 
         $crawler = $client->request('GET', '/team/1');
 
-        // Find a link and click it
-        $link = $crawler->selectLink('Søk Styret')->eq(0)->link();
+        $link = $crawler->selectLink('Søk Styret!')->eq(0)->link();
         $crawler = $client->click($link);
 
-        //Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h1:contains("Søk Styret")')->count());
-        //Form checks?
     }
 
     public function testShowAllApplications()
     {
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
-        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/1');
-
+        $crawler = $this->goTo('/kontrollpanel/teamadmin/team/1', $client);
         // Find a link and click it (Sjekk hva som skal stå for søknad nr 1)
         $link = $crawler->selectLink('Se søkere')->eq(0)->link();
         $crawler = $client->click($link);
@@ -132,7 +125,7 @@ class TeamApplicationControllerTest extends BaseWebTestCase
         $this->assertTrue($clientAnonymous->getResponse()->isSuccessful());
 
         // Find a link
-        $this->assertGreaterThan(0, $crawler->selectLink('Søk Styret')->count());
+        $this->assertGreaterThan(0, $crawler->selectLink('Søk Styret!')->count());
 
         // Admin
         $clientAdmin = static::createClient(array(), array(
@@ -182,6 +175,7 @@ class TeamApplicationControllerTest extends BaseWebTestCase
 
         $form['app_bundle_team_application_type[name]'] = 'Sondre';
         $form['app_bundle_team_application_type[email]'] = 'sondre@vektorprogrammet.no';
+        $form['app_bundle_team_application_type[phone]'] = '12345678';
         $form['app_bundle_team_application_type[yearOfStudy]'] = '3. klasse';
         $form['app_bundle_team_application_type[fieldOfStudy]'] = 'MTTK';
         $form['app_bundle_team_application_type[motivationText]'] = 'Jeg vil bli nestleder! Pls.';

@@ -12,6 +12,9 @@ use AppBundle\Form\Type\EditUserType;
 use AppBundle\Form\Type\EditUserPasswordType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use TFox\MpdfPortBundle\Response\PDFResponse;
+use AppBundle\Role\Roles;
 
 class ProfileController extends Controller
 {
@@ -25,14 +28,18 @@ class ProfileController extends Controller
         // Fetch the assistant history of the user
         $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
 
-        // Find the work history of the user
-        $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
+        // Find the team history of the user
+        $teamMemberships = $em->getRepository('AppBundle:TeamMembership')->findByUser($user);
+
+        // Find the executive board history of the user
+        $executiveBoardMemberships = $em->getRepository('AppBundle:ExecutiveBoardMembership')->findByUser($user);
 
         // Render the view
         return $this->render('profile/profile.html.twig', array(
-            'user' => $user,
-            'assistantHistory' => $assistantHistory,
-            'workHistory' => $workHistory,
+            'user'                      => $user,
+            'assistantHistory'          => $assistantHistory,
+            'teamMemberships'            => $teamMemberships,
+            'executiveBoardMemberships'  => $executiveBoardMemberships,
         ));
     }
 
@@ -45,60 +52,48 @@ class ProfileController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+        // Find the work history of the user
+        $teamMemberships = $em->getRepository('AppBundle:TeamMembership')->findByUser($user);
+
+        // Find the executive board history of the user
+        $executiveBoardMemberships = $em->getRepository('AppBundle:ExecutiveBoardMembership')->findByUser($user);
+
+        $isGrantedAssistant = ($this->getUser() !== null && $this->get('app.roles')->userIsGranted($this->getUser(), Roles::ASSISTANT));
+
+        if (empty($teamMemberships) && empty($executiveBoardMemberships) && !$isGrantedAssistant) {
+            throw $this->createAccessDeniedException();
+        }
+
         // Fetch the assistant history of the user
         $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
 
-        // Find the work history of the user
-        $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
-
-        return $this->render('profile/public_profile.html.twig', array(
-            'user' => $user,
-            'assistantHistory' => $assistantHistory,
-            'workHistory' => $workHistory,
+        // Render the view
+        return $this->render('profile/profile.html.twig', array(
+            'user'                      => $user,
+            'assistantHistory'          => $assistantHistory,
+            'teamMemberships'            => $teamMemberships,
+            'executiveBoardMemberships'  => $executiveBoardMemberships,
         ));
     }
 
     public function deactivateUserAction(User $user)
     {
-        try {
-            // set user active level
-            $user->setActive(0);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+        $user->setActive(false);
 
-            // Send a response back to AJAX
-            $response['success'] = true;
-        } catch (\Exception $e) {
-            // Send a response back to AJAX
-            $response['success'] = false;
-            $response['cause'] = 'Kunne ikke endre rettighetene.';
-        }
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
 
-        // Send a response to ajax
-        return new JsonResponse($response);
+        return $this->redirectToRoute('specific_profile', ['id' => $user->getId()]);
     }
 
     public function activateUserAction(User $user)
     {
-        try {
-            // set user active level
-            $user->setActive(true);
+        $user->setActive(true);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
 
-            // Send a response back to AJAX
-            $response['success'] = true;
-        } catch (\Exception $e) {
-            // Send a response back to AJAX
-            $response['success'] = false;
-            $response['cause'] = 'Kunne ikke endre rettighetene.';
-        }
-
-        // Send a response to ajax
-        return new JsonResponse($response);
+        return $this->redirectToRoute('specific_profile', ['id' => $user->getId()]);
     }
 
     public function activateNewUserAction(Request $request, $newUserCode)
@@ -107,13 +102,13 @@ class ProfileController extends Controller
 
         if ($user === null) {
             return $this->render('error/error_message.html.twig', array(
-                'title' => 'Koden er ugyldig',
+                'title'   => 'Koden er ugyldig',
                 'message' => 'Ugyldig kode eller brukeren er allerede opprettet',
             ));
         }
 
         $form = $this->createForm(NewUserType::class, $user, array(
-            'validation_groups' => array('username'),
+            'validation_groups' => array( 'username' ),
         ));
 
         $form->handleRequest($request);
@@ -123,9 +118,13 @@ class ProfileController extends Controller
             $em->persist($user);
             $em->flush();
 
+            $token = new UsernamePasswordToken($user, null, 'secured_area', $user->getRoles());
+            $this->get('security.token_storage')->setToken($token);
+            $this->get('session')->set('_security_secured_area', serialize($token));
+
             $this->get('app.logger')->info("User $user activated with new user code");
 
-            return $this->redirectToRoute('login_route');
+            return $this->redirectToRoute('profile');
         }
 
         return $this->render('new_user/create_new_user.html.twig', array(
@@ -139,15 +138,15 @@ class ProfileController extends Controller
         $response = array();
 
         $roleManager = $this->get('app.roles');
-        $roleName = $roleManager->mapAliasToRole($request->request->get('role'));
+        $roleName    = $roleManager->mapAliasToRole($request->request->get('role'));
 
-        if (!$roleManager->loggedInUserCanChangeRoleOfUsersWithRole($user, $roleName)) {
+        if (! $roleManager->loggedInUserCanChangeRoleOfUsersWithRole($user, $roleName)) {
             throw new BadRequestHttpException();
         }
 
         try {
             $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findByRoleName($roleName);
-            $user->setRoles(array($role));
+            $user->setRoles(array( $role ));
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -172,7 +171,7 @@ class ProfileController extends Controller
         $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
 
         // Find the work history of the user
-        $workHistory = $em->getRepository('AppBundle:WorkHistory')->findByUser($user);
+        $teamMembership = $em->getRepository('AppBundle:TeamMembership')->findByUser($user);
 
         // Find the signature of the user creating the certificate
         $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($this->getUser());
@@ -184,27 +183,27 @@ class ProfileController extends Controller
             return $this->redirectToRoute('certificate_signature_picture_upload');
         }
 
-        $html = $this->renderView('certificate/certificate.html.twig', array(
-            'user' => $user,
+        $html        = $this->renderView('certificate/certificate.html.twig', array(
+            'user'             => $user,
             'assistantHistory' => $assistantHistory,
-            'workHistory' => $workHistory,
-            'signature' => $signature,
-            'department' => $department,
-            'base_dir' => $this->get('kernel')->getRootDir().'/../www'.$request->getBasePath(),
+            'teamMembership'      => $teamMembership,
+            'signature'        => $signature,
+            'department'       => $department,
+            'base_dir'         => $this->get('kernel')->getRootDir() . '/../www' . $request->getBasePath(),
         ));
-        $mpdfService = $this->get('tfox.mpdfport');
+        $mpdfService = $this->get('t_fox_mpdf_port.pdf');
 
-        return $mpdfService->generatePdfResponse($html);
+        return new PDFResponse($mpdfService->generatePdf($html));
     }
 
     public function editProfileInformationAction(Request $request)
     {
-        $user = $this->getUser();
+        $user            = $this->getUser();
         $oldCompanyEmail = $user->getCompanyEmail();
 
         $form = $this->createForm(EditUserType::class, $user, array(
-            'department' => $user->getDepartment(),
-            'validation_groups' => array('edit_user'),
+            'department'        => $user->getDepartment(),
+            'validation_groups' => array( 'edit_user' ),
         ));
 
         $form->handleRequest($request);
@@ -213,7 +212,7 @@ class ProfileController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            
+
             $this->get('event_dispatcher')->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
 
             return $this->redirect($this->generateUrl('profile'));
@@ -249,7 +248,7 @@ class ProfileController extends Controller
 
     public function editProfileInformationAdminAction(Request $request, User $user)
     {
-        $form = $this->createForm(EditUserType::class, $user, array(
+        $form            = $this->createForm(EditUserType::class, $user, array(
             'department' => $user->getDepartment(),
         ));
         $oldCompanyEmail = $user->getCompanyEmail();
@@ -264,7 +263,7 @@ class ProfileController extends Controller
 
             $this->get('event_dispatcher')->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
 
-            return $this->redirect($this->generateUrl('specific_profile', array('id' => $user->getId())));
+            return $this->redirect($this->generateUrl('specific_profile', array( 'id' => $user->getId() )));
         }
 
         return $this->render('profile/edit_profile.html.twig', array(
@@ -276,7 +275,7 @@ class ProfileController extends Controller
     public function editCompanyEmailAction(Request $request, User $user)
     {
         $oldCompanyEmail = $user->getCompanyEmail();
-        $form = $this->createForm(UserCompanyEmailType::class, $user);
+        $form            = $this->createForm(UserCompanyEmailType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -285,7 +284,7 @@ class ProfileController extends Controller
 
             $this->get('event_dispatcher')->dispatch(UserEvent::COMPANY_EMAIL_EDITED, new UserEvent($user, $oldCompanyEmail));
 
-            return $this->redirectToRoute('specific_profile', ['id' => $user->getId()]);
+            return $this->redirectToRoute('specific_profile', [ 'id' => $user->getId() ]);
         }
 
         return $this->render('profile/edit_company_email.html.twig', [

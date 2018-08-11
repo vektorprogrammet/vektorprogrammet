@@ -134,11 +134,11 @@ class RoleManager
         }
     }
 
-    private function userIsInExecutiveBoard(User $user)
+    public function userIsInExecutiveBoard(User $user)
     {
-        $executiveBoardMember = $this->em->getRepository('AppBundle:ExecutiveBoardMember')->findByUser($user);
+        $executiveBoardMembership = $this->em->getRepository('AppBundle:ExecutiveBoardMembership')->findByUser($user);
 
-        return !empty($executiveBoardMember);
+        return !empty($executiveBoardMembership);
     }
 
     private function userIsTeamLeader(User $user)
@@ -155,14 +155,14 @@ class RoleManager
     {
         $department = $user->getDepartment();
         $semester = $department->getCurrentOrLatestSemester();
-        $workHistories = $user->getWorkHistories();
+        $teamMemberships = $user->getTeamMemberships();
 
         if ($semester === null) {
             return false;
         }
 
-        foreach ($workHistories as $workHistory) {
-            if ($workHistory->isActiveInSemester($semester) && $workHistory->isTeamLeader() === $teamLeader) {
+        foreach ($teamMemberships as $teamMembership) {
+            if ($teamMembership->isActiveInSemester($semester) && $teamMembership->isTeamLeader() === $teamLeader) {
                 return true;
             }
         }
