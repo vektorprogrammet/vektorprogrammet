@@ -1,9 +1,30 @@
 {% extends 'adminBase.html.twig' %}
 
+{% block title %}
+    Teaminteresse
+{% endblock %}
+
 {% block body %}
 <div class="row">
     <div class="small-12 columns">
         <h1>Teaminteresse {{ semester.department.shortname }} {{ semester.semestertime }} {{ semester.year }}</h1>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-12 columns">
+        {% if is_granted_admin() %}
+            {% include "common/department_semester_dropdowns.html.twig" with {'path': 'admissionadmin_team_interest', 'parameterName': 'semester', 'currentSemester': semester} %}
+        {% else %}
+            <ul class="inline-list">
+                {# Semester dropdown #}
+                {% include "common/semester_dropdown.html.twig" with {
+                'pathForSemester': 'admissionadmin_team_interest',
+                'semesterParameterName': 'semester',
+                'currentSemester': semester} %}
+            </ul>
+        {% endif %}
         <hr>
     </div>
 </div>

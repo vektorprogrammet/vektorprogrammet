@@ -122,13 +122,9 @@ class Application
     private $teamInterest;
 
     /**
-     * @ORM\OneToMany(
-     *       targetEntity="AppBundle\Entity\Team",
-     *       cascade={"persist"}
-     * )
-     * @ORM\Column(type="array")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Team", inversedBy="potentialMembers")
      */
-    private $interestedInTeam;
+    private $potentialTeams;
 
     /**
      * @ORM\OneToOne(targetEntity="Interview", cascade={"persist", "remove"}, inversedBy="application")
@@ -531,16 +527,16 @@ class Application
     /**
      * @return mixed
      */
-    public function getInterestedInTeam()
+    public function getPotentialTeams()
     {
-        return $this->interestedInTeam;
+        return $this->potentialTeams;
     }
 
     /**
-     * @param mixed $interestedInTeam
+     * @param mixed $potentialTeams
      */
-    public function setInterestedInTeam($interestedInTeam): void
+    public function setPotentialTeams($potentialTeams)
     {
-        $this->interestedInTeam = $interestedInTeam;
+        $this->potentialTeams = $potentialTeams;
     }
 }

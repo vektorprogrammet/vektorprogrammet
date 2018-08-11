@@ -1,7 +1,7 @@
 {% set dropdownId = dropdownId is defined ? dropdownId : 'departmentDropdown' %}
 <li>
     <a class="button tiny" data-dropdown="{{ dropdownId }}" aria-controls="{{ dropdownId }}"
-       aria-expanded="false">{{ currentDepartment is defined ? currentDepartment : 'Avdeling' }} <i
+       aria-expanded="false"><i class="fa fa-institution"></i> {{ currentDepartment is defined ? currentDepartment : 'Avdeling' }} <i
                 class="fa fa-caret-down"></i></a>
     <ul id="{{ dropdownId }}" class="f-dropdown" data-dropdown-content tabindex="-1"
         aria-hidden="true" aria-autoclose="false" tabindex="-1">

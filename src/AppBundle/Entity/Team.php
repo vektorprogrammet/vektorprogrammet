@@ -57,6 +57,11 @@ class Team implements TeamInterface
     private $acceptApplication;
 
     /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Application", mappedBy="potentialTeams")
+     */
+    private $potentialMembers;
+
+    /**
      * @ORM\Column(type="boolean", options={"default"=true})
      */
     protected $active;
@@ -282,5 +287,21 @@ class Team implements TeamInterface
         }
 
         return $activeUsers;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPotentialMembers()
+    {
+        return $this->potentialMembers;
+    }
+
+    /**
+     * @param mixed $potentialMembers
+     */
+    public function setPotentialMembers($potentialMembers)
+    {
+        $this->potentialMembers = $potentialMembers;
     }
 }
