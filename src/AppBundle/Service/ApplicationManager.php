@@ -33,7 +33,7 @@ class ApplicationManager
             return new ApplicationStatus(
                 ApplicationStatus::INTERVIEW_COMPLETED,
                 "Intervju gjennomført",
-                "Vent på å bli invitert til intervju"
+                "Søknaden din vurderes av Vektorprogrammet. Du vil få svar på e-post."
             );
         }
 
@@ -45,11 +45,16 @@ class ApplicationManager
                     "Vent på å bli invitert til intervju"
                 );
             case InterviewStatusType::REQUEST_NEW_TIME:
+                return new ApplicationStatus(
+                    ApplicationStatus::APPLICATION_RECEIVED,
+                    "Endring av tidspunkt til intervju",
+                    "Vent på å få et nytt tidspunkt til intervju"
+                );
             case InterviewStatusType::PENDING:
                 return new ApplicationStatus(
                     ApplicationStatus::INVITED_TO_INTERVIEW,
                     "Invitert til intervju",
-                    "Vent på å bli invitert til intervju"
+                    "Godta intervjutidspunktet"
                 );
             case InterviewStatusType::ACCEPTED:
                 return new ApplicationStatus(
