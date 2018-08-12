@@ -4,6 +4,7 @@ namespace AppBundle\Tests\Service;
 
 use AppBundle\Entity\Department;
 use AppBundle\Service\GeoLocation;
+use AppBundle\Service\LogService;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
@@ -68,7 +69,11 @@ class GeoLocationTest extends TestCase
                          }
                      });
 
-        $this->geoLocation = new GeoLocation('xxxxx', $entityManager, $sessionStorage, $requestStack);
+        $logger = $this->getMockBuilder(LogService::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->geoLocation = new GeoLocation('xxxxx', $entityManager, $sessionStorage, $requestStack, $logger);
     }
 
     public function testDistance()
