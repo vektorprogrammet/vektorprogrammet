@@ -29,6 +29,8 @@ class SecurityController extends Controller
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('control_panel');
+        } elseif ($this->getDoctrine()->getRepository('AppBundle:Application')->findActiveByUser($this->getUser())) {
+            return $this->redirectToRoute('my_page');
         } else {
             return $this->redirectToRoute('profile');
         }

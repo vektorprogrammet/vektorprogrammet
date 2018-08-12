@@ -1,0 +1,38 @@
+<div class="card text-center">
+    <div class="card-body">
+        <h2 class="text-dark-blue">Søknad under vurdering</h2>
+        <p>Søknaden din vil snart bli vurdert av Vektorprogrammet. Du vil motta svar på {{ app.user.email }}.</p>
+        <hr>
+
+        <h5 class="mt-4">Info fra intervju</h5>
+        <div class="fs-16">
+            <p>Under intervjuet har vi lagret følgende informasjon om deg:</p>
+
+            <p><strong>Dager som passer</strong> <br>
+                Mandag: {{ application.monday ? "Bra" : "Ikke" }} <br>
+                Tirsdag: {{ application.tuesday ? "Bra" : "Ikke" }} <br>
+                Onsdag: {{ application.wednesday ? "Bra" : "Ikke" }} <br>
+                Torsdag: {{ application.thursday ? "Bra" : "Ikke" }} <br>
+                Fredag: {{ application.friday ? "Bra" : "Ikke" }} <br>
+            </p>
+
+            <p>
+                Arbeidsmengde: <strong>Én dag i uka i {{ application.doublePosition ? '8 uker' : '4 uker' }}</strong>
+                <br>
+                {% if application.preferredGroup %}
+                    Ønsket bolk: <strong>{{ application.preferredGroup }}</strong> <br>
+                {% endif %}
+
+                Ønsket undervisningsspråk: <strong>{{ application.language }}</strong>
+            </p>
+
+            <hr>
+
+            Hvis noe av informasjonen over er feil må du ta kontakt med din intervjuer, <a
+                    href="{{ path('specific_profile', {'id': application.interview.interviewer.id}) }}">{{ application.interview.interviewer }}</a>,
+            eller send oss en e-post på <a
+                    href="mailto:{{ app.user.department.email }}">{{ app.user.department.email }}</a>
+        </div>
+    </div>
+</div>
+

@@ -4,7 +4,18 @@
 
 <br>
 
-<p>Vi kontakter deg på denne e-postadressen innen et par dager etter søknadsfristen for å sette opp et intervju. Du vil også få beskjed på sms.</p>
+<p>Du kan se status på søknaden din ved å følge denne linken:
+    {% if new_user_code %}
+        <a href="{{ url('profile_activate_with_user_code', {'newUserCode': new_user_code}) }}">{{ url('profile_activate_with_user_code', {'newUserCode': new_user_code}) }}</a>
+    {% else %}
+        <a href="{{ url('my_page') }}">{{ url('my_page') }}</a>
+    {% endif %}
+</p>
+
+<br>
+
+<p>Vi kontakter deg på denne e-postadressen innen et par dager etter søknadsfristen for å sette opp et intervju. Du vil
+    også få beskjed på sms.</p>
 <p>Vi gleder oss til å møte deg!</p>
 
 <br>
@@ -19,7 +30,8 @@
     <li><b>Kjønn:</b> {{ user.gender == 1 ? 'Dame' : 'Mann' }}</li>
 </ul>
 
-<p>Søknaden ble mottatt den {{ "now" | date("j. F Y") }} klokken {{ "now" | date("H:i") }} på <a href="https://vektorprogrammet.no">vektorprogrammet.no</a>.</p>
+<p>Søknaden ble mottatt den {{ "now" | date("j. F Y") }} klokken {{ "now" | date("H:i") }} på <a
+            href="https://vektorprogrammet.no">vektorprogrammet.no</a>.</p>
 
 <br>
 

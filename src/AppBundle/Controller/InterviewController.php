@@ -366,8 +366,14 @@ class InterviewController extends Controller
         $formattedDate = $interview->getScheduled()->format('d. M');
         $formattedTime = $interview->getScheduled()->format('H:i');
         $room = $interview->getRoom();
+
+        $successMessage = "Takk for at du aksepterte intervjutiden. Da sees vi $formattedDate klokka $formattedTime i $room!";
+        if ($interview->getUser() === $this->getUser()) {
+            $this->addFlash('success', $successMessage);
+            return $this->redirectToRoute("my_page");
+        }
         $this->addFlash('title', 'Akseptert!');
-        $this->addFlash('message', "Takk for at du aksepterte intervjutiden. Da sees vi $formattedDate klokka $formattedTime i $room!");
+        $this->addFlash('message', $successMessage);
         return $this->redirectToRoute('confirmation');
     }
 
@@ -396,8 +402,13 @@ class InterviewController extends Controller
 
             $this->get('app.interview.manager')->sendRescheduleEmail($interview);
 
+            $successMessage = "Vi tar kontakt med deg når vi har funnet en ny intervjutid.";
+            if ($interview->getUser() === $this->getUser()) {
+                $this->addFlash('success', "Forspørsel om ny intervjutid er sendt. $successMessage");
+                return $this->redirectToRoute("my_page");
+            }
             $this->addFlash('title', 'Notert');
-            $this->addFlash('message', 'Vi tar kontakt med deg når vi har funnet en ny intervjutid.');
+            $this->addFlash('message', $successMessage);
             return $this->redirectToRoute('confirmation');
         }
 
@@ -448,8 +459,13 @@ class InterviewController extends Controller
 
             $this->get('app.interview.manager')->sendCancelEmail($interview);
 
+            $successMessage = "Du har kansellert intervjuet ditt.";
+            if ($interview->getUser() === $this->getUser()) {
+                $this->addFlash('success', $successMessage);
+                return $this->redirectToRoute("my_page");
+            }
             $this->addFlash('title', 'Kansellert');
-            $this->addFlash('message', 'Du har kansellert intervjuet ditt.');
+            $this->addFlash('message', $successMessage);
             return $this->redirectToRoute('confirmation');
         }
 

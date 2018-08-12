@@ -124,7 +124,7 @@ class ProfileController extends Controller
 
             $this->get('app.logger')->info("User $user activated with new user code");
 
-            return $this->redirectToRoute('profile');
+            return $this->redirectToRoute('my_page');
         }
 
         return $this->render('new_user/create_new_user.html.twig', array(

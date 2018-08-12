@@ -159,7 +159,7 @@ class User implements AdvancedUserInterface, \Serializable
     {
         $this->roles = new ArrayCollection();
         $this->certificateRequests = new ArrayCollection();
-        $this->isActive = false;
+        $this->isActive = true;
         $this->picture_path = 'images/defaultProfile.png';
         $this->receipts = new ArrayCollection();
     }

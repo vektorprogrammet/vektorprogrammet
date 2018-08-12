@@ -78,6 +78,18 @@ strong strong {
   text-align: center;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
+.text-italic {
+  font-style: italic;
+}
+
+.text-line-through {
+  text-decoration: line-through;
+}
+
 .AlignLeft {
   text-align: left;
 }
@@ -226,4 +238,12 @@ strong strong {
   padding: 10px;
   border-radius: 5px;
   border: 3px solid #fff3cd;
+}
+
+.fs-14, .fs-14 p {
+  font-size: 14px !important;
+}
+
+.fs-16, .fs-16 p {
+  font-size: 16px !important;
 }
