@@ -7,12 +7,33 @@
 {% block body %}
     <div class="container-fluid assistants">
         <div class="content">
-            <header class="row page-header">
+            <header class="row page-header page-header-thin">
                 <div class="col-12">
                     {% include 'statictext/static_content.html.twig' with {'id': 'assistants-header'} %}
                 </div>
             </header>
         </div>
+
+        {% set departmentsWithActiveAdmission = [] %}
+        {% for department in departments %}
+            {% if department.currentSemester and department.currentSemester.hasActiveAdmission() %}
+                {% set departmentsWithActiveAdmission = departmentsWithActiveAdmission|merge([department.city]) %}
+            {% endif %}
+        {% endfor %}
+        {% if departmentsWithActiveAdmission is not empty %}
+            <div class="content text-center call-to-action jumbotron">
+                <p class="text-dark-blue">
+                    <i class="fa fa-info-circle"></i>
+                    Følgende avdelinger har opptak: <br class="d-md-none">{{ departmentsWithActiveAdmission|join(', ') }}
+                </p>
+                <button class="btn btn-lg btn-success" onclick="scrollToElement('application')">
+                    Søk nå! <i class="fa fa-arrow-down"></i>
+                </button>
+            </div>
+        {% else %}
+            <br>
+        {% endif %}
+
         <section class="container">
             <div class="row">
                 <div class="blurb col-xs-12 col-md-4">
@@ -187,6 +208,11 @@
 
           input.classList.add('is-invalid');
           error.innerHTML = message;
+        }
+        function scrollToElement(elementId) {
+            let selector = '#' + elementId;
+            $('html, body').animate({ scrollTop:  $(selector).offset().top - 50 }, 'slow');
+
         }
     </script>
 {% endblock %}
