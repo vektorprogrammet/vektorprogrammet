@@ -49,7 +49,7 @@ class AssistantController extends Controller
     {
         $admissionManager = $this->get('app.application_admission');
         $em = $this->getDoctrine()->getManager();
-        $departments = $em->getRepository('AppBundle:Department')->findAll();
+        $departments = $em->getRepository('AppBundle:Department')->findActive();
         $departments = $this->get('app.geolocation')->sortDepartmentsByDistanceFromClient($departments);
         if (null === $specificDepartment) {
             $specificDepartment = $departments[0];
