@@ -90,7 +90,13 @@
       padding:27px;
     }
     p {
-      font-size:20px;
+
+      @media (max-width: 400px) {
+        font-size:16px;
+      }
+      @media (min-width: 500px) {
+        font-size:20px;
+      }
       margin-bottom:0;
     }
     button {
