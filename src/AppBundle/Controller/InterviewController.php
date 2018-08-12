@@ -62,8 +62,6 @@ class InterviewController extends Controller
             $isNewInterview = !$interview->getInterviewed();
             $interview->setCancelled(false);
 
-            dump($form->getData());
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($interview);
             $em->flush();

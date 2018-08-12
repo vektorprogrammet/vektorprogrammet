@@ -37,6 +37,10 @@ class InterviewControllerTest extends BaseWebTestCase
 
         $form['application[interview][interviewScore][suitableAssistant]']->select('Ja');
 
+        if ($teamInterest) {
+            $form['application[applicationPractical][potentialTeams]'][0]->tick();
+        }
+
         // Submit the form
         $client->submit($form);
     }
@@ -427,7 +431,7 @@ class InterviewControllerTest extends BaseWebTestCase
 
     public function testWantTeamInterest()
     {
-        $applicationsBefore = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
+        $rowsBefore = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
 
         // Admin user
 
@@ -438,14 +442,14 @@ class InterviewControllerTest extends BaseWebTestCase
 
         $this->fillAndSubmitInterviewFormWithTeamInterest(self::createAdminClient(), $crawler, true);
 
-        $applicationsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
+        $rowsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
 
-        $this->assertEquals($applicationsBefore + 1, $applicationsAfter);
+        $this->assertEquals($rowsBefore + 2, $rowsAfter); // One new row in each table
     }
 
     public function testNotWantTeamInterest()
     {
-        $applicationsBefore = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
+        $rowsBefore = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
 
         // Admin user
 
@@ -456,9 +460,9 @@ class InterviewControllerTest extends BaseWebTestCase
 
         $this->fillAndSubmitInterviewFormWithTeamInterest(self::createAdminClient(), $crawler, false);
 
-        $applicationsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
+        $rowsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
 
-        $this->assertEquals($applicationsBefore, $applicationsAfter);
+        $this->assertEquals($rowsBefore, $rowsAfter);
     }
 
     public function testUpdateStatus()
