@@ -89,9 +89,9 @@ class UserAdminController extends Controller
 
     public function deleteUserByIdAction(User $user)
     {
-    	if ($user === $this->getUser()) {
+        if ($user === $this->getUser()) {
             $this->addFlash("error", "Du kan ikke slette deg selv.");
-	    } elseif ($this->isGranted(ROLES::ADMIN) || $user->getDepartment() == $this->getUser()->getDepartment()) {
+        } elseif ($this->isGranted(ROLES::ADMIN) || $user->getDepartment() == $this->getUser()->getDepartment()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush();
