@@ -3,9 +3,6 @@
 .assistants {
   section {
     margin: 110px auto;
-    @media (max-width: 1200px) {
-      margin: 110px auto;
-    }
     @media (max-width: 992px) {
       margin: 110px auto;
     }
@@ -103,7 +100,7 @@
       margin:15px 0 15px 0;
     }
     button {
-      margin-left:10px;
+      margin:4px 0 2px 0;
     }
     .alert-icon {
       font-size:40px;
