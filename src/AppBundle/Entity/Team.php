@@ -4,12 +4,17 @@ namespace AppBundle\Entity;
 
 use AppBundle\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Table(name="team")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\TeamRepository")
+ * @UniqueEntity(
+ *     fields={"department", "name"},
+ *     message="Et team med dette navnet finnes allerede i avdelingen.",
+ * )
  */
 class Team implements TeamInterface
 {
@@ -37,6 +42,7 @@ class Team implements TeamInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Department", inversedBy="teams")
+     * @Assert\NotNull(message="Avdeling kan ikke være null")
      **/
     protected $department;
 
@@ -109,6 +115,7 @@ class Team implements TeamInterface
     public function __construct()
     {
         $this->active = true;
+        $this->teamMemberships = [];
     }
 
     public function __toString()

@@ -62,4 +62,14 @@ class DepartmentRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findOneByCityCaseInsensitive($city)
+    {
+        return $this->createQueryBuilder('Department')
+            ->select('Department')
+            ->where('upper(Department.city) = upper(:city)')
+            ->setParameter('city', $city)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

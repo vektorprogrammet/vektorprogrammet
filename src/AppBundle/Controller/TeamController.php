@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Department;
 use AppBundle\Role\Roles;
 use AppBundle\Entity\Team;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -18,6 +19,15 @@ class TeamController extends Controller
         return $this->render('team/team_page.html.twig', array(
             'team'  => $team,
         ));
+    }
+
+    public function showByDepartmentAndTeamAction($departmentCity, $teamName)
+    {
+        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByCityAndName($departmentCity, $teamName);
+        if (count($teams) !== 1) {
+            throw new NotFoundHttpException('Team not found');
+        }
+        return $this->showAction($teams[0]);
     }
 
     public function indexAction()
