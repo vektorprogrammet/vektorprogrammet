@@ -76,7 +76,7 @@ class GeoLocation
 
     /**
      * @param Department[] $departments
-     * @return array
+     * @return Department[] $departments
      */
     public function sortDepartmentsByDistanceFromClient($departments)
     {
