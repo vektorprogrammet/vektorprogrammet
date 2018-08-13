@@ -2,6 +2,19 @@
 
 .assistants {
   section {
+    margin: 125px auto;
+    @media (max-width: 1200px) {
+      margin: 110px auto;
+    }
+    @media (max-width: 992px) {
+      margin: 110px auto;
+    }
+    @media (max-width: 768px) {
+      margin: 80px auto;
+    }
+  }
+
+  .assistant-perks {
     margin: 30px auto;
     @media (min-width: 768px) {
       margin: 60px auto;
