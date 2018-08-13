@@ -23,7 +23,7 @@ class TeamController extends Controller
 
     public function showByDepartmentAndTeamAction($departmentCity, $teamName)
     {
-        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByDepartmentAndName($departmentCity, $teamName);
+        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByCityAndName($departmentCity, $teamName);
         if (count($teams) !== 1) {
             throw new NotFoundHttpException('Team not found');
         }
