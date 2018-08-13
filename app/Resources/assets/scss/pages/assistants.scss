@@ -89,9 +89,10 @@
   }
 
   .call-to-action {
-    padding:35px;
-    @media (max-width: 767px){
-      padding:27px;
+    padding:27px;
+    @media (min-width: 768px) {
+      padding:35px;
+      margin-top:-60px;
     }
     p {
       @media (max-width: 400px) {
