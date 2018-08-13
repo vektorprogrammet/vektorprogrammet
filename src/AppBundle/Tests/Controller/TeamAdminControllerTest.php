@@ -160,6 +160,34 @@ class TeamAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
+    public function testCreateTeamWithNonUnique()
+    {
+        // ADMIN
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'petjo',
+            'PHP_AUTH_PW' => '1234',
+        ));
+
+        $crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/1');
+
+        // Assert that we have the correct page
+        $this->assertEquals(1, $crawler->filter('h1:contains("Opprett team")')->count());
+
+        $form = $crawler->selectButton('Lagre')->form();
+
+        // Change the value of a field
+        $form['createTeam[name]'] = 'IT';
+        $form['createTeam[email]'] = 'hackerclub@vektorprogrammet.no';
+
+        // submit the form
+        $client->submit($form);
+
+        // Assert not redirected
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        // Assert body contains validation error
+        $this->assertContains('Teamet &quot;IT&quot; finnes allerede i avdelingen', $client->getResponse()->getContent());
+    }
+
     public function testCreateTeamForDepartment()
     {
         // ADMIN

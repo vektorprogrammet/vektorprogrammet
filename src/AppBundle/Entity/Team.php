@@ -23,7 +23,7 @@ class Team implements TeamInterface
     /**
      * @ORM\Column(type="string", length=250)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     * @CustomAssert\UniqueTeamNameInDepartment
+     * @CustomAssert\UniqueTeamNameInDepartment(groups={"create_team"})
      */
     protected $name;
 

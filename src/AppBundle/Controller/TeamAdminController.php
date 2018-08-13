@@ -186,7 +186,9 @@ class TeamAdminController extends Controller
         $team->setDepartment($department);
 
         // Create a new formType with the needed variables
-        $form = $this->createForm(new CreateTeamType(), $team);
+        $form = $this->createForm(new CreateTeamType(), $team, array(
+            'validation_groups' => array('create_team'),
+        ));
 
         // Handle the form
         $form->handleRequest($request);

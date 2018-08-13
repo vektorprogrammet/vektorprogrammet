@@ -10,7 +10,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="department")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\DepartmentRepository")
- * @UniqueEntity("city")
+ * @UniqueEntity(
+ *     fields={"city"},
+ *     groups={"create_department"}
+ * )
  */
 class Department
 {

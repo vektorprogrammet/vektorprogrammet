@@ -19,7 +19,7 @@ class BoardAndTeamControllerTest extends BaseWebTestCase
 
     public function testHideTeam()
     {
-        $crawler = $this->goTo('/team#NTNU');
+        $crawler = $this->goTo('/team#Trondheim');
         $numberOfTeamsBefore = $crawler->filter('.team-card')->count();
 
         $client = self::createAdminClient();
@@ -28,7 +28,7 @@ class BoardAndTeamControllerTest extends BaseWebTestCase
         $form['createTeam[active]']->untick();
         $client->submit($form);
 
-        $crawler = $this->goTo('/team#NTNU');
+        $crawler = $this->goTo('/team#Trondheim');
         $numberOfTeamsAfter = $crawler->filter('.team-card')->count();
 
         $this->assertEquals($numberOfTeamsBefore-1, $numberOfTeamsAfter);

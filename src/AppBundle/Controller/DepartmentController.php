@@ -19,7 +19,9 @@ class DepartmentController extends Controller
     {
         $department = new Department();
 
-        $form = $this->createForm(new CreateDepartmentType(), $department);
+        $form = $this->createForm(new CreateDepartmentType(), $department, array(
+            'validation_groups' => array('create_department'),
+        ));
 
         $form->handleRequest($request);
 
