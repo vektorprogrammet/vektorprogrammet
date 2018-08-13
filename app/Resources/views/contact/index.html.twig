@@ -110,7 +110,7 @@
                                             {% for team in department.teams if team.isActive %}
                                                 <div class="list-group-item">
                                                     <a class="text-dark-blue"
-                                                       href={{ path('team_page', {'id': team.id}) }}>
+                                                       href="{{ path('team_page_department_team', {city: team.department, teamName: team.name}) }}">
                                                         <h5 class="mb-1">{{ team.name }}</h5>
                                                     </a>
                                                     <p class="mb-0"><a
