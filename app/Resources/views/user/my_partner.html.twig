@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block title %}
-    Vektorpartner
+    Vektorpartnere
 {% endblock %}
 
 {% block stylesheets %}
@@ -13,9 +13,12 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h1 class="text-center text-dark-blue mt-3">
-                    {{ partnerCount == 1 ? 'Min vektorpartner' : 'Mine vektorpartnere' }} - {{ semester.name }}
-                </h1>
+                <div class="page-header">
+
+                    <h1 class="text-center">
+                        {{ partnerCount == 1 ? 'Min vektorpartner' : 'Mine vektorpartnere' }} - {{ semester.name }}
+                    </h1>
+                </div>
                 <div class="content">
                     {% for partnerInformation in partnerInformations %}
                         <div class="row school mb-5">
@@ -23,12 +26,12 @@
                             {% set school = partnerInformation['school'] %}
                             {% set partners = partnerInformation['partners'] %}
                             <div class="col-12">
-                                <h2 class="text-center text-muted my-3">{{ school }} - {{ assistantHistory.day }}er</h2>
+                                <h3 class="text-center text-muted my-3">{{ school }} - {{ assistantHistory.day }}er</h3>
                             </div>
 
                             {% for group in [1,2] if assistantHistory.activeInGroup(group) %}
                                 <div class="col-12 col-md-6{{ not (assistantHistory.activeInGroup(1) and assistantHistory.activeInGroup(2)) ? ' offset-md-3':'' }}">
-                                    <h3 class="text-center my-3">Bolk {{ group }}</h3>
+                                    <h5 class="text-center my-3">Bolk {{ group }}</h5>
                                     <div class="partners group-{{ group }}">
                                         {% for partner in partners if partner.activeInGroup(group) %}
                                             <div class="partner">
@@ -42,7 +45,11 @@
                                                         {{ partner.user }}
                                                     </a>
                                                 </h5>
-                                                <p><i class="fa fa-phone"></i> {{ partner.user.phone }}</p>
+                                                <p>
+                                                    <a class="text-default" href="tel:{{ partner.user.phone }}">
+                                                        <i class="fa fa-phone"></i> {{ partner.user.phone }}
+                                                    </a>
+                                                </p>
                                             </div>
                                         {% endfor %}
                                     </div>
@@ -53,7 +60,7 @@
                 </div>
                 {% if partnerCount > 0 %}
                     <div class="contact-partner text-center">
-                        <p>
+                        <p class="mb-2">
                             <i class="fa fa-info-circle text-dark-blue"></i>
                         </p>
                         <p>
