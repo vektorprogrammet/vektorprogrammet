@@ -275,7 +275,7 @@ class Department
 
     public function __toString()
     {
-        return (string) $this->getShortName();
+        return (string) $this->getCity();
     }
 
     /**
