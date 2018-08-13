@@ -13,7 +13,6 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\TeamRepository")
  * @UniqueEntity(
  *     fields={"department", "name"},
- *     groups={"create_team"},
  *     message="Et team med dette navnet finnes allerede i avdelingen.",
  * )
  */
