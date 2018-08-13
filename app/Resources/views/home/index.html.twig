@@ -20,7 +20,7 @@
                                     class="cd-number" id="cd-minutes"></span>m <span class="cd-number"
                                                                                      id="cd-seconds"></span>s</span>
                         &#9&#9&#9 igjen av opptaket. <a
-                                href="{{ path('admission_show_by_short_name', {'shortName': closestDepartment }) }}">Søk
+                                href="{{ path('admission_show_by_city_case_insensitive', {'city': closestDepartment }) }}">Søk
                             nå!</a></p>
                 </div>
                 {% set semester = closestDepartment.currentSemester %}

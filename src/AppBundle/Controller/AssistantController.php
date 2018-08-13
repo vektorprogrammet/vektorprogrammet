@@ -15,13 +15,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class AssistantController extends Controller
 {
     /**
+     * @Route("/opptak/{city}", name="admission_show_by_city_case_insensitive")
+     * @Route("/avdeling/{city}", name="admission_show_specific_department_by_city_case_insensitive")
+     *
+     * @param Request $request
+     * @param $city
+     *
+     * @return Response
+     */
+    public function admissionActionCaseInsensitive(Request $request, $city = null)
+    {
+        $city = str_replace(array('æ', 'ø','å'), array('Æ','Ø','Å'), $city);
+        $department = $this->getDoctrine()->getRepository('AppBundle:Department')
+            ->findOneByCityCaseInsensitive($city);
+        return $this->indexAction($request, $department, true);
+    }
+
+    /**
      * @Route("/opptak")
      * @Route("/opptak/avdeling/{id}", name="admission_show_specific_department",
      *     requirements={"id"="\d+"})
-     * @Route("/opptak/{city}", name="admission_show_by_city",
-     *     requirements={"city"="\w+"})
-     * @Route("/avdeling/{city}", name="admission_show_specific_department_by_city",
-     *     requirements={"city"="\w+"})
      * @Route("/opptak/{shortName}", name="admission_show_by_short_name",
      *     requirements={"shortName"="\w+"})
      * @Route("/avdeling/{shortName}", name="admission_show_specific_department_by_name",
