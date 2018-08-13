@@ -34,7 +34,12 @@ class Gmail extends GoogleService implements MailerInterface
         if (array_search('SENT', $res->getLabelIds()) !== false && !$disableLogging) {
             $this->logger->info("Email sent to {$this->recipientsToHeader($message->getTo())}: `{$message->getSubject()}`");
         } else {
-            $this->logger->notice("Failed to send email to {$this->recipientsToHeader($message->getTo())}: `{$message->getSubject()}`");
+            $this->logger->notice(
+                "Failed to send email to {$this->recipientsToHeader($message->getTo())}: `{$message->getSubject()}`\n".
+                "```".
+                implode(", ", $res->getLabelIds()).
+                "```"
+            );
         }
     }
 
