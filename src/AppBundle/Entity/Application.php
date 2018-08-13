@@ -526,7 +526,7 @@ class Application
     }
 
     /**
-     * @return mixed
+     * @return Team[]
      */
     public function getPotentialTeams()
     {
@@ -534,7 +534,7 @@ class Application
     }
 
     /**
-     * @param mixed $potentialTeams
+     * @param Team[] $potentialTeams
      */
     public function setPotentialTeams($potentialTeams)
     {

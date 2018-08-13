@@ -290,7 +290,7 @@ class Team implements TeamInterface
     }
 
     /**
-     * @return mixed
+     * @return Application[]
      */
     public function getPotentialMembers()
     {
@@ -298,7 +298,7 @@ class Team implements TeamInterface
     }
 
     /**
-     * @param mixed $potentialMembers
+     * @param Application[] $potentialMembers
      */
     public function setPotentialMembers($potentialMembers)
     {
