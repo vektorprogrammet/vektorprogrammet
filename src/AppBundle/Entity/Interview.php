@@ -98,7 +98,6 @@ class Interview
 
     /**
      * @ORM\OneToOne(targetEntity="Application", mappedBy="interview")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $application;
 
