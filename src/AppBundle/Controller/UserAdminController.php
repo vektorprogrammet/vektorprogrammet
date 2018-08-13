@@ -93,6 +93,7 @@ class UserAdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush();
+            $this->addFlash("success", "$user har blitt slettet.");
         } else {
             throw $this->createAccessDeniedException();
         }

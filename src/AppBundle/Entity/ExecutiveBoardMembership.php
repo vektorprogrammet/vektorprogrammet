@@ -20,6 +20,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="executiveBoardMemberships")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      * @Assert\Valid
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      **/

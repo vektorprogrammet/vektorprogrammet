@@ -58,12 +58,13 @@ class Interview
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="interviews")
-     * @ORM\JoinColumn(name="interviewer_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="interviewer_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $interviewer; // Unidirectional, may turn out to be bidirectional
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     protected $coInterviewer;
 
@@ -91,11 +92,13 @@ class Interview
 
     /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $user;
 
     /**
      * @ORM\OneToOne(targetEntity="Application", mappedBy="interview")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $application;
 
