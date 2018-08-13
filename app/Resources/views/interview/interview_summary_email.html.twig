@@ -1,30 +1,37 @@
 {% set user = application.user %}
-Takk for at du deltok på intervju med Vektorprogrammet!
+<p>Takk for at du deltok på intervju med Vektorprogrammet!</p>
 
-Her er et sammendrag av informasjonen vi har notert oss, vennligst ta kontakt hvis noe er feil:
+<p>Status på søknaden din kan du se på "Min side": <a href="{{ url('my_page') }}">{{ url('my_page') }}</a></p>
 
-Navn: {{ user.firstName }} {{ user.lastName }}
-E-post: {{ user.email }}
-Telefon: {{ user.phone }}
-Linje: {{ user.fieldOfStudy.name }} ({{ user.fieldOfStudy.shortName }})
-År: {{ application.yearOfStudy }}
-Kjønn: {{ user.gender == 1 ? 'Dame' : 'Mann' }}
+<p>Her er et sammendrag av informasjonen vi har notert oss, vennligst ta kontakt hvis noe er feil:</p>
 
-Dager som passer
-Mandag: {{ application.monday ? "Bra" : "Ikke" }}
-Tirsdag: {{ application.tuesday ? "Bra" : "Ikke" }}
-Onsdag: {{ application.wednesday ? "Bra" : "Ikke" }}
-Torsdag: {{ application.thursday ? "Bra" : "Ikke" }}
-Fredag: {{ application.friday ? "Bra" : "Ikke" }}
+<p>Navn: {{ user.firstName }} {{ user.lastName }}<br>
+    E-post: {{ user.email }}<br>
+    Telefon: {{ user.phone }}<br>
+    Linje: {{ user.fieldOfStudy.name }} ({{ user.fieldOfStudy.shortName }})<br>
+    År: {{ application.yearOfStudy }}<br>
+    Kjønn: {{ user.gender == 1 ? 'Dame' : 'Mann' }}</p>
 
-Dobbel stilling: {{ application.doublePosition ? 'Ja' : 'Nei' }}
-{% if application.preferredGroup %}
-Ønsket bolk: {{ application.preferredGroup }}
-{% endif %}
+<p>Dager som passer
+    Mandag: {{ application.monday ? "Bra" : "Ikke" }}<br>
+    Tirsdag: {{ application.tuesday ? "Bra" : "Ikke" }}<br>
+    Onsdag: {{ application.wednesday ? "Bra" : "Ikke" }}<br>
+    Torsdag: {{ application.thursday ? "Bra" : "Ikke" }}<br>
+    Fredag: {{ application.friday ? "Bra" : "Ikke" }}</p>
 
-Ønsket undervisningsspråk: {{ application.language }}
+<p>
+    Dobbel stilling: {{ application.doublePosition ? 'Ja' : 'Nei' }}
+    {% if application.preferredGroup %}
+        <br>
+        Ønsket bolk: {{ application.preferredGroup }}
+    {% endif %}
+</p>
 
-Mvh.
-{{ interviewer }}
-{{ interviewer.email }}
-vektorprogrammet.no
+<p>Ønsket undervisningsspråk: {{ application.language }}</p>
+
+<p>
+    Mvh.<br>
+    {{ interviewer }}<br>
+    {{ interviewer.email }}<br>
+    vektorprogrammet.no
+</p>
