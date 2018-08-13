@@ -65,13 +65,14 @@ class TeamRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findByDepartmentAndName(Department $department, string $name)
+    public function findByDepartmentAndName(string $departmentCity, string $name)
     {
         return $this->createQueryBuilder('team')
             ->select('team')
-            ->where('team.department = :department')
-            ->andWhere('team.name = :name')
-            ->setParameter('department', $department)
+            ->join('team.department', 'department')
+            ->where('lower(department.city) = lower(:departmentCity)')
+            ->andWhere('lower(team.name) = lower(:name)')
+            ->setParameter('departmentCity', $departmentCity)
             ->setParameter('name', $name)
             ->getQuery()
             ->getResult();

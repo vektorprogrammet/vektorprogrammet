@@ -44,7 +44,7 @@ class Department
     protected $address;
 
     /**
-     * @ORM\Column(type="string", length=250, nullable=true)
+     * @ORM\Column(type="string", length=250, nullable=true, unique=true)
      * @Assert\NotBlank
      */
     private $city;

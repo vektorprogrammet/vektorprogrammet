@@ -648,11 +648,9 @@ team_application:
   methods: [GET, POST]
 
 team_page_department_team:
-  path: /team/{city}/{teamName}
+  path: /team/{departmentCity}/{teamName}
   defaults: {_controller: AppBundle:Team:showByDepartmentAndTeam}
   methods: [GET]
-  requirements:
-    department: \w+
 
 team_application_show:
   path: /kontrollpanel/team/application/{id}

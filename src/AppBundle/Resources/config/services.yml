@@ -251,3 +251,9 @@ services:
     arguments: ['@app.application_admission']
     tags:
         - { name: validator.constraint_validator }
+
+  app.team_validator:
+    class: AppBundle\Validator\Constraints\TeamValidator
+    arguments: ['@doctrine.orm.entity_manager']
+    tags:
+      - { name: validator.constraint_validator }
