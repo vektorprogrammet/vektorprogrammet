@@ -36,6 +36,9 @@ services:
     app.admission_statistics:
         class: AppBundle\Service\AdmissionStatistics
 
+    app.application_manager:
+        class: AppBundle\Service\ApplicationManager
+
     app.content_mode_twig_extension:
         class: AppBundle\Twig\Extension\ContentModeExtension
         arguments: ['@app.content_mode']

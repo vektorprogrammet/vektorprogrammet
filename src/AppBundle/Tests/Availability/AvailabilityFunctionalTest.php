@@ -108,6 +108,7 @@ class AvailabilityFunctionalTest extends WebTestCase
     {
         return array(
             array('/profile'),
+            array('/min-side'),
         );
     }
 

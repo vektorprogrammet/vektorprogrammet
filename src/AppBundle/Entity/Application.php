@@ -127,6 +127,7 @@ class Application
     private $potentialTeams;
 
     /**
+     * @var Interview
      * @ORM\OneToOne(targetEntity="Interview", cascade={"persist", "remove"}, inversedBy="application")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      * @Assert\Valid

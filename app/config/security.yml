@@ -143,4 +143,5 @@ security:
         - { path: ^/profile$, roles: ROLE_USER }
         - { path: ^/utlegg, roles: ROLE_USER }
         - { path: ^/api/myreceipts, roles: ROLE_USER }
+        - { path: ^/min-side, roles: ROLE_USER }
 

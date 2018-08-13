@@ -618,4 +618,12 @@ class Interview
     {
         $this->newTimeMessage = $newTimeMessage;
     }
+
+    /**
+     * @return int
+     */
+    public function getInterviewStatus(): int
+    {
+        return $this->interviewStatus;
+    }
 }
