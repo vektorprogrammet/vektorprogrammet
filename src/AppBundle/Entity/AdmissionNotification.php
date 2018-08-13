@@ -27,6 +27,7 @@ class AdmissionNotification
 
     /**
      * @ORM\ManyToOne(targetEntity="AdmissionSubscriber")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $subscriber;
 

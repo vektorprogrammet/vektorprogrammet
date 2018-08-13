@@ -23,6 +23,7 @@ class Receipt
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="receipts")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $user;
 

@@ -74,7 +74,7 @@ class Article
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id"))
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $author; // Unidirectional, may change
 

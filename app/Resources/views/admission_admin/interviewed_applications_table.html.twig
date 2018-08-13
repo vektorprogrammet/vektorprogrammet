@@ -47,7 +47,7 @@
                 {% if a.user != app.user and ( is_granted_team_leader() or a.interview.interviewer == app.user ) %}
                     <td>{{ a.interview.interviewScore.sum }}</td>
                     <td>{{ a.interview.interviewScore.suitableAssistant }}</td>
-                    <td>{% if a.interview.application.specialNeeds %}
+                    <td>{% if a.specialNeeds %}
                             <i class="fa fa-2x fa-exclamation-triangle text-warning"></i>
 
                         {% endif %}</td>
