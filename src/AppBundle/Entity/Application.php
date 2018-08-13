@@ -122,6 +122,11 @@ class Application
     private $teamInterest;
 
     /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Team", inversedBy="potentialMembers")
+     */
+    private $potentialTeams;
+
+    /**
      * @var Interview
      * @ORM\OneToOne(targetEntity="Interview", cascade={"persist", "remove"}, inversedBy="application")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
@@ -518,5 +523,21 @@ class Application
     public function setPreferredSchool($preferredSchool): void
     {
         $this->preferredSchool = $preferredSchool;
+    }
+
+    /**
+     * @return Team[]
+     */
+    public function getPotentialTeams()
+    {
+        return $this->potentialTeams;
+    }
+
+    /**
+     * @param Team[] $potentialTeams
+     */
+    public function setPotentialTeams($potentialTeams)
+    {
+        $this->potentialTeams = $potentialTeams;
     }
 }

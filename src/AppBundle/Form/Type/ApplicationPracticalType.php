@@ -2,6 +2,8 @@
 
 namespace AppBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -69,6 +71,17 @@ class ApplicationPracticalType extends AbstractType
             'expanded' => true,
             'multiple' => false,
         ));
+
+        $builder->add('potentialTeams', EntityType::class, array(
+            'label' => 'Hvilket team er du eventuelt interessert i?',
+            'class' => 'AppBundle:Team',
+            'query_builder' => function (EntityRepository $entityRepository) {
+                return $entityRepository->createQueryBuilder('c');
+            },
+            'choices' => $options['teams'],
+            'expanded' => true,
+            'multiple' => true,
+        ));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -76,6 +89,7 @@ class ApplicationPracticalType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Application',
             'inherit_data' => true,
+            'teams' => null,
         ));
     }
 

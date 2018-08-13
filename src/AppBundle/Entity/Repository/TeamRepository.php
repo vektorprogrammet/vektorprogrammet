@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
 use AppBundle\Entity\Team;
 use Doctrine\ORM\EntityRepository;
 
@@ -51,5 +52,16 @@ class TeamRepository extends EntityRepository
             ->getScalarResult();
 
         return array_column($result, 'email');
+    }
+
+    public function findByTeamInterestAndSemester(Semester $semester)
+    {
+        return $this->createQueryBuilder('team')
+            ->select('team')
+            ->join('team.potentialMembers', 'application')
+            ->where('application.semester = :semester')
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getResult();
     }
 }

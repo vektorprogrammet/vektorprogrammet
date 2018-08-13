@@ -13,6 +13,7 @@ class ApplicationInterviewType extends AbstractType
     {
         $builder->add('applicationPractical', new ApplicationPracticalType(), array(
             'data_class' => 'AppBundle\Entity\Application',
+            'teams' => $options['teams'],
         ));
 
         $builder->add('heardAboutFrom', 'choice', array(
@@ -50,6 +51,7 @@ class ApplicationInterviewType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Application',
+            'teams' => null,
         ));
     }
 
