@@ -18,10 +18,10 @@ class AssistantController extends Controller
      * @Route("/opptak")
      * @Route("/opptak/avdeling/{id}", name="admission_show_specific_department",
      *     requirements={"id"="\d+"})
-     * @Route("/opptak/{shortName}", name="admission_show_by_short_name",
-     *     requirements={"shortName"="\w+"})
-     * @Route("/avdeling/{shortName}", name="admission_show_specific_department_by_name",
-     *     requirements={"shortName"="\w+"})
+     * @Route("/opptak/{city}", name="admission_show_by_city",
+     *     requirements={"city"="\w+"})
+     * @Route("/avdeling/{city}", name="admission_show_specific_department_by_city",
+     *     requirements={"city"="\w+"})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
