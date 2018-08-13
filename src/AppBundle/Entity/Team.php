@@ -116,6 +116,7 @@ class Team implements TeamInterface
     public function __construct()
     {
         $this->active = true;
+        $this->teamMemberships = [];
     }
 
     public function __toString()
