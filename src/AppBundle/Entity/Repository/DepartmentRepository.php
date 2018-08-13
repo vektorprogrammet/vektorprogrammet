@@ -70,6 +70,6 @@ class DepartmentRepository extends EntityRepository
             ->where('upper(Department.city) = upper(:city)')
             ->setParameter('city', $city)
             ->getQuery()
-            ->getSingleResult();
+            ->getOneOrNullResult();
     }
 }

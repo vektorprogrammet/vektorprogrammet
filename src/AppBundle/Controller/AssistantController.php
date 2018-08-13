@@ -23,12 +23,17 @@ class AssistantController extends Controller
      *
      * @return Response
      */
-    public function admissionActionCaseInsensitive(Request $request, $city = null)
+    public function admissionActionCaseInsensitive(Request $request, $city)
     {
-        $city = str_replace(array('æ', 'ø','å'), array('Æ','Ø','Å'), $city);
-        $department = $this->getDoctrine()->getRepository('AppBundle:Department')
-            ->findOneByCityCaseInsensitive($city);
-        return $this->indexAction($request, $department, true);
+        $city = str_replace(array('æ', 'ø','å'), array('Æ','Ø','Å'), $city); // Make sqlite happy
+        $department = $this->getDoctrine()
+                ->getRepository('AppBundle:Department')
+                ->findOneByCityCaseInsensitive($city);
+        if ($department !== null) {
+            return $this->indexAction($request, $department, true);
+        } else {
+            throw $this->createNotFoundException("Fant ingen avdeling $city.");
+        }
     }
 
     /**
