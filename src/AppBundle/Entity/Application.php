@@ -91,6 +91,7 @@ class Application
 
     /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      * @Assert\Valid
      */
     private $user;

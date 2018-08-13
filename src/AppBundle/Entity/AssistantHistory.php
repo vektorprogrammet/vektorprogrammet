@@ -20,6 +20,7 @@ class AssistantHistory
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="assistantHistories")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      **/
     protected $user;
 

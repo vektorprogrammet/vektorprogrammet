@@ -26,7 +26,7 @@ class InterviewQuestionAlternative
 
     /**
      * @ORM\ManyToOne(targetEntity="InterviewQuestion", inversedBy="alternatives")
-     * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="question_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $interviewQuestion;
 
