@@ -1,7 +1,7 @@
 <div class="card team-card mx-sm-4 my-sm-4 mx-0 my-2">
     <div class="card-block px-3 py-3">
         <h5 class="card-title mb-0 text-uppercase text-center">
-            <a class="text-dark-blue" href="{{ path('team_page', {id: team.id}) }}">{{ team | split(' ')[0] }}</a>
+            <a class="text-dark-blue" href="{{ path('team_page_department_team', {city: team.department, teamName: team.name}) }}">{{ team | split(' ')[0] }}</a>
         </h5>
     </div>
     <hr class="my-0">

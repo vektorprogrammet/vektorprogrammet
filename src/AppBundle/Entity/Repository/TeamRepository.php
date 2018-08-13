@@ -64,4 +64,16 @@ class TeamRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByDepartmentAndName(Department $department, string $name)
+    {
+        return $this->createQueryBuilder('team')
+            ->select('team')
+            ->where('team.department = :department')
+            ->andWhere('team.name = :name')
+            ->setParameter('department', $department)
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getResult();
+    }
 }
