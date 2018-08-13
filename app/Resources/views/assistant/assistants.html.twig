@@ -14,12 +14,6 @@
             </header>
         </div>
 
-        {% set departmentsWithActiveAdmission = [] %}
-        {% for department in departments %}
-            {% if department.currentSemester and department.currentSemester.hasActiveAdmission() %}
-                {% set departmentsWithActiveAdmission = departmentsWithActiveAdmission|merge([department.city]) %}
-            {% endif %}
-        {% endfor %}
         {% if departmentsWithActiveAdmission is not empty %}
             <div class="content text-center call-to-action jumbotron">
                 <p class="text-dark-blue">
