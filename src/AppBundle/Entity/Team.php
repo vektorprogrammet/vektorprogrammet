@@ -23,6 +23,7 @@ class Team implements TeamInterface
     /**
      * @ORM\Column(type="string", length=250)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
+     * @CustomAssert\UniqueTeamNameInDepartment
      */
     protected $name;
 
@@ -37,6 +38,7 @@ class Team implements TeamInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Department", inversedBy="teams")
+     * @Assert\NotNull(message="Avdeling kan ikke være null")
      **/
     protected $department;
 

@@ -252,8 +252,8 @@ services:
     tags:
         - { name: validator.constraint_validator }
 
-  app.team_validator:
-    class: AppBundle\Validator\Constraints\TeamValidator
+  app.unique_team_name_in_department_validator:
+    class: AppBundle\Validator\Constraints\UniqueTeamNameInDepartmentValidator
     arguments: ['@doctrine.orm.entity_manager']
     tags:
       - { name: validator.constraint_validator }
