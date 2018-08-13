@@ -232,7 +232,7 @@ class AdmissionAdminController extends Controller
         }
 
         $teamInterest = $this->getDoctrine()->getRepository('AppBundle:Application')->findApplicationByTeamInterestAndSemester($semester);
-        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByTeamInterest();
+        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByTeamInterestAndSemester($semester);
 
         return $this->render('admission_admin/teamInterest.html.twig', array(
             'teamInterest' => $teamInterest,
