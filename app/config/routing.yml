@@ -642,17 +642,17 @@ team_page:
   defaults: {_controller: AppBundle:Team:show}
   methods: [GET]
 
+team_application:
+  path: /team/application/{id}
+  defaults: {_controller: AppBundle:TeamApplication:show}
+  methods: [GET, POST]
+
 team_page_department_team:
   path: /team/{city}/{teamName}
   defaults: {_controller: AppBundle:Team:showByDepartmentAndTeam}
   methods: [GET]
   requirements:
     department: \w+
-
-team_application:
-  path: /team/application/{id}
-  defaults: {_controller: AppBundle:TeamApplication:show}
-  methods: [GET, POST]
 
 team_application_show:
   path: /kontrollpanel/team/application/{id}
