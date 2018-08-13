@@ -87,4 +87,30 @@
     font-size: 42px;
     margin-bottom: 32px;
   }
+
+  .call-to-action {
+    padding:27px;
+    @media (min-width: 768px) {
+      padding:35px;
+      margin-top:-60px;
+    }
+    p {
+      @media (max-width: 400px) {
+        font-size:16px;
+      }
+      @media (min-width: 500px) {
+        font-size:20px;
+      }
+      margin:15px 0 15px 0;
+    }
+    button {
+      margin:4px 0 2px 0;
+    }
+    .alert-icon {
+      font-size:40px;
+    }
+    .active-admission-departments {
+      font-weight:600;
+    }
+  }
 }
