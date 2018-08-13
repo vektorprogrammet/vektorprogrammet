@@ -4,12 +4,18 @@ namespace AppBundle\Entity;
 
 use AppBundle\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Table(name="team")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\TeamRepository")
+ * @UniqueEntity(
+ *     fields={"department", "name"},
+ *     groups={"create_team"},
+ *     message="Et team med dette navnet finnes allerede i avdelingen.",
+ * )
  */
 class Team implements TeamInterface
 {
@@ -23,7 +29,6 @@ class Team implements TeamInterface
     /**
      * @ORM\Column(type="string", length=250)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     * @CustomAssert\UniqueTeamNameInDepartment(groups={"create_team"})
      */
     protected $name;
 
