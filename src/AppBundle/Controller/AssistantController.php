@@ -93,10 +93,9 @@ class AssistantController extends Controller
         $departments = $this->get('app.geolocation')->sortDepartmentsByDistanceFromClient($departments);
         $departmentsWithActiveAdmission = $this->get('app.filter_service')->filterDepartmentsByActiveAdmission($departments, true);
 
-        $departmentInUrl = true;
-        if (null === $specificDepartment) {
+        $departmentInUrl = $specificDepartment !== null;
+        if (!$departmentInUrl) {
             $specificDepartment = $departments[0];
-            $departmentInUrl = false;
         }
 
         $teams = $em->getRepository('AppBundle:Team')->findByOpenApplicationAndDepartment($specificDepartment);
