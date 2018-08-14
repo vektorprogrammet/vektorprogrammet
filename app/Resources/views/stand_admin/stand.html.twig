@@ -26,13 +26,13 @@
             <p class="text-faded">
                 Totalt antall søknader: <strong>{{ applications|length }}</strong><br>
                 Antall søknader {{ semester.name }}: <strong>{{ applications_in_semester|length }}</strong><br>
-                <a href="{{ path('admission_show_by_short_name', {shortName: semester.department.shortName}) }}">
-                    Søknadsskjema for {{ semester.department.city }}
+                <a href="{{ path('admission_show_by_city_case_insensitive', {city: semester.department}) }}">
+                    Søknadsskjema for {{ semester.department }}
                 </a>
             </p>
         </div>
         <div class="small-12 columns">
-            <h4 class="text-center">Søknader {{ semester.name }} - {{ semester.department.city }}</h4>
+            <h4 class="text-center">Søknader {{ semester.name }} - {{ semester.department }}</h4>
             <canvas id="applicationsChart" width="400" height="125"></canvas>
         </div>
         <hr>
@@ -45,12 +45,12 @@
                 Totalt antall påmeldte: <strong>{{ subscribers|length }}</strong><br>
                 Antall påmeldte {{ semester.name }}: <strong>{{ subscribers_in_semester|length }}</strong><br>
                 <a href="{{ path('interest_list', {shortName: semester.department.shortName}) }}">
-                    Påmeldingsside for {{ semester.department.city }}
+                    Påmeldingsside for {{ semester.department }}
                 </a>
             </p>
         </div>
         <div class="small-12 columns">
-            <h4 class="text-center">Påmeldte {{ semester.name }} - {{ semester.department.city }}</h4>
+            <h4 class="text-center">Påmeldte {{ semester.name }} - {{ semester.department }}</h4>
             <canvas id="admissionSubscribersChart" width="400" height="125"></canvas>
         </div>
         <hr>
