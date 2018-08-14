@@ -60,7 +60,7 @@
                 {% for d in get_departments() %}
                     <tr>
                         <td width="40%"><a
-                                    href="{{ path('admission_show_specific_department', { 'id': d.id} ) }}">  {{ d.name }} </a>
+                                    href="{{ path('admission_show_by_city_case_insensitive', { 'city': d} ) }}">  {{ d }} </a>
                         </td>
                         <td width="20%"> {{ d.shortname }} </td>
                         <td width="20%"> {{ d.email }} </td>

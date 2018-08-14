@@ -15,12 +15,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class AssistantController extends Controller
 {
     /**
-     * Legacy route, do not use
+     * Deprecated route, do not use
      *
      * @Route("/opptak/{shortName}",
      *     requirements={"shortName"="(NTNU|NMBU|UiB|UIB|UiO|UIO)"})
      * @Route("/avdeling/{shortName}",
      *     requirements={"shortName"="(NTNU|NMBU|UiB|UIB|UiO|UIO)"})
+     * @Route("/opptak/avdeling/{id}",
+     *     requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -59,8 +61,6 @@ class AssistantController extends Controller
 
     /**
      * @Route("/opptak")
-     * @Route("/opptak/avdeling/{id}", name="admission_show_specific_department",
-     *     requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
