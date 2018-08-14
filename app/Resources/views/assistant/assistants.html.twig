@@ -17,7 +17,7 @@
         {% if departmentsWithActiveAdmission is not empty %}
             <div class="content text-center call-to-action jumbotron">
                 <i class="fa fa-info-circle alert-icon text-dark-blue"></i>
-                {% if specific_department in departmentsWithActiveAdmission %}
+                {% if department_in_url and specific_department in departmentsWithActiveAdmission %}
                     <p class="text-dark-blue">
                         Avdeling
                         <span class="active-admission-departments">
