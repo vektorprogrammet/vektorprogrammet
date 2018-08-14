@@ -101,6 +101,14 @@ class AvailabilityFunctionalTest extends WebTestCase
             array('/nyheter/ntnu'),
             array('/nyhet/1'),
             array('/profile/1'),
+            array('/opptak'),
+            array('/opptak/NTNU'),
+            array('/avdeling/NTNU'),
+            array('/opptak/avdeling/1'),
+            array('/opptak/Bergen'),
+            array('/opptak/ås'),
+            array('/avdeling/Trondheim'),
+            array('/avdeling/ås'),
         );
     }
 
