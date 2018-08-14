@@ -93,8 +93,10 @@ class AssistantController extends Controller
         $departments = $this->get('app.geolocation')->sortDepartmentsByDistanceFromClient($departments);
         $departmentsWithActiveAdmission = $this->get('app.filter_service')->filterDepartmentsByActiveAdmission($departments, true);
 
+        $departmentInUrl = true;
         if (null === $specificDepartment) {
             $specificDepartment = $departments[0];
+            $departmentInUrl = false;
         }
 
         $teams = $em->getRepository('AppBundle:Team')->findByOpenApplicationAndDepartment($specificDepartment);
@@ -140,6 +142,7 @@ class AssistantController extends Controller
 
         return $this->render('assistant/assistants.html.twig', array(
             'specific_department' => $specificDepartment,
+            'department_in_url' => $departmentInUrl,
             'departments' => $departments,
             'departmentsWithActiveAdmission' => $departmentsWithActiveAdmission,
             'teams' => $teams,
