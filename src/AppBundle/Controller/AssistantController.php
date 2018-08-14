@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AssistantController extends Controller
 {
     /**
-     * Deprecated route, do not use
+     * @deprecated This route is only here to serve old urls (e.g. in old emails)
      *
      * @Route("/opptak/{shortName}",
      *     requirements={"shortName"="(NTNU|NMBU|UiB|UIB|UiO|UIO)"})
