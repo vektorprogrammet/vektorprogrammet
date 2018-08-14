@@ -2,7 +2,7 @@
 
 <p>Dette er en automatisk påminnelse om at opptaket for vektorassistenter har startet i {{ department.city }}.</p>
 <p><strong>For å søke må du fylle inn skjemaet på <a
-            href=3D"https://vektorprogrammet.no{{ path('admission_show_by_short_name', {'shortName': department.shortName}) }}">https://vektorprogrammet.no{{ path('admission_show_by_short_name', {'shortName': department.shortName}) }}</a>.</strong>
+            href=3D"https://vektorprogrammet.no{{ path('admission_show_by_city_case_insensitive', {'city': department}) }}">https://vektorprogrammet.no{{ path('admission_show_by_city_case_insensitive', {'city': department}) }}</a>.</strong>
 </p>
 <p>
     Dersom du har vært assistent tidligere kan du søke <a href=3D"https://vektorprogrammet.no{{ path('admission_existing_user') }}">her</a> (krever
