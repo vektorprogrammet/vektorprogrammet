@@ -17,9 +17,9 @@ class AssistantController extends Controller
     /**
      * Legacy route, do not use
      *
-     * @Route("/opptak/{shortName}", name="admission_show_by_short_name",
+     * @Route("/opptak/{shortName}",
      *     requirements={"shortName"="(NTNU|NMBU|UiB|UIB|UiO|UIO)"})
-     * @Route("/avdeling/{shortName}", name="admission_show_specific_department_by_name",
+     * @Route("/avdeling/{shortName}",
      *     requirements={"shortName"="(NTNU|NMBU|UiB|UIB|UiO|UIO)"})
      * @Method({"GET", "POST"})
      *
