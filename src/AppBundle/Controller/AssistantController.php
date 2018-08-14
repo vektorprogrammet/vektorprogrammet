@@ -53,7 +53,7 @@ class AssistantController extends Controller
                 ->getRepository('AppBundle:Department')
                 ->findOneByCityCaseInsensitive($city);
         if ($department !== null) {
-            return $this->indexAction($request, $department, true);
+            return $this->indexAction($request, $department);
         } else {
             throw $this->createNotFoundException("Fant ingen avdeling $city.");
         }
@@ -72,7 +72,7 @@ class AssistantController extends Controller
      */
     public function admissionAction(Request $request, Department $department = null)
     {
-        return $this->indexAction($request, $department, true);
+        return $this->indexAction($request, $department);
     }
 
     /**
