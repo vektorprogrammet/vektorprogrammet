@@ -32,7 +32,7 @@ class AssistantController extends Controller
      */
     public function admissionActionByShortName(Request $request, Department $department)
     {
-        return $this->indexAction($request, $department, true);
+        return $this->indexAction($request, $department);
     }
     
     /**
