@@ -24,8 +24,11 @@ class ExistingUserAdmissionController extends Controller
     public function showAction(Request $request)
     {
         $user = $this->getUser();
+        $department = $user->getDepartment();
+
         $em = $this->getDoctrine()->getManager();
         $admissionManager = $this->get('app.application_admission');
+        $teams = $em->getRepository('AppBundle:Team')->findByDepartment($department);
 
         if ($res = $admissionManager->renderErrorPage($user)) {
             return $res;
@@ -35,6 +38,7 @@ class ExistingUserAdmissionController extends Controller
 
         $form = $this->createForm(new ApplicationExistingUserType(), $application, array(
             'validation_groups' => array('admission_existing'),
+            'teams' => $teams,
         ));
         $form->handleRequest($request);
 
