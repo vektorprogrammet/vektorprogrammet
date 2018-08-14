@@ -40,6 +40,7 @@ class AssistantController extends Controller
      * @Route("/opptak")
      * @Route("/opptak/avdeling/{id}", name="admission_show_specific_department",
      *     requirements={"id"="\d+"})
+     * @Route("/opptak/NTNU")
      * @Route("/opptak/{shortName}", name="admission_show_by_short_name",
      *     requirements={"shortName"="\w+"})
      * @Route("/avdeling/{shortName}", name="admission_show_specific_department_by_name",
