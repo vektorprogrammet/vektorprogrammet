@@ -15,6 +15,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class AssistantController extends Controller
 {
     /**
+     * @Route("/opptak/NTNU")
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param Department $department
+     *
+     * @return Response
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function tempAction(Request $request)
+    {
+        return $this->indexAction($request);
+    }
+    
+    /**
      * @Route("/opptak/{city}", name="admission_show_by_city_case_insensitive")
      * @Route("/avdeling/{city}", name="admission_show_specific_department_by_city_case_insensitive")
      *
