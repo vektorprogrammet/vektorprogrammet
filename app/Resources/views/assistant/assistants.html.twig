@@ -17,13 +17,23 @@
         {% if departmentsWithActiveAdmission is not empty %}
             <div class="content text-center call-to-action jumbotron">
                 <i class="fa fa-info-circle alert-icon text-dark-blue"></i>
-                <p class="text-dark-blue">
-                    Disse avdelingene har opptak nå:
-                    <br class="d-md-none">
-                    <span class="active-admission-departments">
-                        {{ departmentsWithActiveAdmission|join(', ') }}
-                    </span>
-                </p>
+                {% if specific_department in departmentsWithActiveAdmission %}
+                    <p class="text-dark-blue">
+                        Avdeling
+                        <span class="active-admission-departments">
+                            {{ specific_department }}
+                        </span>
+                        har opptak nå!
+                    </p>
+                {% else %}
+                    <p class="text-dark-blue">
+                        Disse avdelingene har opptak nå:
+                        <br class="d-md-none">
+                        <span class="active-admission-departments">
+                            {{ departmentsWithActiveAdmission|join(', ') }}
+                        </span>
+                    </p>
+                {% endif %}
                 <button class="btn btn-md btn-success" onclick="scrollToElement('application')">
                     Scroll ned for å søke! <i class="fa fa-arrow-down"></i>
                 </button>

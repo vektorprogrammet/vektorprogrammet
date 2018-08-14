@@ -11,10 +11,10 @@ class DepartmentControllerTest extends BaseWebTestCase
         $crawler = $this->adminGoTo('/kontrollpanel/avdelingadmin');
 
         // Assert that we have the correct department data
-        $this->assertEquals(1, $crawler->filter('a:contains("Norges teknisk-naturvitenskapelige universitet")')->count());
-        $this->assertEquals(1, $crawler->filter('a:contains("Universitetet i Bergen")')->count());
-        $this->assertEquals(1, $crawler->filter('a:contains("Norges miljø- og biovitenskapelige universitet")')->count());
-        $this->assertEquals(1, $crawler->filter('a:contains("Universitetet i Oslo")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("Trondheim")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("Bergen")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("Ås")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("Oslo")')->count());
     }
 
     public function testCreateDepartment()
@@ -114,8 +114,9 @@ class DepartmentControllerTest extends BaseWebTestCase
         $form = $crawler->selectButton('Opprett')->form();
 
         // Change the value of a field
-        $form['createDepartment[name]'] = 'Norges teknisk-naturvitenskapelige universitet2';
+        $form['createDepartment[name]'] = 'Trondheim2';
         $form['createDepartment[shortName]'] = 'NTNU2';
+        $form['createDepartment[city]'] = 'Trondheim2';
         $form['createDepartment[email]'] = 'NTNU@mail.com2';
         $form['createDepartment[address]'] = 'Storgata 1';
 
@@ -132,12 +133,12 @@ class DepartmentControllerTest extends BaseWebTestCase
         $crawler = $client->followRedirect();
 
         // Assert that we created a new entity
-        $this->assertContains('Norges teknisk-naturvitenskapelige universitet2', $client->getResponse()->getContent());
+        $this->assertContains('Trondheim2', $client->getResponse()->getContent());
         $this->assertContains('NTNU2', $client->getResponse()->getContent());
         $this->assertContains('NTNU@mail.com2', $client->getResponse()->getContent());
 
         // Check the count for the different variables
-        $this->assertEquals(1, $crawler->filter('a:contains("Norges teknisk-naturvitenskapelige universitet2")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("Trondheim2")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("NTNU2")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("NTNU@mail.com2")')->count());
 

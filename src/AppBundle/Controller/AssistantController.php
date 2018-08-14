@@ -15,7 +15,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class AssistantController extends Controller
 {
     /**
-     * @Route("/opptak/NTNU")
+     * @deprecated This route is only here to serve old urls (e.g. in old emails)
+     *
+     * @Route("/opptak/{shortName}",
+     *     requirements={"shortName"="(NTNU|NMBU|UiB|UIB|UiO|UIO)"})
+     * @Route("/avdeling/{shortName}",
+     *     requirements={"shortName"="(NTNU|NMBU|UiB|UIB|UiO|UIO)"})
+     * @Route("/opptak/avdeling/{id}",
+     *     requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -25,9 +32,9 @@ class AssistantController extends Controller
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function tempAction(Request $request)
+    public function admissionActionByShortName(Request $request, Department $department)
     {
-        return $this->indexAction($request);
+        return $this->indexAction($request, $department);
     }
     
     /**
@@ -46,7 +53,7 @@ class AssistantController extends Controller
                 ->getRepository('AppBundle:Department')
                 ->findOneByCityCaseInsensitive($city);
         if ($department !== null) {
-            return $this->indexAction($request, $department, true);
+            return $this->indexAction($request, $department);
         } else {
             throw $this->createNotFoundException("Fant ingen avdeling $city.");
         }
@@ -54,13 +61,6 @@ class AssistantController extends Controller
 
     /**
      * @Route("/opptak")
-     * @Route("/opptak/avdeling/{id}", name="admission_show_specific_department",
-     *     requirements={"id"="\d+"})
-     * @Route("/opptak/NTNU")
-     * @Route("/opptak/{shortName}", name="admission_show_by_short_name",
-     *     requirements={"shortName"="\w+"})
-     * @Route("/avdeling/{shortName}", name="admission_show_specific_department_by_name",
-     *     requirements={"shortName"="\w+"})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -72,7 +72,7 @@ class AssistantController extends Controller
      */
     public function admissionAction(Request $request, Department $department = null)
     {
-        return $this->indexAction($request, $department, true);
+        return $this->indexAction($request, $department);
     }
 
     /**
