@@ -15,7 +15,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class AssistantController extends Controller
 {
     /**
-     * @Route("/opptak/NTNU")
+     * Legacy route, do not use
+     *
+     * @Route("/opptak/{shortName}", name="admission_show_by_short_name",
+     *     requirements={"shortName"="(NTNU|NMBU|UiB|UIB|UiO|UIO)"})
+     * @Route("/avdeling/{shortName}", name="admission_show_specific_department_by_name",
+     *     requirements={"shortName"="(NTNU|NMBU|UiB|UIB|UiO|UIO)"})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -25,9 +30,9 @@ class AssistantController extends Controller
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function tempAction(Request $request)
+    public function admissionActionByShortName(Request $request, Department $department)
     {
-        return $this->indexAction($request);
+        return $this->indexAction($request, $department, true);
     }
     
     /**
@@ -56,11 +61,6 @@ class AssistantController extends Controller
      * @Route("/opptak")
      * @Route("/opptak/avdeling/{id}", name="admission_show_specific_department",
      *     requirements={"id"="\d+"})
-     * @Route("/opptak/NTNU")
-     * @Route("/opptak/{shortName}", name="admission_show_by_short_name",
-     *     requirements={"shortName"="\w+"})
-     * @Route("/avdeling/{shortName}", name="admission_show_specific_department_by_name",
-     *     requirements={"shortName"="\w+"})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
