@@ -17,17 +17,24 @@ class ApplicationManager
     public function getApplicationStatus(Application $application): ApplicationStatus
     {
         $interview = $application->getInterview();
-        if ($interview === null) {
-            return new ApplicationStatus(
-                ApplicationStatus::APPLICATION_RECEIVED,
-                "Søknad mottatt",
-                "Vent på å bli invitert til intervju"
-            );
-        } elseif ($application->getUser()->isActiveAssistant()) {
+        $user = $application->getUser();
+        if ($application->getUser()->isActiveAssistant()) {
             return new ApplicationStatus(
                 ApplicationStatus::ASSIGNED_TO_SCHOOL,
                 "Tatt opp som vektorassistent",
                 "Ta kontakt med dine vektorpartnere og dra ut til skolen"
+            );
+        } elseif ($user->hasBeenAssistant()) {
+            return new ApplicationStatus(
+                ApplicationStatus::INTERVIEW_COMPLETED,
+                "Søknad mottatt",
+                "Siden du har vært assistent tidligere trenger du ikke å møte på intervju. Du vil få en e-post når opptaket er klart."
+            );
+        } elseif ($interview === null) {
+            return new ApplicationStatus(
+                ApplicationStatus::APPLICATION_RECEIVED,
+                "Søknad mottatt",
+                "Vent på å bli invitert til intervju"
             );
         } elseif ($interview->getInterviewed()) {
             return new ApplicationStatus(
