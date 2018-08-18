@@ -63,9 +63,18 @@ class Team implements TeamInterface
     private $acceptApplication;
 
     /**
+     * Applications with team interest
+     *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Application", mappedBy="potentialTeams")
      */
     private $potentialMembers;
+
+    /**
+     * TeamInterest entities not corresponding to any Application
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\TeamInterest", mappedBy="potentialTeams")
+     */
+    private $potentialApplicants;
 
     /**
      * @ORM\Column(type="boolean", options={"default"=true})
