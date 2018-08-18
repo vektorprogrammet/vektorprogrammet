@@ -652,13 +652,6 @@ team_application:
   defaults: {_controller: AppBundle:TeamApplication:show}
   methods: [GET, POST]
 
-team_interest_form:
-  path: /teaminteresse/{id}
-  defaults: {_controller: AppBundle:Team:showTeamInterestForm, id: null}
-  methods: [GET, POST]
-  requirements:
-    id: \d+
-
 team_page_department_team:
   path: /team/{departmentCity}/{teamName}
   defaults: {_controller: AppBundle:Team:showByDepartmentAndTeam}
