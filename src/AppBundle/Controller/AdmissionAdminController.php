@@ -222,10 +222,15 @@ class AdmissionAdminController extends Controller
         ));
     }
 
-    public function showTeamInterestAction(Semester $semester)
+    public function showTeamInterestAction(Semester $semester = null)
     {
         $user = $this->getUser();
-        $department = $semester->getDepartment();
+        if ($semester === null) {
+            $department = $user->getDepartment();
+            $semester = $department->getCurrentOrLatestSemester();
+        } else {
+            $department = $semester->getDepartment();
+        }
 
         if (!$this->isGranted(Roles::ADMIN) && $user->getDepartment() !== $department) {
             throw $this->createAccessDeniedException();
