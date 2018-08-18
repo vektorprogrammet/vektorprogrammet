@@ -38,6 +38,7 @@ class TeamInterestType extends AbstractType
                         ->setParameter('department', $department);
                 },
                 'expanded' => true,
+                'error_bubbling' => true,
                 'multiple' => true,
             ));
     }
