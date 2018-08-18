@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * TeamInterest
@@ -24,21 +25,18 @@ class TeamInterest
     /**
      * @var string
      *
-     * @ORM\Column(name="firstName", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
+     * @Assert\Length(max="255")
      */
-    private $firstName;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="lastName", type="string", length=255)
-     */
-    private $lastName;
+    private $name;
 
     /**
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255)
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
+     * @Assert\Length(max="255")
      */
     private $email;
 
@@ -51,8 +49,17 @@ class TeamInterest
 
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Team", inversedBy="potentialApplicants")
+     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     private $potentialTeams;
+
+    /**
+     * TeamInterest constructor.
+     */
+    public function __construct()
+    {
+        $this->timestamp = new \DateTime();
+    }
 
 
     /**
@@ -66,49 +73,27 @@ class TeamInterest
     }
 
     /**
-     * Set firstName
-     *
-     * @param string $firstName
-     * @return TeamInterest
-     */
-    public function setFirstName($firstName)
-    {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
-
-    /**
-     * Get firstName
+     * Set name
      *
      * @return string
      */
-    public function getFirstName()
+    public function getName()
     {
-        return $this->firstName;
+        return $this->name;
     }
 
     /**
-     * Set lastName
+     * Get name
      *
-     * @param string $lastName
+     * @param string $name
+     *
      * @return TeamInterest
      */
-    public function setLastName($lastName)
+    public function setName($name)
     {
-        $this->lastName = $lastName;
+        $this->name = $name;
 
         return $this;
-    }
-
-    /**
-     * Get lastName
-     *
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
     }
 
     /**
