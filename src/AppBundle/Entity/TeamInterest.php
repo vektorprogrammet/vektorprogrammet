@@ -49,6 +49,15 @@ class TeamInterest
     private $timestamp;
 
     /**
+     * @var Department
+     *
+     * @ORM\ManyToOne(targetEntity="Department", inversedBy="teamInterests")
+     */
+    private $department;
+
+    /**
+     * @var Team[]
+     *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Team", inversedBy="potentialApplicants")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      * @Assert\Count(min=1, minMessage="Du må velge minst ett team")
@@ -142,6 +151,30 @@ class TeamInterest
     public function getTimestamp()
     {
         return $this->timestamp;
+    }
+
+    /**
+     * Get department
+     *
+     * @return Department
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * Set department
+     *
+     * @param Department $department
+     *
+     * @return TeamInterest
+     */
+    public function setDepartment(Department $department)
+    {
+        $this->department = $department;
+
+        return $this;
     }
 
     /**

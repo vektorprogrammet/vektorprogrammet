@@ -97,6 +97,12 @@ class Department
     private $teams;
 
     /**
+     * @ORM\OneToMany(targetEntity="TeamInterest", mappedBy="department",
+     *     cascade={"remove"})
+     */
+    private $teamInterests;
+
+    /**
      * @ORM\Column(name="logo_path", type="string", length=255, nullable=true)
      * @Assert\Length(min = 1, max = 255, maxMessage="Path kan maks være 255
      *     tegn."))
