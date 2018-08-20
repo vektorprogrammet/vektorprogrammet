@@ -128,7 +128,7 @@ class GeoLocation
             return null;
         }
 
-        $coords = $this->session->get('coords1');
+        $coords = $this->session->get('coords');
         if ($coords) {
             return $coords;
         }

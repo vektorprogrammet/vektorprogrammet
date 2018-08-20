@@ -1,0 +1,32 @@
+{% if ipWasLocated and closestDepartment.activeAdmission %}
+    <section class="row urgent-box">
+        <div class="main-navigation">
+            <p>Vektorprogrammet i <strong>{{ closestDepartment }}</strong> søker nye assistenter!
+                <span class="countdown"><span class="cd-number" id="cd-days"></span>d <span class="cd-number"
+                                                                                            id="cd-hours"></span>t <span
+                            class="cd-number" id="cd-minutes"></span>m <span class="cd-number"
+                                                                             id="cd-seconds"></span>s</span>
+                &#9&#9&#9 igjen av opptaket. <a
+                        href="{{ path('assistants') }}">Søk
+                    nå!</a></p>
+        </div>
+        {% set semester = closestDepartment.currentSemester %}
+        {% if semester is not null and semester.infoMeeting and semester.infoMeeting.showOnPage and semester.infoMeeting.date and date() < date(semester.infoMeeting.date) %}
+            {% set infoMeeting = closestDepartment.currentSemester.infoMeeting %}
+            <div class="infomeeting-banner">
+                Husk infomøte {{ infoMeeting.date|date('d. M')|lower }} kl. {{ infoMeeting.date|date('H:i') }} {% if infoMeeting.room %}i rom  {{ infoMeeting.room }} {% endif %}.
+                {% if infoMeeting.link %}<a target="_blank" href="{{ infoMeeting.link }}"
+                                            onclick="ga('send', 'event', 'Infomøte', 'Les mer - forside', '{{ closestDepartment.currentSemester }}')">
+                        Les mer
+                    </a>{% endif %}
+            </div>
+        {% endif %}
+    </section>
+{% elseif departmentsWithActiveAdmission|length > 0 %}
+    <section class="row urgent-box">
+        <div class="main-navigation">
+            <p>Vektorprogrammet i <strong>{{ departmentsWithActiveAdmission|join(', ') }}</strong> søker nye
+                assistenter! <a href="{{ path('assistants') }}">Les mer!</a>
+        </div>
+    </section>
+{% endif %}
