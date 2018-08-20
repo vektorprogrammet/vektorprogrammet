@@ -36,8 +36,13 @@ class TeamInterestController extends Controller
             }
         }
 
+        $semester = $department->getCurrentOrLatestSemester();
+        if ($semester === null) {
+            throw new BadRequestHttpException('This department has no semesters');
+        }
+
         $teamInterest = new TeamInterest();
-        $teamInterest->setDepartment($department);
+        $teamInterest->setSemester($semester);
         $form = $this->createForm(new TeamInterestType(), $teamInterest, array(
             'department' => $department,
         ));

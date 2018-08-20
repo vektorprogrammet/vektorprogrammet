@@ -236,11 +236,14 @@ class AdmissionAdminController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        $teamInterest = $this->getDoctrine()->getRepository('AppBundle:Application')->findApplicationByTeamInterestAndSemester($semester);
+        $applicationsWithTeamInterest = $this->getDoctrine()->getRepository('AppBundle:Application')
+            ->findApplicationByTeamInterestAndSemester($semester);
+        $possibleApplicants = $this->getDoctrine()->getRepository('AppBundle:TeamInterest')->findBy(array('semester' => $semester));
         $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByTeamInterestAndSemester($semester);
 
         return $this->render('admission_admin/teamInterest.html.twig', array(
-            'teamInterest' => $teamInterest,
+            'applicationsWithTeamInterest' => $applicationsWithTeamInterest,
+            'possibleApplicants' => $possibleApplicants,
             'semester' => $semester,
             'teams' => $teams,
         ));

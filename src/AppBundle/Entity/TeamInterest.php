@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * TeamInterest
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="TeamInterestRepository")
  */
 class TeamInterest
 {
@@ -49,13 +49,6 @@ class TeamInterest
     private $timestamp;
 
     /**
-     * @var Department
-     *
-     * @ORM\ManyToOne(targetEntity="Department", inversedBy="teamInterests")
-     */
-    private $department;
-
-    /**
      * @var Team[]
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Team", inversedBy="potentialApplicants")
@@ -63,6 +56,13 @@ class TeamInterest
      * @Assert\Count(min=1, minMessage="Du må velge minst ett team")
      */
     private $potentialTeams;
+
+    /**
+     * @var Semester
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Semester")
+     */
+    private $semester;
 
     /**
      * TeamInterest constructor.
@@ -154,30 +154,6 @@ class TeamInterest
     }
 
     /**
-     * Get department
-     *
-     * @return Department
-     */
-    public function getDepartment()
-    {
-        return $this->department;
-    }
-
-    /**
-     * Set department
-     *
-     * @param Department $department
-     *
-     * @return TeamInterest
-     */
-    public function setDepartment(Department $department)
-    {
-        $this->department = $department;
-
-        return $this;
-    }
-
-    /**
      * Get potentialTeams
      *
      * @return Team[]
@@ -198,5 +174,37 @@ class TeamInterest
         $this->potentialTeams = $potentialTeams;
 
         return $this;
+    }
+
+    /**
+     * Get semester
+     *
+     * @return Semester
+     */
+    public function getSemester()
+    {
+        return $this->semester;
+    }
+
+    /**
+     * Set semester
+     *
+     * @param Semester $semester
+     * @return TeamInterest
+     */
+    public function setSemester(Semester $semester)
+    {
+        $this->semester = $semester;
+
+        return $this;
+    }
+
+
+    /**
+     * @return Department
+     */
+    public function getDepartment()
+    {
+        return $this->semester->getDepartment();
     }
 }

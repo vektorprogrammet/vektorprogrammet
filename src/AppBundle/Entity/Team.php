@@ -320,4 +320,24 @@ class Team implements TeamInterface
     {
         $this->potentialMembers = $potentialMembers;
     }
+
+    /**
+     * @return TeamInterest[]
+     */
+    public function getPotentialApplicants()
+    {
+        return $this->potentialApplicants;
+    }
+
+    /**
+     * @param TeamInterest[] $potentialApplicants
+     *
+     * @return Team
+     */
+    public function setPotentialApplicants($potentialApplicants)
+    {
+        $this->potentialApplicants = $potentialApplicants;
+
+        return $this;
+    }
 }

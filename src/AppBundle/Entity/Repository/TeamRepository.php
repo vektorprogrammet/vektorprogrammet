@@ -6,6 +6,7 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Team;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr;
 
 /**
  * TeamRepository.
@@ -58,9 +59,11 @@ class TeamRepository extends EntityRepository
     {
         return $this->createQueryBuilder('team')
             ->select('team')
-            ->join('team.potentialMembers', 'application')
-            ->where('application.semester = :semester')
+            ->leftJoin('team.potentialMembers', 'application', Expr\Join::WITH, 'application.semester = :semester')
+            ->leftJoin('team.potentialApplicants', 'potentialApplicant', Expr\Join::WITH, 'potentialApplicant.semester = :semester')
             ->setParameter('semester', $semester)
+            ->where('application IS NOT NULL')
+            ->orWhere('potentialApplicant IS NOT NULL')
             ->getQuery()
             ->getResult();
     }
