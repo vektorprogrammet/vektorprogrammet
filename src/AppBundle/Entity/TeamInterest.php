@@ -131,19 +131,6 @@ class TeamInterest
     }
 
     /**
-     * Set timestamp
-     *
-     * @param \DateTime $timestamp
-     * @return TeamInterest
-     */
-    public function setTimestamp($timestamp)
-    {
-        $this->timestamp = $timestamp;
-
-        return $this;
-    }
-
-    /**
      * Get timestamp
      *
      * @return \DateTime
