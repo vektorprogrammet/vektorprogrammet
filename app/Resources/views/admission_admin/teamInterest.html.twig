@@ -46,7 +46,7 @@
             {% for team in teams %}
                 <tr>
                     <td> <a href="{{ path('team_page', {'id' : team.id}) }}">{{ team }}</a></td>
-                    <td>{{ team.potentialMembers | length + team.potentialApplicants | length }}</td>
+                    <td>{{ team.numberOfPotentialMembersAndApplicantsInSemester(semester) }}</td>
                     <td>
                         {% for application in team.potentialMembers %}
                             {% if application.semester == semester %}

@@ -340,4 +340,13 @@ class Team implements TeamInterface
 
         return $this;
     }
+
+    public function getNumberOfPotentialMembersAndApplicantsInSemester($semester)
+    {
+        $array = array_merge($this->potentialApplicants->toArray(), $this->potentialMembers->toArray());
+        $array = array_filter($array, function ($a) use ($semester) {
+            return $a->getSemester() === $semester;
+        });
+        return count($array);
+    }
 }
