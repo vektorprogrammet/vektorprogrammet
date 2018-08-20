@@ -73,7 +73,7 @@ class GeoLocationTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->geoLocation = new GeoLocation('xxxxx', $entityManager, $sessionStorage, $requestStack, $logger);
+        $this->geoLocation = new GeoLocation('xxxxx', [], $entityManager, $sessionStorage, $requestStack, $logger);
     }
 
     public function testDistance()

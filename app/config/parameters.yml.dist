@@ -52,6 +52,7 @@ parameters:
     sms_disable: true
 
     ipinfo_token: ''
+    geo_ignored_asns: []
 
     # Webhook from GitHub to automatically deploy on push to master
 

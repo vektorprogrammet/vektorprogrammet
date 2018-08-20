@@ -31,6 +31,14 @@ class DepartmentRepository extends EntityRepository
         return $departments;
     }
 
+    public function findAllWithActiveAdmission()
+    {
+        return array_filter($this->findAll(), function (Department $department) {
+            $semester = $department->getCurrentSemester();
+            return $semester !== null && $semester->hasActiveAdmission();
+        });
+    }
+
     public function findDepartmentByShortName($shortName)
     {
         return $this->getEntityManager()->createQuery('
