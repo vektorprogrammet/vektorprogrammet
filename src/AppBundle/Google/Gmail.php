@@ -46,7 +46,7 @@ class Gmail extends GoogleService implements MailerInterface
     private function SwiftMessageToGmailMessage(\Swift_Message $message)
     {
         $subject = $message->getSubject();
-        $body = $message->getBody();
+        $body = $this->encodeBody($message->getBody());
         $from = $this->recipientsToHeader($message->getFrom());
         $to = $this->recipientsToHeader($message->getTo());
         $replyTo = $this->recipientsToHeader($message->getReplyTo());
@@ -99,6 +99,15 @@ class Gmail extends GoogleService implements MailerInterface
         }
 
         return $header;
+    }
+
+    private function encodeBody($body) {
+    	$body = str_replace("src=\"", "src=3D\"", $body);
+    	$body = str_replace("src='", "src=3D'", $body);
+    	$body = str_replace("href=\"", "href=3D\"", $body);
+    	$body = str_replace("href='", "href=3D'", $body);
+
+    	return $body;
     }
 
     /**
