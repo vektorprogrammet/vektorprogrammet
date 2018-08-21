@@ -25,10 +25,9 @@ class StandController extends Controller
 
         $admissionStatistics = $this->get('app.admission_statistics');
 
-        $subscribers = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')->findByDepartment($department);
-        $subscribersInSemester = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')->findBySemester($semester);
+        $subscribers = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')->findFromWebByDepartment($department);
+        $subscribersInSemester = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')->findFromWebBySemester($semester);
         $subData = $admissionStatistics->generateGraphDataFromSubscribersInSemester($subscribersInSemester, $semester);
-
 
         $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findByDepartment($department);
         $applicationsInSemester = $this->getDoctrine()->getRepository('AppBundle:Application')->findBySemester($semester);

@@ -136,6 +136,7 @@ class AvailabilityFunctionalTest extends WebTestCase
             array('/kontrollpanel'),
             array('/kontrollpanel/undersokelse/admin'),
             array('/kontrollpanel/undersokelse/opprett'),
+            array('/kontrollpanel/stand'),
         );
     }
 }
