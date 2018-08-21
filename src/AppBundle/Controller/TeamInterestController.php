@@ -16,7 +16,7 @@ class TeamInterestController extends Controller
 {
     /**
      * @Route(name="team_interest_form", path="/teaminteresse/{id}",
-     *     defaults={"id"=null}, requirements={"id"="\d+"})
+     *      requirements={"id"="\d+"})
      * @Method({"GET","POST"})
      *
      * @param \AppBundle\Entity\Department|NULL $department
@@ -24,18 +24,8 @@ class TeamInterestController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function showTeamInterestFormAction(Department $department = null, Request $request)
+    public function showTeamInterestFormAction(Department $department, Request $request)
     {
-        $departmentInUrl = $department !== null;
-        if (!$departmentInUrl) {
-            $user = $this->getUser();
-            if ($user !== null) {
-                $department = $user->getDepartment();
-            } else {
-                throw new BadRequestHttpException('No department specified');
-            }
-        }
-
         $semester = $department->getCurrentOrLatestSemester();
         if ($semester === null) {
             throw new BadRequestHttpException('This department has no semesters');
