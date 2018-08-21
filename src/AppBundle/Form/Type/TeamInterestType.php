@@ -34,7 +34,6 @@ class TeamInterestType extends AbstractType
                     return $entityRepository->createQueryBuilder('team')
                         ->select('team')
                         ->where('team.department = :department')
-                        ->andWhere('team.acceptApplication = true')
                         ->setParameter('department', $department);
                 },
                 'expanded' => true,
