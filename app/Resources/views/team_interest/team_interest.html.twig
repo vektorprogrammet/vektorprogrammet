@@ -4,6 +4,8 @@
     Teaminteresse - Vektorprogrammet
 {% endblock %}
 
+{% block header %} {% endblock %}
+
 {% block body %}
     <div class="container">
         <header class="page-header row content">
@@ -26,4 +28,14 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block footer %} {% endblock %}
+
+{% block javascripts %}
+    <script>
+        setTimeout(function() {
+            $('.alert').slideUp();
+        }, 10000)
+    </script>
 {% endblock %}
