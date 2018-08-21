@@ -46,8 +46,9 @@ class ExistingUserAdmissionController extends Controller
             $em->flush();
 
             $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+            $this->addFlash("success", "Søknad mottatt!");
 
-            return $this->redirectToRoute('application_confirmation');
+            return $this->redirectToRoute('my_page');
         }
 
         $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($user->getDepartment());
