@@ -232,6 +232,7 @@
                     </a>
                 </div>
             </div>
+
             <div class="small-4 medium-3 large-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('surveys') }}">
@@ -241,6 +242,18 @@
                     </a>
                 </div>
             </div>
+
+            {% if is_granted_team_leader() %}
+            <div class="small-4 medium-3 large-2 columns">
+                <div class="control-panel-item">
+                    <a href="{{ path('admissionadmin_team_interest') }}">
+                        <i class="fa fa-star fa-3x"></i>
+
+                        <p>Teaminteresse</p>
+                    </a>
+                </div>
+            </div>
+            {% endif %}
 
         </div>
         <br>

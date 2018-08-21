@@ -142,6 +142,12 @@ services:
     tags:
       - { name: kernel.event_subscriber }
 
+  app.team_interest_subscriber:
+    class: AppBundle\EventSubscriber\TeamInterestSubscriber
+    arguments: ['@app.mailer', '@twig','@session' ]
+    tags:
+      - { name: kernel.event_subscriber }
+
   app.assistant_history_subscriber:
     class: AppBundle\EventSubscriber\AssistantHistorySubscriber
     arguments: ['@session', '@logger', '@doctrine.orm.default_entity_manager', '@app.user.registration']

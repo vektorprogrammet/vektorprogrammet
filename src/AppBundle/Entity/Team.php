@@ -63,9 +63,18 @@ class Team implements TeamInterface
     private $acceptApplication;
 
     /**
+     * Applications with team interest
+     *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Application", mappedBy="potentialTeams")
      */
     private $potentialMembers;
+
+    /**
+     * TeamInterest entities not corresponding to any Application
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\TeamInterest", mappedBy="potentialTeams")
+     */
+    private $potentialApplicants;
 
     /**
      * @ORM\Column(type="boolean", options={"default"=true})
@@ -310,5 +319,34 @@ class Team implements TeamInterface
     public function setPotentialMembers($potentialMembers)
     {
         $this->potentialMembers = $potentialMembers;
+    }
+
+    /**
+     * @return TeamInterest[]
+     */
+    public function getPotentialApplicants()
+    {
+        return $this->potentialApplicants;
+    }
+
+    /**
+     * @param TeamInterest[] $potentialApplicants
+     *
+     * @return Team
+     */
+    public function setPotentialApplicants($potentialApplicants)
+    {
+        $this->potentialApplicants = $potentialApplicants;
+
+        return $this;
+    }
+
+    public function getNumberOfPotentialMembersAndApplicantsInSemester($semester)
+    {
+        $array = array_merge($this->potentialApplicants->toArray(), $this->potentialMembers->toArray());
+        $array = array_filter($array, function ($a) use ($semester) {
+            return $a->getSemester() === $semester;
+        });
+        return count($array);
     }
 }
