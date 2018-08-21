@@ -1,18 +1,18 @@
 <h1>Teaminteresse i Vektorprogrammet</h1>
 
-Denne mailen er et automatisk svar på din innmeldte teaminteresse.
+<small>Denne e-posten er et automatisk svar på din innmeldte teaminteresse.</small>
 
 <p>
-    Hei {{ teamInterest.name }}!
-    Så hyggelig at du er interessert i teamvervene i Vektorprogrammet!
-    Som teammedlem får du bli med i en sammensveiset og sosial gjeng med studenter fra alle mulige linjer og trinn.
-    Vi arrangerer mange sosiale sammenkomster for teamene våre, som fester, hytteturer, tacokvelder, julebord osv.
-    I tillegg byr vervene på verdifull erfaring som du kan ta med deg videre i både studier og arbeidsliv.
+    Hei {{ teamInterest.name }}!<br>
+    Så hyggelig at du er interessert i teamvervene i Vektorprogrammet!<br>
+    Som teammedlem får du bli med i en sammensveiset og sosial gjeng med studenter fra alle mulige linjer og trinn. <br>
+    Vi arrangerer mange sosiale sammenkomster for teamene våre, som fester, hytteturer, tacokvelder, julebord osv. <br>
+    I tillegg byr vervene på verdifull erfaring som du kan ta med deg videre i både studier og arbeidsliv. <br>
 </p>
 <p>
-    Nedenfor er en liste med teamene du er interessert i.
-    Du kan trykke inn på lenkene for å lese mer om hvert av dem (og ikke minst søke!).
-    Lederne i de respektive teamene vil kontakte deg med videre informasjon.
+    Nedenfor er en liste med teamene du er interessert i. <br>
+    Du kan trykke inn på lenkene for å lese mer om hvert av dem (og ikke minst søke!). <br>
+    Lederne i de respektive teamene vil kontakte deg med videre informasjon. <br>
 </p>
 
 <ul>
@@ -20,6 +20,7 @@ Denne mailen er et automatisk svar på din innmeldte teaminteresse.
         <li>
             <h3>{{ team.name }}</h3>
             {{ team.shortDescription }}<br>
+            <br>
             Link til teamet:
             <a href="{{ url('team_page_department_team', {departmentCity: team.department, teamName: team.name }) }}">
                 {{ url('team_page_department_team', {departmentCity: team.department, teamName: team.name }) }}
