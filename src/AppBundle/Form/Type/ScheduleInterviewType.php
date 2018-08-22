@@ -29,6 +29,10 @@ class ScheduleInterviewType extends AbstractType
                 'label' => false,
                 'required' => false,
             ))
+            ->add('campus', 'text', array(
+                'label' => 'Campus',
+                'required' => false,
+            ))
             ->add('message', 'textarea', array(
                 'label' => 'Melding',
                 'attr' => array('rows' => '5'),

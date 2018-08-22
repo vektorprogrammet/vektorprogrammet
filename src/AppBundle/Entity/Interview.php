@@ -37,6 +37,15 @@ class Interview
     protected $room;
 
     /**
+    * @ORM\Column(type="string", length=255, nullable=true)
+    * @Assert\Length(
+    *     max=255,
+    *     maxMessage="Campusnavn kan ikke være mer enn 255 tegn"
+    * )
+    */
+    protected $campus;
+
+    /**
      * @ORM\Column(type="string", length=500, nullable=true)
      * @Assert\Length(
      *     max=500,
@@ -355,6 +364,25 @@ class Interview
     public function setRoom($room)
     {
         $this->room = $room;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCampus()
+    {
+        return $this->campus;
+    }
+
+    /**
+     * @param string $campus
+     *
+     * @return Interview
+     */
+    public function setCampus($campus)
+    {
+        $this->campus = $campus;
+        return $this;
     }
 
     /**

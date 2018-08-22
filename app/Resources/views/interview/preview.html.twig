@@ -3,7 +3,8 @@
 <br/>
 Tidspunkt: {{ data['datetime']|date("d.m.y - G:i") }}.
 <br/>
-Rom: {{ data['room'] }}{% if data['mapLink'] %} (<a href="{{ data['mapLink'] }}">kart</a>){% endif %}
+Rom: {{ data['room'] }}{% if data['mapLink'] %} (<a href="{{ data['mapLink'] }}">kart</a>){% endif %}<br>
+Campus: {{ data['campus'] }}
 
 <br/><br/>
 <p>For å akseptere eller kansellere intervjuet, gå inn på følgende link:</p>
