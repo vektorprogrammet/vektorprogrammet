@@ -18,11 +18,13 @@
             <span class="text-devil member-count">{{ team.activeUsers | length }} medlemmer</span>
         </p>
     </div>
-    <div class="card-block px-2 py-2 card-footer">
-        {% if team.acceptApplication %}
-            <a href="{{ path('team_page_department_team', {departmentCity: team.department, teamName: team.name}) }}" class="m-0"><i class="admission-star fa fa-star"></i> Søk nå!</a>
-        {% else %}
-            <a class="m-0" href="{{ path('team_page_department_team', {departmentCity: team.department, teamName: team.name}) }}">Les mer</a>
-        {% endif %}
-    </div>
+    <a href="{{ path('team_page_department_team', {departmentCity: team.department, teamName: team.name}) }}" class="application-link m-0">
+        <div class="card-block px-2 py-2 card-footer text-center">
+            {% if team.acceptApplication %}
+                <i class="admission-star fa fa-star"></i> <span class="text-dark-blue">Søk nå!</span>
+            {% else %}
+                <span>Les mer</span>
+            {% endif %}
+        </div>
+    </a>
 </div>

@@ -187,13 +187,27 @@
     justify-content: center;
   }
 
-  .card-footer {
+  .application-link {
+    font-weight: 600;
+    text-decoration: none;
+    color: #a0a0a0;
+    transition:0.2s;
     .admission-star {
+      transition:0.35s;
       color: #3b97fa;
     }
-    a {
-      font-weight: 600;
-      color: #a0a0a0;
+    &:hover {
+      background: #d7ffd5;
+      span {
+        color: #0a3a06;
+      }
+      .admission-star {
+        color: #39ce43;
+        @media (min-width: 768px) {
+          // Rules out most touch devices
+          transform: rotate(144deg);
+        }
+      }
     }
   }
 }
