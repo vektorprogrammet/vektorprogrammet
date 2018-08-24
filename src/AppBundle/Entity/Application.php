@@ -148,6 +148,12 @@ class Application
     private $wantsNewsletter;
 
     /**
+     * @var SubstitutePosition
+     * @ORM\OneToOne(targetEntity="SubstitutePosition", inversedBy="application")
+     */
+    private $substitutePosition;
+
+    /**
      * ApplicationInfo constructor.
      */
     public function __construct()
@@ -540,5 +546,25 @@ class Application
     public function setPotentialTeams($potentialTeams)
     {
         $this->potentialTeams = $potentialTeams;
+    }
+
+    /**
+     * @return SubstitutePosition
+     */
+    public function getSubstitutePosition()
+    {
+        return $this->substitutePosition;
+    }
+
+    /**
+     * @param SubstitutePosition $substitutePosition
+     *
+     * @return Application
+     */
+    public function setSubstitutePosition($substitutePosition)
+    {
+        $this->substitutePosition = $substitutePosition;
+
+        return $this;
     }
 }

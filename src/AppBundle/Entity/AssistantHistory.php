@@ -57,6 +57,13 @@ class AssistantHistory
      */
     protected $day;
 
+    /**
+     * @var Substitution
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Substitution", mappedBy="substitutedAssistant")
+     */
+    protected $substitutions;
+
+
     public function activeInGroup($group): bool
     {
         return strpos($this->bolk, "Bolk $group") !== false;
