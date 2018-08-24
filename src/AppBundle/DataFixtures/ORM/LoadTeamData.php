@@ -109,7 +109,8 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         $team6->setDepartment($this->getReference('dep-1'));
         $team6->setName('Eksport');
         $team6->setShortDescription('Eksport');
-        $team6->setAcceptApplication(true);
+        $team6->setAcceptApplication(false);
+        $team6->setActive(false);
         $manager->persist($team6);
 
         $team7 = new Team();
