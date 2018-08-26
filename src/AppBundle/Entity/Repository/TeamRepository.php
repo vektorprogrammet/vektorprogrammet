@@ -7,12 +7,27 @@ use AppBundle\Entity\Semester;
 use AppBundle\Entity\Team;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * TeamRepository.
  */
 class TeamRepository extends EntityRepository
 {
+
+    /**
+     * @param Department $department
+     *
+     * @return QueryBuilder
+     */
+    private function findByDepartmentQueryBuilder(Department $department)
+    {
+        return $this->createQueryBuilder('team')
+            ->select('team')
+            ->where('team.department = :department')
+            ->setParameter('department', $department);
+    }
+
     /**
      * @param Department $department
      *
@@ -20,10 +35,21 @@ class TeamRepository extends EntityRepository
      */
     public function findByDepartment(Department $department): array
     {
-        return $this->createQueryBuilder('team')
-            ->select('team')
-            ->where('team.department = :department')
-            ->setParameter('department', $department)
+        return $this->findByDepartmentQueryBuilder($department)
+            ->orderBy('team.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return Team[]
+     */
+    public function findActiveByDepartment(Department $department): array
+    {
+        return $this->findByDepartmentQueryBuilder($department)
+            ->andWhere('team.active = true')
             ->orderBy('team.name', 'ASC')
             ->getQuery()
             ->getResult();

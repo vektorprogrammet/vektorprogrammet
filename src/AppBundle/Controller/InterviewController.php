@@ -37,7 +37,7 @@ class InterviewController extends Controller
     public function conductAction(Request $request, Application $application)
     {
         $department = $this->getUser()->getDepartment();
-        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByDepartment($department);
+        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findActiveByDepartment($department);
 
         if ($this->getUser() === $application->getUser()) {
             return $this->render('error/control_panel_error.html.twig', array('error' => 'Du kan ikke intervjue deg selv'));
