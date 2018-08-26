@@ -85,8 +85,9 @@ class GeoLocationTest extends TestCase
 
         $expected = 417389.42572204565;
         $actual   = $this->geoLocation->distance($fromLat, $fromLon, $toLat, $toLon);
+        $precision = 0.0001;
 
-        $this->assertEquals($expected, $actual);
+        $this->assertLessThan($precision, abs($expected - $actual));
     }
 
     public function testFindDepartmentClosestTo()
