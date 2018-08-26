@@ -12,12 +12,16 @@ class HomeController extends Controller
 {
     public function showAction()
     {
+        $geoLocation = $this->get('app.geolocation');
         $assistantsCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findAssistants());
         $teamMembersCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findTeamMembers());
         $articles = $this->getDoctrine()->getRepository('AppBundle:Article')->findStickyAndLatestArticles();
 
         $departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findAll();
-        $closestDepartment = $this->get('app.geolocation')->findNearestDepartment($departments);
+        $departmentsWithActiveAdmission = $this->getDoctrine()->getRepository('AppBundle:Department')->findAllWithActiveAdmission();
+        $departmentsWithActiveAdmission = $geoLocation->sortDepartmentsByDistanceFromClient($departmentsWithActiveAdmission);
+        $closestDepartment = $geoLocation->findNearestDepartment($departments);
+        $ipWasLocated = $geoLocation->findCoordinatesOfCurrentRequest();
 
         $femaleAssistantCount = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->numFemale();
         $maleAssistantCount = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->numMale();
@@ -27,6 +31,8 @@ class HomeController extends Controller
             'teamMemberCount' => $teamMembersCount + 160, // + Estimated number of team members not registered in website
             'femaleAssistantCount' => $femaleAssistantCount,
             'maleAssistantCount' => $maleAssistantCount,
+            'ipWasLocated' => $ipWasLocated,
+            'departmentsWithActiveAdmission' => $departmentsWithActiveAdmission,
             'closestDepartment' => $closestDepartment,
             'news' => $articles,
         ]);

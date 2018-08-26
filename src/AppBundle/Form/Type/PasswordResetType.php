@@ -5,6 +5,8 @@ namespace AppBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PasswordResetType extends AbstractType
@@ -27,6 +29,10 @@ class PasswordResetType extends AbstractType
             ->add('email', EmailType::class, array(
                 'label' => 'E-post',
                 'mapped' => false,
+                'constraints' => array(
+                    new NotBlank(),
+                    new Valid(),
+                )
             ));
     }
 }

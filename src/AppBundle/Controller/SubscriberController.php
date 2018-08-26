@@ -99,7 +99,7 @@ class SubscriberController extends Controller
 
             $this->addFlash('admission-notice', 'Takk for at du meldte deg på '.$newsletter->getName().'! '.$subscriber->getEmail().' ble registrert');
 
-            return $this->redirectToRoute('admission_show_specific_department', array('id' => $department->getId()));
+            return $this->redirectToRoute('admission_show_by_city_case_insensitive', array('city' => $department));
         }
 
         return $this->render('newsletter/subscribe_form.html.twig', array(

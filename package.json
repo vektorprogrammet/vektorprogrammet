@@ -31,8 +31,8 @@
     "gulp-uglify": "^1.5.1"
   },
   "scripts": {
-    "test": "./bin/phpunit --configuration app/phpunit.xml.dist",
-    "test:win": ".\\bin\\phpunit --configuration app/phpunit.xml.dist",
+    "test": "./bin/phpunit --configuration app/phpunit.xml.dist --testsuite Project",
+    "test:win": ".\\bin\\phpunit --configuration app/phpunit.xml.dist --testsuite Project",
     "setup": "php ./composer.phar install -n && npm install && npm run setup:scheduling && npm run build:dev && php app/console doctrine:schema:drop --force --env=dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:schema:update --force --env=dev && php app/console doctrine:fixtures:load --env=dev -n",
     "setup:win": "php .\\composer.phar install -n && npm install && npm run setup:scheduling:win && npm run build:dev && php app/console doctrine:schema:drop --force --env=dev && php app/console doctrine:schema:create --env=dev && php app/console doctrine:schema:update --force --env=dev && php app/console doctrine:fixtures:load --env=dev -n",
     "setup:scheduling": "cd src/AppBundle/AssistantScheduling/Webapp && npm install",

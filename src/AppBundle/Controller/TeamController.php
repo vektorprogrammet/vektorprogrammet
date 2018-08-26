@@ -20,6 +20,15 @@ class TeamController extends Controller
         ));
     }
 
+    public function showByDepartmentAndTeamAction($departmentCity, $teamName)
+    {
+        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByCityAndName($departmentCity, $teamName);
+        if (count($teams) !== 1) {
+            throw new NotFoundHttpException('Team not found');
+        }
+        return $this->showAction($teams[0]);
+    }
+
     public function indexAction()
     {
         return $this->render('team/index.html.twig');

@@ -34,14 +34,19 @@ class Gmail extends GoogleService implements MailerInterface
         if (array_search('SENT', $res->getLabelIds()) !== false && !$disableLogging) {
             $this->logger->info("Email sent to {$this->recipientsToHeader($message->getTo())}: `{$message->getSubject()}`");
         } else {
-            $this->logger->notice("Failed to send email to {$this->recipientsToHeader($message->getTo())}: `{$message->getSubject()}`");
+            $this->logger->notice(
+                "Failed to send email to {$this->recipientsToHeader($message->getTo())}: `{$message->getSubject()}`\n".
+                "```".
+                implode(", ", $res->getLabelIds()).
+                "```"
+            );
         }
     }
 
     private function SwiftMessageToGmailMessage(\Swift_Message $message)
     {
         $subject = $message->getSubject();
-        $body = $message->getBody();
+        $body = $this->encodeBody($message->getBody());
         $from = $this->recipientsToHeader($message->getFrom());
         $to = $this->recipientsToHeader($message->getTo());
         $replyTo = $this->recipientsToHeader($message->getReplyTo());
@@ -94,6 +99,16 @@ class Gmail extends GoogleService implements MailerInterface
         }
 
         return $header;
+    }
+
+    private function encodeBody($body)
+    {
+        $body = str_replace("src=\"", "src=3D\"", $body);
+        $body = str_replace("src='", "src=3D'", $body);
+        $body = str_replace("href=\"", "href=3D\"", $body);
+        $body = str_replace("href='", "href=3D'", $body);
+
+        return $body;
     }
 
     /**

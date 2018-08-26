@@ -101,6 +101,10 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application3->setPreferredGroup('Bolk 1');
         $application3->setDoublePosition(true);
         $application3->setTeamInterest(true);
+        $application3->setPotentialTeams(array(
+            $this->getReference('team-1'),
+            $this->getReference('team-2'),
+        ));
 
         $manager->persist($application3);
 
@@ -117,6 +121,8 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $interview4->setInterviewer($this->getReference('user-2'));
         $interview4->setInterviewSchema($this->getReference('ischema-1'));
         $interview4->setUser($this->getReference('user-13'));
+        $application4->setTeamInterest(true);
+        $application4->setPotentialTeams(array($this->getReference('team-1')));
         $application4->setInterview($interview4);
 
         // Create answer objects for all the questions in the schema
@@ -266,6 +272,9 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $this->setReference('application-0', $application0);
         $this->setReference('application-1', $application1);
         $this->setReference('application-2', $application2);
+
+        $this->getReference('team-1')->setPotentialMembers(array($application3, $application4));
+        $this->getReference('team-2')->setPotentialMembers(array($application3));
 
         $manager->flush();
     }

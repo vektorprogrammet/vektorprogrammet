@@ -120,6 +120,7 @@ class InterviewManager
                     array('message' => $data['message'],
                         'datetime' => $data['datetime'],
                         'room' => $data['room'],
+                        'campus' => $data['campus'],
                         'mapLink' => $data['mapLink'],
                         'fromName' => $interview->getInterviewer()->getFirstName().' '.$interview->getInterviewer()->getLastName(),
                         'fromMail' => $data['from'],
@@ -192,6 +193,7 @@ Vennligst gi beskjed til meg hvis tidspunktet ikke passer.";
         return array(
             'datetime' => $interview->getScheduled(),
             'room' => $interview->getRoom(),
+            'campus' => $interview->getCampus(),
             'mapLink' => $interview->getMapLink(),
             'message' => $message,
             'from' => $interview->getInterviewer()->getEmail(),

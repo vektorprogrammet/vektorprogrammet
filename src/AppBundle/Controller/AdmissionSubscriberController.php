@@ -75,7 +75,7 @@ class AdmissionSubscriberController extends Controller
     }
 
     /**
-     * @Route("/opptak/notification/unsubscribe/{code}", name="admission_unsibscribe")
+     * @Route("/opptak/notification/unsubscribe/{code}", name="admission_unsubscribe")
      * @param string $code
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse

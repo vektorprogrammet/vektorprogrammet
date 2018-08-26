@@ -4,9 +4,10 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\AdmissionSubscriber;
+use AppBundle\Entity\Application;
 use AppBundle\Entity\Semester;
 
-class AdmissionSubscriberStatistics
+class AdmissionStatistics
 {
     /**
      * @param AdmissionSubscriber[] $subscribers
@@ -16,11 +17,23 @@ class AdmissionSubscriberStatistics
      */
     public function generateGraphDataFromSubscribersInSemester($subscribers, Semester $semester)
     {
-        $subData = $this->initializeSubscriberData($semester);
+        $subData = $this->initializeDataArray($semester);
         return $this->populateSubscriberDataWithSubscribers($subData, $subscribers);
     }
 
-    private function initializeSubscriberData(Semester $semester)
+    /**
+     * @param Application[] $applications
+     * @param Semester $semester
+     *
+     * @return array
+     */
+    public function generateGraphDataFromApplicationsInSemester($applications, Semester $semester)
+    {
+        $appData = $this->initializeDataArray($semester);
+        return $this->populateApplicationDataWithApplications($appData, $applications);
+    }
+
+    private function initializeDataArray(Semester $semester)
     {
         $subData = [];
 
@@ -36,6 +49,26 @@ class AdmissionSubscriberStatistics
         }
 
         return $subData;
+    }
+
+    /**
+     * @param array $appData
+     * @param Application[] $applications
+     *
+     * @return array
+     */
+    private function populateApplicationDataWithApplications($appData, $applications)
+    {
+        foreach ($applications as $application) {
+            $date = $application->getCreated()->format('Y-m-d');
+            if (!isset($appData[$date])) {
+                $appData[$date] = 0;
+            }
+            $appData[$date]++;
+        }
+        ksort($appData);
+
+        return $appData;
     }
 
     /**

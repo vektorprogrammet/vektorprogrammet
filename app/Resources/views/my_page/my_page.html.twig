@@ -1,0 +1,48 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="content">
+            <header class="row page-header">
+                <div class="col-12 text-center">
+                    <h1 class="mb-0">Min side</h1>
+                    <img class="profile-photo rounded-circle mt-4 mb-3"
+                         src="{{ asset(app.user.picturePath | imagine_filter('profile_img_small')) }}">
+                    <p class="fs-16 mb-0">Du er logget inn som</p>
+                    <p class="mt-0 text-bold">{{ app.user }}</p>
+                </div>
+            </header>
+        </div>
+    </div>
+    {% if active_application %}
+        <section class="container">
+            <div class="row">
+                {% if app.user.isActiveAssistant %}
+                    <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                        {% include 'my_page/my_partners.html.twig' with {application: active_application} %}
+                    </div>
+                {% elseif app.user.hasBeenAssistant %}
+                    <div class="col-lg-3"></div>
+                {% elseif not active_application.interview %}
+                    <div class="col-lg-3"></div>
+                {% elseif active_application.interview.interviewed %}
+                    <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                        {% include 'my_page/interview_result.html.twig' with {application: active_application} %}
+                    </div>
+                {% elseif active_application.interview.interviewStatus == 0 %}
+                    <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                        {% include 'my_page/interview_invitation.html.twig' with {interview: active_application.interview} %}
+                    </div>
+                {% elseif active_application.interview.interviewStatus == 1 %}
+                    <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                        {% include 'my_page/interview_description.html.twig' with {interview: active_application.interview} %}
+                    </div>
+                {% else %}
+                    <div class="col-lg-3"></div>
+                {% endif %}
+                <div class="col-12 col-lg-6">
+                    {% include 'my_page/applications.html.twig' with {application: active_application} %}
+                </div>
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}

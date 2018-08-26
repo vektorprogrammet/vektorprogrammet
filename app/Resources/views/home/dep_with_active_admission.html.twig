@@ -4,7 +4,7 @@
         <h4>Følgende avdelinger søker nå nye vektorassistenter:</h4>
         <h5>
             {% for department in departments %}
-                <li>&bull;<a href="{{ path('admission_show_specific_department', {'id': department.id}) }}">
+                <li>&bull;<a href="{{ path('admission_show_by_city_case_insensitive', {'city': department}) }}">
                         {{ department.shortName }}</a>
                 </li>
             {% endfor %}

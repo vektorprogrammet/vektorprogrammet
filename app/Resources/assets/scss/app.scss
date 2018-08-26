@@ -63,6 +63,10 @@ strong strong {
   color: $color-devil;
 }
 
+.text-default {
+  color: #333;
+}
+
 .content {
   display: block;
   margin: 0 auto;
@@ -76,6 +80,18 @@ strong strong {
 
 .text-center {
   text-align: center;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+.text-italic {
+  font-style: italic;
+}
+
+.text-line-through {
+  text-decoration: line-through;
 }
 
 .AlignLeft {
@@ -96,7 +112,7 @@ strong strong {
 
 .page-header {
   margin-top: 50px;
-  margin-bottom: 110px;
+  margin-bottom: 100px;
 
   h1 {
     text-align: center;
@@ -226,4 +242,12 @@ strong strong {
   padding: 10px;
   border-radius: 5px;
   border: 3px solid #fff3cd;
+}
+
+.fs-14, .fs-14 p {
+  font-size: 14px !important;
+}
+
+.fs-16, .fs-16 p {
+  font-size: 16px !important;
 }

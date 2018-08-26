@@ -27,7 +27,7 @@ class PasswordResetController extends Controller
         $form->handleRequest($request);
 
         //Checks if the form is valid
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
             $passwordReset = $this->get('app.password_manager')->createPasswordResetEntity($email);
 

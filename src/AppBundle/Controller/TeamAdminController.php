@@ -181,6 +181,10 @@ class TeamAdminController extends Controller
         // Create a new Team entity
         $team = new Team();
 
+        // Set the teams department to the department sent in by the request
+        // Note: the team object is not valid without a department
+        $team->setDepartment($department);
+
         // Create a new formType with the needed variables
         $form = $this->createForm(new CreateTeamType(), $team);
 
@@ -188,8 +192,6 @@ class TeamAdminController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            // Set the teams department to the department sent in by the request
-            $team->setDepartment($department);
             //Don't persist if the preview button was clicked
             if (!$form->get('preview')->isClicked()) {
                 // Persist the team to the database

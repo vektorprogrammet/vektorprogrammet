@@ -100,6 +100,15 @@ class AvailabilityFunctionalTest extends WebTestCase
             array('/nyheter'),
             array('/nyheter/ntnu'),
             array('/nyhet/1'),
+            array('/profile/1'),
+            array('/opptak'),
+            array('/opptak/NTNU'),
+            array('/avdeling/NTNU'),
+            array('/opptak/avdeling/1'),
+            array('/opptak/Bergen'),
+            array('/opptak/ås'),
+            array('/avdeling/Trondheim'),
+            array('/avdeling/ås'),
         );
     }
 
@@ -107,7 +116,7 @@ class AvailabilityFunctionalTest extends WebTestCase
     {
         return array(
             array('/profile'),
-            array('/profile/1'),
+            array('/min-side'),
         );
     }
 
@@ -127,6 +136,7 @@ class AvailabilityFunctionalTest extends WebTestCase
             array('/kontrollpanel'),
             array('/kontrollpanel/undersokelse/admin'),
             array('/kontrollpanel/undersokelse/opprett'),
+            array('/kontrollpanel/stand'),
         );
     }
 }

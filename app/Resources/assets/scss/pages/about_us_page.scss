@@ -1,7 +1,11 @@
 .about-us-page {
   section {
-    margin-top: 130px;
-    margin-bottom: 130px;
+    margin-top: 125px;
+    margin-bottom: 125px;
+    @media (max-width: 1920px) {
+      margin-top: 100px;
+      margin-bottom: 100px;
+    }
     @media (max-width: 766px) {
       margin-top: 50px;
       margin-bottom: 50px;

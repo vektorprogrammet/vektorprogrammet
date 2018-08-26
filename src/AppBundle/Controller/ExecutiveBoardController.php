@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\CreateExecutiveBoardType;
 use AppBundle\Form\Type\CreateExecutiveBoardMembershipType;
-use AppBundle\Entity\ExecutiveBoard;
 use AppBundle\Entity\ExecutiveBoardMembership;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -133,21 +132,19 @@ class ExecutiveBoardController extends Controller
      */
     public function editMemberHistory(Request $request, ExecutiveBoardMembership $member)
     {
-        $em = $this->getDoctrine()->getManager();
+        $user = $member->getUser(); // Store the $user object before the form touches our $member object with spooky user data
+        $form = $this->createForm(new CreateExecutiveBoardMembershipType($user->getDepartment()), $member);
 
-        $form = $this->createForm(new CreateExecutiveBoardMembershipType($member->getUser()->getDepartment()), $member);
-        $user = $member->getUser();
-        $form->handleRequest($request); // Sets user to null
-        $member->setUser($user);
+        $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($member);
             $em->flush();
             return $this->redirectToRoute('executive_board_show');
         }
 
-        $form->remove('user');
-        $memberName = $member->getUser()->getFullName();
+        $memberName = $user->getFullName();
         return $this->render("executive_board/member.html.twig", array(
             'heading' => "Rediger medlemshistorikken til $memberName",
             'form' => $form->createView(),

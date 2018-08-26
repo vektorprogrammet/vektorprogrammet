@@ -1,0 +1,32 @@
+<div class="card text-center">
+    <div class="card-body">
+        <h2 class="text-dark-blue">Invitasjon til intervju</h2>
+        {% include 'my_page/interview_info.html.twig' %}
+
+        <div>
+            <form method="POST"
+                  action="{{ path('interview_accept_by_response', {responseCode:interview.responseCode}) }}">
+                <button class="btn btn-md btn-success my-4">Godta tidspunkt</button>
+            </form>
+
+            <p>
+                <small class="text-bold">Hvis tidspunktet ikke passer, eller hvis du ønsker å kansellere intervjuet,
+                    trykk
+                    på:
+                </small>
+            </p>
+
+            <div class="d-flex justify-content-center">
+                <form method="POST"
+                      action="{{ path('interview_request_new_time_by_response', {responseCode:interview.responseCode}) }}">
+                    <button class="btn btn-link btn-sm">Be om ny tid</button>
+                </form>
+                <form method="POST"
+                      action="{{ path('interview_cancel_by_response', {responseCode:interview.responseCode}) }}"
+                      onsubmit="return confirm('Er du sikker på at du vil kansellere intervjuet?');">
+                    <button class="btn btn-sm btn-link ml-3 text-danger">Kanseller</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

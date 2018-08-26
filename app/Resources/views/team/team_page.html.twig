@@ -39,19 +39,14 @@
             <section class="team-members">
                 {% for user in team.activeUsers | team_position_sort(team) %}
                     <div class="team-member mx-2 my-3 mx-sm-4">
-                        {% if is_granted_assistant() %}
-                            <a href="{{ path('specific_profile', { 'id': user.id }) }}"><img
-                                        class="img-fluid rounded-circle mb-2 mb-sm-4 profile-photo"
-                                        src="{{ asset(user.picturePath | imagine_filter('profile_img_small')) }}"
-                                        alt="{{ user }}"></a>
-                            <h5 class="m-0">
-                                <a href="{{ path('specific_profile', { 'id': user.id }) }}">{{ user }}</a>
-                            </h5>
-                        {% else %}
-                            <img class="img-fluid rounded-circle mb-2 mb-sm-4 profile-photo"
-                                 src="{{ asset(user.picturePath | imagine_filter('profile_img_small')) }}" alt="{{ user }}">
-                            <h5 class="m-0">{{ user }}</h5>
-                        {% endif %}
+                        <a href="{{ path('specific_profile', { 'id': user.id }) }}"><img
+                                    class="img-fluid rounded-circle mb-2 mb-sm-4 profile-photo"
+                                    src="{{ asset(user.picturePath | imagine_filter('profile_img_small')) }}"
+                                    alt="{{ user }}"></a>
+
+                        <h5 class="m-0">
+                            <a href="{{ path('specific_profile', { 'id': user.id }) }}">{{ user }}</a>
+                        </h5>
 
                         <p class="position m-0">
                             {% for membership in user.activeMemberships %}

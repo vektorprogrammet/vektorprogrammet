@@ -31,6 +31,14 @@ class DepartmentRepository extends EntityRepository
         return $departments;
     }
 
+    public function findAllWithActiveAdmission()
+    {
+        return array_filter($this->findAll(), function (Department $department) {
+            $semester = $department->getCurrentSemester();
+            return $semester !== null && $semester->hasActiveAdmission();
+        });
+    }
+
     public function findDepartmentByShortName($shortName)
     {
         return $this->getEntityManager()->createQuery('
@@ -61,5 +69,15 @@ class DepartmentRepository extends EntityRepository
             ->where('Department.active = true')
             ->getQuery()
             ->getResult();
+    }
+
+    public function findOneByCityCaseInsensitive($city)
+    {
+        return $this->createQueryBuilder('Department')
+            ->select('Department')
+            ->where('upper(Department.city) = upper(:city)')
+            ->setParameter('city', $city)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

@@ -1,0 +1,41 @@
+<h1>Teaminteresse i Vektorprogrammet</h1>
+
+<small>Denne e-posten er et automatisk svar på din innmeldte teaminteresse.</small>
+
+<p>
+    Hei {{ teamInterest.name }}!<br>
+    Så hyggelig at du er interessert i teamvervene i Vektorprogrammet!<br>
+    Som teammedlem får du bli med i en sammensveiset og sosial gjeng med studenter fra alle mulige linjer og trinn. <br>
+    Vi arrangerer mange sosiale sammenkomster for teamene våre, som fester, hytteturer, tacokvelder, julebord osv. <br>
+    I tillegg byr vervene på verdifull erfaring som du kan ta med deg videre i både studier og arbeidsliv. <br>
+</p>
+<p>
+    Nedenfor er en liste med teamene du er interessert i. <br>
+    Du kan trykke inn på lenkene for å lese mer om hvert av dem (og ikke minst søke!). <br>
+    Lederne i de respektive teamene vil kontakte deg med videre informasjon. <br>
+</p>
+
+<ul>
+    {% for team in teamInterest.potentialTeams %}
+        <li>
+            <h3>{{ team.name }}</h3>
+            {{ team.shortDescription }}<br>
+            <br>
+            Link til teamet:
+            <a href="{{ url('team_page_department_team', {departmentCity: team.department, teamName: team.name }) }}">
+                {{ url('team_page_department_team', {departmentCity: team.department, teamName: team.name }) }}
+            </a><br>
+            E-post: <a href="mailto:{{ team.email }}">{{ team.email }}</a>
+        </li>
+    {% endfor %}
+</ul>
+
+<p>
+    Hvis du bestemmer deg for å søke, kan du gjøre dette via lenkene over. Vi håper du vil være med!
+</p>
+
+<br>
+<p>Med vennlig hilsen Vektorprogrammet {{ teamInterest.department }}</p>
+<a href="{{ url('home') }}">
+    <img src="{{ absolute_url(asset('images/vektor.png')) }}" alt="{{ url('home') }}">
+</a>

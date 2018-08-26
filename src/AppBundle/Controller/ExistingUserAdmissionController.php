@@ -26,15 +26,18 @@ class ExistingUserAdmissionController extends Controller
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
         $admissionManager = $this->get('app.application_admission');
-
         if ($res = $admissionManager->renderErrorPage($user)) {
             return $res;
         }
+
+        $department = $user->getDepartment();
+        $teams = $em->getRepository('AppBundle:Team')->findByDepartment($department);
 
         $application = $admissionManager->createApplicationForExistingAssistant($user);
 
         $form = $this->createForm(new ApplicationExistingUserType(), $application, array(
             'validation_groups' => array('admission_existing'),
+            'teams' => $teams,
         ));
         $form->handleRequest($request);
 
@@ -43,8 +46,9 @@ class ExistingUserAdmissionController extends Controller
             $em->flush();
 
             $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+            $this->addFlash("success", "Søknad mottatt!");
 
-            return $this->redirectToRoute('application_confirmation');
+            return $this->redirectToRoute('my_page');
         }
 
         $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($user->getDepartment());

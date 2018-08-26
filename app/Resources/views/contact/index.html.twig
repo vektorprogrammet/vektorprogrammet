@@ -110,7 +110,7 @@
                                             {% for team in department.teams if team.isActive %}
                                                 <div class="list-group-item">
                                                     <a class="text-dark-blue"
-                                                       href={{ path('team_page', {'id': team.id}) }}>
+                                                       href="{{ path('team_page_department_team', {departmentCity: team.department, teamName: team.name}) }}">
                                                         <h5 class="mb-1">{{ team.name }}</h5>
                                                     </a>
                                                     <p class="mb-0"><a
@@ -151,14 +151,10 @@
                                     <div class="list-group list-group-flush">
                                         {% for user in board.activeUsers | team_position_sort(board) %}
                                             <div class="list-group-item">
-                                                {% if is_granted_assistant() %}
-                                                    <a class="text-dark-blue"
-                                                       href={{ path('specific_profile', {'id': user.id}) }}>
-                                                        <h5 class="mb-1">{{ user.fullName }}</h5>
-                                                    </a>
-                                                {% else %}
+                                                <a class="text-dark-blue"
+                                                   href={{ path('specific_profile', {'id': user.id}) }}>
                                                     <h5 class="mb-1">{{ user.fullName }}</h5>
-                                                {% endif %}
+                                                </a>
                                                 <p class="mb-0 text-devil">
                                                     {% for membership in user.activeMemberships %}
                                                         {{ membership.positionName }}{% if not loop.last %},{% endif %}

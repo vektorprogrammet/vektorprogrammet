@@ -81,7 +81,7 @@ class InterviewSubscriber implements EventSubscriberInterface
         // Send email to the interviewee with a summary of the interview
         $emailMessage = \Swift_Message::newInstance()
             ->setSubject('Vektorprogrammet intervju')
-            ->setFrom(array('rekruttering@vektorprogrammet.no' => 'Vektorprogrammet'))
+            ->setReplyTo(array($interviewer->getDepartment()->getEmail() => 'Vektorprogrammet'))
             ->setTo($application->getUser()->getEmail())
             ->setReplyTo($interviewer->getEmail())
             ->setBody($this->twig->render('interview/interview_summary_email.html.twig', array(

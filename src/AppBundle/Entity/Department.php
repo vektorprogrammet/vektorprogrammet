@@ -4,11 +4,13 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="department")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\DepartmentRepository")
+ * @UniqueEntity(fields={"city"})
  */
 class Department
 {
@@ -44,7 +46,7 @@ class Department
     protected $address;
 
     /**
-     * @ORM\Column(type="string", length=250, nullable=true)
+     * @ORM\Column(type="string", length=250, unique=true)
      * @Assert\NotBlank
      */
     private $city;
@@ -275,7 +277,7 @@ class Department
 
     public function __toString()
     {
-        return (string) $this->getShortName();
+        return (string) $this->getCity();
     }
 
     /**

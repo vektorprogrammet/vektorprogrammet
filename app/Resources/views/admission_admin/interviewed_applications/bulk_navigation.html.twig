@@ -15,7 +15,7 @@
                 {% endif %}
                 {% if is_granted_team_leader() and department == semester.department %}
                     <div class="small-3 columns"style="padding-left: 15px">
-                        <a class="button tiny" href="{{ path('admissionadmin_team_interest' , { 'semester': semester.id })}}">Team-interesse</a>
+                        <a class="button tiny" href="{{ path('admissionadmin_team_interest_by_semester' , { 'semester': semester.id })}}">Team-interesse</a>
                     </div>
                 {% endif %}
             </div>

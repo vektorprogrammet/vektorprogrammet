@@ -5,6 +5,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Department;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
+use Symfony\Component\Debug\Exception\ContextErrorException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -14,20 +15,30 @@ class GeoLocation
     private $departmentRepo;
     private $session;
     private $requestStack;
+    private $logger;
+    /**
+     * @var array
+     */
+    private $ignoredAsns;
 
     /**
      * GeoLocation constructor.
      *
      * @param string $ipinfoToken
+     * @param array $ignoredAsns
      * @param EntityManagerInterface $em
      * @param Session $session
+     * @param RequestStack $requestStack
+     * @param LogService $logger
      */
-    public function __construct(string $ipinfoToken, EntityManagerInterface $em, Session $session, RequestStack $requestStack)
+    public function __construct(string $ipinfoToken, array $ignoredAsns, EntityManagerInterface $em, Session $session, RequestStack $requestStack, LogService $logger)
     {
         $this->ipinfoToken = $ipinfoToken;
         $this->departmentRepo = $em->getRepository('AppBundle:Department');
         $this->session = $session;
         $this->requestStack = $requestStack;
+        $this->logger = $logger;
+        $this->ignoredAsns = $ignoredAsns;
     }
 
     /**
@@ -69,14 +80,23 @@ class GeoLocation
         return $closestDepartment;
     }
 
+    public function findCoordinatesOfCurrentRequest()
+    {
+        $ip = $this->clientIp();
+        return $this->findCoordinates($ip);
+    }
+
     /**
      * @param Department[] $departments
-     * @return array
+     * @return Department[] $departments
      */
     public function sortDepartmentsByDistanceFromClient($departments)
     {
-        //$ip = '193.157.161.108'; // UIO
-        //$ip = '158.39.3.40'; //NMBU
+//        $ip = '158.39.3.40'; // Oslo
+//        $ip = '146.185.181.87'; // Server location (Amsterdam)
+//        $ip = '129.241.56.201'; // Trondheim
+//        $ip = '46.230.133.85'; // Mobile (Oslo)
+
         $ip = $this->clientIp();
         $coords = $this->findCoordinates($ip);
 
@@ -113,14 +133,34 @@ class GeoLocation
             return $coords;
         }
 
-        $response = file_get_contents("http://ipinfo.io/$ip?token={$this->ipinfoToken}");
-        $location = json_decode($response, true);
-        if (!isset($location['loc'])) {
+        try {
+            $rawResponse = file_get_contents("http://ipinfo.io/$ip?token={$this->ipinfoToken}");
+            $response = json_decode($rawResponse, true);
+        } catch (ContextErrorException $exception) {
+            $this->logger->warning("Could not get location from 
+            ipinfo.io. The page returned an error.\nError:\n
+            {$exception->getMessage()}");
             return null;
         }
 
-        $coords = explode(',', $location['loc']);
+        if (!isset($response['org'])) {
+            $this->logger->warning("Could not get org from 
+            ipinfo.io.\nResponse:\n$rawResponse");
+            return null;
+        }
+        if ($this->ipIsFromAnIgnoredAsn($response)) {
+            return null;
+        }
+        if (!isset($response['loc'])) {
+            $this->logger->warning("Could not get location from 
+            ipinfo.io.\nResponse:\n$rawResponse");
+            return null;
+        }
+
+        $coords = explode(',', $response['loc']);
         if (count($coords) !== 2) {
+            $this->logger->warning("Could not find lat/lon in location 
+                object. \nLocation:\n$response");
             return null;
         }
 
@@ -160,5 +200,20 @@ class GeoLocation
         } else {
             return null;
         }
+    }
+
+    private function ipIsFromAnIgnoredAsn($response) : bool
+    {
+        if (!isset($response['org'])) {
+            return false;
+        }
+
+        foreach ($this->ignoredAsns as $asn) {
+            if (strpos($response['org'], $asn) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

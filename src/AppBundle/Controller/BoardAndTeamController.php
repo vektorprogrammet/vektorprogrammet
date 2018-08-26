@@ -10,6 +10,7 @@ class BoardAndTeamController extends Controller
     {
         // Find all departments
         $departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findActive();
+        $departments = $this->get('app.geolocation')->sortDepartmentsByDistanceFromClient($departments);
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
 
         $numberOfTeams = 0;

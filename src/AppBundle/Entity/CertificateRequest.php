@@ -19,6 +19,7 @@ class CertificateRequest
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="certificateRequests")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      **/
     protected $user;
 

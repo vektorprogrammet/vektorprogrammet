@@ -4,12 +4,17 @@ namespace AppBundle\Entity;
 
 use AppBundle\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Table(name="team")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\TeamRepository")
+ * @UniqueEntity(
+ *     fields={"department", "name"},
+ *     message="Et team med dette navnet finnes allerede i avdelingen.",
+ * )
  */
 class Team implements TeamInterface
 {
@@ -37,6 +42,7 @@ class Team implements TeamInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Department", inversedBy="teams")
+     * @Assert\NotNull(message="Avdeling kan ikke være null")
      **/
     protected $department;
 
@@ -55,6 +61,20 @@ class Team implements TeamInterface
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $acceptApplication;
+
+    /**
+     * Applications with team interest
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Application", mappedBy="potentialTeams")
+     */
+    private $potentialMembers;
+
+    /**
+     * TeamInterest entities not corresponding to any Application
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\TeamInterest", mappedBy="potentialTeams")
+     */
+    private $potentialApplicants;
 
     /**
      * @ORM\Column(type="boolean", options={"default"=true})
@@ -104,6 +124,7 @@ class Team implements TeamInterface
     public function __construct()
     {
         $this->active = true;
+        $this->teamMemberships = [];
     }
 
     public function __toString()
@@ -282,5 +303,50 @@ class Team implements TeamInterface
         }
 
         return $activeUsers;
+    }
+
+    /**
+     * @return Application[]
+     */
+    public function getPotentialMembers()
+    {
+        return $this->potentialMembers;
+    }
+
+    /**
+     * @param Application[] $potentialMembers
+     */
+    public function setPotentialMembers($potentialMembers)
+    {
+        $this->potentialMembers = $potentialMembers;
+    }
+
+    /**
+     * @return TeamInterest[]
+     */
+    public function getPotentialApplicants()
+    {
+        return $this->potentialApplicants;
+    }
+
+    /**
+     * @param TeamInterest[] $potentialApplicants
+     *
+     * @return Team
+     */
+    public function setPotentialApplicants($potentialApplicants)
+    {
+        $this->potentialApplicants = $potentialApplicants;
+
+        return $this;
+    }
+
+    public function getNumberOfPotentialMembersAndApplicantsInSemester($semester)
+    {
+        $array = array_merge($this->potentialApplicants->toArray(), $this->potentialMembers->toArray());
+        $array = array_filter($array, function ($a) use ($semester) {
+            return $a->getSemester() === $semester;
+        });
+        return count($array);
     }
 }

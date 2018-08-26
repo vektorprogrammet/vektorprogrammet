@@ -15,13 +15,52 @@ use Symfony\Component\Routing\Annotation\Route;
 class AssistantController extends Controller
 {
     /**
-     * @Route("/opptak")
-     * @Route("/opptak/avdeling/{id}", name="admission_show_specific_department",
+     * @deprecated This route is only here to serve old urls (e.g. in old emails)
+     *
+     * @Route("/opptak/{shortName}",
+     *     requirements={"shortName"="(NTNU|NMBU|UiB|UIB|UiO|UIO)"})
+     * @Route("/avdeling/{shortName}",
+     *     requirements={"shortName"="(NTNU|NMBU|UiB|UIB|UiO|UIO)"})
+     * @Route("/opptak/avdeling/{id}",
      *     requirements={"id"="\d+"})
-     * @Route("/opptak/{shortName}", name="admission_show_by_short_name",
-     *     requirements={"shortName"="\w+"})
-     * @Route("/avdeling/{shortName}", name="admission_show_specific_department_by_name",
-     *     requirements={"shortName"="\w+"})
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param Department $department
+     *
+     * @return Response
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function admissionActionByShortName(Request $request, Department $department)
+    {
+        return $this->indexAction($request, $department);
+    }
+    
+    /**
+     * @Route("/opptak/{city}", name="admission_show_by_city_case_insensitive")
+     * @Route("/avdeling/{city}", name="admission_show_specific_department_by_city_case_insensitive")
+     *
+     * @param Request $request
+     * @param $city
+     *
+     * @return Response
+     */
+    public function admissionActionCaseInsensitive(Request $request, $city)
+    {
+        $city = str_replace(array('æ', 'ø','å'), array('Æ','Ø','Å'), $city); // Make sqlite happy
+        $department = $this->getDoctrine()
+                ->getRepository('AppBundle:Department')
+                ->findOneByCityCaseInsensitive($city);
+        if ($department !== null) {
+            return $this->indexAction($request, $department);
+        } else {
+            throw $this->createNotFoundException("Fant ingen avdeling $city.");
+        }
+    }
+
+    /**
+     * @Route("/opptak")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -33,7 +72,7 @@ class AssistantController extends Controller
      */
     public function admissionAction(Request $request, Department $department = null)
     {
-        return $this->indexAction($request, $department, true);
+        return $this->indexAction($request, $department);
     }
 
     /**
@@ -49,9 +88,14 @@ class AssistantController extends Controller
     {
         $admissionManager = $this->get('app.application_admission');
         $em = $this->getDoctrine()->getManager();
-        $departments = $em->getRepository('AppBundle:Department')->findAll();
-        if (null === $specificDepartment) {
-            $specificDepartment = $this->get('app.geolocation')->findNearestDepartment($departments);
+
+        $departments = $em->getRepository('AppBundle:Department')->findActive();
+        $departments = $this->get('app.geolocation')->sortDepartmentsByDistanceFromClient($departments);
+        $departmentsWithActiveAdmission = $this->get('app.filter_service')->filterDepartmentsByActiveAdmission($departments, true);
+
+        $departmentInUrl = $specificDepartment !== null;
+        if (!$departmentInUrl) {
+            $specificDepartment = $departments[0];
         }
 
         $teams = $em->getRepository('AppBundle:Team')->findByOpenApplicationAndDepartment($specificDepartment);
@@ -97,6 +141,9 @@ class AssistantController extends Controller
 
         return $this->render('assistant/assistants.html.twig', array(
             'specific_department' => $specificDepartment,
+            'department_in_url' => $departmentInUrl,
+            'departments' => $departments,
+            'departmentsWithActiveAdmission' => $departmentsWithActiveAdmission,
             'teams' => $teams,
             'forms' => $formViews,
             'scroll_to_admission_form' => $scrollToAdmissionForm,

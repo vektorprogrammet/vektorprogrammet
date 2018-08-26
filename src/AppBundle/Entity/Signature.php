@@ -38,6 +38,7 @@ class Signature
 
     /**
      * @ORM\OneToOne(targetEntity="User", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $user;
 

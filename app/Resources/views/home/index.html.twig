@@ -11,31 +11,7 @@
 
 {% block body %}
     <div class="container-fluid">
-        {% if closestDepartment.activeAdmission %}
-            <section class="row urgent-box">
-                <div class="main-navigation">
-                    <p>Vektorprogrammet <span id="department-name">{{ closestDepartment }}</span> søker nye assistenter!
-                        <span class="countdown"><span class="cd-number" id="cd-days"></span>d <span class="cd-number"
-                                                                                                    id="cd-hours"></span>t <span
-                                    class="cd-number" id="cd-minutes"></span>m <span class="cd-number"
-                                                                                     id="cd-seconds"></span>s</span>
-                        &#9&#9&#9 igjen av opptaket. <a
-                                href="{{ path('admission_show_by_short_name', {'shortName': closestDepartment }) }}">Søk
-                            nå!</a></p>
-                </div>
-                {% set semester = closestDepartment.currentSemester %}
-                {% if semester is not null and semester.infoMeeting and semester.infoMeeting.showOnPage and semester.infoMeeting.date and date() < date(semester.infoMeeting.date) %}
-                    {% set infoMeeting = closestDepartment.currentSemester.infoMeeting %}
-                    <div class="infomeeting-banner">
-                        Husk infomøte {{ infoMeeting.date|date('d. M')|lower }} kl. {{ infoMeeting.date|date('H:i') }} {% if infoMeeting.room %}i rom  {{ infoMeeting.room }} {% endif %}.
-                        {% if infoMeeting.link %}<a target="_blank" href="{{ infoMeeting.link }}"
-                           onclick="ga('send', 'event', 'Infomøte', 'Les mer - forside', '{{ closestDepartment.currentSemester }}')">
-                            Les mer
-                        </a>{% endif %}
-                    </div>
-                {% endif %}
-            </section>
-        {% endif %}
+        {% include 'home/admission_banner.html.twig' %}
         <section class="row hero">
             <div class="container">
                 <div class="row hero-section">
@@ -153,7 +129,7 @@
 
             var millisUntilAdmission = Math.max(admissionTimeStamp - currentTimeStamp, 0);
 
-            $('#cd-days').html(zeroPad(moment.duration(millisUntilAdmission).days(), 2));
+            $('#cd-days').html(zeroPad(Math.floor(moment.duration(millisUntilAdmission).asDays()), 2));
             $('#cd-hours').html(zeroPad(moment.duration(millisUntilAdmission).hours(), 2));
             $('#cd-minutes').html(zeroPad(moment.duration(millisUntilAdmission).minutes(), 2));
             $('#cd-seconds').html(zeroPad(moment.duration(millisUntilAdmission).seconds(), 2));

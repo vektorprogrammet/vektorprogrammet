@@ -129,7 +129,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
 
         // Assert that we have the correct buttons for superadmin
-        $this->assertEquals(1, $crawler->filter('a.button:contains("NTNU")')->count());
+        $this->assertEquals(1, $crawler->filter('a.button:contains("Trondheim")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Slett")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Fordel")')->count());
 
@@ -140,10 +140,10 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opptak NTNU")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Opptak Trondheim")')->count());
 
         // Assert that we have the correct buttons for superadmin
-        $this->assertEquals(1, $crawler->filter('a.button:contains("NTNU")')->count());
+        $this->assertEquals(1, $crawler->filter('a.button:contains("Trondheim")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Sett opp")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Intervju")')->count());
 
@@ -154,10 +154,10 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opptak NTNU")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Opptak Trondheim")')->count());
 
         // Assert that we have the correct buttons for superadmin
-        $this->assertEquals(1, $crawler->filter('a.button:contains("NTNU")')->count());
+        $this->assertEquals(1, $crawler->filter('a.button:contains("Trondheim")')->count());
         $this->assertGreaterThan(1, $crawler->filter('td>a:contains("Les intervju")')->count());
         $this->assertGreaterThan(1, $crawler->filter('td>a:contains("Slett")')->count());
 
@@ -177,7 +177,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
 
         // Assert that we only have the buttons for admin
-        $this->assertEquals(1, $crawler->filter('a.button:contains("NTNU")')->count());
+        $this->assertEquals(1, $crawler->filter('a.button:contains("Trondheim")')->count());
         $this->assertEquals(2, $crawler->filter('td>a:contains("Fordel")')->count());
 
         // Assigned to interview applications
@@ -190,7 +190,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
 
         // Assert that we only have the buttons for admin
-        $this->assertEquals(1, $crawler->filter('a.button:contains("NTNU")')->count());
+        $this->assertEquals(1, $crawler->filter('a.button:contains("Trondheim")')->count());
         $this->assertGreaterThan(1, $crawler->filter('td>a:contains("Sett opp")')->count());
         $this->assertGreaterThan(1, $crawler->filter('td>a:contains("Intervju")')->count());
 
@@ -201,10 +201,10 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opptak NTNU")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains("Opptak Trondheim")')->count());
 
         // Assert that we only have the buttons for admin
-        $this->assertEquals(1, $crawler->filter('a.button:contains("NTNU")')->count());
+        $this->assertEquals(1, $crawler->filter('a.button:contains("Trondheim")')->count());
         $this->assertEquals(0, $crawler->filter('td>a:contains("Slett")')->count());
         $this->assertGreaterThan(1, $crawler->filter('td>a:contains("Les intervju")')->count());
 

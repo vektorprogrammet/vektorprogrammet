@@ -45,7 +45,7 @@ services:
 
   app.geolocation:
       class: AppBundle\Service\GeoLocation
-      arguments: ['%ipinfo_token%', '@doctrine.orm.entity_manager', '@session', '@request_stack']
+      arguments: ['%ipinfo_token%', '%geo_ignored_asns%', '@doctrine.orm.entity_manager', '@session', '@request_stack', '@app.logger']
 
   app.company_email_maker:
     class: AppBundle\Service\CompanyEmailMaker
@@ -132,13 +132,19 @@ services:
 
   app.application_subscriber:
     class: AppBundle\EventSubscriber\ApplicationSubscriber
-    arguments: ['@app.mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@application.data', '@router', '@app.admission_notifier']
+    arguments: ['@app.mailer', '@twig', '@app.logger', '@app.admission_notifier', '@app.user.registration']
     tags:
       - { name: kernel.event_subscriber }
 
   app.team_application_subscriber:
     class: AppBundle\EventSubscriber\TeamApplicationSubscriber
     arguments: ['@app.mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@router']
+    tags:
+      - { name: kernel.event_subscriber }
+
+  app.team_interest_subscriber:
+    class: AppBundle\EventSubscriber\TeamInterestSubscriber
+    arguments: ['@app.mailer', '@twig','@session' ]
     tags:
       - { name: kernel.event_subscriber }
 
@@ -243,5 +249,11 @@ services:
   app.unique_company_email_validator:
     class: AppBundle\Validator\Constraints\UniqueCompanyEmailValidator
     arguments: ['@doctrine.orm.entity_manager', '@app.google_api']
+    tags:
+        - { name: validator.constraint_validator }
+
+  app.application_email_validator:
+    class: AppBundle\Validator\Constraints\ApplicationEmailValidator
+    arguments: ['@app.application_admission']
     tags:
         - { name: validator.constraint_validator }

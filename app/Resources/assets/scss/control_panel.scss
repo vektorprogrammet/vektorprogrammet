@@ -656,9 +656,8 @@ ul.alternatives {
   display: none;
 }
 
-.team-interest-table {
+.team-interest-user-table {
   padding-top: 25px;
-
 }
 
 #substitute-table {
@@ -882,4 +881,12 @@ button.secretly-not-a-button {
 .my-32px {
   margin-top: 32px!important;
   margin-bottom: 32px!important;
+}
+
+.button-icon-left {
+  margin-right: 6px;
+}
+
+.button-icon-right {
+  margin-left: 6px;
 }

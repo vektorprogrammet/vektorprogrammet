@@ -13,7 +13,36 @@
                 </div>
             </header>
         </div>
-        <section class="container">
+
+        {% if departmentsWithActiveAdmission is not empty %}
+            <div class="content text-center call-to-action jumbotron">
+                <i class="fa fa-info-circle alert-icon text-dark-blue"></i>
+                {% if department_in_url and specific_department in departmentsWithActiveAdmission %}
+                    <p class="text-dark-blue">
+                        Avdeling
+                        <span class="active-admission-departments">
+                            {{ specific_department }}
+                        </span>
+                        har opptak nå!
+                    </p>
+                {% else %}
+                    <p class="text-dark-blue">
+                        Disse avdelingene har opptak nå:
+                        <br class="d-md-none">
+                        <span class="active-admission-departments">
+                            {{ departmentsWithActiveAdmission|join(', ') }}
+                        </span>
+                    </p>
+                {% endif %}
+                <button class="btn btn-md btn-success" onclick="scrollToElement('application')">
+                    Scroll ned for å søke! <i class="fa fa-arrow-down"></i>
+                </button>
+            </div>
+        {% else %}
+            <br>
+        {% endif %}
+
+        <section class="container assistant-perks">
             <div class="row">
                 <div class="blurb col-xs-12 col-md-4">
                     <img src="{{ asset_with_version('images/graduation.svg') }}" alt="CV">
@@ -187,6 +216,11 @@
 
           input.classList.add('is-invalid');
           error.innerHTML = message;
+        }
+        function scrollToElement(elementId) {
+            let selector = '#' + elementId;
+            $('html, body').animate({ scrollTop:  $(selector).offset().top - 50 }, 'slow');
+
         }
     </script>
 {% endblock %}

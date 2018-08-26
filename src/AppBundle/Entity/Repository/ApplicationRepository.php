@@ -37,6 +37,21 @@ class ApplicationRepository extends EntityRepository
             ->getOneOrNullResult();
     }
 
+    /**
+     * @param User $user
+     *
+     * @return Application|null
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findActiveByUser(User $user)
+    {
+        $department = $user->getDepartment();
+        $semester = $department->getCurrentOrLatestSemester();
+
+        return $this->findByUserInSemester($user, $semester);
+    }
+
     public function findEmailsBySemester(Semester $semester)
     {
         $res = $this->createQueryBuilder('application')
@@ -58,7 +73,7 @@ class ApplicationRepository extends EntityRepository
      *
      * @return Application[]
      */
-    public function findByEmailInSemester(string $email, Semester $semester)
+    public function findByEmailInSemester($email, Semester $semester)
     {
         return $this->createQueryBuilder('application')
             ->select('application')
@@ -474,6 +489,37 @@ class ApplicationRepository extends EntityRepository
             ->select('Application')
             ->where('Application.semester = :semester')
             ->andWhere('Application.substitute = TRUE')
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return Application[]
+     */
+    public function findByDepartment(Department $department)
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->join('a.semester', 's')
+            ->where('s.department = :department')
+            ->setParameter('department', $department)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param Semester $semester
+     *
+     * @return Application[]
+     */
+    public function findBySemester(Semester $semester)
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.semester = :semester')
             ->setParameter('semester', $semester)
             ->getQuery()
             ->getResult();

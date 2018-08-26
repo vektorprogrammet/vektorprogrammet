@@ -3,8 +3,10 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
 use AppBundle\Entity\Team;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr;
 
 /**
  * TeamRepository.
@@ -51,5 +53,31 @@ class TeamRepository extends EntityRepository
             ->getScalarResult();
 
         return array_column($result, 'email');
+    }
+
+    public function findByTeamInterestAndSemester(Semester $semester)
+    {
+        return $this->createQueryBuilder('team')
+            ->select('team')
+            ->leftJoin('team.potentialMembers', 'application', Expr\Join::WITH, 'application.semester = :semester')
+            ->leftJoin('team.potentialApplicants', 'potentialApplicant', Expr\Join::WITH, 'potentialApplicant.semester = :semester')
+            ->setParameter('semester', $semester)
+            ->where('application IS NOT NULL')
+            ->orWhere('potentialApplicant IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByCityAndName(string $departmentCity, string $name)
+    {
+        return $this->createQueryBuilder('team')
+            ->select('team')
+            ->join('team.department', 'department')
+            ->where('lower(department.city) = lower(:departmentCity)')
+            ->andWhere('lower(team.name) = lower(:name)')
+            ->setParameter('departmentCity', $departmentCity)
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getResult();
     }
 }

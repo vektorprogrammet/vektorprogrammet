@@ -61,10 +61,16 @@
                     <div class="col-12">
                         <label class="question-label">
                             Kunne du tenke deg å jobbe med organiseringen av Vektorprogrammet?<br>
-                            Dette innebærer et verv i et at Vektorprogrammets team
+                            Dette innebærer et verv i et av Vektorprogrammets team
                         </label>
                         {{ form_widget(form.applicationPractical.teamInterest) }}
                         {{ form_errors(form.applicationPractical.teamInterest) }}
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-12">
+                        {{ form_row(form.applicationPractical.potentialTeams) }}
                     </div>
                 </div>
 

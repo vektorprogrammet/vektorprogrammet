@@ -13,6 +13,7 @@ class ApplicationExistingUserType extends AbstractType
     {
         $builder->add('applicationPractical', new ApplicationPracticalType(), array(
             'data_class' => 'AppBundle\Entity\Application',
+            'teams' => $options['teams'],
         ));
 
         $builder->add('preferredSchool', TextType::class, [
@@ -25,6 +26,7 @@ class ApplicationExistingUserType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Application',
+            'teams' => null,
         ));
     }
 

@@ -222,20 +222,30 @@ class AdmissionAdminController extends Controller
         ));
     }
 
-    public function showTeamInterestAction(Semester $semester)
+    public function showTeamInterestAction(Semester $semester = null)
     {
         $user = $this->getUser();
-        $department = $semester->getDepartment();
+        if ($semester === null) {
+            $department = $user->getDepartment();
+            $semester = $department->getCurrentOrLatestSemester();
+        } else {
+            $department = $semester->getDepartment();
+        }
 
         if (!$this->isGranted(Roles::ADMIN) && $user->getDepartment() !== $department) {
             throw $this->createAccessDeniedException();
         }
 
-        $teamInterest = $this->getDoctrine()->getRepository('AppBundle:Application')->findApplicationByTeamInterestAndSemester($semester);
+        $applicationsWithTeamInterest = $this->getDoctrine()->getRepository('AppBundle:Application')
+            ->findApplicationByTeamInterestAndSemester($semester);
+        $possibleApplicants = $this->getDoctrine()->getRepository('AppBundle:TeamInterest')->findBy(array('semester' => $semester));
+        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByTeamInterestAndSemester($semester);
 
         return $this->render('admission_admin/teamInterest.html.twig', array(
-            'teamInterest' => $teamInterest,
+            'applicationsWithTeamInterest' => $applicationsWithTeamInterest,
+            'possibleApplicants' => $possibleApplicants,
             'semester' => $semester,
+            'teams' => $teams,
         ));
     }
 }

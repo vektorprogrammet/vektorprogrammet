@@ -37,6 +37,15 @@ class Interview
     protected $room;
 
     /**
+    * @ORM\Column(type="string", length=255, nullable=true)
+    * @Assert\Length(
+    *     max=255,
+    *     maxMessage="Campusnavn kan ikke være mer enn 255 tegn"
+    * )
+    */
+    protected $campus;
+
+    /**
      * @ORM\Column(type="string", length=500, nullable=true)
      * @Assert\Length(
      *     max=500,
@@ -58,12 +67,13 @@ class Interview
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="interviews")
-     * @ORM\JoinColumn(name="interviewer_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="interviewer_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $interviewer; // Unidirectional, may turn out to be bidirectional
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     protected $coInterviewer;
 
@@ -91,6 +101,7 @@ class Interview
 
     /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $user;
 
@@ -358,6 +369,25 @@ class Interview
     /**
      * @return string
      */
+    public function getCampus()
+    {
+        return $this->campus;
+    }
+
+    /**
+     * @param string $campus
+     *
+     * @return Interview
+     */
+    public function setCampus($campus)
+    {
+        $this->campus = $campus;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getMapLink()
     {
         return $this->mapLink;
@@ -617,5 +647,13 @@ class Interview
     public function setNewTimeMessage($newTimeMessage)
     {
         $this->newTimeMessage = $newTimeMessage;
+    }
+
+    /**
+     * @return int
+     */
+    public function getInterviewStatus(): int
+    {
+        return $this->interviewStatus;
     }
 }

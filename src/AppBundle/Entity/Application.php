@@ -4,11 +4,12 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use JMS\Serializer\Annotation as JMS;
+use AppBundle\Validator\Constraints as CustomAssert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ApplicationRepository")
  * @ORM\Table(name="application")
+ * @CustomAssert\ApplicationEmail(groups={"admission"})
  */
 class Application
 {
@@ -90,6 +91,7 @@ class Application
 
     /**
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      * @Assert\Valid
      */
     private $user;
@@ -121,6 +123,12 @@ class Application
     private $teamInterest;
 
     /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Team", inversedBy="potentialMembers")
+     */
+    private $potentialTeams;
+
+    /**
+     * @var Interview
      * @ORM\OneToOne(targetEntity="Interview", cascade={"persist", "remove"}, inversedBy="application")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      * @Assert\Valid
@@ -516,5 +524,21 @@ class Application
     public function setPreferredSchool($preferredSchool): void
     {
         $this->preferredSchool = $preferredSchool;
+    }
+
+    /**
+     * @return Team[]
+     */
+    public function getPotentialTeams()
+    {
+        return $this->potentialTeams;
+    }
+
+    /**
+     * @param Team[] $potentialTeams
+     */
+    public function setPotentialTeams($potentialTeams)
+    {
+        $this->potentialTeams = $potentialTeams;
     }
 }

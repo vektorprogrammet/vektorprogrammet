@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use TFox\MpdfPortBundle\Response\PDFResponse;
+use AppBundle\Role\Roles;
 
 class ProfileController extends Controller
 {
@@ -51,14 +52,20 @@ class ProfileController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        // Fetch the assistant history of the user
-        $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
-
         // Find the work history of the user
         $teamMemberships = $em->getRepository('AppBundle:TeamMembership')->findByUser($user);
 
         // Find the executive board history of the user
         $executiveBoardMemberships = $em->getRepository('AppBundle:ExecutiveBoardMembership')->findByUser($user);
+
+        $isGrantedAssistant = ($this->getUser() !== null && $this->get('app.roles')->userIsGranted($this->getUser(), Roles::ASSISTANT));
+
+        if (empty($teamMemberships) && empty($executiveBoardMemberships) && !$isGrantedAssistant) {
+            throw $this->createAccessDeniedException();
+        }
+
+        // Fetch the assistant history of the user
+        $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
 
         // Render the view
         return $this->render('profile/profile.html.twig', array(
@@ -117,7 +124,7 @@ class ProfileController extends Controller
 
             $this->get('app.logger')->info("User $user activated with new user code");
 
-            return $this->redirectToRoute('profile');
+            return $this->redirectToRoute('my_page');
         }
 
         return $this->render('new_user/create_new_user.html.twig', array(

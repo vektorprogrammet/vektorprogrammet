@@ -8,10 +8,14 @@
          bootstrap="testBootstrap.php"
 >
     <testsuites>
-        <testsuite name="Project Test Suite">
+        <testsuite name="Project">
             <directory>../src/*/*Bundle/Tests</directory>
             <directory>../src/*/Bundle/*Bundle/Tests</directory>
             <directory>../src/*Bundle/Tests</directory>
+            <exclude>../src/*/*Bundle/Tests/Validation</exclude>
+        </testsuite>
+        <testsuite name="FormCrawler">
+            <directory>../src/*Bundle/Tests/FormCrawler</directory>
         </testsuite>
     </testsuites>
 

@@ -36,6 +36,9 @@ class InterviewController extends Controller
      */
     public function conductAction(Request $request, Application $application)
     {
+        $department = $this->getUser()->getDepartment();
+        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByDepartment($department);
+
         if ($this->getUser() === $application->getUser()) {
             return $this->render('error/control_panel_error.html.twig', array('error' => 'Du kan ikke intervjue deg selv'));
         }
@@ -50,7 +53,9 @@ class InterviewController extends Controller
 
         $form = $this->createForm(new ApplicationInterviewType(), $application, array(
             'validation_groups' => array('interview'),
+            'teams' => $teams,
         ));
+
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -73,6 +78,8 @@ class InterviewController extends Controller
 
         return $this->render('interview/conduct.html.twig', array(
             'application' => $application,
+            'department' => $department,
+            'teams' => $teams,
             'form' => $form->createView(),
         ));
     }
@@ -201,7 +208,7 @@ class InterviewController extends Controller
         $data = $form->getData();
         $mapLink = $data['mapLink'];
         if ($form->isSubmitted()) {
-            if ($mapLink and ! (strpos($mapLink, 'http')===0)) {
+            if ($mapLink && !(strpos($mapLink, 'http')===0)) {
                 $mapLink='http://' . $mapLink;
             }
         }
@@ -214,6 +221,7 @@ class InterviewController extends Controller
             // Update the scheduled time for the interview
             $interview->setScheduled($data['datetime']);
             $interview->setRoom($data['room']);
+            $interview->setCampus($data['campus']);
 
             $interview->setMapLink($mapLink);
             $interview->resetStatus();
@@ -250,7 +258,7 @@ class InterviewController extends Controller
         }
 
         try {
-            $headers = @get_headers($link);
+            $headers = get_headers($link);
             $statusCode = intval(explode(" ", $headers[0])[1]);
         } catch (\Exception $e) {
             return false;
@@ -366,8 +374,14 @@ class InterviewController extends Controller
         $formattedDate = $interview->getScheduled()->format('d. M');
         $formattedTime = $interview->getScheduled()->format('H:i');
         $room = $interview->getRoom();
+
+        $successMessage = "Takk for at du aksepterte intervjutiden. Da sees vi $formattedDate klokka $formattedTime i $room!";
+        if ($interview->getUser() === $this->getUser()) {
+            $this->addFlash('success', $successMessage);
+            return $this->redirectToRoute("my_page");
+        }
         $this->addFlash('title', 'Akseptert!');
-        $this->addFlash('message', "Takk for at du aksepterte intervjutiden. Da sees vi $formattedDate klokka $formattedTime i $room!");
+        $this->addFlash('message', $successMessage);
         return $this->redirectToRoute('confirmation');
     }
 
@@ -396,8 +410,13 @@ class InterviewController extends Controller
 
             $this->get('app.interview.manager')->sendRescheduleEmail($interview);
 
+            $successMessage = "Vi tar kontakt med deg når vi har funnet en ny intervjutid.";
+            if ($interview->getUser() === $this->getUser()) {
+                $this->addFlash('success', "Forspørsel om ny intervjutid er sendt. $successMessage");
+                return $this->redirectToRoute("my_page");
+            }
             $this->addFlash('title', 'Notert');
-            $this->addFlash('message', 'Vi tar kontakt med deg når vi har funnet en ny intervjutid.');
+            $this->addFlash('message', $successMessage);
             return $this->redirectToRoute('confirmation');
         }
 
@@ -448,8 +467,13 @@ class InterviewController extends Controller
 
             $this->get('app.interview.manager')->sendCancelEmail($interview);
 
+            $successMessage = "Du har kansellert intervjuet ditt.";
+            if ($interview->getUser() === $this->getUser()) {
+                $this->addFlash('success', $successMessage);
+                return $this->redirectToRoute("my_page");
+            }
             $this->addFlash('title', 'Kansellert');
-            $this->addFlash('message', 'Du har kansellert intervjuet ditt.');
+            $this->addFlash('message', $successMessage);
             return $this->redirectToRoute('confirmation');
         }
 
@@ -496,7 +520,7 @@ class InterviewController extends Controller
     {
         $semester = $interview->getApplication()->getSemester();
         $teamUsers = $this->getDoctrine()->getRepository('AppBundle:User')
-            ->findUsersWithWorkHistoryInSemester($semester);
+            ->findUsersWithTeamMembershipInSemester($semester);
         $form = $this->createForm(new AddCoInterviewerType($teamUsers));
         $form->handleRequest($request);
 
