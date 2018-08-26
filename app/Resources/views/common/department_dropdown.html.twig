@@ -10,9 +10,9 @@
 
             <li>
                 {% if linkToSemester is defined and linkToSemester == true %}
-                    <a href="{{ path(pathForDepartment, { (departmentParameterName): department.currentOrLatestSemester.id }) }}">{{ department.shortName }}</a>
+                    <a href="{{ path(pathForDepartment, { (departmentParameterName): department.currentOrLatestSemester.id }) }}">{{ department.shortName }} - {{ department.city }}</a>
                 {% else %}
-                    <a href="{{ path(pathForDepartment, { (departmentParameterName): department.id }) }}">{{ department.shortName }}</a>
+                    <a href="{{ path(pathForDepartment, { (departmentParameterName): department.id }) }}">{{ department.shortName }} - {{ department.city }}</a>
                 {% endif %}
             </li>
 
