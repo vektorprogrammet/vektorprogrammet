@@ -24,20 +24,8 @@ monolog:
         main:
             type:         fingers_crossed
             action_level: critical
-            handler:      grouped
-        grouped:
-            type:    group
-            members: [streamed, buffered]
+            handler:      streamed
         streamed:
             type:  stream
             path:  '%kernel.logs_dir%/%kernel.environment%.log'
             level: debug
-        buffered:
-            type:    buffer
-            handler: swift
-        swift:
-            type:       swift_mailer
-            from_email: 'vektorprogrammet@vektorprogrammet.no'
-            to_email:   'webansvarlig@vektorprogrammet.no'
-            subject:    An Error Occurred on vektorprogrammet.no!
-            level:      debug
