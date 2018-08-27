@@ -21,7 +21,15 @@
       @media (min-width: 767px) {
         margin-top: 50px;
       }
+      cursor: pointer;
     }
+    #about-faq p {
+      display: none;
+    }
+    #about-faq.editable p {
+      display: block;
+    }
+
   }
 
   .contact-info {
