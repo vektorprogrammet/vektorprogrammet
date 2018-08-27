@@ -2,7 +2,7 @@
 ## Set up development environment
 ### Requirements
 - [PHP](http://php.net/downloads.php) version >= 7.1
-- [Node](https://nodejs.org/en/) version >= 4
+- [Node](https://nodejs.org/en/) version >= 8
 
 #### UNIX:
 `npm run setup`
@@ -21,12 +21,12 @@ so that the files are put in the correct places. (this is automatically
 done when doing `npm start`)
 
 ## Users
-| Username   | Password |        Role        |
-| ---------- |:--------:|:------------------:|
-| assistent  |   1234   |      ROLE_USER     |
-| team       |   1234   |     ROLE_ADMIN     |
-| admin      |   1234   |  ROLE_SUPER_ADMIN  |
-| superadmin |   1234   | ROLE_HIGHEST_ADMIN |
+| Position     | Username   | Password |        Role        |
+| :----------: | :--------: |:--------:|:------------------:|
+| Assistent    | assistent  |   1234   |      ROLE_USER     |
+| Teammedlem   | team       |   1234   |     ROLE_ADMIN     |
+| Teamleder    | admin      |   1234   |  ROLE_SUPER_ADMIN  |
+| Admin        | superadmin |   1234   | ROLE_HIGHEST_ADMIN |
 
 
 ## Code style
