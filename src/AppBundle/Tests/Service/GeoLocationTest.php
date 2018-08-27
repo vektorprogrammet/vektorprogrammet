@@ -83,8 +83,8 @@ class GeoLocationTest extends TestCase
         $toLat   = '59.666108';
         $toLon   = '10.768452';
 
-        $expected = 417389.42572204565;
-        $actual   = $this->geoLocation->distance($fromLat, $fromLon, $toLat, $toLon);
+        $expected = 417389.42572;
+        $actual   = round($this->geoLocation->distance($fromLat, $fromLon, $toLat, $toLon), 5);
 
         $this->assertEquals($expected, $actual);
     }
