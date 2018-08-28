@@ -11,9 +11,14 @@
 <p>Påmeldingsfristen er <strong>{{ department.currentSemester.admissionEndDate|date('d.m.Y') }} kl. {{ department.currentSemester.admissionEndDate|date('H:i') }}.</strong></p>
 
 {% if infoMeeting and infoMeeting.showOnPage %}
-<br>
-<p>Vi har infomøte den {{ infoMeeting.date|date('d.m.Y') }} kl. {{ infoMeeting.date|date('H:i') }} i rom {{ infoMeeting.room }}!</p>
-{% if infoMeeting.link %}<p>Link til arrangement: <a href=3D"{{ infoMeeting.link }}">{{ infoMeeting.link }}</a></p>{% endif %}
+    <br>
+    <p>Vi har infomøte den {{ infoMeeting.date|date('d.m.Y') }} kl. {{ infoMeeting.date|date('H:i') }}
+    {% if infoMeeting.room %}
+        i rom {{ infoMeeting.room }}
+    {% endif %}!</p>
+    {% if infoMeeting.link %}
+        <p>Link til arrangement: <a href=3D"{{ infoMeeting.link }}">{{ infoMeeting.link }}</a></p>
+    {% endif %}
 {% endif %}
 
 <br>
