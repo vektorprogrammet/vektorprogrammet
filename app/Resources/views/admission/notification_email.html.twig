@@ -11,6 +11,14 @@
 <p>Påmeldingsfristen er <strong>{{ department.currentSemester.admissionEndDate|date('d.m.Y') }} kl. {{ department.currentSemester.admissionEndDate|date('H:i') }}.</strong></p>
 
 <br>
+{% if infoMeeting and infoMeeting.showOnPage %}
+    <p>Vi har infomøte den {{ infoMeeting.date|date('d.m.Y') }} kl. {{ infoMeeting.date|date('H:i') }} i rom {{ infoMeeting.room }}!</p>
+    {% if infoMeeting.link %}
+        <p>Link til arrangement: <a href=3D"{{ infoMeeting.link }}">{{ infoMeeting.link }}</a></p>
+    {% endif %}
+{% endif %}
+
+<br>
 <p>Kort oppsummert vil man som vektorassistent bli sendt ut til en ungdomsskole sammen med en annen vektorassistent, for
     å kunne bidra i matematikkundervisningen. Dette vil foregå 4 eller 8 ganger i semesteret over en henholdsvis 4-
     eller 8 ukers periode. Vi har som mål at studentene skal sitte igjen mer motivert for videre studier etter å ha vært
