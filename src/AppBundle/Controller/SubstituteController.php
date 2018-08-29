@@ -69,7 +69,7 @@ class SubstituteController extends Controller
 
     public function deleteSubstituteByIdAction(Application $application)
     {
-        $application->setSubstitute(false);
+        // TODO: Implement deletion
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($application);
@@ -85,7 +85,7 @@ class SubstituteController extends Controller
             // User is already substitute
             throw new BadRequestHttpException();
         }
-        $application->setSubstitute(true);
+        // TODO: Implement creation
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($application);

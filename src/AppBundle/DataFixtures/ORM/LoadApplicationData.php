@@ -25,7 +25,6 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application0->setWednesday(false);
         $application0->setThursday(false);
         $application0->setFriday(true);
-        $application0->setSubstitute(true);
 
         $manager->persist($application0);
 
@@ -39,7 +38,6 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application1->setWednesday(true);
         $application1->setThursday(false);
         $application1->setFriday(true);
-        $application0->setSubstitute(true);
 
         $manager->persist($application1);
 
@@ -53,7 +51,6 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application2->setWednesday(false);
         $application2->setThursday(false);
         $application2->setFriday(true);
-        $application0->setSubstitute(true);
 
         $manager->persist($application2);
 
@@ -243,7 +240,6 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application21->setWednesday('Ikke');
         $application21->setThursday('Ikke');
         $application21->setFriday('Bra');
-        $application21->setSubstitute(true);
         $application21->setPreferredGroup("Bolk 1");
         $interview21 = new Interview();
         $interview21->setInterviewed(true);

@@ -62,11 +62,6 @@ class Application
     private $friday;
 
     /**
-     * @ORM\Column(type="boolean", options={"default"=false})
-     */
-    private $substitute;
-
-    /**
      * @ORM\Column(type="string", nullable=true)
      * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
      */
@@ -160,7 +155,6 @@ class Application
     {
         $this->last_edited = new \DateTime();
         $this->created = new \DateTime();
-        $this->substitute = false;
         $this->doublePosition = false;
         $this->previousParticipation = false;
         $this->teamInterest = false;
@@ -485,22 +479,6 @@ class Application
     }
 
     /**
-     * @return bool
-     */
-    public function isSubstitute()
-    {
-        return $this->substitute;
-    }
-
-    /**
-     * @param bool $substitute
-     */
-    public function setSubstitute($substitute)
-    {
-        $this->substitute = $substitute;
-    }
-
-    /**
      * @return string
      */
     public function getSpecialNeeds()
@@ -566,5 +544,13 @@ class Application
         $this->substitutePosition = $substitutePosition;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSubstitute()
+    {
+        return $this->substitutePosition !== null;
     }
 }
