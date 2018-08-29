@@ -34,9 +34,6 @@ class UserDataForSubstituteType extends AbstractType
                 'label' => 'Linje',
                 'class' => 'AppBundle:FieldOfStudy',
 
-                //'query_builder' => Controller?->getDoctrine()->getRepository('AppBundle:FieldOfStudy')->findByDepartment($this->department);
-                // Hvordan får jeg kjørt funksjoner på Controller her?
-
                 'query_builder' => function (FieldOfStudyRepository $er) {
                     return $er->createQueryBuilder('f')
                         ->orderBy('f.shortName', 'ASC')

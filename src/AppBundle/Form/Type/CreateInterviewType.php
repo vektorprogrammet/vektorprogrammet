@@ -10,30 +10,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateInterviewType extends AbstractType
 {
-    protected $roles;
-
-    protected $department;
-
-    public function __construct($roles, $department)
-    {
-        $this->roles = $roles;
-        $this->department = $department;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('interviewer', EntityType::class, array(
             'class' => 'AppBundle:User',
-            'query_builder' => function (EntityRepository $er) {
+            'query_builder' => function (EntityRepository $er) use ($options) {
                 return $er->createQueryBuilder('u')
                     ->select('u')
                     ->join('u.roles', 'r')
                     ->join('u.fieldOfStudy', 'f')
                     ->join('f.department', 'd')
                     ->where('r.role IN (:roles)')
-                    //->andWhere('d.id = :department')
                     ->orderBy('u.firstName')
-                    ->setParameter('roles', $this->roles);
+                    ->setParameter('roles', $options['roles']);
             },
             'group_by' => 'fieldOfStudy.department.shortName',
         ));
@@ -53,6 +42,7 @@ class CreateInterviewType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Interview',
+            'roles' => [],
         ));
     }
 

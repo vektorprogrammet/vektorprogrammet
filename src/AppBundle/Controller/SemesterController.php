@@ -14,7 +14,7 @@ class SemesterController extends Controller
 {
     public function updateSemesterAction(Request $request, Semester $semester)
     {
-        $form = $this->createForm(new EditSemesterType(), $semester);
+        $form = $this->createForm(EditSemesterType::class, $semester);
 
         // Handle the form
         $form->handleRequest($request);
@@ -65,7 +65,7 @@ class SemesterController extends Controller
         $semester = new Semester();
 
         // Create the form
-        $form = $this->createForm(new CreateSemesterType(), $semester);
+        $form = $this->createForm(CreateSemesterType::class, $semester);
 
         // Handle the form
         $form->handleRequest($request);

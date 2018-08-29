@@ -17,7 +17,7 @@ class ContentModeExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-        	new \Twig_SimpleFunction('is_edit_mode', [$this, 'isEditMode']),
+            new \Twig_SimpleFunction('is_edit_mode', [$this, 'isEditMode']),
         );
     }
 

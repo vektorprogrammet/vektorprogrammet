@@ -22,7 +22,7 @@ class SignatureController extends Controller
             $oldPath = $signature->getSignaturePath();
         }
 
-        $form = $this->createForm(new CreateSignatureType(), $signature);
+        $form = $this->createForm(CreateSignatureType::class, $signature);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

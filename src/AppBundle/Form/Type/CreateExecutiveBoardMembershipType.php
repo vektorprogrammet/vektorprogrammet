@@ -13,13 +13,10 @@ class CreateExecutiveBoardMembershipType extends AbstractType
 {
     private $departmentId;
 
-    public function __construct($departmentId)
-    {
-        $this->departmentId = $departmentId;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->departmentId = $options['departmentId'];
+
         $builder
             ->add('user', EntityType::class, array(
                 'label' => 'Bruker',
@@ -68,6 +65,7 @@ class CreateExecutiveBoardMembershipType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\ExecutiveBoardMembership',
+            'departmentId' => null
         ));
     }
 

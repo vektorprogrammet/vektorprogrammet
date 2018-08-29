@@ -13,12 +13,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateUserOnApplicationType extends AbstractType
 {
-    private $departmentId;
-    public function __construct($departmentId)
-    {
-        $this->departmentId = $departmentId;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -48,12 +42,12 @@ class CreateUserOnApplicationType extends AbstractType
             ->add('fieldOfStudy', EntityType::class, array(
                 'label' => 'Linje',
                 'class' => 'AppBundle:FieldOfStudy',
-                'query_builder' => function (EntityRepository $er) {
+                'query_builder' => function (EntityRepository $er) use ($options) {
                     return $er->createQueryBuilder('f')
                         ->orderBy('f.shortName', 'ASC')
                         ->where('f.department = ?1')
                         // Set the parameter to the department ID that the current user belongs to.
-                        ->setParameter(1, $this->departmentId);
+                        ->setParameter(1, $options['departmentId']);
                 },
             ));
     }
@@ -62,6 +56,7 @@ class CreateUserOnApplicationType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
+            'departmentId' => null
         ));
     }
 

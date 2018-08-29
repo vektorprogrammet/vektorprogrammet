@@ -33,7 +33,7 @@ class TeamInterestController extends Controller
 
         $teamInterest = new TeamInterest();
         $teamInterest->setSemester($semester);
-        $form = $this->createForm(new TeamInterestType(), $teamInterest, array(
+        $form = $this->createForm(TeamInterestType::class, $teamInterest, array(
             'department' => $department,
         ));
         $form->handleRequest($request);

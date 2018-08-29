@@ -13,7 +13,7 @@ class ApplicationInterviewType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('applicationPractical', new ApplicationPracticalType(), array(
+        $builder->add('applicationPractical', ApplicationPracticalType::class, array(
             'data_class' => 'AppBundle\Entity\Application',
             'teams' => $options['teams'],
         ));

@@ -13,8 +13,9 @@ class ApplicationType extends AbstractType
     {
         // The fields that populate the form
         $builder
-            ->add('user', new CreateUserOnApplicationType($options['departmentId']), array(
+            ->add('user', CreateUserOnApplicationType::class, array(
                 'label' => '',
+                'departmentId' => $options['departmentId']
             ))
         ->add('yearOfStudy', ChoiceType::class, [
             'label' => 'Årstrinn',
@@ -28,14 +29,15 @@ class ApplicationType extends AbstractType
         ]);
     }
 
-    public function configureOptions( OptionsResolver $resolver ) {
-	    $resolver->setDefaults(array(
-		    'data_class' => 'AppBundle\Entity\Application',
-		    'user' => null,
-		    'allow_extra_fields' => true,
-		    'departmentId' => null,
-		    'environment' => 'prod',
-	    ));
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'AppBundle\Entity\Application',
+            'user' => null,
+            'allow_extra_fields' => true,
+            'departmentId' => null,
+            'environment' => 'prod',
+        ));
     }
 
     public function getBlockPrefix()

@@ -33,7 +33,7 @@ class ContactController extends Controller
 
         $supportTicket = new SupportTicket();
         $supportTicket->setDepartment($department);
-        $form = $this->createForm(new SupportTicketType(), $supportTicket, array(
+        $form = $this->createForm(SupportTicketType::class, $supportTicket, array(
             'department_repository' => $this->getDoctrine()->getRepository('AppBundle:Department'),
         ));
         $form->remove('captcha');

@@ -18,7 +18,7 @@ class ModifySubstituteType extends AbstractType
             'label' => 'Dager som passer',
             'data_class' => 'AppBundle\Entity\Application',
         ));
-        $builder->add('user', new UserDataForSubstituteType(), array(
+        $builder->add('user', UserDataForSubstituteType::class, array(
             'department' => $options['department'],
             'label' => false,
         ));

@@ -20,7 +20,10 @@ class SponsorsController extends Controller
         $forms = array();
         $logos = array();
         foreach ($sponsors as $sponsor) {
-            $form = $this->createForm(new SponsorType($sponsor->getId(), $this->container->get('router')), $sponsor);
+            $form = $this->createForm(SponsorType::class, $sponsor, [
+                'id' => $sponsor->getId(),
+                'router' => $this->container->get('router')
+            ]);
             $form = $form->createView();
             $forms[] = $form;
             $logos[] = $sponsor->getLogoImagePath();

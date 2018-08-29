@@ -14,13 +14,9 @@ class CreateAssistantHistoryType extends AbstractType
 {
     private $department;
 
-    public function __construct($department)
-    {
-        $this->department = $department;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->department = $options['department'];
         $builder
             ->add('Semester', EntityType::class, array(
                 'label' => 'Semester',
@@ -84,6 +80,7 @@ class CreateAssistantHistoryType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\AssistantHistory',
+            'department' => null,
         ));
     }
 

@@ -12,15 +12,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateTeamMembershipType extends AbstractType
 {
-    private $departmentId;
-
-    public function __construct($departmentId)
-    {
-        $this->departmentId = $departmentId;
-    }
+    private $department;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->department = $options['department'];
+
         $builder
             ->add('user', EntityType::class, array(
                 'label' => 'Bruker',
@@ -33,7 +30,7 @@ class CreateTeamMembershipType extends AbstractType
                         ->where('u.fieldOfStudy = fos.id')
                         ->andWhere('fos.department = d')
                         ->andWhere('d = ?1')
-                        ->setParameter(1, $this->departmentId);
+                        ->setParameter(1, $this->department);
                 },
             ))
             ->add('isTeamLeader', ChoiceType::class, array(
@@ -60,7 +57,7 @@ class CreateTeamMembershipType extends AbstractType
                         ->orderBy('s.semesterStartDate', 'DESC')
                         ->join('s.department', 'd')
                         ->where('d.id = ?1')
-                        ->setParameter(1, $this->departmentId);
+                        ->setParameter(1, $this->department);
                 },
             ))
             ->add('endSemester', EntityType::class, array(
@@ -71,7 +68,7 @@ class CreateTeamMembershipType extends AbstractType
                         ->orderBy('s.semesterStartDate', 'DESC')
                         ->join('s.department', 'd')
                         ->where('d.id = ?1')
-                        ->setParameter(1, $this->departmentId);
+                        ->setParameter(1, $this->department);
                 },
                 'required' => false,
             ))
@@ -84,6 +81,7 @@ class CreateTeamMembershipType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\TeamMembership',
+            'department' => null
         ));
     }
 

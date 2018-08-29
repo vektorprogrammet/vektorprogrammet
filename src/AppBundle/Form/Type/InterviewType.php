@@ -13,7 +13,7 @@ class InterviewType extends AbstractType
     {
         $builder->add('interviewAnswers', CollectionType::class, array('type' => new InterviewAnswerType()));
 
-        $builder->add('interviewScore', new InterviewScoreType());
+        $builder->add('interviewScore', InterviewScoreType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

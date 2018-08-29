@@ -16,7 +16,7 @@ class SubscriberController extends Controller
     {
         $subscriber = new Subscriber();
 
-        $form = $this->createForm(new SubscribeToNewsletterType(), $subscriber);
+        $form = $this->createForm(SubscribeToNewsletterType::class, $subscriber);
 
         $form->handleRequest($request);
 
@@ -78,13 +78,13 @@ class SubscriberController extends Controller
         $subscriber = new Subscriber($newsletter);
 
         if ($newsletter !== null) {
-            $form = $this->createForm(new SubscribeToNewsletterType(), $subscriber, array(
+            $form = $this->createForm(SubscribeToNewsletterType::class, $subscriber, array(
                 'action' => $this->generateUrl('newsletter_subscribe', array(
                     'id' => $newsletter->getId(),
                 )),
             ));
         } else {
-            $form = $this->createForm(new SubscribeToNewsletterType(), $subscriber);
+            $form = $this->createForm(SubscribeToNewsletterType::class, $subscriber);
         }
 
         $form->handleRequest($request);

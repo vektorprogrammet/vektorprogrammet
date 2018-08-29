@@ -20,7 +20,7 @@ class NewsletterController extends Controller
             $newsletter->setDepartment($department);
         }
 
-        $form = $this->createForm(new CreateNewsletterType(), $newsletter);
+        $form = $this->createForm(CreateNewsletterType::class, $newsletter);
 
         $form->handleRequest($request);
 
@@ -82,7 +82,7 @@ class NewsletterController extends Controller
     public function createLetterAction(Newsletter $newsletter, Request $request)
     {
         $letter = new Letter($newsletter);
-        $form = $this->createForm(new CreateLetterType(), $letter);
+        $form = $this->createForm(CreateLetterType::class, $letter);
 
         $form->handleRequest($request);
 

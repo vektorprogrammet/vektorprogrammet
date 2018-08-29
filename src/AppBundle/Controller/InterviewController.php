@@ -51,7 +51,7 @@ class InterviewController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        $form = $this->createForm(new ApplicationInterviewType(), $application, array(
+        $form = $this->createForm(ApplicationInterviewType::class, $application, array(
             'validation_groups' => array('interview'),
             'teams' => $teams,
         ));
@@ -201,7 +201,7 @@ class InterviewController extends Controller
         // Set the default data for the form
         $defaultData = $this->get('app.interview.manager')->getDefaultScheduleFormData($interview);
 
-        $form = $this->createForm(new ScheduleInterviewType(), $defaultData);
+        $form = $this->createForm(ScheduleInterviewType::class, $defaultData);
 
         $form->handleRequest($request);
 
@@ -286,7 +286,9 @@ class InterviewController extends Controller
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
         $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([Roles::TEAM_MEMBER]);
 
-        $form = $this->createForm(new AssignInterviewType($roles), $application);
+        $form = $this->createForm(AssignInterviewType::class, $application, [
+            'roles' => $roles
+        ]);
 
         $form->handleRequest($request);
 
@@ -325,7 +327,9 @@ class InterviewController extends Controller
     {
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
         $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([Roles::TEAM_MEMBER]);
-        $form = $this->createForm(new AssignInterviewType($roles));
+        $form = $this->createForm(AssignInterviewType::class, null, [
+            'roles' => $roles
+        ]);
 
         if ($request->isMethod('POST')) {
             $em = $this->getDoctrine()->getManager();
@@ -397,7 +401,7 @@ class InterviewController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(new InterviewNewTimeType(), $interview, array(
+        $form = $this->createForm(InterviewNewTimeType::class, $interview, array(
             "validation_groups" => array("newTimeRequest")
         ));
         $form->handleRequest($request);
@@ -454,7 +458,7 @@ class InterviewController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(new CancelInterviewConfirmationType());
+        $form = $this->createForm(CancelInterviewConfirmationType::class);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -521,7 +525,9 @@ class InterviewController extends Controller
         $semester = $interview->getApplication()->getSemester();
         $teamUsers = $this->getDoctrine()->getRepository('AppBundle:User')
             ->findUsersWithTeamMembershipInSemester($semester);
-        $form = $this->createForm(new AddCoInterviewerType($teamUsers));
+        $form = $this->createForm(AddCoInterviewerType::class, null, [
+            'teamUsers' => $teamUsers
+        ]);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
