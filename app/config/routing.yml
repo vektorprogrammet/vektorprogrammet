@@ -1099,13 +1099,17 @@ interview_edit_status:
 #                File browser            #
 ##########################################
 #ElFinder routes
+
+#elfinder:
+#     resource: "@FMElfinderBundle/Resources/config/routing.yml"
+
 elfinder:
-    path: /kontrollpanel/elfinder/{instance}
-    defaults: { _controller: FMElfinderBundle:ElFinder:show, instance: default }
+    path: /kontrollpanel/elfinder/{instance}/{homeFolder}
+    defaults: { _controller: FMElfinderBundle:ElFinder:show, instance: default, homeFolder: '' }
     methods: [GET]
 ef_connect: #This one is used only internally by FMElfinderBundle?
-    path:  /efconnect/{instance}
-    defaults: { _controller: FMElfinderBundle:ElFinder:load, instance: default }
+    path:  /efconnect/{instance}/{homeFolder}
+    defaults: { _controller: FMElfinderBundle:ElFinder:load, instance: default, homeFolder: '' }
     methods: [GET, POST]
 
 #Route for opening a file browser window by a user of the website. Not related to ckeditor or any other subsystem.

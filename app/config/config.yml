@@ -180,7 +180,7 @@ fm_elfinder:
                         path: %public_uploads%
                         upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
                         upload_deny: ['all']
-                        upload_max_size: 2M
+                        upload_max_size: 5M
         admin_access:
                     locale: %locale% # defaults to current request locale
                     editor: simple # other options are tinymce, tinymce4, form, custom and ckeditor
@@ -195,14 +195,14 @@ fm_elfinder:
                                 path: %private_uploads%
                                 upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
                                 upload_deny: ['all']
-                                upload_max_size: 2M
+                                upload_max_size: 5M
                             public:
                                 #show_hidden: false # defaults to false
                                 driver: LocalFileSystem
                                 path: %public_uploads%
                                 upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
                                 upload_deny: ['all']
-                                upload_max_size: 2M
+                                upload_max_size: 5M
         ck_editor:
                     locale: %locale% # defaults to current request locale
                     editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
@@ -217,14 +217,14 @@ fm_elfinder:
                                 path: %public_uploads%
                                 upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
                                 upload_deny: ['all']
-                                upload_max_size: 2M
+                                upload_max_size: 5M
                           private:
                                 #show_hidden: false # defaults to false
                                 driver: LocalFileSystem
                                 path: %private_uploads%
                                 upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
                                 upload_deny: ['all']
-                                upload_max_size: 2M
+                                upload_max_size: 5M
 
         article_editor:
                     locale: %locale% # defaults to current request locale
@@ -240,7 +240,7 @@ fm_elfinder:
                                 path: %article_images%
                                 upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
                                 upload_deny: ['all']
-                                upload_max_size: 2M
+                                upload_max_size: 5M
 
         article_form:
                     locale: %locale% # defaults to current request locale
@@ -255,7 +255,7 @@ fm_elfinder:
                                 path: %article_images%
                                 upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
                                 upload_deny: ['all']
-                                upload_max_size: 2M
+                                upload_max_size: 5M
         newsletter_editor:
                     locale: %locale% # defaults to current request locale
                     editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
@@ -270,7 +270,7 @@ fm_elfinder:
                           path: %newsletter_images%
                           upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
                           upload_deny: ['all']
-                          upload_max_size: 2M
+                          upload_max_size: 5M
 
         team_editor:
                     locale: %locale% # defaults to current request locale
@@ -286,7 +286,7 @@ fm_elfinder:
                           path: %team_images%
                           upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
                           upload_deny: ['all']
-                          upload_max_size: 2M
+                          upload_max_size: 5M
 
 
 # Provides help text functionality to forms

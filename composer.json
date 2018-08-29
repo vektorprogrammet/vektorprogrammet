@@ -25,7 +25,7 @@
         "doctrine/doctrine-fixtures-bundle": "2.2.*",
         "friendsofsymfony/jsrouting-bundle": "~1.5",
         "knplabs/knp-paginator-bundle": "~2.4",
-        "helios-ag/fm-elfinder-bundle": "~3",
+        "helios-ag/fm-elfinder-bundle": "~8.0.3",
         "simplethings/form-extra-bundle": "1.1.*",
         "liip/imagine-bundle": "^1.2",
         "tfox/mpdf-port-bundle": "^2.0",
@@ -67,7 +67,8 @@
         ]
     },
     "config": {
-        "bin-dir": "bin"
+        "bin-dir": "bin",
+        "component-dir": "www/assets"
     },
     "extra": {
         "symfony-app-dir": "app",
