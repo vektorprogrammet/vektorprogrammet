@@ -101,7 +101,11 @@ class EmailSender
              ->setSubject('Opptak for vektorassistenter har åpnet!')
              ->setFrom($this->defaultEmail)
              ->setTo($subscriber->getEmail())
-             ->setBody($this->twig->render('admission/notification_email.html.twig', array('department' => $subscriber->getDepartment(), 'subscriber' => $subscriber)))
+             ->setBody($this->twig->render('admission/notification_email.html.twig', array(
+                 'department' => $subscriber->getDepartment(),
+                 'infoMeeting' => $subscriber->getDepartment()->getCurrentSemester()->getInfoMeeting(),
+                 'subscriber' => $subscriber,
+             )))
              ->setContentType('text/html');
 
         $this->mailer->send($message, true);
