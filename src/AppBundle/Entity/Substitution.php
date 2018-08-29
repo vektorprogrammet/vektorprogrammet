@@ -37,6 +37,13 @@ class Substitution
 
 
     /**
+     * @var SubstitutePosition
+     *
+     * @ORM\ManyToOne(targetEntity="SubstitutePosition", inversedBy="substitutions")
+     */
+    private $substitutePosition;
+
+    /**
      * @var AssistantHistory
      *
      * @ORM\ManyToOne(targetEntity="AssistantHistory", inversedBy="substitutions")
@@ -98,6 +105,29 @@ class Substitution
     public function getSchool()
     {
         return $this->school;
+    }
+
+    /**
+     * Get substitute position
+     *
+     * @return SubstitutePosition
+     */
+    public function getSubstitutePosition(): SubstitutePosition
+    {
+        return $this->substitutePosition;
+    }
+
+    /**
+     * Set substitute position
+     *
+     * @param SubstitutePosition $substitutePosition
+     *
+     * @return Substitution
+     */
+    public function setSubstitutePosition(SubstitutePosition $substitutePosition): Substitution
+    {
+        $this->substitutePosition = $substitutePosition;
+        return $this;
     }
 
     /**

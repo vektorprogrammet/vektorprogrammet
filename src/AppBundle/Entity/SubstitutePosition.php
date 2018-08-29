@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * SubstitutePosition
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SubstitutePositionRepository")
  */
 class SubstitutePosition
 {
@@ -24,7 +24,7 @@ class SubstitutePosition
     /**
      * @var string
      *
-     * @ORM\Column(name="comment", type="string", length=5000)
+     * @ORM\Column(name="comment", type="string", length=5000, nullable=true)
      */
     private $comment;
 
@@ -34,6 +34,13 @@ class SubstitutePosition
      * @ORM\OneToOne(targetEntity="Application", mappedBy="substitutePosition")
      */
     private $application;
+
+    /**
+     * @var Substitution[]
+     *
+     * @ORM\OneToMany(targetEntity="Substitution", mappedBy="substitutePosition")
+     */
+    private $substitutions;
 
     /**
      * Get id
@@ -87,6 +94,47 @@ class SubstitutePosition
     public function setApplication($application)
     {
         $this->application = $application;
+
+        return $this;
+    }
+
+    /**
+     * Get substitutions
+     *
+     * @return Substitution[]
+     */
+    public function getSubstitutions()
+    {
+        return $this->substitutions;
+    }
+
+    /**
+     * Set substitutions
+     *
+     * @param Substitution[] $substitutions
+     *
+     * @return SubstitutePosition
+     */
+    public function setSubstitutions($substitutions): SubstitutePosition
+    {
+        $this->substitutions = $substitutions;
+        foreach ($substitutions as $substitution) {
+            $substitution->setSubstitutePosition($this);
+        }
+        return $this;
+    }
+
+    /**
+     * Add substitution
+     *
+     * @param Substitution $substitution
+     *
+     * @return SubstitutePosition
+     */
+    public function addSubstitution(Substitution $substitution) : SubstitutePosition
+    {
+        $this->substitutions[] = $substitution;
+        $substitution->setSubstitutePosition($this);
 
         return $this;
     }

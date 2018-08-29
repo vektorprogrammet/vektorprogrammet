@@ -17,7 +17,7 @@ class SubstituteController extends Controller
 {
     public function showBySemesterAction(Semester $semester)
     {
-        $substitutes = $this->getDoctrine()->getRepository('AppBundle:Application')->findSubstitutesBySemester($semester);
+        $substitutes = $this->getDoctrine()->getRepository('AppBundle:SubstitutePosition')->findBySemester($semester);
 
         return $this->render('substitute/index.html.twig', array(
             'substitutes' => $substitutes,

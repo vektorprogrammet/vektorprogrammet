@@ -542,7 +542,7 @@ class Application
     public function setSubstitutePosition($substitutePosition)
     {
         $this->substitutePosition = $substitutePosition;
-
+        $substitutePosition->setApplication($this);
         return $this;
     }
 
