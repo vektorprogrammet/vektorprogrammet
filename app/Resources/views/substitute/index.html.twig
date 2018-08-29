@@ -38,8 +38,7 @@
     <p></p>
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
-            <h1>Vikarerstillinger</h1>
-            <p>Dette er en oversikt over alle vikarstillingene {{ semester }}</p>
+            <h1>Vikarer</h1>
         </div>
     </div>
 
@@ -57,23 +56,21 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
             <hr>
+            <h3>Vikarerstillinger</h3>
+            <p>Dette er en oversikt over alle vikarstillingene {{ semester }}</p>
+
             <table width="100%" id="substitute-table">
                 <thead>
 
                 <tr>
-                    <th data-sort="string"> Fornavn</th>
-                    <th data-sort="string"> Etternavn</th>
+                    <th data-sort="string"> Navn</th>
                     <th data-sort="int"> Tlf</th>
                     <th data-sort="string"> E-post</th>
-                    <th data-sort="string"> Språk</th>
-                    <th><span data-sort="string" class="has-tip" title="Mandag">Man</span></th>
-                    <th><span data-sort="string" class="has-tip" title="Tirsdag">Tir</span></th>
-                    <th><span data-sort="string" class="has-tip" title="Onsdag">Ons</span></th>
-                    <th><span data-sort="string" class="has-tip" title="Torsdag">Tor</span></th>
-                    <th><span data-sort="string" class="has-tip" title="Fredag">Fre</span></th>
-                    <th><span data-sort="string"> Bolk</span></th>
-                    <th><span data-sort="int"> Poeng</span></th>
-                    <th><span data-sort="string"> Passende</span></th>
+                    <th data-sort="string">Man</th>
+                    <th data-sort="string">Tir</th>
+                    <th data-sort="string">Ons</th>
+                    <th data-sort="string">Tor</th>
+                    <th data-sort="string">Fre</th>
                     {% if is_granted_team_leader() %}
                         <th colspan="2"></th>
                     {% endif %}
@@ -83,25 +80,29 @@
                 <tbody>
                     {% for sub in substitutes %}
                         <tr>
-                            <td>{{ sub.application.user.firstName }}</td>
-                            <td>{{ sub.application.user.lastName }}</td>
-                            <td>{{ sub.application.user.phone }}</td>
-                            <td>{{ sub.application.user.email }}</td>
-
-                            <td>{{ sub.application.language }}</td>
-                            <td><i class="fa text-larger {{ sub.application.monday ? "fa-check-circle text-success" : "fa-times text-alert" }}"></i></td>
-                            <td><i class="fa text-larger {{ sub.application.tuesday ? "fa-check-circle text-success" : "fa-times text-alert" }}"></i></td>
-                            <td><i class="fa text-larger {{ sub.application.wednesday ? "fa-check-circle text-success" : "fa-times text-alert" }}"></i></td>
-                            <td><i class="fa text-larger {{ sub.application.thursday ? "fa-check-circle text-success" : "fa-times text-alert" }}"></i></td>
-                            <td><i class="fa text-larger {{ sub.application.friday ? "fa-check-circle text-success" : "fa-times text-alert" }}"></i></td>
-                            <td>{{ sub.application.preferredGroup }}</td>
-                            {% if sub.application.interview is not null and sub.application.user != app.user and (is_granted_team_leader() or sub.application.interview.interviewer == app.user) %}
-                                <td>{{ sub.application.interview.interviewScore.getSum() }}</td>
-                                <td>{{ sub.application.interview.interviewScore.suitableAssistant }}</td>
-                                {% else %}
-                                    <td colspan="2"></td>
-                            {% endif %}
-
+                            <td>
+                                <a href="{{ path("specific_profile", {id: sub.user.id}) }}">
+                                    <i class="fa fa-user"></i>&nbsp
+                                    {{ sub.user.firstName }} {{ sub.user.lastName }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="tel:{{ sub.user.phone }}">
+                                    <i class="fa fa-phone"></i>&nbsp
+                                    {{ sub.user.phone }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="mailto:{{ sub.user.email }}">
+                                    <i class="fa fa-envelope"></i>&nbsp
+                                    {{ sub.user.email }}
+                                </a>
+                            </td>
+                            <td><i class="fa text-larger {{ sub.monday ? "fa-check-circle text-success" : "fa-times text-alert" }}"></i></td>
+                            <td><i class="fa text-larger {{ sub.tuesday ? "fa-check-circle text-success" : "fa-times text-alert" }}"></i></td>
+                            <td><i class="fa text-larger {{ sub.wednesday ? "fa-check-circle text-success" : "fa-times text-alert" }}"></i></td>
+                            <td><i class="fa text-larger {{ sub.thursday ? "fa-check-circle text-success" : "fa-times text-alert" }}"></i></td>
+                            <td><i class="fa text-larger {{ sub.friday ? "fa-check-circle text-success" : "fa-times text-alert" }}"></i></td>
                             {% if is_granted_team_leader() %}
                                 <td>
                                     <form method="POST"
@@ -115,7 +116,7 @@
                                 </td>
                                 <td>
                                     <form method="POST"
-                                          onsubmit="return confirm('Vil du virkelig fjerne vikarstillingen til {{ sub.application.user.firstName }} {{ sub.application.user.lastName }}?')"
+                                          onsubmit="return confirm('Vil du virkelig fjerne vikarstillingen til {{ sub.user.firstName }} {{ sub.user.lastName }}?')"
                                           action="{{ path('substitute_delete', { id: sub.id }) }}">
                                         <button type="submit"
                                                 class="button tiny alert">

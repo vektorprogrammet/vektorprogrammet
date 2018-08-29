@@ -155,6 +155,12 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $receipts;
 
+    /**
+     * @var SubstitutePosition[]
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SubstitutePosition", mappedBy="user", )
+     */
+    private $substitutePositions;
+
     public function __construct()
     {
         $this->roles = new ArrayCollection();
@@ -769,6 +775,43 @@ class User implements AdvancedUserInterface, \Serializable
         $this->teamMemberships = $teamMemberships;
         $this->executiveBoardMemberships = $boardMemberships;
 
+        return $this;
+    }
+
+
+    /**
+     * Get substitute positions
+     *
+     * @return SubstitutePosition[]
+     */
+    public function getSubstitutePositions()
+    {
+        return $this->substitutePositions;
+    }
+
+    /**
+     * Set substitute positions
+     *
+     * @param SubstitutePosition[] $substitutePositions
+     *
+     * @return User
+     */
+    public function setSubstitutePositions(array $substitutePositions): User
+    {
+        $this->substitutePositions = $substitutePositions;
+        return $this;
+    }
+
+    /**
+     * Add substitute position
+     *
+     * @param SubstitutePosition $substitutePosition
+     *
+     * @return User
+     */
+    public function addSubstitutePosition(SubstitutePosition $substitutePosition): User
+    {
+        $this->substitutePositions[] = $substitutePosition;
         return $this;
     }
 }

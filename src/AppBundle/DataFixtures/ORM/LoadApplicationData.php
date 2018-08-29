@@ -25,7 +25,6 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application0->setWednesday(false);
         $application0->setThursday(false);
         $application0->setFriday(true);
-        $application0->setSubstitutePosition($this->getReference('substitute-position-1'));
 
         $manager->persist($application0);
 
@@ -39,7 +38,6 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application1->setWednesday(true);
         $application1->setThursday(false);
         $application1->setFriday(true);
-        $application1->setSubstitutePosition($this->getReference('substitute-position-3'));
 
         $manager->persist($application1);
 
@@ -61,7 +59,6 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application3->setPreviousParticipation(false);
         $application3->setYearOfStudy(1);
         $application3->setSemester($this->getReference('semester-current'));
-        $application3->setSubstitutePosition($this->getReference('substitute-position-2'));
 
         $manager->persist($application3);
 
@@ -105,7 +102,6 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
             $this->getReference('team-1'),
             $this->getReference('team-2'),
         ));
-        $application3->setSubstitutePosition($this->getReference('substitute-position-4'));
 
         $manager->persist($application3);
 

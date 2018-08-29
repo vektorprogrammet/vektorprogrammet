@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SubstitutePositionRepository")
+ * @ORM\Embedded
  */
 class SubstitutePosition
 {
@@ -29,11 +30,19 @@ class SubstitutePosition
     private $comment;
 
     /**
-     * @var Application
+     * @var Semester
      *
-     * @ORM\OneToOne(targetEntity="Application", mappedBy="substitutePosition")
+     * @ORM\ManyToOne(targetEntity="Semester")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
-    private $application;
+    private $semester;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="substitutePositions")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    private $user;
 
     /**
      * @var Substitution[]
@@ -41,6 +50,48 @@ class SubstitutePosition
      * @ORM\OneToMany(targetEntity="Substitution", mappedBy="substitutePosition")
      */
     private $substitutions;
+
+    /**
+     * @var boolean
+     * @ORM\Column(name="monday", type="boolean")
+     */
+    private $monday;
+
+    /**
+     * @var boolean
+     * @ORM\Column(name="tuesday", type="boolean")
+     */
+    private $tuesday;
+
+    /**
+     * @var boolean
+     * @ORM\Column(name="wednesday", type="boolean")
+     */
+    private $wednesday;
+
+    /**
+     * @var boolean
+     * @ORM\Column(name="thursday", type="boolean")
+     */
+    private $thursday;
+
+    /**
+     * @var boolean
+     * @ORM\Column(name="friday", type="boolean")
+     */
+    private $friday;
+
+    /**
+     * SubstitutePosition constructor.
+     */
+    public function __construct()
+    {
+        $this->monday = true;
+        $this->tuesday = true;
+        $this->wednesday = true;
+        $this->thursday = true;
+        $this->friday = true;
+    }
 
     /**
      * Get id
@@ -76,25 +127,44 @@ class SubstitutePosition
     }
 
     /**
-     * Get application
+     * Get semester
      *
-     * @return Application
+     * @return Semester
      */
-    public function getApplication()
+    public function getSemester(): ?Semester
     {
-        return $this->application;
+        return $this->semester;
     }
 
     /**
-     * Set application
+     * Set semester
      *
-     * @param Application $application
+     * @param Semester $semester
+     *
      * @return SubstitutePosition
      */
-    public function setApplication($application)
+    public function setSemester(Semester $semester): SubstitutePosition
     {
-        $this->application = $application;
+        $this->semester = $semester;
+        return $this;
+    }
 
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return SubstitutePosition
+     */
+    public function setUser(User $user): SubstitutePosition
+    {
+        $this->user = $user;
         return $this;
     }
 
@@ -118,9 +188,6 @@ class SubstitutePosition
     public function setSubstitutions($substitutions): SubstitutePosition
     {
         $this->substitutions = $substitutions;
-        foreach ($substitutions as $substitution) {
-            $substitution->setSubstitutePosition($this);
-        }
         return $this;
     }
 
@@ -134,8 +201,104 @@ class SubstitutePosition
     public function addSubstitution(Substitution $substitution) : SubstitutePosition
     {
         $this->substitutions[] = $substitution;
-        $substitution->setSubstitutePosition($this);
 
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMonday(): bool
+    {
+        return $this->monday;
+    }
+
+    /**
+     * @param bool $monday
+     *
+     * @return SubstitutePosition
+     */
+    public function setMonday(bool $monday): SubstitutePosition
+    {
+        $this->monday = $monday;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTuesday(): bool
+    {
+        return $this->tuesday;
+    }
+
+    /**
+     * @param bool $tuesday
+     *
+     * @return SubstitutePosition
+     */
+    public function setTuesday(bool $tuesday): SubstitutePosition
+    {
+        $this->tuesday = $tuesday;
+        return $this;
+    }
+
+    /**
+     * It isWednesday my dudes
+     *
+     * @return bool
+     */
+    public function isWednesday(): bool
+    {
+        return $this->wednesday;
+    }
+
+    /**
+     * @param bool $wednesday
+     *
+     * @return SubstitutePosition
+     */
+    public function setWednesday(bool $wednesday): SubstitutePosition
+    {
+        $this->wednesday = $wednesday;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isThursday(): bool
+    {
+        return $this->thursday;
+    }
+
+    /**
+     * @param bool $thursday
+     *
+     * @return SubstitutePosition
+     */
+    public function setThursday(bool $thursday): SubstitutePosition
+    {
+        $this->thursday = $thursday;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFriday(): bool
+    {
+        return $this->friday;
+    }
+
+    /**
+     * @param bool $friday
+     *
+     * @return SubstitutePosition
+     */
+    public function setFriday(bool $friday): SubstitutePosition
+    {
+        $this->friday = $friday;
         return $this;
     }
 }

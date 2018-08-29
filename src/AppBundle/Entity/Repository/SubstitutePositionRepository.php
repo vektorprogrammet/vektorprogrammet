@@ -17,8 +17,7 @@ class SubstitutePositionRepository extends EntityRepository
     {
         return $this->createQueryBuilder('sp')
             ->select('sp')
-            ->join('sp.application', 'a')
-            ->where('a.semester = :semester')
+            ->where('sp.semester = :semester')
             ->setParameter('semester', $semester)
             ->getQuery()
             ->getResult();

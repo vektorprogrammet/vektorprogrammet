@@ -32,6 +32,7 @@ class Substitution
      * @var School
      *
      * @ORM\ManyToOne(targetEntity="School")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $school;
 
@@ -40,6 +41,7 @@ class Substitution
      * @var SubstitutePosition
      *
      * @ORM\ManyToOne(targetEntity="SubstitutePosition", inversedBy="substitutions")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $substitutePosition;
 
