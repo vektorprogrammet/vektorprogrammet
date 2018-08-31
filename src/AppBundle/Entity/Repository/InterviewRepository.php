@@ -30,6 +30,7 @@ class InterviewRepository extends EntityRepository
             ->setParameter('user', $user)
             ->andWhere('application.semester = :semester')
             ->setParameter('semester', $semester)
+            ->andWhere('interview.lastScheduleChanged IS NOT NULL')
             ->orderBy('interview.lastScheduleChanged', 'DESC')
             ->getQuery()
             ->getResult();
