@@ -53,7 +53,9 @@ class InterviewManager
     {
         $user = $this->tokenStorage->getToken()->getUser();
 
-        return $this->authorizationChecker->isGranted(Roles::TEAM_LEADER) || $interview->isInterviewer($user);
+        return $this->authorizationChecker->isGranted(Roles::TEAM_LEADER) ||
+               $interview->isInterviewer($user) ||
+               $interview->isCoInterviewer($user);
     }
 
     /**
