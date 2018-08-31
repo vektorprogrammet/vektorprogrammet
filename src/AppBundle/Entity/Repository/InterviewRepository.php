@@ -15,6 +15,27 @@ use Doctrine\ORM\EntityRepository;
  */
 class InterviewRepository extends EntityRepository
 {
+    /**
+     * @param User $user
+     *
+     * @param Semester $semester
+     *
+     * @return Interview
+     */
+    public function findLastScheduledByUserInSemester(User $user, Semester $semester)
+    {
+        $result = $this->createQueryBuilder('interview')
+            ->join('interview.application', 'application')
+            ->where('interview.interviewer = :user')
+            ->setParameter('user', $user)
+            ->andWhere('application.semester = :semester')
+            ->setParameter('semester', $semester)
+            ->orderBy('interview.lastScheduleChanged', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return !empty($result) ? $result[0] : null;
+    }
     public function findAllInterviewedInterviewsBySemester($semester)
     {
         $interviews = $this->getEntityManager()->createQuery('
