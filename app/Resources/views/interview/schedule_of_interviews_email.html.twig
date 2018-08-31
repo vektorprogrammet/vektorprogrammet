@@ -1,6 +1,6 @@
 <p>Hei {{ interviewer.firstName }}</p>
 <p>Under finner du oversikt over alle dine intervjuer som ikke er gjennomførte enda. En fullstending oversikt kan du også finne på
-    <a href=3D"https://vektorprogrammet.no{{ path('applications_show_assigned') }}">nettsiden</a>.</p>
+    <a href="https://vektorprogrammet.no{{ path('applications_show_assigned') }}">nettsiden</a>.</p>
 <br>
 
 {% include 'interview/_schedule_of_interviews_status.html.twig' with {title: 'Aksepterte', status: 1} %}
@@ -8,7 +8,7 @@
 
 <h3>Ikke satt opp</h3>
 {% for interview in interviews if (interview.interviewStatus == 4) %}
-    <p><a href=3D"https://vektorprogrammet.no{{ path('interview_schedule', {'id': interview.id}) }}">{{ interview.user }}</a></p>
+    <p><a href="https://vektorprogrammet.no{{ path('interview_schedule', {'id': interview.id}) }}">{{ interview.user }}</a></p>
 {% else %}
     Ingen
 {% endfor %}
