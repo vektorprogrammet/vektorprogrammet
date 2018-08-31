@@ -1,0 +1,6 @@
+<h3>{{ title }}</h3>
+{% for interview in interviews if (interview.interviewStatus == status) %}
+    {% include 'interview/_schedule_of_interview_line.html.twig' %}
+{% else %}
+    Ingen
+{% endfor %}
