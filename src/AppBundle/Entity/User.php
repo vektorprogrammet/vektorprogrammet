@@ -159,6 +159,7 @@ class User implements AdvancedUserInterface, \Serializable
     {
         $this->roles = new ArrayCollection();
         $this->certificateRequests = new ArrayCollection();
+        $this->interviews = new ArrayCollection();
         $this->isActive = true;
         $this->picture_path = 'images/defaultProfile.png';
         $this->receipts = new ArrayCollection();
@@ -630,7 +631,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function getInterviews()
     {
-        return $this->interviews;
+        return $this->interviews->toArray();
     }
 
     /**

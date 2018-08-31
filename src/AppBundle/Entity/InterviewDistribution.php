@@ -2,15 +2,47 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Type\InterviewStatusType;
+
 class InterviewDistribution
 {
     private $user;
     private $semester;
+    private $interviews;
+    private $totalCount;
 
     public function __construct(User $user, Semester $semester)
     {
         $this->user = $user;
         $this->semester = $semester;
+        $allInterviews = $this->filterInterviewsInSemester($this->user->getInterviews(), $semester);
+        $this->totalCount = count($allInterviews);
+        $this->interviews = $this->filterNotInterviewed($allInterviews);
+    }
+
+    /**
+     * @param $interviews
+     * @param $semester
+     *
+     * @return Interview[]
+     */
+    private function filterInterviewsInSemester($interviews, $semester)
+    {
+        return array_filter($interviews, function (Interview $interview) use ($semester) {
+            return $interview->getApplication()->getSemester() === $semester;
+        });
+    }
+
+    /**
+     * @param $interviews
+     *
+     * @return Interview[]
+     */
+    private function filterNotInterviewed($interviews)
+    {
+        return array_filter($interviews, function (Interview $interview) {
+            return !$interview->getInterviewed();
+        });
     }
 
     /**
@@ -24,13 +56,8 @@ class InterviewDistribution
     public function getInterviewsLeft()
     {
         $interviewsLeftCount = 0;
-        $interviews = $this->user->getInterviews();
 
-        foreach ($interviews as $interview) {
-            if ($interview->getApplication()->getSemester() !== $this->semester) {
-                continue;
-            }
-
+        foreach ($this->interviews as $interview) {
             if (!$interview->getCancelled() && !$interview->getInterviewed()) {
                 ++$interviewsLeftCount;
             }
@@ -41,18 +68,52 @@ class InterviewDistribution
 
     public function getTotalInterviews()
     {
-        $interviewsCount = 0;
-        $interviews = $this->user->getInterviews();
+        return $this->totalCount;
+    }
 
-        foreach ($interviews as $interview) {
-            if ($interview->getApplication()->getSemester() !== $this->semester) {
-                continue;
-            }
+    public function countAccepted()
+    {
+        $interviews = array_filter($this->interviews, function (Interview $interview) {
+            return $interview->getInterviewStatus() === InterviewStatusType::ACCEPTED;
+        });
 
-            ++$interviewsCount;
-        }
+        return count($interviews);
+    }
 
-        return $interviewsCount;
+    public function countCancelled()
+    {
+        $interviews = array_filter($this->interviews, function (Interview $interview) {
+            return $interview->getInterviewStatus() === InterviewStatusType::CANCELLED;
+        });
+
+        return count($interviews);
+    }
+
+    public function countPending()
+    {
+        $interviews = array_filter($this->interviews, function (Interview $interview) {
+            return $interview->getInterviewStatus() === InterviewStatusType::PENDING;
+        });
+
+        return count($interviews);
+    }
+
+    public function countNoContact()
+    {
+        $interviews = array_filter($this->interviews, function (Interview $interview) {
+            return $interview->getInterviewStatus() === InterviewStatusType::NO_CONTACT;
+        });
+
+        return count($interviews);
+    }
+
+    public function countRequestNewTime()
+    {
+        $interviews = array_filter($this->interviews, function (Interview $interview) {
+            return $interview->getInterviewStatus() === InterviewStatusType::REQUEST_NEW_TIME;
+        });
+
+        return count($interviews);
     }
 
     public function __toString()
