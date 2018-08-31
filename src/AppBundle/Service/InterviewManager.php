@@ -112,7 +112,6 @@ class InterviewManager
     {
         $message = \Swift_Message::newInstance()
             ->setSubject('Intervju for vektorprogrammet')
-            ->setFrom(array('opptak@vektorprogrammet.no' => 'Vektorprogrammet'))
             ->setTo($data['to'])
             ->setReplyTo($data['from'])
             ->setBody(
@@ -139,12 +138,11 @@ class InterviewManager
     public function sendRescheduleEmail(Interview $interview)
     {
         $application = $this->em->getRepository('AppBundle:Application')->findOneBy(array('interview' => $interview));
+        $user = $interview->getUser();
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('Intervju: Ønske om ny tid')
+            ->setSubject("[$user] Intervju: Ønske om ny tid")
             ->setTo($interview->getInterviewer()->getEmail())
-            ->setFrom(array('opptak@vektorprogrammet.no' => 'Vektorprogrammet'))
-            ->setReplyTo('opptak@vektorprogrammet.no')
             ->setBody(
                 $this->twig->render('interview/reschedule_email.html.twig',
                     array('interview' => $interview,
@@ -162,11 +160,10 @@ class InterviewManager
      */
     public function sendCancelEmail(Interview $interview)
     {
+        $user = $interview->getUser();
         $message = \Swift_Message::newInstance()
-            ->setSubject('Intervju: Kansellert')
+            ->setSubject("[$user] Intervju: Kansellert")
             ->setTo($interview->getInterviewer()->getEmail())
-            ->setFrom(array('opptak@vektorprogrammet.no' => 'Vektorprogrammet'))
-            ->setReplyTo('opptak@vektorprogrammet.no')
             ->setBody(
                 $this->twig->render('interview/cancel_email.html.twig',
                     array('interview' => $interview,
