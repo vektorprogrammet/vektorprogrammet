@@ -216,7 +216,9 @@ class InterviewController extends Controller
         if ($invalidMapLink) {
             $this->addFlash('error', 'Kartlinken er ikke gyldig');
         } elseif ($form->isValid()) {
-            $interview->generateAndSetResponseCode();
+            if (!$interview->getResponseCode()) {
+                $interview->generateAndSetResponseCode();
+            }
 
             // Update the scheduled time for the interview
             $interview->setScheduled($data['datetime']);
