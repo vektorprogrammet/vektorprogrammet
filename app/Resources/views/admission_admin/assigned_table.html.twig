@@ -41,7 +41,7 @@
                 <td>{{ a.interview.coInterviewer }}</td>
             {% else %}
                 <td>
-                    {% if a.interview.getCoInterviewer() == null %}
+                    {% if a.interview.getCoInterviewer() == null and a.interview.user != app.user %}
                         <form method="POST" action="{{ path('interview_assign_co_interviewer', { id: a.interview.id }) }}">
                             <div class="row">
                                 <div class="small-12 columns">
@@ -62,37 +62,42 @@
             </td>
 
             {# Add the buttons to book(send email) and conduct an interview, given the correct permissions #}
-            {% if is_granted_team_leader() or a.interview.isInterviewer(app.user) %}
+            {% if is_granted_team_leader() or a.interview.isInterviewer(app.user) or a.interview.isCoInterviewer(app.user) %}
                 <td>
                     <a href="{{ path('interview_schedule', { 'id': a.id }) }}" class="button tiny"><i
                                 class="fa fa-envelope"></i> Sett opp</a>
                 </td>
                 <td>
-                    <a href="{{ path('interview_conduct', { 'id': a.id }) }}" class="button tiny {{ a.interview.isDraft ? 'warning' }}"><i
+                    <a href="{{ path('interview_conduct', { 'id': a.id }) }}"
+                       class="button tiny {{ a.interview.isDraft ? 'warning' }}"><i
                                 class="fa fa-list-ul"></i> {{ a.interview.isDraft ? 'Kladd' : 'Intervju' }}</a>
                 </td>
-                <td>
-                    <div class="row">
-                        <div class="small-12 columns">
-                            <a href="{{ path('interview_admin_assign_co_interviewer', { 'id': a.interview.id }) }}" class="button tiny"><i
-                                        class="fa fa-share-alt"></i> Rediger medintervjuer</a>
-                        </div>
-                    </div>
-                </td>
-            {% elseif a.interview.isCoInterviewer(app.user) %}
-                <td>
-                    <form method="POST" action="{{ path('interview_clear_co_interviewer', { id: a.interview.id }) }}">
+                {% if a.interview.isCoInterviewer(app.user) %}
+                    <td>
+                        <form method="POST"
+                              action="{{ path('interview_clear_co_interviewer', { id: a.interview.id }) }}">
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <button type="submit"
+                                            class="button warning tiny">
+                                        <i class="fa fa-share-alt"></i>
+                                        Meld av som medintervjuer
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+                {% else %}
+                    <td>
                         <div class="row">
                             <div class="small-12 columns">
-                                <button type="submit"
-                                        class="button warning tiny">
-                                    <i class="fa fa-share-alt"></i>
-                                    Meld av som medintervjuer
-                                </button>
+                                <a href="{{ path('interview_admin_assign_co_interviewer', { 'id': a.interview.id }) }}"
+                                   class="button tiny"><i
+                                            class="fa fa-share-alt"></i> Rediger medintervjuer</a>
                             </div>
                         </div>
-                    </form>
-                </td>
+                    </td>
+                {% endif %}
             {% endif %}
         </tr>
     {% endfor %}

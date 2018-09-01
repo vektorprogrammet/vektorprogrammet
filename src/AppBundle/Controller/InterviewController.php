@@ -40,6 +40,9 @@ class InterviewController extends Controller
      */
     public function conductAction(Request $request, Application $application)
     {
+        if ($application->getInterview() === null) {
+            throw $this->createNotFoundException();
+        }
         $department = $this->getUser()->getDepartment();
         $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findActiveByDepartment($department);
 
@@ -507,13 +510,19 @@ class InterviewController extends Controller
 
     public function assignCoInterviewerAction(Interview $interview)
     {
+        if ($interview->getUser() === $this->getUser()) {
+            return $this->render('error/control_panel_error.html.twig', array(
+                'error' => 'Kan ikke legge til deg selv som medintervjuer på ditt eget intervju'
+            ));
+        }
+
         if ($interview->getInterviewed()) {
             return $this->render('error/control_panel_error.html.twig', array(
                 'error' => 'Kan ikke legge til deg selv som medintervjuer etter intervjuet er gjennomført'
             ));
         }
 
-        if ($this->getUser() != $interview->getInterviewer()) {
+        if ($this->getUser() === $interview->getInterviewer()) {
             return $this->render('error/control_panel_error.html.twig', array(
                 'error' => 'Kan ikke legge til deg selv som medintervjuer når du allerede er intervjuer'
             ));
