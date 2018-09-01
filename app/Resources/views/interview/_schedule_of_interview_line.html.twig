@@ -1,1 +1,4 @@
-<p>{{ interview.scheduled|date('d.M') }} kl. {{ interview.scheduled|date('h:i') }} | {{ interview.room }} | Medintervjuer: {{ interview.interviewer == interviewer ? interview.coInterviewer : interview.interviewer }} | Søker: <a href="https://vektorprogrammet.no{{ path('interview_schedule', {'id': interview.id}) }}"><strong>{{ interview.user }}</strong></a></p>
+<p>{{ interview.scheduled|date('d.M') }} kl. {{ interview.scheduled|date('h:i') }} | 
+{{ interview.room }} | 
+Medintervjuer: {{ interview.interviewer == interviewer ? interview.coInterviewer : interview.interviewer }} | 
+Søker: <a href="https://vektorprogrammet.no{{ path('interview_schedule', {'id': interview.id}) }}"><strong>{{ interview.user }}</strong></a></p>
