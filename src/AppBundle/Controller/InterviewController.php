@@ -13,6 +13,8 @@ use AppBundle\Form\Type\AssignInterviewType;
 use AppBundle\Form\Type\CancelInterviewConfirmationType;
 use AppBundle\Form\Type\ScheduleInterviewType;
 use AppBundle\Role\Roles;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,10 +28,12 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class InterviewController extends Controller
 {
     /**
-     * Shows and handles the submission of the interview form.
-     * The rendered page is the page used to conduct interviews.
+     * @Route("/kontrollpanel/intervju/conduct/{id}",
+     *     name="interview_conduct",
+     *     requirements={"id"="\d+"},)
+     * @Method({"GET", "POST"})
      *
-     * @param Request     $request
+     * @param Request $request
      * @param Application $application
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -46,7 +50,7 @@ class InterviewController extends Controller
         // If the interview has not yet been conducted, create up to date answer objects for all questions in schema
         $interview = $this->get('app.interview.manager')->initializeInterviewAnswers($application->getInterview());
 
-        // Only admin and above, or the assigned interviewer should be able to conduct an interview
+        // Only admin and above, or the assigned interviewer, or the co interviewer should be able to conduct an interview
         if (!$this->get('app.interview.manager')->loggedInUserCanSeeInterview($interview)) {
             throw $this->createAccessDeniedException();
         }
@@ -503,13 +507,24 @@ class InterviewController extends Controller
 
     public function assignCoInterviewerAction(Interview $interview)
     {
-        if ($this->getUser() != $interview->getInterviewer()) {
-            $interview->setCoInterviewer($this->getUser());
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($interview);
-            $em->flush();
-            $this->get('event_dispatcher')->dispatch(InterviewEvent::COASSIGN, new InterviewEvent($interview));
+        if ($interview->getInterviewed()) {
+            return $this->render('error/control_panel_error.html.twig', array(
+                'error' => 'Kan ikke legge til deg selv som medintervjuer etter intervjuet er gjennomført'
+            ));
         }
+
+        if ($this->getUser() != $interview->getInterviewer()) {
+            return $this->render('error/control_panel_error.html.twig', array(
+                'error' => 'Kan ikke legge til deg selv som medintervjuer når du allerede er intervjuer'
+            ));
+        }
+
+        $interview->setCoInterviewer($this->getUser());
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($interview);
+        $em->flush();
+        $this->get('event_dispatcher')->dispatch(InterviewEvent::COASSIGN, new InterviewEvent($interview));
+
         return $this->redirectToRoute('applications_show_assigned');
     }
 
