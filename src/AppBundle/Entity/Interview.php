@@ -521,7 +521,7 @@ class Interview
             case InterviewStatusType::NO_CONTACT:
                 return '#9999ff';
             case InterviewStatusType::PENDING:
-                return '#000000';
+                return '#0d97c4';
             case InterviewStatusType::ACCEPTED:
                 return '#32CD32';
             case InterviewStatusType::REQUEST_NEW_TIME:
