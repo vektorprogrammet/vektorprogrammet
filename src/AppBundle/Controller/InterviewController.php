@@ -52,7 +52,6 @@ class InterviewController extends Controller
 
         // Only admin and above, or the assigned interviewer, or the co interviewer should be able to conduct an interview
         if (!$this->get('app.interview.manager')->loggedInUserCanSeeInterview($interview)) {
-            dump("test");
             throw $this->createAccessDeniedException();
         }
 
