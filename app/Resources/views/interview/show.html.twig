@@ -14,8 +14,9 @@
                         <a href="{{ path('interview_conduct', { 'id': application.id }) }}"
                            class="button radius tiny info float-right clear">Endre</a>
                         <h1>Intervju</h1>
-                        <h3>Intervjuer</h3>
-                        <p>{{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}</p>
+                        <h3>Intervjuet av</h3>
+                        <p>{{ interview.interviewer }}
+                            {% if interview.coInterviewer %} og {{ interview.coInterviewer }}{% endif %}</p>
                         <h3>Kandidat</h3>
                         <table>
                             <thead>

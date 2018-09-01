@@ -209,7 +209,7 @@ class Interview
     /**
      * Set interviewer.
      *
-     * @param User $interviewer
+     * @param User $coInterviewer
      *
      * @return Interview
      */
