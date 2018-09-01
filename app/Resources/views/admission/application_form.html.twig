@@ -114,7 +114,9 @@
                             <div class="form-group">
                                 <input type="email" class="form-control subscribe-input" placeholder="E-post">
                                 <div class="invalid-feedback"></div>
-                                <button class="btn btn-info btn-sm mt-3" onclick="subscribe({{ department.id }}, this)">Få påminnelse når opptaket starter neste semester</button>
+                                <button class="btn btn-info btn-sm mt-3 btn-text-break" onclick="subscribe({{ department.id }}, this)">
+                                    Få påminnelse når neste opptak starter
+                                </button>
                             </div>
                         </div>
                     {% else %}
