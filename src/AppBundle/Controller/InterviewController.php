@@ -216,7 +216,9 @@ class InterviewController extends Controller
         if ($invalidMapLink) {
             $this->addFlash('error', 'Kartlinken er ikke gyldig');
         } elseif ($form->isValid()) {
-            $interview->generateAndSetResponseCode();
+            if (!$interview->getResponseCode()) {
+                $interview->generateAndSetResponseCode();
+            }
 
             // Update the scheduled time for the interview
             $interview->setScheduled($data['datetime']);
@@ -376,13 +378,13 @@ class InterviewController extends Controller
         $room = $interview->getRoom();
 
         $successMessage = "Takk for at du aksepterte intervjutiden. Da sees vi $formattedDate klokka $formattedTime i $room!";
+        $this->addFlash('success', $successMessage);
+
         if ($interview->getUser() === $this->getUser()) {
-            $this->addFlash('success', $successMessage);
             return $this->redirectToRoute("my_page");
         }
-        $this->addFlash('title', 'Akseptert!');
-        $this->addFlash('message', $successMessage);
-        return $this->redirectToRoute('confirmation');
+
+        return $this->redirectToRoute('interview_response', ['responseCode' => $interview->getResponseCode()]);
     }
 
     /**
@@ -409,15 +411,13 @@ class InterviewController extends Controller
             $manager->flush();
 
             $this->get('app.interview.manager')->sendRescheduleEmail($interview);
+            $this->addFlash('success', "Forspørsel om ny intervjutid er sendt. Vi tar kontakt med deg når vi har funnet en ny intervjutid.");
 
-            $successMessage = "Vi tar kontakt med deg når vi har funnet en ny intervjutid.";
             if ($interview->getUser() === $this->getUser()) {
-                $this->addFlash('success', "Forspørsel om ny intervjutid er sendt. $successMessage");
                 return $this->redirectToRoute("my_page");
             }
-            $this->addFlash('title', 'Notert');
-            $this->addFlash('message', $successMessage);
-            return $this->redirectToRoute('confirmation');
+
+            return $this->redirectToRoute('interview_response', ['responseCode' => $interview->getResponseCode()]);
         }
 
         return $this->render('interview/request_new_time.html.twig', array(
@@ -433,12 +433,11 @@ class InterviewController extends Controller
      */
     public function respondAction(Interview $interview)
     {
-        if (!$interview->isPending()) {
-            throw $this->createNotFoundException();
-        }
+        $applicationStatus = $this->get('app.application_manager')->getApplicationStatus($interview->getApplication());
 
         return $this->render('interview/response.html.twig', array(
             'interview' => $interview,
+            'application_status' => $applicationStatus
         ));
     }
 
@@ -466,15 +465,13 @@ class InterviewController extends Controller
             $manager->flush();
 
             $this->get('app.interview.manager')->sendCancelEmail($interview);
+            $this->addFlash('success', "Du har kansellert intervjuet ditt.");
 
-            $successMessage = "Du har kansellert intervjuet ditt.";
             if ($interview->getUser() === $this->getUser()) {
-                $this->addFlash('success', $successMessage);
                 return $this->redirectToRoute("my_page");
             }
-            $this->addFlash('title', 'Kansellert');
-            $this->addFlash('message', $successMessage);
-            return $this->redirectToRoute('confirmation');
+
+            return $this->redirectToRoute('interview_response', ['responseCode' => $interview->getResponseCode()]);
         }
 
         return $this->render('interview/response_confirm_cancel.html.twig', array(
