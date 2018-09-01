@@ -182,6 +182,18 @@ class InterviewManager
      */
     public function getDefaultScheduleFormData(Interview $interview): array
     {
+        $previousScheduledInterview = $this->em->getRepository('AppBundle:Interview')
+                                               ->findLastScheduledByUserInSemester($interview->getInterviewer(), $interview->getApplication()->getSemester());
+        $room = null;
+        $campus = null;
+        $mapLink = null;
+        if ($previousScheduledInterview) {
+            $room = $previousScheduledInterview->getRoom();
+            $campus = $previousScheduledInterview->getCampus();
+            $mapLink = $previousScheduledInterview->getMapLink();
+        }
+
+
         $message = "Hei, {$interview->getUser()->getFirstName()}!
          
 Vi har satt opp et intervju for deg angående opptak til vektorprogrammet. 
@@ -189,9 +201,9 @@ Vennligst gi beskjed til meg hvis tidspunktet ikke passer.";
 
         return array(
             'datetime' => $interview->getScheduled(),
-            'room' => $interview->getRoom(),
-            'campus' => $interview->getCampus(),
-            'mapLink' => $interview->getMapLink(),
+            'room' => $interview->getRoom() ?: $room,
+            'campus' => $interview->getCampus() ?: $campus,
+            'mapLink' => $interview->getMapLink() ?: $mapLink,
             'message' => $message,
             'from' => $interview->getInterviewer()->getEmail(),
             'to' => $interview->getUser()->getEmail(),
