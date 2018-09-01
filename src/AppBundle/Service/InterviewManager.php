@@ -5,9 +5,11 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Interview;
 use AppBundle\Entity\InterviewAnswer;
+use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use AppBundle\Mailer\MailerInterface;
 use AppBundle\Role\Roles;
+use AppBundle\Type\InterviewStatusType;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -173,6 +175,44 @@ class InterviewManager
                 ),
                 'text/html'
             );
+
+        $this->mailer->send($message);
+    }
+
+    public function sendInterviewScheduleToInterviewer(User $interviewer)
+    {
+        $interviews = $this->em->getRepository('AppBundle:Interview')->findUncompletedInterviewsByInterviewerInCurrentSemester($interviewer);
+
+        $nothingMoreToDo = true;
+        foreach ($interviews as $interview) {
+            $status = $interview->getInterviewStatus();
+
+            if ($status === InterviewStatusType::NO_CONTACT ||
+                 $status === InterviewStatusType::PENDING ||
+                 $status === InterviewStatusType::REQUEST_NEW_TIME ||
+                 $status === InterviewStatusType::ACCEPTED
+            ) {
+                $nothingMoreToDo = false;
+                break;
+            }
+        }
+
+        if ($nothingMoreToDo) {
+            return;
+        }
+
+        $message = \Swift_Message::newInstance()
+             ->setSubject('Dine intervjuer dette semesteret')
+             ->setTo($interviewer->getEmail())
+             ->setBody(
+                 $this->twig->render('interview/schedule_of_interviews_email.html.twig',
+                     array(
+                         'interviews'  => $interviews,
+                         'interviewer' => $interviewer
+                     )
+                 ),
+                 'text/html'
+             );
 
         $this->mailer->send($message);
     }

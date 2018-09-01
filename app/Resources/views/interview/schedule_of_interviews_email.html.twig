@@ -1,0 +1,35 @@
+<p>Hei {{ interviewer.firstName }}</p>
+<p>Under finner du oversikt over alle dine intervjuer som ikke er gjennomførte enda. En fullstending oversikt kan du også finne på
+    <a href="https://vektorprogrammet.no{{ path('applications_show_assigned') }}">nettsiden</a>.</p>
+<br>
+
+{% include 'interview/_schedule_of_interviews_status.html.twig' with {title: 'Aksepterte', status: 1} %}
+<br>
+<hr>
+
+<h3>Ikke satt opp</h3>
+{% for interview in interviews if (interview.interviewStatus == 4) %}
+    <p><a href="https://vektorprogrammet.no{{ path('interview_schedule', {'id': interview.id}) }}">{{ interview.user }}</a></p>
+{% else %}
+    Ingen<br>
+{% endfor %}
+<br>
+<hr>
+
+{% include 'interview/_schedule_of_interviews_status.html.twig' with {title: 'Bedt om ny tid', status: 2} %}
+<br>
+<hr>
+
+{% include 'interview/_schedule_of_interviews_status.html.twig' with {title: 'Venter på svar', status: 0} %}
+<br>
+<hr>
+
+{% include 'interview/_schedule_of_interviews_status.html.twig' with {title: 'Kansellerte', status: 3} %}
+<br>
+<hr>
+
+<p>
+    Mvh.<br>
+    Vektorbot
+</p>
+
