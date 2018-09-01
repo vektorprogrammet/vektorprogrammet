@@ -107,8 +107,8 @@
                         </header>
                         <p class="text-center">
                             <i class="fa fa-exclamation-circle text-warning"></i> Opptaket stengte <span class="deadline">
-                        {{ department.currentSemester.admissionStartDate|date('d.m.Y') }}
-                                kl. {{ department.currentSemester.admissionStartDate|date('H:i') }}</span>
+                        {{ department.currentSemester.admissionEndDate|date('d.m.Y') }}
+                                kl. {{ department.currentSemester.admissionEndDate|date('H:i') }}</span>
                         </p>
                         <div class="col-12 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 mt-4">
                             <div class="form-group">
