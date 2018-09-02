@@ -18,19 +18,22 @@
                 <hr>
                 {{ form_start(form) }}
                 {{ form_end(form) }}
-                <div class="clear-button">
-                    <form method="POST" action="{{ path('interview_clear_co_interviewer', { id: interview.id }) }}">
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <button type="submit"
-                                        class="button warning tiny">
-                                    <i class="fa fa-share-alt"></i>
-                                    Fjern medintervjuer
-                                </button>
+
+                {% if interview.coInterviewer %}
+                    <div class="clear-button">
+                        <form method="POST" action="{{ path('interview_clear_co_interviewer', { id: interview.id }) }}">
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <button type="submit"
+                                            class="button warning tiny">
+                                        <i class="fa fa-share-alt"></i>
+                                        Fjern medintervjuer
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
+                        </form>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

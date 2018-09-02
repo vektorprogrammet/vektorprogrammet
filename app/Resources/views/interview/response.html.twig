@@ -5,8 +5,9 @@
 
 {% block body %}
     <div class="container mb-3">
-        <div class="row">
-            <div class="col-12 text-center">
+        {% if interview.isPending %}
+            <div class="row">
+                <div class="col-12 text-center">
                 {% include 'interview/interview_invitation_header.html.twig' %}
 
                 <h3 class="mt-5">Hei {{ interview.user }}!</h3>
@@ -36,7 +37,24 @@
                     </form>
                 </div>
             </div>
-        </div>
+            </div>
+        {% else %}
+            <header class="row page-header my-5">
+                <div class="col-12 text-center">
+                    <h1 class="mb-0">Status vektorsøknad {{ interview.application.semester.name|lower }}</h1>
+                    <img class="profile-photo rounded-circle mt-4 mb-3"
+                         src="{{ asset(interview.user.picturePath | imagine_filter('profile_img_small')) }}">
+                    <p class="fs-16 mb-0">Søknad for</p>
+                    <p class="mt-0 text-bold">{{ interview.user }}</p>
+                </div>
+            </header>
+            <div class="row">
+                <div class="col-12 col-lg-6 offset-lg-3 mb-4">
+                    {% include 'my_page/applications.html.twig' with {application: interview.application} %}
+                </div>
+            </div>
+        {% endif %}
+
     </div>
 {% endblock %}
 

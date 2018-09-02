@@ -53,7 +53,8 @@
                             </tbody>
                         </table>
                         <h3>Intervjuet av</h3>
-                        <p>{{ application.interview.interviewer }}</p>
+                        <p>{{ application.interview.interviewer }}
+                            {% if application.interview.coInterviewer %} og {{ application.interview.coInterviewer }}{% endif %}</p>
                     </div>
                 </div>
                 {{ form_start(form) }}

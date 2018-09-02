@@ -31,7 +31,7 @@ class ExistingUserAdmissionController extends Controller
         }
 
         $department = $user->getDepartment();
-        $teams = $em->getRepository('AppBundle:Team')->findByDepartment($department);
+        $teams = $em->getRepository('AppBundle:Team')->findActiveByDepartment($department);
 
         $application = $admissionManager->createApplicationForExistingAssistant($user);
 

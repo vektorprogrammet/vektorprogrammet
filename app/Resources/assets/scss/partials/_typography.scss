@@ -1,4 +1,5 @@
 @import "../modules/colors";
+@import "../colors";
 
 .text-alert {
   color: $alert-color;
@@ -30,4 +31,24 @@
     text-decoration: underline;
     cursor: pointer;
   }
+}
+
+.color-status-no-contact {
+  color: $color-status-no-contact;
+}
+
+.color-status-pending {
+  color: $color-status-pending;
+}
+
+.color-status-new-time {
+  color: $color-status-new-time;
+}
+
+.color-status-accepted {
+  color: $color-status-accepted;
+}
+
+.color-status-cancelled {
+  color: $color-status-cancelled;
 }
