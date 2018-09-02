@@ -158,7 +158,7 @@ class User implements AdvancedUserInterface, \Serializable
 
     public function __construct()
     {
-        $this->roles = new ArrayCollection([Roles::ASSISTANT]);
+        $this->roles = new ArrayCollection();
         $this->certificateRequests = new ArrayCollection();
         $this->interviews = new ArrayCollection();
         $this->isActive = true;
