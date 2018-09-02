@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Role\Roles;
 use AppBundle\Validator\Constraints as CustomAssert;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -157,7 +158,7 @@ class User implements AdvancedUserInterface, \Serializable
 
     public function __construct()
     {
-        $this->roles = new ArrayCollection();
+        $this->roles = new ArrayCollection([Roles::ASSISTANT]);
         $this->certificateRequests = new ArrayCollection();
         $this->interviews = new ArrayCollection();
         $this->isActive = true;
