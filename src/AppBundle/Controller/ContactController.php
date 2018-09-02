@@ -36,7 +36,6 @@ class ContactController extends Controller
         $form = $this->createForm(SupportTicketType::class, $supportTicket, array(
             'department_repository' => $this->getDoctrine()->getRepository('AppBundle:Department'),
         ));
-        $form->remove('captcha');
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $supportTicket->getDepartment() === null) {

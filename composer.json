@@ -21,7 +21,6 @@
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
         "egeloen/ckeditor-bundle": "~3.0",
-        "gregwar/captcha-bundle": "~2.0",
         "doctrine/doctrine-fixtures-bundle": "2.2.*",
         "friendsofsymfony/jsrouting-bundle": "~1.5",
         "knplabs/knp-paginator-bundle": "~2.4",

@@ -50,16 +50,6 @@ class SupportTicketType extends AbstractType
             'attr' => array(
                 'class' => 'btn-primary'
             )));
-        $builder->add('captcha', CaptchaType::class, array(
-            'label' => ' ',
-            'width' => 200,
-            'height' => 50,
-            'length' => 5,
-            'quality' => 200,
-            'keep_value' => true,
-            'distortion' => false,
-            'background_color' => [255, 255, 255],
-        ));
 
         $builder->get('department')
             ->addModelTransformer(new CallbackTransformer(

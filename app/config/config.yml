@@ -162,8 +162,6 @@ ivory_ck_editor:
         standard_config:
             toolbar: standard
 
-gregwar_captcha: ~
-
 fm_elfinder:
     instances:
         default:
