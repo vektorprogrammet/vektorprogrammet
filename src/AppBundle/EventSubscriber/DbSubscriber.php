@@ -26,9 +26,9 @@ class DbSubscriber implements EventSubscriber
     private $tokenStorage;
     private $request;
     private $ignoredClasses;
-	private $manager;
+    private $manager;
 
-	public function __construct(LoggerInterface $logger, TokenStorageInterface $tokenStorage, RequestStack $request, EntityManager $manager)
+    public function __construct(LoggerInterface $logger, TokenStorageInterface $tokenStorage, RequestStack $request, EntityManager $manager)
     {
         $this->logger = $logger;
         $this->tokenStorage = $tokenStorage;
@@ -44,7 +44,7 @@ class DbSubscriber implements EventSubscriber
             SurveyQuestionAlternative::class,
             AdmissionNotification::class,
         ];
-	    $this->manager = $manager;
+        $this->manager = $manager;
     }
 
     /**
@@ -55,29 +55,30 @@ class DbSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array(
-        	'prePersist',
+            'prePersist',
             'postPersist',
             'postUpdate',
             'postRemove'
         );
     }
 
-    public function prePersist(LifecycleEventArgs $args) {
-		$obj = $args->getObject();
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $obj = $args->getObject();
 
-		if ($obj instanceof User) {
-			$this->setDefaultUserRole($obj);
-		}
+        if ($obj instanceof User) {
+            $this->setDefaultUserRole($obj);
+        }
     }
 
     private function setDefaultUserRole(User $user)
     {
-		if (!empty($user->getRoles())) {
-			return;
-		}
+        if (!empty($user->getRoles())) {
+            return;
+        }
 
-		$defaultRole = $this->manager->getRepository('AppBundle:Role')->findByRoleName(Roles::ASSISTANT);
-		$user->addRole($defaultRole);
+        $defaultRole = $this->manager->getRepository('AppBundle:Role')->findByRoleName(Roles::ASSISTANT);
+        $user->addRole($defaultRole);
     }
 
     public function postUpdate(LifecycleEventArgs $args)
