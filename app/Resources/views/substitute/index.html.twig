@@ -56,8 +56,15 @@
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
             <hr>
-            <h3>Vikarerstillinger</h3>
-            <p>Dette er en oversikt over alle vikarstillingene {{ semester }}</p>
+            {% if semester == semester.department.currentSemester %}
+                <h3>Vikarerstillinger dette semesteret</h3>
+            {% else %}
+                <h3>Vikarerstillinger {{ semester.name }}</h3>
+            {% endif %}
+            <p>
+                Dette er en oversikt over alle vikarstillingene i semesteret {{ semester.name }}.
+                Du kan legge til nye vikarer så lenge de har en bruker på nettsiden.
+            </p>
 
             <table width="100%" id="substitute-table">
                 <thead>
@@ -110,7 +117,7 @@
                                         <button type="submit"
                                                 class="button tiny">
                                             <i class="fa fa-pencil-square-o"></i>
-                                            Rediger
+                                            Rediger stilling
                                         </button>
                                     </form>
                                 </td>
@@ -121,7 +128,7 @@
                                         <button type="submit"
                                                 class="button tiny alert">
                                             <i class="fa fa-trash"></i>
-                                            Slett
+                                            Slett stilling
                                         </button>
                                     </form>
                                 </td>
