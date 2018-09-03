@@ -101,6 +101,24 @@
                                 </div>
                             </div>
                         </div>
+                    {% elseif department.currentSemester and date(department.currentSemester.admissionEndDate)|date_modify("+14 days") > date() %}
+                        <header class="application-header text-center mt-3">
+                            <h3>{{ department.city }}</h3>
+                        </header>
+                        <p class="text-center">
+                            <i class="fa fa-exclamation-circle text-warning"></i> Opptaket stengte <span class="deadline">
+                        {{ department.currentSemester.admissionEndDate|date('d.m.Y') }}
+                                kl. {{ department.currentSemester.admissionEndDate|date('H:i') }}</span>
+                        </p>
+                        <div class="col-12 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 mt-4">
+                            <div class="form-group">
+                                <input type="email" class="form-control subscribe-input" placeholder="E-post">
+                                <div class="invalid-feedback"></div>
+                                <button class="btn btn-info btn-sm mt-3 btn-text-break" onclick="subscribe({{ department.id }}, this)">
+                                    Få påminnelse når neste opptak starter
+                                </button>
+                            </div>
+                        </div>
                     {% else %}
                         <header class="application-header text-center mt-3">
                             <h3>{{ department.city }}</h3>

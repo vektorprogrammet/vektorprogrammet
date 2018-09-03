@@ -204,7 +204,7 @@ services:
 
   app.db_subscriber:
     class: AppBundle\EventSubscriber\DbSubscriber
-    arguments: ['@app.logger', '@security.token_storage', '@request_stack']
+    arguments: ['@app.logger', '@security.token_storage', '@request_stack', '@doctrine.orm.default_entity_manager']
     tags:
       - { name: doctrine.event_subscriber }
 
@@ -255,5 +255,10 @@ services:
   app.application_email_validator:
     class: AppBundle\Validator\Constraints\ApplicationEmailValidator
     arguments: ['@app.application_admission']
+    tags:
+        - { name: validator.constraint_validator }
+
+  app.info_meeting_validator:
+    class: AppBundle\Validator\Constraints\InfoMeetingValidator
     tags:
         - { name: validator.constraint_validator }

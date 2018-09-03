@@ -282,13 +282,13 @@ class Semester
     {
         $now = new \DateTime();
 
-        return $this->getSemesterStartDate() < $now && $now < $this->getSemesterEndDate();
+        return $this->getSemesterStartDate() < $now && $now <= $this->getSemesterEndDate();
     }
 
     public function hasActiveAdmission(): bool
     {
         $now = new \DateTime();
 
-        return $this->getAdmissionStartDate() < $now && $now < $this->getAdmissionEndDate();
+        return $this->getAdmissionStartDate() <= $now && $now <= $this->getAdmissionEndDate();
     }
 }
