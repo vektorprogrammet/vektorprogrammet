@@ -60,6 +60,49 @@ class SurveyController extends Controller
         ));
     }
 
+    public function showTeamAction(Request $request, Survey $survey){
+        $user = $this->getUser();
+
+        if($user===null){
+            return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
+        }
+
+        $surveyTaken = $this->get('survey.manager')->initializeSurveyTaken($survey);
+
+        $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $surveyTaken->removeNullAnswers();
+            $surveyTaken->setTime(new \DateTime());
+            $surveyTaken->setUser($user);
+
+            if ($surveyTaken->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($surveyTaken);
+                $em->flush();
+
+                if ($survey->isShowCustomFinishPage()) {
+                    return $this->render('survey/finish_page.html.twig', [
+                        'content' => $survey->getFinishPageContent(),
+                    ]);
+                }
+
+                $this->addFlash('undersokelse-notice', 'Mottatt svar!');
+            } else {
+                $this->addFlash('undersokelse-warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
+            }
+
+            //New form without previous answers
+            return $this->redirectToRoute('survey_show_team', array('id' => $survey->getId()));
+        }
+
+        return $this->render('survey/takeSurvey.html.twig', array(
+            'form' => $form->createView(),
+
+        ));
+    }
+
     public function showAdminAction(Request $request, Survey $survey)
     {
         $surveyTaken = $this->get('survey.manager')->initializeSurveyTaken($survey);

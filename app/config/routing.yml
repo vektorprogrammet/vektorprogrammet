@@ -75,12 +75,28 @@ survey_show:
   requirements:
     id: \d+
 
+survey_show_team:
+ path: /teamundersokelse/{id}
+ defaults: { _controller: AppBundle:Survey:showTeam }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+
 survey_show_admin:
+ path: /kontrollpanel/undersokelse/{id}
+ defaults: { _controller: AppBundle:Survey:showAdmin }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+survey_team_show_admin:
   path: /kontrollpanel/undersokelse/{id}
   defaults: { _controller: AppBundle:Survey:showAdmin }
   methods: [GET, POST]
   requirements:
-    id: \d+
+   id: \d+
+
 
 survey_create:
   path: /kontrollpanel/undersokelse/opprett

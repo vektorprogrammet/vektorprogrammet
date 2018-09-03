@@ -19,6 +19,13 @@ class SurveyTaken implements \JsonSerializable
     protected $id;
 
     /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
+     */
+    protected $user;
+
+    /**
      * @ORM\Column(type="datetime", nullable=false)
      *
      * @var string
@@ -130,6 +137,26 @@ class SurveyTaken implements \JsonSerializable
     }
 
     /**
+     * @return User
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     * @return SurveyTaken
+     */
+    public function setUser(User $user): SurveyTaken
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+
+
+    /**
      * Specify data which should be serialized to JSON.
      *
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
@@ -170,4 +197,6 @@ class SurveyTaken implements \JsonSerializable
 
         return true;
     }
+
+
 }
