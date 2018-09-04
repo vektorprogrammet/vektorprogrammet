@@ -5,6 +5,7 @@ namespace AppBundle\Entity\Repository;
 use AppBundle\Entity\Interview;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
+use AppBundle\Type\InterviewStatusType;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -156,5 +157,26 @@ class InterviewRepository extends EntityRepository
         }
 
         return array_unique($interviewers);
+    }
+
+    /**
+     * Find interviews which will receive accept-interview notifications.
+     * All interviews scheduled to a time after $time and having PENDING
+     * interview status apply.
+     *
+     * @param \DateTime $time
+     *
+     * @return array
+     */
+    public function findAcceptInterviewNotificationRecipients(\DateTime $time)
+    {
+        return $this->createQueryBuilder('i')
+            ->select('i')
+            ->where('i.scheduled > :time')
+            ->andWhere('i.interviewStatus = :status')
+            ->setParameter('time', $time)
+            ->setParameter('status', InterviewStatusType::PENDING)
+            ->getQuery()
+            ->getResult();
     }
 }

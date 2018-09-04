@@ -24,6 +24,8 @@ class InterviewManager
     private $logger;
     private $em;
 
+    private const MAX_NUM_ACCEPT_INTERVIEW_REMINDERS_SENT = 3;
+
     /**
      * InterviewManager constructor.
      *
@@ -215,6 +217,42 @@ class InterviewManager
              );
 
         $this->mailer->send($message);
+    }
+
+    public function sendAcceptInterviewReminders()
+    {
+        $interviews = $this->em->getRepository('AppBundle:Interview')->findAcceptInterviewNotificationRecipients(new \DateTime());
+        /** @var Interview $interview */
+        foreach ($interviews as $interview) {
+            if ($interview->getNumAcceptInterviewRemindersSent() < self::MAX_NUM_ACCEPT_INTERVIEW_REMINDERS_SENT) {
+                $this->sendAcceptInterviewReminderToInterviewee($interview);
+            }
+        }
+    }
+
+    private function sendAcceptInterviewReminderToInterviewee(Interview $interview)
+    {
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Påminnelse om intervjuinvitasjon med Vektorprogrammet')
+            ->setTo($interview->getUser()->getEmail())
+            ->setBody(
+                $this->twig->render(
+                    'interview/accept_interview_reminder_email.html.twig',
+                    array(
+                        'interview' => $interview,
+                    ))
+            );
+
+        $this->mailer->send($message);
+
+        $interview->incrementNumAcceptInterviewRemindersSent();
+        $this->em->persist($interview);
+        $this->em->flush();
+
+        $maxNum = self::MAX_NUM_ACCEPT_INTERVIEW_REMINDERS_SENT;
+        $this->logger->info("
+            Accept interview reminder sent to {$interview->getUser()}.
+            ({$interview->getNumAcceptInterviewRemindersSent()}/$maxNum reminders sent)");
     }
 
     /**
