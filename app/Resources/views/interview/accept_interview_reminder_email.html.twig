@@ -11,8 +11,8 @@ Rom: {{ interview.room }}{% if interview.mapLink %} (<a href="{{ interview.mapLi
 <p>
     Vi vil gjerne vite om tidspunktet passer for deg!
     Gå inn på følgende link for å akseptere eller kansellere intervjuet:  <p/>
-<a href="{{ url('interview_response', { 'responseCode' : interview.responseCode}) }}">
-    {{ app.request.httpHost ~ path('interview_response', {'responseCode' : interview.responseCode})}}
+<a href="https://vektorprogrammet.no{{ path('interview_response', { 'responseCode' : interview.responseCode}) }}">
+    https://vektorprogrammet.no{{ path('interview_response', {'responseCode' : interview.responseCode})}}
 </a>
 <br/>
 Mvh. Vektorprogrammet

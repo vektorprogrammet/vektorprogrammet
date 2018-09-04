@@ -9,9 +9,12 @@ use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use AppBundle\Mailer\MailerInterface;
 use AppBundle\Role\Roles;
+use AppBundle\Sms\Sms;
+use AppBundle\Sms\SmsSender;
 use AppBundle\Type\InterviewStatusType;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -23,20 +26,24 @@ class InterviewManager
     private $twig;
     private $logger;
     private $em;
+    private $router;
+    private $smsSender;
 
     private const MAX_NUM_ACCEPT_INTERVIEW_REMINDERS_SENT = 3;
 
     /**
      * InterviewManager constructor.
      *
-     * @param TokenStorage                  $tokenStorage
+     * @param TokenStorage $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param MailerInterface               $mailer
-     * @param \Twig_Environment             $twig
-     * @param LoggerInterface               $logger
-     * @param EntityManager                 $em
+     * @param MailerInterface $mailer
+     * @param \Twig_Environment $twig
+     * @param LoggerInterface $logger
+     * @param EntityManager $em
+     * @param RouterInterface $router
+     * @param SmsSender $smsSender
      */
-    public function __construct(TokenStorage $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, MailerInterface $mailer, \Twig_Environment $twig, LoggerInterface $logger, EntityManager $em)
+    public function __construct(TokenStorage $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, MailerInterface $mailer, \Twig_Environment $twig, LoggerInterface $logger, EntityManager $em, RouterInterface $router, SmsSender $smsSender)
     {
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
@@ -44,6 +51,8 @@ class InterviewManager
         $this->twig = $twig;
         $this->logger = $logger;
         $this->em = $em;
+        $this->router = $router;
+        $this->smsSender = $smsSender;
     }
 
     /**
@@ -240,7 +249,9 @@ class InterviewManager
                     'interview/accept_interview_reminder_email.html.twig',
                     array(
                         'interview' => $interview,
-                    ))
+                    )
+                ),
+                'text/html'
             );
 
         $this->mailer->send($message);
@@ -253,6 +264,20 @@ class InterviewManager
         $this->logger->info("
             Accept interview reminder sent to {$interview->getUser()}.
             ({$interview->getNumAcceptInterviewRemindersSent()}/$maxNum reminders sent)");
+
+
+        $oneDay = new \DateInterval('P1D');
+        $now = new \DateTime();
+        $lessThan24HoursUntilInterview = $now->add($oneDay) > $interview->getScheduled();
+        if ($lessThan24HoursUntilInterview) {
+            $smsMessage = "Hei! Vi har satt opp intervjutid for deg og trenger å vite om den passer. Gå til https://vektorprogrammet.no{$this->router->generate('interview_response', ['responseCode' => $interview->getResponseCode()])} for å se intervjutiden og svare. Mvh Vektorprogrammet.";
+            $sms = new Sms();
+            $sms->setMessage($smsMessage);
+            $sms->setSender("Vektor");
+            $sms->setRecipients([$interview->getUser()->getPhone()]);
+
+            $this->smsSender->send($sms);
+        }
     }
 
     /**
