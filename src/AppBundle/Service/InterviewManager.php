@@ -233,7 +233,10 @@ class InterviewManager
         $interviews = $this->em->getRepository('AppBundle:Interview')->findAcceptInterviewNotificationRecipients(new \DateTime());
         /** @var Interview $interview */
         foreach ($interviews as $interview) {
-            if ($interview->getNumAcceptInterviewRemindersSent() < self::MAX_NUM_ACCEPT_INTERVIEW_REMINDERS_SENT) {
+            $oneDay = new \DateInterval('P1D');
+            $now = new \DateTime();
+            $moreThan24HoursSinceScheduled = $now->sub($oneDay) > $interview->getLastScheduleChanged();
+            if ($interview->getNumAcceptInterviewRemindersSent() < self::MAX_NUM_ACCEPT_INTERVIEW_REMINDERS_SENT && $moreThan24HoursSinceScheduled) {
                 $this->sendAcceptInterviewReminderToInterviewee($interview);
             }
         }
