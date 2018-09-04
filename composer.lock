@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "de59e1e4f23e72f2de804fbaf8b17cc7",
+    "content-hash": "14d03f2ff14ffb521205ac212dcb5ce6",
     "packages": [
         {
             "name": "components/elfinder",
@@ -4283,54 +4283,6 @@
                 "pdf"
             ],
             "time": "2017-05-11T14:25:49+00:00"
-        },
-        {
-            "name": "simplethings/form-extra-bundle",
-            "version": "v1.1.0",
-            "target-dir": "SimpleThings/FormExtraBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/simplethings/SimpleThingsFormExtraBundle.git",
-                "reference": "cb5dca6ffd9bbbd047b8f82d9156de5d5b4a7571"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/simplethings/SimpleThingsFormExtraBundle/zipball/cb5dca6ffd9bbbd047b8f82d9156de5d5b4a7571",
-                "reference": "cb5dca6ffd9bbbd047b8f82d9156de5d5b4a7571",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "symfony/symfony": "~2.1"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-0": {
-                    "SimpleThings\\FormExtraBundle\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Benjamin Eberlei",
-                    "email": "kontakt@beberlei.de"
-                },
-                {
-                    "name": "Henrik Bjornskov",
-                    "email": "henrik@bjrnskov.dk",
-                    "homepage": "http://henrik.bjrnskov.dk"
-                }
-            ],
-            "description": "This bundles provides extra FormType's for Symfony2",
-            "keywords": [
-                "Symfony2",
-                "form",
-                "recaptcha"
-            ],
-            "time": "2014-04-17T08:30:37+00:00"
         },
         {
             "name": "studio-42/elfinder",

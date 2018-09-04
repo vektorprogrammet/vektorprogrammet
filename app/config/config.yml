@@ -287,10 +287,6 @@ fm_elfinder:
                           upload_max_size: 5M
 
 
-# Provides help text functionality to forms
-simple_things_form_extra:
-    help_extension: true
-
 nexy_slack:
     guzzle_service: guzzle.slack
     endpoint: "%slack_endpoint%"
