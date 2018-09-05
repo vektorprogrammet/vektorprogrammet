@@ -38,7 +38,7 @@ class ApplicationInterviewType extends AbstractType
             'required' => false
         ]);
 
-        $builder->add('interview', new InterviewType());
+        $builder->add('interview', InterviewType::class);
 
         $builder->add('save', SubmitType::class, array(
             'label' => 'Lagre kladd',

@@ -3,6 +3,9 @@
 parameters:
 #    parameter_name: value
 
+imports:
+    - { resource: "@AppBundle/Resources/config/forms.yml" }
+
 services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
