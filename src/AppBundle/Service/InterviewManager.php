@@ -273,7 +273,11 @@ class InterviewManager
         $now = new \DateTime();
         $lessThan24HoursUntilInterview = $now->add($oneDay) > $interview->getScheduled();
         if ($lessThan24HoursUntilInterview) {
-            $smsMessage = "Hei! Vi har satt opp intervjutid for deg og trenger å vite om den passer. Gå til https://vektorprogrammet.no{$this->router->generate('interview_response', ['responseCode' => $interview->getResponseCode()])} for å se intervjutiden og svare. Mvh Vektorprogrammet.";
+            $smsMessage =
+                "Hei {$interview->getUser()->getFirstName()}\n".
+                "Vi har satt opp intervjutid for deg og trenger å vite om den passer.\n\n".
+                "Gå til https://vektorprogrammet.no{$this->router->generate('interview_response', ['responseCode' => $interview->getResponseCode()])} for å se intervjutiden og svare.\n".
+                "Mvh Vektorprogrammet.";
             $sms = new Sms();
             $sms->setMessage($smsMessage);
             $sms->setSender("Vektor");

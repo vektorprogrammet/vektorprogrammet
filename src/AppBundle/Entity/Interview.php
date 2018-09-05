@@ -154,6 +154,7 @@ class Interview
         $this->interviewed = false;
         $this->interviewStatus = InterviewStatusType::NO_CONTACT;
         $this->newTimeMessage = "";
+        $this->numAcceptInterviewRemindersSent = 0;
     }
 
     /**
