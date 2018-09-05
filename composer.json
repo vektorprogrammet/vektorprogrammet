@@ -30,10 +30,6 @@
         "doctrine/doctrine-migrations-bundle": "^1.2",
         "nexylan/slack-bundle": "^1.1",
         "twig/twig": "^1.33",
-        "friendsofsymfony/rest-bundle": "^2.2",
-        "jms/serializer-bundle": "^2.1",
-        "nelmio/cors-bundle": "^1.5",
-        "nelmio/api-doc-bundle": "^2.13",
         "google/apiclient": "^2.2",
         "ramsey/uuid": "^3.7"
     },
