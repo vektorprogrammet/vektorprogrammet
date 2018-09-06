@@ -3,7 +3,7 @@
 
     $('.faq h5').click(function(){
         var index = $(this).index();
-        $(faq[index + 1]).slideToggle("slow");
+        $(faq[index + 1]).slideToggle("fast");
         $(this).toggleClass('active');
 
         var icon = $(this).find('span');
@@ -19,7 +19,6 @@
     $('.faq p').addClass('card-block px-3');
     $('.faq h5').append('<span class="fa fa-plus"></span>');
 
-    var icons = $('#about-faq').find('span');
-    icons.css({"float": "right", "flex" : "1", "align-self": "right", "vertical-align": "middle"});
+    $('#about-faq').find('span').addClass('icons');
 
 })();

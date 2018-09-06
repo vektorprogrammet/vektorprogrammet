@@ -16,39 +16,60 @@
 
   .faq {
 
-    display: flex;
-    flex-direction: row;
-
     .active{
       background-color: #eee;
-    }
-
-    .icon {
-      float: right;
-      flex: 1;
-      align-self: right;
-      vertical-align: middle;
     }
 
     h2 {
       text-align: center;
     }
     h5 {
-
+      display: flex;
+      align-items:center;
+      justify-content: space-between;
       &:hover, &:visited {
         background-color: #eee;
       }
 
       margin-top: 10px;
+      padding-right: 75px!important;
       @media (min-width: 767px) {
         margin-top: 10px;
+      }
+      @media (max-width: 766px) {
+        font-size: 16px;
       }
       cursor: pointer;
 
     }
+
+    .icons {
+      margin-right: -65px;
+      padding: 10px;
+      float: right;
+      color: $dark-blue;
+    }
+
     #about-faq p {
       display: none;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      @media (max-width: 766px) {
+        font-size: 14px;
+
+      }
     }
+
+    h3, h4{
+      font-size: 22px;
+      text-align: center;
+      margin: 30px;
+      color: $dark-blue;
+      @media (max-width: 766px) {
+        font-size: 18px;
+      }
+    }
+
     #about-faq.editable p {
       display: block;
     }
