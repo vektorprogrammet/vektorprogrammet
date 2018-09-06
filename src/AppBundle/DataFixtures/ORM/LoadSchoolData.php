@@ -33,9 +33,17 @@ class LoadSchoolData extends AbstractFixture implements OrderedFixtureInterface
         $school3->setInternational(true);
         //        $school3->addDepartment($this->getReference('dep-1'));
 
+        $school4 = new School();
+        $school4->setName('Katta');
+        $school4->setContactPerson('Jon Andreas Støvneng');
+        $school4->setEmail('jas@mail.com');
+        $school4->setPhone('13424567');
+        $school4->setActive(false);
+
         $manager->persist($school1);
         $manager->persist($school2);
         $manager->persist($school3);
+        $manager->persist($school4);
 
         for ($i = 0; $i < 10; ++$i) {
             $school = new School();
@@ -53,6 +61,7 @@ class LoadSchoolData extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('school-1', $school1);
         $this->addReference('school-2', $school2);
         $this->addReference('school-3', $school3);
+        $this->addReference('school-4', $school4);
     }
 
     public function getOrder()

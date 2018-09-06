@@ -32,6 +32,15 @@ class CreateSchoolType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
             ))
+            ->add('active', 'choice', array(
+                'label' => 'Skolen er aktiv',
+                'choices' => array(
+                    true => 'Ja',
+                    false => 'Nei',
+                ),
+                'expanded' => true,
+                'multiple' => false,
+            ))
             ->add('save', 'submit', array(
                 'label' => 'Opprett',
             ));

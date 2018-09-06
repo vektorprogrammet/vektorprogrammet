@@ -5,53 +5,42 @@ namespace AppBundle\Entity\Repository;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\School;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 class SchoolRepository extends EntityRepository
 {
     /**
-     * @param $department
+     * @param Department $department
      *
      * @return School[]
      */
-    public function findSchoolsByDepartment($department)
+    public function findActiveSchoolsByDepartment(Department $department)
     {
-        $schools = $this->getEntityManager()->createQuery('
-		
-		SELECT s, d
-		FROM AppBundle:School s
-		JOIN s.departments d		
-		WHERE d = :department
-		')
-            ->setParameter('department', $department)
+        return $this->getSchoolsByDepartmentQueryBuilder($department)
+            ->andWhere('school.active = true')
+            ->getQuery()
             ->getResult();
-
-        return $schools;
     }
 
-    public function findSchoolsByDepartmentQuery($department)
+    /**
+     * @param Department $department
+     *
+     * @return School[]
+     */
+    public function findInactiveSchoolsByDepartment(Department $department)
     {
-        $query = $this->createQueryBuilder('s', 'd')
-            ->from('AppBundle:School', 's')
-            ->join('s.departments', 'd')
-            ->where('d = :department')
-            ->setParameter('department', $department);
-
-        return $query;
+        return $this->getSchoolsByDepartmentQueryBuilder($department)
+            ->andWhere('school.active = false')
+            ->getQuery()
+            ->getResult();
     }
 
-    public function getNumberOfSchools()
-    {
-        $schools = $this->getEntityManager()->createQuery('
-
-		SELECT COUNT (s.id)
-		FROM AppBundle:School s
-		')
-            ->getSingleScalarResult();
-
-        return $schools;
-    }
-
-    public function findSchoolsWithoutCapacity(Department $department)
+    /**
+     * @param Department $department
+     *
+     * @return QueryBuilder
+     */
+    public function findActiveSchoolsWithoutCapacity(Department $department)
     {
         $qb = $this->_em->createQueryBuilder();
         $exclude = $qb
@@ -59,12 +48,24 @@ class SchoolRepository extends EntityRepository
             ->from('AppBundle:SchoolCapacity', 'capacity')
             ->where('capacity.semester = :semester');
 
+        return $this->getSchoolsByDepartmentQueryBuilder($department)
+            ->andWhere('school.active = true')
+            ->setParameter('department', $department)
+            ->setParameter('semester', $department->getCurrentSemester())
+            ->andWhere($qb->expr()->notIn('school.id', $exclude->getDQL()));
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return QueryBuilder
+     */
+    private function getSchoolsByDepartmentQueryBuilder(Department $department)
+    {
         return $this->createQueryBuilder('school')
             ->select('school')
             ->join('school.departments', 'departments')
             ->where('departments = :department')
-            ->setParameter('department', $department)
-            ->setParameter('semester', $department->getCurrentSemester())
-            ->andWhere($qb->expr()->notIn('school.id', $exclude->getDQL()));
+            ->setParameter('department', $department);
     }
 }
