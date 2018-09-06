@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\Type\SurveySchoolSpecificExecuteType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,8 @@ use AppBundle\Form\Type\SurveyExecuteType;
  */
 class SurveyController extends Controller
 {
+
+
     /**
      * Shows the given survey.
      *
@@ -27,14 +30,16 @@ class SurveyController extends Controller
     {
         $surveyTaken = $this->get('survey.manager')->initializeSurveyTaken($survey);
 
-        $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
+        $form = $this->createForm(SurveySchoolSpecificExecuteType::class, $surveyTaken, array(
+            'validation_groups' => array('schoolSpecific'),
+        ));
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
             $surveyTaken->setTime(new \DateTime());
 
-            if ($surveyTaken->isValid()) {
+            if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($surveyTaken);
                 $em->flush();
@@ -60,10 +65,11 @@ class SurveyController extends Controller
         ));
     }
 
-    public function showTeamAction(Request $request, Survey $survey){
+    public function showTeamAction(Request $request, Survey $survey)
+    {
         $user = $this->getUser();
 
-        if($user===null){
+        if ($user===null) {
             return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
         }
 
@@ -77,7 +83,7 @@ class SurveyController extends Controller
             $surveyTaken->setTime(new \DateTime());
             $surveyTaken->setUser($user);
 
-            if ($surveyTaken->isValid()) {
+            if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($surveyTaken);
                 $em->flush();
@@ -108,7 +114,7 @@ class SurveyController extends Controller
         $surveyTaken = $this->get('survey.manager')->initializeSurveyTaken($survey);
         $surveyTaken = $this->get('survey.manager')->predictSurveyTakenAnswers($surveyTaken);
 
-        $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
+        $form = $this->createForm(SurveySchoolSpecificExecuteType::class, $surveyTaken);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
@@ -261,7 +267,12 @@ class SurveyController extends Controller
             }
         }
 
-        //Inject the school question into question array
+
+
+
+        //Inject the school question into question array (if not team survey)
+
+
         $schoolQuestion = array('question_id' => 0, 'question_label' => 'Skole', 'alternatives' => $schools);
         $survey_json = json_encode($survey);
         $survey_decode = json_decode($survey_json, true);

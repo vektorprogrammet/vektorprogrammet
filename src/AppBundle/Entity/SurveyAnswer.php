@@ -3,10 +3,13 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as CustomAssert;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="survey_answer")
+ * @CustomAssert\SurveyAnswer()
  */
 class SurveyAnswer implements \JsonSerializable
 {
@@ -25,11 +28,16 @@ class SurveyAnswer implements \JsonSerializable
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Assert\NotBlank()
+     *
      */
     protected $answer;
 
     /**
      * @ORM\Column(type="array", nullable=true)
+     * @Assert\NotBlank()
+     *
+     *
      */
     private $answerArray;
 

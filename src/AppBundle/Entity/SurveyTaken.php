@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -36,11 +37,14 @@ class SurveyTaken implements \JsonSerializable
      * @var School
      *
      * @ORM\ManyToOne(targetEntity="School", cascade={"persist"})
+     * @Assert\NotNull(groups="schoolSpecific")
+     *
      */
     protected $school;
 
     /**
      * @ORM\ManyToOne(targetEntity="Survey", cascade={"persist"})
+     *
      */
     protected $survey;
 
@@ -181,22 +185,4 @@ class SurveyTaken implements \JsonSerializable
 
         return $ret;
     }
-
-    public function isValid(): bool
-    {
-        if ($this->school === null) {
-            return false;
-        }
-
-        foreach ($this->getSurveyAnswers() as $answer) {
-            $question = $answer->getSurveyQuestion();
-            if (!$question->getOptional() && strlen($answer->getAnswer()) < 1 && $answer->getSurveyQuestion()->getType() !== 'check') {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-
 }

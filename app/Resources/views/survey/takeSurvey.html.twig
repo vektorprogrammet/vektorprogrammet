@@ -38,9 +38,12 @@
     {{ form_start(form) }} {#This is everything that is needed to show a form/survey#}
     {{ form_errors(form) }}
     {% set QuestionNumber = 1 %}
-    <h3>Velg skole</h3>
-    {{ form_widget(form.school) }}
-    <br/>
+
+    {% if form.school is defined %}
+        <h3>Velg skole</h3>
+        {{ form_widget(form.school) }}
+        <br/>
+    {% endif %}
     {% for surveyAnswer in form.surveyAnswers %}
         <div class="row">
             <div class="small-12 medium-12 large-9 columns">
