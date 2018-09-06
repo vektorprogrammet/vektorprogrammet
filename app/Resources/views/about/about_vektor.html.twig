@@ -30,6 +30,7 @@
                 </div>
                 <div class="col-sm-12 col-md-6 order-md-2">
                     {% include 'statictext/static_content.html.twig' with {'id': 'about-motivate-students'} %}
+                </div>
             </section>
             <section class="row">
                 <div class="col-12">
@@ -39,9 +40,17 @@
                     <img src="{{ asset_with_version('images/nett.jpg') }}" class="img-fluid">
                 </div>
             </section>
-            <div id="FAQ" class="faq">
+            <div id="FAQ" class="faq card px-2 px-sm-4 py-4">
+                <div class="card-body p-1 p-sm-3">
                 {% include 'statictext/static_content.html.twig' with {'id': 'about-faq'} %}
+                </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+{% if not is_edit_mode() %}
+    <script src="{{ asset_with_version('/js/faqCollapse.js') }}"></script>
+{% endif %}
 {% endblock %}
