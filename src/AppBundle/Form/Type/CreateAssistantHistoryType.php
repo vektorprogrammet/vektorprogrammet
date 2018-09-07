@@ -51,6 +51,7 @@ class CreateAssistantHistoryType extends AbstractType
                         ->JOIN('s.departments', 'd')
                         // Since it is a many to many bidirectional relationship we have to use the MEMBER OF function
                         ->where(':department MEMBER OF s.departments')
+                        ->andWhere('s.active = true')
                         ->setParameter('department', $this->department);
                 },
             ))
