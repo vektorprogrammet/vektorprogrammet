@@ -50,7 +50,6 @@ class SchoolRepository extends EntityRepository
 
         return $this->getSchoolsByDepartmentQueryBuilder($department)
             ->andWhere('school.active = true')
-            ->setParameter('department', $department)
             ->setParameter('semester', $department->getCurrentSemester())
             ->andWhere($qb->expr()->notIn('school.id', $exclude->getDQL()));
     }
