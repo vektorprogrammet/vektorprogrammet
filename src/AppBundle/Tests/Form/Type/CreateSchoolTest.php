@@ -43,10 +43,13 @@ class CreateSchoolTest extends TypeTestCase
                     'contactPerson' => 'test2',
                     'phone' => 'test3',
                     'email' => 'test4',
+                    'active' => true,
                 ),
             ),
             array(
-                'data' => array(),
+                'data' => array(
+                    'active' => true,
+                ),
             ),
             array(
                 'data' => array(
@@ -54,6 +57,7 @@ class CreateSchoolTest extends TypeTestCase
                     'contactPerson' => null,
                     'phone' => null,
                     'email' => null,
+                    'active' => true,
                 ),
             ),
         );
