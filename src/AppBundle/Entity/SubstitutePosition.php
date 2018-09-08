@@ -44,13 +44,6 @@ class SubstitutePosition
     private $user;
 
     /**
-     * @var Substitution[]
-     *
-     * @ORM\OneToMany(targetEntity="Substitution", mappedBy="substitutePosition")
-     */
-    private $substitutions;
-
-    /**
      * @var boolean
      * @ORM\Column(name="monday", type="boolean")
      */
@@ -79,6 +72,12 @@ class SubstitutePosition
      * @ORM\Column(name="friday", type="boolean")
      */
     private $friday;
+
+    /**
+     * @var PartnerWorkDay[]
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\PartnerWorkDay", inversedBy="substitutePositions")
+     */
+    private $partnerWorkDays;
 
     /**
      * SubstitutePosition constructor.
@@ -164,43 +163,6 @@ class SubstitutePosition
     public function setUser(User $user): SubstitutePosition
     {
         $this->user = $user;
-        return $this;
-    }
-
-    /**
-     * Get substitutions
-     *
-     * @return Substitution[]
-     */
-    public function getSubstitutions()
-    {
-        return $this->substitutions;
-    }
-
-    /**
-     * Set substitutions
-     *
-     * @param Substitution[] $substitutions
-     *
-     * @return SubstitutePosition
-     */
-    public function setSubstitutions($substitutions): SubstitutePosition
-    {
-        $this->substitutions = $substitutions;
-        return $this;
-    }
-
-    /**
-     * Add substitution
-     *
-     * @param Substitution $substitution
-     *
-     * @return SubstitutePosition
-     */
-    public function addSubstitution(Substitution $substitution) : SubstitutePosition
-    {
-        $this->substitutions[] = $substitution;
-
         return $this;
     }
 
@@ -298,6 +260,36 @@ class SubstitutePosition
     public function setFriday(bool $friday): SubstitutePosition
     {
         $this->friday = $friday;
+        return $this;
+    }
+
+    /**
+     * @return PartnerWorkDay[]
+     */
+    public function getPartnerWorkDays()
+    {
+        return $this->partnerWorkDays;
+    }
+
+    /**
+     * @param PartnerWorkDay[] $partnerWorkDays
+     *
+     * @return SubstitutePosition
+     */
+    public function setPartnerWorkDays(array $partnerWorkDays): SubstitutePosition
+    {
+        $this->partnerWorkDays = $partnerWorkDays;
+        return $this;
+    }
+
+    /**
+     * @param PartnerWorkDay $partnerWorkDay
+     *
+     * @return SubstitutePosition
+     */
+    public function addPartnerWorkDay(PartnerWorkDay $partnerWorkDay): SubstitutePosition
+    {
+        $this->partnerWorkDays[] = $partnerWorkDay;
         return $this;
     }
 }

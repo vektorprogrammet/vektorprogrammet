@@ -39,6 +39,8 @@ class AssistantHistory
     protected $school;
 
     /**
+     * @deprecated
+     *
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
@@ -58,10 +60,10 @@ class AssistantHistory
     protected $day;
 
     /**
-     * @var Substitution
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Substitution", mappedBy="substitutedAssistant")
+     * @var PartnerWorkDay[]
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\PartnerWorkDay", inversedBy="assistantPosisions")
      */
-    protected $substitutions;
+    private $partnerWorkDays;
 
 
     public function activeInGroup($group): bool
@@ -210,6 +212,25 @@ class AssistantHistory
     public function setDay($day)
     {
         $this->day = $day;
+    }
+
+    /**
+     * @return PartnerWorkDay[]
+     */
+    public function getPartnerWorkDays()
+    {
+        return $this->partnerWorkDays;
+    }
+
+    /**
+     * @param PartnerWorkDay[] $partnerWorkDays
+     *
+     * @return AssistantHistory
+     */
+    public function setPartnerWorkDays(array $partnerWorkDays): AssistantHistory
+    {
+        $this->partnerWorkDays = $partnerWorkDays;
+        return $this;
     }
 
     // Used for unit testing
