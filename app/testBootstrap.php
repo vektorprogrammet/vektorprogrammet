@@ -1,8 +1,9 @@
 <?php
 
-require_once  __DIR__ . '/bootstrap.php.cache';
-
-require_once __DIR__ . '/AppKernel.php';
+//require_once  __DIR__ . '/bootstrap.php.cache';
+//
+//require_once __DIR__ . '/AppKernel.php';
+require __DIR__.'/../vendor/autoload.php';
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;

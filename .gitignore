@@ -2,6 +2,7 @@
 .env.*.php
 .env.php
 .env
+./npm-debug.log
 
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
