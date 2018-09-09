@@ -10,7 +10,7 @@ class ExistingUserAdmissionControllerTest extends BaseWebTestCase
     {
         $this->createAndSubmitForm_preferredSchool('');
 
-        $path = '/kontrollpanel/opptakadmin/soknad/110';
+	    $path = '/kontrollpanel/opptak/gamle';
 
         $applicationsBefore = $this->countTableRows($path);
 

@@ -32,8 +32,8 @@ class ApplicationPracticalType extends AbstractType
         $builder->add('doublePosition', ChoiceType::class, array(
             'label' => 'Kunne du tenke deg enkel eller dobbel stilling?',
             'choices' => array(
-                0 => '4 uker',
-                1 => '8 uker'
+	            '4 uker' => 0,
+	            '8 uker' => 1
             ),
             'expanded' => true,
             'multiple' => false,
@@ -42,9 +42,9 @@ class ApplicationPracticalType extends AbstractType
         $builder->add('preferredGroup', ChoiceType::class, array(
             'label' => 'Er det noen tidspunkt i løpet av semesteret du ikke kan delta på?',
             'choices' => array(
-                null => 'Kan hele semesteret',
-                'Bolk 2' => 'Kan ikke i bolk 1',
-                'Bolk 1' => 'Kan ikke i bolk 2',
+	            'Kan hele semesteret' => null,
+	            'Kan ikke i bolk 1' => 'Bolk 2',
+	            'Kan ikke i bolk 2' => 'Bolk 1',
             ),
             'expanded' => true,
             'multiple' => false,
@@ -65,8 +65,8 @@ class ApplicationPracticalType extends AbstractType
         $builder->add('teamInterest', ChoiceType::class, array(
             'label' => 'Legg til personen i teaminteresse-listen?',
             'choices' => array(
-                0 => 'Nei',
-                1 => 'Ja',
+	            'Nei' => 0,
+	            'Ja' => 1,
             ),
             'expanded' => true,
             'multiple' => false,
