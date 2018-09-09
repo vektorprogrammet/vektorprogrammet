@@ -3,6 +3,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\User;
+use AppBundle\Google\GoogleUsers;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
@@ -15,6 +16,7 @@ class RoleManager
     private $authorizationChecker;
     private $em;
     private $logger;
+    private $googleUserService;
 
     /**
      * RoleManager constructor.
@@ -22,8 +24,9 @@ class RoleManager
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param EntityManager $em
      * @param LoggerInterface $logger
+     * @param GoogleUsers $googleUserService
      */
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker, EntityManager $em, LoggerInterface $logger)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker, EntityManager $em, LoggerInterface $logger, GoogleUsers $googleUserService)
     {
         $this->roles = array(
             Roles::ASSISTANT,
@@ -40,6 +43,7 @@ class RoleManager
         $this->authorizationChecker = $authorizationChecker;
         $this->em = $em;
         $this->logger = $logger;
+        $this->googleUserService = $googleUserService;
     }
 
     public function isValidRole(string $role): bool
@@ -126,12 +130,19 @@ class RoleManager
     public function updateUserRole(User $user)
     {
         if ($this->userIsInExecutiveBoard($user) || $this->userIsTeamLeader($user)) {
-            return $this->setUserRole($user, Roles::TEAM_LEADER);
+            $updated = $this->setUserRole($user, Roles::TEAM_LEADER);
         } elseif ($this->userIsTeamMember($user)) {
-            return $this->setUserRole($user, Roles::TEAM_MEMBER);
+            $updated = $this->setUserRole($user, Roles::TEAM_MEMBER);
         } else {
-            return $this->setUserRole($user, Roles::ASSISTANT);
+            $updated = $this->setUserRole($user, Roles::ASSISTANT);
         }
+
+        if ($updated && $user->getCompanyEmail()) {
+            $shouldSuspendGoogleUser = !$this->userIsGranted($user, Roles::TEAM_MEMBER);
+            $this->googleUserService->updateUser($user->getCompanyEmail(), $user, $shouldSuspendGoogleUser);
+        }
+
+        return $updated;
     }
 
     public function userIsInExecutiveBoard(User $user)

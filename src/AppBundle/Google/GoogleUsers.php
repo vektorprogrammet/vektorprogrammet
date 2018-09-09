@@ -76,17 +76,10 @@ class GoogleUsers extends GoogleService
         $client  = $this->getClient();
         $service = new Google_Service_Directory($client);
 
-        $googleUser = new Google_Service_Directory_User();
-        $googleUser->setPrimaryEmail($user->getCompanyEmail());
+        $googleUser = $this->mapApplicationUserToGoogleUser($user);
 
         $password = bin2hex(random_bytes(15));
         $googleUser->setPassword($password);
-
-        $name = new Google_Service_Directory_UserName();
-        $name->setGivenName($user->getFirstName());
-        $name->setFamilyName($user->getLastName());
-        $name->setFullName($user->getFullName());
-        $googleUser->setName($name);
 
         try {
             $createdUser = $service->users->insert($googleUser);
@@ -100,34 +93,31 @@ class GoogleUsers extends GoogleService
     /**
      * @param string $userKey
      * @param User $user
+     * @param $suspended
+     *
      * @return Google_Service_Directory_User
      */
-    public function updateUser(string $userKey, User $user)
+    public function updateUser(string $userKey, User $user, $suspended = null)
     {
         if ($this->disabled) {
             return null;
         }
 
+        $googleUser = $this->mapApplicationUserToGoogleUser($user);
+
+        if (is_bool($suspended)) {
+            $googleUser->setSuspended($suspended);
+        }
+
         $client  = $this->getClient();
         $service = new Google_Service_Directory($client);
 
-        $googleUser = new Google_Service_Directory_User();
-        $googleUser->setPrimaryEmail($user->getCompanyEmail());
-
-        $name = new Google_Service_Directory_UserName();
-        $name->setGivenName($user->getFirstName());
-        $name->setFamilyName($user->getLastName());
-        $name->setFullName($user->getFullName());
-        $googleUser->setName($name);
-
         try {
-            $updatedUser = $service->users->update($userKey, $googleUser);
+            return $service->users->update($userKey, $googleUser);
         } catch (\Google_Service_Exception $e) {
             $this->logServiceException($e, "updateUser() $userKey ($user)");
             return null;
         }
-
-        return $updatedUser;
     }
 
     /**
@@ -147,5 +137,24 @@ class GoogleUsers extends GoogleService
         } catch (\Google_Service_Exception $e) {
             $this->logServiceException($e, "deleteUser('$userKey')");
         }
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return Google_Service_Directory_User
+     */
+    private function mapApplicationUserToGoogleUser(User $user)
+    {
+        $googleUser = new Google_Service_Directory_User();
+        $googleUser->setPrimaryEmail($user->getCompanyEmail());
+
+        $name = new Google_Service_Directory_UserName();
+        $name->setGivenName($user->getFirstName());
+        $name->setFamilyName($user->getLastName());
+        $name->setFullName($user->getFullName());
+        $googleUser->setName($name);
+
+        return $googleUser;
     }
 }
