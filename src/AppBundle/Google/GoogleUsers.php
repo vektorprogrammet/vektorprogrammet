@@ -53,24 +53,14 @@ class GoogleUsers extends GoogleService
         $client  = $this->getClient();
         $service = new Google_Service_Directory($client);
 
-        $optParams = array(
-            'customer' => 'my_customer',
-        );
-
         try {
-            $results = $service->users->listUsers($optParams);
+            return $service->users->get($companyEmail);
         } catch (\Google_Service_Exception $e) {
-            $this->logServiceException($e, "getUser('$companyEmail')");
+            if ($e->getCode() !== 404) {
+                $this->logServiceException($e, "getUser('$companyEmail')");
+            }
             return null;
         }
-
-        foreach ($results->getUsers() as $user) {
-            if ($user->primaryEmail === $companyEmail) {
-                return $user;
-            }
-        }
-
-        return null;
     }
 
     /**
