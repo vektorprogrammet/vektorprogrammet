@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Semester;
+use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Role\Roles;
 use AppBundle\Service\InterviewCounter;
@@ -200,6 +201,8 @@ class AdmissionAdminController extends Controller
             $em->flush();
 
             $this->addFlash('admission-notice', 'Søknaden er registrert.');
+
+            $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
 
             return $this->redirectToRoute('register_applicant', array('id' => $department->getId()));
         }
