@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity
  */
-class PartnerWorkDay
+class WorkDay
+
 {
     /**
      * @var integer
@@ -36,18 +37,18 @@ class PartnerWorkDay
     private $term;
 
     /**
-     * @var AssistantHistory[]
+     * @var AssistantHistory
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\AssistantHistory", mappedBy="partnerWorkDays")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AssistantHistory", inversedBy="workDays")
      */
-    private $assistantPosisions;
+    private $assistantPosition;
 
     /**
-     * @var SubstitutePosition[]
+     * @var SubstitutePosition
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\SubstitutePosition", mappedBy="partnerWorkDays")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\SubstitutePosition", inversedBy="workDays")
      */
-    private $substitutePositions;
+    private $substitutePosition;
 
 
     /**
@@ -65,7 +66,7 @@ class PartnerWorkDay
      *
      * @param \DateTime $date
      *
-     * @return PartnerWorkDay
+     * @return WorkDay
      */
     public function setDate($date)
     {
@@ -95,49 +96,49 @@ class PartnerWorkDay
     /**
      * @param Term $term
      *
-     * @return PartnerWorkDay
+     * @return WorkDay
      */
-    public function setTerm(Term $term): PartnerWorkDay
+    public function setTerm(Term $term): WorkDay
     {
         $this->term = $term;
         return $this;
     }
 
     /**
-     * @return AssistantHistory[]
+     * @return AssistantHistory
      */
-    public function getAssistantPosisions(): array
+    public function getAssistantPosition(): ?AssistantHistory
     {
-        return $this->assistantPosisions;
+        return $this->assistantPosition;
     }
 
     /**
-     * @param AssistantHistory[] $assistantPosisions
+     * @param AssistantHistory $assistantPosition
      *
-     * @return PartnerWorkDay
+     * @return WorkDay
      */
-    public function setAssistantPosisions(array $assistantPosisions): PartnerWorkDay
+    public function setAssistantPosition(AssistantHistory $assistantPosition): WorkDay
     {
-        $this->assistantPosisions = $assistantPosisions;
+        $this->assistantPosition = $assistantPosition;
         return $this;
     }
 
     /**
-     * @return SubstitutePosition[]
+     * @return SubstitutePosition
      */
-    public function getSubstitutePositions(): array
+    public function getSubstitutePosition(): ?SubstitutePosition
     {
-        return $this->substitutePositions;
+        return $this->substitutePosition;
     }
 
     /**
-     * @param SubstitutePosition[] $substitutePositions
+     * @param SubstitutePosition $substitutePosition
      *
-     * @return PartnerWorkDay
+     * @return WorkDay
      */
-    public function setSubstitutePositions(array $substitutePositions): PartnerWorkDay
+    public function setSubstitutePosition(SubstitutePosition $substitutePosition): WorkDay
     {
-        $this->substitutePositions = $substitutePositions;
+        $this->substitutePosition = $substitutePosition;
         return $this;
     }
 }

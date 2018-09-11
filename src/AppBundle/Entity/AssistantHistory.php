@@ -44,7 +44,7 @@ class AssistantHistory
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
-    protected $workdays;
+    protected $extraWorkDays;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -60,10 +60,10 @@ class AssistantHistory
     protected $day;
 
     /**
-     * @var PartnerWorkDay[]
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\PartnerWorkDay", inversedBy="assistantPosisions")
+     * @var WorkDay[]
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkDay", mappedBy="assistantPosition")
      */
-    private $partnerWorkDays;
+    private $workDays;
 
 
     public function activeInGroup($group): bool
@@ -161,13 +161,13 @@ class AssistantHistory
     /**
      * Set workdays.
      *
-     * @param string $workdays
+     * @param string $extraWorkDays
      *
      * @return AssistantHistory
      */
-    public function setWorkdays($workdays)
+    public function setExtraWorkDays($extraWorkDays)
     {
-        $this->workdays = $workdays;
+        $this->extraWorkDays = $extraWorkDays;
 
         return $this;
     }
@@ -177,9 +177,9 @@ class AssistantHistory
      *
      * @return string
      */
-    public function getWorkdays()
+    public function getExtraWorkDays()
     {
-        return $this->workdays;
+        return $this->extraWorkDays;
     }
 
     /**
@@ -215,21 +215,21 @@ class AssistantHistory
     }
 
     /**
-     * @return PartnerWorkDay[]
+     * @return WorkDay[]
      */
-    public function getPartnerWorkDays()
+    public function getWorkDays()
     {
-        return $this->partnerWorkDays;
+        return $this->workDays;
     }
 
     /**
-     * @param PartnerWorkDay[] $partnerWorkDays
+     * @param WorkDay[] $workDays
      *
      * @return AssistantHistory
      */
-    public function setPartnerWorkDays(array $partnerWorkDays): AssistantHistory
+    public function setWorkDays(array $workDays): AssistantHistory
     {
-        $this->partnerWorkDays = $partnerWorkDays;
+        $this->workDays = $workDays;
         return $this;
     }
 

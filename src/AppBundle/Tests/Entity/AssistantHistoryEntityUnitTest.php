@@ -79,9 +79,9 @@ class AssistantHistoryEntityUnitTest extends \PHPUnit_Framework_TestCase
         $assistantHistory = new AssistantHistory();
 
         // Set the workdays of the entity
-        $assistantHistory->setWorkdays('5');
+        $assistantHistory->setExtraWorkDays('5');
 
         // Assert the result
-        $this->assertEquals('5', $assistantHistory->getWorkdays());
+        $this->assertEquals('5', $assistantHistory->getExtraWorkDays());
     }
 }

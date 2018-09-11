@@ -74,10 +74,10 @@ class SubstitutePosition
     private $friday;
 
     /**
-     * @var PartnerWorkDay[]
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\PartnerWorkDay", inversedBy="substitutePositions")
+     * @var WorkDay[]
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkDay", mappedBy="substitutePosition")
      */
-    private $partnerWorkDays;
+    private $workDays;
 
     /**
      * SubstitutePosition constructor.
@@ -264,32 +264,32 @@ class SubstitutePosition
     }
 
     /**
-     * @return PartnerWorkDay[]
+     * @return WorkDay[]
      */
-    public function getPartnerWorkDays()
+    public function getWorkDays()
     {
-        return $this->partnerWorkDays;
+        return $this->workDays;
     }
 
     /**
-     * @param PartnerWorkDay[] $partnerWorkDays
+     * @param WorkDay[] $workDays
      *
      * @return SubstitutePosition
      */
-    public function setPartnerWorkDays(array $partnerWorkDays): SubstitutePosition
+    public function setWorkDays(array $workDays): SubstitutePosition
     {
-        $this->partnerWorkDays = $partnerWorkDays;
+        $this->workDays = $workDays;
         return $this;
     }
 
     /**
-     * @param PartnerWorkDay $partnerWorkDay
+     * @param WorkDay $partnerWorkDay
      *
      * @return SubstitutePosition
      */
-    public function addPartnerWorkDay(PartnerWorkDay $partnerWorkDay): SubstitutePosition
+    public function addPartnerWorkDay(WorkDay $partnerWorkDay): SubstitutePosition
     {
-        $this->partnerWorkDays[] = $partnerWorkDay;
+        $this->workDays[] = $partnerWorkDay;
         return $this;
     }
 }
