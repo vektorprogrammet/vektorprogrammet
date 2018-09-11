@@ -5,6 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\User;
 use AppBundle\Event\AssistantHistoryCreatedEvent;
+use AppBundle\Form\Type\AssistantDelegationInfoType;
+use AppBundle\Model\AssistantDelegationInfo;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\School;
@@ -38,30 +40,21 @@ class SchoolAdminController extends Controller
     {
         $department = $user->getDepartment();
 
+        $info = new AssistantDelegationInfo();
+        $form = $this->createFormBuilder(AssistantDelegationInfoType::class, $info)->getForm();
+
+        $form->handleRequest($request);
+
+        if($form->isValid()) {
+
+        }
+
         // Deny access if not super admin and trying to delegate user in other department
         if (!$this->isGranted('ROLE_SUPER_ADMIN') && $department !== $this->getUser()->getDepartment()) {
             throw $this->createAccessDeniedException();
         }
 
-        $assistantHistory = new AssistantHistory();
-
-        $form = $this->createForm(new CreateAssistantHistoryType($department), $assistantHistory);
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $assistantHistory->setUser($user);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($assistantHistory);
-            $em->flush();
-
-            $this->get('event_dispatcher')->dispatch(AssistantHistoryCreatedEvent::NAME, new AssistantHistoryCreatedEvent($assistantHistory));
-
-            return $this->redirect($this->generateUrl('schooladmin_show_users_of_department'));
-        }
-
-        // Return the form view
-        return $this->render('school_admin/create_assistant_history.html.twig', array(
+        return $this->render('school_admin/create_assistant_position.html.twig', array(
             'form' => $form->createView(),
         ));
     }
