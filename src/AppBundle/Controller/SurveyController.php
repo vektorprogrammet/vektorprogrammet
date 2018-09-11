@@ -50,9 +50,9 @@ class SurveyController extends Controller
                     ]);
                 }
 
-                $this->addFlash('undersokelse-notice', 'Mottatt svar!');
+                $this->addFlash('success', 'Mottatt svar!');
             } else {
-                $this->addFlash('undersokelse-warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
+                $this->addFlash('warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
             }
 
             //New form without previous answers
@@ -121,7 +121,9 @@ class SurveyController extends Controller
             $surveyTaken->removeNullAnswers();
             $surveyTaken->setTime(new \DateTime());
 
-            if ($surveyTaken->isValid()) {
+
+
+            if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($surveyTaken);
                 $em->flush();
@@ -259,9 +261,9 @@ class SurveyController extends Controller
             if (is_null($surveyTaken->getSchool())) {
                 continue;
             }
-            if ($surveyTaken->isValid()) {
-                $validSurveysTaken[] = $surveyTaken;
-            }
+
+            $validSurveysTaken[] = $surveyTaken;
+
             if (!in_array($surveyTaken->getSchool()->getName(), $schools)) {
                 $schools[] = $surveyTaken->getSchool()->getName();
             }

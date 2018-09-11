@@ -17,9 +17,7 @@ class SurveyExecuteType extends AbstractType
     {
         $builder->add('surveyAnswers', 'collection', array('type' => new SurveyAnswerType()));
 
-        $builder->add('save', 'submit', array(
-            'label' => 'Send inn',
-        ));
+
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

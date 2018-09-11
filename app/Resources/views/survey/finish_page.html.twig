@@ -1,25 +1,32 @@
-<!DOCTYPE html>
-<html class="nojs" lang="no">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <title>Spørreundersøkelse Vektorprogrammet</title>
+{% extends "base.html.twig" %}
 
-    <link rel="stylesheet" rel="stylesheet" type="text/css" href="{{ asset_with_version('css/pages/survey.css') }}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="icon" type="image/x-icon" href="{{ asset_with_version('favicon.ico') }}?v=2"/>
+{% block header %}
+{% endblock %}
 
-    {# Used by Foundation for backwards compability, and is supposed to be in the header #}
 
-</head>
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/survey.css') }}">
+{% endblock %}
 
-<body>
+{% block body %}
 
-<div class="formSurvey">
+    <div class="container surveypage mt-5">
+        <div class="row">
+            <div class="col-12">
+                <a href="{{ path('home') }}">
+                    <img src="{{ asset_with_version('images/vektor-logo.svg') }}" alt="Vektor logo">
+                </a>
+                <div class="card mt-4">
+                    <div class="card-body">
+                        {{ content | safe_html }}
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    {{ content | safe_html }}
+        <a href="{{ path('home') }}">
+        <button class="btn">Til hovedside</button>
+        </a>
+    </div>
+{% endblock %}
 
-</div>
-
-</body>
-</html>
