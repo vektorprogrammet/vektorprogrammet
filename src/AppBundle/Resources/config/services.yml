@@ -83,6 +83,10 @@ services:
       class: AppBundle\Service\InterviewNotificationManager
       arguments: ['@app.slack_messenger', '@application.data', '@router']
 
+  app.work_day.manager:
+      class: AppBundle\Service\WorkDayManager
+      arguments: ['@doctrine.orm.default_entity_manager']
+
   app.assistants.data:
     class: AppBundle\Service\AssistantsData
     arguments: ['@doctrine.orm.default_entity_manager']
