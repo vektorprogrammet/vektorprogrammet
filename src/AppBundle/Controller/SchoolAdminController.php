@@ -54,6 +54,10 @@ class SchoolAdminController extends Controller
             $assistantPosition->setUser($user);
             $assistantPosition->setSemester($semester);
 
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($assistantPosition);
+            $em->flush();
+
             $this->get('app.work_day.manager')->createAndPersistWorkDays($info, $assistantPosition);
         }
 

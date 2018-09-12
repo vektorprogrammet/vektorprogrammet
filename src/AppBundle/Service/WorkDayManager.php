@@ -39,64 +39,35 @@ class WorkDayManager
             $workDays[] = new WorkDay($assistantPosition);
         }
 
+        $startDate = $this->convertWeekNumberToDateTime($info->getStartingWeek(), $info->getWeekDay(), $semester);
+        $weekDiff = $this->dateDiffInWeeks($startDate, $semester->getSemesterEndDate());
+        $dateFrequencyTable = array();
+        for($week = $info->getStartingWeek(); $week < $info->getStartingWeek() + $weekDiff; $week++) {
+            $date = $this->convertWeekNumberToDateTime($week, $info->getWeekDay(), $semester);
+            $dateFrequencyTable[$week] = $this->em->getRepository('AppBundle:WorkDay')
+                ->createQueryBuilder('workDay')
+                ->select('count(workDay)')
+                ->innerJoin('workDay.assistantPosition', 'assistantPosition')
+                ->where('workDay.date = :date')
+                ->andWhere('assistantPosition.semester = :semester')
+                ->andWhere('assistantPosition != :assistantPosition')
+                ->setParameters(array(
+                    'date'              => $date,
+                    'semester'          => $semester,
+                    'assistantPosition' => $assistantPosition,
+                ))
+                ->getQuery()
+                ->getSingleScalarResult();
+        }
+
+
+        dump($dateFrequencyTable);
+
         /*
-         * Predict which days should follow the given startDate by looking at
-         * other workDays in the same semester
-         */
-        $maxNumReferenceAssistantPositions = 5;
-        $firstWorkDate = $this->convertWeekNumberToDateTime($info->getStartingWeek(), $info->getWeekDay(), $semester);
-        $workDayRepository = $this->em->getRepository('AppBundle:WorkDay');
-
-        // Create a cool queryBuilder
-        $qb = $workDayRepository->createQueryBuilder('workDay')
-            ->select('workDay.assistantPosition')
-            ->join('workDay.assistantPosition', 'assistantPosition')
-            ->where('assistantPosition.semester = :semester')
-            ->andWhere('workDay.date = :firstWorkDate')
-            ->setMaxResults($maxNumReferenceAssistantPositions)
-            ->setParameter('semester', $semester)
-            ->setParameter('firstWorkDate', $firstWorkDate);
-
-        // We create a set of assistant positions for reference
-        $referenceAssistantPositions = new Set();
-        $referenceAssistantPositions->addAll($qb->getQuery()->getResult());
-
-        // We then (possibly) add some with as many or more workdays as our assistant position
-        // This is done to ensure ensure we do something stupid
-        $referenceAssistantPositions->addAll($qb
-            ->andWhere('count(assistantPosition.workDays) >= :numDays')
-            ->setParameter('numDays', $info->getNumDays())
-            ->getQuery()
-            ->getResult());
-
-
-        /**
-         * Array containing {numDays} arrays of workDay dates. Array 1
-         * corresponds to the first day, array 2 corresponds to the second and
-         * so on. These will be traversed from day 1 all the way to day
-         * {numDays} and the most common date will be picked for our
-         * assistantPosition's workDay.
-         */
-        $dateArrays = array_fill(0, $info->getNumDays(), array());
-        foreach($referenceAssistantPositions as $assistantPosition) {
-            /** @var WorkDay[] $referenceAssistantWorkDays */
-            $referenceAssistantWorkDays = $workDayRepository->findChronologicallyByAssistantPosition($assistantPosition);
-            for($day = 0; $day < $info->getNumDays(); $day++) {
-                $dateArrays[$day][] = $referenceAssistantWorkDays[$day]->getDate();
-            }
-        }
-
-        for($day = 0; $day < $info->getNumDays(); $day++) {
-            foreach($dateArrays[$day] as $referenceDates) {
-                /** @var \DateTime $mostCommonDate */
-                $mostCommonDate = $this->findMostCommonElement($referenceDates);
-                $workDays[$day]->setDate($mostCommonDate);
-            }
-        }
-
         $this->persistWorkDays($workDays);
         $this->em->persist($assistantPosition);
         $this->em->flush();
+        */
         return $workDays;
     }
 
@@ -139,18 +110,24 @@ class WorkDayManager
     }
 
     /**
-     * @param int $startingWeek
+     * @param int $weekNumber
      * @param int $weekDay – Monday is 0 sunday is 6
      * @param Semester $semester
      *
      * @return \DateTime
      */
-    private function convertWeekNumberToDateTime(int $startingWeek, int $weekDay, Semester $semester)
+    private function convertWeekNumberToDateTime(int $weekNumber, int $weekDay, Semester $semester)
     {
         $date = new \DateTime();
         $semesterStartYear = $semester->getSemesterStartDate()->format('Y');
-        $date->setISODate($semesterStartYear, $startingWeek, $weekDay);
+        $date->setISODate($semesterStartYear, $weekNumber, $weekDay);
         $date->setTime(8,0); // Set time to something fixed instead of current time
         return $date;
+    }
+
+    function dateDiffInWeeks($date1, $date2)
+    {
+        if($date1 > $date2) return $this->dateDiffInWeeks($date2, $date1);
+        return floor($date1->diff($date2)->days/7);
     }
 }

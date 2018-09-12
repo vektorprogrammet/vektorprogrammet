@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * WorkDay
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\WorkDayRepository"
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\WorkDayRepository")
  */
 class WorkDay
 
