@@ -13,14 +13,11 @@
                     </tr>
                     </thead>
                     {% for as in assistantHistory %}
-                        {% if as.semester is not null and as.school is not null %}
+                        {% if as.semester is not null%}
                             <tr>
                                 <td>
-                                    {% if as.school is null %}
-                                        skolen har blitt slettet
-                                    {% else %}
-                                        {{ as.getSchool.getName }}
-                                    {% endif %}
+                                    {# Skole kommer #}
+                                    Skole kommer
                                 </td>
                                 <td>
                                     {% if as.semester is null %}

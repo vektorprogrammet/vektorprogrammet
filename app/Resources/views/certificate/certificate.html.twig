@@ -8582,9 +8582,10 @@
                                 <th style="text-align: center; width:100px;padding:8px;">Antall Dager</th>
                             </tr>
                             {% for as in assistantHistory %}
-                                {% if as.semester is not null and as.school is not null %}
+                                {% if as.semester is not null%}
                                     <tr>
-                                        <td style="padding:5px 8px;">{{ as.getSchool.getName }}</td>
+                                        {# TODO: add school #}
+                                        <td style="padding:5px 8px;">Skole kommer</td>
                                         <td style="padding:5px 8px;">{{ as.getSemester.name }}</td>
                                         {# TODO: add number of actual workDays to the number below #}
                                         <td style="text-align: center;padding:5px 8px;">{{ as.extraWorkDays }}</td>

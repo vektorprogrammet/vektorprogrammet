@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
+use AppBundle\Entity\Repository\ApplicationRepository;
 use AppBundle\Entity\User;
 use AppBundle\Event\AssistantHistoryCreatedEvent;
 use AppBundle\Form\Type\AssistantDelegationInfoType;
@@ -39,14 +40,21 @@ class SchoolAdminController extends Controller
     public function delegateSchoolToUserAction(Request $request, User $user)
     {
         $department = $user->getDepartment();
+        // TODO: Superadmins should be able to switch and semester
+        $semester = $department->getCurrentOrLatestSemester();
 
         $info = new AssistantDelegationInfo();
-        $form = $this->createFormBuilder(AssistantDelegationInfoType::class, $info)->getForm();
+        $info->setUser($user);
+        $form = $this->createForm(new AssistantDelegationInfoType($department), $info);
 
         $form->handleRequest($request);
 
         if($form->isValid()) {
+            $assistantPosition = new AssistantHistory();
+            $assistantPosition->setUser($user);
+            $assistantPosition->setSemester($semester);
 
+            $this->get('app.work_day.manager')->createAndPersistWorkDays($info, $assistantPosition);
         }
 
         // Deny access if not super admin and trying to delegate user in other department

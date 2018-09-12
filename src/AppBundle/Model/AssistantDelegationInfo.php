@@ -3,7 +3,8 @@
 namespace AppBundle\Model;
 
 use AppBundle\Entity\School;
-use AppBundle\Entity\Term;
+use AppBundle\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * AssistantDelegationInfo
@@ -12,29 +13,68 @@ class AssistantDelegationInfo
 {
 
     /**
+     * @var User
+     */
+    private $user;
+
+    /**
      * @var School
+     * @Assert\NotNull(message="Dette feltet kan ikke være tomt")
+     * @Assert\Valid()
      */
     private $school;
 
     /**
-     * @var Term
-     */
-    private $term;
-
-    /**
      * @var integer
+     * @Assert\NotNull(message="Dette feltet kan ikke være tomt")
+     * @Assert\Range(min=1, max=7,
+     *     minMessage="Du må velge en dag mellom mandag og fredag",
+     *     maxMessage="Du må velge en dag mellom mandag og fredag")
+     * @Assert\Valid()
      */
     private $weekDay;
 
     /**
-     * @var boolean
+     * @var integer
+     * @Assert\GreaterThan(value=0, message="Det der gir ikke mening")
+     * @Assert\Valid()
+     * @Assert\NotNull(message="Dette feltet kan ikke være tomt")
      */
-    private $doublePosition;
+    private $numDays;
+
+    /**
+     * @var integer
+     * @Assert\Range(min=1, max=52,
+     *     minMessage="Ukenummer kan ikke være mindre enn 1",
+     *     maxMessage="Ukenummer kan ikke være mer enn 52")
+     * @Assert\Valid()
+     * @Assert\NotNull(message="Dette feltet kan ikke være tomt")
+     */
+    private $startingWeek;
+
+    /**
+     * @return User
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return AssistantDelegationInfo
+     */
+    public function setUser(User $user): AssistantDelegationInfo
+    {
+        $this->user = $user;
+        return $this;
+    }
 
     /**
      * @return School
      */
-    public function getSchool(): School
+    public function getSchool(): ?School
     {
         return $this->school;
     }
@@ -47,25 +87,6 @@ class AssistantDelegationInfo
     public function setSchool(School $school): AssistantDelegationInfo
     {
         $this->school = $school;
-        return $this;
-    }
-
-    /**
-     * @return Term
-     */
-    public function getTerm(): Term
-    {
-        return $this->term;
-    }
-
-    /**
-     * @param Term $term
-     *
-     * @return AssistantDelegationInfo
-     */
-    public function setTerm(Term $term): AssistantDelegationInfo
-    {
-        $this->term = $term;
         return $this;
     }
 
@@ -94,25 +115,40 @@ class AssistantDelegationInfo
     }
 
     /**
-     * Set doublePosition
+     * @return int
+     */
+    public function getNumDays(): ?int
+    {
+        return $this->numDays;
+    }
+
+    /**
+     * @param int $numDays
      *
-     * @param boolean $doublePosition
      * @return AssistantDelegationInfo
      */
-    public function setDoublePosition($doublePosition)
+    public function setNumDays(int $numDays): AssistantDelegationInfo
     {
-        $this->doublePosition = $doublePosition;
-
+        $this->numDays = $numDays;
         return $this;
     }
 
     /**
-     * Get doublePosition
-     *
-     * @return boolean 
+     * @return int
      */
-    public function getDoublePosition()
+    public function getStartingWeek(): ?int
     {
-        return $this->doublePosition;
+        return $this->startingWeek;
+    }
+
+    /**
+     * @param int $startingWeek
+     *
+     * @return AssistantDelegationInfo
+     */
+    public function setStartingWeek(int $startingWeek): AssistantDelegationInfo
+    {
+        $this->startingWeek = $startingWeek;
+        return $this;
     }
 }

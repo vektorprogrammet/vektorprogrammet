@@ -32,13 +32,6 @@ class AssistantHistory
     protected $semester;
 
     /**
-     * @ORM\ManyToOne(targetEntity="School", inversedBy="assistantHistories")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     **/
-    protected $school;
-
-    /**
      * @deprecated
      *
      * @ORM\Column(type="string")
@@ -53,17 +46,18 @@ class AssistantHistory
     protected $bolk;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
-    protected $day;
-
-    /**
      * @var WorkDay[]
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkDay", mappedBy="assistantPosition")
      */
     private $workDays;
+
+    /**
+     * AssistantHistory constructor.
+     */
+    public function __construct()
+    {
+        $this->extraWorkDays = 0;
+    }
 
 
     public function activeInGroup($group): bool
@@ -120,30 +114,6 @@ class AssistantHistory
     }
 
     /**
-     * Set school.
-     *
-     * @param \AppBundle\Entity\School $school
-     *
-     * @return AssistantHistory
-     */
-    public function setSchool(\AppBundle\Entity\School $school = null)
-    {
-        $this->school = $school;
-
-        return $this;
-    }
-
-    /**
-     * Get school.
-     *
-     * @return \AppBundle\Entity\School
-     */
-    public function getSchool()
-    {
-        return $this->school;
-    }
-
-    /**
      * Get id.
      *
      * @return int
@@ -196,22 +166,6 @@ class AssistantHistory
     public function setBolk($bolk)
     {
         $this->bolk = $bolk;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDay()
-    {
-        return $this->day;
-    }
-
-    /**
-     * @param string $day
-     */
-    public function setDay($day)
-    {
-        $this->day = $day;
     }
 
     /**

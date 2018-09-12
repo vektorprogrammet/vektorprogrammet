@@ -1,3 +1,12 @@
 {% extends 'adminBase.html.twig' %}
 
-
+{% block body %}
+    <div class="row">
+        <div class="small-12 medium-6 large-4 columns">
+            {{ form_start(form) }}
+            {{ form_row(form) }}
+            <button>Fortsett <i class="button-icon-right fa fa-arrow-right"></i></button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

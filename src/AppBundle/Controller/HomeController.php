@@ -6,6 +6,7 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use AppBundle\Entity\TeamMembership;
+use PhpCollection\Set;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class HomeController extends Controller

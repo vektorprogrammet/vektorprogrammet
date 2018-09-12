@@ -44,11 +44,6 @@ class School
     protected $email;
 
     /**
-     * @ORM\OneToMany(targetEntity="AssistantHistory", mappedBy="school")
-     */
-    private $assistantHistories;
-
-    /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
@@ -57,7 +52,7 @@ class School
     /**
      * @var bool
      * @ORM\Column(type="boolean")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
+     * @Assert\NotNull(message="Dette feltet kan ikke være tomt.")
      */
     private $international;
 
@@ -257,21 +252,5 @@ class School
         }
 
         return false;
-    }
-
-    /**
-     * @return AssistantHistory[]
-     */
-    public function getAssistantHistories()
-    {
-        return $this->assistantHistories;
-    }
-
-    /**
-     * @return SchoolCapacity[]
-     */
-    public function getCapacities(): array
-    {
-        return $this->capacities;
     }
 }

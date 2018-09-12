@@ -42,18 +42,6 @@ class CreateAssistantHistoryType extends AbstractType
                     '8' => '8',
                 ),
             ))
-            ->add('School', 'entity', array(
-                'label' => 'Skole',
-                'class' => 'AppBundle:School',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('s')
-                        ->orderBy('s.name', 'ASC')
-                        ->JOIN('s.departments', 'd')
-                        // Since it is a many to many bidirectional relationship we have to use the MEMBER OF function
-                        ->where(':department MEMBER OF s.departments')
-                        ->setParameter('department', $this->department);
-                },
-            ))
             ->add('bolk', 'choice', array(
                 'label' => 'Bolk',
                 'choices' => array(

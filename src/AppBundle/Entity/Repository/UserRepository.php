@@ -5,6 +5,7 @@ namespace AppBundle\Entity\Repository;
 use AppBundle\Entity\Receipt;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -272,5 +273,28 @@ class UserRepository extends EntityRepository implements UserProviderInterface
                     ->distinct()
                     ->getQuery()
                     ->getResult();
+    }
+
+    /**
+     * TODO: Remove
+     *
+     * Find users interviewed in $semester
+     *
+     * @param Semester $semester
+     *
+     * @return QueryBuilder
+     */
+    public function findDelegatableQueryBuilder(Semester $semester)
+    {
+        /** @var ApplicationRepository $applicationRepository */
+        $applicationRepository = $this
+            ->getEntityManager()->getRepository(ApplicationRepository::class);
+
+        return $applicationRepository->createQueryBuilder('application')
+            ->select('application.user')
+            ->join('application.interview', 'interview')
+            ->where('application.semester = :semester')
+            ->andWhere('application.previousParticipation = 1 OR interview.interviewed = 1')
+            ->setParameter('semester', $semester);
     }
 }

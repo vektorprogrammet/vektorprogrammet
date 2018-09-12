@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * WorkDay
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\WorkDayRepository"
  */
 class WorkDay
 
@@ -30,11 +30,11 @@ class WorkDay
     private $date;
 
     /**
-     * @var Term
+     * @var School
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Term")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\School")
      */
-    private $term;
+    private $school;
 
     /**
      * @var AssistantHistory
@@ -49,6 +49,16 @@ class WorkDay
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\SubstitutePosition", inversedBy="workDays")
      */
     private $substitutePosition;
+
+    /**
+     * WorkDay constructor.
+     *
+     * @param AssistantHistory $assistantPosition
+     */
+    public function __construct(AssistantHistory $assistantPosition)
+    {
+        $this->assistantPosition = $assistantPosition;
+    }
 
 
     /**
@@ -86,21 +96,21 @@ class WorkDay
     }
 
     /**
-     * @return Term
+     * @return School
      */
-    public function getTerm(): Term
+    public function getSchool(): ?School
     {
-        return $this->term;
+        return $this->school;
     }
 
     /**
-     * @param Term $term
+     * @param School $school
      *
      * @return WorkDay
      */
-    public function setTerm(Term $term): WorkDay
+    public function setSchool(School $school): WorkDay
     {
-        $this->term = $term;
+        $this->school = $school;
         return $this;
     }
 

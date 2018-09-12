@@ -152,12 +152,8 @@
                                 <a href='{{ path('specific_profile', { 'id': ah.user.id }) }}'>{{ ah.user }}</a>
                             </td>
                             <td>
-
-                                {% if ah.school is not null %}
-                                    {{ ah.school.name }}
-                                {% else %}
-                                    Skolen er slettet.
-                                {% endif %}
+                                {# TODO: Add schools #}
+                                Skole kommer
 
                             </td>
                             <td> {{ ah.user.email }}</td>
@@ -170,7 +166,7 @@
                                     <form
                                             action="{{ path('assistant_history_delete', {id: ah.id}) }}"
                                             method="POST"
-                                            onsubmit="return confirm('Er du sikker på at du vil slette {{ ah.user }} fra {{ ah.school.name }} {{ ah.semester.name }}?')"
+                                            onsubmit="return confirm('Er du sikker på at du vil slette {{ ah.user }} fra skolen {# TODO #} {{ ah.semester.name }}?')"
                                     >
                                         <button class="button tiny alert"><i class="fa fa-trash"></i>
                                         </button>

@@ -10,10 +10,15 @@ namespace AppBundle\Form\Type;
 
 
 use AppBundle\Entity\Department;
+use AppBundle\Entity\Repository\UserRepository;
+use AppBundle\Entity\School;
+use AppBundle\Entity\Semester;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class AssistantDelegationInfoType extends AbstractType
@@ -29,9 +34,9 @@ class AssistantDelegationInfoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('School', EntityType::class, array(
+            ->add('school', EntityType::class, array(
                 'label' => 'Skole',
-                'class' => 'AppBundle:School',
+                'class' => 'AppBundle\Entity\School',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('s')
                         ->orderBy('s.name', 'ASC')
@@ -41,27 +46,21 @@ class AssistantDelegationInfoType extends AbstractType
                         ->setParameter('department', $this->department);
                 },
             ))
-            ->add('Term', EntityType::class, array(
-                'label' => 'Bolk',
-                'class' => 'AppBundle:Term',
-                'required' => false,
-            ))
-            ->add('doublePosition', ChoiceType::class, array(
-                'label' => 'Dobbel stilling',
+            ->add('weekDay', ChoiceType::class, array(
+                'label' => 'Ukedag',
                 'choices' => array(
-                    'Ja' => true,
-                    'Nei' => false,
+                    1 => 'Mandag',
+                    2 => 'Tirsdag',
+                    3 => 'Onsdag',
+                    4 => 'Torsdag',
+                    5 => 'Fredag',
                 ),
             ))
-            ->add('day', ChoiceType::class, array(
-                'label' => 'Dag',
-                'choices' => array(
-                    'Mandag' => 1,
-                    'Tirsdag' => 2,
-                    'Onsdag' => 3,
-                    'Torsdag' => 4,
-                    'Fredag' => 5,
-                ),
+            ->add('numDays', IntegerType::class, array(
+                'label' => 'Antall arbeidsdager (Enkel stilling: 4 dager, dobbel stilling: 8 dager)'
+            ))
+            ->add('startingWeek', IntegerType::class, array(
+                'label' => 'Ukenummer: Første uke assistenten sendes ut'
             ));
     }
 
