@@ -1,5 +1,3 @@
-TEST
-
 ![Build Status](https://travis-ci.org/vektorprogrammet/vektorprogrammet.svg?branch=master)
 ## Set up development environment
 ### Requirements
