@@ -69,7 +69,7 @@ services:
 
   app.interview.manager:
     class: AppBundle\Service\InterviewManager
-    arguments: ['@security.token_storage', '@security.authorization_checker', '@app.mailer', '@twig', '@app.logger', '@doctrine.orm.entity_manager']
+    arguments: ['@security.token_storage', '@security.authorization_checker', '@app.mailer', '@twig', '@app.logger', '@doctrine.orm.entity_manager', '@router', '@app.sms']
 
   app.newsletter.manager:
       class: AppBundle\Service\NewsletterManager
