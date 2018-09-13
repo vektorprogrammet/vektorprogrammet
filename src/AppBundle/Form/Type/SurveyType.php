@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class SurveyType extends AbstractType
 {
+    private $isAdminSurvey = false;
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('semester', 'entity', array(
@@ -28,30 +30,48 @@ class SurveyType extends AbstractType
             'label' => false,
             'attr' => array('placeholder' => 'Fyll inn tittel til undersøkelse'),
         ))
-            
-            ->add('showCustomFinishPage', ChoiceType::class, [
-                'label' => 'Sluttside som vises etter undersøkelsen er besvart.',
+
+        ->add('showCustomFinishPage', ChoiceType::class, [
+            'label' => 'Sluttside som vises etter undersøkelsen er besvart:',
+            'multiple' => false,
+            'expanded' => true,
+            'choices' => [
+                false => 'Standard',
+                true => 'Tilpasset',
+            ]
+        ]);
+
+        if($this->isAdminSurvey())
+        {
+            $builder->add('team_survey', ChoiceType::class, [
+                'label' => 'Teammedlem skal få undersøkelse som popup når de er logget inn:',
                 'multiple' => false,
                 'expanded' => true,
                 'choices' => [
-                    false => 'Standard',
-                    true => 'Tilpasset',
+                    true => 'Ja',
+                    false => 'Nei',
                 ]
+
             ])
 
-            ->add('confidential', ChoiceType::class, array(
-                'label' => 'Resultater kan leses av',
-                'multiple' => false,
-                'expanded' => true,
-                'choices' => [
-                    false => 'Medlemmer og Ledere',
-                    true => 'Kun Ledere'
-                ]
-            ))
-            
-            ->add('finishPageContent', CKEditorType::class, [
-                'label' => 'Tilpasset sluttside. Vises kun hvis "Tilpasset" er valgt over.',
-            ])
+            ->add('surveyPopUpMessage', CKEditorType::class, [
+            'label' => 'Tilpasset pop-up melding? Vises kun hvis "Tilpasset" er valgt over.',
+        ]);
+        }
+
+        $builder->add('confidential', ChoiceType::class, array(
+            'label' => 'Resultater kan leses av:',
+            'multiple' => false,
+            'expanded' => true,
+            'choices' => [
+                false => 'Medlemmer og Ledere',
+                true => 'Kun Ledere'
+            ]
+        ))
+
+        ->add('finishPageContent', CKEditorType::class, [
+            'label' => 'Tilpasset sluttside. Vises kun hvis "Tilpasset" er valgt over.',
+        ])
 
         ->add('surveyQuestions', 'collection', array(
             'type' => new SurveyQuestionType(),
@@ -71,6 +91,17 @@ class SurveyType extends AbstractType
             'data_class' => 'AppBundle\Entity\Survey',
         ));
     }
+
+
+    public function setAdminSurvey(bool $isSuperAdmin){
+        $this->isAdminSurvey = $isSuperAdmin;
+    }
+
+    public function isAdminSurvey() : bool
+    {
+        return $this->isAdminSurvey;
+    }
+
 
     public function getName()
     {

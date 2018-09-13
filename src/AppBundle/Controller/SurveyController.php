@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Survey;
 use AppBundle\Form\Type\SurveyType;
 use AppBundle\Form\Type\SurveyExecuteType;
+use AppBundle\Role\Roles;
 
 /**
  * SurveyController is the controller responsible for survey actions,
@@ -145,8 +146,11 @@ class SurveyController extends Controller
     public function createSurveyAction(Request $request)
     {
         $survey = new Survey();
-
-        $form = $this->createForm(new SurveyType(), $survey);
+        $surveyType = new SurveyType();
+        if($this->isUserAdmin()){
+            $surveyType->setAdminSurvey(true);
+        }
+        $form = $this->createForm($surveyType, $survey);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -159,16 +163,26 @@ class SurveyController extends Controller
             return $this->redirect($this->generateUrl('surveys'));
         }
 
+        // Check if user can create team surveys.
+
         return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
     }
 
     public function copySurveyAction(Request $request, Survey $survey)
     {
+
+        $tempSurveyType = new SurveyType();
+        if($this->isUserAdmin()){
+            $tempSurveyType->setAdminSurvey(true);
+        }elseif($survey->isTeamSurvey()) {
+            throw $this->createAccessDeniedException();
+        }
+
         $em = $this->getDoctrine()->getManager();
         $department = $this->getUser()->getDepartment();
         $semester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
 
-        $surveyClone = $survey->copy();
+        $surveyClone = $survey->copy($this->isUserAdmin());
         $surveyClone->setSemester($semester);
 
         $form = $this->createForm(SurveyType::class, $surveyClone);
@@ -197,7 +211,14 @@ class SurveyController extends Controller
 
     public function editSurveyAction(Request $request, Survey $survey)
     {
-        $form = $this->createForm(new SurveyType(), $survey);
+        $tempSurveyType = new SurveyType();
+        if($this->isUserAdmin()){
+            $tempSurveyType->setAdminSurvey(true);
+        }elseif($survey->isTeamSurvey()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $form = $this->createForm($tempSurveyType, $survey);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -282,4 +303,10 @@ class SurveyController extends Controller
 
         return new JsonResponse(array('survey' => $survey_decode, 'answers' => $validSurveysTaken));
     }
+
+    private function isUserAdmin() : bool
+    {
+        return $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN');
+    }
 }
+

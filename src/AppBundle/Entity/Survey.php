@@ -49,6 +49,21 @@ class Survey implements \JsonSerializable
      */
     private $confidential;
 
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean", nullable=false, options={"default" : false})
+     * @Assert\NotNull(message="Dette feltet kan ikke være tomt.")
+     */
+    private $teamSurvey;
+
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=false, options={"default" : "Vi har en undersøkelse klar til deg!"})
+     */
+     private $surveyPopUpMessage;
+
     /**
      * @var SurveyQuestion[]
      *
@@ -127,6 +142,7 @@ class Survey implements \JsonSerializable
         $this->surveyQuestions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->showCustomFinishPage = false;
         $this->confidential = false;
+        $this->teamSurvey = false;
     }
 
     /**
@@ -222,6 +238,9 @@ class Survey implements \JsonSerializable
             $surveyClone->addSurveyQuestion($questionClone);
         }
 
+        $surveyClone->setTeamSurvey($this->isTeamSurvey());
+
+
         return $surveyClone;
     }
 
@@ -272,4 +291,39 @@ class Survey implements \JsonSerializable
     {
         $this->confidential = $confidential;
     }
+
+    /**
+     * @param boolean $teamSurvey
+     */
+    public function setTeamSurvey($teamSurvey)
+    {
+        $this->teamSurvey = $teamSurvey;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isTeamSurvey() : bool
+    {
+        return $this->teamSurvey;
+    }
+
+    /**
+     * @param string surveyPopUpMessage
+     */
+    public function setSurveyPopUpMessage($message){
+        $this->surveyPopUpMessage = $message;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSurveyPopUpMessage() : string {
+        if($this->surveyPopUpMessage===null){
+            return "";
+        }
+        return $this->surveyPopUpMessage;
+    }
+
+
 }

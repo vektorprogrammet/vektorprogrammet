@@ -55,7 +55,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for survey in surveys if ((not survey.confidential) or is_granted_team_leader()) %}
+                {% for survey in surveys
+                    if ((not survey.confidential) or is_granted_team_leader())  %}
                     <tr>
                         <td>{{ survey.name }} - {{ survey.semester }} - Antall svar: {{ survey.getTotalAnswered }}</td>
                         <td><a href="{{ path('survey_show', {'id': survey.id }) }}" class="button tiny">Vis
@@ -64,11 +65,14 @@
                                 utfylling</a></td>
                         <td><a href="{{ path('survey_results', {'id': survey.id }) }}" class="button tiny">Vis
                                 resultater</a></td>
-                        {% if is_granted_team_leader() %}
+                        {% if is_granted_team_leader() and (is_granted_admin() or not survey.teamSurvey) %}
                         <td><a href="{{ path('survey_copy', {'id': survey.id }) }}" class="button tiny">Kopier</a></td>
                         {% endif %}
+
+                        {% if is_granted_admin() or not survey.teamSurvey %}
                         <td><a href="{{ path('survey_edit', {'id': survey.id }) }}" class="button tiny">
                                 <i class="fa fa-pencil-square-o"></i> Rediger</a></td>
+                        {% endif %}
                         {# Delete button disabled because you can't delete surveys which have been used in interviews #}
                         {# <td><a href="#" id="{{ survey.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td> #}
                     </tr>
