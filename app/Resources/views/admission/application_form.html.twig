@@ -80,7 +80,7 @@
                             <div class="text-center mx-auto">
                                 <button type="submit" tabindex="8" class="btn btn-lg btn-primary my-5">Søk nå!</button>
                                 <p class="pt-2 mb-0">Har du vært assistent tidligere? <br>
-                                    Da han du søke på nytt <a href="{{ path('admission_existing_user') }}">her</a> (krever innlogging)</p>
+                                    Da kan du søke på nytt <a href="{{ path('admission_existing_user') }}">her</a> (krever innlogging)</p>
                             </div>
                         </div>
                         {{ form_end(form) }}
@@ -97,6 +97,12 @@
                                 <div class="form-group">
                                     <input type="email" class="form-control subscribe-input" placeholder="E-post">
                                     <div class="invalid-feedback"></div>
+                                    <br>
+                                    <div class="form-check">
+                                        <label class="form-check-label"><input class="form-check-input" type="checkbox" checked>
+                                            <small>Send meg påminnelse om neste infomøte.</small>
+                                        </label>
+                                    </div>
                                     <button class="btn btn-info btn-sm mt-3" onclick="subscribe({{ department.id }}, this)">Få påminnelse når opptaket starter</button>
                                 </div>
                             </div>
@@ -114,6 +120,12 @@
                             <div class="form-group">
                                 <input type="email" class="form-control subscribe-input" placeholder="E-post">
                                 <div class="invalid-feedback"></div>
+                                <br>
+                                <div class="form-check">
+                                    <label class="form-check-label"><input class="form-check-input" type="checkbox" checked>
+                                        <small>Send meg påminnelse om neste infomøte.</small>
+                                    </label>
+                                </div>
                                 <button class="btn btn-info btn-sm mt-3 btn-text-break" onclick="subscribe({{ department.id }}, this)">
                                     Få påminnelse når neste opptak starter
                                 </button>
@@ -130,6 +142,12 @@
                             <div class="form-group">
                                 <input type="email" class="form-control subscribe-input" placeholder="E-post">
                                 <div class="invalid-feedback"></div>
+                                <br>
+                                <div class="form-check">
+                                    <label class="form-check-label"><input class="form-check-input" type="checkbox" checked>
+                                        <small>Send meg påminnelse om neste infomøte.</small>
+                                    </label>
+                                </div>
                                 <button class="btn btn-info btn-sm mt-3" onclick="subscribe({{ department.id }}, this)">Få påminnelse når opptaket starter</button>
                             </div>
                         </div>

@@ -30,11 +30,12 @@ class AdmissionNotifier
     /**
      * @param Department $department
      * @param string $email
+     * @param bool $infoMeeting
      * @param bool $fromApplication
      *
      * @throws \InvalidArgumentException
      */
-    public function createSubscription(Department $department, string $email, bool $fromApplication = false)
+    public function createSubscription(Department $department, string $email, bool $infoMeeting, bool $fromApplication = false)
     {
         $alreadySubscribed = $this->em->getRepository('AppBundle:AdmissionSubscriber')->findByEmailAndDepartment($email, $department);
         if ($alreadySubscribed) {
@@ -44,6 +45,7 @@ class AdmissionNotifier
         $subscriber = new AdmissionSubscriber();
         $subscriber->setDepartment($department);
         $subscriber->setEmail($email);
+        $subscriber->setInfoMeeting($infoMeeting);
         $subscriber->setFromApplication($fromApplication);
 
         $errors = $this->validator->validate($subscriber);
