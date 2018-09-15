@@ -59,3 +59,4 @@ Tests should be run before opening a PR.
 
 test3
 test more
+testing testing
