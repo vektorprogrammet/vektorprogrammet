@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * WorkDay
@@ -35,6 +36,15 @@ class WorkDay
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\School")
      */
     private $school;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="term", type="integer")
+     *
+     * @Assert\Range(min="1", max="2")
+     */
+    private $term;
 
     /**
      * @var AssistantHistory
@@ -111,6 +121,33 @@ class WorkDay
     public function setSchool(School $school): WorkDay
     {
         $this->school = $school;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTerm(): int
+    {
+        return $this->term;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTermAsString(): string
+    {
+        return "Bolk {$this->term}";
+    }
+
+    /**
+     * @param int $term
+     *
+     * @return WorkDay
+     */
+    public function setTerm(int $term): WorkDay
+    {
+        $this->term = $term;
         return $this;
     }
 

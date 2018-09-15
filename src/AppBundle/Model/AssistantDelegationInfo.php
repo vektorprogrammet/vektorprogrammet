@@ -53,6 +53,16 @@ class AssistantDelegationInfo
     private $startingWeek;
 
     /**
+     * @var boolean
+     */
+    private $term1;
+
+    /**
+     * @var boolean
+     */
+    private $term2;
+
+    /**
      * @return User
      */
     public function getUser(): ?User
@@ -149,6 +159,44 @@ class AssistantDelegationInfo
     public function setStartingWeek(int $startingWeek): AssistantDelegationInfo
     {
         $this->startingWeek = $startingWeek;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTerm1(): bool
+    {
+        return $this->term1;
+    }
+
+    /**
+     * @param bool $term1
+     *
+     * @return AssistantDelegationInfo
+     */
+    public function setTerm1(bool $term1): AssistantDelegationInfo
+    {
+        $this->term1 = $term1;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTerm2(): bool
+    {
+        return $this->term2;
+    }
+
+    /**
+     * @param bool $term2
+     *
+     * @return AssistantDelegationInfo
+     */
+    public function setTerm2(bool $term2): AssistantDelegationInfo
+    {
+        $this->term2 = $term2;
         return $this;
     }
 }

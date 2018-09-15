@@ -25,6 +25,7 @@ class LoadWorkDayData extends AbstractFixture implements OrderedFixtureInterface
             $wd = new WorkDay($this->getReference('ah-1'));
             $wd->setDate($this->convertWeekNumberToDateTime($firstWeek + $i, 1, $currentSemester));
             $wd->setSchool($this->getReference('school-1'));
+            $wd->setTerm(2);
             $manager->persist($wd);
         }
 
@@ -35,6 +36,7 @@ class LoadWorkDayData extends AbstractFixture implements OrderedFixtureInterface
             $wd = new WorkDay($this->getReference('ah-2'));
             $wd->setDate($this->convertWeekNumberToDateTime($firstWeek + $i, 1, $currentSemester));
             $wd->setSchool($this->getReference('school-1'));
+            $wd->setTerm(intdiv($i - 1, 4) + 1);
             $manager->persist($wd);
         }
 
@@ -43,6 +45,7 @@ class LoadWorkDayData extends AbstractFixture implements OrderedFixtureInterface
                 $wd = new WorkDay($this->getReference("ah-$j"));
                 $wd->setDate($this->convertWeekNumberToDateTime($firstWeek + $i, 1, $currentSemester));
                 $wd->setSchool($this->getReference('school-1'));
+                $wd->setTerm(1);
                 $manager->persist($wd);
             }
         }

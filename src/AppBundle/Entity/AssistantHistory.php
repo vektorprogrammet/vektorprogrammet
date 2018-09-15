@@ -34,7 +34,7 @@ class AssistantHistory
     /**
      * @deprecated
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", options={"default":0})
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     protected $extraWorkDays;
