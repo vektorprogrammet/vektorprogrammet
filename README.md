@@ -57,3 +57,4 @@ Tests should be run before opening a PR.
 ### Add new entities to the database and reload fixtures
 `npm run db:update`
 
+test3
