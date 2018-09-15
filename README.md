@@ -58,3 +58,4 @@ Tests should be run before opening a PR.
 `npm run db:update`
 
 test3
+test more
