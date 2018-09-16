@@ -1,5 +1,9 @@
 {% extends 'adminBase.html.twig' %}
 {% block title %}Kontrollpanel{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/admin/home.css') }}">
+{% endblock %}
+
 {% block body %}
     <div class="control-panel">
         <div class="sbs">
