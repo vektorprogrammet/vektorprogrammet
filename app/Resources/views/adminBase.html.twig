@@ -51,11 +51,13 @@
 {% include 'base/admin/mobile_navigation.html.twig' %}
 <br/>
 {% include 'common/flash.html.twig' %}
-{% block body %}
-    <p>
-        Content
-    </p>
-{% endblock %}
+<div class="container-fluid">
+    {% block body %}
+        <p>
+            Content
+        </p>
+    {% endblock %}
+</div>
 
 {% include 'base/admin/footer.html.twig' %}
 
