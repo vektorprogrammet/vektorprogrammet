@@ -1,12 +1,12 @@
 {% extends 'adminBase.html.twig' %}
 {% block body %}
     <div class="row">
-        <div class="col-12 columns">
+        <div class="col-12">
             <h1>Last opp signatur</h1>
         </div>
     </div>
     <div class="row">
-        <div class="col-12 col-md-12 col-lg-12 columns">
+        <div class="col-12 col-md-12 col-lg-12">
             {% for flashMessage in app.session.flashbag.get('success') %}
                 <div data-alert class="alert-box success radius">
                     {{ flashMessage }}
@@ -16,14 +16,14 @@
             {{ form_start(form) }}
             {{ form_errors(form) }}
             <div class="row">
-                <div class="col-8 columns">
+                <div class="col-8">
                     <label>Beskrivelse (Feks. Leder, Vektorprogrammet)
                         {{ form_row(form.description) }}</label>
                 </div>
             </div>
             {#<label for="form_signature_path">Age</label>#}
             <div class="row">
-                <div class="col-2 columns">
+                <div class="col-2">
                     <div class="hide">
                         {{ form_row(form.signature_path) }}
                     </div>
@@ -31,7 +31,7 @@
                         Velg bilde
                     </button>
                 </div>
-                <div class="col-4 columns">
+                <div class="col-4">
                     <div class="{{ signature.signaturePath is not null ? '' : 'hide' }}">
                         <img src="{{ asset_with_version(signature.signaturePath) }}" height="60px" id="signature_picture">
                     </div>

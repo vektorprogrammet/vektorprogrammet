@@ -2,12 +2,12 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-12 columns">
+        <div class="col-12">
             <h1>{{ department.shortName }} sine nyhetsbrev</h1>
         </div>
     </div>
     <div class="row">
-        <div class="col-12 columns">
+        <div class="col-12">
             {% if not is_granted_team_leader() %}
                 <div class="panel callout radius inline-block">
                     <p><i class="fa fa-info-circle" aria-hidden="true"></i> NB: Ta kontakt med team-leder for å sende nyhetsbrev</p>
@@ -17,7 +17,7 @@
     </div>
     {% if  is_granted_team_leader() %}
         <div class="row">
-            <div class="col-12 columns">
+            <div class="col-12">
                 <a class="tiny button success" href="{{ path('newsletter_create') }}">
                     Opprett nytt nyhetsbrev <i class="fa fa-plus"></i>
                 </a>
@@ -26,7 +26,7 @@
         </div>
     {% endif %}
     <div class="row">
-        <div class="col-12 columns">
+        <div class="col-12">
             <table>
                 <tr>
                     <th>Navn</th>

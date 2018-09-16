@@ -13,7 +13,7 @@
         <th data-sort="string">Intervjues av</th>
         <th data-sort="string">Medintervjuer</th>
         <th data-sort="string">Status</th>
-        {# Add header columns to match the buttons added #}
+        {# Add header to match the buttons added #}
         <th colspan="3"></th>
     </tr>
     </thead>
@@ -44,7 +44,7 @@
                     {% if a.interview.getCoInterviewer() == null and a.interview.user != app.user %}
                         <form method="POST" action="{{ path('interview_assign_co_interviewer', { id: a.interview.id }) }}">
                             <div class="row">
-                                <div class="col-12 columns">
+                                <div class="col-12">
                                     <button type="submit"
                                             class="button tiny">
                                         <i class="fa fa-share-alt"></i>
@@ -77,7 +77,7 @@
                         <form method="POST"
                               action="{{ path('interview_clear_co_interviewer', { id: a.interview.id }) }}">
                             <div class="row">
-                                <div class="col-12 columns">
+                                <div class="col-12">
                                     <button type="submit"
                                             class="button warning tiny">
                                         <i class="fa fa-share-alt"></i>
@@ -90,7 +90,7 @@
                 {% else %}
                     <td>
                         <div class="row">
-                            <div class="col-12 columns">
+                            <div class="col-12">
                                 <a href="{{ path('interview_admin_assign_co_interviewer', { 'id': a.interview.id }) }}"
                                    class="button tiny"><i
                                             class="fa fa-share-alt"></i> Rediger medintervjuer</a>

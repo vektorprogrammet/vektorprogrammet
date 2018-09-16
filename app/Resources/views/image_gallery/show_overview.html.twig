@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-12 col-md-12 col-lg-12 columns">
+        <div class="col-12 col-md-12 col-lg-12">
             <h1>Bildegallerier</h1>
             <hr>
             <p>Bildegallerier blir brukt for å samle bilder til bruk i nettsidens komponenter som f.eks bildekaruseller eller dekorative bildegrids.&nbsp
@@ -13,7 +13,7 @@
             </p>
         </div>
 
-        <div class="col-12 col-md-12 col-lg-12 columns">
+        <div class="col-12 col-md-12 col-lg-12">
             {% for flashMessage in app.session.flashbag.get('success') %}
                 <div data-alert class="alert-box success radius">
                     {{ flashMessage }}
@@ -26,15 +26,15 @@
     {% if is_granted_team_leader() %}
         <section id="create-gallery-form" {% if not form.vars.valid %} style="display: block" {% endif %}>
             <div class="row">
-                <div class="col-12 col-md-12 col-lg-12 columns">
+                <div class="col-12 col-md-12 col-lg-12">
                     <hr>
                     <h3>Opprett et nytt bildegalleri</h3>
                 </div>
 
-                <div class="col-12 col-md-12 col-lg-12 columns">
+                <div class="col-12 col-md-12 col-lg-12">
                     {{ form_start(form) }}
                     <div class="row">
-                        <div class="col-12 col-md-7 col-lg-7 columns">
+                        <div class="col-12 col-md-7 col-lg-7">
                             {{ form_row(form.title) }}
                             {{ form_row(form.referenceName) }}
                             {{ form_row(form.description) }}
@@ -42,7 +42,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-12 col-md-12 col-lg-12 columns">
+                        <div class="col-12 col-md-12 col-lg-12">
                             <button class="button success">Opprett bildegalleri</button>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
         </section>
 
     <div class="row">
-        <div class="col-12 col-md-12 col-lg-12 columns">
+        <div class="col-12 col-md-12 col-lg-12">
             <a class="text-success" onclick="toggleForm()" id="toggle-form-link"><i class="fa fa-plus"></i> Opprett galleri</a>
         </div>
     </div>
@@ -61,11 +61,11 @@
     {% for image_gallery in image_galleries %}
         <div class="row">
 
-            <div class="col-12 col-md-12 col-lg-12 columns">
+            <div class="col-12 col-md-12 col-lg-12">
                 <hr>
             </div>
 
-            <div class="col-12 col-md-12 col-lg-12 columns">
+            <div class="col-12 col-md-12 col-lg-12">
                 <h3><a href="{{ path('image_gallery_edit', {'id': image_gallery.id }) }}"> {{ image_gallery.title }} </a></h3>
                 {% for key, image in image_gallery.images if key < 5 %}
                     <img class="gallery-preview-image" src="{{ image.path }}" alt="{{ image.description }}">
@@ -74,7 +74,7 @@
         </div>
     {% else %}
         <div class="row">
-            <div class="col-12 col-md-12 col-lg-12 columns">
+            <div class="col-12 col-md-12 col-lg-12">
                 <hr>
                 <p>Det finnes for øyeblikket ingen bildegallerier. Om noen opprettes vil de dukke opp her.</p>
             </div>

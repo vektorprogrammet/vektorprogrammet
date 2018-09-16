@@ -32,35 +32,35 @@
             {{ form_start(form) }}
 
             {# Name and url labels and fields#}
-            <div class="col-6 col-md-6 col-lg-6 columns">
+            <div class="col-6 col-md-6 col-lg-6">
                 <div class="row">
-                    <div class="col-4 col-md-4 col-lg-4 columns">
+                    <div class="col-4 col-md-4 col-lg-4">
                         {{ form_label(form.name) }}
                     </div>
-                    <div class="col-8 col-md-8 col-lg-8 columns">
+                    <div class="col-8 col-md-8 col-lg-8">
                         {{ form_widget(form.name) }}
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-4 col-md-4 col-lg-4 columns">
+                    <div class="col-4 col-md-4 col-lg-4">
                         {{ form_label(form.url) }}
                     </div>
-                    <div class="col-8 col-md-8 col-lg-8 columns">
+                    <div class="col-8 col-md-8 col-lg-8">
                         {{ form_widget(form.url) }}
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-4 col-md-4 col-lg-4 columns">
+                    <div class="col-4 col-md-4 col-lg-4">
                         {{ form_label(form.size) }}
                     </div>
-                    <div class="col-8 col-md-8 col-lg-8 columns">
+                    <div class="col-8 col-md-8 col-lg-8">
                         {{ form_widget(form.size) }}
                     </div>
                 </div>
             </div>
 
             {# Logo #}
-            <div class="col-3 col-md-3 col-lg-3 columns">
+            <div class="col-3 col-md-3 col-lg-3">
                 <div class="row">
                     Nåværende logo
                 </div>
@@ -73,7 +73,7 @@
             </div>
 
             {# Save and delete buttons #}
-            <div class="col-3 col-md-3 col-lg-3 columns text-center">
+            <div class="col-3 col-md-3 col-lg-3 text-center">
                 <ul class="stack button-group">
                     <li>{{ form_widget(form.save, {'attr': {'class': 'small'}}) }}</li>
                     <li>{{ form_widget(form.delete, {'attr': {'class': 'small alert'}}) }}</li>

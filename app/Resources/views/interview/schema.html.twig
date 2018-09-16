@@ -73,8 +73,8 @@
 
                 var qIndex = IntSchema.questions.data("q-index");
                 var newQuestion = $(IntSchema.qPrototype.replace(/__q_prot__/g, qIndex));
-                var newAlternatives = $("<div></div>").addClass("alternatives col-8 col-md-6 col-lg-5 offset-3 offset-md-2 offset-lg-1 columns");
-                var newButtons = $("<div></div>").addClass("buttons col-8 col-md-6 col-lg-5 offset-3 offset-md-2 offset-lg-1 columns");
+                var newAlternatives = $("<div></div>").addClass("alternatives col-8 col-md-6 col-lg-5 offset-3 offset-md-2 offset-lg-1");
+                var newButtons = $("<div></div>").addClass("buttons col-8 col-md-6 col-lg-5 offset-3 offset-md-2 offset-lg-1");
 
                 newAlternatives.data("a-index", 0);
                 newAlternatives.data("q-index", qIndex);
@@ -84,7 +84,7 @@
                         .append($("<div></div>").addClass("row").append(newAlternatives))
                         .append($("<div></div>").addClass("row").append(newButtons));
 
-                var newColumns = $("<div></div>").addClass("col-12 columns");
+                var newColumns = $("<div></div>").addClass("col-12");
                 var newRow = $("<div></div>").addClass("row");
 
                 newRow.append(newColumns.append(newPanel));
@@ -106,7 +106,7 @@
 
             addQuestionDeleteButton: function (panel) {
                 var deleteButton = $('<a href="#" class="button tiny alert right"><i class="fa fa-trash-o fa-lg"></i></a>');
-                var column = $("<div></div>").addClass("col-3 col-md-2 col-lg-1 columns");
+                var column = $("<div></div>").addClass("col-3 col-md-2 col-lg-1");
                 var row = panel.find(".row").first();
 
                 row.append(column);
@@ -133,7 +133,7 @@
             addAlternativeDeleteButton: function (alternative) {
                 var deleteButton = $('<i class="fa fa-times"></i>');
 
-                alternative.append($('<div class="col-1 columns"></div>').append(deleteButton));
+                alternative.append($('<div class="col-1"></div>').append(deleteButton));
 
                 deleteButton.on('click', function (event) {
                     event.preventDefault();
@@ -175,7 +175,7 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-12 col-md-12 col-lg-12 columns">
+        <div class="col-12 col-md-12 col-lg-12">
 
             <h1>Intervjuskjema</h1>
 
@@ -197,20 +197,20 @@
             <div id="questions">
                 {% for interviewQuestion in form.interviewQuestions %}
                     <div class="row">
-                        <div class="col-12 columns">
+                        <div class="col-12">
                             <div class="panel">
                                 {{ form_row(interviewQuestion.question) }}
                                 {{ form_row(interviewQuestion.help) }}
                                 {{ form_row(interviewQuestion.type) }}
                                 <div class="row">
-                                    <div class="alternatives col-8 col-md-6 col-lg-4 offset-3 offset-md-2 offset-lg-1 columns">
+                                    <div class="alternatives col-8 col-md-6 col-lg-4 offset-3 offset-md-2 offset-lg-1">
                                         {% for alternative in interviewQuestion.alternatives %}
                                             {{ form_row(alternative.alternative) }}
                                         {% endfor %}
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="buttons col-8 col-md-6 col-lg-4 offset-3 offset-md-2 offset-lg-1 columns">
+                                    <div class="buttons col-8 col-md-6 col-lg-4 offset-3 offset-md-2 offset-lg-1">
                                     </div>
                                 </div>
                             </div>

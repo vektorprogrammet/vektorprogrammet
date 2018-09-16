@@ -12,31 +12,31 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-12 columns">
+        <div class="col-12">
                 {% include "common/department_semester_dropdowns.html.twig" with {
                 'path': 'statistics_application_by_semester',
                 'parameterName': 'id',
                 'currentSemester': semester} %}
         </div>
         {% if applicationData.count %}
-            <header class="col-12 columns">
+            <header class="col-12">
                 <h3>Søkerstatistikk</h3>
                 <h6>Antall søkere: {{ applicationData.count }}</h6>
             </header>
-            <div class="col-12 columns equalheight charts" id="applicationCharts">
+            <div class="col-12 equalheight charts" id="applicationCharts">
             </div>
         {% endif %}
         {% if assistantHistoryData.count %}
-            <header class="col-12 columns">
+            <header class="col-12">
                 <h3>Opptaksstatistikk</h3>
                 <h6>Antall assistenter: {{ assistantHistoryData.assistantHistoryCount }}</h6>
                 <h6>Antall stillinger: {{ assistantHistoryData.positionsCount }}</h6>
             </header>
-            <div class="col-12 columns equalheight charts" id="admissionCharts">
+            <div class="col-12 equalheight charts" id="admissionCharts">
             </div>
         {% endif %}
         {% if assistantHistoryData.count == 0 and applicationData.count == 0 %}
-            <div class="col-xs-12 columns">
+            <div class="col-xs-12">
                 <h4>Ingen data dette semesteret</h4>
             </div>
         {% endif %}

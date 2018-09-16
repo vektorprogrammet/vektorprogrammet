@@ -8552,20 +8552,20 @@
         <div class="top">
 
             <div class="row" style="margin-bottom: 50px">
-                <div class="col-12 columns" style="text-align: center;">
+                <div class="col-12" style="text-align: center;">
                     <h1 style="font-size: 25px;">Attest - Vektorprogrammet</h1>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-12 columns">
+                <div class="col-12">
                     <p style="font-weight: bold; margin-bottom: 15px;">{{ user }} har vært deltagende i Vektorprogrammet
                         ved {{ user.fieldOfStudy.department.shortName }} som vektorassistent.</p>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-1 columns">
+                <div class="col-1">
                     {% if assistantHistory is not empty %}
                         <p>I sitt arbeid for det frivillighetsbaserte Vektorprogrammet har {{ user }} deltatt
                             som assistent i undervisningen ved en ungdomsskole. Dette innebærer
@@ -8608,20 +8608,20 @@
         <div class="bottom">
 
             <div class="row" style="">
-                <div class="col-12 columns">
+                <div class="col-12">
                     <p style="font-weight: bold; margin-top:15px; margin-bottom: 15px;">På vegne av Vektorprogrammet.</p>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-12 columns left">
+                <div class="col-12 left">
                     <img src="{{ base_dir ~ "/../" ~ signature.signaturePath }}"
                          style="max-height: 75px; max-width: 300px; margin-bottom: 10px; border-bottom:1px solid gray">
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-12 columns">
+                <div class="col-12">
                     <p style="font-weight: bold">{{ app.user }}</p>
                     <p style="margin-top: 5px;">{{ signature.description }}</p>
                 </div>

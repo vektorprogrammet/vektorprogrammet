@@ -43,7 +43,7 @@
     <br/>
     {% for surveyAnswer in form.surveyAnswers %}
         <div class="row">
-            <div class="col-12 col-md-12 col-lg-9 columns">
+            <div class="col-12 col-md-12 col-lg-9">
                 {{ QuestionNumber }}.
                 {% if surveyAnswer.vars.value.surveyQuestion.type == 'check' %}
                     {{ form_row(surveyAnswer.answerArray) }}

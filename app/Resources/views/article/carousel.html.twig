@@ -1,5 +1,5 @@
 {% if articles|length %}
-    <div class="col-12 col-md-8 col-md-push-4 columns">
+    <div class="col-12 col-md-8 col-md-push-4">
         <div class="news-carousel">
             {% for article in articles %}
                 <div><img src="{{ asset(article.imageLarge | imagine_filter('article_large')) }}"/></div>
@@ -8,7 +8,7 @@
             {% endfor %}
         </div>
     </div>
-    <div class="news-carousel-text col-12 col-md-4 col-md-pull-8 columns">
+    <div class="news-carousel-text col-12 col-md-4 col-md-pull-8">
         <h4 class="hide-for-col-only">Nyheter:</h4>
         {% for article in articles %}
             <div id="news-carousel-text-{{ loop.index0 }}" {% if loop.index0 != 0 %}style="display: none"{% endif %}>

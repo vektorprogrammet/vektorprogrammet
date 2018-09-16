@@ -1,14 +1,14 @@
 {%- block form_row -%}
     <div class="row">
         {%- if label is not empty -%}
-            <div class="col-3 col-md-2 col-lg-1 columns">
+            <div class="col-3 col-md-2 col-lg-1">
                 {{- form_label(form, null, {'label_attr': {'class': 'inline'}}) -}}
             </div>
             {%- set columns = 'col-8 col-md-9 col-lg-10' -%}
         {%- else -%}
             {%- set columns = 'col-11' -%}
         {%- endif -%}
-        <div class="{{ columns }} columns end">
+        <div class="{{ }} end">
             {{- form_errors(form) -}}
             {{- form_widget(form) -}}
         </div>
@@ -20,7 +20,7 @@
         {% set required = false %}
     {%- endif -%}
     <div class="row">
-        <div class="col-8 col-md-5 col-lg-3 columns">
+        <div class="col-8 col-md-5 col-lg-3">
             <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
                 {%- if placeholder is not none -%}
                     <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder|trans({}, translation_domain) }}</option>

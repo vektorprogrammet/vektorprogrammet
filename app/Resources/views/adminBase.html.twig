@@ -31,16 +31,15 @@
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
-<div class="top-line admin-top-line"></div>
 
 <header data-equalizer>
-    <div class="col-12 col-md-3 columns hide-for-col-only" data-equalizer-watch>
+    <div class="col-12 col-md-3 hide-for-col-only" data-equalizer-watch>
         {% include 'base/logo_link.html.twig' %}
     </div>
-    <div class="col-md-4 offset-md-1 columns hide-for-col-only" data-equalizer-watch>
+    <div class="col-md-4 offset-md-1 hide-for-col-only" data-equalizer-watch>
         <h1 class="control-panel-header">Kontrollpanel</h1>
     </div>
-    <div class="col-md-4 columns hide-for-col-only">
+    <div class="col-md-4 hide-for-col-only">
         <div class="float-right">
             <a href="{{ path('home') }}">Tilbake til hovedsiden</a> | <a href="{{ path('logout') }}">Logg ut</a>
         </div>

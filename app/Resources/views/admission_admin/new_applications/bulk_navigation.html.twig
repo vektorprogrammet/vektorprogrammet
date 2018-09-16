@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="col-3 columns">
+    <div class="col-3">
         {% if is_granted_team_leader() %}
             <div class="row collapse">
-                <div class="col-9 columns">
+                <div class="col-9">
                     <select id="bulkSelect">
                         <option value="title">Gruppehandling</option>
                         <option value="assign">Fordel intervju</option>
@@ -11,13 +11,13 @@
                         {% endif %}
                     </select>
                 </div>
-                <div class="col-3 columns">
+                <div class="col-3">
                     <a href="#" id="bulkAction" class="button postfix">Utfør</a>
                 </div>
             </div>
         {% endif %}
     </div>
-    <div class="col-9 columns">
+    <div class="col-9">
         {% if app.user.department == semester.department and is_granted_team_leader() %}
             <a class="button tiny success float-right" href="{{ path('register_applicant') }}">
                 Ny søker <i class="fa fa-plus"></i>

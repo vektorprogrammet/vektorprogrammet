@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-12 col-md-12 col-lg-12 columns">
+        <div class="col-12 col-md-12 col-lg-12">
             <form method="POST"
                   onsubmit="return confirm('Vil du virkelig slette dette bildet?')"
                   action="{{ path('image_delete', {'id': image.id}) }}">
@@ -13,7 +13,7 @@
             </form>
         </div>
 
-        <div class="col-12 col-md-12 col-lg-12 columns">
+        <div class="col-12 col-md-12 col-lg-12">
             {% for flashMessage in app.session.flashbag.get('success') %}
                 <div data-alert class="alert-box success radius">
                     {{ flashMessage }}
@@ -24,14 +24,14 @@
     </div>
 
     <div class="row">
-        <div class="col-12 col-md-12 col-lg-12 columns">
+        <div class="col-12 col-md-12 col-lg-12">
             <hr>
         </div>
 
-        <div class="col-6 col-md-6 col-lg-6 columns">
+        <div class="col-6 col-md-6 col-lg-6">
             <img src="{{ image.path }}" alt="{{ image.description }}">
         </div>
-        <div class="col-6 col-md-6 col-lg-6 columns">
+        <div class="col-6 col-md-6 col-lg-6">
             {{ form_start(form) }}
                 {{ form_row(form.description) }}
                 <button class="button success"><i class="fa fa-pencil"></i> Endre beskrivelse</button>

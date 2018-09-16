@@ -1,21 +1,21 @@
 <div class="row">
     {% if is_granted_admin() %}
-        <div class="col-6 col-md-5 col-lg-3 columns">
+        <div class="col-6 col-md-5 col-lg-3">
             <div class="row collapse">
-                <div class="col-9 columns">
+                <div class="col-9">
                     <select id="bulkSelect">
                         <option value="title">Gruppehandling</option>
                         <option value="deleteApplication">Slett søknad</option>
                         <option value="deleteInterview">Slett intervju</option>
                     </select>
                 </div>
-                <div class="col-3 columns">
+                <div class="col-3">
                     <a href="#" id="bulkAction" class="button postfix">Utfør</a>
                 </div>
             </div>
         </div>
     {% endif %}
-    <div class="col-12 col-md-7 col-lg-9 columns">
+    <div class="col-12 col-md-7 col-lg-9">
         <h6 class="float-right">Antall: {{ applications|length }}</h6>
     </div>
 </div>
