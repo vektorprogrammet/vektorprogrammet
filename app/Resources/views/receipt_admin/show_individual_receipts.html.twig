@@ -3,20 +3,20 @@
 
 {% block body %}
     <div class="row">
-        <div class="small-12 columns">
+        <div class="col-12 columns">
             <a href="{{ path('receipts_show') }}">
                 <i class="fa fa-chevron-left"></i> Alle utlegg
             </a>
         </div>
     </div>
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="col-12 col-md-12 col-lg-12 columns">
             <h1>Utlegg for <a href="{{ path('specific_profile', {'id': user.id}) }}">{{ user }}</a></h1>
         </div>
     </div>
 
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="col-12 col-md-12 col-lg-12 columns">
             <ul class="clean-list">
                 <li><b>Kontonummer:</b> {{ user.accountNumber }}</li>
                 <li><b>Email:</b> <a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
@@ -26,7 +26,7 @@
     </div>
 
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="col-12 col-md-12 col-lg-12 columns">
             {% for flashMessage in app.session.flashbag.get('success') %}
                 <div data-alert class="alert-box success radius">
                     {{ flashMessage }}
@@ -37,17 +37,17 @@
 
     {% if receipts is not empty %}
         <div class="row">
-            <div class="small-12 medium-12 large-12 columns">
+            <div class="col-12 col-md-12 col-lg-12 columns">
                 <hr>
             </div>
 
-            <div class="small-6 medium-6 large-6 columns">
+            <div class="col-6 col-md-6 col-lg-6 columns">
                 <h3> Utlegg </h3>
             </div>
         </div>
 
         <div class="row">
-            <div class="small-12 medium-12 large-12 columns">
+            <div class="col-12 col-md-12 col-lg-12 columns">
 
                 <br>
 

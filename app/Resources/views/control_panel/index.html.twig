@@ -9,7 +9,7 @@
         <div class="row">
             <h3>Brukere</h3>
 
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('useradmin_show') }}">
                         <i class="fa fa-users fa-3x"></i>
@@ -18,7 +18,7 @@
                     </a>
                 </div>
             </div>
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('participanthistory_show') }}">
                         <i class="fa fa-history fa-3x"></i>
@@ -27,7 +27,7 @@
                     </a>
                 </div>
             </div>
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('teamadmin_show') }}">
                         <i class="fa fa-smile-o fa-3x"></i>
@@ -37,7 +37,7 @@
                 </div>
             </div>
             {% if is_granted_team_leader() %}
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('executive_board_show') }}">
                         <i class="fa fa-diamond fa-3x"></i>
@@ -47,7 +47,7 @@
                 </div>
             </div>
             {% endif %}
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     {% if is_granted_team_leader() %}
                     <a data-dropdown="superadminCreateUser" aria-controls="superadminCreateUser" aria-expanded="false">
@@ -77,7 +77,7 @@
 
                 </div>
             </div>
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                   <a href="{{ path('generate_mail_lists') }}">
 		    <i class="fa fa-list fa-3x"></i>
@@ -92,7 +92,7 @@
         <div class="row">
             <h3>Opptak</h3>
 
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('admissionadmin_show') }}">
                         <i class="fa fa-upload fa-3x"></i>
@@ -102,7 +102,7 @@
                 </div>
             </div>
 
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('semester_show') }}">
                         <i class="fa fa-clock-o fa-3x"></i>
@@ -112,7 +112,7 @@
                 </div>
             </div>
 
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('statistics_application_show') }}">
                         <i class="fa fa-bar-chart fa-3x"></i>
@@ -122,7 +122,7 @@
                 </div>
             </div>
 
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('substitute_show') }}">
                         <i class="fa fa-user-secret fa-3x"></i>
@@ -133,7 +133,7 @@
             </div>
 
             {% if is_granted_team_leader() %}
-                <div class="small-4 medium-3 large-2 columns">
+                <div class="col-4 col-md-3 col-lg-2 columns">
                     <div class="control-panel-item">
                         <a href="{{ path('interview_schema') }}">
                             <i class="fa fa-comments fa-3x"></i>
@@ -144,7 +144,7 @@
                 </div>
             {% endif %}
 
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('stand') }}">
                         <i class="fa fa-bullhorn fa-3x"></i>
@@ -154,7 +154,7 @@
                 </div>
             </div>
 
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
 
                 </div>
@@ -166,7 +166,7 @@
         <div class="row">
             <h3>Artikkel</h3>
 
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('articleadmin_show') }}">
                         <i class="fa fa-sticky-note fa-3x"></i>
@@ -176,7 +176,7 @@
                 </div>
             </div>
 
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('articleadmin_create') }}">
                         <i class="fa fa-plus-square fa-3x"></i>
@@ -191,7 +191,7 @@
         <div class="row">
             <h3>Diverse</h3>
 
-            <div class="small-4 medium-3 small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('departmentadmin_show') }}">
                         <i class="fa fa-industry fa-3x"></i>
@@ -202,7 +202,7 @@
             </div>
 
             {% if is_granted_team_leader() %}
-                <div class="small-4 medium-3 large-2 columns">
+                <div class="col-4 col-md-3 col-lg-2 columns">
                     <div class="control-panel-item">
                         <a href="{{ path('show_field_of_studies') }}">
                             <i class="fa fa-bars fa-3x"></i>
@@ -213,7 +213,7 @@
                 </div>
             {% endif %}
 
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('schooladmin_show') }}">
                         <i class="fa fa-graduation-cap fa-3x"></i>
@@ -223,7 +223,7 @@
                 </div>
             </div>
 
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('newsletter_show_all') }}">
                         <i class="fa fa-envelope fa-3x"></i>
@@ -233,7 +233,7 @@
                 </div>
             </div>
 
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('surveys') }}">
                         <i class="fa fa-comment fa-3x"></i>
@@ -244,7 +244,7 @@
             </div>
 
             {% if is_granted_team_leader() %}
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('admissionadmin_team_interest') }}">
                         <i class="fa fa-star fa-3x"></i>
@@ -259,7 +259,7 @@
         <br>
         <div class="row">
 
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('sponsors_edit') }}">
                         <i class="fa fa-money fa-3x"></i>
@@ -269,7 +269,7 @@
                 </div>
             </div>
 
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('receipts_show') }}">
                         <i class="fa fa-usd fa-3x"></i>
@@ -279,7 +279,7 @@
                 </div>
             </div>
 
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('certificate_show') }}">
                         <i class="fa fa-sticky-note-o fa-3x"></i>
@@ -289,7 +289,7 @@
                 </div>
             </div>
             {% if is_granted_team_leader() %}
-                <div class="small-4 medium-3 large-2 columns">
+                <div class="col-4 col-md-3 col-lg-2 columns">
                     <div class="control-panel-item">
                         <a href="{{ path('school_allocation') }}">
                             <i class="fa fa-calendar fa-3x"></i>
@@ -300,7 +300,7 @@
                 </div>
             {% endif %}
 
-            <div class="small-4 medium-3 large-2 columns">
+            <div class="col-4 col-md-3 col-lg-2 columns">
                 <div class="control-panel-item">
                     <a href="{{ path('image_gallery_create') }}">
                         <i class="fa fa-image fa-3x"></i>

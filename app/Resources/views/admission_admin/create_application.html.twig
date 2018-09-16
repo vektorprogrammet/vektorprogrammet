@@ -8,7 +8,7 @@
 
 {% block body %}
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="col-12 col-md-12 col-lg-12 columns">
             {% for flashMessage in app.session.flashbag.get('contact-notice') %}
                 <div class="contact-notice">
                     <div data-alert class="alert-box success radius">
@@ -29,7 +29,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="col-12 col-md-12 col-lg-12 columns">
 
             <h1 class="text-center"> Registrer søker {{ department.shortname }} {{ semester.name }} </h1>
 
@@ -39,7 +39,7 @@
             {{ form_errors(form) }}
 
             <div class="row">
-                <div class="small-12 medium-6 large-4 large-offset-2 columns">
+                <div class="col-12 col-md-6 col-lg-4 offset-lg-2 columns">
 
                     <div>
                         {{ form_label(form.user.firstName) }}
@@ -55,7 +55,7 @@
 
                 </div>
 
-                <div class="small-12 medium-6 large-4  end columns">
+                <div class="col-12 col-md-6 col-lg-4  end columns">
 
                     <div>
                         {{ form_label(form.user.lastName) }}
@@ -73,7 +73,7 @@
             </div>
 
             <div class="row">
-                <div class="small-6 medium-4 large-1 columns large-offset-2">
+                <div class="col-6 col-md-4 col-lg-1 columns offset-lg-2">
 
                     <div>
                         {{ form_label(form.user.fieldOfStudy) }}
@@ -83,7 +83,7 @@
 
                 </div>
 
-                <div class="small-6 medium-4 large-1  columns">
+                <div class="col-6 col-md-4 col-lg-1  columns">
 
                     <div>
                         {{ form_label(form.yearOfStudy) }}
@@ -93,7 +93,7 @@
 
                 </div>
 
-                <div class="small-6 medium-4 large-2  columns">
+                <div class="col-6 col-md-4 col-lg-2  columns">
 
                     <div>
                         {{ form_label(form.user.gender) }}
@@ -106,7 +106,7 @@
             </div>
 
             <div class="row">
-                <div class="small-12 medium-6 large-4 text-center large-offset-4 columns">
+                <div class="col-12 col-md-6 col-lg-4 text-center offset-lg-4 columns">
                     <button class="vektor-button-inverted" tabindex="9">Registrer</button>
                 </div>
             </div>

@@ -1,6 +1,4 @@
-@import "../../../../node_modules/foundation-sites/scss/normalize";
-@import "settings";
-@import "../../../../node_modules/foundation-sites/scss/foundation";
+@import "bootstrap";
 @import "../../../../node_modules/font-awesome/scss/font-awesome";
 @import "partials/fonts";
 @import "partials/typography";
@@ -17,10 +15,6 @@ body {
   background: $vektor-white;
 }
 
-.inline-list {
-  margin: $inline-list-top-margin $inline-list-opposite-margin $inline-list-bottom-margin $inline-list-default-float-margin;
-}
-
 .f-dropdown {
   outline: none;
 }
@@ -28,38 +22,6 @@ body {
 .reveal-modal ul {
   margin-left: 0;
 }
-
-// The default vektor button with the blue border
-.vektor-button {
-  @include button-base();
-
-  background: $vektor-white;
-  color: black;
-  border: solid $vektor-blue 3px;
-  padding: rem-calc(7 20 7 20);
-
-  // Medium screens
-  @media only screen and (min-width: 40.063em) {
-    font-size: rem-calc(16);
-  }
-
-  // Large screens
-  @media only screen and (min-width: 64.063em) {
-    font-size: rem-calc(20);
-  }
-}
-
-//The inverted vektor button
-.vektor-button-inverted {
-  @include button-base();
-
-  padding: rem-calc(7 20 7 20);
-  background: $vektor-blue;
-  color: white;
-  border: solid $vektor-white 3px;
-  font-size: rem-calc(20);
-}
-
 // A container with the same border as the vektor button
 .vektor-box {
   padding: rem-calc(16);
@@ -115,8 +77,6 @@ body {
 }
 
 header {
-  @include grid-row;
-
   nav {
     float: right;
     margin-top: 88px;
@@ -636,7 +596,7 @@ ul.alternatives {
   .no-answer {
     text-align: center;
     margin-bottom: 100px;
-    color: $warning-button-bg-color;
+    color: #ff9b28;
   }
 }
 

@@ -26,15 +26,15 @@
     <div class="row collapse">
         {% set prepend = '{{' == money_pattern[0:2] %}
         {% if not prepend %}
-            <div class="small-3 large-2 columns">
+            <div class="col-3 col-lg-2 columns">
                 <span class="prefix">{{ money_pattern|replace({ '{{ widget }}':''}) }}</span>
             </div>
         {% endif %}
-        <div class="small-9 large-10 columns">
+        <div class="col-9 col-lg-10 columns">
             {{- block('form_widget_simple') -}}
         </div>
         {% if prepend %}
-            <div class="small-3 large-2 columns">
+            <div class="col-3 col-lg-2 columns">
                 <span class="postfix">{{ money_pattern|replace({ '{{ widget }}':''}) }}</span>
             </div>
         {% endif %}
@@ -43,10 +43,10 @@
 
 {% block percent_widget -%}
     <div class="row collapse">
-        <div class="small-9 large-10 columns">
+        <div class="col-9 col-lg-10 columns">
             {{- block('form_widget_simple') -}}
         </div>
-        <div class="small-3 large-2 columns">
+        <div class="col-3 col-lg-2 columns">
             <span class="postfix">%</span>
         </div>
     </div>
@@ -58,12 +58,12 @@
     {% else %}
         {% set attr = attr|merge({class: (attr.class|default('') ~ ' row')|trim}) %}
         <div class="row">
-            <div class="large-7 columns">{{ form_errors(form.date) }}</div>
-            <div class="large-5 columns">{{ form_errors(form.time) }}</div>
+            <div class="col-lg-7 columns">{{ form_errors(form.date) }}</div>
+            <div class="col-lg-5 columns">{{ form_errors(form.time) }}</div>
         </div>
         <div {{ block('widget_container_attributes') }}>
-            <div class="large-7 columns">{{ form_widget(form.date, { datetime: true } ) }}</div>
-            <div class="large-5 columns">{{ form_widget(form.time, { datetime: true } ) }}</div>
+            <div class="col-lg-7 columns">{{ form_widget(form.date, { datetime: true } ) }}</div>
+            <div class="col-lg-5 columns">{{ form_widget(form.time, { datetime: true } ) }}</div>
         </div>
     {% endif %}
 {%- endblock datetime_widget %}
@@ -77,9 +77,9 @@
             <div {{ block('widget_container_attributes') }}>
         {% endif %}
         {{- date_pattern|replace({
-            '{{ year }}': '<div class="large-4 columns">' ~ form_widget(form.year) ~ '</div>',
-            '{{ month }}': '<div class="large-4 columns">' ~ form_widget(form.month) ~ '</div>',
-            '{{ day }}': '<div class="large-4 columns">' ~ form_widget(form.day) ~ '</div>',
+            '{{ year }}': '<div class="col-lg-4 columns">' ~ form_widget(form.year) ~ '</div>',
+            '{{ month }}': '<div class="col-lg-4 columns">' ~ form_widget(form.month) ~ '</div>',
+            '{{ day }}': '<div class="col-lg-4 columns">' ~ form_widget(form.day) ~ '</div>',
         })|safe_html -}}
         {% if datetime is not defined or not datetime %}
             </div>
@@ -96,35 +96,35 @@
             <div {{ block('widget_container_attributes') -}}>
         {% endif %}
         {% if with_seconds %}
-            <div class="large-4 columns">{{ form_widget(form.hour) }}</div>
-            <div class="large-4 columns">
+            <div class="col-lg-4 columns">{{ form_widget(form.hour) }}</div>
+            <div class="col-lg-4 columns">
                 <div class="row collapse">
-                    <div class="small-3 large-2 columns">
+                    <div class="col-3 col-lg-2 columns">
                         <span class="prefix">:</span>
                     </div>
-                    <div class="small-9 large-10 columns">
+                    <div class="col-9 col-lg-10 columns">
                         {{ form_widget(form.minute) }}
                     </div>
                 </div>
             </div>
-            <div class="large-4 columns">
+            <div class="col-lg-4 columns">
                 <div class="row collapse">
-                    <div class="small-3 large-2 columns">
+                    <div class="col-3 col-lg-2 columns">
                         <span class="prefix">:</span>
                     </div>
-                    <div class="small-9 large-10 columns">
+                    <div class="col-9 col-lg-10 columns">
                         {{ form_widget(form.second) }}
                     </div>
                 </div>
             </div>
         {% else %}
-            <div class="large-6 columns">{{ form_widget(form.hour) }}</div>
-            <div class="large-6 columns">
+            <div class="col-lg-6 columns">{{ form_widget(form.hour) }}</div>
+            <div class="col-lg-6 columns">
                 <div class="row collapse">
-                    <div class="small-3 large-2 columns">
+                    <div class="col-3 col-lg-2 columns">
                         <span class="prefix">:</span>
                     </div>
-                    <div class="small-9 large-10 columns">
+                    <div class="col-9 col-lg-10 columns">
                         {{ form_widget(form.minute) }}
                     </div>
                 </div>
@@ -261,7 +261,7 @@
 
 {% block form_row -%}
     <div class="row">
-        <div class="large-12 columns{% if (not compound or force_error|default(false)) and not valid %} error{% endif %}">
+        <div class="col-lg-12 columns{% if (not compound or force_error|default(false)) and not valid %} error{% endif %}">
             {{ form_label(form) }}
             {{ form_widget(form) }}
             {{ form_errors(form) }}
@@ -291,7 +291,7 @@
 
 {% block checkbox_row -%}
     <div class="row">
-        <div class="large-12 columns{% if not valid %} error{% endif %}">
+        <div class="col-lg-12 columns{% if not valid %} error{% endif %}">
             {{ form_widget(form) }}
             {{ form_errors(form) }}
         </div>
@@ -300,7 +300,7 @@
 
 {% block radio_row -%}
     <div class="row">
-        <div class="large-12 columns{% if not valid %} error{% endif %}">
+        <div class="col-lg-12 columns{% if not valid %} error{% endif %}">
             {{ form_widget(form) }}
             {{ form_errors(form) }}
         </div>

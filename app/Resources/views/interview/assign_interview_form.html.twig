@@ -2,27 +2,27 @@
     <h3 id="modalTitle">Fordel intervju</h3>
     {{ form_start(form) }}
     {{ form_errors(form) }}
-    <div class="small-12 columns">
+    <div class="col-12 columns">
         <div class="row">
-            <div class="small-3 columns">
+            <div class="col-3 columns">
                 {{ form_label(form.interview.interviewer, 'Intervjuer', {'label_attr': {'class': 'inline'}}) }}
             </div>
-            <div class="small-9 columns">
+            <div class="col-9 columns">
                 {{ form_errors(form.interview.interviewer) }}
                 {{ form_widget(form.interview.interviewer) }}
             </div>
         </div>
         <div class="row">
-            <div class="small-3 columns">
+            <div class="col-3 columns">
                 {{ form_label(form.interview.interviewSchema, 'Skjema', {'label_attr': {'class': 'inline'}}) }}
             </div>
-            <div class="small-9 columns">
+            <div class="col-9 columns">
                 {{ form_errors(form.interview.interviewSchema) }}
                 {{ form_widget(form.interview.interviewSchema) }}
             </div>
         </div>
         <div class="row">
-            <div class="small-2 small-centered columns">
+            <div class="col-2 col-centered columns">
                 {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
             </div>
         </div>

@@ -12,10 +12,10 @@
 {% block body %}
 
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="col-12 col-md-12 col-lg-12 columns">
             <div class="panel">
                 <div class="row">
-                    <div class="small-12 medium-12 large-12 columns">
+                    <div class="col-12 col-md-12 col-lg-12 columns">
                         <h3>Sett opp intervju</h3>
                         <div class="float-right">
                             Status: <span style="color: {{ interview.getInterviewStatusAsColor }}">{{ interview.interviewStatusAsString }}</span>
@@ -52,7 +52,7 @@
                 <h5>Tid og sted</h5>
                 {% if interview.interviewStatusAsString == 'Ny tid ønskes' %}
                     <div class="row">
-                        <div class="small-12 medium-6 columns">
+                        <div class="col-12 col-md-6 columns">
                             <div class="panel text-center">
                                 <p><i class="fa fa-2x fa-warning text-warning"></i></p>
                                 <p class="text-bold">{{ u.firstName }} har bedt om nytt tidspunkt for intervju.</p>
@@ -62,7 +62,7 @@
                     </div>
                 {% elseif interview.interviewStatusAsString == 'Kansellert' %}
                     <div class="row">
-                        <div class="small-12 medium-6 columns">
+                        <div class="col-12 col-md-6 columns">
                             <div class="panel text-center">
                                 <p><i class="fa fa-2x fa-warning text-alert"></i></p>
                                 <p class="text-bold">{{ u.firstName }} har kansellert intervjuet.</p>
@@ -74,13 +74,13 @@
 
                 {{ form_start(form) }}
                 <div class="row">
-                    <div class="small-12 medium-4 columns">
+                    <div class="col-12 col-md-4 columns">
                         {{ form_row(form.datetime) }}
                     </div>
-                    <div class="small-12 medium-4 columns">
+                    <div class="col-12 col-md-4 columns">
                         {{ form_row(form.room) }}
                     </div>
-                    <div class="small-12 medium-4 columns">
+                    <div class="col-12 col-md-4 columns">
                         {{ form_row(form.campus) }}
                     </div>
 
@@ -88,13 +88,13 @@
 
                 </div>
                 <div class="row">
-                    <div class="small-12 medium-4 columns end">
+                    <div class="col-12 col-md-4 columns end">
                         <div class="panel callout radius">
                             <h3 class="text-center"><i class="fa fa-info-circle"></i></h3>
                             <p>Tidspunkt og rom blir automatisk lagt til på slutten av e-posten.</p>
                         </div>
                     </div>
-                    <div class="small-12 medium-8 columns">
+                    <div class="col-12 col-md-8 columns">
                         <label>Link til kart (<a href="https://use.mazemap.com/" target="_blank" rel="noopener">MazeMap</a>)</label>
                         {{ form_row(form.mapLink) }}
                     </div>
@@ -103,20 +103,20 @@
                 <h5>Melding</h5>
                 <div class="row">
                     {{ form_errors(form) }}
-                    <div class="small-12 medium-4 columns">
+                    <div class="col-12 col-md-4 columns">
                         {{ form_row(form.from) }}
                     </div>
-                    <div class="small-12 medium-4 columns end">
+                    <div class="col-12 col-md-4 columns end">
                         {{ form_row(form.to) }}
                     </div>
                 </div>
                 <div class="row">
-                    <div class="small-12 columns">
+                    <div class="col-12 columns">
                         {{ form_row(form.message) }}
                     </div>
                 </div>
                 <div class="row">
-                    <div class="small-12 columns">
+                    <div class="col-12 columns">
 
                         {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
                         {{ form_widget(form.preview, {'attr': {'class': 'button tiny secondary', 'formtarget': '_blank'}}) }}

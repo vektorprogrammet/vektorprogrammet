@@ -2,12 +2,12 @@
 
 {% block body %}
     <div class="row">
-        <div class="small-12 columns">
+        <div class="col-12 columns">
             <h2>{{ letter.title }}</h2>
         </div>
     </div>
     <div class="row">
-        <div class="small-12 columns">
+        <div class="col-12 columns">
             {{ letter.content|replace({'\n':'<br>'})|safe_html }}
         </div>
     </div>

@@ -7,10 +7,10 @@
 {% block body %}
     <p></p>
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="col-12 col-md-12 col-lg-12 columns">
             <div class="panel">
                 <div class="row">
-                    <div class="small-12 medium-12 large-12 columns">
+                    <div class="col-12 col-md-12 col-lg-12 columns">
                         <a href="{{ path('interview_conduct', { 'id': application.id }) }}"
                            class="button radius tiny info float-right clear">Endre</a>
                         <h1>Intervju</h1>
@@ -49,7 +49,7 @@
                 <h3>Praktisk informasjon</h3>
 
                 <div class="row">
-                    <div class="small-12 large-9 columns">
+                    <div class="col-12 col-lg-9 columns">
                         {% if interview.application.specialNeeds %}
                             <label class="question-label">
                                 <i class="fa fa-exclamation-triangle text-warning"></i>
@@ -61,7 +61,7 @@
 
 
                 <div class="row">
-                    <div class="small-12 columns">
+                    <div class="col-12 columns">
                         <label class="question-label">Er det noen dager som IKKE passer for deg?</label>
                         <table>
                             <thead>
@@ -87,7 +87,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
+                    <div class="col-12 col-md-12 col-lg-9 columns">
                         <label class="question-label">
                             Kunne du tenke deg enkel eller dobbel stilling?
                         </label>
@@ -97,7 +97,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
+                    <div class="col-12 col-md-12 col-lg-9 columns">
                         <label class="question-label">
                             Er det noen tidspunkt i løpet av semesteret du ikke kan delta på?
                         </label>
@@ -114,7 +114,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
+                    <div class="col-12 col-md-12 col-lg-9 columns">
                         <label class="question-label">Vil du undervise på norsk skole eller internasjonal skole?</label>
                         <p>
                             {{ application.language }}
@@ -123,7 +123,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
+                    <div class="col-12 col-md-12 col-lg-9 columns">
                         <label class="question-label">Hvor hørte du om Vektorprogrammet?</label>
                         <p>
                             {% for from in application.heardAboutFrom %}
@@ -143,7 +143,7 @@
                 {% endfor %}
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
+                    <div class="col-12 col-md-12 col-lg-9 columns">
                         <label class="question-label">Kan du tenke deg å være med i organiseringen av Vektorprogrammet?
                             Dette inneholder teamarbeid</label>
                         <p>
@@ -156,7 +156,7 @@
                 <h3>Evaluering</h3>
 
                 <div class="row">
-                    <div class="small-12 columns">
+                    <div class="col-12 columns">
                         <table>
                             <thead>
                             <tr>
@@ -180,7 +180,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
+                    <div class="col-12 col-md-12 col-lg-9 columns">
                         <label class="question-label">Passer studenten som assistent?</label>
                         <p>{{ interview.interviewScore.suitableAssistant }}</p>
                     </div>

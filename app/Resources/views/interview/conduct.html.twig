@@ -11,10 +11,10 @@
 {% block body %}
     <p></p>
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="col-12 col-md-12 col-lg-12 columns">
             <div class="panel">
                 <div class="row">
-                    <div class="small-12 medium-12 large-12 columns">
+                    <div class="col-12 col-md-12 col-lg-12 columns">
                         {% if not application.interview.cancelled and not application.interview.interviewed %}
                             <form action="{{ path('interview_cancel', {'id' : application.interview.id}) }}" method="POST">
                                 <button class="button alert tiny radius float-right" type="submit">Kansellér intervju</button>
@@ -63,7 +63,7 @@
 
                 <h3>Praktisk informasjon</h3>
                 <div class="row">
-                    <div class="small-12 columns">
+                    <div class="col-12 columns">
                         <h4>Introduksjon</h4>
                         <ul>
                             <li>En ungdomsskoledag er innenfor tidsrommet kl. 08.00 og 14.45. I tillegg kommer reisetid</li>
@@ -74,26 +74,26 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="small-12 columns">
+                    <div class="col-12 columns">
                         <label class="question-label">{{ form.applicationPractical.days.vars.label }}</label>
                         {{ form_row(form.applicationPractical.days) }}
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-4 columns">
+                    <div class="col-12 col-md-12 col-lg-4 columns">
                         {{ form_row(form.applicationPractical.yearOfStudy) }}
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
+                    <div class="col-12 col-md-12 col-lg-9 columns">
                         {{ form_row(form.applicationPractical.doublePosition) }}
                     </div>
                 </div>
 
                 <div class="row doublePositionRow">
-                    <div class="small-12 medium-12 large-9 columns">
+                    <div class="col-12 col-md-12 col-lg-9 columns">
                         {{form_label(form.applicationPractical.preferredGroup, null, {'label_attr': {'class': 'question-label'}})}}
                         <span class="question-help">Dette kan være f.eks reise, studietur, lab, annet obligatorisk opplegg eller liknende.</span>
                         {{form_errors(form.applicationPractical.preferredGroup)}}
@@ -103,7 +103,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
+                    <div class="col-12 col-md-12 col-lg-9 columns">
                         {{ form_label(form.applicationPractical.teamInterest, null, {'label_attr': {'class': 'question-label'}}) }}
                         <span class="question-help">Du kan gjerne spørre om de har mye å gjøre gjennom semesteret, og lede det inn i om de er interessert i team</span>
                         {{ form_errors(form.applicationPractical.teamInterest) }}
@@ -112,13 +112,13 @@
                 </div>
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
+                    <div class="col-12 col-md-12 col-lg-9 columns">
                         {{ form_row(form.applicationPractical.potentialTeams) }}
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-4 columns">
+                    <div class="col-12 col-md-12 col-lg-4 columns">
                         <label class="question-label" for="specialNeedsToggle">Spesielle behov</label>
                         <input type="checkbox" id="specialNeedsToggle">
                         <label for="specialNeedsToggle">Assistenten har spesielle behov</label>
@@ -126,19 +126,19 @@
                 </div>
 
                 <div class="row" id="specialNeeds">
-                    <div class="small-12 medium-12 large-9 columns">
+                    <div class="col-12 col-md-12 col-lg-9 columns">
                         {{ form_row(form.specialNeeds) }}
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
+                    <div class="col-12 col-md-12 col-lg-9 columns">
                         {{ form_row(form.applicationPractical.language) }}
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
+                    <div class="col-12 col-md-12 col-lg-9 columns">
                         {{ form_row(form.heardAboutFrom) }}
                     </div>
                 </div>
@@ -148,7 +148,7 @@
                 </h3>
                 {% for interviewAnswer in form.interview.interviewAnswers %}
                     <div class="row">
-                        <div class="small-12 medium-12 large-9 columns">
+                        <div class="col-12 col-md-12 col-lg-9 columns">
                             {{ form_row(interviewAnswer.answer) }}
                         </div>
                     </div>
@@ -156,36 +156,36 @@
 
                 <h3>Evaluering</h3>
                 <div class="row">
-                    <div class="small-12 medium-12 large-4 columns">
+                    <div class="col-12 col-md-12 col-lg-4 columns">
                         {{ form_row(form.interview.interviewScore.explanatoryPower) }}
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-4 columns">
+                    <div class="col-12 col-md-12 col-lg-4 columns">
                         {{ form_row(form.interview.interviewScore.roleModel) }}
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-4 columns">
+                    <div class="col-12 col-md-12 col-lg-4 columns">
                         {{ form_row(form.interview.interviewScore.suitability) }}
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-4 columns end">
+                    <div class="col-12 col-md-12 col-lg-4 columns end">
                         {{ form_row(form.interview.interviewScore.suitableAssistant) }}
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="small-12 medium-12 large-12 columns">
+                    <div class="col-12 col-md-12 col-lg-12 columns">
                         {% if not application.interview.interviewed %}
                             {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
                             {{ form_widget(form.saveAndSend, {'attr': {'class': 'button tiny success'}}) }}
                             <div class="row">
-                                <div class="medium-6 columns">
+                                <div class="col-md-6 columns">
                                     <br>
                                     <span class="text-alert">Obs!</span> Ved å trykke på 'Lagre og send kvittering' vil et sammendrag med praktisk informasjon (ikke
                                     intervjuspørsmål eller evaluering)
@@ -197,7 +197,7 @@
                             {{ form_widget(form.save, {'attr': {'class': 'button tiny hide'}}) }}
                             {{ form_widget(form.saveAndSend, {'attr': {'class': 'button tiny success hide'}}) }}
                             <div class="row">
-                                <div class="medium-6 columns">
+                                <div class="col-md-6 columns">
                                     <br>
                                     <span class="text-alert">Obs!</span> Kvittering vil <b>ikke</b> bli sendt.
                                 </div>

@@ -2,13 +2,13 @@
 
 {% block body %}
     <div class="row">
-        <div class="small-12 columns">
+        <div class="col-12 columns">
             <h2>Abonnenter til {{ newsletter.name }}</h2>
         </div>
     </div>
     {% if  is_granted_team_leader() %}
         <div class="row">
-            <div class="small-12 columns">
+            <div class="col-12 columns">
                 <table>
                     <td>
                         <a href="{{ path('newsletter_edit', { 'id': newsletter.id }) }}" class="button tiny">
@@ -33,7 +33,7 @@
     {% endif %}
 
     <div class="row">
-        <div class="small-12 columns">
+        <div class="col-12 columns">
             <table>
                 <tr>
                     <th>Navn</th>

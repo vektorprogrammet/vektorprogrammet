@@ -4,13 +4,13 @@
 
 {% block body %}
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="col-12 col-md-12 col-lg-12 columns">
             <h1>Utlegg</h1>
         </div>
     </div>
 
     <div class="row panel callout radius">
-        <div class="small-6 columns text-center">
+        <div class="col-6 columns text-center">
             <h3 class="text-faded">Gj.snittlig behandlingstid</h3>
             {% set days = avg_refund_time_in_hours // 24 %}
             {% set hours = avg_refund_time_in_hours - days*24 %}
@@ -19,13 +19,13 @@
                 {{ hours }} {{ hours == 1 ? 'time' : 'timer' }}
             </p>
         </div>
-        <div class="small-6 columns text-center">
+        <div class="col-6 columns text-center">
             <h3 class="text-faded">Utbetalt i {{ "now"|date("Y") }}</h3>
             <p class="payout">{{ total_payout|number_format(2, ',', ' ') }} kr</p>
         </div>
     </div>
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="col-12 col-md-12 col-lg-12 columns">
 
             <br>
 

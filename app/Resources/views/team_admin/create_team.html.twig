@@ -10,7 +10,7 @@
     <p></p>
 
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="col-12 col-md-12 col-lg-12 columns">
             {% if isUpdate is not defined %}
                 {% set isUpdate = false %}
             {% endif %}
@@ -21,7 +21,7 @@
             <hr>
 
             <div class="row">
-                <div class="small-12 medium-12 large-12 columns">
+                <div class="col-12 col-md-12 col-lg-12 columns">
 
                     {{ form_start(form) }}
                     {{ form_errors(form) }}
@@ -34,7 +34,7 @@
                     {{ form_row(form.active) }}
                     {{ form_row(form.description) }}
                     <br>
-                    <div class="small-8  columns">
+                    <div class="col-8  columns">
                         {{ form_widget(form.preview, {'attr': {'class': 'button tiny', 'formtarget': '_blank'}}) }}
                         <button class="button tiny success">Lagre</button>
                     </div>
