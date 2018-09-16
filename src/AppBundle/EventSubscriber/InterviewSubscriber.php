@@ -87,7 +87,8 @@ class InterviewSubscriber implements EventSubscriberInterface
             ->setBody($this->twig->render('interview/interview_summary_email.html.twig', array(
                 'application' => $application,
                 'interviewer' => $interviewer,
-            )));
+            )))
+            ->setContentType('text/html');
         $this->mailer->send($emailMessage);
     }
 
