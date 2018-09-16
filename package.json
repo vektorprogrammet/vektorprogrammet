@@ -41,7 +41,7 @@
     "watch": "gulp",
     "watch:scheduling": "gulp watch:scheduling",
     "db:reload": "npm run db:update",
-    "db:update": "php app/console doctrine:schema:update --force --env=dev && php app/console doctrine:fixtures:load -n --env=dev",
+    "db:update": "php app/console doctrine:schema:update --force --env=dev && php app/console doctrine:fixtures:load -n --env=dev && php app/console doctrine:migrations:version -n --delete --all --env=dev && php app/console doctrine:migrations:version -n --add --all --env=dev",
     "build": "gulp build:dev",
     "compress-images": "gulp compressImages",
     "build:scheduling": "gulp assistantSchedulingStaticFiles",
