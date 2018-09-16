@@ -1,22 +1,16 @@
 {% set dropdownId = dropdownId is defined ? dropdownId : 'departmentDropdown' %}
-<li>
-    <a class="button tiny" data-dropdown="{{ dropdownId }}" aria-controls="{{ dropdownId }}"
-       aria-expanded="false"><i class="fa fa-institution button-icon-left"></i>{{ currentDepartment is defined ? currentDepartment : 'Avdeling' }} <i
-                class="fa fa-caret-down button-icon-right"></i></a>
-    <ul id="{{ dropdownId }}" class="f-dropdown" data-dropdown-content tabindex="-1"
-        aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
+<div class="dropdown">
+    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="departmentDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-institution button-icon-left"></i>{{ currentDepartment is defined ? currentDepartment : 'Avdeling' }}
+    </button>
+    <div class="dropdown-menu" aria-labelledby="departmentDropdown">
         {% for department in get_departments() %}
 
-            <li>
-                {% if linkToSemester is defined and linkToSemester == true %}
-                    <a href="{{ path(pathForDepartment, { (departmentParameterName): department.currentOrLatestSemester.id }) }}">{{ department.shortName }} - {{ department.city }}</a>
-                {% else %}
-                    <a href="{{ path(pathForDepartment, { (departmentParameterName): department.id }) }}">{{ department.shortName }} - {{ department.city }}</a>
-                {% endif %}
-            </li>
-
+            {% if linkToSemester is defined and linkToSemester == true %}
+                <a class="dropdown-item" href="{{ path(pathForDepartment, { (departmentParameterName): department.currentOrLatestSemester.id }) }}">{{ department }}</a>
+            {% else %}
+                <a class="dropdown-item" href="{{ path(pathForDepartment, { (departmentParameterName): department.id }) }}">{{ department }}</a>
+            {% endif %}
         {% endfor %}
-
-    </ul>
-</li>
+    </div>
+</div>
