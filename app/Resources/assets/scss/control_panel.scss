@@ -10,9 +10,45 @@
 @import "modules/team.scss";
 @import "modules/interview_confirmation.scss";
 
+$sidebar-width: 225px;
 body {
   font-family: 'Lato', sans-serif;
   background: $vektor-white;
+}
+
+.app-header {
+  .dropdown-item {
+    padding: 10px 20px;
+    border-bottom: 1px solid #c8ced3;
+    font-size: 14px;
+  }
+}
+
+html:not([dir=rtl]) {
+  .app-body {
+    @media (max-width: 991.98px) {
+      margin-top: 0;
+    }
+    .sidebar {
+      margin-left: -$sidebar-width;
+      width: $sidebar-width;
+      @media (min-width: 992px) {
+          margin-left: 0;
+      }
+      .sidebar-nav {
+        width: $sidebar-width;
+        ul.nav {
+          width: $sidebar-width;
+        }
+      }
+    }
+  }
+
+  .sidebar-lg-show.sidebar-fixed .main {
+    @media (min-width: 576px) and (min-width: 992px) {
+      margin-left: $sidebar-width;
+    }
+  }
 }
 
 .f-dropdown {

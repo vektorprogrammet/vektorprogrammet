@@ -27,39 +27,36 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="#6FCEEE"><!-- iOS Safari -->
 
     <link rel="icon" type="image/x-icon" href="{{ asset_with_version('favicon.ico') }}"/>
+    <link rel="stylesheet" href="https://unpkg.com/@coreui/coreui/dist/css/coreui.min.css">
     <link rel="stylesheet" href="{{ asset_with_version('css/control_panel.css') }}">
     {% block stylesheets %}{% endblock %}
 </head>
-<body>
+<body class="app header-fixed sidebar-fixed aside-menu-fixed pace-done sidebar-lg-show">
 
-<header data-equalizer>
-    <div class="col-12 col-md-3 hide-for-col-only" data-equalizer-watch>
-        {% include 'base/logo_link.html.twig' %}
-    </div>
-    <div class="col-md-4 offset-md-1 hide-for-col-only" data-equalizer-watch>
-        <h1 class="control-panel-header">Kontrollpanel</h1>
-    </div>
-    <div class="col-md-4 hide-for-col-only">
-        <div class="float-right">
-            <a href="{{ path('home') }}">Tilbake til hovedsiden</a> | <a href="{{ path('logout') }}">Logg ut</a>
+{% include 'base/admin/header.html.twig' %}
+<div class="app-body">
+    {% include 'base/admin/main_navigation.html.twig' %}
+    <main class="main">
+        <ol class="breadcrumb">
+            {% block breadcrumb %}
+                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item">
+                    <a href="#">Admin</a>
+                </li>
+                <li class="breadcrumb-item active">Dashboard</li>
+            {% endblock %}
+        </ol>
+        {% include 'common/flash.html.twig' %}
+        <div class="container-fluid">
+            {% block body %}
+                <p>
+                    Content
+                </p>
+            {% endblock %}
+            {#{% include 'base/admin/footer.html.twig' %}#}
         </div>
-    </div>
-</header>
-
-<br>
-{% include 'base/admin/main_navigation.html.twig' %}
-{% include 'base/admin/mobile_navigation.html.twig' %}
-<br/>
-{% include 'common/flash.html.twig' %}
-<div class="container-fluid">
-    {% block body %}
-        <p>
-            Content
-        </p>
-    {% endblock %}
+    </main>
 </div>
-
-{% include 'base/admin/footer.html.twig' %}
 
 <script>
   (function (i, s, o, g, r, a, m) {
@@ -78,6 +75,8 @@
   ga('send', 'pageview');
 
 </script>
+
+<script src="https://unpkg.com/@coreui/coreui/dist/js/coreui.js"></script>
 
 <script src="{{ asset_with_version('/js/vendor.js') }}"></script>
 

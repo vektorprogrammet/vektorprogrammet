@@ -1,69 +1,92 @@
-<div class="row hide-for-col-only">
-    <div class="col-md-12 hide-for-col-only" data-equalizer-watch>
-        <nav class="control-menu">
-            <ul>
-                <li><a href="{{ path('control_panel') }}">Kontrollpanel</a></li>
-                <li>
-                    <a href="#" data-dropdown="usersDropDown" data-options="is_hover:true; hover_timeout:200">Brukere
-                        <i class="fa fa-chevron-down"></i></a>
-
-                    <ul id="usersDropDown" class="f-dropdown very-small" data-dropdown-content>
-                        <li><a href="{{ path('useradmin_show') }}">Brukere</a></li>
-                        <li><a href="{{ path('participanthistory_show') }}">Deltakerhistorikk</a></li>
-                        <li><a href="{{ path('teamadmin_show') }}">Team</a></li>
-                        {% if is_granted_team_leader() %}
-                        <li><a href="{{ path('executive_board_show') }}">Hovedstyret</a></li>
-                        {% endif %}
-                        <li><a href="{{ path('generate_mail_lists') }}">Epostlister</a></li>
-                    </ul>
+<div class="sidebar">
+        <nav class="sidebar-nav">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('control_panel') }}">
+                        <i class="fa fa-tachometer nav-icon icon-speedometer"></i> Kontrollpanel
+                        <span class="badge badge-primary">NEW</span>
+                    </a>
                 </li>
-                <li>
-                    <a href="#" data-dropdown="admissionDropDown"
-                       data-options="is_hover:true; hover_timeout:200">Opptak <i
-                                class="fa fa-chevron-down"></i> </a>
-
-                    <ul id="admissionDropDown" class="f-dropdown very-small" data-dropdown-content>
-                        <li><a href="{{ path('admissionadmin_show') }}">Opptak</a></li>
-                        <li><a href="{{ path('semester_show') }}">Opptaksperiode</a></li>
-                        <li>
-                            <a href="{{ path('statistics_application_show') }}">Opptaksstatistikk</a>
+                <li class="nav-title">Opptak</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('semester_show') }}">
+                        <i class="fa fa-clock-o nav-icon icon-speedometer"></i> Opptaksperiode
+                    </a>
+                </li>
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link nav-dropdown-toggle" href="#">
+                        <i class="fa fa-users nav-icon icon-star"></i> Søkere</a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('applications_show_new') }}">
+                                <i class="fa fa-users nav-icon icon-star"></i> Nye søkere</a>
                         </li>
-                        <li><a href="{{ path('substitute_show') }}">Vikarer</a></li>
-                        {% if is_granted_team_leader() %}
-                            <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
-                        {% endif %}
-                        <li><a href="{{ path('stand') }}">Stand</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('applications_show_existing') }}">
+                                <i class="fa fa-users nav-icon icon-star"></i> Tidligere assistenter</a>
+                        </li>
+                    </ul>
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link nav-dropdown-toggle" href="#">
+                        <i class="fa fa-comments nav-icon icon-star"></i> Intervju</a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('applications_show_assigned') }}">
+                                <i class="fa fa-comments nav-icon icon-star"></i> Intervjufordeling</a>
+                            <a class="nav-link" href="{{ path('applications_show_interviewed') }}">
+                                <i class="fa fa-comments nav-icon icon-star"></i> Intervjuer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('interview_schema') }}">
+                                <i class="fa fa-comments nav-icon icon-star"></i> Intervjuskjema</a>
+                        </li>
                     </ul>
                 </li>
-                <li>
-                    <a href="#" data-dropdown="articleDropDown" data-options="is_hover:true; hover_timeout:200">Artikkel
-                        <i class="fa fa-chevron-down"></i></a>
-
-                    <ul id="articleDropDown" class="f-dropdown mini" data-dropdown-content>
-                        <li><a href="{{ path('articleadmin_show') }}">Artikler</a></li>
-                        <li><a href="{{ path('articleadmin_create') }}">Ny artikkel</a></li>
-                    </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('stand') }}">
+                        <i class="fa fa-bullhorn nav-icon icon-speedometer"></i> Stand
+                    </a>
                 </li>
-                <li>
-                    <a href="#" data-dropdown="miscDropDown" data-options="is_hover:true; hover_timeout:200">Diverse
-                        <i class="fa fa-chevron-down"></i></a>
-
-                    <ul id="miscDropDown" class="f-dropdown very-small" data-dropdown-content>
-                        <li><a href="{{ path('departmentadmin_show') }}">Avdeling</a></li>
-                        <li><a href="{{ path('schooladmin_show') }}">Skole</a></li>
-                        <li><a href="{{ path('newsletter_show_all') }}">Nyhetsbrev</a></li>
-                        <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
-                        <li><a href="{{ path('sponsors_edit') }}">Sponsorer</a></li>
-                        <li><a href="{{ path('receipts_show') }}">Utlegg</a></li>
-                        <li><a href="{{ path('certificate_show') }}">Attest</a></li>
-                        {% if is_granted_team_leader() %}
-                            <li><a href="{{ path('admissionadmin_team_interest') }}">Teaminteresse</a></li>
-                            <li><a href="{{ path('show_field_of_studies') }}">Linjer</a></li>
-                        {% endif %}
-                        <li><a href="{{ path('image_gallery_create') }}">Bildegallerier</a></li>
-                    </ul>
+                <li class="nav-title">Assistenter</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('participanthistory_show') }}">
+                        <i class="fa fa-history nav-icon icon-drop"></i> Deltakerhistorikk</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('substitute_show') }}">
+                        <i class="fa fa-user-secret nav-icon icon-drop"></i> Vikarer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('school_allocation') }}">
+                        <i class="fa fa-calendar nav-icon icon-drop"></i> Timeplan</a>
+                </li>
+                <li class="nav-title">Brukere</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('useradmin_show') }}">
+                        <i class="fa fa-user nav-icon icon-drop"></i> Brukere</a>
+                </li>
+                <li class="nav-title">Team</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('teamadmin_show') }}">
+                        <i class="fa fa-smile-o nav-icon icon-pencil"></i> Team</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('executive_board_show') }}">
+                        <i class="fa fa-diamond nav-icon icon-pencil"></i> Hovedstyret</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('admissionadmin_team_interest') }}">
+                        <i class="fa fa-star nav-icon icon-pencil"></i> Teaminteresse</a>
+                </li>
+                <li class="nav-title">Økonomi</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('sponsors_add') }}">
+                        <i class="fa fa-money nav-icon icon-pencil"></i> Sponsorer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('receipts_show') }}">
+                        <i class="fa fa-usd nav-icon icon-pencil"></i> Utlegg</a>
                 </li>
             </ul>
         </nav>
     </div>
-</div>
