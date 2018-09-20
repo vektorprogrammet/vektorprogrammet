@@ -109,7 +109,7 @@ class AdmissionNotifier
         try {
             foreach ($departments as $department) {
                 $semester = $department->getCurrentSemester();
-                if (!isset($semester) || is_null($semester->getInfoMeeting())){
+                if (!isset($semester) || is_null($semester->getInfoMeeting())) {
                     continue;
                 }
 
