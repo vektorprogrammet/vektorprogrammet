@@ -33,6 +33,8 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700&subset=latin" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700&subset=latin" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset_with_version('css/app.css') }}">
+
+
     {% block stylesheets %}{% endblock %}
 
 </head>
@@ -50,7 +52,14 @@
     {% include 'base/footer.html.twig' %}
 {% endblock %}
 
-{% if googleAnalyticsId %}
+
+    {{ render(controller(
+        "AppBundle:TwigSurvey:nextSurvey"
+    )) }}
+
+
+
+    {% if googleAnalyticsId %}
     <script>
       (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;
@@ -84,6 +93,11 @@
         </script>
     {% endif %}
 {% block javascripts %}{% endblock %}
+
+
+
+
+
 
 </body>
 </html>

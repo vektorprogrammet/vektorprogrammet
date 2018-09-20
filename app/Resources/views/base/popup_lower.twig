@@ -1,0 +1,14 @@
+
+{% if survey %}
+
+<link rel="stylesheet" href="{{ asset_with_version('css/pages/popup_lower.css') }}">
+<script src="{{ asset_with_version('js/popup_lower.js') }}"></script>
+
+<div class="popup">
+    <div class="cta js-popup-toggle text-center popupAttention">
+        <p><a href="{{ path('survey_show_team',{'id':survey.id}) }}"><i class="fa fa-pencil-square-o"></i> Svar på undersøkelse </a>| <span class="popup-dismiss">Lukk</span></p>
+    </div>
+</div>
+
+{% endif %}
+

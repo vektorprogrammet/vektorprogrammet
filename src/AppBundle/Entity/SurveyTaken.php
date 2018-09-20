@@ -43,7 +43,7 @@ class SurveyTaken implements \JsonSerializable
     protected $school;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Survey", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Survey", cascade={"persist"}, inversedBy="surveysTaken")
      *
      */
     protected $survey;

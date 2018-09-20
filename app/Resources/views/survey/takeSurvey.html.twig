@@ -53,7 +53,7 @@
                         </div>
                     </div>
                 {% endif %}
-                {% for surveyAnswer in form.surveyAnswers %}
+                {% for surveyAnswer in form.surveyAnswers           %}
                     <div class="row mt-2">
                         <div class="col-12">
                             {% if surveyAnswer.vars.value.surveyQuestion.type == 'check' %}

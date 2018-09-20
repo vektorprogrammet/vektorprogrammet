@@ -8,6 +8,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="survey")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SurveyRepository")
+ *
  */
 class Survey implements \JsonSerializable
 {
@@ -49,6 +51,13 @@ class Survey implements \JsonSerializable
      */
     private $confidential;
 
+    /**
+     * @var SurveyTaken[]
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SurveyTaken", mappedBy="survey")
+     *
+     */
+    private $surveysTaken;
+
 
     /**
      * @var bool
@@ -60,7 +69,7 @@ class Survey implements \JsonSerializable
 
     /**
      * @var string
-     * @ORM\Column(type="text", nullable=false, options={"default" : "Vi har en undersøkelse klar til deg!"})
+     * @ORM\Column(type="text", nullable=true, options={"default" : "Vi har en undersøkelse klar til deg!"})
      */
      private $surveyPopUpMessage;
 
@@ -143,6 +152,7 @@ class Survey implements \JsonSerializable
         $this->showCustomFinishPage = false;
         $this->confidential = false;
         $this->teamSurvey = false;
+        $this->surveysTaken = [];
     }
 
     /**
@@ -324,6 +334,26 @@ class Survey implements \JsonSerializable
         }
         return $this->surveyPopUpMessage;
     }
+
+    /**
+     * @return SurveyTaken[]
+     */
+    public function getSurveysTaken(): array
+    {
+        return $this->surveysTaken;
+    }
+
+    /**
+     * @param SurveyTaken[] $surveysTaken
+     */
+    public function setSurveysTaken(array $surveysTaken): void
+    {
+        $this->surveysTaken = $surveysTaken;
+    }
+
+
+
+
 
 
 }
