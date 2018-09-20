@@ -109,7 +109,12 @@ class AdmissionNotifier
         try {
             foreach ($departments as $department) {
                 $semester = $department->getCurrentSemester();
-                if (!$semester || !$semester->hasActiveAdmission()) {
+                if (!isset($semester) || is_null($semester->getInfoMeeting())){
+                    continue;
+                }
+
+                $infoMeetingLessThanTwoDays = $semester->getInfoMeeting()->getDate()->diff(new \DateTime())->d <= 2;
+                if (!$infoMeetingLessThanTwoDays) {
                     continue;
                 }
 
@@ -119,16 +124,15 @@ class AdmissionNotifier
 
                 $notificationsSent = 0;
                 foreach ($subscribers as $subscriber) {
-                    if ($notificationsSent > $this->sendLimit || !$subscriber->getInfoMeeting()) {
+                    if ($notificationsSent > $this->sendLimit) {
                         break;
                     }
                     $hasApplied = array_search($subscriber->getEmail(), $applicationEmails) !== false;
                     $alreadyNotified = array_search($subscriber->getEmail(), $notificationEmails) !== false;
                     $subscribedMoreThanOneYearAgo = $subscriber->getTimestamp()->diff(new \DateTime())->y >= 1;
-                    if ($hasApplied || $alreadyNotified || $subscribedMoreThanOneYearAgo) {
+                    if ($hasApplied || $alreadyNotified || $subscribedMoreThanOneYearAgo || !$subscriber->getInfoMeeting()) {
                         continue;
                     }
-
                     $this->emailSender->sendInfoMeetingNotification($subscriber);
                     $notification = new AdmissionNotification();
                     $notification->setSemester($semester);

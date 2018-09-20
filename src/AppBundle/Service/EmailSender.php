@@ -2,7 +2,7 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Entity\InfoMeetingSubscriber;
+use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\SupportTicket;
 use AppBundle\Entity\Receipt;
 use AppBundle\Mailer\MailerInterface;
@@ -113,19 +113,17 @@ class EmailSender
 
     public function sendInfoMeetingNotification(AdmissionSubscriber $subscriber)
     {
-        if ($subscriber->getInfoMeeting()){
-            $message = \Swift_Message::newInstance()
-                ->setSubject('Kom på infomøte!')
-                ->setFrom($this->defaultEmail)
-                ->setTo($subscriber->getEmail())
-                ->setBody($this->twig->render('admission/info_meeting_email.html.twig', array(
-                    'department' => $subscriber->getDepartment(),
-                    'infoMeeting' => $subscriber->getDepartment()->getCurrentSemester()->getInfoMeeting(),
-                    'subscriber' => $subscriber,
-                )))
-                ->setContentType('text/html');
-            $this->mailer->send($message, true);
-        }
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Kom på infomøte!')
+            ->setFrom($this->defaultEmail)
+            ->setTo($subscriber->getEmail())
+            ->setBody($this->twig->render('admission/info_meeting_email.html.twig', array(
+                'department' => $subscriber->getDepartment(),
+                'infoMeeting' => $subscriber->getDepartment()->getCurrentSemester()->getInfoMeeting(),
+                'subscriber' => $subscriber,
+            )))
+            ->setContentType('text/html');
+        $this->mailer->send($message, true);
     }
 
 }
