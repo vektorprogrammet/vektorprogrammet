@@ -64,6 +64,18 @@ control_panel:
   defaults: { _controller: AppBundle:ControlPanel:show }
   methods: [GET]
 
+
+##########################################
+#               To Do List               #
+##########################################
+
+to_do_list:
+ path: /sjekkliste
+ defaults: { _controller: AppBundle:ToDoList:show }
+ methods: [GET]
+
+
+
 ##########################################
 #                Survey                  #
 ##########################################

@@ -232,6 +232,11 @@ services:
         class: AppBundle\Service\SurveyManager
         arguments: ['@doctrine.orm.default_entity_manager', '@form.factory']
 
+  app.to_do_list_service:
+      class: AppBundle\Service\ToDoListService
+      arguments: ['@doctrine.orm.default_entity_manager']
+
+
   app.group_sorter_extension:
     class: AppBundle\Twig\Extension\TeamPositionSortExtension
     public: false
@@ -257,3 +262,4 @@ services:
     arguments: ['@app.application_admission']
     tags:
         - { name: validator.constraint_validator }
+

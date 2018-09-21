@@ -1,0 +1,62 @@
+{% extends 'adminBase.html.twig' %}
+{% block javascripts %}{% endblock %}
+{% block title %} Sjekkliste {% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+            <h1 class = "header"> Sjekkliste</h1>
+            <hr>
+                <div class="checklist">
+
+                    <h4>Items:</h4>
+                    <h2>Short deadlines:</h2>
+                    {% for item in shortDeadlines %}
+                        <h5>* {{ item.getTitle() }}</h5>
+                        <p>{{ item.getDescription() }}</p>
+                        <p>Deadline (SHORT): {{ item.getToDoDeadlines()[0].getDeadDate.format('d/m-Y') }}</p>
+                    {% endfor %}
+
+                    <h2>Mandatory;</h2>
+                    {% for item in mandatoryToDoItems %}
+                        <h5>* {{ item.getTitle() }}</h5>
+                        <p>{{ item.getDescription() }}</p>
+                        <p>Denne er OBLIGATORISK dette semesteret!</p>
+                        {% if item.hasDeadlineThisSemester() %}
+                            <p>Deadline: {{ item.getToDoDeadlines()[0].getDeadDate.format('d/m-Y') }}</p>
+                        {% endif %}
+                    {% endfor %}
+
+                    <h2>Resten:</h2>
+                    {% for item in nonMandatoryToDoItems %}
+                        <h5>* {{ item.getTitle() }}</h5>
+                        <p>{{ item.getDescription() }}</p>
+                        <p>Denne er ikke obligatorisk dette semesteret.</p>
+
+                        {% if item.hasDeadlineThisSemester() %}
+                            <p>Deadline: {{ item.getToDoDeadlines()[0].getDeadDate.format('d/m-Y') }}</p>
+                        {% endif %}
+
+                    {% endfor %}
+
+                    <h2>Completed:</h2>
+                    {% for item in completedToDoListItems %}
+                        <h5>* {{ item.getTitle() }}</h5>
+                        <p>{{ item.getDescription() }}</p>
+                        <p>Denne ble gjennomført: {{ item.getToDoCompleted()[0].getCompletedAt().format('d/m-Y') }}</p>
+
+                    {% endfor %}
+
+
+                </div>
+
+                <div class="small-12 medium-12 large-12 columns">
+                    <p></p>
+                </div>
+
+            </hr>
+
+        </div>
+    </div>
+
+{% endblock %}
+
