@@ -37,9 +37,7 @@
       };
     },
     mounted() {
-      this.getServers().then(() => {
-        console.log(this.servers);
-      });
+      this.getServers();
     },
     computed: {
       ...mapGetters('staging', ['servers']),

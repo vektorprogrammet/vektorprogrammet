@@ -57,14 +57,14 @@ const mutations = {
   },
   loginFailure(e) {
     //TODO: Handle error
-    console.log('ERROR: ', e.message);
+    // console.log('ERROR: ', e.message);
   },
   logoutSuccessful(state) {
     state.user = {...defaultState.user};
   },
   logoutFailure(e) {
     //TODO: Handle error
-    console.log('ERROR: ', e);
+    // console.log('ERROR: ', e);
   },
 };
 

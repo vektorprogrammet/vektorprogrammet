@@ -16,6 +16,9 @@ var path = {
     dist: 'www/',
     src: 'app/Resources/assets/',
     frontEnd: 'client/build',
+    client: {
+        src: 'client'
+    },
     scheduling: {
         src: 'src/AppBundle/AssistantScheduling/Webapp'
     }
@@ -142,6 +145,21 @@ gulp.task('assistantSchedulingStaticFiles', ['buildAssistantSchedulingApp'], fun
         .pipe(gulp.dest('www/js/scheduling'));
     gulp.src(path.scheduling.src + '/dist/build.js.map')
         .pipe(gulp.dest('www/js/scheduling'));
+});
+
+gulp.task('buildClientApp', function (cb) {
+  exec('cd '+path.client.src+' && npm run build', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  })
+});
+
+gulp.task('clientStaticFiles', ['buildClientApp'], function () {
+  gulp.src(path.client.src + '/dist/app.js')
+    .pipe(gulp.dest('www/js/client'));
+  gulp.src(path.client.src + '/dist/app.js.map')
+    .pipe(gulp.dest('www/js/client'));
 });
 
 gulp.task('frontEnd', function () {

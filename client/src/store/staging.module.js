@@ -37,7 +37,7 @@ const mutations = {
   },
   getServersFailure(e) {
     //TODO: Handle error
-    console.log('ERROR: ', e.message);
+    // console.log('ERROR: ', e.message);
   },
 };
 
