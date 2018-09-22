@@ -9,6 +9,8 @@ var gulp = require('gulp'),
     changed = require('gulp-changed'),
     babel = require('gulp-babel');
 
+var exec = require('child_process').exec;
+
 var path = {
     dist: 'www/',
     src: 'app/Resources/assets/',
@@ -135,18 +137,16 @@ function assistantSchedulingStaticFiles () {
         .pipe(gulp.dest('www/js/scheduling'));
 }
 
-gulp.task('buildClientApp', function (cb) {
+function buildClientApp (cb) {
   exec('cd '+path.client.src+' && npm run build', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
     cb(err);
   })
-});
+}
 
 function clientStaticFiles () {
-  var r = gulp.src(path.client.src + '/dist/app.js')
-    .pipe(gulp.dest('www/js/client'));
-  return r && gulp.src(path.client.src + '/dist/app.js.map')
+  return gulp.src(path.client.src + '/dist/app.js')
     .pipe(gulp.dest('www/js/client'));
 }
 
@@ -168,3 +168,4 @@ function watch () {
 gulp.task('build:prod', gulp.parallel([stylesProd, scriptsProd, imagesProd, files, icons, vendor]));
 gulp.task('build:dev', gulp.parallel([stylesDev, scriptsDev, imagesDev, files, icons, vendor]));
 gulp.task('default', gulp.series(['build:dev', watch]));
+gulp.task('build:client', gulp.series([buildClientApp, clientStaticFiles]));

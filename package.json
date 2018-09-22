@@ -46,7 +46,7 @@
     "compress-images": "gulp compressImages",
     "build:scheduling": "cd src/AppBundle/AssistantScheduling/Webapp && npm run build:dev",
     "build:scheduling:win": "cd src\\AppBundle\\AssistantScheduling\\Webapp && npm run build:dev",
-    "build:client": "gulp clientStaticFiles",
+    "build:client": "gulp build:client",
     "build:dev": "gulp build:dev",
     "build:prod": "gulp build:prod",
     "code-style": "./bin/php-cs-fixer fix src/ --dry-run --diff -vv",
