@@ -133,13 +133,13 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getSingleResult();
     }
 
-	/**
-	 * @param $login
-	 *
-	 * @return User
-	 * @throws NoResultException
-	 * @throws \Doctrine\ORM\NonUniqueResultException
-	 */
+    /**
+     * @param $login
+     *
+     * @return User
+     * @throws NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findByUsernameOrEmail($login)
     {
         return $this->createQueryBuilder('User')

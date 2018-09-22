@@ -777,13 +777,14 @@ class User implements AdvancedUserInterface, \Serializable
         return $this;
     }
 
-	public function isAdmin(): bool {
-		foreach ($this->roles as $role) {
-			if ($role->getRole() === Roles::ADMIN) {
-				return true;
-			}
-		}
+    public function isAdmin(): bool
+    {
+        foreach ($this->roles as $role) {
+            if ($role->getRole() === Roles::ADMIN) {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 }
