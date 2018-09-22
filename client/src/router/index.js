@@ -48,9 +48,15 @@ router.beforeEach(async (to, from, next) => {
   }
   let loggedInUser = store.getters['account/user'];
   if (!loggedInUser.loaded) {
+    await store.dispatch('account/getUser');
+  }
+
+  loggedInUser = store.getters['account/user'];
+  if (!loggedInUser.loaded) {
     next({name: 'login'});
     return;
   }
+
   if (to.path.indexOf('/kontrollpanel/staging') === 0 && !loggedInUser.isAdmin) {
     next({name: '403'});
     return

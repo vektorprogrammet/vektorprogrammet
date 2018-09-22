@@ -19,6 +19,8 @@ class AccountController extends Controller {
 	 * @param Request $request
 	 *
 	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @throws \BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException
+	 * @throws \Doctrine\ORM\NonUniqueResultException
 	 */
 	public function loginAction(Request $request) {
 		$response = new JsonResponse();
@@ -60,16 +62,21 @@ class AccountController extends Controller {
 	}
 
 	/**
-	 * @Route("api/account/login")
-	 *
-	 * @param Request $request
+	 * @Route("api/account/user")
 	 *
 	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @throws \BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException
 	 */
-	public function getUserAction(Request $request) {
-		dump($_POST);
-		$username = $request->request->get('username');
-		$password = $request->request->get('password');
-		return new JsonResponse([$username, $password]);
+	public function getUserAction() {
+		if (!$this->getUser()) {
+			return new JsonResponse(null);
+		}
+
+		$mapper = $this->get('bcc_auto_mapper.mapper');
+		$mapper->createMap(User::class, UserDto::class);
+		$userDto = new UserDto();
+		$mapper->map($this->getUser(), $userDto);
+
+		return new JsonResponse($userDto);
 	}
 }

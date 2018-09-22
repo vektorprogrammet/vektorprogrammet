@@ -14,8 +14,7 @@ const actions = {
     commit('loginRequest');
 
     try {
-      const response = await accountService.login(credentials.username, credentials.password);
-      const user = await response.json();
+      const user = await accountService.login(credentials.username, credentials.password);
       commit('loginSuccessful', user);
     } catch (e) {
       commit('loginFailure', e);
@@ -51,6 +50,11 @@ const mutations = {
     state.user.loading = true;
   },
   loginSuccessful(state, user) {
+    if (!user.hasOwnProperty("username")) {
+      state.user = {...defaultState.user};
+      return;
+    }
+
     state.user = {...state.user, ...user};
     state.user.loading = false;
     state.user.loaded = true;

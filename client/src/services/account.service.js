@@ -1,15 +1,17 @@
 import http from './http.service'
 
-function login(username, password) {
-  return http.post("/account/login", {username, password})
+async function login(username, password) {
+  const response = await http.post("/account/login", {username, password})
+  return await response.json();
 }
 
 function logout() {
   return http.get("/logout")
 }
 
-function getUser() {
-  return http.get("/user")
+async function getUser() {
+  const response = await http.get("/account/user");
+  return await response.json();
 }
 
 export const accountService = {
