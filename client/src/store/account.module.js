@@ -14,7 +14,8 @@ const actions = {
     commit('loginRequest');
 
     try {
-      const user = await accountService.login(credentials.username, credentials.password);
+      const response = await accountService.login(credentials.username, credentials.password);
+      const user = await response.json();
       commit('loginSuccessful', user);
     } catch (e) {
       commit('loginFailure', e);

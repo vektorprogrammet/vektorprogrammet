@@ -11,4 +11,5 @@ class UserDto {
 	public $username;
 	public $email;
 	public $companyEmail;
+	public $isAdmin;
 }
