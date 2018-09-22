@@ -8,8 +8,6 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-
-
 class LoadToDoCompletedData extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
@@ -29,5 +27,4 @@ class LoadToDoCompletedData extends AbstractFixture implements OrderedFixtureInt
     {
         return 6;
     }
-
 }

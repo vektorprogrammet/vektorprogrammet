@@ -8,7 +8,6 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\ToDoItem;
 
-
 class LoadToDoItemData extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
@@ -65,5 +64,4 @@ class LoadToDoItemData extends AbstractFixture implements OrderedFixtureInterfac
     {
         return 5;
     }
-
 }

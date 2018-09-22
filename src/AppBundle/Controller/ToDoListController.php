@@ -12,7 +12,8 @@ class ToDoListController extends Controller
 {
     private $user;
 
-    public function showAction(){
+    public function showAction()
+    {
 
         //$this->user = $this->getUser();
         //$dep = $this->user->getDepartment();
@@ -31,7 +32,7 @@ class ToDoListController extends Controller
 
         $toDoItemsWithDeadLines = $repository->findToDoListItemsWithDeadLines($semester);
         $completedToDoListItems = $repository->findCompletedToDoListItems($semester);
-            //$toDoListService->getCompletedToDoItems($allToDoItems);
+        //$toDoListService->getCompletedToDoItems($allToDoItems);
 
         $incompletedToDoItems = $toDoListService->getIncompletedToDoItems($allToDoItems, $semester);
         $toDoShortDeadLines = $toDoListService->getToDoItemsWithShortDeadline($incompletedToDoItems);
@@ -58,8 +59,5 @@ class ToDoListController extends Controller
             'nonMandatoryToDoItems' => $toDoNonMandatoryNoDeadline,
 
         ));
-
-
     }
-
 }

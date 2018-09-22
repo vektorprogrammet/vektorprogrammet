@@ -48,7 +48,7 @@ class ToDoDeadline
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -71,7 +71,7 @@ class ToDoDeadline
     /**
      * Get deadDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDeadDate()
     {
@@ -109,5 +109,4 @@ class ToDoDeadline
     {
         return $this->semester;
     }
-
 }

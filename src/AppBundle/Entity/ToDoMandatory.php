@@ -48,7 +48,7 @@ class ToDoMandatory
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -71,7 +71,7 @@ class ToDoMandatory
     /**
      * Get isMandatory
      *
-     * @return boolean 
+     * @return boolean
      */
     public function isMandatory()
     {
@@ -109,5 +109,4 @@ class ToDoMandatory
     {
         $this->semester = $semester;
     }
-
 }

@@ -2,13 +2,10 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-
 use AppBundle\Entity\ToDoDeadline;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
-
 
 class LoadToDoDeadlineData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -28,5 +25,4 @@ class LoadToDoDeadlineData extends AbstractFixture implements OrderedFixtureInte
     {
         return 6;
     }
-
 }

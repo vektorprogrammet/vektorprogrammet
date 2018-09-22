@@ -46,7 +46,7 @@ class ToDoCompleted
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -69,7 +69,7 @@ class ToDoCompleted
     /**
      * Get completedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCompletedAt()
     {
@@ -107,6 +107,4 @@ class ToDoCompleted
     {
         return $this->toDoItem;
     }
-
-
 }

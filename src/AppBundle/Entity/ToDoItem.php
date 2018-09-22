@@ -5,7 +5,6 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-
 /**
  * ToDoItem
  *
@@ -110,7 +109,7 @@ class ToDoItem
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -133,7 +132,7 @@ class ToDoItem
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -156,7 +155,7 @@ class ToDoItem
     /**
      * Get deletedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDeletedAt(): ? \DateTime
     {
@@ -179,7 +178,7 @@ class ToDoItem
     /**
      * Get priority
      *
-     * @return integer 
+     * @return integer
      */
     public function getPriority()
     {
@@ -202,7 +201,7 @@ class ToDoItem
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -225,7 +224,7 @@ class ToDoItem
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -271,7 +270,7 @@ class ToDoItem
     public function getToDoMandatories(): array
     {
         $sortedArray = $this->toDoMandatories->toArray();
-        usort($sortedArray, function (ToDoMandatory $a, ToDoMandatory $b ){
+        usort($sortedArray, function (ToDoMandatory $a, ToDoMandatory $b) {
             return ($a->getSemester()->getSemesterStartDate() < $b->getSemester()->getSemesterStartDate());
         });
 
@@ -292,7 +291,7 @@ class ToDoItem
     public function getToDoDeadlines(): array
     {
         $sortedArray = $this->toDoDeadlines->toArray();
-        usort($sortedArray, function (ToDoDeadline $a, ToDoDeadline $b ){
+        usort($sortedArray, function (ToDoDeadline $a, ToDoDeadline $b) {
             return ($a->getSemester()->getSemesterStartDate() < $b->getSemester()->getSemesterStartDate());
         });
         return $sortedArray;
@@ -315,7 +314,7 @@ class ToDoItem
     public function getToDoCompleted(): array
     {
         $sortedArray = $this->toDoCompleted->toArray();
-        usort($sortedArray, function (ToDoCompleted $a, ToDoCompleted $b ){
+        usort($sortedArray, function (ToDoCompleted $a, ToDoCompleted $b) {
             return ($a->getSemester()->getSemesterStartDate() < $b->getSemester()->getSemesterStartDate());
         });
         return $sortedArray;
@@ -332,8 +331,9 @@ class ToDoItem
     /**
      * @return bool
      */
-    public function isMandatory(){
-        if (empty($this->getToDoMandatories())){
+    public function isMandatory()
+    {
+        if (empty($this->getToDoMandatories())) {
             return false;
         }
         $mandatories = $this->getToDoMandatories();
@@ -344,8 +344,9 @@ class ToDoItem
     /**
      * @return bool
      */
-    public function hasDeadlineThisSemester(){
-        if (empty($this->getToDoDeadlines())){
+    public function hasDeadlineThisSemester()
+    {
+        if (empty($this->getToDoDeadlines())) {
             return false;
         }
         $deadlines = $this->getToDoDeadlines();
@@ -355,14 +356,12 @@ class ToDoItem
     /**
      * @return bool
      */
-    public function isCompletedInSemester(Semester $semester){
-        if (empty($this->getToDoCompleted())){
+    public function isCompletedInSemester(Semester $semester)
+    {
+        if (empty($this->getToDoCompleted())) {
             return false;
         }
         $completes = $this->getToDoCompleted();
         return ($completes[0]->getSemester()->getId() == $semester->getId());
     }
-
-
-
 }
