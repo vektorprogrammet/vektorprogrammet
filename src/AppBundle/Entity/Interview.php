@@ -139,6 +139,12 @@ class Interview
     private $newTimeMessage;
 
     /**
+     * @var int
+     * @ORM\Column(type="integer", options={"default": 0})
+     */
+    private $numAcceptInterviewRemindersSent;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -148,6 +154,7 @@ class Interview
         $this->interviewed = false;
         $this->interviewStatus = InterviewStatusType::NO_CONTACT;
         $this->newTimeMessage = "";
+        $this->numAcceptInterviewRemindersSent = 0;
     }
 
     /**
@@ -669,5 +676,32 @@ class Interview
     public function getLastScheduleChanged()
     {
         return $this->lastScheduleChanged;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumAcceptInterviewRemindersSent(): ?int
+    {
+        return $this->numAcceptInterviewRemindersSent;
+    }
+
+    /**
+     * @param int $numAcceptInterviewRemindersSent
+     *
+     * @return Interview
+     */
+    public function setNumAcceptInterviewRemindersSent(int $numAcceptInterviewRemindersSent): Interview
+    {
+        $this->numAcceptInterviewRemindersSent = $numAcceptInterviewRemindersSent;
+        return $this;
+    }
+
+    /**
+     * Increments number of accept-interview reminders sent
+     */
+    public function incrementNumAcceptInterviewRemindersSent()
+    {
+        $this->numAcceptInterviewRemindersSent++;
     }
 }
