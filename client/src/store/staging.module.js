@@ -35,7 +35,7 @@ const mutations = {
     state.loading = false;
     state.loaded = true;
   },
-  getServersFailure(e) {
+  getServersFailure() {
     //TODO: Handle error
     // console.log('ERROR: ', e.message);
   },
