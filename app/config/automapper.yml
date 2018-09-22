@@ -1,0 +1,5 @@
+services:
+    app.mapper.user:
+        class: AppBundle\AutoMapper\UserMap
+#        tags:
+#            - bcc_auto_mapper.map

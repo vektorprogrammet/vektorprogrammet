@@ -1,35 +1,51 @@
 <template>
-    <div id="app">
-        <img alt="Vue logo" src="./assets/logo.png">
-        <HelloWorld msg="Welcome to Your Vue.js App"/>
-        <button @click="onclick">Click me!</button>
-    </div>
+  <div id="app">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
-export default {
+  export default {
     name: 'app',
-        components: {
-        HelloWorld
-    },
-
-    methods: {
-          onclick: function() {
-              this.$store.dispatch('setUser', {user: 'MyUser'})
-          }
-    }
-}
+  };
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+  #app {
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+    background: #fafdff;
+
+    h1, h2, h3, h4, h5 {
+      font-family: 'Lato', sans-serif;
+      line-height: 1.2;
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: 28px;
+    }
+
+    h3 {
+      font-size: 24px;
+    }
+
+    p {
+      line-height: 1.6;
+      font-size: 18px;
+    }
+
+    strong {
+      font-weight: 600;
+    }
+
+    strong strong {
+      font-weight: 700;
+    }
+
+    .text-dark-blue {
+      color: #023874;
+    }
+  }
 </style>
