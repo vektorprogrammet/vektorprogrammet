@@ -893,3 +893,11 @@ button.secretly-not-a-button {
 .button-icon-right {
   margin-left: 6px;
 }
+
+.clickable:hover {
+  cursor: pointer;
+}
+
+.profile-photo {
+  filter: grayscale(100%);
+}

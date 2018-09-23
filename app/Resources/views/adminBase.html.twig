@@ -12,7 +12,7 @@
     <meta property="og:type" content="website"/>
     {% if app.request.attributes.get('_route') is not null %}
         <meta property="og:url" content="http://vektorprogrammet.no/{{ path(app.request.attributes.get('_route'),
-        app.request.attributes.get('_route_params')) }}"/>
+            app.request.attributes.get('_route_params')) }}"/>
     {% endif %}
     <meta property="og:title" content="{{ block('title') }}"/>
     <meta property="og:image"
@@ -38,13 +38,18 @@
     {% include 'base/admin/main_navigation.html.twig' %}
     <main class="main">
         <ol class="breadcrumb">
-            {% block breadcrumb %}
-                <li class="breadcrumb-item">Home</li>
+            {% block default_breadcrumb %}
                 <li class="breadcrumb-item">
-                    <a href="#">Admin</a>
+                    <a href="{{ path('control_panel') }}">Kontrollpanel</a>
                 </li>
-                <li class="breadcrumb-item active">Dashboard</li>
             {% endblock %}
+            {% block breadcrumb %}
+            {% endblock %}
+            <li class="breadcrumb-menu">
+                {% block breadcrumb_menu %}
+
+                {% endblock %}
+            </li>
         </ol>
         {% include 'common/flash.html.twig' %}
         <div class="container-fluid">

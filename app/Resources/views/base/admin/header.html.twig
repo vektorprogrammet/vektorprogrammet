@@ -7,7 +7,7 @@
     <ul class="nav navbar-nav ml-auto">
         <li class="nav-item">
             <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <img class="img-avatar" src="{{ asset(app.user.picturePath | imagine_filter('profile_img_tiny')) }}" alt="{{ app.user }}">
+                <img class="img-avatar profile-photo" src="{{ asset(app.user.picturePath | imagine_filter('profile_img_tiny')) }}" alt="{{ app.user }}">
                 {{ app.user }}
             </a>
             <div class="dropdown-menu dropdown-menu-right p-0">
