@@ -283,7 +283,8 @@
 {#<h1>Opptak {{ semester.department }}</h1>#}
     <div class="row">
         <div class="col-12">
-                <ul class="nav nav-tabs justify-content-center mt-2 mb-5">
+            <h2 class="text-center my-3">Opptak {{ semester.name }}</h2>
+                <ul class="nav nav-tabs justify-content-center mt-4 mb-5">
                     <li class="nav-item">
                         <a class="nav-link {{ status == "new" ? 'active' : '' }}" href="{{ path('applications_show_new_by_semester', {id: semester.id}) }}">Nye Søkere</a>
                     </li>
