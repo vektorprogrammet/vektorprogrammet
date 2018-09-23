@@ -81,7 +81,7 @@
                         modal.html(response.form);
                         modal.find("form").data("app-id", applicationId);
                         modal.find("form").submit(AppAdmin.onAssignFormSubmit);
-                        modal.modal();
+                        modal.foundation("reveal", "open");
                     }
                 });
             },
@@ -96,13 +96,12 @@
                     url: Routing.generate('interview_assign', {id: applicationId}),
                     data: formdata,
                     success: function (respone) {
-                      window.location.reload();
-                        // AppAdmin.appTable.find("tr#" + applicationId).find(".assign").addClass("success");
+                        AppAdmin.appTable.find("tr#" + applicationId).find(".assign").addClass("success");
                     }
                 });
 
                 //Close the modal
-                $("#assignModal").modal('hide');
+                $("#assignModal").foundation("reveal", "close");
             },
 
             bulkAction: function (event) {
@@ -125,25 +124,25 @@
                                 var modal = $("#assignModal");
                                 modal.html(response.form);
                                 modal.find("form").submit(AppAdmin.onBulkAssignFormSubmit);
-                                modal.modal();
+                                modal.foundation("reveal", "open");
                             }
                         });
                         break;
                     case "deleteApplication":
                         var modal = $("#bulkModal");
-                        var acceptBtn = $('<button class="btn btn-primary">Slett</button>');
-                        var cancelBtn = $('<button class="btn btn-secondary">Avbryt</button>');
+                        var acceptBtn = $('<li><a href="#" class="button tiny">Slett</a></li>');
+                        var cancelBtn = $('<li><a href="#" class="button tiny">Avbryt</a></li>');
 
-                        modal.find(".modalMessage").html("Vil du virkelig slette søknadene?");
-                        modal.find(".modal-footer").empty().append(cancelBtn).append(acceptBtn);
+                        modal.find(".modalMessage").html("Vil du virkelig slette søknadede?");
+                        modal.find(".modalButtons").empty().append(acceptBtn).append(cancelBtn);
 
                         acceptBtn.on("click", AppAdmin.bulkDeleteApplications);
                         cancelBtn.on("click", function (event) {
                             event.preventDefault();
-                            modal.modal('hide');
+                            modal.foundation("reveal", "close");
                         });
 
-                        modal.modal();
+                        modal.foundation("reveal", "open");
                         break;
                     case "deleteInterview":
                         var modal = $("#bulkModal");
@@ -156,10 +155,10 @@
                         acceptBtn.on("click", AppAdmin.bulkDeleteInterviews);
                         cancelBtn.on("click", function (event) {
                             event.preventDefault();
-                            modal.modal('hide');
+                            modal.foundation("reveal", "close");
                         });
 
-                        modal.modal();
+                        modal.foundation("reveal", "open");
                         break;
                 }
             },
@@ -167,13 +166,13 @@
             bulkDeleteApplications: function (event) {
                 event.preventDefault();
                 var formdata = $("#bulk").serialize();
+
                 $.ajax({
                     type: 'POST',
                     url: Routing.generate('admissionadmin_delete_application_bulk'),
                     data: formdata,
                     success: function (response) {
                         if (response.success) {
-                            window.location.reload();
                             $(".bulkCheck:checked").closest("tr").remove();
                         } else {
                             alert(response.cause);
@@ -183,7 +182,7 @@
                 });
 
                 //Close the modal
-                $("#assignModal").modal('hide');
+                $("#assignModal").foundation("reveal", "close");
             },
 
             bulkDeleteInterviews: function (event) {
@@ -205,7 +204,7 @@
                 });
 
                 //Close the modal
-                $("#assignModal").modal('hide');
+                $("#assignModal").foundation("reveal", "close");
             },
 
             onBulkAssignFormSubmit: function (event) {
@@ -218,13 +217,12 @@
                     url: "{{ path('interview_assign_bulk') }}",
                     data: formdata,
                     success: function (response) {
-                      window.location.reload();
                         $(".bulkCheck:checked").closest("tr").find(".assign").addClass("success");
                     }
                 });
 
                 //Close the modal
-                $("#assignModal").modal('hide');
+                $("#assignModal").foundation("reveal", "close");
             },
 
             toggleSelectAll: function () {
@@ -290,12 +288,6 @@
                     <li class="nav-item">
                         <a class="nav-link {{ status == "existing" ? 'active' : '' }}" href="{{ path('applications_show_existing_by_semester', {id: semester.id}) }}">Tidligere Assistenter</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ status == "assigned" ? 'active' : '' }}" href="{{ path('applications_show_assigned_by_semester', {id: semester.id}) }}">Intervjufordeling</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ status == "interviewed" ? 'active' : '' }}" href="{{ path('applications_show_interviewed_by_semester', {id: semester.id}) }}">Intervjuer</a>
-                    </li>
                 </ul>
         </div>
     </div>
@@ -308,22 +300,16 @@
 </div>
 
     {# The assign interview modal #}
-    <div id="assignModal" class="modal fade" data-reveal aria-labelledby="assignFormModal" aria-hidden="true"
+    <div id="assignModal" class="reveal-modal tiny" data-reveal aria-labelledby="assignFormModal" aria-hidden="true"
          role="dialog">
     </div>
 
     {# The bulk modal, used by the various bulk actions #}
-    <div id="bulkModal" class="modal fade" data-reveal aria-labelledby="assignFormModal" aria-hidden="true"
+    <div id="bulkModal" class="reveal-modal small" data-reveal aria-labelledby="assignFormModal" aria-hidden="true"
          role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modalMessage"></h2>
-                </div>
-                <div class="modal-footer">
-                </div>
-            </div>
-        </div>
+        <h2 class="modalMessage"></h2>
+        <ul class="inline-list modalButtons">
+        </ul>
     </div>
 
 {% endblock %}

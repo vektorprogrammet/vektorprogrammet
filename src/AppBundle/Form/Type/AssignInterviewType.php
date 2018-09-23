@@ -20,10 +20,6 @@ class AssignInterviewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('interview', new CreateInterviewType($this->roles, $this->department));
-
-        $builder->add('save', 'submit', array(
-            'label' => 'Lagre',
-        ));
     }
 
     public function getName()

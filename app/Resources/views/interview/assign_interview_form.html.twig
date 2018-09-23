@@ -1,32 +1,37 @@
-<div class="row">
-    <h3 id="modalTitle">Fordel intervju</h3>
+<div class="modal-dialog" role="document">
     {{ form_start(form) }}
     {{ form_errors(form) }}
-    <div class="col-12">
-        <div class="row">
-            <div class="col-3">
-                {{ form_label(form.interview.interviewer, 'Intervjuer', {'label_attr': {'class': 'inline'}}) }}
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Fordel intervju</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-3">
+                    {{ form_label(form.interview.interviewer, 'Intervjuer', {'label_attr': {'class': 'inline'}}) }}
+                </div>
+                <div class="col-9">
+                    {{ form_errors(form.interview.interviewer) }}
+                    {{ form_widget(form.interview.interviewer) }}
+                </div>
             </div>
-            <div class="col-9">
-                {{ form_errors(form.interview.interviewer) }}
-                {{ form_widget(form.interview.interviewer) }}
+            <div class="row">
+                <div class="col-3">
+                    {{ form_label(form.interview.interviewSchema, 'Skjema', {'label_attr': {'class': 'inline'}}) }}
+                </div>
+                <div class="col-9">
+                    {{ form_errors(form.interview.interviewSchema) }}
+                    {{ form_widget(form.interview.interviewSchema) }}
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-3">
-                {{ form_label(form.interview.interviewSchema, 'Skjema', {'label_attr': {'class': 'inline'}}) }}
-            </div>
-            <div class="col-9">
-                {{ form_errors(form.interview.interviewSchema) }}
-                {{ form_widget(form.interview.interviewSchema) }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-2 col-centered">
-                {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
-            </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Avbryt</button>
+            <button type="submit" class="btn btn-primary">Fordel</button>
         </div>
     </div>
     {{ form_end(form) }}
-    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>

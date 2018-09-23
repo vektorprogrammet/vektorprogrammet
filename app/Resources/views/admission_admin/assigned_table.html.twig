@@ -1,105 +1,108 @@
-{# The table containing applications which are assiged to an interviewer but not interviewed #}
-<table width="100%" class="application-table">
+<div class="card">
+    <div class="card-header">
+        <h5><strong>{{ title }}</strong></h5>
+    </div>
+    <div class="card-body table-responsive">
+        <table width="100%" class="application-table table table-striped">
 
-    <thead>
-    <tr>
-        {# data-sort is used to sort the tables with stupidtable.js #}
-        <th data-sort="string">Fornavn</th>
-        <th data-sort="string">Etternavn</th>
-        <th data-sort="int">Tlf</th>
-        <th data-sort="string">E-post</th>
-        <th data-sort="int">Oppsatt dato</th>
-        <th data-sort="string">Oppsatt rom</th>
-        <th data-sort="string">Intervjues av</th>
-        <th data-sort="string">Medintervjuer</th>
-        <th data-sort="string">Status</th>
-        {# Add header to match the buttons added #}
-        <th colspan="3"></th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for a in applicants %}
-        <tr>
-            <td><a href="{{ path('specific_profile', {id: a.user.id}) }}">{{ a.user.firstName }}</a></td>
-            <td>{{ a.user.lastName }}</td>
-            <td>{{ a.user.phone }}</td>
-            <td>{{ a.user.email }}</td>
-
-            {% if a.interview.scheduled is not null %}
-                <td data-sort-value="{{ a.interview.scheduled.getTimestamp }}">
-                    {{ a.interview.scheduled|date("d.m.y - G:i") }}
-                </td>
-            {% else %}
-                <td data-sort-value="0"></td>
-            {% endif %}
-
-
-            <td>{{ a.interview.room }}</td>
-            <td>{{ a.interview.interviewer }}</td>
-
-            {% if a.interview.coInterviewer or is_granted_team_leader() %}
-                <td>{{ a.interview.coInterviewer }}</td>
-            {% else %}
+            <thead>
+            <tr>
+                <th></th>
+                {# data-sort is used to sort the tables with stupidtable.js #}
+                <th data-sort="string">Søker</th>
+                <th data-sort="int">Tlf</th>
+                <th data-sort="string">E-post</th>
+                <th data-sort="int">Oppsatt dato</th>
+                <th data-sort="string">Oppsatt rom</th>
+                <th data-sort="string">Intervjues av</th>
+                <th data-sort="string">Medintervjuer</th>
+                <th data-sort="string">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for a in applicants %}
+            <tr>
                 <td>
-                    {% if a.interview.getCoInterviewer() == null and a.interview.user != app.user %}
-                        <form method="POST" action="{{ path('interview_assign_co_interviewer', { id: a.interview.id }) }}">
-                            <div class="row">
-                                <div class="col-12">
-                                    <button type="submit"
-                                            class="button tiny">
-                                        <i class="fa fa-share-alt"></i>
-                                        Legg meg til som medintervjuer
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                    {% if is_granted_team_leader() or a.interview.isInterviewer(app.user) or a.interview.isCoInterviewer(app.user) %}
+                    <div class="dropdown">
+                        <div class="clickable px-2" id="options-{{ a.id }}" data-toggle="dropdown"
+                             aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v text-secondary"></i>
+                        </div>
+                        <div class="dropdown-menu pt-0" aria-labelledby="options-{{ a.id }}">
+                            <div class="dropdown-header mb-2"><strong>{{ a.user }}</strong></div>
+                            <a href="{{ path('interview_schedule', { 'id': a.id }) }}" class="dropdown-item"><i
+                                        class="fa fa-envelope"></i> Sett opp</a>
+                            <a href="{{ path('interview_conduct', { 'id': a.id }) }}"
+                               class="dropdown-item {{ a.interview.isDraft ? 'warning' }}"><i
+                                        class="fa fa-list-ul"></i> {{ a.interview.isDraft ? 'Gå til intervju' : 'Start intervju' }}
+                            </a>
+                            {% if a.interview.isCoInterviewer(app.user) %}
+                                <form method="POST"
+                                      action="{{ path('interview_clear_co_interviewer', { id: a.interview.id }) }}">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button type="submit"
+                                                    class="dropdown-item">
+                                                <i class="fa fa-share-alt"></i>
+                                                Meld av som medintervjuer
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            {% else %}
+                                <a href="{{ path('interview_admin_assign_co_interviewer', { 'id': a.interview.id }) }}"
+                                   class="dropdown-item"><i
+                                            class="fa fa-share-alt"></i> Rediger medintervjuer</a>
+                            {% endif %}
+                        </div>
+                    </div>
                     {% endif %}
                 </td>
-            {% endif %}
+                <td><a href="{{ path('specific_profile', {id: a.user.id}) }}">{{ a.user }}</a></td>
+                <td>{{ a.user.phone }}</td>
+                <td>{{ a.user.email }}</td>
 
-            <td style="color: {{ a.interview.getInterviewStatusAsColor() }}">
-                {{ a.interview.getInterviewStatusAsString() }}
-            </td>
-
-            {# Add the buttons to book(send email) and conduct an interview, given the correct permissions #}
-            {% if is_granted_team_leader() or a.interview.isInterviewer(app.user) or a.interview.isCoInterviewer(app.user) %}
-                <td>
-                    <a href="{{ path('interview_schedule', { 'id': a.id }) }}" class="button tiny"><i
-                                class="fa fa-envelope"></i> Sett opp</a>
-                </td>
-                <td>
-                    <a href="{{ path('interview_conduct', { 'id': a.id }) }}"
-                       class="button tiny {{ a.interview.isDraft ? 'warning' }}"><i
-                                class="fa fa-list-ul"></i> {{ a.interview.isDraft ? 'Kladd' : 'Intervju' }}</a>
-                </td>
-                {% if a.interview.isCoInterviewer(app.user) %}
-                    <td>
-                        <form method="POST"
-                              action="{{ path('interview_clear_co_interviewer', { id: a.interview.id }) }}">
-                            <div class="row">
-                                <div class="col-12">
-                                    <button type="submit"
-                                            class="button warning tiny">
-                                        <i class="fa fa-share-alt"></i>
-                                        Meld av som medintervjuer
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                {% if a.interview.scheduled is not null %}
+                    <td class="text-nowrap" data-sort-value="{{ a.interview.scheduled.getTimestamp }}">
+                        {{ a.interview.scheduled|date("d.m.y - G:i") }}
                     </td>
                 {% else %}
+                    <td data-sort-value="0"></td>
+                {% endif %}
+
+
+                <td>{{ a.interview.room }}</td>
+                <td>{{ a.interview.interviewer }}</td>
+
+                {% if a.interview.coInterviewer or is_granted_team_leader() %}
+                    <td>{{ a.interview.coInterviewer }}</td>
+                {% else %}
                     <td>
-                        <div class="row">
-                            <div class="col-12">
-                                <a href="{{ path('interview_admin_assign_co_interviewer', { 'id': a.interview.id }) }}"
-                                   class="button tiny"><i
-                                            class="fa fa-share-alt"></i> Rediger medintervjuer</a>
-                            </div>
-                        </div>
+                        {% if a.interview.getCoInterviewer() == null and a.interview.user != app.user %}
+                            <form method="POST"
+                                  action="{{ path('interview_assign_co_interviewer', { id: a.interview.id }) }}">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <button type="submit"
+                                                class="btn btn-link">
+                                            <i class="fa fa-share-alt"></i>
+                                            Legg meg til som medintervjuer
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        {% endif %}
                     </td>
                 {% endif %}
-            {% endif %}
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+
+                <td style="color: {{ a.interview.getInterviewStatusAsColor() }}">
+                        <span class="badge badge-success"
+                              style="background-color: {{ a.interview.getInterviewStatusAsColor() }}">{{ a.interview.getInterviewStatusAsString() }}</span>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -8,6 +8,7 @@ use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Role\Roles;
 use AppBundle\Service\InterviewCounter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -147,6 +148,23 @@ class AdmissionAdminController extends Controller
         ]);
     }
 
+	/**
+	 * @Route("/kontrollpanel/application/existing/delete/{id}", name="delete_application_existing_user")
+	 * @param Application $application
+	 *
+	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
+	 */
+	public function deleteApplicationExistingAssistant(Application $application)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$em->remove($application);
+		$em->flush();
+
+		$this->addFlash('success', 'Søknaden ble slettet.');
+
+		return $this->redirectToRoute('applications_show_existing_by_semester', ['id' => $application->getSemester()->getId()]);
+	}
+
     /**
      * Deletes the applications submitted as a list of ids through a form POST request.
      * This method is intended to be called by an Ajax request.
@@ -172,6 +190,8 @@ class AdmissionAdminController extends Controller
         }
 
         $em->flush();
+
+        $this->addFlash('success', 'Søknadene ble slettet.');
 
         return new JsonResponse([
             'success' => true,

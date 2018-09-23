@@ -1,33 +1,38 @@
 {% if interviewDistributions|length > 0 %}
-    <h3>Intervjufordeling</h3>
-    <table id="interview-distribution-table" width="100%">
-        <thead>
-        <tr class="text-center">
-            <th data-sort="string">Navn</th>
-            <th class="text-center" data-sort="int">Totalt antall intervjuer</th>
-            <th class="text-center color-status-accepted" data-sort="int">Akseptert</th>
-            <th class="text-center color-status-no-contact" data-sort="int">Ikke satt opp</th>
-            <th class="text-center color-status-pending" data-sort="int">Ingen svar</th>
-            <th class="text-center color-status-new-time" data-sort="int">Bedt om ny tid</th>
-            <th class="text-center color-status-cancelled" data-sort="int">Kansellert</th>
-            <th class="text-center" data-sort="int">Intervjuer igjen</th>
-        </tr>
-        </thead>
+    <div class="card">
+        <div class="card-header">
+            <h5><strong>Intervjufordeling</strong></h5>
+        </div>
+        <div class="card-body table-responsive">
+            <table id="interview-distribution-table" width="100%" class="table">
+                <thead>
+                <tr class="text-center">
+                    <th data-sort="string">Navn</th>
+                    <th class="text-center" data-sort="int">Totalt antall intervjuer</th>
+                    <th class="text-center color-status-accepted" data-sort="int">Akseptert</th>
+                    <th class="text-center color-status-no-contact" data-sort="int">Ikke satt opp</th>
+                    <th class="text-center color-status-pending" data-sort="int">Ingen svar</th>
+                    <th class="text-center color-status-new-time" data-sort="int">Bedt om ny tid</th>
+                    <th class="text-center color-status-cancelled" data-sort="int">Kansellert</th>
+                    <th class="text-center" data-sort="int">Intervjuer igjen</th>
+                </tr>
+                </thead>
 
-        <tbody>
-        {% for interviewer in interviewDistributions%}
-            <tr>
-                <td>{{ interviewer }}</td>
-                <td class="text-center">{{ interviewer.getTotalInterviews }}</td>
-                <td class="text-center color-status-accepted">{{ interviewer.countAccepted }}</td>
-                <td class="text-center color-status-no-contact">{{ interviewer.countNoContact }}</td>
-                <td class="text-center color-status-pending">{{ interviewer.countPending }}</td>
-                <td class="text-center color-status-new-time">{{ interviewer.countRequestNewTime }}</td>
-                <td class="text-center color-status-cancelled">{{ interviewer.countCancelled }}</td>
-                <td class="text-center text-bold">{{ interviewer.getInterviewsLeft }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <hr>
+                <tbody>
+                {% for interviewer in interviewDistributions %}
+                    <tr>
+                        <td>{{ interviewer }}</td>
+                        <td class="text-center">{{ interviewer.getTotalInterviews }}</td>
+                        <td class="text-center color-status-accepted">{{ interviewer.countAccepted }}</td>
+                        <td class="text-center color-status-no-contact">{{ interviewer.countNoContact }}</td>
+                        <td class="text-center color-status-pending">{{ interviewer.countPending }}</td>
+                        <td class="text-center color-status-new-time">{{ interviewer.countRequestNewTime }}</td>
+                        <td class="text-center color-status-cancelled">{{ interviewer.countCancelled }}</td>
+                        <td class="text-center text-bold">{{ interviewer.getInterviewsLeft }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endif %}

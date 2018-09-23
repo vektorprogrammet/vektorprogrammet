@@ -129,28 +129,24 @@ class InterviewController extends Controller
         return $this->render('interview/show.html.twig', array('interview' => $interview, 'application' => $application));
     }
 
-    /**
-     * Deletes the given interview.
-     * This method is intended to be called by an Ajax request.
-     *
-     * @param Interview $interview
-     *
-     * @return JsonResponse
-     */
-    public function deleteInterviewAction(Interview $interview)
+	/**
+	 * Deletes the given interview.
+	 *
+	 * @param Interview $interview
+	 *
+	 * @param Request $request
+	 *
+	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
+	 */
+    public function deleteInterviewAction(Interview $interview, Request $request)
     {
-        $application = $this->getDoctrine()->getRepository('AppBundle:Application')->findOneBy(array('interview' => $interview));
-        $application->setInterview(null);
+        $interview->getApplication()->setInterview(null);
 
         $em = $this->getDoctrine()->getManager();
-        $em->persist($application);
         $em->remove($interview);
         $em->flush();
 
-        // AJAX response
-        return new JsonResponse(array(
-            'success' => true,
-        ));
+        return $this->redirect($request->headers->get('referer'));
     }
 
     /**
@@ -354,6 +350,8 @@ class InterviewController extends Controller
             }
 
             $em->flush();
+
+            $this->addFlash('success', 'Søknadene ble fordelt til ' . $interviewer);
 
             return new JsonResponse(array(
                 'success' => true,

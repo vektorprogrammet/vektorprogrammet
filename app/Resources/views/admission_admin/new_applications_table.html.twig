@@ -1,5 +1,15 @@
 {% extends 'admission_admin/layout.html.twig' %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">
+        Søkere
+    </li>
+    <li class="breadcrumb-item active">
+        Nye søkere
+    </li>
+{% endblock %}
+
+
 {% block applications %}
     {% include 'admission_admin/new_applications/bulk_navigation.html.twig' %}
     {% include 'admission_admin/new_applications/table.html.twig' %}

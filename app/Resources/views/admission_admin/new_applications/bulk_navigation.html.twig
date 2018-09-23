@@ -1,10 +1,9 @@
-<div class="row">
+<div class="row mb-3">
     <div class="col-3">
         {% if is_granted_team_leader() %}
-            <div class="row collapse">
+            <div class="row">
                 <div class="col-9">
-                    <select id="bulkSelect">
-                        <option value="title">Gruppehandling</option>
+                    <select id="bulkSelect" class="form-control">
                         <option value="assign">Fordel intervju</option>
                         {% if is_granted_admin() %}
                             <option value="deleteApplication">Slett søknad</option>
@@ -12,15 +11,15 @@
                     </select>
                 </div>
                 <div class="col-3">
-                    <a href="#" id="bulkAction" class="button postfix">Utfør</a>
+                    <a href="#" id="bulkAction" class="btn btn-secondary">Utfør</a>
                 </div>
             </div>
         {% endif %}
     </div>
     <div class="col-9">
         {% if app.user.department == semester.department and is_granted_team_leader() %}
-            <a class="button tiny success float-right" href="{{ path('register_applicant') }}">
-                Ny søker <i class="fa fa-plus"></i>
+            <a class="float-right btn btn-success btn-sm" href="{{ path('register_applicant') }}">
+                <i class="fa fa-plus"></i> Ny søker
             </a>
         {% endif %}
     </div>

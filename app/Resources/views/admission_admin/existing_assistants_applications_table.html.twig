@@ -1,48 +1,96 @@
 {% extends 'admission_admin/layout.html.twig' %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">
+        Søkere
+    </li>
+    <li class="breadcrumb-item active">
+        Tidligere assistenter
+    </li>
+{% endblock %}
+
+
 {% block applications %}
-    {% include 'admission_admin/existing_applications/bulk_navigation.html.twig' %}
-    <table width="100%" class="application-table">
-        <thead>
-        <tr>
-            {% if is_granted_admin() %}
-                <th><input type="checkbox" id="bulkAllCheck"></th>
-            {% endif %}
+    <div class="card">
+        <div class="card-header">
+            <h5><strong>Tidligere assistenter ({{ applications|length }})</strong></h5>
+        </div>
+        <div class="card-body table-responsive">
 
-            {# data-sort is used to sort the tables with stupidtable.js #}
-            <th data-sort="string">Fornavn</th>
-            <th data-sort="string">Etternavn</th>
-            <th data-sort="string">E-post</th>
-            <th data-sort="string">Dobbel Stilling</th>
-            <th data-sort="string">Bolk</th>
-            <th data-sort="string">Språk</th>
-            <th colspan="3"></th>
-        </tr>
-        </thead>
-
-        <tbody>
-            {% for a in applications %}
-                <tr id="{{ a.id }}">
-                    {% if is_granted_admin() %}
-                        <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ a.id }}">
-                        </td>
+            <table width="100%" class="application-table table table-striped">
+                <thead>
+                <tr>
+                    {% if is_granted_team_leader() %}
+                        <th></th>
                     {% endif %}
-                    <td><a href="{{ path('specific_profile', {id: a.user.id}) }}">{{ a.user.firstName }}</a></td>
-                    <td>{{ a.user.lastName }}</td>
-                    <td>{{ a.user.email }}</td>
-                    <td>{{ a.doublePosition ? 'Dobbel':'Enkel' }}</td>
-                    <td>{{ a.preferredGroup }}</td>
-                    <td>{{ a.language }}</td>
-                    <td><a class="button tiny" href="{{ path('admissionadmin_show_application', {'id': a.id}) }}">
-                            <i class="fa fa-list-ul"></i>
-                            Les søknad
-                        </a>
-                    </td>
 
-                    {% include 'admission_admin/create_substitute_button.html.twig' %}
-                    {% include 'admission_admin/existing_applications/delete_column.html.twig' %}
+                    {# data-sort is used to sort the tables with stupidtable.js #}
+                    <th data-sort="string">Fornavn</th>
+                    <th data-sort="string">Etternavn</th>
+                    <th data-sort="string">E-post</th>
+                    <th data-sort="string">Dobbel Stilling</th>
+                    <th data-sort="string">Bolk</th>
+                    <th data-sort="string">Språk</th>
+                    <th></th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                </thead>
+
+                <tbody>
+                {% for a in applications %}
+                    <tr>
+                        {% if is_granted_team_leader() %}
+                            <td>
+                                <div class="dropdown">
+                                    <div class="clickable px-2" id="options-{{ a.id }}" data-toggle="dropdown"
+                                         aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v text-secondary"></i>
+                                    </div>
+                                    <div class="dropdown-menu pt-0" aria-labelledby="options-{{ a.id }}">
+                                        <div class="dropdown-header mb-2"><strong>{{ a.user }}</strong></div>
+                                        <form method="POST"
+                                              onsubmit="return confirm('Lag vikar av {{ a.user.firstName }} {{ a.user.lastName }}?')"
+                                              action="{{ path('substitute_create_from_application', { id: a.id }) }}">
+                                            <button type="submit"
+                                                    {% if a.substitute %} disabled {% endif %}
+                                                    class="dropdown-item text-{{ a.substitute ? 'secondary' : 'primary' }}">
+                                                <i class="fa fa-user-secret text-{{ a.substitute ? 'secondary' : 'primary' }}"></i>
+                                                {{ a.substitute ? 'Vikar allerede opprettet':'Lag vikar' }}
+                                            </button>
+                                        </form>
+                                        {% if is_granted_admin() %}
+                                            <form method="POST"
+                                                  onsubmit="return confirm('Er du sikker på at du vil slette søknaden til {{ a.user }}?')"
+                                                  action="{{ path('delete_application_existing_user', { id: a.id }) }}">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <button type="submit"
+                                                                class="dropdown-item text-danger">
+                                                            <i class="fa fa-trash text-danger"></i>
+                                                            Slett søknad
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </td>
+                        {% endif %}
+                        <td><a href="{{ path('specific_profile', {id: a.user.id}) }}">{{ a.user.firstName }}</a></td>
+                        <td>{{ a.user.lastName }}</td>
+                        <td>{{ a.user.email }}</td>
+                        <td>{{ a.doublePosition ? 'Dobbel':'Enkel' }}</td>
+                        <td>{{ a.preferredGroup }}</td>
+                        <td>{{ a.language }}</td>
+                        <td><a class="button tiny" href="{{ path('admissionadmin_show_application', {'id': a.id}) }}">
+                                <i class="fa fa-list-ul"></i>
+                                Les søknad
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

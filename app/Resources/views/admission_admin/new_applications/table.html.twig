@@ -1,56 +1,54 @@
 <form id="bulk" name="application">
-    <table width="100%" class="application-table">
-        <thead>
-        <tr>
-            {% if is_granted_team_leader() %}
-                <th><input type="checkbox" id="bulkAllCheck"></th>
-            {% endif %}
-            {# data-sort is used to sort the tables with stupidtable.js #}
-            <th data-sort="string">Fornavn</th>
-            <th data-sort="string">Etternavn</th>
-            <th data-sort="int">Tlf</th>
-            <th data-sort="string">E-post</th>
-            <th data-sort="string">Linje</th>
-            <th data-sort="int">År</th>
-            <th colspan="3"></th>
-        </tr>
-        </thead>
-        <tbody>
+    <div class="card">
+        <div class="card-header"><h5><strong>Nye søkere ({{ applications|length }})</strong></h5></div>
+        <div class="card-body table-responsive">
 
-        {% for application in applications %}
-            <tr id="{{ application.id }}">
-                {% if is_granted_team_leader() %}
-                    <td><input type="checkbox" class="bulkCheck" name="application[id][]" value="{{ application.id }}">
-                    </td>
-                {% endif %}
-                <td>
-                    <a href="{{ path('specific_profile', {id: application.user.id}) }}">{{ application.user.firstName }}</a>
-                </td>
-                <td>{{ application.user.lastName }}</td>
-                <td>{{ application.user.phone }}</td>
-                <td>{{ application.user.email }}</td>
-                <td>{{ application.user.fieldOfStudy }}</td>
-                <td>{{ application.yearOfStudy }}</td>
 
-                {# Add the assign interview button, given the correct permissions #}
-                {% if is_granted_team_leader() %}
-                    <td>
-                        <a href="#" class="assign button tiny{{ application.interview is null ? '' : ' success' }}">
-                            <i class="fa fa-share-alt"></i> Fordel
-                        </a>
-                    </td>
-                {% endif %}
+            <table width="100%" class="application-table table table-striped">
+                <thead>
+                <tr>
+                    {% if is_granted_team_leader() %}
+                        <th><input type="checkbox" id="bulkAllCheck"></th>
+                    {% endif %}
+                    {# data-sort is used to sort the tables with stupidtable.js #}
+                    <th data-sort="string">Søker</th>
+                    <th data-sort="int">Tlf</th>
+                    <th data-sort="string">E-post</th>
+                    <th data-sort="string">Linje</th>
+                    <th data-sort="int">År</th>
+                    <th data-sort="string">Fordelt til</th>
+                </tr>
+                </thead>
+                <tbody>
 
-                {# Add the delete application button, given the correct permissions #}
-                {% if is_granted_admin() %}
-                    <td>
-                        <a href="#" class="button tiny alert deleteApplication" id="{{ application.id }}">
-                            <i class="fa fa-trash"></i> Slett
-                        </a>
-                    </td>
-                {% endif %}
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                {% for application in applications %}
+                    <tr id="{{ application.id }}">
+                        {% if is_granted_team_leader() %}
+                            <td><input type="checkbox" class="bulkCheck" name="application[id][]"
+                                       value="{{ application.id }}">
+                            </td>
+                        {% endif %}
+                        <td>
+                            <a href="{{ path('specific_profile', {id: application.user.id}) }}">{{ application.user }}</a>
+                        </td>
+                        <td>{{ application.user.phone }}</td>
+                        <td>{{ application.user.email }}</td>
+                        <td>{{ application.user.fieldOfStudy }}</td>
+                        <td>{{ application.yearOfStudy }}</td>
+                        <td>
+                            {% if application.interview and application.interview.interviewer %}
+                                <a href="{{ path('specific_profile', {'id': application.interview.interviewer.id}) }}">
+                                    {{ application.interview.interviewer }}
+                                </a>
+                            {% else %}
+                                <span class="text-warning">&lt;Mangler intervjuer&gt;</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
 </form>
