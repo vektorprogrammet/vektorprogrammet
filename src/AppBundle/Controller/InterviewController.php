@@ -129,15 +129,15 @@ class InterviewController extends Controller
         return $this->render('interview/show.html.twig', array('interview' => $interview, 'application' => $application));
     }
 
-	/**
-	 * Deletes the given interview.
-	 *
-	 * @param Interview $interview
-	 *
-	 * @param Request $request
-	 *
-	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
-	 */
+    /**
+     * Deletes the given interview.
+     *
+     * @param Interview $interview
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function deleteInterviewAction(Interview $interview, Request $request)
     {
         $interview->getApplication()->setInterview(null);
