@@ -1,72 +1,57 @@
 {% extends 'adminBase.html.twig' %}
 
 {% block javascripts %}
-
-    {# Easy routing with FOSJsRouting bundle #}
-    <script src="{{ asset_with_version('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-    {# We need the deletetablerow.js file #}
-    <script src="{{ asset_with_version('js/deleteablerow.js') }}"></script>
-
     <script>
-
-        $(document).ready(function () {
-            $('.delete').deleteablerow('schooladmin_remove_user_from_school_by_id', {
-                confirmation: {
-                    modal: $('#confirmModal'),
-                    acceptButton: $('#modalAccept'),
-                    cancelButton: $('#modalCancel')
+        $("#search").keyup(function () {
+            _this = this;
+            $.each($("#table tbody").find("tr"), function () {
+                if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
+                    $(this).hide();
+                }
+                else {
+                    $(this).show();
                 }
             });
         });
-
     </script>
-
 {% endblock %}
 
 {% block title %}
     {{ school }}
 {% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{{ path("schooladmin_show") }}">Skoler</a></li>
+    <li class="breadcrumb-item active">{{ school }}</li>
+{% endblock %}
+
 {% block body %}
     <div class="row">
-        <div class="col-12 col-md-12 col-lg-12">
-            <h1> {{ school }} </h1>
-
-            <hr>
-
-            {% if activeAssistantHistories %}
-                <h3> Aktive assistenter </h3>
-
-                {% include 'school_admin/assistant_history_table.html.twig' with {assistantHistories: activeAssistantHistories} %}
-
-            {% else %}
-                <div class="alert-box radius warning">
-                    Det finnes ingen aktive assistenter på denne skolen.
-                </div>
-            {% endif %}
-
-            <br>
-
-            {% if inactiveAssistantHistories %}
-                <hr>
-
-                <h3> Tidligere assistenter </h3>
-
-                {% include 'school_admin/assistant_history_table.html.twig' with {assistantHistories: inactiveAssistantHistories} %}
-
-            {% endif %}
-
+        <div class="col-12">
+            <h2 class="text-center my-3">Assistenter på {{ school }} </h2>
+            <ul class="nav nav-tabs mt-4">
+                <li class="nav-item">
+                    <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active" role="tab" aria-controls="home" aria-selected="true">Aktive assistenter</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="inactive-tab" data-toggle="tab" href="#inactive" role="tab" aria-controls="home" aria-selected="true">Tidligere assistenter</a>
+                </li>
+                <li class="nav-item ml-auto">
+                    <input class="form-control" id="search" placeholder="Søk..."/>
+                </li>
+            </ul>
         </div>
     </div>
-
-    <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
-         aria-hidden="true" role="dialog">
-        <h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
-        <ul class="inline-list">
-            <a id="modalAccept" href="#" class="button tiny">Slett</a>
-            <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
-        </ul>
+    <div class="row">
+        <div class="col-12">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="active" role="tabpanel" aria-labelledby="active-tab">
+                    {% include 'school_admin/assistant_history_table.html.twig' with {assistantHistories: activeAssistantHistories} %}
+                </div>
+                <div class="tab-pane fade" id="inactive" role="tabpanel" aria-labelledby="inactive-tab">
+                    {% include 'school_admin/assistant_history_table.html.twig' with {assistantHistories: inactiveAssistantHistories} %}
+                </div>
+            </div>
+        </div>
     </div>
-
 {% endblock %}

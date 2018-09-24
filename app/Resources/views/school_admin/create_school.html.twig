@@ -4,6 +4,11 @@
     Opprett skole
 {% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{{ path("schooladmin_show") }}">Skoler</a></li>
+    <li class="breadcrumb-item active">Opprett</li>
+{% endblock %}
+
 {% block body %}
     <p></p>
 

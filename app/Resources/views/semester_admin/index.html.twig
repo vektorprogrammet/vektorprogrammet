@@ -69,9 +69,8 @@
                                                     <form method="POST"
                                                           action="{{ path('semester_delete', {'id': s.id}) }}"
                                                           onsubmit="return confirm('Er du sikker på at du vil slette {{ s.name }}?')">
-                                                        <button class="dropdown-item"
-                                                                href="{{ path('semester_update', {'id': s.id}) }}"><i
-                                                                    class="fa fa-trash text-danger"></i> Slett
+                                                        <button class="dropdown-item">
+                                                            <i class="fa fa-trash text-danger"></i> Slett
                                                         </button>
                                                     </form>
                                                 {% endif %}
