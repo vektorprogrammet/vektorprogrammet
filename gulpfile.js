@@ -83,10 +83,10 @@ function imagesDev () {
 }
 
 function icons () {
-  var r = gulp.src('node_modules/font-awesome/fonts/**.*')
-      .pipe(gulp.dest('www/fonts/'));
-  return r && gulp.src(path.src + 'fonts/**.*')
-    .pipe(gulp.dest('www/fonts/'));
+  var r = gulp.src('node_modules/@fortawesome/fontawesome-free/webfonts/**.*')
+      .pipe(gulp.dest('www/webfonts/'));
+  return r && gulp.src(path.src + 'webfonts/**.*')
+    .pipe(gulp.dest('www/webfonts/'));
 }
 
 function files () {

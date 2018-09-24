@@ -20,10 +20,10 @@
         <a class="btn text-success btn-sm" href="{{ path('schooladmin_create_school_by_department', { 'id': department.id }) }}"><i
                     class="fa fa-plus"></i> Skole</a>
         <a class="btn text-primary btn-sm" href="{{ path('schooladmin_show_users_of_department_superadmin', { 'id': department.id }) }}"><i
-                    class="fa fa-user-plus"></i> Tildel Skole</a>
+                    class="fa fa-user-check"></i> Fordel assistenter</a>
     {% else %}
         <a class="btn text-primary btn-sm" href="{{ path('schooladmin_show_users_of_department') }}"><i
-                    class="fa fa-user-plus"></i> Tildel Skole</a>
+                    class="fa fa-user-check"></i> Fordel assistenter</a>
     {% endif %}
     </div>
 {% endblock %}
