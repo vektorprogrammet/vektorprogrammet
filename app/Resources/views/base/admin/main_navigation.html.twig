@@ -1,6 +1,49 @@
 <div class="sidebar">
         <nav class="sidebar-nav ps ps--active-y">
             <ul class="nav">
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link nav-dropdown-toggle text-center mt-2" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <img class="img-avatar profile-photo" src="{{ asset(app.user.picturePath | imagine_filter('profile_img_tiny')) }}" alt="{{ app.user }}">
+                        <div class="mt-2">{{ app.user }}</div>
+                    </a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('my_page') }}">
+                                <i class="fa fa-file nav-icon"></i> Min side</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('profile') }}">
+                                <i class="fa fa-user nav-icon"></i> Profil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('receipt_create') }}">
+                                <i class="fa fa-usd nav-icon"></i> Mine utlegg</a>
+                        </li>
+                        {% if app.user.isActiveAssistant() %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('my_partners') }}">
+                                    <i class="fa fa-users nav-icon"></i> Mine vektorpartnere</a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('logout') }}">
+                                <i class="fa fa-lock nav-icon"></i> Logg ut</a>
+                        </li>
+                    </ul>
+                    <hr class="my-1">
+                    {#<div class="dropdown-menu dropdown-menu-right p-0">#}
+                        {#<div class="dropdown-header text-center">#}
+                            {#<strong>Min konto</strong>#}
+                        {#</div>#}
+                        {#{% include 'base/dropdown_item_link.html.twig' with {route: 'my_page', name: 'Min side', icon: 'file'} %}#}
+                        {#{% include 'base/dropdown_item_link.html.twig' with {route: 'profile', name: 'Profil', icon: 'user'} %}#}
+                        {#{% include 'base/dropdown_item_link.html.twig' with {route: 'receipt_create', name: 'Mine utlegg', icon: 'usd'} %}#}
+                        {#{% if app.user.isActiveAssistant() %}#}
+                            {#{% include 'base/dropdown_item_link.html.twig' with {route: 'my_partners', name: 'Mine vektorpartnere', icon: 'users'} %}#}
+                        {#{% endif %}#}
+                        {#{% include 'base/dropdown_item_link.html.twig' with {route: 'logout', name: 'Logg ut', icon: 'lock', class: 'text-danger'} %}#}
+                    {#</div>#}
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('control_panel') }}">
                         <i class="fa fa-tachometer nav-icon icon-speedometer"></i> Kontrollpanel
@@ -15,30 +58,30 @@
                 </li>
                 <li class="nav-item nav-dropdown">
                     <a class="nav-link nav-dropdown-toggle" href="#">
-                        <i class="fa fa-users nav-icon icon-star"></i> Søkere</a>
+                        <i class="fa fa-users nav-icon"></i> Søkere</a>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('applications_show_new') }}">
-                                <i class="fa fa-users nav-icon icon-star"></i> Nye søkere</a>
+                                <i class="fa fa-users nav-icon"></i> Nye søkere</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('applications_show_existing') }}">
-                                <i class="fa fa-users nav-icon icon-star"></i> Tidligere assistenter</a>
+                                <i class="fa fa-users nav-icon"></i> Tidligere assistenter</a>
                         </li>
                     </ul>
                 <li class="nav-item nav-dropdown">
                     <a class="nav-link nav-dropdown-toggle" href="#">
-                        <i class="fa fa-comments nav-icon icon-star"></i> Intervju</a>
+                        <i class="fa fa-comments nav-icon"></i> Intervju</a>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('applications_show_assigned') }}">
-                                <i class="fa fa-comments nav-icon icon-star"></i> Intervjufordeling</a>
+                                <i class="fa fa-comments nav-icon"></i> Intervjufordeling</a>
                             <a class="nav-link" href="{{ path('applications_show_interviewed') }}">
-                                <i class="fa fa-comments nav-icon icon-star"></i> Intervjuer</a>
+                                <i class="fa fa-comments nav-icon"></i> Intervjuer</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('interview_schema') }}">
-                                <i class="fa fa-comments nav-icon icon-star"></i> Intervjuskjema</a>
+                                <i class="fa fa-comments nav-icon"></i> Intervjuskjema</a>
                         </li>
                     </ul>
                 </li>

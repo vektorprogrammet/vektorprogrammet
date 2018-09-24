@@ -1,57 +1,70 @@
-<table width="100%" class="test" id="table">
+<div class="table-responsive">
+    <table width="100%" class="table">
 
-    <thead>
-    <tr>
-        <th> Fornavn</th>
-        <th> Etternavn</th>
-        <th> Tlf</th>
-        <th> E-post</th>
-        <th> Linje</th>
-        <th> Avdeling</th>
-        {% if is_granted_team_leader() %}
-            <th>Send aktiveringsmelding</th>
-        {% endif %}
-        <th></th>
-    </tr>
-    </thead>
-
-    <tbody>
-    {% for u in users %}
+        <thead>
         <tr>
-            <td><a href='{{ path('specific_profile', { 'id': u.id }) }}'>{{ u.firstName }}</a></td>
-            <td> {{ u.lastName }} </td>
-            <td> {{ u.phone }} </td>
-            <td> {{ u.email }} </td>
-            <td> {{ u.fieldOfStudy }} </td>
-            <td> {{ u.department }} </td>
-
-            {% if u.password is null and  is_granted_team_leader() %}
-                <td>
-                    <form method="POST"
-                          onsubmit="return confirm('Send aktiveringslenke til {{ u }}?')"
-                          action="{{ path('send_user_activation_mail', {id: u.id}) }}">
-                        <button type="submit"
-                                class="button tiny">{{ u.newUserCode is null ? 'Send' : 'Send på nytt' }}</button>
-                    </form>
-                </td>
-            {% else %}
-                <td><span class="text-success">Aktivert</span></td>
-            {% endif %}
-            {% if is_granted('ROLE_HIGHEST_ADMIN') or (app.user.department == u.department and is_granted('ROLE_SUPER_ADMIN')) %}
-                <td>
-                    <form method="POST"
-                          onsubmit="return confirm('Vil du virkelig fjerne brukeren {{ u.firstName }} {{ u.lastName }}?')"
-                          action="{{ path('useradmin_delete_user_by_id', { id: u.id }) }}">
-                        <button type="submit"
-                                class="button tiny alert">
-                            <i class="fa fa-trash"></i>
-                            Slett
-                        </button>
-                    </form>
-                </td>
+            <th></th>
+            <th> Fornavn</th>
+            <th> Etternavn</th>
+            <th> Tlf</th>
+            <th> E-post</th>
+            <th> Linje</th>
+            <th> Avdeling</th>
+            {% if is_granted_team_leader() %}
+                <th>Send aktiveringsmelding</th>
             {% endif %}
         </tr>
-    {% endfor %}
-    </tbody>
+        </thead>
 
-</table>
+        <tbody>
+        {% for u in users %}
+            <tr>
+                <td>
+                    {% if is_granted_admin() or (app.user.department == u.department and is_granted_team_leader()) %}
+                        <div class="dropdown">
+                            <div class="clickable px-2" id="options-{{ u.id }}" data-toggle="dropdown"
+                                 aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v text-secondary"></i>
+                            </div>
+                            <div class="dropdown-menu pt-0" aria-labelledby="options-{{ u.id }}">
+                                <div class="dropdown-header mb-2"><strong>{{ u }}</strong></div>
+                                <form method="POST"
+                                      onsubmit="return confirm('Vil du virkelig fjerne brukeren {{ u }}?')"
+                                      action="{{ path('useradmin_delete_user_by_id', { id: u.id }) }}">
+                                    <button type="submit"
+                                            class="dropdown-item text-danger">
+                                        <i class="fa fa-trash text-danger"></i>
+                                        Slett bruker
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                    {% endif %}
+                </td>
+                <td><a href='{{ path('specific_profile', { 'id': u.id }) }}'>{{ u.firstName }}</a></td>
+                <td> {{ u.lastName }} </td>
+                <td> {{ u.phone }} </td>
+                <td> {{ u.email }} </td>
+                <td> {{ u.fieldOfStudy }} </td>
+                <td> {{ u.department }} </td>
+
+                {% if u.password is null and is_granted_team_leader() %}
+                    <td>
+                        <form method="POST"
+                              onsubmit="return confirm('Send aktiveringslenke til {{ u }}?')"
+                              action="{{ path('send_user_activation_mail', {id: u.id}) }}">
+                            <button type="submit"
+                                    class="btn btn-link p-0">{{ u.newUserCode is null ? 'Send aktivering' : 'Send på nytt' }}</button>
+                        </form>
+                    </td>
+                {% else %}
+                    <td><span class="text-success">Aktivert</span></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
