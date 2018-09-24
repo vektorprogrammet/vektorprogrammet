@@ -10,7 +10,7 @@ class ClientController extends Controller
 
     /**
      * @Route("/kontrollpanel/staging")
-     * @Route("/min-side")
+     * @Route("/assistent/min-side")
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
