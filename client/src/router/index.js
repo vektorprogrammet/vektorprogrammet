@@ -2,11 +2,13 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import store from '../store';
 
-import MyPageView from '../views/MyPageView';
+import MyPageView from '../views/assistant/MyPageView';
 import LoginView from '../views/LoginView';
 import Error404View from '../views/Error404View';
 import Error403View from '../views/Error403View';
 import StagingServerView from '../views/controlpanel/StagingServerView';
+import AdminBaseView from '../views/controlpanel/AdminBaseView';
+import AssistantBaseView from '../views/assistant/AssistantBaseView';
 
 Vue.use(Router);
 
@@ -14,19 +16,9 @@ const router = new Router({
   mode: 'history',
   routes: [
     {
-      path: '/min-side',
-      name: 'my_page',
-      component: MyPageView,
-    },
-    {
       path: '/login',
       name: 'login',
       component: LoginView,
-    },
-    {
-      path: '/kontrollpanel/staging',
-      name: 'staging',
-      component: StagingServerView,
     },
     {
       path: '*',
@@ -37,6 +29,30 @@ const router = new Router({
       path: '/403',
       name: '403',
       component: Error403View,
+    },
+    {
+      path: '/kontrollpanel',
+      name: 'controlpanel',
+      component: AdminBaseView,
+      children: [
+        {
+          path: 'staging',
+          name: 'staging',
+          component: StagingServerView,
+        },
+      ],
+    },
+    {
+      path: '/assistent',
+      name: 'assistant',
+      component: AssistantBaseView,
+      children: [
+        {
+          path: 'min-side',
+          name: 'my_page',
+          component: MyPageView,
+        },
+      ],
     },
   ],
 });
