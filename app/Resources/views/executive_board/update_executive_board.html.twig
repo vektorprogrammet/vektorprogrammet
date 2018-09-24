@@ -20,15 +20,12 @@
                     {{ form_row(form.name) }}
                     {{ form_row(form.email) }}
 
-                    <label>Kort beskrivelse (<span id="shortDescription_length"></span> tegn igjen.
-                        Valgfritt){{ form_row(form.shortDescription) }}</label>
+                    {{ form_row(form.shortDescription) }}
 
                     {{ form_row(form.description) }}
                     <br>
-                    <div class="col-8 ">
-                        {{ form_widget(form.preview, {'attr': {'class': 'button tiny', 'formtarget': '_blank'}}) }}
-                        <button class="button tiny success">Lagre</button>
-                    </div>
+                    {{ form_widget(form.preview, {'attr': {'class': 'btn btn-secondary', 'formtarget': '_blank'}}) }}
+                    <button class="btn btn-primary">Lagre</button>
                     <br><br>
 
                     {{ form_end(form) }}
@@ -39,25 +36,5 @@
 
         </div>
     </div>
-
-{% endblock %}
-
-{% block javascripts %}
-
-    <script>
-        var shortDescriptionInput = document.getElementById('createBoard_shortDescription');
-        var shortDescriptionLength = document.getElementById('shortDescription_length');
-        function updateShortDescriptionLength() {
-            var charactersLeft = (125 - shortDescriptionInput.value.length);
-            shortDescriptionLength.innerHTML = charactersLeft;
-            if (charactersLeft <= 0) {
-                shortDescriptionLength.style.color = 'red';
-            } else {
-                shortDescriptionLength.style.color = 'black';
-            }
-        }
-        shortDescriptionInput.addEventListener('keyup', updateShortDescriptionLength, false);
-        updateShortDescriptionLength()
-    </script>
 
 {% endblock %}

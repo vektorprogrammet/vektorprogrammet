@@ -17,7 +17,7 @@
 {%- endblock widget_attributes -%}
 
 {% block button_widget -%}
-    {%- set attr = attr|merge({class: (attr.class|default('btn-secondary') ~ ' btn')|trim}) -%}
+    {%- set attr = attr|merge({class: (attr.class|default('btn-primary') ~ ' btn')|trim}) -%}
     {{- parent() -}}
 {%- endblock button_widget %}
 

@@ -158,6 +158,7 @@ class TeamAdminController extends Controller
         }
 
         return $this->render('team_admin/create_team.html.twig', array(
+            'team' => $team,
             'department' => $department,
             'form' => $form->createView(),
             'isUpdate' => true,
