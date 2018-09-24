@@ -85,8 +85,6 @@ twig:
     form_themes:
         - 'form/bootstrap_4_layout.html.twig'
 
-
-
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"
