@@ -4,16 +4,20 @@
     Stand
 {% endblock %}
 
+{% block breadcrumb_menu %}
+    {% if is_granted_team_leader() %}
+        {% include 'common/department_semester_dropdowns.html.twig' with {
+        'path': 'stand_by_semester',
+        'parameterName': 'id',
+        'currentSemester': semester
+        } %}
+    {% endif %}
+{% endblock %}
+
+
 {% block body %}
     <div class="row">
         <div class="col-12">
-            {% if is_granted_team_leader() %}
-                {% include 'common/department_semester_dropdowns.html.twig' with {
-                'path': 'stand_by_semester',
-                'parameterName': 'id',
-                'currentSemester': semester
-                } %}
-            {% endif %}
             <h1>Stand</h1>
             <p>Her vil du finne informasjon som kan være nyttig når man står på stand (mer info kommer).</p>
             <hr>
