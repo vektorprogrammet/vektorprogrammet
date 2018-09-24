@@ -1,5 +1,5 @@
 <template>
-    <h1>Min side</h1>
+    <PageHeader><h1>Min side</h1></PageHeader>
 </template>
 
 <script>
