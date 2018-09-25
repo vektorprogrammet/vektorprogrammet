@@ -10,6 +10,7 @@ use AppBundle\Entity\Survey;
 use AppBundle\Form\Type\SurveyType;
 use AppBundle\Form\Type\SurveyExecuteType;
 use AppBundle\Role\Roles;
+use Doctrine\ORM\EntityManager;
 
 /**
  * SurveyController is the controller responsible for survey actions,
@@ -308,5 +309,34 @@ class SurveyController extends Controller
     {
         return $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN');
     }
+
+
+    public function toggleReservePopUpAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        $user->setReservedPopUp(!$user->getReservedPopUp());
+        $user->setLastPopUp(new \DateTime());
+        $em->persist($user);
+        $em->flush();
+
+        $response = $this->forward('AppBundle:Home:show'
+        );
+
+        return $response;
+    }
+
+    public function closePopUpAction(){
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        $user->setLastPopUp(new \DateTime());
+        $em->persist($user);
+        $em->flush();
+        $response = $this->forward('AppBundle:Home:show'
+        );
+        return $response;
+    }
+
+
 }
 

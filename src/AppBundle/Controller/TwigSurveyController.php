@@ -17,19 +17,15 @@ class TwigSurveyController extends Controller
     public function nextSurveyAction(){
 
         $survey = null;
+        $user = $this->getUser();
 
-        if($this->getUser()!==null) {
-
-            try {
-                $survey = $this->getDoctrine()->getRepository('AppBundle:Survey')->findOneByUserNotTaken($this->getUser());
-            } catch (\Doctrine\ORM\NonUniqueResultException $e) {
-                // This should not happen
-                throw new $e;
-            }
-
+        if($user !== null && !$user->getReservedPopUp()&& $user->getLastPopUp()->diff(new \DateTime())->days > 1) {
+                $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findOneByUserNotTaken($this->getUser());
+                if(!empty($surveys)){
+                   $survey=$surveys[0];
+                }
         }
 
-        dump($survey);
 
         return $this->render("base/popup_lower.twig",
             array('survey' => $survey));

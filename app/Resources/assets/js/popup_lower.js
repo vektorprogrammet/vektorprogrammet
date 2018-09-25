@@ -1,11 +1,7 @@
 window.onload = function() {
 
-    $(".js-popup-toggle").on('click', function() {
-        $("body").toggleClass("popup-active");
-    });
-
     $(".cta").on('click', function() {
-        $(this).removeClass("popupAttention");
+        $(this).removeClass("popupAttentionUp");
     });
 
 
@@ -13,35 +9,25 @@ window.onload = function() {
         $(".popup").css("display", "none");
     });
 
-    var firstScroll = true;
-
-    $(window).on('scroll', function() {
-        if (firstScroll) {
-            firstScroll = false;
-            $(".popup").css("visibility", "visible");
-            runAnimation();
 
 
-        }
-    });
+    $(".popup").css("visibility", "visible");
+    runAnimationIn();
 
     var scrollFromTop = true;
     var scrollFromBot = true;
-    var itCount = 0;
 
 
     $(window).scroll(function() {
-        console.log(scrollFromBot, scrollFromTop)
-
         if(window.scrollY==0){
-            if(scrollFromBot) runAnimation();
+            if(scrollFromBot) runAnimationUp();
             scrollFromBot = false;
         }else{
             scrollFromBot = true;
         }
 
         if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-            if(scrollFromTop) runAnimation();
+            if(scrollFromTop) runAnimationDown();
             scrollFromTop = false;
         }else{
             scrollFromTop = true;
@@ -50,10 +36,32 @@ window.onload = function() {
 
     });
 
-    function runAnimation() {
-        itCount +=1;
-        $(".cta.popupAttention").css("animation-iteration-count", itCount);
 
+    function runAnimationUp() {
+
+        $(".cta").addClass("popupAttentionUp");
+
+        window.setTimeout(function(){
+            $(".cta").removeClass("popupAttentionUp");
+        }, 500);
+
+    }
+
+    function runAnimationDown(){
+        $(".cta").addClass("popupAttentionDown");
+
+        window.setTimeout(function(){
+            $(".cta").removeClass("popupAttentionDown");
+        }, 500);
+
+    }
+
+    function runAnimationIn(){
+        $(".cta").addClass("transitionIn");
+
+        window.setTimeout(function(){
+            $(".cta").removeClass("transitionIn");
+        }, 500);
 
     }
 

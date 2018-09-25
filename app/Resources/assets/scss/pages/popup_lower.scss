@@ -15,7 +15,7 @@ img { margin: 0 auto; }
   overflow: hidden;
   bottom:0;
   left: 0;
-  transition: all 0.1s ease;
+  transition: all 0.0.5s ease;
   visibility: hidden;
 
   .popup-container {
@@ -23,46 +23,6 @@ img { margin: 0 auto; }
   }
 }
 
-.popup-active {
-  overflow: hidden;
-
-  .popup {
-    height: 100%;
-    width: 100%;
-  }
-
-  .popup-form {
-    top: 0;
-    height: calc(100% - 49px);
-  }
-
-  .popup-form * {
-    opacity: 1;
-  }
-
-  .popup-form {
-    top: 0;
-  }
-}
-
-.popup-form {
-  position: absolute;
-  top: 100%;
-  width: 100%;
-  color: $black;
-  padding: 15px;
-  transition: all .5s ease;
-  background: $form-bkg;
-
-  form { margin-top: 30px; }
-  input { margin-bottom: 15px; }
-
-  * {
-    opacity: 0;
-    transition: all .5s ease;
-    transition-delay: .5s;
-  }
-}
 
 .popup-close {
   display: inline-block;
@@ -88,28 +48,86 @@ img { margin: 0 auto; }
   p { margin: 0; }
 }
 
-.cta.popupAttention {
-  -webkit-animation: popupAttention 1s infinite; /* Safari 4+ */
-  -moz-animation:    popupAttention 1s infinite; /* Fx 5+ */
-  -o-animation:      popupAttention 1s infinite; /* Opera 12+ */
-  animation:         popupAttention 1s infinite; /* IE 10+, Fx 29+ */
-  animation-duration: 6s;
-  animation-delay: 8s;
+.cta.popupAttentionUp {
+  -webkit-animation: popupAttentionUp 0.5s infinite; /* Safari 4+ */
+  -moz-animation:    popupAttentionUp 0.5s infinite; /* Fx 5+ */
+  -o-animation:      popupAttentionUp 0.5s infinite; /* Opera 12+ */
+  animation:         popupAttentionUp 0.5s infinite; /* IE 10+, Fx 29+ */
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+  
+}
 
+@keyframes popupAttentionUp {
+  0% { padding: 15px; background: $cBar; }
+  8% { padding: 15px; background: $cBar; }
+  32% { padding: 25px 15px; background: lighten($cBar, 8%); }
+  58% { padding: 10px; background: $cBar;}
+  74% { padding: 15px; background: $cBar; }
+  90% { padding: 12px; background: $cBar; }
+  100% { padding: 15px; background: $cBar; }
+}
+
+.cta.popupAttentionDown {
+  -webkit-animation: popupAttentionDown 0.5s infinite; /* Safari 4+ */
+  -moz-animation:    popupAttentionDown 0.5s infinite; /* Fx 5+ */
+  -o-animation:      popupAttentionDown 0.5s infinite; /* Opera 12+ */
+  animation:         popupAttentionDown 0.5s infinite; /* IE 10+, Fx 29+ */
+  animation-duration: 0.5s;
   animation-iteration-count: 1;
 
 }
 
-@keyframes popupAttention {
+@keyframes popupAttentionDown {
   0% { padding: 15px; background: $cBar; }
   8% { padding: 15px; background: $cBar; }
-  11% { padding: 25px 15px; background: lighten($cBar, 8%); }
-  13% { padding: 10px; background: $cBar;}
-  15% { padding: 15px; background: $cBar; }
-  17% { padding: 12px; background: $cBar; }
-  19% { padding: 15px; background: $cBar; }
-  100% { padding: 15px;}
+  32% { padding: 5px 15px; background: darken($cBar, 8%); }
+  58% { padding: 20px; background: $cBar;}
+  74% { padding: 15px; background: $cBar; }
+  90% { padding: 17px; background: $cBar; }
+  100% { padding: 15px; background: $cBar; }
 }
+
+
+.cta.transitionIn {
+  -webkit-animation: transitionIn 0.5s infinite; /* Safari 4+ */
+  -moz-animation:    transitionIn 0.5s infinite; /* Fx 5+ */
+  -o-animation:      transitionIn 0.5s infinite; /* Opera 12+ */
+  animation:         transitionIn 0.5s infinite; /* IE 10+, Fx 29+ */
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+
+}
+
+@keyframes transitionIn {
+   0% { padding: 0px; background: $cBar; }
+   32% { padding: 5px; background: $cBar; }
+   48% { padding: 15px 15px; background: $cBar; }
+   74% { padding: 15px; background: $cBar; }
+   90% { padding: 17px; background: $cBar; }
+   100% { padding: 15px; background: $cBar; }
+ }
+
+
+.cta.transitionOut {
+  -webkit-animation: transitionOut 0.5s infinite; /* Safari 4+ */
+  -moz-animation:    transitionOut 0.5s infinite; /* Fx 5+ */
+  -o-animation:      transitionOut 0.5s infinite; /* Opera 12+ */
+  animation:         transitionOut 0.5s infinite; /* IE 10+, Fx 29+ */
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+
+}
+
+@keyframes transitionOut {
+  100% { padding: 0px; background: $cBar; }
+  90% { padding: 5px; background: $cBar; }
+  74% { padding: 15px 15px; background: $cBar; }
+  48% { padding: 15px; background: $cBar; }
+  32% { padding: 17px; background: $cBar; }
+  0% { padding: 15px; background: $cBar; }
+}
+
 
 a{
   color: white;

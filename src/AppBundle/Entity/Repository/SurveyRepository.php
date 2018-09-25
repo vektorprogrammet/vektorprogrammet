@@ -17,20 +17,25 @@ class SurveyRepository extends EntityRepository
 {
     /**
      * @param User $user
-     * @return Survey
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return Survey[]
      */
-    public function findOneByUserNotTaken(User $user) : ?Survey
+    public function findOneByUserNotTaken(User $user)
         {
+            $qb = $this->_em->createQueryBuilder();
+
+            $exclude = $qb
+                ->select('IDENTITY(survey_taken.survey)')
+                ->from('AppBundle:SurveyTaken','survey_taken')
+                ->where('survey_taken.user = :user');
+
             return $this->createQueryBuilder('survey')
                 ->select("survey")
-                //->join('survey.surveysTaken','surveysTaken')
                 ->where('survey.teamSurvey = true')
-                //->where(':user NOT IN surveysTaken')
-                //->setParameter('user', $user)
-                ->setMaxResults(1)
+                ->setParameter('user',$user)
+                ->andWhere($qb->expr()->notIn('survey.id',$exclude->getDQL()))
                 ->getQuery()
-                ->getOneOrNullResult();
+                ->getResult();
+
 
         }
 }

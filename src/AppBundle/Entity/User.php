@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+
 /**
  * AppBundle\Entity\User.
  *
@@ -97,6 +98,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $email;
 
+
     /**
      * @ORM\Column(type="string", unique=true, nullable=true)
      * @Assert\Email
@@ -109,6 +111,18 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\Column(name="is_active", type="boolean")
      */
     private $isActive;
+
+
+    /**
+     * @ORM\Column(type="boolean", name="reserved_pop_up", nullable=true)
+     */
+    private $reservedPopUp;
+
+
+    /**
+     * @ORM\Column(type="datetime", name="last_pop_up", nullable=true)
+     */
+    private $lastPopUp;
 
     /**
      * @var Role[]
@@ -155,6 +169,7 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\OneToMany(targetEntity="Receipt", mappedBy="user")
      */
     private $receipts;
+
 
     public function __construct()
     {
@@ -745,6 +760,44 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
+     * @return boolean
+     */
+    public function getReservedPopUp()
+    {
+        if($this->reservedPopUp === null){
+            return false;
+        }
+        return $this->reservedPopUp;
+    }
+
+    /**
+     * @param boolean $reservedPopUp
+     */
+    public function setReservedPopUp($reservedPopUp): void
+    {
+        $this->reservedPopUp = $reservedPopUp;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getLastPopUp() : \DateTime
+    {
+        if($this->lastPopUp === null){
+            return new \DateTime("2000-01-01");
+        }
+        return $this->lastPopUp;
+    }
+
+    /**
+     * @param \DateTime $lastPopUp
+     */
+    public function setLastPopUp($lastPopUp): void
+    {
+        $this->lastPopUp = $lastPopUp;
+    }
+
+    /**
      * @return TeamMembershipInterface[]
      */
     public function getActiveMemberships()
@@ -775,6 +828,7 @@ class User implements AdvancedUserInterface, \Serializable
 
         return $this;
     }
+
 
     /**
      *
