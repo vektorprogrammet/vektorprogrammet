@@ -676,10 +676,10 @@ team_application_delete:
   requirements:
       id: \d+
 
-teamadmin_show:
- path: /kontrollpanel/teamadmin
- defaults: {_controller: AppBundle:TeamAdmin:show }
- methods: [GET]
+#teamadmin_show:
+# path: /kontrollpanel/teamadmin
+# defaults: {_controller: AppBundle:TeamAdmin:show }
+# methods: [GET]
 
 teamadmin_create_position:
  path: /kontrollpanel/teamadmin/opprett/stilling

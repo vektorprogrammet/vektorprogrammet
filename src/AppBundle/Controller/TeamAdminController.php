@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Department;
 use AppBundle\Event\TeamEvent;
 use AppBundle\Event\TeamMembershipEvent;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,17 +16,26 @@ use AppBundle\Form\Type\CreateTeamMembershipType;
 
 class TeamAdminController extends Controller
 {
-    public function showAction()
+	/**
+	 * @Route("/kontrollpanel/team/avdeling/{id}", name="teamadmin_show", defaults={"id":null}, methods={"GET"})
+	 * @param Department|null $department
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
+    public function showAction(Department $department = null)
     {
-        // Finds the department for the current logged in user
-        $department = $this->getUser()->getDepartment();
+    	if ($department === null) {
+	        $department = $this->getUser()->getDepartment();
+	    }
 
         // Find teams that are connected to the department of the user
-        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByDepartment($department);
+        $activeTeams = $this->getDoctrine()->getRepository('AppBundle:Team')->findActiveByDepartment($department);
+        $inactiveTeams = $this->getDoctrine()->getRepository('AppBundle:Team')->findInactiveByDepartment($department);
 
         // Return the view with suitable variables
         return $this->render('team_admin/index.html.twig', array(
-            'teams' => $teams,
+            'active_teams' => $activeTeams,
+            'inactive_teams' => $inactiveTeams,
             'department' => $department,
         ));
     }
@@ -241,9 +251,7 @@ class TeamAdminController extends Controller
 
         $em->remove($team);
         $em->flush();
-        
-        return new JsonResponse(array(
-            'success' => true,
-        ));
+
+        return $this->redirectToRoute("teamadmin_show", ["id" => $team->getDepartment()->getId()]);
     }
 }

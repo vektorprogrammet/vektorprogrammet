@@ -8,162 +8,59 @@
     {# We need the deletetablerow.js file #}
     <script src="{{ asset_with_version('js/deleteablerow.js') }}"></script>
 
-    <script>
-
-        $(document).ready(function () {
-            $('.delete').deleteablerow('teamadmin_delete_team_by_id', {
-                confirmation: {
-                    modal: $('#confirmModal'),
-                    acceptButton: $('#modalAccept'),
-                    cancelButton: $('#modalCancel')
-                }
-            });
-        });
-
-    </script>
-
-
 {% endblock %}
 
 {% block title %}
     Team
 {% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">
+        Team
+    </li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    {% if is_granted_team_leader() %}
+        <div class="btn-group">
+            {% include "common/department_dropdown.html.twig" with {'pathForDepartment': 'teamadmin_show', 'departmentParameterName': 'id', 'currentDepartment': department} %}
+            <a href="{{ path('teamadmin_show_position') }}" class="btn btn-outline-secondary text-secondary">Stillinger</a>
+            <a class="btn text-success"
+               href="{{ path('teamadmin_create_team_for_department', { 'id': department.id }) }}"><i
+                        class="fa fa-plus text-success"></i> Nytt team</a>
+        </div>
+    {% endif %}
+{% endblock %}
+
+
 	
 {% block body %}
     <div class="row">
-        <div class="col-12 col-md-12 col-lg-12">
-            <h1> Team {{ department }}</h1>
-
-            <hr>
-
-            {% if is_granted_team_leader() %}
-                <div class="row">
-                    <div class="col-12 col-md-12 col-lg-6">
-                        <ul class="inline-list">
-
-                            {% include "common/department_dropdown.html.twig" with {'pathForDepartment': 'teamadmin_filter_teams_by_department', 'departmentParameterName': 'id', 'currentDepartment': department} %}
-
-                            <li>
-                                <a class="button tiny" data-dropdown="team" aria-controls="team" aria-expanded="false">Opprett
-                                    team &raquo;</a>
-                                <ul id="team" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true"
-                                    aria-autoclose="false" tabindex="-1">
-
-                                    {% for d in get_departments() %}
-
-                                        <li>
-                                            <a href="{{ path('teamadmin_create_team_for_department', { 'id': d.id }) }}">{{ d.shortName }}</a>
-                                        </li>
-
-                                    {% endfor %}
-
-                                </ul>
-                            </li>
-
-                            <li>
-                                <a href="{{ path('teamadmin_show_position') }}" class="button tiny">Stillinger</a>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-            {% endif %}
-
-            <h5>Aktive team</h5>
-            <table width="100%" id="table">
-
-                <thead>
-                <tr>
-                    <th>Navn</th>
-                    <th>E-post</th>
-                    <th colspan="3">Opptak</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                {% for t in teams %}
-                    {% if t.isActive %}
-                        <tr>
-                            <td><a
-                                        href="{{ path('teamadmin_show_specific_team', { 'id': t.id }) }}"> {{ t.name }} </a>
-                            </td>
-                            <td>
-                                {{ t.email }}
-                            </td>
-                            {% if t.acceptApplication %}
-                                <td><span class="text-success">Åpent</span></td>
-                            {% else %}
-                                <td><span class="text-alert">Stengt</span></td>
-                            {% endif %}
-                            {% if is_granted_admin() %}
-                                <td class="float-right"><a href="#" id="{{ t.id }}" class="button tiny alert delete"><i
-                                                class="fa fa-trash-o"></i> Slett</a></td>
-                            {% endif %}
-                            {% if is_granted_team_leader() %}
-                                <td class="float-right"><a href="{{ path('teamadmin_update', { 'id': t.id }) }}"
-                                       class="button tiny float-right">Rediger</a>
-                                </td>
-                            {% endif %}
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-            </table>
-
-            {% set anyInactive = false %}
-            <!-- Henter ut team som ikke er aktive -->
-            {% for t in teams if not t.isActive %}
-            <!-- Printer ut tablehead kun hvis iterasjonen går gjennom en gang, altså hvis det
-             finnes minst ett inaktivt team-->
-            {% if loop.first %}
-            {% set anyInactive = true %}
-            <h5>Inaktive team</h5>
-            <table width="100%">
-                <thead>
-                <tr>
-                    <th>Navn</th>
-                    <th>E-post</th>
-                    <th colspan="3">Opptak</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% endif %}
-                <tr>
-                    <td><a href="{{ path('teamadmin_show_specific_team', { 'id': t.id }) }}"> {{ t.name }} </a>
-                    </td>
-                    <td>
-                        {{ t.email }}
-                    </td>
-                    {% if t.acceptApplication %}
-                        <td><span class="text-success">Åpent</span></td>
-                    {% else %}
-                        <td><span class="text-alert">Stengt</span></td>
-                    {% endif %}
-                    {% if is_granted_admin() %}
-                        <td class="float-right"><a href="#" id="{{ t.id }}" class="button tiny alert delete"><i
-                                        class="fa fa-trash-o"></i> Slett</a></td>
-                    {% endif %}
-                    {% if is_granted_team_leader() %}
-                        <td class="float-right"><a href="{{ path('teamadmin_update', { 'id': t.id }) }}"
-                                                   class="button tiny float-right">Rediger</a>
-                        </td>
-                    {% endif %}
-                </tr>
-                {% endfor %}
-                {% if anyInactive %}
-                </tbody>
-            </table>
-            {% endif %}
+        <div class="col-12">
+            <h2 class="text-center my-3">Team {{ department }}</h2>
+            <ul class="nav nav-tabs mt-4">
+                <li class="nav-item">
+                    <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active" role="tab"
+                       aria-controls="home" aria-selected="true">Aktive team</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="inactive-tab" data-toggle="tab" href="#inactive" role="tab"
+                       aria-controls="home" aria-selected="true">Inaktive team</a>
+                </li>
+            </ul>
         </div>
     </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="active" role="tabpanel" aria-labelledby="active-tab">
+                    {% include 'team_admin/team_table.html.twig' with {'teams': active_teams} %}
+                </div>
+                <div class="tab-pane fade" id="inactive" role="tabpanel" aria-labelledby="inactive-tab">
+                    {% include 'team_admin/team_table.html.twig' with {'teams': inactive_teams} %}
+                </div>
+            </div>
 
-    <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
-         aria-hidden="true" role="dialog">
-        <h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
-        <ul class="inline-list">
-            <a id="modalAccept" href="#" class="button tiny">Slett</a>
-            <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
-        </ul>
+        </div>
     </div>
-
 {% endblock %}
