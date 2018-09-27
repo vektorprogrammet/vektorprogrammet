@@ -30,6 +30,11 @@ class SurveyController extends Controller
      */
     public function showAction(Request $request, Survey $survey)
     {
+        if($survey->isTeamSurvey()){
+            return $this->showTeamAction($request,$survey);
+        }
+
+
         $surveyTaken = $this->get('survey.manager')->initializeSurveyTaken($survey);
 
         $form = $this->createForm(SurveySchoolSpecificExecuteType::class, $surveyTaken, array(
@@ -69,6 +74,10 @@ class SurveyController extends Controller
 
     public function showTeamAction(Request $request, Survey $survey)
     {
+        if(!$survey->isTeamSurvey()){
+            return $this->showAction($request,$survey);
+        }
+
         $user = $this->getUser();
 
         if ($user===null) {
@@ -179,14 +188,16 @@ class SurveyController extends Controller
             throw $this->createAccessDeniedException();
         }
 
+
         $em = $this->getDoctrine()->getManager();
         $department = $this->getUser()->getDepartment();
         $semester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
 
-        $surveyClone = $survey->copy($this->isUserAdmin());
+        $surveyClone = $survey->copy();
         $surveyClone->setSemester($semester);
 
-        $form = $this->createForm(SurveyType::class, $surveyClone);
+
+        $form = $this->createForm($tempSurveyType, $surveyClone);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -195,6 +206,9 @@ class SurveyController extends Controller
 
             return $this->redirect($this->generateUrl('surveys'));
         }
+
+        dump($tempSurveyType);
+
 
         return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
     }

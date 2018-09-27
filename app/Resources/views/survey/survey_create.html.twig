@@ -9,6 +9,8 @@
 {% block javascripts %}
     <script>
 
+
+
         /**
          * This object organizes the javascript used by this twig.
          * It handles all the client side functionality required to make use of embedded form collections,
@@ -217,19 +219,20 @@
             <hr>
 
             {{ form_start(form) }}
-
             {{ form_widget(form.name) }}
             {{ form_errors(form.name) }}
             {{ form_widget(form.semester ) }}
             {{ form_errors(form.semester) }}
             {{ form_row(form.showCustomFinishPage ) }}
+            {{ form_row(form.finishPageContent ) }}
+
             {{ form_row(form.confidential) }}
 
             {% if is_granted_admin() %}
                 {{ form_row(form.team_survey) }}
+                {{ form_row(form.surveyPopUpMessage ) }}
             {%  endif %}
 
-            {{ form_row(form.finishPageContent ) }}
 
             <div
                     id="prototypes"

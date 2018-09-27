@@ -53,9 +53,13 @@
 {% endblock %}
 
 
-    {{ render(controller(
-        "AppBundle:TwigSurvey:nextSurvey"
-    )) }}
+    {% if 'survey_show' not in app.request.get('_route') %}
+
+        {{
+             render(controller("AppBundle:TwigSurvey:nextSurvey"))
+
+        }}
+    {% endif %}
 
 
 

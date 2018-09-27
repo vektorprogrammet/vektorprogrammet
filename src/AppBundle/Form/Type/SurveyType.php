@@ -55,8 +55,10 @@ class SurveyType extends AbstractType
             ])
 
             ->add('surveyPopUpMessage', CKEditorType::class, [
-            'label' => 'Tilpasset pop-up melding? Vises kun hvis "Tilpasset" er valgt over.',
-        ]);
+            'label' => 'Pop-up melding, vises kun hvis ja er valgt.',
+             ]);
+
+
         }
 
         $builder->add('confidential', ChoiceType::class, array(
@@ -70,7 +72,7 @@ class SurveyType extends AbstractType
         ))
 
         ->add('finishPageContent', CKEditorType::class, [
-            'label' => 'Tilpasset sluttside. Vises kun hvis "Tilpasset" er valgt over.',
+            'label' => 'Tilpasset sluttside, vises kun hvis "tilpasset" er valgt',
         ])
 
         ->add('surveyQuestions', 'collection', array(

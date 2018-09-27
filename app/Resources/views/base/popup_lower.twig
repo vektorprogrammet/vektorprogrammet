@@ -8,7 +8,19 @@
 
 <div class="popup">
     <div class="cta js-popup-toggle text-center popupAttention">
-        <p><a href="{{ path('survey_show_team',{'id':survey.id}) }}" target="_blank" class="popup-dismiss"><i class="fa fa-external-link"></i> Svar på undersøkelse </a>| <span class="popup-never"> Aldri vis igjen </span>|<span class="popup-dismiss"> Lukk </span></p>
+        <span>
+            <a href="{{ path('survey_show_team',{'id':survey.id}) }}" target="_blank" class="popup-dismiss">
+                <i class="fa fa-external-link"></i> <p id="mobilethinshow">Ta undersøkelse</p><div id="mobilethinnone">{{ survey.surveyPopUpMessage | safe_html}} </div>
+            </a>
+
+        </span>
+
+        <span>
+            <p id="mobilenone">|</p>
+            <p id="popup-dismisstext" class="popup-dismiss"> Senere |</p>
+            <p class="popup-never"> Aldri </p>
+        </span>
+
     </div>
 </div>
 

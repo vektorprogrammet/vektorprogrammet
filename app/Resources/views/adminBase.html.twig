@@ -52,6 +52,17 @@
 {% include 'base/admin/mobile_navigation.html.twig' %}
 <br/>
 {% include 'common/flash_control_panel.html.twig' %}
+
+
+{% if 'survey_show' not in app.request.get('_route') %}
+
+    {{
+    render(controller("AppBundle:TwigSurvey:nextSurvey"))
+
+    }}
+{% endif %}
+
+
 {% block body %}
     <p>
         Content
