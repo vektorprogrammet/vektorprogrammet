@@ -9,21 +9,13 @@
 {% block body %}
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12">
-            {% for flashMessage in app.session.flashbag.get('contact-notice') %}
-                <div class="contact-notice">
-                    <div data-alert class="alert-box success radius">
-                        {{ flashMessage }}
-                        <a href="#" class="close">&times;</a>
-                    </div>
-                </div>
-            {% endfor %}
-
             {% for flashMessage in app.session.flashbag.get('admission-notice') %}
-                <div class="admission-notice">
-                    <div data-alert class="alert-box success radius">
-                        {{ flashMessage }}
-                        <a href="#" class="close">&times;</a>
-                    </div>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading">Søknad registrert!</h4>
+                    <p>En bekreftelsesmail med videre informasjon har blitt sendt til assistenten</p>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
             {% endfor %}
         </div>
@@ -107,7 +99,7 @@
 
             <div class="row">
                 <div class="col-12 col-md-6 col-lg-4 text-center offset-lg-4">
-                    <button class="vektor-button-inverted" tabindex="9">Registrer</button>
+                    <button class="btn btn-success mt-3" tabindex="9">Registrer</button>
                 </div>
             </div>
 
