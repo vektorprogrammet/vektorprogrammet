@@ -1,33 +1,75 @@
 {% extends 'adminBase.html.twig' %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('teamadmin_show', {'id': team.department.id}) }}">Team</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{{ path('teamadmin_show_specific_team', {'id': team.id}) }}">{{ team.name }}</a>
+    </li>
+    <li class="breadcrumb-item active">
+        Søkere
+    </li>
+{% endblock %}
+
+
 {% block body %}
     <div class="row">
         <div class="col-12">
-            <h3>Søknader til {{ team.name }}</h3>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <table>
-                {% for application in applications %}
-                    <tr>
-                        <td>
-                            <a href="{{ path('team_application_show',{id:application.id}) }}">{{ application.name }}</a>
-                        </td>
-                        <td>
-                            {{ application.email }}
-                        </td>
-                        <td>
-                            <form action="{{ path('team_application_delete',{id:application.id}) }}" method="POST"
-                                  onsubmit="return confirm('Er du sikker?')">
-                                <button type="submit" class="button tiny alert">
-                                    <i class="fa fa-trash"></i> Slett
-                                </button>
-                            </form>
+            <h2 class="text-center my-3">Søknader {{ team }}</h2>
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Søknader til {{ team.name }} ({{ applications|length }})
+                </div>
+                <div class="card-body table-responsive">
 
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
+                    <table class="table">
+                        <tr>
+                            <th></th>
+                            <th>Navn</th>
+                            <th>E-post</th>
+                        </tr>
+                        {% for application in applications %}
+                            <tr>
+                                <td>
+                                    {% if is_granted_team_leader() %}
+                                        <div class="dropdown">
+                                            <div class="clickable px-2" id="options-{{ application.id }}"
+                                                 data-toggle="dropdown"
+                                                 aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-ellipsis-v text-secondary"></i>
+                                            </div>
+                                            <div class="dropdown-menu pt-0"
+                                                 aria-labelledby="options-{{ application.id }}">
+                                                <div class="dropdown-header mb-2">
+                                                    <strong>{{ application.name }}</strong></div>
+                                                <form method="POST"
+                                                      onsubmit="return confirm('Vil du virkelig slette søknaden til {{ application.name }}?')"
+                                                      action="{{ path('team_application_delete', { id: application.id }) }}">
+                                                    <button type="submit"
+                                                            class="dropdown-item">
+                                                        <i class="fa fa-trash text-danger"></i> Slett
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ path('team_application_show',{id:application.id}) }}">{{ application.name }}</a>
+                                </td>
+                                <td>
+                                    {{ application.email }}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="3"><i class="fa fa-warning text-warning"></i> Ingen søkere</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
