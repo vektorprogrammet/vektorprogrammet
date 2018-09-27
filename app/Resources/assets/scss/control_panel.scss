@@ -6,13 +6,8 @@
 @import "../../../../node_modules/@fortawesome/fontawesome-free/scss/v4-shims";
 @import "partials/fonts";
 @import "partials/typography";
-@import "header";
-@import "mobile_nav";
 @import "footer";
-@import "modules/well";
 @import "modules/colors";
-@import "modules/team.scss";
-@import "modules/interview_confirmation.scss";
 
 $sidebar-width: 225px;
 body {
