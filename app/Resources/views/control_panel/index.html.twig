@@ -4,6 +4,16 @@
     <link rel="stylesheet" href="{{ asset_with_version('css/pages/admin/home.css') }}">
 {% endblock %}
 
+{% block default_breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('home') }}">Forsiden</a>
+    </li>
+    <li class="breadcrumb-item active">
+        Kontrollpanel
+    </li>
+{% endblock %}
+
+
 {% block body %}
     <div class="control-panel">
         <div class="sbs">
