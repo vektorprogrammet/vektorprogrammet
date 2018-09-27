@@ -1,120 +1,59 @@
 {% extends 'adminBase.html.twig' %}
 
-{% block javascripts %}
-
-    {# Easy routing with FOSJsRouting bundle #}
-    <script src="{{ asset_with_version('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-    {# We need the deletetablerow.js file #}
-    <script src="{{ asset_with_version('js/deleteablerow.js') }}"></script>
-
-    <script>
-
-        $(document).ready(function () {
-            $('.delete').deleteablerow('teamadmin_remove_user_from_team_by_id', {
-                confirmation: {
-                    modal: $('#confirmModal'),
-                    acceptButton: $('#modalAccept'),
-                    cancelButton: $('#modalCancel')
-                }
-            });
-        });
-
-        $("#search").keyup(function () {
-
-            _this = this;
-
-            $.each($("#table tbody").find("tr"), function () {
-
-                if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
-                    $(this).hide();
-                }
-                else {
-                    $(this).show();
-                }
-            });
-
-        });
-
-    </script>
-
-    <script>
-        var $oldTeamMemberships = $('#oldTeamMemberships');
-        var $oldTeamMembershipsButton = $('#oldTeamMembershipsButton');
-        $oldTeamMembershipsButton.on('click', function () {
-            $oldTeamMemberships.slideToggle(400);
-            if ($oldTeamMembershipsButton.html() == "Vis gamle medlemmer") {
-                $oldTeamMembershipsButton.html("Skjul gamle medlemmer");
-                $oldTeamMembershipsButton.addClass('alert').removeClass('success');
-            } else if ($oldTeamMembershipsButton.html() == "Skjul gamle medlemmer") {
-                $oldTeamMembershipsButton.addClass('success').removeClass('alert');
-                $oldTeamMembershipsButton.html("Vis gamle medlemmer");
-            }
-        });
-    </script>
-
-
-{% endblock %}
-
 {% block title %}
     Team: {{ team.name }}
 {% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('teamadmin_show', {'id': team.department.id}) }}">Team</a>
+    </li>
+    <li class="breadcrumb-item active">
+        {{ team.name }}
+    </li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    <div class="btn-group">
+        {% if is_granted_team_leader() or isUserInTeam %}
+            <a href="{{ path('team_application_show_all', { 'id': team.id }) }}"
+               class="btn btn-outline-secondary">Se søkere{% if team.applications|length %} ({{ team.applications|length }}){% endif %}</a>
+        {% endif %}
+        {% if is_granted_team_leader() %}
+            <a href="{{ path('teamadmin_add_user_to_team', { 'id': team.id }) }}"
+               class="btn text-success"><i class="fa fa-plus"></i> Legg til teammedlem</a>
+        {% endif %}
+    </div>
+{% endblock %}
+
 {% block body %}
     <div class="row">
-        <div class="col-12 col-md-12 col-lg-12">
-
-            <h1> {{ team.name }} </h1>
-            <hr>
-
-            <div class="row">
-
-                <div class="col-12 col-md-12 col-lg-6">
-                    <ul class="inline-list">
-
-                        {% if is_granted_team_leader() %}
-
-                            <li>
-                                <a href="{{ path('teamadmin_add_user_to_team', { 'id': team.id }) }}"
-                                   class="button tiny">Legg til bruker</a>
-                            </li>
-                        {% endif %}
-                        {% if is_granted_team_leader() or isUserInTeam %}
-                            <li>
-                                <a href="{{ path('team_application_show_all', { 'id': team.id }) }}"
-                                   class="button tiny">Se søkere</a>
-                            </li>
-                        {% endif %}
-
-                    </ul>
-                </div>
-
-                <div class="col-12 col-md-12 col-lg-6">
-                    <input type="text" id="search" placeholder="Søk..."/>
-                </div>
-
-            </div>
-
-            <hr>
-
-            <h3>Aktive medlemmer</h3>
-            {% include 'team_admin/team_membership_table.html.twig' with {'teamMemberships' : activeTeamMemberships} %}
-
-            <div id="oldTeamMemberships">
-                <h3>Team historikk</h3>
-                {% include 'team_admin/team_membership_table.html.twig' with {'teamMemberships' : inActiveTeamMemberships} %}
-            </div>
-            <button id="oldTeamMembershipsButton" class="button tiny success">Vis gamle medlemmer</button>
+        <div class="col-12">
+            <h2 class="text-center my-3">{{ team.name }}</h2>
+            <ul class="nav nav-tabs mt-4">
+                <li class="nav-item">
+                    <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active" role="tab"
+                       aria-controls="home" aria-selected="true">Aktive medlemmer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="inactive-tab" data-toggle="tab" href="#inactive" role="tab"
+                       aria-controls="home" aria-selected="true">Inaktive medlemmer</a>
+                </li>
+            </ul>
         </div>
     </div>
 
-    <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
-         aria-hidden="true" role="dialog">
-        <h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
-        <ul class="inline-list">
-            <a id="modalAccept" href="#" class="button tiny">Slett</a>
-            <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
-        </ul>
-    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show table-responsive active" id="active" role="tabpanel" aria-labelledby="active-tab">
+                    {% include 'team_admin/team_membership_table.html.twig' with {'teamMemberships' : activeTeamMemberships} %}
+                </div>
+                <div class="tab-pane fade table-responsive" id="inactive" role="tabpanel" aria-labelledby="inactive-tab">
+                    {% include 'team_admin/team_membership_table.html.twig' with {'teamMemberships' : inActiveTeamMemberships} %}
+                </div>
+            </div>
 
+        </div>
+    </div>
 {% endblock %}
