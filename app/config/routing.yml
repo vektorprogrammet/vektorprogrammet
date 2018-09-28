@@ -1217,25 +1217,6 @@ signature_image_show:
   methods: [GET]
 
 
-##########################################	
-#                Sponsors                #
-##########################################
-
-sponsors_edit:	
-  path: /kontrollpanel/sponsors/edit
-  defaults: { _controller: AppBundle:Sponsors:sponsorsEdit }
-  methods: [GET]
-
-sponsors_update:	
-  path: /kontrollpanel/sponsors/update/{id}
-  defaults: { _controller: AppBundle:Sponsors:sponsorsUpdate }
-  methods: [GET, POST]
-
-sponsors_add:	
-  path: /kontrollpanel/sponsors/add
-  defaults: { _controller: AppBundle:Sponsors:sponsorsAdd }
-  methods: [GET, POST]
-
 ##########################################
 #              Newsletter                #
 ##########################################
