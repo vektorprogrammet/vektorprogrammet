@@ -46,7 +46,6 @@ class SponsorsController extends Controller
 
         $form = $this->createForm(SponsorType::class, $sponsor);
         $form->handleRequest($request);
-        dump($sponsor);
         if ($form->isSubmitted() && $form->isValid()) {
             $isImageUpload = $request->files->count() > 0;
 
