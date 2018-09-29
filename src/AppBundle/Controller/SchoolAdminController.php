@@ -63,7 +63,7 @@ class SchoolAdminController extends Controller
         // Return the form view
         return $this->render('school_admin/create_assistant_history.html.twig', array(
             'form' => $form->createView(),
-	        'user' => $user
+            'user' => $user
         ));
     }
 
