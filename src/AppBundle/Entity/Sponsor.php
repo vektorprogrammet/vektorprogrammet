@@ -40,7 +40,6 @@ class Sponsor
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotBlank(message="Et bilde må lastes opp.")
      */
     protected $logoImagePath;
 

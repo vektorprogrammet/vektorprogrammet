@@ -386,21 +386,6 @@ articleadmin_delete:
   options:
     expose: true
 
-articleadmin_crop:
-  path: /kontrollpanel/artikkeladmin/crop
-  defaults: { _controller: AppBundle:ArticleAdmin:cropImage }
-  methods: [GET, POST]
-  options:
-    expose: true
-
-articleadmin_saveImage:
-  path: /kontrollpanel/artikkeladmin/saveImage
-  defaults: { _controller: AppBundle:ArticleAdmin:saveImage }
-  methods: [GET, POST]
-  options:
-    expose: true
-
-
 ##########################################
 #            AdmissionAdmin              #
 ##########################################
