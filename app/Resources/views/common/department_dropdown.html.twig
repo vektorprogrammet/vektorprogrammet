@@ -5,7 +5,6 @@
     </button>
     <div class="dropdown-menu" aria-labelledby="departmentDropdown">
         {% for department in get_departments() %}
-
             {% if linkToSemester is defined and linkToSemester == true %}
                 <a class="dropdown-item" href="{{ path(pathForDepartment, { (departmentParameterName): department.currentOrLatestSemester.id }) }}">{{ department }}</a>
             {% else %}

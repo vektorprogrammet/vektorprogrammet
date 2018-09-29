@@ -4,29 +4,23 @@
     Opprett assistent historie
 {% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('schooladmin_show_users_of_department_superadmin', {'id': user.department.id}) }}">Tildel skole</a>
+    </li>
+    <li class="breadcrumb-item active">{{ user }}</li>
+{% endblock %}
+
+
 {% block body %}
-    <p></p>
-
-    <div class="row">
-        <div class="col-12 col-md-12 col-lg-12">
-
-            <h1> Opprett assistent historie </h1>
-
-            <hr>
-
-            <div class="row">
-                <div class="col-12 col-md-12 col-lg-12">
-
-                    {{ form_start(form) }}
-                    {{ form_widget(form) }}
-                    {{ form_end(form) }}
-
-                </div>
-            </div>
-
-
+    <div class="card">
+        <div class="card-header">
+            Opprett assistentstilling for {{ user }}
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
         </div>
     </div>
-    </div>
-
 {% endblock %}

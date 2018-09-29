@@ -63,6 +63,7 @@ class SchoolAdminController extends Controller
         // Return the form view
         return $this->render('school_admin/create_assistant_history.html.twig', array(
             'form' => $form->createView(),
+	        'user' => $user
         ));
     }
 
@@ -75,6 +76,7 @@ class SchoolAdminController extends Controller
         // Return the view with suitable variables
         return $this->render('school_admin/all_users.html.twig', array(
             'departments' => $activeDepartments,
+            'department' => $department,
             'users' => $users,
         ));
     }
@@ -95,6 +97,7 @@ class SchoolAdminController extends Controller
         // Return the view with suitable variables
         return $this->render('school_admin/all_users.html.twig', array(
             'departments' => $activeDepartments,
+            'department' => $department,
             'users' => $users,
         ));
     }
