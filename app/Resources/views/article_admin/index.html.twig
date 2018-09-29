@@ -1,7 +1,7 @@
 {% extends 'adminBase.html.twig' %}
 
 {% block title %}
-    Nyheter
+    Artikler
 {% endblock %}
 
 {% block breadcrumb %}
@@ -47,7 +47,7 @@
                                             <a href="{{ path('articleadmin_edit', { 'id': a.id }) }}"
                                                class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
                                             </a>
-                                            {% if is_granted_admin() %}
+                                            {% if is_granted_team_leader() %}
                                                 <form method="POST"
                                                       onsubmit="return confirm('Vil du virkelig slette artikkel {{ a.title }}?')"
                                                       action="{{ path('articleadmin_delete', { id: a.id }) }}">
