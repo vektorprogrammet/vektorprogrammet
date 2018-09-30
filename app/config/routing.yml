@@ -87,11 +87,6 @@ survey_create:
   defaults: { _controller: AppBundle:Survey:createSurvey }
   methods: [GET, POST]
 
-surveys:
- path: /kontrollpanel/undersokelse/admin
- defaults: { _controller: AppBundle:Survey:showSurveys }
- methods: [GET]
-
 survey_edit:
  path: /kontrollpanel/undersokelse/endre/{id}
  defaults: { _controller: AppBundle:Survey:editSurvey }
