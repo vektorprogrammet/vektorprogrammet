@@ -4,217 +4,219 @@
     Ny Spørreundersøkelse
 {% endblock %}
 
-{% form_theme form 'form/survey_layout.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/admin/survey_form.css') }}">
+{% endblock %}
+
 
 {% block javascripts %}
     <script>
 
-        /**
-         * This object organizes the javascript used by this twig.
-         * It handles all the client side functionality required to make use of embedded form collections,
-         * and the ability to add and remove objects, such as adding new questions and alternatives to a interview schema.
-         * It uses prototypes, which are blueprints with placeholder values, to dynamically generate new form components.
-         *
-         * See: http://symfony.com/doc/current/cookbook/form/form_collections.html
-         *
-         * The onReady function is called when the document is ready.
-         */
-        IntSchema = {
+      /**
+       * This object organizes the javascript used by this twig.
+       * It handles all the client side functionality required to make use of embedded form collections,
+       * and the ability to add and remove objects, such as adding new questions and alternatives to a interview schema.
+       * It uses prototypes, which are blueprints with placeholder values, to dynamically generate new form components.
+       *
+       * See: http://symfony.com/doc/current/cookbook/form/form_collections.html
+       *
+       * The onReady function is called when the document is ready.
+       */
+      IntSchema = {
 
-            // The container for all the questions
-            questions: $("#questions"),
+        // The container for all the questions
+        questions: $('#questions'),
 
-            // The add question button
-            addQuestionButton: $("#addQuestionButton"),
+        // The add question button
+        addQuestionButton: $('#addQuestionButton'),
 
-            // The prototype for a question alternative
-            aPrototype: $("#prototypes").data("prototype-a"),
+        // The prototype for a question alternative
+        aPrototype: $('#prototypes').data('prototype-a'),
 
-            // The prototype for a question
-            qPrototype: $("#prototypes").data("prototype-q"),
+        // The prototype for a question
+        qPrototype: $('#prototypes').data('prototype-q'),
 
-            onReady: function () {
-                // Set up the questions that are already in the database (add buttons etc)
-                IntSchema.questions.find(".panel").each(IntSchema.setUp);
+        onReady: function () {
+          // Set up the questions that are already in the database (add buttons etc)
+          IntSchema.questions.find('.question-card').each(IntSchema.setUp);
 
-                // Find the initial number of questions in the schema
-                IntSchema.questions.data("q-index", IntSchema.questions.find('.panel').length);
+          // Find the initial number of questions in the schema
+          IntSchema.questions.data('q-index', IntSchema.questions.find('.question-card').length);
 
-                // Bind the add question functionality to the add question button
-                IntSchema.addQuestionButton.on("click", IntSchema.addQuestion);
-            },
+          // Bind the add question functionality to the add question button
+          IntSchema.addQuestionButton.on('click', IntSchema.addQuestion);
+        },
 
-            setUp: function (i) {
-                var alternatives = $(this).find(".alternatives");
-                var rows = alternatives.find(".row");
-                var type = $(this).find("select");
+        setUp: function (i) {
+          var alternatives = $(this).find('.alternatives');
+          var rows = alternatives.find('.row');
+          var type = $(this).find('select');
 
-                alternatives.data("a-index", rows.length);
-                alternatives.data("q-index", i);
+          alternatives.data('a-index', rows.length);
+          alternatives.data('q-index', i);
 
-                IntSchema.addQuestionDeleteButton($(this));
+          IntSchema.addQuestionDeleteButton($(this));
 
-                var alternativeButton = IntSchema.addAlternativeAddButton($(this));
+          var alternativeButton = IntSchema.addAlternativeAddButton($(this));
 
-                IntSchema.toggleAlternatives(type, alternatives, alternativeButton);
+          IntSchema.toggleAlternatives(type, alternatives, alternativeButton);
 
-                type.on("change", function () {
-                    IntSchema.toggleAlternatives(type, alternatives, alternativeButton);
-                });
+          type.on('change', function () {
+            IntSchema.toggleAlternatives(type, alternatives, alternativeButton);
+          });
 
-                rows.each(function () {
-                    IntSchema.addAlternativeDeleteButton($(this));
-                });
-            },
+          rows.each(function () {
+            IntSchema.addAlternativeDeleteButton($(this));
+          });
+        },
 
-            addQuestion: function (event) {
-                event.preventDefault();
+        addQuestion: function (event) {
+          event.preventDefault();
 
-                var qIndex = IntSchema.questions.data("q-index");
-                var newQuestion = $(IntSchema.qPrototype.replace(/__q_prot__/g, qIndex));
-                var newAlternatives = $("<div></div>").addClass("alternatives col-8 col-md-6 col-lg-5 offset-3 offset-md-2 offset-lg-1");
-                var newButtons = $("<div></div>").addClass("buttons col-8 col-md-6 col-lg-5 offset-3 offset-md-2 offset-lg-1");
+          var qIndex = IntSchema.questions.data('q-index');
+          var newQuestion = $(IntSchema.qPrototype.replace(/__q_prot__/g, qIndex));
+          var newAlternatives = $('<div></div>').addClass('alternatives col-8 col-md-6 col-lg-5');
+          var newButtons = $('<div></div>').addClass('buttons col-8 col-md-6 col-lg-5');
 
-                newAlternatives.data("a-index", 0);
-                newAlternatives.data("q-index", qIndex);
+          newAlternatives.data('a-index', 0);
+          newAlternatives.data('q-index', qIndex);
 
-                var newPanel = $("<div></div>").addClass("panel")
-                        .append(newQuestion)
-                        .append($("<div></div>").addClass("row").append(newAlternatives))
-                        .append($("<div></div>").addClass("row").append(newButtons));
+          var question = $('<div></div>').addClass('card question-card');
+          var questionHeader = $('<div>Spørsmål</div>').addClass('card-header');
 
-                var newColumns = $("<div></div>").addClass("col-12");
-                var newRow = $("<div></div>").addClass("row");
+          var newPanel = $('<div></div>').addClass('card-body')
+            .append(newQuestion)
+            .append($('<div></div>').addClass('row').append(newAlternatives))
+            .append($('<div></div>').addClass('row').append(newButtons));
 
-                newRow.append(newColumns.append(newPanel));
+          question.append(questionHeader).append(newPanel);
 
-                IntSchema.addQuestionDeleteButton(newPanel);
-                var alternativeButton = IntSchema.addAlternativeAddButton(newPanel);
-                alternativeButton.hide();
-                IntSchema.addOrderButtons(newPanel);
+          IntSchema.addQuestionDeleteButton(newPanel);
+          var alternativeButton = IntSchema.addAlternativeAddButton(newPanel);
+          alternativeButton.hide();
+          IntSchema.addOrderButtons(newPanel);
 
-                IntSchema.questions.append(newRow);
+          IntSchema.questions.append(question);
 
-                var type = newQuestion.find("select");
+          var type = newQuestion.find('select');
 
-                type.on("change", function () {
-                    IntSchema.toggleAlternatives(type, newAlternatives, alternativeButton);
-                });
+          type.on('change', function () {
+            IntSchema.toggleAlternatives(type, newAlternatives, alternativeButton);
+          });
 
-                IntSchema.questions.data("q-index", qIndex + 1);
-            },
+          IntSchema.questions.data('q-index', qIndex + 1);
+        },
 
-            addQuestionDeleteButton: function (panel) {
-                var deleteButton = $('<a href="#" class="button tiny alert right"><i class="fa fa-trash-o fa-lg"></i></a>');
-                var column = $("<div></div>").addClass("col-3 col-md-2 col-lg-1");
-                var row = panel.find(".row").first();
+        addQuestionDeleteButton: function (panel) {
+          var deleteButton = $('<button class="float-right clickable btn btn-sm btn-outline-danger">Slett&nbsp;<i class="fa fa-trash-o text-danger"></i></button>');
+          var row = panel.siblings('.card-header').first();
 
-                row.append(column);
-                column.append(deleteButton);
+          row.append(deleteButton);
 
-                deleteButton.on('click', function (event) {
-                    event.preventDefault();
-                    panel.remove();
-                });
-            },
+          deleteButton.on('click', function (event) {
+            event.preventDefault();
+            panel.parent(".question-card").remove();
+          });
+        },
 
-            addAlternativeAddButton: function (panel) {
-                var alternativeButton = $('<a href="#" class="button tiny"><i class="fa fa-plus"></i> Alternativ</a>');
-                var alternatives = panel.find(".alternatives");
-                var buttons = panel.find(".buttons");
+        addAlternativeAddButton: function (panel) {
+          var alternativeButton = $('<a href="#" class="button tiny"><i class="fa fa-plus"></i> Alternativ</a>');
+          var alternatives = panel.find('.alternatives');
+          var buttons = panel.find('.buttons');
 
-                buttons.append(alternativeButton);
+          buttons.append(alternativeButton);
 
-                alternativeButton.on('click', null, alternatives, IntSchema.addAlternative);
+          alternativeButton.on('click', null, alternatives, IntSchema.addAlternative);
 
-                return alternativeButton;
-            },
+          return alternativeButton;
+        },
 
-            addAlternativeDeleteButton: function (alternative) {
-                var deleteButton = $('<i class="fa fa-times delete-icon"></i>');
+        addAlternativeDeleteButton: function (alternative) {
+          var deleteButton = $('<button class="btn btn-sm btn-outline-danger float-right">Slett&nbsp;<i class="fa fa-trash-o"></i></button>');
 
-                alternative.append(deleteButton);
+          alternative.append(deleteButton);
 
-                deleteButton.on('click', function (event) {
-                    event.preventDefault();
-                    alternative.remove();
-                });
-            },
+          deleteButton.on('click', function (event) {
+            event.preventDefault();
+            alternative.closest(".alternative").remove();
+          });
+        },
 
-            addAlternative: function (event) {
-                event.preventDefault();
-                var alternatives = event.data;
+        addAlternative: function (event) {
+          event.preventDefault();
+          var alternatives = event.data;
 
-                var aIndex = alternatives.data('a-index');
-                var qIndex = alternatives.data('q-index');
+          var aIndex = alternatives.data('a-index');
+          var qIndex = alternatives.data('q-index');
 
-                var upButton = $('<button class="button tiny secondary">Opp&nbsp;<i class="fa fa-arrow-up"/></button>');
-                var downButton = $('<button class="button tiny secondary">Ned&nbsp;<i class="fa fa-arrow-down"/></button>');
+          var upButton = $('<button class="btn btn-sm btn-outline-secondary">Opp&nbsp;<i class="fa fa-arrow-up"/></button>');
+          var downButton = $('<button class="btn btn-sm btn-outline-secondary">Ned&nbsp;<i class="fa fa-arrow-down"/></button>');
 
-                upButton.on('click', function (e) {
-                    e.preventDefault();
-                    upButton.closest('.row').insertBefore(upButton.closest('.row').prev('.row'));
-                });
-                downButton.on('click', function (e) {
-                    e.preventDefault();
-                    downButton.closest('.row').insertAfter(downButton.closest('.row').next('.row'));
-                });
+          upButton.on('click', function (e) {
+            e.preventDefault();
+            upButton.closest('.alternative').insertBefore(upButton.closest('.alternative').prev('.alternative'));
+          });
+          downButton.on('click', function (e) {
+            e.preventDefault();
+            downButton.closest('.alternative').insertAfter(downButton.closest('.alternative').next('.alternative'));
+          });
 
-                var newAlternative = $(IntSchema.aPrototype.replace(/__a_prot__/g, aIndex).replace(/__q_prot__/g, qIndex));
+          var newAlternative = $(IntSchema.aPrototype.replace(/__a_prot__/g, aIndex).replace(/__q_prot__/g, qIndex));
 
-                newAlternative.append(upButton);
-                newAlternative.append(downButton);
-                alternatives.data("a-index", aIndex + 1);
-                alternatives.append(newAlternative);
+          var alternativeRow = $('<div class="alternative"></div>');
+          alternativeRow.append(newAlternative).append(upButton).append(downButton);
 
-                IntSchema.addAlternativeDeleteButton(newAlternative);
-            },
+          newAlternative.append(upButton);
+          newAlternative.append(downButton);
+          alternatives.data('a-index', aIndex + 1);
+          alternatives.append(alternativeRow);
 
-            toggleAlternatives: function (select, alternatives, alternativeButton) {
-                if (select.val() == "text") {
-                    alternatives.empty();
-                    alternativeButton.hide();
-                } else if (select.val() == "radio") {
-                    alternativeButton.show();
-                } else {
-                    alternativeButton.show();
-                }
-            },
+          IntSchema.addAlternativeDeleteButton(newAlternative);
+        },
 
-            addOrderButtons: function (panel) {
-                var upButton = $('<button class="button tiny secondary">Opp&nbsp;<i class="fa fa-arrow-up"/></button>');
-                var downButton = $('<button class="button tiny secondary">Ned&nbsp;<i class="fa fa-arrow-down"/></button>');
+        toggleAlternatives: function (select, alternatives, alternativeButton) {
+          if (select.val() == 'text') {
+            alternatives.empty();
+            alternativeButton.hide();
+          } else if (select.val() == 'radio') {
+            alternativeButton.show();
+          } else {
+            alternativeButton.show();
+          }
+        },
 
-                upButton.on('click', function (e) {
-                    e.preventDefault();
-                    panel.closest('.row').insertBefore(panel.closest('.row').prev('.row'));
-                });
-                downButton.on('click', function (e) {
-                    e.preventDefault();
-                    panel.closest('.row').insertAfter(panel.closest('.row').next('.row'));
-                });
+        addOrderButtons: function (panel) {
+          var upButton = $('<button class="btn btn-sm btn-outline-secondary float-right">Opp&nbsp;<i class="fa fa-arrow-up"/></button>');
+          var downButton = $('<button class="btn btn-sm btn-outline-secondary mx-2 float-right">Ned&nbsp;<i class="fa fa-arrow-down"/></button>');
+          var footer = panel.siblings('.card-header').first();
 
-                panel.append(upButton);
-                panel.append(downButton);
+          upButton.on('click', function (e) {
+            e.preventDefault();
+            panel.closest('.question-card').insertBefore(panel.closest('.question-card').prev('.question-card'));
+          });
+          downButton.on('click', function (e) {
+            e.preventDefault();
+            panel.closest('.question-card').insertAfter(panel.closest('.question-card').next('.question-card'));
+          });
 
-                return upButton;
-            }
-        };
+          footer.append(downButton);
+          footer.append(upButton);
 
-        $(document).ready(IntSchema.onReady);
+          return upButton;
+        },
+      };
+
+      $(document).ready(IntSchema.onReady);
 
     </script>
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-12 col-md-12 col-lg-12">
+    {{ form_start(form) }}
+    <div class="card">
+        <div class="card-header"><i class="fa fa-comment-o"></i> Spørreundersøkelse</div>
+        <div class="card-body">
 
-            <h1>Spørreundersøkelse</h1>
-
-            <hr>
-
-            {{ form_start(form) }}
 
             {{ form_widget(form.name) }}
             {{ form_errors(form.name) }}
@@ -223,58 +225,63 @@
             {{ form_row(form.showCustomFinishPage ) }}
             {{ form_row(form.confidential) }}
             {{ form_row(form.finishPageContent ) }}
+        </div>
+    </div>
 
-            <div
-                    id="prototypes"
-                    data-prototype-a="{{ form_row(form.surveyQuestions.vars.prototype.children['alternatives'].vars.prototype.alternative) | e }}"
-                    data-prototype-q="{{ form_row(form.surveyQuestions.vars.prototype.question) | e }}
+    <div
+            id="prototypes"
+            data-prototype-a="{{ form_row(form.surveyQuestions.vars.prototype.children['alternatives'].vars.prototype.alternative) | e }}"
+            data-prototype-q="{{ form_row(form.surveyQuestions.vars.prototype.question) | e }}
                 {{ form_row(form.surveyQuestions.vars.prototype.help) | e }}
                 {{ form_row(form.surveyQuestions.vars.prototype.type) | e }}
                 {{ form_row(form.surveyQuestions.vars.prototype.optional) | e }}
                 "
-            >
-            </div>
+    >
+    </div>
 
-            <div id="questions">
-                {% for surveyQuestion in form.surveyQuestions %}
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="panel">
-                                {{ form_row(surveyQuestion.question) }}
-                                {{ form_row(surveyQuestion.help) }}
-                                {{ form_row(surveyQuestion.type) }}
-                                <div class="row">
-                                    <div class="alternatives col-8 col-md-6 col-lg-4 offset-3 offset-md-2 offset-lg-1">
-                                        {% for alternative in surveyQuestion.alternatives %}
-                                            {{ form_row(alternative.alternative) }}
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                                <div style="margin-top:5px;">
-                                    {{ form_row(surveyQuestion.optional) }}
+    <div id="questions">
+        {% for surveyQuestion in form.surveyQuestions %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="panel">
+                        {{ form_row(surveyQuestion.question) }}
+                        {{ form_row(surveyQuestion.help) }}
+                        {{ form_row(surveyQuestion.type) }}
+                        <div class="row">
+                            <div class="alternatives col-8 col-md-6 col-lg-4">
+                                {% for alternative in surveyQuestion.alternatives %}
+                                    {{ form_row(alternative.alternative) }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div style="margin-top:5px;">
+                            {{ form_row(surveyQuestion.optional) }}
 
-                                </div>
-                                <div class="row">
-                                    <div class="buttons col-8 col-md-6 col-lg-4 offset-3 offset-md-2 offset-lg-1">
-                                    </div>
-                                </div>
+                        </div>
+                        <div class="row">
+                            <div class="buttons col-8 col-md-6 col-lg-4">
                             </div>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
-
-            <div class="row">
-                <div class="col-12 column">
-                    <ul class="inline-list">
-                        <li><a href="#" id="addQuestionButton" class="button tiny">Nytt Spørsmål</a></li>
-                        <li>{{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}</li>
-                    </ul>
                 </div>
             </div>
+        {% endfor %}
+    </div>
 
-            {# Token CSRF #}
-            {{ form_widget(form._token) }}
+
+    <div class="card">
+        <div class="card-body">
+            <p>
+                <a href="#" id="addQuestionButton" class="button tiny">
+                    <i class="fa fa-plus"></i> Nytt Spørsmål
+                </a>
+            </p>
+
+            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
         </div>
     </div>
+    <div class="hide">
+        {{ form_rest(form) }}
+    </div>
+    {{ form_end(form) }}
 {% endblock %}
