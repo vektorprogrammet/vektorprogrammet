@@ -1,97 +1,73 @@
 {% extends 'adminBase.html.twig' %}
 
-{% block javascripts %}
-
-    {# Easy routing with FOSJsRouting bundle #}
-    <script src="{{ asset_with_version('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-    {# We need the deletetablerow.js file #}
-    <script src="{{ asset_with_version('js/deleteablerow.js') }}"></script>
-
-    <script>
-
-        $(document).ready(function () {
-            $('.delete').deleteablerow('departmentadmin_delete_department_by_id', {
-                confirmation: {
-                    modal: $('#confirmModal'),
-                    acceptButton: $('#modalAccept'),
-                    cancelButton: $('#modalCancel')
-                }
-            });
-        });
-
-    </script>
-
-{% endblock %}
-
 {% block title %}
     Avdeling
 {% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Avdelinger</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    {% if is_granted_admin() %}
+        <a href="{{ path('departmentadmin_create_department') }}" class="btn btn-outline-success text-success">
+            <i class="fa fa-plus"></i> Opprett avdeling
+        </a>
+    {% endif %}
+{% endblock %}
+
+
 	
 {% block body %}
-    <p></p>
-
-    <div class="row">
-        <div class="col-12 col-md-12 col-lg-12">
-            <h1> Avdeling </h1>
-            <hr>
-
-            {% if is_granted_admin() %}
-                <div class="row">
-                    <div class="col-12 col-md-12 col-lg-6">
-                        <ul class="inline-list">
-                            <li><a href="{{ path('departmentadmin_create_department') }}" class="button tiny">Opprett
-                                    avdeling</a></li>
-                        </ul>
-                    </div>
-                </div>
-            {% endif %}
-
-            <table width="100%" id="table">
+    <div class="card">
+        <div class="card-header"><i class="fa fa-align-justify"></i> Avdelinger</div>
+        <div class="card-body table-responsive">
+            <table class="table" id="table">
                 <thead>
                 <tr>
+                    <th></th>
                     <th> Navn</th>
                     <th> Forkortet navn</th>
-                    <th colspan="3"> E-post</th>
+                    <th> E-post</th>
                 </tr>
                 </thead>
 
                 <tbody>
                 {% for d in get_departments() %}
                     <tr>
-                        <td width="40%"><a
+                        <td>
+                            <div class="dropdown">
+                                <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"
+                                     aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-secondary"></i>
+                                </div>
+                                <div class="dropdown-menu pt-0" aria-labelledby="options-{{ loop.index }}">
+                                    <div class="dropdown-header mb-2"><strong>{{ d }}</strong></div>
+                                    <a href="{{ path('departmentadmin_update', { 'id': d.id }) }}"
+                                       class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
+                                    </a>
+                                    {% if is_granted_admin() %}
+                                        <form method="POST"
+                                              onsubmit="return confirm('Vil du virkelig slette avdeling {{ d }}?')"
+                                              action="{{ path('departmentadmin_delete_department_by_id', { id: d.id }) }}">
+                                            <button type="submit"
+                                                    class="dropdown-item">
+                                                <i class="fa fa-trash text-danger"></i> Slett
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td><a
                                     href="{{ path('admission_show_by_city_case_insensitive', { 'city': d} ) }}">  {{ d }} </a>
                         </td>
-                        <td width="20%"> {{ d.shortname }} </td>
-                        <td width="20%"> {{ d.email }} </td>
-
-                        {# Only SUPER_ADMIN should be able to edit teams #}
-                        {% if is_granted_team_leader() %}
-
-                            <td><a href="{{ path('departmentadmin_update', { 'id': d.id }) }}" class="button tiny">Rediger</a>
-                            </td>
-
-                        {% endif %}
-
-                        {# Only HIGHEST_ADMIN should be able to delete teams #}
-                        {% if is_granted_admin() %}
-                            <td><a href="#" id="{{ d.id }}" class="button tiny alert delete"><i
-                                            class="fa fa-trash-o"></i> Slett</a></td>
-                        {% endif %}
+                        <td> {{ d.shortname }} </td>
+                        <td> {{ d.email }} </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
-
-    <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
-         aria-hidden="true" role="dialog">
-        <h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
-        <ul class="inline-list">
-            <a id="modalAccept" href="#" class="button tiny">Slett</a>
-            <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
-        </ul>
-    </div>
-
 {% endblock %}
