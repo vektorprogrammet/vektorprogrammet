@@ -131,8 +131,8 @@ security:
 
           #ROLE_ADMIN = team user
         - { path: ^/signatures, roles: ROLE_ADMIN }
-        - { path: ^/kontrollpanel/attest/lastned, roles: ROLE_ADMIN }
-        - { path: ^/profile/attest, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/attest, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/profile/attest, roles: ROLE_SUPER_ADMIN }
         - { path: ^/profile/edit, roles: ROLE_ADMIN }
         - { path: ^/efconnect, role: ROLE_ADMIN }
         - { path: ^/elfinder, role: ROLE_ADMIN }

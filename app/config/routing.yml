@@ -1160,42 +1160,6 @@ substitute_modify:
   requirements:
     id: \d+
 
-##########################################
-#                Certificate              #
-##########################################
-certificate_show:
-   path: /kontrollpanel/attest
-   defaults: { _controller: AppBundle:Certificate:show }
-   methods: [GET]
-
-certificate_delete_by_id:	
-  path: /kontrollpanel/attest/slett/{id}
-  defaults: { _controller: AppBundle:Certificate:delete }
-  methods: [GET, POST]
-  requirements:
-  options:
-    expose: true
-
-certificate_request:
-  path: /kontrollpanel/attest/forespør
-  defaults: { _controller: AppBundle:Certificate:request }
-  methods: [GET, POST]
-  requirements:
-  options:
-    expose: true
-
-certificate_signature_picture_upload:
-  path: /kontrollpanel/attest/signatur
-  defaults: {_controller: AppBundle:Signature:show }
-  methods: [GET, POST]
-
-certificate_download:
-  path: /kontrollpanel/attest/lastned/{id}
-  defaults: {_controller: AppBundle:Certificate:download}
-  methods: [GET]
-  requirements:
-    id: \d+
-
 signature_image_show:
   path: /signatures/{imageName}
   defaults: { _controller: AppBundle:Signature:showSignatureImage }
