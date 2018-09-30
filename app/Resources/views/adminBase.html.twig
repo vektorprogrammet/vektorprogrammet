@@ -37,6 +37,11 @@
     {% include 'base/admin/main_navigation.html.twig' %}
     <main class="main">
         <ol class="breadcrumb">
+            <li>
+                <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto pr-4" type="button" data-toggle="sidebar-show">
+                    <span class="fa fa-bars"></span>
+                </button>
+            </li>
             {% block default_breadcrumb %}
                 <li class="breadcrumb-item">
                     <a href="{{ path('home') }}">Forsiden</a>

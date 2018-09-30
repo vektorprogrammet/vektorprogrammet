@@ -1,6 +1,12 @@
 <div class="sidebar">
         <nav class="sidebar-nav ps ps--active-y">
             <ul class="nav">
+                <li><span class="navbar-toggler sidebar-toggler d-flex d-md-none align-items-center float-right p-3" data-toggle="sidebar-show">
+                        <span class="fa fa-bars mr-2"></span> <small>lukk</small>
+                    </span></li>
+                <li class="text-center mt-2">
+                    <a class="text-muted" href="{{ path('home') }}"><i class="fa fa-chevron-left"></i> Tilbake til forsiden</a>
+                </li>
                 <li class="nav-item nav-dropdown">
                     <a class="nav-link nav-dropdown-toggle text-center mt-2" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                         <img class="img-avatar profile-photo" src="{{ asset(app.user.picturePath | imagine_filter('profile_img_tiny')) }}" alt="{{ app.user }}">
@@ -13,7 +19,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('profile') }}">
-                                <i class="fa fa-user nav-icon"></i> Profil</a>
+                                <i class="fa fa-user nav-icon"></i> Min profil</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('receipt_create') }}">
@@ -31,34 +37,25 @@
                         </li>
                     </ul>
                     <hr class="my-1">
-                    {#<div class="dropdown-menu dropdown-menu-right p-0">#}
-                        {#<div class="dropdown-header text-center">#}
-                            {#<strong>Min konto</strong>#}
-                        {#</div>#}
-                        {#{% include 'base/dropdown_item_link.html.twig' with {route: 'my_page', name: 'Min side', icon: 'file'} %}#}
-                        {#{% include 'base/dropdown_item_link.html.twig' with {route: 'profile', name: 'Profil', icon: 'user'} %}#}
-                        {#{% include 'base/dropdown_item_link.html.twig' with {route: 'receipt_create', name: 'Mine utlegg', icon: 'usd'} %}#}
-                        {#{% if app.user.isActiveAssistant() %}#}
-                            {#{% include 'base/dropdown_item_link.html.twig' with {route: 'my_partners', name: 'Mine vektorpartnere', icon: 'users'} %}#}
-                        {#{% endif %}#}
-                        {#{% include 'base/dropdown_item_link.html.twig' with {route: 'logout', name: 'Logg ut', icon: 'lock', class: 'text-danger'} %}#}
-                    {#</div>#}
                 </li>
+
+
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('control_panel') }}">
-                        <i class="fa fa-tachometer nav-icon icon-speedometer"></i> Kontrollpanel
-                        <span class="badge badge-primary">NEW</span>
+                        <i class="fa fa-tachometer nav-icon"></i> Kontrollpanel
                     </a>
                 </li>
+
+
                 <li class="nav-title">Opptak</li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('semester_show') }}">
-                        <i class="fa fa-clock-o nav-icon icon-speedometer"></i> Opptaksperioder
+                        <i class="fa fa-clock-o nav-icon"></i> Opptaksperioder
                     </a>
                 </li>
                 <li class="nav-item nav-dropdown">
                     <a class="nav-link nav-dropdown-toggle" href="#">
-                        <i class="fa fa-users nav-icon"></i> Søkere</a>
+                        <i class="fa fa-users nav-icon"></i> Opptak</a>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('applications_show_new') }}">
@@ -68,72 +65,107 @@
                             <a class="nav-link" href="{{ path('applications_show_existing') }}">
                                 <i class="fa fa-users nav-icon"></i> Tidligere assistenter</a>
                         </li>
-                    </ul>
-                <li class="nav-item nav-dropdown">
-                    <a class="nav-link nav-dropdown-toggle" href="#">
-                        <i class="fa fa-comments nav-icon"></i> Intervju</a>
-                    <ul class="nav-dropdown-items">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('applications_show_assigned') }}">
                                 <i class="fa fa-comments nav-icon"></i> Intervjufordeling</a>
                             <a class="nav-link" href="{{ path('applications_show_interviewed') }}">
                                 <i class="fa fa-comments nav-icon"></i> Intervjuer</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('interview_schema') }}">
-                                <i class="fa fa-comments nav-icon"></i> Intervjuskjema</a>
-                        </li>
                     </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('interview_schema') }}">
+                        <i class="fa fa-comments nav-icon"></i> Intervjuskjema</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('stand') }}">
-                        <i class="fa fa-bullhorn nav-icon icon-speedometer"></i> Stand
+                        <i class="fa fa-bullhorn nav-icon"></i> Stand
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('statistics_application_show') }}">
+                        <i class="fa fa-bar-chart nav-icon"></i> Opptaksstatistikk
+                    </a>
+                </li>
+
+
                 <li class="nav-title">Assistenter</li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('participanthistory_show') }}">
-                        <i class="fa fa-history nav-icon icon-drop"></i> Deltakerhistorikk</a>
+                        <i class="fa fa-history nav-icon"></i> Deltakerhistorikk</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('substitute_show') }}">
-                        <i class="fa fa-user-secret nav-icon icon-drop"></i> Vikarer</a>
+                        <i class="fa fa-user-secret nav-icon"></i> Vikarer</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('school_allocation') }}">
-                        <i class="fa fa-calendar nav-icon icon-drop"></i> Timeplan</a>
+                        <i class="fa fa-calendar nav-icon"></i> Timeplan</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('schooladmin_show') }}">
-                        <i class="fa fa-school nav-icon icon-drop"></i> Skoler</a>
+                    <a class="nav-link" href="{{ path('certificate_show') }}">
+                        <i class="fa fa-sticky-note-o nav-icon"></i> Attester</a>
                 </li>
-                <li class="nav-title">Brukere</li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('useradmin_show') }}">
-                        <i class="fa fa-user nav-icon icon-drop"></i> Brukere</a>
-                </li>
+
                 <li class="nav-title">Team</li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('teamadmin_show') }}">
-                        <i class="fa fa-smile-o nav-icon icon-pencil"></i> Team</a>
+                        <i class="fa fa-smile-o nav-icon"></i> Team</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('executive_board_show') }}">
-                        <i class="fa fa-diamond nav-icon icon-pencil"></i> Hovedstyret</a>
+                        <i class="fa fa-diamond nav-icon"></i> Hovedstyret</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('admissionadmin_team_interest') }}">
-                        <i class="fa fa-star nav-icon icon-pencil"></i> Teaminteresse</a>
+                        <i class="fa fa-star nav-icon"></i> Teaminteresse</a>
                 </li>
+
+
+                <li class="nav-title">Brukere</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('useradmin_show') }}">
+                        <i class="fa fa-user nav-icon"></i> Brukere</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('generate_mail_lists') }}">
+                        <i class="fa fa-list nav-icon"></i> Epostlister</a>
+                </li>
+
+
                 <li class="nav-title">Økonomi</li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('sponsors_show') }}">
-                        <i class="fa fa-money nav-icon icon-pencil"></i> Sponsorer</a>
+                        <i class="fa fa-money nav-icon"></i> Sponsorer</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('receipts_show') }}">
-                        <i class="fa fa-usd nav-icon icon-pencil"></i> Utlegg</a>
+                        <i class="fa fa-usd nav-icon"></i> Utlegg</a>
                 </li>
+
+
+                <li class="nav-title">Annet</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('surveys') }}">
+                        <i class="fa fa-comment nav-icon"></i> Undersøkelser</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('articleadmin_show') }}">
+                        <i class="fa fa-file nav-icon"></i> Artikler</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('departmentadmin_show') }}">
+                        <i class="fa fa-industry nav-icon"></i> Avdelinger</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('schooladmin_show') }}">
+                        <i class="fa fa-school nav-icon"></i> Skoler</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('show_field_of_studies') }}">
+                        <i class="fa fa-bars nav-icon"></i> Linjer</a>
+                </li>
+
+
                 <li class="nav-item mt-auto">
                     <div class="p-4">
 

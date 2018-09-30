@@ -32,6 +32,23 @@ body {
 }
 
 html:not([dir=rtl]) {
+  .sidebar-show {
+    &.sidebar-fixed {
+      .main {
+        margin-left: $sidebar-width;
+      }
+      .breadcrumb {
+        .navbar-toggler {
+          display: none;
+        }
+      }
+    }
+    .app-body {
+      .sidebar {
+        margin-left: 0;
+      }
+    }
+  }
   .app-body {
     @media (max-width: 991.98px) {
       margin-top: 0;
@@ -60,6 +77,11 @@ html:not([dir=rtl]) {
   .flash-message {
     margin-top: -1rem;
   }
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
 }
 
 .f-dropdown {
