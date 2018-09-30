@@ -56,6 +56,10 @@ html:not([dir=rtl]) {
       margin-left: $sidebar-width;
     }
   }
+
+  .flash-message {
+    margin-top: -1rem;
+  }
 }
 
 .f-dropdown {
