@@ -2,37 +2,76 @@
 
 {% block title %}Utlegg{% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Utlegg</li>
+{% endblock %}
+
+
 {% block body %}
+    <h2 class="text-center my-5">Utlegg</h2>
+
     <div class="row">
-        <div class="col-12 col-md-12 col-lg-12">
-            <h1>Utlegg</h1>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card">
+                <div class="card-body p-0 d-flex align-items-center">
+                    <i class="fa fa-clock bg-info p-4 font-2xl mr-3"></i>
+                    <div>
+                        <div class="text-value-sm text-info">
+                            {% set days = avg_refund_time_in_hours // 24 %}
+                            {% set hours = avg_refund_time_in_hours - days*24 %}
+                            {% if days > 0 %}{{ days }} {{ days == 1 ? 'dag' : 'dager' }}{% endif %}
+                            {{ hours }} {{ hours == 1 ? 'time' : 'timer' }}
+                        </div>
+                        <div class="text-muted text-uppercase font-weight-bold small">Gj.snittlig behandlingstid</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card">
+                <div class="card-body p-0 d-flex align-items-center">
+                    <i class="fa fa-dollar bg-success p-4 font-2xl mr-3"></i>
+                    <div>
+                        <div class="text-value-sm text-success">{{ total_payout|number_format(2, ',', ' ') }} kr</div>
+                        <div class="text-muted text-uppercase font-weight-bold small">Utbetalt
+                            i {{ "now"|date("Y") }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card">
+                <div class="card-body p-0 d-flex align-items-center">
+                    <i class="fa fa-dollar bg-warning p-4 font-2xl mr-3"></i>
+                    <div>
+                        <div class="text-value-sm text-warning">{{ pending_statistics.totalAmount|number_format(2, ',', ' ') }}
+                            kr
+                        </div>
+                        <div class="text-muted text-uppercase font-weight-bold small">Sum ubehandlet</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card">
+                <div class="card-body p-0 d-flex align-items-center">
+                    <i class="fa fa-dollar bg-danger p-4 font-2xl mr-3"></i>
+                    <div>
+                        <div class="text-value-sm text-danger">{{ rejected_statistics.totalAmount|number_format(2, ',', ' ') }}
+                            kr
+                        </div>
+                        <div class="text-muted text-uppercase font-weight-bold small">Sum avvist</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="row panel callout radius">
-        <div class="col-6 text-center">
-            <h3 class="text-faded">Gj.snittlig behandlingstid</h3>
-            {% set days = avg_refund_time_in_hours // 24 %}
-            {% set hours = avg_refund_time_in_hours - days*24 %}
-            <p class="payout">
-                {% if days > 0 %}{{ days }} {{ days == 1 ? 'dag' : 'dager' }}{% endif %}
-                {{ hours }} {{ hours == 1 ? 'time' : 'timer' }}
-            </p>
-        </div>
-        <div class="col-6 text-center">
-            <h3 class="text-faded">Utbetalt i {{ "now"|date("Y") }}</h3>
-            <p class="payout">{{ total_payout|number_format(2, ',', ' ') }} kr</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12 col-md-12 col-lg-12">
-
-            <br>
-
-            <table width="100%">
-
+    <div class="card">
+        <div class="card-header"><i class="fa fa-align-justify"></i> Utlegg</div>
+        <div class="card-body table-responsive">
+            <table class="table">
                 <thead>
-
                 <tr>
                     <th> Navn</th>
                     <th> Email</th>
