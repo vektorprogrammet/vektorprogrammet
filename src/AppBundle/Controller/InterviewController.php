@@ -13,6 +13,8 @@ use AppBundle\Form\Type\AssignInterviewType;
 use AppBundle\Form\Type\CancelInterviewConfirmationType;
 use AppBundle\Form\Type\ScheduleInterviewType;
 use AppBundle\Role\Roles;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,16 +28,21 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class InterviewController extends Controller
 {
     /**
-     * Shows and handles the submission of the interview form.
-     * The rendered page is the page used to conduct interviews.
+     * @Route("/kontrollpanel/intervju/conduct/{id}",
+     *     name="interview_conduct",
+     *     requirements={"id"="\d+"},)
+     * @Method({"GET", "POST"})
      *
-     * @param Request     $request
+     * @param Request $request
      * @param Application $application
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function conductAction(Request $request, Application $application)
     {
+        if ($application->getInterview() === null) {
+            throw $this->createNotFoundException();
+        }
         $department = $this->getUser()->getDepartment();
         $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findActiveByDepartment($department);
 
@@ -46,7 +53,7 @@ class InterviewController extends Controller
         // If the interview has not yet been conducted, create up to date answer objects for all questions in schema
         $interview = $this->get('app.interview.manager')->initializeInterviewAnswers($application->getInterview());
 
-        // Only admin and above, or the assigned interviewer should be able to conduct an interview
+        // Only admin and above, or the assigned interviewer, or the co interviewer should be able to conduct an interview
         if (!$this->get('app.interview.manager')->loggedInUserCanSeeInterview($interview)) {
             throw $this->createAccessDeniedException();
         }
@@ -216,7 +223,9 @@ class InterviewController extends Controller
         if ($invalidMapLink) {
             $this->addFlash('error', 'Kartlinken er ikke gyldig');
         } elseif ($form->isValid()) {
-            $interview->generateAndSetResponseCode();
+            if (!$interview->getResponseCode()) {
+                $interview->generateAndSetResponseCode();
+            }
 
             // Update the scheduled time for the interview
             $interview->setScheduled($data['datetime']);
@@ -376,13 +385,13 @@ class InterviewController extends Controller
         $room = $interview->getRoom();
 
         $successMessage = "Takk for at du aksepterte intervjutiden. Da sees vi $formattedDate klokka $formattedTime i $room!";
+        $this->addFlash('success', $successMessage);
+
         if ($interview->getUser() === $this->getUser()) {
-            $this->addFlash('success', $successMessage);
             return $this->redirectToRoute("my_page");
         }
-        $this->addFlash('title', 'Akseptert!');
-        $this->addFlash('message', $successMessage);
-        return $this->redirectToRoute('confirmation');
+
+        return $this->redirectToRoute('interview_response', ['responseCode' => $interview->getResponseCode()]);
     }
 
     /**
@@ -409,15 +418,13 @@ class InterviewController extends Controller
             $manager->flush();
 
             $this->get('app.interview.manager')->sendRescheduleEmail($interview);
+            $this->addFlash('success', "Forspørsel om ny intervjutid er sendt. Vi tar kontakt med deg når vi har funnet en ny intervjutid.");
 
-            $successMessage = "Vi tar kontakt med deg når vi har funnet en ny intervjutid.";
             if ($interview->getUser() === $this->getUser()) {
-                $this->addFlash('success', "Forspørsel om ny intervjutid er sendt. $successMessage");
                 return $this->redirectToRoute("my_page");
             }
-            $this->addFlash('title', 'Notert');
-            $this->addFlash('message', $successMessage);
-            return $this->redirectToRoute('confirmation');
+
+            return $this->redirectToRoute('interview_response', ['responseCode' => $interview->getResponseCode()]);
         }
 
         return $this->render('interview/request_new_time.html.twig', array(
@@ -433,12 +440,11 @@ class InterviewController extends Controller
      */
     public function respondAction(Interview $interview)
     {
-        if (!$interview->isPending()) {
-            throw $this->createNotFoundException();
-        }
+        $applicationStatus = $this->get('app.application_manager')->getApplicationStatus($interview->getApplication());
 
         return $this->render('interview/response.html.twig', array(
             'interview' => $interview,
+            'application_status' => $applicationStatus
         ));
     }
 
@@ -466,15 +472,13 @@ class InterviewController extends Controller
             $manager->flush();
 
             $this->get('app.interview.manager')->sendCancelEmail($interview);
+            $this->addFlash('success', "Du har kansellert intervjuet ditt.");
 
-            $successMessage = "Du har kansellert intervjuet ditt.";
             if ($interview->getUser() === $this->getUser()) {
-                $this->addFlash('success', $successMessage);
                 return $this->redirectToRoute("my_page");
             }
-            $this->addFlash('title', 'Kansellert');
-            $this->addFlash('message', $successMessage);
-            return $this->redirectToRoute('confirmation');
+
+            return $this->redirectToRoute('interview_response', ['responseCode' => $interview->getResponseCode()]);
         }
 
         return $this->render('interview/response_confirm_cancel.html.twig', array(
@@ -506,13 +510,30 @@ class InterviewController extends Controller
 
     public function assignCoInterviewerAction(Interview $interview)
     {
-        if ($this->getUser() != $interview->getInterviewer()) {
-            $interview->setCoInterviewer($this->getUser());
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($interview);
-            $em->flush();
-            $this->get('event_dispatcher')->dispatch(InterviewEvent::COASSIGN, new InterviewEvent($interview));
+        if ($interview->getUser() === $this->getUser()) {
+            return $this->render('error/control_panel_error.html.twig', array(
+                'error' => 'Kan ikke legge til deg selv som medintervjuer på ditt eget intervju'
+            ));
         }
+
+        if ($interview->getInterviewed()) {
+            return $this->render('error/control_panel_error.html.twig', array(
+                'error' => 'Kan ikke legge til deg selv som medintervjuer etter intervjuet er gjennomført'
+            ));
+        }
+
+        if ($this->getUser() === $interview->getInterviewer()) {
+            return $this->render('error/control_panel_error.html.twig', array(
+                'error' => 'Kan ikke legge til deg selv som medintervjuer når du allerede er intervjuer'
+            ));
+        }
+
+        $interview->setCoInterviewer($this->getUser());
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($interview);
+        $em->flush();
+        $this->get('event_dispatcher')->dispatch(InterviewEvent::COASSIGN, new InterviewEvent($interview));
+
         return $this->redirectToRoute('applications_show_assigned');
     }
 

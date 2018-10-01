@@ -65,11 +65,11 @@ services:
 
   app.roles:
     class: AppBundle\Service\RoleManager
-    arguments: ['@security.authorization_checker', '@doctrine.orm.entity_manager', '@app.logger']
+    arguments: ['@security.authorization_checker', '@doctrine.orm.entity_manager', '@app.logger', '@app.google_users']
 
   app.interview.manager:
     class: AppBundle\Service\InterviewManager
-    arguments: ['@security.token_storage', '@security.authorization_checker', '@app.mailer', '@twig', '@app.logger', '@doctrine.orm.entity_manager']
+    arguments: ['@security.token_storage', '@security.authorization_checker', '@app.mailer', '@twig', '@app.logger', '@doctrine.orm.entity_manager', '@router', '@app.sms']
 
   app.newsletter.manager:
       class: AppBundle\Service\NewsletterManager
@@ -204,7 +204,7 @@ services:
 
   app.db_subscriber:
     class: AppBundle\EventSubscriber\DbSubscriber
-    arguments: ['@app.logger', '@security.token_storage', '@request_stack']
+    arguments: ['@app.logger', '@security.token_storage', '@request_stack', '@doctrine.orm.default_entity_manager']
     tags:
       - { name: doctrine.event_subscriber }
 
@@ -263,3 +263,7 @@ services:
     tags:
         - { name: validator.constraint_validator }
 
+  app.info_meeting_validator:
+    class: AppBundle\Validator\Constraints\InfoMeetingValidator
+    tags:
+        - { name: validator.constraint_validator }

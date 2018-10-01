@@ -97,42 +97,11 @@
 
             <hr>
 
-            <table width="100%" id="table">
-                <thead>
-                <tr>
-                    <th> Skole</th>
-                    <th> Kontaktperson</th>
-                    <th> Telefon</th>
-                    <th> E-post</th>
-                    <th colspan="3"> Språk</th>
-                </tr>
-                </thead>
+            <h5>Aktive skoler</h5>
+           {% include 'school_admin/school_table.html.twig' with {'schools': activeSchools }  %}
 
-                <tbody>
-                {% for s in schools %}
-                    <tr>
-                        <td><a href="{{ path('schooladmin_show_specific_school', { 'id': s.id }) }}">{{ s.name }}</a>
-                        </td>
-                        <td> {{ s.contactPerson }} </td>
-                        <td> {{ s.phone }} </td>
-                        <td> {{ s.email }} </td>
-                        <td> {{ s.international ? 'Internasjonal':'Norsk' }} </td>
-
-                        {# Only SUPER_ADMIN can edit #}
-                        {% if is_granted_team_leader() %}
-                            <td><a href="{{ path('schooladmin_update', { 'id': s.id }) }}"
-                                   class="button tiny">Rediger</a></td>
-                        {% endif %}
-
-                        {# Only HIGHEST_ADMIN can delete #}
-                        {% if is_granted_admin() %}
-                            <td><a href="#" id="{{ s.id }}" class="button tiny alert delete"><i
-                                            class="fa fa-trash-o"></i> Slett</a></td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            <h5>Inaktive skoler</h5>
+            {% include 'school_admin/school_table.html.twig' with {'schools': inactiveSchools }  %}
         </div>
     </div>
 

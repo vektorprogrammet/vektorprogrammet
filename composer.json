@@ -38,7 +38,8 @@
         "nelmio/cors-bundle": "^1.5",
         "nelmio/api-doc-bundle": "^2.13",
         "google/apiclient": "^2.2",
-        "ramsey/uuid": "^3.7"
+        "ramsey/uuid": "^3.7",
+        "bcc/auto-mapper-bundle": "^1.2"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.6",

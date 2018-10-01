@@ -5,6 +5,7 @@
 @import "header";
 @import "mobile_nav";
 @import "footer";
+@import "./modules/page-header";
 
 html.noscroll, body.noscroll {
   overflow: hidden;
@@ -110,43 +111,6 @@ strong strong {
   text-align: justify;
 }
 
-.page-header {
-  margin-top: 50px;
-  margin-bottom: 100px;
-
-  h1 {
-    text-align: center;
-  }
-}
-
-.page-header-thin {
-  margin-bottom: 50px;
-}
-
-.page-header, .page-cover {
-  color: $dark-blue;
-
-  h1 {
-    font-size: 34px;
-  }
-
-  p {
-    font-size: 20px;
-  }
-
-  @media (max-width: 767px) {
-    margin-top: 25px;
-    margin-bottom: 25px;
-    h1 {
-      font-size: 30px;
-    }
-
-    p {
-      font-size: 19px;
-    }
-  }
-}
-
 .card-title h1, h1.card-title {
   font-size: 36px;
 
@@ -250,4 +214,8 @@ strong strong {
 
 .fs-16, .fs-16 p {
   font-size: 16px !important;
+}
+
+.btn-text-break {
+  white-space: normal;
 }

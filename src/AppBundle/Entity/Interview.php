@@ -19,22 +19,27 @@ class Interview
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $interviewed;
+    private $interviewed;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    protected $scheduled;
+    private $scheduled;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastScheduleChanged;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $room;
+    private $room;
 
     /**
     * @ORM\Column(type="string", length=255, nullable=true)
@@ -43,7 +48,7 @@ class Interview
     *     maxMessage="Campusnavn kan ikke være mer enn 255 tegn"
     * )
     */
-    protected $campus;
+    private $campus;
 
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
@@ -52,36 +57,36 @@ class Interview
      *     maxMessage= "Linken kan ikke være mer enn 500 tegn"
      * )
      */
-    protected $mapLink;
+    private $mapLink;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    protected $conducted;
+    private $conducted;
 
     /**
      * @ORM\ManyToOne(targetEntity="InterviewSchema")
      * @ORM\JoinColumn(name="schema_id", referencedColumnName="id")
      */
-    protected $interviewSchema; // Bidirectional, may turn out to be unidirectional
+    private $interviewSchema; // Bidirectional, may turn out to be unidirectional
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="interviews")
      * @ORM\JoinColumn(name="interviewer_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $interviewer; // Unidirectional, may turn out to be bidirectional
+    private $interviewer; // Unidirectional, may turn out to be bidirectional
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    protected $coInterviewer;
+    private $coInterviewer;
 
     /**
      * @ORM\OneToMany(targetEntity="InterviewAnswer", mappedBy="interview", cascade={"persist", "remove"})
      * @Assert\Valid
      */
-    protected $interviewAnswers;
+    private $interviewAnswers;
 
     /**
      * @var InterviewScore
@@ -90,7 +95,7 @@ class Interview
      * @ORM\JoinColumn(name="interview_score_id", referencedColumnName="id")
      * @Assert\Valid
      */
-    protected $interviewScore;
+    private $interviewScore;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
@@ -103,7 +108,7 @@ class Interview
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
-    protected $user;
+    private $user;
 
     /**
      * @ORM\OneToOne(targetEntity="Application", mappedBy="interview")
@@ -134,6 +139,12 @@ class Interview
     private $newTimeMessage;
 
     /**
+     * @var int
+     * @ORM\Column(type="integer", options={"default": 0})
+     */
+    private $numAcceptInterviewRemindersSent;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -143,6 +154,7 @@ class Interview
         $this->interviewed = false;
         $this->interviewStatus = InterviewStatusType::NO_CONTACT;
         $this->newTimeMessage = "";
+        $this->numAcceptInterviewRemindersSent = 0;
     }
 
     /**
@@ -204,7 +216,7 @@ class Interview
     /**
      * Set interviewer.
      *
-     * @param User $interviewer
+     * @param User $coInterviewer
      *
      * @return Interview
      */
@@ -424,6 +436,7 @@ class Interview
     public function setScheduled($scheduled)
     {
         $this->scheduled = $scheduled;
+        $this->lastScheduleChanged = new \DateTime();
 
         return $this;
     }
@@ -521,7 +534,7 @@ class Interview
             case InterviewStatusType::NO_CONTACT:
                 return '#9999ff';
             case InterviewStatusType::PENDING:
-                return '#000000';
+                return '#0d97c4';
             case InterviewStatusType::ACCEPTED:
                 return '#32CD32';
             case InterviewStatusType::REQUEST_NEW_TIME:
@@ -655,5 +668,40 @@ class Interview
     public function getInterviewStatus(): int
     {
         return $this->interviewStatus;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getLastScheduleChanged()
+    {
+        return $this->lastScheduleChanged;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumAcceptInterviewRemindersSent(): ?int
+    {
+        return $this->numAcceptInterviewRemindersSent;
+    }
+
+    /**
+     * @param int $numAcceptInterviewRemindersSent
+     *
+     * @return Interview
+     */
+    public function setNumAcceptInterviewRemindersSent(int $numAcceptInterviewRemindersSent): Interview
+    {
+        $this->numAcceptInterviewRemindersSent = $numAcceptInterviewRemindersSent;
+        return $this;
+    }
+
+    /**
+     * Increments number of accept-interview reminders sent
+     */
+    public function incrementNumAcceptInterviewRemindersSent()
+    {
+        $this->numAcceptInterviewRemindersSent++;
     }
 }

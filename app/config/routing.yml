@@ -993,13 +993,6 @@ interview_assign_co_interviewer:
  requirements:
   id: \d+
 
-interview_conduct:
- path: /kontrollpanel/intervju/conduct/{id}
- defaults: { _controller: AppBundle:Interview:conduct }
- methods: [GET, POST]
- requirements:
-  id: \d+
-
 interview_cancel:
  path: /kontrollpanel/intervju/cancel/{id}
  defaults: { _controller: AppBundle:Interview:cancel }

@@ -12,8 +12,10 @@ use AppBundle\Entity\SurveyAnswer;
 use AppBundle\Entity\SurveyQuestion;
 use AppBundle\Entity\SurveyQuestionAlternative;
 use AppBundle\Entity\User;
+use AppBundle\Role\Roles;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -24,8 +26,9 @@ class DbSubscriber implements EventSubscriber
     private $tokenStorage;
     private $request;
     private $ignoredClasses;
+    private $manager;
 
-    public function __construct(LoggerInterface $logger, TokenStorageInterface $tokenStorage, RequestStack $request)
+    public function __construct(LoggerInterface $logger, TokenStorageInterface $tokenStorage, RequestStack $request, EntityManager $manager)
     {
         $this->logger = $logger;
         $this->tokenStorage = $tokenStorage;
@@ -41,6 +44,7 @@ class DbSubscriber implements EventSubscriber
             SurveyQuestionAlternative::class,
             AdmissionNotification::class,
         ];
+        $this->manager = $manager;
     }
 
     /**
@@ -51,10 +55,30 @@ class DbSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array(
+            'prePersist',
             'postPersist',
             'postUpdate',
             'postRemove'
         );
+    }
+
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $obj = $args->getObject();
+
+        if ($obj instanceof User) {
+            $this->setDefaultUserRole($obj);
+        }
+    }
+
+    private function setDefaultUserRole(User $user)
+    {
+        if (!empty($user->getRoles())) {
+            return;
+        }
+
+        $defaultRole = $this->manager->getRepository('AppBundle:Role')->findByRoleName(Roles::ASSISTANT);
+        $user->addRole($defaultRole);
     }
 
     public function postUpdate(LifecycleEventArgs $args)

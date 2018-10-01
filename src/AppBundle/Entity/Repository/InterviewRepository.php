@@ -5,6 +5,7 @@ namespace AppBundle\Entity\Repository;
 use AppBundle\Entity\Interview;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
+use AppBundle\Type\InterviewStatusType;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -15,6 +16,28 @@ use Doctrine\ORM\EntityRepository;
  */
 class InterviewRepository extends EntityRepository
 {
+    /**
+     * @param User $user
+     *
+     * @param Semester $semester
+     *
+     * @return Interview
+     */
+    public function findLastScheduledByUserInSemester(User $user, Semester $semester)
+    {
+        $result = $this->createQueryBuilder('interview')
+            ->join('interview.application', 'application')
+            ->where('interview.interviewer = :user')
+            ->setParameter('user', $user)
+            ->andWhere('application.semester = :semester')
+            ->setParameter('semester', $semester)
+            ->andWhere('interview.lastScheduleChanged IS NOT NULL')
+            ->orderBy('interview.lastScheduleChanged', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return !empty($result) ? $result[0] : null;
+    }
     public function findAllInterviewedInterviewsBySemester($semester)
     {
         $interviews = $this->getEntityManager()->createQuery('
@@ -82,5 +105,77 @@ class InterviewRepository extends EntityRepository
             ->setParameter('responseCode', $responseCode)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @param User $interviewer
+     *
+     * @return Interview[]
+     */
+    public function findUncompletedInterviewsByInterviewerInCurrentSemester(User $interviewer)
+    {
+        $semester = $interviewer->getDepartment()->getCurrentSemester();
+        if ($semester === null) {
+            return [];
+        }
+
+        return $this->createQueryBuilder('interview')
+            ->join('interview.application', 'application')
+            ->where('application.semester = :semester')
+            ->setParameter('semester', $semester)
+            ->andWhere('interview.interviewer = :interviewer OR interview.coInterviewer = :interviewer')
+            ->andWhere('interview.interviewed = false')
+            ->setParameter('interviewer', $interviewer)
+            ->orderBy('interview.scheduled')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param Semester $semester
+     *
+     * @return User[]
+     */
+    public function findInterviewersInSemester(Semester $semester)
+    {
+        /**
+         * @var $interviews Interview[]
+         */
+        $interviews = $this->createQueryBuilder('interview')
+                    ->join('interview.application', 'application')
+                    ->where('application.semester = :semester')
+                    ->setParameter('semester', $semester)
+                    ->getQuery()
+                    ->getResult();
+        $interviewers = [];
+        foreach ($interviews as $interview) {
+            $interviewers[] = $interview->getInterviewer();
+            if ($interview->getCoInterviewer()) {
+                $interviewers[] = $interview->getCoInterviewer();
+            }
+        }
+
+        return array_unique($interviewers);
+    }
+
+    /**
+     * Find interviews which will receive accept-interview notifications.
+     * All interviews scheduled to a time after $time and having PENDING
+     * interview status apply.
+     *
+     * @param \DateTime $time
+     *
+     * @return array
+     */
+    public function findAcceptInterviewNotificationRecipients(\DateTime $time)
+    {
+        return $this->createQueryBuilder('i')
+            ->select('i')
+            ->where('i.scheduled > :time')
+            ->andWhere('i.interviewStatus = :status')
+            ->setParameter('time', $time)
+            ->setParameter('status', InterviewStatusType::PENDING)
+            ->getQuery()
+            ->getResult();
     }
 }
