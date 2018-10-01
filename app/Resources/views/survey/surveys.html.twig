@@ -63,8 +63,6 @@
                         {% if survey.teamSurvey %}
                             <td><a href="{{ path('survey_show_team', {'id': survey.id }) }}" class="button tiny">Vis
                                     undersøkelse</a></td>
-                            <td><a href="{{ path('survey_team_show_admin', {'id': survey.id }) }}" class="button tiny">Admin-
-                                    utfylling</a></td>
                         {% else %}
                             <td><a href="{{ path('survey_show', {'id': survey.id }) }}" class="button tiny">Vis
                                     undersøkelse</a></td>

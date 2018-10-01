@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Form\Type\SurveySchoolSpecificExecuteType;
+use http\Exception\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +12,7 @@ use AppBundle\Form\Type\SurveyType;
 use AppBundle\Form\Type\SurveyExecuteType;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * SurveyController is the controller responsible for survey actions,
@@ -30,7 +32,7 @@ class SurveyController extends Controller
      */
     public function showAction(Request $request, Survey $survey)
     {
-        if ($survey->isTeamSurvey() && $this->getUser() !==null) {
+        if ($survey->isTeamSurvey()) {
             return $this->redirectToRoute('survey_show_team', array('id' => $survey->getId()));
         }
 
@@ -74,11 +76,10 @@ class SurveyController extends Controller
 
     public function showTeamAction(Request $request, Survey $survey)
     {
-
         $user = $this->getUser();
 
         if ($user===null) {
-            return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
+            throw new AccessDeniedException("Dette er en teamundersøkese. Logg inn for å ta den!");
         }
 
         $surveyTaken = $this->get('survey.manager')->initializeSurveyTaken($survey);
@@ -91,8 +92,19 @@ class SurveyController extends Controller
             $surveyTaken->setTime(new \DateTime());
             $surveyTaken->setUser($user);
 
+
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
+
+                $allTakenSurveys = $em
+                    ->getRepository('AppBundle:SurveyTaken')
+                    ->findAllSurveyTakenBySurveyAndUser($survey, $user);
+
+                if (!empty($allTakenSurveys)) {
+                    foreach ($allTakenSurveys as $oldTakenSurvey) {
+                        $em->remove($oldTakenSurvey);
+                    }
+                }
                 $em->persist($surveyTaken);
                 $em->flush();
 
@@ -119,6 +131,9 @@ class SurveyController extends Controller
 
     public function showAdminAction(Request $request, Survey $survey)
     {
+        if ($survey->isTeamSurvey()) {
+            throw new \InvalidArgumentException("Er team undersøkelse og har derfor ingen admin utfylling");
+        }
         $surveyTaken = $this->get('survey.manager')->initializeSurveyTaken($survey);
         $surveyTaken = $this->get('survey.manager')->predictSurveyTakenAnswers($surveyTaken);
 

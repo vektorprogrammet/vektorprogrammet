@@ -25,6 +25,8 @@ class SurveyTaken implements \JsonSerializable
      * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      */
     protected $user;
+
+
     /**
 
      * @ORM\Column(type="datetime", nullable=false)
