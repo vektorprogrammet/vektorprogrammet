@@ -195,7 +195,9 @@ class InterviewController extends Controller
      */
     public function scheduleAction(Request $request, Application $application)
     {
-        $interview = $application->getInterview();
+        if (null === $interview = $application->getInterview()) {
+            throw $this->createNotFoundException('Interview not found.');
+        }
         // Only admin and above, or the assigned interviewer should be able to book an interview
         if (!$this->get('app.interview.manager')->loggedInUserCanSeeInterview($interview)) {
             throw $this->createAccessDeniedException();

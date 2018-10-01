@@ -12,140 +12,158 @@
 {% block body %}
 
     <div class="row">
-        <div class="col-12 col-md-12 col-lg-12">
-            <div class="panel">
-                <div class="row">
-                    <div class="col-12 col-md-12 col-lg-12">
-                        <h3>Sett opp intervju</h3>
-                        <div class="float-right">
-                            Status: <span style="color: {{ interview.getInterviewStatusAsColor }}">{{ interview.interviewStatusAsString }}</span>
-                        </div>
-                        <h5>Intervjuer</h5>
-                        <p>{{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}</p>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-6">
+                    <h3>Sett opp intervju</h3>
+                </div>
+                <div class="col-6 text-right">
+                    Status: <span style="color: {{ interview.getInterviewStatusAsColor }}">{{ interview.interviewStatusAsString }}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex flex-row justify-content-between">
+                    <div class="candidate flex-shrink-0 flex-grow-1">
                         <h5>Kandidat</h5>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th> Fornavn</th>
-                                <th> Etternavn</th>
-                                <th> Tlf</th>
-                                <th> E-post</th>
-                                <th> Linje</th>
-                                <th> År</th>
-                            </tr>
-                            </thead>
+                        {% set u = interview.user %}
+                        <table class="table table-bordered table-light">
                             <tbody>
                             <tr>
-                                {% set u = interview.user %}
-                                <td> {{ u.firstName }} </td>
-                                <td> {{ u.lastName }} </td>
-                                <td> {{ u.phone }} </td>
-                                <td> {{ u.email }} </td>
+                                <th><i class="fa fa-user"></i> Navn</th>
+                                <td> {{ u.firstName }} {{ u.lastName }}</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-phone"></i> Tlf</th>
+                                <td> <a href="tel:{{ u.phone }}">{{ u.phone }}</a> </td>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-envelope"></i> E-post</th>
+                                <td> <a href="mailto:{{ u.email }}">{{ u.email }}</a> </td>
+                            </tr>
+                            <tr>
+                                <th> Linje</th>
                                 <td> {{ u.fieldOfStudy }} </td>
+                            </tr>
+                            <tr>
+                                <th> År</th>
                                 <td> {{ application.yearOfStudy }} </td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
-                </div>
 
-                <h5>Tid og sted</h5>
-                {% if interview.interviewStatusAsString == 'Ny tid ønskes' %}
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            <div class="panel text-center">
-                                <p><i class="fa fa-2x fa-warning text-warning"></i></p>
-                                <p class="text-bold">{{ u.firstName }} har bedt om nytt tidspunkt for intervju.</p>
-                                <p>Følgende tider passer <span class="text-bold">ikke:</span><br>{{ u.firstName }}: <i>{{ interview.newTimeMessage }}</i></p>
-                            </div>
+                    <div class="mr-3"></div>
+                    <div class="d-none d-xl-block mx-3">
+                        {% include 'interview/schedule_status_card.html.twig' %}
+                    </div>
+                    <div class="ml-3"></div>
+                    <div class="d-flex flex-row">
+                        <div class="interviewer">
+                            <h5 class="text-center">Intervjuer</h5>
+                            <p class="text-center">{{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}</p>
+                            <img class="scheduler-photo profile-photo bordered rounded-circle " src="{{ asset(interview.interviewer.picturePath | imagine_filter('profile_img')) }}">
+                        </div>
+                        <div class="mx-3"></div>
+                        <div class="interviewer">
+                            <h5 class="text-center">Medintervjuer</h5>
+                            {% if interview.cointerviewer %}
+                                <p class="text-center">{{ interview.coInterviewer.firstName }} {{ interview.interviewer.lastName }}</p>
+                                <img class="scheduler-photo profile-photo bordered rounded-circle " src="{{ asset(interview.coInterviewer.picturePath | imagine_filter('profile_img')) }}">
+                            {% else %}
+                                <p class="text-center text-faded font-italic">Ingen</p>
+                                <div class="no-co-interviewer img-blur-container rounded-circle bordered">
+                                    <img class="scheduler-photo profile-photo-blur" src="{{ asset(interview.interviewer.picturePath | imagine_filter('profile_img')) }}">
+                                    <span>Ikke valgt enda</span>
+                                </div>
+                            {% endif %}
+
                         </div>
                     </div>
-                {% elseif interview.interviewStatusAsString == 'Kansellert' %}
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            <div class="panel text-center">
-                                <p><i class="fa fa-2x fa-warning text-alert"></i></p>
-                                <p class="text-bold">{{ u.firstName }} har kansellert intervjuet.</p>
-                                <p><span class="text-bold">Begrunnelse:</span><br>{{ u.firstName }}: <i>{{ interview.cancelMessage }}</i></p>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {{ form_start(form) }}
-                <div class="row">
-                    <div class="col-12 col-md-4">
-                        {{ form_row(form.datetime) }}
-                    </div>
-                    <div class="col-12 col-md-4">
-                        {{ form_row(form.room) }}
-                    </div>
-                    <div class="col-12 col-md-4">
-                        {{ form_row(form.campus) }}
-                    </div>
-
-
-
                 </div>
-                <div class="row">
-                    <div class="col-12 col-md-4 end">
-                        <div class="panel callout radius">
-                            <h3 class="text-center"><i class="fa fa-info-circle"></i></h3>
-                            <p>Tidspunkt og rom blir automatisk lagt til på slutten av e-posten.</p>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-8">
-                        <label>Link til kart (<a href="https://use.mazemap.com/" target="_blank" rel="noopener">MazeMap</a>)</label>
-                        {{ form_row(form.mapLink) }}
-                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="row d-xl-none">
+        <div class="col-12">
+            {% include 'interview/schedule_status_card.html.twig' %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h5>Tid og sted</h5>
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="col-12 col-md-4">
+                    {{ form_row(form.datetime) }}
+                </div>
+                <div class="col-12 col-md-4">
+                    {{ form_row(form.room) }}
+                </div>
+                <div class="col-12 col-md-4">
+                    {{ form_row(form.campus) }}
                 </div>
 
-                <h5>Melding</h5>
-                <div class="row">
-                    {{ form_errors(form) }}
-                    <div class="col-12 col-md-4">
-                        {{ form_row(form.from) }}
-                    </div>
-                    <div class="col-12 col-md-4 end">
-                        {{ form_row(form.to) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        {{ form_row(form.message) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
 
-                        {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
-                        {{ form_widget(form.preview, {'attr': {'class': 'button tiny secondary', 'formtarget': '_blank'}}) }}
-                        {{ form_widget(form.changeStatus, {'attr': {'class': 'button tiny', 'data-reveal-id': 'status-'~interview.id}}) }}
-                        <div class="float-right">
-                            {{ form_widget(form.saveAndSend, {'attr': {'class': 'button small success'}}) }}
-                        </div>
-
-                    </div>
-                </div>
-                {{ form_end(form) }}
-                <div id="status-{{ interview.id }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-                    <h3 id="modalTitle">Endre status</h3>
-                    <form method="POST" action="{{ path('interview_edit_status', {id: interview.id}) }}">
-                        <select name="status" id="status">
-                            {% set s = interview.interviewStatusAsString %}
-                            <option value="4" {% if s == 'Ikke satt opp' %}selected{% endif %}>Ikke satt opp</option>
-                            <option value="0" {% if s == 'Ingen svar' %}selected{% endif %}>Ingen svar</option>
-                            <option value="1" {% if s == 'Akseptert' %}selected{% endif %}>Akseptert</option>
-                            <option value="2" {% if s == 'Ny tid ønskes' %}selected{% endif %}>Ny tid ønskes</option>
-                            <option value="3" {% if s == 'Kansellert' %}selected{% endif %}>Kansellert</option>
-                        </select>
-                        <p>OBS: Dette vil laste inn siden på nytt. Alle felter vil bli tilbakestilt.</p>
-                    <button id="status_form_button" type="submit" class="tiny success">Lagre</button>
-                    </form>
-                    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                </div>
 
             </div>
+            <div class="row">
+                <div class="col-12 col-md-4 end">
+                    <div class="panel callout radius">
+                        <h3 class="text-center"><i class="fa fa-info-circle"></i></h3>
+                        <p>Tidspunkt og rom blir automatisk lagt til på slutten av e-posten.</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-8">
+                    <label>Link til kart (<a href="https://use.mazemap.com/" target="_blank" rel="noopener">MazeMap</a>)</label>
+                    {{ form_row(form.mapLink) }}
+                </div>
+            </div>
+
+            <h5>Melding</h5>
+            <div class="row">
+                {{ form_errors(form) }}
+                <div class="col-12 col-md-4">
+                    {{ form_row(form.from) }}
+                </div>
+                <div class="col-12 col-md-4 end">
+                    {{ form_row(form.to) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    {{ form_row(form.message) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+
+                    {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
+                    {{ form_widget(form.preview, {'attr': {'class': 'button tiny secondary', 'formtarget': '_blank'}}) }}
+                    {{ form_widget(form.changeStatus, {'attr': {'class': 'button tiny', 'data-reveal-id': 'status-'~interview.id}}) }}
+                    <div class="float-right">
+                        {{ form_widget(form.saveAndSend, {'attr': {'class': 'button small success'}}) }}
+                    </div>
+
+                </div>
+            </div>
+            {{ form_end(form) }}
+            <div id="status-{{ interview.id }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+                <h3 id="modalTitle">Endre status</h3>
+                <form method="POST" action="{{ path('interview_edit_status', {id: interview.id}) }}">
+                    <select name="status" id="status">
+                        {% set s = interview.interviewStatusAsString %}
+                        <option value="4" {% if s == 'Ikke satt opp' %}selected{% endif %}>Ikke satt opp</option>
+                        <option value="0" {% if s == 'Ingen svar' %}selected{% endif %}>Ingen svar</option>
+                        <option value="1" {% if s == 'Akseptert' %}selected{% endif %}>Akseptert</option>
+                        <option value="2" {% if s == 'Ny tid ønskes' %}selected{% endif %}>Ny tid ønskes</option>
+                        <option value="3" {% if s == 'Kansellert' %}selected{% endif %}>Kansellert</option>
+                    </select>
+                    <p>OBS: Dette vil laste inn siden på nytt. Alle felter vil bli tilbakestilt.</p>
+                <button id="status_form_button" type="submit" class="tiny success">Lagre</button>
+                </form>
+                <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+            </div>
+
         </div>
     </div>
 
