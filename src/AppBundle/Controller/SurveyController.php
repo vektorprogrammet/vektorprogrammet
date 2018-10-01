@@ -74,7 +74,6 @@ class SurveyController extends Controller
 
     public function showTeamAction(Request $request, Survey $survey)
     {
-
         $user = $this->getUser();
 
         if ($user===null) {
