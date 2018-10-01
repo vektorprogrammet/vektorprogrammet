@@ -65,6 +65,7 @@ security:
         # require ROLE_ADMIN for /admin*
 
           #ROLE_HIGHEST_ADMIN = admin user
+        - { path: ^/kontrollpanel/staging, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/avdelingadmin/opprett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/avdelingadmin/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/semesteradmin/slett, roles: ROLE_HIGHEST_ADMIN }
@@ -140,6 +141,7 @@ security:
 
           #ROLE_USER = assistant user
         - { path: ^/profil/rediger, roles: ROLE_USER }
+        - { path: ^/profil/partnere, roles: ROLE_USER }
         - { path: ^/profile$, roles: ROLE_USER }
         - { path: ^/utlegg, roles: ROLE_USER }
         - { path: ^/api/myreceipts, roles: ROLE_USER }
