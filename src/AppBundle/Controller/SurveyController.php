@@ -30,8 +30,8 @@ class SurveyController extends Controller
      */
     public function showAction(Request $request, Survey $survey)
     {
-        if ($survey->isTeamSurvey()) {
-            return $this->showTeamAction($request, $survey);
+        if ($survey->isTeamSurvey() && $this->getUser() !==null) {
+            return $this->redirectToRoute('survey_show_team', array('id' => $survey->getId()));
         }
 
 
@@ -74,9 +74,6 @@ class SurveyController extends Controller
 
     public function showTeamAction(Request $request, Survey $survey)
     {
-        if (!$survey->isTeamSurvey()) {
-            return $this->showAction($request, $survey);
-        }
 
         $user = $this->getUser();
 
