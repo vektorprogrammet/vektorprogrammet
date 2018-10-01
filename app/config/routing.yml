@@ -75,6 +75,14 @@ to_do_list:
  methods: [GET]
 
 
+create_toDoList:
+  path: /sjekkliste/opprett
+  defaults: {_controller: AppBundle:ToDoList:createToDo, id: null }
+  methods: [GET, POST]
+  requirements:
+   id: \d+
+
+
 
 ##########################################
 #                Survey                  #

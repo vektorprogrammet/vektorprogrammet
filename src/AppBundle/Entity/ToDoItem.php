@@ -34,7 +34,7 @@ class ToDoItem
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="deletedAt", type="date")
+     * @ORM\Column(name="deletedAt", type="date", nullable=true)
      */
     private $deletedAt;
 

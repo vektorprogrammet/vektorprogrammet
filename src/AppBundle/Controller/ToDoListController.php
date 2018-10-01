@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\Type\CreateToDoItemType;
+use AppBundle\Model\ToDoItemInfo;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Service\ToDoListService;
 use AppBundle\Entity\ToDoItem;
@@ -10,7 +12,6 @@ use Doctrine\ORM\EntityManager;
 
 class ToDoListController extends Controller
 {
-    private $user;
 
     public function showAction()
     {
@@ -60,4 +61,56 @@ class ToDoListController extends Controller
 
         ));
     }
+
+
+    public function createToDoAction(Request $request)
+    {
+        /*
+        if (!$this->isGranted(Roles::TEAM_LEADER) || $department === null) {
+            $department = $this->getUser()->getDepartment();
+        }*/
+
+        // Create the user object
+        //$item = new ToDoItem();
+        //$item->setCreatedAt(new \DateTime());
+
+        $itemInfo = new ToDoItemInfo();
+
+        $form = $this->createForm(CreateToDoItemType::class, $itemInfo, array(
+            'validation_groups' => array('create_toDoItemInfo'),
+            //'toDoItem' => $item,
+        ));
+
+
+        // Handle the form
+        $form->handleRequest($request);
+
+
+        // The fields of the form is checked if they contain the correct information
+        if ($form->isValid()) {/*
+
+            $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findByRoleName(Roles::ASSISTANT);
+            $user->addRole($role);*/
+            $itemInfo->generateEntities();
+            service->generateItems(itemInfo)
+            $item = $itemInfo->getToDoItem();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($item);
+            $em->flush();
+
+            /*$this->get('app.user.registration')->sendActivationCode($user);*/
+
+            return $this->redirectToRoute('to_do_list');
+        }
+
+
+
+        // Render the view
+        return $this->render('to_do_list/create_todo_element.html.twig', array(
+            'form' => $form->createView(),
+            //'department' => null,
+        ));
+
+    }
+
 }

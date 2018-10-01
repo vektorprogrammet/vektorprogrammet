@@ -2,9 +2,14 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Repository\SemesterRepository;
 use AppBundle\Entity\Semester;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\ToDoItem;
+use AppBundle\Entity\ToDoMandatory;
+use AppBundle\Entity\ToDoDeadline;
+use AppBundle\Entity\ToDoCompleted;
+use AppBundle\Model\ToDoItemInfo;
 
 class ToDoListService
 {
@@ -114,4 +119,54 @@ class ToDoListService
         });
         return $items;
     }
+
+    public function generateEntities(ToDoItemInfo $itemInfo){
+        $entities = array();
+        $entities->append($itemInfo->getToDoItem());
+        $entities->append($itemInfo->getToDoMandatory());
+        $deadline = $itemInfo->getToDoDeadline();
+        $this->em->persist($item);
+        $this->em->flush();
+    }
+
+    public function generateEntities(ToDoItemInfo $itemInfo){
+        $toDoItem = new ToDoItem();
+        $toDoItem->setCreatedAt(new \DateTime());
+        $toDoItem->setPriority($itemInfo->getPriority());
+        $toDoItem->setTitle($itemInfo->getTitle());
+        $toDoItem->setDescription($itemInfo->getDescription());
+        $semester = $itemInfo->getSemester();
+        if ($semester != null){
+            $toDoItem->setSemester($semester);
+        }
+
+        $department = $itemInfo->getDepartment();
+        if ($department != null){
+            $toDoItem->setDepartment($department);
+        }
+
+        if ($itemInfo->getIsMandatory()){
+            $toDoMandatory = new ToDoMandatory();
+            $toDoMandatory->setToDoItem($toDoItem);
+            $toDoMandatory->setIsMandatory(true);
+            $toDoMandatory->setSemester($semester);
+            //$toDoItem->setToDoMandatory($toDoMandatory);
+            $this->toDoMandatory = $toDoMandatory;
+        }
+        $deadlineDate = $itemInfo->getToDoDeadline();
+        if ($deadlineDate != null){
+            $toDoDeadLine = new ToDoDeadline();
+            $toDoDeadLine->setToDoItem($toDoItem);
+            $toDoDeadLine->setSemester($semester);
+            $toDoDeadLine->setDeadDate($deadlineDate);
+            $this->toDoDeadline = $toDoDeadLine;
+        }
+        $currentSemester = $this->em->getRepository('AppBundle:Semester')->
+
+
+        $this->toDoItem = $toDoItem;
+
+    }
+
+
 }
