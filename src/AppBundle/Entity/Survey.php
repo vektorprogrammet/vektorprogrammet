@@ -71,7 +71,7 @@ class Survey implements \JsonSerializable
      * @var string
      * @ORM\Column(type="text", nullable=true, options={"default" : "Vi har en undersøkelse klar til deg!"})
      */
-     private $surveyPopUpMessage;
+    private $surveyPopUpMessage;
 
     /**
      * @var SurveyQuestion[]
@@ -321,15 +321,17 @@ class Survey implements \JsonSerializable
     /**
      * @param string surveyPopUpMessage
      */
-    public function setSurveyPopUpMessage($message){
+    public function setSurveyPopUpMessage($message)
+    {
         $this->surveyPopUpMessage = $message;
     }
 
     /**
      * @return string
      */
-    public function getSurveyPopUpMessage() : string {
-        if($this->surveyPopUpMessage===null){
+    public function getSurveyPopUpMessage() : string
+    {
+        if ($this->surveyPopUpMessage===null) {
             return "Vi har en undersøkelse til deg";
         }
         return $this->surveyPopUpMessage;
@@ -350,10 +352,4 @@ class Survey implements \JsonSerializable
     {
         $this->surveysTaken = $surveysTaken;
     }
-
-
-
-
-
-
 }

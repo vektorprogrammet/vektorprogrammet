@@ -41,8 +41,7 @@ class SurveyType extends AbstractType
             ]
         ]);
 
-        if($this->isAdminSurvey())
-        {
+        if ($this->isAdminSurvey()) {
             $builder->add('team_survey', ChoiceType::class, [
                 'label' => 'Teammedlem skal få undersøkelse som popup når de er logget inn:',
                 'multiple' => false,
@@ -57,8 +56,6 @@ class SurveyType extends AbstractType
             ->add('surveyPopUpMessage', CKEditorType::class, [
             'label' => 'Pop-up melding, vises kun hvis ja er valgt.',
              ]);
-
-
         }
 
         $builder->add('confidential', ChoiceType::class, array(
@@ -95,7 +92,8 @@ class SurveyType extends AbstractType
     }
 
 
-    public function setAdminSurvey(bool $isSuperAdmin){
+    public function setAdminSurvey(bool $isSuperAdmin)
+    {
         $this->isAdminSurvey = $isSuperAdmin;
     }
 

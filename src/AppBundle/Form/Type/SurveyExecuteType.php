@@ -16,8 +16,6 @@ class SurveyExecuteType extends AbstractType
     private function baseBuildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('surveyAnswers', 'collection', array('type' => new SurveyAnswerType()));
-
-
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

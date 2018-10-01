@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-
 /**
  * AppBundle\Entity\User.
  *
@@ -764,7 +763,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function getReservedPopUp()
     {
-        if($this->reservedPopUp === null){
+        if ($this->reservedPopUp === null) {
             return false;
         }
         return $this->reservedPopUp;
@@ -783,7 +782,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function getLastPopUp() : \DateTime
     {
-        if($this->lastPopUp === null){
+        if ($this->lastPopUp === null) {
             return new \DateTime("2000-01-01");
         }
         return $this->lastPopUp;
@@ -833,6 +832,4 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      *
      */
-
-
 }

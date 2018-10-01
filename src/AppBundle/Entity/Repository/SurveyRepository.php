@@ -8,7 +8,6 @@
 
 namespace AppBundle\Entity\Repository;
 
-
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
@@ -20,22 +19,20 @@ class SurveyRepository extends EntityRepository
      * @return Survey[]
      */
     public function findOneByUserNotTaken(User $user)
-        {
-            $qb = $this->_em->createQueryBuilder();
+    {
+        $qb = $this->_em->createQueryBuilder();
 
-            $exclude = $qb
+        $exclude = $qb
                 ->select('IDENTITY(survey_taken.survey)')
-                ->from('AppBundle:SurveyTaken','survey_taken')
+                ->from('AppBundle:SurveyTaken', 'survey_taken')
                 ->where('survey_taken.user = :user');
 
-            return $this->createQueryBuilder('survey')
+        return $this->createQueryBuilder('survey')
                 ->select("survey")
                 ->where('survey.teamSurvey = true')
-                ->setParameter('user',$user)
-                ->andWhere($qb->expr()->notIn('survey.id',$exclude->getDQL()))
+                ->setParameter('user', $user)
+                ->andWhere($qb->expr()->notIn('survey.id', $exclude->getDQL()))
                 ->getQuery()
                 ->getResult();
-
-
-        }
+    }
 }

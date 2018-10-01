@@ -30,8 +30,8 @@ class SurveyController extends Controller
      */
     public function showAction(Request $request, Survey $survey)
     {
-        if($survey->isTeamSurvey()){
-            return $this->showTeamAction($request,$survey);
+        if ($survey->isTeamSurvey()) {
+            return $this->showTeamAction($request, $survey);
         }
 
 
@@ -74,8 +74,8 @@ class SurveyController extends Controller
 
     public function showTeamAction(Request $request, Survey $survey)
     {
-        if(!$survey->isTeamSurvey()){
-            return $this->showAction($request,$survey);
+        if (!$survey->isTeamSurvey()) {
+            return $this->showAction($request, $survey);
         }
 
         $user = $this->getUser();
@@ -157,7 +157,7 @@ class SurveyController extends Controller
     {
         $survey = new Survey();
         $surveyType = new SurveyType();
-        if($this->isUserAdmin()){
+        if ($this->isUserAdmin()) {
             $surveyType->setAdminSurvey(true);
         }
         $form = $this->createForm($surveyType, $survey);
@@ -180,11 +180,10 @@ class SurveyController extends Controller
 
     public function copySurveyAction(Request $request, Survey $survey)
     {
-
         $tempSurveyType = new SurveyType();
-        if($this->isUserAdmin()){
+        if ($this->isUserAdmin()) {
             $tempSurveyType->setAdminSurvey(true);
-        }elseif($survey->isTeamSurvey()) {
+        } elseif ($survey->isTeamSurvey()) {
             throw $this->createAccessDeniedException();
         }
 
@@ -227,9 +226,9 @@ class SurveyController extends Controller
     public function editSurveyAction(Request $request, Survey $survey)
     {
         $tempSurveyType = new SurveyType();
-        if($this->isUserAdmin()){
+        if ($this->isUserAdmin()) {
             $tempSurveyType->setAdminSurvey(true);
-        }elseif($survey->isTeamSurvey()) {
+        } elseif ($survey->isTeamSurvey()) {
             throw $this->createAccessDeniedException();
         }
 
@@ -340,7 +339,8 @@ class SurveyController extends Controller
         return $response;
     }
 
-    public function closePopUpAction(){
+    public function closePopUpAction()
+    {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
         $user->setLastPopUp(new \DateTime());
@@ -350,7 +350,4 @@ class SurveyController extends Controller
         );
         return $response;
     }
-
-
 }
-
