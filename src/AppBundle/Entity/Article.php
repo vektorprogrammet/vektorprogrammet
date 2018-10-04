@@ -27,6 +27,11 @@ class Article
     protected $title;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    protected $slug;
+
+    /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt")
      */
@@ -114,6 +119,7 @@ class Article
     public function setTitle($title)
     {
         $this->title = $title;
+        $this->setSlug($title);
 
         return $this;
     }
@@ -126,6 +132,34 @@ class Article
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Set slug.
+     *
+     * @param string $title
+     *
+     * @return Article
+     */
+    public function setSlug($title)
+    {
+        $a = array('Æ', 'Ø', 'Å', 'æ', 'ø', 'å', '&shy;', '-', '!', ',', '.');
+        $b = array('AE', 'O', 'A', 'ae', 'o', 'a', '', '', '', '', '');
+        $title = str_replace($a, $b, $title);
+
+        $this->slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
+
+        return $this;
+    }
+
+    /**
+     * Get slug.
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**

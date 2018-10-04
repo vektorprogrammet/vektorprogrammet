@@ -45,7 +45,7 @@ class ArticleAdminController extends Controller
     }
 
     /**
-     * @Route("/kontrollpanel/artikkel/kladd/{id}", name="article_show_draft")
+     * @Route("/kontrollpanel/artikkel/kladd/{slug}", name="article_show_draft")
      * @param Article $article
      *
      * @return \Symfony\Component\HttpFoundation\Response

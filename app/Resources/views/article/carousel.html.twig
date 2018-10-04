@@ -13,7 +13,7 @@
         {% for article in articles %}
             <div id="news-carousel-text-{{ loop.index0 }}" {% if loop.index0 != 0 %}style="display: none"{% endif %}>
                 <h1 class="article-heading">{{ article.title|safe_html }}</h1>
-                <a href="{{ path('article_show', { 'id': article.id }) }}" class="vektor-button tiny">Les mer</a>
+                <a href="{{ path('article_show', { 'slug': article.slug }) }}" class="vektor-button tiny">Les mer</a>
             </div>
         {% else %}
             <div><h3>Ingen nyheter</h3></div>

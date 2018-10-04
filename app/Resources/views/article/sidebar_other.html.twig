@@ -1,7 +1,7 @@
 <div class="vektor-box">
     <p><strong>Les flere nyheter:</strong></p>
     {% for article in articles %}
-        <p><a href="{{ path('article_show', { 'id': article.id }) }}">{{ article.title|safe_html }}</a></p>
+        <p><a href="{{ path('article_show', { 'slug': article.slug }) }}">{{ article.title|safe_html }}</a></p>
     {% else %}
         <p>Ingen flere nyheter</p>
     {% endfor %}
