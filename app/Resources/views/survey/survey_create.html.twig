@@ -12,201 +12,205 @@
 {% block javascripts %}
     <script>
 
-      /**
-       * This object organizes the javascript used by this twig.
-       * It handles all the client side functionality required to make use of embedded form collections,
-       * and the ability to add and remove objects, such as adding new questions and alternatives to a interview schema.
-       * It uses prototypes, which are blueprints with placeholder values, to dynamically generate new form components.
-       *
-       * See: http://symfony.com/doc/current/cookbook/form/form_collections.html
-       *
-       * The onReady function is called when the document is ready.
-       */
-      IntSchema = {
+        /**
+         * This object organizes the javascript used by this twig.
+         * It handles all the client side functionality required to make use of embedded form collections,
+         * and the ability to add and remove objects, such as adding new questions and alternatives to a interview schema.
+         * It uses prototypes, which are blueprints with placeholder values, to dynamically generate new form components.
+         *
+         * See: http://symfony.com/doc/current/cookbook/form/form_collections.html
+         *
+         * The onReady function is called when the document is ready.
+         */
+        IntSchema = {
 
-        // The container for all the questions
-        questions: $('#questions'),
+            // The container for all the questions
+            questions: $('#questions'),
 
-        // The add question button
-        addQuestionButton: $('#addQuestionButton'),
+            // The add question button
+            addQuestionButton: $('#addQuestionButton'),
 
-        // The prototype for a question alternative
-        aPrototype: $('#prototypes').data('prototype-a'),
+            // The prototype for a question alternative
+            aPrototype: $('#prototypes').data('prototype-a'),
 
-        // The prototype for a question
-        qPrototype: $('#prototypes').data('prototype-q'),
+            // The prototype for a question
+            qPrototype: $('#prototypes').data('prototype-q'),
 
-        onReady: function () {
-          // Set up the questions that are already in the database (add buttons etc)
-          IntSchema.questions.find('.question-card').each(IntSchema.setUp);
+            onReady: function () {
+                // Set up the questions that are already in the database (add buttons etc)
+                console.log(IntSchema.questions)
+                IntSchema.questions.find('.card').each(IntSchema.setUp);
 
-          // Find the initial number of questions in the schema
-          IntSchema.questions.data('q-index', IntSchema.questions.find('.question-card').length);
+                // Find the initial number of questions in the schema
+                IntSchema.questions.data('q-index', IntSchema.questions.length);
 
-          // Bind the add question functionality to the add question button
-          IntSchema.addQuestionButton.on('click', IntSchema.addQuestion);
-        },
+                // Bind the add question functionality to the add question button
+                IntSchema.addQuestionButton.on('click', IntSchema.addQuestion);
+            },
 
-        setUp: function (i) {
-          var alternatives = $(this).find('.alternatives');
-          var rows = alternatives.find('.row');
-          var type = $(this).find('select');
+            setUp: function (i) {
+                console.log(i)
+                var alternativeList = $(this).find('.alternatives');
+                var alternatives = alternativeList.find('.form-group');
+                var type = $(this).find('select');
 
-          alternatives.data('a-index', rows.length);
-          alternatives.data('q-index', i);
+                alternativeList.data('a-index', alternatives.length);
+                alternativeList.data('q-index', i);
 
-          IntSchema.addQuestionDeleteButton($(this));
+                IntSchema.addQuestionDeleteButton($(this));
 
-          var alternativeButton = IntSchema.addAlternativeAddButton($(this));
+                var alternativeButton = IntSchema.addAlternativeAddButton($(this));
 
-          IntSchema.toggleAlternatives(type, alternatives, alternativeButton);
+                IntSchema.toggleAlternatives(type, alternatives, alternativeButton);
 
-          type.on('change', function () {
-            IntSchema.toggleAlternatives(type, alternatives, alternativeButton);
-          });
+                type.on('change', function () {
+                    IntSchema.toggleAlternatives(type, alternatives, alternativeButton);
+                });
 
-          rows.each(function () {
-            IntSchema.addAlternativeDeleteButton($(this));
-          });
-        },
+                alternatives.each(function () {
+                    IntSchema.addAlternativeDeleteButton($(this));
+                });
+            },
 
-        addQuestion: function (event) {
-          event.preventDefault();
+            addQuestion: function (event) {
+                event.preventDefault();
 
-          var qIndex = IntSchema.questions.data('q-index');
-          var newQuestion = $(IntSchema.qPrototype.replace(/__q_prot__/g, qIndex));
-          var newAlternatives = $('<div></div>').addClass('alternatives col-8 col-md-6 col-lg-5');
-          var newButtons = $('<div></div>').addClass('buttons col-8 col-md-6 col-lg-5');
+                var qIndex = IntSchema.questions.data('q-index');
+                var newQuestion = $(IntSchema.qPrototype.replace(/__q_prot__/g, qIndex));
+                var newAlternatives = $('<div></div>').addClass('alternatives col-8 col-md-6 col-lg-5');
+                var newButtons = $('<div></div>').addClass('buttons col-8 col-md-6 col-lg-5');
 
-          newAlternatives.data('a-index', 0);
-          newAlternatives.data('q-index', qIndex);
+                newAlternatives.data('a-index', 0);
+                newAlternatives.data('q-index', qIndex);
 
-          var question = $('<div></div>').addClass('card question-card');
-          var questionHeader = $('<div>Spørsmål</div>').addClass('card-header');
+                var question = $('<div></div>').addClass('card question-card');
+                var questionHeader = $('<div>Spørsmål</div>').addClass('card-header');
 
-          var newPanel = $('<div></div>').addClass('card-body')
-            .append(newQuestion)
-            .append($('<div></div>').addClass('row').append(newAlternatives))
-            .append($('<div></div>').addClass('row').append(newButtons));
+                var cardBody = $('<div></div>').addClass('card-body')
+                        .append(newQuestion)
+                        .append($('<div></div>').addClass('row').append(newAlternatives))
+                        .append($('<div></div>').addClass('row').append(newButtons));
 
-          question.append(questionHeader).append(newPanel);
+                question.append(questionHeader).append(cardBody);
 
-          IntSchema.addQuestionDeleteButton(newPanel);
-          var alternativeButton = IntSchema.addAlternativeAddButton(newPanel);
-          alternativeButton.hide();
-          IntSchema.addOrderButtons(newPanel);
+                var questionCard = cardBody.parent();
 
-          IntSchema.questions.append(question);
+                IntSchema.addQuestionDeleteButton(questionCard);
+                var alternativeButton = IntSchema.addAlternativeAddButton(cardBody);
+                alternativeButton.hide();
+                IntSchema.addOrderButtons(questionCard);
 
-          var type = newQuestion.find('select');
+                IntSchema.questions.append(question);
 
-          type.on('change', function () {
-            IntSchema.toggleAlternatives(type, newAlternatives, alternativeButton);
-          });
+                var type = newQuestion.find('select');
 
-          IntSchema.questions.data('q-index', qIndex + 1);
-        },
+                type.on('change', function () {
+                    IntSchema.toggleAlternatives(type, newAlternatives, alternativeButton);
+                });
 
-        addQuestionDeleteButton: function (panel) {
-          var deleteButton = $('<button class="float-right clickable btn btn-sm btn-outline-danger">Slett&nbsp;<i class="fa fa-trash-o text-danger"></i></button>');
-          var row = panel.siblings('.card-header').first();
+                IntSchema.questions.data('q-index', qIndex + 1);
+            },
 
-          row.append(deleteButton);
+            addQuestionDeleteButton: function (questionCard) {
+                var deleteButton = $('<button class="float-right clickable btn btn-sm btn-outline-danger">Slett&nbsp;<i class="fa fa-trash-o text-danger"></i></button>');
+                var header = questionCard.find('.card-header').first();
 
-          deleteButton.on('click', function (event) {
-            event.preventDefault();
-            panel.parent(".question-card").remove();
-          });
-        },
+                header.append(deleteButton);
 
-        addAlternativeAddButton: function (panel) {
-          var alternativeButton = $('<a href="#" class="button tiny"><i class="fa fa-plus"></i> Alternativ</a>');
-          var alternatives = panel.find('.alternatives');
-          var buttons = panel.find('.buttons');
+                deleteButton.on('click', function (event) {
+                    event.preventDefault();
+                    questionCard.remove();
+                });
+            },
 
-          buttons.append(alternativeButton);
+            addAlternativeAddButton: function (panel) {
+                var alternativeButton = $('<a href="#" class="button tiny"><i class="fa fa-plus"></i> Alternativ</a>');
+                var alternatives = panel.find('.alternatives');
+                var buttons = panel.find('.buttons');
 
-          alternativeButton.on('click', null, alternatives, IntSchema.addAlternative);
+                buttons.append(alternativeButton);
 
-          return alternativeButton;
-        },
+                alternativeButton.on('click', null, alternatives, IntSchema.addAlternative);
 
-        addAlternativeDeleteButton: function (alternative) {
-          var deleteButton = $('<button class="btn btn-sm btn-outline-danger float-right">Slett&nbsp;<i class="fa fa-trash-o"></i></button>');
+                return alternativeButton;
+            },
 
-          alternative.append(deleteButton);
+            addAlternativeDeleteButton: function (alternative) {
+                var deleteButton = $('<button class="btn btn-sm btn-outline-danger float-right">Slett&nbsp;<i class="fa fa-trash-o"></i></button>');
 
-          deleteButton.on('click', function (event) {
-            event.preventDefault();
-            alternative.closest(".alternative").remove();
-          });
-        },
+                alternative.append(deleteButton);
 
-        addAlternative: function (event) {
-          event.preventDefault();
-          var alternatives = event.data;
+                deleteButton.on('click', function (event) {
+                    event.preventDefault();
+                    alternative.closest(".alternative").remove();
+                });
+            },
 
-          var aIndex = alternatives.data('a-index');
-          var qIndex = alternatives.data('q-index');
+            addAlternative: function (event) {
+                event.preventDefault();
+                var alternatives = event.data;
 
-          var upButton = $('<button class="btn btn-sm btn-outline-secondary">Opp&nbsp;<i class="fa fa-arrow-up"/></button>');
-          var downButton = $('<button class="btn btn-sm btn-outline-secondary">Ned&nbsp;<i class="fa fa-arrow-down"/></button>');
+                var aIndex = alternatives.data('a-index');
+                var qIndex = alternatives.data('q-index');
 
-          upButton.on('click', function (e) {
-            e.preventDefault();
-            upButton.closest('.alternative').insertBefore(upButton.closest('.alternative').prev('.alternative'));
-          });
-          downButton.on('click', function (e) {
-            e.preventDefault();
-            downButton.closest('.alternative').insertAfter(downButton.closest('.alternative').next('.alternative'));
-          });
+                var upButton = $('<button class="btn btn-sm btn-outline-secondary">Opp&nbsp;<i class="fa fa-arrow-up"/></button>');
+                var downButton = $('<button class="btn btn-sm btn-outline-secondary">Ned&nbsp;<i class="fa fa-arrow-down"/></button>');
 
-          var newAlternative = $(IntSchema.aPrototype.replace(/__a_prot__/g, aIndex).replace(/__q_prot__/g, qIndex));
+                upButton.on('click', function (e) {
+                    e.preventDefault();
+                    upButton.closest('.alternative').insertBefore(upButton.closest('.alternative').prev('.alternative'));
+                });
+                downButton.on('click', function (e) {
+                    e.preventDefault();
+                    downButton.closest('.alternative').insertAfter(downButton.closest('.alternative').next('.alternative'));
+                });
 
-          var alternativeRow = $('<div class="alternative"></div>');
-          alternativeRow.append(newAlternative).append(upButton).append(downButton);
+                var newAlternative = $(IntSchema.aPrototype.replace(/__a_prot__/g, aIndex).replace(/__q_prot__/g, qIndex));
 
-          newAlternative.append(upButton);
-          newAlternative.append(downButton);
-          alternatives.data('a-index', aIndex + 1);
-          alternatives.append(alternativeRow);
+                var alternativeRow = $('<div class="alternative"></div>');
+                alternativeRow.append(newAlternative).append(upButton).append(downButton);
 
-          IntSchema.addAlternativeDeleteButton(newAlternative);
-        },
+                newAlternative.append(upButton);
+                newAlternative.append(downButton);
+                alternatives.data('a-index', aIndex + 1);
+                alternatives.append(alternativeRow);
 
-        toggleAlternatives: function (select, alternatives, alternativeButton) {
-          if (select.val() == 'text') {
-            alternatives.empty();
-            alternativeButton.hide();
-          } else if (select.val() == 'radio') {
-            alternativeButton.show();
-          } else {
-            alternativeButton.show();
-          }
-        },
+                IntSchema.addAlternativeDeleteButton(newAlternative);
+            },
 
-        addOrderButtons: function (panel) {
-          var upButton = $('<button class="btn btn-sm btn-outline-secondary float-right">Opp&nbsp;<i class="fa fa-arrow-up"/></button>');
-          var downButton = $('<button class="btn btn-sm btn-outline-secondary mx-2 float-right">Ned&nbsp;<i class="fa fa-arrow-down"/></button>');
-          var footer = panel.siblings('.card-header').first();
+            toggleAlternatives: function (select, alternatives, alternativeButton) {
+                if (select.val() == 'text') {
+                    alternatives.empty();
+                    alternativeButton.hide();
+                } else if (select.val() == 'radio') {
+                    alternativeButton.show();
+                } else {
+                    alternativeButton.show();
+                }
+            },
 
-          upButton.on('click', function (e) {
-            e.preventDefault();
-            panel.closest('.question-card').insertBefore(panel.closest('.question-card').prev('.question-card'));
-          });
-          downButton.on('click', function (e) {
-            e.preventDefault();
-            panel.closest('.question-card').insertAfter(panel.closest('.question-card').next('.question-card'));
-          });
+            addOrderButtons: function (questionCard) {
+                var upButton = $('<button class="btn btn-sm btn-outline-secondary float-right">Opp&nbsp;<i class="fa fa-arrow-up"/></button>');
+                var downButton = $('<button class="btn btn-sm btn-outline-secondary mx-2 float-right">Ned&nbsp;<i class="fa fa-arrow-down"/></button>');
+                var header = questionCard.find('.card-header').first();
 
-          footer.append(downButton);
-          footer.append(upButton);
+                upButton.on('click', function (e) {
+                    e.preventDefault();
+                    questionCard.insertBefore(questionCard.prev('.question-card'));
+                });
+                downButton.on('click', function (e) {
+                    e.preventDefault();
+                    questionCard.insertAfter(questionCard.next('.question-card'));
+                });
 
-          return upButton;
-        },
-      };
+                header.append(downButton);
+                header.append(upButton);
 
-      $(document).ready(IntSchema.onReady);
+                return upButton;
+            },
+        };
+
+        $(document).ready(IntSchema.onReady);
 
     </script>
 {% endblock %}
@@ -216,12 +220,8 @@
     <div class="card">
         <div class="card-header"><i class="fa fa-comment-o"></i> Spørreundersøkelse</div>
         <div class="card-body">
-
-
-            {{ form_widget(form.name) }}
-            {{ form_errors(form.name) }}
-            {{ form_widget(form.semester ) }}
-            {{ form_errors(form.semester) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.semester ) }}
             {{ form_row(form.showCustomFinishPage ) }}
             {{ form_row(form.confidential) }}
             {{ form_row(form.finishPageContent ) }}
@@ -241,26 +241,27 @@
 
     <div id="questions">
         {% for surveyQuestion in form.surveyQuestions %}
-            <div class="row">
-                <div class="col-12">
-                    <div class="panel">
-                        {{ form_row(surveyQuestion.question) }}
-                        {{ form_row(surveyQuestion.help) }}
-                        {{ form_row(surveyQuestion.type) }}
-                        <div class="row">
-                            <div class="alternatives col-8 col-md-6 col-lg-4">
-                                {% for alternative in surveyQuestion.alternatives %}
+            <div class="card">
+                <div class="card-header">Spørsmål</div>
+                <div class="card-body">
+                    {{ form_row(surveyQuestion.question) }}
+                    {{ form_row(surveyQuestion.help) }}
+                    {{ form_row(surveyQuestion.type) }}
+                    <div class="row">
+                        <div class="alternatives col-8 col-md-6 col-lg-4">
+                            {% for alternative in surveyQuestion.alternatives %}
+                                <div class="alternative">
                                     {{ form_row(alternative.alternative) }}
-                                {% endfor %}
-                            </div>
+                                </div>
+                            {% endfor %}
                         </div>
-                        <div style="margin-top:5px;">
-                            {{ form_row(surveyQuestion.optional) }}
+                    </div>
+                    <div style="margin-top:5px;">
+                        {{ form_row(surveyQuestion.optional) }}
 
-                        </div>
-                        <div class="row">
-                            <div class="buttons col-8 col-md-6 col-lg-4">
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="buttons col-8 col-md-6 col-lg-4">
                         </div>
                     </div>
                 </div>
