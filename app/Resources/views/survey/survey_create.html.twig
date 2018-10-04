@@ -8,6 +8,21 @@
     <link rel="stylesheet" href="{{ asset_with_version('css/pages/admin/survey_form.css') }}">
 {% endblock %}
 
+{% block breadcrumb %}
+    {% if survey.id %}
+        <li class="breadcrumb-item">
+            <a href="{{ path('surveys', {'id': survey.semester.id}) }}">Undersøkelser</a>
+        </li>
+        <li class="breadcrumb-item active">{{ survey.name }}</li>
+    {% else %}
+        <li class="breadcrumb-item">
+            <a href="{{ path('surveys') }}">Undersøkelser</a>
+        </li>
+        <li class="breadcrumb-item active">Ny undersøkelse</li>
+    {% endif %}
+{% endblock %}
+
+
 
 {% block javascripts %}
     <script>

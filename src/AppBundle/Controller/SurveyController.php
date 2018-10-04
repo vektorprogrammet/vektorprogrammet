@@ -110,7 +110,10 @@ class SurveyController extends Controller
             return $this->redirect($this->generateUrl('surveys'));
         }
 
-        return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
+        return $this->render('survey/survey_create.html.twig', array(
+            'form' => $form->createView(),
+            'survey' => $survey
+        ));
     }
 
     public function copySurveyAction(Request $request, Survey $survey)
@@ -132,7 +135,10 @@ class SurveyController extends Controller
             return $this->redirect($this->generateUrl('surveys'));
         }
 
-        return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
+        return $this->render('survey/survey_create.html.twig', array(
+            'form' => $form->createView(),
+            'survey' => $survey
+        ));
     }
 
     /**
@@ -181,7 +187,10 @@ class SurveyController extends Controller
             return $this->redirect($this->generateUrl('surveys'));
         }
 
-        return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
+        return $this->render('survey/survey_create.html.twig', array(
+            'form' => $form->createView(),
+            'survey' => $survey
+        ));
     }
 
     /**
