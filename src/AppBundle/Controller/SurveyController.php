@@ -68,6 +68,7 @@ class SurveyController extends Controller
             return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
         }
 
+
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView(),
 
@@ -78,6 +79,9 @@ class SurveyController extends Controller
     {
         $user = $this->getUser();
 
+        if(!$survey->isTeamSurvey()){
+            return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
+        }
         if ($user===null) {
             throw new AccessDeniedException("Dette er en teamundersøkese. Logg inn for å ta den!");
         }
@@ -293,6 +297,14 @@ class SurveyController extends Controller
 
     public function resultSurveyAction(Survey $survey)
     {
+        if($survey->isTeamSurvey()){
+            return $this->render('survey/survey_result.html.twig', array(
+                'textAnswers' => $survey->getTextAnswerWithTeamResults(),
+                'survey' => $survey,
+            ));
+
+        }
+
         return $this->render('survey/survey_result.html.twig', array(
             'textAnswers' => $survey->getTextAnswerWithSchoolResults(),
             'survey' => $survey,
@@ -315,8 +327,6 @@ class SurveyController extends Controller
                 $schools[] = $surveyTaken->getSchool()->getName();
             }
         }
-
-
 
 
         //Inject the school question into question array (if not team survey)

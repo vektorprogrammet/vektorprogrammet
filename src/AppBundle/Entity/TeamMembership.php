@@ -140,6 +140,7 @@ class TeamMembership implements TeamMembershipInterface
         return $this->team;
     }
 
+
     /**
      * Set position.
      *

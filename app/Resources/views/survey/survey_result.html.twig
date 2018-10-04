@@ -25,7 +25,11 @@
                 {% if textAnswers[key] %}
                     <h4>{{ key }}</h4>
                     {% for answer in textAnswers[key] %}
-                        <p>{{ loop.index }}: {{ answer.answerText }} <b>{{  answer.schoolName }}</b></p>
+                        {% if survey.teamsurvey %}
+                            <p>{{ loop.index }}: {{ answer.answerText }} <b>{{  answer.teamName }}</b></p>
+                        {% else %}
+                            <p>{{ loop.index }}: {{ answer.answerText }} <b>{{  answer.schoolName }}</b></p>
+                        {% endif %}
                     {% endfor %}
                 {% endif %}
             {% endfor %}

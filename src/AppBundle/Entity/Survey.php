@@ -234,6 +234,56 @@ class Survey implements \JsonSerializable
         return $textQAarray;
     }
 
+    public function getTextAnswerWithTeamResults(): array{
+        $textQuestionArray = array();
+        $textQAarray = array();
+
+        // Get all text questions
+        foreach ($this->getSurveyQuestions() as $question) {
+            if ($question->getType() == 'text') {
+                $textQuestionArray[] = $question;
+            }
+        }
+
+        //Collect text answers
+        foreach ($textQuestionArray as $textQuestion) {
+            $questionText = $textQuestion->getQuestion();
+            $textQAarray[$questionText] = array();
+            foreach ($textQuestion->getAnswers() as $answer) {
+                if ($answer->getSurveyTaken() === null || empty($answer->getSurveyTaken()->getUser()->getTeamMemberships())) {
+                    continue;
+                }
+
+
+                $teamNames = array();
+                foreach($answer->getSurveyTaken()->getUser()->getTeamMemberships() as $teamMembership){
+                    $teamNames[] = $teamMembership->getTeam()->getName();
+                }
+
+
+
+                $teamNames = implode (", ", $teamNames);
+                $find = ',';
+                $replace = ' og';
+                $teamNames = strrev(preg_replace(strrev("/$find/"),strrev($replace),strrev($teamNames),1));
+
+                $textQAarray[$questionText][] = array(
+                    'answerText' => $answer->getAnswer(),
+                    'teamName' => $teamNames
+                );
+            }
+        }
+
+        return $textQAarray;
+
+    }
+
+
+   private function map($team) {
+        return $team->getName();
+    }
+
+
     public function copy(): Survey
     {
         $surveyClone = clone $this;

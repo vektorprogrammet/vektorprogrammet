@@ -16,6 +16,7 @@ class SurveySchoolSpecificExecuteType extends SurveyExecuteType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $semester = $builder->getData()->getSurvey()->getSemester();
+
         $builder->add('school', 'entity', array(
             'label' => 'School',
             'placeholder' => 'Velg Skole',
@@ -29,6 +30,9 @@ class SurveySchoolSpecificExecuteType extends SurveyExecuteType
                     ->setParameter('semester', $semester);
             },
         ));
+
+
+        dump($builder);
 
         parent::buildForm($builder, $options);
     }
