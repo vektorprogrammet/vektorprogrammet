@@ -156,12 +156,12 @@ class InterviewManager
         $user = $interview->getUser();
         $interviewers = array();
         $interviewers[] = $interview->getInterviewer();
-        if (!is_null($interview->getCoInterviewer())){
+        if (!is_null($interview->getCoInterviewer())) {
             $interviewers[] = $interview->getCoInterviewer();
         }
 
         // Send mail to interviewer and co-interviewer
-        foreach ($interviewers as $interviewer){
+        foreach ($interviewers as $interviewer) {
             $message = \Swift_Message::newInstance()
                 ->setSubject("[$user] Intervju: Ønske om ny tid")
                 ->setTo($interviewer->getEmail())
@@ -186,12 +186,12 @@ class InterviewManager
         $user = $interview->getUser();
         $interviewers = array();
         $interviewers[] = $interview->getInterviewer();
-        if (!is_null($interview->getCoInterviewer())){
+        if (!is_null($interview->getCoInterviewer())) {
             $interviewers[] = $interview->getCoInterviewer();
         }
 
         // Send mail to interviewer and co-interviewer
-        foreach ($interviewers as $interviewer){
+        foreach ($interviewers as $interviewer) {
             $message = \Swift_Message::newInstance()
                 ->setSubject("[$user] Intervju: Kansellert")
                 ->setTo($interviewer->getEmail())
