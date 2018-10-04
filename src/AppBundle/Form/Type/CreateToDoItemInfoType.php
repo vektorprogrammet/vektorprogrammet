@@ -8,25 +8,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use AppBundle\Entity\Department;
 
-class CreateToDoItemType extends AbstractType
+class CreateToDoItemInfoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
-            /*
-            ->add('createdAt', 'datetime', array(
-                'label' => 'Når ble denne laget?',
-                'widget' => 'single_text',
-                'format' => 'dd.MM.yyyy HH:mm',
-                'required' => true,
-            ))
-            ->add('deletedAt', 'datetime', array(
-                'label' => 'Når ble denne slettet?',
-                'widget' => 'single_text',
-                'format' => 'dd.MM.yyyy HH:mm',
-                'required' => true,
-            ))*/
+
             ->add('priority', 'choice', array(
                 'label' => 'Hva er dette punktets prioritet?',
                 'choices' => array(
@@ -39,6 +26,14 @@ class CreateToDoItemType extends AbstractType
                 ),
                 'expanded' => false,
                 'required' => true,
+            ))
+            ->add('isMandatory', 'checkbox', array(
+                'label' => 'Dette punktet er påbudt',
+                'required' => false,
+            ))
+            ->add('deadlineDate', 'datetime', array(
+                'label' => 'Hvis dette punktet har deadline, vennligst før inn. Hvis ikke, la være blank:',
+                'required' => false,
             ))
             ->add('title', 'text', array(
                 'label' => 'Hva er denne sin tittel?',
@@ -53,7 +48,7 @@ class CreateToDoItemType extends AbstractType
             ->add('department', 'entity', array(
                 'label' => 'Hvilken department skal denne gjelde for?',
                 'class' => 'AppBundle:Department',
-                'query_builder' => function (EntityRepository $er){
+                'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('d')
                         ->orderBy('d.name', 'ASC');
                 },

@@ -120,53 +120,42 @@ class ToDoListService
         return $items;
     }
 
-    public function generateEntities(ToDoItemInfo $itemInfo){
-        $entities = array();
-        $entities->append($itemInfo->getToDoItem());
-        $entities->append($itemInfo->getToDoMandatory());
-        $deadline = $itemInfo->getToDoDeadline();
-        $this->em->persist($item);
-        $this->em->flush();
-    }
-
-    public function generateEntities(ToDoItemInfo $itemInfo){
+    // Generate appropriate items from ToDoItemInfo, info from Type
+    public function generateEntities(ToDoItemInfo $itemInfo)
+    {
         $toDoItem = new ToDoItem();
         $toDoItem->setCreatedAt(new \DateTime());
         $toDoItem->setPriority($itemInfo->getPriority());
         $toDoItem->setTitle($itemInfo->getTitle());
         $toDoItem->setDescription($itemInfo->getDescription());
-        $semester = $itemInfo->getSemester();
-        if ($semester != null){
-            $toDoItem->setSemester($semester);
-        }
-
+        $toDoItem->setSemester($itemInfo->getSemester());
         $department = $itemInfo->getDepartment();
-        if ($department != null){
-            $toDoItem->setDepartment($department);
-        }
+        $toDoItem->setDepartment($department);
 
-        if ($itemInfo->getIsMandatory()){
+        $this->em->persist($toDoItem);
+
+        // TOT DO: lag getCurrentSemester()
+        //$currentSemester = $this->em->getRepository('AppBundle:Semester')->getCurrentSemester();
+        //FOR NOW:
+        $currentSemester = $itemInfo->getSemester();
+
+        if ($itemInfo->getIsMandatory()) {
             $toDoMandatory = new ToDoMandatory();
             $toDoMandatory->setToDoItem($toDoItem);
             $toDoMandatory->setIsMandatory(true);
-            $toDoMandatory->setSemester($semester);
-            //$toDoItem->setToDoMandatory($toDoMandatory);
-            $this->toDoMandatory = $toDoMandatory;
+            $toDoMandatory->setSemester($currentSemester);
+
+            $this->em->persist($toDoMandatory);
         }
-        $deadlineDate = $itemInfo->getToDoDeadline();
-        if ($deadlineDate != null){
+        $deadlineDate = $itemInfo->getDeadlineDate();
+        if ($deadlineDate != null) {
             $toDoDeadLine = new ToDoDeadline();
             $toDoDeadLine->setToDoItem($toDoItem);
-            $toDoDeadLine->setSemester($semester);
+            $toDoDeadLine->setSemester($currentSemester);
             $toDoDeadLine->setDeadDate($deadlineDate);
-            $this->toDoDeadline = $toDoDeadLine;
+
+            $this->em->persist($toDoDeadLine);
         }
-        $currentSemester = $this->em->getRepository('AppBundle:Semester')->
-
-
-        $this->toDoItem = $toDoItem;
-
+        $this->em->flush();
     }
-
-
 }

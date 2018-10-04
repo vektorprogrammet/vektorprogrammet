@@ -23,7 +23,7 @@ class ToDoDeadline
     /**
      * @var Semester
      *
-     * @ORM\OneToOne(targetEntity="Semester")
+     * @ORM\ManyToOne(targetEntity="Semester")
      */
     private $semester;
 

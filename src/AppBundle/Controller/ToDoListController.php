@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Form\Type\CreateToDoItemType;
+use AppBundle\Form\Type\CreateToDoItemInfoType;
 use AppBundle\Model\ToDoItemInfo;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Service\ToDoListService;
@@ -12,7 +12,6 @@ use Doctrine\ORM\EntityManager;
 
 class ToDoListController extends Controller
 {
-
     public function showAction()
     {
 
@@ -74,11 +73,13 @@ class ToDoListController extends Controller
         //$item = new ToDoItem();
         //$item->setCreatedAt(new \DateTime());
 
+        $toDoListService = $this->get('app.to_do_list_service');
+
         $itemInfo = new ToDoItemInfo();
 
-        $form = $this->createForm(CreateToDoItemType::class, $itemInfo, array(
+        $form = $this->createForm(CreateToDoItemInfoType::class, $itemInfo, array(
             'validation_groups' => array('create_toDoItemInfo'),
-            //'toDoItem' => $item,
+            //'toDoItemInfo' => $itemInfo,
         ));
 
 
@@ -91,12 +92,13 @@ class ToDoListController extends Controller
 
             $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findByRoleName(Roles::ASSISTANT);
             $user->addRole($role);*/
-            $itemInfo->generateEntities();
-            service->generateItems(itemInfo)
-            $item = $itemInfo->getToDoItem();
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($item);
-            $em->flush();
+            $toDoListService->generateEntities($itemInfo);
+            //$itemInfo->generateEntities();
+            //service->generateItems(itemInfo);
+            //$item = $itemInfo->getToDoItem();
+            //$em = $this->getDoctrine()->getManager();
+            //$em->persist($item);
+            //$em->flush();
 
             /*$this->get('app.user.registration')->sendActivationCode($user);*/
 
@@ -110,7 +112,5 @@ class ToDoListController extends Controller
             'form' => $form->createView(),
             //'department' => null,
         ));
-
     }
-
 }

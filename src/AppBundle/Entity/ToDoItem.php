@@ -63,6 +63,7 @@ class ToDoItem
      * @var Department
      *
      * @ORM\ManyToOne(targetEntity="Department")
+     * @@ORM\JoinColumn(name="toDoItem_id", referencedColumnName="id", nullable=true)
      */
     private $department;
 
@@ -71,7 +72,9 @@ class ToDoItem
      * @var Semester
      *
      * @ORM\ManyToOne(targetEntity="Semester")
+     * @ORM\JoinColumn(name="toDoItem_id", referencedColumnName="id", nullable=true)
      */
+    //New, non-department-specific semester:
     private $semester;
 
 
@@ -243,7 +246,7 @@ class ToDoItem
      * @param Department $department
      *
      */
-    public function setDepartment(Department $department)
+    public function setDepartment(? Department $department)
     {
         $this->department = $department;
     }
@@ -251,7 +254,7 @@ class ToDoItem
     /**
      * @param Semester $semester
      */
-    public function setSemester(Semester $semester)
+    public function setSemester(? Semester $semester)
     {
         $this->semester = $semester;
     }

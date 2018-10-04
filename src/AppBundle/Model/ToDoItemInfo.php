@@ -7,6 +7,7 @@ use AppBundle\Entity\Semester;
 use AppBundle\Entity\ToDoDeadline;
 use AppBundle\Entity\ToDoItem;
 use AppBundle\Entity\ToDoMandatory;
+use phpDocumentor\Reflection\DocBlock\Serializer;
 
 class ToDoItemInfo
 {
@@ -17,56 +18,36 @@ class ToDoItemInfo
     private $description;
 
     private $isMandatory;
-    private $deadLineDate;
+    private $deadlineDate;
 
     private $toDoItem;
     private $toDoMandatory;
     private $toDoDeadline;
 
-
-    /*public function __construct(int $priority, string $title, string $description, Semester $semester, Department $department, \DateTime $mandatoryDate, \DateTime $deadLineDate){
-        $this->priority = $priority;
-        $this->title = $title;
-        $this->description = $description;
-        $this->semester = $semester;
-        $this->department = $department;
-        $this->mandatoryDate = $mandatoryDate;
-        $this->deadLineDate = $deadLineDate;
-
-    }*/
-
-    public function generateEntities(){
-        $toDoItem = new ToDoItem();
-        $toDoItem->setCreatedAt(new \DateTime());
-        $toDoItem->setPriority($this->priority);
-        $toDoItem->setTitle($this->title);
-        $toDoItem->setDescription($this->description);
-        if ($this->semester != null){
-            $toDoItem->setSemester($this->semester);
-        }
-        if ($this->department != null){
-            $toDoItem->setDepartment($this->department);
-        }
-
-        if ($this->mandatoryDate != null){
-            $toDoMandatory = new ToDoMandatory();
-            $toDoMandatory->setToDoItem($toDoItem);
-            $toDoMandatory->setIsMandatory(true);
-            $toDoMandatory->setSemester($this->semester);
-            //$toDoItem->setToDoMandatory($toDoMandatory);
-            $this->toDoMandatory = $toDoMandatory;
-        }
-        if ($this->deadLineDate != null){
-            $toDoDeadLine = new ToDoDeadline();
-            $toDoDeadLine->setToDoItem($toDoItem);
-            $toDoDeadLine->setSemester($this->semester);
-            $toDoDeadLine->setDeadDate($this->deadLineDate);
-            $this->toDoDeadline = $toDoDeadLine;
-        }
-
-        $this->toDoItem = $toDoItem;
-
+    public function __construct()
+    {
+        return $this;
     }
+
+/*
+    public function createWithData(int $priority, string $title, string $description, Semester $semester, Department $department, \DateTime $mandatoryDate, bool $isMandatory,  \DateTime $deadLineDate)
+    {
+        $self = new self();
+        $self->priority = $priority;
+        $self->title = $title;
+        $self->description = $description;
+        $self->semester = $semester;
+        $self->department = $department;
+        $self->mandatoryDate = $mandatoryDate;
+        $self->isMandatory = $isMandatory;
+        $self->deadLineDate = $deadLineDate;
+
+
+
+        return $self;
+    }
+*/
+
 
     /**
      * @return Semester
@@ -161,18 +142,18 @@ class ToDoItemInfo
     /**
      * @return \DateTime
      */
-    public function getDeadLineDate(): ?\DateTime
+    public function getDeadlineDate(): ?\DateTime
     {
-        return $this->deadLineDate;
+        return $this->deadlineDate;
     }
 
     /**
-     * @param \DateTime $deadLineDate
+     * @param \DateTime $deadlineDate
      * @return ToDoItemInfo
      */
-    public function setDeadLineDate(\DateTime $deadLineDate): ToDoItemInfo
+    public function setDeadlineDate(\DateTime $deadlineDate): ToDoItemInfo
     {
-        $this->deadLineDate = $deadLineDate;
+        $this->deadlineDate = $deadlineDate;
         return $this;
     }
 
@@ -247,7 +228,4 @@ class ToDoItemInfo
     {
         return $this->isMandatory;
     }
-
-
-
 }
