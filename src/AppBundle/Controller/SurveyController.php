@@ -79,7 +79,7 @@ class SurveyController extends Controller
     {
         $user = $this->getUser();
 
-        if(!$survey->isTeamSurvey()){
+        if (!$survey->isTeamSurvey()) {
             return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
         }
         if ($user===null) {
@@ -297,12 +297,11 @@ class SurveyController extends Controller
 
     public function resultSurveyAction(Survey $survey)
     {
-        if($survey->isTeamSurvey()){
+        if ($survey->isTeamSurvey()) {
             return $this->render('survey/survey_result.html.twig', array(
                 'textAnswers' => $survey->getTextAnswerWithTeamResults(),
                 'survey' => $survey,
             ));
-
         }
 
         return $this->render('survey/survey_result.html.twig', array(

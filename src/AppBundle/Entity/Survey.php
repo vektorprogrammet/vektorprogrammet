@@ -234,7 +234,8 @@ class Survey implements \JsonSerializable
         return $textQAarray;
     }
 
-    public function getTextAnswerWithTeamResults(): array{
+    public function getTextAnswerWithTeamResults(): array
+    {
         $textQuestionArray = array();
         $textQAarray = array();
 
@@ -256,16 +257,16 @@ class Survey implements \JsonSerializable
 
 
                 $teamNames = array();
-                foreach($answer->getSurveyTaken()->getUser()->getTeamMemberships() as $teamMembership){
+                foreach ($answer->getSurveyTaken()->getUser()->getTeamMemberships() as $teamMembership) {
                     $teamNames[] = $teamMembership->getTeam()->getName();
                 }
 
 
 
-                $teamNames = implode (", ", $teamNames);
+                $teamNames = implode(", ", $teamNames);
                 $find = ',';
                 $replace = ' og';
-                $teamNames = strrev(preg_replace(strrev("/$find/"),strrev($replace),strrev($teamNames),1));
+                $teamNames = strrev(preg_replace(strrev("/$find/"), strrev($replace), strrev($teamNames), 1));
 
                 $textQAarray[$questionText][] = array(
                     'answerText' => $answer->getAnswer(),
@@ -275,11 +276,11 @@ class Survey implements \JsonSerializable
         }
 
         return $textQAarray;
-
     }
 
 
-   private function map($team) {
+    private function map($team)
+    {
         return $team->getName();
     }
 
