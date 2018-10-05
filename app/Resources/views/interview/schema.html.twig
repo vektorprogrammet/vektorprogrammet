@@ -1,237 +1,56 @@
 {% extends 'adminBase.html.twig' %}
 
 {% block title %}
-    Nytt intervjuskjema
+    {{ isCreate ? 'Nytt intervjuskjema' : 'Endre intervjuskjema - ' ~ schema.name }}
 {% endblock %}
 
-{# Same layout as survey layout #}
-{#{% form_theme form 'form/survey_layout.html.twig' %}#}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/admin/survey_form.css') }}">
+{% endblock %}
 
 {% block javascripts %}
+    <script src="{{ asset_with_version('js/question_repeater.js') }}"></script>
     <script>
-
-        /**
-         * This object organizes the javascript used by this twig.
-         * It handles all the client side functionality required to make use of embedded form collections,
-         * and the ability to add and remove objects, such as adding new questions and alternatives to a interview schema.
-         * It uses prototypes, which are blueprints with placeholder values, to dynamically generate new form components.
-         *
-         * See: http://symfony.com/doc/current/cookbook/form/form_collections.html
-         *
-         * The onReady function is called when the document is ready.
-         */
-        IntSchema = {
-
-            // The container for all the questions
-            questions: $("#questions"),
-
-            // The add question button
-            addQuestionButton: $("#addQuestionButton"),
-
-            // The prototype for a question alternative
-            aPrototype: $("#prototypes").data("prototype-a"),
-
-            // The prototype for a question
-            qPrototype: $("#prototypes").data("prototype-q"),
-
-            onReady: function () {
-                // Set up the questions that are already in the database (add buttons etc)
-                IntSchema.questions.find(".panel").each(IntSchema.setUp);
-
-                // Find the initial number of questions in the schema
-                IntSchema.questions.data("q-index", IntSchema.questions.find('.panel').length);
-
-                // Bind the add question functionality to the add question button
-                IntSchema.addQuestionButton.on("click", IntSchema.addQuestion);
-            },
-
-            setUp: function (i) {
-                var alternatives = $(this).find(".alternatives");
-                var rows = alternatives.find(".row");
-                var type = $(this).find("select");
-
-                alternatives.data("a-index", rows.length);
-                alternatives.data("q-index", i);
-
-                IntSchema.addQuestionDeleteButton($(this));
-
-                var alternativeButton = IntSchema.addAlternativeAddButton($(this));
-
-                IntSchema.toggleAlternatives(type, alternatives, alternativeButton);
-
-                type.on("change", function () {
-                    IntSchema.toggleAlternatives(type, alternatives, alternativeButton);
-                });
-
-                rows.each(function () {
-                    IntSchema.addAlternativeDeleteButton($(this));
-                });
-            },
-
-            addQuestion: function (event) {
-                event.preventDefault();
-
-                var qIndex = IntSchema.questions.data("q-index");
-                var newQuestion = $(IntSchema.qPrototype.replace(/__q_prot__/g, qIndex));
-                var newAlternatives = $("<div></div>").addClass("alternatives col-8 col-md-6 col-lg-5 offset-3 offset-md-2 offset-lg-1");
-                var newButtons = $("<div></div>").addClass("buttons col-8 col-md-6 col-lg-5 offset-3 offset-md-2 offset-lg-1");
-
-                newAlternatives.data("a-index", 0);
-                newAlternatives.data("q-index", qIndex);
-
-                var newPanel = $("<div></div>").addClass("panel")
-                        .append(newQuestion)
-                        .append($("<div></div>").addClass("row").append(newAlternatives))
-                        .append($("<div></div>").addClass("row").append(newButtons));
-
-                var newColumns = $("<div></div>").addClass("col-12");
-                var newRow = $("<div></div>").addClass("row");
-
-                newRow.append(newColumns.append(newPanel));
-
-                IntSchema.addQuestionDeleteButton(newPanel);
-                var alternativeButton = IntSchema.addAlternativeAddButton(newPanel);
-                alternativeButton.hide();
-
-                IntSchema.questions.append(newRow);
-
-                var type = newQuestion.find("select");
-
-                type.on("change", function () {
-                    IntSchema.toggleAlternatives(type, newAlternatives, alternativeButton);
-                });
-
-                IntSchema.questions.data("q-index", qIndex + 1);
-            },
-
-            addQuestionDeleteButton: function (panel) {
-                var deleteButton = $('<a href="#" class="button tiny alert right"><i class="fa fa-trash-o fa-lg"></i></a>');
-                var column = $("<div></div>").addClass("col-3 col-md-2 col-lg-1");
-                var row = panel.find(".row").first();
-
-                row.append(column);
-                column.append(deleteButton);
-
-                deleteButton.on('click', function (event) {
-                    event.preventDefault();
-                    panel.remove();
-                });
-            },
-
-            addAlternativeAddButton: function (panel) {
-                var alternativeButton = $('<a href="#" class="button tiny"><i class="fa fa-plus"></i> Alternativ</a>');
-                var alternatives = panel.find(".alternatives");
-                var buttons = panel.find(".buttons");
-
-                buttons.append(alternativeButton);
-
-                alternativeButton.on('click', null, alternatives, IntSchema.addAlternative);
-
-                return alternativeButton;
-            },
-
-            addAlternativeDeleteButton: function (alternative) {
-                var deleteButton = $('<i class="fa fa-times"></i>');
-
-                alternative.append($('<div class="col-1"></div>').append(deleteButton));
-
-                deleteButton.on('click', function (event) {
-                    event.preventDefault();
-                    alternative.remove();
-                });
-            },
-
-            addAlternative: function (event) {
-                event.preventDefault();
-                var alternatives = event.data;
-
-                var aIndex = alternatives.data('a-index');
-                var qIndex = alternatives.data('q-index');
-
-                var newAlternative = $(IntSchema.aPrototype.replace(/__a_prot__/g, aIndex).replace(/__q_prot__/g, qIndex));
-
-                alternatives.data("a-index", aIndex + 1);
-                alternatives.append(newAlternative);
-
-                IntSchema.addAlternativeDeleteButton(newAlternative);
-            },
-
-            toggleAlternatives: function (select, alternatives, alternativeButton) {
-                if (select.val() == "text") {
-                    alternatives.empty();
-                    alternativeButton.hide();
-                } else if (select.val() == "radio") {
-                    alternativeButton.show();
-                } else {
-                    alternativeButton.show();
-                }
-            }
-        };
-
-        $(document).ready(IntSchema.onReady);
-
+      document.addEventListener('DOMContentLoaded', QuestionManager.onReady);
     </script>
 {% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('interview_schema') }}">Intervjuskjema</a>
+    </li>
+    <li class="breadcrumb-item active">{{ isCreate ? 'Nytt intervjuskjema' : schema.name }}</li>
+{% endblock %}
+
+
 {% block body %}
-    <div class="row">
-        <div class="col-12 col-md-12 col-lg-12">
+    {{ form_start(form) }}
+    <div class="card">
+        <div class="card-header"><i class="fa fa-comments-o"></i> Intervjuskjema</div>
 
-            <h1>Intervjuskjema</h1>
-
-            <hr>
-
-            {{ form_start(form) }}
+        <div class="card-body">
             {{ form_widget(form.name) }}
             {{ form_errors(form.name) }}
-
-            <div
-                    id="prototypes"
-                    data-prototype-a="{{ form_row(form.interviewQuestions.vars.prototype.children['alternatives'].vars.prototype.alternative) | e }}"
-                    data-prototype-q="{{ form_row(form.interviewQuestions.vars.prototype.question) | e }}
-                {{ form_row(form.interviewQuestions.vars.prototype.help) | e }}
-                {{ form_row(form.interviewQuestions.vars.prototype.type) | e }}"
-            >
-            </div>
-
-            <div id="questions">
-                {% for interviewQuestion in form.interviewQuestions %}
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="panel">
-                                {{ form_row(interviewQuestion.question) }}
-                                {{ form_row(interviewQuestion.help) }}
-                                {{ form_row(interviewQuestion.type) }}
-                                <div class="row">
-                                    <div class="alternatives col-8 col-md-6 col-lg-4 offset-3 offset-md-2 offset-lg-1">
-                                        {% for alternative in interviewQuestion.alternatives %}
-                                            {{ form_row(alternative.alternative) }}
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="buttons col-8 col-md-6 col-lg-4 offset-3 offset-md-2 offset-lg-1">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-
-            <div class="row">
-                <div class="col-12 column">
-                    <ul class="inline-list">
-                        <li><a href="#" id="addQuestionButton" class="button tiny">Nytt Spørsmål</a></li>
-                        <li>{{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}</li>
-                    </ul>
-                </div>
-            </div>
-
-            {# Token CSRF #}
-            {{ form_widget(form._token) }}
         </div>
     </div>
+
+    {% include 'questions/repeatable_question.html.twig' with {'questions': form.interviewQuestions} %}
+
+    <div class="card">
+        <div class="card-body">
+            <p>
+                <a href="#" id="addQuestionButton" class="button tiny">
+                    <i class="fa fa-plus"></i> Nytt Spørsmål
+                </a>
+            </p>
+
+            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+        </div>
+    </div>
+    <div class="hide">
+        {{ form_rest(form) }}
+    </div>
+    {{ form_end(form) }}
 {% endblock %}
 
 

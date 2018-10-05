@@ -4,71 +4,53 @@
     Intervjuskjemaer
 {% endblock %}
 
-{% block javascripts %}
-
-    <script src="{{ asset_with_version('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-    <script src="{{ asset_with_version('js/deleteablerow.js') }}"></script>
-
-    <script>
-
-        $(document).ready(function () {
-
-            // Bind delete schema functionality to each delete button
-            $('.delete').deleteablerow('interview_schema_delete', {
-                confirmation: {
-                    modal: $('#confirmModal'),
-                    acceptButton: $('#modalAccept'),
-                    cancelButton: $('#modalCancel')
-                }
-            });
-        });
-
-    </script>
-
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Intervjuskjema</li>
 {% endblock %}
+
+{% block breadcrumb_menu %}
+    <a href="{{ path('interview_schema_create') }}" class="btn btn-outline-success text-success">
+        <i class="fa fa-plus"></i> Nytt intervjuskjema
+    </a>
+{% endblock %}
+
 
 {% block body %}
 
-    <div class="row">
-        <div class="col-12 col-md-12 col-lg-12">
-
-            <h1>Intervjuskjemaer</h1>
-
-            <hr>
-
-            <ul class="inline-list">
-                <li><a href="{{ path('interview_schema_create') }}" class="button tiny">Nytt skjema</a></li>
-            </ul>
-
-            <table width="100%">
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-comments-o"></i> Intervjuskjemaer
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table">
                 <thead>
                 <tr>
-                    <th width="80%">Tittel</th>
                     <th></th>
+                    <th>Skjema</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for schema in schemas %}
                     <tr>
+                        <td width="50px">
+                            <div class="dropdown">
+                                <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"
+                                     aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-secondary"></i>
+                                </div>
+                                <div class="dropdown-menu pt-0" aria-labelledby="options-{{ loop.index }}">
+                                    <div class="dropdown-header mb-2"><strong>{{ schema.name }}</strong></div>
+                                    <a href="{{ path('interview_schema_edit', {'id': schema.id }) }}"
+                                       class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
                         <td>{{ schema.name }}</td>
-                        <td><a href="{{ path('interview_schema_edit', {'id': schema.id }) }}" class="button right tiny">
-                                <i class="fa fa-pencil-square-o"></i> Rediger</a></td>
-                        {# Delete button disabled because you can't delete schemas which have been used in interviews #}
-                        {# <td><a href="#" id="{{ schema.id }}" class="button tiny alert delete"><i class="fa fa-trash-o"></i> Slett</a></td> #}
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td>Ingen skjemaer</td>
-                        <td></td>
-                        <td></td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
-
-    {% include 'common/confirmation_modal.html.twig' %}
-
 {% endblock %}
