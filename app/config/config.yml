@@ -4,6 +4,7 @@ imports:
     - { resource: services.yml }
     - { resource: image_filters.yml }
     - { resource: "@AppBundle/Resources/config/services.yml" }
+    - { resource: automapper.yml }
 
 parameters:
   google_api:

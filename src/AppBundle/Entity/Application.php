@@ -143,11 +143,6 @@ class Application
     private $specialNeeds;
 
     /**
-     * @var bool
-     */
-    private $wantsNewsletter;
-
-    /**
      * ApplicationInfo constructor.
      */
     public function __construct()
@@ -158,7 +153,6 @@ class Application
         $this->doublePosition = false;
         $this->previousParticipation = false;
         $this->teamInterest = false;
-        $this->wantsNewsletter = false;
         $this->specialNeeds = '';
         $this->monday = true;
         $this->tuesday = true;
@@ -452,30 +446,6 @@ class Application
     public function setTeamInterest($teamInterest)
     {
         $this->teamInterest = $teamInterest;
-    }
-
-    /**
-     * @return bool
-     */
-    public function wantsNewsletter()
-    {
-        return $this->isWantsNewsletter();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isWantsNewsletter()
-    {
-        return $this->wantsNewsletter;
-    }
-
-    /**
-     * @param bool $wantsNewsletter
-     */
-    public function setWantsNewsletter($wantsNewsletter)
-    {
-        $this->wantsNewsletter = $wantsNewsletter;
     }
 
     /**

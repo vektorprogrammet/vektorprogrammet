@@ -9,9 +9,14 @@ var gulp = require('gulp'),
     changed = require('gulp-changed'),
     babel = require('gulp-babel');
 
+var exec = require('child_process').exec;
+
 var path = {
     dist: 'www/',
     src: 'app/Resources/assets/',
+    client: {
+        src: 'client'
+    },
     scheduling: {
         src: 'src/AppBundle/AssistantScheduling/Webapp'
     }
@@ -132,6 +137,24 @@ function assistantSchedulingStaticFiles () {
         .pipe(gulp.dest('www/js/scheduling'));
 }
 
+function buildClientApp (cb) {
+  exec('cd '+path.client.src+' && npm run build', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  })
+}
+
+function clientStaticFiles () {
+  return gulp.src(path.client.src + '/dist/app.js')
+    .pipe(gulp.dest('www/js/client'));
+}
+
+gulp.task('frontEnd', function () {
+  gulp.src(path.frontEnd + '/**/*')
+      .pipe(gulp.dest('www/'));
+});
+
 function watch () {
     gulp.watch(path.src + 'scss/**/*.scss', stylesDev);
     gulp.watch(path.src + 'js/**/*.js', scriptsDev);
@@ -145,3 +168,4 @@ function watch () {
 gulp.task('build:prod', gulp.parallel([stylesProd, scriptsProd, imagesProd, files, icons, vendor]));
 gulp.task('build:dev', gulp.parallel([stylesDev, scriptsDev, imagesDev, files, icons, vendor]));
 gulp.task('default', gulp.series(['build:dev', watch]));
+gulp.task('build:client', gulp.series([buildClientApp, clientStaticFiles]));

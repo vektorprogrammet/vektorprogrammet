@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Role\Roles;
 use AppBundle\Validator\Constraints as CustomAssert;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -798,5 +799,16 @@ class User implements AdvancedUserInterface, \Serializable
         $this->executiveBoardMemberships = $boardMemberships;
 
         return $this;
+    }
+
+    public function isAdmin(): bool
+    {
+        foreach ($this->roles as $role) {
+            if ($role->getRole() === Roles::ADMIN) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

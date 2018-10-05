@@ -14,10 +14,6 @@ applications:
     type: rest
     resource: @AppBundle/Controller/API/ApplicationController.php
 
-newsletters:
-    type: rest
-    resource: @AppBundle/Controller/API/NewsletterController.php
-
 receipts:
     type: rest
     resource: @AppBundle/Controller/API/ReceiptController.php
