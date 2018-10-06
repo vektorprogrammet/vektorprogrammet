@@ -114,7 +114,7 @@ class InterviewRepository extends EntityRepository
      */
     public function findUncompletedInterviewsByInterviewerInCurrentSemester(User $interviewer)
     {
-        $semester = $interviewer->getDepartment()->getCurrentSemester();
+        $semester = $interviewer->getDepartment()->getCurrentAdmissionPeriod();
         if ($semester === null) {
             return [];
         }

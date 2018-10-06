@@ -7,7 +7,7 @@
 {% block body %}
 <div class="row">
     <div class="small-12 columns">
-        <h1>Teaminteresse {{ semester.department.shortname }} {{ semester.semestertime }} {{ semester.year }}</h1>
+        <h1>Teaminteresse {{ department.shortname }} {{ semester.semestertime }} {{ semester.year }}</h1>
         <hr>
     </div>
 </div>
@@ -15,14 +15,22 @@
 <div class="row">
     <div class="small-12 columns">
         {% if is_granted_admin() %}
-            {% include "common/department_semester_dropdowns.html.twig" with {'path': 'admissionadmin_team_interest_by_semester', 'parameterName': 'semester', 'currentSemester': semester} %}
+            {% include "common/department_semester_dropdowns.html.twig" with {
+                'path': 'admissionadmin_team_interest',
+                'departmentParameterName': 'department',
+                'semesterParameterName': 'semester',
+                'currentDepartment': department,
+                'currentSemester': semester,
+            } %}
         {% else %}
             <ul class="inline-list">
-                {# Semester dropdown #}
                 {% include "common/semester_dropdown.html.twig" with {
-                'pathForSemester': 'admissionadmin_team_interest_by_semester',
-                'semesterParameterName': 'semester',
-                'currentSemester': semester} %}
+                    'pathForSemester': 'admissionadmin_team_interest',
+                    'departmentParameterName': 'department',
+                    'semesterParameterName': 'semester',
+                    'currentDepartment': department,
+                    'currentSemester': semester,
+                } %}
             </ul>
         {% endif %}
         <hr>
@@ -137,8 +145,8 @@
         <p>
             Disse har fylt ut skjema for teaminteresse, enten på stand eller via link.<br>
             Link til skjema:
-            <a href="{{ path('team_interest_form', {'id': semester.department.id }) }}">
-                {{ url('team_interest_form', {'id': semester.department.id }) }}
+            <a href="{{ path('team_interest_form', {'id': department.id }) }}">
+                {{ url('team_interest_form', {'id': department.id }) }}
             </a>
         </p>
         <table width="100%" class="application-table">

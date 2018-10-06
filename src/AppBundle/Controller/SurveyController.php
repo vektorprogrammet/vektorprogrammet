@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Survey;
@@ -13,7 +12,7 @@ use AppBundle\Form\Type\SurveyExecuteType;
  * SurveyController is the controller responsible for survey actions,
  * such as showing, assigning and conducting surveys.
  */
-class SurveyController extends Controller
+class SurveyController extends BaseController
 {
     /**
      * Shows the given survey.
@@ -114,11 +113,10 @@ class SurveyController extends Controller
     public function copySurveyAction(Request $request, Survey $survey)
     {
         $em = $this->getDoctrine()->getManager();
-        $department = $this->getUser()->getDepartment();
-        $semester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
+        $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
 
         $surveyClone = $survey->copy();
-        $surveyClone->setSemester($semester);
+        $surveyClone->setSemester($currentSemester);
 
         $form = $this->createForm(SurveyType::class, $surveyClone);
         $form->handleRequest($request);

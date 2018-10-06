@@ -2,32 +2,28 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Semester;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-class ApplicationStatisticsController extends Controller
+class ApplicationStatisticsController extends BaseController
 {
     /**
-     * @param Semester $semester
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Semester $semester = null)
+    public function showAction()
     {
-        if ($semester === null) {
-            $department = $this->getUser()->getDepartment();
-            $semester = $department->getCurrentOrLatestSemester();
-        }
-
-        $applicationData = $this->get('application.data');
-        $applicationData->setSemester($semester);
+        $department = $this->getDepartmentOrThrow404();
+        $semester = $this->getSemesterOrThrow404();
         $assistantHistoryData = $this->get('assistant_history.data');
-        $assistantHistoryData->setSemester($semester);
+        $assistantHistoryData->setSemester($semester)->setDepartment($department);
+
+        $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
+            ->findOneByDepartmentAndSemester($department, $semester);
+        $applicationData = $this->get('application.data');
+        $applicationData->setAdmissionPeriod($admissionPeriod);
 
         return $this->render('statistics/statistics.html.twig', array(
             'applicationData' => $applicationData,
             'assistantHistoryData' => $assistantHistoryData,
             'semester' => $semester,
+            'department' => $department,
         ));
     }
 }

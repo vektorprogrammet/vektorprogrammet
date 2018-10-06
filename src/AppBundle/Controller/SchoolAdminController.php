@@ -6,14 +6,13 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\User;
 use AppBundle\Event\AssistantHistoryCreatedEvent;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\School;
 use AppBundle\Form\Type\CreateSchoolType;
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Form\Type\CreateAssistantHistoryType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class SchoolAdminController extends Controller
+class SchoolAdminController extends BaseController
 {
     public function showSpecificSchoolAction(School $school)
     {
@@ -44,7 +43,7 @@ class SchoolAdminController extends Controller
         }
 
         $assistantHistory = new AssistantHistory();
-
+        $assistantHistory->setDepartment($department);
         $form = $this->createForm(new CreateAssistantHistoryType($department), $assistantHistory);
 
         $form->handleRequest($request);

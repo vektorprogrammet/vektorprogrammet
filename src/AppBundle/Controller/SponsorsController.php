@@ -2,12 +2,11 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\SponsorType;
 use AppBundle\Entity\Sponsor;
 
-class SponsorsController extends Controller
+class SponsorsController extends BaseController
 {
     public function sponsorsEditAction(Request $request)
     {

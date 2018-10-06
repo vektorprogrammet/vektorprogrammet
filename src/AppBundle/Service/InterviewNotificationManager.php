@@ -32,7 +32,7 @@ class InterviewNotificationManager
 
         $interviewsLink = $this->router->generate(
             'applications_show_interviewed_by_semester',
-            array('id' => $department->getCurrentOrLatestSemester()->getId()),
+            array('id' => $department->getCurrentOrLatestAdmissionPeriod()->getId()),
             Router::ABSOLUTE_URL
         );
 
@@ -61,7 +61,7 @@ class InterviewNotificationManager
         $this->slackMessenger->notify(
             'Se alle intervjuene her: '.$this->router->generate(
                 'applications_show_interviewed_by_semester',
-                array('id' => $department->getCurrentOrLatestSemester()->getId(), 'status' => 'interviewed'),
+                array('id' => $department->getCurrentOrLatestAdmissionPeriod()->getId(), 'status' => 'interviewed'),
                 Router::ABSOLUTE_URL
             ));
     }

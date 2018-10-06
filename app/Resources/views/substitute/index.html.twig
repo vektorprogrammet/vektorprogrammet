@@ -46,9 +46,11 @@
         <div class="small-12 medium-12 large-12 columns">
             {# Semester dropdown #}
             {% include 'common/department_semester_dropdowns.html.twig' with {
-            'path': 'substitute_show_by_semester',
-            'parameterName': 'semester',
-            'currentSemester': semester
+                'path': 'substitute_show',
+                'departmentParameterName': 'department',
+                'semesterParameterName': 'semester',
+                'currentDepartment': department,
+                'currentSemester': semester,
             } %}
         </div>
     </div>

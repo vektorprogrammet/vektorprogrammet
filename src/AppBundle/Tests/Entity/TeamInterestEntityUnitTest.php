@@ -47,12 +47,10 @@ class TeamInterestEntityUnitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($semester, $this->teamInterest->getSemester());
     }
 
-    public function testGetDepartment()
+    public function testSetDepartment()
     {
         $department = new Department();
-        $semester = new Semester();
-        $semester->setDepartment($department);
-        $this->teamInterest->setSemester($semester);
-        $this->assertEquals($department, $this->teamInterest->getSemester()->getDepartment());
+        $this->teamInterest->setDepartment($department);
+        $this->assertEquals($department, $this->teamInterest->getDepartment());
     }
 }

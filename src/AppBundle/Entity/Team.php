@@ -64,6 +64,7 @@ class Team implements TeamInterface
 
     /**
      * Applications with team interest
+     * @var Application[]
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Application", mappedBy="potentialTeams")
      */
@@ -71,6 +72,7 @@ class Team implements TeamInterface
 
     /**
      * TeamInterest entities not corresponding to any Application
+     * @var TeamInterest[]
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\TeamInterest", mappedBy="potentialTeams")
      */
@@ -280,7 +282,7 @@ class Team implements TeamInterface
         $histories = [];
 
         foreach ($this->teamMemberships as $wh) {
-            $semester = $wh->getUser()->getDepartment()->getCurrentOrLatestSemester();
+            $semester = $wh->getUser()->getDepartment()->getCurrentOrLatestAdmissionPeriod()->getSemester();
             if ($semester !== null && $wh->isActiveInSemester($semester)) {
                 $histories[] = $wh;
             }
@@ -344,7 +346,7 @@ class Team implements TeamInterface
     public function getNumberOfPotentialMembersAndApplicantsInSemester($semester)
     {
         $array = array_merge($this->potentialApplicants->toArray(), $this->potentialMembers->toArray());
-        $array = array_filter($array, function ($a) use ($semester) {
+        $array = array_filter($array, function (DepartmentSemesterInterface $a) use ($semester) {
             return $a->getSemester() === $semester;
         });
         return count($array);

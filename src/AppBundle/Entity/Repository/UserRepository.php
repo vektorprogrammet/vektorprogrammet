@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Department;
 use AppBundle\Entity\Receipt;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
@@ -14,11 +15,10 @@ use Doctrine\ORM\NoResultException;
 
 class UserRepository extends EntityRepository implements UserProviderInterface
 {
-    public function findUsersWithTeamMembershipInSemester(Semester $semester)
+    public function findUsersInDepartmentWithTeamMembershipInSemester(Department $department, Semester $semester)
     {
         $startDate = $semester->getSemesterStartDate();
         $endDate = $semester->getSemesterEndDate();
-        $department = $semester->getDepartment();
 
         return $this->createQueryBuilder('user')
             ->select('user')
@@ -36,13 +36,23 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getResult();
     }
 
-    public function findUsersWithAssistantHistoryInSemester(Semester $semester)
+    /**
+     * @param Department $department
+     * @param Semester $semester
+     *
+     * @return User[]
+     */
+    public function findUsersWithAssistantHistoryInDepartmentAndSemester(Department $department, Semester $semester)
     {
         return $this->createQueryBuilder('user')
             ->select('user')
             ->join('user.assistantHistories', 'ah')
-            ->where('ah.semester = :semester')
-            ->setParameter('semester', $semester)
+            ->where('ah.department = :department')
+            ->andWhere('ah.semester = :semester')
+            ->setParameters(array(
+                'department' => $department,
+                'semester' => $semester,
+            ))
             ->getQuery()
             ->getResult();
     }

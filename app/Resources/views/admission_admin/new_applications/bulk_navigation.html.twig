@@ -18,7 +18,7 @@
         {% endif %}
     </div>
     <div class="small-9 columns">
-        {% if app.user.department == semester.department and is_granted_team_leader() %}
+        {% if app.user.department == department and is_granted_team_leader() %}
             <a class="button tiny success float-right" href="{{ path('register_applicant') }}">
                 Ny søker <i class="fa fa-plus"></i>
             </a>

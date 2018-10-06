@@ -6,10 +6,9 @@ use AppBundle\Entity\Letter;
 use AppBundle\Entity\Newsletter;
 use AppBundle\Form\Type\CreateLetterType;
 use AppBundle\Form\Type\CreateNewsletterType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class NewsletterController extends Controller
+class NewsletterController extends BaseController
 {
     public function createAction(Request $request, Newsletter $newsletter = null)
     {

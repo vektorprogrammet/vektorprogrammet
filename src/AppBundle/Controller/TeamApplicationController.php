@@ -6,14 +6,13 @@ use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamApplication;
 use AppBundle\Event\TeamApplicationCreatedEvent;
 use AppBundle\Form\Type\TeamApplicationType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TeamApplicationController extends Controller
+class TeamApplicationController extends BaseController
 {
     public function showApplicationAction(TeamApplication $application)
     {

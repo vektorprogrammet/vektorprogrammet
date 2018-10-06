@@ -6,11 +6,10 @@ use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Department;
 use AppBundle\Form\Type\AdmissionSubscriberType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class AdmissionSubscriberController extends Controller
+class AdmissionSubscriberController extends BaseController
 {
     /**
      * @Route("/interesseliste/{shortName}", name="interest_list", requirements={"shortName"="\w+"})

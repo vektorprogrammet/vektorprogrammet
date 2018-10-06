@@ -2,9 +2,9 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\InterviewDistribution;
-use AppBundle\Entity\Semester;
 
 class InterviewCounter
 {
@@ -39,11 +39,11 @@ class InterviewCounter
 
     /**
      * @param Application[] $applications
-     * @param Semester      $semester
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return array
      */
-    public function createInterviewDistributions(array $applications, Semester $semester)
+    public function createInterviewDistributions(array $applications, AdmissionPeriod $admissionPeriod)
     {
         $interviewDistributions = array();
 
@@ -51,7 +51,7 @@ class InterviewCounter
             $interviewer = $application->getInterview()->getInterviewer();
 
             if (!array_key_exists($interviewer->__toString(), $interviewDistributions)) {
-                $interviewDistributions[$interviewer->__toString()] = new InterviewDistribution($interviewer, $semester);
+                $interviewDistributions[$interviewer->__toString()] = new InterviewDistribution($interviewer, $admissionPeriod);
             }
         }
 

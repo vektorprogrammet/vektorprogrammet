@@ -2,7 +2,7 @@
 
 
 {% block title %}
-    Opprett semester
+    Endre opptaksperiode
 {% endblock %}
 
 {% form_theme form 'form/foundation_layout.html.twig' %}
@@ -81,14 +81,14 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.min.js"></script>
     <script>
-      const options = {
-        format: 'd.m.Y H:i',
-        lang: 'no',
-        step: 1,
-      };
+        const options = {
+            format: 'd.m.Y H:i',
+            lang: 'no',
+            step: 1,
+        };
 
-      jQuery('#{{ form.admissionStartDate.vars.id }}').datetimepicker(options);
-      jQuery('#{{ form.admissionEndDate.vars.id }}').datetimepicker(options);
-      jQuery('#{{ form.infoMeeting.date.vars.id }}').datetimepicker(Object.assign(options, {step: 15}));
+        jQuery('#{{ form.admissionStartDate.vars.id }}').datetimepicker(options);
+        jQuery('#{{ form.admissionEndDate.vars.id }}').datetimepicker(options);
+        jQuery('#{{ form.infoMeeting.date.vars.id }}').datetimepicker(Object.assign(options, {step: 15}));
     </script>
 {% endblock %}

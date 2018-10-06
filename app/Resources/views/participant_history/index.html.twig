@@ -79,20 +79,29 @@
 <div class="row">
     <div class="small-12 medium-12 large-12 columns">
 
-        <h1>Deltakerhistorikk {{ semester.department }}</h1>
+        <h1>Deltakerhistorikk {{ department }}</h1>
 
         <hr>
 
 
         {% if is_granted_team_leader() %}
-        {% include "common/department_semester_dropdowns.html.twig" with {'path': 'participanthistory_show_by_semester', 'parameterName': 'id', 'currentSemester': semester} %}
+        {% include "common/department_semester_dropdowns.html.twig" with {
+            'path': 'participanthistory_show',
+            'departmentParameterName': 'department',
+            'semesterParameterName': 'semester',
+            'currentDepartment': department,
+            'currentSemester': semester,
+        } %}
         {% else %}
         <ul class="inline-list">
             {# Semester dropdown #}
             {% include "common/semester_dropdown.html.twig" with {
                 'pathForSemester': 'participanthistory_show_by_semester',
-                'semesterParameterName': 'id',
-                'currentSemester': semester} %}
+                'departmentParameterName': 'department',
+                'semesterParameterName': 'semester',
+                'currentDepartment': department,
+                'currentSemester': semester,
+            } %}
         </ul>
         {% endif %}
 
@@ -137,7 +146,7 @@
                         <th> Avdeling</th>
                         <th> Bolk</th>
                         <th> Dag</th>
-                        {% if is_granted_admin() or (is_granted_team_leader() and app.user.department == semester.department) %}
+                        {% if is_granted_admin() or (is_granted_team_leader() and app.user.department == department) %}
                             <th></th>
                             <th></th>
                         {% endif %}
@@ -162,10 +171,10 @@
                             </td>
                             <td> {{ ah.user.email }}</td>
                             <td> {{ ah.semester.name }}</td>
-                            <td> {{ ah.semester.department.shortname }}</td>
+                            <td> {{ ah.department.shortname }}</td>
                             <td> {{ ah.bolk }}</td>
                             <td> {{ ah.day }}</td>
-                            {% if is_granted_admin() or (is_granted_team_leader() and app.user.department == semester.department) %}
+                            {% if is_granted_admin() or (is_granted_team_leader() and app.user.department == department) %}
                                 <td>
                                     <form
                                             action="{{ path('assistant_history_delete', {id: ah.id}) }}"

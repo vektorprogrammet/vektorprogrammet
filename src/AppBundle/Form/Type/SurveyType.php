@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\Repository\DepartmentRepository;
 use Doctrine\ORM\EntityRepository;
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
@@ -18,9 +19,19 @@ class SurveyType extends AbstractType
             'class' => 'AppBundle:Semester',
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('s')
-                    ->where('s.admissionEndDate > :limit')
+                    ->where('s.semesterEndDate > :limit')
                     ->setParameter('limit', new \DateTime('now -1 year'))
                     ->orderBy('s.semesterStartDate', 'DESC');
+            },
+        ))
+
+        ->add('department', 'entity', array(
+            'label' => 'Region',
+            'class' => 'AppBundle:Department',
+            'query_builder' => function (DepartmentRepository $er) {
+                return $er->createQueryBuilder('Department')
+                    ->select('Department')
+                    ->where('Department.active = true');
             },
         ))
 

@@ -84,11 +84,11 @@ class Department
     private $fieldOfStudy;
 
     /**
-     * @ORM\OneToMany(targetEntity="Semester", mappedBy="department",
+     * @ORM\OneToMany(targetEntity="AdmissionPeriod", mappedBy="department",
      *     cascade={"remove"})
-     * @ORM\OrderBy({"semesterStartDate" = "DESC"})
+     * @ORM\OrderBy({"admissionStartDate" = "DESC"})
      **/
-    private $semesters;
+    private $admissionPeriods;
 
     /**
      * @ORM\OneToMany(targetEntity="Team", mappedBy="department",
@@ -116,22 +116,23 @@ class Department
     {
         $this->schools = new ArrayCollection();
         $this->fieldOfStudy = new ArrayCollection();
-        $this->semesters = new ArrayCollection();
+        $this->admissionPeriods = new ArrayCollection();
         $this->teams = new ArrayCollection();
         $this->active = true;
     }
 
     /**
-     * @return Semester
+     * @return AdmissionPeriod
      */
-    public function getCurrentSemester()
+    public function getCurrentAdmissionPeriod()
     {
         $now = new \DateTime();
 
-        foreach ($this->semesters as $semester) {
-            if ($now > $semester->getSemesterStartDate() && $now < $semester->getSemesterEndDate()) {
+        /** @var AdmissionPeriod $admissionPeriod */
+        foreach ($this->admissionPeriods as $admissionPeriod) {
+            if ($now > $admissionPeriod->getAdmissionStartDate() && $now < $admissionPeriod->getAdmissionEndDate()) {
                 // Current semester
-                return $semester;
+                return $admissionPeriod;
             }
         }
 
@@ -139,46 +140,46 @@ class Department
     }
 
     /**
-     * @return Semester
+     * @return AdmissionPeriod
      */
-    public function getLatestSemester()
+    public function getLatestAdmissionPeriod()
     {
-        /** @var Semester[] $semesters */
-        $semesters = $this->getSemesters()->toArray();
+        /** @var AdmissionPeriod[] $admissionPeriods */
+        $admissionPeriods = $this->getAdmissionPeriods()->toArray();
 
-        $latestSemester = current($semesters);
+        $latestAdmissionPeriod = current($admissionPeriods);
 
         $now = new \DateTime();
 
-        foreach ($semesters as $semester) {
-            if ($semester->getSemesterStartDate() < $now && $semester->getSemesterEndDate() > $latestSemester->getSemesterEndDate()) {
-                $latestSemester = $semester;
+        foreach ($admissionPeriods as $admissionPeriod) {
+            if ($admissionPeriod->getAdmissionStartDate() < $now && $admissionPeriod->getAdmissionEndDate() > $latestAdmissionPeriod->getAdmissionEndDate()) {
+                $latestAdmissionPeriod = $admissionPeriod;
             }
         }
 
-        return $latestSemester;
+        return $latestAdmissionPeriod;
     }
 
     /**
-     * @return Semester
+     * @return AdmissionPeriod
      */
-    public function getCurrentOrLatestSemester()
+    public function getCurrentOrLatestAdmissionPeriod()
     {
-        if (null === $semester = $this->getCurrentSemester()) {
-            $semester = $this->getLatestSemester();
+        if (null === $admissionPeriod = $this->getCurrentAdmissionPeriod()) {
+            $admissionPeriod = $this->getLatestAdmissionPeriod();
         }
 
-        return $semester;
+        return $admissionPeriod;
     }
 
     public function activeAdmission()
     {
-        $semester = $this->getCurrentSemester();
-        if (!$semester) {
+        $admissionPeriod = $this->getCurrentAdmissionPeriod();
+        if (!$admissionPeriod) {
             return false;
         }
-        $start = $semester->getAdmissionStartDate();
-        $end = $semester->getAdmissionEndDate();
+        $start = $admissionPeriod->getAdmissionStartDate();
+        $end = $admissionPeriod->getAdmissionEndDate();
         $now = new \DateTime();
         return $start < $now && $now < $end;
     }
@@ -365,25 +366,25 @@ class Department
     /**
      * Add semesters.
      *
-     * @param Semester $semesters
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return Department
      */
-    public function addSemester(Semester $semesters)
+    public function addAdmissionPeriod(AdmissionPeriod $admissionPeriod)
     {
-        $this->semesters[] = $semesters;
+        $this->admissionPeriods[] = $admissionPeriod;
 
         return $this;
     }
 
     /**
-     * Remove semesters.
+     * Remove admission periods.
      *
-     * @param Semester $semesters
+     * @param AdmissionPeriod $admissionPeriod
      */
-    public function removeSemester(Semester $semesters)
+    public function removeAdmissionPeriod(AdmissionPeriod $admissionPeriod)
     {
-        $this->semesters->removeElement($semesters);
+        $this->admissionPeriods->removeElement($admissionPeriod);
     }
 
     /**
@@ -391,9 +392,9 @@ class Department
      *
      * @return ArrayCollection
      */
-    public function getSemesters()
+    public function getAdmissionPeriods()
     {
-        return $this->semesters;
+        return $this->admissionPeriods;
     }
 
     /**

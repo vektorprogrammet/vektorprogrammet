@@ -2,7 +2,7 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Entity\Semester;
+use AppBundle\Entity\AdmissionPeriod;
 
 class SbsData extends ApplicationData
 {
@@ -17,34 +17,34 @@ class SbsData extends ApplicationData
 
     public function getStepProgress(): float
     {
-        return $this->determineCurrentStep($this->getSemester(), $this->getInterviewedAssistantsCount(), $this->getAssignedInterviewsCount(), $this->getTotalAssistantsCount());
+        return $this->determineCurrentStep($this->getAdmissionPeriod(), $this->getInterviewedAssistantsCount(), $this->getAssignedInterviewsCount(), $this->getTotalAssistantsCount());
     }
 
     public function getAdmissionTimeLeft(): int
     {
-        return intval(ceil(($this->getSemester()->getAdmissionEndDate()->getTimestamp() - (new \DateTime())->getTimestamp()) / 3600));
+        return intval(ceil(($this->getAdmissionPeriod()->getAdmissionEndDate()->getTimestamp() - (new \DateTime())->getTimestamp()) / 3600));
     }
 
     public function getTimeToAdmissionStart(): int
     {
-        return intval(ceil(($this->getSemester()->getAdmissionStartDate()->getTimestamp() - (new \DateTime())->getTimestamp()) / 3600));
+        return intval(ceil(($this->getAdmissionPeriod()->getAdmissionStartDate()->getTimestamp() - (new \DateTime())->getTimestamp()) / 3600));
     }
 
-    private function determineCurrentStep(Semester $semester, $interviewedAssistantsCount, $assignedInterviewsCount, $totalAssistantsCount): float
+    private function determineCurrentStep(AdmissionPeriod $admissionPeriod, $interviewedAssistantsCount, $assignedInterviewsCount, $totalAssistantsCount): float
     {
         $today = new \DateTime();
-        if ($today > $semester->getSemesterEndDate()) {
+        if ($today > $admissionPeriod->getSemester()->getSemesterEndDate()) {
             return 0;
         }
 
         // Step 1 Wait for admission to start
-        if ($this->admissionHasNotStartedYet($semester)) {
-            return 1 + ($today->format('U') - $semester->getSemesterStartDate()->format('U')) / ($semester->getAdmissionStartDate()->format('U') - $semester->getSemesterStartDate()->format('U'));
+        if ($this->admissionHasNotStartedYet($admissionPeriod)) {
+            return 1 + ($today->format('U') - $admissionPeriod->getSemester()->getSemesterStartDate()->format('U')) / ($admissionPeriod->getAdmissionStartDate()->format('U') - $admissionPeriod->getSemester()->getSemesterStartDate()->format('U'));
         }
 
         // Step 2 Admission has started
-        if ($this->admissionIsOngoing($semester)) {
-            return 2 + ($today->format('U') - $semester->getAdmissionStartDate()->format('U')) / ($semester->getAdmissionEndDate()->format('U') - $semester->getAdmissionStartDate()->format('U'));
+        if ($admissionPeriod->hasActiveAdmission()) {
+            return 2 + ($today->format('U') - $admissionPeriod->getAdmissionStartDate()->format('U')) / ($admissionPeriod->getAdmissionEndDate()->format('U') - $admissionPeriod->getAdmissionStartDate()->format('U'));
         }
 
         // Step 3 Interviewing
@@ -63,32 +63,25 @@ class SbsData extends ApplicationData
         }
 
         // Step 5 Operating phase
-        if ($this->admissionHasEnded($semester)) {
-            return 5 + ($today->format('U') - $semester->getAdmissionEndDate()->format('U')) / ($semester->getSemesterEndDate()->format('U') - $semester->getAdmissionEndDate()->format('U'));
+        if ($this->admissionHasEnded($admissionPeriod)) {
+            return 5 + ($today->format('U') - $admissionPeriod->getAdmissionEndDate()->format('U')) / ($admissionPeriod->getSemester()->getSemesterEndDate()->format('U') - $admissionPeriod->getAdmissionEndDate()->format('U'));
         }
 
         // Something is wrong
         return -1;
     }
 
-    private function admissionHasNotStartedYet(Semester $semester): bool
+    private function admissionHasNotStartedYet(AdmissionPeriod $admissionPeriod): bool
     {
         $today = new \DateTime();
 
-        return $today > $semester->getSemesterStartDate() && $today < $semester->getAdmissionStartDate();
+        return $today > $admissionPeriod->getSemester()->getSemesterStartDate() && $today < $admissionPeriod->getAdmissionStartDate();
     }
 
-    private function admissionIsOngoing(Semester $semester): bool
+    private function admissionHasEnded(AdmissionPeriod $admissionPeriod): bool
     {
         $today = new \DateTime();
 
-        return $today > $semester->getAdmissionStartDate() && $today < $semester->getAdmissionEndDate();
-    }
-
-    private function admissionHasEnded(Semester $semester): bool
-    {
-        $today = new \DateTime();
-
-        return $today < $semester->getSemesterEndDate() && $today > $semester->getAdmissionEndDate();
+        return $today < $admissionPeriod->getSemester()->getSemesterEndDate() && $today > $admissionPeriod->getAdmissionEndDate();
     }
 }

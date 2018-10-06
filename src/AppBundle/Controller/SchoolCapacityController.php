@@ -5,10 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\SchoolCapacity;
 use AppBundle\Form\Type\SchoolCapacityEditType;
 use AppBundle\Form\Type\SchoolCapacityType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class SchoolCapacityController extends Controller
+class SchoolCapacityController extends BaseController
 {
     public function createAction(Request $request)
     {

@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class EditSemesterType extends AbstractType
+class EditAdmissionPeriodType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -40,12 +40,12 @@ class EditSemesterType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Semester',
+            'data_class' => 'AppBundle\Entity\AdmissionPeriod',
         ));
     }
 
     public function getName()
     {
-        return 'createSemester';
+        return 'editAdmissionPeriod';
     }
 }

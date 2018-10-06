@@ -3,16 +3,20 @@
     {# Department dropdown #}
     {% include "common/department_dropdown.html.twig" with {
     'pathForDepartment': path,
-    'departmentParameterName': parameterName,
-    'currentDepartment': currentSemester.department,
+    'departmentParameterName': departmentParameterName,
+    'semesterParameterName': semesterParameterName,
+    'currentSemester': semester,
+    'currentDepartment': department,
     'linkToSemester': true
     } %}
 
     {# Semester dropdown #}
     {% include "common/semester_dropdown.html.twig" with {
     'pathForSemester': path,
-    'semesterParameterName': parameterName,
-    'currentSemseter': currentSemester
+    'departmentParameterName': departmentParameterName,
+    'semesterParameterName': semesterParameterName,
+    'currentSemester': semester,
+    'currentDepartment': department
     } %}
 
 </ul>

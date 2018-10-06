@@ -16,46 +16,55 @@ class AssistantHistory
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="assistantHistories")
      * @ORM\JoinColumn(onDelete="CASCADE")
      **/
-    protected $user;
+    private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="Semester")
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      **/
-    protected $semester;
+    private $semester;
+
+    /**
+     * @var Department
+     *
+     * @ORM\ManyToOne(targetEntity="Department")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @Assert\NotBlank(message="Region må velges.")
+     */
+    private $department;
 
     /**
      * @ORM\ManyToOne(targetEntity="School", inversedBy="assistantHistories")
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      **/
-    protected $school;
+    private $school;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
-    protected $workdays;
+    private $workdays;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
-    protected $bolk;
+    private $bolk;
 
     /**
      * @var string
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
-    protected $day;
+    private $day;
 
     public function activeInGroup($group): bool
     {
@@ -108,6 +117,25 @@ class AssistantHistory
     public function getSemester()
     {
         return $this->semester;
+    }
+
+    /**
+     * @return Department
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return AssistantHistory
+     */
+    public function setDepartment(Department $department)
+    {
+        $this->department = $department;
+        return $this;
     }
 
     /**

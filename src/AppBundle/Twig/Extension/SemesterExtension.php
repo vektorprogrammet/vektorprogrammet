@@ -26,8 +26,8 @@ class SemesterExtension extends \Twig_Extension
         );
     }
 
-    public function getSemesters(Department $department)
+    public function getSemesters()
     {
-        return $this->em->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
+        return $this->em->getRepository('AppBundle:Semester')->findAll();
     }
 }

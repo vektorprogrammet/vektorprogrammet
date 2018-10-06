@@ -52,19 +52,31 @@
 
             <div class="row">
                 <div class="small-6 medium-6 large-6 columns">
-                    <ul class="inline-list">
-                        {% include "common/semester_dropdown.html.twig" with {
-                        'pathForSemester': 'certificate_download',
-                        'semesterParameterName': 'id',
-                        'currentSemester': currentSemester} %}
-                    </ul>
+                    {% if is_granted_admin() %}
+                        {% include "common/department_semester_dropdowns.html.twig" with {
+                        'path': 'certificate_download',
+                        'departmentParameterName': 'department',
+                        'semesterParameterName': 'semester',
+                        'currentDepartment': department,
+                        'currentSemester': semester,
+                        } %}
+                    {% else %}
+                        <ul class="inline-list">
+                            {% include "common/semester_dropdown.html.twig" with {
+                            'pathForSemester': 'certificate_download',
+                            'departmentParameterName': 'department',
+                            'semesterParameterName': 'semester',
+                            'currentDepartment': department,
+                            'currentSemester': semester,
+                            } %}
+                        </ul>
+                    {% endif %}
                 </div>
             </div>
 
             <table width="100%" id="substitute-table">
                 <thead>
                 <tr>
-                    <!--Navn	e-post	Skole	Semester	Avdeling-->
                     <th data-sort="string">Navn</th>
                     <th data-sort="string">E-post</th>
                     <th data-sort="string">Skole</th>

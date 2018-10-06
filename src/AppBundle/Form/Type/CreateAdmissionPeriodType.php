@@ -2,32 +2,24 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\Repository\SemesterRepository;
+use AppBundle\Entity\Semester;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class CreateSemesterType extends AbstractType
+class CreateAdmissionPeriodType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $years = array();
-        for ($i = 2012; $i <= intval(date('Y')) + 1; ++$i) {
-            $years[] = $i;
-        }
-        $years = array_reverse($years);
-        $years = array_combine($years, $years);
-
         $builder
-            ->add('semesterTime', 'choice', array(
-                'choices' => array('Vår' => 'Vår', 'Høst' => 'Høst'),
-                'expanded' => true,
-                'label' => 'Semester type',
-                'required' => true,
-            ))
-            ->add('year', 'choice', array(
-                'choices' => $years,
-                'label' => 'År',
-                'required' => true,
+            ->add('Semester', EntityType::class, array(
+                'label' => 'Semester',
+                'class' => Semester::class,
+                'query_builder' => function (SemesterRepository $sr) {
+                    return $sr->queryForAllSemestersOrderedByAge();
+                },
             ))
             ->add('admissionStartDate', 'datetime', array(
                 'label' => 'Opptak starttidspunkt',
@@ -47,12 +39,12 @@ class CreateSemesterType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Semester',
+            'data_class' => 'AppBundle\Entity\AdmissionPeriod',
         ));
     }
 
     public function getName()
     {
-        return 'createSemester';
+        return 'createAdmissionPeriodType';
     }
 }

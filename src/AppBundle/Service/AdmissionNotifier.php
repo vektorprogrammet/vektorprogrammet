@@ -58,16 +58,16 @@ class AdmissionNotifier
     public function sendAdmissionNotifications()
     {
         $departments = $this->em->getRepository('AppBundle:Department')->findActive();
+        $semester = $this->em->getRepository('AppBundle:Semester')->findCurrentSemester();
         try {
             foreach ($departments as $department) {
-                $semester = $department->getCurrentSemester();
-                if (!$semester || !$semester->hasActiveAdmission()) {
+                $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')->findOneByDepartmentAndSemester($department, $semester);
+                if ($admissionPeriod === null || !$admissionPeriod->hasActiveAdmission()) {
                     continue;
                 }
-
-                $applicationEmails = $this->em->getRepository('AppBundle:Application')->findEmailsBySemester($semester);
+                $applicationEmails = $this->em->getRepository('AppBundle:Application')->findEmailsByAdmissionPeriod($admissionPeriod);
                 $subscribers = $this->em->getRepository('AppBundle:AdmissionSubscriber')->findByDepartment($department);
-                $notificationEmails = $this->em->getRepository('AppBundle:AdmissionNotification')->findEmailsBySemester($semester);
+                $notificationEmails = $this->em->getRepository('AppBundle:AdmissionNotification')->findEmailsBySemesterAndDepartment($semester, $department);
 
                 $notificationsSent = 0;
                 foreach ($subscribers as $subscriber) {

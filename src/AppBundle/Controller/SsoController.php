@@ -3,11 +3,10 @@
 namespace AppBundle\Controller;
 
 use Doctrine\ORM\NoResultException;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class SsoController extends Controller
+class SsoController extends BaseController
 {
     public function loginAction(Request $request)
     {

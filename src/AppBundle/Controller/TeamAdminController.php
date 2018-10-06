@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Department;
 use AppBundle\Event\TeamEvent;
 use AppBundle\Event\TeamMembershipEvent;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Team;
@@ -13,7 +12,7 @@ use AppBundle\Form\Type\CreateTeamType;
 use AppBundle\Entity\TeamMembership;
 use AppBundle\Form\Type\CreateTeamMembershipType;
 
-class TeamAdminController extends Controller
+class TeamAdminController extends BaseController
 {
     public function showAction()
     {

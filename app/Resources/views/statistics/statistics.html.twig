@@ -14,9 +14,12 @@
     <div class="row">
         <div class="small-12 columns">
                 {% include "common/department_semester_dropdowns.html.twig" with {
-                'path': 'statistics_application_by_semester',
-                'parameterName': 'id',
-                'currentSemester': semester} %}
+                'path': 'statistics_application_show',
+                'departmentParameterName': 'department',
+                'semesterParameterName': 'semester',
+                'department': department,
+                'semester': semester,
+                } %}
         </div>
         {% if applicationData.count %}
             <header class="small-12 columns">
@@ -42,4 +45,3 @@
         {% endif %}
     </div>
 {% endblock %}
-

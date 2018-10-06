@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Entity\Article;
@@ -13,7 +12,7 @@ use AppBundle\Form\Type\ArticleType;
  * ArticleAdminController is the controller responsible for the administrative article actions,
  * such as creating and deleting articles.
  */
-class ArticleAdminController extends Controller
+class ArticleAdminController extends BaseController
 {
     // Number of articles shown per page on the admin page
     const NUM_ARTICLES = 10;

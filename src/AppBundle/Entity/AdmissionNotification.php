@@ -37,6 +37,12 @@ class AdmissionNotification
     private $semester;
 
 
+    /**
+     * @var Department
+     * @ORM\ManyToOne(targetEntity="Department")
+     */
+    private $department;
+
     public function __construct()
     {
         $this->timestamp = new \DateTime();
@@ -98,5 +104,24 @@ class AdmissionNotification
     public function setSemester($semester)
     {
         $this->semester = $semester;
+    }
+
+    /**
+     * @return Department
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return AdmissionNotification
+     */
+    public function setDepartment(Department $department)
+    {
+        $this->department = $department;
+        return $this;
     }
 }

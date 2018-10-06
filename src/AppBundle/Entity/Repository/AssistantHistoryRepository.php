@@ -26,16 +26,21 @@ class AssistantHistoryRepository extends EntityRepository
     }
 
     /**
+     * @param Department $department
      * @param Semester $semester
      *
      * @return AssistantHistory[]
      */
-    public function findBySemester(Semester $semester): array
+    public function findByDepartmentAndSemester(Department $department, Semester $semester)
     {
         return $this->createQueryBuilder('assistantHistory')
             ->select('assistantHistory')
-            ->where('assistantHistory.semester = :semester')
-            ->setParameter('semester', $semester)
+            ->where('assistantHistory.department = :department')
+            ->andWhere('assistantHistory.semester = :semester')
+            ->setParameters(array(
+                'department' => $department,
+                'semester' => $semester,
+            ))
             ->getQuery()
             ->getResult();
     }
@@ -130,32 +135,6 @@ class AssistantHistoryRepository extends EntityRepository
             ->getResult();
 
         return $assistantHistories;
-    }
-
-    /**
-     * @param Department $department
-     * @param Semester   $semester
-     *
-     * @return AssistantHistory[]
-     */
-    public function findAssistantHistoriesByDepartment($department, $semester = null)
-    {
-        $qb = $this->createQueryBuilder('AssistantHistory')
-            ->select('AssistantHistory')
-            ->join('AssistantHistory.semester', 's')
-            ->join('s.department', 'd')
-            ->where('d = ?1');
-
-        if (!is_null($semester)) {
-            $qb->andWhere('s = ?2')
-                ->setParameter(2, $semester);
-        }
-
-        $qb
-            ->setParameter(1, $department)
-            ->orderBy('s.semesterStartDate', 'DESC');
-
-        return $qb->getQuery()->getResult();
     }
 
     /**

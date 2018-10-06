@@ -7,12 +7,11 @@ use AppBundle\Entity\Department;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AssistantController extends Controller
+class AssistantController extends BaseController
 {
     /**
      * @deprecated This route is only here to serve old urls (e.g. in old emails)

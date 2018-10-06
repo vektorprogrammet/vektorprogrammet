@@ -2,7 +2,7 @@
 
 namespace AppBundle\Tests\Form\Type;
 
-use AppBundle\Form\Type\CreateSemesterType;
+use AppBundle\Form\Type\CreateAdmissionPeriodType;
 use AppBundle\Entity\Semester;
 use Symfony\Component\Form\Test\TypeTestCase;
 use DateTime;

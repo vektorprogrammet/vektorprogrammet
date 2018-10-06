@@ -11,7 +11,7 @@
     <script>
 
         $(document).ready(function () {
-            $('.delete').deleteablerow('semester_delete', {
+            $('.delete').deleteablerow('admission_period_delete', {
                 confirmation: {
                     modal: $('#confirmModal'),
                     acceptButton: $('#modalAccept'),
@@ -64,27 +64,29 @@
                     <ul class="inline-list">
 
                         {% include 'common/department_dropdown.html.twig' with {
-                            'pathForDepartment': 'semester_show_by_department',
+                            'pathForDepartment': 'admission_period_admin_show_by_department',
                             'departmentParameterName': 'id',
-                            'currentDepartment': departmentName
+                            'currentDepartment': department,
+                            'linkToSemester': false
                         } %}
+                        {% if is_granted_admin() %}
+                            <li>
+                                <a class="button tiny" data-dropdown="createSemesterDropdown" aria-controls="createSemesterDropdown"
+                                   aria-expanded="false">Ny opptaksperiode &raquo;</a>
+                                <ul id="createSemesterDropdown" class="f-dropdown" data-dropdown-content tabindex="-1"
+                                    aria-hidden="true" aria-autoclose="false" tabindex="-1">
 
-                        <li>
-                            <a class="button tiny" data-dropdown="createSemesterDropdown" aria-controls="createSemesterDropdown"
-                               aria-expanded="false">Opprett semester &raquo;</a>
-                            <ul id="createSemesterDropdown" class="f-dropdown" data-dropdown-content tabindex="-1"
-                                aria-hidden="true" aria-autoclose="false" tabindex="-1">
+                                    {% for d in get_departments() %}
 
-                                {% for d in get_departments() %}
+                                        <li>
+                                            <a href="{{ path('admission_period_create', { 'id': d.id }) }}">{{ d.shortName }}</a>
+                                        </li>
 
-                                    <li>
-                                        <a href="{{ path('semester_create', { 'id': d.id }) }}">{{ d.shortName }}</a>
-                                    </li>
+                                    {% endfor %}
 
-                                {% endfor %}
-
-                            </ul>
-                        </li>
+                                </ul>
+                            </li>
+                        {% endif %}
 
                     </ul>
 
@@ -96,13 +98,13 @@
                 {% else %}
                 <div class="small-12 medium-12 large-12 columns">
                     {% endif %}
-                    <input type="text" id="search" placeholder="Søk..."/>
+                    <input id="search" placeholder="Søk..."/>
                 </div>
 
             </div>
             <hr>
 
-            {% if semesters is defined %}
+            {% if admissionPeriods is defined %}
 
                 <table width="100%" id="table">
 
@@ -118,19 +120,19 @@
                     </thead>
 
                     <tbody>
-                    {% for s in semesters %}
+                    {% for a in admissionPeriods %}
                         <tr>
-                            <td> {{ s.name }} </td>
-                            <td> {{ s.admissionStartDate|date('d. M Y') }} </br>
-                                Kl. {{ s.admissionStartDate|date('H:i:s') }}</td>
-                            <td> {{ s.admissionEndDate|date('d. M Y') }} </br>
-                                Kl. {{ s.admissionEndDate|date('H:i:s') }}</td>
+                            <td> {{ a.semester.name }} </td>
+                            <td> {{ a.admissionStartDate|date('d. M Y') }} <br>
+                                Kl. {{ a.admissionStartDate|date('H:i:s') }}</td>
+                            <td> {{ a.admissionEndDate|date('d. M Y') }} <br>
+                                Kl. {{ a.admissionEndDate|date('H:i:s') }}</td>
 
                             {% if is_granted_team_leader() %}
-                                <td><a href="{{ path('semester_update', { 'id': s.id }) }}" class="button tiny"><i class="fa fa-pencil"></i> Rediger</a>
+                                <td><a href="{{ path('admission_period_update', { 'id': a.id }) }}" class="button tiny"><i class="fa fa-pencil"></i> Rediger</a>
                                 </td>
                                 {% if is_granted_admin() %}
-                                    <td><a href="#" id="{{ s.id }}" class="button tiny alert delete"><i
+                                    <td><a href="#" id="{{ a.id }}" class="button tiny alert delete"><i
                                                     class="fa fa-trash-o"></i> Slett</a></td>
                                 {% endif %}
                             {% endif %}
@@ -154,6 +156,6 @@
             <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
         </ul>
     </div>
-
+    </div>
 
 {% endblock %}

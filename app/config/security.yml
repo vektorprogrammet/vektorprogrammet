@@ -68,7 +68,8 @@ security:
         - { path: ^/kontrollpanel/staging, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/avdelingadmin/opprett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/avdelingadmin/slett, roles: ROLE_HIGHEST_ADMIN }
-        - { path: ^/kontrollpanel/semesteradmin/slett, roles: ROLE_HIGHEST_ADMIN }
+        - { path: ^/kontrollpanel/opptaksperiode/slett, roles: ROLE_HIGHEST_ADMIN }
+        - { path: ^/kontrollpanel/opptaksperiode/opprett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/stilling/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/skoleadmin/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/intervju/slett, roles: ROLE_HIGHEST_ADMIN }
@@ -87,8 +88,7 @@ security:
         - { path: ^/kontrollpanel/brukeradmin/jubileum/slettbetaling, role: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/deltakerhistorikk/slett, role: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/deltakerhistorikk/rediger, role: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/semesteradmin/update, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/semesteradmin/avdeling/opprett, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/opptaksperiode/update, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/skoleadmin/avdeling, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/skoleadmin/oppdater, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/skoleadmin/opprett, roles: ROLE_SUPER_ADMIN }

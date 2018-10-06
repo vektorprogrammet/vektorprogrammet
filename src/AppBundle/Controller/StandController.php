@@ -2,42 +2,44 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Semester;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class StandController extends Controller
+class StandController extends BaseController
 {
     /**
-     * @Route("/kontrollpanel/stand/{id}", name="stand_by_semester")
      * @Route("/kontrollpanel/stand", name="stand")
-     *
-     * @param Semester|null $semester
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Semester $semester = null)
+    public function indexAction()
     {
-        if ($semester === null) {
-            $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
-        }
-        $department = $semester->getDepartment();
+        $department = $this->getDepartmentOrThrow404();
+        $semester = $this->getSemesterOrThrow404();
 
         $admissionStatistics = $this->get('app.admission_statistics');
 
         $subscribers = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')->findFromWebByDepartment($department);
-        $subscribersInSemester = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')->findFromWebBySemester($semester);
-        $subData = $admissionStatistics->generateGraphDataFromSubscribersInSemester($subscribersInSemester, $semester);
+        $subscribersInDepartmentAndSemester = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')
+            ->findFromWebByDepartmentAndSemester($department, $semester);
+        $subData = $admissionStatistics->generateGraphDataFromSubscribersInSemester($subscribersInDepartmentAndSemester, $semester);
 
         $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findByDepartment($department);
-        $applicationsInSemester = $this->getDoctrine()->getRepository('AppBundle:Application')->findBySemester($semester);
+        $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
+            ->findOneByDepartmentAndSemester($department, $semester);
+        $applicationsInSemester = null;
+        if ($admissionPeriod !== null) {
+            $applicationsInSemester = $this->getDoctrine()
+                ->getRepository('AppBundle:Application')
+                ->findByAdmissionPeriod($admissionPeriod);
+        }
         $appData = $admissionStatistics->generateGraphDataFromApplicationsInSemester($applicationsInSemester, $semester);
 
 
         return $this->render('stand_admin/stand.html.twig', [
+            'department' => $department,
             'semester' => $semester,
             'subscribers' => $subscribers,
-            'subscribers_in_semester' => $subscribersInSemester,
+            'subscribers_in_semester' => $subscribersInDepartmentAndSemester,
             'subData' => $subData,
             'applications' => $applications,
             'applications_in_semester' => $applicationsInSemester,

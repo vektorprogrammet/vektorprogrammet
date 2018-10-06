@@ -5,11 +5,10 @@ namespace AppBundle\Controller;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationExistingUserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ExistingUserAdmissionController extends Controller
+class ExistingUserAdmissionController extends BaseController
 {
     /**
      * @Route("/eksisterendeopptak", name="admission_existing_user")

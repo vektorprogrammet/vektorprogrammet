@@ -36,7 +36,7 @@ class ApplicationAdmission
     {
         $semester = $this->em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($user->getDepartment());
 
-        $application = $this->em->getRepository('AppBundle:Application')->findByUserInSemester($user, $semester);
+        $application = $this->em->getRepository('AppBundle:Application')->findByUserInAdmissionPeriod($user, $semester);
         if ($application === null) {
             $application = new Application();
         }
@@ -68,7 +68,7 @@ class ApplicationAdmission
 
     public function userHasAlreadyAppliedInSemester(User $user, Semester $semester)
     {
-        $existingApplications = $this->em->getRepository('AppBundle:Application')->findByEmailInSemester($user->getEmail(), $semester);
+        $existingApplications = $this->em->getRepository('AppBundle:Application')->findByEmailInAdmissionPeriod($user->getEmail(), $semester);
 
         return count($existingApplications) > 0;
     }

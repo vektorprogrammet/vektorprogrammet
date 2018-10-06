@@ -5,10 +5,10 @@
     <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1"
         aria-hidden="true" aria-autoclose="false" tabindex="-1">
 
-        {% for s in currentSemester.department.semesters %}
+        {% for s in get_semesters() %}
 
             <li>
-                <a href="{{ path(pathForSemester, { (semesterParameterName): s.id }) }}">{{ s.name }}</a>
+                <a href="{{ path(pathForSemester, { (departmentParameterName): department.id, (semesterParameterName): s.id }) }}">{{ s.name }}</a>
             </li>
 
         {% endfor %}

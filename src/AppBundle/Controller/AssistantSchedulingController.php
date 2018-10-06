@@ -6,10 +6,9 @@ use AppBundle\Entity\Application;
 use AppBundle\AssistantScheduling\Assistant;
 use AppBundle\AssistantScheduling\School;
 use AppBundle\Entity\SchoolCapacity;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class AssistantSchedulingController extends Controller
+class AssistantSchedulingController extends BaseController
 {
     public function indexAction()
     {
@@ -21,7 +20,7 @@ class AssistantSchedulingController extends Controller
         $user = $this->getUser();
 
         $currentSemester = $user->getDepartment()->getCurrentSemester();
-        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsBySemester($currentSemester);
+        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsByAdmissionPeriod($currentSemester);
 
         $assistants = $this->getAssistantAvailableDays($applications);
 

@@ -6,11 +6,10 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\Newsletter;
 use AppBundle\Entity\Subscriber;
 use AppBundle\Form\Type\SubscribeToNewsletterType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class SubscriberController extends Controller
+class SubscriberController extends BaseController
 {
     public function showSubscribePageAction(Request $request, Newsletter $newsletter)
     {
