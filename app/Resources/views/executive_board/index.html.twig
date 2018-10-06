@@ -14,14 +14,19 @@
 
 {% block breadcrumb_menu %}
     {% if is_granted_team_leader() %}
-        <div class="dropdown">
-            <button class="btn btn-outline-success text-success" id="dropdownToggle" data-toggle="dropdown" aria-haspopup="true"   aria-expanded="false">
-                <i class="fa fa-user-plus"></i> Legg til nytt medlem
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownToggle">
-                {% for d in get_active_departments() %}
-                    <a class="dropdown-item" href="{{ path('executive_board_add_user_to_board', { 'id': d.id }) }}">{{ d }}</a>
-                {% endfor %}
+        <div class="btn-group">
+            <a href="{{ path('executive_board_update') }}" class="btn btn-outline-secondary">
+                <i class="fa fa-pencil"></i> Rediger hovedstyret
+            </a>
+            <div class="dropdown">
+                <button class="btn btn-outline-success text-success" id="dropdownToggle" data-toggle="dropdown" aria-haspopup="true"   aria-expanded="false">
+                    <i class="fa fa-user-plus"></i> Legg til nytt medlem
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownToggle">
+                    {% for d in get_active_departments() %}
+                        <a class="dropdown-item" href="{{ path('executive_board_add_user_to_board', { 'id': d.id }) }}">{{ d }}</a>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     {% endif %}

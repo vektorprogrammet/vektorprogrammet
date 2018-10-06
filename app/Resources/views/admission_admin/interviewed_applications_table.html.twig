@@ -2,9 +2,6 @@
 
 {% block breadcrumb %}
     <li class="breadcrumb-item active">
-        Intervju
-    </li>
-    <li class="breadcrumb-item active">
         Intervjuer
     </li>
 {% endblock %}
@@ -30,13 +27,13 @@
                     <th data-sort="int">Poeng</th>
                     <th data-sort="string">Passende</th>
                     <th data-sort="string">Spesielle behov</th>
-                    <th></th>
                 </tr>
                 </thead>
 
                 <tbody>
 
                 {% for a in applications %}
+                    {% set userCanSeeInterview = a.user != app.user and ( is_granted_team_leader() or a.interview.interviewer == app.user or a.interview.coInterviewer == app.user ) %}
                     <tr>
                         {% if is_granted_team_leader() %}
                             <td>
@@ -76,7 +73,13 @@
                                 </div>
                             </td>
                         {% endif %}
-                        <td><a href="{{ path('specific_profile', {id: a.user.id}) }}">{{ a.user }}</a></td>
+                        <td>
+                            {% if userCanSeeInterview %}
+                                <a href="{{ path('interview_show', { 'id': a.id }) }}">{{ a.user }}</a>
+                            {% else %}
+                                {{ a.user }}
+                            {% endif %}
+                        </td>
                         <td>{{ a.user.email }}</td>
                         <td>{{ a.user.phone }}</td>
                         <td>{{ a.doublePosition ? 'Ja':'Nei' }}</td>
@@ -84,8 +87,7 @@
                         <td>{{ a.language }}</td>
 
 
-                        {# Add the read interview button #}
-                        {% if a.user != app.user and ( is_granted_team_leader() or a.interview.interviewer == app.user or a.interview.coInterviewer == app.user ) %}
+                        {% if userCanSeeInterview %}
                             <td>{{ a.interview.interviewScore.sum }}</td>
                             <td>{{ a.interview.interviewScore.suitableAssistant }}</td>
                             <td>{% if a.specialNeeds %}
@@ -93,12 +95,8 @@
                                         <i class="fs-20 fa fa-exclamation-triangle text-warning" data-toggle="tooltip" data-placement="bottom" title="{{ a.specialNeeds }}"></i>
                                     </a>
                                 {% endif %}</td>
-                            <td>
-                                <a href="{{ path('interview_show', { 'id': a.id }) }}" class="button tiny"><i
-                                            class="fa fa-list-ul"></i> Les intervju</a>
-                            </td>
                         {% else %}
-                            <td colspan="4">
+                            <td colspan="3">
                                 <span class="text-alert">Intervjuet er skjult</span>
                             </td>
                         {% endif %}

@@ -1,16 +1,23 @@
 {% extends 'adminBase.html.twig' %}
 
+{% set header = department is defined ? 'Avdeling - ' ~ department : 'Opprett avdeling' %}
+
 {% block title %}
-    Opprett avdeling
+    {{ header }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('departmentadmin_show') }}">Avdelinger</a>
+    </li>
+    <li class="breadcrumb-item active">{{ header }}</li>
 {% endblock %}
 
 
 {% block body %}
-    <p></p>
-    <div class="row">
-        <div class="col-12 col-md-12 col-lg-12">
-            <h1> Opprett avdeling </h1>
-            <hr>
+    <div class="card">
+        <div class="card-header"><i class="fa fa-industry"></i> {{ header }}</div>
+        <div class="card-body">
             <div class="row">
                 <div class="col-12 col-md-12 col-lg-12">
                     {{ form_start(form) }}

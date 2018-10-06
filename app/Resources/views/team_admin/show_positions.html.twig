@@ -1,118 +1,67 @@
 {% extends 'adminBase.html.twig' %}
 
-{% block javascripts %}
-
-    {# Easy routing with FOSJsRouting bundle #}
-    <script src="{{ asset_with_version('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-    {# We need the deletetablerow.js file #}
-    <script src="{{ asset_with_version('js/deleteablerow.js') }}"></script>
-
-    <script>
-
-        $(document).ready(function () {
-            $('.delete').deleteablerow('teamadmin_remove_position', {
-                confirmation: {
-                    modal: $('#confirmModal'),
-                    acceptButton: $('#modalAccept'),
-                    cancelButton: $('#modalCancel')
-                }
-            });
-        });
-
-        $("#search").keyup(function () {
-
-            _this = this;
-
-            $.each($("#table tbody").find("tr"), function () {
-
-                if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
-                    $(this).hide();
-                }
-                else {
-                    $(this).show();
-                }
-            });
-
-        });
-
-    </script>
-
-{% endblock %}
-
 {% block title %}
     Stillinger
 {% endblock %}
-	
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('teamadmin_show') }}">Team</a>
+    </li>
+    <li class="breadcrumb-item active">Stillinger</li>
+{% endblock %}
+
+
+{% block breadcrumb_menu %}
+    {% if is_granted_team_leader() %}
+        <a href="{{ path('teamadmin_create_position') }}" class="btn btn-outline-success text-success">
+            <i class="fa fa-plus text-success"></i> Opprett stilling
+        </a>
+    {% endif %}
+{% endblock %}
+
 {% block body %}
-    <p></p>
+    <div class="card">
+        <div class="card-header"><i class="fa fa-align-justify"></i> Stillinger</div>
+        <div class="card-body">
 
-    <div class="row">
-    <div class="col-12 col-md-12 col-lg-12">
-
-        <h1> Stillinger </h1>
-
-        <hr>
-
-        <div class="row">
-
-            {% if is_granted_team_leader() %}
-
-                <div class="col-12 col-md-12 col-lg-6">
-
-                    <ul class="inline-list">
-
-                        <li>
-                            <a href="{{ path('teamadmin_create_position') }}" class="button tiny">Opprett stilling</a>
-                        </li>
-
-                    </ul>
-
-                </div>
-
-            {% endif %}
-
-            {% if is_granted_team_leader() %}
-            <div class="col-12 col-md-12 col-lg-6">
-                {% else %}
-                <div class="col-12 col-md-12 col-lg-12">
-                    {% endif %}
-
-                    <input type="text" id="search" placeholder="Søk..."/>
-
-                </div>
-
-            </div>
-
-
-            <hr>
-
-            <table width="100%" id="table">
+            <table class="table" id="table">
 
                 <thead>
                 <tr>
-                    <th> Navn</th>
                     <th></th>
-                    <th></th>
+                    <th>Navn</th>
                 </tr>
                 </thead>
 
                 <tbody>
                 {% for p in positions %}
                     <tr>
-                        <td width="70%"> {{ p.name }} </a> </td>
-
-                        {# Only SUPER_ADMIN should be able to edit teams #}
-                        {% if is_granted_team_leader() %}
-                            <td><a href="{{ path('teamadmin_edit_position', { 'id': p.id }) }}" class="button tiny">Rediger</a>
-                            </td>
-                        {% endif %}
-                        {% if is_granted_admin() %}
-                            <td><a href="#" id="{{ p.id }}" class="button tiny alert delete"><i
-                                            class="fa fa-trash-o"></i> Slett</a></td>
-                        {% endif %}
-
-
+                        <td class="table-menu">
+                            <div class="dropdown">
+                                <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"
+                                     aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-secondary"></i>
+                                </div>
+                                <div class="dropdown-menu pt-0" aria-labelledby="options-{{ loop.index }}">
+                                    <div class="dropdown-header mb-2"><strong>{{ p.name }}</strong></div>
+                                    <a href="{{ path('teamadmin_edit_position', { 'id': p.id }) }}"
+                                       class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
+                                    </a>
+                                    {% if is_granted_admin() %}
+                                        <form method="POST"
+                                              onsubmit="return confirm('Vil du virkelig slette stilling {{ p.name }}?')"
+                                              action="{{ path('teamadmin_remove_position', { id: p.id }) }}">
+                                            <button type="submit"
+                                                    class="dropdown-item">
+                                                <i class="fa fa-trash text-danger"></i> Slett
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td> {{ p.name }} </td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -120,15 +69,6 @@
             </table>
 
         </div>
-    </div>
-
-    <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
-         aria-hidden="true" role="dialog">
-        <h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
-        <ul class="inline-list">
-            <a id="modalAccept" href="#" class="button tiny">Slett</a>
-            <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
-        </ul>
     </div>
 
 {% endblock %}

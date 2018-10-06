@@ -4,15 +4,21 @@
     Generer epostliste
 {% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Epostlister</li>
+{% endblock %}
+
+
 {% block body %}
     <div class="row">
-        <div class="col-12 col-md-12 col-lg-12">
-            <h1>Generer epostliste</h1>
-            <hr>
-            <div class="row">
-                {{ form_start(form) }}
-                {{ form_widget(form) }}
-                {{ form_end(form) }}
+        <div class="col-12 col-lg-6 col-xl-4">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-envelope-o"></i> Generer epostliste</div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+                </div>
             </div>
         </div>
     </div>

@@ -9,13 +9,18 @@
     Ny artikkel
 {% endblock %}
 
-{% block body %}
-    <div class="row">
-        <p></p>
-        <div class="col-12 col-md-12 col-lg-12">
-            <h1>{{ title }}</h1>
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('articleadmin_show') }}">Artikler</a>
+    </li>
+    <li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
 
-            <hr>
+
+{% block body %}
+    <div class="card">
+        <div class="card-header"><i class="fa fa-file"></i> {{ title }}</div>
+        <div class="card-body">
             <div id="app" style="display: none">
                 <div class="row">
                     <div class="col-12 col-md-5">
@@ -142,9 +147,9 @@
           var form = $("[name='{{ form.vars.name }}']");
           form.submit(function (e) {
             e.preventDefault();
-            setTimeout(function() {
-                this.upload();
-            }.bind(this), 100)
+            setTimeout(function () {
+              this.upload();
+            }.bind(this), 100);
           }.bind(this));
           $('#app').show();
         },

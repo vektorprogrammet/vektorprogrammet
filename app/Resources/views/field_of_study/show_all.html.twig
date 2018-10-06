@@ -13,8 +13,7 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-12">
-            <h2 class="text-center my-3">Linjer {{ department }}</h2>
+        <div class="col-12 col-lg-6">
             <div class="card">
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> Linjer {{ department }} ({{ fieldOfStudies|length }})
@@ -28,7 +27,7 @@
                         </tr>
                         {% for fieldOfStudy in fieldOfStudies %}
                             <tr>
-                                <td>
+                                <td class="table-menu">
                                     <div class="dropdown">
                                         <div class="clickable px-2" id="options-{{ fieldOfStudy.id }}" data-toggle="dropdown"
                                              aria-haspopup="true" aria-expanded="false">

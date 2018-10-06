@@ -15,11 +15,11 @@
             <td>
                 {% if is_granted_team_leader() %}
                     <div class="dropdown">
-                        <div class="clickable px-2" id="options-{{ team.id }}" data-toggle="dropdown"
+                        <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"
                              aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-ellipsis-v text-secondary"></i>
                         </div>
-                        <div class="dropdown-menu pt-0" aria-labelledby="options-{{ team.id }}">
+                        <div class="dropdown-menu pt-0" aria-labelledby="options-{{ loop.index }}">
                             <div class="dropdown-header mb-2"><strong>{{ team.name }}</strong></div>
                             <a href="{{ path('teamadmin_update', { 'id': team.id }) }}"
                                class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger

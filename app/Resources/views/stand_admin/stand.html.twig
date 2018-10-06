@@ -4,6 +4,11 @@
     Stand
 {% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Stand</li>
+{% endblock %}
+
+
 {% block breadcrumb_menu %}
     {% if is_granted_team_leader() %}
         {% include 'common/department_semester_dropdowns.html.twig' with {

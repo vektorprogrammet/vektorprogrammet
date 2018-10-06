@@ -37,6 +37,11 @@
     Deltakerhistorikk
 {% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Assistenter</li>
+{% endblock %}
+
+
 {% block breadcrumb_menu %}
     {% if is_granted_team_leader() %}
         {% include "common/department_semester_dropdowns.html.twig" with {'path': 'participanthistory_show_by_semester', 'parameterName': 'id', 'currentSemester': semester} %}
@@ -57,9 +62,6 @@
 
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12">
-            <button class="btn btn-outline-secondary csv_download_button" data-table-id="assistantTable"><i
-                        class="fa fa-download"></i> Last ned CSV
-            </button>
             <div class="card">
                 <div class="card-header">
                     <div class="form-row">
@@ -149,7 +151,9 @@
                         </tbody>
 
                     </table>
-
+                    <button class="btn btn-outline-secondary csv_download_button" data-table-id="assistantTable"><i
+                                class="fa fa-download"></i> Last ned CSV
+                    </button>
                 </div>
             </div>
         </div>

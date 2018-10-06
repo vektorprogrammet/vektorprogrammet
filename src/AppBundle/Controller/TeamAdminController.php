@@ -59,6 +59,8 @@ class TeamAdminController extends Controller
 
         return $this->render('team_admin/create_team_membership.html.twig', array(
             'form' => $form->createView(),
+            'team' => $teamMembership->getTeam(),
+            'teamMembership' => $teamMembership
         ));
     }
 
@@ -95,6 +97,7 @@ class TeamAdminController extends Controller
 
         return $this->render('team_admin/create_team_membership.html.twig', array(
             'form' => $form->createView(),
+            'team' => $team
         ));
     }
 
@@ -226,6 +229,8 @@ class TeamAdminController extends Controller
         return $this->render('team_admin/create_team.html.twig', array(
             'form'       => $form->createView(),
             'department' => $department,
+            'team' => $team,
+            'isUpdate' => false
         ));
     }
 

@@ -154,6 +154,7 @@ class SchoolAdminController extends Controller
         // Return the form view
         return $this->render('school_admin/create_school.html.twig', array(
             'form' => $form->createView(),
+            'school' => $school
         ));
     }
 
