@@ -14,7 +14,7 @@ class LoadToDoItemData extends AbstractFixture implements OrderedFixtureInterfac
     {
         $toDoItem1 = new ToDoItem();
         $toDoItem1->setCreatedAt(new DateTime('2018-01-01'));
-        $toDoItem1->setDeletedAt(new DateTime('2018-12-12'));
+        $toDoItem1->setDeletedAt(new DateTime('2018-09-09'));
         $toDoItem1->setTitle("Jobbejuice");
         $toDoItem1->setDescription("Lag kaffe ved hjelp av kaffemaskinen");
         $toDoItem1->setPriority(1);
@@ -44,12 +44,12 @@ class LoadToDoItemData extends AbstractFixture implements OrderedFixtureInterfac
 
         $toDoItem4 = new ToDoItem();
         $toDoItem4->setCreatedAt(new DateTime('2015-01-01'));
-        $toDoItem4->setDeletedAt(new DateTime('2017-12-12'));
+        //$toDoItem4->setDeletedAt(new DateTime('2017-12-12'));
         $toDoItem4->setTitle("Få underskrifter");
         $toDoItem4->setDescription("Få underskrifter og e-post på interesse-skjema ved stand");
         $toDoItem4->setPriority(5);
-        $toDoItem1->setDepartment(null); // Nå er denne global (for alle departments)
-        $toDoItem1->setSemester(null); // Nå er denne global (for alle semestre)
+        $toDoItem4->setDepartment(null); // Nå er denne global (for alle departments)
+        $toDoItem4->setSemester(null); // Nå er denne global (for alle semestre)
         $manager->persist($toDoItem4);
 
         $manager->flush();

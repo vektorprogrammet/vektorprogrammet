@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Department;
 use AppBundle\Entity\Repository\SemesterRepository;
 use AppBundle\Entity\Semester;
 use Doctrine\ORM\EntityManager;
@@ -10,6 +11,7 @@ use AppBundle\Entity\ToDoMandatory;
 use AppBundle\Entity\ToDoDeadline;
 use AppBundle\Entity\ToDoCompleted;
 use AppBundle\Model\ToDoItemInfo;
+use Symfony\Component\Validator\Constraints\Date;
 
 class ToDoListService
 {
@@ -120,7 +122,16 @@ class ToDoListService
         return $items;
     }
 
+    public function getDeletedToDoItems(array $toDoItems){
+        $today = new \DateTime();
+        $items = array_filter($toDoItems, function (ToDoItem $a) use ($today) {
+            return !(($a->getDeletedAt() == null) or ($a->getDeletedAt() > $today));
+        });
+        return $items;
+    }
+
     // Generate appropriate items from ToDoItemInfo, info from Type
+
     public function generateEntities(ToDoItemInfo $itemInfo)
     {
         $toDoItem = new ToDoItem();
@@ -158,4 +169,24 @@ class ToDoListService
         }
         $this->em->flush();
     }
+
+    public function completedItem(ToDoItem $item, Semester $semester, Department $department){
+        $completedItem = new ToDoCompleted();
+        $completedItem->setToDoItem($item);
+        $completedItem->setSemester($semester);
+        $completedItem->setCompletedAt(new \DateTime());
+        $completedItem->setDepartment($department);
+
+        $this->em->persist($completedItem);
+        $this->em->flush();
+    }
+
+    public function deleteToDoItem(ToDoItem $item){
+        $item->setDeletedAt(new \DateTime());
+        $this->em->persist($item);
+        $this->em->flush();
+    }
+
+
+
 }

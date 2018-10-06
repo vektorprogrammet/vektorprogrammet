@@ -4,10 +4,6 @@ namespace AppBundle\Model;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
-use AppBundle\Entity\ToDoDeadline;
-use AppBundle\Entity\ToDoItem;
-use AppBundle\Entity\ToDoMandatory;
-use phpDocumentor\Reflection\DocBlock\Serializer;
 
 class ToDoItemInfo
 {
@@ -151,7 +147,7 @@ class ToDoItemInfo
      * @param \DateTime $deadlineDate
      * @return ToDoItemInfo
      */
-    public function setDeadlineDate(\DateTime $deadlineDate): ToDoItemInfo
+    public function setDeadlineDate(\DateTime $deadlineDate = null): ToDoItemInfo
     {
         $this->deadlineDate = $deadlineDate;
         return $this;

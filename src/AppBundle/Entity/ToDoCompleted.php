@@ -38,9 +38,16 @@ class ToDoCompleted
     /**
      * @var Semester
      *
-     * @ORM\OneToOne(targetEntity="Semester")
+     * @ORM\ManyToOne(targetEntity="Semester")
      */
     private $semester;
+
+    /**
+     * @var Department
+     *
+     * @ORM\ManyToOne(targetEntity="Department")
+     */
+    private $department;
 
 
     /**
@@ -106,5 +113,21 @@ class ToDoCompleted
     public function getToDoItem(): ToDoItem
     {
         return $this->toDoItem;
+    }
+
+    /**
+     * @param Department $department
+     */
+    public function setDepartment(Department $department): void
+    {
+        $this->department = $department;
+    }
+
+    /**
+     * @return Department
+     */
+    public function getDepartment(): Department
+    {
+        return $this->department;
     }
 }

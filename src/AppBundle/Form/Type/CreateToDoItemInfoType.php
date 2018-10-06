@@ -10,7 +10,7 @@ use AppBundle\Entity\Department;
 
 class CreateToDoItemInfoType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $option)
     {
         $builder
 
@@ -34,6 +34,7 @@ class CreateToDoItemInfoType extends AbstractType
             ->add('deadlineDate', 'datetime', array(
                 'label' => 'Hvis dette punktet har deadline, vennligst før inn. Hvis ikke, la være blank:',
                 'required' => false,
+                //'nullable' => true,
             ))
             ->add('title', 'text', array(
                 'label' => 'Hva er denne sin tittel?',
@@ -48,18 +49,22 @@ class CreateToDoItemInfoType extends AbstractType
             ->add('department', 'entity', array(
                 'label' => 'Hvilken department skal denne gjelde for?',
                 'class' => 'AppBundle:Department',
+                'empty_value' => 'Alle departments',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('d')
-                        ->orderBy('d.name', 'ASC');
+                        ->orderBy('d.name', 'DESC');
                 },
+                'required'=>false,
             ))
             ->add('semester', 'entity', array(
                 'label' => 'Hvilket semester skal denne gjelde for?',
                 'class' => 'AppBundle:Semester',
+                'empty_value' => 'Alle semestre',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('s')
-                        ->orderBy('s.semesterStartDate', 'ASC');
+                        ->orderBy('s.semesterStartDate', 'DESC');
                 },
+                'required'=>false,
             ))
             ->add('save', 'submit', array(
                 'label' => 'Opprett',

@@ -14,6 +14,7 @@ class LoadToDoCompletedData extends AbstractFixture implements OrderedFixtureInt
     {
         $toDoCompleted1 = new ToDoCompleted();
         $toDoCompleted1->setSemester($this->getReference('semester-current'));
+        $toDoCompleted1->setDepartment($this->getReference('dep-1'));
         $toDoCompleted1->setCompletedAt(new DateTime('2018-05-05'));
         $toDoCompleted1->setToDoItem($this->getReference('outdated-to-do-item'));
         $manager->persist($toDoCompleted1);

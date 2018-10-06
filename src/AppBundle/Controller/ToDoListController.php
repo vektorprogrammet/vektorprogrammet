@@ -40,6 +40,7 @@ class ToDoListController extends Controller
         $toDoNonMandatoryNoDeadline = $toDoListService->getNonMandatoryToDoItemsWithInsignificantDeadline($incompletedToDoItems);
         $completedToDoListItems = $repository->findCompletedToDoListItems($semester);
 
+        $deletedItems = $toDoListService->getDeletedToDoItems($allToDoItems);
 
 
 
@@ -49,7 +50,7 @@ class ToDoListController extends Controller
 
         //$mylist = $toDoListService->getMyToDoItems($dep);
 
-        return $this->render("to_do_list/toDoList.html.twig", array(
+        return $this->render("todo_list/toDoList.html.twig", array(
             'allToDoItems' => $allToDoItems,
             'mandatoryToDoItems' => $toDoMandaoryNoDeadLine,
             'toDoWithDeadline' => $toDoItemsWithDeadLines,
@@ -57,6 +58,7 @@ class ToDoListController extends Controller
             'department' => $department,
             'shortDeadlines' => $toDoShortDeadLines,
             'nonMandatoryToDoItems' => $toDoNonMandatoryNoDeadline,
+            'deletedItems' => $deletedItems,
 
         ));
     }
@@ -64,53 +66,25 @@ class ToDoListController extends Controller
 
     public function createToDoAction(Request $request)
     {
-        /*
-        if (!$this->isGranted(Roles::TEAM_LEADER) || $department === null) {
-            $department = $this->getUser()->getDepartment();
-        }*/
-
-        // Create the user object
-        //$item = new ToDoItem();
-        //$item->setCreatedAt(new \DateTime());
-
         $toDoListService = $this->get('app.to_do_list_service');
-
         $itemInfo = new ToDoItemInfo();
 
         $form = $this->createForm(CreateToDoItemInfoType::class, $itemInfo, array(
             'validation_groups' => array('create_toDoItemInfo'),
-            //'toDoItemInfo' => $itemInfo,
         ));
-
 
         // Handle the form
         $form->handleRequest($request);
 
-
         // The fields of the form is checked if they contain the correct information
-        if ($form->isValid()) {/*
-
-            $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findByRoleName(Roles::ASSISTANT);
-            $user->addRole($role);*/
+        if ($form->isValid()) {
             $toDoListService->generateEntities($itemInfo);
-            //$itemInfo->generateEntities();
-            //service->generateItems(itemInfo);
-            //$item = $itemInfo->getToDoItem();
-            //$em = $this->getDoctrine()->getManager();
-            //$em->persist($item);
-            //$em->flush();
-
-            /*$this->get('app.user.registration')->sendActivationCode($user);*/
-
             return $this->redirectToRoute('to_do_list');
         }
 
-
-
         // Render the view
-        return $this->render('to_do_list/create_todo_element.html.twig', array(
+        return $this->render('todo_list/create_todo_element.html.twig', array(
             'form' => $form->createView(),
-            //'department' => null,
         ));
     }
 }

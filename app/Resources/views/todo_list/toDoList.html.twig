@@ -46,6 +46,14 @@
 
                     {% endfor %}
 
+                    <h2>Deleted:</h2>
+                    {% for item in deletedItems %}
+                        <h5>* {{ item.getTitle() }}</h5>
+                        <p>{{ item.getDescription() }}</p>
+                        <p>Denne ble slettet: {{ item.getDeletedAt().format('d/m-Y') }}</p>
+
+                    {% endfor %}
+
 
                 </div>
 

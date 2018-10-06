@@ -63,7 +63,7 @@ class ToDoItem
      * @var Department
      *
      * @ORM\ManyToOne(targetEntity="Department")
-     * @@ORM\JoinColumn(name="toDoItem_id", referencedColumnName="id", nullable=true)
+     * @@ORM\JoinColumn(referencedColumnName="id", nullable=true)
      */
     private $department;
 
@@ -72,7 +72,7 @@ class ToDoItem
      * @var Semester
      *
      * @ORM\ManyToOne(targetEntity="Semester")
-     * @ORM\JoinColumn(name="toDoItem_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(referencedColumnName="id", nullable=true)
      */
     //New, non-department-specific semester:
     private $semester;
