@@ -8,17 +8,9 @@ class ExecutiveBoardControllerTest extends BaseWebTestCase
 {
     public function testUpdateExecutiveBoard()
     {
-        // ADMIN
         $client = $this->createTeamLeaderClient();
 
-        $crawler = $this->goTo('/kontrollpanel/hovedstyret', $client);
-
-        // Find a link and click it
-        $link = $crawler->selectLink('Rediger')->link();
-        $crawler = $client->click($link);
-
-        // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("Oppdater Hovedstyret")')->count());
+        $crawler = $this->goTo('/kontrollpanel/hovedstyret/oppdater', $client);
 
         $form = $crawler->selectButton('Lagre')->form();
 
@@ -32,8 +24,8 @@ class ExecutiveBoardControllerTest extends BaseWebTestCase
         $crawler = $client->followRedirect();
 
         // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("nyttStyre")')->count());
-        $this->assertEquals(0, $crawler->filter('h1:contains("Hovedstyret")')->count());
+        $this->assertEquals(1, $crawler->filter('h2:contains("nyttStyre")')->count());
+        $this->assertEquals(0, $crawler->filter('h2:contains("Hovedstyret")')->count());
     }
 
     public function testAddUserToBoard()
@@ -45,11 +37,11 @@ class ExecutiveBoardControllerTest extends BaseWebTestCase
         $numActiveRowsBefore = $crawler->filter('#activeMemberTable tr')->count(); // Includes header row
 
         // Find a link and click it
-        $link = $crawler->selectLink('NTNU')->eq(0)->link();
+        $link = $crawler->selectLink('Trondheim')->eq(0)->link();
         $crawler = $client->click($link);
 
         // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h2:contains("Legg til hovedstyremedlem")')->count());
+        $this->assertGreaterThanOrEqual(1, $crawler->filter('div:contains("Legg til hovedstyremedlem")')->count());
 
         $form = $crawler->selectButton('Lagre')->form();
 
@@ -65,9 +57,8 @@ class ExecutiveBoardControllerTest extends BaseWebTestCase
         $crawler = $client->followRedirect();
 
         // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("Hovedstyret")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Petter")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Johansen")')->count());
+        $this->assertEquals(1, $crawler->filter('h2:contains("Hovedstyret")')->count());
+        $this->assertGreaterThanOrEqual(1, $crawler->filter('td:contains("Petter Johansen")')->count());
 
         // Assert that a user was added to the active table
         $this->assertEquals($numActiveRowsBefore + 1, $crawler->filter('#activeMemberTable tr')->count());
@@ -128,7 +119,7 @@ class ExecutiveBoardControllerTest extends BaseWebTestCase
         $crawler = $this->teamLeaderGoTo('/kontrollpanel/hovedstyret');
 
         // Check the count for the different variables
-        $this->assertEquals(1, $crawler->filter('h1:contains("Hovedstyret")')->count());
+        $this->assertEquals(1, $crawler->filter('h2:contains("Hovedstyret")')->count());
 
         $client = $this->createTeamMemberClient();
 

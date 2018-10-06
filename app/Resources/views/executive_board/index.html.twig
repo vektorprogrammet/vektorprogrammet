@@ -9,14 +9,14 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active">Hovedstyret</li>
+    <li class="breadcrumb-item active">{{ board_name }}</li>
 {% endblock %}
 
 {% block breadcrumb_menu %}
     {% if is_granted_team_leader() %}
         <div class="btn-group">
             <a href="{{ path('executive_board_update') }}" class="btn btn-outline-secondary">
-                <i class="fa fa-pencil"></i> Rediger hovedstyret
+                <i class="fa fa-pencil"></i> Rediger {{ board_name }}
             </a>
             <div class="dropdown">
                 <button class="btn btn-outline-success text-success" id="dropdownToggle" data-toggle="dropdown" aria-haspopup="true"   aria-expanded="false">
@@ -37,7 +37,7 @@
 {% block body %}
     <div class="row">
         <div class="col-12">
-            <h2 class="text-center my-3">Hovedstyret</h2>
+            <h2 class="text-center my-3">{{ board_name }}</h2>
             <ul class="nav nav-tabs mt-4">
                 <li class="nav-item">
                     <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active" role="tab"
