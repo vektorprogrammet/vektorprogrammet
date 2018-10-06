@@ -23,13 +23,10 @@ class TeamApplicationControllerTest extends BaseWebTestCase
         // ADMIN
         $client = $this->createAdminClient();
 
-        $crawler = $this->goTo('/kontrollpanel/teamadmin/team/1', $client);
-        // Find a link and click it (Sjekk hva som skal stå for søknad nr 1)
-        $link = $crawler->selectLink('Se søkere')->eq(0)->link();
-        $crawler = $client->click($link);
+        $crawler = $this->goTo('/kontrollpanel/team/applications/1', $client);
 
         //Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h3:contains("Søknader til Styret")')->count());
+        $this->assertEquals(1, $crawler->filter('h2:contains("Søknader Styret")')->count());
 
         // USER
         $client = static::createClient(array(), array(
@@ -215,8 +212,6 @@ class TeamApplicationControllerTest extends BaseWebTestCase
         $crawler = $clientAdmin->request('GET', '/kontrollpanel/team/applications/1');
         $this->assertTrue($clientAdmin->getResponse()->isSuccessful());
 
-        $applicationsAfter = $crawler->filter('tr')->count();
-
-        $this->assertEquals($applicationsBefore - 1, $applicationsAfter);
+        $this->assertEquals(1, $crawler->filter('td:contains("Ingen søkere")')->count());
     }
 }
