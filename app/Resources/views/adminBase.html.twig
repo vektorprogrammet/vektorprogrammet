@@ -92,6 +92,12 @@
 
 <script src="{{ asset_with_version('/scripts/coreui.js') }}"></script>
 
+<script>
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+
 {% block javascripts %}{% endblock %}
 
 </body>

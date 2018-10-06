@@ -89,8 +89,9 @@
                             <td>{{ a.interview.interviewScore.sum }}</td>
                             <td>{{ a.interview.interviewScore.suitableAssistant }}</td>
                             <td>{% if a.specialNeeds %}
-                                    <i class="fa fa-2x fa-exclamation-triangle text-warning"></i>
-
+                                    <a href="{{ path('interview_show', { 'id': a.id }) }}#special">
+                                        <i class="fs-20 fa fa-exclamation-triangle text-warning" data-toggle="tooltip" data-placement="bottom" title="{{ a.specialNeeds }}"></i>
+                                    </a>
                                 {% endif %}</td>
                             <td>
                                 <a href="{{ path('interview_show', { 'id': a.id }) }}" class="button tiny"><i
