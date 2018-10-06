@@ -16,37 +16,35 @@
 
 {% block breadcrumb_menu %}
     {% include "common/department_semester_dropdowns.html.twig" with {
-        'path': 'statistics_application_by_semester',
-        'parameterName': 'id',
-        'currentSemester': semester} %}
+    'path': 'statistics_application_by_semester',
+    'parameterName': 'id',
+    'currentSemester': semester} %}
 {% endblock %}
 
 
 {% block body %}
     <h2 class="text-center my-5">Opptaksstatistikk {{ semester.department }} {{ semester.name }}</h2>
-    <div class="row">
-        {% if applicationData.count %}
-            <header class="col-12">
-                <h3>Søkerstatistikk</h3>
-                <h6>Antall søkere: {{ applicationData.count }}</h6>
-            </header>
-            <div class="d-block d-lg-flex w-100 equalheight charts" id="applicationCharts">
-            </div>
-        {% endif %}
-        {% if assistantHistoryData.count %}
-            <header class="col-12">
-                <h3 class="mt-3">Opptaksstatistikk</h3>
-                <h6>Antall assistenter: {{ assistantHistoryData.assistantHistoryCount }}</h6>
-                <h6>Antall stillinger: {{ assistantHistoryData.positionsCount }}</h6>
-            </header>
-            <div class="d-block d-lg-flex w-100 equalheight charts" id="admissionCharts">
-            </div>
-        {% endif %}
-        {% if assistantHistoryData.count == 0 and applicationData.count == 0 %}
-            <div class="col-12">
-                <h4>Ingen data dette semesteret</h4>
-            </div>
-        {% endif %}
-    </div>
+    {% if applicationData.count %}
+        <header>
+            <h3>Søkerstatistikk</h3>
+            <h6>Antall søkere: {{ applicationData.count }}</h6>
+        </header>
+        <div class="row charts" id="applicationCharts">
+        </div>
+    {% endif %}
+    {% if assistantHistoryData.count %}
+        <header>
+            <h3 class="mt-3">Opptaksstatistikk</h3>
+            <h6>Antall assistenter: {{ assistantHistoryData.assistantHistoryCount }}</h6>
+            <h6>Antall stillinger: {{ assistantHistoryData.positionsCount }}</h6>
+        </header>
+        <div class="row charts" id="admissionCharts">
+        </div>
+    {% endif %}
+    {% if assistantHistoryData.count == 0 and applicationData.count == 0 %}
+        <div>
+            <h4>Ingen data dette semesteret</h4>
+        </div>
+    {% endif %}
 {% endblock %}
 
