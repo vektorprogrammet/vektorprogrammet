@@ -16,12 +16,15 @@
 
 {% block body %}
     <div class="control-panel">
-        <div class="sbs">
+        <h2 class="text-center my-3">Kontrollpanel</h2>
+        <div class="sbs my-5">
             {{ render(controller('AppBundle:ControlPanel:showSBS')) }}
         </div>
 
         <div class="row">
-            <h3>Brukere</h3>
+            <div class="col-12">
+                <h3>Brukere</h3>
+            </div>
 
             <div class="col-4 col-md-3 col-lg-2">
                 <div class="control-panel-item">
@@ -63,36 +66,6 @@
             {% endif %}
             <div class="col-4 col-md-3 col-lg-2">
                 <div class="control-panel-item">
-                    {% if is_granted_team_leader() %}
-                    <a data-dropdown="superadminCreateUser" aria-controls="superadminCreateUser" aria-expanded="false">
-                        <i class="fa fa-user-plus fa-3x"></i>
-
-                        <p>Ny bruker</p>
-                    </a>
-                    <ul id="superadminCreateUser" class="f-dropdown mini" data-dropdown-content tabindex="-1"
-                        aria-hidden="true"
-                        aria-autoclose="false" tabindex="-1">
-
-                        {% for d in departments %}
-
-                            <li>
-                                <a href="{{ path('useradmin_create_user', { 'id': d.id }) }}">{{ d.shortName }}</a>
-                            </li>
-
-                        {% endfor %}
-                    </ul>
-                        {% else %}
-                            <a href="{{ path('useradmin_create_user') }}">
-                                <i class="fa fa-user-plus fa-3x"></i>
-
-                                <p>Ny bruker</p>
-                            </a>
-                    {% endif %}
-
-                </div>
-            </div>
-            <div class="col-4 col-md-3 col-lg-2">
-                <div class="control-panel-item">
                   <a href="{{ path('generate_mail_lists') }}">
 		    <i class="fa fa-list fa-3x"></i>
                         <p>Epostliste</p>
@@ -104,7 +77,9 @@
 
 
         <div class="row">
-            <h3>Opptak</h3>
+            <div class="col-12">
+                <h3>Opptak</h3>
+            </div>
 
             <div class="col-4 col-md-3 col-lg-2">
                 <div class="control-panel-item">
@@ -178,7 +153,9 @@
         </div>
 
         <div class="row">
-            <h3>Artikkel</h3>
+            <div class="col-12">
+                <h3>Artikkel</h3>
+            </div>
 
             <div class="col-4 col-md-3 col-lg-2">
                 <div class="control-panel-item">
@@ -203,7 +180,9 @@
         </div>
 
         <div class="row">
-            <h3>Diverse</h3>
+            <div class="col-12">
+                <h3>Diverse</h3>
+            </div>
 
             <div class="col-4 col-md-3 col-4 col-md-3 col-lg-2">
                 <div class="control-panel-item">
