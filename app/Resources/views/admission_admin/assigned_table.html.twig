@@ -59,7 +59,7 @@
                     </div>
                     {% endif %}
                 </td>
-                <td><a href="{{ path('specific_profile', {id: a.user.id}) }}">{{ a.user }}</a></td>
+                <td><a href="{{ path('interview_schedule', { 'id': a.id }) }}">{{ a.user }}</a></td>
                 <td>{{ a.user.phone }}</td>
                 <td>{{ a.user.email }}</td>
 
