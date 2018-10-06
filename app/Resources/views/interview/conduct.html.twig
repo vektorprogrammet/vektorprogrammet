@@ -28,7 +28,7 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-12 col-xl-6">
+        <div class="col-12 col-xl-8">
             <div class="card">
                 <div class="card-header">
                     <span><i class="fa fa-comments-o"></i> Intervju - {{ application.user }}</span>
@@ -38,13 +38,13 @@
                 </div>
             </div>
 
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
             <div class="card">
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> Praktisk informasjon
                 </div>
                 <div class="card-body">
-                    {{ form_start(form) }}
-                    {{ form_errors(form) }}
                     <h4>Introduksjon</h4>
                     <ul>
                         <li>En ungdomsskoledag er innenfor tidsrommet kl. 08.00 og 14.45. I tillegg kommer reisetid</li>
@@ -160,9 +160,10 @@
                     {% endif %}
                 </div>
             </div>
+
+            {{ form_end(form) }}
         </div>
     </div>
-    {{ form_end(form) }}
 {% endblock %}
 
 {% block javascripts %}

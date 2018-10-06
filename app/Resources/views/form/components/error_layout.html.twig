@@ -1,10 +1,11 @@
 {% block form_errors -%}
-    {% if errors|length > 0 -%}
-        {% if form.parent %}<small class="error">{% else %}<div data-alert class="alert-box alert">{% endif %}
-        {%- for error in errors -%}
-            {{ error.message }}
-            {% if not loop.last %}, {% endif %}
-        {%- endfor -%}
-        {% if form.parent %}</small>{% else %}</div>{% endif %}
+    {%- if errors|length > 0 -%}
+        <div class="{% if form.parent %}invalid-feedback{% else %}alert alert-danger{% endif %}">
+            <ul class="list-unstyled mb-0">
+                {%- for error in errors -%}
+                    <li>{{ error.message }}</li>
+                {%- endfor -%}
+            </ul>
+        </div>
     {%- endif %}
 {%- endblock form_errors %}
