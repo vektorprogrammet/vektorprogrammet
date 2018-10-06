@@ -4,77 +4,75 @@
     Sett opp intervju
 {% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('applications_show_assigned_by_semester', {'id': application.semester.id}) }}">Intervjufordeling</a>
+    </li>
+    <li class="breadcrumb-item active">{{ application.user }}</li>
+{% endblock %}
+
+
 {% block stylesheets %}
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.min.css">
 {% endblock %}
 
 {% block body %}
+    {% set u = interview.user %}
+    <div class="row my-5">
+
+        <div class="col-12 text-center">
+            <h2>Intervjuoppsett for {{ application.user }}</h2>
+            <p class="m-0">
+                Status: <span style="color: {{ interview.getInterviewStatusAsColor }}">
+                    {{ interview.interviewStatusAsString }}
+                </span>
+            </p>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+            {% include 'interview/schedule_status_card.html.twig' %}
+        </div>
+    </div>
 
     <div class="row">
-        <div class="col-12">
-            <div class="row">
-                <div class="col-6">
-                    <h3>Sett opp intervju</h3>
-                </div>
-                <div class="col-6 text-right">
-                    Status: <span style="color: {{ interview.getInterviewStatusAsColor }}">{{ interview.interviewStatusAsString }}</span>
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-user-o"></i> Kandidat</div>
+                <div class="card-body">
+                    {% include 'interview/interviewee_table.html.twig' %}
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12 d-flex flex-row justify-content-between">
-                    <div class="candidate flex-shrink-0 flex-grow-1">
-                        <h5>Kandidat</h5>
-                        {% set u = interview.user %}
-                        <table class="table table-bordered table-light">
-                            <tbody>
-                            <tr>
-                                <th><i class="fa fa-user"></i> Navn</th>
-                                <td> {{ u.firstName }} {{ u.lastName }}</td>
-                            </tr>
-                            <tr>
-                                <th><i class="fa fa-phone"></i> Tlf</th>
-                                <td> <a href="tel:{{ u.phone }}">{{ u.phone }}</a> </td>
-                            </tr>
-                            <tr>
-                                <th><i class="fa fa-envelope"></i> E-post</th>
-                                <td> <a href="mailto:{{ u.email }}">{{ u.email }}</a> </td>
-                            </tr>
-                            <tr>
-                                <th> Linje</th>
-                                <td> {{ u.fieldOfStudy }} </td>
-                            </tr>
-                            <tr>
-                                <th> År</th>
-                                <td> {{ application.yearOfStudy }} </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="mr-3"></div>
-                    <div class="d-none d-xl-block mx-3">
-                        {% include 'interview/schedule_status_card.html.twig' %}
-                    </div>
-                    <div class="ml-3"></div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-users"></i> Intervjuere</div>
+                <div class="card-body d-flex justify-content-center">
                     <div class="d-flex flex-row">
                         <div class="interviewer">
                             <h5 class="text-center">Intervjuer</h5>
                             <p class="text-center">{{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}</p>
-                            <img class="scheduler-photo profile-photo bordered rounded-circle " src="{{ asset(interview.interviewer.picturePath | imagine_filter('profile_img')) }}">
+                            <img class="scheduler-photo profile-photo bordered rounded-circle "
+                                 src="{{ asset(interview.interviewer.picturePath | imagine_filter('profile_img')) }}">
                         </div>
                         <div class="mx-3"></div>
                         <div class="interviewer">
                             <h5 class="text-center">Medintervjuer</h5>
                             {% if interview.cointerviewer %}
                                 <p class="text-center">{{ interview.coInterviewer.firstName }} {{ interview.interviewer.lastName }}</p>
-                                <img class="scheduler-photo profile-photo bordered rounded-circle " src="{{ asset(interview.coInterviewer.picturePath | imagine_filter('profile_img')) }}">
+                                <img class="scheduler-photo profile-photo bordered rounded-circle "
+                                     src="{{ asset(interview.coInterviewer.picturePath | imagine_filter('profile_img')) }}">
                             {% else %}
                                 <p class="text-center text-faded font-italic">Ingen</p>
+                                    <a href="{{ path('interview_admin_assign_co_interviewer', {'id': interview.id, 'from': 'schedule'}) }}">
                                 <div class="no-co-interviewer img-blur-container rounded-circle bordered">
-                                    <img class="scheduler-photo profile-photo-blur" src="{{ asset(interview.interviewer.picturePath | imagine_filter('profile_img')) }}">
-                                    <span>Ikke valgt enda</span>
+                                        <img class="scheduler-photo profile-photo-blur"
+                                             src="{{ asset(interview.interviewer.picturePath | imagine_filter('profile_img')) }}">
+                                        <div class="profile-photo-overlay">Velg intervjuer</div>
                                 </div>
+                                    </a>
                             {% endif %}
 
                         </div>
@@ -82,103 +80,115 @@
                 </div>
             </div>
         </div>
+
     </div>
-    <div class="row d-xl-none">
-        <div class="col-12">
-            {% include 'interview/schedule_status_card.html.twig' %}
-        </div>
-    </div>
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
     <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-clock-o"></i> Tid og sted</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.datetime) }}
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.room) }}
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.campus) }}
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <label>Link til kart (<a href="https://use.mazemap.com/" target="_blank" rel="noopener">MazeMap</a>)</label>
+                            {{ form_row(form.mapLink) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-envelope-open-o"></i> Melding</div>
+                <div class="card-body">
+                    <div class="row hide">
+                        <div class="col-12 col-md-4">
+                            {{ form_row(form.from) }}
+                        </div>
+                        <div class="col-12 col-md-4 end">
+                            {{ form_row(form.to) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            {{ form_row(form.message) }}
+                            <p class="m-0 text-center"><i class="fa fa-info-circle"></i> Tid og sted blir
+                                automatisk lagt til i meldingen.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-12">
-            <h5>Tid og sted</h5>
-            {{ form_start(form) }}
-            <div class="row">
-                <div class="col-12 col-md-4">
-                    {{ form_row(form.datetime) }}
-                </div>
-                <div class="col-12 col-md-4">
-                    {{ form_row(form.room) }}
-                </div>
-                <div class="col-12 col-md-4">
-                    {{ form_row(form.campus) }}
-                </div>
 
-
-
-            </div>
-            <div class="row">
-                <div class="col-12 col-md-4 end">
-                    <div class="panel callout radius">
-                        <h3 class="text-center"><i class="fa fa-info-circle"></i></h3>
-                        <p>Tidspunkt og rom blir automatisk lagt til på slutten av e-posten.</p>
-                    </div>
-                </div>
-                <div class="col-12 col-md-8">
-                    <label>Link til kart (<a href="https://use.mazemap.com/" target="_blank" rel="noopener">MazeMap</a>)</label>
-                    {{ form_row(form.mapLink) }}
-                </div>
-            </div>
-
-            <h5>Melding</h5>
-            <div class="row">
-                {{ form_errors(form) }}
-                <div class="col-12 col-md-4">
-                    {{ form_row(form.from) }}
-                </div>
-                <div class="col-12 col-md-4 end">
-                    {{ form_row(form.to) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    {{ form_row(form.message) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-
-                    {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
-                    {{ form_widget(form.preview, {'attr': {'class': 'button tiny secondary', 'formtarget': '_blank'}}) }}
-                    {{ form_widget(form.changeStatus, {'attr': {'class': 'button tiny', 'data-reveal-id': 'status-'~interview.id}}) }}
+            <div class="card">
+                <div class="card-body">
+                    {{ form_widget(form.preview, {'attr': {'class': 'btn btn-outline-secondary', 'formtarget': '_blank'}}) }}
+                    <button type="button" class="btn btn-outline-secondary" data-toggle="modal"
+                            data-target="#statusModal">
+                        Endre status
+                    </button>
                     <div class="float-right">
-                        {{ form_widget(form.saveAndSend, {'attr': {'class': 'button small success'}}) }}
+                        {{ form_widget(form.saveAndSend, {'attr': {'class': 'btn btn-primary'}}) }}
                     </div>
-
                 </div>
             </div>
-            {{ form_end(form) }}
-            <div id="status-{{ interview.id }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-                <h3 id="modalTitle">Endre status</h3>
-                <form method="POST" action="{{ path('interview_edit_status', {id: interview.id}) }}">
-                    <select name="status" id="status">
-                        {% set s = interview.interviewStatusAsString %}
-                        <option value="4" {% if s == 'Ikke satt opp' %}selected{% endif %}>Ikke satt opp</option>
-                        <option value="0" {% if s == 'Ingen svar' %}selected{% endif %}>Ingen svar</option>
-                        <option value="1" {% if s == 'Akseptert' %}selected{% endif %}>Akseptert</option>
-                        <option value="2" {% if s == 'Ny tid ønskes' %}selected{% endif %}>Ny tid ønskes</option>
-                        <option value="3" {% if s == 'Kansellert' %}selected{% endif %}>Kansellert</option>
-                    </select>
-                    <p>OBS: Dette vil laste inn siden på nytt. Alle felter vil bli tilbakestilt.</p>
-                <button id="status_form_button" type="submit" class="tiny success">Lagre</button>
-                </form>
-                <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-            </div>
-
         </div>
     </div>
-
+    {{ form_end(form) }}
+    <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="POST" action="{{ path('interview_edit_status', {id: interview.id}) }}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="statusModalLabel">Endre status</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <select class="form-control" name="status" id="status">
+                            {% set s = interview.interviewStatusAsString %}
+                            <option value="4" {% if s == 'Ikke satt opp' %}selected{% endif %}>Ikke satt opp</option>
+                            <option value="0" {% if s == 'Ingen svar' %}selected{% endif %}>Ingen svar</option>
+                            <option value="1" {% if s == 'Akseptert' %}selected{% endif %}>Akseptert</option>
+                            <option value="2" {% if s == 'Ny tid ønskes' %}selected{% endif %}>Ny tid ønskes</option>
+                            <option value="3" {% if s == 'Kansellert' %}selected{% endif %}>Kansellert</option>
+                        </select>
+                        <p class="my-3"><span class="text-danger text-bold">Obs!</span> Dette vil laste inn siden på
+                            nytt. Alle felter vil bli tilbakestilt.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Avbryt</button>
+                        <button type="submit" class="btn btn-primary">Lagre</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.min.js"></script>
     <script>
-        const options = {
-            format: 'd.m.Y H:i',
-            lang: 'no',
-            step: 5,
-        };
+      const options = {
+        format: 'd.m.Y H:i',
+        lang: 'no',
+        step: 5,
+      };
 
-        jQuery('#{{ form.datetime.vars.id }}').datetimepicker(options);
+      jQuery('#{{ form.datetime.vars.id }}').datetimepicker(options);
     </script>
 {% endblock %}

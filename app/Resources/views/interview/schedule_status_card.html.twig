@@ -1,27 +1,33 @@
 {% if interview.interviewStatusAsString == 'Ny tid ønskes' %}
-    <h5>&nbsp</h5>
-    <div class="card border-warning">
+    <div class="card border-warning mb-5">
         <div class="card-body">
-            <h5 class="card-title text-bold text-warning">{{ u.firstName }} har bedt om nytt tidspunkt for intervju.</h5>
-            <p class="card-text">
-                Følgende tider passer
-                <span class="text-bold">ikke:</span>
+            <h5 class="card-title text-bold text-warning">{{ u.firstName }} har bedt om nytt tidspunkt for intervju</h5>
+            <p class="card-text text-center">
+                <span class="text-bold">
+                    Følgende tider passer
+                    <span class="text-underline">ikke</span>
+                </span>
                 <br>
-                {{ u.firstName }}:
-                <i>{{ interview.newTimeMessage }}</i>
+                {% if interview.newTimeMessage %}
+                    <i class="fa fa-comment-o"></i> {{ u.firstName }}: <i>{{ interview.newTimeMessage }}</i>
+                {% else %}
+                    Ingen tilbakemelding gitt
+                {% endif %}
             </p>
         </div>
     </div>
 {% elseif interview.interviewStatusAsString == 'Kansellert' %}
-    <h5>&nbsp</h5>
-    <div class="card border-danger">
+    <div class="card border-danger mb-5">
         <div class="card-body text-danger">
-            <h5 class="card-title text-bold">{{ u.firstName }} har kansellert intervjuet.</h5>
-            <p class="card-text">
-                <span class="text-bold">Begrunnelse:</span>
+            <h5 class="card-title text-bold">{{ u.firstName }} har kansellert intervjuet</h5>
+            <p class="card-text text-center">
+                <span class="text-bold">Begrunnelse</span>
                 <br>
-                {{ u.firstName }}:
-                <i>{{ interview.cancelMessage }}</i>
+                {% if interview.cancelMessage %}
+                    <i class="fa fa-comment-o"></i>  {{ u.firstName }}: <i>{{ interview.cancelMessage }}</i>
+                {% else %}
+                    Ingen begrunnelse gitt
+                {% endif %}
             </p>
         </div>
     </div>

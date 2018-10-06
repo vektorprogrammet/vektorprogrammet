@@ -893,7 +893,7 @@ button.secretly-not-a-button {
     position:relative;
     display:flex;
     flex-direction:column;
-    span {
+    .profile-photo-overlay {
       color:#fff;
       font-weight:700;
       text-shadow:0 1px 2px rgba(0,0,0,0.7);
@@ -906,9 +906,6 @@ button.secretly-not-a-button {
       text-align:center;
     }
   }
-}
-
-.candidate {
 }
 
 .profile-photo-blur {

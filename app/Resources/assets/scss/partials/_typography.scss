@@ -25,6 +25,10 @@
   font-weight: bold;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .text-link {
   color: $primary-color;
   &:hover {
