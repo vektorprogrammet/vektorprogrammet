@@ -65,6 +65,7 @@ security:
         # require ROLE_ADMIN for /admin*
 
           #ROLE_HIGHEST_ADMIN = admin user
+        - { path: ^/kontrollpanel/admin, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/staging, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/avdelingadmin/opprett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/avdelingadmin/slett, roles: ROLE_HIGHEST_ADMIN }

@@ -45,8 +45,24 @@ services:
         tags:
             - { name: twig.extension }
 
+    app.access_extension:
+        class: AppBundle\Twig\Extension\AccessExtension
+        arguments: ['@app.access_control']
+        tags:
+            - { name: twig.extension }
+
     guzzle.slack:
         class: GuzzleHttp\Client
         arguments:
             - { timeout: 2 }
+
+    app.access_control:
+        class: AppBundle\Service\AccessControlService
+        arguments: ['@doctrine.orm.default_entity_manager', '@router', '@app.roles', '@security.token_storage']
+
+    app.access_control_subscriber:
+        class: AppBundle\EventSubscriber\AccessControlSubscriber
+        arguments: ['@app.access_control']
+        tags:
+            - { name: kernel.event_subscriber }
 

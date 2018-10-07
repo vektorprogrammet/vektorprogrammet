@@ -1,0 +1,61 @@
+{% extends "adminBase.html.twig" %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('access_rules_show') }}">Access Control</a>
+    </li>
+    <li class="breadcrumb-item active">{{ isCreate ? 'Create rule' : accessRule.name }}</li>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12 col-xl-10 col-xxl-8 col-xxxl-6">
+            {{ form_start(form) }}
+            <div class="card">
+                <div class="card-header"><i class="fa fa-align-justify"></i> Create Access Rule</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            {{ form_row(form.name) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">{{ form_row(form.route) }}</div>
+                        <div class="col-6">{{ form_row(form.method) }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <div class="card">
+                        <div class="card-header"><i class="fa fa-shield-alt"></i> Roles</div>
+                        <div class="card-body">
+                            {{ form_row(form.roles) }}
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><i class="fa fa-smile-o"></i> Teams</div>
+                        <div class="card-body">
+                            {{ form_row(form.teams) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="card">
+                        <div class="card-header"><i class="fa fa-users"></i> Users</div>
+                        <div class="card-body">
+                            {{ form_row(form.users) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <button class="btn btn-primary">Save</button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

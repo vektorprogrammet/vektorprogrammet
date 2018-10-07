@@ -1,0 +1,94 @@
+{% extends "adminBase.html.twig" %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Access Control</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    <a class="btn btn-outline-success text-success" href="{{ path('access_rules_create') }}"><i class="fa fa-plus text-success"></i> Create rule</a>
+{% endblock %}
+
+
+{% block body %}
+    <div class="card">
+        <div class="card-header"><i class="fa fa-shield-alt"></i> Access Rules</div>
+        <div class="card-body">
+            <table class="table">
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Route</th>
+                    <th>Method</th>
+                    <th>Roles</th>
+                    <th>Teams</th>
+                    <th>Users</th>
+                </tr>
+                {% for rule in rules %}
+                    <tr>
+                        <td class="table-menu">
+                            <div class="dropdown">
+                                <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"
+                                     aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-secondary"></i>
+                                </div>
+                                <div class="dropdown-menu pt-0" aria-labelledby="options-{{ loop.index }}">
+                                    <div class="dropdown-header mb-2"><strong>{{ rule.name }}</strong></div>
+                                    <a href="{{ path('access_rules_edit', { 'id': rule.id }) }}"
+                                       class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Edit
+                                    </a>
+                                    <form method="POST"
+                                          onsubmit="return confirm('Deleting {{ rule.name }}.Are you sure?')"
+                                          action="{{ path('access_rules_delete', { id: rule.id }) }}">
+                                        <button type="submit"
+                                                class="dropdown-item">
+                                            <i class="fa fa-trash text-danger"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ rule.name }}</td>
+                        <td>{{ rule.route }}</td>
+                        <td>{{ rule.method }}</td>
+                        <td>{{ rule.roles|join(", ") }}</td>
+                        <td>{{ rule.teams|join(", ") }}</td>
+                        <td>
+                            {% if rule.users|length %}
+                                <span class="clickable text-primary" data-toggle="modal" data-target="#rule-{{ rule.id }}">
+                                    Show users ({{ rule.users|length }})
+                                </span>
+                            {% else %}
+                                &lt;No users&gt;
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    {% for rule in rules %}
+        <div class="modal fade" id="rule-{{ rule.id }}" tabindex="-1" role="dialog" aria-labelledby="rule-{{ rule.id }}Label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="rule-{{ rule.id }}Label">Users in rule {{ rule.name }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body table-responsive">
+                        <table class="table table-bordered">
+                            <tr><th>Name</th></tr>
+                            {% for user in rule.users %}
+                                <tr><td>{{ user }}</td></tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
