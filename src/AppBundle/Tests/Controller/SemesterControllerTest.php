@@ -120,19 +120,5 @@ class SemesterControllerTest extends BaseWebTestCase
         // Assert that we have the correct amount of data
         $this->assertEquals(1, $crawler->filter('td:contains("Vår 2013")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Høst 2015")')->count());
-
-        // Assert a specific 200 status code
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        // USER
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/skoleadmin/avdeling/2');
-
-        // Assert that the response is a redirect to /
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 }

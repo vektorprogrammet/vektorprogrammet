@@ -91,15 +91,6 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->assertGreaterThanOrEqual(1, $crawler->filter('td button:contains("Slett")')->count());
     }
 
-    public function testAssistantIsDenied()
-    {
-        $client = self::createAssistantClient();
-
-        $client->request('GET', '/kontrollpanel/opptak');
-
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-    }
-
     public function testCancelInterview()
     {
         $client = static::createClient(array(), array(

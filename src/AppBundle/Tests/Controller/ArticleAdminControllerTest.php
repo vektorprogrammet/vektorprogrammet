@@ -20,17 +20,6 @@ class ArticleAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(1, $crawler->filter('a:contains("Ny Artikkel")')->count());
         $this->assertGreaterThan(0, $crawler->filter('a:contains("Rediger")')->count());
         $this->assertEquals(0, $crawler->filter('button:contains("Slett")')->count());
-
-        // User
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/artikkeladmin');
-
-        // Assert that the page response status code is 403 Access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testTeamLeaderShow()
@@ -47,13 +36,5 @@ class ArticleAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(1, $crawler->filter('a:contains("Ny Artikkel")')->count());
         $this->assertGreaterThanOrEqual(1, $crawler->filter('a:contains("Rediger")')->count());
         $this->assertGreaterThanOrEqual(1, $crawler->filter('button:contains("Slett")')->count());
-
-        // User
-        $client = $this->createAssistantClient();
-
-        $client->request('GET', '/kontrollpanel/artikkeladmin');
-
-        // Assert that the page response status code is 403 Access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 }

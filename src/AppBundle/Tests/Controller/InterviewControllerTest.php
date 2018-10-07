@@ -138,28 +138,6 @@ class InterviewControllerTest extends BaseWebTestCase
 
         $crawler = $client->request('GET', '/kontrollpanel/intervju/vis/5');
         $this->verifyInterview($crawler);
-
-        // Team user who is not assigned the interview
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/intervju/conduct/6');
-
-        // Assert that the page response status code is 403 access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        // Assistant user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/intervju/conduct/6');
-
-        // Assert that the page response status code is 403 access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testShow()
@@ -178,39 +156,6 @@ class InterviewControllerTest extends BaseWebTestCase
         // Assert that we have the correct page
         $this->verifyCorrectInterview($crawler, 'Markus', 'Gundersen');
         $this->assertEquals(2, $crawler->filter('p:contains("Test answer")')->count());
-
-        // Team user from the same department as the applicant
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $crawler = $client->request('GET', '/kontrollpanel/intervju/vis/4');
-
-        // Assert that the page response status code is 200
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        // Team user from a different department than the applicant
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'kribo',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/intervju/vis/4');
-
-        // Assert that the page response status code is 403 access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        // Assistant user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/intervju/vis/4');
-
-        // Assert that the page response status code is 403 access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testCreateSchema()
@@ -240,17 +185,6 @@ class InterviewControllerTest extends BaseWebTestCase
 
         // Assert that we have the correct page with the correct info (from the submitted form)
         $this->assertGreaterThanOrEqual(1, $crawler->filter('td:contains("Test skjema1")')->count());
-
-        // Team user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/intervju/skjema/opprett');
-
-        // Assert that the page response status code is 403 access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testEditSchemas()
@@ -280,17 +214,6 @@ class InterviewControllerTest extends BaseWebTestCase
 
         // Assert that we have the correct page with the correct info (from the submitted form)
         $this->assertGreaterThanOrEqual(1, $crawler->filter('td:contains("Intervjuskjema HiST oppdatert, 2015")')->count());
-
-        // Team user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/intervju/skjema/1');
-
-        // Assert that the page response status code is 403 access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testShowSchemas()
@@ -308,17 +231,6 @@ class InterviewControllerTest extends BaseWebTestCase
 
         // Assert that we have the correct page
         $this->assertGreaterThanOrEqual(1, $crawler->filter('td:contains("Intervjuskjema NTNU, 2015")')->count());
-
-        // Team user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/intervju/skjema');
-
-        // Assert that the page response status code is 403 access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testSchedule()
@@ -382,33 +294,10 @@ class InterviewControllerTest extends BaseWebTestCase
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h2:contains("Opptak")')->count());
-
-        // Team user who is not assigned the interview
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/intervju/settopp/6');
-
-        // Assert that the page response status code is 403 access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        // Assistant user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/intervju/settopp/6');
-
-        // Assert that the page response status code is 403 access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testWantTeamInterest()
     {
-        $rowsBeforeInt = $this->countTableRows('/kontrollpanel/intervju/conduct/6');
         $rowsBefore = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
 
         // Admin user
@@ -421,7 +310,6 @@ class InterviewControllerTest extends BaseWebTestCase
         $this->fillAndSubmitInterviewFormWithTeamInterest(self::createAdminClient(), $crawler, true);
 
         $rowsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
-        $rowsAfterInt = $this->countTableRows('/kontrollpanel/intervju/conduct/6');
         $this->assertEquals($rowsBefore + 2, $rowsAfter); // One new row in each table
     }
 

@@ -27,39 +27,6 @@ class TeamApplicationControllerTest extends BaseWebTestCase
 
         //Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h2:contains("Søknader Styret")')->count());
-
-        // USER
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $crawler = $client->request('GET', '/kontrollpanel/team/applications/1');
-
-        // Assert that the response is access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        // TEAM
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $crawler = $client->request('GET', '/kontrollpanel/team/applications/1');
-
-        // Assert that the response is access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        // TEAM user in team 1
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'userInTeam1',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $crawler = $client->request('GET', '/kontrollpanel/team/applications/1');
-
-        // Assert that the response is access denied
-        $this->assertNotEquals(403, $client->getResponse()->getStatusCode()); // Should be something better than notEquals
     }
 
     public function testShow()
@@ -79,39 +46,6 @@ class TeamApplicationControllerTest extends BaseWebTestCase
 
         //Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h3:contains("Søknad til Styret fra ")')->count());
-
-        // USER
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $crawler = $client->request('GET', '/kontrollpanel/team/application/1');
-
-        // Assert that the response is access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        // TEAM
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $crawler = $client->request('GET', '/kontrollpanel/team/application/1');
-
-        // Assert that the response is access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        // TEAM user in team 1
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'userInTeam1',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $crawler = $client->request('GET', '/kontrollpanel/team/application/1');
-
-        // Assert that the response is access denied
-        $this->assertNotEquals(403, $client->getResponse()->getStatusCode()); // Should be something better than notEquals
     }
 
     public function testAcceptApplication()

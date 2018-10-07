@@ -33,27 +33,6 @@ class SchoolAdminControllerTest extends BaseWebTestCase
 
         // Assert that the response is the correct redirect
         $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel/skoleadmin'));
-
-        // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'idaan',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/skoleadmin/opprett/1');
-
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        // USER
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/skoleadmin/opprett/1');
-
-        // Assert that the response is a redirect to /
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testUpdateSchool()
@@ -117,30 +96,6 @@ class SchoolAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(1, $crawler->filter('td:contains("Kari Johansen")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("kari@mail.com")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Internasjonal")')->count());
-
-        // Assert a specific 200 status code
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'idaan',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/skoleadmin/avdeling/2');
-
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        // USER
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/skoleadmin/avdeling/2');
-
-        // Assert that the response is a redirect to /
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testShowUsersByDepartment()
@@ -161,20 +116,6 @@ class SchoolAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(1, $crawler->filter('td:contains("Ravnå")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Myrvoll-Nilsen")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Rasdal Håland")')->count());
-
-        // Assert a specific 200 status code
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        // USER
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/skoleadmin/brukere');
-
-        // Assert that the response is a redirect to /
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testShowUsersByDepartmentSuperadmin()
@@ -203,20 +144,6 @@ class SchoolAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(1, $crawler->filter('a:contains("Gimse")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Per Olsen")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Per@mail.com")')->count());
-
-        // Assert a specific 200 status code
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        // USER
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/skoleadmin/avdeling/2');
-
-        // Assert that the response is a redirect to /
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testDelegateSchoolToUser()
@@ -295,17 +222,6 @@ class SchoolAdminControllerTest extends BaseWebTestCase
 
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        // USER
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/skoleadmin/brukere/avdeling/1');
-
-        // Assert that the response is a redirect to /
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testShowSpecificSchool()
@@ -348,20 +264,6 @@ class SchoolAdminControllerTest extends BaseWebTestCase
 
         // Assert that we have the correct amount of data
         $this->assertEquals(1, $crawler->filter('h2:contains("Gimse")')->count());
-
-        // Assert a specific 200 status code
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        // USER
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/skoleadmin');
-
-        // Assert that the response is a redirect to /
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testShow()
@@ -397,28 +299,5 @@ class SchoolAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(1, $crawler->filter('td:contains("Per Olsen")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Per@mail.com")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("99887722")')->count());
-
-        // Assert a specific 200 status code
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'assistent',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $client->request('GET', '/kontrollpanel/skoleadmin');
-
-        // Assert that the response is a redirect to /
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
-
-    /*
-    Requires JQuery interaction, Symfony2 does not support that
-
-    Phpunit was designed to test the PHP language, have to use another tool to test these.
-
-    public function testDeleteSchoolById() {}
-    public function testRemoveUserFromSchoolById() {]
-
-    */
 }

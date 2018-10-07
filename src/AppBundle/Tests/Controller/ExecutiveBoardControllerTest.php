@@ -62,27 +62,10 @@ class ExecutiveBoardControllerTest extends BaseWebTestCase
 
         // Assert that a user was added to the active table
         $this->assertEquals($numActiveRowsBefore + 1, $crawler->filter('#activeMemberTable tr')->count());
-
-        $client = $this->createAssistantClient();
-
-        $client->request('GET', '/kontrollpanel/hovedstyret/nytt_medlem/1');
-
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
-        $client = $this->createTeamMemberClient();
-
-        $client->request('GET', '/kontrollpanel/hovedstyret/nytt_medlem/1');
-
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testEditBoardMembership()
     {
-        // Team member has no access
-        $teamMemberClient = $this->createTeamMemberClient();
-        $teamMemberClient->request('GET', '/kontrollpanel/hovedstyret/rediger_medlem/1');
-        $this->assertEquals(403, $teamMemberClient->getResponse()->getStatusCode());
-
         // Select and populate form
         $crawler = $this->teamLeaderGoTo('/kontrollpanel/hovedstyret/rediger_medlem/1');
         $form = $crawler->selectButton('Lagre')->form();
@@ -120,12 +103,6 @@ class ExecutiveBoardControllerTest extends BaseWebTestCase
 
         // Check the count for the different variables
         $this->assertEquals(1, $crawler->filter('h2:contains("Hovedstyret")')->count());
-
-        $client = $this->createTeamMemberClient();
-
-        $client->request('GET', '/kontrollpanel/hovedstyret');
-
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     public function testShow()

@@ -80,13 +80,5 @@ class SubstituteControllerTest extends BaseWebTestCase
 
         // Assert that we have the correct page with the correct info (from the submitted form)
         $this->assertEquals(1, $crawler->filter('td:contains("95999999")')->count());
-
-        // Team user
-        $client = self::createTeamMemberClient();
-
-        $client->request('GET', '/kontrollpanel/vikar/rediger/4');
-
-        // Assert that the page response status code is 403 access denied
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 }

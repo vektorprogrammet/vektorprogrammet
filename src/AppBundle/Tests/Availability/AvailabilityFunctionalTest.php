@@ -228,7 +228,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
             array('/kontrollpanel/intervju/vis/4'),
             array('/kontrollpanel/intervju/skjema'),
             array('/kontrollpanel/intervju/skjema/1'),
-            array('/kontrollpanel/skole/timeplan/'), //TODO:??
+            array('/kontrollpanel/skole/timeplan/'),
 
             array('/kontrollpanel/teamadmin/stillinger'),
             array('/kontrollpanel/teamadmin/opprett/stilling'),
