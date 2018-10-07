@@ -11,8 +11,8 @@
             <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle text-center mt-2" data-toggle="dropdown" href="#" role="button"
                    aria-haspopup="true" aria-expanded="false">
-                    <img class="img-avatar profile-photo"
-                         src="{{ asset(app.user.picturePath | imagine_filter('profile_img_tiny')) }}"
+                    <img class="img-avatar profile-photo" width="75"
+                         src="{{ asset(app.user.picturePath | imagine_filter('profile_img_small')) }}"
                          alt="{{ app.user }}">
                     <div class="mt-2">{{ app.user }}</div>
                 </a>
