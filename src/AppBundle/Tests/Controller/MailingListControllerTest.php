@@ -30,7 +30,7 @@ class MailingListControllerTest extends BaseWebTestCase
         $userID = 23;
 
         $crawler = $this->goTo('/kontrollpanel/teamadmin/team/nytt_medlem/2', $client);
-        $form = $crawler->selectButton('Opprett')->form();
+        $form = $crawler->selectButton('Legg til')->form();
         $form['createTeamMembership[user]'] = $userID;
         $form['createTeamMembership[position]'] = 2;
         $form['createTeamMembership[startSemester]'] = 2;

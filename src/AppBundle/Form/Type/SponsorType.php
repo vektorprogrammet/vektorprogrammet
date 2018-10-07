@@ -7,20 +7,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class SponsorType extends AbstractType
 {
-    protected $id;
-    private $router;
-
-    public function __construct($id, $router)
-    {
-        $this->id = $id;
-        $this->router = $router;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->setAction($this->router->generate('sponsors_update', array('id' => $this->id)))
-            ->setMethod('POST')
             ->add('name', 'text', array(
                 'label' => 'Sponsornavn',
             ))
@@ -40,14 +29,9 @@ class SponsorType extends AbstractType
             ))
             ->add('logoImagePath', 'file', array(
                 'required' => false,
+                'error_bubbling' => true,
                 'data_class' => null,
                 'label' => 'Last opp ny logo',
-            ))
-            ->add('save', 'submit', array(
-                'label' => 'Lagre',
-            ))
-            ->add('delete', 'submit', array(
-                'label' => 'Slett',
             ));
     }
 

@@ -31,10 +31,7 @@ class EditSemesterType extends AbstractType
             ->add('infoMeeting', InfoMeetingType::class, [
                 'label' => 'Infomøte',
                 'required' => false
-            ])
-            ->add('save', 'submit', array(
-                'label' => 'Endre',
-            ));
+            ]);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
