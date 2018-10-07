@@ -34,6 +34,15 @@
 {% endblock %}
 
 {% block breadcrumb %}
+    <li class="breadcrumb-item">
+        {% if is_granted_team_leader() %}
+            <a href="{{ path('schooladmin_filter_schools_by_department', {'id': department.id}) }}">
+        {% else %}
+            <a href="{{ path('schooladmin_show') }}">
+        {% endif %}
+                Skoler
+            </a>
+    </li>
     <li class="breadcrumb-item active">Tildel skole</li>
 {% endblock %}
 

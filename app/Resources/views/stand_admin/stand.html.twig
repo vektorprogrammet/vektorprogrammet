@@ -16,6 +16,12 @@
         'parameterName': 'id',
         'currentSemester': semester
         } %}
+    {% else %}
+        {% include 'common/semester_dropdown.html.twig' with {
+            'pathForSemester': 'stand_by_semester',
+            'semesterParameterName': 'id',
+            'currentSemester': semester
+        } %}
     {% endif %}
 {% endblock %}
 

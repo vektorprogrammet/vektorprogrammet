@@ -10,8 +10,8 @@
             <th> E-post</th>
             <th> Linje</th>
             <th> Avdeling</th>
-            {% if is_granted_team_leader() %}
-                <th>Send aktiveringsmelding</th>
+            {% if is_granted_admin() %}
+                <th>Aktivert</th>
             {% endif %}
         </tr>
         </thead>
@@ -49,17 +49,19 @@
                 <td> {{ u.fieldOfStudy }} </td>
                 <td> {{ u.department }} </td>
 
-                {% if u.password is null and is_granted_team_leader() %}
-                    <td>
-                        <form method="POST"
-                              onsubmit="return confirm('Send aktiveringslenke til {{ u }}?')"
-                              action="{{ path('send_user_activation_mail', {id: u.id}) }}">
-                            <button type="submit"
-                                    class="btn btn-link p-0">{{ u.newUserCode is null ? 'Send aktivering' : 'Send på nytt' }}</button>
-                        </form>
-                    </td>
-                {% else %}
-                    <td><span class="text-success">Aktivert</span></td>
+                {% if is_granted_team_leader() %}
+                    {% if u.password is null %}
+                        <td>
+                            <form method="POST"
+                                  onsubmit="return confirm('Send aktiveringslenke til {{ u }}?')"
+                                  action="{{ path('send_user_activation_mail', {id: u.id}) }}">
+                                <button type="submit"
+                                        class="btn btn-link p-0">{{ u.newUserCode is null ? 'Send aktivering' : 'Send på nytt' }}</button>
+                            </form>
+                        </td>
+                    {% else %}
+                        <td><span class="text-success">Aktivert</span></td>
+                    {% endif %}
                 {% endif %}
             </tr>
         {% endfor %}

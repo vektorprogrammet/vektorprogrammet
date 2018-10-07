@@ -1,78 +1,82 @@
 {% extends 'adminBase.html.twig' %}
 
 {% set user = application.user %}
-{% block body %}
-    <h2 class="text-center">Søknad for {{ user }} {{ application.semester }}</h2>
-    <div class="row">
-        <div class="col-12 col-md-6">
-            <table width="100%">
-                <tr>
-                    <td><b><b>Navn</b></b></td>
-                    <td>{{ user }}</td>
-                </tr>
-                <tr>
-                    <td><b>E-post</b></td>
-                    <td>{{ user.email }}</td>
-                </tr>
-                <tr>
-                    <td><b>Telefon</b></td>
-                    <td>{{ user.phone }}</td>
-                </tr>
-                <tr>
-                    <td><b>Linje</b></td>
-                    <td>{{ user.fieldOfStudy.name }} ({{ user.fieldOfStudy.shortName }})</td>
-                </tr>
-                <tr>
-                    <td><b>År</b></td>
-                    <td>{{ application.yearOfStudy }}</td>
-                </tr>
-                <tr>
-                    <td><b>Kjønn</b></td>
-                    <td>{{ user.gender == 1 ? 'Dame' : 'Mann' }}</td>
-                </tr>
-                <tr>
-                    <td><b>Dobbel stilling</b></td>
-                    <td>{{ application.doublePosition ? 'Ja' : 'Nei' }}</td>
-                </tr>
-                <tr>
-                    <td><b>Ønsket bolk</b></td>
-                    <td>{{ application.preferredGroup ? application.preferredGroup : 'Ingen' }}</td>
-                </tr>
-                <tr>
-                    <td><b>Ønsket undervisningsspråk</b></td>
-                    <td>{{ application.language}}</td>
-                </tr>
-                {% if application.preferredSchool is not null %}  <tr>
-                    <td><b>Ønsket skole</b></td>
-                    <td>{{ application.preferredSchool}}</td>
-                </tr>
-                {% endif %}
-            </table>
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('applications_show_existing_by_semester', {'id': application.semester.id}) }}">Tidligere assistenter</a>
+    </li>
+    <li class="breadcrumb-item active">{{ user }}</li>
+{% endblock %}
+
+{% block body %}
+    <h2 class="text-center my-5">Søknad for {{ user }} {{ application.semester }}</h2>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-user-o"></i> Søker {{ user }}</div>
+                <div class="card-body table-responsive">
+                    {% include 'interview/interviewee_table.html.twig' %}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fa fa-calendar-check-o"></i> Tilgjengelige dager</div>
+                <div class="card-body table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td><b>Mandag</b></td>
+                            <td>{{ application.monday ? "Bra" : "Ikke" }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Tirsdag</b></td>
+                            <td>{{ application.tuesday ? "Bra" : "Ikke" }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Onsdag</b></td>
+                            <td>{{ application.wednesday ? "Bra" : "Ikke" }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Torsdag</b></td>
+                            <td>{{ application.thursday ? "Bra" : "Ikke" }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Fredag</b></td>
+                            <td>{{ application.friday ? "Bra" : "Ikke" }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="col-12 col-md-6">
-            <table width="100%">
-                <tr>
-                    <td><b>Mandag</b></td>
-                    <td>{{ application.monday ? "Bra" : "Ikke" }}</td>
-                </tr>
-                <tr>
-                    <td><b>Tirsdag</b></td>
-                    <td>{{ application.tuesday ? "Bra" : "Ikke" }}</td>
-                </tr>
-                <tr>
-                    <td><b>Onsdag</b></td>
-                    <td>{{ application.wednesday ? "Bra" : "Ikke" }}</td>
-                </tr>
-                <tr>
-                    <td><b>Torsdag</b></td>
-                    <td>{{ application.thursday ? "Bra" : "Ikke" }}</td>
-                </tr>
-                <tr>
-                    <td><b>Fredag</b></td>
-                    <td>{{ application.friday ? "Bra" : "Ikke" }}</td>
-                </tr>
-            </table>
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-align-justify"></i> Søknad</div>
+                <div class="card-body table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td><b>Kjønn</b></td>
+                            <td>{{ user.gender == 1 ? 'Dame' : 'Mann' }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Dobbel stilling</b></td>
+                            <td>{{ application.doublePosition ? 'Ja' : 'Nei' }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Ønsket bolk</b></td>
+                            <td>{{ application.preferredGroup ? application.preferredGroup : 'Ingen' }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Ønsket undervisningsspråk</b></td>
+                            <td>{{ application.language }}</td>
+                        </tr>
+                        {% if application.preferredSchool is not null %}
+                            <tr>
+                                <td><b>Ønsket skole</b></td>
+                                <td>{{ application.preferredSchool }}</td>
+                            </tr>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

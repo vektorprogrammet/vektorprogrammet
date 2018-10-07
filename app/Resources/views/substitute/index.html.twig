@@ -40,11 +40,19 @@
 
 
 {% block breadcrumb_menu %}
-    {% include 'common/department_semester_dropdowns.html.twig' with {
-        'path': 'substitute_show_by_semester',
-        'parameterName': 'semester',
-        'currentSemester': semester
-    } %}
+    {% if is_granted_team_leader() %}
+        {% include 'common/department_semester_dropdowns.html.twig' with {
+            'path': 'substitute_show_by_semester',
+            'parameterName': 'semester',
+            'currentSemester': semester
+        } %}
+    {% else %}
+        {% include 'common/semester_dropdown.html.twig' with {
+            'pathForSemester': 'substitute_show_by_semester',
+            'semesterParameterName': 'semester',
+            'currentSemester': semester
+        } %}
+    {% endif %}
 {% endblock %}
 
 
