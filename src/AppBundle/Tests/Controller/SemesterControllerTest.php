@@ -79,7 +79,7 @@ class SemesterControllerTest extends BaseWebTestCase
         $link = $crawler->selectLink('Rediger')->eq(1)->link();
         $crawler = $client->click($link);
 
-        $form = $crawler->selectButton('Endre')->form();
+        $form = $crawler->selectButton('Lagre')->form();
 
         // Change the value of a field
         $form['createSemester[admissionStartDate]'] = '04.08.2015 10:30 ';
