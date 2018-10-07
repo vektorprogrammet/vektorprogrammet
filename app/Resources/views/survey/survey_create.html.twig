@@ -25,38 +25,42 @@
 {% block javascripts %}
     <script src="{{ asset_with_version('js/question_repeater.js') }}"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", QuestionManager.onReady);
+      document.addEventListener('DOMContentLoaded', QuestionManager.onReady);
     </script>
 {% endblock %}
 
 {% block body %}
     {{ form_start(form) }}
-    <div class="card">
-        <div class="card-header"><i class="fa fa-comment-o"></i> Spørreundersøkelse</div>
-        <div class="card-body">
-            {{ form_row(form.name) }}
-            {{ form_row(form.semester ) }}
-            {{ form_row(form.showCustomFinishPage ) }}
-            {{ form_row(form.confidential) }}
-            {{ form_row(form.finishPageContent ) }}
+    <div class="row">
+        <div class="col-12 col-xl-10 col-xxl-8 col-xxxl-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-comment-o"></i> Spørreundersøkelse</div>
+                <div class="card-body">
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.semester ) }}
+                    {{ form_row(form.showCustomFinishPage ) }}
+                    {{ form_row(form.confidential) }}
+                    {{ form_row(form.finishPageContent ) }}
+                </div>
+            </div>
+
+            {% include 'questions/repeatable_question.html.twig' with {'questions': form.surveyQuestions} %}
+
+            <div class="card">
+                <div class="card-body">
+                    <p>
+                        <a href="#" id="addQuestionButton" class="button tiny">
+                            <i class="fa fa-plus"></i> Nytt Spørsmål
+                        </a>
+                    </p>
+
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                </div>
+            </div>
+            <div class="hide">
+                {{ form_rest(form) }}
+            </div>
         </div>
-    </div>
-
-    {% include 'questions/repeatable_question.html.twig' with {'questions': form.surveyQuestions} %}
-
-    <div class="card">
-        <div class="card-body">
-            <p>
-                <a href="#" id="addQuestionButton" class="button tiny">
-                    <i class="fa fa-plus"></i> Nytt Spørsmål
-                </a>
-            </p>
-
-            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
-        </div>
-    </div>
-    <div class="hide">
-        {{ form_rest(form) }}
     </div>
     {{ form_end(form) }}
 {% endblock %}
