@@ -295,7 +295,7 @@ class InterviewManager
     public function getDefaultScheduleFormData(Interview $interview): array
     {
         $previousScheduledInterview = $this->em->getRepository('AppBundle:Interview')
-                                               ->findLastScheduledByUserInSemester($interview->getInterviewer(), $interview->getApplication()->getSemester());
+            ->findLastScheduledByUserInAdmissionPeriod($interview->getInterviewer(), $interview->getApplication()->getAdmissionPeriod());
         $room = null;
         $campus = null;
         $mapLink = null;

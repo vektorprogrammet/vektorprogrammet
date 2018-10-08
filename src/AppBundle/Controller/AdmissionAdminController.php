@@ -33,13 +33,20 @@ class AdmissionAdminController extends BaseController
         $semester = $this->getSemesterOrThrow404();
         $department = $this->getDepartmentOrThrow404();
 
-        $admissionPeriod = $department->getCurrentOrLatestAdmissionPeriod();
+        $admissionPeriod = $this->getDoctrine()
+                ->getRepository('AppBundle:AdmissionPeriod')
+                ->findOneByDepartmentAndSemester($department, $semester);
 
         if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
             throw $this->createAccessDeniedException();
         }
 
-        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findNewApplicationsByAdmissionPeriod($admissionPeriod);
+        $applications = [];
+        if ($admissionPeriod !== null) {
+            $applications = $this->getDoctrine()
+                ->getRepository('AppBundle:Application')
+                ->findNewApplicationsByAdmissionPeriod($admissionPeriod);
+        }
 
         return $this->render('admission_admin/new_applications_table.html.twig', array(
             'applications' => $applications,

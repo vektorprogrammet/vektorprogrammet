@@ -36,20 +36,19 @@ class AssistantControllerTest extends BaseWebTestCase
     public function testSameEmailCanBeUsedInMultipleDepartments()
     {
         $firstDepartmentId = 1;
-        $firstSemesterId = 2;
         $secondDepartmentId = 4;
         $secondDepartmentFieldOfStudyId = 5;
-        $secondSemesterId = 3;
-        $path = '/kontrollpanel/opptak';
+        $firstDepartmentPath = "/kontrollpanel/opptak?department=$firstDepartmentId&semester=1";
+        $secondDepartmentPath = "/kontrollpanel/opptak?department=$secondDepartmentId&semester=1";
 
-        $applicationsBeforeFirstDepartment = $this->countTableRows("$path/$firstSemesterId");
-        $applicationsBeforeSecondDepartment = $this->countTableRows("$path/$secondSemesterId");
+        $applicationsBeforeFirstDepartment = $this->countTableRows($firstDepartmentPath);
+        $applicationsBeforeSecondDepartment = $this->countTableRows($secondDepartmentPath);
 
         $this->createAndSubmitForm($firstDepartmentId);
         $this->createAndSubmitForm($secondDepartmentId, $secondDepartmentFieldOfStudyId);
 
-        $applicationsAfterFirstDepartment = $this->countTableRows("$path/$firstSemesterId");
-        $applicationsAfterSecondDepartment = $this->countTableRows("$path/$secondSemesterId");
+        $applicationsAfterFirstDepartment = $this->countTableRows($firstDepartmentPath);
+        $applicationsAfterSecondDepartment = $this->countTableRows($secondDepartmentPath);
 
         $this->assertEquals($applicationsBeforeFirstDepartment + 1, $applicationsAfterFirstDepartment);
         $this->assertEquals($applicationsBeforeSecondDepartment + 1, $applicationsAfterSecondDepartment);

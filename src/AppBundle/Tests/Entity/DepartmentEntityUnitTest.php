@@ -196,34 +196,6 @@ class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testRemoveAdmissionPeriod()
-    {
-
-        // new entity
-        $department = new Department();
-
-        $admissionPeriod1 = new AdmissionPeriod();
-        $admissionPeriod2 = new AdmissionPeriod();
-        $admissionPeriod3 = new AdmissionPeriod();
-
-        // Use the addSemester method
-        $department->addAdmissionPeriod($admissionPeriod1);
-        $department->addAdmissionPeriod($admissionPeriod2);
-        $department->addAdmissionPeriod($admissionPeriod3);
-
-        // Remove $semester1 from department
-        $department->removeAdmissionPeriod($admissionPeriod1);
-
-        // Semesters are stored in an array
-        $admissionPeriods = $department->getAdmissionPeriods();
-
-        // Loop through the array
-        foreach ($admissionPeriods as $admissionPeriod) {
-            // Assert the result
-            $this->assertNotEquals($admissionPeriod1, $admissionPeriod);
-        }
-    }
-
     // Check whether the addTeam function is working correctly
     public function testAddTeam()
     {

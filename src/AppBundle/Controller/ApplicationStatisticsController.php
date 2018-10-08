@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 class ApplicationStatisticsController extends BaseController
 {
     /**
@@ -11,13 +13,17 @@ class ApplicationStatisticsController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404();
         $semester = $this->getSemesterOrThrow404();
+        $admissionPeriod = $this->getDoctrine()
+            ->getRepository('AppBundle:AdmissionPeriod')
+            ->findOneByDepartmentAndSemester($department, $semester);
+
         $assistantHistoryData = $this->get('assistant_history.data');
         $assistantHistoryData->setSemester($semester)->setDepartment($department);
 
-        $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
-            ->findOneByDepartmentAndSemester($department, $semester);
         $applicationData = $this->get('application.data');
-        $applicationData->setAdmissionPeriod($admissionPeriod);
+        if ($admissionPeriod !== null) {
+            $applicationData->setAdmissionPeriod($admissionPeriod);
+        }
 
         return $this->render('statistics/statistics.html.twig', array(
             'applicationData' => $applicationData,

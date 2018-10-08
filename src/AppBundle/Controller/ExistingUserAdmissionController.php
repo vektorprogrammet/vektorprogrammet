@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationExistingUserType;
+use Doctrine\ORM\NoResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -50,7 +51,7 @@ class ExistingUserAdmissionController extends BaseController
             return $this->redirectToRoute('my_page');
         }
 
-        $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($user->getDepartment());
+        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
 
         return $this->render(':admission:existingUser.html.twig', array(
             'form' => $form->createView(),

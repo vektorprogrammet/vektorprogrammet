@@ -8,7 +8,7 @@ class TeamInterestControllerTest extends BaseWebTestCase
 {
     public function testShowTeamInterestForm()
     {
-        $crawler = $this->teamLeaderGoTo('/kontrollpanel/opptakadmin/teaminteresse/2');
+        $crawler = $this->teamLeaderGoTo('/kontrollpanel/opptakadmin/teaminteresse?department=1&semester=1');
         $rowsBefore = $crawler->filter('tr')->count();
 
         $client = $this->createAnonymousClient();
@@ -20,7 +20,7 @@ class TeamInterestControllerTest extends BaseWebTestCase
         $this->createAnonymousClient()->submit($form);
         $this->assertEquals(302, $client->getResponse()->getStatusCode()); // Assert request was redirected
 
-        $crawler = $this->teamLeaderGoTo('/kontrollpanel/opptakadmin/teaminteresse/2');
+        $crawler = $this->teamLeaderGoTo('/kontrollpanel/opptakadmin/teaminteresse?department=1&semester=1');
         $rowsAfter = $crawler->filter('tr')->count();
         $this->assertEquals($rowsBefore + 2, $rowsAfter);
     }

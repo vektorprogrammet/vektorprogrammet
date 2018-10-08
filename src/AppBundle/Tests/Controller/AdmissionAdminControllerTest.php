@@ -112,7 +112,6 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
     public function testShowApplicationsByDepartment()
     {
-
         // Superadmin user
         $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'superadmin',
@@ -120,7 +119,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         ));
 
         // New applications
-        $crawler = $client->request('GET', '/kontrollpanel/opptak/nye/2');
+        $crawler = $client->request('GET', '/kontrollpanel/opptak/nye?department=1&semester=1');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -134,7 +133,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(2, $crawler->filter('td>a:contains("Fordel")')->count());
 
         // Assigned to interview applications
-        $crawler = $client->request('GET', '/kontrollpanel/opptak/fordelt/2');
+        $crawler = $client->request('GET', '/kontrollpanel/opptak/fordelt?department=1&semester=1');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -148,7 +147,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(2, $crawler->filter('td>a:contains("Intervju")')->count());
 
         // Interviewed applications
-        $crawler = $client->request('GET', '/kontrollpanel/opptak/intervjuet/2');
+        $crawler = $client->request('GET', '/kontrollpanel/opptak/intervjuet?department=1&semester=1');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -168,7 +167,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         ));
 
         // New applications
-        $crawler = $client->request('GET', '/kontrollpanel/opptak/nye/2');
+        $crawler = $client->request('GET', '/kontrollpanel/opptak/nye?department=1&semester=1');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -181,7 +180,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(2, $crawler->filter('td>a:contains("Fordel")')->count());
 
         // Assigned to interview applications
-        $crawler = $client->request('GET', '/kontrollpanel/opptak/fordelt/2');
+        $crawler = $client->request('GET', '/kontrollpanel/opptak/fordelt?department=1&semester=1');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -195,7 +194,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->assertGreaterThan(1, $crawler->filter('td>a:contains("Intervju")')->count());
 
         // Interviewed applications
-        $crawler = $client->request('GET', '/kontrollpanel/opptak/intervjuet/2');
+        $crawler = $client->request('GET', '/kontrollpanel/opptak/intervjuet?department=1&semester=1');
 
         // Assert that the page response status code is 200
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -214,10 +213,10 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
             'PHP_AUTH_PW' => '1234',
         ));
 
-        $client->request('GET', '/kontrollpanel/opptak/1');
+        $client->request('GET', '/kontrollpanel/opptak?department=1&semester=1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        $client->request('GET', '/kontrollpanel/opptak/4');
+        $client->request('GET', '/kontrollpanel/opptak?department=2&semester=1');
     }
 
     public function testCancelInterview()

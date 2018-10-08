@@ -431,7 +431,7 @@ class InterviewControllerTest extends BaseWebTestCase
 
     public function testWantTeamInterest()
     {
-        $rowsBefore = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
+        $rowsBefore = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse?department=1&semester=1');
 
         // Admin user
 
@@ -442,14 +442,14 @@ class InterviewControllerTest extends BaseWebTestCase
 
         $this->fillAndSubmitInterviewFormWithTeamInterest(self::createAdminClient(), $crawler, true);
 
-        $rowsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
+        $rowsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse?department=1&semester=1');
 
         $this->assertEquals($rowsBefore + 2, $rowsAfter); // One new row in each table
     }
 
     public function testNotWantTeamInterest()
     {
-        $rowsBefore = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
+        $rowsBefore = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse?department=1&semester=1');
 
         // Admin user
 
@@ -460,7 +460,7 @@ class InterviewControllerTest extends BaseWebTestCase
 
         $this->fillAndSubmitInterviewFormWithTeamInterest(self::createAdminClient(), $crawler, false);
 
-        $rowsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse/2');
+        $rowsAfter = $this->countTableRows('/kontrollpanel/opptakadmin/teaminteresse?department=1&semester=1');
 
         $this->assertEquals($rowsBefore, $rowsAfter);
     }
@@ -468,7 +468,7 @@ class InterviewControllerTest extends BaseWebTestCase
     public function testUpdateStatus()
     {
         $client = $this->createAdminClient();
-        $crawler = $this->goTo('/kontrollpanel/opptak/fordelt/2', $client);
+        $crawler = $this->goTo('/kontrollpanel/opptak/fordelt?department=1&semester=1', $client);
         $before = $crawler->filter('td:contains("Ikke satt opp")')->count();
 
         $crawler = $this->goTo("/kontrollpanel/intervju/settopp/6", $client);
@@ -480,7 +480,7 @@ class InterviewControllerTest extends BaseWebTestCase
         $client->submit($form);
         $client->followRedirect();
 
-        $crawler = $this->goTo('/kontrollpanel/opptak/fordelt/2', $client);
+        $crawler = $this->goTo('/kontrollpanel/opptak/fordelt?department=1&semester=1', $client);
         $after = $crawler->filter('td:contains("Ikke satt opp")')->count();
         $this->assertEquals($before - 1, $after);
     }

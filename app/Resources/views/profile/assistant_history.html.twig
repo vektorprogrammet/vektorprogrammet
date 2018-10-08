@@ -13,20 +13,20 @@
                     </tr>
                     </thead>
                     {% for ah in assistantHistory %}
-                        {% if as.semester is not null and as.school is not null %}
+                        {% if ah.semester is not null and ah.school is not null %}
                             <tr>
                                 <td>
-                                    {% if as.school is null %}
+                                    {% if ah.school is null %}
                                         skolen har blitt slettet
                                     {% else %}
-                                        {{ as.getSchool.getName }}
+                                        {{ ah.getSchool.getName }}
                                     {% endif %}
                                 </td>
                                 <td>
-                                    {% if as.semester is null %}
+                                    {% if ah.semester is null %}
                                         semesteret har blitt slettet
                                     {% else %}
-                                        {{ as.getSemester.getName }}
+                                        {{ ah.getSemester.getName }}
                                     {% endif %}
                                 </td>
                             </tr>

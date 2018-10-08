@@ -364,7 +364,7 @@ class Department
     }
 
     /**
-     * Add semesters.
+     * Add admission periods.
      *
      * @param AdmissionPeriod $admissionPeriod
      *
@@ -378,17 +378,7 @@ class Department
     }
 
     /**
-     * Remove admission periods.
-     *
-     * @param AdmissionPeriod $admissionPeriod
-     */
-    public function removeAdmissionPeriod(AdmissionPeriod $admissionPeriod)
-    {
-        $this->admissionPeriods->removeElement($admissionPeriod);
-    }
-
-    /**
-     * Get semesters.
+     * Get admission periods.
      *
      * @return ArrayCollection
      */

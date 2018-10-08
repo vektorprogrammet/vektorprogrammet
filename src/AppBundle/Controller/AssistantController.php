@@ -125,8 +125,8 @@ class AssistantController extends BaseController
                     return $this->redirectToRoute('admission_existing_user');
                 }
 
-                $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
-                $application->setSemester($semester);
+                $admissionPeriod = $em->getRepository('AppBundle:AdmissionPeriod')->findOneWithActiveAdmissionByDepartment($department);
+                $application->setAdmissionPeriod($admissionPeriod);
                 $em->persist($application);
                 $em->flush();
 
