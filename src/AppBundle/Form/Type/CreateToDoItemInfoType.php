@@ -52,7 +52,7 @@ class CreateToDoItemInfoType extends AbstractType
                 'empty_value' => 'Alle departments',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('d')
-                        ->orderBy('d.name', 'DESC');
+                        ->orderBy('d.city', 'ASC');
                 },
                 'required'=>false,
             ))

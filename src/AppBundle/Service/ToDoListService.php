@@ -3,7 +3,6 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\Department;
-use AppBundle\Entity\Repository\SemesterRepository;
 use AppBundle\Entity\Semester;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\ToDoItem;
@@ -11,7 +10,6 @@ use AppBundle\Entity\ToDoMandatory;
 use AppBundle\Entity\ToDoDeadline;
 use AppBundle\Entity\ToDoCompleted;
 use AppBundle\Model\ToDoItemInfo;
-use Symfony\Component\Validator\Constraints\Date;
 
 class ToDoListService
 {
@@ -114,15 +112,16 @@ class ToDoListService
      * @return array
      *
      */
-    public function getIncompletedToDoItems(array $toDoItems, Semester $semester)
+    public function getIncompletedToDoItems(array $toDoItems, Semester $semester, Department $department)
     {
-        $items = array_filter($toDoItems, function (ToDoItem $a) use ($semester) {
-            return !($a->isCompletedInSemester($semester));
+        $items = array_filter($toDoItems, function (ToDoItem $a) use ($semester, $department) {
+            return !($a->isCompletedInSemesterByDepartment($semester,$department));
         });
         return $items;
     }
 
-    public function getDeletedToDoItems(array $toDoItems){
+    public function getDeletedToDoItems(array $toDoItems)
+    {
         $today = new \DateTime();
         $items = array_filter($toDoItems, function (ToDoItem $a) use ($today) {
             return !(($a->getDeletedAt() == null) or ($a->getDeletedAt() > $today));
@@ -170,7 +169,8 @@ class ToDoListService
         $this->em->flush();
     }
 
-    public function completedItem(ToDoItem $item, Semester $semester, Department $department){
+    public function completedItem(ToDoItem $item, Semester $semester, Department $department)
+    {
         $completedItem = new ToDoCompleted();
         $completedItem->setToDoItem($item);
         $completedItem->setSemester($semester);
@@ -181,11 +181,37 @@ class ToDoListService
         $this->em->flush();
     }
 
-    public function deleteToDoItem(ToDoItem $item){
+    public function deleteToDoItem(ToDoItem $item)
+    {
         $item->setDeletedAt(new \DateTime());
         $this->em->persist($item);
         $this->em->flush();
     }
+
+    public function toggleCompletedItem(ToDoItem $item, Semester $semester, Department $department)
+    {
+        $completedItem = $this->em->getRepository('AppBundle:ToDoCompleted')->findOneBy(array(
+                'semester' => $semester,
+                'department' => $department,
+                'toDoItem' => $item,
+            )
+        );
+        if ($completedItem != null) {
+            $this->em->remove($completedItem);
+            $this->em->flush();
+            return true;
+        } else {
+            $completedItem = new ToDoCompleted();
+            $completedItem->setCompletedAt(new \DateTime());
+            $completedItem->setSemester($semester);
+            $completedItem->setDepartment($department);
+            $completedItem->setToDoItem($item);
+            $this->em->persist($completedItem);
+            $this->em->flush();
+            return true;
+        }
+    }
+
 
 
 

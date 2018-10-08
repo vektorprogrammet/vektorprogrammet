@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\CreateToDoItemInfoType;
 use AppBundle\Model\ToDoItemInfo;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -9,6 +11,7 @@ use AppBundle\Service\ToDoListService;
 use AppBundle\Entity\ToDoItem;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ToDoListController extends Controller
 {
@@ -25,6 +28,7 @@ class ToDoListController extends Controller
         $em = $this->getDoctrine()->getManager();
         $department = $this->getUser()->getDepartment();
         $semester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
+        //elif user = superadmin, Dropdownmenu
         $allToDoItems = $repository->findToDoListItemsBySemester($semester);
         $mandatoryToDoItems = $toDoListService->getMandatoryToDoItems($allToDoItems);
         //$toDoItemsWithDeadLines = $toDoListService->getToDoItemsWithDeadlines($allToDoItems);
@@ -34,7 +38,7 @@ class ToDoListController extends Controller
         $completedToDoListItems = $repository->findCompletedToDoListItems($semester);
         //$toDoListService->getCompletedToDoItems($allToDoItems);
 
-        $incompletedToDoItems = $toDoListService->getIncompletedToDoItems($allToDoItems, $semester);
+        $incompletedToDoItems = $toDoListService->getIncompletedToDoItems($allToDoItems, $semester, $department);
         $toDoShortDeadLines = $toDoListService->getToDoItemsWithShortDeadline($incompletedToDoItems);
         $toDoMandaoryNoDeadLine = $toDoListService->getMandatoryToDoItemsWithInsignificantDeadline($incompletedToDoItems);
         $toDoNonMandatoryNoDeadline = $toDoListService->getNonMandatoryToDoItemsWithInsignificantDeadline($incompletedToDoItems);
@@ -56,6 +60,7 @@ class ToDoListController extends Controller
             'toDoWithDeadline' => $toDoItemsWithDeadLines,
             'completedToDoListItems' => $completedToDoListItems,
             'department' => $department,
+            'semester' => $semester,
             'shortDeadlines' => $toDoShortDeadLines,
             'nonMandatoryToDoItems' => $toDoNonMandatoryNoDeadline,
             'deletedItems' => $deletedItems,
@@ -86,5 +91,38 @@ class ToDoListController extends Controller
         return $this->render('todo_list/create_todo_element.html.twig', array(
             'form' => $form->createView(),
         ));
+    }
+
+    //Maybe move to service?
+    /**
+     * Set/unset completed status on the given item.
+     * This method is intended to be called by an Ajax request.
+     *
+     * @param ToDoItem $item
+     *
+     * @return JsonResponse
+     */
+    public function completedAction(ToDoItem $item, Semester $semester, Department $department)
+    {
+        $toDoListService = $this->get('app.to_do_list_service');
+        try {
+            $toDoListService->completedItem($item, $semester, $department);
+            if ($item->isCompletedInSemesterByDepartment($semester, $department)) {
+                $toDoListService->toggleCompletedItem($item, $semester, $department);
+                $response['toDoCompleted'] = false;
+            } else {
+                $toDoListService->toggleCompletedItem($item, $semester, $department);
+                $response['toDoCompleted'] = true;
+            }
+            $response['success'] = true;
+
+        } catch (\Exception $e) {
+            $response = [
+                'success' => false,
+                'code' => $e->getCode(),
+                'cause' => 'Det oppstod en feil.',
+            ];
+        }
+        return new JsonResponse($response);
     }
 }

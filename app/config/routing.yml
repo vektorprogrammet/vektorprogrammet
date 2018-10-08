@@ -70,13 +70,13 @@ control_panel:
 ##########################################
 
 to_do_list:
- path: /sjekkliste
+ path: /kontrollpanel/sjekkliste
  defaults: { _controller: AppBundle:ToDoList:show }
  methods: [GET]
 
 
 create_toDoList:
-  path: /sjekkliste/opprett
+  path: /kontrollpanel/sjekkliste/opprett
   defaults: {_controller: AppBundle:ToDoList:createToDo, id: null }
   methods: [GET, POST]
   requirements:

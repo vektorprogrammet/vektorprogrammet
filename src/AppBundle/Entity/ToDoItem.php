@@ -359,12 +359,12 @@ class ToDoItem
     /**
      * @return bool
      */
-    public function isCompletedInSemester(Semester $semester)
+    public function isCompletedInSemesterByDepartment(Semester $semester, Department $department)
     {
         if (empty($this->getToDoCompleted())) {
             return false;
         }
         $completes = $this->getToDoCompleted();
-        return ($completes[0]->getSemester()->getId() == $semester->getId());
+        return (($completes[0]->getSemester()->getId() == $semester->getId())) and ($completes[0]->getDepartment()->getId() == $department->getId());
     }
 }

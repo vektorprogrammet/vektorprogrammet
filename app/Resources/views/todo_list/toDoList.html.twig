@@ -14,6 +14,9 @@
                         <h5>* {{ item.getTitle() }}</h5>
                         <p>{{ item.getDescription() }}</p>
                         <p>Deadline (SHORT): {{ item.getToDoDeadlines()[0].getDeadDate.format('d/m-Y') }}</p>
+                        <button class="btn btn-success cta-link" onclick="">
+                        Completed
+                        </button>
                     {% endfor %}
 
                     <h2>Mandatory;</h2>
