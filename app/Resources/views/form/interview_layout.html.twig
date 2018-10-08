@@ -1,16 +1,16 @@
 {# Form row #}
 {% use 'form/components/form_row_with_help_layout.html.twig' %}
 
-{%- block choice_widget_expanded -%}
-    <ul {{ block('widget_container_attributes') }} class="no-bullet alternatives{% if not valid %} error{% endif %}">
-        {%- for child in form %}
-            <li>
-                {{- form_widget(child) -}}
-                {{- form_label(child) -}}
-            </li>
-        {% endfor -%}
-    </ul>
-{%- endblock choice_widget_expanded -%}
+{#{%- block choice_widget_expanded -%}#}
+    {#<ul {{ block('widget_container_attributes') }} class="no-bullet alternatives{% if not valid %} error{% endif %}">#}
+        {#{%- for child in form %}#}
+            {#<li>#}
+                {#{{- form_widget(child) -}}#}
+                {#{{- form_label(child) -}}#}
+            {#</li>#}
+        {#{% endfor -%}#}
+    {#</ul>#}
+{#{%- endblock choice_widget_expanded -%}#}
 
 {# Errors #}
 {% use 'form/components/error_layout.html.twig' %}

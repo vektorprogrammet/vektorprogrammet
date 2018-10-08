@@ -1,12 +1,13 @@
 <div class="row">
-    <div class="small-12 columns">
+    <div class="col-12">
         <div id="allApplicantsList" class="slide-group">
             {% if applications|length %}
-                <h5 class="">Alle intervjuer | Antall: {{ applications|length }}</h5>
-            {% include 'admission_admin/assigned_table.html.twig' with {'applicants': applications} %}
+                {% set title = 'Alle intervjuer | Antall: ' ~ applications|length %}
+
+                {% include 'admission_admin/assigned_table.html.twig' with {'applicants': applications, 'title': title} %}
             {% endif %}
         </div>
-        <button id="allApplicantsButton" class="button tiny default radius">Vis alle intervjuer
+        <button id="allApplicantsButton" class="btn btn-outline-secondary">Vis alle intervjuer
             ({{ applications|length }})
             <i class="fa fa-caret-down"></i></button>
     </div>

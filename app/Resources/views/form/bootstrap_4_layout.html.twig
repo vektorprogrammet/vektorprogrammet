@@ -17,7 +17,7 @@
 {%- endblock widget_attributes -%}
 
 {% block button_widget -%}
-    {%- set attr = attr|merge({class: (attr.class|default('btn-secondary') ~ ' btn')|trim}) -%}
+    {%- set attr = attr|merge({class: (attr.class|default('btn-primary') ~ ' btn')|trim}) -%}
     {{- parent() -}}
 {%- endblock button_widget %}
 
@@ -70,7 +70,7 @@
 {# Labels #}
 
 {% block form_label -%}
-    {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' form-control-label')|trim}) -%}
+    {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' form-control-label mb-0')|trim}) -%}
     {{- parent() -}}
 {%- endblock form_label %}
 

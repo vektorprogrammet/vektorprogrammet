@@ -1,6 +1,15 @@
-{% extends 'base.html.twig' %}
+{% extends parent_template %}
 
 {% block title %}Utlegg{% endblock %}
+
+{% if parent_template == 'adminBase.html.twig' %}
+    {% block breadcrumb %}
+        <li class="breadcrumb-item"><a href="{{ path('receipts_show') }}">Utlegg</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('receipts_show_individual', {'user': receipt.user.id}) }}">{{ receipt.user }}</a></li>
+        <li class="breadcrumb-item active">{{ receipt.visualId }}</li>
+    {% endblock %}
+{% endif %}
+
 
 {% block body %}
     <div class="container">

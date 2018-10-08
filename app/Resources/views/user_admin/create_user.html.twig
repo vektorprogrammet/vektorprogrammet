@@ -4,83 +4,52 @@
     Opprett bruker
 {% endblock %}
 
-{% form_theme form 'form/foundation_layout.html.twig' %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('useradmin_filter_users_by_department', {'id': department.id}) }}">Brukere</a>
+    </li>
+    <li class="breadcrumb-item active">Opprett</li>
+{% endblock %}
+
 
 {% block body %}
-    <p></p>
+    <div class="card">
+        <div class="card-header"><i class="fa fa-user-o"></i> Opprett bruker til {{ department }}</div>
+        <div class="card-body">
 
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <h1> Opprett bruker til {{ department.shortName }} </h1>
-            <hr>
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
             <div class="row">
-                <div class="small-12 medium-12 large-12 columns">
 
-                    {{ form_start(form) }}
-                    {{ form_errors(form) }}
+                <div class="col-12 col-md-12 col-lg-6">
 
-                    <div class="row">
+                    {{ form_row(form.firstName) }}
+                    {{ form_row(form.lastName) }}
+                    {{ form_row(form.gender) }}
+                    {{ form_row(form.phone) }}
 
-                        <div class="small-12 medium-12 large-6 columns">
-
-                            <div>
-                                {{ form_label(form.firstName) }}
-                                {{ form_widget(form.firstName) }}
-                                {{ form_errors(form.firstName) }}
-                            </div>
-
-                            <div>
-                                {{ form_label(form.lastName) }}
-                                {{ form_widget(form.lastName) }}
-                                {{ form_errors(form.lastName) }}
-                            </div>
-
-                            <div>
-                                {{ form_label(form.gender) }}
-                                {{ form_widget(form.gender) }}
-                                {{ form_errors(form.gender) }}
-                            </div>
-
-                            <div>
-                                {{ form_label(form.phone) }}
-                                {{ form_widget(form.phone) }}
-                                {{ form_errors(form.phone) }}
-                            </div>
-
-                            <div>
-                                <button type="submit" class="button">Opprett</button>
-                            </div>
-
-                        </div>
-
-                        <div class="small-12 medium-12 large-6 columns">
-
-                            <div>
-                                {{ form_label(form.email) }}
-                                {{ form_widget(form.email) }}
-                                {{ form_errors(form.email) }}
-                            </div>
-
-                            <div>
-                                {{ form_label(form.fieldOfStudy) }}
-                                {{ form_widget(form.fieldOfStudy) }}
-                                {{ form_errors(form.fieldOfStudy) }}
-                            </div>
-
-                        </div>
-
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-primary">Opprett</button>
                     </div>
 
-                    {{ form_end(form) }}
+                </div>
 
-                    <br>
-                    <p><span class="text-alert">Obs!</span> En epost vil bli sendt til brukeren med instruksjoner for å
-                        fullføre registreringen (brukernavn og passord).</p>
+                <div class="col-12 col-md-12 col-lg-6">
+
+                    {{ form_row(form.email) }}
+                    {{ form_row(form.fieldOfStudy) }}
 
                 </div>
+
             </div>
+
+            {{ form_end(form) }}
+
+            <br>
+            <p><span class="text-alert">Obs!</span> En epost vil bli sendt til brukeren med instruksjoner for å
+                fullføre registreringen (brukernavn og passord).</p>
 
         </div>
     </div>
-
 {% endblock %}

@@ -15,6 +15,20 @@ use Doctrine\ORM\EntityRepository;
  */
 class TeamMembershipRepository extends EntityRepository
 {
+
+    /**
+     * @param Team $team
+     *
+     * @return TeamMembership[]
+     */
+    public function findByTeam(Team $team): array
+    {
+        return $this->createQueryBuilder('team_membership')
+            ->where('team_membership.team = :team')
+            ->setParameter('team', $team)
+            ->getQuery()
+            ->getResult();
+    }
     /**
      * @param User $user
      *
@@ -99,21 +113,12 @@ class TeamMembershipRepository extends EntityRepository
      *
      * @return TeamMembership[]
      */
-    public function findInActiveTeamMembershipsByTeam($team)
+    public function findInActiveTeamMembershipsByTeam(Team $team)
     {
-        $today = new \DateTime('now');
+        $allMembers = $this->findByTeam($team);
+        $activeMembers = $this->findActiveTeamMembershipsByTeam($team);
 
-        return $this->createQueryBuilder('whistory')
-            ->select('whistory')
-            ->join('whistory.startSemester', 'startSemester')
-            ->leftJoin('whistory.endSemester', 'endSemester')
-            ->where('startSemester.semesterStartDate < :today')
-            ->andWhere('whistory.team = :team')
-            ->andWhere('endSemester.semesterEndDate < :today')
-            ->setParameter('today', $today)
-            ->setParameter('team', $team)
-            ->getQuery()
-            ->getResult();
+        return array_diff($allMembers, $activeMembers);
     }
 
     /**

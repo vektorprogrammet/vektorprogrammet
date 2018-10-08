@@ -10,19 +10,9 @@ class UserAdminControllerTest extends BaseWebTestCase
     {
 
         // TEAM
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'idaan',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamLeaderClient();
 
-        $crawler = $client->request('GET', '/kontrollpanel/brukeradmin');
-
-        // Find a link and click it
-        $link = $crawler->selectLink('Opprett bruker')->eq(0)->link();
-        $crawler = $client->click($link);
-
-        // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opprett bruker")')->count());
+        $crawler = $client->request('GET', '/kontrollpanel/brukeradmin/opprett/1');
 
         $form = $crawler->selectButton('Opprett')->form();
 
@@ -56,11 +46,11 @@ class UserAdminControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/kontrollpanel/brukeradmin/avdeling/1');
 
         // Assert that we have the correct amount of data
-        $this->assertEquals(2, $crawler->filter('h1:contains("Brukere")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Reidun")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Persdatter Ødegaard")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Siri")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Brenna Eskeland")')->count());
+        $this->assertEquals(1, $crawler->filter('h2:contains("Brukere")')->count());
+        $this->assertGreaterThanOrEqual(1, $crawler->filter('td:contains("Reidun")')->count());
+        $this->assertGreaterThanOrEqual(1, $crawler->filter('td:contains("Persdatter Ødegaard")')->count());
+        $this->assertGreaterThanOrEqual(1, $crawler->filter('td:contains("Siri")')->count());
+        $this->assertGreaterThanOrEqual(1, $crawler->filter('td:contains("Brenna Eskeland")')->count());
 
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -78,7 +68,7 @@ class UserAdminControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/kontrollpanel/brukeradmin');
 
         // Assert that we have the correct amount of data
-        $this->assertEquals(1, $crawler->filter('h1:contains("Brukere")')->count());
+        $this->assertEquals(1, $crawler->filter('h2:contains("Brukere")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Reidun")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Persdatter Ødegaard")')->count());
         $this->assertEquals(1, $crawler->filter('td:contains("Siri")')->count());

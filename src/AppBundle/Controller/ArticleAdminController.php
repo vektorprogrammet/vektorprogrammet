@@ -41,6 +41,7 @@ class ArticleAdminController extends Controller
 
         return $this->render('article_admin/index.html.twig', array(
             'pagination' => $pagination,
+            'articles' => $articles->getQuery()->getResult()
         ));
     }
 
@@ -189,29 +190,18 @@ class ArticleAdminController extends Controller
     }
 
     /**
-     * Deletes the given article.
-     * This method is intended to be called by an Ajax request.
-     *
      * @param Article $article
      *
-     * @return JsonResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteAction(Article $article)
     {
-        try {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($article);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($article);
+        $em->flush();
 
-            $response['success'] = true;
-        } catch (\Exception $e) {
-            $response = [
-                'success' => false,
-                'code'    => $e->getCode(),
-                'cause'   => 'Det oppstod en feil.',
-            ];
-        }
+        $this->addFlash("success", "Artikkelen ble slettet");
 
-        return new JsonResponse($response);
+        return $this->redirectToRoute('articleadmin_show');
     }
 }

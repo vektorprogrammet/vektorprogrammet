@@ -57,7 +57,7 @@ class TeamApplication
     private $biography;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Team")
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="applications")
      */
     private $team;
 

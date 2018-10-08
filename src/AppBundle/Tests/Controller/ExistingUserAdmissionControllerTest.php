@@ -8,9 +8,7 @@ class ExistingUserAdmissionControllerTest extends BaseWebTestCase
 {
     public function testCreateWithPreferredSchool()
     {
-        $this->createAndSubmitForm_preferredSchool('');
-
-        $path = '/kontrollpanel/opptakadmin/soknad/110';
+        $path = '/kontrollpanel/opptak/gamle';
 
         $applicationsBefore = $this->countTableRows($path);
 
@@ -46,6 +44,6 @@ class ExistingUserAdmissionControllerTest extends BaseWebTestCase
         $form['application[applicationPractical][language]'] = 'Engelsk';
         $form['application[preferredSchool]'] = $preferredSchool;
 
-        $crawler = $assistantClient->submit($form);
+        $assistantClient->submit($form);
     }
 }
