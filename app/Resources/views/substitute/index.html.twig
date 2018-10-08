@@ -4,136 +4,144 @@
 
     <script src="{{ asset_with_version('js/stupidtable.js') }}"></script>
     <script>
-        var Substitute = {
-            // The html table containing the substitute assistants
-            subTable: $("#substitute-table"),
+      var Substitute = {
+        // The html table containing the substitute assistants
+        subTable: $('#substitute-table'),
 
-            onReady: function () {
-                // Add sort functionality to the table containing the substitute assistants
-                Substitute.subTable.stupidtable();
+        onReady: function () {
+          // Add sort functionality to the table containing the substitute assistants
+          Substitute.subTable.stupidtable();
 
-                // Add arrows after sorting the table
-                Substitute.subTable.on("aftertablesort", Substitute.addSortArrows);
-            },
+          // Add arrows after sorting the table
+          Substitute.subTable.on('aftertablesort', Substitute.addSortArrows);
+        },
 
-            addSortArrows: function (event, data) {
-                var th = $(this).find("th");
-                th.find(".arrow").remove();
-                var dir = $.fn.stupidtable.dir;
+        addSortArrows: function (event, data) {
+          var th = $(this).find('th');
+          th.find('.arrow').remove();
+          var dir = $.fn.stupidtable.dir;
 
-                var arrow = data.direction === dir.ASC ? "asc" : "desc";
-                th.eq(data.column).append('<span class="arrow"> <i class="fa fa-sort-' + arrow + '"></i></span>');
-            }
-        };
-        $(document).ready(Substitute.onReady);
+          var arrow = data.direction === dir.ASC ? 'asc' : 'desc';
+          th.eq(data.column).append('<span class="arrow"> <i class="fa fa-sort-' + arrow + '"></i></span>');
+        },
+      };
+      $(document).ready(Substitute.onReady);
     </script>
 
 {% endblock %}
 
 {% block title %}
-    Vikar
+    Vikarer
 {% endblock %}
 
-{% block body %}
-    <p></p>
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <h1>Vikarer</h1>
-        </div>
-    </div>
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Vikarer</li>
+{% endblock %}
 
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            {# Semester dropdown #}
-            {% include 'common/department_semester_dropdowns.html.twig' with {
+
+{% block breadcrumb_menu %}
+    {% if is_granted_team_leader() %}
+        {% include 'common/department_semester_dropdowns.html.twig' with {
             'path': 'substitute_show_by_semester',
             'parameterName': 'semester',
             'currentSemester': semester
-            } %}
-        </div>
-    </div>
+        } %}
+    {% else %}
+        {% include 'common/semester_dropdown.html.twig' with {
+            'pathForSemester': 'substitute_show_by_semester',
+            'semesterParameterName': 'semester',
+            'currentSemester': semester
+        } %}
+    {% endif %}
+{% endblock %}
 
+
+{% block body %}
+    <h2 class="text-center my-5">Vikarer {{ semester.department }} {{ semester.name }}</h2>
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <hr>
-            <table width="100%" id="substitute-table">
-                <thead>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-align-justify"></i> Vikarer ({{ substitutes|length }})</div>
+                <div class="card-body table-responsive">
+                    <table width="100%" id="substitute-table" class="table">
+                        <thead>
 
-                <tr>
-                    <th data-sort="string"> Fornavn</th>
-                    <th data-sort="string"> Etternavn</th>
-                    <th data-sort="int"> Tlf</th>
-                    <th data-sort="string"> E-post</th>
-                    <th data-sort="string"> Linje</th>
-
-                    <th data-sort="int"> År</th>
-                    <th data-sort="string"> Språk</th>
-                    <th><span data-sort="string" class="has-tip" title="Mandag"> M</span></th>
-                    <th><span data-sort="string" class="has-tip" title="Tirsdag"> T</span></th>
-                    <th><span data-sort="string" class="has-tip" title="Onsdag"> O</span></th>
-                    <th><span data-sort="string" class="has-tip" title="Torsdag"> T</span></th>
-                    <th><span data-sort="string" class="has-tip" title="Fredag"> F</span></th>
-                    <th><span data-sort="string"> Bolk</span></th>
-                    <th><span data-sort="int"> Poeng</span></th>
-                    <th><span data-sort="string"> Passende</span></th>
-                    {% if is_granted_team_leader() %}
-                        <th colspan="2"></th>
-                    {% endif %}
-                </tr>
-                </thead>
-
-                <tbody>
-                    {% for sub in substitutes %}
                         <tr>
-                            <td>{{ sub.user.firstName }}</td>
-                            <td>{{ sub.user.lastName }}</td>
-                            <td>{{ sub.user.phone }}</td>
-                            <td>{{ sub.user.email }}</td>
-                            <td>{{ sub.user.fieldOfStudy }}</td>
-                            <td>{{ sub.yearOfStudy }}</td>
+                            <th></th>
+                            <th data-sort="string"> Navn</th>
+                            <th data-sort="int"> Tlf</th>
+                            <th data-sort="string"> E-post</th>
+                            <th data-sort="string"> Linje</th>
 
-                            <td>{{ sub.language }}</td>
-                            <td>{{ sub.monday ? "Bra" : "Ikke" }}</td>
-                            <td>{{ sub.tuesday ? "Bra" : "Ikke" }}</td>
-                            <td>{{ sub.wednesday ? "Bra" : "Ikke" }}</td>
-                            <td>{{ sub.thursday ? "Bra" : "Ikke" }}</td>
-                            <td>{{ sub.friday ? "Bra" : "Ikke" }}</td>
-                            <td>{{ sub.preferredGroup }}</td>
-                            {% if sub.interview is not null and sub.user != app.user and (is_granted_team_leader() or sub.interview.interviewer == app.user) %}
-                                <td>{{ sub.interview.interviewScore.getSum() }}</td>
-                                <td>{{ sub.interview.interviewScore.suitableAssistant }}</td>
+                            <th data-sort="int"> År</th>
+                            <th data-sort="string"> Språk</th>
+                            <th><span data-sort="string" class="has-tip" title="Mandag"> M</span></th>
+                            <th><span data-sort="string" class="has-tip" title="Tirsdag"> T</span></th>
+                            <th><span data-sort="string" class="has-tip" title="Onsdag"> O</span></th>
+                            <th><span data-sort="string" class="has-tip" title="Torsdag"> T</span></th>
+                            <th><span data-sort="string" class="has-tip" title="Fredag"> F</span></th>
+                            <th><span data-sort="string"> Bolk</span></th>
+                            <th><span data-sort="int"> Poeng</span></th>
+                            <th><span data-sort="string"> Passende</span></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for sub in substitutes %}
+                            <tr>
+                                <td>
+                                    {% if is_granted_team_leader() %}
+                                        <div class="dropdown">
+                                            <div class="clickable px-2" id="options-{{ loop.index }}"
+                                                 data-toggle="dropdown"
+                                                 aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-ellipsis-v text-secondary"></i>
+                                            </div>
+                                            <div class="dropdown-menu pt-0" aria-labelledby="options-{{ loop.index }}">
+                                                <div class="dropdown-header mb-2"><strong>Artikkel</strong></div>
+                                                <a href="{{ path('substitute_modify', { id: sub.id }) }}"
+                                                   class="dropdown-item"><i class="fa fa-pencil text-primary"></i>
+                                                    Rediger
+                                                </a>
+                                                {% if is_granted_admin() %}
+                                                    <form method="POST"
+                                                          onsubmit="return confirm('Vil du virkelig fjerne vikarstillingen til {{ sub.user }}?')"
+                                                          action="{{ path('substitute_delete', { id: sub.id }) }}">
+                                                        <button type="submit"
+                                                                class="dropdown-item">
+                                                            <i class="fa fa-trash text-danger"></i> Slett
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td><a href="{{ path('specific_profile', {'id': sub.id}) }}">{{ sub.user }}</a></td>
+                                <td>{{ sub.user.phone }}</td>
+                                <td>{{ sub.user.email }}</td>
+                                <td>{{ sub.user.fieldOfStudy }}</td>
+                                <td>{{ sub.yearOfStudy }}</td>
+
+                                <td>{{ sub.language }}</td>
+                                <td>{{ sub.monday ? "Bra" : "Ikke" }}</td>
+                                <td>{{ sub.tuesday ? "Bra" : "Ikke" }}</td>
+                                <td>{{ sub.wednesday ? "Bra" : "Ikke" }}</td>
+                                <td>{{ sub.thursday ? "Bra" : "Ikke" }}</td>
+                                <td>{{ sub.friday ? "Bra" : "Ikke" }}</td>
+                                <td>{{ sub.preferredGroup }}</td>
+                                {% if sub.interview is not null and sub.user != app.user and (is_granted_team_leader() or sub.interview.interviewer == app.user) %}
+                                    <td>{{ sub.interview.interviewScore.getSum() }}</td>
+                                    <td>{{ sub.interview.interviewScore.suitableAssistant }}</td>
                                 {% else %}
                                     <td colspan="2"></td>
-                            {% endif %}
-
-                            {% if is_granted_team_leader() %}
-                                <td>
-                                    <form method="POST"
-                                          action="{{ path('substitute_modify', { id: sub.id }) }}">
-                                        <button type="submit"
-                                                class="button tiny">
-                                            <i class="fa fa-pencil-square-o"></i>
-                                            Rediger
-                                        </button>
-                                    </form>
-                                </td>
-                                <td>
-                                    <form method="POST"
-                                          onsubmit="return confirm('Vil du virkelig fjerne vikarstillingen til {{ sub.user.firstName }} {{ sub.user.lastName }}?')"
-                                          action="{{ path('substitute_delete', { id: sub.id }) }}">
-                                        <button type="submit"
-                                                class="button tiny alert">
-                                            <i class="fa fa-trash"></i>
-                                            Slett
-                                        </button>
-                                    </form>
-                                </td>
-                            {% endif %}
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <hr>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -18,7 +18,7 @@ class CreateTeamType extends AbstractType
                 'label' => 'E-post',
             ))
             ->add('shortDescription', 'text', array(
-                'label' => ' ',
+                'label' => 'Kort beskrivelse',
                 'max_length' => 125,
                 'required' => false,
             ))

@@ -9,16 +9,21 @@
     Ny artikkel
 {% endblock %}
 
-{% block body %}
-    <div class="row">
-        <p></p>
-        <div class="small-12 medium-12 large-12 columns">
-            <h1>{{ title }}</h1>
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('articleadmin_show') }}">Artikler</a>
+    </li>
+    <li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
 
-            <hr>
+
+{% block body %}
+    <div class="card">
+        <div class="card-header"><i class="fa fa-file"></i> {{ title }}</div>
+        <div class="card-body">
             <div id="app" style="display: none">
                 <div class="row">
-                    <div class="small-12 medium-5 columns">
+                    <div class="col-12 col-md-5">
                         <h3>Lite bilde</h3>
                         <span v-if="smallPhotoSrc" @click="smallPhotoSrc = ''" class="text-link">Rediger</span>
                         <form v-show="!smallPhotoSrc" action="/" id="dropsmall" class="dropzone" method="POST">
@@ -28,7 +33,7 @@
                         </div>
 
                     </div>
-                    <div class="small-12 medium-7 columns">
+                    <div class="col-12 col-md-7">
                         <h3>Stort bilde</h3>
                         <span v-if="largePhotoSrc" @click="largePhotoSrc = ''" class="text-link">Rediger</span>
                         <form v-show="!largePhotoSrc" action="/" id="droplarge" class="dropzone" method="POST">
@@ -52,7 +57,7 @@
                 <h5>Publisering</h5>
                 <div class="content">
                     <div class="row">
-                        <div class="small-8 columns">
+                        <div class="col-8">
                             <span class="has-tip"
                                   title="Hvilke regioner artikkelen er knyttet til. Velges ingen er artikkelen knyttet til alle.">
                                 Regioner
@@ -60,7 +65,7 @@
                             {{ form_errors(form.departments) }}
                             {{ form_widget(form.departments) }}
                         </div>
-                        <div class="small-4 columns">
+                        <div class="col-4">
                             <div class="right">
                                 <span class="has-tip"
                                       title="Artikkelen fryses på forsiden i nyhetskarusellen.">
@@ -74,12 +79,12 @@
                 </div>
                 <div class="footer">
                     <div class="row">
-                        <div class="small-6 medium-2 medium-offset-8 large-offset-9 columns">
+                        <div class="col-6 col-md-2 offset-md-8 offset-lg-9">
                             {{ form_row(form.published) }}
                         </div>
-                        <div class="small-6 medium-2 large-1 columns">
+                        <div class="col-6 col-md-2 col-lg-1">
                             <br>
-                            <button id="submitBtn" class="tiny button right">Lagre</button>
+                            <button id="submitBtn" class="btn btn-primary right">Lagre</button>
                         </div>
                     </div>
                 </div>
@@ -142,9 +147,9 @@
           var form = $("[name='{{ form.vars.name }}']");
           form.submit(function (e) {
             e.preventDefault();
-            setTimeout(function() {
-                this.upload();
-            }.bind(this), 100)
+            setTimeout(function () {
+              this.upload();
+            }.bind(this), 100);
           }.bind(this));
           $('#app').show();
         },

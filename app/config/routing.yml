@@ -103,11 +103,6 @@ survey_create:
   defaults: { _controller: AppBundle:Survey:createSurvey }
   methods: [GET, POST]
 
-surveys:
- path: /kontrollpanel/undersokelse/admin
- defaults: { _controller: AppBundle:Survey:showSurveys }
- methods: [GET]
-
 survey_edit:
  path: /kontrollpanel/undersokelse/endre/{id}
  defaults: { _controller: AppBundle:Survey:editSurvey }
@@ -413,21 +408,6 @@ articleadmin_delete:
   options:
     expose: true
 
-articleadmin_crop:
-  path: /kontrollpanel/artikkeladmin/crop
-  defaults: { _controller: AppBundle:ArticleAdmin:cropImage }
-  methods: [GET, POST]
-  options:
-    expose: true
-
-articleadmin_saveImage:
-  path: /kontrollpanel/artikkeladmin/saveImage
-  defaults: { _controller: AppBundle:ArticleAdmin:saveImage }
-  methods: [GET, POST]
-  options:
-    expose: true
-
-
 ##########################################
 #            AdmissionAdmin              #
 ##########################################
@@ -703,10 +683,10 @@ team_application_delete:
   requirements:
       id: \d+
 
-teamadmin_show:
- path: /kontrollpanel/teamadmin
- defaults: {_controller: AppBundle:TeamAdmin:show }
- methods: [GET]
+#teamadmin_show:
+# path: /kontrollpanel/teamadmin
+# defaults: {_controller: AppBundle:TeamAdmin:show }
+# methods: [GET]
 
 teamadmin_create_position:
  path: /kontrollpanel/teamadmin/opprett/stilling
@@ -1202,164 +1182,10 @@ substitute_modify:
   requirements:
     id: \d+
 
-##########################################
-#                Certificate              #
-##########################################
-certificate_show:
-   path: /kontrollpanel/attest
-   defaults: { _controller: AppBundle:Certificate:show }
-   methods: [GET]
-
-certificate_delete_by_id:	
-  path: /kontrollpanel/attest/slett/{id}
-  defaults: { _controller: AppBundle:Certificate:delete }
-  methods: [GET, POST]
-  requirements:
-  options:
-    expose: true
-
-certificate_request:
-  path: /kontrollpanel/attest/forespør
-  defaults: { _controller: AppBundle:Certificate:request }
-  methods: [GET, POST]
-  requirements:
-  options:
-    expose: true
-
-certificate_signature_picture_upload:
-  path: /kontrollpanel/attest/signatur
-  defaults: {_controller: AppBundle:Signature:show }
-  methods: [GET, POST]
-
-certificate_download:
-  path: /kontrollpanel/attest/lastned/{id}
-  defaults: {_controller: AppBundle:Certificate:download}
-  methods: [GET]
-  requirements:
-    id: \d+
-
 signature_image_show:
   path: /signatures/{imageName}
   defaults: { _controller: AppBundle:Signature:showSignatureImage }
   methods: [GET]
-
-
-##########################################	
-#                Sponsors                #
-##########################################
-
-sponsors_edit:	
-  path: /kontrollpanel/sponsors/edit
-  defaults: { _controller: AppBundle:Sponsors:sponsorsEdit }
-  methods: [GET]
-
-sponsors_update:	
-  path: /kontrollpanel/sponsors/update/{id}
-  defaults: { _controller: AppBundle:Sponsors:sponsorsUpdate }
-  methods: [GET, POST]
-
-sponsors_add:	
-  path: /kontrollpanel/sponsors/add
-  defaults: { _controller: AppBundle:Sponsors:sponsorsAdd }
-  methods: [GET, POST]
-
-##########################################
-#              Newsletter                #
-##########################################
-
-newsletter_create:
-  path: /kontrollpanel/nyhetsbrev/opprett
-  defaults: { _controller: AppBundle:Newsletter:create }
-  methods: [GET, POST]
-
-newsletter_edit:
-  path: /kontrollpanel/nyhetsbrev/opprett/{id}
-  defaults: { _controller: AppBundle:Newsletter:create }
-  methods: [GET, POST]
-  requirements:
-    id: \d+
-
-newsletter_delete:
-  path: /kontrollpanel/nyhetsbrev/slett/{id}
-  defaults: { _controller: AppBundle:Newsletter:delete }
-  methods: [POST]
-  requirements:
-    id: \d+
-
-newsletter_show_all:
-  path: /kontrollpanel/nyhetsbrev
-  defaults: { _controller: AppBundle:Newsletter:showAllNewsletters }
-  methods: [GET]
-
-newsletter_show_subscribers:
-  path: /kontrollpanel/nyhetsbrev/abonnenter/{id}
-  defaults: { _controller: AppBundle:Subscriber:showSubscribers }
-  methods: [GET]
-  requirements:
-    id: \d+
-
-newsletter_subscribe:
-  path: /subscribe/{id}
-  defaults: { _controller: AppBundle:Subscriber:subscribeForm }
-  methods: [GET, POST]
-  requirements:
-   id: \d+
-
-newsletter_admin_unsubscribe:
-  path: /kontrollpanel/nyhetsbrev/unsubscribe/{id}
-  defaults: { _controller: AppBundle:Subscriber:adminUnsubscribe }
-  methods: [POST]
-  requirements:
-    id: \d+
-
-newsletter_show_subscribe:
-  path: /nyhetsbrev/{id}
-  defaults: { _controller: AppBundle:Subscriber:showSubscribePage }
-  methods: [GET, POST]
-  requirements:
-    id: \d+
-
-newsletter_toggle_visible:
-  path: /kontrollpanel/nyhetsbrev/toggle/{id}
-  defaults: {_controller: AppBundle:Newsletter:showOnAdmissionPage}
-  methods: [POST]
-  requirements:
-    id: \d+
-
-newsletter_send_letter:
-  path: /kontrollpanel/nyhetsbrev/send/{id}
-  defaults: { _controller: AppBundle:Newsletter:createLetter }
-  methods: [GET|POST]
-  requirements:
-    id: \d+
-
-newsletter_show_letters:
-   path: /kontrollpanel/nyhetsbrev/brev/{id}
-   defaults: { _controller: AppBundle:Newsletter:showLetters }
-   methods: [GET]
-   requirements:
-     id: \d+
-
-newsletter_show_letter_content:
-   path: /kontrollpanel/nyhetsbrev/brev/vis/{id}
-   defaults: { _controller: AppBundle:Newsletter:showLetterContent }
-   methods: [GET]
-   requirements:
-     id: \d+
-
-unsubscribe_newsletter:
-    path: /nyhetsbrev/meldav/{unsubscribeCode}
-    defaults: { _controller: AppBundle:Subscriber:unsubscribeNewsletter }
-    methods: [GET, POST]
-    requirements:
-      code: \w+
-
-unsubscribe_newsletter_confirmation:
-    path: /nyhetsbrev/avmeldt
-    defaults: { _controller: AppBundle:Subscriber:unsubscribeNewsletterConfirmation }
-    methods: [GET]
-    requirements:
-      code: \w+
 
 ##########################################
 #              Field of study            #

@@ -23,7 +23,8 @@ class PositionController extends Controller
 
     public function editPositionAction(Request $request, Position $position = null)
     {
-        if ($position === null) {
+        $isCreate = $position === null;
+        if ($isCreate) {
             $position = new Position();
         }
 
@@ -37,31 +38,29 @@ class PositionController extends Controller
             $em->persist($position);
             $em->flush();
 
+            $flash = "Stillingen ble ";
+            $flash .= $isCreate ? "opprettet." : "endret.";
+
+            $this->addFlash("success", $flash);
+
             return $this->redirectToRoute('teamadmin_show_position');
         }
 
         return $this->render('team_admin/create_position.html.twig', array(
             'form' => $form->createView(),
+            'isCreate' => $isCreate,
+            'position' => $position
         ));
     }
 
     public function removePositionAction(Position $position)
     {
-        try {
-            // This deletes the given position
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($position);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($position);
+        $em->flush();
 
-            return new JsonResponse(array(
-                'success' => true,
-            ));
-        } catch (\Exception $e) {
-            // Send a response back to AJAX
-            return new JsonResponse(array(
-                'success' => true,
-                'cause' => $e->getMessage(),
-            ));
-        }
+        $this->addFlash("success", "Stillingen ble slettet.");
+
+        return $this->redirectToRoute("teamadmin_show_position");
     }
 }

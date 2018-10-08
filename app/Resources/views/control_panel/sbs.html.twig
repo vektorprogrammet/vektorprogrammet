@@ -1,14 +1,15 @@
-{% set step = data.step %}
-{% include 'control_panel/step_by_step/progressbar.html.twig' %}
-<div class="row step-spacing"></div>
-<div class="row">
-    {% include 'control_panel/step_by_step/step_box1.html.twig' %}
-    {% include 'control_panel/step_by_step/step_box2.html.twig' %}
-    {% include 'control_panel/step_by_step/step_box3.html.twig' %}
-    {% include 'control_panel/step_by_step/step_box4.html.twig' %}
-    {% include 'control_panel/step_by_step/step_box5.html.twig' %}
+<div class="step-by-step">
+    {% set step = data.step %}
+    {% include 'control_panel/step_by_step/progressbar.html.twig' %}
+    <div class="row step-spacing"></div>
+    <div class="row">
+        {% include 'control_panel/step_by_step/step_box1.html.twig' %}
+        {% include 'control_panel/step_by_step/step_box2.html.twig' %}
+        {% include 'control_panel/step_by_step/step_box3.html.twig' %}
+        {% include 'control_panel/step_by_step/step_box4.html.twig' %}
+        {% include 'control_panel/step_by_step/step_box5.html.twig' %}
+    </div>
 </div>
-
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {

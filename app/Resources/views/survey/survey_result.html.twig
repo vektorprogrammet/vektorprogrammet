@@ -4,11 +4,19 @@
     Resultater {{ survey.name }} {{ survey.semester }}
 {% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('surveys', {'id': survey.semester.id}) }}">Undersøkelser</a>
+    </li>
+    <li class="breadcrumb-item active">Resultater - {{ survey.name }}</li>
+{% endblock %}
+
+
 {% block body %}
     <header class="row">
-        <div class="small-12 columns">
+        <div class="col-12">
             <h3>Resultater for {{ survey.name }} {{ survey.semester }} </h3>
-            <a id="show-filter-btn" class="">Vis/skjul filter&nbsp;&nbsp;<i
+            <a id="show-filter-btn" class="text-primary">Vis/skjul filter&nbsp;&nbsp;<i
                         class="fa fa-chevron-right"></i></a>
         </div>
     </header>
@@ -19,7 +27,7 @@
 
     {% if textAnswers %}
         <!-- Display text answers -->
-        <div class="row" id="text-answers">
+        <div class="row mt-5" id="text-answers">
             <h3 class="text-center">Tekstsvar</h3>
             {% for key in textAnswers|keys %}
                 {% if textAnswers[key] %}
@@ -93,7 +101,7 @@
                 var question = questions[i];
                 var title = $('<h6></h6>');
                 title.html(question.question_label);
-                var filterList = $('<select multiple></select>');
+                var filterList = $('<select class="form-control" multiple></select>');
                 filterList.attr('id', question.question_id.toString());
                 for (var j = 0; j < question.alternatives.length; j++) {
                     // Add alternative to the multiple select box
@@ -113,7 +121,7 @@
                 }
                 // Wrapper for the multiple select box and question text
                 var selectWrapper = $('<div></div>');
-                selectWrapper.addClass('survey-filter-wrapper small-12 medium-4 large-3 columns');
+                selectWrapper.addClass('survey-filter-wrapper col-12 col-md-4 col-lg-3 columns');
                 if (i === questions.length - 1) selectWrapper.addClass('end');
                 selectWrapper.append(title);
                 selectWrapper.append(filterList);
@@ -124,10 +132,10 @@
             var buttonRow = $('<div></div>');
             buttonRow.addClass('row');
             var buttonColumn = $('<div></div>');
-            buttonColumn.addClass('small-12 columns');
+            buttonColumn.addClass('col-12 columns');
             var btn = $('<button></button>');
             btn.html('Filtrer');
-            btn.addClass('button small')
+            btn.addClass('btn btn-secondary btn-sm');
 
             // Filter surveyData when filter button is clicked
             btn.on('click', function () {
@@ -236,7 +244,7 @@
             // Create charts
             for (var i = 0; i < chartData.length; i++) {
                 var div = $('<div></div>');
-                div.addClass('small-12 medium-6 large-4 columns');
+                div.addClass('col-12 col-md-6 col-lg-4 columns');
 
                 // The pie chart will be painted on the canvas
                 var canvas = $('<canvas width="185" height="125"><canvas/>');

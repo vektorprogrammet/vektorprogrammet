@@ -703,6 +703,30 @@ class User implements AdvancedUserInterface, \Serializable
         return $totalSum;
     }
 
+    public function getTotalRefundedReceiptSum(): float
+    {
+        $totalSum = 0.0;
+        foreach ($this->receipts as $receipt) {
+            if ($receipt->getStatus() === Receipt::STATUS_REFUNDED) {
+                $totalSum += $receipt->getSum();
+            }
+        }
+
+        return $totalSum;
+    }
+
+    public function getTotalRejectedReceiptSum(): float
+    {
+        $totalSum = 0.0;
+        foreach ($this->receipts as $receipt) {
+            if ($receipt->getStatus() === Receipt::STATUS_REJECTED) {
+                $totalSum += $receipt->getSum();
+            }
+        }
+
+        return $totalSum;
+    }
+
     /**
      * @return string
      */

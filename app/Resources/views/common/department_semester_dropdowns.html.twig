@@ -1,12 +1,13 @@
-<ul class="inline-list">
-
-    {# Department dropdown #}
+<div class="btn-group">
+    <div class="mr-3">
+{# Department dropdown #}
     {% include "common/department_dropdown.html.twig" with {
     'pathForDepartment': path,
     'departmentParameterName': parameterName,
     'currentDepartment': currentSemester.department,
     'linkToSemester': true
     } %}
+    </div>
 
     {# Semester dropdown #}
     {% include "common/semester_dropdown.html.twig" with {
@@ -14,5 +15,4 @@
     'semesterParameterName': parameterName,
     'currentSemseter': currentSemester
     } %}
-
-</ul>
+</div>

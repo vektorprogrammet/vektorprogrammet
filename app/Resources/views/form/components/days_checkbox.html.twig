@@ -1,8 +1,17 @@
 {% block form_row %}
     {% spaceless %}
-        <div class="interview-day">
+        <span class="question-label">
+            {{ form_label(form) }}
+        </span>
+        {#{{ dump(form) }}#}
+        <div {% if form.vars.name != 'days' %}class="form-check"{% endif %}>
             {{ form_errors(form) }}
-            {{ form_widget(form) }}
+            <label class="form-check-label">
+                {{ form_widget(form) }}
+                {% if not (form.vars.label in form_label(form)) %}
+                    {{ form.vars.label }}
+                {% endif %}
+            </label>
         </div>
     {% endspaceless %}
 {% endblock form_row %}
@@ -10,11 +19,10 @@
 {% block checkbox_widget -%}
     {% spaceless %}
         <input type="checkbox"
-               class="interview-days-checkbox"
+               class="form-check-input"
                 {{ block('widget_attributes') }}
                 {% if value is defined %} value="{{ value }}"{% endif %}
                 {% if checked %} checked="checked"{% endif %}
         />
-        {{ form_label(form) }}
     {% endspaceless %}
 {%- endblock checkbox_widget %}

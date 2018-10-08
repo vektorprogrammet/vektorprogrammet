@@ -1,29 +1,48 @@
-<table width="100%">
-
-    <thead>
-    <tr>
-        <th>Navn</th>
-        <th>Skole</th>
-        <th>Semester</th>
-        <th colspan="2">Pulje</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    {% for ah in assistantHistories %}
+<div class="card-body table-responsive">
+    <table class="table" width="100%" id="table">
+        <thead>
         <tr>
-            <td><a href="{{ path('specific_profile', {id: ah.user.id}) }}">{{ ah.user }}</a></td>
-            <td> {{ ah.school.name }} </td>
-            <td> {{ ah.semester.name }} </td>
-            <td> {{ ah.bolk }} </td>
-
             {% if is_granted_team_leader() %}
-                <td><a href="#" id="{{ ah.id }}" class="button tiny alert delete"><i
-                                class="fa fa-trash-o"></i> Slett</a></td>
+                <th></th>
             {% endif %}
-
+            <th>Navn</th>
+            <th>Skole</th>
+            <th>Semester</th>
+            <th>Pulje</th>
         </tr>
-    {% endfor %}
-    </tbody>
+        </thead>
 
-</table>
+        <tbody>
+        {% for ah in assistantHistories %}
+            <tr>
+                {% if is_granted_team_leader() %}
+                    <td>
+                        <div class="dropdown">
+                            <div class="clickable" id="options-{{ ah.id }}" data-toggle="dropdown"
+                                 aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v text-secondary"></i>
+                            </div>
+                            <div class="dropdown-menu pt-0" aria-labelledby="options-{{ ah.id }}">
+                                <div class="dropdown-header mb-2"><strong>{{ ah.user }}</strong></div>
+                                {% if is_granted_admin() %}
+                                    <form method="POST"
+                                          action="{{ path('schooladmin_remove_user_from_school_by_id', {'id': ah.id}) }}"
+                                          onsubmit="return confirm('Er du sikker på at du vil slette assistentstillingen til {{ ah.user }}?')">
+                                        <button class="dropdown-item">
+                                            <i class="fa fa-trash text-danger"></i> Slett
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+                {% endif %}
+                <td><a href="{{ path('specific_profile', {id: ah.user.id}) }}">{{ ah.user }}</a></td>
+                <td> {{ ah.school.name }} </td>
+                <td> {{ ah.semester.name }} </td>
+                <td> {{ ah.bolk }} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

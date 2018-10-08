@@ -2,6 +2,9 @@
 
 namespace AppBundle\Controller;
 
+
+use AppBundle\Entity\Semester;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Form\Type\SurveySchoolSpecificExecuteType;
 use http\Exception\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -189,9 +192,10 @@ class SurveyController extends Controller
             return $this->redirect($this->generateUrl('surveys'));
         }
 
-        // Check if user can create team surveys.
-
-        return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
+        return $this->render('survey/survey_create.html.twig', array(
+            'form' => $form->createView(),
+            'survey' => $survey
+        ));
     }
 
     public function copySurveyAction(Request $request, Survey $survey)
@@ -222,21 +226,41 @@ class SurveyController extends Controller
             return $this->redirect($this->generateUrl('surveys'));
         }
 
-        dump($tempSurveyType);
-
-
-        return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
+        return $this->render('survey/survey_create.html.twig', array(
+            'form' => $form->createView(),
+            'survey' => $survey
+        ));
     }
 
-    public function showSurveysAction()
+    /**
+     * @Route(
+     *     "/kontrollpanel/undersokelse/admin/{id}",
+     *     name="surveys",
+     *     methods={"GET"},
+     *     defaults={"id": null}
+     * )
+     *
+     * @param Semester|null $semester
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showSurveysAction(Semester $semester = null)
     {
-        $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy([], ['id' => 'DESC']);
+        if ($semester === null) {
+            $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
+        }
+        $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
+            ['semester' => $semester], ['id' => 'DESC']
+        );
         foreach ($surveys as $survey) {
             $totalAnswered = count($this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findBy(array('survey' => $survey)));
             $survey->setTotalAnswered($totalAnswered);
         }
 
-        return $this->render('survey/surveys.html.twig', array('surveys' => $surveys));
+        return $this->render('survey/surveys.html.twig', array(
+            'surveys' => $surveys,
+            'semester' => $semester
+        ));
     }
 
     public function editSurveyAction(Request $request, Survey $survey)
@@ -261,7 +285,10 @@ class SurveyController extends Controller
             return $this->redirect($this->generateUrl('surveys'));
         }
 
-        return $this->render('survey/survey_create.html.twig', array('form' => $form->createView()));
+        return $this->render('survey/survey_create.html.twig', array(
+            'form' => $form->createView(),
+            'survey' => $survey
+        ));
     }
 
     /**
