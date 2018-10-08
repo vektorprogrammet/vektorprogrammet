@@ -108,7 +108,7 @@ class ArticleRepository extends EntityRepository
             ->select('a.slug');
         $temp = $qb->getQuery()->getResult();
         $slugs = [];
-        foreach ($temp as $slug){
+        foreach ($temp as $slug) {
             array_push($slugs, $slug['slug']);
         }
         return $slugs;
