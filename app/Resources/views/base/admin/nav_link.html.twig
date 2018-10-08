@@ -1,0 +1,10 @@
+{% set currentRoute = app.request.attributes.get('_route') %}
+{% if not activeRoutes is defined %}
+    {% set activeRoutes = [] %}
+{% endif %}
+
+<li class="nav-item">
+    <a class="nav-link{% if route == currentRoute or currentRoute in activeRoutes %} active{% endif %}" href="{{ path(route) }}">
+        <i class="fa fa-{{ icon }} nav-icon"></i> {{ name }}
+    </a>
+</li>

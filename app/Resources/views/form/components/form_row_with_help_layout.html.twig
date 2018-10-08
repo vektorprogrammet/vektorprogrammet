@@ -6,7 +6,7 @@
 
 {% block form_row %}
     {% spaceless %}
-        <div>
+        <div class="form-group">
             {{ form_label(form, label|default(null), {'label_attr': {'class': valid ? 'question-label': 'question-label error'}}) }}
             {{ block('field_help') }}
             {{ form_errors(form) }}

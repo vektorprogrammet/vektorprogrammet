@@ -14,9 +14,7 @@ class InfoMeetingControllerTest extends BaseWebTestCase
 
         $crawler = $this->teamLeaderGoTo('/kontrollpanel/semesteradmin/update/2');
 
-        $this->assertEquals(1, $crawler->filter('h1:contains("Endre opptaksperiode")')->count());
-
-        $saveButton = $crawler->filter('button:contains("Endre")');
+        $saveButton = $crawler->filter('button:contains("Lagre")');
         $this->assertNotNull($saveButton);
 
         $form = $saveButton->form();

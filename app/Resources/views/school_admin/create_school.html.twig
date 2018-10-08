@@ -1,35 +1,24 @@
 {% extends 'adminBase.html.twig' %}
 
+{% set header = school is defined ? school.name : 'Opprett skole' %}
+
 {% block title %}
-    Opprett skole
+    {{ header }}
 {% endblock %}
 
-{% form_theme form 'form/foundation_layout.html.twig' %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{{ path("schooladmin_show") }}">Skoler</a></li>
+    <li class="breadcrumb-item active">{{ header }}</li>
+{% endblock %}
 
 {% block body %}
-    <p></p>
-
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-
-            <h1> Opprett skole </h1>
-
-            <hr>
-
-            <div class="row">
-                <div class="small-12 medium-12 large-12 columns">
-
-
-                    {{ form_start(form) }}
-                    {{ form_widget(form) }}
-                    {{ form_end(form) }}
-
-                </div>
-            </div>
-
-
+    <div class="card">
+        <div class="card-header"><i class="fa fa-school"></i> {{ header }}</div>
+        <div class="card-body">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
         </div>
-    </div>
     </div>
 
 {% endblock %}

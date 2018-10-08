@@ -1,38 +1,56 @@
 {% block school_table %}
-    <table width="100%" id="table">
-        <thead>
-        <tr>
-            <th> Skole</th>
-            <th> Kontaktperson</th>
-            <th> Telefon</th>
-            <th> E-post</th>
-            <th colspan="3"> Språk</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        {% for s in schools %}
+    <div class="card-body table-responsive">
+        <table class="table" width="100%" id="table">
+            <thead>
             <tr>
-                <td><a href="{{ path('schooladmin_show_specific_school', { 'id': s.id }) }}">{{ s.name }}</a>
-                </td>
-                <td> {{ s.contactPerson }} </td>
-                <td> {{ s.phone }} </td>
-                <td> {{ s.email }} </td>
-                <td> {{ s.international ? 'Internasjonal':'Norsk' }} </td>
-
-                {# Only SUPER_ADMIN can edit #}
                 {% if is_granted_team_leader() %}
-                    <td><a href="{{ path('schooladmin_update', { 'id': s.id }) }}"
-                           class="button tiny">Rediger</a></td>
+                <th></th>
                 {% endif %}
-
-                {# Only HIGHEST_ADMIN can delete #}
-                {% if is_granted_admin() %}
-                    <td><a href="#" id="{{ s.id }}" class="button tiny alert delete"><i
-                                    class="fa fa-trash-o"></i> Slett</a></td>
-                {% endif %}
+                <th> Skole</th>
+                <th> Kontaktperson</th>
+                <th> Telefon</th>
+                <th> E-post</th>
+                <th> Språk</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+
+            <tbody>
+            {% for s in schools %}
+                <tr>
+                    {% if is_granted_team_leader() %}
+                        <td>
+                            <div class="dropdown">
+                                <div class="clickable" id="options-{{ s.id }}" data-toggle="dropdown"
+                                     aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-secondary"></i>
+                                </div>
+                                <div class="dropdown-menu pt-0" aria-labelledby="options-{{ s.id }}">
+                                    <div class="dropdown-header mb-2"><strong>{{ s.name }}</strong></div>
+                                    <a class="dropdown-item"
+                                       href="{{ path('schooladmin_update', {'id': s.id}) }}"><i
+                                                class="fa fa-pencil text-primary"></i> Rediger</a>
+                                    {% if is_granted_admin() %}
+                                        <form method="POST"
+                                              action="{{ path('schooladmin_delete_school_by_id', {'id': s.id}) }}"
+                                              onsubmit="return confirm('Er du sikker på at du vil slette skolen {{ s.name }}?')">
+                                            <button class="dropdown-item">
+                                                <i class="fa fa-trash text-danger"></i> Slett
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                    {% endif %}
+                    <td><a href="{{ path('schooladmin_show_specific_school', { 'id': s.id }) }}">{{ s.name }}</a>
+                    </td>
+                    <td> {{ s.contactPerson }} </td>
+                    <td> {{ s.phone }} </td>
+                    <td> {{ s.email }} </td>
+                    <td> {{ s.international ? 'Internasjonal':'Norsk' }} </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

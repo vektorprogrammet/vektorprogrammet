@@ -60,6 +60,20 @@ class TeamRepository extends EntityRepository
      *
      * @return Team[]
      */
+    public function findInActiveByDepartment(Department $department): array
+    {
+        return $this->findByDepartmentQueryBuilder($department)
+                    ->andWhere('team.active = false')
+                    ->orderBy('team.name', 'ASC')
+                    ->getQuery()
+                    ->getResult();
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return Team[]
+     */
     public function findByOpenApplicationAndDepartment(Department $department): array
     {
         return $this->createQueryBuilder('team')
