@@ -21,7 +21,6 @@
     <div class="card-block tab-content px-3 px-sm-4 py-2 py-sm-4 mx-sm-4">
         {% for department in departments %}
             {% set form = forms[department.city] %}
-            {% form_theme form 'form/bootstrap_4_layout.html.twig' %}
             <div role="tabpanel" class="tab-pane fade in" id="{{ department }}">
                 <div class="card-block px-3 px-sm-0 my-2 my-sm-0">
                     {% if department.currentAdmissionPeriod and department.currentAdmissionPeriod.hasActiveAdmission() %}

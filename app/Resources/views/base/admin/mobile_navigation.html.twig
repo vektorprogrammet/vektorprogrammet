@@ -1,12 +1,12 @@
 <!--Mobile Navigation-->
-<div class="show-for-small-only">
+<div class="show-for-col-only">
     <div class="row">
-        <div class="small-12 columns" style="text-align: center;">
+        <div class="col-12" style="text-align: center;">
             {% include 'base/logo_link.html.twig' %}
         </div>
     </div>
     <div class="row">
-        <div class="small-12 columns" style="text-align: center;margin-top:20px;margin-bottom:20px;">
+        <div class="col-12" style="text-align: center;margin-top:20px;margin-bottom:20px;">
             <a href="{{ path('home') }}">Tilbake til hovedsiden</a>
         </div>
     </div>
@@ -66,9 +66,8 @@
                         <ul class="dropdown">
                             <li><a href="{{ path('departmentadmin_show') }}">Avdeling</a></li>
                             <li><a href="{{ path('schooladmin_show') }}">Skole</a></li>
-                            <li><a href="{{ path('newsletter_show_all') }}">Nyhetsbrev</a></li>
                             <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
-                            <li><a href="{{ path('sponsors_edit') }}">Sponsorer</a></li>
+                            <li><a href="{{ path('sponsors_show') }}">Sponsorer</a></li>
                             <li><a href="{{ path('receipts_show') }}">Utlegg</a></li>
                             <li><a href="{{ path('certificate_show') }}">Attest</a></li>
                             {%  if is_granted_team_leader() %}

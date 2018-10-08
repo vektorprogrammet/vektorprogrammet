@@ -19,14 +19,9 @@ class DepartmentControllerTest extends BaseWebTestCase
 
     public function testCreateDepartment()
     {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
-        $crawler = $client->request('GET', '/kontrollpanel/avdelingadmin');
-
-        // Assert a specific 200 status code
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $client = $this->createAdminClient();
+        $crawler = $this->goTo('/kontrollpanel/avdelingadmin', $client);
+        $this->assertEquals(0, $crawler->filter('a:contains("Ålesund")')->count());
 
         // Find a link and click it
         $link = $crawler->selectLink('Opprett avdeling')->link();
@@ -53,15 +48,8 @@ class DepartmentControllerTest extends BaseWebTestCase
         // Follow the redirect
         $crawler = $client->followRedirect();
 
-        // Assert that we created a new entity
-        $this->assertContains('Ålesund', $client->getResponse()->getContent());
-        $this->assertContains('Ål', $client->getResponse()->getContent());
-        $this->assertContains('abcde@vektorprogrammet.no', $client->getResponse()->getContent());
-
         // Check the count for the different variables
         $this->assertEquals(1, $crawler->filter('a:contains("Ålesund")')->count());
-        $this->assertEquals(2, $crawler->filter('td:contains("Ål")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("abcde@vektorprogrammet.no")')->count());
     }
 
     public function testCreateDepartmentWithNonUniqueName()
@@ -86,12 +74,12 @@ class DepartmentControllerTest extends BaseWebTestCase
         $form['createDepartment[city]'] = 'Trondheim'; // Not unique!
 
         // submit the form
-        $client->submit($form);
+        $crawler = $client->submit($form);
 
         // Assert not redirected
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         // Assert body contains validation error
-        $this->assertContains('This value is already used', $client->getResponse()->getContent());
+        $this->assertEquals(1, $crawler->filter('div.invalid-feedback:contains("Verdien er allerede brukt")')->count());
     }
 
     public function testUpdateDepartment()
@@ -107,9 +95,6 @@ class DepartmentControllerTest extends BaseWebTestCase
         // Find a link and click it
         $link = $crawler->selectLink('Rediger')->first()->link();
         $crawler = $client->click($link);
-
-        // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opprett avdeling")')->count());
 
         $form = $crawler->selectButton('Opprett')->form();
 

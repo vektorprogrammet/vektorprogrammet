@@ -1,0 +1,34 @@
+{% if interview.interviewStatusAsString == 'Ny tid ønskes' %}
+    <div class="card border-warning mb-5">
+        <div class="card-body">
+            <h5 class="card-title text-bold text-warning">{{ u.firstName }} har bedt om nytt tidspunkt for intervju</h5>
+            <p class="card-text text-center">
+                <span class="text-bold">
+                    Følgende tider passer
+                    <span class="text-underline">ikke</span>
+                </span>
+                <br>
+                {% if interview.newTimeMessage %}
+                    <i class="fa fa-comment-o"></i> {{ u.firstName }}: <i>{{ interview.newTimeMessage }}</i>
+                {% else %}
+                    Ingen tilbakemelding gitt
+                {% endif %}
+            </p>
+        </div>
+    </div>
+{% elseif interview.interviewStatusAsString == 'Kansellert' %}
+    <div class="card border-danger mb-5">
+        <div class="card-body text-danger">
+            <h5 class="card-title text-bold">{{ u.firstName }} har kansellert intervjuet</h5>
+            <p class="card-text text-center">
+                <span class="text-bold">Begrunnelse</span>
+                <br>
+                {% if interview.cancelMessage %}
+                    <i class="fa fa-comment-o"></i>  {{ u.firstName }}: <i>{{ interview.cancelMessage }}</i>
+                {% else %}
+                    Ingen begrunnelse gitt
+                {% endif %}
+            </p>
+        </div>
+    </div>
+{% endif %}

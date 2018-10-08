@@ -18,9 +18,15 @@ class ReceiptController extends BaseController
     {
         $usersWithReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithReceipts();
         $refundedReceipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByStatus(Receipt::STATUS_REFUNDED);
-        $receiptStatistics = new ReceiptStatistics($refundedReceipts);
-        $totalPayoutThisYear = $receiptStatistics->totalPayoutIn((new \DateTime())->format('Y'));
-        $avgRefundTimeInHours = $receiptStatistics->averageRefundTimeInHours();
+        $pendingReceipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByStatus(Receipt::STATUS_PENDING);
+        $rejectedReceipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByStatus(Receipt::STATUS_REJECTED);
+
+        $refundedReceiptStatistics = new ReceiptStatistics($refundedReceipts);
+        $totalPayoutThisYear = $refundedReceiptStatistics->totalPayoutIn((new \DateTime())->format('Y'));
+        $avgRefundTimeInHours = $refundedReceiptStatistics->averageRefundTimeInHours();
+
+        $pendingReceiptStatistics = new ReceiptStatistics($pendingReceipts);
+        $rejectedReceiptStatistics = new ReceiptStatistics($rejectedReceipts);
 
         $sorter = $this->container->get('app.sorter');
 
@@ -31,7 +37,10 @@ class ReceiptController extends BaseController
             'users_with_receipts' => $usersWithReceipts,
             'current_user' => $this->getUser(),
             'total_payout' => $totalPayoutThisYear,
-            'avg_refund_time_in_hours' => $avgRefundTimeInHours
+            'avg_refund_time_in_hours' => $avgRefundTimeInHours,
+            'pending_statistics' => $pendingReceiptStatistics,
+            'rejected_statistics' => $rejectedReceiptStatistics,
+            'refunded_statistics' => $refundedReceiptStatistics
         ));
     }
 
@@ -135,7 +144,7 @@ class ReceiptController extends BaseController
         return $this->render('receipt/edit_receipt.html.twig', array(
             'form' => $form->createView(),
             'receipt' => $receipt,
-            'parent_template' => 'base_new.html.twig',
+            'parent_template' => 'base.html.twig',
         ));
     }
 

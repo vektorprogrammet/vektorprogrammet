@@ -1,17 +1,31 @@
 {% extends 'adminBase.html.twig' %}
 
+{% set header = isEdit ? 'Endre ' ~ fieldOfStudy.shortName : 'Opprett ny linje' %}
+
+{% block title %}
+    {{ header }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('show_field_of_studies') }}">Linjer</a>
+    </li>
+    <li class="breadcrumb-item active">{{ header }}</li>
+{% endblock %}
+
+
 {% block body %}
     <div class="row">
-        <div class="small-12 medium-8 large-6 columns">
-            {% if isEdit %}
-                <h2>Endre {{ fieldOfStudy.shortName }}</h2>
-            {% else %}
-                <h2>Opprett ny linje</h2>
-            {% endif %}
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <button>Lagre</button>
-            {{ form_end(form) }}
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-bars"></i> {{ header }}</div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button class="btn btn-primary">Lagre</button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

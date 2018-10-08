@@ -1,73 +1,90 @@
 {% extends 'adminBase.html.twig' %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('teamadmin_show', {'id': application.team.department.id}) }}">Team</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{{ path('teamadmin_show_specific_team', {'id': application.team.id}) }}">{{ application.team.name }}</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{{ path('team_application_show_all', {'id': application.team.id}) }}">Søkere</a>
+    </li>
+    <li class="breadcrumb-item active">
+        {{ application.name }}
+    </li>
+{% endblock %}
+
 {% block body %}
     <div class="row">
-        <div class="small-12 columns">
-            <h3>Søknad til {{ application.team.name }} fra {{ application.name }}</h3>
+        <div class="col-12 col-lg-9">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Søknad til {{ application.team.name }} fra {{ application.name }}</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <b>Navn</b>
+                            </td>
+                            <td>
+                                {{ application.name }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Epost</b>
+                            </td>
+                            <td>
+                                {{ application.email }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Telefon</b>
+                            </td>
+                            <td>
+                                {{ application.phone }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Studieår</b>
+                            </td>
+                            <td>
+                                {{ application.yearOfStudy }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Linje</b>
+                            </td>
+                            <td>
+                                {{ application.fieldOfStudy }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Om søkeren</b>
+                            </td>
+                            <td>
+                                {{ application.biography|replace({'\n':'<br>'})|safe_html }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Motivasjon</b>
+                            </td>
+                            <td>
+                                {{ application.motivationText|replace({'\n':'<br>'})|safe_html }}
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="small-12 columns">
-            <table>
-                <tr>
-                    <td>
-                        <b>Navn</b>
-                    </td>
-                    <td>
-                        {{ application.name }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <b>Epost</b>
-                    </td>
-                    <td>
-                        {{ application.email }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <b>Telefon</b>
-                    </td>
-                    <td>
-                        {{ application.phone }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <b>Studieår</b>
-                    </td>
-                    <td>
-                        {{ application.yearOfStudy }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <b>Linje</b>
-                    </td>
-                    <td>
-                        {{ application.fieldOfStudy }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <b>Om søkeren</b>
-                    </td>
-                    <td>
-                        {{ application.biography|replace({'\n':'<br>'})|safe_html }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <b>Motivasjon</b>
-                    </td>
-                    <td>
-                        {{ application.motivationText|replace({'\n':'<br>'})|safe_html }}
-                    </td>
-                </tr>
-            </table>
-
-        </div>
-    </div>
-
 
 {% endblock %}

@@ -94,6 +94,7 @@ security:
         - { path: ^/kontrollpanel/skoleadmin/opprett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/skoleadmin/brukere/avdeling, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/skoleadmin/historikk/slett, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/skole/timeplan, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/intervju/skjema, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/intervju/fordel, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/undersokelse/slett, role: ROLE_SUPER_ADMIN }
@@ -104,7 +105,9 @@ security:
         - { path: ^/kontrollpanel/teamadmin/stilling/slett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/oppdater/teamhistorie, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/team/nytt_medlem, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/teamadmin/avdeling, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/teamadmin/avdeling/opprett, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/teamadmin/update, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/team/avdeling/, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/team/slett/bruker, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/slett, roles: ROLE_SUPER_ADMIN }
         - { path: ^/kontrollpanel/linje, roles: ROLE_SUPER_ADMIN }
@@ -132,8 +135,8 @@ security:
 
           #ROLE_ADMIN = team user
         - { path: ^/signatures, roles: ROLE_ADMIN }
-        - { path: ^/kontrollpanel/attest/lastned, roles: ROLE_ADMIN }
-        - { path: ^/profile/attest, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/attest, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/profile/attest, roles: ROLE_SUPER_ADMIN }
         - { path: ^/profile/edit, roles: ROLE_ADMIN }
         - { path: ^/efconnect, role: ROLE_ADMIN }
         - { path: ^/elfinder, role: ROLE_ADMIN }

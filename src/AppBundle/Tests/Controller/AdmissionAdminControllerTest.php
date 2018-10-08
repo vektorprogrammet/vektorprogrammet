@@ -11,103 +11,84 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
     {
         $crawler = $this->teamMemberGoTo('/kontrollpanel/opptak');
 
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
-        $this->assertEquals(0, $crawler->filter('a.button:contains("Ny søker")')->count());
-        $this->assertEquals(0, $crawler->filter('td>a.button:contains("Slett")')->count());
-        $this->assertEquals(0, $crawler->filter('td>a.button:contains("Fordel")')->count());
+        $this->assertEquals(1, $crawler->filter('h2:contains("Opptak")')->count());
+        $this->assertEquals(0, $crawler->filter('a.btn:contains("Ny søker")')->count());
+        $this->assertEquals(0, $crawler->filter('option:contains("Fordel intervju")')->count());
+        $this->assertEquals(0, $crawler->filter('option:contains("Slett søknad")')->count());
+        $this->assertEquals(0, $crawler->filter('a.btn:contains("Utfør")')->count());
     }
 
     public function testShowAsTeamLeader()
     {
         $crawler = $this->teamLeaderGoTo('/kontrollpanel/opptak');
 
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
-        $this->assertEquals(0, $crawler->filter('td>a:contains("Slett")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Fordel")')->count());
+        $this->assertEquals(1, $crawler->filter('h2:contains("Opptak")')->count());
+        $this->assertEquals(1, $crawler->filter('a.btn:contains("Ny søker")')->count());
+        $this->assertEquals(1, $crawler->filter('option:contains("Fordel intervju")')->count());
+        $this->assertEquals(0, $crawler->filter('option:contains("Slett søknad")')->count());
+        $this->assertEquals(1, $crawler->filter('a.btn:contains("Utfør")')->count());
     }
 
     public function testShowAsAdmin()
     {
         $crawler = $this->adminGoTo('/kontrollpanel/opptak');
 
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
-        $this->assertEquals(2, $crawler->filter('td>a:contains("Slett")')->count());
-        $this->assertEquals(2, $crawler->filter('td>a:contains("Fordel")')->count());
+        $this->assertEquals(1, $crawler->filter('h2:contains("Opptak")')->count());
+        $this->assertEquals(1, $crawler->filter('a.btn:contains("Ny søker")')->count());
+        $this->assertEquals(1, $crawler->filter('option:contains("Fordel intervju")')->count());
+        $this->assertEquals(1, $crawler->filter('option:contains("Slett søknad")')->count());
+        $this->assertEquals(1, $crawler->filter('a.btn:contains("Utfør")')->count());
     }
 
     public function testAssignedAsTeamMember()
     {
         $crawler = $this->teamMemberGoTo('/kontrollpanel/opptak/fordelt');
 
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
-        $this->assertEquals(0, $crawler->filter('td>a:contains("Sett opp")')->count());
-        $this->assertEquals(0, $crawler->filter('td>a:contains("Intervju")')->count());
+        $this->assertEquals(1, $crawler->filter('h2:contains("Opptak")')->count());
+        $this->assertEquals(0, $crawler->filter('td a:contains("Sett opp")')->count());
+        $this->assertEquals(0, $crawler->filter('td a:contains("Start intervju")')->count());
     }
 
     public function testAssignedAsTeamLeader()
     {
         $crawler = $this->teamLeaderGoTo('/kontrollpanel/opptak/fordelt');
 
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
-        $this->assertEquals(2, $crawler->filter('td>a:contains("Sett opp")')->count());
-        $this->assertEquals(2, $crawler->filter('td>a:contains("Intervju")')->count());
+        $this->assertEquals(1, $crawler->filter('h2:contains("Opptak")')->count());
+        $this->assertGreaterThanOrEqual(1, $crawler->filter('td a:contains("Sett opp")')->count());
+        $this->assertGreaterThanOrEqual(1, $crawler->filter('td a:contains("Start intervju")')->count());
     }
 
     public function testAssignedAsAdmin()
     {
         $crawler = $this->adminGoTo('/kontrollpanel/opptak/fordelt');
 
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
-        $this->assertEquals(2, $crawler->filter('td>a:contains("Sett opp")')->count());
-        $this->assertEquals(2, $crawler->filter('td>a:contains("Intervju")')->count());
+        $this->assertEquals(1, $crawler->filter('h2:contains("Opptak")')->count());
+        $this->assertGreaterThanOrEqual(1, $crawler->filter('td a:contains("Sett opp")')->count());
+        $this->assertGreaterThanOrEqual(1, $crawler->filter('td a:contains("Start intervju")')->count());
     }
 
     public function testInterviewedAsTeamMember()
     {
         $crawler = $this->teamMemberGoTo('/kontrollpanel/opptak/intervjuet');
 
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
-        $this->assertEquals(0, $crawler->filter('td>a:contains("Les intervju")')->count());
-        $this->assertEquals(0, $crawler->filter('td>a:contains("Slett")')->count());
+        $this->assertEquals(1, $crawler->filter('h2:contains("Opptak")')->count());
+        $this->assertEquals(0, $crawler->filter('td button:contains("Slett")')->count());
     }
 
     public function testInterviewedAsTeamLeader()
     {
         $crawler = $this->teamLeaderGoTo('/kontrollpanel/opptak/intervjuet');
 
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
-        $this->assertEquals(0, $crawler->filter('td>a.button.tiny:contains("Slett")')->count());
-        $this->assertGreaterThan(1, $crawler->filter('td>a.button.tiny:contains("Les intervju")')->count());
+        $this->assertEquals(1, $crawler->filter('h2:contains("Opptak")')->count());
+        $this->assertGreaterThanOrEqual(0, $crawler->filter('td button:contains("Slett")')->count());
     }
 
     public function testInterviewedAsAdmin()
     {
         $crawler = $this->adminGoTo('/kontrollpanel/opptak/intervjuet');
 
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Avdeling")')->count());
-        $this->assertEquals(3, $crawler->filter('a:contains("Opptaksperiode")')->count());
-        $this->assertGreaterThan(1, $crawler->filter('td>a.button:contains("Les intervju")')->count());
-        $this->assertGreaterThan(1, $crawler->filter('td>a.button:contains("Slett")')->count());
-    }
-
-    public function testAssistantIsDenied()
-    {
-        $client = self::createAssistantClient();
-
-        $client->request('GET', '/kontrollpanel/opptak');
-
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+        $this->assertEquals(1, $crawler->filter('h2:contains("Opptak")')->count());
+        $this->assertGreaterThanOrEqual(1, $crawler->filter('td button:contains("Slett")')->count());
     }
 
     public function testShowApplicationsByDepartment()
@@ -227,28 +208,10 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         ));
 
         $crawler = $client->request('GET', '/kontrollpanel/opptak/fordelt');
-        $this->assertEquals(1, $crawler->filter('td:contains("Ruben")')->count());
-        $this->assertEquals(1, $crawler->filter('td:contains("Ravnå")')->count());
+        $this->assertGreaterThanOrEqual(1, $crawler->filter('td:contains("Ruben Ravnå")')->count());
 
         $crawler = $client->request('GET', '/kontrollpanel/opptak/nye');
-        $this->assertEquals(0, $crawler->filter('td:contains("Ruben")')->count());
-        $this->assertEquals(0, $crawler->filter('td:contains("Ravnå")')->count());
-    }
-
-    /**
-     * Assert that no email is sent when we click on 'Lagre tidspunkt'.
-     */
-    public function testSaveAndNoEmail()
-    {
-        $client = self::createAdminClient();
-        $crawler = $this->goTo('/kontrollpanel/intervju/settopp/6', $client);
-        $form['scheduleInterview[datetime]'] = '2015-08-10 15:00:00';
-        $form = $crawler->selectButton('Lagre tidspunkt')->form();
-        $client->enableProfiler();
-        $client->submit($form);
-
-        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
-        $this->assertEquals(0, $mailCollector->getMessageCount());
+        $this->assertEquals(0, $crawler->filter('td:contains("Ruben Ravnå")')->count());
     }
 
     /**

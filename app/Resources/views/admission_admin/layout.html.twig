@@ -81,7 +81,7 @@
                         modal.html(response.form);
                         modal.find("form").data("app-id", applicationId);
                         modal.find("form").submit(AppAdmin.onAssignFormSubmit);
-                        modal.foundation("reveal", "open");
+                        modal.modal();
                     }
                 });
             },
@@ -96,12 +96,13 @@
                     url: Routing.generate('interview_assign', {id: applicationId}),
                     data: formdata,
                     success: function (respone) {
-                        AppAdmin.appTable.find("tr#" + applicationId).find(".assign").addClass("success");
+                      window.location.reload();
+                        // AppAdmin.appTable.find("tr#" + applicationId).find(".assign").addClass("success");
                     }
                 });
 
                 //Close the modal
-                $("#assignModal").foundation("reveal", "close");
+                $("#assignModal").modal('hide');
             },
 
             bulkAction: function (event) {
@@ -124,25 +125,25 @@
                                 var modal = $("#assignModal");
                                 modal.html(response.form);
                                 modal.find("form").submit(AppAdmin.onBulkAssignFormSubmit);
-                                modal.foundation("reveal", "open");
+                                modal.modal();
                             }
                         });
                         break;
                     case "deleteApplication":
                         var modal = $("#bulkModal");
-                        var acceptBtn = $('<li><a href="#" class="button tiny">Slett</a></li>');
-                        var cancelBtn = $('<li><a href="#" class="button tiny">Avbryt</a></li>');
+                        var acceptBtn = $('<button class="btn btn-primary">Slett</button>');
+                        var cancelBtn = $('<button class="btn btn-secondary">Avbryt</button>');
 
-                        modal.find(".modalMessage").html("Vil du virkelig slette søknadede?");
-                        modal.find(".modalButtons").empty().append(acceptBtn).append(cancelBtn);
+                        modal.find(".modalMessage").html("Vil du virkelig slette søknadene?");
+                        modal.find(".modal-footer").empty().append(cancelBtn).append(acceptBtn);
 
                         acceptBtn.on("click", AppAdmin.bulkDeleteApplications);
                         cancelBtn.on("click", function (event) {
                             event.preventDefault();
-                            modal.foundation("reveal", "close");
+                            modal.modal('hide');
                         });
 
-                        modal.foundation("reveal", "open");
+                        modal.modal();
                         break;
                     case "deleteInterview":
                         var modal = $("#bulkModal");
@@ -155,10 +156,10 @@
                         acceptBtn.on("click", AppAdmin.bulkDeleteInterviews);
                         cancelBtn.on("click", function (event) {
                             event.preventDefault();
-                            modal.foundation("reveal", "close");
+                            modal.modal('hide');
                         });
 
-                        modal.foundation("reveal", "open");
+                        modal.modal();
                         break;
                 }
             },
@@ -166,13 +167,13 @@
             bulkDeleteApplications: function (event) {
                 event.preventDefault();
                 var formdata = $("#bulk").serialize();
-
                 $.ajax({
                     type: 'POST',
                     url: Routing.generate('admissionadmin_delete_application_bulk'),
                     data: formdata,
                     success: function (response) {
                         if (response.success) {
+                            window.location.reload();
                             $(".bulkCheck:checked").closest("tr").remove();
                         } else {
                             alert(response.cause);
@@ -182,7 +183,7 @@
                 });
 
                 //Close the modal
-                $("#assignModal").foundation("reveal", "close");
+                $("#assignModal").modal('hide');
             },
 
             bulkDeleteInterviews: function (event) {
@@ -204,7 +205,7 @@
                 });
 
                 //Close the modal
-                $("#assignModal").foundation("reveal", "close");
+                $("#assignModal").modal('hide');
             },
 
             onBulkAssignFormSubmit: function (event) {
@@ -217,12 +218,13 @@
                     url: "{{ path('interview_assign_bulk') }}",
                     data: formdata,
                     success: function (response) {
+                      window.location.reload();
                         $(".bulkCheck:checked").closest("tr").find(".assign").addClass("success");
                     }
                 });
 
                 //Close the modal
-                $("#assignModal").foundation("reveal", "close");
+                $("#assignModal").modal('hide');
             },
 
             toggleSelectAll: function () {
@@ -250,98 +252,82 @@
     Opptak
 {% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">
+        Opptak
+    </li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    <div class="btn-group">
+        {% if is_granted_team_leader() %}
+            {% include "common/department_semester_dropdowns.html.twig" with {
+                'path': 'applications_show_new',
+                'departmentParameterName': 'department',
+                'semesterParameterName': 'semester',
+                'department': department,
+                'semester': semester
+            } %}
+        {% else %}
+            <ul class="inline-list">
+                {% include 'common/semester_dropdown.html.twig' with {
+                    'pathForSemester': 'applications_show_new',
+                    'departmentParameterName': 'department',
+                    'semesterParameterName': 'semester',
+                    'department': department,
+                    'semester': semester
+                } %}
+            </ul>
+        {% endif %}
+        </div>
+{% endblock %}
+
 
 {% block body %}
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-
-            <h1>Opptak {{ department }}</h1>
-
-            <hr>
-
-            <div class="row">
-
-                {# Contains the bulk action navigation. Bulk actions depends on interview status #}
-                <div class="small-4 columns">
-                        {% if is_granted_team_leader() %}
-                            {% include "common/department_semester_dropdowns.html.twig" with {
-                                'path': 'applications_show_new',
-                                'departmentParameterName': 'department',
-                                'semesterParameterName': 'semester',
-                                'department': department,
-                                'semester': semester
-                            } %}
-                        {% else %}
-                            <ul class="inline-list">
-                                {% include 'common/semester_dropdown.html.twig' with {
-                                    'pathForSemester': 'applications_show_new',
-                                    'departmentParameterName': 'department',
-                                    'semesterParameterName': 'semester',
-                                    'department': department,
-                                    'semester': semester
-                                } %}
-                            </ul>
-                        {% endif %}
-                </div>
-                {# The interview status navigation #}
-                <div class="small-7 columns" style="float:right">
-                    <dl id="interviewStatusNav" class="sub-nav right">
-                        <dt>Status:</dt>
-                        <dd {{ status == "new" ? 'class="active"' : '' }}>
-                            <a href="{{ path('applications_show_new', {'department': department.id, 'semester': semester.id}) }}">Nye</a>
-                        </dd>
-                        <dd {{ status == "assigned" ? 'class="active"' : '' }}>
-                            <a href="{{ path('applications_show_assigned', {'department': department.id, 'semester': semester.id}) }}">Fordelt</a>
-                        </dd>
-                        <dd {{ status == "interviewed" ? 'class="active"' : '' }}>
-                            <a href="{{ path('applications_show_interviewed', {'department': department.id, 'semester': semester.id}) }}">Intervjuet</a>
-                        </dd>
-                        <dd {{ status == "existing" ? 'class="active"' : '' }}>
-                            <a href="{{ path('applications_show_existing', {'department': department.id, 'semester': semester.id}) }}">Tidligere Assistenter</a>
-                        </dd>
-                    </dl>
-                </div>
-            </div>
-
-
-             {#Contains an application table, depends on interview status #}
-            {% block applications %}
-
-            {% endblock %}
+        <div class="col-12">
+            <h2 class="text-center my-3">Opptak {{ semester.name }}</h2>
+                <ul class="nav nav-tabs justify-content-center mt-4 mb-5">
+                    <li class="nav-item">
+                        <a class="nav-link {{ status == "new" ? 'active' : '' }}" href="{{ path('applications_show_new', {'department': department.id, 'semester': semester.id}) }}">Nye Søkere</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ status == "existing" ? 'active' : '' }}" href="{{ path('applications_show_assigned', {'department': department.id, 'semester': semester.id}) }}">Tidligere Assistenter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ status == "assigned" ? 'active' : '' }}" href="{{ path('applications_show_interviewed', {'department': department.id, 'semester': semester.id}) }}">Intervjufordeling</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ status == "interviewed" ? 'active' : '' }}" href="{{ path('applications_show_existing', {'department': department.id, 'semester': semester.id}) }}">Intervjuer</a>
+                    </li>
+                </ul>
         </div>
     </div>
 
-    {# The confirmation modal, used to confirm application deletes #}
-    <div id="deleteAppModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
-         aria-hidden="true" role="dialog">
-        <h2 class="modalMessage">Vil du virkelig slette søknaden?</h2>
-        <ul class="inline-list modalButtons">
-            <a href="#" class="button tiny accept">Slett</a>
-            <a href="#" class="button tiny cancel">Avbryt</a>
-        </ul>
+<div class="row">
+    <div class="col-12">
+        {#Contains an application table, depends on interview status #}
+        {% block applications %}{% endblock %}
     </div>
-
-    {# The confirmation modal, used to confirm interview deletes #}
-    <div id="deleteIntModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
-         aria-hidden="true" role="dialog">
-        <h2 class="modalMessage">Vil du virkelig slette intervjuet?</h2>
-        <ul class="inline-list modalButtons">
-            <a href="#" class="button tiny accept">Slett</a>
-            <a href="#" class="button tiny cancel">Avbryt</a>
-        </ul>
-    </div>
+</div>
 
     {# The assign interview modal #}
-    <div id="assignModal" class="reveal-modal tiny" data-reveal aria-labelledby="assignFormModal" aria-hidden="true"
+    <div id="assignModal" class="modal fade" data-reveal aria-labelledby="assignFormModal" aria-hidden="true"
          role="dialog">
     </div>
 
     {# The bulk modal, used by the various bulk actions #}
-    <div id="bulkModal" class="reveal-modal small" data-reveal aria-labelledby="assignFormModal" aria-hidden="true"
+    <div id="bulkModal" class="modal fade" data-reveal aria-labelledby="assignFormModal" aria-hidden="true"
          role="dialog">
-        <h2 class="modalMessage"></h2>
-        <ul class="inline-list modalButtons">
-        </ul>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modalMessage"></h2>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}

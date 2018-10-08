@@ -25,20 +25,7 @@ class InterviewSchemaController extends BaseController
     {
         $schema = new InterviewSchema();
 
-        $form = $this->createForm(new InterviewSchemaType(), $schema);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($schema);
-            $em->flush();
-
-            // Need some form of redirect. Will cause wrong database entries if the form is rendered again
-            // after a valid submit, without remaking the form with up to date question objects from the database.
-            return $this->redirect($this->generateUrl('interview_schema'));
-        }
-
-        return $this->render('interview/schema.html.twig', array('form' => $form->createView()));
+        return $this->editSchemaAction($request, $schema);
     }
 
     /**
@@ -59,13 +46,14 @@ class InterviewSchemaController extends BaseController
             $em = $this->getDoctrine()->getManager();
             $em->persist($schema);
             $em->flush();
-
-            // Need some form of redirect. Will cause wrong database entries if the form is rendered again
-            // after a valid submit, without remaking the form with up to date question objects from the database.
             return $this->redirect($this->generateUrl('interview_schema'));
         }
 
-        return $this->render('interview/schema.html.twig', array('form' => $form->createView()));
+        return $this->render('interview/schema.html.twig', array(
+            'form' => $form->createView(),
+            'schema' => $schema,
+            'isCreate' => !$schema->getId()
+        ));
     }
 
     /**

@@ -1,0 +1,38 @@
+<div
+        id="prototypes"
+        data-prototype-a="{{ form_row(questions.vars.prototype.children['alternatives'].vars.prototype.alternative) | e }}"
+        data-prototype-q="{{ form_row(questions.vars.prototype.question) | e }}
+                {{ form_row(questions.vars.prototype.help) | e }}
+                {{ form_row(questions.vars.prototype.type) | e }}
+                {% if questions.vars.prototype.optional is defined %}{{ form_row(questions.vars.prototype.optional) | e }}{% endif %}
+                ">
+</div>
+
+<div id="questions">
+    {% for question in questions %}
+        <div class="card question-card">
+            <div class="card-header">Spørsmål</div>
+            <div class="card-body">
+                {{ form_row(question.question) }}
+                {{ form_row(question.help) }}
+                {{ form_row(question.type) }}
+                {% if question.optional is defined %}
+                        {{ form_row(question.optional) }}
+                {% endif %}
+                <div class="row">
+                    <div class="alternatives col-12 col-md-8 col-lg-7 col-xl-6">
+                        {% for alternative in question.alternatives %}
+                            <div class="alternative">
+                                {{ form_row(alternative.alternative) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="buttons col-8 col-md-6 col-lg-4">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

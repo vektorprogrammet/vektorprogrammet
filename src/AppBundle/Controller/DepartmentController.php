@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Department;
 use AppBundle\Form\Type\CreateDepartmentType;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DepartmentController extends BaseController
 {
@@ -27,22 +26,13 @@ class DepartmentController extends BaseController
             $em->persist($department);
             $em->flush();
 
+            $this->addFlash("success", "$department ble opprettet");
+
             return $this->redirectToRoute('departmentadmin_show');
         }
 
         return $this->render('department_admin/create_department.html.twig', array(
             'form' => $form->createView(),
-        ));
-    }
-
-    public function getAllDepartmentsForTopbarAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $departments = $em->getRepository('AppBundle:Department')->findActive();
-
-        return $this->render('home/department_loop.html.twig', array(
-            'departments' => $departments,
         ));
     }
 
@@ -52,7 +42,9 @@ class DepartmentController extends BaseController
         $em->remove($department);
         $em->flush();
 
-        return new JsonResponse(array('success' => true));
+        $this->addFlash("success", "Avdelingen ble slettet");
+
+        return $this->redirectToRoute("departmentadmin_show");
     }
 
     public function updateDepartmentAction(Request $request, Department $department)
@@ -65,6 +57,8 @@ class DepartmentController extends BaseController
             $em = $this->getDoctrine()->getManager();
             $em->persist($department);
             $em->flush();
+
+            $this->addFlash("success", "$department ble oppdatert");
 
             return $this->redirectToRoute('departmentadmin_show');
         }

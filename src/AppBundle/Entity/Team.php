@@ -81,7 +81,12 @@ class Team implements TeamInterface
     /**
      * @ORM\Column(type="boolean", options={"default"=true})
      */
-    protected $active;
+    private $active;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TeamApplication", mappedBy="team")
+     */
+    private $applications;
 
     /**
      * @return bool
@@ -350,5 +355,21 @@ class Team implements TeamInterface
             return $a->getSemester() === $semester;
         });
         return count($array);
+    }
+
+    /**
+     * @return TeamApplication[]
+     */
+    public function getApplications()
+    {
+        return $this->applications;
+    }
+
+    /**
+     * @param TeamApplication $applications
+     */
+    public function setApplications(TeamApplication $applications): void
+    {
+        $this->applications = $applications;
     }
 }

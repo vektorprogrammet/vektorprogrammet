@@ -25,6 +25,10 @@
   font-weight: bold;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .text-link {
   color: $primary-color;
   &:hover {
@@ -51,4 +55,16 @@
 
 .color-status-cancelled {
   color: $color-status-cancelled;
+}
+
+.fs-16 {
+  font-size: 16px;
+}
+
+.fs-18 {
+  font-size: 18px;
+}
+
+.fs-20 {
+  font-size: 20px;
 }

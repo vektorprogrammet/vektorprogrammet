@@ -2,25 +2,17 @@
 
 
 {% block body %}
-    <p></p>
 
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <div class="panel">
+        <div class="col-12 col-md-12 col-lg-6">
+            <div class="card">
+                <div class="card-body">
 
-                <div class="row">
-                    <div class="small-12 medium-12 large-6 columns">
-                        <div class="panel">
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
 
-                            {{ form_start(form) }}
-                            {{ form_widget(form) }}
-
-                            {{ form_end(form) }}
-                        </div>
-                    </div>
+                    {{ form_end(form) }}
                 </div>
-
-
             </div>
         </div>
     </div>

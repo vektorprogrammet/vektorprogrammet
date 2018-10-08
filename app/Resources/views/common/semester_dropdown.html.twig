@@ -1,17 +1,12 @@
-<li>
-    <a class="button tiny" data-dropdown="semesterDropDown" aria-controls="semesterDropDown"
-       aria-expanded="false"><i class="fa fa-calendar button-icon-left"></i>{% if semester != NULL %}{{ semester.name }}{% else %}Semester{% endif %}<i
-                class="fa fa-caret-down button-icon-right"></i></a>
-    <ul id="semesterDropDown" class="f-dropdown" data-dropdown-content tabindex="-1"
-        aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
+<div class="dropdown">
+    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="semesterDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-calendar button-icon-left"></i>{% if semester != NULL %}{{ semester.name }}{% else %}Semester{% endif %}
+    </button>
+    <div class="dropdown-menu" aria-labelledby="semesterDropDown">
         {% for s in get_semesters() %}
 
-            <li>
-                <a href="{{ path(pathForSemester, { (departmentParameterName): department.id, (semesterParameterName): s.id }) }}">{{ s.name }}</a>
-            </li>
+            <a class="dropdown-item" href="{{ path(pathForSemester, { (departmentParameterName): department.id, (semesterParameterName): s.id }) }}">{{ s.name }}</a>
 
         {% endfor %}
-    </ul>
-</li>
-
+    </div>
+</div>
