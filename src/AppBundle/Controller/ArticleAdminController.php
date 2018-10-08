@@ -85,6 +85,8 @@ class ArticleAdminController extends Controller
             $article->setImageSmall($imageSmall);
             $article->setImageLarge($imageLarge);
 
+            $this->get('app.slug_maker')->setSlugFor($article);
+
             $em->persist($article);
             $em->flush();
 
@@ -132,6 +134,7 @@ class ArticleAdminController extends Controller
             if ($imageLarge) {
                 $article->setImageLarge($imageLarge);
             }
+
             $em->persist($article);
             $em->flush();
 

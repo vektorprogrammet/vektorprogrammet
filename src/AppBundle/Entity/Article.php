@@ -27,7 +27,7 @@ class Article
     protected $title;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", unique=true)
      */
     protected $slug;
 
@@ -119,8 +119,6 @@ class Article
     public function setTitle($title)
     {
         $this->title = $title;
-        $this->setSlug($title);
-
         return $this;
     }
 
@@ -137,18 +135,13 @@ class Article
     /**
      * Set slug.
      *
-     * @param string $title
+     * @param string $slug
      *
      * @return Article
      */
-    public function setSlug($title)
+    public function setSlug($slug)
     {
-        $a = array('Æ', 'Ø', 'Å', 'æ', 'ø', 'å', '&shy;', '-', '!', ',', '.');
-        $b = array('AE', 'O', 'A', 'ae', 'o', 'a', '', '', '', '', '');
-        $title = str_replace($a, $b, $title);
-
-        $this->slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
-
+        $this->slug = $slug;
         return $this;
     }
 
