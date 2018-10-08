@@ -141,21 +141,19 @@ class SurveyController extends BaseController
 
     /**
      * @Route(
-     *     "/kontrollpanel/undersokelse/admin/{id}",
+     *     "/kontrollpanel/undersokelse/admin",
      *     name="surveys",
      *     methods={"GET"},
-     *     defaults={"id": null}
      * )
      *
      * @param Semester|null $semester
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showSurveysAction(Semester $semester = null)
+    public function showSurveysAction()
     {
-        if ($semester === null) {
-            $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
-        }
+        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404();
         $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
             ['semester' => $semester], ['id' => 'DESC']
         );
@@ -166,7 +164,8 @@ class SurveyController extends BaseController
 
         return $this->render('survey/surveys.html.twig', array(
             'surveys' => $surveys,
-            'semester' => $semester
+            'department' => $department,
+            'semester' => $semester,
         ));
     }
 

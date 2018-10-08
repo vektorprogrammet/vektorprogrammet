@@ -21,7 +21,7 @@
                 'linkToSemester': false,
             } %}
 
-            <a class="btn text-success btn-sm" href="{{ path('semester_create', { 'id': department.id }) }}">
+            <a class="btn text-success btn-sm" href="{{ path('admission_period_create', { 'id': department.id }) }}">
                 <i class="fa fa-plus"></i> Opptaksperiode
             </a>
         </div>
@@ -63,14 +63,14 @@
                                                 <i class="fa fa-ellipsis-v text-secondary"></i>
                                             </div>
                                             <div class="dropdown-menu pt-0" aria-labelledby="options-{{ a.id }}">
-                                                <div class="dropdown-header mb-2"><strong>{{ a.name }}</strong></div>
+                                                <div class="dropdown-header mb-2"><strong>{{ a }}</strong></div>
                                                 <a class="dropdown-item"
-                                                   href="{{ path('semester_update', {'id': a.id}) }}"><i
+                                                   href="{{ path('admission_period_update', {'id': a.id}) }}"><i
                                                             class="fa fa-pencil text-primary"></i> Rediger</a>
                                                 {% if is_granted_admin() %}
                                                     <form method="POST"
-                                                          action="{{ path('semester_delete', {'id': a.id}) }}"
-                                                          onsubmit="return confirm('Er du sikker på at du vil slette {{ a.name }}?')">
+                                                          action="{{ path('admission_period_delete', {'id': a.id}) }}"
+                                                          onsubmit="return confirm('Er du sikker på at du vil slette {{ a }}?')">
                                                         <button class="dropdown-item">
                                                             <i class="fa fa-trash text-danger"></i> Slett
                                                         </button>
@@ -80,7 +80,7 @@
                                         </div>
                                     </td>
                                 {% endif %}
-                                <td>{{ a.name }}</td>
+                                <td>{{ a }}</td>
                                 <td> {{ a.admissionStartDate|date('d. M Y') }}
                                     kl. {{ a.admissionStartDate|date('H:i:s') }}</td>
                                 <td> {{ a.admissionEndDate|date('d. M Y') }}

@@ -31,7 +31,7 @@ class CertificateController extends BaseController
         $semester = $this->getSemesterOrThrow404();
         $em = $this->getDoctrine()->getManager();
 
-        $assistants = $em->getRepository('AppBundle:AssistantHistory')->findAssistantHistoriesByDepartment($department, $semester);
+        $assistants = $em->getRepository('AppBundle:AssistantHistory')->findByDepartmentAndSemester($department, $semester);
 
         $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($this->getUser());
         $oldPath = '';
