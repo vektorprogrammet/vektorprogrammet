@@ -95,6 +95,7 @@
             var filterDiv = $('<div></div>');
             filterDiv.addClass('row');
 
+
             // Create a multiple select box with alternatives for each question
             var questions = surveyData.survey.questions;
             for (var i = 0; i < questions.length; i++) {
@@ -103,7 +104,9 @@
                 title.html(question.question_label);
                 var filterList = $('<select class="form-control" multiple></select>');
                 filterList.attr('id', question.question_id.toString());
-                for (var j = 0; j < question.alternatives.length; j++) {
+
+
+                for (var j = 0 ; j < question.alternatives.length; j++) {
                     // Add alternative to the multiple select box
                     var alternative = question.alternatives[j];
                     var filterOption = $('<option></option>');
@@ -118,6 +121,7 @@
                     });
 
                     filterList.append(filterOption);
+
                 }
                 // Wrapper for the multiple select box and question text
                 var selectWrapper = $('<div></div>');
@@ -156,8 +160,11 @@
                     }
                 })
 
+
+
                 // Get the filtered data and re-render the charts
                 var filteredSurveyData = filterSurveyData(surveyData, filter);
+                console.log(filter)
                 $('#show-filter-btn').click();
                 renderCharts(filteredSurveyData);
             });
@@ -211,6 +218,8 @@
                     data[questionId][alternatives[j]] = 0;
                 }
             }
+
+            console.log(data)
 
             // Count occurrences of different alternatives
             var answers = surveyData.answers;

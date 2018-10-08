@@ -333,6 +333,8 @@ class SurveyController extends Controller
         return $this->render('survey/survey_result.html.twig', array(
             'textAnswers' => $survey->getTextAnswerWithSchoolResults(),
             'survey' => $survey,
+            'teamSurvey' =>  $survey->isTeamSurvey(),
+
         ));
     }
 
@@ -340,27 +342,38 @@ class SurveyController extends Controller
     {
         $surveysTaken = $this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
         $validSurveysTaken = array();
-        $schools = [];
-        foreach ($surveysTaken as $surveyTaken) {
-            if (is_null($surveyTaken->getSchool())) {
-                continue;
+
+        $group = array();
+        $title = "";
+        if ($survey->isTeamSurvey()) {
+            foreach ($surveysTaken as $surveyTaken) {
+                foreach ($surveyTaken->getUser()->getTeamMemberships() as $teamMembership) {
+                    $group[] = $teamMembership->getTeam()->getName();
+                }
             }
 
-            $validSurveysTaken[] = $surveyTaken;
+            $title = "Team";
+        } else {
+            foreach ($surveysTaken as $surveyTaken) {
+                if (is_null($surveyTaken->getSchool())) {
+                    continue;
+                }
 
-            if (!in_array($surveyTaken->getSchool()->getName(), $schools)) {
-                $schools[] = $surveyTaken->getSchool()->getName();
+                $validSurveysTaken[] = $surveyTaken;
+
+                if (!in_array($surveyTaken->getSchool()->getName(), $group)) {
+                    $group[] = $surveyTaken->getSchool()->getName();
+                }
             }
+
+            $title = "Skole";
         }
 
-
-        //Inject the school question into question array (if not team survey)
-
-
-        $schoolQuestion = array('question_id' => 0, 'question_label' => 'Skole', 'alternatives' => $schools);
+        //Inject the school/team question into question array
+        $groupQuestion = array('question_id' => 0, 'question_label' => $title, 'alternatives' => $group);
         $survey_json = json_encode($survey);
         $survey_decode = json_decode($survey_json, true);
-        $survey_decode['questions'][] = $schoolQuestion;
+        $survey_decode['questions'][] = $groupQuestion;
 
         return new JsonResponse(array('survey' => $survey_decode, 'answers' => $validSurveysTaken));
     }

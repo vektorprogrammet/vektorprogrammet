@@ -255,7 +255,6 @@ class Survey implements \JsonSerializable
                     continue;
                 }
 
-
                 $teamNames = array();
                 foreach ($answer->getSurveyTaken()->getUser()->getTeamMemberships() as $teamMembership) {
                     $teamNames[] = $teamMembership->getTeam()->getName();
