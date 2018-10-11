@@ -8,25 +8,6 @@ use AppBundle\Entity\FieldOfStudy;
 
 class UserEntityUnitTest extends \PHPUnit_Framework_TestCase
 {
-    /* Did not manage to get this working
-    // Check whether the setPassword function is working correctly
-    public function testSetPassword(){
-
-        // new entity
-        $user = new User();
-
-        // dummy password
-        $password = password_hash("test", PASSWORD_BCRYPT, array('cost' => 12));
-
-        // Use the setPassword method
-        $user->setPassword("test");
-
-        // Assert the result
-        $this->assertEquals($password, $user->getPassword());
-
-    }
-    */
-
     // Check whether the setEmail function is working correctly
     public function testSetEmail()
     {
