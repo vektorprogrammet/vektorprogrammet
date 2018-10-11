@@ -13,6 +13,7 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
     {
         $article1 = new Article();
         $article1->setTitle('VEKAS VEKTOR&shy;ASSISTENT! MØT TORSTEIN!');
+        $article1->setSlug('1');
         $article1->setImageLarge('images/1124.jpg');
         $article1->setImageSmall('images/small/1124.jpg');
         $article1->setPublished(true);
@@ -27,6 +28,7 @@ EOT;
 
         $article2 = new Article();
         $article2->setTitle('VEKAS VEKTOR&shy;ASSISTENT! MØT BEATE!');
+        $article2->setSlug('2');
         $article2->setImageLarge('images/1122.jpg');
         $article2->setImageSmall('images/small/1122.jpg');
         $article2->setPublished(true);
@@ -41,6 +43,7 @@ EOT;
 
         $article3 = new Article();
         $article3->setTitle('VEKAS VEKTOR&shy;ASSISTENT! MØT SIRI!');
+        $article3->setSlug('3');
         $article3->setImageLarge('images/1094.jpg');
         $article3->setImageSmall('images/small/1094.jpg');
         $article3->setPublished(true);
@@ -55,6 +58,7 @@ EOT;
 
         $article4 = new Article();
         $article4->setTitle('VEKTOR&shy;PROGRAMMET TILBYR FORELDREKURS!');
+        $article4->setSlug('4');
         $article4->setImageLarge('images/28.png');
         $article4->setImageSmall('images/small/28.png');
         $article4->setPublished(true);
@@ -68,6 +72,7 @@ EOT;
 
         $article5 = new Article();
         $article5->setTitle('KVIFOR MATEMATIKK ER DET VIKTIGASTE DU LÆRAR I GRUNNSKULEN.');
+        $article5->setSlug('5');
         $article5->setImageLarge('images/195.png');
         $article5->setImageSmall('images/small/195.png');
         $article5->setPublished(true);
@@ -82,6 +87,7 @@ EOT;
 
         $article6 = new Article();
         $article6->setTitle('VI SØKER NYE TEAM&shy;MEDLEMMER!');
+        $article6->setSlug('6');
         $article6->setImageLarge('images/986.jpg');
         $article6->setImageSmall('images/small/986.jpg');
         $article6->setPublished(true);
@@ -96,6 +102,7 @@ EOT;
 
         $article7 = new Article();
         $article7->setTitle('TA EN UT&shy;FORDRING - SØK SPONSOR&shy;TEAMET!');
+        $article7->setSlug('7');
         $article7->setImageLarge('images/135.png');
         $article7->setImageSmall('images/small/135.png');
         $article7->setPublished(true);
@@ -110,6 +117,7 @@ EOT;
 
         $article8 = new Article();
         $article8->setTitle('VEKAS VEKTOR&shy;ASSISTENT! MØT SIREN!');
+        $article8->setSlug('test-title');
         $article8->setImageLarge('images/1130.jpg');
         $article8->setImageSmall('images/small/1130.jpg');
         $article8->setPublished(true);

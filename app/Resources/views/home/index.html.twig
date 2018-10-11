@@ -47,11 +47,11 @@
                                          alt="First slide">
                                     <div class="carousel-caption">
                                         <div class="content text-dark-blue">
-                                            <a href="{{ path('article_show', {'id': article.id}) }}">
+                                            <a href="{{ path('article_show', {'slug': article.slug}) }}">
                                                 <h4>{{ article.title|safe_html }}</h4>
                                             </a>
                                             <p>{{ article.article|striptags|split(' ')|slice(0,40)|join(' ')|safe_html }}... <a class="medium-bold"
-                                                       href="{{ path('article_show', {'id': article.id}) }}">LES MER <i
+                                                       href="{{ path('article_show', {'slug': article.slug}) }}">LES MER <i
                                                             class="fa fa-chevron-right"></i></a></p>
                                         </div>
                                     </div>
