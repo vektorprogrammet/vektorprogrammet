@@ -19,7 +19,7 @@ class Version20181008175719 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE article ADD slug VARCHAR(255)');
-        $this->addSql('UPDATE article SET slug=CONVERT(id, VARCHAR(255))');
+        $this->addSql('UPDATE article SET slug=CONVERT(id, CHAR(255))');
         $this->addSql('ALTER TABLE article MODIFY slug VARCHAR(255) NOT NULL');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_23A0E66989D9B62 ON article (slug)');
     }
