@@ -13,7 +13,7 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
     {
         $article1 = new Article();
         $article1->setTitle('VEKAS VEKTOR&shy;ASSISTENT! MØT TORSTEIN!');
-        $article1->setSlug('test-title');
+        $article1->setSlug('1');
         $article1->setImageLarge('images/1124.jpg');
         $article1->setImageSmall('images/small/1124.jpg');
         $article1->setPublished(true);
@@ -117,7 +117,7 @@ EOT;
 
         $article8 = new Article();
         $article8->setTitle('VEKAS VEKTOR&shy;ASSISTENT! MØT SIREN!');
-        $article8->setSlug('8');
+        $article8->setSlug('test-title');
         $article8->setImageLarge('images/1130.jpg');
         $article8->setImageSmall('images/small/1130.jpg');
         $article8->setPublished(true);
