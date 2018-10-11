@@ -4,36 +4,30 @@
     Opprett semester
 {% endblock %}
 
-{% form_theme form 'form/foundation_layout.html.twig' %}
-
 {% block stylesheets %}
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.min.css">
 {% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('semester_show_by_department', {'id': department.id}) }}">Opptaksperioder</a>
+    </li>
+    <li class="breadcrumb-item active">Opprett</li>
+{% endblock %}
+
+
 {% block body %}
-    <p></p>
-
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-
-            <h1> Opprett semester {{ department }}</h1>
-
-            <hr>
-
-
-            <div class="row">
-
-                <div class="small-12 medium-12 large-6 columns">
-
+        <div class="col-12 col-md-12 col-lg-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-industry"></i> Opprett semester {{ department }}</div>
+                <div class="card-body">
                     {{ form_start(form) }}
                     {{ form_widget(form) }}
                     {{ form_end(form) }}
-
                 </div>
-
             </div>
-
         </div>
     </div>
 

@@ -1,0 +1,55 @@
+<table class="table">
+
+    <thead>
+    <tr>
+        <th></th>
+        <th>Navn</th>
+        <th>E-post</th>
+        <th colspan="3">Opptak</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for team in teams %}
+        <tr>
+            <td>
+                {% if is_granted_team_leader() %}
+                    <div class="dropdown">
+                        <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"
+                             aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v text-secondary"></i>
+                        </div>
+                        <div class="dropdown-menu pt-0" aria-labelledby="options-{{ loop.index }}">
+                            <div class="dropdown-header mb-2"><strong>{{ team.name }}</strong></div>
+                            <a href="{{ path('teamadmin_update', { 'id': team.id }) }}"
+                               class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
+                            </a>
+                            {% if is_granted_admin() %}
+                                <form method="POST"
+                                      onsubmit="return confirm('Vil du virkelig slette team {{ team.name }}?')"
+                                      action="{{ path('teamadmin_delete_team_by_id', { id: team.id }) }}">
+                                    <button type="submit"
+                                            class="dropdown-item">
+                                        <i class="fa fa-trash text-danger"></i> Slett
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                {% endif %}
+            </td>
+            <td><a href="{{ path('teamadmin_show_specific_team', { 'id': team.id }) }}"> {{ team.name }} </a>
+            </td>
+            <td>
+                {{ team.email }}
+            </td>
+            {% if team.acceptApplication %}
+                <td><span class="text-success">Åpent</span></td>
+            {% else %}
+                <td><span class="text-alert">Stengt</span></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

@@ -12,7 +12,7 @@
     <meta property="og:type" content="website"/>
     {% if app.request.attributes.get('_route') is not null %}
         <meta property="og:url" content="http://vektorprogrammet.no/{{ path(app.request.attributes.get('_route'),
-        app.request.attributes.get('_route_params')) }}"/>
+            app.request.attributes.get('_route_params')) }}"/>
     {% endif %}
     <meta property="og:title" content="{{ block('title') }}"/>
     <meta property="og:image"
@@ -27,44 +27,48 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="#6FCEEE"><!-- iOS Safari -->
 
     <link rel="icon" type="image/x-icon" href="{{ asset_with_version('favicon.ico') }}"/>
+    <link rel="stylesheet" href="https://unpkg.com/@coreui/coreui/dist/css/coreui.min.css">
     <link rel="stylesheet" href="{{ asset_with_version('css/control_panel.css') }}">
     {% block stylesheets %}{% endblock %}
 </head>
-<body>
-<div class="top-line admin-top-line"></div>
+<body class="app sidebar-fixed aside-menu-fixed pace-done sidebar-lg-show">
 
-<header data-equalizer>
-    <div class="small-12 medium-3 columns hide-for-small-only" data-equalizer-watch>
-        {% include 'base/logo_link.html.twig' %}
-    </div>
-    <div class="medium-4 medium-offset-1 columns hide-for-small-only" data-equalizer-watch>
-        <h1 class="control-panel-header">Kontrollpanel</h1>
-    </div>
-    <div class="medium-4 columns hide-for-small-only">
-        <div class="float-right">
-            <a href="{{ path('home') }}">Tilbake til hovedsiden</a> | <a href="{{ path('logout') }}">Logg ut</a>
+<div class="app-body">
+    {% include 'base/admin/main_navigation.html.twig' %}
+    <main class="main">
+        <ol class="breadcrumb">
+            <li>
+                <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto pr-4" type="button" data-toggle="sidebar-show">
+                    <span class="fa fa-bars"></span>
+                </button>
+            </li>
+            {% block default_breadcrumb %}
+                <li class="breadcrumb-item">
+                    <a href="{{ path('home') }}">Forsiden</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{{ path('control_panel') }}">Kontrollpanel</a>
+                </li>
+            {% endblock %}
+            {% block breadcrumb %}
+            {% endblock %}
+            <li class="breadcrumb-menu">
+                {% block breadcrumb_menu %}
+
+                {% endblock %}
+            </li>
+        </ol>
+        {% include 'common/flash.html.twig' %}
+        <div class="container-fluid">
+            {% block body %}
+                <p>
+                    Content
+                </p>
+            {% endblock %}
+            {#{% include 'base/admin/footer.html.twig' %}#}
         </div>
-    </div>
-</header>
-
-<br>
-{% include 'base/admin/main_navigation.html.twig' %}
-{% include 'base/admin/mobile_navigation.html.twig' %}
-<br/>
-{% include 'common/flash_control_panel.html.twig' %}
-{% block body %}
-    <p>
-        Content
-    </p>
-{% endblock %}
-
-{% include 'base/admin/footer.html.twig' %}
-
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="{{ asset_with_version('/js/foundation.min.js') }}"></script>
-<script>
-  $(document).foundation();
-</script>
+    </main>
+</div>
 
 <script>
   (function (i, s, o, g, r, a, m) {
@@ -82,6 +86,17 @@
   ga('create', '{{ googleAnalyticsId }}', 'auto');
   ga('send', 'pageview');
 
+</script>
+
+<script src="{{ asset_with_version('/js/vendor.js') }}"></script>
+
+<script src="{{ asset_with_version('/scripts/coreui.js') }}"></script>
+<script src="{{ asset_with_version('/js/control_panel.js') }}"></script>
+
+<script>
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
 </script>
 
 {% block javascripts %}{% endblock %}

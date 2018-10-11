@@ -55,4 +55,14 @@ class ReceiptStatistics
 
         return intval(round($totalHours/count($receipts)));
     }
+
+    /**
+     * @return float
+     */
+    public function totalAmount()
+    {
+        return array_reduce($this->receipts, function (int $carry, Receipt $receipt) {
+            return $carry + $receipt->getSum();
+        }, 0.0);
+    }
 }
