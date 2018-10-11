@@ -22,12 +22,14 @@ class Article
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\Length(max=255)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt")
      */
     protected $title;
 
     /**
      * @ORM\Column(type="string", unique=true)
+     * @Assert\Length(max=255)
      */
     protected $slug;
 

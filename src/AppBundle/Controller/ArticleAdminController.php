@@ -70,6 +70,10 @@ class ArticleAdminController extends Controller
 
         $form->handleRequest($request);
 
+        if ($form->isSubmitted()) {
+            $this->get('app.slug_maker')->setSlugFor($article);
+        }
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
@@ -84,8 +88,6 @@ class ArticleAdminController extends Controller
 
             $article->setImageSmall($imageSmall);
             $article->setImageLarge($imageLarge);
-
-            $this->get('app.slug_maker')->setSlugFor($article);
 
             $em->persist($article);
             $em->flush();
