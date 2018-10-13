@@ -9,6 +9,7 @@ use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,7 +24,7 @@ class AccessRuleType extends AbstractType
 
         $builder
             ->add("name", TextType::class)
-	        ->add("resource", TextType::class)
+            ->add("resource", TextType::class)
             ->add("roles", EntityType::class, [
                 'label' => false,
                 "expanded" => true,
@@ -37,6 +38,9 @@ class AccessRuleType extends AbstractType
                 "class" => Team::class,
                 "group_by" => "department.city"
 
+            ])
+            ->add('forExecutiveBoard', CheckboxType::class, [
+                'label' => 'Hovedstyret'
             ])
             ->add("users", EntityType::class, [
                 'label' => false,

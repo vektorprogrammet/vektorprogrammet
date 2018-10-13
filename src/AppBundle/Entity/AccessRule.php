@@ -33,10 +33,15 @@ class AccessRule
      */
     private $method;
 
-	/**
-	 * @ORM\Column(type="boolean")
-	 */
-	private $isRoutingRule;
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isRoutingRule;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $forExecutiveBoard;
 
     /**
      * @ORM\ManyToMany(targetEntity="User")
@@ -53,13 +58,15 @@ class AccessRule
      */
     private $roles;
 
-	public function __construct() {
-		$this->isRoutingRule = false;
-		$this->method = "GET";
-	}
+    public function __construct()
+    {
+        $this->isRoutingRule = false;
+        $this->forExecutiveBoard = false;
+        $this->method = "GET";
+    }
 
 
-	/**
+    /**
      * @return int
      */
     public function getId()
@@ -163,17 +170,35 @@ class AccessRule
         $this->name = $name;
     }
 
-	/**
-	 * @return boolean
-	 */
-	public function isRoutingRule() {
-		return $this->isRoutingRule;
-	}
+    /**
+     * @return boolean
+     */
+    public function isRoutingRule()
+    {
+        return $this->isRoutingRule;
+    }
 
-	/**
-	 * @param boolean $isRoutingRule
-	 */
-	public function setIsRoutingRule( $isRoutingRule ): void {
-		$this->isRoutingRule = $isRoutingRule;
-	}
+    /**
+     * @param boolean $isRoutingRule
+     */
+    public function setIsRoutingRule($isRoutingRule): void
+    {
+        $this->isRoutingRule = $isRoutingRule;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isForExecutiveBoard()
+    {
+        return $this->forExecutiveBoard;
+    }
+
+    /**
+     * @param boolean $forExecutiveBoard
+     */
+    public function setForExecutiveBoard($forExecutiveBoard): void
+    {
+        $this->forExecutiveBoard = $forExecutiveBoard;
+    }
 }

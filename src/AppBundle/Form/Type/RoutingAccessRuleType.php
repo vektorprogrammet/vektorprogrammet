@@ -12,7 +12,7 @@ class RoutingAccessRuleType extends AccessRuleType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-    	parent::buildForm($builder, $options);
+        parent::buildForm($builder, $options);
 
         $choices = [];
         /**
