@@ -13,7 +13,7 @@ class CreateDepartmentTest extends TypeTestCase
      */
     public function testForm($data)
     {
-        $type = new CreateDepartmentType();
+        $type = CreateDepartmentType::class;
         $form = $this->factory->create($type);
 
         $object = new Department();

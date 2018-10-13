@@ -65,8 +65,8 @@ class ApplicationPracticalType extends AbstractType
         $builder->add('teamInterest', ChoiceType::class, array(
             'label' => 'Legg til personen i teaminteresse-listen?',
             'choices' => array(
-	            'Nei' => 0,
-	            'Ja' => 1,
+	            0 => 'Nei',
+	            1 => 'Ja',
             ),
             'expanded' => true,
             'multiple' => false,

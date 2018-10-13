@@ -13,7 +13,7 @@ class CreateSchoolTest extends TypeTestCase
      */
     public function testForm($data)
     {
-        $type = new CreateSchoolType();
+        $type = CreateSchoolType::class;
         $form = $this->factory->create($type);
 
         $object = new School();

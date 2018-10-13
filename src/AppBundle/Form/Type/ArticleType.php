@@ -41,8 +41,8 @@ class ArticleType extends AbstractType
             ->add('published', ChoiceType::class, array(
                 'label' => 'Status',
                 'choices' => [
-                    0 => 'Kladd',
-                    1 => 'Publisert',
+	                'Kladd' => 0,
+	                'Publisert' => 1,
                 ]
             ));
     }

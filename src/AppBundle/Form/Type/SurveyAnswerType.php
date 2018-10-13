@@ -113,7 +113,7 @@ class SurveyAnswerType extends AbstractType
                     } else {
                         $answers = array_combine($data['answerArray'], $data['answerArray']);
                     }
-                    $newChoices = array_merge($choices, $answers);
+                    $newChoices = array_merge($answers, $choices);
 
                     $form->remove('answerArray');
                     $form->add('answerArray', ChoiceType::class, array(

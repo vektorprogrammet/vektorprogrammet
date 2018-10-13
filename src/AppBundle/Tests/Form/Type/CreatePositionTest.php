@@ -13,7 +13,7 @@ class CreatePositionTest extends TypeTestCase
      */
     public function testForm($data)
     {
-        $type = new CreatePositionType();
+        $type = CreatePositionType::class;
         $form = $this->factory->create($type);
 
         $object = new Position();
