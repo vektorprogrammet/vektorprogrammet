@@ -2,7 +2,6 @@
 .env.*.php
 .env.php
 .env
-./npm-debug.log
 
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
@@ -34,26 +33,32 @@ crashlytics-build.properties
 
 ### Symfony ###
 /app/bootstrap.php.cache
-/app/cache/*
-!app/cache/.gitkeep
+/var/bootstrap.php.cache
+/var/SymfonyRequirements.php
 /app/config/parameters.yml
-/app/data
-/app/logs/*
-!app/logs/.gitkeep
+/var/cache/*
+!var/cache/.gitkeep
+/var/data
+!/var/data/.gitkeep
+/var/logs/*
+!var/logs/.gitkeep
 /app/phpunit.xml
 /bin/
 /composer.phar
 /vendor/
 /signatures/
-/www/bundles/
-/www/images/
-/www/fonts/
-/www/files/
-/www/js/
-/www/vendor/
-/www/css
-/www/static
-/www/media/
+/web/assets/
+/web/bundles/
+/web/images/
+/web/fonts/
+/web/webfonts/
+/web/files/
+/web/js/
+/web/vendor/
+/web/css
+/web/static
+/web/media/
+!/web/media/.gitkeep
 
 #npm
 /node_modules/

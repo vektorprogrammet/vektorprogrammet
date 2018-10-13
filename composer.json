@@ -73,11 +73,11 @@
     },
     "config": {
         "bin-dir": "bin",
-        "component-dir": "www/assets"
+        "component-dir": "web/assets"
     },
     "extra": {
         "symfony-app-dir": "app",
-        "symfony-web-dir": "www",
+        "symfony-web-dir": "web",
         "symfony-bin-dir": "bin",
         "symfony-var-dir": "var",
         "symfony-tests-dir": "tests",

@@ -14,8 +14,8 @@ npm install >>$log 2>&1
 ./node_modules/.bin/gulp build:prod >>$log 2>&1
 npm run setup:client >>$log 2>&1
 npm run build:client >>$log 2>&1
-php app/console cache:clear --env=prod >>$log 2>&1
-php app/console doctrine:migrations:migrate -n --env=prod >>$log 2>&1
+php bin/console cache:clear --env=prod >>$log 2>&1
+php bin/console doctrine:migrations:migrate -n --env=prod >>$log 2>&1
 echo "---------------------------------------------------" >>$log
 
 exit 0
