@@ -2,7 +2,6 @@
 
 namespace AppBundle\Service;
 
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -16,10 +15,8 @@ class FileUploader
     private $receiptFolder;
     private $profilePhotoFolder;
     private $galleryImageFolder;
-    /**
-     * @var string
-     */
     private $articleFolder;
+    private $sponsorFolder;
 
     /**
      * FileUploader constructor.
@@ -30,8 +27,9 @@ class FileUploader
      * @param string $galleryImageFolder
      * @param string $profilePhotoFolder
      * @param string $articleFolder
+     * @param string $sponsorFolder
      */
-    public function __construct(string $signatureFolder, string $logoFolder, string $receiptFolder, string $galleryImageFolder, string $profilePhotoFolder, string $articleFolder)
+    public function __construct(string $signatureFolder, string $logoFolder, string $receiptFolder, string $galleryImageFolder, string $profilePhotoFolder, string $articleFolder, string $sponsorFolder)
     {
         $this->signatureFolder = $signatureFolder;
         $this->logoFolder = $logoFolder;
@@ -39,6 +37,19 @@ class FileUploader
         $this->galleryImageFolder = $galleryImageFolder;
         $this->profilePhotoFolder = $profilePhotoFolder;
         $this->articleFolder = $articleFolder;
+        $this->sponsorFolder = $sponsorFolder;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return string absolute file path
+     */
+    public function uploadSponsor(Request $request)
+    {
+        $file = $this->getFileFromRequest($request);
+
+        return $this->uploadFile($file, $this->sponsorFolder);
     }
 
     /**
@@ -165,6 +176,17 @@ class FileUploader
         }
 
         return $this->getAbsolutePath($targetFolder, $fileName);
+    }
+
+    public function deleteSponsor(string $path)
+    {
+        if (empty($path)) {
+            return;
+        }
+
+        $fileName = $this->getFileNameFromPath($path);
+
+        $this->deleteFile("$this->sponsorFolder/$fileName");
     }
 
     public function deleteSignature(string $path)

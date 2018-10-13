@@ -22,7 +22,7 @@ class SchoolCapacityType extends AbstractType
                 'label' => 'Skole',
                 'class' => 'AppBundle:School',
                 'query_builder' => function (SchoolRepository $er) use ($department) {
-                    return $er->findSchoolsWithoutCapacity($department);
+                    return $er->findActiveSchoolsWithoutCapacity($department);
                 },
             ))
             ->add('monday', IntegerType::class)

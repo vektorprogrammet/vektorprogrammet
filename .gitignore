@@ -22,6 +22,7 @@
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
+npm-debug.log
 
 # JIRA plugin
 atlassian-ide-plugin.xml

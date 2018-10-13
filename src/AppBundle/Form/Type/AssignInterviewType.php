@@ -12,7 +12,8 @@ class AssignInterviewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('interview', CreateInterviewType::class, [
-            'roles' => $options['roles']
+            'roles' => $options['roles'],
+            'department' => $options['department'],
         ]);
 
         $builder->add('save', SubmitType::class, array(
@@ -23,7 +24,8 @@ class AssignInterviewType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'roles' => []
+            'roles' => [],
+	        'department' => null
         ]);
     }
 

@@ -1,0 +1,82 @@
+{% extends "adminBase.html.twig" %}
+
+{% set title =  is_create ? 'Opprett ny sponsor' : 'Rediger ' ~ sponsor.name %}
+
+{% block title %}
+    Sponsor | {{ title }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('sponsors_show') }}">Sponsorer</a>
+    </li>
+    <li class="breadcrumb-item active">
+        {{ title }}
+    </li>
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-12 col-lg-8 col-xl-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-money"></i> {{ title }}
+                </div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+                    <div class="hide">
+                        {{ form_widget(form.logoImagePath) }}
+                    </div>
+                    {{ form_rest(form) }}
+                    <img src="{{ sponsor.logoImagePath }}" class="img-fluid" id="preview"
+                         style="max-width: 200px; max-height: 150px;">
+                    <br>
+                    <button type="button" class="btn btn-secondary" id="picture">
+                        Velg bilde
+                    </button>
+
+                    <br>
+                    <br>
+                    <button id="submit" type="submit"{% if not sponsor.logoImagePath %} disabled{% endif %}
+                            class="btn btn-primary">Lagre
+                    </button>
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+      var uploadButton = $('#picture');
+      var realUploadButton = $('#sponsor_logoImagePath');
+      var preview = $('#preview');
+      var submitBtn = $('#submit');
+      uploadButton.click(function () {
+        realUploadButton.click();
+      });
+
+      function readURL(input) {
+
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            preview.attr('src', e.target.result);
+          };
+
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+
+      realUploadButton.change(function () {
+        preview.parent().removeClass('hide');
+        readURL(this);
+        submitBtn.attr('disabled', false);
+      });
+    </script>
+{% endblock %}

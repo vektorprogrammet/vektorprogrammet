@@ -4,6 +4,7 @@ imports:
     - { resource: services.yml }
     - { resource: image_filters.yml }
     - { resource: "@AppBundle/Resources/config/services.yml" }
+    - { resource: automapper.yml }
 
 parameters:
   google_api:
@@ -54,7 +55,7 @@ parameters:
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -83,9 +84,7 @@ twig:
        filebrowser_window_width: 1200 #The initial width of window when opened
        filebrowser_window_height: 800
     form_themes:
-#        - 'form/foundation_layout.html.twig'
-
-
+        - 'form/bootstrap_4_layout.html.twig'
 
 # Assetic Configuration
 assetic:
@@ -292,3 +291,7 @@ nexy_slack:
     endpoint: "%slack_endpoint%"
     username: 'vektorbot'
     icon: ':robot_face:'
+
+knp_paginator:
+    template:
+        pagination: '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig'

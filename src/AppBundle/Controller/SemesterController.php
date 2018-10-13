@@ -42,7 +42,7 @@ class SemesterController extends Controller
         // Renders the view with the variables
         return $this->render('semester_admin/index.html.twig', array(
             'semesters' => $semesters,
-            'departmentName' => $department->getShortName(),
+            'department' => $department,
         ));
     }
 
@@ -56,7 +56,7 @@ class SemesterController extends Controller
 
         return $this->render('semester_admin/index.html.twig', array(
             'semesters' => $semesters,
-            'departmentName' => $department->getShortName(),
+            'department' => $department,
         ));
     }
 

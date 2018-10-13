@@ -24,18 +24,18 @@ class SurveyQuestionType extends AbstractType
             'attr' => array('placeholder' => 'Fyll inn hjelpetekst'),
         ));
 
-        $builder->add('type', ChoiceType::class, array(
-            'choices' => array(
-                'text' => 'Text',
-                'radio' => 'Multiple choice',
-                'list' => 'Velg fra liste',
-                'check' => 'Checkboxes'
-            ),
-            'label' => 'Type',
-        ));
+	    $builder->add( 'type', ChoiceType::class, array(
+		    'choices' => array(
+			    'Text'            => 'text',
+			    'Multiple choice' => 'radio',
+			    'Velg fra liste'  => 'list',
+			    'Checkboxes'      => 'check'
+		    ),
+		    'label'   => 'Type',
+	    ) );
 
         $builder->add('alternatives', CollectionType::class, array(
-            'type' => new SurveyQuestionAlternativeType(),
+            'entry_type' => SurveyQuestionAlternativeType::class,
             'allow_add' => true,
             'allow_delete' => true,
             'prototype_name' => '__a_prot__',
@@ -46,8 +46,8 @@ class SurveyQuestionType extends AbstractType
             'label' => 'Valgfritt',
             'expanded' => 'true',
             'choices' => array(
-                '0' => 'Nei',
-                '1' => 'Ja',
+	            'Nei' => '0',
+	            'Ja' => '1',
             ),
         ));
     }

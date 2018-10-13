@@ -73,7 +73,7 @@ class CreateTeamMembershipType extends AbstractType
                 'required' => false,
             ))
             ->add('save', SubmitType::class, array(
-                'label' => 'Opprett',
+                'label' => 'Legg til',
             ));
     }
 

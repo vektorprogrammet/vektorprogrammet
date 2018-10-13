@@ -38,8 +38,8 @@ class SurveyType extends AbstractType
                 'multiple' => false,
                 'expanded' => true,
                 'choices' => [
-                    false => 'Standard',
-                    true => 'Tilpasset',
+	                'Standard' => false,
+	                'Tilpasset' => true,
                 ]
             ])
 
@@ -48,8 +48,8 @@ class SurveyType extends AbstractType
                 'multiple' => false,
                 'expanded' => true,
                 'choices' => [
-                    false => 'Medlemmer og Ledere',
-                    true => 'Kun Ledere'
+                    'Medlemmer og Ledere' => false,
+                    'Kun Ledere' => true
                 ]
             ))
             
@@ -58,7 +58,7 @@ class SurveyType extends AbstractType
             ])
 
         ->add('surveyQuestions', CollectionType::class, array(
-            'type' => new SurveyQuestionType(),
+            'entry_type' => SurveyQuestionType::class,
             'allow_add' => true,
             'allow_delete' => true,
             'prototype_name' => '__q_prot__',

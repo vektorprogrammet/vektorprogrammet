@@ -4,20 +4,68 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd42aeaf40a4d43a9f868c8113b85043",
+    "content-hash": "3a5b555d76550ce17b80c2b7aaf183aa",
     "packages": [
         {
-            "name": "components/elfinder",
-            "version": "3.0",
+            "name": "bcc/auto-mapper-bundle",
+            "version": "1.2.0",
+            "target-dir": "BCC/AutoMapperBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/helios-ag/elfinder-component.git",
-                "reference": "f936fd522d060d26f8434f6c9d2a77044100b78f"
+                "url": "https://github.com/michelsalib/BCCAutoMapperBundle.git",
+                "reference": "ae50416b6a0d1c0c93a8ed1fd9ec58c283376de5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/helios-ag/elfinder-component/zipball/f936fd522d060d26f8434f6c9d2a77044100b78f",
-                "reference": "f936fd522d060d26f8434f6c9d2a77044100b78f",
+                "url": "https://api.github.com/repos/michelsalib/BCCAutoMapperBundle/zipball/ae50416b6a0d1c0c93a8ed1fd9ec58c283376de5",
+                "reference": "ae50416b6a0d1c0c93a8ed1fd9ec58c283376de5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "symfony/expression-language": ">=2.2.0 || ^3.0",
+                "symfony/framework-bundle": ">=2.2.0 || ^3.0",
+                "symfony/property-access": ">=2.2.0 || ^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.7.*"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "BCC\\AutoMapperBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michel Salib",
+                    "email": "michelsalib@hotmail.com",
+                    "homepage": "http://www.michelsalib.com"
+                }
+            ],
+            "description": "An object to object mapper bundle for Symfony2",
+            "homepage": "http://github.com/michelsalib/BCCAutoMapperBundle",
+            "keywords": [
+                "mapper automapper"
+            ],
+            "time": "2017-11-20T11:41:09+00:00"
+        },
+        {
+            "name": "components/elfinder",
+            "version": "3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/helios-ag/elfinder-component.git",
+                "reference": "88d12a1e9f47f437e7bbf2f1e0bb0eaa2e84dbe4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/helios-ag/elfinder-component/zipball/88d12a1e9f47f437e7bbf2f1e0bb0eaa2e84dbe4",
+                "reference": "88d12a1e9f47f437e7bbf2f1e0bb0eaa2e84dbe4",
                 "shasum": ""
             },
             "require": {
@@ -61,7 +109,7 @@
                 "elfinder",
                 "file manager"
             ],
-            "time": "2018-02-25T02:31:20+00:00"
+            "time": "2018-10-08T04:14:38+00:00"
         },
         {
             "name": "components/jquery",
@@ -1813,12 +1861,12 @@
             "version": "v2.2.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/google/google-api-php-client.git",
+                "url": "https://github.com/googleapis/google-api-php-client.git",
                 "reference": "4e0fd83510e579043e10e565528b323b7c2b3c81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-api-php-client/zipball/4e0fd83510e579043e10e565528b323b7c2b3c81",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/4e0fd83510e579043e10e565528b323b7c2b3c81",
                 "reference": "4e0fd83510e579043e10e565528b323b7c2b3c81",
                 "shasum": ""
             },
@@ -1869,16 +1917,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.68",
+            "version": "v0.71",
             "source": {
                 "type": "git",
-                "url": "https://github.com/google/google-api-php-client-services.git",
-                "reference": "f218f5697aa753fa031a09a14ed56a5a438070e4"
+                "url": "https://github.com/googleapis/google-api-php-client-services.git",
+                "reference": "f066aac8c0ea88cf5880611d589fd1e01c4fd082"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/f218f5697aa753fa031a09a14ed56a5a438070e4",
-                "reference": "f218f5697aa753fa031a09a14ed56a5a438070e4",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/f066aac8c0ea88cf5880611d589fd1e01c4fd082",
+                "reference": "f066aac8c0ea88cf5880611d589fd1e01c4fd082",
                 "shasum": ""
             },
             "require": {
@@ -1902,20 +1950,20 @@
             "keywords": [
                 "google"
             ],
-            "time": "2018-09-03T00:22:49+00:00"
+            "time": "2018-10-09T00:22:49+00:00"
         },
         {
             "name": "google/auth",
-            "version": "v1.3.3",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/google/google-auth-library-php.git",
-                "reference": "af72b3f50420c801dc35cc07b1fa429ae027b847"
+                "url": "https://github.com/googleapis/google-auth-library-php.git",
+                "reference": "196237248e636a3554a7d9e4dfddeb97f450ab5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-auth-library-php/zipball/af72b3f50420c801dc35cc07b1fa429ae027b847",
-                "reference": "af72b3f50420c801dc35cc07b1fa429ae027b847",
+                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/196237248e636a3554a7d9e4dfddeb97f450ab5c",
+                "reference": "196237248e636a3554a7d9e4dfddeb97f450ab5c",
                 "shasum": ""
             },
             "require": {
@@ -1949,7 +1997,7 @@
                 "google",
                 "oauth2"
             ],
-            "time": "2018-08-27T19:47:35+00:00"
+            "time": "2018-09-17T20:29:21+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -2364,16 +2412,16 @@
         },
         {
             "name": "knplabs/knp-components",
-            "version": "v1.3.9",
+            "version": "v1.3.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/knp-components.git",
-                "reference": "f0f830361ff0ee83ea5c5ffe49b429d2b0ff4266"
+                "reference": "fc1755ba2b77f83a3d3c99e21f3026ba2a1429be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/knp-components/zipball/f0f830361ff0ee83ea5c5ffe49b429d2b0ff4266",
-                "reference": "f0f830361ff0ee83ea5c5ffe49b429d2b0ff4266",
+                "url": "https://api.github.com/repos/KnpLabs/knp-components/zipball/fc1755ba2b77f83a3d3c99e21f3026ba2a1429be",
+                "reference": "fc1755ba2b77f83a3d3c99e21f3026ba2a1429be",
                 "shasum": ""
             },
             "require": {
@@ -2426,7 +2474,7 @@
                 "pager",
                 "paginator"
             ],
-            "time": "2018-08-03T08:37:27+00:00"
+            "time": "2018-09-11T07:54:48+00:00"
         },
         {
             "name": "knplabs/knp-paginator-bundle",
@@ -2748,16 +2796,16 @@
         },
         {
             "name": "mpdf/mpdf",
-            "version": "v7.1.4",
+            "version": "v7.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mpdf/mpdf.git",
-                "reference": "349a1ffae7d04f0d976f619d6f00d8569a4a74c7"
+                "reference": "2ed29c3a59fa23e77052e9d7fa7e31c707fb7502"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mpdf/mpdf/zipball/349a1ffae7d04f0d976f619d6f00d8569a4a74c7",
-                "reference": "349a1ffae7d04f0d976f619d6f00d8569a4a74c7",
+                "url": "https://api.github.com/repos/mpdf/mpdf/zipball/2ed29c3a59fa23e77052e9d7fa7e31c707fb7502",
+                "reference": "2ed29c3a59fa23e77052e9d7fa7e31c707fb7502",
                 "shasum": ""
             },
             "require": {
@@ -2812,7 +2860,7 @@
                 "php",
                 "utf-8"
             ],
-            "time": "2018-08-10T11:00:53+00:00"
+            "time": "2018-09-19T09:58:39+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -3689,16 +3737,16 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v5.2.0",
+            "version": "v5.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "50e8b7292425957b8fd66887504430c89bcbd83c"
+                "reference": "535b56b7b0325e87b15b9c57bd3631ae2a0b9f16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/50e8b7292425957b8fd66887504430c89bcbd83c",
-                "reference": "50e8b7292425957b8fd66887504430c89bcbd83c",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/535b56b7b0325e87b15b9c57bd3631ae2a0b9f16",
+                "reference": "535b56b7b0325e87b15b9c57bd3631ae2a0b9f16",
                 "shasum": ""
             },
             "require": {
@@ -3756,7 +3804,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2018-05-12T09:37:42+00:00"
+            "time": "2018-09-30T05:16:57+00:00"
         },
         {
             "name": "sensiolabs/security-checker",
@@ -4557,16 +4605,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.4.15",
+            "version": "v3.4.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "5bb5c2d4b0d5cf10672015b68519a199e6ac27c1"
+                "reference": "de239d25e0bb3be451a17b627705a5970c6c59e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/5bb5c2d4b0d5cf10672015b68519a199e6ac27c1",
-                "reference": "5bb5c2d4b0d5cf10672015b68519a199e6ac27c1",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/de239d25e0bb3be451a17b627705a5970c6c59e6",
+                "reference": "de239d25e0bb3be451a17b627705a5970c6c59e6",
                 "shasum": ""
             },
             "require": {
@@ -4708,7 +4756,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2018-08-28T06:06:28+00:00"
+            "time": "2018-10-03T12:03:55+00:00"
         },
         {
             "name": "tfox/mpdf-port-bundle",
@@ -5238,6 +5286,64 @@
             ],
             "description": "A tool to automatically fix PHP code style",
             "time": "2018-08-23T13:15:44+00:00"
+        },
+        {
+            "name": "nelmio/cors-bundle",
+            "version": "1.5.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nelmio/NelmioCorsBundle.git",
+                "reference": "548dc8ebd3984acd2f6d8787ab1dac2e9aa14254"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nelmio/NelmioCorsBundle/zipball/548dc8ebd3984acd2f6d8787ab1dac2e9aa14254",
+                "reference": "548dc8ebd3984acd2f6d8787ab1dac2e9aa14254",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/framework-bundle": "^2.7 || ^3.0 || ^4.0"
+            },
+            "require-dev": {
+                "matthiasnoback/symfony-dependency-injection-test": "^1.0 || ^2.0",
+                "mockery/mockery": "^0.9 || ^1.0",
+                "symfony/phpunit-bridge": "^2.7 || ^3.0 || ^4.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Nelmio\\CorsBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nelmio",
+                    "homepage": "http://nelm.io"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://github.com/nelmio/NelmioCorsBundle/contributors"
+                }
+            ],
+            "description": "Adds CORS (Cross-Origin Resource Sharing) headers support in your Symfony2 application",
+            "keywords": [
+                "api",
+                "cors",
+                "crossdomain"
+            ],
+            "time": "2017-12-11T18:41:54+00:00"
         },
         {
             "name": "php-cs-fixer/diff",

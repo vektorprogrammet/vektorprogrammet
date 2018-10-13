@@ -3,85 +3,78 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Semester;
-use AppBundle\Role\Roles;
+use AppBundle\Entity\Signature;
+use AppBundle\Form\Type\CreateSignatureType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use AppBundle\Entity\CertificateRequest;
-use AppBundle\Entity\Department;
 
 class CertificateController extends Controller
 {
-    public function showAction()
+    /**
+     * @Route(
+     *     "/kontrollpanel/attest/{id}",
+     *     name="certificate_show",
+     *     defaults={"id": null},
+     *     methods={"GET", "POST"}
+     * )
+     *
+     * @param Request $request
+     * @param Semester|null $semester
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function showAction(Request $request, Semester $semester = null)
     {
-        // Finds all the the certificate requests
-        $certificateRequests = $this->getDoctrine()->getRepository('AppBundle:CertificateRequest')->findAll();
-        $department = $this->getUser()->getDepartment();
-        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
-
-        return $this->render('certificate/index.html.twig', array(
-            'certificateRequests' => $certificateRequests,
-            'currentSemester'     => $currentSemester,
-        ));
-    }
-
-    public function deleteAction(Request $request)
-    {
-
-        // Get the ID sent by the request
-        $id = $request->get('id');
-
-        // This deletes the given certificate
-        $em = $this->getDoctrine()->getManager();
-        $certificate = $this->getDoctrine()->getRepository('AppBundle:CertificateRequest')->find($id);
-
-        $em->remove($certificate);
-        $em->flush();
-
-        // Send a response back to AJAX
-        $response['success'] = true;
-
-        // Send a respons to ajax
-        return new JsonResponse($response);
-    }
-
-    public function downloadAction(Semester $semester)
-    {
+        if ($semester === null) {
+            $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
+        }
+        $department = $semester->getDepartment();
         $em = $this->getDoctrine()->getManager();
 
-        // Finds the department for the current logged in user
-        $department = $this->getUser()->getDepartment();
-
-        // Finds all the assistants of the associated semester and department (semester can be NULL)
         $assistants = $em->getRepository('AppBundle:AssistantHistory')->findAssistantHistoriesByDepartment($department, $semester);
 
-        return $this->render('certificate/certificate_download.html.twig', array(
-            'assistants'      => $assistants,
-            'currentSemester' => $semester,
-        ));
-    }
+        $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($this->getUser());
+        $oldPath = '';
+        if ($signature === null) {
+            $signature = new Signature();
+        } else {
+            $oldPath = $signature->getSignaturePath();
+        }
 
-    public function requestAction()
-    {
-        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new CreateSignatureType(), $signature);
+        $form->handleRequest($request);
 
-        // A new certificate entity
-        $certificate = new CertificateRequest();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $isImageUpload = $request->files->get('create_signature')['signature_path'] !== null;
 
-        // Find the user that sent the request
-        $user = $this->getUser();
+            if ($isImageUpload) {
+                $signaturePath = $this->get('app.file_uploader')->uploadSignature($request);
+                $this->get('app.file_uploader')->deleteSignature($oldPath);
 
-        // Add the user to the certificate
-        $certificate->setUser($user);
+                $signature->setSignaturePath($signaturePath);
+            } else {
+                $signature->setSignaturePath($oldPath);
+            }
 
-        // Store it in the database
-        $em->persist($certificate);
-        $em->flush();
+            $signature->setUser($this->getUser());
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($signature);
+            $manager->flush();
 
-        // Send a response back to AJAX
-        $response['success'] = true;
+            $this->addFlash('success', 'Signaturen ble lagret');
+            return $this->redirect($request->headers->get('referer'));
+        }
 
-        // Send a respons to ajax
-        return new JsonResponse($response);
+        // Finds all the the certificate requests
+        $certificateRequests = $this->getDoctrine()->getRepository('AppBundle:CertificateRequest')->findAll();
+
+	    return $this->render('certificate/index.html.twig', array(
+		    'certificateRequests' => $certificateRequests,
+		    'form' => $form->createView(),
+		    'signature' => $signature,
+		    'assistants' => $assistants,
+		    'currentSemester' => $semester,
+	    ));
     }
 }

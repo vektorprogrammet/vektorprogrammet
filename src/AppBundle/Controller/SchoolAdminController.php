@@ -65,6 +65,7 @@ class SchoolAdminController extends Controller
         // Return the form view
         return $this->render('school_admin/create_assistant_history.html.twig', array(
             'form' => $form->createView(),
+            'user' => $user
         ));
     }
 
@@ -77,6 +78,7 @@ class SchoolAdminController extends Controller
         // Return the view with suitable variables
         return $this->render('school_admin/all_users.html.twig', array(
             'departments' => $activeDepartments,
+            'department' => $department,
             'users' => $users,
         ));
     }
@@ -97,6 +99,7 @@ class SchoolAdminController extends Controller
         // Return the view with suitable variables
         return $this->render('school_admin/all_users.html.twig', array(
             'departments' => $activeDepartments,
+            'department' => $department,
             'users' => $users,
         ));
     }
@@ -107,11 +110,14 @@ class SchoolAdminController extends Controller
         $department = $this->getUser()->getDepartment();
 
         // Find schools that are connected to the department of the user
-        $schools = $this->getDoctrine()->getRepository('AppBundle:School')->findSchoolsByDepartment($department);
+        $activeSchools = $this->getDoctrine()->getRepository('AppBundle:School')->findActiveSchoolsByDepartment($department);
+
+        $inactiveSchools = $this->getDoctrine()->getRepository('AppBundle:School')->findInactiveSchoolsByDepartment($department);
 
         // Return the view with suitable variables
         return $this->render('school_admin/index.html.twig', array(
-            'schools' => $schools,
+            'activeSchools' => $activeSchools,
+            'inactiveSchools' => $inactiveSchools,
             'department' => $department,
         ));
     }
@@ -119,11 +125,13 @@ class SchoolAdminController extends Controller
     public function showSchoolsByDepartmentAction(Department $department)
     {
         // Finds the schools for the given department
-        $schools = $this->getDoctrine()->getRepository('AppBundle:School')->findSchoolsByDepartment($department);
+        $activeSchools = $this->getDoctrine()->getRepository('AppBundle:School')->findActiveSchoolsByDepartment($department);
+        $inactiveSchools = $this->getDoctrine()->getRepository('AppBundle:School')->findInactiveSchoolsByDepartment($department);
 
         // Renders the view with the variables
         return $this->render('school_admin/index.html.twig', array(
-            'schools' => $schools,
+            'activeSchools' => $activeSchools,
+            'inactiveSchools' => $inactiveSchools,
             'department' => $department,
         ));
     }
@@ -148,6 +156,7 @@ class SchoolAdminController extends Controller
         // Return the form view
         return $this->render('school_admin/create_school.html.twig', array(
             'form' => $form->createView(),
+            'school' => $school
         ));
     }
 

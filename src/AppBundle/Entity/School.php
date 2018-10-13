@@ -67,10 +67,17 @@ class School
      */
     private $capacities;
 
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean", options={"default": 1})
+     */
+    private $active;
+
     public function __construct()
     {
         $this->departments = new \Doctrine\Common\Collections\ArrayCollection();
         $this->international = false;
+        $this->active = true;
     }
 
     /**
@@ -273,5 +280,24 @@ class School
     public function getCapacities(): array
     {
         return $this->capacities;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     *
+     * @return School
+     */
+    public function setActive(bool $active): School
+    {
+        $this->active = $active;
+        return $this;
     }
 }

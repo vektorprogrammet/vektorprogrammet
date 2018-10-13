@@ -43,18 +43,11 @@ class ScheduleInterviewType extends AbstractType
                 'label' => 'Melding',
                 'attr' => array('rows' => '5'),
             ))
-            ->add('save', SubmitType::class, array(
-                'label' => 'Lagre tidspunkt',
-                'attr' => array('style' => 'display:none')
-            ))
             ->add('saveAndSend', SubmitType::class, array(
                 'label' => 'Send invitasjon på sms og e-post',
             ))
             ->add('preview', SubmitType::class, array(
                 'label' => 'Forhåndsvis'
-            ))
-            ->add('changeStatus', ButtonType::class, array(
-                'label' => 'Endre status'
             ))
         ;
     }

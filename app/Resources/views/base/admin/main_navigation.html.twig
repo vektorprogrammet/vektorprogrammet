@@ -1,69 +1,287 @@
-<div class="row hide-for-small-only">
-    <div class="medium-12 columns hide-for-small-only" data-equalizer-watch>
-        <nav class="control-menu">
-            <ul>
-                <li><a href="{{ path('control_panel') }}">Kontrollpanel</a></li>
-                <li>
-                    <a href="#" data-dropdown="usersDropDown" data-options="is_hover:true; hover_timeout:200">Brukere
-                        <i class="fa fa-chevron-down"></i></a>
-
-                    <ul id="usersDropDown" class="f-dropdown very-small" data-dropdown-content>
-                        <li><a href="{{ path('useradmin_show') }}">Brukere</a></li>
-                        <li><a href="{{ path('participanthistory_show') }}">Deltakerhistorikk</a></li>
-                        <li><a href="{{ path('teamadmin_show') }}">Team</a></li>
-                        {% if is_granted_team_leader() %}
-                        <li><a href="{{ path('executive_board_show') }}">Hovedstyret</a></li>
-                        {% endif %}
-                        <li><a href="{{ path('generate_mail_lists') }}">Epostlister</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" data-dropdown="admissionDropDown"
-                       data-options="is_hover:true; hover_timeout:200">Opptak <i
-                                class="fa fa-chevron-down"></i> </a>
-
-                    <ul id="admissionDropDown" class="f-dropdown very-small" data-dropdown-content>
-                        <li><a href="{{ path('admissionadmin_show') }}">Opptak</a></li>
-                        <li><a href="{{ path('semester_show') }}">Opptaksperiode</a></li>
-                        <li>
-                            <a href="{{ path('statistics_application_show') }}">Opptaksstatistikk</a>
+<div class="sidebar">
+    <nav class="sidebar-nav ps ps--active-y">
+        <ul class="nav">
+            <li><span class="navbar-toggler sidebar-toggler d-flex d-lg-none align-items-center float-right p-3"
+                      data-toggle="sidebar-show">
+                        <span class="fa fa-bars mr-2"></span> <small>lukk</small>
+                    </span></li>
+            <li class="text-center mt-2">
+                <a class="text-muted" href="{{ path('home') }}"><i class="fa fa-chevron-left"></i> Tilbake til forsiden</a>
+            </li>
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle text-center mt-2" data-toggle="dropdown" href="#" role="button"
+                   aria-haspopup="true" aria-expanded="false">
+                    <img class="img-avatar profile-photo" width="75"
+                         src="{{ asset(app.user.picturePath | imagine_filter('profile_img_small')) }}"
+                         alt="{{ app.user }}">
+                    <div class="mt-2">{{ app.user }}</div>
+                </a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('my_page') }}">
+                            <i class="fa fa-file nav-icon"></i> Min side</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('profile') }}">
+                            <i class="fa fa-user nav-icon"></i> Min profil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('receipt_create') }}">
+                            <i class="fa fa-usd nav-icon"></i> Mine utlegg</a>
+                    </li>
+                    {% if app.user.isActiveAssistant() %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('my_partners') }}">
+                                <i class="fa fa-users nav-icon"></i> Mine vektorpartnere</a>
                         </li>
-                        <li><a href="{{ path('substitute_show') }}">Vikarer</a></li>
-                        {% if is_granted_team_leader() %}
-                            <li><a href="{{ path('interview_schema') }}">Intervjuskjema</a></li>
-                        {% endif %}
-                        <li><a href="{{ path('stand') }}">Stand</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" data-dropdown="articleDropDown" data-options="is_hover:true; hover_timeout:200">Artikkel
-                        <i class="fa fa-chevron-down"></i></a>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('logout') }}">
+                            <i class="fa fa-lock nav-icon"></i> Logg ut</a>
+                    </li>
+                </ul>
+                <hr class="my-1">
+            </li>
 
-                    <ul id="articleDropDown" class="f-dropdown mini" data-dropdown-content>
-                        <li><a href="{{ path('articleadmin_show') }}">Artikler</a></li>
-                        <li><a href="{{ path('articleadmin_create') }}">Ny artikkel</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" data-dropdown="miscDropDown" data-options="is_hover:true; hover_timeout:200">Diverse
-                        <i class="fa fa-chevron-down"></i></a>
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'control_panel',
+                icon: 'tachometer',
+                name: 'Kontrollpanel'
+            } %}
 
-                    <ul id="miscDropDown" class="f-dropdown very-small" data-dropdown-content>
-                        <li><a href="{{ path('departmentadmin_show') }}">Avdeling</a></li>
-                        <li><a href="{{ path('schooladmin_show') }}">Skole</a></li>
-                        <li><a href="{{ path('newsletter_show_all') }}">Nyhetsbrev</a></li>
-                        <li><a href="{{ path('surveys') }}">Undersøkelser</a></li>
-                        <li><a href="{{ path('sponsors_edit') }}">Sponsorer</a></li>
-                        <li><a href="{{ path('receipts_show') }}">Utlegg</a></li>
-                        <li><a href="{{ path('certificate_show') }}">Attest</a></li>
-                        {% if is_granted_team_leader() %}
-                            <li><a href="{{ path('admissionadmin_team_interest') }}">Teaminteresse</a></li>
-                            <li><a href="{{ path('show_field_of_studies') }}">Linjer</a></li>
-                        {% endif %}
-                        <li><a href="{{ path('image_gallery_create') }}">Bildegallerier</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-    </div>
+            <li class="nav-title">Opptak</li>
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'semester_show',
+                icon: 'clock-o',
+                name: 'Opptaksperioder',
+                activeRoutes: ['semester_show_by_department', 'semester_create', 'semester_update']
+            } %}
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle" href="#">
+                    <i class="fa fa-users nav-icon"></i> Opptak</a>
+                <ul class="nav-dropdown-items">
+                    {% include 'base/admin/nav_link.html.twig' with {
+                        route: 'applications_show_new',
+                        icon: 'users',
+                        name: 'Nye søkere',
+                        activeRoutes: ['applications_show_by_semester']
+                    } %}
+                    {% include 'base/admin/nav_link.html.twig' with {
+                        route: 'applications_show_existing',
+                        icon: 'users',
+                        name: 'Tidligere assistenter',
+                        activeRoutes: ['applications_show_existing_by_semester']
+                    } %}
+                    {% include 'base/admin/nav_link.html.twig' with {
+                        route: 'applications_show_assigned',
+                        icon: 'comments-o',
+                        name: 'Intervjufordeling',
+                        activeRoutes: [
+                            'applications_show_assigned_by_semester',
+                            'interview_schedule'
+                        ]
+                    } %}
+                    {% include 'base/admin/nav_link.html.twig' with {
+                        route: 'applications_show_interviewed',
+                        icon: 'comments-o',
+                        name: 'Intervjuer',
+                        activeRoutes: [
+                            'applications_show_interviewed_by_semester',
+                            'interview_show'
+                        ]
+                    } %}
+                </ul>
+                {% if is_granted_team_leader() %}
+                    {% include 'base/admin/nav_link.html.twig' with {
+                        route: 'interview_schema',
+                        icon: 'comments-o',
+                        name: 'Intervjuskjema',
+                    } %}
+                {% endif %}
+                {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'stand',
+                    icon: 'bullhorn',
+                    name: 'Stand',
+                    activeRoutes: ['stand_by_semester']
+                } %}
+                {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'statistics_application_show',
+                    icon: 'bar-chart',
+                    name: 'Opptaksstatistikk',
+                    activeRoutes: ['statistics_application_by_semester']
+                } %}
+
+            <li class="nav-title">Assistenter</li>
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'participanthistory_show',
+                icon: 'history',
+                name: 'Assistenter',
+                activeRoutes: ['participanthistory_show_by_semester']
+            } %}
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'substitute_show',
+                icon: 'user-secret',
+                name: 'Vikarer',
+                activeRoutes: ['substitute_show_by_semester']
+            } %}
+
+            {% if is_granted_team_leader() %}
+                {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'school_allocation',
+                    icon: 'calendar',
+                    name: 'Timeplan',
+                } %}
+
+                {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'certificate_show',
+                    icon: 'sticky-note-o',
+                    name: 'Attester',
+                } %}
+            {% endif %}
+
+            <li class="nav-title">Team</li>
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'teamadmin_show',
+                icon: 'smile-o',
+                name: 'Team',
+                activeRoutes: [
+                    'teamadmin_show_position',
+                    'teamadmin_create_team_for_department',
+                    'teamadmin_update',
+                    'teamadmin_show_specific_team',
+                    'team_application_show_all',
+                    'teamadmin_add_user_to_team',
+                    'teamadmin_update_team_membership'
+                ]
+            } %}
+
+            {% if is_granted_team_leader() %}
+                {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'executive_board_show',
+                    icon: 'diamond',
+                    name: 'Hovedstyret',
+                    activeRoutes: [
+                        'executive_board_update',
+                        'executive_board_add_user_to_board',
+                        'edit_executive_board_membership'
+                    ]
+                } %}
+
+                {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'admissionadmin_team_interest',
+                    icon: 'star',
+                    name: 'Teaminteresse',
+                    activeRoutes: ['admissionadmin_team_interest_by_semester',]
+                } %}
+            {% endif %}
+
+
+            <li class="nav-title">Brukere</li>
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'useradmin_show',
+                icon: 'users',
+                name: 'Brukere',
+                activeRoutes: [
+                    'useradmin_filter_users_by_department',
+                    'useradmin_create_user',
+                ]
+            } %}
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'generate_mail_lists',
+                icon: 'list',
+                name: 'Epostlister',
+            } %}
+
+
+            <li class="nav-title">Økonomi</li>
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'sponsors_show',
+                icon: 'money',
+                name: 'Sponsorer',
+                activeRoutes: [
+                    'sponsor_edit',
+                    'sponsor_create',
+                ]
+            } %}
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'receipts_show',
+                icon: 'usd',
+                name: 'Utlegg',
+                activeRoutes: [
+                    'receipts_show_individual',
+                    'receipt_admin_edit',
+                ]
+            } %}
+
+
+            <li class="nav-title">Annet</li>
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'surveys',
+                icon: 'comment-o',
+                name: 'Undersøkelser',
+                activeRoutes: [
+                    'survey_create',
+                    'survey_edit',
+                    'survey_copy',
+                    'survey_results',
+                ]
+            } %}
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'articleadmin_show',
+                icon: 'file',
+                name: 'Artikler',
+                activeRoutes: [
+                    'articleadmin_create',
+                    'articleadmin_edit',
+                ]
+            } %}
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'departmentadmin_show',
+                icon: 'industry',
+                name: 'Avdelinger',
+                activeRoutes: [
+                    'departmentadmin_create_department',
+                    'departmentadmin_update',
+                ]
+            } %}
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'schooladmin_show',
+                icon: 'school',
+                name: 'Skoler',
+                activeRoutes: [
+                    'schooladmin_filter_schools_by_department',
+                    'schooladmin_create_school_by_department',
+                    'schooladmin_show_users_of_department_superadmin',
+                    'schooladmin_delegate_school_to_user',
+                    'schooladmin_show_specific_school',
+                    'schooladmin_show_users_of_department',
+                ]
+            } %}
+
+            {% if is_granted_team_leader() %}
+                {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'show_field_of_studies',
+                    icon: 'bars',
+                    name: 'Linjer',
+                    activeRoutes: [
+                        'create_field_of_study',
+                        'edit_field_of_study',
+                    ]
+                } %}
+            {% endif %}
+
+
+            <li class="nav-item mt-auto">
+                <div class="p-4">
+
+                    {% include 'base/logo_link.html.twig' %}
+                    {#<img class="img-fluid" src="{{ asset_with_version('images/vektor.png') }}">#}
+                    <a href="{{ path('home') }}">
+                        <p class="text-center my-2 text-secondary"><i class="fa fa-chevron-left"></i> Tilbake til
+                            forsiden</p>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </nav>
 </div>
