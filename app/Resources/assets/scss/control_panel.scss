@@ -91,41 +91,7 @@ html:not([dir=rtl]) {
 .reveal-modal ul {
   margin-left: 0;
 }
-// A container with the same border as the vektor button
-.vektor-box {
-  padding: rem-calc(16);
-  border: solid $vektor-blue 3px;
-  margin-bottom: rem-calc(16);
-}
 
-// The toggle options box
-.option-box {
-  border: solid 1px $gainsboro;
-  background: $white;
-  margin: rem-calc(16) 0;
-
-  h5 {
-    padding: 8px 12px;
-    margin: 0 0;
-  }
-
-  .toggle-caret {
-    padding: 8px 12px;
-    float: right;
-    cursor: pointer;
-  }
-
-  .content {
-    border-top: solid 1px $gainsboro;
-    padding: 12px 12px;
-  }
-
-  .footer {
-    padding: 8px 12px;
-    border-top: solid 1px $gainsboro;
-    background: $white-smoke;
-  }
-}
 
 // Hide the content and the footer of the options box
 .closed {
@@ -145,58 +111,6 @@ html:not([dir=rtl]) {
   color: $vektor-blue;
 }
 
-header {
-  nav {
-    float: right;
-    margin-top: 88px;
-    @media screen and (max-width: 874px) {
-      margin-top: 10px;
-    }
-    > ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      margin-left: - rem-calc(35);
-
-      > li {
-        float: left;
-
-        // Medium screens
-        @media only screen and (min-width: 40.063em) {
-          margin-left: rem-calc(15);
-        }
-
-        // Large screens
-        @media only screen and (min-width: 64.563em) {
-          margin-left: rem-calc(30);
-        }
-      }
-    }
-  }
-}
-
-// Footer
-// - - - - - - - - - - - - - - - - - - - - - - - - -
-footer {
-  padding-top: 10px;
-  .row {
-    border-top: solid 3px $vektor-blue;
-    padding-top: 2rem;
-  }
-
-  ul {
-    list-style-type: none;
-    margin-left: 0;
-  }
-
-}
-
-.admin-footer {
-  .row {
-    border-top: solid 3px $admin-grey;
-  }
-}
-
 // AdmissionAdmin
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -207,16 +121,6 @@ footer {
 .active-application {
   border-top: solid #dddddd 1px;
   border-bottom: solid #dddddd 1px;
-}
-
-#bulkAllCheck, input[type="checkbox"].bulkCheck {
-  margin: rem-calc(4) 0 0 0;
-  min-width: rem-calc(16);
-  min-height: rem-calc(16);
-}
-
-#interviewStatusNav {
-  margin: rem-calc(10) 0 0 0;
 }
 
 // Interview

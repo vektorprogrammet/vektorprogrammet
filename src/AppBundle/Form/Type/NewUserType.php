@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -19,7 +20,7 @@ class NewUserType extends AbstractType
                 'label' => 'Brukernavn',
             ))
             ->add('password', RepeatedType::class, array(
-                'type' => 'password',
+                'type' => PasswordType::class,
                 'first_options' => array('label' => 'Passord'),
                 'second_options' => array('label' => 'Gjenta passord'),
                 'invalid_message' => 'Passordene må være like',

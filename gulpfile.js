@@ -111,9 +111,6 @@ function vendor () {
   r = r && gulp.src(['node_modules/ckeditor/**/*', path.src + 'js/ckeditor/**/*'])
       .pipe(gulp.dest('www/vendor/ckeditor/'));
 
-  r = r && gulp.src('node_modules/foundation-sites/js/foundation.min.js')
-    .pipe(gulp.dest('www/js'));
-
   r = r && gulp.src('node_modules/bootstrap/dist/js/bootstrap.min.js')
     .pipe(gulp.dest('www/js'));
 
