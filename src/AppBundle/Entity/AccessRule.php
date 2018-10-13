@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\AccessRuleRepository")
  * @ORM\Table(name="access_rule")
- * @ORM\HasLifecycleCallbacks
  */
 class AccessRule
 {

@@ -40,7 +40,8 @@ class AccessRuleType extends AbstractType
 
             ])
             ->add('forExecutiveBoard', CheckboxType::class, [
-                'label' => 'Hovedstyret'
+                'label' => 'Hovedstyret',
+                'required' => false
             ])
             ->add("users", EntityType::class, [
                 'label' => false,
