@@ -29,8 +29,8 @@ class CreateSchoolType extends AbstractType
             ->add('international', ChoiceType::class, array(
                 'label' => 'Skolen er internasjonal',
                 'choices' => array(
-                    true => 'Ja',
-                    false => 'Nei',
+                    'Ja' => 1,
+                    'Nei' => 0,
                 ),
                 'expanded' => true,
                 'multiple' => false,
@@ -38,8 +38,8 @@ class CreateSchoolType extends AbstractType
             ->add('active', ChoiceType::class, array(
                 'label' => 'Skolen er aktiv',
                 'choices' => array(
-                    true => 'Ja',
-                    false => 'Nei',
+                    'Ja' => true,
+                    'Nei' => false,
                 ),
                 'expanded' => true,
                 'multiple' => false,

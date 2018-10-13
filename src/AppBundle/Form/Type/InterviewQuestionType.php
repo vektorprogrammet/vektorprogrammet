@@ -26,16 +26,16 @@ class InterviewQuestionType extends AbstractType
 
         $builder->add('type', ChoiceType::class, array(
             'choices' => array(
-                'text' => 'Text',
-                'radio' => 'Multiple choice',
-                'check' => 'Checkboxes',
-                'list' => 'Velg fra liste',
+                'Text'            => 'text',
+                'Multiple choice' => 'radio',
+                'Checkboxes'      => 'check',
+                'Velg fra liste'  => 'list',
             ),
             'label' => 'Type',
         ));
 
         $builder->add('alternatives', CollectionType::class, array(
-            'type' => new InterviewQuestionAlternativeType(),
+            'entry_type' => InterviewQuestionAlternativeType::class,
             'allow_add' => true,
             'allow_delete' => true,
             'prototype_name' => '__a_prot__',

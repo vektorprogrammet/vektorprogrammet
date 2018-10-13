@@ -19,7 +19,7 @@ class InterviewSchemaType extends AbstractType
         ));
 
         $builder->add('interviewQuestions', CollectionType::class, array(
-            'type' => new InterviewQuestionType(),
+            'entry_type' => InterviewQuestionType::class,
             'allow_add' => true,
             'allow_delete' => true,
             'prototype_name' => '__q_prot__',

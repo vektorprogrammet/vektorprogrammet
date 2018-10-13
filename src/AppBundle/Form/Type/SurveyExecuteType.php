@@ -28,7 +28,7 @@ class SurveyExecuteType extends AbstractType
                     ->setParameter('semester', $semester);
             },
         ));
-        $builder->add('surveyAnswers', CollectionType::class, array('type' => new SurveyAnswerType()));
+        $builder->add('surveyAnswers', CollectionType::class, array('type' => SurveyAnswerType::class));
 
         $builder->add('save', SubmitType::class, array(
             'label' => 'Send inn',

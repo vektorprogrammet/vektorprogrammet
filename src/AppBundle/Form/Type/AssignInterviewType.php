@@ -25,7 +25,7 @@ class AssignInterviewType extends AbstractType
     {
         $resolver->setDefaults([
             'roles' => [],
-	        'department' => null
+            'department' => null
         ]);
     }
 

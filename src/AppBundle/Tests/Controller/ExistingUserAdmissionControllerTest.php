@@ -40,7 +40,7 @@ class ExistingUserAdmissionControllerTest extends BaseWebTestCase
         $form['application[applicationPractical][days][thursday]']->untick();
         $form['application[applicationPractical][days][friday]']->tick();
         $form['application[applicationPractical][doublePosition]'] = 0;
-        $form['application[applicationPractical][preferredGroup]'] = 2;
+        $form['application[applicationPractical][preferredGroup]'] = 'Bolk 1';
         $form['application[applicationPractical][language]'] = 'Engelsk';
         $form['application[preferredSchool]'] = $preferredSchool;
 

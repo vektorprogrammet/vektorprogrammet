@@ -59,7 +59,7 @@ class CreateAssistantHistoryType extends AbstractType
                 'choices' => array(
                     'Bolk 1' => 'Bolk 1',
                     'Bolk 2' => 'Bolk 2',
-                    'Bolk 1, Bolk 2' => 'Bolk 1 og Bolk 2',
+                    'Bolk 1 og Bolk 2' => 'Bolk 1, Bolk 2',
                 ),
             ))
             ->add('day', ChoiceType::class, array(

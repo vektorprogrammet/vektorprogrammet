@@ -69,12 +69,12 @@ class CertificateController extends Controller
         // Finds all the the certificate requests
         $certificateRequests = $this->getDoctrine()->getRepository('AppBundle:CertificateRequest')->findAll();
 
-	    return $this->render('certificate/index.html.twig', array(
-		    'certificateRequests' => $certificateRequests,
-		    'form' => $form->createView(),
-		    'signature' => $signature,
-		    'assistants' => $assistants,
-		    'currentSemester' => $semester,
-	    ));
+        return $this->render('certificate/index.html.twig', array(
+            'certificateRequests' => $certificateRequests,
+            'form' => $form->createView(),
+            'signature' => $signature,
+            'assistants' => $assistants,
+            'currentSemester' => $semester,
+        ));
     }
 }

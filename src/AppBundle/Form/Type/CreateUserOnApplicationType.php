@@ -34,8 +34,8 @@ class CreateUserOnApplicationType extends AbstractType
             ))
             ->add('gender', ChoiceType::class, array(
                 'choices' => [
-                    0 => 'Mann',
-                   1 => 'Dame'
+                    'Mann' => 0,
+                    'Dame' => 1
                 ],
                 'label' => 'Kjønn'
             ))

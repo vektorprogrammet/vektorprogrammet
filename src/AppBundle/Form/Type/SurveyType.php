@@ -38,8 +38,8 @@ class SurveyType extends AbstractType
                 'multiple' => false,
                 'expanded' => true,
                 'choices' => [
-	                'Standard' => false,
-	                'Tilpasset' => true,
+                    'Standard' => false,
+                    'Tilpasset' => true,
                 ]
             ])
 

@@ -35,8 +35,8 @@ class CreateTeamMembershipType extends AbstractType
             ))
             ->add('isTeamLeader', ChoiceType::class, array(
                 'choices' => [
-	                'Medlem' => false,
-	                'Leder' => true,
+                    'Medlem' => false,
+                    'Leder' => true,
                 ],
                 'expanded' => true,
                 'label' => false,

@@ -29,8 +29,8 @@ class CreateUserType extends AbstractType
             ->add('gender', ChoiceType::class, array(
                 'label' => 'Kjønn',
                 'choices' => array(
-                    0 => 'Mann',
-                    1 => 'Dame',
+                    'Mann' => 0,
+                    'Dame' => 1,
                 ),
             ))
             ->add('phone', TextType::class, array(

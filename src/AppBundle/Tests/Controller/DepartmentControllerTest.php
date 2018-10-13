@@ -79,7 +79,7 @@ class DepartmentControllerTest extends BaseWebTestCase
         // Assert not redirected
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         // Assert body contains validation error
-        $this->assertEquals(1, $crawler->filter('div.invalid-feedback:contains("Verdien er allerede brukt")')->count());
+        $this->assertEquals(1, $crawler->filter('div.invalid-feedback:contains("This value is already used")')->count());
     }
 
     public function testUpdateDepartment()

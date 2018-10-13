@@ -159,7 +159,8 @@ class SurveyController extends Controller
             $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
         }
         $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
-            ['semester' => $semester], ['id' => 'DESC']
+            ['semester' => $semester],
+            ['id' => 'DESC']
         );
         foreach ($surveys as $survey) {
             $totalAnswered = count($this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findBy(array('survey' => $survey)));

@@ -23,9 +23,9 @@ class SponsorType extends AbstractType
                 'required' => true,
                 'label' => 'Størrelse',
                 'choices' => array(
-	                'Liten' => 'small',
-	                'Medium' => 'medium',
-	                'Stor' => 'large',
+                    'Liten' => 'small',
+                    'Medium' => 'medium',
+                    'Stor' => 'large',
                 ),
                 'multiple' => false,
                 'expanded' => true,

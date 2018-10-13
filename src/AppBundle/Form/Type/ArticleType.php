@@ -31,7 +31,6 @@ class ArticleType extends AbstractType
             ->add('departments', EntityType::class, array(
                 'label' => 'Regioner',
                 'class' => 'AppBundle:Department',
-                'property' => 'shortName',
                 'multiple' => true,
                 'expanded' => true,
             ))
@@ -41,8 +40,8 @@ class ArticleType extends AbstractType
             ->add('published', ChoiceType::class, array(
                 'label' => 'Status',
                 'choices' => [
-	                'Kladd' => 0,
-	                'Publisert' => 1,
+                    'Kladd' => 0,
+                    'Publisert' => 1,
                 ]
             ));
     }

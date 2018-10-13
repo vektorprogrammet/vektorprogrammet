@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +16,7 @@ class NewPasswordType extends AbstractType
     {
         $builder
             ->add('password', RepeatedType::class, array(
-                'type' => 'password',
+                'type' => PasswordType::class,
                 'first_options' => array('label' => 'Passord'),
                 'second_options' => array('label' => 'Gjenta passord'),
                 'constraints' => array(

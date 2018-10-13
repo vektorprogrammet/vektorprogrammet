@@ -24,7 +24,6 @@ class CreateExecutiveBoardType extends AbstractType
             ))
             ->add('shortDescription', TextType::class, array(
                 'label' => 'Kort beskrivelse',
-                'max_length' => 125,
                 'required' => false,
             ))
             ->add('preview', SubmitType::class, array(
