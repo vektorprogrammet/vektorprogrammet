@@ -26,12 +26,17 @@ class AccessRule
     /**
      * @ORM\Column(type="string")
      */
-    private $route;
+    private $resource;
 
     /**
      * @ORM\Column(type="string")
      */
     private $method;
+
+	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	private $isRoutingRule;
 
     /**
      * @ORM\ManyToMany(targetEntity="User")
@@ -48,7 +53,13 @@ class AccessRule
      */
     private $roles;
 
-    /**
+	public function __construct() {
+		$this->isRoutingRule = false;
+		$this->method = "GET";
+	}
+
+
+	/**
      * @return int
      */
     public function getId()
@@ -59,17 +70,17 @@ class AccessRule
     /**
      * @return string
      */
-    public function getRoute()
+    public function getResource()
     {
-        return $this->route;
+        return $this->resource;
     }
 
     /**
-     * @param string $route
+     * @param string $resource
      */
-    public function setRoute($route): void
+    public function setResource($resource): void
     {
-        $this->route = $route;
+        $this->resource = $resource;
     }
 
     /**
@@ -151,4 +162,18 @@ class AccessRule
     {
         $this->name = $name;
     }
+
+	/**
+	 * @return boolean
+	 */
+	public function isRoutingRule() {
+		return $this->isRoutingRule;
+	}
+
+	/**
+	 * @param boolean $isRoutingRule
+	 */
+	public function setIsRoutingRule( $isRoutingRule ): void {
+		$this->isRoutingRule = $isRoutingRule;
+	}
 }

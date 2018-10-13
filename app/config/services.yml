@@ -45,9 +45,15 @@ services:
         tags:
             - { name: twig.extension }
 
-    app.access_extension:
+    app.access_twig_extension:
         class: AppBundle\Twig\Extension\AccessExtension
         arguments: ['@app.access_control']
+        tags:
+            - { name: twig.extension }
+
+    app.route_display_twig_extension:
+        class: AppBundle\Twig\Extension\RouteDisplayExtension
+        arguments: ['@router.default']
         tags:
             - { name: twig.extension }
 

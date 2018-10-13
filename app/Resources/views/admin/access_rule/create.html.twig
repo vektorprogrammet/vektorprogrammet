@@ -9,10 +9,10 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-12 col-xl-10 col-xxl-8 col-xxxl-6">
+        <div class="col-12 col-xl-10 col-xxl-9 col-xxxl-7">
             {{ form_start(form) }}
             <div class="card">
-                <div class="card-header"><i class="fa fa-align-justify"></i> Create Access Rule</div>
+                <div class="card-header"><i class="fa fa-align-justify"></i> {{ isCreate ? 'Create rule' : 'Edit ' ~ accessRule.name }}</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
@@ -20,8 +20,10 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-6">{{ form_row(form.route) }}</div>
-                        <div class="col-6">{{ form_row(form.method) }}</div>
+                        <div class="col-6">{{ form_row(form.resource) }}</div>
+                        {% if form.method is defined %}
+                            <div class="col-6">{{ form_row(form.method) }}</div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

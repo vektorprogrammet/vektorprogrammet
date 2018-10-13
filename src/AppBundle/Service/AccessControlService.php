@@ -41,28 +41,28 @@ class AccessControlService
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function checkAccess($routes, User $user = null)
+    public function checkAccess($resources, User $user = null) : bool
     {
         if ($user === null) {
             $user = $this->getLoggedInUser();
         }
 
-        if (is_string($routes)) {
-            $route = $routes;
-            return $this->checkAccessToRouteAndMethod($user, $route);
+        if (is_string($resources)) {
+            $resource = $resources;
+            return $this->checkAccessToResourceAndMethod($user, $resource);
         }
 
-        if (!is_array($routes)) {
+        if (!is_array($resources)) {
             throw new \InvalidArgumentException();
         }
 
-        foreach ($routes as $route => $method) {
-            $onlyRouteSpecified = is_numeric($route);
+        foreach ($resources as $resource => $method) {
+            $onlyRouteSpecified = is_numeric($resource);
             if ($onlyRouteSpecified) {
-                $route = $method;
-                $hasAccess = $this->checkAccessToRouteAndMethod($user, $route);
+                $resource = $method;
+                $hasAccess = $this->checkAccessToResourceAndMethod($user, $resource);
             } else {
-                $hasAccess = $this->checkAccessToRouteAndMethod($user, $route, $method);
+                $hasAccess = $this->checkAccessToResourceAndMethod($user, $resource, $method);
             }
 
             if (!$hasAccess) {
@@ -75,14 +75,14 @@ class AccessControlService
 
     /**
      * @param User|null $user
-     * @param string $route
+     * @param string $resource
      * @param string $method
      *
      * @return bool
      */
-    public function checkAccessToRouteAndMethod(?User $user, string $route, string $method = 'GET'): bool
+    public function checkAccessToResourceAndMethod(?User $user, string $resource, string $method = 'GET'): bool
     {
-        $accessRules = $this->entityManager->getRepository("AppBundle:AccessRule")->findOneByRouteAndMethod($route, $method);
+        $accessRules = $this->entityManager->getRepository("AppBundle:AccessRule")->findOneByResourceAndMethod($resource, $method);
 
         $everyoneHasAccess = empty($accessRules);
         if ($everyoneHasAccess) {
@@ -143,12 +143,12 @@ class AccessControlService
 
     public function getRoutes(): array
     {
-        $routes = $this->router->getRouteCollection()->all();
-        $routes = array_filter($routes, function ($v, string $route) {
-            return strlen($route) > 0 && $route[0] !== "_";
+        $resources = $this->router->getRouteCollection()->all();
+        $resources = array_filter($resources, function ($v, string $resource) {
+            return strlen($resource) > 0 && $resource[0] !== "_";
         }, ARRAY_FILTER_USE_BOTH);
 
-        uasort($routes, function (Route $a, Route $b) {
+        uasort($resources, function (Route $a, Route $b) {
             if ($this->isControlPanelRoute($a) && !$this->isControlPanelRoute($b)) {
                 return -1;
             }
@@ -158,11 +158,11 @@ class AccessControlService
             return strcmp($a->getPath(), $b->getPath());
         });
 
-        return $routes;
+        return $resources;
     }
 
-    private function isControlPanelRoute(Route $route)
+    private function isControlPanelRoute(Route $resource)
     {
-        return substr($route->getPath(), 0, 14) === "/kontrollpanel";
+        return substr($resource->getPath(), 0, 14) === "/kontrollpanel";
     }
 }

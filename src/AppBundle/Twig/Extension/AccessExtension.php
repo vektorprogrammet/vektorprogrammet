@@ -27,14 +27,14 @@ class AccessExtension extends \Twig_Extension
     }
 
     /**
-     * Checks if the user has access to the route.
+     * Checks if the user has access to the resource.
      *
      *
      * @param $routes
      * @param null $user
-     * @return string The public path of the asset
+     * @return boolean True if the user has access to the resource, false otherwise
      */
-    public function hasAccessTo($routes, $user = null)
+    public function hasAccessTo($routes, $user = null) : bool
     {
         return $this->accessControlService->checkAccess($routes, $user);
     }
