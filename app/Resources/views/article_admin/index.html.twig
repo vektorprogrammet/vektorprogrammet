@@ -14,7 +14,6 @@
     </a>
 {% endblock %}
 
-
 {% block body %}
 
     <div class="row">
@@ -61,7 +60,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <a href="{{ path(a.published ? 'article_show' : 'article_show_draft', {'id': a.id}) }}">{{ a.title|safe_html }}</a>
+                                    <a href="{{ path(a.published ? 'article_show' : 'article_show_draft', {'slug': a.slug}) }}">{{ a.title|safe_html }}</a>
                                 </td>
                                 <td>{{ a.updated|date("d.m.y - G:i") }}</td>
                                 <td><a href="{{ path('specific_profile', {'id': a.author.id}) }}">{{ a.author }}</a></td>

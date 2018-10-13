@@ -10,39 +10,6 @@ use DateTime;
 
 class TeamMembershipEntityUnitTest extends \PHPUnit_Framework_TestCase
 {
-    // Check whether the setStartDate function is working correctly
-    /*public function testSetStartDate(){
-
-        // New datetime variable
-        $today = new DateTime("now");
-
-        // new entity
-        $wh = new TeamMembership();
-
-        // Use the setStartDate method
-        $wh->setStartDate($today);
-
-        // Assert the result
-        $this->assertEquals($today, $wh->getStartDate());
-
-    }*/
-
-    // Check whether the setEndDate function is working correctly
-    /*	public function testSetEndDate(){
-
-            // New datetime variable
-            $today = new DateTime("now");
-
-            // new entity
-            $wh = new TeamMembership();
-
-            // Use the setStartDate method
-            $wh->setEndDate($today);
-
-            // Assert the result
-            $this->assertEquals($today, $wh->getEndDate());
-
-        }*/
 
     // Check whether the setUser function is working correctly
     public function testSetUser()

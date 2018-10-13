@@ -46,7 +46,7 @@ class ArticleAdminController extends Controller
     }
 
     /**
-     * @Route("/kontrollpanel/artikkel/kladd/{id}", name="article_show_draft")
+     * @Route("/kontrollpanel/artikkel/kladd/{slug}", name="article_show_draft")
      * @param Article $article
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -69,6 +69,10 @@ class ArticleAdminController extends Controller
         $form          = $this->createForm(new ArticleType(), $article);
 
         $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $this->get('app.slug_maker')->setSlugFor($article);
+        }
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -132,6 +136,7 @@ class ArticleAdminController extends Controller
             if ($imageLarge) {
                 $article->setImageLarge($imageLarge);
             }
+
             $em->persist($article);
             $em->flush();
 
