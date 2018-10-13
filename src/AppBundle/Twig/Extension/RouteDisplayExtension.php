@@ -36,6 +36,15 @@ class RouteDisplayExtension extends \Twig_Extension
      */
     public function getPath(string $name)
     {
+        if (!$this->isRoute($name)) {
+            return $name;
+        }
+
         return $this->router->getRouteCollection()->get($name)->getPath();
+    }
+
+    private function isRoute(string $name)
+    {
+        return $this->router->getRouteCollection()->get($name) !== null;
     }
 }

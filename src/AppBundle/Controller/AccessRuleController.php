@@ -23,9 +23,11 @@ class AccessRuleController extends Controller
     {
         $customRules = $this->getDoctrine()->getRepository('AppBundle:AccessRule')->findCustomRules();
         $routingRules = $this->getDoctrine()->getRepository('AppBundle:AccessRule')->findRoutingRules();
+        $unhandledRules = $this->getDoctrine()->getRepository('AppBundle:UnhandledAccessRule')->findAll();
         return $this->render('admin/access_rule/index.html.twig', array(
             'customRules' => $customRules,
             'routingRules' => $routingRules,
+            'unhandledRules' => $unhandledRules
         ));
     }
 
@@ -56,10 +58,8 @@ class AccessRuleController extends Controller
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($accessRule);
-            $em->flush();
-            
+            $this->get('app.access_control')->createRule($accessRule);
+
             if ($isCreate) {
                 $this->addFlash("success", "Access rule created");
             } else {
@@ -105,9 +105,7 @@ class AccessRuleController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $accessRule->setIsRoutingRule(true);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($accessRule);
-            $em->flush();
+            $this->get('app.access_control')->createRule($accessRule);
 
             if ($isCreate) {
                 $this->addFlash("success", "Access rule created");

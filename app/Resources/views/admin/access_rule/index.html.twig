@@ -5,6 +5,11 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
+    {% if unhandledRules|length %}
+        <button type="button" class="btn btn-outline-warning text-warning" data-toggle="modal" data-target="#unhandledModal">
+            <i class="fa fa-warning"></i> Unhandled rules ({{ unhandledRules|length }})
+        </button>
+    {% endif %}
     <a class="btn btn-outline-success text-success" href="{{ path('access_rules_create') }}"><i
                 class="fa fa-plus text-success"></i> Custom rule</a>
     <a class="btn btn-outline-success text-success" href="{{ path('access_rules_create_routing') }}"><i
@@ -37,5 +42,31 @@
         {% endif %}
     </div>
 
-
+    <div class="modal fade" id="unhandledModal" tabindex="-1" role="dialog" aria-labelledby="unhandledModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="unhandledModalLabel">Unhandled Rules</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <th>Resource</th>
+                        </tr>
+                        {% for rule in unhandledRules %}
+                            <tr>
+                                <td>{{ get_path(rule.resource) }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

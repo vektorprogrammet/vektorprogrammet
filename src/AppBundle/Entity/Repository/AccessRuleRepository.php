@@ -26,6 +26,16 @@ class AccessRuleRepository extends EntityRepository
             ->getResult();
     }
 
+    public function findByResource(string $resource)
+    {
+        return $this
+            ->createQueryBuilder('accessRule')
+            ->andWhere('accessRule.resource = :resource')
+            ->setParameter('resource', $resource)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findRoutingRules()
     {
         return $this->findRules(true);

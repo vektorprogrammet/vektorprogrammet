@@ -39,7 +39,7 @@
                     {{ rule.resource }}
                 {% endif %}</td>
             <td>{{ rule.roles|join(", ") }}</td>
-            <td>{{ rule.teams|join(", ") }}</td>
+            <td>{{ rule.teams|join(", ") }}{{ rule.forExecutiveBoard ? (rule.teams|length > 0 ? ', ' : '') ~ 'Hovedstyret' }}</td>
             <td class="text-nowrap">
                 {% if rule.users|length %}
                     <span class="clickable text-primary" data-toggle="modal" data-target="#rule-{{ rule.id }}">

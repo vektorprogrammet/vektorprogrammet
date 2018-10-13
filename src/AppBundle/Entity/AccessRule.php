@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\AccessRuleRepository")
  * @ORM\Table(name="access_rule")
- * @ORM\HasLifecycleCallbacks
  */
 class AccessRule
 {
@@ -82,12 +81,16 @@ class AccessRule
         return $this->resource;
     }
 
-    /**
-     * @param string $resource
-     */
-    public function setResource($resource): void
+	/**
+	 * @param string $resource
+	 *
+	 * @return AccessRule
+	 */
+    public function setResource($resource): AccessRule
     {
         $this->resource = $resource;
+
+        return $this;
     }
 
     /**
@@ -98,12 +101,16 @@ class AccessRule
         return $this->method;
     }
 
-    /**
-     * @param string $method
-     */
-    public function setMethod($method): void
+	/**
+	 * @param string $method
+	 *
+	 * @return AccessRule
+	 */
+    public function setMethod($method): AccessRule
     {
         $this->method = $method;
+
+	    return $this;
     }
 
     /**
@@ -114,12 +121,16 @@ class AccessRule
         return $this->users;
     }
 
-    /**
-     * @param User[] $users
-     */
-    public function setUsers($users): void
+	/**
+	 * @param User[] $users
+	 *
+	 * @return AccessRule
+	 */
+    public function setUsers($users): AccessRule
     {
         $this->users = $users;
+
+	    return $this;
     }
 
     /**
@@ -130,12 +141,16 @@ class AccessRule
         return $this->teams;
     }
 
-    /**
-     * @param Team[] $teams
-     */
-    public function setTeams($teams): void
+	/**
+	 * @param Team[] $teams
+	 *
+	 * @return AccessRule
+	 */
+    public function setTeams($teams): AccessRule
     {
         $this->teams = $teams;
+
+	    return $this;
     }
 
     /**
@@ -146,12 +161,16 @@ class AccessRule
         return $this->roles;
     }
 
-    /**
-     * @param Role[] $roles
-     */
-    public function setRoles($roles): void
+	/**
+	 * @param Role[] $roles
+	 *
+	 * @return AccessRule
+	 */
+    public function setRoles($roles): AccessRule
     {
         $this->roles = $roles;
+
+	    return $this;
     }
 
     /**
@@ -162,12 +181,16 @@ class AccessRule
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName($name)
+	/**
+	 * @param string $name
+	 *
+	 * @return AccessRule
+	 */
+    public function setName($name) : AccessRule
     {
         $this->name = $name;
+
+	    return $this;
     }
 
     /**
@@ -178,12 +201,16 @@ class AccessRule
         return $this->isRoutingRule;
     }
 
-    /**
-     * @param boolean $isRoutingRule
-     */
-    public function setIsRoutingRule($isRoutingRule): void
+	/**
+	 * @param boolean $isRoutingRule
+	 *
+	 * @return AccessRule
+	 */
+    public function setIsRoutingRule($isRoutingRule): AccessRule
     {
         $this->isRoutingRule = $isRoutingRule;
+
+	    return $this;
     }
 
     /**
@@ -194,11 +221,15 @@ class AccessRule
         return $this->forExecutiveBoard;
     }
 
-    /**
-     * @param boolean $forExecutiveBoard
-     */
-    public function setForExecutiveBoard($forExecutiveBoard): void
+	/**
+	 * @param boolean $forExecutiveBoard
+	 *
+	 * @return AccessRule
+	 */
+    public function setForExecutiveBoard($forExecutiveBoard): AccessRule
     {
         $this->forExecutiveBoard = $forExecutiveBoard;
+
+	    return $this;
     }
 }
