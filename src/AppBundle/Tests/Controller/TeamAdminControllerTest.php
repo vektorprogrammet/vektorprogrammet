@@ -9,10 +9,7 @@ class TeamAdminControllerTest extends BaseWebTestCase
     public function testCreatePosition()
     {
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/teamadmin/opprett/stilling');
 
@@ -35,10 +32,7 @@ class TeamAdminControllerTest extends BaseWebTestCase
     public function testEditPosition()
     {
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/teamadmin/rediger/stilling/2');
 
@@ -63,10 +57,7 @@ class TeamAdminControllerTest extends BaseWebTestCase
     {
 
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/teamadmin/stillinger');
 
@@ -78,10 +69,7 @@ class TeamAdminControllerTest extends BaseWebTestCase
     public function testCreateTeamWithNonUniqueName()
     {
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/1');
 
@@ -101,10 +89,7 @@ class TeamAdminControllerTest extends BaseWebTestCase
     public function testCreateTeamForDepartment()
     {
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/teamadmin/avdeling/opprett/1');
 
@@ -126,10 +111,7 @@ class TeamAdminControllerTest extends BaseWebTestCase
     {
 
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/teamadmin/update/1');
 
@@ -151,10 +133,7 @@ class TeamAdminControllerTest extends BaseWebTestCase
     public function testAddUserToTeam()
     {
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/nytt_medlem/1');
 
@@ -176,10 +155,7 @@ class TeamAdminControllerTest extends BaseWebTestCase
     {
 
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/team/avdeling/1');
 
@@ -191,10 +167,7 @@ class TeamAdminControllerTest extends BaseWebTestCase
     public function testShowSpecificTeam()
     {
         // TEAM
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamMemberClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/teamadmin/team/1');
 
@@ -205,12 +178,8 @@ class TeamAdminControllerTest extends BaseWebTestCase
 
     public function testShow()
     {
-
         // TEAM
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamMemberClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/team/avdeling');
 

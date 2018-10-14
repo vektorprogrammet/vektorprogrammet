@@ -10,10 +10,7 @@ class SchoolAdminControllerTest extends BaseWebTestCase
     {
 
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/skoleadmin/opprett/1');
 
@@ -39,10 +36,7 @@ class SchoolAdminControllerTest extends BaseWebTestCase
     {
 
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/skoleadmin/avdeling/1');
 
@@ -72,10 +66,7 @@ class SchoolAdminControllerTest extends BaseWebTestCase
     {
 
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/skoleadmin/avdeling/1');
 
@@ -102,10 +93,7 @@ class SchoolAdminControllerTest extends BaseWebTestCase
     {
 
         // TEAM
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamMemberClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/skoleadmin/brukere');
 
@@ -120,10 +108,7 @@ class SchoolAdminControllerTest extends BaseWebTestCase
 
     public function testShowUsersByDepartmentSuperadmin()
     {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/skoleadmin/avdeling/2');
 
@@ -148,10 +133,7 @@ class SchoolAdminControllerTest extends BaseWebTestCase
 
     public function testDelegateSchoolToUser()
     {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/skoleadmin/brukere/avdeling/1');
 
@@ -185,11 +167,7 @@ class SchoolAdminControllerTest extends BaseWebTestCase
         // Assert a specific 200 status code
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamLeaderClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/skoleadmin/brukere/avdeling/1');
 
@@ -228,10 +206,7 @@ class SchoolAdminControllerTest extends BaseWebTestCase
     {
 
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/skoleadmin');
 
@@ -251,10 +226,7 @@ class SchoolAdminControllerTest extends BaseWebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         // TEAM
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamMemberClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/skoleadmin');
 
@@ -268,10 +240,7 @@ class SchoolAdminControllerTest extends BaseWebTestCase
 
     public function testShow()
     {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/skoleadmin');
 
@@ -286,10 +255,7 @@ class SchoolAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // TEAM
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamMemberClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/skoleadmin');
 

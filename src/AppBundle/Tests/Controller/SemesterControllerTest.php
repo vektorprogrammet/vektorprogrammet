@@ -10,10 +10,7 @@ class SemesterControllerTest extends BaseWebTestCase
     {
 
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/semesteradmin/avdeling/1');
 
@@ -37,10 +34,7 @@ class SemesterControllerTest extends BaseWebTestCase
     {
 
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/semesteradmin/avdeling/opprett/1');
 
@@ -66,10 +60,7 @@ class SemesterControllerTest extends BaseWebTestCase
     {
 
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/semesteradmin/avdeling/1');
 
@@ -110,10 +101,7 @@ class SemesterControllerTest extends BaseWebTestCase
     {
 
         // TEAM
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'team',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamMemberClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/semesteradmin');
 

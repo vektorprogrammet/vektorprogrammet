@@ -20,10 +20,7 @@ class TeamApplicationControllerTest extends BaseWebTestCase
 
     public function testShowAllApplications()
     {
-        // ADMIN
-        $client = $this->createAdminClient();
-
-        $crawler = $this->goTo('/kontrollpanel/team/applications/1', $client);
+        $crawler = $this->adminGoTo('/kontrollpanel/team/applications/1');
 
         //Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h2:contains("Søknader Styret")')->count());
@@ -31,12 +28,7 @@ class TeamApplicationControllerTest extends BaseWebTestCase
 
     public function testShow()
     {
-
-        // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamLeaderClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/team/applications/1');
 
@@ -59,10 +51,7 @@ class TeamApplicationControllerTest extends BaseWebTestCase
         $this->assertGreaterThan(0, $crawler->selectLink('Søk Styret!')->count());
 
         // Admin
-        $clientAdmin = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $clientAdmin = $this->createTeamLeaderClient();
 
         $crawler = $clientAdmin->request('GET', '/kontrollpanel/teamadmin/update/1');
 
@@ -82,12 +71,7 @@ class TeamApplicationControllerTest extends BaseWebTestCase
 
     public function testCreateApplication()
     {
-
-        // Admin
-        $clientAdmin = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $clientAdmin = $this->createTeamLeaderClient();
 
         $crawler = $clientAdmin->request('GET', '/kontrollpanel/team/applications/1');
         $this->assertTrue($clientAdmin->getResponse()->isSuccessful());
@@ -123,11 +107,7 @@ class TeamApplicationControllerTest extends BaseWebTestCase
 
     public function testDeleteApplication()
     {
-        // Admin
-        $clientAdmin = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $clientAdmin = $this->createTeamLeaderClient();
 
         $crawler = $clientAdmin->request('GET', '/kontrollpanel/team/applications/1');
         $this->assertTrue($clientAdmin->getResponse()->isSuccessful());

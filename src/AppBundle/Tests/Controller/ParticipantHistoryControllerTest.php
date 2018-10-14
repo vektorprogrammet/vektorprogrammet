@@ -8,10 +8,7 @@ class ParticipantHistoryControllerTest extends BaseWebTestCase
 {
     public function testIndex()
     {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/deltakerhistorikk');
 

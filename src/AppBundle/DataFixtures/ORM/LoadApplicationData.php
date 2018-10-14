@@ -16,7 +16,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
     public function load(ObjectManager $manager)
     {
         $application0 = new Application();
-        $application0->setUser($this->getReference('user-team'));
+        $application0->setUser($this->getReference('user-team-member'));
         $application0->setPreviousParticipation(false);
         $application0->setYearOfStudy(1);
         $application0->setSemester($this->getReference('semester-current'));
