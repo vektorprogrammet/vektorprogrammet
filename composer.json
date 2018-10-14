@@ -37,7 +37,7 @@
         "egeloen/ckeditor-bundle": "~6.0",
         "doctrine/doctrine-fixtures-bundle": "^3.0.2",
         "knplabs/knp-paginator-bundle": "~2.4",
-        "helios-ag/fm-elfinder-bundle": "~8.0.3",
+        "helios-ag/fm-elfinder-bundle": "^9.1",
         "liip/imagine-bundle": "^1.2",
         "tfox/mpdf-port-bundle": "^2.0",
         "doctrine/doctrine-migrations-bundle": "^1.2",

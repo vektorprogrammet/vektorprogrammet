@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8002cb65277c577d8b50713005fb2424",
+    "content-hash": "47a9bb113bdba9cc6c16d0885b41a659",
     "packages": [
         {
             "name": "bcc/auto-mapper-bundle",
@@ -2236,16 +2236,16 @@
         },
         {
             "name": "helios-ag/fm-elfinder-bundle",
-            "version": "8.0.3",
+            "version": "9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/helios-ag/FMElfinderBundle.git",
-                "reference": "a49fc58c555f32a6e692fc1386a67aba89ddb621"
+                "reference": "f68418be557d8cd6867cc41190eeae87d90b4b6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/helios-ag/FMElfinderBundle/zipball/a49fc58c555f32a6e692fc1386a67aba89ddb621",
-                "reference": "a49fc58c555f32a6e692fc1386a67aba89ddb621",
+                "url": "https://api.github.com/repos/helios-ag/FMElfinderBundle/zipball/f68418be557d8cd6867cc41190eeae87d90b4b6a",
+                "reference": "f68418be557d8cd6867cc41190eeae87d90b4b6a",
                 "shasum": ""
             },
             "require": {
@@ -2259,27 +2259,28 @@
                 "symfony/twig-bundle": "~2.8|~3.0|~4.0"
             },
             "require-dev": {
-                "matthiasnoback/symfony-config-test": "~2",
-                "matthiasnoback/symfony-dependency-injection-test": "~1|~2",
-                "phpunit/phpunit": "~5",
+                "matthiasnoback/symfony-config-test": "^3.0",
+                "matthiasnoback/symfony-dependency-injection-test": "^2",
                 "satooshi/php-coveralls": "~1",
-                "symfony/finder": "~2.8|~3.0|~4.0",
-                "symfony/phpunit-bridge": "~2.8|~3.0|~4.0"
+                "symfony/finder": "~3.0|~4.0",
+                "symfony/phpunit-bridge": "^4.0"
             },
             "suggest": {
-                "friendsofsymfony/ckeditor-bundle": "CKEditor Bundle initially by Egeloen (Maintained by FOS Community)",
-                "helios-ag/fm-summernote-bundle": "Summernote Bundle by me",
-                "helios-ag/fm-tinymce-bundle": "TinyMCE Bundle by me"
+                "barryvdh/elfinder-flysystem-driver": "Flysystem driver for elfinder",
+                "friendsofsymfony/ckeditor-bundle": "FOSCKEditorBundle WYSIWYG Editor Bundle",
+                "helios-ag/fm-summernote-bundle": "FMSummernoteBundle WYSIWYG Editor Bundle",
+                "helios-ag/fm-tinymce-bundle": "FMTinyMCEBundle WYSIWYG Editor Bundle",
+                "spatie/flysystem-dropbox": "Dropbox 2 Driver for Flysystem"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "8.0-dev"
+                    "dev-master": "9.0-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "FM\\ElfinderBundle\\": ""
+                    "FM\\ElfinderBundle\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2303,7 +2304,7 @@
                 "file manager",
                 "wysiwyg"
             ],
-            "time": "2018-05-25T16:07:56+00:00"
+            "time": "2018-10-10T07:20:46+00:00"
         },
         {
             "name": "imagine/imagine",
