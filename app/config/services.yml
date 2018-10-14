@@ -50,6 +50,10 @@ services:
         class: AppBundle\Service\SlugMaker
         arguments: ['@doctrine.orm.default_entity_manager']
 
+    app.user_service:
+        class: AppBundle\Service\UserService
+        arguments: ['@security.token_storage']
+
     guzzle.slack:
         class: GuzzleHttp\Client
         arguments:

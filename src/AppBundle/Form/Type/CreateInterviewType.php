@@ -34,7 +34,6 @@ class CreateInterviewType extends AbstractType
                     ->select('i')
                     ->orderBy('i.id', 'DESC');
             },
-            'property' => 'name',
         ));
     }
 

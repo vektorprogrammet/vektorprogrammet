@@ -37,16 +37,16 @@
         "symfony/assetic-bundle": "~2.3",
         "egeloen/ckeditor-bundle": "~6.0",
         "doctrine/doctrine-fixtures-bundle": "~2.4",
-        "friendsofsymfony/jsrouting-bundle": "~1.5",
         "knplabs/knp-paginator-bundle": "~2.4",
         "helios-ag/fm-elfinder-bundle": "~8.0.3",
         "liip/imagine-bundle": "^1.2",
         "tfox/mpdf-port-bundle": "^2.0",
         "doctrine/doctrine-migrations-bundle": "^1.2",
-        "nexylan/slack-bundle": "^1.1",
+        "nexylan/slack-bundle": "^2.0",
         "google/apiclient": "^2.2",
         "ramsey/uuid": "^3.7",
-        "bcc/auto-mapper-bundle": "^1.2"
+        "bcc/auto-mapper-bundle": "^1.2",
+        "php-http/guzzle6-adapter": "^1.1"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.6",

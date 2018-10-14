@@ -18,13 +18,13 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
             new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
-			new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new FM\ElfinderBundle\FMElfinderBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
             new TFox\MpdfPortBundle\TFoxMpdfPortBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
-            new Nexy\SlackBundle\NexySlackBundle(),
+	        new Http\HttplugBundle\HttplugBundle(),
+	        new Nexy\SlackBundle\NexySlackBundle(),
 	        new BCC\AutoMapperBundle\BCCAutoMapperBundle(),
         );
 

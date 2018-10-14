@@ -1,3 +1,5 @@
+@import "colors";
+
 $grid-breakpoints: (
         xs: 0,
         sm: 576px,
@@ -16,5 +18,3 @@ $container-max-widths: (
         xxl: 1141px,
         xxxl: 1142px
 );
-
-$blue: #007bff;

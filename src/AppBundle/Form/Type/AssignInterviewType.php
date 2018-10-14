@@ -13,19 +13,13 @@ class AssignInterviewType extends AbstractType
     {
         $builder->add('interview', CreateInterviewType::class, [
             'roles' => $options['roles'],
-            'department' => $options['department'],
         ]);
-
-        $builder->add('save', SubmitType::class, array(
-            'label' => 'Lagre',
-        ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'roles' => [],
-            'department' => null
         ]);
     }
 

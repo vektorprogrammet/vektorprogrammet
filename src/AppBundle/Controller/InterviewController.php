@@ -11,6 +11,7 @@ use AppBundle\Form\Type\AddCoInterviewerType;
 use AppBundle\Form\Type\ApplicationInterviewType;
 use AppBundle\Form\Type\AssignInterviewType;
 use AppBundle\Form\Type\CancelInterviewConfirmationType;
+use AppBundle\Form\Type\CreateInterviewType;
 use AppBundle\Form\Type\ScheduleInterviewType;
 use AppBundle\Role\Roles;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -288,15 +289,18 @@ class InterviewController extends Controller
      *
      * @return JsonResponse
      */
-    public function assignAction(Request $request, $id)
+    public function assignAction(Request $request, $id = null)
     {
+        if ($id === null) {
+            throw $this->createNotFoundException();
+        }
         $em = $this->getDoctrine()->getManager();
         $application = $em->getRepository('AppBundle:Application')->find($id);
         $user = $application->getUser();
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
         $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([ Roles::TEAM_MEMBER ]);
 
-        $form = $this->createForm(AssignInterviewType::class, $application, [
+        $form = $this->createForm(CreateInterviewType::class, $application, [
             'roles' => $roles
         ]);
 
@@ -337,18 +341,18 @@ class InterviewController extends Controller
     {
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
         $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([Roles::TEAM_MEMBER]);
-        $form = $this->createForm(AssignInterviewType::class, null, [
+        $form = $this->createForm(CreateInterviewType::class, null, [
             'roles' => $roles
         ]);
 
         if ($request->isMethod('POST')) {
             $em = $this->getDoctrine()->getManager();
             // Get the info from the form
-            $data = $request->request->get('application');
+            $data = $request->request->all();
             // Get objects from database
             $interviewer = $em->getRepository('AppBundle:User')->findOneBy(array( 'id' => $data['interview']['interviewer'] ));
             $schema = $em->getRepository('AppBundle:InterviewSchema')->findOneBy(array( 'id' => $data['interview']['interviewSchema'] ));
-            $applications = $em->getRepository('AppBundle:Application')->findBy(array( 'id' => $data['id'] ));
+            $applications = $em->getRepository('AppBundle:Application')->findBy(array( 'id' => $data['application']['id'] ));
 
             // Update or create new interviews for all the given applications
             foreach ($applications as $application) {

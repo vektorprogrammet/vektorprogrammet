@@ -114,6 +114,9 @@ function vendor () {
   r = r && gulp.src(path.src + '/js/coreui.js')
     .pipe(gulp.dest('web/vendor/'));
 
+  r = r && gulp.src('node_modules/@coreui/coreui/dist/js/coreui.min.js')
+    .pipe(gulp.dest('web/vendor/'));
+
   r = r && gulp.src('node_modules/bootstrap/dist/js/bootstrap.min.js')
     .pipe(gulp.dest('web/js'));
 

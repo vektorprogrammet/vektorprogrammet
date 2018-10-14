@@ -285,9 +285,17 @@ fm_elfinder:
                           upload_deny: ['all']
                           upload_max_size: 5M
 
+httplug:
+    plugins:
+        logger: ~
+    clients:
+        acme:
+            factory: 'httplug.factory.guzzle6'
+            plugins: ['httplug.plugin.logger']
+            config:
+                timeout: 2
 
 nexy_slack:
-    guzzle_service: guzzle.slack
     endpoint: "%slack_endpoint%"
     username: 'vektorbot'
     icon: ':robot_face:'
