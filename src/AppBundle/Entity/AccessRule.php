@@ -81,11 +81,11 @@ class AccessRule
         return $this->resource;
     }
 
-	/**
-	 * @param string $resource
-	 *
-	 * @return AccessRule
-	 */
+    /**
+     * @param string $resource
+     *
+     * @return AccessRule
+     */
     public function setResource($resource): AccessRule
     {
         $this->resource = $resource;
@@ -101,16 +101,16 @@ class AccessRule
         return $this->method;
     }
 
-	/**
-	 * @param string $method
-	 *
-	 * @return AccessRule
-	 */
+    /**
+     * @param string $method
+     *
+     * @return AccessRule
+     */
     public function setMethod($method): AccessRule
     {
         $this->method = $method;
 
-	    return $this;
+        return $this;
     }
 
     /**
@@ -121,16 +121,16 @@ class AccessRule
         return $this->users;
     }
 
-	/**
-	 * @param User[] $users
-	 *
-	 * @return AccessRule
-	 */
+    /**
+     * @param User[] $users
+     *
+     * @return AccessRule
+     */
     public function setUsers($users): AccessRule
     {
         $this->users = $users;
 
-	    return $this;
+        return $this;
     }
 
     /**
@@ -141,16 +141,16 @@ class AccessRule
         return $this->teams;
     }
 
-	/**
-	 * @param Team[] $teams
-	 *
-	 * @return AccessRule
-	 */
+    /**
+     * @param Team[] $teams
+     *
+     * @return AccessRule
+     */
     public function setTeams($teams): AccessRule
     {
         $this->teams = $teams;
 
-	    return $this;
+        return $this;
     }
 
     /**
@@ -161,16 +161,16 @@ class AccessRule
         return $this->roles;
     }
 
-	/**
-	 * @param Role[] $roles
-	 *
-	 * @return AccessRule
-	 */
+    /**
+     * @param Role[] $roles
+     *
+     * @return AccessRule
+     */
     public function setRoles($roles): AccessRule
     {
         $this->roles = $roles;
 
-	    return $this;
+        return $this;
     }
 
     /**
@@ -181,16 +181,16 @@ class AccessRule
         return $this->name;
     }
 
-	/**
-	 * @param string $name
-	 *
-	 * @return AccessRule
-	 */
+    /**
+     * @param string $name
+     *
+     * @return AccessRule
+     */
     public function setName($name) : AccessRule
     {
         $this->name = $name;
 
-	    return $this;
+        return $this;
     }
 
     /**
@@ -201,16 +201,16 @@ class AccessRule
         return $this->isRoutingRule;
     }
 
-	/**
-	 * @param boolean $isRoutingRule
-	 *
-	 * @return AccessRule
-	 */
+    /**
+     * @param boolean $isRoutingRule
+     *
+     * @return AccessRule
+     */
     public function setIsRoutingRule($isRoutingRule): AccessRule
     {
         $this->isRoutingRule = $isRoutingRule;
 
-	    return $this;
+        return $this;
     }
 
     /**
@@ -221,15 +221,15 @@ class AccessRule
         return $this->forExecutiveBoard;
     }
 
-	/**
-	 * @param boolean $forExecutiveBoard
-	 *
-	 * @return AccessRule
-	 */
+    /**
+     * @param boolean $forExecutiveBoard
+     *
+     * @return AccessRule
+     */
     public function setForExecutiveBoard($forExecutiveBoard): AccessRule
     {
         $this->forExecutiveBoard = $forExecutiveBoard;
 
-	    return $this;
+        return $this;
     }
 }
