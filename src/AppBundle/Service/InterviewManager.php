@@ -125,7 +125,7 @@ class InterviewManager
      */
     public function sendScheduleEmail(Interview $interview, array $data)
     {
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('Intervju for vektorprogrammet')
             ->setTo($data['to'])
             ->setReplyTo($data['from'])
@@ -163,7 +163,7 @@ class InterviewManager
 
         // Send mail to interviewer and co-interviewer
         foreach ($interviewers as $interviewer) {
-            $message = \Swift_Message::newInstance()
+            $message = (new \Swift_Message())
                 ->setSubject("[$user] Intervju: Ønske om ny tid")
                 ->setTo($interviewer->getEmail())
                 ->setBody(
@@ -194,7 +194,7 @@ class InterviewManager
 
         // Send mail to interviewer and co-interviewer
         foreach ($interviewers as $interviewer) {
-            $message = \Swift_Message::newInstance()
+            $message = (new \Swift_Message())
                 ->setSubject("[$user] Intervju: Kansellert")
                 ->setTo($interviewer->getEmail())
                 ->setBody(
@@ -232,7 +232,7 @@ class InterviewManager
             return;
         }
 
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
              ->setSubject('Dine intervjuer dette semesteret')
              ->setTo($interviewer->getEmail())
              ->setBody(
@@ -265,7 +265,7 @@ class InterviewManager
 
     private function sendAcceptInterviewReminderToInterviewee(Interview $interview)
     {
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('Påminnelse om intervjuinvitasjon med Vektorprogrammet')
             ->setTo($interview->getUser()->getEmail())
             ->setBody(
