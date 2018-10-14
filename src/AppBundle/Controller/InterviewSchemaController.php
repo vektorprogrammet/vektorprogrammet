@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -80,7 +81,7 @@ class InterviewSchemaController extends Controller
     public function deleteSchemaAction(InterviewSchema $schema)
     {
         try {
-            if ($this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+            if ($this->isGranted(Roles::TEAM_LEADER)) {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($schema);
                 $em->flush();
