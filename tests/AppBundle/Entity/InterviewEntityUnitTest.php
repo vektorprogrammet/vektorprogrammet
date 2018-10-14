@@ -7,8 +7,9 @@ use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\InterviewSchema;
 use AppBundle\Entity\InterviewScore;
 use AppBundle\Entity\User;
+use PHPUnit\Framework\TestCase;
 
-class InterviewEntityUnitTest extends \PHPUnit_Framework_TestCase
+class InterviewEntityUnitTest extends TestCase
 {
     public function testSetInterviewSchema()
     {
@@ -37,7 +38,7 @@ class InterviewEntityUnitTest extends \PHPUnit_Framework_TestCase
 
         $interview->addInterviewAnswer($answer);
 
-        $this->assertContainsOnly($answer, $interview->getInterviewAnswers());
+        $this->assertContains($answer, $interview->getInterviewAnswers());
     }
 
     public function testRemoveInterviewAnswer()

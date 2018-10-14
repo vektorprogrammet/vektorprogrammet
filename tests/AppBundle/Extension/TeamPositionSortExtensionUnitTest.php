@@ -13,8 +13,9 @@ use AppBundle\Entity\User;
 use AppBundle\Service\FilterService;
 use AppBundle\Service\Sorter;
 use AppBundle\Twig\Extension\TeamPositionSortExtension;
+use PHPUnit\Framework\TestCase;
 
-class TeamPositionSortExtensionUnitTest extends \PHPUnit_Framework_TestCase
+class TeamPositionSortExtensionUnitTest extends TestCase
 {
     private $sortExtension;
     private $activeSemester;

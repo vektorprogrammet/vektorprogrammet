@@ -4,8 +4,9 @@ namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\PasswordReset;
 use AppBundle\Entity\User;
+use PHPUnit\Framework\TestCase;
 
-class PasswordResetEntityUnitTest extends \PHPUnit_Framework_TestCase
+class PasswordResetEntityUnitTest extends TestCase
 {
     // Check whether the setUser function is working correctly
     public function testSetUser()

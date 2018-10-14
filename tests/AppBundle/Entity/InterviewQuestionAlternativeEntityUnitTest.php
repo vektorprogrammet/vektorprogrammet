@@ -4,8 +4,9 @@ namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\InterviewQuestion;
 use AppBundle\Entity\InterviewQuestionAlternative;
+use PHPUnit\Framework\TestCase;
 
-class InterviewQuestionAlternativeEntityUnitTest extends \PHPUnit_Framework_TestCase
+class InterviewQuestionAlternativeEntityUnitTest extends TestCase
 {
     public function testSetAlternative()
     {

@@ -4,17 +4,20 @@ namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\InterviewQuestion;
 use AppBundle\Entity\InterviewSchema;
+use PHPUnit\Framework\TestCase;
 
-class InterviewSchemaEntityUnitTest extends \PHPUnit_Framework_TestCase
+class InterviewSchemaEntityUnitTest extends TestCase
 {
     public function testAddInterviewQuestion()
     {
         $intSchema = new InterviewSchema();
         $intQuestion = new InterviewQuestion();
 
+        $this->assertNotContains($intQuestion, $intSchema->getInterviewQuestions());
+
         $intSchema->addInterviewQuestion($intQuestion);
 
-        $this->assertContainsOnly($intQuestion, $intSchema->getInterviewQuestions());
+        $this->assertContains($intQuestion, $intSchema->getInterviewQuestions());
     }
 
     public function testRemoveInterviewQuestion()
@@ -24,7 +27,7 @@ class InterviewSchemaEntityUnitTest extends \PHPUnit_Framework_TestCase
 
         $intSchema->addInterviewQuestion($intQuestion);
 
-        $this->assertContainsOnly($intQuestion, $intSchema->getInterviewQuestions());
+        $this->assertContains($intQuestion, $intSchema->getInterviewQuestions());
 
         $intSchema->removeInterviewQuestion($intQuestion);
 

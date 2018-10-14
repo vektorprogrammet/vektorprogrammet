@@ -4,8 +4,9 @@ namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\InterviewQuestion;
 use AppBundle\Entity\InterviewQuestionAlternative;
+use PHPUnit\Framework\TestCase;
 
-class InterviewQuestionEntityUnitTest extends \PHPUnit_Framework_TestCase
+class InterviewQuestionEntityUnitTest extends TestCase
 {
     public function testSetQuestion()
     {
@@ -39,9 +40,11 @@ class InterviewQuestionEntityUnitTest extends \PHPUnit_Framework_TestCase
         $intQuestion = new InterviewQuestion();
         $alternative = new InterviewQuestionAlternative();
 
+        $this->assertEquals(0, count($intQuestion->getAlternatives()));
+
         $intQuestion->addAlternative($alternative);
 
-        $this->assertContainsOnly($alternative, $intQuestion->getAlternatives());
+        $this->assertEquals(1, count($intQuestion->getAlternatives()));
     }
 
     public function testRemoveAlternative()
@@ -51,7 +54,7 @@ class InterviewQuestionEntityUnitTest extends \PHPUnit_Framework_TestCase
 
         $intQuestion->addAlternative($alternative);
 
-        $this->assertContainsOnly($alternative, $intQuestion->getAlternatives());
+        $this->assertContains($alternative, $intQuestion->getAlternatives());
 
         $intQuestion->removeAlternative($alternative);
 

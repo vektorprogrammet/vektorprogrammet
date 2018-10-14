@@ -4,8 +4,9 @@ namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\Receipt;
+use PHPUnit\Framework\TestCase;
 
-class ReceiptEntityUnitTest extends \PHPUnit_Framework_TestCase
+class ReceiptEntityUnitTest extends TestCase
 {
     // Test the setUser() method
     public function testSetUser()

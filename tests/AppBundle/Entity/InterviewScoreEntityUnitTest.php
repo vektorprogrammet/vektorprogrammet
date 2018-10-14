@@ -3,8 +3,9 @@
 namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\InterviewScore;
+use PHPUnit\Framework\TestCase;
 
-class InterviewScoreEntityUnitTest extends \PHPUnit_Framework_TestCase
+class InterviewScoreEntityUnitTest extends TestCase
 {
     public function testSetExplanatoryPower()
     {

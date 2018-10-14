@@ -4,8 +4,9 @@ namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
+use PHPUnit\Framework\TestCase;
 
-class RoleEntityUnitTest extends \PHPUnit_Framework_TestCase
+class RoleEntityUnitTest extends TestCase
 {
     // Check whether the setId function is working correctly
     public function testSetId()

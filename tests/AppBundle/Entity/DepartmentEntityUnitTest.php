@@ -7,8 +7,9 @@ use AppBundle\Entity\FieldOfStudy;
 use AppBundle\Entity\School;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Team;
+use PHPUnit\Framework\TestCase;
 
-class DepartmentEntityUnitTest extends \PHPUnit_Framework_TestCase
+class DepartmentEntityUnitTest extends TestCase
 {
     // Check whether the setName function is working correctly
     public function testSetName()

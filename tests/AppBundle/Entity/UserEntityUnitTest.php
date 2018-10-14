@@ -5,8 +5,9 @@ namespace Tests\AppBundle\Entity;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Role;
 use AppBundle\Entity\FieldOfStudy;
+use PHPUnit\Framework\TestCase;
 
-class UserEntityUnitTest extends \PHPUnit_Framework_TestCase
+class UserEntityUnitTest extends TestCase
 {
     // Check whether the setEmail function is working correctly
     public function testSetEmail()

@@ -5,8 +5,9 @@ namespace Tests\AppBundle\Entity;
 use AppBundle\Entity\Interview;
 use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\InterviewQuestion;
+use PHPUnit\Framework\TestCase;
 
-class InterviewAnswerEntityUnitTest extends \PHPUnit_Framework_TestCase
+class InterviewAnswerEntityUnitTest extends TestCase
 {
     public function testSetAnswer()
     {

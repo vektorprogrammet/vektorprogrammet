@@ -4,8 +4,9 @@ namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\CertificateRequest;
+use PHPUnit\Framework\TestCase;
 
-class CertificateRequestEntityUnitTest extends \PHPUnit_Framework_TestCase
+class CertificateRequestEntityUnitTest extends TestCase
 {
     // Check whether the setUser function is working correctly
     public function testSetUser()

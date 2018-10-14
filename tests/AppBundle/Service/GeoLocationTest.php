@@ -38,17 +38,17 @@ class GeoLocationTest extends TestCase
         $this->dep2->setLatitude('63.446057');
         $this->dep2->setLongitude('10.428514');
 
-        $departmentRepo = $this->getMock(ObjectRepository::class);
+        $departmentRepo = $this->getMockBuilder(ObjectRepository::class)->getMock();
         $departmentRepo->expects($this->any())
                        ->method('findAll')
                        ->willReturn([ $this->dep1, $this->dep2 ]);
 
-        $entityManager = $this->getMock(EntityManagerInterface::class);
+        $entityManager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $entityManager->expects($this->any())
                       ->method('getRepository')
                       ->willReturn($departmentRepo);
 
-        $sessionStorage = $this->getMock(Session::class);
+        $sessionStorage = $this->getMockBuilder(Session::class)->getMock();
         $sessionStorage->expects($this->any())
                        ->method('get')
                        ->willReturn(null);
@@ -57,7 +57,7 @@ class GeoLocationTest extends TestCase
                        ->willReturn(null);
 
 
-        $requestStack = $this->getMock(RequestStack::class);
+        $requestStack = $this->getMockBuilder(RequestStack::class)->getMock();
         $requestStack->expects($this->any())
                      ->method('getMasterRequest')
                      ->willReturn(new class {

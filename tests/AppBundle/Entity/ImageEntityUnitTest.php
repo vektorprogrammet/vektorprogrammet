@@ -5,8 +5,9 @@ namespace Tests\AppBundle\Entity;
 use AppBundle\Entity\Image;
 use AppBundle\Entity\ImageGallery;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use PHPUnit\Framework\TestCase;
 
-class ImageEntityUnitTest extends \PHPUnit_Framework_TestCase
+class ImageEntityUnitTest extends TestCase
 {
     public function testSetGallery()
     {

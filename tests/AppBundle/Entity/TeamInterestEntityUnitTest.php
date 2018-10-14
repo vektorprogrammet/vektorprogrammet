@@ -6,8 +6,9 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamInterest;
+use PHPUnit\Framework\TestCase;
 
-class TeamInterestEntityUnitTest extends \PHPUnit_Framework_TestCase
+class TeamInterestEntityUnitTest extends TestCase
 {
 
     /**

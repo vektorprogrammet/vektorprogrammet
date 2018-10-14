@@ -5,8 +5,9 @@ namespace Tests\AppBundle\Entity;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Department;
 use DateTime;
+use PHPUnit\Framework\TestCase;
 
-class SemesterEntityUnitTest extends \PHPUnit_Framework_TestCase
+class SemesterEntityUnitTest extends TestCase
 {
     // Check whether the setAdmissionStartDate function is working correctly
     public function testSetAdmissionStartDate()

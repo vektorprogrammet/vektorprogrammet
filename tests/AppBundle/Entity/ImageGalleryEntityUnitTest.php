@@ -5,8 +5,9 @@ namespace Tests\AppBundle\Entity;
 use AppBundle\Entity\ImageGallery;
 use AppBundle\Entity\Image;
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\TestCase;
 
-class ImageGalleryEntityUnitTest extends \PHPUnit_Framework_TestCase
+class ImageGalleryEntityUnitTest extends TestCase
 {
     public function testSetImages()
     {

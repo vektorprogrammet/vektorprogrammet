@@ -3,8 +3,9 @@
 namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\Position;
+use PHPUnit\Framework\TestCase;
 
-class PositionEntityUnitTest extends \PHPUnit_Framework_TestCase
+class PositionEntityUnitTest extends TestCase
 {
     // Check whether the setName function is working correctly
     public function testSetName()

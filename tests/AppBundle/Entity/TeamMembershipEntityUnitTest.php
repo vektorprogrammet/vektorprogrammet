@@ -6,9 +6,9 @@ use AppBundle\Entity\TeamMembership;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\Position;
-use DateTime;
+use PHPUnit\Framework\TestCase;
 
-class TeamMembershipEntityUnitTest extends \PHPUnit_Framework_TestCase
+class TeamMembershipEntityUnitTest extends TestCase
 {
 
     // Check whether the setUser function is working correctly

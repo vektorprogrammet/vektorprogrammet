@@ -4,8 +4,9 @@ namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\School;
 use AppBundle\Entity\Department;
+use PHPUnit\Framework\TestCase;
 
-class SchoolEntityUnitTest extends \PHPUnit_Framework_TestCase
+class SchoolEntityUnitTest extends TestCase
 {
     // Check whether the setName function is working correctly
     public function testSetName()

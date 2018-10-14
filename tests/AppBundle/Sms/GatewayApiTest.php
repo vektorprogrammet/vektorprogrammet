@@ -206,5 +206,7 @@ class GatewayApiTest extends KernelTestCase
         $sms->setMessage('This is a test message');
 
         $this->gatewayApi->send($sms);
+
+        self::assertTrue(true); // Test will be marked as "risky" if there are no asserts
     }
 }

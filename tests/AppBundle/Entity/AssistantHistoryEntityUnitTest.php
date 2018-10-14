@@ -6,8 +6,9 @@ use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\School;
+use PHPUnit\Framework\TestCase;
 
-class AssistantHistoryEntityUnitTest extends \PHPUnit_Framework_TestCase
+class AssistantHistoryEntityUnitTest extends TestCase
 {
     // Check whether the setUser function is working correctly
     public function testSetUser()
