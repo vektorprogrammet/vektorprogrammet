@@ -320,18 +320,14 @@ news:
   methods: [GET]
 
 article_show:
-  path: /nyhet/{id}
+  path: /nyhet/{slug}
   defaults: { _controller: AppBundle:Article:showSpecific }
   methods: [GET]
-  requirements:
-    id: \d+
 
 old_article_show:
-  path: /artikkel/{id}
+  path: /artikkel/{slug}
   defaults: { _controller: AppBundle:Article:showSpecific }
   methods: [GET]
-  requirements:
-    id: \d+
 
 article_filter:
   path: /nyheter/{department}

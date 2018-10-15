@@ -97,6 +97,23 @@ class ArticleRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * Finds slugs.
+     *
+     * @return array
+     */
+    public function findSlugs()
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->select('a.slug');
+        $temp = $qb->getQuery()->getResult();
+        $slugs = [];
+        foreach ($temp as $slug) {
+            array_push($slugs, $slug['slug']);
+        }
+        return $slugs;
+    }
+
     /* The methods below return a QueryBuilder instance, to be used with knp_paginator bundle. */
 
     /**

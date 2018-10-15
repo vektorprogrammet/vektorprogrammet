@@ -179,7 +179,7 @@ class ProfileController extends BaseController
         $department = $this->getUser()->getDepartment();
 
         if ($signature === null) {
-            return $this->redirectToRoute('certificate_signature_picture_upload');
+            return $this->redirectToRoute('certificate_show');
         }
 
         $html        = $this->renderView('certificate/certificate.html.twig', array(
