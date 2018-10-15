@@ -57,6 +57,11 @@ services:
         tags:
             - { name: twig.extension }
 
+    twig.extension.routing:
+        public: false
+        class: AppBundle\Twig\Extension\AppRoutingExtension
+        arguments: ['@app.access_control', '@router.default']
+
     app.slug_maker:
         class: AppBundle\Service\SlugMaker
         arguments: ['@doctrine.orm.default_entity_manager']
