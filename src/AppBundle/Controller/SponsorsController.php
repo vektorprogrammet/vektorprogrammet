@@ -47,7 +47,6 @@ class SponsorsController extends Controller
         $form = $this->createForm(SponsorType::class, $sponsor);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             if (!is_null($request->files->get('sponsor')['logoImagePath'])) {
                 $imgPath = $this->get('app.file_uploader')->uploadSponsor($request);
                 $this->get('app.file_uploader')->deleteSponsor($oldImgPath);
