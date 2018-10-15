@@ -164,7 +164,6 @@
 
                 // Get the filtered data and re-render the charts
                 var filteredSurveyData = filterSurveyData(surveyData, filter);
-                console.log(filter)
                 $('#show-filter-btn').click();
                 renderCharts(filteredSurveyData);
             });
@@ -219,7 +218,6 @@
                 }
             }
 
-            console.log(data)
 
             // Count occurrences of different alternatives
             var answers = surveyData.answers;
@@ -244,7 +242,6 @@
         function renderCharts(surveyData) {
             // Clear all previous charts and loading text
             $('#charts').empty();
-
             // Get chartData
             var countedData = countAnswers(surveyData);
             var chartData = generateChartData(countedData);
@@ -302,9 +299,8 @@
 
           // A submission is a survey that has been submitted with answers
           var submissions = surveyData.answers;
-          const filteredQuestionIds = Object.keys(filterObject);
 
-
+            const filteredQuestionIds = Object.keys(filterObject);
             // Remove all submissions that doesn't match filter criteria
             var filteredSubmissions = submissions.filter(function (submission) {
               const answeredQuestionIds = submission.map(function (q) {

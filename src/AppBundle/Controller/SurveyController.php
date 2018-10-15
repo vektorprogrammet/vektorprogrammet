@@ -14,6 +14,7 @@ use AppBundle\Form\Type\SurveyType;
 use AppBundle\Form\Type\SurveyExecuteType;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -101,10 +102,10 @@ class SurveyController extends Controller
 
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
-
                 $allTakenSurveys = $em
                     ->getRepository('AppBundle:SurveyTaken')
                     ->findAllSurveyTakenBySurveyAndUser($survey, $user);
+
 
                 if (!empty($allTakenSurveys)) {
                     foreach ($allTakenSurveys as $oldTakenSurvey) {
@@ -114,15 +115,16 @@ class SurveyController extends Controller
                 $em->persist($surveyTaken);
                 $em->flush();
 
+
+
                 if ($survey->isShowCustomFinishPage()) {
                     return $this->render('survey/finish_page.html.twig', [
                         'content' => $survey->getFinishPageContent(),
                     ]);
                 }
-
-                $this->addFlash('undersokelse-notice', 'Mottatt svar!');
+                $this->addFlash('success', 'Mottatt svar!');
             } else {
-                $this->addFlash('undersokelse-warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
+                $this->addFlash('warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
             }
 
             //New form without previous answers
@@ -327,6 +329,7 @@ class SurveyController extends Controller
             return $this->render('survey/survey_result.html.twig', array(
                 'textAnswers' => $survey->getTextAnswerWithTeamResults(),
                 'survey' => $survey,
+                'teamSurvey' => $survey->isTeamSurvey()
             ));
         }
 
@@ -343,6 +346,8 @@ class SurveyController extends Controller
         $surveysTaken = $this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
         $validSurveysTaken = array();
 
+
+
         $group = array();
         $title = "";
         if ($survey->isTeamSurvey()) {
@@ -350,7 +355,10 @@ class SurveyController extends Controller
                 foreach ($surveyTaken->getUser()->getTeamMemberships() as $teamMembership) {
                     $group[] = $teamMembership->getTeam()->getName();
                 }
+
+                $validSurveysTaken[] = $surveyTaken;
             }
+
 
             $title = "Team";
         } else {
@@ -374,6 +382,7 @@ class SurveyController extends Controller
         $survey_json = json_encode($survey);
         $survey_decode = json_decode($survey_json, true);
         $survey_decode['questions'][] = $groupQuestion;
+
 
         return new JsonResponse(array('survey' => $survey_decode, 'answers' => $validSurveysTaken));
     }

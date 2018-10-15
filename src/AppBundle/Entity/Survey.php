@@ -255,21 +255,11 @@ class Survey implements \JsonSerializable
                     continue;
                 }
 
-                $teamNames = array();
-                foreach ($answer->getSurveyTaken()->getUser()->getTeamMemberships() as $teamMembership) {
-                    $teamNames[] = $teamMembership->getTeam()->getName();
-                }
-
-
-
-                $teamNames = implode(", ", $teamNames);
-                $find = ',';
-                $replace = ' og';
-                $teamNames = strrev(preg_replace(strrev("/$find/"), strrev($replace), strrev($teamNames), 1));
+                // $teamNames = $answer->getSurveyTaken()->getUser()->getTeamNames();
 
                 $textQAarray[$questionText][] = array(
                     'answerText' => $answer->getAnswer(),
-                    'teamName' => $teamNames
+                    'teamName' => "", // $teamNames
                 );
             }
         }
@@ -278,10 +268,6 @@ class Survey implements \JsonSerializable
     }
 
 
-    private function map($team)
-    {
-        return $team->getName();
-    }
 
 
     public function copy(): Survey
