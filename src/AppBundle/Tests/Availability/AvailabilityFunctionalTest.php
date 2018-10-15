@@ -200,7 +200,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
             array('/kontrollpanel/artikkeladmin'),
 
             array('/kontrollpanel/vikar'),
-            array('/kontrollpanel/vikar/semester/4'),
+            array('/kontrollpanel/vikar?department=1&semester=1'),
 
             array('/kontrollpanel/team/avdeling'),
             array('/kontrollpanel/teamadmin/team/1'),
@@ -213,7 +213,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
             array('/kontrollpanel/utlegg/2'),
 
             array('/kontrollpanel/undersokelse/admin'),
-            array('/kontrollpanel/undersokelse/admin/4'),
+            array('/kontrollpanel/undersokelse/admin?department=1&semester=1'),
             array('/kontrollpanel/undersokelse/opprett'),
 
             array('/kontrollpanel/artikkeladmin'),
@@ -256,7 +256,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
             array('/kontrollpanel/hovedstyret/oppdater'),
 
             array('/kontrollpanel/opptakadmin/teaminteresse'),
-            array('/kontrollpanel/opptakadmin/teaminteresse/4'),
+            array('/kontrollpanel/opptakadmin/teaminteresse?department=2&semester=1'),
 
             array('/kontrollpanel/brukeradmin/avdeling/2'),
             array('/kontrollpanel/brukeradmin/opprett/2'),

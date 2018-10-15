@@ -59,15 +59,19 @@
         {% if is_granted_team_leader() %}
             {% include "common/department_semester_dropdowns.html.twig" with {
                 'path': 'applications_show_by_semester',
-                'parameterName': 'id',
-                'currentSemester': semester
+                'departmentParameterName': 'department',
+                'semesterParameterName': 'semester',
+                'currentDepartment': department,
+                'currentSemester': semester,
             } %}
         {% else %}
             <ul class="inline-list">
                 {% include 'common/semester_dropdown.html.twig' with {
                     'pathForSemester': 'applications_show_by_semester',
-                    'semesterParameterName': 'id',
-                    'currentSemester': semester
+                    'departmentParameterName': 'department',
+                    'semesterParameterName': 'semester',
+                    'currentDepartment': department,
+                    'currentSemester': semester,
                 } %}
             </ul>
         {% endif %}
@@ -81,10 +85,10 @@
         <div class="col-12">
                 <ul class="nav nav-tabs justify-content-center mt-2 mb-5">
                     <li class="nav-item">
-                        <a class="nav-link {{ status == "assigned" ? 'active' : '' }}" href="{{ path('applications_show_assigned_by_semester', {id: semester.id}) }}">Intervjufordeling</a>
+                        <a class="nav-link {{ status == "assigned" ? 'active' : '' }}" href="{{ path('applications_show_assigned', {department: department.id, semester: semester.id}) }}">Intervjufordeling</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ status == "interviewed" ? 'active' : '' }}" href="{{ path('applications_show_interviewed_by_semester', {id: semester.id}) }}">Intervjuer</a>
+                        <a class="nav-link {{ status == "interviewed" ? 'active' : '' }}" href="{{ path('applications_show_interviewed', {department: department.id, semester: semester.id}) }}">Intervjuer</a>
                     </li>
                 </ul>
         </div>

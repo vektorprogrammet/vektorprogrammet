@@ -183,7 +183,10 @@ class AdmissionAdminController extends BaseController
 
         $this->addFlash('success', 'Søknaden ble slettet.');
 
-        return $this->redirectToRoute('applications_show_existing_by_semester', ['id' => $application->getSemester()->getId()]);
+        return $this->redirectToRoute('applications_show_existing', array(
+            'department' => $application->getDepartment(),
+            'semester' => $application->getSemester()->getId()
+        ));
     }
 
     /**

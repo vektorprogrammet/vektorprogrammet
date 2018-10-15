@@ -18,7 +18,7 @@ class TeamInterestType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $department = $options['department'];
+        $department = $builder->getData()->getDepartment();
 
         $builder
             ->add('name', TextType::class, array(

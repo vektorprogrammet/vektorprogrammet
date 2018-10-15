@@ -106,7 +106,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains("Opptak")')->count());
+        $this->assertEquals(1, $crawler->filter('h2:contains("Opptak")')->count());
 
         // Assert that we have the correct buttons for superadmin
         $this->assertEquals(1, $crawler->filter('a.button:contains("Trondheim")')->count());

@@ -292,13 +292,13 @@
                         <a class="nav-link {{ status == "new" ? 'active' : '' }}" href="{{ path('applications_show_new', {'department': department.id, 'semester': semester.id}) }}">Nye Søkere</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ status == "existing" ? 'active' : '' }}" href="{{ path('applications_show_assigned', {'department': department.id, 'semester': semester.id}) }}">Tidligere Assistenter</a>
+                        <a class="nav-link {{ status == "existing" ? 'active' : '' }}" href="{{ path('applications_show_existing', {'department': department.id, 'semester': semester.id}) }}">Tidligere Assistenter</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ status == "assigned" ? 'active' : '' }}" href="{{ path('applications_show_interviewed', {'department': department.id, 'semester': semester.id}) }}">Intervjufordeling</a>
+                        <a class="nav-link {{ status == "assigned" ? 'active' : '' }}" href="{{ path('applications_show_assigned', {'department': department.id, 'semester': semester.id}) }}">Intervjufordeling</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ status == "interviewed" ? 'active' : '' }}" href="{{ path('applications_show_existing', {'department': department.id, 'semester': semester.id}) }}">Intervjuer</a>
+                        <a class="nav-link {{ status == "interviewed" ? 'active' : '' }}" href="{{ path('applications_show_interviewed', {'department': department.id, 'semester': semester.id}) }}">Intervjuer</a>
                     </li>
                 </ul>
         </div>

@@ -260,16 +260,20 @@
     <div class="btn-group">
         {% if is_granted_team_leader() %}
             {% include "common/department_semester_dropdowns.html.twig" with {
-                'path': 'applications_show_by_semester',
-                'parameterName': 'id',
-                'currentSemester': semester
+                'path': 'applications_show_new',
+                'departmentParameterName': 'department',
+                'semesterParameterName': 'semester',
+                'currentDepartment': department,
+                'currentSemester': semester,
             } %}
         {% else %}
             <ul class="inline-list">
                 {% include 'common/semester_dropdown.html.twig' with {
-                    'pathForSemester': 'applications_show_by_semester',
-                    'semesterParameterName': 'id',
-                    'currentSemester': semester
+                    'pathForSemester': 'applications_show',
+                    'departmentParameterName': 'department',
+                    'semesterParameterName': 'semester',
+                    'currentDepartment': department,
+                    'currentSemester': semester,
                 } %}
             </ul>
         {% endif %}
@@ -278,15 +282,14 @@
 
 
 {% block body %}
-{#<h1>Opptak {{ department }}</h1>#}
     <div class="row">
         <div class="col-12">
                 <ul class="nav nav-tabs justify-content-center mt-2 mb-5">
                     <li class="nav-item">
-                        <a class="nav-link {{ status == "new" ? 'active' : '' }}" href="{{ path('applications_show_new_by_semester', {id: semester.id}) }}">Nye Søkere</a>
+                        <a class="nav-link {{ status == "new" ? 'active' : '' }}" href="{{ path('applications_show_new', {department: department.id, semester: semester.id}) }}">Nye Søkere</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ status == "existing" ? 'active' : '' }}" href="{{ path('applications_show_existing_by_semester', {id: semester.id}) }}">Tidligere Assistenter</a>
+                        <a class="nav-link {{ status == "existing" ? 'active' : '' }}" href="{{ path('applications_show_existing', {department: department.id, semester: semester.id}) }}">Tidligere Assistenter</a>
                     </li>
                 </ul>
         </div>

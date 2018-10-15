@@ -13,6 +13,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class TeamInterestController extends BaseController
 {
+
     /**
      * @Route(name="team_interest_form", path="/teaminteresse/{id}",
      *      requirements={"id"="\d+"})
@@ -22,6 +23,8 @@ class TeamInterestController extends BaseController
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function showTeamInterestFormAction(Department $department, Request $request)
     {
@@ -32,6 +35,7 @@ class TeamInterestController extends BaseController
 
         $teamInterest = new TeamInterest();
         $teamInterest->setSemester($semester);
+        $teamInterest->setDepartment($department);
         $form = $this->createForm(new TeamInterestType(), $teamInterest, array(
             'department' => $department,
         ));

@@ -253,7 +253,7 @@ class InterviewController extends BaseController
                 $this->get('event_dispatcher')->dispatch(InterviewEvent::SCHEDULE, new InterviewEvent($interview, $data));
             }
 
-            return $this->redirectToRoute('applications_show_assigned', array('department' => $application->getDepartment(), 'semester' => $application->getSemester()->getId()));
+            return $this->redirectToRoute('applications_show_assigned', array('department' => $application->getDepartment()->getId(), 'semester' => $application->getSemester()->getId()));
         }
 
         return $this->render('interview/schedule.html.twig', array(
@@ -545,8 +545,9 @@ class InterviewController extends BaseController
     public function adminAssignCoInterviewerAction(Request $request, Interview $interview)
     {
         $semester = $interview->getApplication()->getSemester();
+        $department = $interview->getApplication()->getDepartment();
         $teamUsers = $this->getDoctrine()->getRepository('AppBundle:User')
-                          ->findUsersWithTeamMembershipInSemester($semester);
+                          ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
         $form = $this->createForm(new AddCoInterviewerType($teamUsers));
         $form->handleRequest($request);
 
@@ -562,7 +563,10 @@ class InterviewController extends BaseController
                 return $this->redirectToRoute('interview_schedule', array( 'id' => $interview->getApplication()->getId() ));
             }
 
-            return $this->redirectToRoute('applications_show_assigned');
+            return $this->redirectToRoute('applications_show_assigned', array(
+                'department' => $department->getId(),
+                'semester' => $semester->getId(),
+            ));
         }
 
         return $this->render('interview/assign_co_interview_form.html.twig', array(
