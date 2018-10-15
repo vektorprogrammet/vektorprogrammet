@@ -1,0 +1,29 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Opprett semester
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('semester_show') }}">Semester</a>
+    </li>
+    <li class="breadcrumb-item active">Opprett</li>
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-industry"></i> Opprett semester</div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

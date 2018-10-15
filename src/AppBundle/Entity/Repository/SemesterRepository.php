@@ -17,6 +17,11 @@ class SemesterRepository extends EntityRepository
             ->orderBy('Semester.semesterStartDate', 'DESC');
     }
 
+    public function findAllOrderedByAge()
+    {
+        return $this->queryForAllSemestersOrderedByAge()->getQuery()->getResult();
+    }
+
     /**
      * @return Semester
      *
@@ -34,5 +39,25 @@ class SemesterRepository extends EntityRepository
             ->setParameter('now', $now)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @param string $semesterTime
+     * @param string $year
+     *
+     * @return Semester[]
+     */
+    public function findByTimeAndYear(string $semesterTime, string $year)
+    {
+        return $this->createQueryBuilder('Semester')
+            ->select('Semester')
+            ->where('Semester.semesterTime = :semesterTime')
+            ->andWhere('Semester.year = :year')
+            ->setParameters(array(
+                'semesterTime' => $semesterTime,
+                'year' => $year,
+            ))
+            ->getQuery()
+            ->getResult();
     }
 }

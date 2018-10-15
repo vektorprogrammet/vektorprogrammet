@@ -66,6 +66,7 @@ security:
 
           #ROLE_HIGHEST_ADMIN = admin user
         - { path: ^/kontrollpanel/staging, roles: ROLE_HIGHEST_ADMIN }
+        - { path: ^/kontrollpanel/semesteradmin, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/avdelingadmin/opprett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/avdelingadmin/slett, roles: ROLE_HIGHEST_ADMIN }
         - { path: ^/kontrollpanel/opptaksperiode/slett, roles: ROLE_HIGHEST_ADMIN }

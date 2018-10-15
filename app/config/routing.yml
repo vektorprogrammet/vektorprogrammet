@@ -536,7 +536,7 @@ receipt_delete:
     receipt: \d+
 
 ##########################################
-#              Semester                  #
+#            Admission Period            #
 ##########################################
 
 admission_period_admin_show:

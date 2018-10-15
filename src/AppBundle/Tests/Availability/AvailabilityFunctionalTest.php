@@ -231,8 +231,6 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
     public function teamLeaderUrlProvider()
     {
         return array(
-            array('/kontrollpanel/semesteradmin/avdeling/2'),
-            array('/kontrollpanel/semesteradmin/avdeling/opprett/1'),
 
             array('/kontrollpanel/intervju/settopp/6'),
             array('/kontrollpanel/intervju/conduct/6'),
@@ -279,6 +277,8 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
             array('/kontrollpanel/staging'),
             array('/kontrollpanel/avdelingadmin/opprett'),
             array('/kontrollpanel/bruker/vekorepost/endre/1'),
+            array('/kontrollpanel/semesteradmin'),
+            array('/kontrollpanel/semesteradmin/opprett'),
         );
     }
 }

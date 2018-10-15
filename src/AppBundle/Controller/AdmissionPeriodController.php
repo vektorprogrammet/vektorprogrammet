@@ -27,7 +27,7 @@ class AdmissionPeriodController extends BaseController
 
 
         // Renders the view with the variables
-        return $this->render('semester_admin/index.html.twig', array(
+        return $this->render('admission_period_admin/index.html.twig', array(
             'admissionPeriods' => $admissionPeriods,
             'departmentName' => $department->getShortName(),
             'department' => $department
@@ -52,7 +52,7 @@ class AdmissionPeriodController extends BaseController
         }
 
         // Render the view
-        return $this->render('semester_admin/create_admission_period.html.twig', array(
+        return $this->render('admission_period_admin/create_admission_period.html.twig', array(
             'department' => $department,
             'form' => $form->createView(),
         ));
@@ -73,7 +73,7 @@ class AdmissionPeriodController extends BaseController
             return $this->redirectToRoute('admission_period_admin_show_by_department', array('id' => $admissionPeriod->getDepartment()->getId()));
         }
 
-        return $this->render('semester_admin/edit_admission_period.html.twig', array(
+        return $this->render('admission_period_admin/edit_admission_period.html.twig', array(
             'form' => $form->createView(),
             'semesterName' => $admissionPeriod->getSemester()->getName(),
             'department' => $admissionPeriod->getDepartment(),
