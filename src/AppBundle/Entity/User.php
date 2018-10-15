@@ -864,17 +864,23 @@ class User implements AdvancedUserInterface, \Serializable
         return false;
     }
 
-    public function getTeamNames(){
+    public function getTeamNamesAsList(){
         $teamNames = array();
         foreach($this->getActiveMemberships() as $teamMembership){
             $teamNames[] = $teamMembership->getTeam()->getName();
         }
+        return $teamNames;
+    }
+
+    public function getTeamNames(){
+        $teamNames = $this->getTeamNamesAsList();
         $teamNames = implode (", ", $teamNames);
         $find = ',';
         $replace = ' og';
         $teamNames = strrev(preg_replace(strrev("/$find/"),strrev($replace),strrev($teamNames),1));
-
         return $teamNames;
 
     }
+
+
 }

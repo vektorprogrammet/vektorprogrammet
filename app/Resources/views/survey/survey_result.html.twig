@@ -80,6 +80,7 @@
         var colors = ["#579AD6", "#78C466", "#9F65AD", "#FCA853", "#F3595D", "#737373", "#D07054", "#D97DB5"];
 
         $.getJSON('{{ path('survey_get_all_results', {'id': survey.id } ) }}', function (surveyData) {
+            console.log(surveyData);
             renderFilter(surveyData);
             renderCharts(surveyData);
             displayTextAnswers();
@@ -201,6 +202,7 @@
 
                 chartData.push(questionData);
             }
+
             return chartData;
         }
 
@@ -222,20 +224,26 @@
             // Count occurrences of different alternatives
             var answers = surveyData.answers;
             for (var k = 0; k < answers.length; k++) {
-                for (var l = 0; l < answers[k].length; l++) {
-                    var answer = answers[k][l];
-                    var answerArray = answer.answerArray;
-                    if (answerArray && answerArray.length > 0) {
-                        for (var m = 0; m < answerArray.length; m++) {
-                          if (data[answer.question_id].hasOwnProperty(answerArray[m])) {
-                            data[answer.question_id][answerArray[m]]++;
-                          }
+                for (var b = 0; b<answers[k][0].answer[0].length; b++) {
+                    var groupId = answers[k][0].answer[0][b].toString();
+                   data[0][groupId] += 1;
+                    for (var l = 1; l < answers[k].length; l++) {
+                        var answer = answers[k][l];
+                        var answerArray = answer.answerArray;
+                        if (answerArray && answerArray.length > 0) {
+                            for (var m = 0; m < answerArray.length; m++) {
+                                if (data[answer.question_id].hasOwnProperty(answerArray[m])) {
+                                    data[answer.question_id][answerArray[m]]++;
+                                }
+                            }
+                        } else if (answer.answer) {
+                            data[answer.question_id][answer.answer]++;
                         }
-                    } else if (answer.answer) {
-                        data[answer.question_id][answer.answer]++;
                     }
                 }
             }
+
+            console.log(data)
             return data;
         }
 
@@ -299,7 +307,6 @@
 
           // A submission is a survey that has been submitted with answers
           var submissions = surveyData.answers;
-
             const filteredQuestionIds = Object.keys(filterObject);
             // Remove all submissions that doesn't match filter criteria
             var filteredSubmissions = submissions.filter(function (submission) {

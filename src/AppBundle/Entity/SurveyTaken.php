@@ -177,10 +177,10 @@ class SurveyTaken implements \JsonSerializable
         $ret = array();
 
         if($this->survey->isTeamSurvey()){
-            $groupQuestion = array('question_id' => 0, 'answer' => $this->getUser()->getTeamNames());
+            $groupQuestion = array('question_id' => 0, 'answer' => array($this->getUser()->getTeamNamesAsList()));
 
         }else{
-            $groupQuestion = array('question_id' => 0, 'answer' => $this->school->getName());
+            $groupQuestion = array('question_id' => 0, 'answer' => array($this->school->getName()));
         }
         $ret[] = $groupQuestion;
         foreach ($this->surveyAnswers as $a) {
