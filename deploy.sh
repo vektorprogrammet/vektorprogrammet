@@ -3,7 +3,7 @@
 cd /var/backups/vektorprogrammet
 ./backup
 cd -
-log=app/logs/deploy.log
+log=var/logs/deploy.log
 cd $(dirname "$0")
 echo "Starting deploy" >>$log
 date >>$log
