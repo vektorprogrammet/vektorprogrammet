@@ -4,6 +4,7 @@ namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\AccessRule;
 use AppBundle\Entity\Role;
+use AppBundle\Entity\TeamMembership;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
@@ -73,70 +74,6 @@ class AccessRuleRepository extends EntityRepository
             ->getResult();
     }
 
-    /**
-     * @param User $user
-     *
-     * @param AccessRule $accessRule
-     *
-     * @return bool
-     */
-    public function usersTeamIsInAccessRule(User $user, AccessRule $accessRule)
-    {
-        $count = $this
-            ->countByAccessRule($accessRule)
-            ->join('accessRule.teams', 'teams')
-            ->join('teams.teamMemberships', "membership")
-            ->andWhere('membership.user = :user')
-            ->setParameter('user', $user)
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        if ($accessRule->isForExecutiveBoard()) {
-            $count += count($user->getActiveExecutiveBoardMemberships());
-        }
-
-        return intval($count) > 0;
-    }
-
-    /**
-     * @param User $user
-     *
-     * @param AccessRule $accessRule
-     *
-     * @return bool
-     */
-    public function userIsInAccessRule(User $user, AccessRule $accessRule)
-    {
-        $count = $this
-            ->countByAccessRule($accessRule)
-            ->join('accessRule.users', 'users')
-            ->andWhere('users = :user')
-            ->setParameter('user', $user)
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return intval($count) > 0;
-    }
-
-    /**
-     * @param Role $role
-     * @param AccessRule $accessRule
-     *
-     * @return bool
-     */
-    public function roleIsInAccessRule(Role $role, AccessRule $accessRule)
-    {
-        $count = $this
-            ->countByAccessRule($accessRule)
-            ->join('accessRule.roles', 'roles')
-            ->andWhere('roles = :role')
-            ->setParameter('role', $role)
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return intval($count) > 0;
-    }
-
     private function findByResourceAndMethodQuery(string $resource, string $method)
     {
         return $this
@@ -145,14 +82,5 @@ class AccessRuleRepository extends EntityRepository
             ->andWhere('accessRule.method = :method')
             ->setParameter('resource', $resource)
             ->setParameter('method', $method);
-    }
-
-    private function countByAccessRule(AccessRule $accessRule)
-    {
-        return $this
-            ->createQueryBuilder('accessRule')
-            ->select('COUNT(accessRule.id)')
-            ->andWhere('accessRule = :accessRule')
-            ->setParameter('accessRule', $accessRule);
     }
 }

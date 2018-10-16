@@ -79,7 +79,7 @@ services:
 
     app.access_control:
         class: AppBundle\Service\AccessControlService
-        arguments: ['@doctrine.orm.default_entity_manager', '@router', '@app.roles', '@security.token_storage']
+        arguments: ['@doctrine.orm.default_entity_manager', '@router', '@app.roles', '@app.user_service']
 
     app.access_control_subscriber:
         class: AppBundle\EventSubscriber\AccessControlSubscriber

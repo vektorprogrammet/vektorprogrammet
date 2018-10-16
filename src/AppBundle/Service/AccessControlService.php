@@ -8,17 +8,15 @@ use AppBundle\Entity\UnhandledAccessRule;
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class AccessControlService
 {
     private $entityManager;
     private $router;
     private $roleManager;
-    private $tokenStorage;
+    private $userService;
 
     /**
      * ResourceAccessSubscriber constructor.
@@ -26,14 +24,14 @@ class AccessControlService
      * @param EntityManagerInterface $entityManager
      * @param RouterInterface $router
      * @param RoleManager $roleManager
-     * @param TokenStorageInterface $tokenStorage
+     * @param UserService $userService
      */
-    public function __construct(EntityManagerInterface $entityManager, RouterInterface $router, RoleManager $roleManager, TokenStorageInterface $tokenStorage)
+    public function __construct(EntityManagerInterface $entityManager, RouterInterface $router, RoleManager $roleManager, UserService $userService)
     {
         $this->entityManager = $entityManager;
         $this->router = $router;
         $this->roleManager = $roleManager;
-        $this->tokenStorage = $tokenStorage;
+        $this->userService = $userService;
     }
 
     public function createRule(AccessRule $accessRule)
@@ -122,36 +120,65 @@ class AccessControlService
 
     private function getLoggedInUser()
     {
-        $token = $this->tokenStorage->getToken();
-        /**
-         * @var User|null $user
-         */
-        $user = $token ? $token->getUser() : null;
-        if (is_string($user)) {
-            $user = null;
-        }
-
-        return $user;
+        return $this->userService->getCurrentUser();
     }
 
     private function userHasAccessToRule(User $user, AccessRule $rule): bool
     {
-        $userHasAccess = $this->entityManager->getRepository("AppBundle:AccessRule")->userIsInAccessRule($user, $rule);
-        if (count($rule->getUsers()) > 0 && !$userHasAccess) {
+        if (count($rule->getUsers()) > 0 && !$this->userIsInRuleUserList($user, $rule)) {
             return false;
         }
 
-        $teamHasAccess = $this->entityManager->getRepository("AppBundle:AccessRule")->usersTeamIsInAccessRule($user, $rule);
-        if (count($rule->getTeams()) > 0 && !$teamHasAccess) {
+        if (count($rule->getTeams()) > 0 && !$this->userHasTeamAccessToRule($user, $rule)) {
             return false;
         }
 
-        $roleHasAccess = $this->entityManager->getRepository("AppBundle:AccessRule")->roleIsInAccessRule($user->getRoles()[0], $rule);
-        if (count($rule->getRoles()) > 0 && !$roleHasAccess) {
+        if ($rule->isForExecutiveBoard() && empty($user->getActiveExecutiveBoardMemberships())) {
+            return false;
+        }
+
+        if (count($rule->getRoles()) > 0 && !$this->userRoleHasAccessToRule($user, $rule)) {
             return false;
         }
 
         return true;
+    }
+
+    private function userHasTeamAccessToRule(User $user, AccessRule $rule) : bool
+    {
+        foreach ($user->getActiveTeamMemberships() as $membership) {
+            foreach ($rule->getTeams() as $team) {
+                if ($membership->getTeam() === $team) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private function userIsInRuleUserList(User $user, AccessRule $rule) : bool
+    {
+        foreach ($rule->getUsers() as $userInRule) {
+            if ($user === $userInRule) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function userRoleHasAccessToRule(User $user, AccessRule $rule) : bool
+    {
+        foreach ($rule->getRoles() as $roleInRule) {
+            foreach ($user->getRoles() as $userRole) {
+                if ($roleInRule === $userRole) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public function getRoutes(): array
