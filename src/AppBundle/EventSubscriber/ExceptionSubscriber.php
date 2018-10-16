@@ -30,7 +30,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
     {
         return array(
             KernelEvents::EXCEPTION => array(
-                array('logException', 0),
+                array( 'logException', 0 ),
             ),
         );
     }
@@ -38,23 +38,25 @@ class ExceptionSubscriber implements EventSubscriberInterface
     public function logException(GetResponseForExceptionEvent $event)
     {
         $exception = $event->getException();
+        if ($exception instanceof HttpException) {
+            $this->logHttpException($exception);
+
+            return;
+        }
         $errorMsg = "```\n" .
                     "{$exception->getMessage()}\n" .
                     "```\n" .
-                    "in {$exception->getFile()} (line {$exception->getLine()})";
+                    "in {$exception->getFile()} (line {$exception->getLine()})\n" .
+                    "@channel";
 
-        if ($exception instanceof HttpException) {
-            $this->logHttpException($exception);
-        } else {
-            $this->logger->critical($errorMsg);
+        $this->logger->critical($errorMsg);
 
-            $this->fileLogger->critical(
-                "File: {$exception->getFile()}\n" .
-                "Line: {$exception->getLine()}\n" .
-                "Message: {$exception->getMessage()}\n" .
-                $exception->getTraceAsString()
-            );
-        }
+        $this->fileLogger->critical(
+            "File: {$exception->getFile()}\n" .
+            "Line: {$exception->getLine()}\n" .
+            "Message: {$exception->getMessage()}\n" .
+            $exception->getTraceAsString()
+        );
     }
 
     private function logHttpException(HttpException $exception)
