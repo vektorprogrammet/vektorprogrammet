@@ -51,7 +51,9 @@ class GitHubController extends Controller
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, 'https://api.github.com/meta');
-        curl_setopt($ch, CURLOPT_HTTPHEADER,
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
             array(
                 'User-Agent: NoBrowser v0.1 beta',
             )

@@ -3,21 +3,23 @@
 parameters:
 #    parameter_name: value
 
+imports:
+    - { resource: "@AppBundle/Resources/config/forms.yml" }
+
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    AppBundle\DataFixtures\ORM\:
+        resource: '../../src/AppBundle/DataFixtures/ORM'
+        tags: ['doctrine.fixture.orm']
+
     app.twig_extension:
         class: AppBundle\Twig\Extension\StaticContentExtension
-        arguments:
-              doctrine: "@doctrine.orm.default_entity_manager"
+        arguments: ["@doctrine.orm.default_entity_manager"]
         tags:
             - { name: twig.extension }
 
     app.twig_sponsors_extension:
         class: AppBundle\Twig\Extension\SponsorsExtension
-        arguments:
-             doctrine: "@doctrine"
+        arguments: ["@doctrine.orm.default_entity_manager"]
         tags:
             - { name: twig.extension }
 
@@ -65,6 +67,10 @@ services:
     app.slug_maker:
         class: AppBundle\Service\SlugMaker
         arguments: ['@doctrine.orm.default_entity_manager']
+
+    app.user_service:
+        class: AppBundle\Service\UserService
+        arguments: ['@security.token_storage']
 
     guzzle.slack:
         class: GuzzleHttp\Client

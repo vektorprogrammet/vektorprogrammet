@@ -3,10 +3,9 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ApplicationType extends AbstractType
 {
@@ -14,8 +13,9 @@ class ApplicationType extends AbstractType
     {
         // The fields that populate the form
         $builder
-            ->add('user', new CreateUserOnApplicationType($options['departmentId']), array(
+            ->add('user', CreateUserOnApplicationType::class, array(
                 'label' => '',
+                'departmentId' => $options['departmentId']
             ))
         ->add('yearOfStudy', ChoiceType::class, [
             'label' => 'Årstrinn',
@@ -29,7 +29,7 @@ class ApplicationType extends AbstractType
         ]);
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Application',
@@ -40,7 +40,7 @@ class ApplicationType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'application'; // This must be unique
     }

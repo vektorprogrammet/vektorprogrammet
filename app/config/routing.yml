@@ -1,14 +1,10 @@
-#FOSJsRoutingBundle/Resources/config/routing/routing bundle needs this
-fos_js_routing:
-    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
-
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
 
 #LiipImagineBundle
 _liip_imagine:
-    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+    resource: "@LiipImagineBundle/Resources/config/routing.yaml"
 
 github_webook:
   path: /webhook/github
@@ -100,8 +96,6 @@ survey_delete:
  methods: [POST]
  requirements:
   id: \d+
- options:
-  expose: true
 
 survey_copy:
  path: /kontrollpanel/undersokelse/kopier/{id}
@@ -109,8 +103,6 @@ survey_copy:
  methods: [GET, POST]
  requirements:
   id: \d+
- options:
-  expose: true
 
 survey_results:
  path: /kontrollpanel/undersokelse/resultater/{id}
@@ -173,27 +165,21 @@ profile_activate_user:
  defaults: { _controller: AppBundle:Profile:activateUser }
  methods: [POST]
  requirements:
-    id: \d+
- options:
-    expose: true
+    id: \d
 
 profile_deactivate_user:
  path:   /profile/deaktiv/{id}
  defaults: { _controller: AppBundle:Profile:deactivateUser }
  methods: [POST]
  requirements:
-    id: \d+
- options:
-    expose: true
+    id: \d
 
 profile_change_role:
  path:   /profile/rolle/endre/{id}
  defaults: { _controller: AppBundle:Profile:changeRole }
  methods: [POST]
  requirements:
-    id: \d+
- options:
-    expose: true
+    id: \d
 
 profile_certificate:
  path:   /profile/attest/{id}
@@ -367,15 +353,11 @@ articleadmin_sticky:
   path: /kontrollpanel/artikkeladmin/sticky/{id}
   defaults: { _controller: AppBundle:ArticleAdmin:sticky }
   methods: [POST]
-  options:
-    expose: true
 
 articleadmin_delete:
   path: /kontrollpanel/artikkeladmin/slett/{id}
   defaults: { _controller: AppBundle:ArticleAdmin:delete }
   methods: [POST]
-  options:
-    expose: true
 
 ##########################################
 #            AdmissionAdmin              #
@@ -454,16 +436,12 @@ admissionadmin_delete_application_by_id:
  methods: [POST]
  requirements:
     id: \d+
- options:
-    expose: true
 
 admissionadmin_delete_application_bulk:
  path: /kontrollpanel/opptakadmin/slett/bulk
  defaults: {_controller: AppBundle:AdmissionAdmin:bulkDeleteApplication }
  methods: [POST]
  requirements:
- options:
-    expose: true
 
 register_applicant:
  path: /kontrollpanel/opprettsoker
@@ -504,8 +482,6 @@ useradmin_delete_user_by_id:
  methods: [POST]
  requirements:
     id: \d+
- options:
-    expose: true
 
 useradmin_create_user:
  path: /kontrollpanel/brukeradmin/opprett/{id}
@@ -606,8 +582,6 @@ semester_delete:
  methods: [POST]
  requirements:
     id: \d+
- options:
-    expose: true
 
 
 ##########################################
@@ -678,8 +652,6 @@ teamadmin_remove_position:
  methods: [POST]
  requirements:
     id: \d+
- options:
-    expose: true
 
 teamadmin_show_specific_team:
  path: /kontrollpanel/teamadmin/team/{id}
@@ -699,8 +671,6 @@ teamadmin_remove_user_from_team_by_id:
  methods: [POST]
  requirements:
     id: \d+
- options:
-    expose: true
 
 teamadmin_add_user_to_team:
  path: /kontrollpanel/teamadmin/team/nytt_medlem/{id}
@@ -734,8 +704,6 @@ teamadmin_delete_team_by_id:
  path: /kontrollpanel/teamadmin/slett/{id}
  defaults: {_controller: AppBundle:TeamAdmin:deleteTeamById }
  methods: [POST]
- options:
-    expose: true
 
 
 ##########################################
@@ -758,8 +726,6 @@ departmentadmin_delete_department_by_id:
  methods: [POST]
  requirements:
     id: \d+
- options:
-    expose: true
 
 departmentadmin_update:
  path: /kontrollpanel/avdelingadmin/update/{id}
@@ -805,8 +771,6 @@ schooladmin_delete_school_by_id:
  methods: [POST]
  requirements:
     id: \d+
- options:
-    expose: true
 
 schooladmin_remove_user_from_school_by_id:
  path: /kontrollpanel/skoleadmin/historikk/slett/{id}
@@ -814,8 +778,6 @@ schooladmin_remove_user_from_school_by_id:
  methods: [POST]
  requirements:
     id: \d+
- options:
-    expose: true
 
 schooladmin_show_users_of_department_superadmin:
  path: /kontrollpanel/skoleadmin/brukere/avdeling/{id}
@@ -986,24 +948,18 @@ interview_schema_delete:
  methods: [POST]
  requirements:
   id: \d+
- options:
-  expose: true
 
 interview_assign:
  path: /kontrollpanel/intervju/fordel/{id}
- defaults: { _controller: AppBundle:Interview:assign }
+ defaults: { _controller: AppBundle:Interview:assign, id: null }
  methods: [GET, POST]
  requirements:
   id: \d+
- options:
-  expose: true
 
 interview_assign_bulk:
  path: /kontrollpanel/intervju/fordel/bulk
  defaults: { _controller: AppBundle:Interview:bulkAssign }
  methods: [GET, POST]
- options:
-  expose: true
 
 interview_delete:
  path: /kontrollpanel/intervju/slett/{id}
@@ -1011,16 +967,11 @@ interview_delete:
  methods: [POST]
  requirements:
   id: \d+
- options:
-  expose: true
 
 interview_delete_bulk:
  path: /kontrollpanel/intervju/slett/bulk
  defaults: { _controller: AppBundle:Interview:bulkDeleteInterview }
  methods: [POST]
- requirements:
- options:
-  expose: true
 
 interview_schedule:
  path: /kontrollpanel/intervju/settopp/{id}
@@ -1068,13 +1019,14 @@ interview_edit_status:
 #                File browser            #
 ##########################################
 #ElFinder routes
+
 elfinder:
-    path: /kontrollpanel/elfinder/{instance}
-    defaults: { _controller: FMElfinderBundle:ElFinder:show, instance: default }
+    path: /kontrollpanel/elfinder/{instance}/{homeFolder}
+    defaults: { _controller: FMElfinderBundle:ElFinder:show, instance: default, homeFolder: '' }
     methods: [GET]
 ef_connect: #This one is used only internally by FMElfinderBundle?
-    path:  /efconnect/{instance}
-    defaults: { _controller: FMElfinderBundle:ElFinder:load, instance: default }
+    path:  /efconnect/{instance}/{homeFolder}
+    defaults: { _controller: FMElfinderBundle:ElFinder:load, instance: default, homeFolder: '' }
     methods: [GET, POST]
 
 #Route for opening a file browser window by a user of the website. Not related to ckeditor or any other subsystem.
@@ -1202,9 +1154,7 @@ executive_board_remove_user_from_board_by_id:
  defaults: {_controller: AppBundle:ExecutiveBoard:removeUserFromBoardById }
  methods: [POST]
  requirements:
-    id: \d+
- options:
-    expose: true
+    id: \d
 
 executive_board_update:
  path: /kontrollpanel/hovedstyret/oppdater

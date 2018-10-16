@@ -18,7 +18,7 @@ class DepartmentController extends Controller
     {
         $department = new Department();
 
-        $form = $this->createForm(new CreateDepartmentType(), $department);
+        $form = $this->createForm(CreateDepartmentType::class, $department);
 
         $form->handleRequest($request);
 
@@ -50,7 +50,7 @@ class DepartmentController extends Controller
 
     public function updateDepartmentAction(Request $request, Department $department)
     {
-        $form = $this->createForm(new CreateDepartmentType(), $department);
+        $form = $this->createForm(CreateDepartmentType::class, $department);
 
         $form->handleRequest($request);
 

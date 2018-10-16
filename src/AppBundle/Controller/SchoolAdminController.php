@@ -46,7 +46,9 @@ class SchoolAdminController extends Controller
 
         $assistantHistory = new AssistantHistory();
 
-        $form = $this->createForm(new CreateAssistantHistoryType($department), $assistantHistory);
+        $form = $this->createForm(CreateAssistantHistoryType::class, $assistantHistory, [
+            'department' => $department
+        ]);
 
         $form->handleRequest($request);
 
@@ -138,7 +140,7 @@ class SchoolAdminController extends Controller
     public function updateSchoolAction(Request $request, School $school)
     {
         // Create the formType
-        $form = $this->createForm(new CreateSchoolType(), $school);
+        $form = $this->createForm(CreateSchoolType::class, $school);
 
         // Handle the form
         $form->handleRequest($request);
@@ -163,7 +165,7 @@ class SchoolAdminController extends Controller
     {
         $school = new School();
 
-        $form = $this->createForm(new CreateSchoolType(), $school);
+        $form = $this->createForm(CreateSchoolType::class, $school);
 
         $form->handleRequest($request);
 

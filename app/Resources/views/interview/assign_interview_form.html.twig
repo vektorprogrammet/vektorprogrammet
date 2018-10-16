@@ -11,20 +11,20 @@
         <div class="modal-body">
             <div class="row">
                 <div class="col-3">
-                    {{ form_label(form.interview.interviewer, 'Intervjuer', {'label_attr': {'class': 'inline'}}) }}
+                    {{ form_label(form.interviewer, 'Intervjuer', {'label_attr': {'class': 'inline'}}) }}
                 </div>
                 <div class="col-9">
-                    {{ form_errors(form.interview.interviewer) }}
-                    {{ form_widget(form.interview.interviewer) }}
+                    {{ form_errors(form.interviewer) }}
+                    {{ form_widget(form.interviewer) }}
                 </div>
             </div>
             <div class="row">
                 <div class="col-3">
-                    {{ form_label(form.interview.interviewSchema, 'Skjema', {'label_attr': {'class': 'inline'}}) }}
+                    {{ form_label(form.interviewSchema, 'Skjema', {'label_attr': {'class': 'inline'}}) }}
                 </div>
                 <div class="col-9">
-                    {{ form_errors(form.interview.interviewSchema) }}
-                    {{ form_widget(form.interview.interviewSchema) }}
+                    {{ form_errors(form.interviewSchema) }}
+                    {{ form_widget(form.interviewSchema) }}
                 </div>
             </div>
         </div>

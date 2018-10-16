@@ -3,60 +3,63 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SurveyQuestionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('question', 'text', array(
+        $builder->add('question', TextType::class, array(
             'label' => 'Spørsmål',
             'attr' => array('placeholder' => 'Fyll inn nytt spørsmål'),
         ));
 
-        $builder->add('help', 'text', array(
+        $builder->add('help', TextType::class, array(
             'label' => 'Hjelpetekst',
             'required' => false,
             'attr' => array('placeholder' => 'Fyll inn hjelpetekst'),
         ));
 
-        $builder->add('type', 'choice', array(
+        $builder->add('type', ChoiceType::class, array(
             'choices' => array(
-                'text' => 'Text',
-                'radio' => 'Multiple choice',
-                'list' => 'Velg fra liste',
-                'check' => 'Checkboxes'
+                'Text'            => 'text',
+                'Multiple choice' => 'radio',
+                'Velg fra liste'  => 'list',
+                'Checkboxes'      => 'check'
             ),
-            'label' => 'Type',
+            'label'   => 'Type',
         ));
 
-        $builder->add('alternatives', 'collection', array(
-            'type' => new SurveyQuestionAlternativeType(),
+        $builder->add('alternatives', CollectionType::class, array(
+            'entry_type' => SurveyQuestionAlternativeType::class,
             'allow_add' => true,
             'allow_delete' => true,
             'prototype_name' => '__a_prot__',
             'by_reference' => false,
         ));
 
-        $builder->add('optional', 'choice', array(
+        $builder->add('optional', ChoiceType::class, array(
             'label' => 'Valgfritt',
             'expanded' => 'true',
             'choices' => array(
-                '0' => 'Nei',
-                '1' => 'Ja',
+                'Nei' => '0',
+                'Ja' => '1',
             ),
         ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\SurveyQuestion',
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'interviewQuestion';
     }

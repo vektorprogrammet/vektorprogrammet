@@ -66,7 +66,7 @@ class ArticleAdminController extends Controller
     public function createAction(Request $request)
     {
         $article       = new Article();
-        $form          = $this->createForm(new ArticleType(), $article);
+        $form          = $this->createForm(ArticleType::class, $article);
 
         $form->handleRequest($request);
 
@@ -122,7 +122,7 @@ class ArticleAdminController extends Controller
      */
     public function editAction(Request $request, Article $article)
     {
-        $form = $this->createForm(new ArticleType(), $article);
+        $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
