@@ -80,7 +80,6 @@
         var colors = ["#579AD6", "#78C466", "#9F65AD", "#FCA853", "#F3595D", "#737373", "#D07054", "#D97DB5"];
 
         $.getJSON('{{ path('survey_get_all_results', {'id': survey.id } ) }}', function (surveyData) {
-            console.log(surveyData);
             renderFilter(surveyData);
             renderCharts(surveyData);
             displayTextAnswers();
@@ -221,9 +220,11 @@
             }
 
 
+
             // Count occurrences of different alternatives
             var answers = surveyData.answers;
             for (var k = 0; k < answers.length; k++) {
+                //Take each group occurence into account
                 for (var b = 0; b<answers[k][0].answer[0].length; b++) {
                     var groupId = answers[k][0].answer[0][b].toString();
                    data[0][groupId] += 1;
@@ -243,7 +244,6 @@
                 }
             }
 
-            console.log(data)
             return data;
         }
 
@@ -254,6 +254,7 @@
             var countedData = countAnswers(surveyData);
             var chartData = generateChartData(countedData);
             chartData = removeUnansweredQuestions(chartData);
+
 
             // Create charts
             for (var i = 0; i < chartData.length; i++) {
@@ -305,6 +306,7 @@
         function filterSurveyData(surveyData, filterObject) {
           var filteredSurveyData = {};
 
+
           // A submission is a survey that has been submitted with answers
           var submissions = surveyData.answers;
             const filteredQuestionIds = Object.keys(filterObject);
@@ -323,6 +325,16 @@
                 var answerObject = submission[i];
                 var questionId = answerObject.question_id;
                 if (filterObject.hasOwnProperty(questionId)) {
+                    //Filter when answer given as answerObject.answer[0] is a list
+                    if(questionId == "0"){
+                        for(var a in filterObject[questionId]){
+                            if(answerObject.answer[0].indexOf(filterObject[questionId][a])!==-1){
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+
                   hasAnsweredQuestion = true;
                   if (answerObject.hasOwnProperty('answerArray') && answerObject.answerArray.length > 0) {
                     var hasAnswer = false;
