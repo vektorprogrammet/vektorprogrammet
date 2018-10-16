@@ -2,11 +2,12 @@
 
 namespace AppBundle\Form\Type;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditUserType extends AbstractType
 {
@@ -17,22 +18,22 @@ class EditUserType extends AbstractType
         $this->department = $options['department'];
 
         $builder
-            ->add('user_name', 'text', array(
+            ->add('user_name', TextType::class, array(
                 'label' => 'Brukernavn',
             ))
-            ->add('firstName', 'text', array(
+            ->add('firstName', TextType::class, array(
                 'label' => 'Fornavn',
             ))
-            ->add('lastName', 'text', array(
+            ->add('lastName', TextType::class, array(
                 'label' => 'Etternavn',
             ))
-            ->add('email', 'text', array(
+            ->add('email', TextType::class, array(
                 'label' => 'E-post',
             ))
-            ->add('phone', 'text', array(
+            ->add('phone', TextType::class, array(
                 'label' => 'Telefon',
             ))
-            ->add('fieldOfStudy', 'entity', array(
+            ->add('fieldOfStudy', EntityType::class, array(
                 'label' => 'Linje',
                 'class' => 'AppBundle:FieldOfStudy',
                 'query_builder' => function (EntityRepository $er) {
@@ -50,7 +51,7 @@ class EditUserType extends AbstractType
             ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
@@ -58,7 +59,7 @@ class EditUserType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'editUser';
     }

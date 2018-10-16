@@ -79,7 +79,7 @@ class InterviewSubscriber implements EventSubscriberInterface
         $interviewer = $application->getInterview()->getInterviewer();
 
         // Send email to the interviewee with a summary of the interview
-        $emailMessage = \Swift_Message::newInstance()
+        $emailMessage = (new \Swift_Message())
             ->setSubject('Vektorprogrammet intervju')
             ->setReplyTo(array($interviewer->getDepartment()->getEmail() => 'Vektorprogrammet'))
             ->setTo($application->getUser()->getEmail())
@@ -153,7 +153,8 @@ class InterviewSubscriber implements EventSubscriberInterface
             "Rom: ".$data['room'] .
             "\n\n" .
             "Vennligst følg linken under for å godkjenne tidspunktet eller be om ny tid:\n" .
-            $this->router->generate('interview_response',
+            $this->router->generate(
+                'interview_response',
                 ['responseCode' => $interview->getResponseCode()],
                 RouterInterface::ABSOLUTE_URL
             ) .
@@ -174,7 +175,7 @@ class InterviewSubscriber implements EventSubscriberInterface
     public function sendCoAssignedEmail(InterviewEvent $event)
     {
         $interview = $event->getInterview();
-        $emailMessage = \Swift_Message::newInstance()
+        $emailMessage = (new \Swift_Message())
             ->setSubject('Vektorprogrammet intervju')
             ->setFrom(array('vektorbot@vektorprogrammet.no' => 'Vektorprogrammet'))
             ->setTo($interview->getInterviewer()->getEmail())

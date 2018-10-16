@@ -3,27 +3,24 @@
 namespace AppBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateUserOnApplicationType extends AbstractType
 {
-    private $departmentId;
-    public function __construct($departmentId)
-    {
-        $this->departmentId = $departmentId;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName', 'text', array(
+            ->add('firstName', TextType::class, array(
                 'label' => 'Fornavn',
                 'attr' => array('autocomplete' => 'given-name')
             ))
-            ->add('lastName', 'text', array(
+            ->add('lastName', TextType::class, array(
                 'label' => 'Etternavn',
                 'attr' => array('autocomplete' => 'family-name')
             ))
@@ -31,38 +28,39 @@ class CreateUserOnApplicationType extends AbstractType
                 'label' => 'Telefon',
                 'attr' => array('autocomplete' => 'tel')
             ))
-            ->add('email', 'email', array(
+            ->add('email', EmailType::class, array(
                 'label' => 'E-post',
                 'attr' => array('autocomplete' => 'email')
             ))
             ->add('gender', ChoiceType::class, array(
                 'choices' => [
-                    0 => 'Mann',
-                   1 => 'Dame'
+                    'Mann' => 0,
+                    'Dame' => 1
                 ],
                 'label' => 'Kjønn'
             ))
-            ->add('fieldOfStudy', 'entity', array(
+            ->add('fieldOfStudy', EntityType::class, array(
                 'label' => 'Linje',
                 'class' => 'AppBundle:FieldOfStudy',
-                'query_builder' => function (EntityRepository $er) {
+                'query_builder' => function (EntityRepository $er) use ($options) {
                     return $er->createQueryBuilder('f')
                         ->orderBy('f.shortName', 'ASC')
                         ->where('f.department = ?1')
                         // Set the parameter to the department ID that the current user belongs to.
-                        ->setParameter(1, $this->departmentId);
+                        ->setParameter(1, $options['departmentId']);
                 },
             ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
+            'departmentId' => null
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'createUser';
     }

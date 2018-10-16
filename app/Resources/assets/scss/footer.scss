@@ -12,11 +12,6 @@ $promo-color: #d6d8da;
   min-height: 400px;
   width: 100%;
   background-color: $dark-blue;
-  padding-top: 0 !important; //Override old footer style. TODO: Remove this when foundation is removed
-  .row {
-    border-top: none !important; //Override old footer style. TODO: Remove this when foundation is removed
-    padding-top: 0 !important; //Override old footer style. TODO: Remove this when foundation is removed
-  }
   h5 {
     color: $text-color;
   }

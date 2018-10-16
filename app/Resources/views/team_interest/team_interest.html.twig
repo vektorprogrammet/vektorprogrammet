@@ -8,22 +8,27 @@
 
 {% block body %}
     <div class="container">
-        <header class="page-header row content">
-            <div class="col-md-12 text-center">
-                <h1>Meld interesse for team</h1>
-                <p>
-                    Huk av på teamene du er interessert i å være med i, så kontakter de respektive teamlederne deg så fort som mulig.
-                </p>
-            </div>
-        </header>
-        <div class="content row">
-            <div class="col-xs-12 col-md-10 offset-md-1">
-                <p>Å fylle inn dette skjemaet er <b>helt uforpliktende</b>! Vi tar kontakt med deg med mer info om teamene.</p>
-                <div class="form-group">
-                    {{ form_start(form) }}
-                    {{ form_widget(form) }}
-                    <button class="btn btn-success btn-block p-4 mt-5 text-uppercase medium-bold">Send</button>
-                    {{ form_end(form) }}
+        <div class="content">
+
+            <header class="page-header row">
+                <div class="col-md-12 text-center">
+                    <h1>Meld interesse for team</h1>
+                    <p>
+                        Huk av på teamene du er interessert i å være med i, så kontakter de respektive teamlederne deg
+                        så fort som mulig.
+                    </p>
+                </div>
+            </header>
+            <div class="row">
+                <div class="col-xs-12 col-md-10 offset-md-1">
+                    <p>Å fylle inn dette skjemaet er <b>helt uforpliktende</b>! Vi tar kontakt med deg med mer info om
+                        teamene.</p>
+                    <div class="form-group">
+                        {{ form_start(form) }}
+                        {{ form_widget(form) }}
+                        <button class="btn btn-success btn-block p-4 mt-5 text-uppercase medium-bold">Send</button>
+                        {{ form_end(form) }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -34,8 +39,8 @@
 
 {% block javascripts %}
     <script>
-        setTimeout(function() {
-            $('.alert').slideUp();
-        }, 10000)
+      setTimeout(function () {
+        $('.alert').slideUp();
+      }, 10000);
     </script>
 {% endblock %}

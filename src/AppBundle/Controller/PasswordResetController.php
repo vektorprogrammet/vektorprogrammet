@@ -91,7 +91,7 @@ class PasswordResetController extends Controller
         $passwordReset = $passwordManager->getPasswordResetByResetCode($resetCode);
         $user = $passwordReset->getUser();
 
-        $form = $this->createForm(new NewPasswordType(), $user);
+        $form = $this->createForm(NewPasswordType::class, $user);
 
         $form->handleRequest($request);
 

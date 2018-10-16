@@ -63,6 +63,7 @@ class InterviewNotificationManager
                 'applications_show_interviewed_by_semester',
                 array('id' => $department->getCurrentOrLatestSemester()->getId(), 'status' => 'interviewed'),
                 Router::ABSOLUTE_URL
-            ));
+            )
+        );
     }
 }

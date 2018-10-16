@@ -5,9 +5,12 @@ namespace AppBundle\Form\Type;
 use AppBundle\Entity\Repository\SchoolCapacityRepository;
 use AppBundle\Entity\Repository\SchoolRepository;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SchoolCapacityType extends AbstractType
 {
@@ -15,31 +18,31 @@ class SchoolCapacityType extends AbstractType
     {
         $department = $builder->getData()->getSemester()->getDepartment();
         $builder
-            ->add('school', 'entity', array(
+            ->add('school', EntityType::class, array(
                 'label' => 'Skole',
                 'class' => 'AppBundle:School',
                 'query_builder' => function (SchoolRepository $er) use ($department) {
                     return $er->findActiveSchoolsWithoutCapacity($department);
                 },
             ))
-            ->add('monday', 'integer')
-            ->add('tuesday', 'integer')
-            ->add('wednesday', 'integer')
-            ->add('thursday', 'integer')
-            ->add('friday', 'integer')
-            ->add('save', 'submit', array(
+            ->add('monday', IntegerType::class)
+            ->add('tuesday', IntegerType::class)
+            ->add('wednesday', IntegerType::class)
+            ->add('thursday', IntegerType::class)
+            ->add('friday', IntegerType::class)
+            ->add('save', SubmitType::class, array(
                 'label' => 'Lagre',
             ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\SchoolCapacity',
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'schoolCapacity';
     }

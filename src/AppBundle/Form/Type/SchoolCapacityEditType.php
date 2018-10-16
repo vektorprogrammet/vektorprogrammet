@@ -3,30 +3,31 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SchoolCapacityEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('monday', 'integer')
-            ->add('tuesday', 'integer')
-            ->add('wednesday', 'integer')
-            ->add('thursday', 'integer')
-            ->add('friday', 'integer')
+            ->add('monday', IntegerType::class)
+            ->add('tuesday', IntegerType::class)
+            ->add('wednesday', IntegerType::class)
+            ->add('thursday', IntegerType::class)
+            ->add('friday', IntegerType::class)
             ;
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\SchoolCapacity',
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'schoolCapacity';
     }

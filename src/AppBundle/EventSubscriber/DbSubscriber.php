@@ -17,22 +17,16 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class DbSubscriber implements EventSubscriber
 {
     private $logger;
-    private $tokenStorage;
-    private $request;
     private $ignoredClasses;
     private $manager;
 
-    public function __construct(LoggerInterface $logger, TokenStorageInterface $tokenStorage, RequestStack $request, EntityManager $manager)
+    public function __construct(LoggerInterface $logger, EntityManager $manager)
     {
         $this->logger = $logger;
-        $this->tokenStorage = $tokenStorage;
-        $this->request = $request;
         $this->ignoredClasses = [
             InterviewAnswer::class,
             InterviewQuestion::class,
@@ -83,17 +77,17 @@ class DbSubscriber implements EventSubscriber
 
     public function postUpdate(LifecycleEventArgs $args)
     {
-        $this->log($args, 'updated');
+        $this->log($args, 'Updated');
     }
 
     public function postPersist(LifecycleEventArgs $args)
     {
-        $this->log($args, 'created');
+        $this->log($args, 'Created');
     }
 
     public function postRemove(LifecycleEventArgs $args)
     {
-        $this->log($args, 'deleted');
+        $this->log($args, 'Deleted');
     }
 
     private function log(LifecycleEventArgs $args, string $action)
@@ -105,36 +99,21 @@ class DbSubscriber implements EventSubscriber
             return;
         }
 
-        $loggedInUser = $this->getUser();
+        $lastSlashIdx = strrpos($className, "\\");
+        if (false !== $lastSlashIdx) {
+            $className = substr($className, $lastSlashIdx + 1);
+        }
+
         $objName = $this->getObjectName($obj);
-        $request = $this->request->getMasterRequest();
-        $path = $request ? $request->getPathInfo() : '???';
 
-        $this->logger->info("Path: `$path`\n$className $objName $action by $loggedInUser");
-    }
-
-    private function getUser()
-    {
-        $user = "Anonymous";
-        $token = $this->tokenStorage->getToken();
-        if (!$token) {
-            return $user;
-        }
-
-        $loggedInUser = $this->tokenStorage->getToken()->getUser();
-        if ($loggedInUser && $loggedInUser instanceof User) {
-            $department = $loggedInUser->getDepartment()->getShortName();
-            $user = "*{$loggedInUser->getFullName()}* ($department)";
-        }
-
-        return $user;
+        $this->logger->info("$action $className $objName");
     }
 
     private function getObjectName($obj)
     {
         $name = "";
         if (method_exists($obj, '__toString')) {
-            $name = "`{$obj->__toString()}`";
+            $name = "*{$obj->__toString()}*";
         }
 
         return $name;
