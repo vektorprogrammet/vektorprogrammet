@@ -38,11 +38,11 @@ class RoleManagerTest extends KernelTestCase
 
             // Team members
             new RoleUserMock('kristoffer@stud.ntnu.no', Roles::ASSISTANT, Roles::TEAM_MEMBER),
-            new RoleUserMock('sortland@mail.com', Roles::TEAM_MEMBER, Roles::TEAM_MEMBER),
+            new RoleUserMock('alm@mail.com', Roles::TEAM_MEMBER, Roles::TEAM_MEMBER),
             new RoleUserMock('aah@b.c', Roles::TEAM_LEADER, Roles::TEAM_MEMBER),
 
             // Team leaders
-            new RoleUserMock('marte@mail.no', Roles::ASSISTANT, Roles::TEAM_LEADER),
+            new RoleUserMock('seip@mail.com', Roles::ASSISTANT, Roles::TEAM_LEADER),
             new RoleUserMock('ida@stud.ntnu.no', Roles::TEAM_MEMBER, Roles::TEAM_LEADER),
             new RoleUserMock('anna@mail.no', Roles::TEAM_LEADER, Roles::TEAM_LEADER),
 

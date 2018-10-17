@@ -96,8 +96,10 @@ class AccessControlService
     {
         $accessRules = $this->entityManager->getRepository("AppBundle:AccessRule")->findOneByResourceAndMethod($resource, $method);
 
-        $everyoneHasAccess = empty($accessRules);
-        if ($everyoneHasAccess) {
+        $everyoneHasAccess = !empty(array_filter($accessRules, function (AccessRule $rule) {
+            return $rule->isEmpty();
+        }));
+        if (empty($accessRules) || $everyoneHasAccess) {
             return true;
         }
 
@@ -125,7 +127,7 @@ class AccessControlService
 
     private function userHasAccessToRule(User $user, AccessRule $rule): bool
     {
-        if (count($rule->getUsers()) > 0 && !$this->userIsInRuleUserList($user, $rule)) {
+        if (count($rule->getUsers()) > 0 && !($user->isActive() && $this->userIsInRuleUserList($user, $rule))) {
             return false;
         }
 

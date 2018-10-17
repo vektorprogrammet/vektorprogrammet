@@ -242,7 +242,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setPhone('97623818');
         $user->setUserName('marte');
         $user->setPassword('123');
-        $user->addRole($this->getReference('role-1'));
+        $user->addRole($this->getReference('role-2'));
         $user->setFieldOfStudy($this->getReference('fos-1'));
         $user->setPicturePath('images/profile6.jpg');
         $manager->persist($user);
@@ -294,20 +294,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $this->setReference('user-inactive', $user);
 
         /*$user = new User();
-        $user->setActive('1');
-        $user->setEmail('l@b.c');
-        $user->setFirstName('Ingrid');
-        $user->setLastName('Seip Domben');
-        $user->setGender('1');
-        $user->setPhone('91104644');
-        $user->setUserName('ingrid');
-        $user->setPassword('123');
-        $user->addRole($this->getReference('role-2'));
-        $user->setFieldOfStudy($this->getReference('fos-1'));
-        $user->setPicturePath('images/defaultProfile.png');
-        $manager->persist($user);
-
-        $user = new User();
         $user->setActive('1');
         $user->setEmail('m@b.c');
         $user->setFirstName('Bjørnar');
@@ -1065,6 +1051,20 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user20->setPicturePath('images/defaultProfile.png');
         $manager->persist($user20);
 
+        $user21 = new User();
+        $user21->setActive('1');
+        $user21->setEmail('seip@mail.com');
+        $user21->setFirstName('Ingrid');
+        $user21->setLastName('Seip Domben');
+        $user21->setGender('1');
+        $user21->setPhone('91104644');
+        $user21->setUserName('ingrid');
+        $user21->setPassword('123');
+        $user21->addRole($this->getReference('role-1'));
+        $user21->setFieldOfStudy($this->getReference('fos-1'));
+        $user21->setPicturePath('images/defaultProfile.png');
+        $manager->persist($user21);
+
         for ($i = 0; $i < 100; ++$i) {
             $user = new User();
             $user->setActive('0');
@@ -1095,6 +1095,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $this->setReference('user-13', $user13);
         $this->setReference('user-16', $user16);
         $this->setReference('user-20', $user20);
+        $this->setReference('user-21', $user21);
         $this->setReference('user-14', $user14);
         $this->setReference('userInTeam1', $userInTeam1);
         $this->setReference('user-assistant', $userAssistant);

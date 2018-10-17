@@ -232,4 +232,13 @@ class AccessRule
 
         return $this;
     }
+
+    public function isEmpty()
+    {
+        return
+            count($this->getUsers()) == 0 &&
+            count($this->getTeams()) == 0 &&
+            count($this->getRoles()) == 0 &&
+            !$this->isForExecutiveBoard();
+    }
 }
