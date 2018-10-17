@@ -94,6 +94,7 @@ class SurveyController extends Controller
         $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
             $surveyTaken->setTime(new \DateTime());

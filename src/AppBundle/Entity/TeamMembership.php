@@ -226,13 +226,27 @@ class TeamMembership implements TeamMembershipInterface
         return $semesterStartLaterThanTeamMembership && $semesterEndsBeforeTeamMembership;
     }
 
-    public function isActive()
+
+    public function wasActiveIn($time){
+        $startSemesterDate = $this->getStartSemester()->getSemesterStartDate();
+        $endSemesterDate = $this->getEndSemester()->getSemesterEndDate();
+
+        $inTimeInterval = ($startSemesterDate <= $time && $time <=$endSemesterDate);
+        return $inTimeInterval;
+
+    }
+
+    public function isActive($time = null)
     {
+        if($time != null){
+            return $this->wasActiveIn($time);
+        }
         $department = $this->team->getDepartment();
         $activeSemester = $department->getCurrentOrLatestSemester();
 
         return $this->isActiveInSemester($activeSemester);
     }
+
 
     /**
      * @return string
@@ -277,4 +291,7 @@ class TeamMembership implements TeamMembershipInterface
     {
         $this->isTeamLeader = $isTeamLeader;
     }
+
+
+
 }

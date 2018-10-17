@@ -150,6 +150,15 @@ class SurveyTaken implements \JsonSerializable
         return $this->user;
     }
 
+
+    /**
+     * @return \DateTime
+     */
+    public function getTime(): ?\DateTime
+    {
+        return new \DateTime($this->time);
+    }
+
     /**
      * @param User $user
      * @return SurveyTaken
@@ -177,13 +186,14 @@ class SurveyTaken implements \JsonSerializable
         $ret = array();
 
         if ($this->survey->isTeamSurvey()) {
-            $groupQuestion = array('question_id' => 0, 'answer' => array($this->getUser()->getTeamNamesAsList()));
+            $groupQuestion = array('question_id' => 0, 'answer' => array($this->getUser()->getTeamNamesAsList($this->getTime())));
         } else {
             $groupQuestion = array('question_id' => 0, 'answer' => array([$this->school->getName()]));
         }
         $ret[] = $groupQuestion;
         foreach ($this->surveyAnswers as $a) {
-            if (!$a->getSurveyQuestion()->getOptional() && ($a->getSurveyQuestion()->getType() == 'radio' || $a->getSurveyQuestion()->getType() == 'list')) {
+            //!$a->getSurveyQuestion()->getOptional() && - If optional results are not wanted
+            if ((!$a->getSurveyQuestion()->getOptional() && $a->getSurveyQuestion()->getType() == 'radio' || $a->getSurveyQuestion()->getType() == 'list')) {
                 $ret[] = $a;
             } elseif ($a->getSurveyQuestion()->getType() == 'check') {
                 $ret[] = $a;
