@@ -3,8 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use http\Exception\BadMessageException;
-use http\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
