@@ -252,7 +252,8 @@ class SurveyController extends Controller
             $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
         }
         $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
-            ['semester' => $semester], ['id' => 'DESC']
+            ['semester' => $semester],
+            ['id' => 'DESC']
         );
         foreach ($surveys as $survey) {
             $totalAnswered = count($this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findBy(array('survey' => $survey)));
@@ -403,7 +404,8 @@ class SurveyController extends Controller
         $em->persist($user);
         $em->flush();
 
-        $response = $this->forward('AppBundle:Home:show'
+        $response = $this->forward(
+            'AppBundle:Home:show'
         );
 
         return $response;
@@ -416,7 +418,8 @@ class SurveyController extends Controller
         $user->setLastPopUp(new \DateTime());
         $em->persist($user);
         $em->flush();
-        $response = $this->forward('AppBundle:Home:show'
+        $response = $this->forward(
+            'AppBundle:Home:show'
         );
         return $response;
     }

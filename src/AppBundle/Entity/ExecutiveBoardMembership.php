@@ -184,7 +184,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
 
     public function isActive($time = null)
     {
-        if(!$time){
+        if (!$time) {
             $time = new \DateTime();
         }
         $termEndsInFuture = $this->endSemester === null || $this->endSemester->getSemesterEndDate() > $time;

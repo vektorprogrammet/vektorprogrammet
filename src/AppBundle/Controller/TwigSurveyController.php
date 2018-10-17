@@ -33,7 +33,9 @@ class TwigSurveyController extends Controller
             }
         }
 
-        return $this->render("base/popup_lower.twig",
-            array('survey' => $survey));
+        return $this->render(
+            "base/popup_lower.twig",
+            array('survey' => $survey)
+        );
     }
 }
