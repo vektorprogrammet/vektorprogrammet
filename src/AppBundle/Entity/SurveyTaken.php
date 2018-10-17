@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use http\Exception\BadMessageException;
+use http\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -193,7 +195,7 @@ class SurveyTaken implements \JsonSerializable
         $ret[] = $groupQuestion;
         foreach ($this->surveyAnswers as $a) {
             //!$a->getSurveyQuestion()->getOptional() && - If optional results are not wanted
-            if ((!$a->getSurveyQuestion()->getOptional() && $a->getSurveyQuestion()->getType() == 'radio' || $a->getSurveyQuestion()->getType() == 'list')) {
+            if (($a->getSurveyQuestion()->getType() == 'radio' || $a->getSurveyQuestion()->getType() == 'list')) {
                 $ret[] = $a;
             } elseif ($a->getSurveyQuestion()->getType() == 'check') {
                 $ret[] = $a;

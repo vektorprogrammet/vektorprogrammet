@@ -80,6 +80,7 @@
         var colors = ["#579AD6", "#78C466", "#9F65AD", "#FCA853", "#F3595D", "#737373", "#D07054", "#D97DB5"];
 
         $.getJSON('{{ path('survey_get_all_results', {'id': survey.id } ) }}', function (surveyData) {
+
             renderFilter(surveyData);
             renderCharts(surveyData);
             displayTextAnswers();
