@@ -180,7 +180,7 @@ class ProfileController extends Controller
         $department = $this->getUser()->getDepartment();
 
         if ($signature === null) {
-            return $this->redirectToRoute('certificate_signature_picture_upload');
+            return $this->redirectToRoute('certificate_show');
         }
 
         $html        = $this->renderView('certificate/certificate.html.twig', array(
@@ -189,7 +189,7 @@ class ProfileController extends Controller
             'teamMembership'      => $teamMembership,
             'signature'        => $signature,
             'department'       => $department,
-            'base_dir'         => $this->get('kernel')->getRootDir() . '/../www' . $request->getBasePath(),
+            'base_dir'         => $this->get('kernel')->getRootDir() . '/../web' . $request->getBasePath(),
         ));
         $mpdfService = $this->get('t_fox_mpdf_port.pdf');
 

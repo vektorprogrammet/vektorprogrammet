@@ -1,0 +1,5 @@
+services:
+    app.form.extension.help:
+        class: AppBundle\Form\Extension\FieldTypeHelpExtension
+        tags:
+            - {name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType}

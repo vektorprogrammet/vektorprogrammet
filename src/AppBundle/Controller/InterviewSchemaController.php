@@ -40,7 +40,7 @@ class InterviewSchemaController extends Controller
      */
     public function editSchemaAction(Request $request, InterviewSchema $schema)
     {
-        $form = $this->createForm(new InterviewSchemaType(), $schema);
+        $form = $this->createForm(InterviewSchemaType::class, $schema);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

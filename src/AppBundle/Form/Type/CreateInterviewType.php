@@ -3,59 +3,49 @@
 namespace AppBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateInterviewType extends AbstractType
 {
-    protected $roles;
-
-    protected $department;
-
-    public function __construct($roles, $department)
-    {
-        $this->roles = $roles;
-        $this->department = $department;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('interviewer', 'entity', array(
+        $builder->add('interviewer', EntityType::class, array(
             'class' => 'AppBundle:User',
-            'query_builder' => function (EntityRepository $er) {
+            'query_builder' => function (EntityRepository $er) use ($options) {
                 return $er->createQueryBuilder('u')
                     ->select('u')
                     ->join('u.roles', 'r')
                     ->join('u.fieldOfStudy', 'f')
                     ->join('f.department', 'd')
                     ->where('r.role IN (:roles)')
-                    //->andWhere('d.id = :department')
                     ->orderBy('u.firstName')
-                    ->setParameter('roles', $this->roles);
+                    ->setParameter('roles', $options['roles']);
             },
             'group_by' => 'fieldOfStudy.department.shortName',
         ));
 
-        $builder->add('interviewSchema', 'entity', array(
+        $builder->add('interviewSchema', EntityType::class, array(
             'class' => 'AppBundle:InterviewSchema',
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('i')
                     ->select('i')
                     ->orderBy('i.id', 'DESC');
             },
-            'property' => 'name',
         ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Interview',
+            'roles' => [],
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'interview';
     }

@@ -2,6 +2,10 @@ import { stagingService } from '../services';
 
 const state = {
   servers: [],
+  diskSpace: {
+    size: 1, 
+    used: 1
+  },
 };
 
 const actions = {
@@ -15,6 +19,16 @@ const actions = {
       commit('getServersFailure', e);
     }
   },
+  async getDiskSpace({commit}) {
+    commit('getDiskSpaceRequest');
+
+    try {
+      const diskSpace = await stagingService.getDiskSpace();
+      commit('getDiskSpaceSuccessful', diskSpace);
+    } catch (e) {
+      commit('getDiskSpaceFailure', e);
+    }
+  },
 };
 
 const getters = {
@@ -22,6 +36,9 @@ const getters = {
     return state.servers.map(s => (
       {...s, repo: s.repo.replace('https://github.com/', '')}
     ));
+  },
+  diskSpace(state) {
+    return state.diskSpace
   },
 };
 
@@ -39,6 +56,19 @@ const mutations = {
     //TODO: Handle error
     // console.log('ERROR: ', e.message);
   },
+  getDiskSpaceRequest(state) {
+    state.loaded = false;
+    state.loading = true;
+  },
+  getDiskSpaceSuccessful(state, diskSpace) {
+    state.diskSpace= diskSpace;
+    state.loading = false;
+    state.loaded = true;
+  },
+  getDiskSpaceFailure() {
+    //TODO: Handle error
+    // console.log('ERROR: ', e.message);
+  }
 };
 
 export const staging = {

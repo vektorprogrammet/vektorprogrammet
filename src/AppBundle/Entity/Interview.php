@@ -123,8 +123,8 @@ class Interview
     private $responseCode;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     *
+     * @ORM\Column(type="string", nullable=true, length=2000)
+     * @Assert\Length(max=2000)
      * @var string
      */
     private $cancelMessage;

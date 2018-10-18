@@ -71,7 +71,7 @@ class InterviewSchema
      *
      * @param \AppBundle\Entity\InterviewQuestion $questions
      */
-    public function removeInterviewQuestion(\AppBundle\Entity\InterviewQuestion $questions)
+    public function removeInterviewQuestion(InterviewQuestion $questions)
     {
         $this->interviewQuestions->removeElement($questions);
     }
@@ -108,5 +108,10 @@ class InterviewSchema
     public function getName()
     {
         return $this->name;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 }

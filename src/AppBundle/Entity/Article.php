@@ -22,9 +22,16 @@ class Article
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\Length(max=255)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt")
      */
     protected $title;
+
+    /**
+     * @ORM\Column(type="string", unique=true)
+     * @Assert\Length(max=255)
+     */
+    protected $slug;
 
     /**
      * @ORM\Column(type="text")
@@ -114,7 +121,6 @@ class Article
     public function setTitle($title)
     {
         $this->title = $title;
-
         return $this;
     }
 
@@ -126,6 +132,29 @@ class Article
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Set slug.
+     *
+     * @param string $slug
+     *
+     * @return Article
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
+     * Get slug.
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**

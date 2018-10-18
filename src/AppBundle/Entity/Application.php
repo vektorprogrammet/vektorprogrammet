@@ -26,7 +26,7 @@ class Application
     private $semester;
 
     /**
-     * @ORM\Column(type="string" , length=20)
+     * @ORM\Column(type="string", length=20)
      * @Assert\NotBlank(groups={"admission", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
      */
     private $yearOfStudy;

@@ -11,7 +11,7 @@ class FieldOfStudyRepository extends EntityRepository
     /*	Perhaps not needed anymore?
 
     public function findFieldOfStudyByName($shortName){
-        $stmt = $this->getEntityManager()
+        $stmt = $this
                     ->getConnection()
                    ->prepare('
                     SELECT *

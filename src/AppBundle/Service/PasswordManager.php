@@ -106,7 +106,7 @@ class PasswordManager
     public function sendResetCode(PasswordReset $passwordReset)
     {
         //Sends a email with the url for resetting the password
-        $emailMessage = \Swift_Message::newInstance()
+        $emailMessage = (new \Swift_Message())
             ->setSubject('Tilbakestill passord for vektorprogrammet.no')
             ->setFrom(array('ikkesvar@vektorprogrammet.no' => 'Vektorprogrammet'))
             ->setTo($passwordReset->getUser()->getEmail())

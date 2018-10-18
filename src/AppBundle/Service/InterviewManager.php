@@ -125,7 +125,7 @@ class InterviewManager
      */
     public function sendScheduleEmail(Interview $interview, array $data)
     {
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('Intervju for vektorprogrammet')
             ->setTo($data['to'])
             ->setReplyTo($data['from'])
@@ -155,21 +155,29 @@ class InterviewManager
     {
         $application = $this->em->getRepository('AppBundle:Application')->findOneBy(array('interview' => $interview));
         $user = $interview->getUser();
+        $interviewers = array();
+        $interviewers[] = $interview->getInterviewer();
+        if (!is_null($interview->getCoInterviewer())) {
+            $interviewers[] = $interview->getCoInterviewer();
+        }
 
-        $message = \Swift_Message::newInstance()
-            ->setSubject("[$user] Intervju: Ønske om ny tid")
-            ->setTo($interview->getInterviewer()->getEmail())
-            ->setBody(
-                $this->twig->render(
-                    'interview/reschedule_email.html.twig',
-                    array('interview' => $interview,
-                        'application' => $application,
-                    )
-                ),
-                'text/html'
-            );
+        // Send mail to interviewer and co-interviewer
+        foreach ($interviewers as $interviewer) {
+            $message = (new \Swift_Message())
+                ->setSubject("[$user] Intervju: Ønske om ny tid")
+                ->setTo($interviewer->getEmail())
+                ->setBody(
+                    $this->twig->render(
+                        'interview/reschedule_email.html.twig',
+                        array('interview' => $interview,
+                            'application' => $application,
+                        )
+                    ),
+                    'text/html'
+                );
 
-        $this->mailer->send($message);
+            $this->mailer->send($message);
+        }
     }
 
     /**
@@ -178,19 +186,28 @@ class InterviewManager
     public function sendCancelEmail(Interview $interview)
     {
         $user = $interview->getUser();
-        $message = \Swift_Message::newInstance()
-            ->setSubject("[$user] Intervju: Kansellert")
-            ->setTo($interview->getInterviewer()->getEmail())
-            ->setBody(
-                $this->twig->render(
-                    'interview/cancel_email.html.twig',
-                    array('interview' => $interview,
-                    )
-                ),
-                'text/html'
-            );
+        $interviewers = array();
+        $interviewers[] = $interview->getInterviewer();
+        if (!is_null($interview->getCoInterviewer())) {
+            $interviewers[] = $interview->getCoInterviewer();
+        }
 
-        $this->mailer->send($message);
+        // Send mail to interviewer and co-interviewer
+        foreach ($interviewers as $interviewer) {
+            $message = (new \Swift_Message())
+                ->setSubject("[$user] Intervju: Kansellert")
+                ->setTo($interviewer->getEmail())
+                ->setBody(
+                    $this->twig->render(
+                        'interview/cancel_email.html.twig',
+                        array('interview' => $interview,
+                        )
+                    ),
+                    'text/html'
+                );
+
+            $this->mailer->send($message);
+        }
     }
 
     public function sendInterviewScheduleToInterviewer(User $interviewer)
@@ -215,7 +232,7 @@ class InterviewManager
             return;
         }
 
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
              ->setSubject('Dine intervjuer dette semesteret')
              ->setTo($interviewer->getEmail())
              ->setBody(
@@ -248,7 +265,7 @@ class InterviewManager
 
     private function sendAcceptInterviewReminderToInterviewee(Interview $interview)
     {
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('Påminnelse om intervjuinvitasjon med Vektorprogrammet')
             ->setTo($interview->getUser()->getEmail())
             ->setBody(

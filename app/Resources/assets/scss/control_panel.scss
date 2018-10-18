@@ -1,4 +1,5 @@
-@import "bootstrap";
+@import "custom";
+@import "../../../../node_modules/@coreui/coreui/scss/coreui";
 @import "../../../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
 @import "../../../../node_modules/@fortawesome/fontawesome-free/scss/brands";
 @import "../../../../node_modules/@fortawesome/fontawesome-free/scss/regular";
@@ -57,12 +58,25 @@ html:not([dir=rtl]) {
       margin-left: -$sidebar-width;
       width: $sidebar-width;
       @media (min-width: 992px) {
-          margin-left: 0;
+        margin-left: 0;
       }
       .sidebar-nav {
         width: $sidebar-width;
         ul.nav {
           width: $sidebar-width;
+          .nav-link {
+            &:hover {
+              background: $info;
+              &.active .nav-icon {
+                color: $white;
+              }
+            }
+            &.active {
+              .nav-icon {
+                color: $info;
+              }
+            }
+          }
         }
       }
     }
@@ -79,6 +93,18 @@ html:not([dir=rtl]) {
   }
 }
 
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  padding: .75rem 1rem;
+  margin-bottom: 1rem;
+  list-style: none;
+  background-color: #e9ecef;
+  border-radius: .25rem;
+  border-bottom: 1px solid #c8ced3;
+  position: relative;
+}
+
 .breadcrumb-item {
   display: flex;
   align-items: center;
@@ -90,41 +116,6 @@ html:not([dir=rtl]) {
 
 .reveal-modal ul {
   margin-left: 0;
-}
-// A container with the same border as the vektor button
-.vektor-box {
-  padding: rem-calc(16);
-  border: solid $vektor-blue 3px;
-  margin-bottom: rem-calc(16);
-}
-
-// The toggle options box
-.option-box {
-  border: solid 1px $gainsboro;
-  background: $white;
-  margin: rem-calc(16) 0;
-
-  h5 {
-    padding: 8px 12px;
-    margin: 0 0;
-  }
-
-  .toggle-caret {
-    padding: 8px 12px;
-    float: right;
-    cursor: pointer;
-  }
-
-  .content {
-    border-top: solid 1px $gainsboro;
-    padding: 12px 12px;
-  }
-
-  .footer {
-    padding: 8px 12px;
-    border-top: solid 1px $gainsboro;
-    background: $white-smoke;
-  }
 }
 
 // Hide the content and the footer of the options box
@@ -145,58 +136,6 @@ html:not([dir=rtl]) {
   color: $vektor-blue;
 }
 
-header {
-  nav {
-    float: right;
-    margin-top: 88px;
-    @media screen and (max-width: 874px) {
-      margin-top: 10px;
-    }
-    > ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      margin-left: - rem-calc(35);
-
-      > li {
-        float: left;
-
-        // Medium screens
-        @media only screen and (min-width: 40.063em) {
-          margin-left: rem-calc(15);
-        }
-
-        // Large screens
-        @media only screen and (min-width: 64.563em) {
-          margin-left: rem-calc(30);
-        }
-      }
-    }
-  }
-}
-
-// Footer
-// - - - - - - - - - - - - - - - - - - - - - - - - -
-footer {
-  padding-top: 10px;
-  .row {
-    border-top: solid 3px $vektor-blue;
-    padding-top: 2rem;
-  }
-
-  ul {
-    list-style-type: none;
-    margin-left: 0;
-  }
-
-}
-
-.admin-footer {
-  .row {
-    border-top: solid 3px $admin-grey;
-  }
-}
-
 // AdmissionAdmin
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -207,16 +146,6 @@ footer {
 .active-application {
   border-top: solid #dddddd 1px;
   border-bottom: solid #dddddd 1px;
-}
-
-#bulkAllCheck, input[type="checkbox"].bulkCheck {
-  margin: rem-calc(4) 0 0 0;
-  min-width: rem-calc(16);
-  min-height: rem-calc(16);
-}
-
-#interviewStatusNav {
-  margin: rem-calc(10) 0 0 0;
 }
 
 // Interview
@@ -241,9 +170,9 @@ ul.alternatives {
 .radio-grid {
   margin-left: 0;
   list-style-type: none;
-  &>div>li{
+  & > div > li {
     margin-right: 1rem;
-    display:inline-block;
+    display: inline-block;
   }
 }
 
@@ -649,7 +578,7 @@ ul.alternatives {
     user-select: none;
   }
   .clickable {
-    cursor:pointer;
+    cursor: pointer;
   }
 }
 
@@ -664,18 +593,19 @@ ul.alternatives {
   left: 115px;
   pointer-events: none;
   opacity: 0;
-  margin-top: 51px !important; }
-
-.clean-list {
-  list-style:none;
-  margin:0;
-  padding:0;
+  margin-top: 51px !important;
 }
 
-#receipt_receiptDate select{
+.clean-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#receipt_receiptDate select {
   display: inline-block;
   width: auto;
-  margin-right:10px;
+  margin-right: 10px;
 }
 
 .btn-group {
@@ -684,11 +614,11 @@ ul.alternatives {
 }
 
 .button-link, .button-link:hover, .button-link:focus {
-  background:none;
-  color:inherit;
-  border:none;
-  outline:none;
-  padding:0;
+  background: none;
+  color: inherit;
+  border: none;
+  outline: none;
+  padding: 0;
   cursor: pointer;
 }
 
@@ -729,24 +659,24 @@ ul.alternatives {
 }
 
 .number-of-pending-receipts-indicator {
-  background-color:#f08a24;
-  color:#fff;
-  border-radius:50%;
-  display:block;
-  height:22px;
-  width:22px;
-  text-align:center;
-  line-height:22px;
-  font-weight:bold;
-  cursor:default;
+  background-color: #f08a24;
+  color: #fff;
+  border-radius: 50%;
+  display: block;
+  height: 22px;
+  width: 22px;
+  text-align: center;
+  line-height: 22px;
+  font-weight: bold;
+  cursor: default;
 }
 
-.has-pending-receipts{
-  border-left:solid 3px #f08a24;
+.has-pending-receipts {
+  border-left: solid 3px #f08a24;
 }
 
 .number-of-pending-receipts-indicator.has-tip:hover {
-  color:#fff;
+  color: #fff;
 }
 
 .delete-icon {
@@ -754,85 +684,85 @@ ul.alternatives {
 }
 
 img.gallery-preview-image {
-  display:inline;
-  height:100px;
+  display: inline;
+  height: 100px;
 }
 
 li.image-gallery-grid-element {
-  position:relative;
-  overflow:hidden;
+  position: relative;
+  overflow: hidden;
   * {
-    transition:0.2s;
+    transition: 0.2s;
   }
   .edit-image-text {
-    opacity:0;
-    position:absolute;
-    text-align:center;
-    width:100%;
-    top:50%;
-    font-size:18px;
-    margin-top:-9px;
-    color:white;
-    pointer-events:none;
-    text-shadow:0 0 1px rgba(0,0,0,0.6), 0 1px 1px rgba(0,0,0,0.4);
+    opacity: 0;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    top: 50%;
+    font-size: 18px;
+    margin-top: -9px;
+    color: white;
+    pointer-events: none;
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.6), 0 1px 1px rgba(0, 0, 0, 0.4);
   }
 
   img:hover {
     filter: brightness(95%) grayscale(40%) blur(1px);
   }
   &:hover .edit-image-text {
-    opacity:1;
+    opacity: 1;
   }
   padding: 2px;
 }
 
 #create-gallery-form {
-  display:none;
+  display: none;
 }
 
 .inline {
-  display:inline;
+  display: inline;
 }
 
 .half-size-text {
   font-size: 50%;
-  vertical-align:middle;
-  margin:inherit;
+  vertical-align: middle;
+  margin: inherit;
 }
 
 .inherit-parent-margins {
-  margin:inherit;
+  margin: inherit;
 }
 
 .upload-gallery-image-hack {
-  position:absolute;
+  position: absolute;
   left: 98px;
-  top:28px;
-  width:1px !important;
-  outline:none;
-  opacity:0;
-  pointer-events:none;
+  top: 28px;
+  width: 1px !important;
+  outline: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .show-on-hover {
-  transition:0.1s;
-  opacity:0.9;
+  transition: 0.1s;
+  opacity: 0.9;
   &:hover {
-    opacity:1;
+    opacity: 1;
   }
 }
 
 button.secretly-not-a-button {
-  background:none;
-  outline:none;
-  height:100%;
-  padding:0;
-  position:absolute;
-  font-size:inherit;
+  background: none;
+  outline: none;
+  height: 100%;
+  padding: 0;
+  position: absolute;
+  font-size: inherit;
 }
 
 .position-relative {
-  position:relative;
+  position: relative;
 }
 
 #specialNeeds {
@@ -851,17 +781,17 @@ button.secretly-not-a-button {
   opacity: 0.8;
 }
 
-.checkbox label{
+.checkbox label {
   display: inline;
 }
 
 .mb-0 {
-  margin-bottom: 0!important;
+  margin-bottom: 0 !important;
 }
 
 .my-32px {
-  margin-top: 32px!important;
-  margin-bottom: 32px!important;
+  margin-top: 32px !important;
+  margin-bottom: 32px !important;
 }
 
 .button-icon-left {
@@ -881,7 +811,7 @@ button.secretly-not-a-button {
 }
 
 .interviewer {
-  overflow:hidden;
+  overflow: hidden;
   .bordered {
     border: 1px solid #eee;
   }
@@ -890,31 +820,31 @@ button.secretly-not-a-button {
     max-width: 150px;
   }
   .no-co-interviewer {
-    position:relative;
-    display:flex;
-    flex-direction:column;
+    position: relative;
+    display: flex;
+    flex-direction: column;
     .profile-photo-overlay {
-      color:#fff;
-      font-weight:700;
-      text-shadow:0 1px 2px rgba(0,0,0,0.7);
-      opacity:0.8;
-      position:absolute;
-      padding-top:50%;
-      margin-top:-15px;
-      font-size:18px;
-      width:100%;
-      text-align:center;
+      color: #fff;
+      font-weight: 700;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+      opacity: 0.8;
+      position: absolute;
+      padding-top: 50%;
+      margin-top: -15px;
+      font-size: 18px;
+      width: 100%;
+      text-align: center;
     }
   }
 }
 
 .profile-photo-blur {
   filter: blur(30px) grayscale(100%);
-  overflow:hidden;
+  overflow: hidden;
 }
 
 .img-blur-container {
-  overflow:hidden;
+  overflow: hidden;
 }
 
 .table-icon {
