@@ -61,28 +61,4 @@ class AccessRuleRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
-
-    /**
-     * @param string $resource
-     * @param string $method
-     *
-     * @return AccessRule[]
-     */
-    public function findOneByResourceAndMethod(string $resource, string $method)
-    {
-        return $this
-            ->findByResourceAndMethodQuery($resource, $method)
-            ->getQuery()
-            ->getResult();
-    }
-
-    private function findByResourceAndMethodQuery(string $resource, string $method)
-    {
-        return $this
-            ->createQueryBuilder('accessRule')
-            ->andWhere('accessRule.resource = :resource')
-            ->andWhere('accessRule.method = :method')
-            ->setParameter('resource', $resource)
-            ->setParameter('method', $method);
-    }
 }

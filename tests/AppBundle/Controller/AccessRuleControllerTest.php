@@ -76,21 +76,21 @@ class AccessRuleControllerTest extends BaseWebTestCase {
 
 	public function testUnhandledRulesAreDeletedWhenRuleIsCreated() {
 		$crawler = $this->adminGoTo('/kontrollpanel/admin/accessrules');
-		$unhandledBefore = $crawler->filter('#unhandledModal tr')->count();
+		$unhandledBefore = $crawler->filter('#unhandledModal tr td:contains("GET /kontrollpanel/admin/accessrules/routing/create")')->count();
+		$this->assertEquals(1, $unhandledBefore);
 
 		$crawler = $this->adminGoTo("/kontrollpanel/admin/accessrules/routing/create");
 		$form = $crawler->selectButton("Save")->form();
-
-		$form["routing_access_rule[name]"] = "Test Rule";
-		$form["routing_access_rule[resource]"] = "control_panel";
+		$form["routing_access_rule[name]"] = "Test Rule 2";
+		$form["routing_access_rule[resource]"] = "access_rules_create_routing";
 		$form["routing_access_rule[roles][0]"]->tick();
 
 		$client = $this->createAdminClient();
 		$client->submit($form);
 
 		$crawler = $this->adminGoTo('/kontrollpanel/admin/accessrules');
-		$unhandledAfter = $crawler->filter('#unhandledModal tr')->count();
+		$unhandledAfter = $crawler->filter('#unhandledModal tr td:contains("GET /kontrollpanel/admin/accessrules/routing/create")')->count();
 
-		$this->assertEquals($unhandledBefore - 1, $unhandledAfter);
+		$this->assertEquals(0, $unhandledAfter);
 	}
 }

@@ -12,11 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class UnhandledAccessRuleRepository extends EntityRepository
 {
-    public function findByResource(string $resource)
+    public function findByResourceAndMethod(string $resource, string $method)
     {
         return $this->createQueryBuilder('rule')
             ->where('rule.resource = :resource')
             ->setParameter('resource', $resource)
+            ->andWhere('rule.method = :method')
+            ->setParameter('method', $method)
             ->getQuery()
             ->getResult();
     }

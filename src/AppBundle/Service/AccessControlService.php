@@ -17,6 +17,8 @@ class AccessControlService
     private $router;
     private $roleManager;
     private $userService;
+    private $accessRulesCache;
+    private $unhandledRulesCache;
 
     /**
      * ResourceAccessSubscriber constructor.
@@ -32,18 +34,44 @@ class AccessControlService
         $this->router        = $router;
         $this->roleManager   = $roleManager;
         $this->userService   = $userService;
+        $this->accessRulesCache = [];
+        $this->unhandledRulesCache = [];
+        $this->preloadCache();
+    }
+
+    private function preloadCache()
+    {
+        $accessRules = $this->entityManager->getRepository('AppBundle:AccessRule')->findAll();
+        foreach ($accessRules as $rule) {
+            $key = $this->getKey($rule->getResource(), $rule->getMethod());
+            if (!key_exists($key, $this->accessRulesCache)) {
+                $this->accessRulesCache[$key] = [];
+            }
+            $this->accessRulesCache[$key][] = $rule;
+        }
+
+        $unhandledRules = $this->entityManager->getRepository('AppBundle:UnhandledAccessRule')->findAll();
+        foreach ($unhandledRules as $rule) {
+            $key = $this->getKey($rule->getResource(), $rule->getMethod());
+            if (!key_exists($key, $this->unhandledRulesCache)) {
+                $this->unhandledRulesCache[$key] = [];
+            }
+            $this->unhandledRulesCache[$key][] = $rule;
+        }
     }
 
     public function createRule(AccessRule $accessRule)
     {
         $em             = $this->entityManager;
-        $unhandledRules = $em->getRepository('AppBundle:UnhandledAccessRule')->findByResource($accessRule->getResource());
+        $unhandledRules = $em->getRepository('AppBundle:UnhandledAccessRule')->findByResourceAndMethod($accessRule->getResource(), $accessRule->getMethod());
         foreach ($unhandledRules as $unhandledRule) {
             $em->remove($unhandledRule);
         }
 
         $em->persist($accessRule);
         $em->flush();
+
+        $this->preloadCache();
     }
 
     public function checkAccess($resources, User $user = null): bool
@@ -88,7 +116,7 @@ class AccessControlService
      */
     private function checkAccessToResourceAndMethod(?User $user, string $resource, string $method = 'GET'): bool
     {
-        $accessRules = $this->entityManager->getRepository("AppBundle:AccessRule")->findOneByResourceAndMethod($resource, $method);
+        $accessRules = $this->getAccessRules($resource, $method);
 
         if (empty($accessRules)) {
             $this->markRuleAsUnhandledIfNotExists($resource, $method);
@@ -231,16 +259,43 @@ class AccessControlService
 
     private function markRuleAsUnhandledIfNotExists(string $resource, string $method = 'GET')
     {
-        if ($this->isPrivateRoute($resource) || $this->unhandledRuleExists($resource)) {
+        if ($this->isPrivateRoute($resource) || $this->unhandledRuleExists($resource, $method)) {
             return;
         }
 
         $this->entityManager->persist(new UnhandledAccessRule($resource, $method));
         $this->entityManager->flush();
+
+        $this->preloadCache();
     }
 
-    private function unhandledRuleExists(string $resource)
+    private function unhandledRuleExists(string $resource, $method)
     {
-        return ! empty($this->entityManager->getRepository('AppBundle:UnhandledAccessRule')->findByResource($resource));
+        return ! empty($this->getUnhandledRules($resource, $method));
+    }
+
+    private function getAccessRules(string $resource, string $method)
+    {
+        $key = $this->getKey($resource, $method);
+        if (key_exists($key, $this->accessRulesCache)) {
+            return $this->accessRulesCache[$key];
+        }
+
+        return [];
+    }
+
+    private function getUnhandledRules(string $resource, string $method)
+    {
+        $key = $this->getKey($resource, $method);
+        if (key_exists($key, $this->unhandledRulesCache)) {
+            return $this->unhandledRulesCache[$key];
+        }
+
+        return [];
+    }
+
+    private function getKey(string $resource, string $method)
+    {
+        return "$method-$resource";
     }
 }
