@@ -1,8 +1,8 @@
-<h1>Velkommen til et nytt semester med Vektorprogrammet!</h1>
+<h1>Infomøte med Vektorprogrammet i morgen!</h1>
 
 {% if infoMeeting and infoMeeting.showOnPage %}
     <br>
-    <p>Vi har infomøte den {{ infoMeeting.date|date('d.m.Y') }} kl. {{ infoMeeting.date|date('H:i') }}
+    <p>I morgen har vi infomøte kl. {{ infoMeeting.date|date('H:i') }}
         {% if infoMeeting.room %}
         i rom {{ infoMeeting.room }}
         {% endif %}!</p>
@@ -12,7 +12,7 @@
 {% endif %}
 
 
-<p>Vi ser fram til å bli kjent med deg og lykke til med det nye semesteret! </p>
+<p>Det blir servert pizza og brus!</p>
 
 <br>
 <a href=3D"https://vektorprogrammet.no{{ path('home') }}">

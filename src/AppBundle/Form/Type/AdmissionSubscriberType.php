@@ -20,7 +20,7 @@ class AdmissionSubscriberType extends AbstractType
             ]
             ))
             ->add('infoMeeting', CheckboxType::class, array(
-            'label' => 'Send meg en påminnelse om infomøte.',
+            'label' => 'Send meg også påminnelse om neste infomøte.',
             'required' => false,
             'attr' => [
                 'checked' => true
