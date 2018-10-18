@@ -213,7 +213,7 @@ class AccessControlService
     {
         $resources = $this->router->getRouteCollection()->all();
         $resources = array_filter($resources, function ($v, string $resource) {
-            return strlen($resource) > 0 && $resource[0] !== "_";
+            return strlen($resource) > 0 && $this->isPrivateRoute($resource);
         }, ARRAY_FILTER_USE_BOTH);
 
         uasort($resources, function (Route $a, Route $b) {
