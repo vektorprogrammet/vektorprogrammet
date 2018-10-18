@@ -58,7 +58,7 @@
                         </tr>
                         {% for rule in unhandledRules %}
                             <tr>
-                                <td>{{ get_path(rule.resource) }}</td>
+                                <td>{{ rule.method }} {{ get_path(rule.resource) }}</td>
                             </tr>
                         {% endfor %}
                     </table>

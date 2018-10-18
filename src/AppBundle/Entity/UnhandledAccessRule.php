@@ -22,9 +22,15 @@ class UnhandledAccessRule
      */
     private $resource;
 
-    public function __construct($resource)
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $method;
+
+    public function __construct($resource, $method)
     {
         $this->resource = $resource;
+        $this->method = $method;
     }
 
 
@@ -50,5 +56,21 @@ class UnhandledAccessRule
     public function setResource($resource): void
     {
         $this->resource = $resource;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethod()
+    {
+        return $this->method;
+    }
+
+    /**
+     * @param string $method
+     */
+    public function setMethod($method): void
+    {
+        $this->method = $method;
     }
 }

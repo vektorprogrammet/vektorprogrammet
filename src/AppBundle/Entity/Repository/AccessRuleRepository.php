@@ -27,12 +27,14 @@ class AccessRuleRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findByResource(string $resource)
+    public function findByResourceAndMethod(string $resource, string $method)
     {
         return $this
             ->createQueryBuilder('accessRule')
             ->andWhere('accessRule.resource = :resource')
             ->setParameter('resource', $resource)
+            ->andWhere('accessRule.method = :method')
+            ->setParameter('method', $method)
             ->getQuery()
             ->getResult();
     }

@@ -53,7 +53,7 @@ class AccessControlSubscriber implements EventSubscriberInterface
         $route = $request->attributes->get('_route');
         $method = $event->getRequest()->getRealMethod();
 
-        $userHasAccess = $this->accessControlService->checkAccessWithoutMarkingUnhandled([$route => $method]);
+        $userHasAccess = $this->accessControlService->checkAccess([$route => $method]);
         if (!$userHasAccess) {
             throw new AccessDeniedHttpException("User does not have access to $method $route");
         }
