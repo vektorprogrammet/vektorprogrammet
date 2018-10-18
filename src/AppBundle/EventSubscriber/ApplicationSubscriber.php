@@ -80,7 +80,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
         }
 
         // Send a confirmation email with a copy of the application
-        $emailMessage = \Swift_Message::newInstance()
+        $emailMessage = (new \Swift_Message())
                                       ->setSubject('Søknad - Vektorassistent')
                                       ->setReplyTo($application->getDepartment()->getEmail())
                                       ->setTo($application->getUser()->getEmail())

@@ -3,6 +3,9 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class SponsorType extends AbstractType
@@ -10,24 +13,24 @@ class SponsorType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'label' => 'Sponsornavn',
             ))
-            ->add('url', 'text', array(
+            ->add('url', TextType::class, array(
                 'label' => 'Sponsors hjemmeside',
             ))
-            ->add('size', 'choice', array(
+            ->add('size', ChoiceType::class, array(
                 'required' => true,
                 'label' => 'Størrelse',
                 'choices' => array(
-                    'small' => 'Liten',
-                    'medium' => 'Medium',
-                    'large' => 'Stor',
+                    'Liten' => 'small',
+                    'Medium' => 'medium',
+                    'Stor' => 'large',
                 ),
                 'multiple' => false,
                 'expanded' => true,
             ))
-            ->add('logoImagePath', 'file', array(
+            ->add('logoImagePath', FileType::class, array(
                 'required' => false,
                 'error_bubbling' => true,
                 'data_class' => null,
@@ -35,7 +38,7 @@ class SponsorType extends AbstractType
             ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'sponsor';
     }

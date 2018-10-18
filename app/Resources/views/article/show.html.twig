@@ -35,7 +35,7 @@
             {{ article.article|safe_html }}
             </div>
             {# Render the controller for the sidebar showing other articles #}
-            {% render controller('AppBundle:Article:showOther', { 'excludeId': article.id }) %}
+            {{ render(controller('AppBundle:Article:showOther', { 'excludeId': article.id })) }}
 
         </article>
         </div>

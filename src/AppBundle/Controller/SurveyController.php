@@ -96,7 +96,7 @@ class SurveyController extends BaseController
     {
         $survey = new Survey();
 
-        $form = $this->createForm(new SurveyType(), $survey);
+        $form = $this->createForm(SurveyType::class, $survey);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -155,7 +155,8 @@ class SurveyController extends BaseController
         $semester = $this->getSemesterOrThrow404();
         $department = $this->getDepartmentOrThrow404();
         $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
-            ['semester' => $semester], ['id' => 'DESC']
+            ['semester' => $semester],
+            ['id' => 'DESC']
         );
         foreach ($surveys as $survey) {
             $totalAnswered = count($this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findBy(array('survey' => $survey)));
@@ -171,7 +172,7 @@ class SurveyController extends BaseController
 
     public function editSurveyAction(Request $request, Survey $survey)
     {
-        $form = $this->createForm(new SurveyType(), $survey);
+        $form = $this->createForm(SurveyType::class, $survey);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

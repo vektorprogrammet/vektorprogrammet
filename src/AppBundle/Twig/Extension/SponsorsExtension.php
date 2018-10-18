@@ -2,11 +2,13 @@
 
 namespace AppBundle\Twig\Extension;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 class SponsorsExtension extends \Twig_Extension
 {
     protected $doctrine;
 
-    public function __construct($doctrine)
+    public function __construct(EntityManagerInterface $doctrine)
     {
         $this->doctrine = $doctrine;
     }
@@ -19,15 +21,14 @@ class SponsorsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'get_sponsors' => new \Twig_Function_Method($this, 'getSponsors'),
-            'get_sponsors_by_size' => new \Twig_Function_method($this, 'getSponsorsBySize'),
+            new \Twig_SimpleFunction('get_sponsors', [$this, 'getSponsors']),
+            new \Twig_SimpleFunction('get_sponsors_by_size', [$this, 'getSponsorsBySize']),
         );
     }
 
     public function getSponsors()
     {
         $sponsors = $this->doctrine
-            ->getEntityManager()
             ->getRepository('AppBundle:Sponsor')
             ->findAll();
         if (!$sponsors) {
@@ -40,7 +41,6 @@ class SponsorsExtension extends \Twig_Extension
     public function getSponsorsBySize($size)
     {
         $sponsors = $this->doctrine
-            ->getEntityManager()
             ->getRepository('AppBundle:Sponsor')
             ->findBy(array('size' => $size));
         if (!$sponsors) {

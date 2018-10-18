@@ -2,10 +2,7 @@
 
 {% block javascripts %}
 
-    <script src="{{ asset_with_version('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
     <script src="{{ asset_with_version('js/stupidtable.js') }}"></script>
-    <script src="{{ asset_with_version('js/deleteablerow.js') }}"></script>
 
     <script>
 
@@ -29,24 +26,6 @@
                 AppAdmin.appTable.on("aftertablesort", AppAdmin.addSortArrows);
                 AppAdmin.distributionTable.on("aftertablesort", AppAdmin.addSortArrows);
 
-                // Bind delete application functionality to each application delete button
-                AppAdmin.appTable.find(".deleteApplication").deleteablerow('admissionadmin_delete_application_by_id', {
-                    confirmation: {
-                        modal: $("#deleteAppModal"),
-                        acceptButton: $("#deleteAppModal .accept"),
-                        cancelButton: $("#deleteAppModal .cancel")
-                    }
-                });
-
-                // Bind delete interview functionality to each interview delete button
-                AppAdmin.appTable.find(".deleteInterview").deleteablerow('interview_delete', {
-                    confirmation: {
-                        modal: $("#deleteIntModal"),
-                        acceptButton: $("#deleteIntModal .accept"),
-                        cancelButton: $("#deleteIntModal .cancel")
-                    }
-                });
-
                 // Bind assign interview functionality to each assign button
                 AppAdmin.appTable.find(".assign").on("click", AppAdmin.getAssignForm);
 
@@ -69,8 +48,8 @@
 
             getAssignForm: function (event) {
                 event.preventDefault();
-                var applicationId = parseInt($(this).closest('tr').attr('id'));
-                var url = Routing.generate('interview_assign', {id: applicationId});
+                var applicationId = $(this).closest('tr').attr('id');
+                var url = '{{ path('interview_assign') }}/'+applicationId;
                 var modal = $("#assignModal");
 
                 $.ajax({
@@ -93,7 +72,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: Routing.generate('interview_assign', {id: applicationId}),
+                    url: "{{ path('interview_assign') }}/"+applicationId,
                     data: formdata,
                     success: function (respone) {
                       window.location.reload();
@@ -119,7 +98,7 @@
                     case "assign":
                         $.ajax({
                             type: 'GET',
-                            url: Routing.generate('interview_assign_bulk'),
+                            url: '{{ path('interview_assign_bulk') }}',
                             cache: false,
                             success: function (response) {
                                 var modal = $("#assignModal");
@@ -169,7 +148,7 @@
                 var formdata = $("#bulk").serialize();
                 $.ajax({
                     type: 'POST',
-                    url: Routing.generate('admissionadmin_delete_application_bulk'),
+                    url: '{{ path('admissionadmin_delete_application_bulk') }}',
                     data: formdata,
                     success: function (response) {
                         if (response.success) {
@@ -192,7 +171,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: Routing.generate('interview_delete_bulk'),
+                    url: '{{ path('interview_delete_bulk') }}',
                     data: formdata,
                     success: function (response) {
                         if (response.success) {
@@ -211,7 +190,7 @@
             onBulkAssignFormSubmit: function (event) {
                 event.preventDefault();
                 // Serializes both the bulk checkbox form and the assign form (both have name=application)
-                var formdata = $("form[name='application']").serialize();
+                var formdata = $("form[name='interview']").serialize();
 
                 $.ajax({
                     type: "POST",

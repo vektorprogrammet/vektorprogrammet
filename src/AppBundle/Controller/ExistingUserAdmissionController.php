@@ -35,7 +35,7 @@ class ExistingUserAdmissionController extends BaseController
 
         $application = $admissionManager->createApplicationForExistingAssistant($user);
 
-        $form = $this->createForm(new ApplicationExistingUserType(), $application, array(
+        $form = $this->createForm(ApplicationExistingUserType::class, $application, array(
             'validation_groups' => array('admission_existing'),
             'teams' => $teams,
         ));

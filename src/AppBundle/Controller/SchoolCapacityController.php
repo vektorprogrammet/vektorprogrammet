@@ -17,7 +17,7 @@ class SchoolCapacityController extends BaseController
 
         $schoolCapacity = new SchoolCapacity();
         $schoolCapacity->setSemester($currentSemester);
-        $form = $this->createForm(new SchoolCapacityType(), $schoolCapacity);
+        $form = $this->createForm(SchoolCapacityType::class, $schoolCapacity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -36,7 +36,7 @@ class SchoolCapacityController extends BaseController
 
     public function editAction(Request $request, SchoolCapacity $capacity)
     {
-        $form = $this->createForm(new SchoolCapacityEditType(), $capacity);
+        $form = $this->createForm(SchoolCapacityEditType::class, $capacity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

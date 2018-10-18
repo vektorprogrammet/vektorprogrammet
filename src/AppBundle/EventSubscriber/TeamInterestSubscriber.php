@@ -41,7 +41,7 @@ class TeamInterestSubscriber implements EventSubscriberInterface
         $department = $teamInterest->getDepartment();
         $fromEmail = $department->getEmail();
 
-        $receipt = \Swift_Message::newInstance()
+        $receipt = (new \Swift_Message())
             ->setSubject("Teaminteresse i Vektorprogrammet")
             ->setFrom(array($fromEmail => "Vektorprogrammet $department"))
             ->setReplyTo($fromEmail)

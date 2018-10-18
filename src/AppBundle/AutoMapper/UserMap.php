@@ -14,7 +14,6 @@ class UserMap extends AbstractMap
      */
     public function __construct()
     {
-        dump("test");
     }
 
 

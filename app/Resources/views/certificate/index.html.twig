@@ -59,12 +59,20 @@
                                 <td>{{ a.school }}</td>
                                 <td>{{ a.user.fieldOfStudy }}</td>
                                 {% if is_granted_team_member() %}
-                                    <td>
-                                        <a href="{{ path('profile_certificate', { 'id': a.user.id }) }}"
-                                           class="button tiny">
-                                            <i class="fa fa-download"></i> Last ned
-                                        </a>
-                                    </td>
+                                    {% if signature.signaturePath is not null %}
+                                        <td>
+                                            <a href="{{ path('profile_certificate', { 'id': a.user.id }) }}"
+                                               class="button tiny">
+                                                <i class="fa fa-download"></i> Last ned
+                                            </a>
+                                        </td>
+                                    {% else %}
+                                        <td>
+                                            <span class="text-danger">
+                                                Legg til signatur for å laste ned attest
+                                            </span>
+                                        </td>
+                                    {% endif %}
                                 {% endif %}
                             </tr>
                         {% endfor %}
@@ -107,29 +115,29 @@
 {% block javascripts %}
 
     <script>
-      var uploadButton = $('#choose_picture');
-      uploadButton.click(function () {
-        var realUploadButton = $('#create_signature_signature_path');
-        realUploadButton.click();
-      });
+        var uploadButton = $('#choose_picture');
+        uploadButton.click(function () {
+            var realUploadButton = $('#create_signature_signature_path');
+            realUploadButton.click();
+        });
 
-      function readURL(input) {
+        function readURL(input) {
 
-        if (input.files && input.files[0]) {
-          var reader = new FileReader();
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
 
-          reader.onload = function (e) {
-            $('#signature_picture').attr('src', e.target.result);
-          };
+                reader.onload = function (e) {
+                    $('#signature_picture').attr('src', e.target.result);
+                };
 
-          reader.readAsDataURL(input.files[0]);
+                reader.readAsDataURL(input.files[0]);
+            }
         }
-      }
 
-      $('#create_signature_signature_path').change(function () {
-        $('#signature_picture').parent().removeClass('hide');
-        readURL(this);
-      });
+        $('#create_signature_signature_path').change(function () {
+            $('#signature_picture').parent().removeClass('hide');
+            readURL(this);
+        });
 
 
     </script>

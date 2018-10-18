@@ -188,7 +188,7 @@ class ProfileController extends BaseController
             'teamMembership'      => $teamMembership,
             'signature'        => $signature,
             'department'       => $department,
-            'base_dir'         => $this->get('kernel')->getRootDir() . '/../www' . $request->getBasePath(),
+            'base_dir'         => $this->get('kernel')->getRootDir() . '/../web' . $request->getBasePath(),
         ));
         $mpdfService = $this->get('t_fox_mpdf_port.pdf');
 

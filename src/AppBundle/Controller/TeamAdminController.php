@@ -43,7 +43,9 @@ class TeamAdminController extends BaseController
     {
         $department = $teamMembership->getTeam()->getDepartment();
 
-        $form = $this->createForm(new CreateTeamMembershipType($department), $teamMembership);
+        $form = $this->createForm(CreateTeamMembershipType::class, $teamMembership, [
+            'department' => $department
+        ]);
 
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -74,7 +76,9 @@ class TeamAdminController extends BaseController
         $teamMembership->setPosition($this->getDoctrine()->getRepository('AppBundle:Position')->findOneBy(array( 'name' => 'Medlem' )));
 
         // Create a new formType with the needed variables
-        $form = $this->createForm(new CreateTeamMembershipType($department), $teamMembership);
+        $form = $this->createForm(CreateTeamMembershipType::class, $teamMembership, [
+            'department' => $department
+        ]);
 
         // Handle the form
         $form->handleRequest($request);
@@ -144,7 +148,7 @@ class TeamAdminController extends BaseController
         $oldTeamEmail = $team->getEmail();
 
         // Create the form
-        $form = $this->createForm(new CreateTeamType(), $team);
+        $form = $this->createForm(CreateTeamType::class, $team);
 
         // Handle the form
         $form->handleRequest($request);
@@ -200,7 +204,7 @@ class TeamAdminController extends BaseController
         $team->setDepartment($department);
 
         // Create a new formType with the needed variables
-        $form = $this->createForm(new CreateTeamType(), $team);
+        $form = $this->createForm(CreateTeamType::class, $team);
 
         // Handle the form
         $form->handleRequest($request);

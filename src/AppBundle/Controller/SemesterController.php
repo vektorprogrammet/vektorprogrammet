@@ -37,7 +37,7 @@ class SemesterController extends Controller
         $semester = new Semester();
 
         // Create the form
-        $form = $this->createForm(new CreateSemesterType(), $semester);
+        $form = $this->createForm(CreateSemesterType::class, $semester);
 
         // Handle the form
         $form->handleRequest($request);

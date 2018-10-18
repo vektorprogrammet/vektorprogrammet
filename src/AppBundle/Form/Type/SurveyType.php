@@ -5,16 +5,20 @@ namespace AppBundle\Form\Type;
 use AppBundle\Entity\Repository\DepartmentRepository;
 use Doctrine\ORM\EntityRepository;
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SurveyType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('semester', 'entity', array(
+        $builder->add('semester', EntityType::class, array(
             'label' => 'Semester',
             'class' => 'AppBundle:Semester',
             'query_builder' => function (EntityRepository $er) {
@@ -25,7 +29,7 @@ class SurveyType extends AbstractType
             },
         ))
 
-        ->add('department', 'entity', array(
+        ->add('department', EntityType::class, array(
             'label' => 'Region',
             'class' => 'AppBundle:Department',
             'query_builder' => function (DepartmentRepository $er) {
@@ -35,7 +39,7 @@ class SurveyType extends AbstractType
             },
         ))
 
-        ->add('name', 'text', array(
+        ->add('name', TextType::class, array(
             'label' => false,
             'attr' => array('placeholder' => 'Fyll inn tittel til undersøkelse'),
         ))
@@ -45,8 +49,8 @@ class SurveyType extends AbstractType
                 'multiple' => false,
                 'expanded' => true,
                 'choices' => [
-                    false => 'Standard',
-                    true => 'Tilpasset',
+                    'Standard' => false,
+                    'Tilpasset' => true,
                 ]
             ])
 
@@ -55,8 +59,8 @@ class SurveyType extends AbstractType
                 'multiple' => false,
                 'expanded' => true,
                 'choices' => [
-                    false => 'Medlemmer og Ledere',
-                    true => 'Kun Ledere'
+                    'Medlemmer og Ledere' => false,
+                    'Kun Ledere' => true
                 ]
             ))
             
@@ -64,26 +68,26 @@ class SurveyType extends AbstractType
                 'label' => 'Tilpasset sluttside. Vises kun hvis "Tilpasset" er valgt over.',
             ])
 
-        ->add('surveyQuestions', 'collection', array(
-            'type' => new SurveyQuestionType(),
+        ->add('surveyQuestions', CollectionType::class, array(
+            'entry_type' => SurveyQuestionType::class,
             'allow_add' => true,
             'allow_delete' => true,
             'prototype_name' => '__q_prot__',
         ))
 
-        ->add('save', 'submit', array(
+        ->add('save', SubmitType::class, array(
             'label' => 'Lagre',
         ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Survey',
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'survey';
     }

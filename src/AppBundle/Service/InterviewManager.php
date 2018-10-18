@@ -125,12 +125,13 @@ class InterviewManager
      */
     public function sendScheduleEmail(Interview $interview, array $data)
     {
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('Intervju for vektorprogrammet')
             ->setTo($data['to'])
             ->setReplyTo($data['from'])
             ->setBody(
-                $this->twig->render('interview/email.html.twig',
+                $this->twig->render(
+                    'interview/email.html.twig',
                     array('message' => $data['message'],
                         'datetime' => $data['datetime'],
                         'room' => $data['room'],
@@ -162,11 +163,12 @@ class InterviewManager
 
         // Send mail to interviewer and co-interviewer
         foreach ($interviewers as $interviewer) {
-            $message = \Swift_Message::newInstance()
+            $message = (new \Swift_Message())
                 ->setSubject("[$user] Intervju: Ønske om ny tid")
                 ->setTo($interviewer->getEmail())
                 ->setBody(
-                    $this->twig->render('interview/reschedule_email.html.twig',
+                    $this->twig->render(
+                        'interview/reschedule_email.html.twig',
                         array('interview' => $interview,
                             'application' => $application,
                         )
@@ -192,11 +194,12 @@ class InterviewManager
 
         // Send mail to interviewer and co-interviewer
         foreach ($interviewers as $interviewer) {
-            $message = \Swift_Message::newInstance()
+            $message = (new \Swift_Message())
                 ->setSubject("[$user] Intervju: Kansellert")
                 ->setTo($interviewer->getEmail())
                 ->setBody(
-                    $this->twig->render('interview/cancel_email.html.twig',
+                    $this->twig->render(
+                        'interview/cancel_email.html.twig',
                         array('interview' => $interview,
                         )
                     ),
@@ -229,11 +232,12 @@ class InterviewManager
             return;
         }
 
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
              ->setSubject('Dine intervjuer dette semesteret')
              ->setTo($interviewer->getEmail())
              ->setBody(
-                 $this->twig->render('interview/schedule_of_interviews_email.html.twig',
+                 $this->twig->render(
+                     'interview/schedule_of_interviews_email.html.twig',
                      array(
                          'interviews'  => $interviews,
                          'interviewer' => $interviewer
@@ -261,7 +265,7 @@ class InterviewManager
 
     private function sendAcceptInterviewReminderToInterviewee(Interview $interview)
     {
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('Påminnelse om intervjuinvitasjon med Vektorprogrammet')
             ->setTo($interview->getUser()->getEmail())
             ->setBody(

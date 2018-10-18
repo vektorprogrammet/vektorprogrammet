@@ -11,6 +11,7 @@ use AppBundle\Form\Type\AddCoInterviewerType;
 use AppBundle\Form\Type\ApplicationInterviewType;
 use AppBundle\Form\Type\AssignInterviewType;
 use AppBundle\Form\Type\CancelInterviewConfirmationType;
+use AppBundle\Form\Type\CreateInterviewType;
 use AppBundle\Form\Type\ScheduleInterviewType;
 use AppBundle\Role\Roles;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -57,9 +58,9 @@ class InterviewController extends BaseController
             throw $this->createAccessDeniedException();
         }
 
-        $form = $this->createForm(new ApplicationInterviewType(), $application, array(
-            'validation_groups' => array( 'interview' ),
-            'teams'             => $teams,
+        $form = $this->createForm(ApplicationInterviewType::class, $application, array(
+            'validation_groups' => array('interview'),
+            'teams' => $teams,
         ));
 
         $form->handleRequest($request);
@@ -210,7 +211,7 @@ class InterviewController extends BaseController
         // Set the default data for the form
         $defaultData = $this->get('app.interview.manager')->getDefaultScheduleFormData($interview);
 
-        $form = $this->createForm(new ScheduleInterviewType(), $defaultData);
+        $form = $this->createForm(ScheduleInterviewType::class, $defaultData);
 
         $form->handleRequest($request);
 
@@ -290,15 +291,20 @@ class InterviewController extends BaseController
      *
      * @return JsonResponse
      */
-    public function assignAction(Request $request, $id)
+    public function assignAction(Request $request, $id = null)
     {
+        if ($id === null) {
+            throw $this->createNotFoundException();
+        }
         $em = $this->getDoctrine()->getManager();
         $application = $em->getRepository('AppBundle:Application')->find($id);
         $user = $application->getUser();
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
         $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([ Roles::TEAM_MEMBER ]);
 
-        $form = $this->createForm(new AssignInterviewType($roles), $application);
+        $form = $this->createForm(CreateInterviewType::class, $application, [
+            'roles' => $roles
+        ]);
 
         $form->handleRequest($request);
 
@@ -336,17 +342,19 @@ class InterviewController extends BaseController
     public function bulkAssignAction(Request $request)
     {
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
-        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([ Roles::TEAM_MEMBER ]);
-        $form = $this->createForm(new AssignInterviewType($roles));
+        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([Roles::TEAM_MEMBER]);
+        $form = $this->createForm(CreateInterviewType::class, null, [
+            'roles' => $roles
+        ]);
 
         if ($request->isMethod('POST')) {
             $em = $this->getDoctrine()->getManager();
             // Get the info from the form
-            $data = $request->request->get('application');
+            $data = $request->request->all();
             // Get objects from database
             $interviewer = $em->getRepository('AppBundle:User')->findOneBy(array( 'id' => $data['interview']['interviewer'] ));
             $schema = $em->getRepository('AppBundle:InterviewSchema')->findOneBy(array( 'id' => $data['interview']['interviewSchema'] ));
-            $applications = $em->getRepository('AppBundle:Application')->findBy(array( 'id' => $data['id'] ));
+            $applications = $em->getRepository('AppBundle:Application')->findBy(array( 'id' => $data['application']['id'] ));
 
             // Update or create new interviews for all the given applications
             foreach ($applications as $application) {
@@ -411,8 +419,8 @@ class InterviewController extends BaseController
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(new InterviewNewTimeType(), $interview, array(
-            "validation_groups" => array( "newTimeRequest" )
+        $form = $this->createForm(InterviewNewTimeType::class, $interview, array(
+            "validation_groups" => array("newTimeRequest")
         ));
         $form->handleRequest($request);
 
@@ -465,7 +473,7 @@ class InterviewController extends BaseController
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(new CancelInterviewConfirmationType());
+        $form = $this->createForm(CancelInterviewConfirmationType::class);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -509,8 +517,10 @@ class InterviewController extends BaseController
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
-        return $this->redirectToRoute('interview_schedule',
-            [ 'id' => $interview->getApplication()->getId() ]);
+        return $this->redirectToRoute(
+            'interview_schedule',
+            [ 'id' => $interview->getApplication()->getId() ]
+        );
     }
 
     public function assignCoInterviewerAction(Interview $interview, Request $request)
@@ -547,8 +557,10 @@ class InterviewController extends BaseController
         $semester = $interview->getApplication()->getSemester();
         $department = $interview->getApplication()->getDepartment();
         $teamUsers = $this->getDoctrine()->getRepository('AppBundle:User')
-                          ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
-        $form = $this->createForm(new AddCoInterviewerType($teamUsers));
+            ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
+        $form = $this->createForm(AddCoInterviewerType::class, null, [
+            'teamUsers' => $teamUsers
+        ]);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

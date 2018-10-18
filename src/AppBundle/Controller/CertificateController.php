@@ -7,9 +7,6 @@ use AppBundle\Entity\Signature;
 use AppBundle\Form\Type\CreateSignatureType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use AppBundle\Entity\CertificateRequest;
-use AppBundle\Entity\Department;
 
 class CertificateController extends BaseController
 {
@@ -41,7 +38,7 @@ class CertificateController extends BaseController
             $oldPath = $signature->getSignaturePath();
         }
 
-        $form = $this->createForm(new CreateSignatureType(), $signature);
+        $form = $this->createForm(CreateSignatureType::class, $signature);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

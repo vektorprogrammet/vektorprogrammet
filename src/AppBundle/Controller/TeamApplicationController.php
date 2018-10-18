@@ -44,7 +44,7 @@ class TeamApplicationController extends BaseController
 
     public function deleteTeamApplicationByIdAction(TeamApplication $teamApplication)
     {
-        $manager = $this->getDoctrine()->getEntityManager();
+        $manager = $this->getDoctrine()->getManager();
 
         $manager->remove($teamApplication);
         $manager->flush();
@@ -58,7 +58,7 @@ class TeamApplicationController extends BaseController
             throw new NotFoundHttpException();
         }
         $teamApplication = new TeamApplication();
-        $form = $this->createForm(new TeamApplicationType(), $teamApplication);
+        $form = $this->createForm(TeamApplicationType::class, $teamApplication);
         $form->handleRequest($request);
 
         if ($form->isValid() && $form->isSubmitted() && $team->getAcceptApplication()) {

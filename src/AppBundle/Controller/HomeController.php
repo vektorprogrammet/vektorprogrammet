@@ -6,6 +6,8 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use AppBundle\Entity\TeamMembership;
+use Nexy\Slack\Attachment;
+use Nexy\Slack\Message;
 
 class HomeController extends BaseController
 {

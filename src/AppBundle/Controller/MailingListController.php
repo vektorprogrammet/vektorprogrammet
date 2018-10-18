@@ -17,7 +17,7 @@ class MailingListController extends BaseController
      */
     public function showAction(Request $request)
     {
-        $form = $this->createForm(new GenerateMailingListType());
+        $form = $this->createForm(GenerateMailingListType::class);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

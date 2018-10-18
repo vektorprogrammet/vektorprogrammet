@@ -1,16 +1,11 @@
 services:
-#  app.beta_redirecter:
-#    class: AppBundle\Service\BetaRedirecter
-#    arguments: ['@security.token_storage', '@app.roles']
-#    tags:
-#        - {name: kernel.event_listener, event: kernel.request}
   app.sms:
     class: AppBundle\Sms\GatewayAPI
     arguments: ['%gateway_sms%', '@app.logger']
 
   app.logger:
     class: AppBundle\Service\LogService
-    arguments: ['@logger', '@app.slack_messenger']
+    arguments: ['@logger', '@app.slack_messenger', '@app.user_service', '@request_stack']
 
   app.mailer:
     class: AppBundle\Mailer\Mailer
@@ -71,10 +66,6 @@ services:
     class: AppBundle\Service\InterviewManager
     arguments: ['@security.token_storage', '@security.authorization_checker', '@app.mailer', '@twig', '@app.logger', '@doctrine.orm.entity_manager', '@router', '@app.sms']
 
-  app.newsletter.manager:
-      class: AppBundle\Service\NewsletterManager
-      arguments: ['@app.mailer', '@twig', '@doctrine.orm.entity_manager']
-
   app.password_manager:
       class: AppBundle\Service\PasswordManager
       arguments: ['@doctrine.orm.default_entity_manager', '@app.mailer', '@twig', '@app.logger']
@@ -122,7 +113,7 @@ services:
 
   app.exception_subscriber:
     class: AppBundle\EventSubscriber\ExceptionSubscriber
-    arguments: ['@app.logger', '@logger', '@security.token_storage', '@router', '@request_stack']
+    arguments: ['@app.logger', '@logger']
     tags:
       - { name: kernel.event_subscriber }
 
@@ -200,7 +191,7 @@ services:
 
   app.db_subscriber:
     class: AppBundle\EventSubscriber\DbSubscriber
-    arguments: ['@app.logger', '@security.token_storage', '@request_stack', '@doctrine.orm.default_entity_manager']
+    arguments: ['@app.logger', '@doctrine.orm.default_entity_manager']
     tags:
       - { name: doctrine.event_subscriber }
 

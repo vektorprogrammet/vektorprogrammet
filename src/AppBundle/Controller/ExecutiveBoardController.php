@@ -52,7 +52,9 @@ class ExecutiveBoardController extends BaseController
         $member->setUser($this->getUser());
 
         // Create a new formType with the needed variables
-        $form = $this->createForm(new CreateExecutiveBoardMembershipType($department), $member);
+        $form = $this->createForm(CreateExecutiveBoardMembershipType::class, $member, [
+            'departmentId' => $department
+        ]);
 
         // Handle the form
         $form->handleRequest($request);
@@ -93,7 +95,7 @@ class ExecutiveBoardController extends BaseController
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
 
         // Create the form
-        $form = $this->createForm(new CreateExecutiveBoardType($board), $board);
+        $form = $this->createForm(CreateExecutiveBoardType::class, $board);
 
         // Handle the form
         $form->handleRequest($request);
@@ -132,7 +134,9 @@ class ExecutiveBoardController extends BaseController
     public function editMemberHistory(Request $request, ExecutiveBoardMembership $member)
     {
         $user = $member->getUser(); // Store the $user object before the form touches our $member object with spooky user data
-        $form = $this->createForm(new CreateExecutiveBoardMembershipType($user->getDepartment()), $member);
+        $form = $this->createForm(CreateExecutiveBoardMembershipType::class, $member, [
+            'departmentId' => $user->getDepartment()
+        ]);
 
         $form->handleRequest($request);
 
