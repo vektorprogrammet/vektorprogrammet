@@ -177,7 +177,7 @@ class SurveyController extends Controller
     public function createSurveyAction(Request $request)
     {
         $survey = new Survey();
-        $form = $this->createForm(SurveyType::class, $survey,array(
+        $form = $this->createForm(SurveyType::class, $survey, array(
             'isAdminSurvey' => $this->isUserAdmin(),
         ));
         $form->handleRequest($request);
@@ -273,7 +273,7 @@ class SurveyController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        $form = $this->createForm(SurveyType::class, $survey,array(
+        $form = $this->createForm(SurveyType::class, $survey, array(
             'isAdminSurvey' => $this->isUserAdmin(),
         ));
 
@@ -351,13 +351,11 @@ class SurveyController extends Controller
 
         $group = array();
         if ($survey->isTeamSurvey()) {
-            foreach ($surveysTaken as $surveyTaken)
-            {
-                foreach ($surveyTaken->getUser()->getTeamNamesAsList($surveyTaken->getTime()) as $teamName)
-                {
-                        if (!in_array($teamName, $group)) {
-                            $group[] = $teamName;
-                        }
+            foreach ($surveysTaken as $surveyTaken) {
+                foreach ($surveyTaken->getUser()->getTeamNamesAsList($surveyTaken->getTime()) as $teamName) {
+                    if (!in_array($teamName, $group)) {
+                        $group[] = $teamName;
+                    }
                 }
                 $validSurveysTaken[] = $surveyTaken;
             }

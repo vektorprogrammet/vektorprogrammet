@@ -48,7 +48,7 @@ class SurveyType extends AbstractType
             ]);
 
         if ($this->isAdminSurvey()) {
-                $builder->add('team_survey', ChoiceType::class, [
+            $builder->add('team_survey', ChoiceType::class, [
                     'label' => 'Dette er en undersøkelse rettet mot teammedlem (popup)',
                     'multiple' => false,
                     'expanded' => true,
@@ -62,9 +62,9 @@ class SurveyType extends AbstractType
                     ->add('surveyPopUpMessage', CKEditorType::class, [
                         'label' => 'Pop-up melding, vises kun hvis ja er valgt.',
                     ]);
-            }
+        }
 
-            $builder->add('confidential', ChoiceType::class, array(
+        $builder->add('confidential', ChoiceType::class, array(
                 'label' => 'Resultater kan leses av',
                 'multiple' => false,
                 'expanded' => true,

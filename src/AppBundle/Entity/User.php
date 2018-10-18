@@ -875,7 +875,7 @@ class User implements AdvancedUserInterface, \Serializable
             $teamNames[] = $teamMembership->getTeam()->getName();
         }
 
-        if(empty($teamNames)){
+        if (empty($teamNames)) {
             $teamNames=array("Ikke teammedlem");
         }
 
