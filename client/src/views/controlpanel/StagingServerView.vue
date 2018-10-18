@@ -12,9 +12,9 @@
       </b-col>
     </b-row>
     <div class=progress >
-      <div v-bind:class="['progress-bar', 'progress-bar-striped', 'progress-bar-animated', this.barMode]"
+      <div v-bind:class="['progress-bar', 'progress-bar-striped', 'progress-bar-animated']"
       role=progressbar v-bind:style="{width: this.diskSpacePercent + '%'}">
-      {{diskSpacePercent.toFixed(1) + '%'}} full
+      {{diskSpacePercent.toFixed(1) +'%'}} full
       </div>
     </div>
     <p>{{(diskSpace.used / 1024 / 1024).toFixed(1)}} GB used out of {{(diskSpace.size / 1024 / 1024).toFixed(1)}} GB total</p>
@@ -51,17 +51,7 @@
       ...mapGetters('staging', ['servers']),
       ...mapGetters('staging', ['diskSpace']),
       diskSpacePercent: function() {
-        return (this.diskSpace.used / this.diskSpace.size) * 100;
-      },
-
-      barMode: function() {
-        if (this.diskSpacePercent > 90) {
-          return "bg-danger";
-        }
-        else if (this.diskSpacePercent > 75) {
-          return "bg-warning";
-        }
-        return "bg-info";
+        return (this.diskSpace.used / this.diskSpace.size) *100
       }
     },
     methods: {
