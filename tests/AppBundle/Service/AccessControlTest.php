@@ -323,7 +323,7 @@ class AccessControlTest extends BaseKernelTestCase {
 	}
 
 
-	private function countUnhandled(string $resource) : int {
-		return count($this->unhandledRepo->findByResource($resource));
+	private function countUnhandled(string $resource, $method = 'GET') : int {
+		return count($this->unhandledRepo->findByResourceAndMethod($resource, $method));
 	}
 }
