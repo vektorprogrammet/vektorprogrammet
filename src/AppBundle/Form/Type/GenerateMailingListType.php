@@ -23,7 +23,7 @@ class GenerateMailingListType extends AbstractType
                 },
                 'required' => true,
             ))
-            ->add('department', 'entity', array(
+            ->add('department', EntityType::class, array(
                 'class' => 'AppBundle:Department',
                 'label' => 'Velg region',
                 'query_builder' => function (DepartmentRepository $dr) {

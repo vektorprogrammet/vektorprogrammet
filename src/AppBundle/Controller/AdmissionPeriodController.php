@@ -60,7 +60,7 @@ class AdmissionPeriodController extends BaseController
 
     public function updateAdmissionPeriodAction(Request $request, AdmissionPeriod $admissionPeriod)
     {
-        $form = $this->createForm(new EditAdmissionPeriodType(), $admissionPeriod);
+        $form = $this->createForm(EditAdmissionPeriodType::class, $admissionPeriod);
 
         // Handle the form
         $form->handleRequest($request);
