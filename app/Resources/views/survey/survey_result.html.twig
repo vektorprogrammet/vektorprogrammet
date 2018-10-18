@@ -80,7 +80,7 @@
         var colors = ["#579AD6", "#78C466", "#9F65AD", "#FCA853", "#F3595D", "#737373", "#D07054", "#D97DB5"];
 
         $.getJSON('{{ path('survey_get_all_results', {'id': survey.id } ) }}', function (surveyData) {
-
+            console.log(surveyData);
             renderFilter(surveyData);
             renderCharts(surveyData);
             displayTextAnswers();
@@ -305,6 +305,8 @@
         }
 
         function filterSurveyData(surveyData, filterObject) {
+            console.log(filterObject);
+
           var filteredSurveyData = {};
 
 
@@ -317,12 +319,13 @@
                 return q.question_id.toString()
               });
               for (let i = 0; i < filteredQuestionIds.length; i++) {
-                if (answeredQuestionIds.indexOf(filteredQuestionIds[i]) === -1) {
+                  console.log(answeredQuestionIds);
+                  if (answeredQuestionIds.indexOf(filteredQuestionIds[i]) === -1) {
                   return false;
                 }
               }
               let hasAnsweredQuestion = false;
-              for (var i = 0; i < submission.length; i++) {
+              for (let i = 0; i < submission.length; i++) {
                 var answerObject = submission[i];
                 var questionId = answerObject.question_id;
                 if (filterObject.hasOwnProperty(questionId)) {

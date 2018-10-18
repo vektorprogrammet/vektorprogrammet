@@ -256,11 +256,12 @@ class Survey implements \JsonSerializable
                     continue;
                 }
 
-                // $teamNames = $answer->getSurveyTaken()->getUser()->getTeamNames();
+                // If teamname not wanted can be commented away
+                $teamNames = $answer->getSurveyTaken()->getUser()->getTeamNames();
 
                 $textQAarray[$questionText][] = array(
                     'answerText' => $answer->getAnswer(),
-                    'teamName' => "", // $teamNames
+                    'teamName' => $teamNames,
                 );
             }
         }

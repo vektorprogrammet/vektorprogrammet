@@ -782,6 +782,7 @@ class User implements AdvancedUserInterface, \Serializable
                 }
             }
         }
+
         return $activeTeamMemberships;
     }
 
@@ -873,16 +874,24 @@ class User implements AdvancedUserInterface, \Serializable
         foreach ($this->getActiveMemberships($time) as $teamMembership) {
             $teamNames[] = $teamMembership->getTeam()->getName();
         }
+
+        if(empty($teamNames)){
+            $teamNames=array("Ikke teammedlem");
+        }
+
         return $teamNames;
     }
 
     public function getTeamNames($time = null)
     {
         $teamNames = $this->getTeamNamesAsList($time);
+
+
         $teamNames = implode(", ", $teamNames);
         $find = ',';
         $replace = ' og';
         $teamNames = strrev(preg_replace(strrev("/$find/"), strrev($replace), strrev($teamNames), 1));
+
         return $teamNames;
     }
 }

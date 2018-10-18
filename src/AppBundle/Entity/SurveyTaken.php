@@ -31,7 +31,7 @@ class SurveyTaken implements \JsonSerializable
 
      * @ORM\Column(type="datetime", nullable=false)
      *
-     * @var string
+     * @var \DateTime
      */
     protected $time;
 
@@ -156,17 +156,15 @@ class SurveyTaken implements \JsonSerializable
      */
     public function getTime(): ?\DateTime
     {
-        return new \DateTime($this->time);
+        return $this->time;
     }
 
     /**
      * @param User $user
-     * @return SurveyTaken
      */
-    public function setUser(User $user): SurveyTaken
+    public function setUser($user)
     {
         $this->user = $user;
-        return $this;
     }
 
 
@@ -186,7 +184,9 @@ class SurveyTaken implements \JsonSerializable
         $ret = array();
 
         if ($this->survey->isTeamSurvey()) {
-            $groupQuestion = array('question_id' => 0, 'answer' => array($this->getUser()->getTeamNamesAsList($this->getTime())));
+            $teamNames = $this->getUser()->getTeamNamesAsList($this->getTime());
+
+            $groupQuestion = array('question_id' => 0, 'answer' => array($teamNames));
         } else {
             $groupQuestion = array('question_id' => 0, 'answer' => array([$this->school->getName()]));
         }

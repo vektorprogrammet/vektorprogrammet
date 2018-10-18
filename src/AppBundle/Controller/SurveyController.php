@@ -5,16 +5,12 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Semester;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Form\Type\SurveySchoolSpecificExecuteType;
-use http\Exception\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Survey;
 use AppBundle\Form\Type\SurveyType;
 use AppBundle\Form\Type\SurveyExecuteType;
-use AppBundle\Role\Roles;
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -74,6 +70,8 @@ class SurveyController extends Controller
 
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView(),
+            'teamSurvey' => $survey->isTeamSurvey(),
+
 
         ));
     }
@@ -134,6 +132,7 @@ class SurveyController extends Controller
 
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView(),
+            'teamSurvey' => $survey->isTeamSurvey(),
 
         ));
     }
@@ -171,17 +170,16 @@ class SurveyController extends Controller
 
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView(),
+            'teamSurvey' => $survey->isTeamSurvey(),
         ));
     }
 
     public function createSurveyAction(Request $request)
     {
         $survey = new Survey();
-        $surveyType = new SurveyType();
-        if ($this->isUserAdmin()) {
-            $surveyType->setAdminSurvey(true);
-        }
-        $form = $this->createForm($surveyType, $survey);
+        $form = $this->createForm(SurveyType::class, $survey,array(
+            'isAdminSurvey' => $this->isUserAdmin(),
+        ));
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -268,14 +266,17 @@ class SurveyController extends Controller
 
     public function editSurveyAction(Request $request, Survey $survey)
     {
-        $tempSurveyType = new SurveyType();
+        $adminSurvey = false;
         if ($this->isUserAdmin()) {
-            $tempSurveyType->setAdminSurvey(true);
+            $adminSurvey = true;
         } elseif ($survey->isTeamSurvey()) {
             throw $this->createAccessDeniedException();
         }
 
-        $form = $this->createForm($tempSurveyType, $survey);
+        $form = $this->createForm(SurveyType::class, $survey,array(
+            'isAdminSurvey' => $this->isUserAdmin(),
+        ));
+
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -348,27 +349,24 @@ class SurveyController extends Controller
         $surveysTaken = $this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
         $validSurveysTaken = array();
 
-
-
         $group = array();
-        $title = "";
         if ($survey->isTeamSurvey()) {
-            foreach ($surveysTaken as $surveyTaken) {
-                foreach ($surveyTaken->getUser()->getTeamMemberships() as $teamMembership) {
-                    $group[] = $teamMembership->getTeam()->getName();
+            foreach ($surveysTaken as $surveyTaken)
+            {
+                foreach ($surveyTaken->getUser()->getTeamNamesAsList($surveyTaken->getTime()) as $teamName)
+                {
+                        if (!in_array($teamName, $group)) {
+                            $group[] = $teamName;
+                        }
                 }
-
                 $validSurveysTaken[] = $surveyTaken;
             }
-
-
             $title = "Team";
         } else {
             foreach ($surveysTaken as $surveyTaken) {
                 if (is_null($surveyTaken->getSchool())) {
                     continue;
                 }
-
                 $validSurveysTaken[] = $surveyTaken;
 
                 if (!in_array($surveyTaken->getSchool()->getName(), $group)) {

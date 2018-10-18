@@ -19,6 +19,8 @@ class SurveyType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->isAdminSurvey = $options['isAdminSurvey'];
+
         $builder->add('semester', EntityType::class, array(
             'label' => 'Semester',
             'class' => 'AppBundle:Semester',
@@ -34,7 +36,7 @@ class SurveyType extends AbstractType
             'label' => false,
             'attr' => array('placeholder' => 'Fyll inn tittel til undersøkelse'),
         ))
-            
+
             ->add('showCustomFinishPage', ChoiceType::class, [
                 'label' => 'Sluttside som vises etter undersøkelsen er besvart.',
                 'multiple' => false,
@@ -43,16 +45,16 @@ class SurveyType extends AbstractType
                     'Standard' => false,
                     'Tilpasset' => true,
                 ]
-            ])
+            ]);
 
-            if ($this->isAdminSurvey()) {
+        if ($this->isAdminSurvey()) {
                 $builder->add('team_survey', ChoiceType::class, [
-                    'label' => 'Teammedlem skal få undersøkelse som popup når de er logget inn:',
+                    'label' => 'Dette er en undersøkelse rettet mot teammedlem (popup)',
                     'multiple' => false,
                     'expanded' => true,
                     'choices' => [
-                        true => 'Ja',
-                        false => 'Nei',
+                        'Ja' => true,
+                        'Nei' => false,
                     ]
 
                 ])
@@ -62,7 +64,7 @@ class SurveyType extends AbstractType
                     ]);
             }
 
-            ->add('confidential', ChoiceType::class, array(
+            $builder->add('confidential', ChoiceType::class, array(
                 'label' => 'Resultater kan leses av',
                 'multiple' => false,
                 'expanded' => true,
@@ -97,6 +99,7 @@ class SurveyType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Survey',
+            'isAdminSurvey' => false,
         ));
     }
 
