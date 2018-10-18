@@ -19,7 +19,7 @@ class RoutingAccessRuleType extends AccessRuleType
          * @var Route $routeObj
          */
         foreach ($options['routes'] as $route => $routeObj) {
-            $choices[$route] = $routeObj->getPath();
+            $choices[$routeObj->getPath()] = $route;
         }
 
         $builder
