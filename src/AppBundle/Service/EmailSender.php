@@ -110,4 +110,19 @@ class EmailSender
 
         $this->mailer->send($message, true);
     }
+
+    public function sendInfoMeetingNotification(AdmissionSubscriber $subscriber)
+    {
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Kom på infomøte!')
+            ->setFrom($this->defaultEmail)
+            ->setTo($subscriber->getEmail())
+            ->setBody($this->twig->render('admission/info_meeting_email.html.twig', array(
+                'department' => $subscriber->getDepartment(),
+                'infoMeeting' => $subscriber->getDepartment()->getCurrentSemester()->getInfoMeeting(),
+                'subscriber' => $subscriber,
+            )))
+            ->setContentType('text/html');
+        $this->mailer->send($message, true);
+    }
 }

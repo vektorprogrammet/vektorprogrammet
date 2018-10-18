@@ -1,0 +1,26 @@
+<h1>Velkommen til et nytt semester med Vektorprogrammet!</h1>
+
+{% if infoMeeting and infoMeeting.showOnPage %}
+    <br>
+    <p>Vi har infomøte den {{ infoMeeting.date|date('d.m.Y') }} kl. {{ infoMeeting.date|date('H:i') }}
+        {% if infoMeeting.room %}
+        i rom {{ infoMeeting.room }}
+        {% endif %}!</p>
+    {% if infoMeeting.link %}
+        <p>Link til arrangement: <a href=3D"{{ infoMeeting.link }}">{{ infoMeeting.link }}</a></p>
+    {% endif %}
+{% endif %}
+
+
+<p>Vi ser fram til å bli kjent med deg og lykke til med det nye semesteret! </p>
+
+<br>
+<a href=3D"https://vektorprogrammet.no{{ path('home') }}">
+    <img src=3D"https://vektorprogrammet.no/images/vektor.png" alt=3D"https://vektorprogrammet.no{{ path('home') }}">
+</a>
+<br>
+<br>
+
+<small>Du mottar denne e-posten fordi du har bedt om å få en påminnelse om infomøte på <a href=3D"https://vektorprogrammet.no{{ path('assistants') }}">https://vektorprogrammet.no{{ path('assistants') }}</a>. Hvis du
+    ikke ønsker å motta automatiske påminnelser i fremtiden kan du melde deg av
+    <a href=3D"https://vektorprogrammet.no{{ path('admission_unsubscribe', {'code': subscriber.unsubscribeCode}) }}">her</a>.</small>
