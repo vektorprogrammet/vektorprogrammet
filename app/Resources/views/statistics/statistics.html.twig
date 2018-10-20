@@ -15,13 +15,7 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
-    {% include "common/department_semester_dropdowns.html.twig" with {
-        'path': 'statistics_application_show',
-        'departmentParameterName': 'department',
-        'semesterParameterName': 'semester',
-        'department': department,
-        'semester': semester,
-    } %}
+    {% include "common/department_semester_dropdowns.html.twig" with { 'path': 'statistics_application_show' } %}
 {% endblock %}
 
 

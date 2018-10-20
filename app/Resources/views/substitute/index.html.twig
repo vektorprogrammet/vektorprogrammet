@@ -41,21 +41,9 @@
 
 {% block breadcrumb_menu %}
     {% if is_granted_team_leader() %}
-        {% include 'common/department_semester_dropdowns.html.twig' with {
-                'path': 'substitute_show',
-                'departmentParameterName': 'department',
-                'semesterParameterName': 'semester',
-                'currentDepartment': department,
-                'currentSemester': semester,
-        } %}
+        {% include 'common/department_semester_dropdowns.html.twig' with { 'path': 'substitute_show' } %}
     {% else %}
-        {% include 'common/semester_dropdown.html.twig' with {
-            'pathForSemester': 'substitute_show',
-            'departmentParameterName': 'department',
-            'semesterParameterName': 'semester',
-            'currentDepartment': department,
-            'currentSemester': semester,
-        } %}
+        {% include 'common/semester_dropdown.html.twig' with { 'pathForSemester': 'substitute_show' } %}
     {% endif %}
 {% endblock %}
 

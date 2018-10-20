@@ -240,22 +240,10 @@
 {% block breadcrumb_menu %}
     <div class="btn-group">
         {% if is_granted_team_leader() %}
-            {% include "common/department_semester_dropdowns.html.twig" with {
-                'path': 'applications_show_new',
-                'departmentParameterName': 'department',
-                'semesterParameterName': 'semester',
-                'department': department,
-                'semester': semester
-            } %}
+            {% include "common/department_semester_dropdowns.html.twig" with { 'path': 'applications_show_new' } %}
         {% else %}
             <ul class="inline-list">
-                {% include 'common/semester_dropdown.html.twig' with {
-                    'pathForSemester': 'applications_show_new',
-                    'departmentParameterName': 'department',
-                    'semesterParameterName': 'semester',
-                    'department': department,
-                    'semester': semester
-                } %}
+                {% include 'common/semester_dropdown.html.twig' with { 'pathForSemester': 'applications_show_new' } %}
             </ul>
         {% endif %}
         </div>

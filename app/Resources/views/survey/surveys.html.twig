@@ -10,13 +10,7 @@
 
 {% block breadcrumb_menu %}
     <div class="btn-group">
-        {% include 'common/department_semester_dropdowns.html.twig' with {
-            'path': 'surveys',
-            'departmentParameterName': 'department',
-            'semesterParameterName': 'semester',
-            'currentDepartment': department,
-            'currentSemester': semester,
-        } %}
+        {% include 'common/department_semester_dropdowns.html.twig' with { 'path': 'surveys' } %}
         <a href="{{ path('survey_create') }}" class="btn btn-outline-success text-success">
             <i class="fa fa-plus"></i> Ny undersøkelse
         </a>
