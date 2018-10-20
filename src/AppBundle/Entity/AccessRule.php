@@ -241,4 +241,9 @@ class AccessRule
             count($this->getRoles()) == 0 &&
             !$this->isForExecutiveBoard();
     }
+
+    public function __toString()
+    {
+        return $this->method ." ". $this->resource;
+    }
 }

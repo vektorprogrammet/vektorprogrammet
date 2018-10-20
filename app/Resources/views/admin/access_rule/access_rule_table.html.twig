@@ -21,6 +21,9 @@
                         <a href="{{ path(editPath, { 'id': rule.id }) }}"
                            class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Edit
                         </a>
+                        <a href="{{ path('access_rules_copy', { 'id': rule.id }) }}"
+                           class="dropdown-item"><i class="fa fa-copy text-primary"></i> Copy
+                        </a>
                         <form method="POST"
                               onsubmit="return confirm('Deleting {{ rule.name }}. Are you sure?')"
                               action="{{ path('access_rules_delete', { id: rule.id }) }}">
