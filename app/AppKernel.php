@@ -25,6 +25,7 @@ class AppKernel extends Kernel
 	        new Http\HttplugBundle\HttplugBundle(),
 	        new Nexy\SlackBundle\NexySlackBundle(),
 	        new BCC\AutoMapperBundle\BCCAutoMapperBundle(),
+            new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
