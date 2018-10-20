@@ -123,6 +123,26 @@ class AccessRuleController extends Controller
     }
 
     /**
+     * @Route("/kontrollpanel/admin/accessrules/copy/{id}",
+     *     name="access_rules_copy",
+     *     requirements={"id"="\d+"}
+     * )
+     *
+     * @param Request $request
+     * @param AccessRule $rule
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function copyAccessRule(Request $request, AccessRule $rule)
+    {
+        $clone = clone $rule;
+        if ($rule->isRoutingRule()) {
+            return $this->createRoutingRuleAction($request, $clone);
+        }
+        
+        return $this->createRuleAction($request, $clone);
+    }
+
+    /**
      * @Route("/kontrollpanel/admin/accessrules/delete/{id}",
      *     name="access_rules_delete",
      *     requirements={"id"="\d+"}
