@@ -15,12 +15,19 @@ class AssistantSchedulingController extends BaseController
         return $this->render('assistant_scheduling/index.html.twig');
     }
 
+    /**
+     * @return JsonResponse
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function getAssistantsAction()
     {
         $user = $this->getUser();
 
-        $currentSemester = $user->getDepartment()->getCurrentSemester();
-        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsByAdmissionPeriod($currentSemester);
+        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $currentAdmissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
+            ->findOneByDepartmentAndSemester($user->getDepartment(), $currentSemester);
+        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findAllAllocatableApplicationsByAdmissionPeriod($currentAdmissionPeriod);
 
         $assistants = $this->getAssistantAvailableDays($applications);
 
@@ -74,12 +81,18 @@ class AssistantSchedulingController extends BaseController
         return $assistants;
     }
 
+    /**
+     * @return JsonResponse
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function getSchoolsAction()
     {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $departmentId = $user->getFieldOfStudy()->getDepartment()->getId();
-        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($departmentId);
-        $allCurrentSchoolCapacities = $this->getDoctrine()->getRepository('AppBundle:SchoolCapacity')->findBySemester($currentSemester);
+        $user = $this->getUser();
+        $department = $user->getFieldOfStudy()->getDepartment();
+        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $allCurrentSchoolCapacities = $this->getDoctrine()
+            ->getRepository('AppBundle:SchoolCapacity')->findByDepartmentAndSemester($department, $currentSemester);
         $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
 
         return new JsonResponse(json_encode($schools));
