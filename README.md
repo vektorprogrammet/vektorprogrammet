@@ -24,19 +24,14 @@ done when doing `npm start`)
 | Position     | Username   | Password |        Role        |
 | :----------: | :--------: |:--------:|:------------------:|
 | Assistent    | assistent  |   1234   |      ROLE_USER     |
-| Teammedlem   | team       |   1234   |     ROLE_ADMIN     |
-| Teamleder    | admin      |   1234   |  ROLE_SUPER_ADMIN  |
-| Admin        | superadmin |   1234   | ROLE_HIGHEST_ADMIN |
+| Teammedlem   | teammember |   1234   |  ROLE_TEAM_MEMBER  |
+| Teamleder    | teamleader |   1234   |  ROLE_TEAM_LEADER  |
+| Admin        | admin      |   1234   |      ROLE_ADMIN    |
 
 
 ## Code style
 Code style should follow a certain set of rules. Make sure your code 
 adheres to these rules before opening a PR. 
-### Check style
-##### UNIX/LINUX:
-`npm run -s code-style`
-##### Windows:
-`npm run -s code-style:win`
 
 ### Fix style
 ##### UNIX/LINUX:

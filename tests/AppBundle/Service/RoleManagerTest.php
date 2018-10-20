@@ -34,15 +34,15 @@ class RoleManagerTest extends KernelTestCase
             // Assistants
             new RoleUserMock('assistant@gmail.com', Roles::ASSISTANT, Roles::ASSISTANT),
             new RoleUserMock('aai@b.c', Roles::TEAM_MEMBER, Roles::ASSISTANT),
-            new RoleUserMock('admin@gmail.com', Roles::TEAM_LEADER, Roles::ASSISTANT),
+            new RoleUserMock('teamleader@gmail.com', Roles::TEAM_LEADER, Roles::ASSISTANT),
 
             // Team members
             new RoleUserMock('kristoffer@stud.ntnu.no', Roles::ASSISTANT, Roles::TEAM_MEMBER),
-            new RoleUserMock('sortland@mail.com', Roles::TEAM_MEMBER, Roles::TEAM_MEMBER),
+            new RoleUserMock('alm@mail.com', Roles::TEAM_MEMBER, Roles::TEAM_MEMBER),
             new RoleUserMock('aah@b.c', Roles::TEAM_LEADER, Roles::TEAM_MEMBER),
 
             // Team leaders
-            new RoleUserMock('marte@mail.no', Roles::ASSISTANT, Roles::TEAM_LEADER),
+            new RoleUserMock('seip@mail.com', Roles::ASSISTANT, Roles::TEAM_LEADER),
             new RoleUserMock('ida@stud.ntnu.no', Roles::TEAM_MEMBER, Roles::TEAM_LEADER),
             new RoleUserMock('anna@mail.no', Roles::TEAM_LEADER, Roles::TEAM_LEADER),
 
@@ -52,7 +52,7 @@ class RoleManagerTest extends KernelTestCase
             new RoleUserMock('jan-per-gustavio@gmail.com', Roles::TEAM_LEADER, Roles::TEAM_LEADER),
 
             // Admins
-            new RoleUserMock('superadmin@gmail.com', Roles::ADMIN, Roles::ADMIN),
+            new RoleUserMock('admin@gmail.com', Roles::ADMIN, Roles::ADMIN),
             new RoleUserMock('petter@stud.ntnu.no', Roles::ADMIN, Roles::ADMIN),
         ];
     }

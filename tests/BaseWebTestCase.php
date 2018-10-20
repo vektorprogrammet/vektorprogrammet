@@ -39,7 +39,7 @@ abstract class BaseWebTestCase extends WebTestCase
     {
         if (self::$teamMemberClient === null) {
             self::$teamMemberClient = self::createClient(array(), array(
-                'PHP_AUTH_USER' => 'team',
+                'PHP_AUTH_USER' => 'teammember',
                 'PHP_AUTH_PW' => '1234',
             ));
         }
@@ -51,7 +51,7 @@ abstract class BaseWebTestCase extends WebTestCase
     {
         if (self::$teamLeaderClient === null) {
             self::$teamLeaderClient = self::createClient(array(), array(
-                'PHP_AUTH_USER' => 'admin',
+                'PHP_AUTH_USER' => 'teamleader',
                 'PHP_AUTH_PW' => '1234',
             ));
         }
@@ -63,7 +63,7 @@ abstract class BaseWebTestCase extends WebTestCase
     {
         if (self::$adminClient === null) {
             self::$adminClient = self::createClient(array(), array(
-                'PHP_AUTH_USER' => 'superadmin',
+                'PHP_AUTH_USER' => 'admin',
                 'PHP_AUTH_PW' => '1234',
             ));
         }

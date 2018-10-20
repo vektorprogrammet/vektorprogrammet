@@ -89,6 +89,14 @@ class LoadTeamMembershipData extends AbstractFixture implements OrderedFixtureIn
 
         $tm = new TeamMembership();
         $tm->setTeam($this->getReference('team-1'));
+        $tm->setUser($this->getReference('user-21'));
+        $tm->setStartSemester($this->getReference('semester-1'));
+        $tm->setPosition($this->getReference('position-1'));
+        $tm->setIsTeamLeader(true);
+        $manager->persist($tm);
+
+        $tm = new TeamMembership();
+        $tm->setTeam($this->getReference('team-1'));
         $tm->setUser($this->getReference('user-anna'));
         $tm->setStartSemester($this->getReference('semester-1'));
         $tm->setPosition($this->getReference('position-1'));

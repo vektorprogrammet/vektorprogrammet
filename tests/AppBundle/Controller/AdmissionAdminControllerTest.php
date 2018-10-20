@@ -93,10 +93,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
 
     public function testCancelInterview()
     {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamLeaderClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/opptak/fordelt');
         $this->assertGreaterThanOrEqual(1, $crawler->filter('td:contains("Ruben Ravnå")')->count());

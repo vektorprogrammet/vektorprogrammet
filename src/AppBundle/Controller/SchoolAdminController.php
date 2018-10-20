@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\User;
 use AppBundle\Event\AssistantHistoryCreatedEvent;
+use AppBundle\Role\Roles;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\School;
@@ -18,7 +19,7 @@ class SchoolAdminController extends Controller
     public function showSpecificSchoolAction(School $school)
     {
         // This prevents admins to see other departments' schools
-        if (!$this->isGranted('ROLE_SUPER_ADMIN') &&
+        if (!$this->isGranted(Roles::TEAM_LEADER) &&
             !$school->belongsToDepartment($this->getUser()->getDepartment())
         ) {
             throw $this->createAccessDeniedException();
@@ -39,7 +40,7 @@ class SchoolAdminController extends Controller
         $department = $user->getDepartment();
 
         // Deny access if not super admin and trying to delegate user in other department
-        if (!$this->isGranted('ROLE_SUPER_ADMIN') && $department !== $this->getUser()->getDepartment()) {
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $department !== $this->getUser()->getDepartment()) {
             throw $this->createAccessDeniedException();
         }
 

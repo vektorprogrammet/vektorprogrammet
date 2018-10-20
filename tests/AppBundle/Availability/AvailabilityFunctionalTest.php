@@ -268,6 +268,9 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
             array('/kontrollpanel/staging'),
             array('/kontrollpanel/avdelingadmin/opprett'),
             array('/kontrollpanel/bruker/vekorepost/endre/1'),
+            array('/kontrollpanel/admin/accessrules'),
+            array('/kontrollpanel/admin/accessrules/create'),
+            array('/kontrollpanel/admin/accessrules/routing/create'),
         );
     }
 }

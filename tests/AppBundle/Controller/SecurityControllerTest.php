@@ -17,23 +17,23 @@ class SecurityControllerTest extends BaseWebTestCase
         $this->assertTrue($crawler->filter('html:contains("Glemt passord?")')->count() > 0);
     }
 
-    public function testLoginHighestAdmin()
-    {
-        $client = $this->login('superadmin', '1234');
-
-        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel'));
-    }
-
-    public function testLoginSuperAdmin()
+    public function testLoginAdmin()
     {
         $client = $this->login('admin', '1234');
 
         $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel'));
     }
 
-    public function testLoginAdmin()
+    public function testLoginTeamLeader()
     {
-        $client = $this->login('team', '1234');
+        $client = $this->login('teamleader', '1234');
+
+        $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel'));
+    }
+
+    public function testLoginTeamMember()
+    {
+        $client = $this->login('teammember', '1234');
 
         $this->assertTrue($client->getResponse()->isRedirect('/kontrollpanel'));
     }
