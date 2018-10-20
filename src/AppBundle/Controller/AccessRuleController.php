@@ -132,7 +132,7 @@ class AccessRuleController extends Controller
      * @param AccessRule $rule
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function copyAccessRule(Request $request, AccessRule $rule)
+    public function copyAccessRuleAction(Request $request, AccessRule $rule)
     {
         $clone = clone $rule;
         if ($rule->isRoutingRule()) {
