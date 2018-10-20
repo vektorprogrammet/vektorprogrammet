@@ -290,3 +290,8 @@ nexy_slack:
 knp_paginator:
     template:
         pagination: '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig'
+
+ewz_recaptcha:
+    enabled: false
+    public_key: ''
+    private_key: ''

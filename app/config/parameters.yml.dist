@@ -52,6 +52,9 @@ parameters:
     ipinfo_token: ''
     geo_ignored_asns: []
 
+    recaptcha_private_key: ~
+    recaptcha_public_key: ~
+
     # Webhook from GitHub to automatically deploy on push to master
 
 twig:
