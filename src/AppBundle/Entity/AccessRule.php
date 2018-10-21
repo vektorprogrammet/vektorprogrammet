@@ -244,6 +244,6 @@ class AccessRule
 
     public function __toString()
     {
-        return $this->method ." ". $this->resource;
+        return $this->name;
     }
 }
