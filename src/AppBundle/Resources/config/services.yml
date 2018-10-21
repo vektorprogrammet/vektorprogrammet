@@ -232,7 +232,7 @@ services:
 
   app.twig.extension.assets:
         class: AppBundle\Twig\Extension\AssetExtension
-        arguments: ['@assets.packages', '%kernel.root_dir%']
+        arguments: ['@assets.packages', '%kernel.project_dir%']
         public: false
         tags:
           - { name: twig.extension }

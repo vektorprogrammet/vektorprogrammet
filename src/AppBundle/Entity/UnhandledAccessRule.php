@@ -73,4 +73,9 @@ class UnhandledAccessRule
     {
         $this->method = $method;
     }
+
+    public function __toString()
+    {
+        return $this->getMethod() . " " . $this->getResource();
+    }
 }
