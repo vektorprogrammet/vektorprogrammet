@@ -3,9 +3,9 @@
 </template>
 
 <script>
-  export default {
-    name: 'Error404View',
-  };
+export default {
+  name: 'Error404View',
+};
 </script>
 
 <style scoped>

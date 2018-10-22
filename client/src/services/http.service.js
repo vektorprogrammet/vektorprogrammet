@@ -11,30 +11,27 @@ function post(path, data) {
     method: 'POST',
     body: createSearchParams(data),
     credentials: 'include',
-    headers: new Headers({'content-type': 'application/x-www-form-urlencoded'})
+    headers: new Headers({ 'content-type': 'application/x-www-form-urlencoded' }),
   });
-
 }
 
 function put(path, data) {
   return fetch(baseUrl + path, {
     method: 'PUT',
     credentials: 'include',
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   });
 }
 
 function del(path) {
   return fetch(baseUrl + path, {
     credentials: 'include',
-    method: 'DELETE'
+    method: 'DELETE',
   });
 }
 
 function createSearchParams(data) {
-  return Object.keys(data).map((key) => {
-    return encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
-  }).join('&');
+  return Object.keys(data).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`).join('&');
 }
 
 export default {

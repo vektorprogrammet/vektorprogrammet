@@ -2,13 +2,13 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import store from '../store';
 
-import MyPageView from '../views/assistant/MyPageView';
-import LoginView from '../views/LoginView';
-import Error404View from '../views/Error404View';
-import Error403View from '../views/Error403View';
-import StagingServerView from '../views/controlpanel/StagingServerView';
-import AdminBaseView from '../views/controlpanel/AdminBaseView';
-import AssistantBaseView from '../views/assistant/AssistantBaseView';
+import MyPageView from '../views/assistant/MyPageView.vue';
+import LoginView from '../views/LoginView.vue';
+import Error404View from '../views/Error404View.vue';
+import Error403View from '../views/Error403View.vue';
+import StagingServerView from '../views/controlpanel/StagingServerView.vue';
+import AdminBaseView from '../views/controlpanel/AdminBaseView.vue';
+import AssistantBaseView from '../views/assistant/AssistantBaseView.vue';
 
 Vue.use(Router);
 
@@ -69,13 +69,13 @@ router.beforeEach(async (to, from, next) => {
 
   loggedInUser = store.getters['account/user'];
   if (!loggedInUser.loaded) {
-    next({name: 'login'});
+    next({ name: 'login' });
     return;
   }
 
   if (to.path.indexOf('/kontrollpanel/staging') === 0 && !loggedInUser.isAdmin) {
-    next({name: '403'});
-    return
+    next({ name: '403' });
+    return;
   }
   next();
 });

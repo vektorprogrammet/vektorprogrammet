@@ -5,9 +5,9 @@
 </template>
 
 <script>
-  export default {
-    name: 'PageHeader',
-  };
+export default {
+  name: 'PageHeader',
+};
 </script>
 
 <style lang="scss" scoped>

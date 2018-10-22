@@ -6,9 +6,10 @@
 </template>
 
 <script>
-  import AdminNav from '../../components/AdminNav'
-  export default {
-      name: 'AdminBaseView',
-      components: {AdminNav: AdminNav},
-  }
+import AdminNav from '../../components/AdminNav';
+
+export default {
+  name: 'AdminBaseView',
+  components: { AdminNav },
+};
 </script>

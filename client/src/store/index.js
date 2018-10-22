@@ -10,6 +10,6 @@ export default new Vuex.Store({
   plugins: [createPersistedState()],
   modules: {
     account,
-    staging
+    staging,
   },
 });

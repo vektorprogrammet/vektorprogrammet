@@ -35,30 +35,30 @@
 </template>
 
 <script>
-  import PageHeader from '../components/PageHeader';
-  import { mapActions } from 'vuex';
+import { mapActions } from 'vuex';
+import PageHeader from '../components/PageHeader.vue';
 
-  export default {
-    name: 'LoginView',
-    components: {PageHeader},
-    data() {
-      return {
-        form: {
-          username: '',
-          password: '',
-        },
-      };
-    },
-    methods: {
-      ...mapActions('account', ['login']),
-      onSubmit(evt) {
-        evt.preventDefault();
-        this.login(this.form).then(() => {
-          this.$router.push({name: 'my_page'});
-        });
+export default {
+  name: 'LoginView',
+  components: { PageHeader },
+  data() {
+    return {
+      form: {
+        username: '',
+        password: '',
       },
+    };
+  },
+  methods: {
+    ...mapActions('account', ['login']),
+    onSubmit(evt) {
+      evt.preventDefault();
+      this.login(this.form).then(() => {
+        this.$router.push({ name: 'my_page' });
+      });
     },
-  };
+  },
+};
 </script>
 
 <style scoped>

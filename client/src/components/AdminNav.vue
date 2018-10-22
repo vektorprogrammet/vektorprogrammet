@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'AdminNav',
-  };
+export default {
+  name: 'AdminNav',
+};
 </script>

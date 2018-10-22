@@ -7,10 +7,10 @@ const defaultState = {
   },
 };
 
-const state = {...defaultState};
+const state = { ...defaultState };
 
 const actions = {
-  async login({commit}, credentials) {
+  async login({ commit }, credentials) {
     commit('loginRequest');
 
     try {
@@ -20,7 +20,7 @@ const actions = {
       commit('loginFailure', e);
     }
   },
-  async logout({commit}) {
+  async logout({ commit }) {
     try {
       await accountService.logout();
       commit('logoutSuccessful');
@@ -28,7 +28,7 @@ const actions = {
       commit('logoutFailure');
     }
   },
-  async getUser({commit}) {
+  async getUser({ commit }) {
     try {
       const user = await accountService.getUser();
       commit('loginSuccessful', user);
@@ -50,24 +50,24 @@ const mutations = {
     state.user.loading = true;
   },
   loginSuccessful(state, user) {
-    if (!user.hasOwnProperty("username")) {
-      state.user = {...defaultState.user};
+    if (!user.hasOwnProperty('username')) {
+      state.user = { ...defaultState.user };
       return;
     }
 
-    state.user = {...state.user, ...user};
+    state.user = { ...state.user, ...user };
     state.user.loading = false;
     state.user.loaded = true;
   },
   loginFailure() {
-    //TODO: Handle error
+    // TODO: Handle error
     // console.log('ERROR: ', e.message);
   },
   logoutSuccessful(state) {
-    state.user = {...defaultState.user};
+    state.user = { ...defaultState.user };
   },
   logoutFailure() {
-    //TODO: Handle error
+    // TODO: Handle error
     // console.log('ERROR: ', e);
   },
 };

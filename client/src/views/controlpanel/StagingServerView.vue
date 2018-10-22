@@ -22,43 +22,43 @@
 </template>
 
 <script>
-  import PageHeader from '../../components/PageHeader';
-  import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+import PageHeader from '../../components/PageHeader.vue';
 
-  export default {
-    name: 'StagingServerView',
-    components: {PageHeader},
-    data() {
-      return {
-        fields: [
-          {
-            key: 'repo',
-          },
-          {
-            key: 'branch',
-          },
-          {
-            key: 'url',
-          },
-        ],
-      };
+export default {
+  name: 'StagingServerView',
+  components: { PageHeader },
+  data() {
+    return {
+      fields: [
+        {
+          key: 'repo',
+        },
+        {
+          key: 'branch',
+        },
+        {
+          key: 'url',
+        },
+      ],
+    };
+  },
+  mounted() {
+    this.getServers();
+    this.getDiskSpace();
+  },
+  computed: {
+    ...mapGetters('staging', ['servers']),
+    ...mapGetters('staging', ['diskSpace']),
+    diskSpacePercent() {
+      return (this.diskSpace.used / this.diskSpace.size) * 100;
     },
-    mounted() {
-      this.getServers();
-      this.getDiskSpace();
-    },
-    computed: {
-      ...mapGetters('staging', ['servers']),
-      ...mapGetters('staging', ['diskSpace']),
-      diskSpacePercent: function() {
-        return (this.diskSpace.used / this.diskSpace.size) *100
-      }
-    },
-    methods: {
-      ...mapActions('staging', ['getServers']),
-      ...mapActions('staging', ['getDiskSpace']),
-    },
-  };
+  },
+  methods: {
+    ...mapActions('staging', ['getServers']),
+    ...mapActions('staging', ['getDiskSpace']),
+  },
+};
 </script>
 
 <style scoped>

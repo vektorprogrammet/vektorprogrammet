@@ -3,11 +3,12 @@
 </template>
 
 <script>
-  import PageHeader from '../../components/PageHeader';
-  export default {
-    name: 'MyPageView',
-    components: {PageHeader},
-  };
+import PageHeader from '../../components/PageHeader';
+
+export default {
+  name: 'MyPageView',
+  components: { PageHeader },
+};
 </script>
 
 <style scoped>

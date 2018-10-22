@@ -7,9 +7,10 @@
 
 
 <script>
-    import AssistantNav from '../../components/AssistantNav.vue'
-    export default {
-        name: 'AssistantBaseView',
-        components: {AssistantNav},
-    }
+import AssistantNav from '../../components/AssistantNav.vue';
+
+export default {
+  name: 'AssistantBaseView',
+  components: { AssistantNav },
+};
 </script>
