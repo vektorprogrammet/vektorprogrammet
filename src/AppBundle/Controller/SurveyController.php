@@ -88,6 +88,9 @@ class SurveyController extends Controller
             throw new AccessDeniedException("Dette er en teamundersøkese. Logg inn for å ta den!");
         }
 
+        $this->updateLastPopUp();
+
+
         $surveyTaken = $this->get('survey.manager')->initializeSurveyTaken($survey);
 
         $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
@@ -280,7 +283,7 @@ class SurveyController extends Controller
         }
 
         $form = $this->createForm(SurveyType::class, $survey, array(
-            'isAdminSurvey' => $this->isUserAdmin(),
+            'isAdminSurvey' => $adminSurvey,
         ));
 
         $form->handleRequest($request);
@@ -397,15 +400,18 @@ class SurveyController extends Controller
     }
 
 
-    public function toggleReservePopUpAction()
-    {
+    public function updateLastPopUp(){
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
         $user->setReservedPopUp(!$user->getReservedPopUp());
-        $user->setLastPopUp(new \DateTime());
+        $user->setLastPopUp(null);
         $em->persist($user);
         $em->flush();
 
+    }
+    public function toggleReservePopUpAction()
+    {
+        $this->updateLastPopUp();
         $response = $this->forward(
             'AppBundle:Home:show'
         );

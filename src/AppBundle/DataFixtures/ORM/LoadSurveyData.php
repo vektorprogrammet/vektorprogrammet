@@ -76,7 +76,6 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($teamSurvey1);
         $manager->persist($schoolSurvey1);
         $manager->flush();
-
     }
 
     public function getOrder()

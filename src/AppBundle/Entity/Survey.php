@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use http\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -25,6 +26,11 @@ class Survey implements \JsonSerializable
      * @Assert\Valid
      */
     protected $semester;
+
+    /**
+     * @ORM\Column(type="datetime", name="createdTime", nullable=true)
+     */
+    private $createdTime;
 
     /**
      * @ORM\Column(type="string")
@@ -80,7 +86,7 @@ class Survey implements \JsonSerializable
 
     /**
      * @var string
-     * @ORM\Column(type="text", nullable=true, options={"default" : "Vi har en undersøkelse klar til deg!"})
+     * @ORM\Column(type="text", nullable=true, options={"default" : "Svar på undersøkelse!"})
      */
     private $surveyPopUpMessage;
 
@@ -165,6 +171,7 @@ class Survey implements \JsonSerializable
         $this->teamSurvey = false;
         $this->surveysTaken = [];
         $this->showCustomPopUpMessage = false;
+        $this->createdTime = new \DateTime();
     }
 
 
@@ -327,7 +334,7 @@ class Survey implements \JsonSerializable
      */
     public function isShowCustomPopUpMessage()
     {
-        return $this->showCustomFinishPage;
+        return $this->showCustomPopUpMessage;
     }
 
     /**
@@ -338,13 +345,7 @@ class Survey implements \JsonSerializable
         $this->showCustomPopUpMessage = $showCustomPopUpMessage;
     }
 
-    /**
-     * @return string
-     */
-    public function getCustomPopUpMessage()
-    {
-        return $this->finishPageContent;
-    }
+
 
 
     /**
@@ -408,10 +409,10 @@ class Survey implements \JsonSerializable
      */
     public function getSurveyPopUpMessage() : string
     {
-        if ($this->surveyPopUpMessage!==null && $this->isShowCustomFinishPage()) {
-            return $this->surveyPopUpMessage;
+        if(!$this->isShowCustomPopUpMessage()){
+            return "Svar på undersøkelse!";
         }
-        return "Svar på undersøkelse";
+        return $this->surveyPopUpMessage;
     }
 
     /**
@@ -428,5 +429,17 @@ class Survey implements \JsonSerializable
     public function setSurveysTaken(array $surveysTaken): void
     {
         $this->surveysTaken = $surveysTaken;
+    }
+
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedTime() : \DateTime
+    {
+        if ($this->createdTime === null) {
+            return new \DateTime("2000-01-01");
+        }
+        return $this->createdTime;
     }
 }

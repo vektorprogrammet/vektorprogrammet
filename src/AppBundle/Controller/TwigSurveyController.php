@@ -18,23 +18,21 @@ class TwigSurveyController extends Controller
     {
         $survey = null;
         $user = $this->getUser();
-        /*$userShouldSeePopUp = $user !== null &&
+        $userShouldSeePopUp = $user !== null &&
             $this->get("app.roles")->userIsGranted($user, Roles::TEAM_MEMBER) &&
             !$user->getReservedPopUp()&&
-            $user->getLastPopUp()->diff(new \DateTime())->d >= 1;*/
+            $user->getLastPopUp()->diff(new \DateTime())->d >= 1;
 
 
-        if (true) {
+        if ($userShouldSeePopUp) {
             $surveys = $this->getDoctrine()
                     ->getRepository('AppBundle:Survey')
                     ->findOneByUserNotTaken($this->getUser());
 
             if (!empty($surveys)) {
-                $survey=$surveys[0];
+                $survey=end($surveys);
             }
         }
-
-        dump($survey);
 
         return $this->render(
             "base/popup_lower.twig",

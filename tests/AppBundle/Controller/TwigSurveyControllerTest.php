@@ -2,39 +2,95 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\Entity\User;
+use AppBundle\Role\Roles;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Tests\BaseWebTestCase;
 
 class TwigSurveyControllerTest extends BaseWebTestCase
 {
-    public function testShowPopup()
+    protected function setUp()
     {
         // Admin
-        $clientAdmin = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
-
-        $crawler = $clientAdmin->request('GET', '/kontrollpanel/undersokelse/opprett');
-        $this->assertTrue($clientAdmin->getResponse()->isSuccessful());
-
-        $form['app_bundle_survey_type[name]'] = "Test" ;
-        $form['app_bundle_survey_type[showCustomFinishPage]'] = false;
-        $form['app_bundle_survey_type[team_survey]'] = true;
-        $form['app_bundle_survey_type[confidential]'] = false;
-
-        $clientAnonymous->submit($form);
+        $crawler = $this->adminGoTo('/kontrollpanel/undersokelse/opprett');
+        $form = $crawler->filter('button:contains("Lagre")')->form();
+        $form['survey[name]'] = "Test" ;
+        $form['survey[showCustomFinishPage]'] = false;
+        $form['survey[team_survey]'] = true;
+        $form['survey[confidential]'] = false;
+        $this->createAdminClient()->submit($form);
+    }
+    /*
 
 
-
+    public function testShowPopup()
+    {
         $crawler = $this->anonymousGoTo('/');
-        $this->assertEquals(0, $crawler->filter('p:contains("undersøkelse")')->count());
+        $this->assertEquals(0, $crawler->filter('a:contains("undersøkelse!")')->count());
 
         $crawler = $this->teamMemberGoTo('/');
-        $this->assertEquals(1, $crawler->filter('p:contains("undersøkelse")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("undersøkelse!")')->count());
 
     }
 
+    public function testSendingRemovesPopup(){
+        $crawler = $this->teamMemberGoTo('/');
+        $this->assertEquals(1, $crawler->filter('a:contains("undersøkelse!")')->count());
+        $crawler = $this->teamMemberGoTo($crawler->filter('a:contains("undersøkelse")')->attr('href'));
+        $form = $crawler->filter('button:contains("Send")')->form();
+        $this->createAdminClient()->submit($form);
+        $crawler = $this->teamMemberGoTo('/');
+        $this->assertEquals(0, $crawler->filter('a:contains("undersøkelse!")')->count());
+    }
 
+
+
+
+    public function testSenereRemovesPopup(){
+        $crawler = $this->teamMemberGoTo('/');
+        $this->assertEquals(1, $crawler->filter('p:contains("Senere |")')->count());
+        $crawler = $this->teamMemberGoTo('/closepopup');
+        $crawler = $this->teamMemberGoTo('/');
+        $this->assertEquals(0, $crawler->filter('a:contains("undersøkelse!")')->count());
+    }
+
+
+  public function testAldriRemovesPopup(){
+      $crawler = $this->teamMemberGoTo('/');
+      $this->assertEquals(1, $crawler->filter('p:contains("Aldri")')->count());
+      $crawler = $this->teamMemberGoTo('/togglepopup');
+      $crawler = $this->teamMemberGoTo('/');
+      $this->assertEquals(0, $crawler->filter('a:contains("undersøkelse!")')->count());
+      $crawler = $this->teamMemberGoTo('/togglepopup');
+
+  }
+  */
+
+
+  public function testCustomPopUpMessage(){
+      $crawler = $this->adminGoTo('/kontrollpanel/undersokelse/opprett');
+      $form = $crawler->filter('button:contains("Lagre")')->form();
+      $form['survey[name]'] = "Test" ;
+      $form['survey[showCustomFinishPage]'] = false;
+      $form['survey[team_survey]'] = true;
+      $form['survey[surveyPopUpMessage]'] = "rjwerjlewørwerjweørjewrjwere";
+      $form['survey[showCustomPopUpMessage]'] = true;
+
+      $this->createAdminClient()->submit($form);
+      $crawler = $this->teamMemberGoTo('/');
+      $this->assertEquals(1, $crawler->filter('a:contains("rjwerjlewørwerjweørjewrjwere!")')->count());
+
+  }
+
+
+
+ public function tearDown()
+ {
+     $this->teamMemberGoTo('/togglepopup');
+     $this->teamMemberGoTo('/togglepopup');
+
+ }
 
 
 }
