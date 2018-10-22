@@ -225,8 +225,8 @@
             var answers = surveyData.answers;
             for (var k = 0; k < answers.length; k++) {
                 //Take each group occurence into account
-                for (var b = 0; b<answers[k][0].answer[0].length; b++) {
-                    var groupId = answers[k][0].answer[0][b].toString();
+                for (var b = 0; b<answers[k][0].answerArray.length; b++) {
+                    var groupId = answers[k][0].answerArray[b].toString();
                    data[0][groupId] += 1;
                     for (var l = 1; l < answers[k].length; l++) {
                         var answer = answers[k][l];
@@ -327,15 +327,6 @@
                 if (filterObject.hasOwnProperty(questionId)) {
                     //Filter when answer given as answerObject.answer[0] is a list
                     hasAnsweredQuestion = true;
-                    let answerArray = false;
-                    if(questionId == "0"){
-                        for(var a in filterObject[questionId]){
-                            if(answerObject.answer[0].indexOf(filterObject[questionId][a])==-1){
-                                hasAnsweredQuestion = false;
-                            }
-                        }
-                        answerArray = true;
-                    }
                   if (answerObject.hasOwnProperty('answerArray') && answerObject.answerArray.length > 0) {
                     var hasAnswer = false;
                     for (var j = 0; j < answerObject.answerArray.length; j++) {
@@ -347,7 +338,7 @@
                     if (!hasAnswer) {
                       return false;
                     }
-                  } else if (filterObject[questionId].indexOf(answerObject.answer) === -1 && !answerArray) {
+                  } else if (filterObject[questionId].indexOf(answerObject.answer) === -1) {
                       return false;}
                 }
               }
