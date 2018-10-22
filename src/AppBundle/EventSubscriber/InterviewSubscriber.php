@@ -145,12 +145,15 @@ class InterviewSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $campus = empty($data['campus']) ? "" : ("\nCampus: " . $data['campus']);
+
         $message =
             $data['message'] .
             "\n\n" .
             "Tid: ".$data['datetime']->format('d.m.Y - H:i') .
             "\n" .
             "Rom: ".$data['room'] .
+            $campus .
             "\n\n" .
             "Vennligst følg linken under for å godkjenne tidspunktet eller be om ny tid:\n" .
             $this->router->generate(

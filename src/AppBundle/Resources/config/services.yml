@@ -1,7 +1,15 @@
 services:
   app.sms:
+    class: AppBundle\Sms\SmsSender
+    arguments: ['%kernel.environment%', '@app.gateway_api_sms', '@app.slack_sms']
+
+  app.gateway_api_sms:
     class: AppBundle\Sms\GatewayAPI
-    arguments: ['%gateway_sms%', '@app.logger']
+    arguments: ['%gateway_sms%', '@app.logger', '@app.slack_sms']
+
+  app.slack_sms:
+    class: AppBundle\Sms\SlackSms
+    arguments: ['@app.slack_messenger']
 
   app.logger:
     class: AppBundle\Service\LogService
@@ -9,7 +17,11 @@ services:
 
   app.mailer:
     class: AppBundle\Mailer\Mailer
-    arguments: ['%kernel.environment%', '@app.google_gmail', '@mailer']
+    arguments: ['%kernel.environment%', '@app.google_gmail', '@mailer', '@app.slack_mailer']
+
+  app.slack_mailer:
+      class: AppBundle\Service\SlackMailer
+      arguments: ['@app.slack_messenger']
 
   app.google_service:
       class: AppBundle\Google\GoogleService
@@ -195,7 +207,7 @@ services:
 
   app.db_subscriber:
     class: AppBundle\EventSubscriber\DbSubscriber
-    arguments: ['@app.logger', '@doctrine.orm.default_entity_manager']
+    arguments: ['@app.logger', '@doctrine.orm.default_entity_manager', '%kernel.environment%']
     tags:
       - { name: doctrine.event_subscriber }
 
