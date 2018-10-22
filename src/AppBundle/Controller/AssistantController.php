@@ -161,7 +161,6 @@ class AssistantController extends Controller
 
     /**
      * @Route("/stand/opptak/{shortName}", name="application_stand_form", requirements={"shortName"="\w+"})
-     * @Route("/stand/opptak/{id}", name="application_stand_form_by_id", requirements={"id"="\d+"})
      *
      * @param Request $request
      * @param Department $department
