@@ -44,6 +44,7 @@
 
                     {% if is_granted_admin() %}
                         {{ form_row(form.team_survey) }}
+                        {{ form_row(form.showCustomPopUpMessage ) }}
                         {{ form_row(form.surveyPopUpMessage ) }}
                     {%  endif %}
 

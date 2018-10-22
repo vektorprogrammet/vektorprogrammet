@@ -59,9 +59,20 @@ class SurveyType extends AbstractType
 
                 ])
 
-                    ->add('surveyPopUpMessage', CKEditorType::class, [
-                        'label' => 'Pop-up melding, vises kun hvis ja er valgt.',
-                    ]);
+                ->add('showCustomPopUpMessage', ChoiceType::class, [
+                    'label' => 'Egen pop-up melding?',
+                    'multiple' => false,
+                    'expanded' => true,
+                    'choices' => [
+                        'Ja' => true,
+                        'Nei' => false,
+                    ]
+
+                ])
+
+                ->add('surveyPopUpMessage', CKEditorType::class, [
+                    'label' => 'Pop-up melding, vises kun hvis ja er valgt.',
+                ]);
         }
 
         $builder->add('confidential', ChoiceType::class, array(

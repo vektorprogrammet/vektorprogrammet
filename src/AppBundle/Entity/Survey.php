@@ -38,6 +38,17 @@ class Survey implements \JsonSerializable
      */
     private $showCustomFinishPage;
 
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $showCustomPopUpMessage;
+
+
+
+
+
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
@@ -153,7 +164,9 @@ class Survey implements \JsonSerializable
         $this->confidential = false;
         $this->teamSurvey = false;
         $this->surveysTaken = [];
+        $this->showCustomPopUpMessage = false;
     }
+
 
     /**
      * Get id.
@@ -308,6 +321,32 @@ class Survey implements \JsonSerializable
         $this->showCustomFinishPage = $showCustomFinishPage;
     }
 
+
+    /**
+     * @return boolean
+     */
+    public function isShowCustomPopUpMessage()
+    {
+        return $this->showCustomFinishPage;
+    }
+
+    /**
+     * @param boolean $showCustomPopUpMessage
+     */
+    public function setShowCustomPopUpMessage($showCustomPopUpMessage)
+    {
+        $this->showCustomPopUpMessage = $showCustomPopUpMessage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomPopUpMessage()
+    {
+        return $this->finishPageContent;
+    }
+
+
     /**
      * @return string
      */
@@ -369,10 +408,10 @@ class Survey implements \JsonSerializable
      */
     public function getSurveyPopUpMessage() : string
     {
-        if ($this->surveyPopUpMessage===null) {
-            return "Vi har en undersøkelse til deg";
+        if ($this->surveyPopUpMessage!==null && $this->isShowCustomFinishPage()) {
+            return $this->surveyPopUpMessage;
         }
-        return $this->surveyPopUpMessage;
+        return "Svar på undersøkelse";
     }
 
     /**

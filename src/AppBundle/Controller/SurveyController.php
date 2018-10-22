@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Semester;
+use http\Exception\InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Form\Type\SurveySchoolSpecificExecuteType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -182,6 +183,9 @@ class SurveyController extends Controller
         ));
         $form->handleRequest($request);
 
+        dump($form);
+
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($survey);
@@ -253,6 +257,8 @@ class SurveyController extends Controller
             ['semester' => $semester],
             ['id' => 'DESC']
         );
+
+
         foreach ($surveys as $survey) {
             $totalAnswered = count($this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findBy(array('survey' => $survey)));
             $survey->setTotalAnswered($totalAnswered);
