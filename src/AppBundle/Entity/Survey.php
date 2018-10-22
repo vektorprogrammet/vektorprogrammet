@@ -409,7 +409,7 @@ class Survey implements \JsonSerializable
      */
     public function getSurveyPopUpMessage() : string
     {
-        if(!$this->isShowCustomPopUpMessage()){
+        if(!$this->isShowCustomPopUpMessage() || $this->surveyPopUpMessage == null){
             return "Svar på undersøkelse!";
         }
         return $this->surveyPopUpMessage;
