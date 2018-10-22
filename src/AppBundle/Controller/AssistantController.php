@@ -169,7 +169,7 @@ class AssistantController extends Controller
      */
     public function subscribePageAction(Request $request, Department $department)
     {
-        if (!$department->getLatestSemester()->hasActiveAdmission()){
+        if (!$department->getLatestSemester()->hasActiveAdmission()) {
             return $this->indexAction($request, $department);
         }
         $admissionManager = $this->get('app.application_admission');
