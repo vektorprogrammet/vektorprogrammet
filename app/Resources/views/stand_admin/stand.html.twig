@@ -41,7 +41,7 @@
             <p class="text-faded">
                 Totalt antall søknader: <strong>{{ applications|length }}</strong><br>
                 Antall søknader {{ semester.name }}: <strong>{{ applications_in_semester|length }}</strong><br>
-                <a href="{{ path('admission_show_by_city_case_insensitive', {city: semester.department}) }}">
+                <a href="{{ path('application_stand_form', {shortName: semester.department.shortName}) }}">
                     Søknadsskjema for {{ semester.department }}
                 </a>
             </p>

@@ -158,4 +158,52 @@ class AssistantController extends Controller
     {
         return $this->render('admission/application_confirmation.html.twig');
     }
+
+    /**
+     * @Route("/stand/opptak/{shortName}", name="application_stand_form", requirements={"shortName"="\w+"})
+     * @Route("/stand/opptak/{id}", name="application_stand_form_by_id", requirements={"id"="\d+"})
+     *
+     * @param Request $request
+     * @param Department $department
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function subscribePageAction(Request $request, Department $department)
+    {
+        $admissionManager = $this->get('app.application_admission');
+        $em = $this->getDoctrine()->getManager();
+        $application = new Application();
+
+        $form = $this->get('form.factory')->createNamedBuilder('application_'.$department->getId(), ApplicationType::class, $application, array(
+            'validation_groups' => array('admission'),
+            'departmentId' => $department->getId(),
+            'environment' => $this->get('kernel')->getEnvironment(),
+        ))->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $admissionManager->setCorrectUser($application);
+
+            if ($application->getUser()->hasBeenAssistant()) {
+                $this->addFlash('warning', $application->getUser()->getEmail().' er allerede registrert.');
+                return $this->redirectToRoute('application_stand_form', ['shortName' => $department->getShortName()]);
+            }
+
+            $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
+            $application->setSemester($semester);
+            $em->persist($application);
+            $em->flush();
+
+            $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+
+            $this->addFlash('success', $application->getUser()->getEmail().' har blitt registrert. Du vil få en e-post med kvittering på søknaden.');
+            return $this->redirectToRoute('application_stand_form', ['shortName' => $department->getShortName()]);
+        }
+
+        return $this->render('admission/application_page.html.twig', [
+            'department' => $department,
+            'form' => $form->createView()
+        ]);
+    }
 }
