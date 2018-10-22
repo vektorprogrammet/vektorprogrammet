@@ -41,9 +41,11 @@
             <p class="text-faded">
                 Totalt antall søknader: <strong>{{ applications|length }}</strong><br>
                 Antall søknader {{ semester.name }}: <strong>{{ applications_in_semester|length }}</strong><br>
-                <a href="{{ path('application_stand_form', {shortName: semester.department.shortName}) }}">
-                    Søknadsskjema for {{ semester.department }}
-                </a>
+                {% if semester.hasActiveAdmission() %}
+                    <a href="{{ path('application_stand_form', {shortName: semester.department.shortName}) }}">
+                        Søknadsskjema for {{ semester.department }}
+                    </a>
+                {% endif %}
             </p>
         </div>
         <div class="col-12">

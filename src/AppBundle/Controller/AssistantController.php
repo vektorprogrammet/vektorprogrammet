@@ -170,6 +170,9 @@ class AssistantController extends Controller
      */
     public function subscribePageAction(Request $request, Department $department)
     {
+        if (!$department->getLatestSemester()->hasActiveAdmission()){
+            return $this->indexAction($request, $department);
+        }
         $admissionManager = $this->get('app.application_admission');
         $em = $this->getDoctrine()->getManager();
         $application = new Application();
@@ -186,7 +189,7 @@ class AssistantController extends Controller
             $admissionManager->setCorrectUser($application);
 
             if ($application->getUser()->hasBeenAssistant()) {
-                $this->addFlash('warning', $application->getUser()->getEmail().' er allerede registrert.');
+                $this->addFlash('warning', $application->getUser()->getEmail().' har vært assistent før. Logg inn med brukeren din for å søke igjen.');
                 return $this->redirectToRoute('application_stand_form', ['shortName' => $department->getShortName()]);
             }
 
