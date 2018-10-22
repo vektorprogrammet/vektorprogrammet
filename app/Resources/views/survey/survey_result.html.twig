@@ -80,7 +80,6 @@
         var colors = ["#579AD6", "#78C466", "#9F65AD", "#FCA853", "#F3595D", "#737373", "#D07054", "#D97DB5"];
 
         $.getJSON('{{ path('survey_get_all_results', {'id': survey.id } ) }}', function (surveyData) {
-            console.log(surveyData);
             renderFilter(surveyData);
             renderCharts(surveyData);
             displayTextAnswers();
@@ -305,8 +304,6 @@
         }
 
         function filterSurveyData(surveyData, filterObject) {
-            console.log(filterObject);
-
           var filteredSurveyData = {};
 
 
@@ -319,7 +316,6 @@
                 return q.question_id.toString()
               });
               for (let i = 0; i < filteredQuestionIds.length; i++) {
-                  console.log(answeredQuestionIds);
                   if (answeredQuestionIds.indexOf(filteredQuestionIds[i]) === -1) {
                   return false;
                 }
@@ -330,16 +326,16 @@
                 var questionId = answerObject.question_id;
                 if (filterObject.hasOwnProperty(questionId)) {
                     //Filter when answer given as answerObject.answer[0] is a list
+                    hasAnsweredQuestion = true;
+                    let answerArray = false;
                     if(questionId == "0"){
                         for(var a in filterObject[questionId]){
-                            if(answerObject.answer[0].indexOf(filterObject[questionId][a])!==-1){
-                                return true;
+                            if(answerObject.answer[0].indexOf(filterObject[questionId][a])==-1){
+                                hasAnsweredQuestion = false;
                             }
                         }
-                        return false;
+                        answerArray = true;
                     }
-
-                  hasAnsweredQuestion = true;
                   if (answerObject.hasOwnProperty('answerArray') && answerObject.answerArray.length > 0) {
                     var hasAnswer = false;
                     for (var j = 0; j < answerObject.answerArray.length; j++) {
@@ -351,8 +347,8 @@
                     if (!hasAnswer) {
                       return false;
                     }
-                  } else if (filterObject[questionId].indexOf(answerObject.answer) === -1) {
-                    return false;}
+                  } else if (filterObject[questionId].indexOf(answerObject.answer) === -1 && !answerArray) {
+                      return false;}
                 }
               }
               return hasAnsweredQuestion;
