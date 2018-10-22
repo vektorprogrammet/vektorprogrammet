@@ -13,7 +13,7 @@ services:
 
   app.logger:
     class: AppBundle\Service\LogService
-    arguments: ['@logger', '@app.slack_messenger', '@app.user_service', '@request_stack']
+    arguments: ['@logger', '@app.slack_messenger', '@app.user_service', '@request_stack', '%kernel.environment%']
 
   app.mailer:
     class: AppBundle\Mailer\Mailer

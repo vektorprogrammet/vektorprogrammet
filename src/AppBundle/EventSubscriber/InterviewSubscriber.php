@@ -9,7 +9,7 @@ use AppBundle\Service\InterviewNotificationManager;
 use AppBundle\Mailer\MailerInterface;
 use AppBundle\Service\SbsData;
 use AppBundle\Sms\Sms;
-use AppBundle\Sms\SmsSender;
+use AppBundle\Sms\SmsSenderInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -35,7 +35,7 @@ class InterviewSubscriber implements EventSubscriberInterface
         SbsData $sbsData,
         InterviewNotificationManager $notificationManager,
         InterviewManager $interviewManager,
-        SmsSender $smsSender,
+        SmsSenderInterface $smsSender,
         RouterInterface $router
     ) {
         $this->mailer = $mailer;
