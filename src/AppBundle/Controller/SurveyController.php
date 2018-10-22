@@ -400,14 +400,14 @@ class SurveyController extends Controller
     }
 
 
-    public function updateLastPopUp(){
+    public function updateLastPopUp()
+    {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
         $user->setReservedPopUp(!$user->getReservedPopUp());
         $user->setLastPopUp(null);
         $em->persist($user);
         $em->flush();
-
     }
     public function toggleReservePopUpAction()
     {
