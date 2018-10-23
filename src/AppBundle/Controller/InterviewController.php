@@ -504,8 +504,10 @@ class InterviewController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
-        return $this->redirectToRoute('interview_schedule',
-            ['id' => $interview->getApplication()->getId()]);
+        return $this->redirectToRoute(
+            'interview_schedule',
+            ['id' => $interview->getApplication()->getId()]
+        );
     }
 
     public function assignCoInterviewerAction(Interview $interview)

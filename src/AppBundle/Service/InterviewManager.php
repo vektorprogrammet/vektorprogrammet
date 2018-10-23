@@ -119,7 +119,8 @@ class InterviewManager
             ->setTo($data['to'])
             ->setReplyTo($data['from'])
             ->setBody(
-                $this->twig->render('interview/email.html.twig',
+                $this->twig->render(
+                    'interview/email.html.twig',
                     array('message' => $data['message'],
                         'datetime' => $data['datetime'],
                         'room' => $data['room'],
@@ -148,7 +149,8 @@ class InterviewManager
             ->setSubject("[$user] Intervju: Ønske om ny tid")
             ->setTo($interview->getInterviewer()->getEmail())
             ->setBody(
-                $this->twig->render('interview/reschedule_email.html.twig',
+                $this->twig->render(
+                    'interview/reschedule_email.html.twig',
                     array('interview' => $interview,
                         'application' => $application,
                     )
@@ -169,7 +171,8 @@ class InterviewManager
             ->setSubject("[$user] Intervju: Kansellert")
             ->setTo($interview->getInterviewer()->getEmail())
             ->setBody(
-                $this->twig->render('interview/cancel_email.html.twig',
+                $this->twig->render(
+                    'interview/cancel_email.html.twig',
                     array('interview' => $interview,
                     )
                 ),
@@ -205,7 +208,8 @@ class InterviewManager
              ->setSubject('Dine intervjuer dette semesteret')
              ->setTo($interviewer->getEmail())
              ->setBody(
-                 $this->twig->render('interview/schedule_of_interviews_email.html.twig',
+                 $this->twig->render(
+                     'interview/schedule_of_interviews_email.html.twig',
                      array(
                          'interviews'  => $interviews,
                          'interviewer' => $interviewer

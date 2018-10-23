@@ -152,7 +152,8 @@ class InterviewSubscriber implements EventSubscriberInterface
             "Rom: ".$data['room'] .
             "\n\n" .
             "Vennligst følg linken under for å godkjenne tidspunktet eller be om ny tid:\n" .
-            $this->router->generate('interview_response',
+            $this->router->generate(
+                'interview_response',
                 ['responseCode' => $interview->getResponseCode()],
                 RouterInterface::ABSOLUTE_URL
             ) .
