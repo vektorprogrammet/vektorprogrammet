@@ -108,7 +108,7 @@ class TeamAdminController extends BaseController
     {
         // Find all TeamMembership entities based on team
         $activeTeamMemberships   = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findActiveTeamMembershipsByTeam($team);
-        $inActiveTeamMemberships = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findInActiveTeamMembershipsByTeam($team);
+        $inActiveTeamMemberships = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findInactiveTeamMembershipsByTeam($team);
         usort($activeTeamMemberships, array( $this, 'sortTeamMembershipsByEndDate' ));
         usort($inActiveTeamMemberships, array( $this, 'sortTeamMembershipsByEndDate' ));
 

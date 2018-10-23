@@ -54,8 +54,6 @@ class SemesterController extends Controller
                 return $this->redirectToRoute('semester_create');
             }
 
-            $semester->setStartAndEndDateByTime($semester->getSemesterTime(), $semester->getYear());
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($semester);
             $em->flush();

@@ -4,12 +4,15 @@ namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\Department;
+use AppBundle\Entity\School;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
+use AppBundle\Utils\SemesterUtil;
 use Doctrine\ORM\EntityRepository;
 
 class AssistantHistoryRepository extends EntityRepository
 {
+
     /**
      * @param User $user
      *
@@ -31,7 +34,7 @@ class AssistantHistoryRepository extends EntityRepository
      *
      * @return AssistantHistory[]
      */
-    public function findByDepartmentAndSemester(Department $department, Semester $semester)
+    public function findByDepartmentAndSemester(Department $department, Semester $semester): array
     {
         return $this->createQueryBuilder('assistantHistory')
             ->select('assistantHistory')
@@ -50,7 +53,7 @@ class AssistantHistoryRepository extends EntityRepository
      *
      * @return AssistantHistory[]
      */
-    public function findActiveAssistantHistoriesByUser($user)
+    public function findActiveAssistantHistoriesByUser($user): array
     {
         $today = new \DateTime('now');
         $assistantHistories = $this->getEntityManager()->createQuery('
@@ -61,22 +64,25 @@ class AssistantHistoryRepository extends EntityRepository
 		JOIN ahistory.semester semester
 		JOIN ahistory.user user 
 		WHERE ahistory.user = :user
-		AND semester.semesterStartDate < :today
-		AND semester.semesterEndDate > :today
+		AND semester.year = :year
+	    AND semester.semesterTime = :semesterTime	
 		')
-            ->setParameter('user', $user)
-            ->setParameter('today', $today)
+            ->setParameters(array(
+                'user' => $user,
+                'year' => SemesterUtil::timeToYear($today),
+                'semesterTime' => SemesterUtil::timeToSemesterTime($today)
+            ))
             ->getResult();
 
         return $assistantHistories;
     }
 
     /**
-     * @param $school
+     * @param School $school
      *
      * @return AssistantHistory[]
      */
-    public function findActiveAssistantHistoriesBySchool($school): array
+    public function findActiveAssistantHistoriesBySchool(School $school): array
     {
         $today = new \DateTime('now');
         $assistantHistories = $this->getEntityManager()->createQuery('
@@ -87,17 +93,23 @@ class AssistantHistoryRepository extends EntityRepository
 		JOIN ahistory.semester semester
 		JOIN ahistory.user user
 		WHERE ahistory.school = :school
-		AND (semester.semesterStartDate < :today
-		AND semester.semesterEndDate > :today)
+		AND semester.year = :year
+	    AND semester.semesterTime = :semesterTime	
 		')
-            ->setParameter('school', $school)
-            ->setParameter('today', $today)
+            ->setParameters(array(
+                'school' => $school,
+                'year' => SemesterUtil::timeToYear($today),
+                'semesterTime' => SemesterUtil::timeToSemesterTime($today)
+            ))
             ->getResult();
 
         return $assistantHistories;
     }
 
-    public function findAllActiveAssistantHistories()
+    /**
+     * @return AssistantHistory[]
+     */
+    public function findAllActiveAssistantHistories(): array
     {
         $today = new \DateTime('now');
         $assistantHistories = $this->getEntityManager()->createQuery('
@@ -107,16 +119,24 @@ class AssistantHistoryRepository extends EntityRepository
 		JOIN ahistory.school school
 		JOIN ahistory.semester semester
 		JOIN ahistory.user user 
-		WHERE semester.semesterStartDate < :today
-		AND semester.semesterEndDate > :today
+		WHERE semester.year = :year
+	    AND semester.semesterTime = :semesterTime	
 		')
-            ->setParameter('today', $today)
+            ->setParameters(array(
+                'year' => SemesterUtil::timeToYear($today),
+                'semesterTime' => SemesterUtil::timeToSemesterTime($today)
+            ))
             ->getResult();
 
         return $assistantHistories;
     }
 
-    public function findInactiveAssistantHistoriesBySchool($school)
+    /**
+     * @param School $school
+     *
+     * @return AssistantHistory[]
+     */
+    public function findInactiveAssistantHistoriesBySchool(School $school): array
     {
         $today = new \DateTime('now');
         $assistantHistories = $this->getEntityManager()->createQuery('
@@ -127,11 +147,16 @@ class AssistantHistoryRepository extends EntityRepository
 		JOIN ahistory.semester semester
 		JOIN ahistory.user user 
 		WHERE ahistory.school = :school
-		AND (semester.semesterStartDate > :today
-		OR semester.semesterEndDate < :today)
+		AND NOT (
+            semester.year = :year
+            AND semester.semesterTime = :semesterTime
+        )
 		')
-            ->setParameter('school', $school)
-            ->setParameter('today', $today)
+            ->setParameters(array(
+                'school' => $school,
+                'year' => SemesterUtil::timeToYear($today),
+                'semesterTime' => SemesterUtil::timeToSemesterTime($today)
+            ))
             ->getResult();
 
         return $assistantHistories;
@@ -141,8 +166,9 @@ class AssistantHistoryRepository extends EntityRepository
      * @param Semester $semester
      *
      * @return int
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function numFemaleBySemester(Semester $semester)
+    public function numFemaleBySemester(Semester $semester): int
     {
         return $this->createQueryBuilder('ah')
             ->select('count(ah.id)')
@@ -158,8 +184,9 @@ class AssistantHistoryRepository extends EntityRepository
      * @param Semester $semester
      *
      * @return int
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function numMaleBySemester(Semester $semester)
+    public function numMaleBySemester(Semester $semester): int
     {
         return $this->createQueryBuilder('ah')
             ->select('count(ah.id)')
@@ -171,7 +198,11 @@ class AssistantHistoryRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function numFemale()
+    /**
+     * @return int
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function numFemale(): int
     {
         return $this->createQueryBuilder('ah')
             ->select('count(ah.id)')
@@ -181,7 +212,11 @@ class AssistantHistoryRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function numMale()
+    /**
+     * @return int
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function numMale(): int
     {
         return $this->createQueryBuilder('ah')
             ->select('count(ah.id)')

@@ -17,23 +17,33 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 {
     public function findUsersInDepartmentWithTeamMembershipInSemester(Department $department, Semester $semester)
     {
-        $startDate = $semester->getSemesterStartDate();
-        $endDate = $semester->getSemesterEndDate();
-
-        return $this->createQueryBuilder('user')
+        $users =  $this->createQueryBuilder('user')
             ->select('user')
             ->join('user.teamMemberships', 'tm')
             ->join('user.fieldOfStudy', 'fos')
             ->where('fos.department = :department')
             ->join('tm.startSemester', 'ss')
-            ->andWhere('ss.semesterStartDate <= :startDate')
             ->leftJoin('tm.endSemester', 'se')
-            ->andWhere('tm.endSemester is NULL OR se.semesterEndDate >= :endDate')
-            ->setParameter('startDate', $startDate)
-            ->setParameter('endDate', $endDate)
             ->setParameter('department', $department)
             ->getQuery()
             ->getResult();
+
+        $teamMembers = array();
+        /** @var User $user */
+        foreach ($users as $user) {
+            foreach ($user->getTeamMemberships() as $teamMembership) {
+                if ($semester->isBetween(
+                        $teamMembership->getStartSemester(),
+                        $teamMembership->getEndSemester()
+                )
+                ) {
+                    $teamMembers[] = $user;
+                    continue;
+                }
+            }
+        }
+
+        return $teamMembers;
     }
 
     /**
@@ -132,6 +142,8 @@ class UserRepository extends EntityRepository implements UserProviderInterface
      * @param $username
      *
      * @return User
+     * @throws NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findUserByUsername($username)
     {

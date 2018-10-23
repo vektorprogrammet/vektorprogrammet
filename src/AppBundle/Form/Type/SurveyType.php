@@ -3,7 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\Repository\DepartmentRepository;
-use Doctrine\ORM\EntityRepository;
+use AppBundle\Entity\Repository\SemesterRepository;
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use AppBundle\Utils\SemesterUtil;
 
 class SurveyType extends AbstractType
 {
@@ -21,11 +22,10 @@ class SurveyType extends AbstractType
         $builder->add('semester', EntityType::class, array(
             'label' => 'Semester',
             'class' => 'AppBundle:Semester',
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('s')
-                    ->where('s.semesterEndDate > :limit')
-                    ->setParameter('limit', new \DateTime('now -1 year'))
-                    ->orderBy('s.semesterStartDate', 'DESC');
+            'query_builder' => function (SemesterRepository $sr) {
+                return $sr->queryForAllSemestersOrderedByAge()
+                    ->andWhere('Semester.year > :limit')
+                    ->setParameter('limit', SemesterUtil::timeToYear(new \DateTime('now')) - 1);
             },
         ))
 
