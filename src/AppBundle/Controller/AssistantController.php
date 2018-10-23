@@ -165,10 +165,12 @@ class AssistantController extends BaseController
      * @param Department $department
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function subscribePageAction(Request $request, Department $department)
     {
-        if (!$department->getLatestSemester()->hasActiveAdmission()) {
+        if (!$department->activeAdmission()) {
             return $this->indexAction($request, $department);
         }
         $admissionManager = $this->get('app.application_admission');
@@ -191,8 +193,8 @@ class AssistantController extends BaseController
                 return $this->redirectToRoute('application_stand_form', ['shortName' => $department->getShortName()]);
             }
 
-            $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
-            $application->setSemester($semester);
+            $admissionPeriod = $em->getRepository('AppBundle:AdmissionPeriod')->findOneWithActiveAdmissionByDepartment($department);
+            $application->setAdmissionPeriod($admissionPeriod);
             $em->persist($application);
             $em->flush();
 

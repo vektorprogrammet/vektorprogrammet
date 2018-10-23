@@ -172,7 +172,10 @@ class Department
         return $admissionPeriod;
     }
 
-    public function activeAdmission()
+    /**
+     * @return bool
+     */
+    public function activeAdmission(): bool
     {
         $admissionPeriod = $this->getCurrentAdmissionPeriod();
         if (!$admissionPeriod) {
