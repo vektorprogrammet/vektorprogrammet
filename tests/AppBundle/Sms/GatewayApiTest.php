@@ -2,11 +2,12 @@
 
 namespace Tests\AppBundle\Sms;
 
+use AppBundle\Service\LogService;
 use AppBundle\Sms\GatewayAPI;
 use AppBundle\Sms\Sms;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use PHPUnit\Framework\TestCase;
 
-class GatewayApiTest extends KernelTestCase
+class GatewayApiTest extends TestCase
 {
     /**
      * @var GatewayAPI
@@ -15,11 +16,13 @@ class GatewayApiTest extends KernelTestCase
 
     protected function setUp()
     {
-        parent::setUp();
-
-        $kernel = $this->createKernel();
-        $kernel->boot();
-        $this->gatewayApi = $kernel->getContainer()->get('app.sms');
+        $loggerMock = $this->createMock(LogService::class);
+        $this->gatewayApi = new GatewayAPI([
+        	'disable_delivery' => true,
+	        'max_length' => 2000,
+	        'api_token' => "SECRET",
+	        'country_code' => '47'
+        ], $loggerMock);
     }
 
     public function testValidateEightDigitNumber()

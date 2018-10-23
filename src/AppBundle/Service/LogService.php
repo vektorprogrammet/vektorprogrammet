@@ -12,19 +12,27 @@ class LogService implements LoggerInterface
     private $slackMessenger;
     private $userService;
     private $requestStack;
+    /**
+     * @var string
+     */
+    private $env;
 
     /**
      * LogService constructor.
      *
-     * @param Logger         $monoLogger
+     * @param Logger $monoLogger
      * @param SlackMessenger $slackMessenger
+     * @param UserService $userService
+     * @param RequestStack $requestStack
+     * @param string $env
      */
-    public function __construct(Logger $monoLogger, SlackMessenger $slackMessenger, UserService $userService, RequestStack $requestStack)
+    public function __construct(Logger $monoLogger, SlackMessenger $slackMessenger, UserService $userService, RequestStack $requestStack, string $env)
     {
         $this->monoLogger = $monoLogger;
         $this->slackMessenger = $slackMessenger;
         $this->userService = $userService;
         $this->requestStack = $requestStack;
+        $this->env = $env;
     }
 
     /**
@@ -152,6 +160,9 @@ class LogService implements LoggerInterface
         $request = $this->requestStack->getMasterRequest();
         $method = $request ? $request->getMethod() : '';
         $path = $request ? $request->getPathInfo() : '???';
+        if ('staging' === $this->env) {
+            $path = $request ? $request->getUri() : '???';
+        }
 
         $default = [
             'color' => $this->getLogColor($level),
