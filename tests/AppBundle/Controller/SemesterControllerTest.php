@@ -9,10 +9,7 @@ class SemesterControllerTest extends BaseWebTestCase
     public function testSuperadminCreateSemester()
     {
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/semesteradmin/opprett');
 

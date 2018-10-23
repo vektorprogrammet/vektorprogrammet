@@ -38,10 +38,7 @@ class UserAdminControllerTest extends BaseWebTestCase
     {
 
         // ADMIN
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/brukeradmin/avdeling/1');
 

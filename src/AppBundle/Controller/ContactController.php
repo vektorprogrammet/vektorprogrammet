@@ -48,11 +48,13 @@ class ContactController extends BaseController
         }
 
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
+        $scrollToForm = $form->isSubmitted() && !$form->isValid();
 
         return $this->render('contact/index.html.twig', array(
             'form' => $form->createView(),
             'specific_department' => $department,
             'board' => $board,
+            'scrollToForm' => $scrollToForm
         ));
     }
 }

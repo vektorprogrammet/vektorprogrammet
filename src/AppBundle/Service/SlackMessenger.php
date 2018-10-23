@@ -74,9 +74,13 @@ class SlackMessenger
 
         $this->send($message);
     }
-
-    private function send(Message $message)
+    
+    public function send(Message $message)
     {
+        if ($message->getChannel() === null) {
+            $message->setChannel($this->logChannel);
+        }
+
         if (!$this->disableDelivery) {
             try {
                 $this->slackClient->sendMessage($message);
@@ -86,6 +90,11 @@ class SlackMessenger
         }
 
         $this->logger->info("Slack message sent to {$message->getChannel()}: {$message->getText()}");
+    }
+    
+    public function createMessage(): Message
+    {
+        return $this->slackClient->createMessage();
     }
 
     private function createAttachment(array $data)

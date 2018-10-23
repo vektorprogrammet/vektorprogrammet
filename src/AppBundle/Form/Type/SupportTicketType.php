@@ -4,7 +4,9 @@ namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Repository\DepartmentRepository;
-use Gregwar\CaptchaBundle\Type\CaptchaType;
+use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -45,6 +47,13 @@ class SupportTicketType extends AbstractType
                 'rows' => '9',
             ),
         ));
+        $builder->add('recaptcha', EWZRecaptchaType::class, [
+            'label' => false,
+            'mapped' => false,
+            'constraints' => array(
+                new RecaptchaTrue()
+            )
+        ]);
         $builder->add('submit', SubmitType::class, array(
             'label' => 'Send melding',
             'attr' => array(

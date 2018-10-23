@@ -6,6 +6,8 @@ use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamApplication;
 use AppBundle\Event\TeamApplicationCreatedEvent;
 use AppBundle\Form\Type\TeamApplicationType;
+use AppBundle\Role\Roles;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -18,7 +20,7 @@ class TeamApplicationController extends BaseController
     {
         $user = $this->getUser();
         $activeUserHistoriesInTeam = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findActiveTeamMembershipsByTeamAndUser($application->getTeam(), $user);
-        if (empty($activeUserHistoriesInTeam) && !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+        if (empty($activeUserHistoriesInTeam) && !$this->isGranted(Roles::TEAM_LEADER)) {
             throw new AccessDeniedException();
         }
 
@@ -32,7 +34,7 @@ class TeamApplicationController extends BaseController
         $applications = $this->getDoctrine()->getRepository('AppBundle:TeamApplication')->findByTeam($team);
         $user = $this->getUser();
         $activeUserHistoriesInTeam = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findActiveTeamMembershipsByTeamAndUser($team, $user);
-        if (empty($activeUserHistoriesInTeam) && !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+        if (empty($activeUserHistoriesInTeam) && !$this->isGranted(Roles::TEAM_LEADER)) {
             throw new AccessDeniedException();
         }
 

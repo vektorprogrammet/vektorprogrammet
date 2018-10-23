@@ -9,9 +9,9 @@ security:
 
     # http://symfony.com/doc/current/book/security.html#hierarchical-roles
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
-        ROLE_HIGHEST_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_TEAM_MEMBER:       ROLE_USER
+        ROLE_TEAM_LEADER: [ROLE_USER, ROLE_TEAM_MEMBER, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_ADMIN: [ROLE_USER, ROLE_TEAM_MEMBER, ROLE_TEAM_LEADER, ROLE_ALLOWED_TO_SWITCH]
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
@@ -62,86 +62,88 @@ security:
     # http://symfony.com/doc/current/cookbook/security/access_control.html
     access_control:
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
-        # require ROLE_ADMIN for /admin*
+        # require ROLE_TEAM_MEMBER for /admin*
 
-          #ROLE_HIGHEST_ADMIN = admin user
-        - { path: ^/kontrollpanel/staging, roles: ROLE_HIGHEST_ADMIN }
+          #ROLE_ADMIN = admin user
+        - { path: ^/kontrollpanel/admin, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/staging, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/semesteradmin, roles: ROLE_HIGHEST_ADMIN }
-        - { path: ^/kontrollpanel/avdelingadmin/opprett, roles: ROLE_HIGHEST_ADMIN }
-        - { path: ^/kontrollpanel/avdelingadmin/slett, roles: ROLE_HIGHEST_ADMIN }
+        - { path: ^/kontrollpanel/avdelingadmin/opprett, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/avdelingadmin/slett, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/opptaksperiode/slett, roles: ROLE_HIGHEST_ADMIN }
-        - { path: ^/kontrollpanel/opptaksperiode/opprett, roles: ROLE_HIGHEST_ADMIN }
-        - { path: ^/kontrollpanel/teamadmin/stilling/slett, roles: ROLE_HIGHEST_ADMIN }
-        - { path: ^/kontrollpanel/skoleadmin/slett, roles: ROLE_HIGHEST_ADMIN }
-        - { path: ^/kontrollpanel/intervju/slett, roles: ROLE_HIGHEST_ADMIN }
-        - { path: ^/kontrollpanel/opptakadmin/slett, roles: ROLE_HIGHEST_ADMIN }
-        - { path: ^/kontrollpanel/bruker/vekorepost/endre, roles: ROLE_HIGHEST_ADMIN }
-        - { path: ^/kontrollpanel/hovedstyret/slett/bruker, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/kontrollpanel/opptaksperiode/opprett, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/teamadmin/stilling/slett, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/skoleadmin/slett, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/intervju/slett, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/opptakadmin/slett, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/bruker/vekorepost/endre, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/hovedstyret/slett/bruker, roles: ROLE_TEAM_LEADER }
 
-          #ROLE_SUPER_ADMIN = team leader
-        - { path: ^/kontrollpanel/avdelingadmin/update, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/brukeradmin/opprett/, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/brukeradmin/slett, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/brukeradmin/avdeling, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/brukeradmin/sendaktivering, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/brukeradmin/jubileum, role: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/brukeradmin/jubileum/betalt, role: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/brukeradmin/jubileum/slettbetaling, role: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/deltakerhistorikk/slett, role: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/deltakerhistorikk/rediger, role: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/opptaksperiode/update, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/skoleadmin/avdeling, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/skoleadmin/oppdater, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/skoleadmin/opprett, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/skoleadmin/brukere/avdeling, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/skoleadmin/historikk/slett, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/skole/timeplan, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/intervju/skjema, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/intervju/fordel, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/undersokelse/slett, role: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/undersokelse/kopier, role: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/teamadmin/stillinger, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/teamadmin/rediger/stilling, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/teamadmin/opprett/stilling, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/teamadmin/stilling/slett, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/teamadmin/oppdater/teamhistorie, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/teamadmin/team/nytt_medlem, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/teamadmin/avdeling/opprett, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/teamadmin/update, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/team/avdeling/, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/teamadmin/team/slett/bruker, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/teamadmin/slett, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/linje, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/linjer, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/nyhetsbrev/opprett, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/nyhetsbrev/send, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/nyhetsbrev/abonnenter, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/updatestaticcontent, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/profile/aktiv, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/profile/deaktiv, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/profile/rolle/endre, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/profil/rediger, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/opptakadmin/teaminteresse, roles: ROLE_SUPER_ADMIN}
-        - { path: ^/kontrollpanel/vikar/rediger, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/vikar/slett, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/vikar/opprett, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/hovedstyret, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/hovedstyret/nytt_medlem, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/hovedstyret/oppdater, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/utlegg/rediger, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/utlegg/status, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/kontrollpanel/bildegallerier, roles: ROLE_SUPER_ADMIN, method: POST }
-        - { path: ^/kontrollpanel/bildegallerier/galleri, roles: ROLE_SUPER_ADMIN, method: POST }
-        - { path: ^/kontrollpanel/bildegallerier/galleri/slett, roles: ROLE_SUPER_ADMIN }
+          #ROLE_TEAM_LEADER = team leader
+        - { path: ^/kontrollpanel/avdelingadmin/update, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/brukeradmin/opprett/, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/brukeradmin/slett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/brukeradmin/avdeling, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/brukeradmin/sendaktivering, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/brukeradmin/jubileum, role: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/brukeradmin/jubileum/betalt, role: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/brukeradmin/jubileum/slettbetaling, role: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/deltakerhistorikk/slett, role: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/deltakerhistorikk/rediger, role: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/semesteradmin/update, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/semesteradmin/avdeling/, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/skoleadmin/avdeling, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/skoleadmin/oppdater, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/skoleadmin/opprett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/skoleadmin/brukere/avdeling, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/skoleadmin/historikk/slett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/skole/timeplan, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/intervju/skjema, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/intervju/fordel, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/undersokelse/slett, role: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/undersokelse/kopier, role: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/stillinger, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/rediger/stilling, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/opprett/stilling, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/stilling/slett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/oppdater/teamhistorie, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/team/nytt_medlem, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/avdeling/opprett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/update, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/team/avdeling/, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/team/slett/bruker, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/slett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/linje, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/linjer, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/nyhetsbrev/opprett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/nyhetsbrev/send, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/nyhetsbrev/abonnenter, roles: ROLE_TEAM_LEADER }
+        - { path: ^/updatestaticcontent, roles: ROLE_TEAM_LEADER }
+        - { path: ^/profile/aktiv, roles: ROLE_TEAM_LEADER }
+        - { path: ^/profile/deaktiv, roles: ROLE_TEAM_LEADER }
+        - { path: ^/profile/rolle/endre, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/profil/rediger, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/opptakadmin/teaminteresse, roles: ROLE_TEAM_LEADER}
+        - { path: ^/kontrollpanel/vikar/rediger, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/vikar/slett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/vikar/opprett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/hovedstyret, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/hovedstyret/nytt_medlem, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/hovedstyret/oppdater, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/utlegg/rediger, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/utlegg/status, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/bildegallerier, roles: ROLE_TEAM_LEADER, method: POST }
+        - { path: ^/kontrollpanel/bildegallerier/galleri, roles: ROLE_TEAM_LEADER, method: POST }
+        - { path: ^/kontrollpanel/bildegallerier/galleri/slett, roles: ROLE_TEAM_LEADER }
 
-          #ROLE_ADMIN = team user
-        - { path: ^/signatures, roles: ROLE_ADMIN }
-        - { path: ^/kontrollpanel/attest, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/profile/attest, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/profile/edit, roles: ROLE_ADMIN }
-        - { path: ^/efconnect, role: ROLE_ADMIN }
-        - { path: ^/elfinder, role: ROLE_ADMIN }
-        - { path: ^/kontrollpanel, role: ROLE_ADMIN }
+          #ROLE_TEAM_MEMBER = team user
+        - { path: ^/signatures, roles: ROLE_TEAM_MEMBER }
+        - { path: ^/kontrollpanel/attest, roles: ROLE_TEAM_LEADER }
+        - { path: ^/profile/attest, roles: ROLE_TEAM_LEADER }
+        - { path: ^/profile/edit, roles: ROLE_TEAM_MEMBER }
+        - { path: ^/efconnect, role: ROLE_TEAM_MEMBER }
+        - { path: ^/elfinder, role: ROLE_TEAM_MEMBER }
+        - { path: ^/kontrollpanel, role: ROLE_TEAM_MEMBER }
 
           #ROLE_USER = assistant user
         - { path: ^/profil/rediger, roles: ROLE_USER }

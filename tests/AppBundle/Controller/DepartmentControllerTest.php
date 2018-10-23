@@ -54,10 +54,7 @@ class DepartmentControllerTest extends BaseWebTestCase
 
     public function testCreateDepartmentWithNonUniqueName()
     {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
         $crawler = $client->request('GET', '/kontrollpanel/avdelingadmin');
 
         // Find a link and click it
@@ -84,10 +81,7 @@ class DepartmentControllerTest extends BaseWebTestCase
 
     public function testUpdateDepartment()
     {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createAdminClient();
         $crawler = $client->request('GET', '/kontrollpanel/avdelingadmin');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());

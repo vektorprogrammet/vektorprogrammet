@@ -11,6 +11,7 @@ use AppBundle\Entity\PasswordReset;
 use AppBundle\Entity\SurveyAnswer;
 use AppBundle\Entity\SurveyQuestion;
 use AppBundle\Entity\SurveyQuestionAlternative;
+use AppBundle\Entity\UnhandledAccessRule;
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
 use Doctrine\Common\EventSubscriber;
@@ -24,7 +25,7 @@ class DbSubscriber implements EventSubscriber
     private $ignoredClasses;
     private $manager;
 
-    public function __construct(LoggerInterface $logger, EntityManager $manager)
+    public function __construct(LoggerInterface $logger, EntityManager $manager, string $env)
     {
         $this->logger = $logger;
         $this->ignoredClasses = [
@@ -38,6 +39,9 @@ class DbSubscriber implements EventSubscriber
             SurveyQuestionAlternative::class,
             AdmissionNotification::class,
         ];
+        if ($env === 'staging') {
+            $this->ignoredClasses[] = UnhandledAccessRule::class;
+        }
         $this->manager = $manager;
     }
 

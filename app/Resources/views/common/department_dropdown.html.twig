@@ -1,17 +1,19 @@
-{% set dropdownId = dropdownId is defined ? dropdownId : 'departmentDropdown' %}
-<div class="dropdown">
-    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="departmentDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fa fa-institution button-icon-left"></i>{{ currentDepartment is defined ? currentDepartment : 'Avdeling' }}
-    </button>
-    <div class="dropdown-menu" aria-labelledby="departmentDropdown">
-        {% set departmentParameterName = departmentParameterName is defined ? departmentParameterName : 'department' %}
+{% if has_access_to('all_departments') %}
+    {% set dropdownId = dropdownId is defined ? dropdownId : 'departmentDropdown' %}
+    <div class="dropdown">
+        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="departmentDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-institution button-icon-left"></i>{{ currentDepartment is defined ? currentDepartment : 'Avdeling' }}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="departmentDropdown">
+            {% set departmentParameterName = departmentParameterName is defined ? departmentParameterName : 'department' %}
         {% set semesterParameterName = semesterParameterName is defined ? semesterParameterName : 'semester' %}
         {% for department in get_departments() %}
-            {% if linkToSemester is defined and linkToSemester == true %}
-                <a class="dropdown-item" href="{{ path(pathForDepartment, { (departmentParameterName): department.id, (semesterParameterName): semester.id }) }}">{{ department }}</a>
-            {% else %}
-                <a class="dropdown-item" href="{{ path(pathForDepartment, { (departmentParameterName): department.id }) }}">{{ department }}</a>
-            {% endif %}
-        {% endfor %}
+                {% if linkToSemester is defined and linkToSemester == true %}
+                    <a class="dropdown-item" href="{{ path(pathForDepartment, { (departmentParameterName): department.id, (semesterParameterName): semester.id }) }}">{{ department }}</a>
+                {% else %}
+                    <a class="dropdown-item" href="{{ path(pathForDepartment, { (departmentParameterName): department.id }) }}">{{ department }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
-</div>
+{% endif %}

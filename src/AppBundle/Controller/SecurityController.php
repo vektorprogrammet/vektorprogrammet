@@ -2,7 +2,9 @@
 
 namespace AppBundle\Controller;
 
-class SecurityController extends BaseController
+use AppBundle\Role\Roles;
+
+class SecurityController extends Controller
 {
     public function loginAction()
     {
@@ -26,7 +28,7 @@ class SecurityController extends BaseController
 
     public function loginRedirectAction()
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted(Roles::TEAM_MEMBER)) {
             return $this->redirectToRoute('control_panel');
         } elseif ($this->getDoctrine()->getRepository('AppBundle:Application')->findActiveByUser($this->getUser())) {
             return $this->redirectToRoute('my_page');

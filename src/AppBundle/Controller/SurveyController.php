@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Semester;
+use AppBundle\Role\Roles;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -202,7 +203,7 @@ class SurveyController extends BaseController
     public function deleteSurveyAction(Survey $survey)
     {
         try {
-            if ($this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+            if ($this->isGranted(Roles::TEAM_LEADER)) {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($survey);
                 $em->flush();
