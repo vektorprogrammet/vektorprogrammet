@@ -6,7 +6,7 @@ use Tests\BaseWebTestCase;
 
 class SemesterControllerTest extends BaseWebTestCase
 {
-    public function testSuperadminCreateSemester()
+    public function testAdminCreateSemester()
     {
         // ADMIN
         $client = $this->createAdminClient();

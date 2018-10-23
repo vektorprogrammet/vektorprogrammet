@@ -23,6 +23,7 @@ class ApplicationRepository extends EntityRepository
      * @param AdmissionPeriod $admissionPeriod
      *
      * @return Application|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findByUserInAdmissionPeriod(User $user, AdmissionPeriod $admissionPeriod)
     {

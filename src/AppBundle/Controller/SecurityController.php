@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Role\Roles;
 
-class SecurityController extends Controller
+class SecurityController extends BaseController
 {
     public function loginAction()
     {
@@ -26,6 +26,10 @@ class SecurityController extends Controller
         );
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function loginRedirectAction()
     {
         if ($this->get('security.authorization_checker')->isGranted(Roles::TEAM_MEMBER)) {
