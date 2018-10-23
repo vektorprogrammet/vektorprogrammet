@@ -4,12 +4,13 @@ namespace AppBundle\Twig\Extension;
 
 use AppBundle\Entity\StaticContent;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class StaticContentExtension extends \Twig_Extension
 {
     private $em;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
@@ -22,7 +23,7 @@ class StaticContentExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'get_content' => new \Twig_Function_Method($this, 'getContent'),
+            new \Twig_SimpleFunction('get_content', [$this, 'getContent']),
         );
     }
 

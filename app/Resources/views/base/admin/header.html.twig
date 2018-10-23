@@ -1,0 +1,27 @@
+<header class="app-header navbar">
+    <ul class="nav navbar-nav d-md-down-none">
+        <li class="nav-item px-3">
+            <a class="nav-link" href="{{ path('home') }}"><i class="fa fa-chevron-left"></i>&nbsp;&nbsp;Tilbake til forsiden</a>
+        </li>
+    </ul>
+    <ul class="nav navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <img class="img-avatar profile-photo" src="{{ asset(app.user.picturePath | imagine_filter('profile_img_tiny')) }}" alt="{{ app.user }}">
+                {{ app.user }}
+            </a>
+            <div class="dropdown-menu dropdown-menu-right p-0">
+                <div class="dropdown-header text-center">
+                    <strong>Min konto</strong>
+                </div>
+                {% include 'base/dropdown_item_link.html.twig' with {route: 'my_page', name: 'Min side', icon: 'file'} %}
+                {% include 'base/dropdown_item_link.html.twig' with {route: 'profile', name: 'Profil', icon: 'user'} %}
+                {% include 'base/dropdown_item_link.html.twig' with {route: 'receipt_create', name: 'Mine utlegg', icon: 'usd'} %}
+                {% if app.user.isActiveAssistant() %}
+                    {% include 'base/dropdown_item_link.html.twig' with {route: 'my_partners', name: 'Mine vektorpartnere', icon: 'users'} %}
+                {% endif %}
+                {% include 'base/dropdown_item_link.html.twig' with {route: 'logout', name: 'Logg ut', icon: 'lock', class: 'text-danger'} %}
+            </div>
+        </li>
+    </ul>
+</header>

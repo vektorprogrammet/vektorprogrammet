@@ -6,6 +6,7 @@ use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamApplication;
 use AppBundle\Event\TeamApplicationCreatedEvent;
 use AppBundle\Form\Type\TeamApplicationType;
+use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -19,7 +20,7 @@ class TeamApplicationController extends Controller
     {
         $user = $this->getUser();
         $activeUserHistoriesInTeam = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findActiveTeamMembershipsByTeamAndUser($application->getTeam(), $user);
-        if (empty($activeUserHistoriesInTeam) && !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+        if (empty($activeUserHistoriesInTeam) && !$this->isGranted(Roles::TEAM_LEADER)) {
             throw new AccessDeniedException();
         }
 
@@ -33,7 +34,7 @@ class TeamApplicationController extends Controller
         $applications = $this->getDoctrine()->getRepository('AppBundle:TeamApplication')->findByTeam($team);
         $user = $this->getUser();
         $activeUserHistoriesInTeam = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findActiveTeamMembershipsByTeamAndUser($team, $user);
-        if (empty($activeUserHistoriesInTeam) && !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+        if (empty($activeUserHistoriesInTeam) && !$this->isGranted(Roles::TEAM_LEADER)) {
             throw new AccessDeniedException();
         }
 
@@ -45,7 +46,7 @@ class TeamApplicationController extends Controller
 
     public function deleteTeamApplicationByIdAction(TeamApplication $teamApplication)
     {
-        $manager = $this->getDoctrine()->getEntityManager();
+        $manager = $this->getDoctrine()->getManager();
 
         $manager->remove($teamApplication);
         $manager->flush();
@@ -59,7 +60,7 @@ class TeamApplicationController extends Controller
             throw new NotFoundHttpException();
         }
         $teamApplication = new TeamApplication();
-        $form = $this->createForm(new TeamApplicationType(), $teamApplication);
+        $form = $this->createForm(TeamApplicationType::class, $teamApplication);
         $form->handleRequest($request);
 
         if ($form->isValid() && $form->isSubmitted() && $team->getAcceptApplication()) {

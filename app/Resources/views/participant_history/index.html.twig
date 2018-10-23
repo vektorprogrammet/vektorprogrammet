@@ -25,44 +25,6 @@
 
             });
 
-            {# -------------------------------------------- #}
-
-
-            $("#activeAssistantSearch").keyup(function () {
-
-                _this = this;
-
-                $.each($("#activeAssistantTable tbody").find("tr"), function () {
-
-                    if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
-                        $(this).hide();
-                    }
-                    else {
-                        $(this).show();
-                    }
-                });
-
-            });
-
-            {# -------------------------------------------- #}
-
-
-            $("#workSearch").keyup(function () {
-
-                _this = this;
-
-                $.each($("#workTable tbody").find("tr"), function () {
-
-                    if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
-                        $(this).hide();
-                    }
-                    else {
-                        $(this).show();
-                    }
-                });
-
-            });
-
         });
 
     </script>
@@ -75,210 +37,125 @@
     Deltakerhistorikk
 {% endblock %}
 
-{% block body %}
-<div class="row">
-    <div class="small-12 medium-12 large-12 columns">
-
-        <h1>Deltakerhistorikk {{ semester.department }}</h1>
-
-        <hr>
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Assistenter</li>
+{% endblock %}
 
 
-        {% if is_granted_team_leader() %}
+{% block breadcrumb_menu %}
+    {% if is_granted_team_leader() %}
         {% include "common/department_semester_dropdowns.html.twig" with {'path': 'participanthistory_show_by_semester', 'parameterName': 'id', 'currentSemester': semester} %}
-        {% else %}
-        <ul class="inline-list">
-            {# Semester dropdown #}
-            {% include "common/semester_dropdown.html.twig" with {
-                'pathForSemester': 'participanthistory_show_by_semester',
-                'semesterParameterName': 'id',
-                'currentSemester': semester} %}
-        </ul>
-        {% endif %}
-
-        <div class="row">
-
-            <div class="small-12 medium-12 large-12 columns">
-                <hr>
-            </div>
-
-            <div class="small-12 medium-12 large-8 columns">
-
-                <h3> Assistenthistorikk &nbsp;
-                    <button class="button tiny csv_download_button" data-table-id="assistantTable"><i class="fa fa-download"></i> Last ned CSV</button>
-                    <span style="float:right;font-size: 80%;">Antall: {{ assistantHistories|length }}</span>
-                </h3>
-
-            </div>
-
-            <div class="small-12 medium-12 large-4 columns">
-
-                <input type="text" id="assistantSearch" placeholder="Søk..."/>
-
-            </div>
-
-        </div>
+    {% else %}
+        {# Semester dropdown #}
+        {% include "common/semester_dropdown.html.twig" with {
+        'pathForSemester': 'participanthistory_show_by_semester',
+        'semesterParameterName': 'id',
+        'currentSemester': semester} %}
+    {% endif %}
+{% endblock %}
 
 
-        <div class="row">
-            <div class="small-12 medium-12 large-12 columns">
+{% block body %}
 
-                <hr>
+    <h2>Assistenter {{ semester.department }} - {{ semester.name }}</h2>
+    <hr>
 
-                <table width="100%" id="assistantTable">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="form-row">
+                        <div class="col d-flex align-items-center">
+                            <span>
+                                <i class="fa fa-align-justify"></i> Assistenter ({{ assistantHistories|length }})
+                            </span>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text" id="assistantSearch" placeholder="Søk..."/>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <table width="100%" id="assistantTable" class="table">
 
-                    <thead>
+                        <thead>
 
-                    <tr>
-                        <th> Navn</th>
-                        <th> Skole</th>
-                        <th> E-post</th>
-                        <th> Semester</th>
-                        <th> Avdeling</th>
-                        <th> Bolk</th>
-                        <th> Dag</th>
-                        {% if is_granted_admin() or (is_granted_team_leader() and app.user.department == semester.department) %}
-                            <th></th>
-                            <th></th>
-                        {% endif %}
-                    </tr>
-
-                    </thead>
-
-                    <tbody>
-                    {% for ah in assistantHistories %}
                         <tr>
-                            <td>
-                                <a href='{{ path('specific_profile', { 'id': ah.user.id }) }}'>{{ ah.user }}</a>
-                            </td>
-                            <td>
-
-                                {% if ah.school is not null %}
-                                    {{ ah.school.name }}
-                                {% else %}
-                                    Skolen er slettet.
-                                {% endif %}
-
-                            </td>
-                            <td> {{ ah.user.email }}</td>
-                            <td> {{ ah.semester.name }}</td>
-                            <td> {{ ah.semester.department.shortname }}</td>
-                            <td> {{ ah.bolk }}</td>
-                            <td> {{ ah.day }}</td>
+                            <th></th>
+                            <th> Navn</th>
+                            <th> Skole</th>
+                            <th> E-post</th>
+                            <th> Semester</th>
+                            <th> Avdeling</th>
+                            <th> Bolk</th>
+                            <th> Dag</th>
                             {% if is_granted_admin() or (is_granted_team_leader() and app.user.department == semester.department) %}
-                                <td>
-                                    <form
-                                            action="{{ path('assistant_history_delete', {id: ah.id}) }}"
-                                            method="POST"
-                                            onsubmit="return confirm('Er du sikker på at du vil slette {{ ah.user }} fra {{ ah.school.name }} {{ ah.semester.name }}?')"
-                                    >
-                                        <button class="button tiny alert"><i class="fa fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                                <td>
-                                    <a type="submit" class="button tiny"
-                                       href="{{ path('assistant_history_edit',  {id: ah.id}) }}"><i
-                                                class="fa fa-pencil"></i>
-                                    </a>
-                                </td>
+                                <th></th>
+                                <th></th>
                             {% endif %}
                         </tr>
-                    {% endfor %}
-                    </tbody>
 
-                </table>
+                        </thead>
 
+                        <tbody>
+                        {% for ah in assistantHistories %}
+                            <tr>
+                                <td>
+                                    {% if is_granted_admin() or (is_granted_team_leader() and app.user.department == semester.department) %}
+
+                                        <div class="dropdown">
+                                            <div class="clickable px-2" id="options-{{ ah.id }}" data-toggle="dropdown"
+                                                 aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-ellipsis-v text-secondary"></i>
+                                            </div>
+                                            <div class="dropdown-menu pt-0" aria-labelledby="options-{{ ah.id }}">
+                                                <div class="dropdown-header mb-2"><strong>{{ ah.user }}</strong></div>
+                                                <a class="dropdown-item text-primary"
+                                                   href="{{ path('assistant_history_edit',  {id: ah.id}) }}"><i
+                                                            class="fa fa-pencil text-primary"></i> Endre
+                                                </a>
+                                                <form
+                                                        action="{{ path('assistant_history_delete', {id: ah.id}) }}"
+                                                        method="POST"
+                                                        onsubmit="return confirm('Er du sikker på at du vil slette {{ ah.user }} fra {{ ah.school.name }} {{ ah.semester.name }}?')"
+                                                >
+                                                    <button type="submit"
+                                                            class="dropdown-item text-danger">
+                                                        <i class="fa fa-trash text-danger"></i>
+                                                        Slett
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href='{{ path('specific_profile', { 'id': ah.user.id }) }}'>{{ ah.user }}</a>
+                                </td>
+                                <td>
+
+                                    {% if ah.school is not null %}
+                                        {{ ah.school.name }}
+                                    {% else %}
+                                        Skolen er slettet.
+                                    {% endif %}
+
+                                </td>
+                                <td> {{ ah.user.email }}</td>
+                                <td> {{ ah.semester.name }}</td>
+                                <td> {{ ah.semester.department.shortname }}</td>
+                                <td> {{ ah.bolk }}</td>
+                                <td> {{ ah.day }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+                    <button class="btn btn-outline-secondary csv_download_button" data-table-id="assistantTable"><i
+                                class="fa fa-download"></i> Last ned CSV
+                    </button>
+                </div>
             </div>
         </div>
-
-
-        <div class="row">
-
-            <div class="small-12 medium-12 large-12 columns">
-                <hr>
-            </div>
-
-            <div class="small-12 medium-12 large-8 columns">
-
-                <h3> Teamhistorikk &nbsp;
-                    <button class="button tiny csv_download_button" data-table-id="workTable"><i class="fa fa-download"></i> Last ned CSV</button>
-                    <span style="float:right;font-size: 80%;">Antall: {{ teamMemberships|length }}</span>
-                </h3>
-
-            </div>
-
-            <div class="small-12 medium-12 large-4 columns">
-
-                <input type="text" id="workSearch" placeholder="Søk..."/>
-
-            </div>
-
-        </div>
-
-        <div class="row">
-            <div class="small-12 medium-12 large-12 columns">
-
-                <hr>
-
-                <table width="100%" id="workTable">
-
-                    <thead>
-
-                    <tr>
-                        <th> Navn</th>
-                        <th> E-post</th>
-                        <th> Team</th>
-                        <th> Avdeling</th>
-                        <th> Start</th>
-                        <th> Slutt</th>
-                    </tr>
-
-                    </thead>
-
-                    <tbody>
-                    {% for wh in teamMemberships %}
-                        <tr>
-                            <td>
-                                {% if wh.user is not null %}
-                                    <a href='{{ path('specific_profile', { 'id': wh.user.id }) }}'>{{ wh.user.firstName }} {{ wh.user.lastName }}</a>
-                                {% else %}
-                                    Brukeren er slettet.
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if wh.user is not null %}
-                                    {{ wh.user.email }}
-                                {% else %}
-                                    Brukeren er slettet.
-                                {% endif %}
-                            </td>
-                            <td>
-                                {{ wh.teamName }}
-                            </td>
-                            <td>
-                                {% if wh.team is not null %}
-                                    {{ wh.team.department.shortName }}
-                                {% else %}
-                                    Avdelingen er slettet.
-                                {% endif %}
-                            </td>
-                            <td> {{ wh.startSemester.name }} </td>
-
-
-                            <td> {{ wh.endSemester is not null ? wh.endSemester.name : '' }}</td>
-
-                        </tr>
-
-                    {% endfor %}
-                    </tbody>
-
-                </table>
-
-            </div>
-        </div>
-
     </div>
-</div>
-
 {% endblock %}

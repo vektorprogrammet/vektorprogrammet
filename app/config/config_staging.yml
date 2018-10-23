@@ -7,7 +7,8 @@ parameters:
         client_secret: '%google_api_client_secret%'
         refresh_token: '%google_api_refresh_token%'
         disabled: true
-    slack.disable_delivery: true
+
+    slack.disable_delivery: false
 
 swiftmailer:
     disable_delivery: true

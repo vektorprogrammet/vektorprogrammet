@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,20 +27,7 @@ class InterviewSchemaController extends Controller
     {
         $schema = new InterviewSchema();
 
-        $form = $this->createForm(new InterviewSchemaType(), $schema);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($schema);
-            $em->flush();
-
-            // Need some form of redirect. Will cause wrong database entries if the form is rendered again
-            // after a valid submit, without remaking the form with up to date question objects from the database.
-            return $this->redirect($this->generateUrl('interview_schema'));
-        }
-
-        return $this->render('interview/schema.html.twig', array('form' => $form->createView()));
+        return $this->editSchemaAction($request, $schema);
     }
 
     /**
@@ -53,20 +41,21 @@ class InterviewSchemaController extends Controller
      */
     public function editSchemaAction(Request $request, InterviewSchema $schema)
     {
-        $form = $this->createForm(new InterviewSchemaType(), $schema);
+        $form = $this->createForm(InterviewSchemaType::class, $schema);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($schema);
             $em->flush();
-
-            // Need some form of redirect. Will cause wrong database entries if the form is rendered again
-            // after a valid submit, without remaking the form with up to date question objects from the database.
             return $this->redirect($this->generateUrl('interview_schema'));
         }
 
-        return $this->render('interview/schema.html.twig', array('form' => $form->createView()));
+        return $this->render('interview/schema.html.twig', array(
+            'form' => $form->createView(),
+            'schema' => $schema,
+            'isCreate' => !$schema->getId()
+        ));
     }
 
     /**
@@ -92,7 +81,7 @@ class InterviewSchemaController extends Controller
     public function deleteSchemaAction(InterviewSchema $schema)
     {
         try {
-            if ($this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+            if ($this->isGranted(Roles::TEAM_LEADER)) {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($schema);
                 $em->flush();

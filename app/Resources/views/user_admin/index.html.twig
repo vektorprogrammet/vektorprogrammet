@@ -11,7 +11,7 @@
 
             _this = this;
 
-            $.each($("#table tbody").find("tr"), function () {
+            $.each($(".table tbody").find("tr"), function () {
 
                 if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
                     $(this).hide();
@@ -28,6 +28,23 @@
 
 {% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">
+        Brukere
+    </li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    {% if is_granted_team_leader() %}
+        <div class="btn-group">
+            {% include "common/department_dropdown.html.twig" with {'pathForDepartment': 'useradmin_filter_users_by_department', 'departmentParameterName': 'id', 'currentDepartment': department} %}
+            <a class="btn text-success btn-sm" href="{{ path('useradmin_create_user', { 'id': department.id }) }}">
+                <i class="fa fa-user-plus"></i> Ny bruker
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}
+
 {% block title %}
     Brukere
 {% endblock %}
@@ -35,89 +52,36 @@
 
 {% block body %}
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-
-            <h1> Brukere </h1>
-
-            <hr>
-
-            <div class="row">
-
-                <div class="small-12 medium-12 large-6 columns">
-
-                    <ul class="inline-list">
-
-                        {# Dropdown to choose department, only for superadmins #}
-                        {% if is_granted_team_leader() %}
-
-                            {% include "common/department_dropdown.html.twig" with {'pathForDepartment': 'useradmin_filter_users_by_department', 'departmentParameterName': 'id', 'currentDepartment': department} %}
-
-                            {# Button to create a user, dropdown for superadmin and regular button for admin #}
-                            <li>
-                                <a class="button tiny" data-dropdown="superadminCreateUser"
-                                   aria-controls="superadminCreateUser" aria-expanded="false">Opprett bruker &raquo;</a>
-                                <ul id="superadminCreateUser" class="f-dropdown" data-dropdown-content tabindex="-1"
-                                    aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                                    {% for d in departments %}
-
-                                        <li>
-                                            <a href="{{ path('useradmin_create_user', { 'id': d.id }) }}">{{ d.shortName }}</a>
-                                        </li>
-
-                                    {% endfor %}
-
-                                </ul>
-                            </li>
-                        {% else %}
-                            <li><a href="{{ path('useradmin_create_user') }}" class="button tiny">Opprett bruker</a>
-                            </li>
-                        {% endif %}
-
-                    </ul>
-
-                </div>
-
-                <div class="small-12 medium-12 large-6 columns">
-
-                    <input type="text" id="search" placeholder="Søk..."/>
-
-                </div>
-
-
-            </div>
+        <div class="col-12">
+            <h2 class="text-center my-3">Brukere {{ department }}</h2>
+            <ul class="nav nav-tabs mt-4">
+                <li class="nav-item">
+                    <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active" role="tab" aria-controls="home" aria-selected="true">Aktive brukere</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="inactive-tab" data-toggle="tab" href="#inactive" role="tab" aria-controls="home" aria-selected="true">Inaktive brukere</a>
+                </li>
+                <li class="nav-item ml-auto">
+                    <input class="form-control" type="text" id="search" placeholder="Søk..."/>
+                </li>
+            </ul>
         </div>
     </div>
 
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <hr>
-            {% include 'user_admin/user.table.html.twig' with {users: activeUsers} %}
+        <div class="col-12">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="active" role="tabpanel" aria-labelledby="active-tab">
+                    {% include 'user_admin/user.table.html.twig' with {users: activeUsers} %}
+                </div>
+                <div class="tab-pane fade" id="inactive" role="tabpanel" aria-labelledby="inactive-tab">
+                    {% include 'user_admin/user.table.html.twig' with {users: inActiveUsers} %}
+                </div>
+            </div>
+
         </div>
     </div>
 
-
-
-    {% if is_granted_team_leader() %}
-
-        <p></p>
-
-        <div class="row">
-            <div class="small-12 medium-12 large-12 columns">
-
-                <h1> Inaktive Brukere </h1>
-
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="small-12 medium-12 large-12 columns">
-                <hr>
-                {% include 'user_admin/user.table.html.twig' with {users: inActiveUsers} %}
-            </div>
-        </div>
-
-    {% endif %}
 {% endblock %}
 
 

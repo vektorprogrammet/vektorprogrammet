@@ -4,166 +4,193 @@
     Teaminteresse
 {% endblock %}
 
-{% block body %}
-<div class="row">
-    <div class="small-12 columns">
-        <h1>Teaminteresse {{ semester.department.shortname }} {{ semester.semestertime }} {{ semester.year }}</h1>
-        <hr>
-    </div>
-</div>
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Teaminteresse</li>
+{% endblock %}
 
-<div class="row">
-    <div class="small-12 columns">
+
+{% block breadcrumb_menu %}
+    <div class="btn-group">
+        <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#emailModal">
+            <i class="fa fa-envelope-o"></i> Generer e-postliste
+        </button>
         {% if is_granted_admin() %}
             {% include "common/department_semester_dropdowns.html.twig" with {'path': 'admissionadmin_team_interest_by_semester', 'parameterName': 'semester', 'currentSemester': semester} %}
         {% else %}
-            <ul class="inline-list">
-                {# Semester dropdown #}
-                {% include "common/semester_dropdown.html.twig" with {
+            {% include "common/semester_dropdown.html.twig" with {
                 'pathForSemester': 'admissionadmin_team_interest_by_semester',
                 'semesterParameterName': 'semester',
                 'currentSemester': semester} %}
-            </ul>
         {% endif %}
-        <hr>
     </div>
-</div>
 
-<div class="row">
-    <div class="small-12 columns">
-        <h2>Team med interessenter</h2>
-        <table width="100%" class="team-table">
-            <thead>
-            <tr>
-                <th>Team</th>
-                <th>Antall interessenter</th>
-                <th>Interessenter (intervju)</th>
-                <th>Interessenter (stand)</th>
-            </tr>
-            </thead>
+{% endblock %}
 
-            <tbody>
-            {% for team in teams %}
+
+{% block body %}
+    <h2 class="text-center my-5">Teaminteresse {{ semester.department }} {{ semester.name }}</h2>
+    <div class="card">
+        <div class="card-header"><i class="fa fa-align-justify"></i> Team med interessenter</div>
+        <div class="card-body">
+            <table width="100%" class="team-table table">
+                <thead>
                 <tr>
-                    <td> <a href="{{ path('team_page', {'id' : team.id}) }}">{{ team }}</a></td>
-                    <td>{{ team.numberOfPotentialMembersAndApplicantsInSemester(semester) }}</td>
-                    <td>
-                        {% for application in team.potentialMembers %}
-                            {% if application.semester == semester %}
-                                <a href='{{ path('specific_profile', { 'id': application.user.id }) }}'>
-                                    <i class="fa fa-user"></i>&nbsp
-                                    {{ application.user }}
-                                </a>
-                                <br>
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for potentialApplicant in team.potentialApplicants %}
-                            {% if potentialApplicant.semester == semester %}
-                                <a href='mailto:{{ potentialApplicant.email }}'>
-                                    <i class="fa fa-envelope"></i>&nbsp
-                                    {{ potentialApplicant.name }}
-                                </a>
-                                <br>
-                            {% endif %}
-                        {% endfor %}
-                    </td>
+                    <th>Team</th>
+                    <th>Antall interessenter</th>
+                    <th>Interessenter (intervju)</th>
+                    <th>Interessenter (stand)</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+                </thead>
 
-
-<div class="row">
-    <div class="small-12 columns">
-        <hr>
-        <h2>Personer som kunne tenkt seg teamverv</h2>
-        <a class="button tiny" href="#" data-reveal-id="myModal">Vis liste med e-postadresser</a>
-
-        <div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-            <p>
-                {% for application in applicationsWithTeamInterest %} {{ application.user.email }}; {% endfor %}
-                {% for possibleApplicant in possibleApplicants %} {{ possibleApplicant.email }}; {% endfor %}
-            </p>
-            <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                <tbody>
+                {% for team in teams %}
+                    <tr>
+                        <td><a href="{{ path('team_page', {'id' : team.id}) }}">{{ team }}</a></td>
+                        <td>{{ team.numberOfPotentialMembersAndApplicantsInSemester(semester) }}</td>
+                        <td>
+                            {% for application in team.potentialMembers %}
+                                {% if application.semester == semester %}
+                                    <a href='{{ path('specific_profile', { 'id': application.user.id }) }}'>
+                                        <i class="fa fa-user"></i>&nbsp
+                                        {{ application.user }}
+                                    </a>
+                                    <br>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% for potentialApplicant in team.potentialApplicants %}
+                                {% if potentialApplicant.semester == semester %}
+                                    <a href='mailto:{{ potentialApplicant.email }}'>
+                                        <i class="fa fa-envelope"></i>&nbsp
+                                        {{ potentialApplicant.name }}
+                                    </a>
+                                    <br>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
-</div>
 
-<div class="row team-interest-user-table">
-    <div class="small-12 columns">
-    <h3>Fra intervju</h3>
-    <p>Disse svarte ja på interesse for team under intervju for å bli vektorassistent</p>
-    <table width="100%" class="application-table">
-        <thead>
-        <tr>
-            <th>Fornavn</th>
-            <th>Etternavn</th>
-            <th>E-post</th>
-            <th>Mobil</th>
-            <th>Team</th>
-        </tr>
-        </thead>
-        <tbody>
-
-        {% for application in applicationsWithTeamInterest %}
-            <tr>
-                <td><a href='{{ path('specific_profile', { 'id': application.user.id }) }}'>{{ application.user.firstName }}</td>
-                <td>{{ application.user.lastName }}</td>
-                <td><a href="mailto:{{ application.user.email }}">{{ application.user.email }}</a></td>
-                <td>{{ application.user.phone }}</td>
-                <td>
-                    {% if application.teamInterest and application.potentialTeams is not empty %}
-                        {% for team in application.potentialTeams %}
-                            <a href="{{ path('team_page', {'id' : team.id}) }}">{{ team }}</a>{{ loop.last ? '' : ',' }}
-                        {% endfor %}
-                    {% else %}
-                        Ingen team oppgitt
-                    {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    </div>
-</div>
-
-<div class="row team-interest-user-table">
-    <div class="small-12 columns">
-        <h3>Fra stand</h3>
-        <p>
-            Disse har fylt ut skjema for teaminteresse, enten på stand eller via link.<br>
-            Link til skjema:
-            <a href="{{ path('team_interest_form', {'id': semester.department.id }) }}">
-                {{ url('team_interest_form', {'id': semester.department.id }) }}
-            </a>
-        </p>
-        <table width="100%" class="application-table">
-            <thead>
-            <tr>
-                <th>Navn</th>
-                <th>E-post</th>
-                <th>Team</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            {% for possibleApplicant in possibleApplicants %}
+    <div class="card my-5">
+        <div class="card-header">
+            <h4>Fra intervju</h4>
+            <p>Disse svarte ja på interesse for team under intervju for å bli vektorassistent</p>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
                 <tr>
-                    <td>{{ possibleApplicant.name }}</td>
-                    <td><a href="mailto:{{ possibleApplicant.email }}" >{{ possibleApplicant.email }}</a></td>
-                    <td>
-                        {% for team in possibleApplicant.potentialTeams %}
-                            <a href="{{ path('team_page', {'id' : team.id}) }}">{{ team }}</a>{{ loop.last ? '' : ',' }}
-                        {% endfor %}
-                    </td>
+                    <th>Fornavn</th>
+                    <th>Etternavn</th>
+                    <th>E-post</th>
+                    <th>Mobil</th>
+                    <th>Team</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+
+                {% for application in applicationsWithTeamInterest %}
+                    <tr>
+                        <td>
+                            <a href='{{ path('specific_profile', { 'id': application.user.id }) }}'>{{ application.user.firstName }}</a>
+                        </td>
+                        <td>{{ application.user.lastName }}</td>
+                        <td><a href="mailto:{{ application.user.email }}">{{ application.user.email }}</a></td>
+                        <td>{{ application.user.phone }}</td>
+                        <td>
+                            {% if application.teamInterest and application.potentialTeams is not empty %}
+                                {% for team in application.potentialTeams %}
+                                    <a
+                                    href="{{ path('team_page', {'id' : team.id}) }}">{{ team }}</a>{{ loop.last ? '' : ',' }}
+                                {% endfor %}
+                            {% else %}
+                                Ingen team oppgitt
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
     </div>
-</div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4>Fra stand</h4>
+            <p>
+                Disse har fylt ut skjema for teaminteresse, enten på stand eller via link.<br>
+                Link til skjema:
+                <a href="{{ path('team_interest_form', {'id': semester.department.id }) }}">
+                    {{ url('team_interest_form', {'id': semester.department.id }) }}
+                </a>
+            </p>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Navn</th>
+                    <th>E-post</th>
+                    <th>Team</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for possibleApplicant in possibleApplicants %}
+                    <tr>
+                        <td>{{ possibleApplicant.name }}</td>
+                        <td><a href="mailto:{{ possibleApplicant.email }}">{{ possibleApplicant.email }}</a></td>
+                        <td>
+                            {% for team in possibleApplicant.potentialTeams %}
+                                <a
+                                href="{{ path('team_page', {'id' : team.id}) }}">{{ team }}</a>{{ loop.last ? '' : ',' }}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="emailModalLabel">E-post til alle interessenter {{ semester }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {% for application in applicationsWithTeamInterest %} {{ application.user.email }}; {% endfor %}
+                    {% for possibleApplicant in possibleApplicants %} {{ possibleApplicant.email }}; {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Lukk</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+        var btn = document.querySelector('button[data-target="#emailModal"]');
+        btn.addEventListener('click', function() {
+            var body = document.querySelector('#emailModal .modal-body');
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.selectNodeContents(body);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        });
+    </script>
+{% endblock %}
+

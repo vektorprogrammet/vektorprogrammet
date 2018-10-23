@@ -5,7 +5,7 @@ namespace AppBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditSemesterType extends AbstractType
 {
@@ -31,20 +31,17 @@ class EditSemesterType extends AbstractType
             ->add('infoMeeting', InfoMeetingType::class, [
                 'label' => 'Infomøte',
                 'required' => false
-            ])
-            ->add('save', 'submit', array(
-                'label' => 'Endre',
-            ));
+            ]);
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Semester',
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'createSemester';
     }

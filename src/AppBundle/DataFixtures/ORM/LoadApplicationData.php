@@ -16,7 +16,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
     public function load(ObjectManager $manager)
     {
         $application0 = new Application();
-        $application0->setUser($this->getReference('user-team'));
+        $application0->setUser($this->getReference('user-team-member'));
         $application0->setPreviousParticipation(false);
         $application0->setYearOfStudy(1);
         $application0->setSemester($this->getReference('semester-current'));
@@ -182,6 +182,14 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $interview6->setInterviewSchema($this->getReference('ischema-1'));
         $interview6->setUser($this->getReference('user-8'));
         $interview6->setCancelled(true);
+        $interview6->setCancelMessage('
+        Jeg er en kjiping som ikke orker å være vektorassistent.
+        Jeg har haugevis av unnskyldninger på lager for å slippe unna disse greine.
+        Helst ikke kontakt meg igjen. Ever.
+        Jeg har haugevis av unnskyldninger på lager for å slippe unna disse greine.
+        Jeg er en kjiping som ikke orker å være vektorassistent.
+        Helst ikke kontakt meg igjen. Ever.
+        Jeg er en kjiping som ikke orker å være vektorassistent.');
         $application6->setInterview($interview6);
 
         $manager->persist($application6);

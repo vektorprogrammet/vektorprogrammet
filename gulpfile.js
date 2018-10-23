@@ -5,7 +5,6 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
     cssnano = require('gulp-cssnano'),
-    rename = require('gulp-rename'),
     sass = require('gulp-sass'),
     changed = require('gulp-changed'),
     babel = require('gulp-babel');
@@ -13,28 +12,30 @@ var gulp = require('gulp'),
 var exec = require('child_process').exec;
 
 var path = {
-    dist: 'www/',
+    dist: 'web/',
     src: 'app/Resources/assets/',
-    frontEnd: 'client/build',
+    client: {
+        src: 'client'
+    },
     scheduling: {
         src: 'src/AppBundle/AssistantScheduling/Webapp'
     }
 };
 
-gulp.task('stylesProd', function () {
+function stylesProd() {
   var dest = path.dist + 'css/';
-  gulp.src(path.src + 'scss/**/*.scss')
-      .pipe(plumber())
-      .pipe(changed(dest))
-      .pipe(sass())
-      .pipe(autoprefixer())
-      .pipe(cssnano())
-      .pipe(gulp.dest(dest))
-});
+  return gulp.src(path.src + 'scss/**/*.scss')
+    .pipe(plumber())
+    .pipe(changed(dest))
+    .pipe(sass())
+    .pipe(autoprefixer())
+    .pipe(cssnano())
+    .pipe(gulp.dest(dest))
+}
 
-gulp.task('scriptsProd', function () {
+function scriptsProd () {
   var dest = path.dist + 'js/';
-  gulp.src(path.src + 'js/**/*.js')
+  return gulp.src(path.src + 'js/**/*.js')
       .pipe(plumber())
       .pipe(changed(dest))
       .pipe(babel({
@@ -42,11 +43,11 @@ gulp.task('scriptsProd', function () {
       }))
       .pipe(uglify())
       .pipe(gulp.dest(dest))
-});
+}
 
-gulp.task('imagesProd', function () {
+function imagesProd () {
   var dest = path.dist + 'images/';
-  gulp.src(path.src + 'images/**/*')
+  return gulp.src(path.src + 'images/**/*')
       .pipe(plumber())
       .pipe(changed(dest))
       .pipe(imagemin({
@@ -55,71 +56,74 @@ gulp.task('imagesProd', function () {
         optimizationLevel: 1
       }))
       .pipe(gulp.dest(dest))
-});
+}
 
-gulp.task('stylesDev', function () {
+function stylesDev () {
   var dest = path.dist + 'css/';
-  gulp.src(path.src + 'scss/**/*.scss')
+  return gulp.src(path.src + 'scss/**/*.scss')
       .pipe(plumber())
       .pipe(changed(dest))
       .pipe(sass())
       .pipe(autoprefixer())
       .pipe(gulp.dest(dest))
-});
+}
 
-gulp.task('scriptsDev', function () {
+function scriptsDev () {
   var dest = path.dist + 'js/';
-  gulp.src(path.src + 'js/**/*.js')
+  return gulp.src(path.src + 'js/**/*.js')
       .pipe(plumber())
       .pipe(changed(dest))
       .pipe(babel({
         presets: ['env']
       }))
       .pipe(gulp.dest(dest))
-});
+}
 
-gulp.task('imagesDev', function () {
+function imagesDev () {
   var dest = path.dist + 'images/';
-  gulp.src(path.src + 'images/**/*')
+  return gulp.src(path.src + 'images/**/*')
       .pipe(plumber())
       .pipe(changed(dest))
       .pipe(gulp.dest(dest))
-});
+}
 
-gulp.task('icons', function () {
-  gulp.src('node_modules/font-awesome/fonts/**.*')
-      .pipe(gulp.dest('www/fonts/'));
-  gulp.src(path.src + 'fonts/**.*')
-    .pipe(gulp.dest('www/fonts/'));
-});
+function icons () {
+  var r = gulp.src('node_modules/@fortawesome/fontawesome-free/webfonts/**.*')
+      .pipe(gulp.dest('web/webfonts/'));
+  return r && gulp.src(path.src + 'webfonts/**.*')
+    .pipe(gulp.dest('web/webfonts/'));
+}
 
-gulp.task('files', function () {
-  gulp.src(path.src + 'files/*')
-      .pipe(changed('www/files/'))
-      .pipe(gulp.dest('www/files/'))
-});
+function files () {
+  return gulp.src(path.src + 'files/*')
+      .pipe(changed('web/files/'))
+      .pipe(gulp.dest('web/files/'))
+}
 
-gulp.task('vendor', function () {
+function vendor () {
 
-  gulp.src('node_modules/dropzone/**/*')
-      .pipe(gulp.dest('www/vendor/dropzone/'));
+  var r = gulp.src('node_modules/dropzone/**/*')
+      .pipe(gulp.dest('web/vendor/dropzone/'));
 
-  gulp.src('node_modules/cropperjs/dist/*')
-    .pipe(gulp.dest('www/vendor/cropperjs/'));
+  r = r && gulp.src('node_modules/cropperjs/dist/*')
+    .pipe(gulp.dest('web/vendor/cropperjs/'));
 
-  gulp.src(['node_modules/ckeditor/**/*', path.src + 'js/ckeditor/**/*'])
-      .pipe(gulp.dest('www/vendor/ckeditor/'));
+  r = r && gulp.src(['node_modules/ckeditor/**/*', path.src + 'js/ckeditor/**/*'])
+      .pipe(gulp.dest('web/vendor/ckeditor/'));
 
-  gulp.src('node_modules/foundation-sites/js/foundation.min.js')
-    .pipe(gulp.dest('www/js'));
+  r = r && gulp.src(path.src + '/js/coreui.js')
+    .pipe(gulp.dest('web/vendor/'));
 
-  gulp.src('node_modules/bootstrap/dist/js/bootstrap.min.js')
-    .pipe(gulp.dest('www/js'));
+  r = r && gulp.src('node_modules/@coreui/coreui/dist/js/coreui.min.js')
+    .pipe(gulp.dest('web/vendor/'));
 
-  gulp.src('node_modules/jquery/dist/jquery.min.js')
-    .pipe(gulp.dest('www/js'));
+  r = r && gulp.src('node_modules/bootstrap/dist/js/bootstrap.min.js')
+    .pipe(gulp.dest('web/js'));
 
-  gulp.src([
+  r = r && gulp.src('node_modules/jquery/dist/jquery.min.js')
+    .pipe(gulp.dest('web/js'));
+
+  return r && gulp.src([
     'node_modules/jquery/dist/jquery.min.js',
     'node_modules/popper.js/dist/umd/popper.min.js',
     'node_modules/bootstrap/dist/js/bootstrap.min.js',
@@ -127,42 +131,53 @@ gulp.task('vendor', function () {
   ])
     .pipe(concat('vendor.js'))
     .pipe(gulp.dest(path.dist + 'js/'));
-});
+}
 
-gulp.task('buildAssistantSchedulingApp', function (cb) {
-    exec('cd '+path.scheduling.src+' && npm run build:dev', function (err, stdout, stderr) {
-        console.log(stdout);
-        console.log(stderr);
-        cb(err);
-    })
-});
+function assistantSchedulingStaticFiles () {
+  var r = gulp.src(path.scheduling.src + '/dist/build.js')
+        .pipe(gulp.dest('web/js/scheduling'));
+    return r && gulp.src(path.scheduling.src + '/dist/build.js.map')
+        .pipe(gulp.dest('web/js/scheduling'));
+}
 
-gulp.task('assistantSchedulingStaticFiles', ['buildAssistantSchedulingApp'], function () {
-    gulp.src(path.scheduling.src + '/dist/build.js')
-        .pipe(gulp.dest('www/js/scheduling'));
-    gulp.src(path.scheduling.src + '/dist/build.js.map')
-        .pipe(gulp.dest('www/js/scheduling'));
-});
+function buildClientApp (cb) {
+  exec('cd '+path.client.src+' && npm run build', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  })
+}
+
+function clientStaticFiles () {
+  return gulp.src(path.client.src + '/dist/app.js')
+    .pipe(gulp.dest('web/js/client'));
+}
+
+function clientStaticFilesProd () {
+  var r = gulp.src(path.client.src + '/dist/js/**/*.js')
+    .pipe(concat('app.js'))
+    .pipe(gulp.dest('web/js/client'));
+  return r && gulp.src(path.client.src + '/dist/css/**/*.css')
+    .pipe(concat('app.css'))
+    .pipe(gulp.dest('web/css/client'));
+}
 
 gulp.task('frontEnd', function () {
   gulp.src(path.frontEnd + '/**/*')
-      .pipe(gulp.dest('www/'));
+      .pipe(gulp.dest('web/'));
 });
 
-
-gulp.task('watch', function () {
-    gulp.watch(path.src + 'scss/**/*.scss', ['stylesDev']);
-    gulp.watch(path.src + 'js/**/*.js', ['scriptsDev']);
-    gulp.watch(path.scheduling.src + '/**/*.vue', ['assistantSchedulingStaticFiles']);
-    gulp.watch(path.src + 'images/*', ['imagesDev']);
-});
-
-gulp.task('watch:scheduling', function () {
-    gulp.watch(path.scheduling.src + '/**/*.vue', ['assistantSchedulingStaticFiles']);
-    gulp.watch(path.scheduling.src + '/src/**/*.js', ['assistantSchedulingStaticFiles']);
-});
+function watch () {
+    gulp.watch(path.src + 'scss/**/*.scss', stylesDev);
+    gulp.watch(path.src + 'js/**/*.js', scriptsDev);
+    gulp.watch(path.scheduling.src + '/**/*.vue', assistantSchedulingStaticFiles);
+    gulp.watch(path.scheduling.src + '/src/**/*.js', assistantSchedulingStaticFiles);
+    gulp.watch(path.src + 'images/*', imagesDev);
+}
 
 
-gulp.task('build:prod', ['stylesProd', 'scriptsProd', 'imagesProd', 'files', 'icons', 'vendor']);
-gulp.task('build:dev', ['stylesDev', 'scriptsDev', 'imagesDev', 'files', 'icons', 'vendor']);
-gulp.task('default', ['build:dev', 'watch']);
+
+gulp.task('build:prod', gulp.parallel([stylesProd, scriptsProd, imagesProd, files, icons, vendor]));
+gulp.task('build:dev', gulp.parallel([stylesDev, scriptsDev, imagesDev, files, icons, vendor]));
+gulp.task('default', gulp.series(['build:dev', watch]));
+gulp.task('build:client', gulp.series([buildClientApp, clientStaticFilesProd]));

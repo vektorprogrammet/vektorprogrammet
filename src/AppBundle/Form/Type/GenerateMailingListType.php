@@ -3,7 +3,10 @@
 namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\Repository\SemesterRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class GenerateMailingListType extends AbstractType
@@ -11,7 +14,7 @@ class GenerateMailingListType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('semester', 'entity', array(
+            ->add('semester', EntityType::class, array(
                 'class' => 'AppBundle:Semester',
                 'label' => 'Velg semester',
                 'query_builder' => function (SemesterRepository $sr) {
@@ -19,7 +22,7 @@ class GenerateMailingListType extends AbstractType
                 },
                 'required' => true,
             ))
-            ->add('type', 'choice', array(
+            ->add('type', ChoiceType::class, array(
                 'label' => 'Velg type',
                 'choices' => array(
                     'Assistent' => 'Assistent',
@@ -28,7 +31,7 @@ class GenerateMailingListType extends AbstractType
                 ),
                 'required' => true,
             ))
-            ->add('save', 'submit', array(
+            ->add('save', SubmitType::class, array(
                 'label' => 'Generer',
             ));
     }

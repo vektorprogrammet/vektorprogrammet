@@ -175,4 +175,11 @@
             </div>
         </div>
     </div>
+    {% if scrollToForm %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                $('html, body').animate({ scrollTop:  $('.invalid-feedback').offset().top }, 'slow');
+            })
+        </script>
+    {% endif %}
 {% endblock %}

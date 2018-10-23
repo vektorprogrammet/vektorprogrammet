@@ -3,30 +3,28 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AssignInterviewType extends AbstractType
 {
-    protected $roles;
-
-    protected $department;
-
-    public function __construct($roles, $department = null)
-    {
-        $this->roles = $roles;
-        $this->department = $department;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('interview', new CreateInterviewType($this->roles, $this->department));
-
-        $builder->add('save', 'submit', array(
-            'label' => 'Lagre',
-        ));
+        $builder->add('interview', CreateInterviewType::class, [
+            'roles' => $options['roles'],
+        ]);
     }
 
-    public function getName()
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'roles' => [],
+        ]);
+    }
+
+
+    public function getBlockPrefix()
     {
         return 'application';
     }

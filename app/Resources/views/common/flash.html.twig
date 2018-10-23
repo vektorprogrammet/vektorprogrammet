@@ -1,5 +1,5 @@
 {% for flashMessage in app.session.flashbag.get('success') %}
-    <div class="admission-notice">
+    <div class="flash-message">
         <div data-alert class="alert alert-success text-center">
             {{ flashMessage }}
             <a href="#" class="close">&times;</a>
@@ -7,7 +7,7 @@
     </div>
 {% endfor %}
 {% for flashMessage in app.session.flashbag.get('info') %}
-    <div class="admission-notice">
+    <div class="flash-message">
         <div data-alert class="alert alert-info text-center">
             {{ flashMessage }}
             <a href="#" class="close">&times;</a>
@@ -15,7 +15,7 @@
     </div>
 {% endfor %}
 {% for flashMessage in app.session.flashbag.get('warning') %}
-    <div class="admission-notice">
+    <div class="flash-message">
         <div data-alert class="alert alert-warning text-center">
             {{ flashMessage }}
             <a href="#" class="close">&times;</a>
@@ -23,7 +23,7 @@
     </div>
 {% endfor %}
 {% for flashMessage in app.session.flashbag.get('danger') %}
-    <div class="admission-notice">
+    <div class="flash-message">
         <div data-alert class="alert alert-danger text-center">
             {{ flashMessage }}
             <a href="#" class="close">&times;</a>
@@ -34,7 +34,7 @@
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         $('.close').click(function () {
-          $(this).closest('.admission-notice').remove();
+          $(this).closest('.flash-message').remove();
         });
       });
     </script>

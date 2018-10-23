@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Role\Roles;
 use AppBundle\Validator\Constraints as CustomAssert;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -688,6 +689,30 @@ class User implements AdvancedUserInterface, \Serializable
         return $totalSum;
     }
 
+    public function getTotalRefundedReceiptSum(): float
+    {
+        $totalSum = 0.0;
+        foreach ($this->receipts as $receipt) {
+            if ($receipt->getStatus() === Receipt::STATUS_REFUNDED) {
+                $totalSum += $receipt->getSum();
+            }
+        }
+
+        return $totalSum;
+    }
+
+    public function getTotalRejectedReceiptSum(): float
+    {
+        $totalSum = 0.0;
+        foreach ($this->receipts as $receipt) {
+            if ($receipt->getStatus() === Receipt::STATUS_REJECTED) {
+                $totalSum += $receipt->getSum();
+            }
+        }
+
+        return $totalSum;
+    }
+
     /**
      * @return string
      */
@@ -774,5 +799,16 @@ class User implements AdvancedUserInterface, \Serializable
         $this->executiveBoardMemberships = $boardMemberships;
 
         return $this;
+    }
+
+    public function isAdmin(): bool
+    {
+        foreach ($this->roles as $role) {
+            if ($role->getRole() === Roles::ADMIN) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

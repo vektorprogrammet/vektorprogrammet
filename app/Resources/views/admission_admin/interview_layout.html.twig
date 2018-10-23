@@ -1,0 +1,99 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block javascripts %}
+
+    <script src="{{ asset_with_version('js/stupidtable.js') }}"></script>
+
+    <script>
+
+        /**
+         * This object organizes the javascript used by this twig and the twigs extending it
+         *
+         * The onReady function is called when the document is ready.
+         */
+        var AppAdmin = {
+
+            // The html table containing the applications
+            appTable: $(".application-table"),
+            distributionTable: $("#interview-distribution-table"),
+
+            onReady: function () {
+                // Add sort functionality to the table containing the applications
+                AppAdmin.appTable.stupidtable();
+                AppAdmin.distributionTable.stupidtable();
+
+                // Add arrows after sorting the table
+                AppAdmin.appTable.on("aftertablesort", AppAdmin.addSortArrows);
+                AppAdmin.distributionTable.on("aftertablesort", AppAdmin.addSortArrows);
+
+            },
+
+            addSortArrows: function (event, data) {
+                var th = $(this).find("th");
+                th.find(".arrow").remove();
+                var dir = $.fn.stupidtable.dir;
+
+                var arrow = data.direction === dir.ASC ? "asc" : "desc";
+                th.eq(data.column).append('<span class="arrow"> <i class="fa fa-sort-' + arrow + '"></i></span>');
+            },
+        };
+
+        $(document).ready(AppAdmin.onReady);
+
+    </script>
+
+{% endblock %}
+
+{% block title %}
+    Opptak
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">
+        Opptak
+    </li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    <div class="btn-group">
+        {% if is_granted_team_leader() %}
+            {% include "common/department_semester_dropdowns.html.twig" with {
+                'path': 'applications_show_by_semester',
+                'parameterName': 'id',
+                'currentSemester': semester
+            } %}
+        {% else %}
+            <ul class="inline-list">
+                {% include 'common/semester_dropdown.html.twig' with {
+                    'pathForSemester': 'applications_show_by_semester',
+                    'semesterParameterName': 'id',
+                    'currentSemester': semester
+                } %}
+            </ul>
+        {% endif %}
+        </div>
+{% endblock %}
+
+
+{% block body %}
+{#<h1>Opptak {{ semester.department }}</h1>#}
+    <div class="row">
+        <div class="col-12">
+                <ul class="nav nav-tabs justify-content-center mt-2 mb-5">
+                    <li class="nav-item">
+                        <a class="nav-link {{ status == "assigned" ? 'active' : '' }}" href="{{ path('applications_show_assigned_by_semester', {id: semester.id}) }}">Intervjufordeling</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ status == "interviewed" ? 'active' : '' }}" href="{{ path('applications_show_interviewed_by_semester', {id: semester.id}) }}">Intervjuer</a>
+                    </li>
+                </ul>
+        </div>
+    </div>
+
+<div class="row">
+    <div class="col-12">
+        {#Contains an application table, depends on interview status #}
+        {% block applications %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

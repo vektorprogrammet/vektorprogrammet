@@ -1,2 +1,9 @@
-<a class="dropdown-item{{ app.request.attributes.get('_route') == route ? ' active' }}" href="{{ path(route) }}">{{ name }}</a>
+<a
+        class="dropdown-item{{ app.request.attributes.get('_route') == route ? ' active' }}{% if class is defined %} {{ class }}{% endif %}"
+        href="{{ path(route) }}">
+    {% if icon is defined %}
+        <i class="fa fa-{{ icon }}"></i>
+    {% endif %}
+    {{ name }}
+</a>
 

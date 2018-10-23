@@ -1,68 +1,68 @@
 {% extends 'adminBase.html.twig' %}
 {% block title %}Utlegg{% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{{ path('receipts_show') }}">Utlegg</a></li>
+    <li class="breadcrumb-item active">{{ user }}</li>
+{% endblock %}
+
+
 {% block body %}
-    <div class="row">
-        <div class="small-12 columns">
-            <a href="{{ path('receipts_show') }}">
-                <i class="fa fa-chevron-left"></i> Alle utlegg
-            </a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <h1>Utlegg for <a href="{{ path('specific_profile', {'id': user.id}) }}">{{ user }}</a></h1>
-        </div>
-    </div>
+    <h2 class="text-center my-5">Utlegg for <a href="{{ path('specific_profile', {'id': user.id}) }}">{{ user }}</a></h2>
 
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <ul class="clean-list">
-                <li><b>Kontonummer:</b> {{ user.accountNumber }}</li>
-                <li><b>Email:</b> <a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
-                <li><b>Sum ubehandlet:</b> {{ user.totalPendingReceiptSum|number_format(2, ',', ' ') }} kr</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            {% for flashMessage in app.session.flashbag.get('success') %}
-                <div data-alert class="alert-box success radius">
-                    {{ flashMessage }}
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card">
+                <div class="card-body p-0 d-flex align-items-center">
+                    <i class="fa fa-laptop bg-info p-4 font-2xl mr-3"></i>
+                    <div>
+                        <div class="text-value-sm text-info">{{ user.accountNumber }}</div>
+                        <div class="text-muted text-uppercase font-weight-bold small">Kontonummer</div>
+                    </div>
                 </div>
-            {% endfor %}
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card">
+                <div class="card-body p-0 d-flex align-items-center">
+                    <i class="fa fa-dollar bg-success p-4 font-2xl mr-3"></i>
+                    <div>
+                        <div class="text-value-sm text-success">{{ user.totalRefundedReceiptSum|number_format(2, ',', ' ') }} kr</div>
+                        <div class="text-muted text-uppercase font-weight-bold small">Sum tilbakebetalt</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card">
+                <div class="card-body p-0 d-flex align-items-center">
+                    <i class="fa fa-dollar bg-warning p-4 font-2xl mr-3"></i>
+                    <div>
+                        <div class="text-value-sm text-warning">{{ user.totalPendingReceiptSum|number_format(2, ',', ' ') }} kr</div>
+                        <div class="text-muted text-uppercase font-weight-bold small">Sum ubehandlet</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card">
+                <div class="card-body p-0 d-flex align-items-center">
+                    <i class="fa fa-dollar bg-danger p-4 font-2xl mr-3"></i>
+                    <div>
+                        <div class="text-value-sm text-danger">{{ user.totalRejectedReceiptSum|number_format(2, ',', ' ') }} kr</div>
+                        <div class="text-muted text-uppercase font-weight-bold small">Sum avvist</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
     {% if receipts is not empty %}
-        <div class="row">
-            <div class="small-12 medium-12 large-12 columns">
-                <hr>
-            </div>
-
-            <div class="small-6 medium-6 large-6 columns">
-                <h3> Utlegg </h3>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="small-12 medium-12 large-12 columns">
-
-                <br>
-
+        <div class="card mt-3">
+            <div class="card-header"><i class="fa fa-align-justify"></i> Utlegg ({{ receipts|length }})</div>
+            <div class="card-body table-responsive">
                 {% include 'receipt_admin/receipts_table_individual.html.twig' with { 'receipts': receipts } %}
             </div>
         </div>
-
     {% endif %}
 
-{% endblock %}
-
-{% block javascripts %}
-    <script>
-        setTimeout(function () {
-            $('.alert-box').fadeOut(800);
-        }, 1500)
-    </script>
 {% endblock %}

@@ -1,32 +1,23 @@
 @import "../modules/colors";
 @import "../colors";
 
-.text-alert {
-  color: $alert-color;
-}
+@import "../../../../../node_modules/bootstrap/scss/variables";
 
-.text-primary {
-  color: $primary-color;
-}
-
-.text-warning {
-  color: $warning-color;
-}
 
 .text-dark-grey {
   color: $admin-grey;
-}
-
-.text-success {
-  color: $success-color;
 }
 
 .text-bold {
   font-weight: bold;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .text-link {
-  color: $primary-color;
+  color: $primary;
   &:hover {
     text-decoration: underline;
     cursor: pointer;
@@ -51,4 +42,16 @@
 
 .color-status-cancelled {
   color: $color-status-cancelled;
+}
+
+.fs-16 {
+  font-size: 16px;
+}
+
+.fs-18 {
+  font-size: 18px;
+}
+
+.fs-20 {
+  font-size: 20px;
 }

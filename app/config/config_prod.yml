@@ -29,3 +29,8 @@ monolog:
             type:  stream
             path:  '%kernel.logs_dir%/%kernel.environment%.log'
             level: debug
+
+ewz_recaptcha:
+    enabled: true
+    public_key:  '%recaptcha_public_key%'
+    private_key: '%recaptcha_private_key%'

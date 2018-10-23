@@ -9,7 +9,7 @@ use AppBundle\Service\InterviewNotificationManager;
 use AppBundle\Mailer\MailerInterface;
 use AppBundle\Service\SbsData;
 use AppBundle\Sms\Sms;
-use AppBundle\Sms\SmsSender;
+use AppBundle\Sms\SmsSenderInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -35,7 +35,7 @@ class InterviewSubscriber implements EventSubscriberInterface
         SbsData $sbsData,
         InterviewNotificationManager $notificationManager,
         InterviewManager $interviewManager,
-        SmsSender $smsSender,
+        SmsSenderInterface $smsSender,
         RouterInterface $router
     ) {
         $this->mailer = $mailer;
@@ -79,7 +79,7 @@ class InterviewSubscriber implements EventSubscriberInterface
         $interviewer = $application->getInterview()->getInterviewer();
 
         // Send email to the interviewee with a summary of the interview
-        $emailMessage = \Swift_Message::newInstance()
+        $emailMessage = (new \Swift_Message())
             ->setSubject('Vektorprogrammet intervju')
             ->setReplyTo(array($interviewer->getDepartment()->getEmail() => 'Vektorprogrammet'))
             ->setTo($application->getUser()->getEmail())
@@ -87,7 +87,8 @@ class InterviewSubscriber implements EventSubscriberInterface
             ->setBody($this->twig->render('interview/interview_summary_email.html.twig', array(
                 'application' => $application,
                 'interviewer' => $interviewer,
-            )));
+            )))
+            ->setContentType('text/html');
         $this->mailer->send($emailMessage);
     }
 
@@ -144,12 +145,15 @@ class InterviewSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $campus = empty($data['campus']) ? "" : ("\nCampus: " . $data['campus']);
+
         $message =
             $data['message'] .
             "\n\n" .
             "Tid: ".$data['datetime']->format('d.m.Y - H:i') .
             "\n" .
             "Rom: ".$data['room'] .
+            $campus .
             "\n\n" .
             "Vennligst følg linken under for å godkjenne tidspunktet eller be om ny tid:\n" .
             $this->router->generate(
@@ -174,7 +178,7 @@ class InterviewSubscriber implements EventSubscriberInterface
     public function sendCoAssignedEmail(InterviewEvent $event)
     {
         $interview = $event->getInterview();
-        $emailMessage = \Swift_Message::newInstance()
+        $emailMessage = (new \Swift_Message())
             ->setSubject('Vektorprogrammet intervju')
             ->setFrom(array('vektorbot@vektorprogrammet.no' => 'Vektorprogrammet'))
             ->setTo($interview->getInterviewer()->getEmail())

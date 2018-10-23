@@ -33,7 +33,9 @@ class AssistantHistoryController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $department = $assistantHistory->getUser()->getDepartment();
-        $form = $this->createForm(new CreateAssistantHistoryType($department), $assistantHistory);
+        $form = $this->createForm(CreateAssistantHistoryType::class, $assistantHistory, [
+            'department' => $department
+        ]);
         $form->handleRequest($request);
 
         if ($form -> isValid()) {
