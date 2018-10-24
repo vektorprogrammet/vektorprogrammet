@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Semester;
 use http\Exception\InvalidArgumentException;
+use AppBundle\Role\Roles;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Form\Type\SurveySchoolSpecificExecuteType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -315,7 +316,7 @@ class SurveyController extends Controller
     public function deleteSurveyAction(Survey $survey)
     {
         try {
-            if ($this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+            if ($this->isGranted(Roles::TEAM_LEADER)) {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($survey);
                 $em->flush();
@@ -396,8 +397,7 @@ class SurveyController extends Controller
 
     private function isUserAdmin() : bool
     {
-        return $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN');
-    }
+        return $this->isGranted(Roles::ADMIN)    }
 
 
     public function updateLastPopUp()

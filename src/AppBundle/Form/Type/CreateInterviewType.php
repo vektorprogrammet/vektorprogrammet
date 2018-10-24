@@ -18,13 +18,11 @@ class CreateInterviewType extends AbstractType
                 return $er->createQueryBuilder('u')
                     ->select('u')
                     ->join('u.roles', 'r')
-                    ->join('u.fieldOfStudy', 'f')
-                    ->join('f.department', 'd')
                     ->where('r.role IN (:roles)')
                     ->orderBy('u.firstName')
                     ->setParameter('roles', $options['roles']);
             },
-            'group_by' => 'fieldOfStudy.department.shortName',
+            'group_by' => 'fieldOfStudy.department.city',
         ));
 
         $builder->add('interviewSchema', EntityType::class, array(

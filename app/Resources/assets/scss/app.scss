@@ -222,3 +222,7 @@ strong strong {
 .btn-text-break {
   white-space: normal;
 }
+
+.g-recaptcha ~ .invalid-feedback {
+  display: block;
+}

@@ -14,7 +14,7 @@ parameters:
     disabled: true
 
   slack.notification_channel: '#notifications'
-  slack.log_channel: '#website_logs'
+  slack.log_channel: '%log_channel%'
   slack.disable_delivery: true
 
   gateway_sms:
@@ -286,7 +286,13 @@ nexy_slack:
     endpoint: "%slack_endpoint%"
     username: 'vektorbot'
     icon: ':robot_face:'
+    channel: '%slack.log_channel%'
 
 knp_paginator:
     template:
         pagination: '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig'
+
+ewz_recaptcha:
+    enabled: false
+    public_key: ''
+    private_key: ''

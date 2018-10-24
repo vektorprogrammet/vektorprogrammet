@@ -12,7 +12,7 @@
     <meta property="og:type" content="website"/>
     {% if app.request.attributes.get('_route') is not null %}
         <meta property="og:url" content="http://vektorprogrammet.no/{{ path(app.request.attributes.get('_route'),
-        app.request.attributes.get('_route_params')) }}"/>
+            app.request.attributes.get('_route_params')) }}"/>
     {% endif %}
     <meta property="og:title" content="{{ block('title') }}"/>
     <meta property="og:image"
@@ -36,42 +36,46 @@
 
 </head>
 <body class="body">
-    {% block header %}
-        {% include 'base/header.html.twig' %}
-    {% endblock %}
-    {% include 'common/flash.html.twig' %}
-    {% block body %}
-        <p>
-            Content
-        </p>
-    {% endblock %}
+{% block header %}
+    {% include 'base/header.html.twig' %}
+{% endblock %}
+{% include 'common/flash.html.twig' %}
+{% block body %}
+    <p>
+        Content
+    </p>
+{% endblock %}
 {% block footer %}
     {% include 'base/footer.html.twig' %}
 {% endblock %}
 
 
-    {% if 'survey_show' not in app.request.get('_route') %}
 
-        {{
-             render(controller("AppBundle:TwigSurvey:nextSurvey"))
-
-        }}
-    {% endif %}
+<script src="{{ asset_with_version('js/access_control.js') }}"></script>
 
 
 
-    {% if googleAnalyticsId %}
+{% if 'survey_show' not in app.request.get('_route') %}
+
+    {{
+    render(controller("AppBundle:TwigSurvey:nextSurvey"))
+
+    }}
+{% endif %}
+
+
+{% if googleAnalyticsId %}
     <script>
       (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;
         i[r] = i[r] || function () {
-          (i[r].q = i[r].q || []).push(arguments)
+          (i[r].q = i[r].q || []).push(arguments);
         }, i[r].l = 1 * new Date();
         a = s.createElement(o),
           m = s.getElementsByTagName(o)[0];
         a.async = 1;
         a.src = g;
-        m.parentNode.insertBefore(a, m)
+        m.parentNode.insertBefore(a, m);
       })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
       ga('create', '{{ googleAnalyticsId }}', 'auto');
@@ -82,17 +86,17 @@
 
 <script src="{{ asset_with_version('/js/vendor.js') }}"></script>
 <script src="{{ asset_with_version('/js/mobile_nav.js') }}"></script>
-    {% if can_edit_page() and is_edit_mode() %}
-        <script> var url = "{{ path('update_static_content') }}" </script>
-        <script src="{{ asset_with_version('vendor/ckeditor/ckeditor.js') }}"></script>
-        <script src="{{ asset_with_version('vendor/ckeditor/adapters/jquery.js') }}"></script>
-        <script src="{{ asset_with_version('js/ckeditor/createCkeditorInstances.js') }}"></script>
-        <script type="text/javascript">
-          $(document).ready(function () {
-            createCkeditorInstances();
-          });
-        </script>
-    {% endif %}
+{% if can_edit_page() and is_edit_mode() %}
+    <script> var url = "{{ path('update_static_content') }}"; </script>
+    <script src="{{ asset_with_version('vendor/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset_with_version('vendor/ckeditor/adapters/jquery.js') }}"></script>
+    <script src="{{ asset_with_version('js/ckeditor/createCkeditorInstances.js') }}"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        createCkeditorInstances();
+      });
+    </script>
+{% endif %}
 {% block javascripts %}{% endblock %}
 
 

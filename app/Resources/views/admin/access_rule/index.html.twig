@@ -1,0 +1,72 @@
+{% extends "adminBase.html.twig" %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Access Control</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    {% if unhandledRules|length %}
+        <button type="button" class="btn btn-outline-warning text-warning" data-toggle="modal" data-target="#unhandledModal">
+            <i class="fa fa-warning"></i> Unhandled rules ({{ unhandledRules|length }})
+        </button>
+    {% endif %}
+    <a class="btn btn-outline-success text-success" href="{{ path('access_rules_create') }}"><i
+                class="fa fa-plus text-success"></i> Custom rule</a>
+    <a class="btn btn-outline-success text-success" href="{{ path('access_rules_create_routing') }}"><i
+                class="fa fa-plus text-success"></i> Routing rule</a>
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        {% if routingRules|length %}
+            <div class="col-12 col-xxxl-6 order-last order-xxxl-first">
+                <div class="card">
+                    <div class="card-header"><i class="fa fa-shield-alt"></i> Routing Rules</div>
+                    <div class="card-body table-responsive">
+                        {% include 'admin/access_rule/access_rule_table.html.twig' with {rules: routingRules} %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if customRules|length %}
+            <div class="col-12 col-xxxl-6 order-first order-xxxl-last">
+                <div class="card">
+                    <div class="card-header"><i class="fa fa-shield-alt"></i> Custom Rules</div>
+                    <div class="card-body table-responsive">
+                        {% include 'admin/access_rule/access_rule_table.html.twig' with {rules: customRules} %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="modal fade" id="unhandledModal" tabindex="-1" role="dialog" aria-labelledby="unhandledModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="unhandledModalLabel">Unhandled Rules</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <th>Resource</th>
+                        </tr>
+                        {% for rule in unhandledRules %}
+                            <tr>
+                                <td>{{ rule.method }} {{ get_path(rule.resource) }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

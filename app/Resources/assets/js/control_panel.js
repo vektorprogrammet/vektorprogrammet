@@ -11,3 +11,15 @@ $('.nav-dropdown-toggle').each(function () {
     }
   });
 });
+
+function removeEmptyNavCategories() {
+  const navTitles = $('.nav-title');
+  navTitles.each(function() {
+    const title = $(this);
+    if (title.prev().hasClass('nav-title')) {
+      title.prev().remove();
+    }
+  });
+}
+
+removeEmptyNavCategories();

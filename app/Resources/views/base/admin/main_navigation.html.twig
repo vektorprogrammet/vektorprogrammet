@@ -114,7 +114,7 @@
             <li class="nav-title">Assistenter</li>
             {% include 'base/admin/nav_link.html.twig' with {
                 route: 'participanthistory_show',
-                icon: 'history',
+                icon: 'users',
                 name: 'Assistenter',
                 activeRoutes: ['participanthistory_show_by_semester']
             } %}
@@ -270,6 +270,19 @@
                 } %}
             {% endif %}
 
+            {% if is_granted_admin() %}
+                <li class="nav-title">Admin</li>
+                {% if is_granted_team_leader() %}
+                    {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'access_rules_show',
+                    icon: 'shield-alt',
+                    name: 'Access Control',
+                    activeRoutes: [
+                    'access_rules_create',
+                    ]
+                    } %}
+                {% endif %}
+            {% endif %}
 
             <li class="nav-item mt-auto">
                 <div class="p-4">

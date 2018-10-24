@@ -142,11 +142,7 @@ class InterviewControllerTest extends BaseWebTestCase
 
     public function testShow()
     {
-        // Admin user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamLeaderClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/intervju/vis/4');
 
@@ -161,10 +157,7 @@ class InterviewControllerTest extends BaseWebTestCase
     public function testCreateSchema()
     {
         // Admin user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamLeaderClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/intervju/skjema/opprett');
 
@@ -190,10 +183,7 @@ class InterviewControllerTest extends BaseWebTestCase
     public function testEditSchemas()
     {
         // Admin user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamLeaderClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/intervju/skjema/1');
 
@@ -219,10 +209,7 @@ class InterviewControllerTest extends BaseWebTestCase
     public function testShowSchemas()
     {
         // Admin user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamLeaderClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/intervju/skjema');
 
@@ -236,10 +223,7 @@ class InterviewControllerTest extends BaseWebTestCase
     public function testSchedule()
     {
         // Admin user
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $client = $this->createTeamLeaderClient();
 
         $crawler = $client->request('GET', '/kontrollpanel/intervju/settopp/6');
 

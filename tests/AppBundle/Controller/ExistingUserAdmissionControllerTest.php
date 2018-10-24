@@ -24,10 +24,7 @@ class ExistingUserAdmissionControllerTest extends BaseWebTestCase
      */
     private function createAndSubmitForm_preferredSchool(string $preferredSchool)
     {
-        $assistantClient = self::createClient(array(), array(
-            'PHP_AUTH_USER' => 'petjo',
-            'PHP_AUTH_PW' => '1234',
-        ));
+        $assistantClient = $this->createAssistantClient();
 
         $crawler = $this->goTo('/eksisterendeopptak', $assistantClient);
         $submitButton = $crawler->selectButton('Søk');

@@ -192,21 +192,21 @@ profile_activate_user:
  defaults: { _controller: AppBundle:Profile:activateUser }
  methods: [POST]
  requirements:
-    id: \d
+    id: \d+
 
 profile_deactivate_user:
  path:   /profile/deaktiv/{id}
  defaults: { _controller: AppBundle:Profile:deactivateUser }
  methods: [POST]
  requirements:
-    id: \d
+    id: \d+
 
 profile_change_role:
  path:   /profile/rolle/endre/{id}
  defaults: { _controller: AppBundle:Profile:changeRole }
  methods: [POST]
  requirements:
-    id: \d
+    id: \d+
 
 profile_certificate:
  path:   /profile/attest/{id}
@@ -1181,7 +1181,7 @@ executive_board_remove_user_from_board_by_id:
  defaults: {_controller: AppBundle:ExecutiveBoard:removeUserFromBoardById }
  methods: [POST]
  requirements:
-    id: \d
+    id: \d+
 
 executive_board_update:
  path: /kontrollpanel/hovedstyret/oppdater
