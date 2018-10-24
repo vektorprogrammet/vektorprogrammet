@@ -87,7 +87,6 @@ security:
         - { path: ^/kontrollpanel/brukeradmin/jubileum/betalt, role: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/brukeradmin/jubileum/slettbetaling, role: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/deltakerhistorikk/slett, role: ROLE_TEAM_LEADER }
-        - { path: ^/kontrollpanel/deltakerhistorikk/rediger, role: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/semesteradmin/update, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/semesteradmin/avdeling/, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/skoleadmin/avdeling, roles: ROLE_TEAM_LEADER }
