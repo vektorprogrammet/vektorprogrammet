@@ -397,7 +397,8 @@ class SurveyController extends Controller
 
     private function isUserAdmin() : bool
     {
-        return $this->isGranted(Roles::ADMIN)    }
+        return $this->isGranted(Roles::ADMIN);
+    }
 
 
     public function updateLastPopUp()
