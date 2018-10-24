@@ -10,6 +10,7 @@ use Tests\BaseWebTestCase;
 
 class TwigSurveyControllerTest extends BaseWebTestCase
 {
+    //Tests popup functionality
     protected function setUp()
     {
         $this->teamMemberGoTo('/togglepopup');
@@ -55,6 +56,9 @@ class TwigSurveyControllerTest extends BaseWebTestCase
         $crawler = $this->teamMemberGoTo('/closepopup');
         $crawler = $this->teamMemberGoTo('/');
         $this->assertEquals(0, $crawler->filter('a:contains("undersøkelse!")')->count());
+
+
+        
     }
 
 
