@@ -157,7 +157,7 @@ class AccessControlService
             return false;
         }
 
-        if (!$this->userHasTeamOrExecutiveBardAccessToRule($user, $rule)) {
+        if (!$this->userHasTeamOrExecutiveBoardAccessToRule($user, $rule)) {
             return false;
         }
 
@@ -168,7 +168,7 @@ class AccessControlService
         return true;
     }
 
-    private function userHasTeamOrExecutiveBardAccessToRule(User $user, AccessRule $rule): bool
+    private function userHasTeamOrExecutiveBoardAccessToRule(User $user, AccessRule $rule): bool
     {
         $teamRule = count($rule->getTeams()) > 0;
         $executiveRule = $rule->isForExecutiveBoard();
