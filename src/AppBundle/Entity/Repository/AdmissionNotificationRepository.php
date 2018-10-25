@@ -43,4 +43,20 @@ class AdmissionNotificationRepository extends EntityRepository
             return $row["email"];
         }, $res);
     }
+
+    public function findEmailsBySemesterAndInfoMeeting(Semester $semester)
+    {
+        $res = $this->createQueryBuilder('notification')
+            ->select('subscriber.email')
+            ->join('notification.subscriber', 'subscriber')
+            ->where('notification.semester = :semester')
+            ->andWhere('notification.infoMeeting = true')
+            ->setParameter('semester', $semester)
+            ->getQuery()
+            ->getResult();
+
+        return array_map(function ($row) {
+            return $row["email"];
+        }, $res);
+    }
 }

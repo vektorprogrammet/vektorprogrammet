@@ -113,7 +113,7 @@ class EmailSender
 
     public function sendInfoMeetingNotification(AdmissionSubscriber $subscriber)
     {
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('Infomøte i morgen!')
             ->setFrom($this->defaultEmail)
             ->setTo($subscriber->getEmail())
