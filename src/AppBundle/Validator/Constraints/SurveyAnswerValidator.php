@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: Amir Ahmed
- * Date: 06.09.2018
- * Time: 18:18
- */
 
 namespace AppBundle\Validator\Constraints;
 

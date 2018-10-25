@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: kristoffer
- * Date: 03.01.17
- * Time: 00:21.
- */
 
 namespace AppBundle\Service;
 

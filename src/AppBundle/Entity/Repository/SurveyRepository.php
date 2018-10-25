@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: Amir Ahmed
- * Date: 20.09.2018
- * Time: 19:39
- */
 
 namespace AppBundle\Entity\Repository;
 
