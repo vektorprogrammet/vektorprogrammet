@@ -23,7 +23,7 @@ class SendInfoMeetingNotificationsCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('app:admission:send_notifications')
+            ->setName('app:admission:send_info_meeting_notifications')
             ->setDescription('Sends notifications about info meeting to subscribers');
     }
 
