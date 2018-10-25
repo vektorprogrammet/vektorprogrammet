@@ -15,12 +15,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SurveyType extends AbstractType
 {
-    private $isAdminSurvey = false;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->isAdminSurvey = $options['isAdminSurvey'];
-
         $builder->add('semester', EntityType::class, array(
             'label' => 'Semester',
             'class' => 'AppBundle:Semester',
@@ -47,7 +44,7 @@ class SurveyType extends AbstractType
                 ]
             ]);
 
-        if ($this->isAdminSurvey()) {
+        if ($options['isGrantedTeamLeader']) {
             $builder->add('team_survey', ChoiceType::class, [
                     'label' => 'Dette er en undersøkelse rettet mot teammedlem (popup)',
                     'multiple' => false,
@@ -110,7 +107,7 @@ class SurveyType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Survey',
-            'isAdminSurvey' => false,
+            'isGrantedTeamLeader' => false,
         ));
     }
 
@@ -119,12 +116,7 @@ class SurveyType extends AbstractType
     {
         $this->isAdminSurvey = $isSuperAdmin;
     }
-
-    public function isAdminSurvey() : bool
-    {
-        return $this->isAdminSurvey;
-    }
-
+    
 
     public function getBlockPrefix()
     {

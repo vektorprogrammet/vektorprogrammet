@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Semester;
-use http\Exception\InvalidArgumentException;
 use AppBundle\Role\Roles;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Form\Type\SurveySchoolSpecificExecuteType;
@@ -21,7 +20,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class SurveyController extends Controller
 {
-
 
     /**
      * Shows the given survey.
@@ -183,7 +181,7 @@ class SurveyController extends Controller
     {
         $survey = new Survey();
         $form = $this->createForm(SurveyType::class, $survey, array(
-            'isAdminSurvey' => $this->isUserAdmin(),
+            'isGrantedTeamLeader' => $this->container->get('app.roles')->userIsTeamLeader($this->getUser()),
         ));
         $form->handleRequest($request);
 
@@ -209,7 +207,7 @@ class SurveyController extends Controller
     public function copySurveyAction(Request $request, Survey $survey)
     {
         $tempSurveyType = new SurveyType();
-        if ($this->isUserAdmin()) {
+        if ($this->container->get('app.roles')->userIsTeamLeader($this->getUser())) {
             $tempSurveyType->setAdminSurvey(true);
         } elseif ($survey->isTeamSurvey()) {
             throw $this->createAccessDeniedException();
@@ -277,7 +275,7 @@ class SurveyController extends Controller
     public function editSurveyAction(Request $request, Survey $survey)
     {
         $adminSurvey = false;
-        if ($this->isUserAdmin()) {
+        if ($this->container->get('app.roles')->userIsTeamLeader($this->getUser())) {
             $adminSurvey = true;
         } elseif ($survey->isTeamSurvey()) {
             throw $this->createAccessDeniedException();
@@ -359,12 +357,12 @@ class SurveyController extends Controller
         $surveysTaken = $this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
         $validSurveysTaken = array();
 
-        $group = array();
+        $userAffiliation = array();
         if ($survey->isTeamSurvey()) {
             foreach ($surveysTaken as $surveyTaken) {
                 foreach ($surveyTaken->getUser()->getTeamNamesAsList($surveyTaken->getTime()) as $teamName) {
-                    if (!in_array($teamName, $group)) {
-                        $group[] = $teamName;
+                    if (!in_array($teamName, $userAffiliation)) {
+                        $userAffiliation[] = $teamName;
                     }
                 }
                 $validSurveysTaken[] = $surveyTaken;
@@ -377,8 +375,8 @@ class SurveyController extends Controller
                 }
                 $validSurveysTaken[] = $surveyTaken;
 
-                if (!in_array($surveyTaken->getSchool()->getName(), $group)) {
-                    $group[] = $surveyTaken->getSchool()->getName();
+                if (!in_array($surveyTaken->getSchool()->getName(), $userAffiliation)) {
+                    $userAffiliation[] = $surveyTaken->getSchool()->getName();
                 }
             }
 
@@ -386,18 +384,13 @@ class SurveyController extends Controller
         }
 
         //Inject the school/team question into question array
-        $groupQuestion = array('question_id' => 0, 'question_label' => $title, 'alternatives' => $group);
+        $userAffiliationQuestion = array('question_id' => 0, 'question_label' => $title, 'alternatives' => $userAffiliation);
         $survey_json = json_encode($survey);
         $survey_decode = json_decode($survey_json, true);
-        $survey_decode['questions'][] = $groupQuestion;
+        $survey_decode['questions'][] = $userAffiliationQuestion;
 
 
         return new JsonResponse(array('survey' => $survey_decode, 'answers' => $validSurveysTaken));
-    }
-
-    private function isUserAdmin() : bool
-    {
-        return $this->isGranted(Roles::ADMIN);
     }
 
 
