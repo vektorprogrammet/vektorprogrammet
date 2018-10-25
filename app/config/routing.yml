@@ -137,12 +137,14 @@ survey_get_all_results:
 survey_popup_reserve:
    path:   /togglepopup
    defaults: { _controller: AppBundle:Survey:toggleReservePopUp }
+   methods: [POST]
    requirements:
     id: \d+
 
 survey_popup_close:
  path:   /closepopup
  defaults: { _controller: AppBundle:Survey:closePopUp }
+ methods: [POST]
  requirements:
   id: \d+
 

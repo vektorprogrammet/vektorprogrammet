@@ -165,15 +165,15 @@ $black: #252525;
       padding: 0px;
       background: $cBar;
     }
-    32% {
+    16% {
       padding: 5px;
       background: $cBar;
     }
-    48% {
+    32% {
       padding: 15px 15px;
       background: $cBar;
     }
-    74% {
+    64% {
       padding: 15px;
       background: $cBar;
     }
@@ -192,7 +192,7 @@ $black: #252525;
     -moz-animation: transitionOut 0.5s infinite; /* Fx 5+ */
     -o-animation: transitionOut 0.5s infinite; /* Opera 12+ */
     animation: transitionOut 0.5s infinite; /* IE 10+, Fx 29+ */
-    animation-duration: 0.5s;
+    animation-duration: 0.3s;
     animation-iteration-count: 1;
 
   }
@@ -206,15 +206,15 @@ $black: #252525;
       padding: 5px;
       background: $cBar;
     }
-    74% {
+    64% {
       padding: 15px 15px;
       background: $cBar;
     }
-    48% {
+    32% {
       padding: 15px;
       background: $cBar;
     }
-    32% {
+    16% {
       padding: 17px;
       background: $cBar;
     }

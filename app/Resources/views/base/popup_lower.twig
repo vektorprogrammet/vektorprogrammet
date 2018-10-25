@@ -32,14 +32,15 @@
                     $(this).removeClass("popupAttentionUp");
                 });
 
-
                 $(".popup-dismiss").on('click', function() {
                     $.ajax({
                         type: "POST",
                         url: "{{ path('survey_popup_close') }}",
                     });
                     runAnimationOut();
-                    $(".popup").css("display", "none");
+
+
+
                 });
 
                 $(".popup-never").on('click', function () {
@@ -48,7 +49,6 @@
                         url: "{{ path('survey_popup_reserve') }}",
                     });
                     runAnimationOut();
-                    $(".popup").css("display", "none");
 
                 });
 
@@ -111,8 +111,9 @@
                     $(".cta").addClass("transitionOut");
 
                     window.setTimeout(function(){
+                        $(".popup").css("display", "none");
                         $(".cta").removeClass("transitionOut");
-                    }, 500);
+                    }, 300);
 
                 }
 

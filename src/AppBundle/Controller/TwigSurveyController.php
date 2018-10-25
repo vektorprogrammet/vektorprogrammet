@@ -23,7 +23,6 @@ class TwigSurveyController extends Controller
             !$user->getReservedPopUp()&&
             $user->getLastPopUp()->diff(new \DateTime())->d >= 1;
 
-
         if ($userShouldSeePopUp) {
             $surveys = $this->getDoctrine()
                     ->getRepository('AppBundle:Survey')

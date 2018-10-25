@@ -13,8 +13,10 @@ class TwigSurveyControllerTest extends BaseWebTestCase
     //Tests popup functionality
     protected function setUp()
     {
-        $this->teamMemberGoTo('/togglepopup');
-        $this->teamMemberGoTo('/togglepopup');
+
+        $client = $this->createTeamMemberClient();
+        $client->request('POST', '/togglepopup');
+        $client->request('POST', '/togglepopup');
 
         // Admin
         $crawler = $this->adminGoTo('/kontrollpanel/undersokelse/opprett');
@@ -51,9 +53,10 @@ class TwigSurveyControllerTest extends BaseWebTestCase
 
 
     public function testSenereRemovesPopup(){
+
         $crawler = $this->teamMemberGoTo('/');
         $this->assertEquals(1, $crawler->filter('p:contains("Senere |")')->count());
-        $crawler = $this->teamMemberGoTo('/closepopup');
+        $this->createTeamMemberClient()->request('POST', '/closepopup');
         $crawler = $this->teamMemberGoTo('/');
         $this->assertEquals(0, $crawler->filter('a:contains("undersøkelse!")')->count());
 
@@ -65,10 +68,10 @@ class TwigSurveyControllerTest extends BaseWebTestCase
   public function testAldriRemovesPopup(){
       $crawler = $this->teamMemberGoTo('/');
       $this->assertEquals(1, $crawler->filter('p:contains("Aldri")')->count());
-      $crawler = $this->teamMemberGoTo('/togglepopup');
+      $this->createTeamMemberClient()->request('POST', '/togglepopup');
       $crawler = $this->teamMemberGoTo('/');
       $this->assertEquals(0, $crawler->filter('a:contains("undersøkelse!")')->count());
-      $crawler = $this->teamMemberGoTo('/togglepopup');
+      $this->createTeamMemberClient()->request('POST', '/togglepopup');
 
   }
 

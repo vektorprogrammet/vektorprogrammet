@@ -413,11 +413,8 @@ class SurveyController extends Controller
     public function toggleReservePopUpAction()
     {
         $this->updateLastPopUp();
-        $response = $this->forward(
-            'AppBundle:Home:show'
-        );
 
-        return $response;
+        return new JsonResponse();
     }
 
     public function closePopUpAction()
@@ -427,9 +424,7 @@ class SurveyController extends Controller
         $user->setLastPopUp(new \DateTime());
         $em->persist($user);
         $em->flush();
-        $response = $this->forward(
-            'AppBundle:Home:show'
-        );
-        return $response;
+
+        return new JsonResponse();
     }
 }
