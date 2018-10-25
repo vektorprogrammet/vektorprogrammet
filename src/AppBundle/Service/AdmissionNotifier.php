@@ -113,8 +113,8 @@ class AdmissionNotifier
                     continue;
                 }
 
-                $infoMeetingLessThanTwoDays = $semester->getInfoMeeting()->getDate()->diff(new \DateTime())->d <= 2;
-                if (!$infoMeetingLessThanTwoDays) {
+                $infoMeetingLessThanOneDay = $semester->getInfoMeeting()->getDate()->diff(new \DateTime())->d <= 1;
+                if (!$infoMeetingLessThanOneDay) {
                     continue;
                 }
 
