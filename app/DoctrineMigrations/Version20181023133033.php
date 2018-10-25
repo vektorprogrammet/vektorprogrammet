@@ -22,7 +22,7 @@ final class Version20181023133033 extends AbstractMigration
         /** Create AdmissionPeriods from old Semesters. Note, old semester_ids inserted */
         $this->addSql('
             INSERT INTO AdmissionPeriod (department_id, semester_id, admission_start_date, admission_end_date, infoMeeting_id)
-            SELECT (department_id, id, admission_start_date, admission_end_date, infoMeeting_id) FROM semester
+            SELECT department_id, id, admission_start_date, admission_end_date, infoMeeting_id FROM semester
         ');
 
 
@@ -33,7 +33,7 @@ final class Version20181023133033 extends AbstractMigration
         $this->addSql('
             UPDATE assistant_history
             INNER JOIN semester ON semester.id = semester_id
-            SET department_id = semester.department_id
+            SET assistant_history.department_id = semester.department_id
         ');
 
         /** Add and set Department for SchoolCapacity */
@@ -43,7 +43,7 @@ final class Version20181023133033 extends AbstractMigration
         $this->addSql('
             UPDATE school_capacity
             INNER JOIN semester ON semester.id = semester_id
-            SET department_id = semester.department_id
+            SET school_capacity.department_id = semester.department_id
         ');
 
         /** Add and set Department for AdmissionNotification */
@@ -53,7 +53,7 @@ final class Version20181023133033 extends AbstractMigration
         $this->addSql('
             UPDATE admission_notification
             INNER JOIN semester ON semester.id = semester_id
-            SET department_id = semester.department_id
+            SET admission_notification.department_id = semester.department_id
         ');
 
         /** Add and set Department for Survey */
@@ -63,7 +63,7 @@ final class Version20181023133033 extends AbstractMigration
         $this->addSql('
             UPDATE survey
             INNER JOIN semester ON semester.id = semester_id
-            SET department_id = semester.department_id
+            SET survey.department_id = semester.department_id
         ');
 
         /** Add and set Department for TeamInterest */
@@ -73,7 +73,7 @@ final class Version20181023133033 extends AbstractMigration
         $this->addSql('
             UPDATE TeamInterest
             INNER JOIN semester ON semester.id = semester_id
-            SET department_id = semester.department_id
+            SET TeamInterest.department_id = semester.department_id
         ');
 
         /** Add and set AdmissionPeriod in Application */
@@ -82,9 +82,9 @@ final class Version20181023133033 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_A45BDDC1CB9236CC ON application (admissionPeriod_id)');
         $this->addSql('
             UPDATE application
-            INNER JOIN semester ON semester.id = semester_id
-            INNER JOIN AdmissionPeriod ON semester
-            SET admissionPeriod_id = admissionPeriod.id
+            INNER JOIN semester ON semester.id = application.semester_id
+            INNER JOIN AdmissionPeriod ON AdmissionPeriod.semester_id = semester.id
+            SET AdmissionPeriod_id = AdmissionPeriod.id
         ');
 
         /** At this point, all tables should have old semester_ids, we need to create new semesters and replace the semester ids */
@@ -94,17 +94,22 @@ final class Version20181023133033 extends AbstractMigration
             CREATE TABLE semester_new (
                 id INT AUTO_INCREMENT NOT NULL,
                 semesterTime VARCHAR(255) NOT NULL,
-                year VARCHAR(255) NOT NULL
+                year VARCHAR(255) NOT NULL,
+                PRIMARY KEY(id)
             )
+            DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB
         ');
 
         /** Create new semesters */
         $this->addSql('
             INSERT INTO semester_new (semesterTime, year)
-            SELECT DISTINCT (semesterTime, year) FROM semester
+            SELECT DISTINCT semesterTime, year FROM semester
         ');
 
         /** Insert new semester_ids in AssistantHistory */
+        /* TODO: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint
+        fails (`vektorprogrammet`.`assistant_history`, CONSTRAINT `FK_8E3E940D4A798B6F` FOREIGN KEY (`semester_id`)
+        REFERENCES `semester` (`id`) ON DELETE SET NULL) */
         $this->addSql('
             UPDATE assistant_history
             INNER JOIN semester ON semester_id = semester.id
