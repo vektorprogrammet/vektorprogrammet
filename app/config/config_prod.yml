@@ -7,7 +7,6 @@ parameters:
         client_secret: '%google_api_client_secret%'
         refresh_token: '%google_api_refresh_token%'
         disabled: false
-    slack.disable_delivery: false
 
 #framework:
 #    validation:

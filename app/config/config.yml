@@ -15,7 +15,7 @@ parameters:
 
   slack.notification_channel: '#notifications'
   slack.log_channel: '%log_channel%'
-  slack.disable_delivery: true
+  slack.disable_delivery: '%slack_disabled%'
 
   gateway_sms:
     api_token: '%gateway_api_token%'
