@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,7 +17,7 @@ class EditUserPasswordType extends AbstractType
             ->add('password', RepeatedType::class, array(
                 'first_name' => 'Passord',
                 'second_name' => 'Gjenta_passord',
-                'type' => 'password',
+                'type' => PasswordType::class,
                 'invalid_message' => 'Passordene må være like',
                 'constraints' => array(
                     new Assert\Length(array(
