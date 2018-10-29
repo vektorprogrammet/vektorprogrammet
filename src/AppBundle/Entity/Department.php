@@ -130,8 +130,7 @@ class Department
 
         /** @var AdmissionPeriod $admissionPeriod */
         foreach ($this->admissionPeriods as $admissionPeriod) {
-            if ($now > $admissionPeriod->getAdmissionStartDate() && $now < $admissionPeriod->getAdmissionEndDate()) {
-                // Current semester
+            if ($now > $admissionPeriod->getSemester()->getSemesterStartDate() && $now < $admissionPeriod->getSemester()->getSemesterEndDate()) {
                 return $admissionPeriod;
             }
         }
@@ -152,7 +151,8 @@ class Department
         $now = new \DateTime();
 
         foreach ($admissionPeriods as $admissionPeriod) {
-            if ($admissionPeriod->getAdmissionStartDate() < $now && $admissionPeriod->getAdmissionEndDate() > $latestAdmissionPeriod->getAdmissionEndDate()) {
+            if ($admissionPeriod->getSemester()->getSemesterStartDate() < $now &&
+                $admissionPeriod->getSemester()->getSemesterEndDate() > $latestAdmissionPeriod->getSemester()->getSemesterEndDate()) {
                 $latestAdmissionPeriod = $admissionPeriod;
             }
         }
