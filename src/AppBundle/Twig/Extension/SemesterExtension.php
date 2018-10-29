@@ -28,6 +28,6 @@ class SemesterExtension extends \Twig_Extension
 
     public function getSemesters()
     {
-        return $this->em->getRepository('AppBundle:Semester')->findAll();
+        return $this->em->getRepository('AppBundle:Semester')->findAllOrderedByAge();
     }
 }

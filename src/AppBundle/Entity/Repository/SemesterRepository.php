@@ -15,8 +15,8 @@ class SemesterRepository extends EntityRepository
     {
         return $this->createQueryBuilder('Semester')
             ->select('Semester')
-            ->orderBy('Semester.semesterTime', 'ASC') // Vår < Høst
-            ->orderBy('Semester.year', 'DESC');
+            ->addOrderBy('Semester.year', 'DESC')
+            ->addOrderBy('Semester.semesterTime', 'ASC'); // Vår < Høst
     }
 
     public function findAllOrderedByAge()
