@@ -3,7 +3,6 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Department;
-use AppBundle\Entity\Receipt;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -17,11 +16,11 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 {
     public function findUsersInDepartmentWithTeamMembershipInSemester(Department $department, Semester $semester)
     {
-        $users =  $this->createQueryBuilder('user')
+        $users = $this->createQueryBuilder('user')
             ->select('user')
             ->join('user.teamMemberships', 'tm')
-            ->join('user.fieldOfStudy', 'fos')
-            ->where('fos.department = :department')
+            ->join('tm.team', 'team')
+            ->where('team.department = :department')
             ->join('tm.startSemester', 'ss')
             ->leftJoin('tm.endSemester', 'se')
             ->setParameter('department', $department)
@@ -38,7 +37,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
                 )
                 ) {
                     $teamMembers[] = $user;
-                    continue;
+                    continue 2;
                 }
             }
         }
