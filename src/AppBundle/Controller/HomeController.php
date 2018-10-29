@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-
 class HomeController extends BaseController
 {
     public function showAction()
