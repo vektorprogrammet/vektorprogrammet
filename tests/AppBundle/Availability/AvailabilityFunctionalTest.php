@@ -159,6 +159,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
     {
         return array(
             array('/profile'),
+            array('/profil/rediger/passord/'),
             array('/min-side'),
             array('/utlegg'),
         );

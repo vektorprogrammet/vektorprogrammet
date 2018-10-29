@@ -21,6 +21,7 @@ parameters:
     newsletter_password: ~
 
     slack_endpoint: 'https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX'
+    slack_disabled: true
 
     gateway_api_token: 'xxxxxxx'
     sms_disable: true
