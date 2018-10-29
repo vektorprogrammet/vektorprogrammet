@@ -87,124 +87,139 @@ final class Version20181023133033 extends AbstractMigration
             SET AdmissionPeriod_id = AdmissionPeriod.id
         ');
 
-        /** At this point, all tables should have old semester_ids, we need to create new semesters and replace the semester ids */
-
-        /** Create new semester table, which we will later replace the old semester table with */
-        $this->addSql('
-            CREATE TABLE semester_new (
-                id INT AUTO_INCREMENT NOT NULL,
-                semesterTime VARCHAR(255) NOT NULL,
-                year VARCHAR(255) NOT NULL,
-                PRIMARY KEY(id)
-            )
-            DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB
-        ');
-
-        /** Create new semesters */
-        $this->addSql('
-            INSERT INTO semester_new (semesterTime, year)
-            SELECT DISTINCT semesterTime, year FROM semester
-        ');
-
-        /** Insert new semester_ids in AssistantHistory */
-        /* TODO: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint
-        fails (`vektorprogrammet`.`assistant_history`, CONSTRAINT `FK_8E3E940D4A798B6F` FOREIGN KEY (`semester_id`)
-        REFERENCES `semester` (`id`) ON DELETE SET NULL) */
+        /** Set all semesters to the semester with department_id = 1 */
         $this->addSql('
             UPDATE assistant_history
-            INNER JOIN semester ON semester_id = semester.id
-            INNER JOIN semester_new ON (semester.semesterTime = semester_new.semesterTime AND semester.year = semester_new.year)
+            INNER JOIN semester AS semester_old ON semester_id = semester_old.id
+            INNER JOIN semester AS semester_new ON (
+                semester_old.semesterTime = semester_new.semesterTime AND
+                semester_old.year = semester_new.year AND 
+                semester_new.department_id = 1
+            )
             SET semester_id = semester_new.id
         ');
 
-        /** Insert new semester_ids in SchoolCapacity */
         $this->addSql('
             UPDATE school_capacity
-            INNER JOIN semester ON semester_id = semester.id
-            INNER JOIN semester_new ON (semester.semesterTime = semester_new.semesterTime AND semester.year = semester_new.year)
+            INNER JOIN semester AS semester_old ON semester_id = semester_old.id
+            INNER JOIN semester AS semester_new ON (
+                semester_old.semesterTime = semester_new.semesterTime AND
+                semester_old.year = semester_new.year AND
+                semester_new.department_id = 1
+            )
             SET semester_id = semester_new.id
         ');
 
-        /** Insert new semester_ids in AdmissionNotification */
         $this->addSql('
             UPDATE admission_notification
-            INNER JOIN semester on semester_id = semester.id
-            INNER JOIN semester_new ON (semester.semesterTime = semester_new.semesterTime AND semester.year = semester_new.year)
+            INNER JOIN semester AS semester_old ON semester_id = semester_old.id
+            INNER JOIN semester AS semester_new ON (
+                semester_old.semesterTime = semester_new.semesterTime AND
+                semester_old.year = semester_new.year AND
+                semester_new.department_id = 1
+            )
             SET semester_id = semester_new.id
         ');
 
-        /** Insert new semester_ids in Survey */
         $this->addSql('
             UPDATE survey
-            INNER JOIN semester on semester_id = semester.id
-            INNER JOIN semester_new ON (semester.semesterTime = semester_new.semesterTime AND semester.year = semester_new.year)
+            INNER JOIN semester AS semester_old ON semester_id = semester_old.id
+            INNER JOIN semester AS semester_new ON (
+                semester_old.semesterTime = semester_new.semesterTime AND
+                semester_old.year = semester_new.year AND
+                semester_new.department_id = 1
+            )
             SET semester_id = semester_new.id
         ');
 
-        /** Insert new semester_ids in TeamInterest */
         $this->addSql('
             UPDATE TeamInterest
-            INNER JOIN semester on semester_id = semester.id
-            INNER JOIN semester_new ON (semester.semesterTime = semester_new.semesterTime AND semester.year = semester_new.year)
+            INNER JOIN semester AS semester_old ON semester_id = semester_old.id
+            INNER JOIN semester AS semester_new ON (
+                semester_old.semesterTime = semester_new.semesterTime AND
+                semester_old.year = semester_new.year AND
+                semester_new.department_id = 1
+            )
             SET semester_id = semester_new.id
         ');
 
-        /** Insert new semester_ids in AdmissionPeriod */
         $this->addSql('
             UPDATE AdmissionPeriod
-            INNER JOIN semester on semester_id = semester.id
-            INNER JOIN semester_new ON (semester.semesterTime = semester_new.semesterTime AND semester.year = semester_new.year)
+            INNER JOIN semester AS semester_old ON semester_id = semester_old.id
+            INNER JOIN semester AS semester_new ON (
+                semester_old.semesterTime = semester_new.semesterTime AND
+                semester_old.year = semester_new.year AND
+                semester_new.department_id = 1
+            )
             SET semester_id = semester_new.id
         ');
 
-        /** Drop old Semester */
-        $this->addSql('ALTER TABLE semester DROP FOREIGN KEY FK_F7388EEDAE80F5DF');
-        $this->addSql('ALTER TABLE semester DROP FOREIGN KEY FK_F7388EEDC8F2226C');
-        $this->addSql('DROP INDEX UNIQ_F7388EEDC8F2226C ON semester');
-        $this->addSql('DROP INDEX IDX_F7388EEDAE80F5DF ON semester');
-        $this->addSql('DROP TABLE semester'); // Rip
+        $this->addSql('
+            UPDATE team_membership
+            INNER JOIN semester AS startSemester_old ON startSemester_id = startSemester_old.id
+            INNER JOIN semester AS startSemester_new ON (
+                startSemester_old.semesterTime = startSemester_new.semesterTime AND
+                startSemester_old.year = startSemester_new.year AND
+                startSemester_new.department_id = 1
+            )
+            LEFT JOIN semester AS endSemester_old ON endSemester_id = endSemester_old.id
+            LEFT JOIN semester AS endSemester_new ON (
+                endSemester_old.semesterTime = endSemester_new.semesterTime AND
+                endSemester_old.year = endSemester_new.year AND
+                endSemester_new.department_id = 1
+            )
+            SET startSemester_id = startSemester_new.id,
+                endSemester_id = endSemester_new.id
+        ');
 
-        /** These were autogenerated, so we probably need them */
+
+        $this->addSql('
+            UPDATE executive_board_membership
+            INNER JOIN semester AS startSemester_old ON startSemester_id = startSemester_old.id
+            INNER JOIN semester AS startSemester_new ON (
+                startSemester_old.semesterTime = startSemester_new.semesterTime AND
+                startSemester_old.year = startSemester_new.year AND
+                startSemester_new.department_id = 1
+            )
+            LEFT JOIN semester AS endSemester_old ON endSemester_id = endSemester_old.id
+            LEFT JOIN semester AS endSemester_new ON (
+                endSemester_old.semesterTime = endSemester_new.semesterTime AND
+                endSemester_old.year = endSemester_new.year AND
+                endSemester_new.department_id = 1
+            )
+            SET startSemester_id = startSemester_new.id,
+                endSemester_id = endSemester_new.id
+        ');
+        /** Delete FK and IDX for semester_id */
         $this->addSql('ALTER TABLE application DROP FOREIGN KEY FK_A45BDDC14A798B6F');
         $this->addSql('DROP INDEX IDX_A45BDDC14A798B6F ON application');
 
         /** Drop semester_id from Application */
         $this->addSql('ALTER TABLE application DROP COLUMN semester_id');
 
-        /** Finally rename it */
-        $this->addSql('ALTER TABLE semester_new RENAME TO semester');
+        /** Drop unused tables */
+        $this->addSql('DROP TABLE interview_practical');
+        $this->addSql('DROP TABLE application_statistic');
+        $this->addSql('DROP TABLE substitute');
+
+        /** Delete all other semesters */
+        $this->addSql('DELETE FROM semester WHERE department_id != 1');
+
+        /** Drop old columns in semester */
+        $this->addSql('ALTER TABLE semester DROP FOREIGN KEY FK_E4EECBBAE80F5DF');
+        $this->addSql('ALTER TABLE semester DROP FOREIGN KEY FK_F7388EEDC8F2226C');
+        $this->addSql('DROP INDEX UNIQ_F7388EEDC8F2226C ON semester');
+        $this->addSql('DROP INDEX IDX_E4EECBBAE80F5DF ON semester');
+        $this->addSql('ALTER TABLE semester DROP COLUMN department_id');
+        $this->addSql('ALTER TABLE semester DROP COLUMN admission_start_date');
+        $this->addSql('ALTER TABLE semester DROP COLUMN admission_end_date');
+        $this->addSql('ALTER TABLE semester DROP COLUMN semesterStartDate');
+        $this->addSql('ALTER TABLE semester DROP COLUMN semesterEndDate');
+        $this->addSql('ALTER TABLE semester DROP COLUMN infoMeeting_id');
     }
 
     public function down(Schema $schema) : void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql('ALTER TABLE application DROP FOREIGN KEY FK_A45BDDC1CB9236CC');
-        $this->addSql('DROP TABLE AdmissionPeriod');
-        $this->addSql('ALTER TABLE TeamInterest DROP FOREIGN KEY FK_6483383AE80F5DF');
-        $this->addSql('DROP INDEX IDX_6483383AE80F5DF ON TeamInterest');
-        $this->addSql('ALTER TABLE TeamInterest DROP department_id');
-        $this->addSql('ALTER TABLE admission_notification DROP FOREIGN KEY FK_EBEBA855AE80F5DF');
-        $this->addSql('DROP INDEX IDX_EBEBA855AE80F5DF ON admission_notification');
-        $this->addSql('ALTER TABLE admission_notification DROP department_id');
-        $this->addSql('DROP INDEX IDX_A45BDDC1CB9236CC ON application');
-        $this->addSql('ALTER TABLE application CHANGE admissionperiod_id semester_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE application ADD CONSTRAINT FK_A45BDDC14A798B6F FOREIGN KEY (semester_id) REFERENCES semester (id)');
-        $this->addSql('CREATE INDEX IDX_A45BDDC14A798B6F ON application (semester_id)');
-        $this->addSql('ALTER TABLE assistant_history DROP FOREIGN KEY FK_1B31A1DBAE80F5DF');
-        $this->addSql('DROP INDEX IDX_1B31A1DBAE80F5DF ON assistant_history');
-        $this->addSql('ALTER TABLE assistant_history DROP department_id');
-        $this->addSql('ALTER TABLE school_capacity DROP FOREIGN KEY FK_4BAE8530AE80F5DF');
-        $this->addSql('DROP INDEX IDX_4BAE8530AE80F5DF ON school_capacity');
-        $this->addSql('ALTER TABLE school_capacity DROP department_id');
-        $this->addSql('ALTER TABLE semester ADD department_id INT DEFAULT NULL, ADD admission_start_date DATETIME NOT NULL, ADD admission_end_date DATETIME NOT NULL, ADD semesterStartDate DATETIME NOT NULL, ADD semesterEndDate DATETIME NOT NULL, ADD infoMeeting_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE semester ADD CONSTRAINT FK_F7388EEDAE80F5DF FOREIGN KEY (department_id) REFERENCES department (id)');
-        $this->addSql('ALTER TABLE semester ADD CONSTRAINT FK_F7388EEDC8F2226C FOREIGN KEY (infoMeeting_id) REFERENCES infomeeting (id)');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_F7388EEDC8F2226C ON semester (infoMeeting_id)');
-        $this->addSql('CREATE INDEX IDX_F7388EEDAE80F5DF ON semester (department_id)');
-        $this->addSql('ALTER TABLE survey DROP FOREIGN KEY FK_AD5F9BFCAE80F5DF');
-        $this->addSql('DROP INDEX IDX_AD5F9BFCAE80F5DF ON survey');
-        $this->addSql('ALTER TABLE survey DROP department_id');
+        $this->abortIf(true, 'Yeah, imma stop you right there');
     }
 }
