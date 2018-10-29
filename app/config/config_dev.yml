@@ -1,9 +1,6 @@
 imports:
     - { resource: config.yml }
 
-parameters:
-    slack.disable_delivery: true
-
 framework:
     translator:      { fallbacks: ["%locale%"] }
     router:

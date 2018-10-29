@@ -97,19 +97,18 @@
                         {% for ah in assistantHistories %}
                             <tr>
                                 <td>
-                                    {% if is_granted_admin() or (is_granted_team_leader() and app.user.department == department) %}
-
-                                        <div class="dropdown">
-                                            <div class="clickable px-2" id="options-{{ ah.id }}" data-toggle="dropdown"
-                                                 aria-haspopup="true" aria-expanded="false">
-                                                <i class="fa fa-ellipsis-v text-secondary"></i>
-                                            </div>
-                                            <div class="dropdown-menu pt-0" aria-labelledby="options-{{ ah.id }}">
-                                                <div class="dropdown-header mb-2"><strong>{{ ah.user }}</strong></div>
-                                                <a class="dropdown-item text-primary"
-                                                   href="{{ path('assistant_history_edit',  {id: ah.id}) }}"><i
-                                                            class="fa fa-pencil text-primary"></i> Endre
-                                                </a>
+                                    <div class="dropdown">
+                                        <div class="clickable px-2" id="options-{{ ah.id }}" data-toggle="dropdown"
+                                             aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v text-secondary"></i>
+                                        </div>
+                                        <div class="dropdown-menu pt-0" aria-labelledby="options-{{ ah.id }}">
+                                            <div class="dropdown-header mb-2"><strong>{{ ah.user }}</strong></div>
+                                            <a class="dropdown-item text-primary"
+                                               href="{{ path('assistant_history_edit',  {id: ah.id}) }}"><i
+                                                        class="fa fa-pencil text-primary"></i> Endre
+                                            </a>
+                                            {% if is_granted_admin() or (is_granted_team_leader() and app.user.department == department) %}
                                                 <form
                                                         action="{{ path('assistant_history_delete', {id: ah.id}) }}"
                                                         method="POST"
@@ -121,9 +120,9 @@
                                                         Slett
                                                     </button>
                                                 </form>
-                                            </div>
+                                            {% endif %}
                                         </div>
-                                    {% endif %}
+                                    </div>
                                 </td>
                                 <td>
                                     <a href='{{ path('specific_profile', { 'id': ah.user.id }) }}'>{{ ah.user }}</a>

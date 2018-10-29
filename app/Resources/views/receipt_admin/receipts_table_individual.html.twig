@@ -5,6 +5,7 @@
         <th></th>
         <th> Id</th>
         <th> Utleggsdato</th>
+        <th> Refusjonsdato</th>
         <th> Beskrivelse</th>
         <th> Sum</th>
         <th> Kvittering</th>
@@ -42,6 +43,7 @@
             </td>
             <td> {{ receipt.visualId }}</td>
             <td> {{ receipt.receiptDate|date('d.m.Y') }}</td>
+            <td> {{ receipt.refundDate is null ? '' : receipt.refundDate|date('d.m.Y') }}</td>
             <td> {{ receipt.description }} </td>
             <td> {{ receipt.sum|number_format(2, ',', ' ') }} kr</td>
             <td>
