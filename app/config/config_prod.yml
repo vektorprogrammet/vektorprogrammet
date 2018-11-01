@@ -33,3 +33,6 @@ ewz_recaptcha:
     enabled: true
     public_key:  '%recaptcha_public_key%'
     private_key: '%recaptcha_private_key%'
+
+sentry:
+    dsn: '%sentry_address%'
