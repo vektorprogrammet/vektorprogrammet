@@ -16,7 +16,7 @@ class TwigSurveyController extends Controller
         $userShouldSeePopUp = $user !== null &&
             $this->get("app.roles")->userIsGranted($user, Roles::TEAM_MEMBER) &&
             !$user->getReservedPopUp()&&
-            $user->getLastPopUp()->diff(new \DateTime())->d >= 1;
+            $user->getLastPopUp()->diff(new \DateTime())->days >= 1;
 
         if ($userShouldSeePopUp) {
             $surveys = $this->getDoctrine()

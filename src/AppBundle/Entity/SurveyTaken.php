@@ -189,14 +189,14 @@ class SurveyTaken implements \JsonSerializable
             $semester = $this->getSurvey()->getSemester();
             $teamMemberships = $this->getUser()->getTeamMemberships();
             $teamNames = array();
-            foreach($teamMemberships as $teamMembership){
-               if(!$teamMembership->isActiveInSemester($semester)){
-                   continue;
-               }else if(!in_array($teamMembership->getTeamName(),$teamNames)) {
-               $teamNames[] = $teamMembership->getTeamName();
-               }
+            foreach ($teamMemberships as $teamMembership) {
+                if (!$teamMembership->isActiveInSemester($semester)) {
+                    continue;
+                } elseif (!in_array($teamMembership->getTeamName(), $teamNames)) {
+                    $teamNames[] = $teamMembership->getTeamName();
+                }
             }
-            if(empty($teamNames)){
+            if (empty($teamNames)) {
                 $teamNames[] = "Ikke teammedlem";
             }
 
@@ -218,7 +218,4 @@ class SurveyTaken implements \JsonSerializable
 
         return $ret;
     }
-
-
 }
-

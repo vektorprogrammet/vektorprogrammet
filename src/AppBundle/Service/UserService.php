@@ -62,6 +62,4 @@ class UserService
 
         return "https://vektorprogrammet.no/" . ($user ? $user->getPicturePath() : "images/defaultProfile.png");
     }
-
-
 }

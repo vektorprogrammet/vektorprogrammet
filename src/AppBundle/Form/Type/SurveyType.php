@@ -110,12 +110,6 @@ class SurveyType extends AbstractType
             'isGrantedTeamLeader' => false,
         ));
     }
-
-
-    public function setAdminSurvey(bool $isSuperAdmin)
-    {
-        $this->isAdminSurvey = $isSuperAdmin;
-    }
     
 
     public function getBlockPrefix()

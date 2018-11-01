@@ -45,8 +45,6 @@ class SurveyController extends Controller
 
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
-            $surveyTaken->setTime(new \DateTime());
-
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($surveyTaken);
@@ -62,11 +60,9 @@ class SurveyController extends Controller
             } else {
                 $this->addFlash('warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
             }
-
             //New form without previous answers
             return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
         }
-
 
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView(),
@@ -79,31 +75,19 @@ class SurveyController extends Controller
     public function showTeamAction(Request $request, Survey $survey)
     {
         $user = $this->getUser();
-
         if (!$survey->isTeamSurvey()) {
             return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
-        }
-        if ($user===null) {
+        }elseif ($user===null) {
             throw new AccessDeniedException("Dette er en teamundersøkese. Logg inn for å ta den!");
         }
-
-        $this->updateLastPopUp();
-
-
-        $surveyTaken = $this->get('survey.manager')->initializeSurveyTaken($survey);
-
+        $surveyTaken = $this->get('survey.manager')->initializeTeamSurveyTaken($survey, $user);
         $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted()) {
+            $em = $this->getDoctrine()->getManager();
             $surveyTaken->removeNullAnswers();
-            $surveyTaken->setTime(new \DateTime());
-            $surveyTaken->setUser($user);
-
-
             if ($form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
                 $allTakenSurveys = $em
                     ->getRepository('AppBundle:SurveyTaken')
                     ->findAllSurveyTakenBySurveyAndUser($survey, $user);
@@ -114,9 +98,10 @@ class SurveyController extends Controller
                         $em->remove($oldTakenSurvey);
                     }
                 }
+                $user->setLastPopUp(new \DateTime());
+                $em->persist($user);
                 $em->persist($surveyTaken);
                 $em->flush();
-
 
 
                 if ($survey->isShowCustomFinishPage()) {
@@ -153,9 +138,6 @@ class SurveyController extends Controller
 
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
-            $surveyTaken->setTime(new \DateTime());
-
-
 
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
@@ -185,9 +167,6 @@ class SurveyController extends Controller
         ));
         $form->handleRequest($request);
 
-
-
-
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             //Merge-conflict - look at copySurvey
@@ -210,24 +189,20 @@ class SurveyController extends Controller
 
     public function copySurveyAction(Request $request, Survey $survey)
     {
-        $tempSurveyType = new SurveyType();
-        if ($this->isGranted(Roles::TEAM_LEADER)) {
-            $tempSurveyType->setAdminSurvey(true);
-        } elseif ($survey->isTeamSurvey()) {
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $survey->isTeamSurvey()) {
             throw $this->createAccessDeniedException();
         }
-
-
         $em = $this->getDoctrine()->getManager();
         $department = $this->getUser()->getDepartment();
         $semester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
-
         $surveyClone = $survey->copy();
         $surveyClone->setSemester($semester);
-
-
-        $form = $this->createForm($tempSurveyType, $surveyClone);
+        $form = $this->createForm(SurveyType::class, $surveyClone, array(
+                'isGrantedTeamLeader' => $this->isGranted(Roles::TEAM_LEADER),
+            ));
         $form->handleRequest($request);
+
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($surveyClone);
@@ -278,10 +253,7 @@ class SurveyController extends Controller
 
     public function editSurveyAction(Request $request, Survey $survey)
     {
-        $adminSurvey = false;
-        if ($this->isGranted(Roles::TEAM_LEADER)) {
-            $adminSurvey = true;
-        } elseif ($survey->isTeamSurvey()) {
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $survey->isTeamSurvey()) {
             throw $this->createAccessDeniedException();
         }
 
@@ -358,49 +330,19 @@ class SurveyController extends Controller
 
     public function getSurveyResultAction(Survey $survey)
     {
-        $userAffiliation = $this->get('survey.manager')->getUserAffiliationOfSurveyAnswers($survey);
-        $validSurveysTaken = $this->get('survey.manager')->getValidSurveysTaken($survey);
-        $title = $this->get('survey.manager')->getSurveyTargetMainAffiliation($survey);
-
-        //Inject the school/team question into question array
-        $userAffiliationQuestion = array('question_id' => 0, 'question_label' => $title, 'alternatives' => $userAffiliation);
-        $survey_json = json_encode($survey);
-        $survey_decode = json_decode($survey_json, true);
-        $survey_decode['questions'][] = $userAffiliationQuestion;
-
-
-
-        return new JsonResponse(array('survey' => $survey_decode, 'answers' => $validSurveysTaken));
+        return new JsonResponse($this->get('survey.manager')->surveyResultToJson($survey));
     }
 
 
-    public function updateLastPopUp()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $user = $this->getUser();
-        $user->setReservedPopUp(!$user->getReservedPopUp());
-        $user->setLastPopUp(null);
-        $em->persist($user);
-        $em->flush();
-
-        return new JsonResponse();
-
-    }
     public function toggleReservePopUpAction()
     {
-        $this->updateLastPopUp();
-
+        $this->get('survey.manager')->toggleReservePopUp($this->getUser());
         return new JsonResponse();
     }
 
     public function closePopUpAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $user = $this->getUser();
-        $user->setLastPopUp(new \DateTime());
-        $em->persist($user);
-        $em->flush();
-
+        $this->get('survey.manager')->closePopUp($this->getUser());
         return new JsonResponse();
     }
 }
