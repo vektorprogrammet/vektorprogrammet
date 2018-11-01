@@ -272,16 +272,21 @@
 
             {% if is_granted_admin() %}
                 <li class="nav-title">Admin</li>
-                {% if is_granted_team_leader() %}
-                    {% include 'base/admin/nav_link.html.twig' with {
+                {% include 'base/admin/nav_link.html.twig' with {
                     route: 'access_rules_show',
                     icon: 'shield-alt',
                     name: 'Access Control',
                     activeRoutes: [
-                    'access_rules_create',
+                        'access_rules_create',
                     ]
-                    } %}
-                {% endif %}
+                } %}
+
+                {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'staging_servers_show',
+                    icon: 'server',
+                    name: 'Staging Servers',
+                } %}
+
             {% endif %}
 
             <li class="nav-item mt-auto">

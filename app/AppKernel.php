@@ -28,6 +28,10 @@ class AppKernel extends Kernel
             new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
         );
 
+	    if ( in_array( $this->getEnvironment(), array( 'prod', 'staging' ) ) ) {
+		    $bundles[] = new Sentry\SentryBundle\SentryBundle();
+	    }
+
         if (in_array($this->getEnvironment(), array('dev', 'test', 'staging'))) {
             $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
         }

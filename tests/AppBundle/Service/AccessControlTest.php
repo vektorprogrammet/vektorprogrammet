@@ -20,6 +20,7 @@ class AccessControlTest extends BaseKernelTestCase {
 	private $inactiveTeamMember;
 	private $team;
 	private $teamMemberRole;
+	private $teamLeaderRole;
 	private $executiveBoardMember;
 	private $inactiveExecutiveBoardMember;
 	private $inactiveUser;
@@ -49,6 +50,7 @@ class AccessControlTest extends BaseKernelTestCase {
 		$this->admin = $em->getRepository('AppBundle:User')->findUserByEmail('admin@gmail.com');
 		$this->team = $em->getRepository('AppBundle:Team')->find(1);
 		$this->teamMemberRole = $em->getRepository('AppBundle:Role')->findByRoleName(Roles::TEAM_MEMBER);
+		$this->teamLeaderRole = $em->getRepository('AppBundle:Role')->findByRoleName(Roles::TEAM_LEADER);
 	}
 
 	public function testHasAccessWhenRuleDoesNotExist() {
@@ -94,6 +96,8 @@ class AccessControlTest extends BaseKernelTestCase {
 		$rule->setName("testName");
 		$rule->setResource($resource);
 		$rule->setTeams([$this->team]);
+		$rule->setRoles([$this->teamMemberRole, $this->teamLeaderRole]);
+		$rule->setForExecutiveBoard(true);
 		$this->service->createRule($rule);
 
 		$this->assertTrue($this->service->checkAccess( $resource, $this->teamMember ));

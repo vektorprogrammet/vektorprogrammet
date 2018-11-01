@@ -21,6 +21,7 @@ parameters:
     newsletter_password: ~
 
     slack_endpoint: 'https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX'
+    slack_disabled: true
 
     gateway_api_token: 'xxxxxxx'
     sms_disable: true
@@ -56,6 +57,8 @@ parameters:
     recaptcha_public_key: ~
 
     log_channel: '#website_logs'
+
+    sentry_address: xxxx
 
     # Webhook from GitHub to automatically deploy on push to master
 
