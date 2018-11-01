@@ -25,9 +25,6 @@ class SurveySchoolSpecificExecuteType extends SurveyExecuteType
             },
         ));
 
-
-        dump($builder);
-
         parent::buildForm($builder, $options);
     }
 }

@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use http\Exception\InvalidArgumentException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -184,13 +186,27 @@ class SurveyTaken implements \JsonSerializable
         $ret = array();
 
         if ($this->survey->isTeamSurvey()) {
-            $teamNames = $this->getUser()->getTeamNamesAsList($this->getTime());
+            $semester = $this->getSurvey()->getSemester();
+            $teamMemberships = $this->getUser()->getTeamMemberships();
+            $teamNames = array();
+            foreach($teamMemberships as $teamMembership){
+               if(!$teamMembership->isActiveInSemester($semester)){
+                   continue;
+               }else if(!in_array($teamMembership->getTeamName(),$teamNames)) {
+               $teamNames[] = $teamMembership->getTeamName();
+               }
+            }
+            if(empty($teamNames)){
+                $teamNames[] = "Ikke teammedlem";
+            }
 
-            $groupQuestion = array('question_id' => 0, 'answerArray' => $teamNames);
+            $affiliationQuestion = array('question_id' => 0, 'answerArray' => $teamNames);
         } else {
-            $groupQuestion = array('question_id' => 0, 'answerArray' => [$this->school->getName()]);
+            $affiliationQuestion = array('question_id' => 0, 'answerArray' => [$this->school->getName()]);
         }
-        $ret[] = $groupQuestion;
+
+
+        $ret[] = $affiliationQuestion;
         foreach ($this->surveyAnswers as $a) {
             //!$a->getSurveyQuestion()->getOptional() && - If optional results are not wanted
             if (($a->getSurveyQuestion()->getType() == 'radio' || $a->getSurveyQuestion()->getType() == 'list')) {
@@ -202,4 +218,7 @@ class SurveyTaken implements \JsonSerializable
 
         return $ret;
     }
+
+
 }
+

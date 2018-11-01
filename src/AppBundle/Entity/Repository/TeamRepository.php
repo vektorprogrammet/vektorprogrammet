@@ -5,6 +5,7 @@ namespace AppBundle\Entity\Repository;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Team;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
@@ -120,4 +121,6 @@ class TeamRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+
 }

@@ -182,16 +182,13 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
         return $this->endSemester;
     }
 
-    public function isActive($time = null)
+    public function isActive()
     {
-        if (!$time) {
-            $time = new \DateTime();
-        }
-        $termEndsInFuture = $this->endSemester === null || $this->endSemester->getSemesterEndDate() > $time;
-        $termStartedInPast = $this->startSemester !== null && $this->startSemester->getSemesterStartDate() < $time;
+        $now = new \DateTime();
+        $termEndsInFuture = $this->endSemester === null || $this->endSemester->getSemesterEndDate() > $now;
+        $termStartedInPast = $this->startSemester !== null && $this->startSemester->getSemesterStartDate() < $now;
         return $termEndsInFuture && $termStartedInPast;
     }
-
 
     /**
      * @return \AppBundle\Entity\TeamInterface

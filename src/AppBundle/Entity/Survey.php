@@ -225,73 +225,6 @@ class Survey implements \JsonSerializable
         return $ret;
     }
 
-    public function getTextAnswerWithSchoolResults(): array
-    {
-        $textQuestionArray = array();
-        $textQAarray = array();
-
-        // Get all text questions
-        foreach ($this->getSurveyQuestions() as $question) {
-            if ($question->getType() == 'text') {
-                $textQuestionArray[] = $question;
-            }
-        }
-
-        //Collect text answers
-        foreach ($textQuestionArray as $textQuestion) {
-            $questionText = $textQuestion->getQuestion();
-            $textQAarray[$questionText] = array();
-            foreach ($textQuestion->getAnswers() as $answer) {
-                if ($answer->getSurveyTaken() === null || $answer->getSurveyTaken()->getSchool() === null) {
-                    continue;
-                }
-                $textQAarray[$questionText][] = array(
-                    'answerText' => $answer->getAnswer(),
-                    'schoolName' => $answer->getSurveyTaken()->getSchool()->getName()
-                );
-            }
-        }
-
-        return $textQAarray;
-    }
-
-    public function getTextAnswerWithTeamResults(): array
-    {
-        $textQuestionArray = array();
-        $textQAarray = array();
-
-        // Get all text questions
-        foreach ($this->getSurveyQuestions() as $question) {
-            if ($question->getType() == 'text') {
-                $textQuestionArray[] = $question;
-            }
-        }
-
-        //Collect text answers
-        foreach ($textQuestionArray as $textQuestion) {
-            $questionText = $textQuestion->getQuestion();
-            $textQAarray[$questionText] = array();
-            foreach ($textQuestion->getAnswers() as $answer) {
-                if ($answer->getSurveyTaken() === null || empty($answer->getSurveyTaken()->getUser()->getTeamMemberships())) {
-                    continue;
-                }
-
-                // If teamname not wanted can be commented away
-                $teamNames = $answer->getSurveyTaken()->getUser()->getTeamNames();
-
-                $textQAarray[$questionText][] = array(
-                    'answerText' => $answer->getAnswer(),
-                    'teamName' => $teamNames,
-                );
-            }
-        }
-
-        return $textQAarray;
-    }
-
-
-
-
     public function copy(): Survey
     {
         $surveyClone = clone $this;
@@ -344,8 +277,6 @@ class Survey implements \JsonSerializable
     {
         $this->showCustomPopUpMessage = $showCustomPopUpMessage;
     }
-
-
 
 
     /**

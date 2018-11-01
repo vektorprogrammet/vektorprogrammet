@@ -28,15 +28,12 @@ class SurveyAnswer implements \JsonSerializable
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Assert\NotBlank()
-     *
      */
     protected $answer;
 
     /**
      * @ORM\Column(type="array", nullable=true)
      * @Assert\NotBlank()
-     *
      *
      */
     private $answerArray;

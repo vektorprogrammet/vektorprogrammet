@@ -279,11 +279,9 @@ class Semester
     }
 
 
-    public function isActive($time = null)
+    public function isActive()
     {
-        if (!$time) {
-            $time = new \DateTime();
-        }
+        $time = new \DateTime();
         return $this->getSemesterStartDate() < $time && $time <= $this->getSemesterEndDate();
     }
 

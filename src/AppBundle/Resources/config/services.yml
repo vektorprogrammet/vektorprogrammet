@@ -235,6 +235,10 @@ services:
         class: AppBundle\Service\SurveyManager
         arguments: ['@doctrine.orm.default_entity_manager', '@form.factory']
 
+  team.service:
+      class: AppBundle\Service\TeamService
+      arguments: ['@doctrine.orm.default_entity_manager', '@form.factory']
+
   app.group_sorter_extension:
     class: AppBundle\Twig\Extension\TeamPositionSortExtension
     public: false

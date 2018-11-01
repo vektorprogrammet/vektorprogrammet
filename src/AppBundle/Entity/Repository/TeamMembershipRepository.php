@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Semester;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
 use AppBundle\Entity\TeamMembership;
@@ -142,6 +143,33 @@ class TeamMembershipRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+
+    /**
+     * @param $user
+     * @param $semester
+     *
+     * @return TeamMembership[]
+     */
+    public function findTeamMembershipsByUserAndSemester($user, Semester $semester)
+    {
+        $semesterStartDate = $semester->getSemesterStartDate();
+
+        return $this->createQueryBuilder('whistory')
+            ->select('whistory')
+            ->join('whistory.startSemester', 'startSemester')
+            ->leftJoin('whistory.endSemester', 'endSemester')
+            ->where('startSemester.semesterStartDate <= :semesterStartDate')
+            ->andWhere('whistory.user = :user')
+            ->andWhere('endSemester.semesterEndDate >= :semesterStartDate OR endSemester.semesterEndDate is NULL')
+            ->setParameter('semesterStartDate', $semesterStartDate)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
 
     /**
      * @param $department

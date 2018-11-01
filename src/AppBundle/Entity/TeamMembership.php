@@ -227,20 +227,8 @@ class TeamMembership implements TeamMembershipInterface
     }
 
 
-    public function wasActiveIn($time)
+    public function isActive()
     {
-        $startSemesterDate = $this->getStartSemester()->getSemesterStartDate();
-        $endSemesterDate = $this->getEndSemester()->getSemesterEndDate();
-
-        $inTimeInterval = ($startSemesterDate <= $time && $time <=$endSemesterDate);
-        return $inTimeInterval;
-    }
-
-    public function isActive($time = null)
-    {
-        if ($time != null) {
-            return $this->wasActiveIn($time);
-        }
         $department = $this->team->getDepartment();
         $activeSemester = $department->getCurrentOrLatestSemester();
 

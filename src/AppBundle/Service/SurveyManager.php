@@ -3,9 +3,11 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Semester;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyAnswer;
 use AppBundle\Entity\SurveyTaken;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 
 class SurveyManager
@@ -72,4 +74,160 @@ class SurveyManager
 
         return $surveyTaken;
     }
+
+
+    public function getValidSurveysTaken(Survey $survey) : array
+    {
+        $surveysTaken = $this->em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
+        $validSurveysTaken = array();
+        foreach($surveysTaken as $surveyTaken){
+            if($surveyTaken === null){
+                continue;
+            }
+            $validSurveysTaken[] = $surveyTaken;
+        }
+
+        return $validSurveysTaken;
+
+    }
+
+
+     public function getUserAffiliationOfSurveyAnswers(Survey $survey)
+     {
+         $surveysTaken = $this->em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
+         $userAffiliation = array();
+         $semester = $survey->getSemester();
+         if ($survey->isTeamSurvey()) {
+             foreach ($surveysTaken as $surveyTaken) {
+                 $user = $surveyTaken->getUser();
+                 $userAffiliation = $this->getUserAffiliationOfUserBySemester($user, $semester, $userAffiliation);
+             }
+         } else {
+             foreach ($surveysTaken as $surveyTaken) {
+                 if (is_null($surveyTaken->getSchool())) {
+                     continue;
+                 }
+                 if (!in_array($surveyTaken->getSchool()->getName(), $userAffiliation)) {
+                     $userAffiliation[] = $surveyTaken->getSchool()->getName();
+                 }
+             }
+         }
+
+         return $userAffiliation;
+     }
+
+
+
+     public function getSurveyTargetMainAffiliation(Survey $survey) : string
+     {
+         if($survey->isTeamSurvey()) {
+             return "Team";
+         }
+         return "Skole";
+
+     }
+
+
+    public function getTextAnswerWithSchoolResults($survey): array
+    {
+        $textQuestionArray = array();
+        $textQAarray = array();
+
+        // Get all text questions
+        foreach ($survey->getSurveyQuestions() as $question) {
+            if ($question->getType() == 'text') {
+                $textQuestionArray[] = $question;
+            }
+        }
+
+        //Collect text answers
+        foreach ($textQuestionArray as $textQuestion) {
+            $questionText = $textQuestion->getQuestion();
+            $textQAarray[$questionText] = array();
+            foreach ($textQuestion->getAnswers() as $answer) {
+                if ($answer->getSurveyTaken() === null || $answer->getSurveyTaken()->getSchool() === null) {
+                    continue;
+                }
+                $textQAarray[$questionText][] = array(
+                    'answerText' => $answer->getAnswer(),
+                    'schoolName' => $answer->getSurveyTaken()->getSchool()->getName()
+                );
+            }
+        }
+
+        return $textQAarray;
+    }
+
+
+    public function getTextAnswerWithTeamResults($survey): array
+    {
+        $textQuestionArray = array();
+        $textQAarray = array();
+
+        $semester = $survey->getSemester();
+
+        // Get all text questions
+        foreach ($survey->getSurveyQuestions() as $question) {
+            if ($question->getType() == 'text') {
+                $textQuestionArray[] = $question;
+            }
+        }
+
+        //Collect text answers
+        foreach ($textQuestionArray as $textQuestion) {
+            $questionText = $textQuestion->getQuestion();
+            $textQAarray[$questionText] = array();
+            foreach ($textQuestion->getAnswers() as $answer) {
+                if ($answer->getSurveyTaken() === null || empty($answer->getSurveyTaken()->getUser()->getTeamMemberships())) {
+                    continue;
+                }
+
+                $user = $answer->getSurveyTaken()->getUser();
+                $ua = $this->getUserAffiliationOfUserBySemester($user, $semester);
+                $teamNames = $this->getTeamNamesAsString($ua);
+
+
+                $textQAarray[$questionText][] = array(
+                    'answerText' => $answer->getAnswer(),
+                    'teamName' => $teamNames,
+                );
+            }
+        }
+
+        return $textQAarray;
+    }
+
+
+    private function getTeamNamesAsString(array $teamNames): string
+    {
+        $teamNames = implode(", ", $teamNames);
+        $find = ',';
+        $replace = ' og';
+        $teamNames = strrev(preg_replace(strrev("/$find/"), strrev($replace), strrev($teamNames), 1));
+        return $teamNames;
+
+    }
+
+
+    private function getUserAffiliationOfUserBySemester(User $user, Semester $semester, $userAffiliation = array()) : array
+    {
+        $teamMemberships = $this->em->getRepository('AppBundle:TeamMembership')->findTeamMembershipsByUserAndSemester($user, $semester);
+
+        foreach ($teamMemberships as $teamMembership) {
+            $teamName = $teamMembership->getTeam()->getName();
+            if (!in_array($teamName, $userAffiliation)) {
+                $userAffiliation[] = $teamName;
+            }
+        }
+
+        if (empty($teamMemberships)) {
+            $userAffiliation[]= "Ikke teammedlem";
+        }
+
+        return $userAffiliation;
+
+    }
+
+
+
 }

@@ -181,7 +181,7 @@ class SurveyController extends Controller
     {
         $survey = new Survey();
         $form = $this->createForm(SurveyType::class, $survey, array(
-            'isGrantedTeamLeader' => $this->container->get('app.roles')->userIsTeamLeader($this->getUser()),
+            'isGrantedTeamLeader' => $this->isGranted(Roles::TEAM_LEADER),
         ));
         $form->handleRequest($request);
 
@@ -190,6 +190,10 @@ class SurveyController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            //Merge-conflict - look at copySurvey
+            $department = $this->getUser()->getDepartment();
+            $semester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
+            $survey->setSemester($semester);
             $em->persist($survey);
             $em->flush();
 
@@ -207,7 +211,7 @@ class SurveyController extends Controller
     public function copySurveyAction(Request $request, Survey $survey)
     {
         $tempSurveyType = new SurveyType();
-        if ($this->container->get('app.roles')->userIsTeamLeader($this->getUser())) {
+        if ($this->isGranted(Roles::TEAM_LEADER)) {
             $tempSurveyType->setAdminSurvey(true);
         } elseif ($survey->isTeamSurvey()) {
             throw $this->createAccessDeniedException();
@@ -275,14 +279,14 @@ class SurveyController extends Controller
     public function editSurveyAction(Request $request, Survey $survey)
     {
         $adminSurvey = false;
-        if ($this->container->get('app.roles')->userIsTeamLeader($this->getUser())) {
+        if ($this->isGranted(Roles::TEAM_LEADER)) {
             $adminSurvey = true;
         } elseif ($survey->isTeamSurvey()) {
             throw $this->createAccessDeniedException();
         }
 
         $form = $this->createForm(SurveyType::class, $survey, array(
-            'isAdminSurvey' => $adminSurvey,
+            'isGrantedTeamLeader' => $this->isGranted(Roles::TEAM_LEADER),
         ));
 
         $form->handleRequest($request);
@@ -338,14 +342,14 @@ class SurveyController extends Controller
     {
         if ($survey->isTeamSurvey()) {
             return $this->render('survey/survey_result.html.twig', array(
-                'textAnswers' => $survey->getTextAnswerWithTeamResults(),
+                'textAnswers' => $this->get('survey.manager')->getTextAnswerWithTeamResults($survey),
                 'survey' => $survey,
-                'teamSurvey' => $survey->isTeamSurvey()
+                'teamSurvey' => $survey->isTeamSurvey(),
             ));
         }
 
         return $this->render('survey/survey_result.html.twig', array(
-            'textAnswers' => $survey->getTextAnswerWithSchoolResults(),
+            'textAnswers' => $this->get('survey.manager')->getTextAnswerWithSchoolResults($survey),
             'survey' => $survey,
             'teamSurvey' =>  $survey->isTeamSurvey(),
 
@@ -354,40 +358,16 @@ class SurveyController extends Controller
 
     public function getSurveyResultAction(Survey $survey)
     {
-        $surveysTaken = $this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
-        $validSurveysTaken = array();
-
-        $userAffiliation = array();
-        if ($survey->isTeamSurvey()) {
-            foreach ($surveysTaken as $surveyTaken) {
-                foreach ($surveyTaken->getUser()->getTeamNamesAsList($surveyTaken->getTime()) as $teamName) {
-                    if (!in_array($teamName, $userAffiliation)) {
-                        $userAffiliation[] = $teamName;
-                    }
-                }
-                $validSurveysTaken[] = $surveyTaken;
-            }
-            $title = "Team";
-        } else {
-            foreach ($surveysTaken as $surveyTaken) {
-                if (is_null($surveyTaken->getSchool())) {
-                    continue;
-                }
-                $validSurveysTaken[] = $surveyTaken;
-
-                if (!in_array($surveyTaken->getSchool()->getName(), $userAffiliation)) {
-                    $userAffiliation[] = $surveyTaken->getSchool()->getName();
-                }
-            }
-
-            $title = "Skole";
-        }
+        $userAffiliation = $this->get('survey.manager')->getUserAffiliationOfSurveyAnswers($survey);
+        $validSurveysTaken = $this->get('survey.manager')->getValidSurveysTaken($survey);
+        $title = $this->get('survey.manager')->getSurveyTargetMainAffiliation($survey);
 
         //Inject the school/team question into question array
         $userAffiliationQuestion = array('question_id' => 0, 'question_label' => $title, 'alternatives' => $userAffiliation);
         $survey_json = json_encode($survey);
         $survey_decode = json_decode($survey_json, true);
         $survey_decode['questions'][] = $userAffiliationQuestion;
+
 
 
         return new JsonResponse(array('survey' => $survey_decode, 'answers' => $validSurveysTaken));
@@ -402,6 +382,9 @@ class SurveyController extends Controller
         $user->setLastPopUp(null);
         $em->persist($user);
         $em->flush();
+
+        return new JsonResponse();
+
     }
     public function toggleReservePopUpAction()
     {

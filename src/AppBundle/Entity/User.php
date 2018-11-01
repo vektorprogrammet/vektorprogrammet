@@ -752,15 +752,14 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @param null $time
      * @return ExecutiveBoardMembership[]
      */
-    public function getActiveExecutiveBoardMemberships($time = null)
+    public function getActiveExecutiveBoardMemberships()
     {
         $activeExecutiveBoardMemberships = [];
         if ($this->executiveBoardMemberships !== null) {
             foreach ($this->executiveBoardMemberships as $executiveBoardMembership) {
-                if ($executiveBoardMembership->isActive($time)) {
+                if ($executiveBoardMembership->isActive()) {
                     $activeExecutiveBoardMemberships[] = $executiveBoardMembership;
                 }
             }
@@ -769,15 +768,14 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @param null $time
      * @return TeamMembership[]
      */
-    public function getActiveTeamMemberships($time = null)
+    public function getActiveTeamMemberships()
     {
         $activeTeamMemberships = [];
         if ($this->teamMemberships !== null) {
             foreach ($this->teamMemberships as $teamMembership) {
-                if ($teamMembership->isActive($time)) {
+                if ($teamMembership->isActive()) {
                     $activeTeamMemberships[] = $teamMembership;
                 }
             }
@@ -785,6 +783,7 @@ class User implements AdvancedUserInterface, \Serializable
 
         return $activeTeamMemberships;
     }
+
 
     /**
      * @return boolean
@@ -825,12 +824,11 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @param null $time
      * @return TeamMembershipInterface[]
      */
-    public function getActiveMemberships($time = null)
+    public function getActiveMemberships()
     {
-        return array_merge($this->getActiveTeamMemberships($time), $this->getActiveExecutiveBoardMemberships($time));
+        return array_merge($this->getActiveTeamMemberships(), $this->getActiveExecutiveBoardMemberships());
     }
 
     /**
@@ -868,30 +866,4 @@ class User implements AdvancedUserInterface, \Serializable
         return false;
     }
 
-    public function getTeamNamesAsList($time = null)
-    {
-        $teamNames = array();
-        foreach ($this->getActiveMemberships($time) as $teamMembership) {
-            $teamNames[] = $teamMembership->getTeam()->getName();
-        }
-
-        if (empty($teamNames)) {
-            $teamNames=array("Ikke teammedlem");
-        }
-
-        return $teamNames;
-    }
-
-    public function getTeamNames($time = null)
-    {
-        $teamNames = $this->getTeamNamesAsList($time);
-
-
-        $teamNames = implode(", ", $teamNames);
-        $find = ',';
-        $replace = ' og';
-        $teamNames = strrev(preg_replace(strrev("/$find/"), strrev($replace), strrev($teamNames), 1));
-
-        return $teamNames;
-    }
 }
