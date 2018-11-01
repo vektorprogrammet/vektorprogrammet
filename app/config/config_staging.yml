@@ -10,3 +10,8 @@ parameters:
 
 swiftmailer:
     disable_delivery: true
+
+ewz_recaptcha:
+    enabled: false
+    public_key:  '%recaptcha_public_key%'
+    private_key: '%recaptcha_private_key%'
