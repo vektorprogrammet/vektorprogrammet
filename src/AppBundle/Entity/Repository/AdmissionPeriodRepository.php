@@ -55,10 +55,10 @@ class AdmissionPeriodRepository extends EntityRepository
      * @param Department $department
      * @param Semester $semester
      *
-     * @return AdmissionPeriod
+     * @return AdmissionPeriod|null
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findOneByDepartmentAndSemester(Department $department, Semester $semester): AdmissionPeriod
+    public function findOneByDepartmentAndSemester(Department $department, Semester $semester): ?AdmissionPeriod
     {
         return $this->createQueryBuilder('admissionPeriod')
             ->where('admissionPeriod.department = :department')
@@ -73,11 +73,11 @@ class AdmissionPeriodRepository extends EntityRepository
      * @param Department $department
      * @param \DateTime   $time
      *
-     * @return AdmissionPeriod
+     * @return AdmissionPeriod|null
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findOneWithActiveAdmissionByDepartment(Department $department, \DateTime $time = null): AdmissionPeriod
+    public function findOneWithActiveAdmissionByDepartment(Department $department, \DateTime $time = null): ?AdmissionPeriod
     {
         if ($time === null) {
             $time = new \DateTime();
