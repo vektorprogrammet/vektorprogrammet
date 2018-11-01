@@ -41,7 +41,6 @@ class AdmissionNotification
      */
     private $infoMeeting;
 
-
     /**
      * @var Department
      * @ORM\ManyToOne(targetEntity="Department")

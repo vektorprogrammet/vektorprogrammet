@@ -86,18 +86,17 @@ class AdmissionNotifier
                     $this->emailSender->sendAdmissionStartedNotification($subscriber);
                     $notification = new AdmissionNotification();
                     $notification->setSemester($semester);
+                    $notification->setDepartment($department);
                     $notification->setSubscriber($subscriber);
                     $this->em->persist($notification);
                     $notificationsSent++;
-
-                    usleep(50 * 1000); // 50ms
                 }
                 if ($notificationsSent > 0) {
                     $this->logger->info("*$notificationsSent* admission notification emails sent to subscribers in *" . $department->getCity() . "*");
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->critical("Failed to send admission notifiction:\n".$e->getMessage());
+            $this->logger->critical("Failed to send admission notification:\n".$e->getMessage());
         } finally {
             $this->em->flush();
         }
@@ -106,21 +105,23 @@ class AdmissionNotifier
     public function sendInfoMeetingNotifications()
     {
         $departments = $this->em->getRepository('AppBundle:Department')->findActive();
+        $semester = $this->em->getRepository('AppBundle:Semester')->findCurrentSemester();
         try {
             foreach ($departments as $department) {
-                $semester = $department->getCurrentSemester();
-                if (!isset($semester) || is_null($semester->getInfoMeeting())) {
+                $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')->findOneByDepartmentAndSemester($department, $semester);
+                if ($admissionPeriod === null || $admissionPeriod->getInfoMeeting() === null) {
                     continue;
                 }
 
-                $infoMeetingLessThanOneDay = $semester->getInfoMeeting()->getDate()->diff(new \DateTime())->d <= 1;
+                $infoMeetingLessThanOneDay = $admissionPeriod->getInfoMeeting()->getDate()->diff(new \DateTime())->d <= 1;
                 if (!$infoMeetingLessThanOneDay) {
                     continue;
                 }
 
-                $applicationEmails = $this->em->getRepository('AppBundle:Application')->findEmailsBySemester($semester);
+                $applicationEmails = $this->em->getRepository('AppBundle:Application')->findEmailsByAdmissionPeriod($admissionPeriod);
                 $subscribers = $this->em->getRepository('AppBundle:AdmissionSubscriber')->findByDepartment($department);
-                $notificationEmails = $this->em->getRepository('AppBundle:AdmissionNotification')->findEmailsBySemesterAndInfoMeeting($semester);
+                $notificationEmails = $this->em->getRepository('AppBundle:AdmissionNotification')
+                    ->findEmailsBySemesterAndDepartmentAndInfoMeeting($semester, $department);
 
                 $notificationsSent = 0;
                 foreach ($subscribers as $subscriber) {
@@ -136,19 +137,18 @@ class AdmissionNotifier
                     $this->emailSender->sendInfoMeetingNotification($subscriber);
                     $notification = new AdmissionNotification();
                     $notification->setSemester($semester);
+                    $notification->setDepartment($department);
                     $notification->setSubscriber($subscriber);
                     $notification->setInfoMeeting(true);
                     $this->em->persist($notification);
                     $notificationsSent++;
-
-                    usleep(50 * 1000); // 50ms
                 }
                 if ($notificationsSent > 0) {
                     $this->logger->info("*$notificationsSent* info meeting notification emails sent to subscribers in *" . $department->getCity() . "*");
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->critical("Failed to send info meeting notifiction:\n".$e->getMessage());
+            $this->logger->critical("Failed to send info meeting notification:\n".$e->getMessage());
         } finally {
             $this->em->flush();
         }
