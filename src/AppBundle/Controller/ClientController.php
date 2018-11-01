@@ -8,7 +8,7 @@ class ClientController extends BaseController
 {
 
     /**
-     * @Route("/kontrollpanel/staging")
+     * @Route("/kontrollpanel/staging", name="staging_servers_show")
      * @Route("/assistent/min-side")
      *
      * @return \Symfony\Component\HttpFoundation\Response

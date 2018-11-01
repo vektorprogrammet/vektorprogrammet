@@ -138,7 +138,7 @@
         })();
 
         function clearErrors() {
-          var input = this.parentNode.querySelector('input');
+          var input = this.parentNode.querySelector('input[type=\'email\']');
           if (!input) {
             return;
           }
@@ -153,7 +153,7 @@
             alert("Noe gikk galt");
             return false;
           }
-          var input = target.parentNode.querySelector('input');
+          var input = target.parentNode.querySelector('input[type=\'email\']');
           var error = target.parentNode.querySelector('.invalid-feedback');
           if (!input || !error) {
             alert("Noe gikk galt");
@@ -179,13 +179,15 @@
             return;
           }
 
-          var email = target.parentNode.querySelector('input').value;
+          var email = target.parentNode.querySelector('input[type=\'email\']').value;
+          var infoMeeting = target.parentNode.querySelector('input[type=\'checkbox\']').checked;
           $.ajax({
             type: "POST",
             url: "{{ path('admission_subscribe') }}",
             data: {
-              department: department,
-              email: email
+                department: department,
+                email: email,
+                infoMeeting: infoMeeting
             },
             success: function () {
               setComplete(target)

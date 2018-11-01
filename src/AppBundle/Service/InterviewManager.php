@@ -160,7 +160,6 @@ class InterviewManager
             $interviewers[] = $interview->getCoInterviewer();
         }
 
-        // Send mail to interviewer and co-interviewer
         foreach ($interviewers as $interviewer) {
             $message = (new \Swift_Message())
                 ->setSubject("[$user] Intervju: Ønske om ny tid")
@@ -174,7 +173,7 @@ class InterviewManager
                     ),
                     'text/html'
                 );
-
+          
             $this->mailer->send($message);
         }
     }
@@ -185,6 +184,7 @@ class InterviewManager
     public function sendCancelEmail(Interview $interview)
     {
         $user = $interview->getUser();
+
         $interviewers = array();
         $interviewers[] = $interview->getInterviewer();
         if (!is_null($interview->getCoInterviewer())) {

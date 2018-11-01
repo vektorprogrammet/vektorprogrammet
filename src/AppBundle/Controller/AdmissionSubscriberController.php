@@ -30,7 +30,7 @@ class AdmissionSubscriberController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $this->get('app.admission_notifier')->createSubscription($department, $subscriber->getEmail());
+                $this->get('app.admission_notifier')->createSubscription($department, $subscriber->getEmail(), $subscriber->getInfoMeeting());
                 $this->addFlash('success', $subscriber->getEmail().' har blitt meldt på interesselisten. Du vil få en e-post når opptaket starter');
             } catch (\InvalidArgumentException $e) {
                 $this->addFlash('danger', 'Kunne ikke melde '.$subscriber->getEmail().' på interesselisten. Vennligst prøv igjen.');
@@ -56,6 +56,7 @@ class AdmissionSubscriberController extends BaseController
     {
         $email = $request->request->get('email');
         $departmentId = $request->request->get('department');
+        $infoMeeting = filter_var($request->request->get('infoMeeting'), FILTER_VALIDATE_BOOLEAN);
         if (!$email || !$departmentId) {
             return new JsonResponse("Email or department missing", 400);
         }
@@ -65,7 +66,7 @@ class AdmissionSubscriberController extends BaseController
         }
 
         try {
-            $this->get('app.admission_notifier')->createSubscription($department, $email);
+            $this->get('app.admission_notifier')->createSubscription($department, $email, $infoMeeting);
         } catch (\InvalidArgumentException $e) {
             return new JsonResponse($e->getMessage(), 400);
         }
