@@ -40,7 +40,7 @@ class SendListOfScheduledInterviewsCommand extends ContainerAwareCommand
     {
         $departments = $this->em->getRepository('AppBundle:Department')->findActive();
         foreach ($departments as $department) {
-            $semester = $department->getCurrentSemester();
+            $semester = $department->getCurrentAdmissionPeriod();
             if (!$semester) {
                 continue;
             }

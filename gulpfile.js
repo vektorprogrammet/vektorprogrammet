@@ -181,3 +181,4 @@ gulp.task('build:prod', gulp.parallel([stylesProd, scriptsProd, imagesProd, file
 gulp.task('build:dev', gulp.parallel([stylesDev, scriptsDev, imagesDev, files, icons, vendor]));
 gulp.task('default', gulp.series(['build:dev', watch]));
 gulp.task('build:client', gulp.series([buildClientApp, clientStaticFilesProd]));
+gulp.task('build:scheduling', gulp.series([assistantSchedulingStaticFiles]));

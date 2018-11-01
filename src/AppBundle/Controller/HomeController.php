@@ -2,15 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Department;
-use AppBundle\Entity\Semester;
-use AppBundle\Entity\User;
-use AppBundle\Entity\TeamMembership;
-use Nexy\Slack\Attachment;
-use Nexy\Slack\Message;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-class HomeController extends Controller
+class HomeController extends BaseController
 {
     public function showAction()
     {
@@ -38,31 +30,5 @@ class HomeController extends Controller
             'closestDepartment' => $closestDepartment,
             'news' => $articles,
         ]);
-    }
-
-    public function activeAdmissionAction()
-    {
-        $activeSemesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findSemestersWithActiveAdmission();
-        $activeDepartments = $this->getDepartmentsFromSemesters($activeSemesters);
-
-        return $this->render('home/dep_with_active_admission.html.twig', array('departments' => $activeDepartments));
-    }
-
-    /**
-     * @param Semester[] $semesters
-     *
-     * @return Department[]
-     */
-    private function getDepartmentsFromSemesters($semesters)
-    {
-        $departments = [];
-        foreach ($semesters as $semester) {
-            $department = $semester->getDepartment();
-            if (!in_array($department, $departments)) {
-                $departments[] = $department;
-            }
-        }
-
-        return $departments;
     }
 }

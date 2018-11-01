@@ -7,14 +7,13 @@ use AppBundle\Form\Type\ImageGalleryType;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\NoResultException;
 use Liip\ImagineBundle\Exception\Imagine\Filter\NonExistingFilterException;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Event\ImageGalleryEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class ImageGalleryController extends Controller
+class ImageGalleryController extends BaseController
 {
     public function createAction(Request $request)
     {

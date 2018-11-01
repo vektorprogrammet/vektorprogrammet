@@ -46,6 +46,7 @@
     "compress-images": "gulp compressImages",
     "build:scheduling": "cd src/AppBundle/AssistantScheduling/Webapp && npm run build:dev",
     "build:scheduling:win": "cd src\\AppBundle\\AssistantScheduling\\Webapp && npm run build:dev",
+    "build:scheduling:files": "gulp build:scheduling",
     "build:client": "gulp build:client",
     "build:dev": "gulp build:dev",
     "build:prod": "gulp build:prod",

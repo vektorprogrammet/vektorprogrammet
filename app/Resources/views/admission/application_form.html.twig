@@ -23,13 +23,13 @@
             {% set form = forms[department.city] %}
             <div role="tabpanel" class="tab-pane fade in" id="{{ department }}">
                 <div class="card-block px-3 px-sm-0 my-2 my-sm-0">
-                    {% if department.currentSemester and department.currentSemester.hasActiveAdmission() %}
+                    {% if department.currentAdmissionPeriod and department.currentAdmissionPeriod.hasActiveAdmission() %}
                         <header class="text-center mb-5">
                             <h3>{{ department.city }}</h3>
 
                             <p>Søknadsfrist: <span class="deadline">
-                            {{ department.currentSemester.admissionEndDate|date('d.m.Y') }}
-                                    kl. {{ department.currentSemester.admissionEndDate|date('H:i') }}</span>
+                            {{ department.currentAdmissionPeriod.admissionEndDate|date('d.m.Y') }}
+                                    kl. {{ department.currentAdmissionPeriod.admissionEndDate|date('H:i') }}</span>
                             </p>
                         </header>
                         {{ form_start(form) }}
@@ -83,12 +83,12 @@
                             </div>
                         </div>
                         {{ form_end(form) }}
-                    {% elseif department.currentSemester and date() < date(department.currentSemester.admissionStartDate) %}
+                    {% elseif department.currentAdmissionPeriod and date() < date(department.currentAdmissionPeriod.admissionStartDate) %}
                         <header class="application-header text-center mt-3">
                             <h3>{{ department.city }}</h3>
                             <p><i class="fa fa-exclamation-circle text-warning"></i> Opptaket starter: <span class="deadline">
-                        {{ department.currentSemester.admissionStartDate|date('d.m.Y') }}
-                                    kl. {{ department.currentSemester.admissionStartDate|date('H:i') }}</span>
+                        {{ department.currentAdmissionPeriod.admissionStartDate|date('d.m.Y') }}
+                                    kl. {{ department.currentAdmissionPeriod.admissionStartDate|date('H:i') }}</span>
                             </p>
                         </header>
                         <div class="row mt-4">
@@ -106,14 +106,14 @@
                                 </div>
                             </div>
                         </div>
-                    {% elseif department.currentSemester and date(department.currentSemester.admissionEndDate)|date_modify("+14 days") > date() %}
+                    {% elseif department.currentAdmissionPeriod and date(department.currentAdmissionPeriod.admissionEndDate)|date_modify("+14 days") > date() %}
                         <header class="application-header text-center mt-3">
                             <h3>{{ department.city }}</h3>
                         </header>
                         <p class="text-center">
                             <i class="fa fa-exclamation-circle text-warning"></i> Opptaket stengte <span class="deadline">
-                        {{ department.currentSemester.admissionEndDate|date('d.m.Y') }}
-                                kl. {{ department.currentSemester.admissionEndDate|date('H:i') }}</span>
+                        {{ department.currentAdmissionPeriod.admissionEndDate|date('d.m.Y') }}
+                                kl. {{ department.currentAdmissionPeriod.admissionEndDate|date('H:i') }}</span>
                         </p>
                         <div class="col-12 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 mt-4">
                             <div class="form-group">

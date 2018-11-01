@@ -6,11 +6,10 @@ use AppBundle\Entity\ImageGallery;
 use AppBundle\Entity\Image;
 use AppBundle\Form\Type\EditImageType;
 use AppBundle\Form\Type\UploadImageType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Event\ImageGalleryEvent;
 
-class ImageController extends Controller
+class ImageController extends BaseController
 {
     public function uploadAction(Request $request, ImageGallery $imageGallery)
     {

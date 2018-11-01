@@ -169,28 +169,39 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
     {
         return array(
             array('/kontrollpanel'),
-            array('/kontrollpanel/semesteradmin'),
+            array('/kontrollpanel/opptaksperiode'),
 
             array('/kontrollpanel/opptak/nye'),
-            array('/kontrollpanel/opptak/nye/4'),
+            array('/kontrollpanel/opptak/nye?department=1&semester=1'),
             array('/kontrollpanel/opptak/gamle'),
-            array('/kontrollpanel/opptak/gamle/4'),
+            array('/kontrollpanel/opptak/gamle?department=1&semester=1'),
             array('/kontrollpanel/opptak/fordelt'),
-            array('/kontrollpanel/opptak/fordelt/4'),
+            array('/kontrollpanel/opptak/fordelt?department=1&semester=1'),
             array('/kontrollpanel/opptak/intervjuet'),
-            array('/kontrollpanel/opptak/intervjuet/4'),
+            array('/kontrollpanel/opptak/intervjuet?department=1&semester=1'),
 
             array('/kontrollpanel/stand'),
-            array('/kontrollpanel/stand/4'),
+            array('/kontrollpanel/stand?department=1&semester=1'),
 
             array('/kontrollpanel/statistikk/opptak'),
-            array('/kontrollpanel/statistikk/opptak/4'),
+            array('/kontrollpanel/statistikk/opptak?department=1&semester=1'),
 
             array('/kontrollpanel/deltakerhistorikk'),
-            array('/kontrollpanel/deltakerhistorikk/4'),
+            array('/kontrollpanel/deltakerhistorikk?department=1&semester=1'),
 
             array('/kontrollpanel/vikar'),
-            array('/kontrollpanel/vikar/semester/4'),
+            array('/kontrollpanel/vikar?department=1&semester=1'),
+
+            array('/kontrollpanel/team/avdeling'),
+            array('/kontrollpanel/teamadmin/team/1'),
+
+            array('/kontrollpanel/opprettsoker'),
+            array('/kontrollpanel/brukeradmin/opprett'),
+
+            array('/kontrollpanel/artikkeladmin'),
+
+            array('/kontrollpanel/vikar'),
+            array('/kontrollpanel/vikar?department=1&semester=1'),
 
             array('/kontrollpanel/team/avdeling'),
             array('/kontrollpanel/teamadmin/team/1'),
@@ -203,7 +214,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
             array('/kontrollpanel/utlegg/2'),
 
             array('/kontrollpanel/undersokelse/admin'),
-            array('/kontrollpanel/undersokelse/admin/4'),
+            array('/kontrollpanel/undersokelse/admin?department=1&semester=1'),
             array('/kontrollpanel/undersokelse/opprett'),
 
             array('/kontrollpanel/artikkeladmin'),
@@ -221,8 +232,6 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
     public function teamLeaderUrlProvider()
     {
         return array(
-            array('/kontrollpanel/semesteradmin/avdeling/2'),
-            array('/kontrollpanel/semesteradmin/avdeling/opprett/1'),
 
             array('/kontrollpanel/intervju/settopp/6'),
             array('/kontrollpanel/intervju/conduct/6'),
@@ -246,7 +255,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
             array('/kontrollpanel/hovedstyret/oppdater'),
 
             array('/kontrollpanel/opptakadmin/teaminteresse'),
-            array('/kontrollpanel/opptakadmin/teaminteresse/4'),
+            array('/kontrollpanel/opptakadmin/teaminteresse?department=2&semester=1'),
 
             array('/kontrollpanel/brukeradmin/avdeling/2'),
             array('/kontrollpanel/brukeradmin/opprett/2'),
@@ -269,6 +278,8 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
             array('/kontrollpanel/staging'),
             array('/kontrollpanel/avdelingadmin/opprett'),
             array('/kontrollpanel/bruker/vekorepost/endre/1'),
+            array('/kontrollpanel/semesteradmin'),
+            array('/kontrollpanel/semesteradmin/opprett'),
             array('/kontrollpanel/admin/accessrules'),
             array('/kontrollpanel/admin/accessrules/create'),
             array('/kontrollpanel/admin/accessrules/routing/create'),

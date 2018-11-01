@@ -228,7 +228,7 @@ class TeamMembership implements TeamMembershipInterface
     public function isActive()
     {
         $department = $this->team->getDepartment();
-        $activeSemester = $department->getCurrentOrLatestSemester();
+        $activeSemester = $department->getCurrentOrLatestAdmissionPeriod()->getSemester();
 
         return $this->isActiveInSemester($activeSemester);
     }

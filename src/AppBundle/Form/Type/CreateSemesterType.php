@@ -32,16 +32,6 @@ class CreateSemesterType extends AbstractType
                 'label' => 'År',
                 'required' => true,
             ))
-            ->add('admissionStartDate', DateTimeType::class, array(
-                'label' => 'Opptak starttidspunkt',
-                'widget' => 'single_text',
-                'format' => 'dd.MM.yyyy HH:mm',
-            ))
-            ->add('admissionEndDate', DateTimeType::class, array(
-                'label' => 'Opptak sluttidspunkt',
-                'widget' => 'single_text',
-                'format' => 'dd.MM.yyyy HH:mm',
-            ))
             ->add('save', SubmitType::class, array(
                 'label' => 'Opprett',
             ));

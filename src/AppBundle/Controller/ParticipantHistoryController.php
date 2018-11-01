@@ -2,39 +2,30 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Department;
-use AppBundle\Entity\Semester;
 use AppBundle\Role\Roles;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class ParticipantHistoryController extends Controller
+class ParticipantHistoryController extends BaseController
 {
     public function showAction()
     {
-        /** @var Department $department */
-        $department = $this->getUser()->getDepartment();
-
-        return $this->showBySemesterAction($department->getCurrentOrLatestSemester());
-    }
-
-    public function showBySemesterAction(Semester $semester)
-    {
-        $department = $semester->getDepartment();
+        $department = $this->getDepartmentOrThrow404();
+        $semester = $this->getSemesterOrThrow404();
 
         if (!$this->isGranted(Roles::TEAM_LEADER) && $department !== $this->getUser()->getDepartment()) {
             throw $this->createAccessDeniedException();
         }
 
-        // Find all work histories by department
+        // Find all team memberships by department
         $teamMemberships = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findTeamMembershipsByDepartment($department);
 
         // Find all assistantHistories by department
-        $assistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findAssistantHistoriesByDepartment($department, $semester);
+        $assistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findByDepartmentAndSemester($department, $semester);
 
         return $this->render('participant_history/index.html.twig', array(
             'teamMemberships' => $teamMemberships,
             'assistantHistories' => $assistantHistories,
             'semester' => $semester,
+            'department' => $department,
         ));
     }
 }

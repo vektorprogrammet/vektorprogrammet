@@ -16,7 +16,7 @@ class SchoolCapacityType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $department = $builder->getData()->getSemester()->getDepartment();
+        $department = $builder->getData()->getDepartment();
         $builder
             ->add('school', EntityType::class, array(
                 'label' => 'Skole',

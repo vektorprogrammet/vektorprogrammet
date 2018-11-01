@@ -17,7 +17,7 @@
         {% endif %}
     </div>
     <div class="col-9">
-        {% if app.user.department == semester.department and is_granted_team_leader() %}
+        {% if app.user.department == department and is_granted_team_leader() %}
             <a class="float-right btn btn-success btn-sm" href="{{ path('register_applicant') }}">
                 <i class="fa fa-plus"></i> Ny søker
             </a>

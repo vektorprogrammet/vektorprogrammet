@@ -2,6 +2,9 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\Repository\PositionRepository;
+use AppBundle\Entity\Repository\SemesterRepository;
+use AppBundle\Entity\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -22,8 +25,8 @@ class CreateTeamMembershipType extends AbstractType
             ->add('user', EntityType::class, array(
                 'label' => 'Bruker',
                 'class' => 'AppBundle:User',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')
+                'query_builder' => function (UserRepository $ur) {
+                    return $ur->createQueryBuilder('u')
                         ->orderBy('u.firstName', 'ASC')
                         ->Join('u.fieldOfStudy', 'fos')
                         ->Join('fos.department', 'd')
@@ -44,31 +47,23 @@ class CreateTeamMembershipType extends AbstractType
             ->add('position', EntityType::class, array(
                 'label' => 'Stillingstittel',
                 'class' => 'AppBundle:Position',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('p')
+                'query_builder' => function (PositionRepository $pr) {
+                    return $pr->createQueryBuilder('p')
                         ->orderBy('p.name', 'ASC');
                 },
             ))
             ->add('startSemester', EntityType::class, array(
                 'label' => 'Start semester',
                 'class' => 'AppBundle:Semester',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('s')
-                        ->orderBy('s.semesterStartDate', 'DESC')
-                        ->join('s.department', 'd')
-                        ->where('d.id = ?1')
-                        ->setParameter(1, $this->department);
+                'query_builder' => function (SemesterRepository $sr) {
+                    return $sr->queryForAllSemestersOrderedByAge();
                 },
             ))
             ->add('endSemester', EntityType::class, array(
                 'label' => 'Slutt semester (Valgfritt)',
                 'class' => 'AppBundle:Semester',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('s')
-                        ->orderBy('s.semesterStartDate', 'DESC')
-                        ->join('s.department', 'd')
-                        ->where('d.id = ?1')
-                        ->setParameter(1, $this->department);
+                'query_builder' => function (SemesterRepository $sr) {
+                    return $sr->queryForAllSemestersOrderedByAge();
                 },
                 'required' => false,
             ))

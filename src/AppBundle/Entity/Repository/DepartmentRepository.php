@@ -4,6 +4,7 @@ namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Department;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 class DepartmentRepository extends EntityRepository
 {
@@ -34,7 +35,7 @@ class DepartmentRepository extends EntityRepository
     public function findAllWithActiveAdmission()
     {
         return array_filter($this->findAll(), function (Department $department) {
-            $semester = $department->getCurrentSemester();
+            $semester = $department->getCurrentAdmissionPeriod();
             return $semester !== null && $semester->hasActiveAdmission();
         });
     }
@@ -60,15 +61,21 @@ class DepartmentRepository extends EntityRepository
     }
 
     /**
+     * @return QueryBuilder
+     */
+    public function queryForActive()
+    {
+        return $this->createQueryBuilder('Department')
+            ->select('Department')
+            ->where('Department.active = true');
+    }
+
+    /**
      * @return Department[]
      */
     public function findActive()
     {
-        return $this->createQueryBuilder('Department')
-            ->select('Department')
-            ->where('Department.active = true')
-            ->getQuery()
-            ->getResult();
+        return $this->queryForActive()->getQuery()->getResult();
     }
 
     public function findOneByCityCaseInsensitive($city)

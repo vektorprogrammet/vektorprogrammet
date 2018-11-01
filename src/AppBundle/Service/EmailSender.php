@@ -103,7 +103,7 @@ class EmailSender
              ->setTo($subscriber->getEmail())
              ->setBody($this->twig->render('admission/notification_email.html.twig', array(
                  'department' => $subscriber->getDepartment(),
-                 'infoMeeting' => $subscriber->getDepartment()->getCurrentSemester()->getInfoMeeting(),
+                 'infoMeeting' => $subscriber->getDepartment()->getCurrentAdmissionPeriod()->getInfoMeeting(),
                  'subscriber' => $subscriber,
              )))
              ->setContentType('text/html');
@@ -119,7 +119,7 @@ class EmailSender
             ->setTo($subscriber->getEmail())
             ->setBody($this->twig->render('admission/info_meeting_email.html.twig', array(
                 'department' => $subscriber->getDepartment(),
-                'infoMeeting' => $subscriber->getDepartment()->getCurrentSemester()->getInfoMeeting(),
+                'infoMeeting' => $subscriber->getDepartment()->getCurrentAdmissionPeriod()->getInfoMeeting(),
                 'subscriber' => $subscriber,
             )))
             ->setContentType('text/html');

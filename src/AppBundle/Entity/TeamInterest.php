@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="TeamInterestRepository")
  */
-class TeamInterest
+class TeamInterest implements DepartmentSemesterInterface
 {
     /**
      * @var integer
@@ -63,6 +63,13 @@ class TeamInterest
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Semester")
      */
     private $semester;
+
+    /**
+     * @var Department
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Department")
+     */
+    private $department;
 
     /**
      * TeamInterest constructor.
@@ -186,12 +193,22 @@ class TeamInterest
         return $this;
     }
 
-
     /**
      * @return Department
      */
-    public function getDepartment()
+    public function getDepartment(): Department
     {
-        return $this->semester->getDepartment();
+        return $this->department;
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return TeamInterest
+     */
+    public function setDepartment(Department $department): TeamInterest
+    {
+        $this->department = $department;
+        return $this;
     }
 }

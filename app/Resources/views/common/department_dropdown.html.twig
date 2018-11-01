@@ -5,9 +5,11 @@
             <i class="fa fa-institution button-icon-left"></i>{{ currentDepartment is defined ? currentDepartment : 'Avdeling' }}
         </button>
         <div class="dropdown-menu" aria-labelledby="departmentDropdown">
-            {% for department in get_departments() %}
+            {% set departmentParameterName = departmentParameterName is defined ? departmentParameterName : 'department' %}
+        {% set semesterParameterName = semesterParameterName is defined ? semesterParameterName : 'semester' %}
+        {% for department in get_departments() %}
                 {% if linkToSemester is defined and linkToSemester == true %}
-                    <a class="dropdown-item" href="{{ path(pathForDepartment, { (departmentParameterName): department.currentOrLatestSemester.id }) }}">{{ department }}</a>
+                    <a class="dropdown-item" href="{{ path(pathForDepartment, { (departmentParameterName): department.id, (semesterParameterName): semester.id }) }}">{{ department }}</a>
                 {% else %}
                     <a class="dropdown-item" href="{{ path(pathForDepartment, { (departmentParameterName): department.id }) }}">{{ department }}</a>
                 {% endif %}

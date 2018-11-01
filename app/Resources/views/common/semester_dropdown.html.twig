@@ -1,12 +1,12 @@
 <div class="dropdown">
     <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="semesterDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fa fa-calendar button-icon-left"></i>{% if currentSemester != NULL %}{{ currentSemester.name }}{% else %}Semester{% endif %}
+        <i class="fa fa-calendar button-icon-left"></i>{% if semester != NULL %}{{ semester.name }}{% else %}Semester{% endif %}
     </button>
     <div class="dropdown-menu" aria-labelledby="semesterDropDown">
-        {% for s in currentSemester.department.semesters %}
-
-            <a class="dropdown-item" href="{{ path(pathForSemester, { (semesterParameterName): s.id }) }}">{{ s.name }}</a>
-
+        {% set departmentParameterName = departmentParameterName is defined ? departmentParameterName : 'department' %}
+        {% set semesterParameterName = semesterParameterName is defined ? semesterParameterName : 'semester' %}
+        {% for s in get_semesters() %}
+            <a class="dropdown-item" href="{{ path(pathForSemester, { (departmentParameterName): department.id, (semesterParameterName): s.id }) }}">{{ s.name }}</a>
         {% endfor %}
     </div>
 </div>

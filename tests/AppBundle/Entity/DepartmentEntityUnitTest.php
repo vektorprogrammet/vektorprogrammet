@@ -2,10 +2,10 @@
 
 namespace Tests\AppBundle\Entity;
 
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\FieldOfStudy;
 use AppBundle\Entity\School;
-use AppBundle\Entity\Semester;
 use AppBundle\Entity\Team;
 use PHPUnit\Framework\TestCase;
 
@@ -183,61 +183,17 @@ class DepartmentEntityUnitTest extends TestCase
         $this->assertEquals('Storgata 12', $department->getAddress());
     }
 
-    // Check whether the addSemester function is working correctly
-    public function testAddSemester()
+    public function testAddAdmissionPeriod()
     {
-
-        // new entity
         $department = new Department();
+        $admissionPeriod1 = new AdmissionPeriod();
+        $department->addAdmissionPeriod($admissionPeriod1);
+        $semesters = $department->getAdmissionPeriods();
 
-        $semester1 = new Semester();
-
-        $semester1->setSemesterTime('Vår');
-
-        // Use the addSemester method
-        $department->addSemester($semester1);
-
-        // Semesters are stored in an array
-        $semesters = $department->getSemesters();
-
-        // Loop through the array and check for matches
         foreach ($semesters as $semester) {
-            if ($semester1 == $semester) {
-                // Assert the result
-                $this->assertEquals($semester1, $semester);
+            if ($admissionPeriod1 == $semester) {
+                $this->assertEquals($admissionPeriod1, $semester);
             }
-        }
-    }
-
-    // Check whether the removeSemester function is working correctly
-    public function testRemoveSemester()
-    {
-
-        // new entity
-        $department = new Department();
-
-        $semester1 = new Semester();
-        $semester1->setSemesterTime('Høst');
-        $semester2 = new Semester();
-        $semester2->setSemesterTime('Vår');
-        $semester3 = new Semester();
-        $semester3->setSemesterTime('Vår');
-
-        // Use the addSemester method
-        $department->addSemester($semester1);
-        $department->addSemester($semester2);
-        $department->addSemester($semester3);
-
-        // Remove $semester1 from department
-        $department->removeSemester($semester1);
-
-        // Semesters are stored in an array
-        $semesters = $department->getSemesters();
-
-        // Loop through the array
-        foreach ($semesters as $semester) {
-            // Assert the result
-            $this->assertNotEquals($semester1, $semester);
         }
     }
 

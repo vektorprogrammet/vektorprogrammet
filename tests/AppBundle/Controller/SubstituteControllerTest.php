@@ -26,7 +26,7 @@ class SubstituteControllerTest extends BaseWebTestCase
     public function testShowSubstitutesByDepartment()
     {
         // Team leader
-        $crawler = $this->adminGoTo('/kontrollpanel/vikar/semester/2');
+        $crawler = $this->adminGoTo('/kontrollpanel/vikar?department=1&semester=1');
 
         // Assert that we have the correct page
         $this->assertEquals(1, $crawler->filter('h2:contains("Vikarer")')->count());

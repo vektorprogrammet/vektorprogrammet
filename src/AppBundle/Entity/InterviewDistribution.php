@@ -7,29 +7,35 @@ use AppBundle\Type\InterviewStatusType;
 class InterviewDistribution
 {
     private $user;
-    private $semester;
+    private $admissionPeriod;
     private $interviews;
     private $totalCount;
 
-    public function __construct(User $user, Semester $semester)
+    /**
+     * InterviewDistribution constructor.
+     *
+     * @param User $user
+     * @param AdmissionPeriod $admissionPeriod
+     */
+    public function __construct(User $user, AdmissionPeriod $admissionPeriod)
     {
         $this->user = $user;
-        $this->semester = $semester;
-        $allInterviews = $this->filterInterviewsInSemester($this->user->getInterviews(), $semester);
+        $this->admissionPeriod = $admissionPeriod;
+        $allInterviews = $this->filterInterviewsInSemester($this->user->getInterviews(), $admissionPeriod);
         $this->totalCount = count($allInterviews);
         $this->interviews = $this->filterNotInterviewed($allInterviews);
     }
 
     /**
-     * @param $interviews
-     * @param $semester
+     * @param Interview[] $interviews
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return Interview[]
      */
-    private function filterInterviewsInSemester($interviews, $semester)
+    private function filterInterviewsInSemester($interviews, $admissionPeriod)
     {
-        return array_filter($interviews, function (Interview $interview) use ($semester) {
-            return $interview->getApplication()->getSemester() === $semester;
+        return array_filter($interviews, function (Interview $interview) use ($admissionPeriod) {
+            return $interview->getApplication()->getAdmissionPeriod() === $admissionPeriod;
         });
     }
 

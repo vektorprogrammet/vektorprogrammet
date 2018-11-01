@@ -41,6 +41,11 @@ class AdmissionNotification
      */
     private $infoMeeting;
 
+    /**
+     * @var Department
+     * @ORM\ManyToOne(targetEntity="Department")
+     */
+    private $department;
 
     public function __construct()
     {
@@ -120,5 +125,24 @@ class AdmissionNotification
     public function setInfoMeeting($bool)
     {
         $this->infoMeeting = $bool;
+    }
+
+    /**
+     * @return Department
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return AdmissionNotification
+     */
+    public function setDepartment(Department $department)
+    {
+        $this->department = $department;
+        return $this;
     }
 }

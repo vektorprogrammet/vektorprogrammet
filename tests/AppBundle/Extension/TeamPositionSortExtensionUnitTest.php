@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Entity;
 
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\ExecutiveBoard;
 use AppBundle\Entity\ExecutiveBoardMembership;
@@ -19,6 +20,7 @@ class TeamPositionSortExtensionUnitTest extends TestCase
 {
     private $sortExtension;
     private $activeSemester;
+    private $latestAdmissionPeriod;
 
     public function __construct($name = null, array $data = [], $dataName = '')
     {
@@ -26,8 +28,15 @@ class TeamPositionSortExtensionUnitTest extends TestCase
         $this->sortExtension = new TeamPositionSortExtension(new Sorter(), new FilterService());
 
         $this->activeSemester = new Semester();
-        $this->activeSemester->setSemesterStartDate(new \DateTime('2013-01-01'));
-        $this->activeSemester->setSemesterEndDate((new \DateTime())->modify('+1day'));
+        $this->activeSemester
+            ->setYear(2013)
+            ->setSemesterTime('Vår');
+
+        $this->latestAdmissionPeriod = new AdmissionPeriod();
+        $this->latestAdmissionPeriod
+            ->setSemester($this->activeSemester)
+            ->setAdmissionStartDate(new \DateTime('2013-01-01'))
+            ->setAdmissionEndDate((new \DateTime())->modify('+1day'));
     }
 
     public function testExecutiveMembers()
@@ -58,7 +67,7 @@ class TeamPositionSortExtensionUnitTest extends TestCase
         $users = array();
         $positions = ['Sekretær', 'Leder', '', 'Økonomi', 'Assistent', 'Medlem', 'Nestleder'];
         $department = new Department();
-        $department->addSemester($this->activeSemester);
+        $department->addAdmissionPeriod($this->latestAdmissionPeriod);
         $team = new Team();
         $team->setDepartment($department);
 
