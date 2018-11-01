@@ -36,10 +36,16 @@ class AdmissionNotification
      */
     private $semester;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $infoMeeting;
+
 
     public function __construct()
     {
         $this->timestamp = new \DateTime();
+        $this->infoMeeting = false;
     }
 
     /**
@@ -98,5 +104,21 @@ class AdmissionNotification
     public function setSemester($semester)
     {
         $this->semester = $semester;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getInfoMeeting()
+    {
+        return $this->infoMeeting;
+    }
+
+    /**
+     * @param boolean $bool
+     */
+    public function setInfoMeeting($bool)
+    {
+        $this->infoMeeting = $bool;
     }
 }
