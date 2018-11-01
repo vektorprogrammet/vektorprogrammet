@@ -16,7 +16,6 @@ use AppBundle\Form\Type\ScheduleInterviewType;
 use AppBundle\Role\Roles;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use InvalidArgumentException;
@@ -26,7 +25,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  * InterviewController is the controller responsible for interview actions,
  * such as showing, assigning and conducting interviews.
  */
-class InterviewController extends Controller
+class InterviewController extends BaseController
 {
     /**
      * @Route("/kontrollpanel/intervju/conduct/{id}",
@@ -81,7 +80,10 @@ class InterviewController extends Controller
                 $this->get('event_dispatcher')->dispatch(InterviewConductedEvent::NAME, new InterviewConductedEvent($application));
             }
 
-            return $this->redirectToRoute('applications_show_interviewed_by_semester', array( 'id' => $application->getSemester()->getId() ));
+            return $this->redirectToRoute('applications_show_interviewed', array(
+                'semester' => $application->getSemester()->getId(),
+                'department' => $application->getAdmissionPeriod()->getDepartment()->getId(),
+            ));
         }
 
         return $this->render('interview/conduct.html.twig', array(
@@ -252,7 +254,7 @@ class InterviewController extends Controller
                 $this->get('event_dispatcher')->dispatch(InterviewEvent::SCHEDULE, new InterviewEvent($interview, $data));
             }
 
-            return $this->redirectToRoute('applications_show_assigned_by_semester', array( 'id' => $application->getSemester()->getId() ));
+            return $this->redirectToRoute('applications_show_assigned', array('department' => $application->getDepartment()->getId(), 'semester' => $application->getSemester()->getId()));
         }
 
         return $this->render('interview/schedule.html.twig', array(
@@ -517,7 +519,7 @@ class InterviewController extends Controller
 
         return $this->redirectToRoute(
             'interview_schedule',
-            [ 'id' => $interview->getApplication()->getId() ]
+            ['id' => $interview->getApplication()->getId()]
         );
     }
 
@@ -553,8 +555,9 @@ class InterviewController extends Controller
     public function adminAssignCoInterviewerAction(Request $request, Interview $interview)
     {
         $semester = $interview->getApplication()->getSemester();
+        $department = $interview->getApplication()->getDepartment();
         $teamUsers = $this->getDoctrine()->getRepository('AppBundle:User')
-            ->findUsersWithTeamMembershipInSemester($semester);
+            ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
         $form = $this->createForm(AddCoInterviewerType::class, null, [
             'teamUsers' => $teamUsers
         ]);
@@ -572,7 +575,10 @@ class InterviewController extends Controller
                 return $this->redirectToRoute('interview_schedule', array( 'id' => $interview->getApplication()->getId() ));
             }
 
-            return $this->redirectToRoute('applications_show_assigned');
+            return $this->redirectToRoute('applications_show_assigned', array(
+                'department' => $department->getId(),
+                'semester' => $semester->getId(),
+            ));
         }
 
         return $this->render('interview/assign_co_interview_form.html.twig', array(

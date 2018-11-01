@@ -3,11 +3,10 @@
 namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Department;
 use AppBundle\Form\Type\CreateDepartmentType;
 
-class DepartmentController extends Controller
+class DepartmentController extends BaseController
 {
     public function showAction()
     {

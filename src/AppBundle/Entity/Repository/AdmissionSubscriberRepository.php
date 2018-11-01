@@ -51,14 +51,13 @@ class AdmissionSubscriberRepository extends EntityRepository
     }
 
     /**
+     * @param Department $department
      * @param Semester $semester
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    private function findBySemesterQueryBuilder(Semester $semester)
+    private function findByDepartmentAndSemesterQueryBuilder(Department $department, Semester $semester)
     {
-        $department = $semester->getDepartment();
-
         return $this
             ->createQueryBuilder('subscriber')
             ->select('subscriber')
@@ -71,30 +70,18 @@ class AdmissionSubscriberRepository extends EntityRepository
     }
 
     /**
+     * @param Department $department
      * @param Semester $semester
      *
      * @return AdmissionSubscriber[]
-     *
      */
-    public function findBySemester(Semester $semester)
+    public function findFromWebByDepartmentAndSemester(Department $department, Semester $semester)
     {
         return $this
-            ->findBySemesterQueryBuilder($semester)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * @param Semester $semester
-     *
-     * @return AdmissionSubscriber[]
-     *
-     */
-    public function findFromWebBySemester(Semester $semester)
-    {
-        return $this
-            ->findBySemesterQueryBuilder($semester)
+            ->findByDepartmentAndSemesterQueryBuilder($department, $semester)
+            ->andWhere('subscriber.department = :department')
             ->andWhere('subscriber.fromApplication = false')
+            ->setParameter('department', $department)
             ->getQuery()
             ->getResult();
     }

@@ -86,10 +86,6 @@ services:
       class: AppBundle\Service\InterviewNotificationManager
       arguments: ['@app.slack_messenger', '@application.data', '@router']
 
-  app.assistants.data:
-    class: AppBundle\Service\AssistantsData
-    arguments: ['@doctrine.orm.default_entity_manager']
-
   app.interview_counter:
     class: AppBundle\Service\InterviewCounter
 

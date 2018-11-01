@@ -13,7 +13,7 @@ use AppBundle\Form\Type\InterviewSchemaType;
  * InterviewController is the controller responsible for interview actions,
  * such as showing, assigning and conducting interviews.
  */
-class InterviewSchemaController extends Controller
+class InterviewSchemaController extends BaseController
 {
     /**
      * Shows and handles the submission of the create interview schema form.

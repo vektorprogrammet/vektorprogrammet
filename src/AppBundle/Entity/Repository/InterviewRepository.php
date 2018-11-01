@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Interview;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
@@ -16,21 +17,22 @@ use Doctrine\ORM\EntityRepository;
  */
 class InterviewRepository extends EntityRepository
 {
+
     /**
      * @param User $user
      *
-     * @param Semester $semester
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return Interview
      */
-    public function findLastScheduledByUserInSemester(User $user, Semester $semester)
+    public function findLastScheduledByUserInAdmissionPeriod(User $user, AdmissionPeriod $admissionPeriod)
     {
         $result = $this->createQueryBuilder('interview')
             ->join('interview.application', 'application')
             ->where('interview.interviewer = :user')
             ->setParameter('user', $user)
-            ->andWhere('application.semester = :semester')
-            ->setParameter('semester', $semester)
+            ->andWhere('application.admissionPeriod = :admissionPeriod')
+            ->setParameter('admissionPeriod', $admissionPeriod)
             ->andWhere('interview.lastScheduleChanged IS NOT NULL')
             ->orderBy('interview.lastScheduleChanged', 'DESC')
             ->getQuery()
@@ -114,7 +116,7 @@ class InterviewRepository extends EntityRepository
      */
     public function findUncompletedInterviewsByInterviewerInCurrentSemester(User $interviewer)
     {
-        $semester = $interviewer->getDepartment()->getCurrentSemester();
+        $semester = $interviewer->getDepartment()->getCurrentAdmissionPeriod();
         if ($semester === null) {
             return [];
         }

@@ -7,12 +7,11 @@ use AppBundle\Entity\Department;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AssistantController extends Controller
+class AssistantController extends BaseController
 {
     /**
      * @deprecated This resource is only here to serve old urls (e.g. in old emails)
@@ -126,8 +125,8 @@ class AssistantController extends Controller
                     return $this->redirectToRoute('admission_existing_user');
                 }
 
-                $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
-                $application->setSemester($semester);
+                $admissionPeriod = $em->getRepository('AppBundle:AdmissionPeriod')->findOneWithActiveAdmissionByDepartment($department);
+                $application->setAdmissionPeriod($admissionPeriod);
                 $em->persist($application);
                 $em->flush();
 
@@ -166,10 +165,12 @@ class AssistantController extends Controller
      * @param Department $department
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function subscribePageAction(Request $request, Department $department)
     {
-        if (!$department->getLatestSemester()->hasActiveAdmission()) {
+        if (!$department->activeAdmission()) {
             return $this->indexAction($request, $department);
         }
         $admissionManager = $this->get('app.application_admission');
@@ -192,8 +193,8 @@ class AssistantController extends Controller
                 return $this->redirectToRoute('application_stand_form', ['shortName' => $department->getShortName()]);
             }
 
-            $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
-            $application->setSemester($semester);
+            $admissionPeriod = $em->getRepository('AppBundle:AdmissionPeriod')->findOneWithActiveAdmissionByDepartment($department);
+            $application->setAdmissionPeriod($admissionPeriod);
             $em->persist($application);
             $em->flush();
 

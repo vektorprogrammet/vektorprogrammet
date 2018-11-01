@@ -6,7 +6,6 @@ use AppBundle\Entity\Department;
 use AppBundle\Event\TeamEvent;
 use AppBundle\Event\TeamMembershipEvent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Team;
@@ -14,7 +13,7 @@ use AppBundle\Form\Type\CreateTeamType;
 use AppBundle\Entity\TeamMembership;
 use AppBundle\Form\Type\CreateTeamMembershipType;
 
-class TeamAdminController extends Controller
+class TeamAdminController extends BaseController
 {
     /**
      * @Route("/kontrollpanel/team/avdeling/{id}", name="teamadmin_show", defaults={"id":null}, methods={"GET"})
@@ -109,7 +108,7 @@ class TeamAdminController extends Controller
     {
         // Find all TeamMembership entities based on team
         $activeTeamMemberships   = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findActiveTeamMembershipsByTeam($team);
-        $inActiveTeamMemberships = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findInActiveTeamMembershipsByTeam($team);
+        $inActiveTeamMemberships = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findInactiveTeamMembershipsByTeam($team);
         usort($activeTeamMemberships, array( $this, 'sortTeamMembershipsByEndDate' ));
         usort($inActiveTeamMemberships, array( $this, 'sortTeamMembershipsByEndDate' ));
 

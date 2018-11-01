@@ -3,64 +3,36 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
-use AppBundle\Form\Type\EditSemesterType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\CreateSemesterType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
 
 class SemesterController extends Controller
 {
-    public function updateSemesterAction(Request $request, Semester $semester)
-    {
-        $form = $this->createForm(EditSemesterType::class, $semester);
-
-        // Handle the form
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($semester);
-            $em->flush();
-
-            return $this->redirectToRoute('semester_show_by_department', array('id' => $semester->getDepartment()->getId()));
-        }
-
-        return $this->render('semester_admin/edit_semester.html.twig', array(
-            'form' => $form->createView(),
-            'semesterName' => $semester->getName(),
-            'department' => $semester->getDepartment(),
-        ));
-    }
-
-    public function showSemestersByDepartmentAction(Department $department)
-    {
-        // Finds the semesters for the given department
-        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
-
-        // Renders the view with the variables
-        return $this->render('semester_admin/index.html.twig', array(
-            'semesters' => $semesters,
-            'department' => $department,
-        ));
-    }
-
+    /**
+     * @Route(name="semester_show", path="/kontrollpanel/semesteradmin")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function showAction()
     {
-        // Finds the departmentId for the current logged in user
-        $department = $this->getUser()->getDepartment();
-
-        // Finds the users for the given department
-        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllSemestersByDepartment($department);
+        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllOrderedByAge();
 
         return $this->render('semester_admin/index.html.twig', array(
             'semesters' => $semesters,
-            'department' => $department,
         ));
     }
 
-    public function createSemesterAction(Request $request, Department $department)
+    /**
+     * @Route(name="semester_create", path="/kontrollpanel/semesteradmin/opprett")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function createSemesterAction(Request $request)
     {
         $semester = new Semester();
 
@@ -73,27 +45,24 @@ class SemesterController extends Controller
         // The fields of the form is checked if they contain the correct information
         if ($form->isValid()) {
             //Check if semester already exists
-            $existingSemester = $this->getDoctrine()->getManager()->getRepository('AppBundle:Semester')->
-            findByDepartmentAndTime($department, $semester->getSemesterTime(), $semester->getYear());
+            $existingSemester = $this->getDoctrine()->getManager()->getRepository('AppBundle:Semester')
+                ->findByTimeAndYear($semester->getSemesterTime(), $semester->getYear());
 
             //Return to semester page if semester already exists
             if (count($existingSemester)) {
-                return $this->redirectToRoute('semester_show');
+                $this->addFlash('warning', "Semesteret $existingSemester[0] finnes allerede");
+                return $this->redirectToRoute('semester_create');
             }
-
-            $semester->setDepartment($department);
-            $semester->setStartAndEndDateByTime($semester->getSemesterTime(), $semester->getYear());
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($semester);
             $em->flush();
 
-            return $this->redirectToRoute('semester_show_by_department', array('id' => $department->getId()));
+            return $this->redirectToRoute('semester_show');
         }
 
         // Render the view
         return $this->render('semester_admin/create_semester.html.twig', array(
-            'department' => $department,
             'form' => $form->createView(),
         ));
     }

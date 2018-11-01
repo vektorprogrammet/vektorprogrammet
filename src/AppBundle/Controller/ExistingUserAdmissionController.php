@@ -4,12 +4,12 @@ namespace AppBundle\Controller;
 
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationExistingUserType;
+use Doctrine\ORM\NoResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ExistingUserAdmissionController extends Controller
+class ExistingUserAdmissionController extends BaseController
 {
     /**
      * @Route("/eksisterendeopptak", name="admission_existing_user")
@@ -51,7 +51,7 @@ class ExistingUserAdmissionController extends Controller
             return $this->redirectToRoute('my_page');
         }
 
-        $semester = $em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($user->getDepartment());
+        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
 
         return $this->render(':admission:existingUser.html.twig', array(
             'form' => $form->createView(),

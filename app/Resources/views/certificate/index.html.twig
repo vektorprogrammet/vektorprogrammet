@@ -12,13 +12,13 @@
     {% if is_granted_admin() %}
         {% include "common/department_semester_dropdowns.html.twig" with {
             'path': 'certificate_show',
-            'parameterName': 'id',
-            'currentSemester': currentSemester} %}
+            'semester': currentSemester,
+        } %}
     {% else %}
         {% include "common/semester_dropdown.html.twig" with {
             'pathForSemester': 'certificate_show',
-            'semesterParameterName': 'id',
-            'currentSemester': currentSemester} %}
+            'semester': currentSemester,
+        } %}
     {% endif %}
 {% endblock %}
 

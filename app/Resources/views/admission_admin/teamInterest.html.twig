@@ -15,12 +15,11 @@
             <i class="fa fa-envelope-o"></i> Generer e-postliste
         </button>
         {% if is_granted_admin() %}
-            {% include "common/department_semester_dropdowns.html.twig" with {'path': 'admissionadmin_team_interest_by_semester', 'parameterName': 'semester', 'currentSemester': semester} %}
+            {% include "common/department_semester_dropdowns.html.twig" with {
+                'path': 'admissionadmin_team_interest',
+            } %}
         {% else %}
-            {% include "common/semester_dropdown.html.twig" with {
-                'pathForSemester': 'admissionadmin_team_interest_by_semester',
-                'semesterParameterName': 'semester',
-                'currentSemester': semester} %}
+            {% include "common/semester_dropdown.html.twig" with { 'pathForSemester': 'admissionadmin_team_interest' } %}
         {% endif %}
     </div>
 
@@ -28,7 +27,7 @@
 
 
 {% block body %}
-    <h2 class="text-center my-5">Teaminteresse {{ semester.department }} {{ semester.name }}</h2>
+    <h2 class="text-center my-5">Teaminteresse {{ department.shortname }} {{ semester.semestertime }} {{ semester.year }}</h2>
     <div class="card">
         <div class="card-header"><i class="fa fa-align-justify"></i> Team med interessenter</div>
         <div class="card-body">
@@ -126,8 +125,8 @@
             <p>
                 Disse har fylt ut skjema for teaminteresse, enten på stand eller via link.<br>
                 Link til skjema:
-                <a href="{{ path('team_interest_form', {'id': semester.department.id }) }}">
-                    {{ url('team_interest_form', {'id': semester.department.id }) }}
+                <a href="{{ path('team_interest_form', {'id': department.id }) }}">
+                    {{ url('team_interest_form', {'id': department.id }) }}
                 </a>
             </p>
         </div>

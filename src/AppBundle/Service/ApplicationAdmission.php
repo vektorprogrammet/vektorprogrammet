@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
@@ -34,9 +35,9 @@ class ApplicationAdmission
 
     public function createApplicationForExistingAssistant(User $user): Application
     {
-        $semester = $this->em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($user->getDepartment());
+        $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')->findOneWithActiveAdmissionByDepartment($user->getDepartment());
 
-        $application = $this->em->getRepository('AppBundle:Application')->findByUserInSemester($user, $semester);
+        $application = $this->em->getRepository('AppBundle:Application')->findByUserInAdmissionPeriod($user, $admissionPeriod);
         if ($application === null) {
             $application = new Application();
         }
@@ -44,7 +45,7 @@ class ApplicationAdmission
         $lastInterview = $this->em->getRepository('AppBundle:Interview')->findLatestInterviewByUser($user);
 
         $application->setUser($user);
-        $application->setSemester($semester);
+        $application->setAdmissionPeriod($admissionPeriod);
         $application->setPreviousParticipation(true);
         $application->setInterview($lastInterview);
 
@@ -61,14 +62,14 @@ class ApplicationAdmission
             return false;
         }
         $department = $fos->getDepartment();
-        $semester = $this->em->getRepository('AppBundle:Semester')
-            ->findSemesterWithActiveAdmissionByDepartment($department);
-        return $this->userHasAlreadyAppliedInSemester($user, $semester);
+        $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')
+            ->findOneWithActiveAdmissionByDepartment($department);
+        return $this->userHasAlreadyAppliedInAdmissionPeriod($user, $admissionPeriod);
     }
 
-    public function userHasAlreadyAppliedInSemester(User $user, Semester $semester)
+    public function userHasAlreadyAppliedInAdmissionPeriod(User $user, AdmissionPeriod $admissionPeriod)
     {
-        $existingApplications = $this->em->getRepository('AppBundle:Application')->findByEmailInSemester($user->getEmail(), $semester);
+        $existingApplications = $this->em->getRepository('AppBundle:Application')->findByEmailInAdmissionPeriod($user->getEmail(), $admissionPeriod);
 
         return count($existingApplications) > 0;
     }
@@ -124,9 +125,9 @@ class ApplicationAdmission
             $content = $this->twig->render('error/no_assistanthistory.html.twig', array('user' => $user));
         } else {
             $department = $user->getDepartment();
-            $semester = $this->em->getRepository('AppBundle:Semester')->findSemesterWithActiveAdmissionByDepartment($department);
+            $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')->findOneWithActiveAdmissionByDepartment($department);
 
-            if ($semester === null) {
+            if ($admissionPeriod === null) {
                 $content = $this->twig->render(':error:no_active_admission.html.twig');
             }
         }

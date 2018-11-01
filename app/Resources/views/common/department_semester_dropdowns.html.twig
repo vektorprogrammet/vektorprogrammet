@@ -1,18 +1,21 @@
 <div class="btn-group">
-    {% if has_access_to('all_departments') %}
-        <div class="mr-3">
-            {% include "common/department_dropdown.html.twig" with {
-                'pathForDepartment': path,
-                'departmentParameterName': parameterName,
-                'currentDepartment': currentSemester.department,
-                'linkToSemester': true
+    {% if has_access_to('all_departments') %}<div class="mr-3">
+    {% include "common/department_dropdown.html.twig" with {
+        'pathForDepartment': path,
+        'departmentParameterName':  departmentParameterName is defined ? departmentParameterName : 'department' ,
+        'semesterParameterName':  semesterParameterName is defined ? semesterParameterName : 'semester' ,
+        'currentDepartment': department,
+        'currentSemester': semester,
+        'linkToSemester': true
             } %}
         </div>
     {% endif %}
 
     {% include "common/semester_dropdown.html.twig" with {
         'pathForSemester': path,
-        'semesterParameterName': parameterName,
-        'currentSemseter': currentSemester
+        'departmentParameterName':  departmentParameterName is defined ? departmentParameterName : 'department' ,
+        'semesterParameterName':  semesterParameterName is defined ? semesterParameterName : 'semester' ,
+        'currentSemester': semester,
+        'currentDepartment': department
     } %}
 </div>

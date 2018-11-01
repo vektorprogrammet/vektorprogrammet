@@ -1,96 +1,47 @@
 {% extends 'adminBase.html.twig' %}
 
 {% block title %}
-    Opptaksperioder
+    Semester
 {% endblock %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item active">
-        Opptaksperioder
+        Semester
     </li>
 {% endblock %}
 
 {% block breadcrumb_menu %}
-
-    {% if is_granted_team_leader() %}
-        <div class="btn-group">
-            {% include 'common/department_dropdown.html.twig' with {
-                'pathForDepartment': 'semester_show_by_department',
-                'departmentParameterName': 'id',
-                'currentDepartment': department
-            } %}
-
-            <a class="btn text-success btn-sm" href="{{ path('semester_create', { 'id': department.id }) }}"><i
-                        class="fa fa-plus"></i> Opptaksperiode</a>
-        </div>
-    {% endif %}
+            <a class="btn text-success btn-sm" href="{{ path('semester_create') }}">
+                <i class="fa fa-plus"></i> Semester
+            </a>
 {% endblock %}
 
-
-
 {% block body %}
-
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-align-justify"></i> Opptaksperioder {{ department }}
+                    <i class="fa fa-align-justify"></i> Semester
                 </div>
                 <div class="card-body table-responsive">
                     <table class="table">
 
                         <thead>
                         <tr>
-                            {% if is_granted_team_leader() %}
-                                <th></th>
-                            {% endif %}
                             <th> Navn</th>
-                            <th> Opptak start</th>
-                            <th> Opptak slutt</th>
                         </tr>
                         </thead>
 
                         <tbody>
                         {% for s in semesters %}
                             <tr class="text-nowrap">
-                                {% if is_granted_team_leader() %}
-                                    <td>
-                                        <div class="dropdown">
-                                            <div class="clickable" id="options-{{ s.id }}" data-toggle="dropdown"
-                                                 aria-haspopup="true" aria-expanded="false">
-                                                <i class="fa fa-ellipsis-v text-secondary"></i>
-                                            </div>
-                                            <div class="dropdown-menu pt-0" aria-labelledby="options-{{ s.id }}">
-                                                <div class="dropdown-header mb-2"><strong>{{ s.name }}</strong></div>
-                                                <a class="dropdown-item"
-                                                   href="{{ path('semester_update', {'id': s.id}) }}"><i
-                                                            class="fa fa-pencil text-primary"></i> Rediger</a>
-                                                {% if is_granted_admin() %}
-                                                    <form method="POST"
-                                                          action="{{ path('semester_delete', {'id': s.id}) }}"
-                                                          onsubmit="return confirm('Er du sikker på at du vil slette {{ s.name }}?')">
-                                                        <button class="dropdown-item">
-                                                            <i class="fa fa-trash text-danger"></i> Slett
-                                                        </button>
-                                                    </form>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </td>
-                                {% endif %}
-                                <td>{{ s.name }}</td>
-                                <td> {{ s.admissionStartDate|date('d. M Y') }}
-                                    kl. {{ s.admissionStartDate|date('H:i:s') }}</td>
-                                <td> {{ s.admissionEndDate|date('d. M Y') }}
-                                    kl. {{ s.admissionEndDate|date('H:i:s') }}</td>
+                                <td>{{ s }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
-
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
 {% endblock %}

@@ -5,19 +5,26 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\SchoolCapacity;
 use AppBundle\Form\Type\SchoolCapacityEditType;
 use AppBundle\Form\Type\SchoolCapacityType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class SchoolCapacityController extends Controller
+class SchoolCapacityController extends BaseController
 {
+
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function createAction(Request $request)
     {
-        $user = $this->getUser();
-        $department = $user->getDepartment();
-        $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
+        $department = $this->getDepartmentOrThrow404();
+        $currentSemester = $this->getSemesterOrThrow404();
 
         $schoolCapacity = new SchoolCapacity();
         $schoolCapacity->setSemester($currentSemester);
+        $schoolCapacity->setDepartment($department);
         $form = $this->createForm(SchoolCapacityType::class, $schoolCapacity);
         $form->handleRequest($request);
 

@@ -31,6 +31,13 @@ class SchoolCapacity
     protected $semester;
 
     /**
+     * @var Department $department
+     * @ORM\ManyToOne(targetEntity="Department")
+     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     */
+    protected $department;
+
+    /**
      * @ORM\Column(name="monday",type="integer")
      */
     protected $monday;
@@ -187,5 +194,24 @@ class SchoolCapacity
     public function setSemester($semester)
     {
         $this->semester = $semester;
+    }
+
+    /**
+     * @return Department
+     */
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return SchoolCapacity
+     */
+    public function setDepartment(Department $department): SchoolCapacity
+    {
+        $this->department = $department;
+        return $this;
     }
 }

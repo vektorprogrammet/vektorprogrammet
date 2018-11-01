@@ -125,16 +125,13 @@ survey_get_all_results:
 ##########################################
 
 statistics_application_show:
- path: /kontrollpanel/statistikk/opptak
- defaults: { _controller: AppBundle:ApplicationStatistics:show }
- methods: [GET]
+  path: /kontrollpanel/statistikk/opptak
+  defaults: { _controller: AppBundle:ApplicationStatistics:show }
+  methods: [GET]
+  requirements:
+    department: \d+
+    semester: \d+
 
-statistics_application_by_semester:
- path: /kontrollpanel/statistikk/opptak/{id}
- defaults: { _controller: AppBundle:ApplicationStatistics:show }
- methods: [GET]
- requirements:
-  id: \d+
 
 ##########################################
 #            BoardAndTeam                #
@@ -236,12 +233,6 @@ profile_upload_photo:
 participanthistory_show:
  path:   /kontrollpanel/deltakerhistorikk
  defaults: { _controller: AppBundle:ParticipantHistory:show }
- methods: [GET]
-
-
-participanthistory_show_by_semester:
- path:   /kontrollpanel/deltakerhistorikk/{id}
- defaults: { _controller: AppBundle:ParticipantHistory:showBySemester }
  methods: [GET]
 
 assistant_history_delete:
@@ -375,60 +366,34 @@ admissionadmin_show_application:
   requirements:
     id: \d+
 
-applications_show_by_semester:
- path: /kontrollpanel/opptak/{id}
- defaults: { _controller: AppBundle:AdmissionAdmin:showNewApplicationsBySemester }
- methods: [GET]
- requirements:
-    id: \d+
-
-applications_show_new_by_semester:
- path: /kontrollpanel/opptak/nye/{id}
- defaults: { _controller: AppBundle:AdmissionAdmin:showNewApplicationsBySemester }
- methods: [GET]
- requirements:
-    id: \d+
-
 applications_show_new:
  path: /kontrollpanel/opptak/nye
- defaults: { _controller: AppBundle:AdmissionAdmin:showNewApplicationsBySemester }
+ defaults:
+  _controller: AppBundle:AdmissionAdmin:showNewApplications
+  department: null
+  semester: null
  methods: [GET]
-
-applications_show_assigned_by_semester:
- path: /kontrollpanel/opptak/fordelt/{id}
- defaults: { _controller: AppBundle:AdmissionAdmin:showAssignedApplicationsBySemester }
- methods: [GET]
- requirements:
-    id: \d+
 
 applications_show_assigned:
  path: /kontrollpanel/opptak/fordelt
- defaults: { _controller: AppBundle:AdmissionAdmin:showAssignedApplicationsBySemester }
+ defaults: { _controller: AppBundle:AdmissionAdmin:showAssignedApplications }
  methods: [GET]
-
-applications_show_interviewed_by_semester:
- path: /kontrollpanel/opptak/intervjuet/{id}
- defaults: { _controller: AppBundle:AdmissionAdmin:showInterviewedApplicationsBySemester }
- methods: [GET]
- requirements:
-    id: \d+
 
 applications_show_interviewed:
  path: /kontrollpanel/opptak/intervjuet
- defaults: { _controller: AppBundle:AdmissionAdmin:showInterviewedApplicationsBySemester }
- methods: [GET]
-
-applications_show_existing_by_semester:
- path: /kontrollpanel/opptak/gamle/{id}
- defaults: { _controller: AppBundle:AdmissionAdmin:showExistingApplicationsBySemester }
+ defaults: { _controller: AppBundle:AdmissionAdmin:showInterviewedApplications }
  methods: [GET]
  requirements:
-    id: \d+
+    department: \d+
+    semester: \d+
 
 applications_show_existing:
  path: /kontrollpanel/opptak/gamle
- defaults: { _controller: AppBundle:AdmissionAdmin:showExistingApplicationsBySemester }
+ defaults: { _controller: AppBundle:AdmissionAdmin:showExistingApplications }
  methods: [GET]
+ requirements:
+  department: \d+
+  semester: \d+
 
 admissionadmin_delete_application_by_id:
  path: /kontrollpanel/opptakadmin/slett/{id}
@@ -448,17 +413,13 @@ register_applicant:
  defaults: {_controller: AppBundle:AdmissionAdmin:createApplication}
  methods: [GET, POST]
 
-admissionadmin_team_interest_by_semester:
- path: /kontrollpanel/opptakadmin/teaminteresse/{semester}
- defaults: {_controller: AppBundle:AdmissionAdmin:showTeamInterest}
- methods: [GET]
- requirements:
-  semester: \d+
-
 admissionadmin_team_interest:
  path: /kontrollpanel/opptakadmin/teaminteresse
  defaults: {_controller: AppBundle:AdmissionAdmin:showTeamInterest}
  methods: [GET]
+ requirements:
+  department: \d+
+  semester: \d+
 
 ##########################################
 #              UserAdmin                 #
@@ -547,38 +508,38 @@ receipt_delete:
     receipt: \d+
 
 ##########################################
-#              Semester                  #
+#            Admission Period            #
 ##########################################
 
-semester_show:
- path: /kontrollpanel/semesteradmin
- defaults: {_controller: AppBundle:Semester:show }
+admission_period_admin_show:
+ path: /kontrollpanel/opptaksperiode
+ defaults: {_controller: AppBundle:AdmissionPeriod:show }
  methods: [GET]
 
-semester_update:
- path: /kontrollpanel/semesteradmin/update/{id}
- defaults: {_controller: AppBundle:Semester:updateSemester }
+admission_period_admin_show_by_department:
+ path: /kontrollpanel/opptaksperiode/{id}
+ defaults: {_controller: AppBundle:AdmissionPeriod:showByDepartment }
+ methods: [GET]
+ requirements:
+  id: \d+
+
+admission_period_update:
+ path: /kontrollpanel/opptaksperiode/update/{id}
+ defaults: {_controller: AppBundle:AdmissionPeriod:updateAdmissionPeriod }
  methods: [GET, POST]
  requirements:
     id: \d+
 
-semester_create:
- path: /kontrollpanel/semesteradmin/avdeling/opprett/{id}
- defaults: {_controller: AppBundle:Semester:createSemester }
+admission_period_create:
+ path: /kontrollpanel/opptaksperiode/opprett/{id}
+ defaults: {_controller: AppBundle:AdmissionPeriod:createAdmissionPeriod }
  methods: [GET, POST]
  requirements:
     id: \d+
 
-semester_show_by_department:
- path: /kontrollpanel/semesteradmin/avdeling/{id}
- defaults: { _controller: AppBundle:Semester:showSemestersByDepartment }
- methods: [GET]
- requirements:
-    id: \d+
-
-semester_delete:
- path: /kontrollpanel/semesteradmin/slett/{id}
- defaults: {_controller: AppBundle:Semester:delete }
+admission_period_delete:
+ path: /kontrollpanel/opptaksperiode/slett/{id}
+ defaults: {_controller: AppBundle:AdmissionPeriod:delete }
  methods: [POST]
  requirements:
     id: \d+
@@ -1071,16 +1032,12 @@ public_files:
 ##########################################
 
 substitute_show:
-   path: /kontrollpanel/vikar
-   defaults: { _controller: AppBundle:Substitute:show }
-   methods: [GET]
-
-substitute_show_by_semester:
- path: /kontrollpanel/vikar/semester/{semester}
- defaults: { _controller: AppBundle:Substitute:showBySemester }
- methods: [GET]
- requirements:
-  semester: \d+
+  path: /kontrollpanel/vikar
+  defaults: { _controller: AppBundle:Substitute:show }
+  methods: [GET]
+  requirements:
+    department: \d+
+    semester: \d+
 
 substitute_delete:
  path: /kontrollpanel/vikar/slett/{id}
@@ -1173,25 +1130,28 @@ generate_mail_lists:
   methods: [GET, POST]
 
 generate_assistant_mail_list:
-  path: /kontrollpanel/epostlister/assistenter/{id}
+  path: /kontrollpanel/epostlister/assistenter
   defaults: {_controller: AppBundle:MailingList:showAssistants}
   methods: [GET]
   requirements:
-    id: \d+
+    department: \d+
+    semester: \d+
 
 generate_team_mail_list:
-  path: /kontrollpanel/epostlister/teammedlemmer/{id}
+  path: /kontrollpanel/epostlister/teammedlemmer
   defaults: {_controller: AppBundle:MailingList:showTeam}
   methods: [GET]
   requirements:
-    id: \d+
+    department: \d+
+    semester: \d+
 
 generate_all_mail_list:
-  path: /kontrollpanel/epostlister/alle/{id}
+  path: /kontrollpanel/epostlister/alle
   defaults: {_controller: AppBundle:MailingList:showAll}
   methods: [GET]
   requirements:
-    id: \d+
+    department: \d+
+    semester: \d+
 
 assistants:
     path: /assistenter/{id}

@@ -12,7 +12,7 @@ class InfoMeetingControllerTest extends BaseWebTestCase
 
         $before = $crawler->filter('p:contains("Husk infomøte")')->count();
 
-        $crawler = $this->teamLeaderGoTo('/kontrollpanel/semesteradmin/update/2');
+        $crawler = $this->teamLeaderGoTo('/kontrollpanel/opptaksperiode/update/2');
 
         $saveButton = $crawler->filter('button:contains("Lagre")');
         $this->assertNotNull($saveButton);
@@ -20,10 +20,10 @@ class InfoMeetingControllerTest extends BaseWebTestCase
         $form = $saveButton->form();
         $this->assertNotNull($form);
 
-        $form['createSemester[infoMeeting][showOnPage]'] = true;
-        $form['createSemester[infoMeeting][date]'] = (new \DateTime())->modify('+1day')->format('d.m.Y H:i');
-        $form['createSemester[infoMeeting][room]'] = 'Parken';
-        $form['createSemester[infoMeeting][description]'] = 'Forvent mat og drikke!';
+        $form['editAdmissionPeriod[infoMeeting][showOnPage]'] = true;
+        $form['editAdmissionPeriod[infoMeeting][date]'] = (new \DateTime())->modify('+1day')->format('d.m.Y H:i');
+        $form['editAdmissionPeriod[infoMeeting][room]'] = 'Parken';
+        $form['editAdmissionPeriod[infoMeeting][description]'] = 'Forvent mat og drikke!';
         $this->createTeamLeaderClient()->submit($form);
 
         $crawler = $this->anonymousGoTo('/opptak/avdeling/1');

@@ -17,7 +17,7 @@
 
 {% block breadcrumb %}
     <li class="breadcrumb-item">
-        <a href="{{ path('applications_show_assigned_by_semester', {'id': application.semester.id}) }}">Intervjufordeling</a>
+        <a href="{{ path('applications_show_assigned', {'department': application.department.id, 'semester': application.semester.id}) }}">Intervjufordeling</a>
     </li>
     <li class="breadcrumb-item active">Intervju - {{ application.user }}</li>
 {% endblock %}

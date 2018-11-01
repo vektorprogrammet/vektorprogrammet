@@ -1,6 +1,6 @@
 <template>
   <div class="admin-nav">
-    Kontrollpanel
+    <router-link to="controlpanel">Kontrollpanel</router-link>
     <slot/>
   </div>
 </template>

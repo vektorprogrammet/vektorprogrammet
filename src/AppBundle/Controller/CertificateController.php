@@ -6,10 +6,9 @@ use AppBundle\Entity\Semester;
 use AppBundle\Entity\Signature;
 use AppBundle\Form\Type\CreateSignatureType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class CertificateController extends Controller
+class CertificateController extends BaseController
 {
     /**
      * @Route(
@@ -20,19 +19,16 @@ class CertificateController extends Controller
      * )
      *
      * @param Request $request
-     * @param Semester|null $semester
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Request $request, Semester $semester = null)
+    public function showAction(Request $request)
     {
-        if ($semester === null) {
-            $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
-        }
-        $department = $semester->getDepartment();
+        $department = $this->getDepartmentOrThrow404();
+        $semester = $this->getSemesterOrThrow404();
         $em = $this->getDoctrine()->getManager();
 
-        $assistants = $em->getRepository('AppBundle:AssistantHistory')->findAssistantHistoriesByDepartment($department, $semester);
+        $assistants = $em->getRepository('AppBundle:AssistantHistory')->findByDepartmentAndSemester($department, $semester);
 
         $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($this->getUser());
         $oldPath = '';
@@ -74,6 +70,7 @@ class CertificateController extends Controller
             'form' => $form->createView(),
             'signature' => $signature,
             'assistants' => $assistants,
+            'department' => $department,
             'currentSemester' => $semester,
         ));
     }
