@@ -23,7 +23,7 @@ class AdmissionPeriodController extends BaseController
     {
         $admissionPeriods = $this->getDoctrine()
             ->getRepository('AppBundle:AdmissionPeriod')
-            ->findBy(array('department' => $department));
+            ->findByDepartmentOrderedByTime($department);
 
 
         // Renders the view with the variables

@@ -12,6 +12,24 @@ use Doctrine\ORM\EntityRepository;
  */
 class AdmissionPeriodRepository extends EntityRepository
 {
+
+    /**
+     * @param Department $department
+     *
+     * @return AdmissionPeriod[]
+     */
+    public function findByDepartmentOrderedByTime(Department $department): array
+    {
+        return $this->createQueryBuilder('ap')
+            ->where('ap.department = :department')
+            ->join('ap.semester', 's')
+            ->addOrderBy('s.year', 'DESC')
+            ->addOrderBy('s.semesterTime', 'ASC')
+            ->setParameter('department', $department)
+            ->getQuery()
+            ->getResult();
+    }
+
     /**
      * @param Department $department
      * @param string     $time
@@ -19,7 +37,7 @@ class AdmissionPeriodRepository extends EntityRepository
      *
      * @return AdmissionPeriod[]
      */
-    public function findByDepartmentAndTime(Department $department, string $time, string $year)
+    public function findByDepartmentAndTime(Department $department, string $time, string $year): array
     {
         return $this->createQueryBuilder('dss')
             ->where('dss.department = :department')
@@ -38,8 +56,9 @@ class AdmissionPeriodRepository extends EntityRepository
      * @param Semester $semester
      *
      * @return AdmissionPeriod
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findOneByDepartmentAndSemester(Department $department, Semester $semester)
+    public function findOneByDepartmentAndSemester(Department $department, Semester $semester): AdmissionPeriod
     {
         return $this->createQueryBuilder('admissionPeriod')
             ->where('admissionPeriod.department = :department')
@@ -56,10 +75,9 @@ class AdmissionPeriodRepository extends EntityRepository
      *
      * @return AdmissionPeriod
      *
-     * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findOneWithActiveAdmissionByDepartment(Department $department, \DateTime $time = null)
+    public function findOneWithActiveAdmissionByDepartment(Department $department, \DateTime $time = null): AdmissionPeriod
     {
         if ($time === null) {
             $time = new \DateTime();
