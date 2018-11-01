@@ -517,7 +517,7 @@ class InterviewController extends Controller
 
         return $this->redirectToRoute(
             'interview_schedule',
-            [ 'id' => $interview->getApplication()->getId() ]
+            ['id' => $interview->getApplication()->getId()]
         );
     }
 
