@@ -8,14 +8,12 @@
 
 namespace AppBundle\Service;
 
-
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 
 class TeamService
 {
-
     private $em;
 
     /**
@@ -36,17 +34,16 @@ class TeamService
         foreach ($teams as $team) {
             $teamName = $team->getName();
 
-            if(in_array($teamName, $teamNames)){
+            if (in_array($teamName, $teamNames)) {
                 continue;
             }
             $teamNames[] = $teamName;
         }
 
-        if(empty($teamNames)) {
+        if (empty($teamNames)) {
             $teamNames[] = "Ikke teammedlem";
         }
 
         return $teamNames;
     }
-
 }

@@ -40,7 +40,8 @@ class SurveyManager
         return $surveyTaken;
     }
 
-    public function initializeTeamSurveyTaken(Survey $survey, User $user){
+    public function initializeTeamSurveyTaken(Survey $survey, User $user)
+    {
         $surveyTaken = $this->initializeSurveyTaken($survey);
         $surveyTaken->setUser($user);
         return $surveyTaken;
@@ -251,22 +252,19 @@ class SurveyManager
         $user->setReservedPopUp(!$user->getReservedPopUp());
         $user->setLastPopUp(null);
 
-        try{
+        try {
             $this->em->persist($user);
             $this->em->flush();
-        }catch (\Exception $e){
-
+        } catch (\Exception $e) {
         }
-
     }
-        public function closePopUp(User $user){
+    public function closePopUp(User $user)
+    {
         $user->setLastPopUp(new \DateTime());
-        try{
+        try {
             $this->em->persist($user);
             $this->em->flush();
-        }catch (\Exception $e){
-
+        } catch (\Exception $e) {
         }
     }
-
 }

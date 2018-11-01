@@ -77,7 +77,7 @@ class SurveyController extends Controller
         $user = $this->getUser();
         if (!$survey->isTeamSurvey()) {
             return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
-        }elseif ($user===null) {
+        } elseif ($user===null) {
             throw new AccessDeniedException("Dette er en teamundersøkese. Logg inn for å ta den!");
         }
         $surveyTaken = $this->get('survey.manager')->initializeTeamSurveyTaken($survey, $user);
