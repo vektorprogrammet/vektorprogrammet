@@ -156,7 +156,10 @@ class SurveyController extends BaseController
         $semester = $this->getSemesterOrThrow404();
         $department = $this->getDepartmentOrThrow404();
         $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
-            ['semester' => $semester],
+            [
+                'semester' => $semester,
+                'department' => $department,
+            ],
             ['id' => 'DESC']
         );
         foreach ($surveys as $survey) {
