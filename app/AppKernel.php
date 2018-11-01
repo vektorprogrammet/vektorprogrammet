@@ -28,7 +28,7 @@ class AppKernel extends Kernel
             new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
         );
 
-	    if ( in_array( $this->getEnvironment(), array( 'prod', 'test' ) ) ) {
+	    if ( in_array( $this->getEnvironment(), array( 'prod', 'staging' ) ) ) {
 		    $bundles[] = new Sentry\SentryBundle\SentryBundle();
 	    }
 
