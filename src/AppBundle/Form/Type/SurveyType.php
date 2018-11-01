@@ -15,7 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SurveyType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('semester', EntityType::class, array(
