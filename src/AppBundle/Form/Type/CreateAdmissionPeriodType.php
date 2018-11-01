@@ -6,8 +6,10 @@ use AppBundle\Entity\Repository\SemesterRepository;
 use AppBundle\Entity\Semester;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateAdmissionPeriodType extends AbstractType
 {
@@ -21,22 +23,22 @@ class CreateAdmissionPeriodType extends AbstractType
                     return $sr->queryForAllSemestersOrderedByAge();
                 },
             ))
-            ->add('admissionStartDate', 'datetime', array(
+            ->add('admissionStartDate', DateTimeType::class, array(
                 'label' => 'Opptak starttidspunkt',
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
             ))
-            ->add('admissionEndDate', 'datetime', array(
+            ->add('admissionEndDate', DateTimeType::class, array(
                 'label' => 'Opptak sluttidspunkt',
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
             ))
-            ->add('save', 'submit', array(
+            ->add('save', SubmitType::class, array(
                 'label' => 'Opprett',
             ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\AdmissionPeriod',
