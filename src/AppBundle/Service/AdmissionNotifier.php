@@ -109,7 +109,7 @@ class AdmissionNotifier
         try {
             foreach ($departments as $department) {
                 $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')->findOneByDepartmentAndSemester($department, $semester);
-                if ($admissionPeriod === null || $admissionPeriod->getInfoMeeting() === null) {
+                if ($admissionPeriod === null || $admissionPeriod->getInfoMeeting() === null || !$admissionPeriod->getInfoMeeting()->isShowOnPage()) {
                     continue;
                 }
 
