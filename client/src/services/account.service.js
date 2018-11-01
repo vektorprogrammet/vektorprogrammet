@@ -1,7 +1,7 @@
 import http from './http.service'
 
 async function login(username, password) {
-  const response = await http.post("/account/login", {username, password})
+  const response = await http.post("/api/account/login", {username, password})
   return await response.json();
 }
 
@@ -10,7 +10,7 @@ function logout() {
 }
 
 async function getUser() {
-  const response = await http.get("/account/user");
+  const response = await http.get("/api/account/user");
   return await response.json();
 }
 
