@@ -8,7 +8,7 @@
 <div class="popup">
     <div class="cta js-popup-toggle text-center popupAttention">
         <span>
-            <a href="{{ path('survey_show_team',{'id':survey.id}) }}" target="_blank" class="popup-dismiss">
+            <a id="survey-link" href="{{ path('survey_show_team',{'id':survey.id}) }}" target="_blank" class="popup-dismiss">
                 <i class="fa fa-external-link"></i> <p id="mobilethinshow">Ta undersøkelse</p><div id="mobilethinnone">{{ survey.surveyPopUpMessage | safe_html}} </div>
             </a>
 
@@ -37,9 +37,6 @@
                         url: "{{ path('survey_popup_close') }}",
                     });
                     runAnimationOut();
-
-
-
                 });
 
                 $(".popup-never").on('click', function () {
@@ -116,7 +113,15 @@
 
                 }
 
+                document.getElementById("survey-link").onclick = function fun()
+                {
+                   runAnimationOut();
+                }
+
             };
+
+
+
 
     </script>
 
