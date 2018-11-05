@@ -44,6 +44,13 @@ class ToDoMandatory
      */
     private $isMandatory;
 
+    /* *
+     * @var \DateTime
+     *
+     * @ORM\Column(name='dateDecided', type="datetime")
+     * /
+    private $dateDecided;
+     */
 
     /**
      * Get id
@@ -88,10 +95,12 @@ class ToDoMandatory
 
     /**
      * @param ToDoItem $toDoItem
+     * @return $this
      */
-    public function setToDoItem(ToDoItem $toDoItem): void
+    public function setToDoItem(ToDoItem $toDoItem)
     {
         $this->toDoItem = $toDoItem;
+        return $this;
     }
 
     /**
@@ -104,9 +113,27 @@ class ToDoMandatory
 
     /**
      * @param Semester $semester
+     * @return $this
      */
-    public function setSemester(Semester $semester): void
+    public function setSemester(Semester $semester)//: void
     {
         $this->semester = $semester;
+        return $this;
     }
+/*
+    /**
+     * @return \DateTime
+     * /
+    public function getDateDecided(): \DateTime
+    {
+        return $this->dateDecided;
+    }
+
+    /**
+     * @param \DateTime $dateDecided
+     * /
+    public function setDateDecided(\DateTime $dateDecided): void
+    {
+        $this->dateDecided = $dateDecided;
+    }*/
 }

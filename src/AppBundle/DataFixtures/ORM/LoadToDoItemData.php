@@ -14,7 +14,7 @@ class LoadToDoItemData extends AbstractFixture implements OrderedFixtureInterfac
     {
         $toDoItem1 = new ToDoItem();
         $toDoItem1->setCreatedAt(new DateTime('2018-01-01'));
-        $toDoItem1->setDeletedAt(new DateTime('2018-09-09'));
+        //$toDoItem1->setDeletedAt(new DateTime('2018-09-09'));
         $toDoItem1->setTitle("Jobbejuice");
         $toDoItem1->setDescription("Lag kaffe ved hjelp av kaffemaskinen");
         $toDoItem1->setPriority(1);
@@ -24,7 +24,7 @@ class LoadToDoItemData extends AbstractFixture implements OrderedFixtureInterfac
 
         $toDoItem2 = new ToDoItem();
         $toDoItem2->setCreatedAt(new DateTime('2018-01-01'));
-        $toDoItem2->setDeletedAt(new DateTime('2018-12-12'));
+        //$toDoItem2->setDeletedAt(new DateTime('2018-12-12'));
         $toDoItem2->setTitle("Stand");
         $toDoItem2->setDescription("Rigg opp en pult der store folkemengder ofte samles. Del ut kaffe, snakk med forbipasserende og forsøk å verve nye assistenter. ");
         $toDoItem2->setPriority(2);
@@ -34,7 +34,7 @@ class LoadToDoItemData extends AbstractFixture implements OrderedFixtureInterfac
 
         $toDoItem3 = new ToDoItem();
         $toDoItem3->setCreatedAt(new DateTime('2018-01-01'));
-        $toDoItem3->setDeletedAt(new DateTime('2018-12-12'));
+        //$toDoItem3->setDeletedAt(new DateTime('2018-12-12'));
         $toDoItem3->setTitle("Blesting");
         $toDoItem3->setDescription("I pausene mellom forelesning, spør om å låne mikrofonen til foreleseren for å fortelle salen litt om vektorprogrammet, hva det innebærer og hvorfor det er gøy. Skriv så opp URL til vektoprogrammets nettside.");
         $toDoItem3->setPriority(3);

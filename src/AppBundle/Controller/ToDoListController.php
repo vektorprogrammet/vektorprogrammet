@@ -18,57 +18,42 @@ class ToDoListController extends Controller
     public function showAction()
     {
 
-        //$this->user = $this->getUser();
-        //$dep = $this->user->getDepartment();
-
         $repository = $this->getDoctrine()->getRepository('AppBundle:ToDoItem');
         $toDoListService = $this->get('app.to_do_list_service');
 
         //TOOLBOX:
+        //Note: Although the creation of the lists below could be moved to the service,
+        //some of the lists are required in the twig file
         $em = $this->getDoctrine()->getManager();
         $department = $this->getUser()->getDepartment();
         $semester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
-        //elif user = superadmin, Dropdownmenu
+
         $allToDoItems = $repository->findToDoListItemsBySemester($semester);
-        $mandatoryToDoItems = $toDoListService->getMandatoryToDoItems($allToDoItems);
-        //$toDoItemsWithDeadLines = $toDoListService->getToDoItemsWithDeadlines($allToDoItems);
-        //$testone = $toDoListService->getCompletedToDoItems();
-
-        $toDoItemsWithDeadLines = $repository->findToDoListItemsWithDeadLines($semester);
-        $completedToDoListItems = $repository->findCompletedToDoListItems($semester);
-        //$toDoListService->getCompletedToDoItems($allToDoItems);
-
         $incompletedToDoItems = $toDoListService->getIncompletedToDoItems($allToDoItems, $semester, $department);
         $toDoShortDeadLines = $toDoListService->getToDoItemsWithShortDeadline($incompletedToDoItems);
-        $toDoMandaoryNoDeadLine = $toDoListService->getMandatoryToDoItemsWithInsignificantDeadline($incompletedToDoItems);
-        $toDoNonMandatoryNoDeadline = $toDoListService->getNonMandatoryToDoItemsWithInsignificantDeadline($incompletedToDoItems);
+        $toDoMandaoryNoDeadLine = $toDoListService->getMandatoryToDoItemsWithInsignificantDeadline($incompletedToDoItems, $semester);
+        $toDoNonMandatoryNoDeadline = $toDoListService->getNonMandatoryToDoItemsWithInsignificantDeadline($incompletedToDoItems, $semester);
         $completedToDoListItems = $repository->findCompletedToDoListItems($semester);
+        $correctOrderWithDeleted = array_merge($toDoShortDeadLines, $toDoMandaoryNoDeadLine, $toDoNonMandatoryNoDeadline, $completedToDoListItems);
 
-        $deletedItems = $toDoListService->getDeletedToDoItems($allToDoItems);
-
-
-
-        $showToDoItems = $mandatoryToDoItems;
-
-
-
-        //$mylist = $toDoListService->getMyToDoItems($dep);
+        $correctOrder = array_filter($correctOrderWithDeleted, function (ToDoItem $a) {
+            return $a->getDeletedAt() == null;
+        });
 
         return $this->render("todo_list/toDoList.html.twig", array(
             'allToDoItems' => $allToDoItems,
-            'mandatoryToDoItems' => $toDoMandaoryNoDeadLine,
-            'toDoWithDeadline' => $toDoItemsWithDeadLines,
             'completedToDoListItems' => $completedToDoListItems,
             'department' => $department,
             'semester' => $semester,
             'shortDeadlines' => $toDoShortDeadLines,
-            'nonMandatoryToDoItems' => $toDoNonMandatoryNoDeadline,
-            'deletedItems' => $deletedItems,
-
+            'correctList' => $correctOrder,
         ));
     }
 
-
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function createToDoAction(Request $request)
     {
         $toDoListService = $this->get('app.to_do_list_service');
@@ -93,7 +78,34 @@ class ToDoListController extends Controller
         ));
     }
 
-    //Maybe move to service?
+
+
+    public function editToDoAction(ToDoItem $item, Request $request)
+    {
+        $toDoListService = $this->get('app.to_do_list_service');
+        $itemInfo = new ToDoItemInfo();
+
+
+
+        $form = $this->createForm(CreateToDoItemInfoType::class, $itemInfo, array(
+            'validation_groups' => array('edit_toDoItemInfo'),
+        ));
+
+        // Handle the form
+        $form->handleRequest($request);
+
+        // The fields of the form is checked if they contain the correct information
+        if ($form->isValid()) {
+            $toDoListService->generateEntities($itemInfo);
+            return $this->redirectToRoute('to_do_list');
+        }
+
+        // Render the view
+        return $this->render('todo_list/create_todo_element.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
+
     /**
      * Set/unset completed status on the given item.
      * This method is intended to be called by an Ajax request.
@@ -124,5 +136,28 @@ class ToDoListController extends Controller
             ];
         }
         return new JsonResponse($response);
+    }
+
+    public function toggleAction(ToDoItem $item, Request $request)
+    {
+        $departmentID = $request->request->get('department');
+        $semesterID = $request->request->get('semester');
+        $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentID);
+        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterID);
+
+        dump($department);
+        dump($semester);
+        $toDoListService = $this->get('app.to_do_list_service');
+        $toDoListService->toggleCompletedItem($item, $semester, $department);
+        return $this->redirectToRoute('to_do_list');
+    }
+
+    public function deleteTodoItemAction(ToDoItem $item)
+    {
+        $item->setDeletedAt(new \DateTime());
+        $this->getDoctrine()->getManager()->persist($item);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('to_do_list');
     }
 }

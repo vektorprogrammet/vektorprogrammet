@@ -80,10 +80,12 @@ class ToDoDeadline
 
     /**
      * @param ToDoItem $toDoItem
+     * @return $this
      */
-    public function setToDoItem(ToDoItem $toDoItem): void
+    public function setToDoItem(ToDoItem $toDoItem)//: void
     {
         $this->toDoItem = $toDoItem;
+        return $this;
     }
 
     /**
@@ -96,10 +98,12 @@ class ToDoDeadline
 
     /**
      * @param Semester $semester
+     * @return $this
      */
-    public function setSemester(Semester $semester): void
+    public function setSemester(Semester $semester)//: void
     {
         $this->semester = $semester;
+        return $this;
     }
 
     /**

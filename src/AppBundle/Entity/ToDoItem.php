@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Entity\Semester;
+use phpDocumentor\Reflection\Types\This;
 
 /**
  * ToDoItem
@@ -252,11 +254,13 @@ class ToDoItem
     }
 
     /**
-     * @param Semester $semester
+     * @param \AppBundle\Entity\Semester|null $semester
+     * @return $this
      */
     public function setSemester(? Semester $semester)
     {
         $this->semester = $semester;
+        return $this;
     }
 
     /**
@@ -282,10 +286,12 @@ class ToDoItem
 
     /**
      * @param ToDoMandatory[] $toDoMandatories
+     * @return $this
      */
-    public function setToDoMandatory(array $toDoMandatories): void
+    public function setToDoMandatory(array $toDoMandatories)//: void
     {
         $this->toDoMandatories = $toDoMandatories;
+        return $this;
     }
 
     /** Gets List of ToDoDeadline objects (with this semester), ordered by semesters start date
@@ -303,10 +309,12 @@ class ToDoItem
 
     /**
      * @param ToDoDeadline[] $toDoDeadlines
+     * @return $this
      */
-    public function setToDoDeadlines(array $toDoDeadlines): void
+    public function setToDoDeadlines(array $toDoDeadlines)//: void
     {
         $this->toDoDeadlines = $toDoDeadlines;
+        return $this;
     }
 
 
@@ -324,23 +332,64 @@ class ToDoItem
     }
 
     /**
-     * @param ToDoCompleted[] $toDoCompleted
+     * @param array $toDoCompleted
+     * @return $this
      */
-    public function setToDoCompleted(array $toDoCompleted): void
+    public function setToDoCompleted(array $toDoCompleted) //: void
     {
         $this->toDoCompleted = $toDoCompleted;
+        return $this;
     }
 
     /**
+     * @param \AppBundle\Entity\Semester $semester
      * @return bool
      */
-    public function isMandatory()
+    public function isMandatoryBySemester(Semester $semester)
     {
         if (empty($this->getToDoMandatories())) {
             return false;
         }
         $mandatories = $this->getToDoMandatories();
-        return $mandatories[0]->isMandatory();
+        foreach ($mandatories as $element){
+            if (($element->getSemester() === $semester)){
+                return $element->isMandatory();
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param \AppBundle\Entity\Semester $semester
+     * @return ToDoMandatory|mixed|null
+     */
+    public function getMandatoryBySemester(Semester $semester){
+        $mandatories = $this->getToDoMandatories();
+        foreach ($mandatories as $element){
+            if (($element->getSemester() === $semester)){
+                return $element;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * @param \AppBundle\Entity\Semester $semester
+     * @return ToDoDeadline|mixed|null
+     */
+    public function getDeadlineBySemester(Semester $semester){
+        if (empty($this->getToDoDeadlines())) {
+            return null;
+        }
+        $deadlines = $this->getToDoDeadlines();
+        foreach ($deadlines as $deadline){
+            if ($deadline->getSemester() === $semester){
+                return $deadline;
+            }
+        }
+        return null;
+
     }
 
 
@@ -354,9 +403,12 @@ class ToDoItem
         }
         $deadlines = $this->getToDoDeadlines();
         return ($deadlines[0]->getSemester()->getId() == $this->semester->getId());
+
     }
 
     /**
+     * @param \AppBundle\Entity\Semester $semester
+     * @param Department $department
      * @return bool
      */
     public function isCompletedInSemesterByDepartment(Semester $semester, Department $department)
@@ -366,5 +418,9 @@ class ToDoItem
         }
         $completes = $this->getToDoCompleted();
         return (($completes[0]->getSemester()->getId() == $semester->getId())) and ($completes[0]->getDepartment()->getId() == $department->getId());
+    }
+
+    public function getDeadDateBySemester(){
+
     }
 }

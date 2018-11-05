@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\This;
 
 /**
  * ToDoCompleted
@@ -69,7 +70,6 @@ class ToDoCompleted
     public function setCompletedAt($completedAt)
     {
         $this->completedAt = $completedAt;
-
         return $this;
     }
 
@@ -93,18 +93,22 @@ class ToDoCompleted
 
     /**
      * @param Semester $semester
+     * @return $this
      */
-    public function setSemester(Semester $semester): void
+    public function setSemester(Semester $semester)//: void
     {
         $this->semester = $semester;
+        return $this;
     }
 
     /**
      * @param ToDoItem $toDoItem
+     * @return $this
      */
-    public function setToDoItem(ToDoItem $toDoItem): void
+    public function setToDoItem(ToDoItem $toDoItem)//: void
     {
         $this->toDoItem = $toDoItem;
+        return $this;
     }
 
     /**
@@ -117,10 +121,12 @@ class ToDoCompleted
 
     /**
      * @param Department $department
+     * @return $this
      */
-    public function setDepartment(Department $department): void
+    public function setDepartment(Department $department)//: void
     {
         $this->department = $department;
+        return $this;
     }
 
     /**

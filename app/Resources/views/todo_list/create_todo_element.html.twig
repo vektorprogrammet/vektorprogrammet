@@ -4,82 +4,83 @@
     Opprett todo-element
 {% endblock %}
 
-{% form_theme form 'form/foundation_layout.html.twig' %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('to_do_list') }}">Sjekkliste</a>
+    </li>
+    <li class="breadcrumb-item active">Opprett</li>
+{% endblock %}
 
 {% block body %}
-    <p></p>
+     <div class="card">
+        <div class="card-header"><i class="fa fa-clipboard-list"></i> Opprett nytt todo-element</div>
+        <div class="card-body">
 
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <h1> Opprett nytt todo-element </h1>
-            <hr>
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
             <div class="row">
-                <div class="small-12 medium-12 large-12 columns">
 
-                    {{ form_start(form) }}
-                    {{ form_errors(form) }}
+                <div class="col-12 col-md-12 col-lg-6">
 
-                    <div class="row">
+                    {{ form_row(form.title) }}
+                    {{ form_row(form.description) }}
+                    {{ form_row(form.priority) }}
+                    {{ form_row(form.isMandatory) }}
 
-                        <div class="small-12 medium-12 large-6 columns">
-
-                            {# <div>
-                                {{ form_label(form.createdAt) }}
-                                {{ form_widget(form.createdAt) }}
-                                {{ form_errors(form.createdAt) }}
-                            </div>
-
-                            <div>
-                                {{ form_label(form.deletedAt) }}
-                                {{ form_widget(form.deletedAt) }}
-                                {{ form_errors(form.deletedAt) }}
-                            </div> #}
-
-                            <div>
-                                {{ form_label(form.priority) }}
-                                {{ form_widget(form.priority) }}
-                                {{ form_errors(form.priority) }}
-                            </div>
-
-
-                        </div>
-
-                        <div class="small-12 medium-12 large-6 columns">
-
-                            <div>
-                                {{ form_label(form.title) }}
-                                {{ form_widget(form.title) }}
-                                {{ form_errors(form.title) }}
-                            </div>
-
-                            <div>
-                                {{ form_label(form.description) }}
-                                {{ form_widget(form.description) }}
-                                {{ form_errors(form.description) }}
-                            </div>
-
-                            <div>
-                                {{ form_label(form.department) }}
-                                {{ form_widget(form.department) }}
-                                {{ form_errors(form.department) }}
-                            </div>
-
-                            <div>
-                                {{ form_label(form.semester) }}
-                                {{ form_widget(form.semester) }}
-                                {{ form_errors(form.semester) }}
-                            </div>
-
-                        </div>
-
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-success cta-link">Opprett</button>
+                         <a href="{{ path('to_do_list') }}">
+                             <button type="button"  class=" btn btn-primary">Avbryt</button>
+                         </a>
                     </div>
 
-                    {{ form_end(form) }}
+
 
                 </div>
+
+                <div class="col-12 col-md-12 col-lg-6">
+                    {% if is_granted_team_leader() %}
+                        {{ form_row(form.department) }}
+                    {% else %}
+                        {% do form.department.setRendered() %}
+                    {% endif %}
+                    {{ form_row(form.semester) }}
+                    {{ form_row(form.deadlineDate) }}
+
+
+                </div>
+
             </div>
+
+            {{ form_end(form) }}
+
+            <br>
+            {% if not is_granted_team_leader() %}
+                <p><span class="text-alert">Obs!</span> Du kan kun opprette todos for din egen avdeling.</p>
+            {% endif %}
 
         </div>
     </div>
 
+
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.min.css">
+{% endblock %}
+
+{% block javascripts %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.min.js"></script>
+    <script>
+        const options = {
+            format: 'd.m.Y H:i',
+            lang: 'no',
+            step: 5,
+        };
+
+        jQuery('#{{ form.deadlineDate.vars.id }}').datetimepicker(options);
+    </script>
 {% endblock %}

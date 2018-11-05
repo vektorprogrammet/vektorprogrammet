@@ -1,7 +1,35 @@
 {% extends 'adminBase.html.twig' %}
-{% block javascripts %}{% endblock %}
-{% block title %} Sjekkliste {% endblock %}
+
+{% block title %}
+    Sjekkliste
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Sjekkliste</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    {# Needs to change, but: #}
+    <div class="btn-group">
+        {% if is_granted_team_leader() %}
+            {% include "common/department_semester_dropdowns.html.twig" with {
+                'path': 'applications_show_by_semester',
+                'parameterName': 'id',
+                'currentSemester': semester} %}
+        {% endif %}
+        <a class="btn text-success"
+           href="{{ path('create_toDoItem') }}">
+            <i class="fa fa-plus text-success"></i>
+            Nytt element
+        </a>
+
+    </div>
+{% endblock %}
+
+
 {% block body %}
+
+{#
     <div class="row">
         <div class="small-12 medium-12 large-12 columns">
             <h1 class = "header"> Sjekkliste</h1>
@@ -70,4 +98,127 @@
     </div>
 
 {% endblock %}
+
+
+
+    <div class="row mb-3">
+        <div class="col-12">
+                <a class="float-right btn btn-success btn-sm" href="{{ path('register_applicant') }}" >
+                    <i class="fa fa-check"></i> Utfør valgte
+                </a>
+            {% if is_granted_team_leader() %}
+                <a class="float-right btn btn-warning btn-sm" href="{{ path('register_applicant') }} b">
+                    <i class="fa fa-times"></i> Slett valgte
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    #}
+
+
+    <div class="card">
+
+        <div class="card-header"><i class="fa fa-clipboard-list"></i> Todo Items ({{ correctList|length }})</div>
+        <div class="card-body table-responsive">
+
+
+            <table width="100%" class="application-table table table-striped">
+                <thead>
+                    <tr>
+                        <th/>
+                        <th>Tittel</th>
+                        <th>Beskrivelse</th>
+                        <th>Påbudt</th>
+                        <th>Deadline</th>
+                        <th>Completed</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+                {% for item in correctList %}
+
+                    <tr id="{{ item.id }}">
+                        <td>
+                            {% if is_granted_team_leader() %}
+                            <div class="dropdown">
+                                <div class="clickable px-2" id="options-{{ item.id }}" data-toggle="dropdown"
+                                     aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-secondary"></i>
+                                </div>
+                                <div class="dropdown-menu pt-0" aria-labelledby="options-{{ item.id }}">
+                                    <div class="dropdown-header mb-2"><strong>{{ item.title }}</strong></div>
+                                    <form method="POST"
+                                          {#onsubmit="return confirm('Er du sikker på dette?')"#}
+                                          action="{{ path('delete_todo_item', {'id': item.id}) }}">
+                                        <button type="submit"
+                                                class="dropdown-item text-secondary">
+                                            <i class="fa fa-edit text-secondary"></i>
+                                            Endre
+                                        </button>
+                                    </form>
+                                    {% if is_granted_admin() %}
+                                        <form method="POST"
+                                              onsubmit="return confirm('Er du sikker på at du vil slette elementet?')"
+                                              action="{{ path('delete_todo_item', {'id': item.id}) }}">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <button type="submit"
+                                                            class="dropdown-item text-danger">
+                                                        <i class="fa fa-trash text-danger"></i>
+                                                        Slett element
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td>{{ item.title }}</td>
+                        {#<a href="{{ path('specific_profile', {id: application.user.id}) }}">{{ application.user }}</a>#}
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.isMandatoryBySemester(semester) ? 'Ja' : 'Nei' }}</td>
+                        <td>
+                            {% if item in shortDeadlines %}
+                                <span class="text-warning">{{ item.getToDoDeadlines()[0].getDeadDate.format('d/m-Y') }} </span>
+                            {% elseif item.getToDoDeadlines() != null %}
+                                {{ item.getToDoDeadlines()[0].getDeadDate.format('d/m-Y') }}
+                            {% else %}
+                                Ingen
+                            {% endif %}
+                        </td>
+                        <td>
+                                {% if item in completedToDoListItems %}
+                               <form action="{{ path('toggle_isCompleted', {'id': item.id}) }}"
+                                     method="post"
+                                     onsubmit="return confirm('Er du sikker på at du vil sette elementets status til ikke gjennomført?')"
+                               >
+                                    <button class="btn btn-link"  type="submit">
+                                        <i class="far fa-check-circle" style="color: forestgreen"></i>
+                                    </button>
+                                    {{ item.getToDoCompleted()[0].getCompletedAt().format('d/m-Y') }}
+                                {% else %}
+                                   <form action="{{ path('toggle_isCompleted', {'id': item.id}) }}" method="post">
+                                    <button class="btn btn-link"  type="submit">
+                                        <i class="far fa-times-circle" style="color: red"></i>
+                                    </button>
+                                {% endif %}
+                                       <input type="hidden" name="semester" value="{{ semester.id }}">
+                                       <input type="hidden" name="department" value="{{ department.id }}">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
 

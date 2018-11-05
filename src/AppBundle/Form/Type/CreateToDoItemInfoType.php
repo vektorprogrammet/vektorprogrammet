@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use AppBundle\Entity\Department;
 
 class CreateToDoItemInfoType extends AbstractType
@@ -24,27 +25,30 @@ class CreateToDoItemInfoType extends AbstractType
                     4 => '4',
                     5 => '5 - Høy'
                 ),
-                'expanded' => false,
-                'required' => true,
             ))
             ->add('isMandatory', 'checkbox', array(
                 'label' => 'Dette punktet er påbudt',
                 'required' => false,
             ))
-            ->add('deadlineDate', 'datetime', array(
+            /*->add('deadlineDate', 'datetime', array(
                 'label' => 'Hvis dette punktet har deadline, vennligst før inn. Hvis ikke, la være blank:',
                 'required' => false,
-                //'nullable' => true,
+                'widget' => calen
+            ))*/
+            ->add('deadlineDate', DateTimeType::class, array(
+                'label' => 'Hvis dette punktet har deadline, vennligst før inn. Hvis ikke, la være blank:',
+                'format' => 'dd.MM.yyyy HH:mm',
+                'widget' => 'single_text',
+                'attr' => [
+                    'placeholder' => 'Klikk for å velge tidspunkt'
+                ],
+                'required' => false,
             ))
             ->add('title', 'text', array(
                 'label' => 'Hva er denne sin tittel?',
-                //'widget' => 'single_text',
-                'required' => true,
             ))
             ->add('description', 'text', array(
                 'label' => 'Beskrivelse av gjøremålet?',
-                //'widget' => 'single_text',
-                'required' => true,
             ))
             ->add('department', 'entity', array(
                 'label' => 'Hvilken department skal denne gjelde for?',
@@ -65,10 +69,10 @@ class CreateToDoItemInfoType extends AbstractType
                         ->orderBy('s.semesterStartDate', 'DESC');
                 },
                 'required'=>false,
-            ))
+            ))/*
             ->add('save', 'submit', array(
-                'label' => 'Opprett',
-            ));
+                'label' => 'Opprett1',
+            ))*/;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

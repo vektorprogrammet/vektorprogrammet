@@ -25,25 +25,6 @@ class ToDoItemInfo
         return $this;
     }
 
-/*
-    public function createWithData(int $priority, string $title, string $description, Semester $semester, Department $department, \DateTime $mandatoryDate, bool $isMandatory,  \DateTime $deadLineDate)
-    {
-        $self = new self();
-        $self->priority = $priority;
-        $self->title = $title;
-        $self->description = $description;
-        $self->semester = $semester;
-        $self->department = $department;
-        $self->mandatoryDate = $mandatoryDate;
-        $self->isMandatory = $isMandatory;
-        $self->deadLineDate = $deadLineDate;
-
-
-
-        return $self;
-    }
-*/
-
 
     /**
      * @return Semester
@@ -224,4 +205,5 @@ class ToDoItemInfo
     {
         return $this->isMandatory;
     }
+
 }
