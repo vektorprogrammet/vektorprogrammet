@@ -19,80 +19,15 @@
 
 
 {% block body %}
-    <div class="card">
-        <div class="card-header"><i class="fa fa-align-justify"></i>
-            Undersøkelser {{ department }} {{ semester }}</div>
-        <div class="card-body">
 
-            <table class="table">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>Tittel</th>
-                    <th>Antall svar</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for survey in surveys
-                    if ((not survey.confidential) or has_access_to('survey_admin'))  %}
-                    <tr>
-                        <td>
-                            <div class="dropdown">
-                                <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"
-                                     aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-ellipsis-v text-secondary"></i>
-                                </div>
+    {% include 'survey/survey_table.html.twig' with {'surveys': surveysWithDepartment, 'cardTitle' : "Undersøkelser #{ department } #{ semester }"} %}
 
-                                {% if has_access_to('survey_admin') %}
-                                <div class="dropdown-menu pt-0" aria-labelledby="options-{{ loop.index }}">
-                                    <div class="dropdown-header mb-2"><strong>{{ survey.name }}</strong></div>
-                                    <a href="{{ path('survey_edit', {'id': survey.id }) }}"
-                                       class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
-                                    </a>
-                                        <a href="{{ path('survey_copy', {'id': survey.id }) }}" class="dropdown-item">
-                                            <i class="fa fa-copy text-primary"></i> Kopier
-                                        </a>
+    {% if has_access_to('survey_admin') %}
 
-                                    {% if not survey.teamSurvey %}
-                                    <a href="{{ path('survey_show_admin', {'id': survey.id }) }}" class="dropdown-item">
-                                        <i class="fa fa-file-signature text-primary"></i> Admin-utfylling
-                                    </a>
-                                    {% endif %}
-                                </div>
-                                {% endif %}
-                            </div>
-                        </td>
-                        <td>{{ survey.name }}</td>
-                        <td>{{ survey.getTotalAnswered }}</td>
-                        <td>
-                            {% if survey.teamSurvey %}
-                                <a href="{{ path('survey_show_team', {'id': survey.id }) }}">
-                                    <i class="fa fa-comment-o"></i> Vis undersøkelse
-                                </a>
-                            {% else %}
-                                <a href="{{ path('survey_show', {'id': survey.id }) }}">
-                                    <i class="fa fa-comment-o"></i> Vis undersøkelse
-                                </a>
-                            {% endif %}
+        {% include 'survey/survey_table.html.twig' with {'surveys': globalSurveys, 'cardTitle' : "Globale undersøkelser #{ semester }" } %}
+
+    {% endif %}
 
 
 
-                        </td>
-                        <td>
-                            <a href="{{ path('survey_results', {'id': survey.id }) }}">
-                                <i class="fa fa-bar-chart"></i> Vis resultater
-                            </a>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td>Ingen spørreundersøkelser</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
 {% endblock %}

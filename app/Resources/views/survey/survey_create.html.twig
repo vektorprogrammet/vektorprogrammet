@@ -38,16 +38,18 @@
                 <div class="card-body">
                     {{ form_row(form.name) }}
                     {{ form_row(form.semester ) }}
-                    {{ form_row(form.department ) }}
+
+                    {% if has_access_to('survey_admin') %}
+                        {{ form_row(form.department ) }}
+                    {%  endif %}
+
+
                     {{ form_row(form.showCustomFinishPage ) }}
                     {{ form_row(form.confidential) }}
                     {{ form_row(form.finishPageContent ) }}
-
-                    {% if is_granted_admin() %}
-                        {{ form_row(form.team_survey) }}
-                        {{ form_row(form.showCustomPopUpMessage ) }}
-                        {{ form_row(form.surveyPopUpMessage ) }}
-                    {%  endif %}
+                    {{ form_row(form.team_survey) }}
+                    {{ form_row(form.showCustomPopUpMessage ) }}
+                    {{ form_row(form.surveyPopUpMessage ) }}
 
                 </div>
             </div>

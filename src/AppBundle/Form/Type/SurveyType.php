@@ -28,19 +28,6 @@ class SurveyType extends AbstractType
             },
         ))
 
-        ->add('department', EntityType::class, array(
-            'label' => 'Region',
-            'class' => 'AppBundle:Department',
-            'placeholder' => 'Alle regioner',
-            'empty_data' => null,
-            'query_builder' => function (DepartmentRepository $er) {
-                return $er->createQueryBuilder('Department')
-                    ->select('Department')
-                    ->where('Department.active = true');
-            },
-            'required' => false,
-        ))
-
         ->add('name', TextType::class, array(
             'label' => false,
             'attr' => array('placeholder' => 'Fyll inn tittel til undersøkelse'),

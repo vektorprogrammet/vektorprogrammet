@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Semester;
+use AppBundle\Form\Type\SurveyAdminType;
 use AppBundle\Role\Roles;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Form\Type\SurveySchoolSpecificExecuteType;
@@ -162,16 +163,20 @@ class SurveyController extends BaseController
     public function createSurveyAction(Request $request)
     {
         $survey = new Survey();
+        $survey->setDepartment($this->getUser()->getDepartment());
 
-        $form = $this->createForm(SurveyType::class, $survey);
+        if($this->get('app.access_control')->checkAccess("survey_admin")){
+            $form = $this->createForm(SurveyAdminType::class, $survey);
+
+        }else{
+            $form = $this->createForm(SurveyType::class, $survey);
+        }
+
         $form->handleRequest($request);
 
-
-
         if ($form->isValid()) {
+            $this->ensureAccess($survey);
             $em = $this->getDoctrine()->getManager();
-            $semester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
-            $survey->setSemester($semester);
             $em->persist($survey);
             $em->flush();
 
@@ -188,12 +193,19 @@ class SurveyController extends BaseController
 
     public function copySurveyAction(Request $request, Survey $survey)
     {
+        $this->ensureAccess($survey);
+
         $em = $this->getDoctrine()->getManager();
         $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
         $surveyClone = $survey->copy();
         $surveyClone->setSemester($currentSemester);
 
-        $form = $this->createForm(SurveyType::class, $surveyClone);
+        if($this->get('app.access_control')->checkAccess("survey_admin")){
+            $form = $this->createForm(SurveyAdminType::class, $survey);
+        }else{
+            $form = $this->createForm(SurveyType::class, $survey);
+        }
+
 
         $em->flush();
 
@@ -230,7 +242,8 @@ class SurveyController extends BaseController
         $semester = $this->getSemesterOrThrow404();
         $department = $this->getDepartmentOrThrow404();
 
-        $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
+
+        $surveysWithDepartment = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
             [
                 'semester' => $semester,
                 'department' => $department,
@@ -239,15 +252,31 @@ class SurveyController extends BaseController
         );
 
 
-
-
-        foreach ($surveys as $survey) {
+        foreach ($surveysWithDepartment as $survey) {
             $totalAnswered = count($this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findBy(array('survey' => $survey)));
             $survey->setTotalAnswered($totalAnswered);
         }
 
+
+        $globalSurveys = array();
+        if($this->get('app.access_control')->checkAccess("survey_admin")) {
+            $globalSurveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
+                [
+                    'semester' => $semester,
+                    'department' => null,
+                ],
+                ['id' => 'DESC']
+            );
+            foreach ($globalSurveys as $survey) {
+                $totalAnswered = count($this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findBy(array('survey' => $survey)));
+                $survey->setTotalAnswered($totalAnswered);
+            }
+        }
+
+
         return $this->render('survey/surveys.html.twig', array(
-            'surveys' => $surveys,
+            'surveysWithDepartment' => $surveysWithDepartment,
+            'globalSurveys' => $globalSurveys,
             'department' => $department,
             'semester' => $semester,
         ));
@@ -256,8 +285,13 @@ class SurveyController extends BaseController
     public function editSurveyAction(Request $request, Survey $survey)
     {
 
+        $this->ensureAccess($survey);
 
-        $form = $this->createForm(SurveyType::class, $survey);
+        if($this->get('app.access_control')->checkAccess("survey_admin")){
+            $form = $this->createForm(SurveyAdminType::class, $survey);
+        }else{
+            $form = $this->createForm(SurveyType::class, $survey);
+        }
 
         $form->handleRequest($request);
 
@@ -287,7 +321,9 @@ class SurveyController extends BaseController
      */
     public function deleteSurveyAction(Survey $survey)
     {
-                $em = $this->getDoctrine()->getManager();
+        $this->ensureAccess($survey);
+
+        $em = $this->getDoctrine()->getManager();
                 $em->remove($survey);
                 $em->flush();
                 $response['success'] = true;
@@ -333,5 +369,25 @@ class SurveyController extends BaseController
     {
         $this->get('survey.manager')->closePopUp($this->getUser());
         return new JsonResponse();
+    }
+
+    /**
+     * @param Survey $survey
+     *
+     * @throws AccessDeniedException
+     */
+    private function ensureAccess(Survey $survey){
+        $user = $this->getUser();
+
+        $isSurveyAdmin = $this->get('app.access_control')->checkAccess("survey_admin");
+        $isSameDepartment = $survey->getDepartment() === $user->getDepartment();
+
+        if($isSameDepartment || $isSurveyAdmin){
+            return;
+        }
+
+        throw new AccessDeniedException();
+
+
     }
 }
