@@ -3,8 +3,6 @@
 namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use AppBundle\Entity\Semester;
 use AppBundle\Entity\Application;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use AppBundle\Form\Type\ModifySubstituteType;
@@ -13,25 +11,30 @@ use AppBundle\Form\Type\ModifySubstituteType;
  * SubstituteController is the controller responsible for substitute assistants,
  * such as showing, modifying and deleting substitutes.
  */
-class SubstituteController extends Controller
+class SubstituteController extends BaseController
 {
-    public function showBySemesterAction(Semester $semester)
-    {
-        $substitutes = $this->getDoctrine()->getRepository('AppBundle:Application')->findSubstitutesBySemester($semester);
-
-        return $this->render('substitute/index.html.twig', array(
-            'substitutes' => $substitutes,
-            'semester' => $semester,
-        ));
-    }
-
     public function showAction()
     {
         // No department specified, get the user's department and call showBySemester with
         // either current or latest semester for that department
-        $department = $this->getUser()->getDepartment();
+        $department = $this->getDepartmentOrThrow404();
+        $semester = $this->getSemesterOrThrow404();
 
-        return $this->showBySemesterAction($department->getCurrentOrLatestSemester());
+        $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
+            ->findOneByDepartmentAndSemester($department, $semester);
+
+        $substitutes = null;
+        if ($admissionPeriod !== null) {
+            $substitutes = $this->getDoctrine()
+                ->getRepository('AppBundle:Application')
+                ->findSubstitutesByAdmissionPeriod($admissionPeriod);
+        }
+
+        return $this->render('substitute/index.html.twig', array(
+            'substitutes' => $substitutes,
+            'semester' => $semester,
+            'department' => $department,
+        ));
     }
 
     public function showModifyFormAction(Request $request, Application $application)
@@ -56,8 +59,9 @@ class SubstituteController extends Controller
 
             // Need some form of redirect. Will cause wrong database entries if the form is rendered again
             // after a valid submit, without remaking the form with up to date question objects from the database.
-            return $this->redirect($this->generateUrl('substitute_show_by_semester', array(
+            return $this->redirect($this->generateUrl('substitute_show', array(
                 'semester' => $application->getSemester()->getId(),
+                'department' => $department->getId(),
             )));
         }
 
@@ -76,7 +80,10 @@ class SubstituteController extends Controller
         $em->flush();
 
         // Redirect to substitute page, set semester to that of the deleted substitute
-        return $this->redirectToRoute('substitute_show_by_semester', array('semester' => $application->getSemester()->getId()));
+        return $this->redirectToRoute('substitute_show', array(
+            'semester' => $application->getSemester()->getId(),
+            'department' => $application->getAdmissionPeriod()->getDepartment()->getid(),
+        ));
     }
 
     public function createSubstituteFromApplicationAction(Application $application)
@@ -92,6 +99,9 @@ class SubstituteController extends Controller
         $em->flush();
 
         // Redirect to substitute page, set semester to that of the newly added substitute
-        return $this->redirectToRoute('substitute_show_by_semester', array('semester' => $application->getSemester()->getId()));
+        return $this->redirectToRoute('substitute_show', array(
+            'semester' => $application->getSemester()->getId(),
+            'department' => $application->getAdmissionPeriod()->getDepartment()->getId(),
+        ));
     }
 }

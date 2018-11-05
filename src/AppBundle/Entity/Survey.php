@@ -19,13 +19,20 @@ class Survey implements \JsonSerializable
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Semester")
      * @Assert\Valid
      */
-    protected $semester;
+    private $semester;
+
+    /**
+     * @var Department
+     * @ORM\ManyToOne(targetEntity="Department")
+     * @Assert\Valid
+     */
+    private $department;
 
     /**
      * @ORM\Column(type="datetime", name="createdTime", nullable=true)
@@ -36,7 +43,7 @@ class Survey implements \JsonSerializable
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
-    protected $name;
+    private $name;
 
     /**
      * @var bool
@@ -100,9 +107,9 @@ class Survey implements \JsonSerializable
      *      )
      * @Assert\Valid
      **/
-    protected $surveyQuestions;
+    private $surveyQuestions;
 
-    protected $totalAnswered;
+    private $totalAnswered;
 
     /**
      * @return int
@@ -150,6 +157,25 @@ class Survey implements \JsonSerializable
     public function getSemester()
     {
         return $this->semester;
+    }
+
+    /**
+     * @return Department
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return Survey
+     */
+    public function setDepartment(Department $department): Survey
+    {
+        $this->department = $department;
+        return $this;
     }
 
     /**

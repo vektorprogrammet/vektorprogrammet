@@ -14,10 +14,10 @@
     <div class=progress >
       <div v-bind:class="['progress-bar', 'progress-bar-striped', 'progress-bar-animated']"
       role=progressbar v-bind:style="{width: this.diskSpacePercent + '%'}">
-      {{diskSpacePercent.toFixed(1) +'%'}} full
+      {{diskSpacePercent +'%'}} full
       </div>
     </div>
-    <p>{{(diskSpace.used / 1024 / 1024).toFixed(1)}} GB used out of {{(diskSpace.size / 1024 / 1024).toFixed(1)}} GB total</p>
+    <p>{{diskSpaceUsed}} GB used out of {{diskSpaceSize}} GB total</p>
   </b-container>
 </template>
 
@@ -49,10 +49,7 @@
     },
     computed: {
       ...mapGetters('staging', ['servers']),
-      ...mapGetters('staging', ['diskSpace']),
-      diskSpacePercent: function() {
-        return (this.diskSpace.used / this.diskSpace.size) *100
-      }
+      ...mapGetters('staging', ['diskSpaceSize', 'diskSpaceUsed', 'diskSpacePercent']),
     },
     methods: {
       ...mapActions('staging', ['getServers']),

@@ -6,7 +6,6 @@ use AppBundle\Entity\User;
 use AppBundle\Event\UserEvent;
 use AppBundle\Form\Type\NewUserType;
 use AppBundle\Form\Type\UserCompanyEmailType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\EditUserType;
 use AppBundle\Form\Type\EditUserPasswordType;
@@ -16,7 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use TFox\MpdfPortBundle\Response\PDFResponse;
 use AppBundle\Role\Roles;
 
-class ProfileController extends Controller
+class ProfileController extends BaseController
 {
     public function showAction()
     {

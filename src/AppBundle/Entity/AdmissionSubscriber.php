@@ -51,9 +51,15 @@ class AdmissionSubscriber
      */
     private $fromApplication;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default"=false})
+     */
+    private $infoMeeting;
+
     public function __construct()
     {
         $this->fromApplication = false;
+        $this->infoMeeting = false;
         $this->timestamp = new \DateTime();
         $this->unsubscribeCode = bin2hex(openssl_random_pseudo_bytes(12));
     }
@@ -151,5 +157,21 @@ class AdmissionSubscriber
     public function setFromApplication($fromApplication): void
     {
         $this->fromApplication = $fromApplication;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getInfoMeeting()
+    {
+        return $this->infoMeeting;
+    }
+
+    /**
+     * @param bool $infoMeeting
+     */
+    public function setInfoMeeting($infoMeeting): void
+    {
+        $this->infoMeeting = $infoMeeting;
     }
 }

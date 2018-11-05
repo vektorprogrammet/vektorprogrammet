@@ -4,14 +4,9 @@
     Opprett semester
 {% endblock %}
 
-{% block stylesheets %}
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.min.css">
-{% endblock %}
-
 {% block breadcrumb %}
     <li class="breadcrumb-item">
-        <a href="{{ path('semester_show_by_department', {'id': department.id}) }}">Opptaksperioder</a>
+        <a href="{{ path('semester_show') }}">Semester</a>
     </li>
     <li class="breadcrumb-item active">Opprett</li>
 {% endblock %}
@@ -21,7 +16,7 @@
     <div class="row">
         <div class="col-12 col-md-12 col-lg-6">
             <div class="card">
-                <div class="card-header"><i class="fa fa-industry"></i> Opprett semester {{ department }}</div>
+                <div class="card-header"><i class="fa fa-industry"></i> Opprett semester</div>
                 <div class="card-body">
                     {{ form_start(form) }}
                     {{ form_widget(form) }}
@@ -31,18 +26,4 @@
         </div>
     </div>
 
-{% endblock %}
-
-{% block javascripts %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.min.js"></script>
-    <script>
-        const options = {
-            format: 'd.m.Y H:i',
-            lang: 'no',
-            step: 1,
-        };
-
-        jQuery('#{{ form.admissionStartDate.vars.id }}').datetimepicker(options);
-        jQuery('#{{ form.admissionEndDate.vars.id }}').datetimepicker(options);
-    </script>
 {% endblock %}

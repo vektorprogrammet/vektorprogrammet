@@ -67,15 +67,17 @@ security:
           #ROLE_ADMIN = admin user
         - { path: ^/kontrollpanel/admin, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/staging, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/semesteradmin, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/avdelingadmin/opprett, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/avdelingadmin/slett, roles: ROLE_ADMIN }
-        - { path: ^/kontrollpanel/semesteradmin/slett, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/opptaksperiode/slett, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/opptaksperiode/opprett, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/stilling/slett, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/skoleadmin/slett, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/intervju/slett, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/opptakadmin/slett, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/bruker/vekorepost/endre, roles: ROLE_ADMIN }
-        - { path: ^/kontrollpanel/hovedstyret/slett/bruker, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/hovedstyret/slett/bruker, roles: ROLE_ADMIN }
 
           #ROLE_TEAM_LEADER = team leader
         - { path: ^/kontrollpanel/avdelingadmin/update, roles: ROLE_TEAM_LEADER }

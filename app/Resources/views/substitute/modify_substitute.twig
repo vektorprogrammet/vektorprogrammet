@@ -6,7 +6,7 @@
 
 {% block breadcrumb %}
     <li class="breadcrumb-item">
-        <a href="{{ path('substitute_show_by_semester', {'semester': application.semester.id}) }}">Vikarer</a>
+        <a href="{{ path('substitute_show', {department: application.department.id, semester: application.semester.id}) }}">Vikarer</a>
     </li>
     <li class="breadcrumb-item active">{{ application.user }}</li>
 {% endblock %}

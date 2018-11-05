@@ -4,14 +4,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
 use AppBundle\Role\Roles;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\CreateUserType;
 use AppBundle\Form\Type\NewUserType;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class UserAdminController extends Controller
+class UserAdminController extends BaseController
 {
     public function createUserAction(Request $request, Department $department = null)
     {

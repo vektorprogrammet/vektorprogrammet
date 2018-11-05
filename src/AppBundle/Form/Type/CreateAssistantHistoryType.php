@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\Repository\SemesterRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -21,11 +22,8 @@ class CreateAssistantHistoryType extends AbstractType
             ->add('Semester', EntityType::class, array(
                 'label' => 'Semester',
                 'class' => 'AppBundle:Semester',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('s')
-                        ->orderBy('s.semesterStartDate', 'DESC')
-                        ->where('s.department = ?1')
-                        ->setParameter(1, $this->department);
+                'query_builder' => function (SemesterRepository $sr) {
+                    return $sr->queryForAllSemestersOrderedByAge();
                 },
             ))
             ->add('workdays', ChoiceType::class, array(

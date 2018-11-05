@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * SurveyController is the controller responsible for survey actions,
  * such as showing, assigning and conducting surveys.
  */
-class SurveyController extends Controller
+class SurveyController extends BaseController
 {
 
     /**
@@ -169,13 +169,9 @@ class SurveyController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            //Merge-conflict - look at copySurvey
-            $department = $this->getUser()->getDepartment();
-            $semester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
+            $semester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
             $survey->setSemester($semester);
             $em->persist($survey);
-            $em->flush();
-
             // Need some form of redirect. Will cause wrong database entries if the form is rendered again
             // after a valid submit, without remaking the form with up to date question objects from the database.
             return $this->redirect($this->generateUrl('surveys'));
@@ -193,13 +189,17 @@ class SurveyController extends Controller
             throw $this->createAccessDeniedException();
         }
         $em = $this->getDoctrine()->getManager();
-        $department = $this->getUser()->getDepartment();
-        $semester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
+        $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
+
         $surveyClone = $survey->copy();
-        $surveyClone->setSemester($semester);
+        $surveyClone->setSemester($currentSemester);
+
         $form = $this->createForm(SurveyType::class, $surveyClone, array(
-                'isGrantedTeamLeader' => $this->isGranted(Roles::TEAM_LEADER),
-            ));
+            'isGrantedTeamLeader' => $this->isGranted(Roles::TEAM_LEADER),
+        ));
+
+        $em->flush();
+
         $form->handleRequest($request);
 
 
@@ -219,23 +219,24 @@ class SurveyController extends Controller
 
     /**
      * @Route(
-     *     "/kontrollpanel/undersokelse/admin/{id}",
+     *     "/kontrollpanel/undersokelse/admin",
      *     name="surveys",
      *     methods={"GET"},
-     *     defaults={"id": null}
      * )
      *
      * @param Semester|null $semester
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showSurveysAction(Semester $semester = null)
+    public function showSurveysAction()
     {
-        if ($semester === null) {
-            $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
-        }
+        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404();
         $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
-            ['semester' => $semester],
+            [
+                'semester' => $semester,
+                'department' => $department,
+            ],
             ['id' => 'DESC']
         );
 
@@ -247,7 +248,8 @@ class SurveyController extends Controller
 
         return $this->render('survey/surveys.html.twig', array(
             'surveys' => $surveys,
-            'semester' => $semester
+            'department' => $department,
+            'semester' => $semester,
         ));
     }
 

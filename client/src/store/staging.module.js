@@ -1,4 +1,5 @@
 import { stagingService } from '../services';
+import { fileSize } from '../util';
 
 const state = {
   servers: [],
@@ -37,9 +38,15 @@ const getters = {
       {...s, repo: s.repo.replace('https://github.com/', '')}
     ));
   },
-  diskSpace(state) {
-    return state.diskSpace
+  diskSpaceSize (state) {
+    return fileSize.kbToGb(state.diskSpace.size).toFixed(1)
   },
+  diskSpaceUsed (state) {
+    return fileSize.kbToGb(state.diskSpace.used).toFixed(1)
+  },
+  diskSpacePercent (state) {
+    return (state.diskSpace.used / state.diskSpace.size * 100).toFixed(1)
+  }
 };
 
 const mutations = {

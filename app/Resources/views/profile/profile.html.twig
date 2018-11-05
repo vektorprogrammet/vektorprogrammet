@@ -30,8 +30,7 @@
                                         method="POST"
                                         action="{{ path(user.isActive ? 'profile_deactivate_user' : 'profile_activate_user', {id: user.id}) }}"
                                         onsubmit="return confirm('Er du sikker?');">
-                                    <button type="submit"
-                                            class="btn btn-link p-0">{{ user.isActive ? 'Deaktiver' : 'Aktiver' }}</button>
+                                    <button class="btn btn-link p-0">{{ user.isActive ? 'Deaktiver' : 'Aktiver' }}</button>
                                 </form>
                             {% endif %}
                         </div>

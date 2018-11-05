@@ -7,13 +7,12 @@ use AppBundle\Form\Type\ReceiptType;
 use AppBundle\Role\Roles;
 use AppBundle\Service\ReceiptStatistics;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Receipt;
 use AppBundle\Entity\User;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class ReceiptController extends Controller
+class ReceiptController extends BaseController
 {
     public function showAction()
     {

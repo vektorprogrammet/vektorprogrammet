@@ -13,7 +13,8 @@ class ExecutiveBoardMembershipRepository extends EntityRepository
             ->where('bm.user = :user')
             ->setParameter('user', $user)
             ->leftJoin('bm.startSemester', 's')
-            ->addOrderBy('s.semesterEndDate', 'DESC')
+            ->addOrderBy('s.semesterTime', 'ASC')
+            ->addOrderBy('s.year', 'DESC')
             ->getQuery()
             ->getResult();
     }

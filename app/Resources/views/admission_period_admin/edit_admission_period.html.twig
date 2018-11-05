@@ -11,7 +11,7 @@
 
 {% block breadcrumb %}
     <li class="breadcrumb-item">
-        <a href="{{ path('semester_show_by_department', {'id': department.id }) }}">Opptaksperioder</a>
+        <a href="{{ path('admission_period_admin_show', {'id': department.id }) }}">Opptaksperioder</a>
     </li>
     <li class="breadcrumb-item active">{{ department }}</li>
 {% endblock %}
@@ -77,14 +77,14 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.min.js"></script>
     <script>
-      const options = {
-        format: 'd.m.Y H:i',
-        lang: 'no',
-        step: 1,
-      };
+        const options = {
+            format: 'd.m.Y H:i',
+            lang: 'no',
+            step: 1,
+        };
 
-      jQuery('#{{ form.admissionStartDate.vars.id }}').datetimepicker(options);
-      jQuery('#{{ form.admissionEndDate.vars.id }}').datetimepicker(options);
-      jQuery('#{{ form.infoMeeting.date.vars.id }}').datetimepicker(Object.assign(options, {step: 15}));
+        jQuery('#{{ form.admissionStartDate.vars.id }}').datetimepicker(options);
+        jQuery('#{{ form.admissionEndDate.vars.id }}').datetimepicker(options);
+        jQuery('#{{ form.infoMeeting.date.vars.id }}').datetimepicker(Object.assign(options, {step: 15}));
     </script>
 {% endblock %}

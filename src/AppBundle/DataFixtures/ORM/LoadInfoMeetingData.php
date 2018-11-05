@@ -28,7 +28,7 @@ class LoadInfoMeetingData extends AbstractFixture implements ContainerAwareInter
         $infoMeetingUiO->setRoom("Parken");
         $infoMeetingUiO->setDescription("Det blir underholdning!");
 
-        $semester = $this->getReference('uio-semester-current');
+        $semester = $this->getReference('uio-admission-period-current');
         $semester->setInfoMeeting($infoMeetingUiO);
 
         $manager->persist($infoMeetingUiO);

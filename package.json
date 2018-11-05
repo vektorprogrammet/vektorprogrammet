@@ -6,6 +6,7 @@
   "dependencies": {
     "@coreui/coreui": "2.0.18",
     "@fortawesome/fontawesome-free": "5.4.1",
+    "axios": "^0.18.0",
     "bootstrap": "4.1.3",
     "ckeditor": "4.5.10",
     "cropperjs": "1.4.1",
@@ -46,6 +47,7 @@
     "compress-images": "gulp compressImages",
     "build:scheduling": "cd src/AppBundle/AssistantScheduling/Webapp && npm run build:dev",
     "build:scheduling:win": "cd src\\AppBundle\\AssistantScheduling\\Webapp && npm run build:dev",
+    "build:scheduling:files": "gulp build:scheduling",
     "build:client": "gulp build:client",
     "build:dev": "gulp build:dev",
     "build:prod": "gulp build:prod",

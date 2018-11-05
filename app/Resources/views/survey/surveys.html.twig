@@ -10,11 +10,7 @@
 
 {% block breadcrumb_menu %}
     <div class="btn-group">
-        {% include 'common/department_semester_dropdowns.html.twig' with {
-            'currentSemester': semester,
-            'path': 'surveys',
-            'parameterName': 'id'
-        } %}
+        {% include 'common/department_semester_dropdowns.html.twig' with { 'path': 'surveys' } %}
         <a href="{{ path('survey_create') }}" class="btn btn-outline-success text-success">
             <i class="fa fa-plus"></i> Ny undersøkelse
         </a>
@@ -25,7 +21,7 @@
 {% block body %}
     <div class="card">
         <div class="card-header"><i class="fa fa-align-justify"></i>
-            Undersøkelser {{ semester.department }} {{ semester.name }}</div>
+            Undersøkelser {{ department }} {{ semester }}</div>
         <div class="card-body">
 
             <table class="table">

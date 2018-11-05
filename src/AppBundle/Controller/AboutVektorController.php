@@ -2,9 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-class AboutVektorController extends Controller
+class AboutVektorController extends BaseController
 {
     public function showAction()
     {

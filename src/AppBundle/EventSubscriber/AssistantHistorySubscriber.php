@@ -47,6 +47,13 @@ class AssistantHistorySubscriber implements EventSubscriberInterface
         );
     }
 
+    /**
+     * @param AssistantHistoryCreatedEvent $event
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function sendActivationMail(AssistantHistoryCreatedEvent $event)
     {
         $assistantHistory = $event->getAssistantHistory();
@@ -59,7 +66,7 @@ class AssistantHistorySubscriber implements EventSubscriberInterface
             $this->em->flush();
         } else { // Send new user code for user to create user name and password
             $currentSemester = $this->em->getRepository('AppBundle:Semester')
-                ->findCurrentSemesterByDepartment($user->getDepartment());
+                ->findCurrentSemester();
 
             // Send new user code only if assistant history is added to current semester
             if ($assistantHistory->getSemester() === $currentSemester && $user->getNewUserCode() === null) {

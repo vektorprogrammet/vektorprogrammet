@@ -5,14 +5,13 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Department;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\CreateExecutiveBoardType;
 use AppBundle\Form\Type\CreateExecutiveBoardMembershipType;
 use AppBundle\Entity\ExecutiveBoardMembership;
 use Symfony\Component\HttpFoundation\Response;
 
-class ExecutiveBoardController extends Controller
+class ExecutiveBoardController extends BaseController
 {
     public function showAction()
     {
