@@ -165,10 +165,9 @@ class SurveyController extends BaseController
         $survey = new Survey();
         $survey->setDepartment($this->getUser()->getDepartment());
 
-        if($this->get('app.access_control')->checkAccess("survey_admin")){
+        if ($this->get('app.access_control')->checkAccess("survey_admin")) {
             $form = $this->createForm(SurveyAdminType::class, $survey);
-
-        }else{
+        } else {
             $form = $this->createForm(SurveyType::class, $survey);
         }
 
@@ -200,9 +199,9 @@ class SurveyController extends BaseController
         $surveyClone = $survey->copy();
         $surveyClone->setSemester($currentSemester);
 
-        if($this->get('app.access_control')->checkAccess("survey_admin")){
+        if ($this->get('app.access_control')->checkAccess("survey_admin")) {
             $form = $this->createForm(SurveyAdminType::class, $survey);
-        }else{
+        } else {
             $form = $this->createForm(SurveyType::class, $survey);
         }
 
@@ -259,7 +258,7 @@ class SurveyController extends BaseController
 
 
         $globalSurveys = array();
-        if($this->get('app.access_control')->checkAccess("survey_admin")) {
+        if ($this->get('app.access_control')->checkAccess("survey_admin")) {
             $globalSurveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
                 [
                     'semester' => $semester,
@@ -284,12 +283,11 @@ class SurveyController extends BaseController
 
     public function editSurveyAction(Request $request, Survey $survey)
     {
-
         $this->ensureAccess($survey);
 
-        if($this->get('app.access_control')->checkAccess("survey_admin")){
+        if ($this->get('app.access_control')->checkAccess("survey_admin")) {
             $form = $this->createForm(SurveyAdminType::class, $survey);
-        }else{
+        } else {
             $form = $this->createForm(SurveyType::class, $survey);
         }
 
@@ -324,16 +322,16 @@ class SurveyController extends BaseController
         $this->ensureAccess($survey);
 
         $em = $this->getDoctrine()->getManager();
-                $em->remove($survey);
-                $em->flush();
-                $response['success'] = true;
+        $em->remove($survey);
+        $em->flush();
+        $response['success'] = true;
 
         return new JsonResponse($response);
     }
 
     public function resultSurveyAction(Survey $survey)
     {
-        if($survey->isConfidential() ||  $this->get('app.access_control')->checkAccess("survey_admin")){
+        if ($survey->isConfidential() ||  $this->get('app.access_control')->checkAccess("survey_admin")) {
             throw new AccessDeniedException();
         }
 
@@ -376,18 +374,17 @@ class SurveyController extends BaseController
      *
      * @throws AccessDeniedException
      */
-    private function ensureAccess(Survey $survey){
+    private function ensureAccess(Survey $survey)
+    {
         $user = $this->getUser();
 
         $isSurveyAdmin = $this->get('app.access_control')->checkAccess("survey_admin");
         $isSameDepartment = $survey->getDepartment() === $user->getDepartment();
 
-        if($isSameDepartment || $isSurveyAdmin){
+        if ($isSameDepartment || $isSurveyAdmin) {
             return;
         }
 
         throw new AccessDeniedException();
-
-
     }
 }

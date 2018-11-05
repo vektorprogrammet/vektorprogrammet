@@ -34,9 +34,8 @@ class TwigSurveyController extends Controller
 
 
         $routeName = $this->container->get('request_stack')->getMasterRequest()->get('_route');
-        if(strpos($routeName, "survey_show") !== false){
+        if (strpos($routeName, "survey_show") !== false) {
             return new Response();
-
         }
         return $this->render(
             "base/popup_lower.twig",

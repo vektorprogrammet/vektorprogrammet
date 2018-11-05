@@ -8,7 +8,6 @@
 
 namespace AppBundle\Form\Type;
 
-
 use Symfony\Component\Form\FormBuilderInterface;
 
 class SurveyAdminType extends SurveyType
@@ -29,7 +28,5 @@ class SurveyAdminType extends SurveyType
     ));
 
         return parent::buildForm($builder, $options);
-
     }
-
 }
