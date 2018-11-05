@@ -4,7 +4,7 @@ namespace AppBundle\Sms;
 
 use AppBundle\Service\LogService;
 
-class GatewayAPI implements SmsSender
+class GatewayAPI implements SmsSenderInterface
 {
     private $apiToken;
     private $logger;

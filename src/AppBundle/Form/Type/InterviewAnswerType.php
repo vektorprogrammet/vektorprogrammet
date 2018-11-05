@@ -5,8 +5,10 @@ namespace AppBundle\Form\Type;
 use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\InterviewQuestionAlternative;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -24,7 +26,7 @@ class InterviewAnswerType extends AbstractType
                 case 'list': // This creates a dropdown list if the type is list
                     $choices = $this->createChoices($interviewAnswer);
 
-                    $form->add('answer', 'choice', array(
+                    $form->add('answer', ChoiceType::class, array(
                         'label' => $interviewAnswer->getInterviewQuestion()->getQuestion(),
                         'help' => $interviewAnswer->getInterviewQuestion()->getHelp(),
                         'choices' => $choices,
@@ -34,7 +36,7 @@ class InterviewAnswerType extends AbstractType
                 case 'radio': // This creates a set of radio buttons if the type is radio
                     $choices = $this->createChoices($interviewAnswer);
 
-                    $form->add('answer', 'choice', array(
+                    $form->add('answer', ChoiceType::class, array(
                         'label' => $interviewAnswer->getInterviewQuestion()->getQuestion(),
                         'help' => $interviewAnswer->getInterviewQuestion()->getHelp(),
                         'choices' => $choices,
@@ -44,7 +46,7 @@ class InterviewAnswerType extends AbstractType
                 case 'check': // This creates a set of checkboxes if the type is check
                     $choices = $this->createChoices($interviewAnswer);
 
-                    $form->add('answer', 'choice', array(
+                    $form->add('answer', ChoiceType::class, array(
                         'label' => $interviewAnswer->getInterviewQuestion()->getQuestion(),
                         'help' => $interviewAnswer->getInterviewQuestion()->getHelp(),
                         'choices' => $choices,
@@ -53,7 +55,7 @@ class InterviewAnswerType extends AbstractType
                     ));
                     break;
                 default: // This creates a textarea if the type is text (default)
-                    $form->add('answer', 'textarea', array(
+                    $form->add('answer', TextareaType::class, array(
                         'label' => $interviewAnswer->getInterviewQuestion()->getQuestion(),
                         'help' => $interviewAnswer->getInterviewQuestion()->getHelp(),
                     ));
@@ -80,14 +82,14 @@ class InterviewAnswerType extends AbstractType
         return array_combine($values, $values);
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\InterviewAnswer',
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'interviewAnswer';
     }

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -10,6 +11,7 @@ class AssistantHistoryData
 {
     private $assistantHistoryRepository;
     private $semester;
+    private $department;
 
     public function __construct(EntityManager $em, TokenStorage $ts, GeoLocation $geoLocation)
     {
@@ -17,21 +19,38 @@ class AssistantHistoryData
         $user = $ts->getToken()->getUser();
         $departments = $em->getRepository('AppBundle:Department')->findAll();
         if ($user == "anon.") {
-            $department =  $geoLocation->findNearestDepartment($departments);
+            $this->department = $geoLocation->findNearestDepartment($departments);
         } else {
-            $department = $ts->getToken()->getUser()->getDepartment();
+            $this->department = $ts->getToken()->getUser()->getDepartment();
         }
-        $this->semester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
+        $this->semester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
     }
 
+    /**
+     * @param Semester $semester
+     *
+     * @return $this
+     */
     public function setSemester(Semester $semester)
     {
         $this->semester = $semester;
+        return $this;
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return AssistantHistoryData
+     */
+    public function setDepartment($department)
+    {
+        $this->department = $department;
+        return $this;
     }
 
     public function getAssistantHistoryCount(): int
     {
-        return count($this->assistantHistoryRepository->findBySemester($this->semester));
+        return count($this->assistantHistoryRepository->findByDepartmentAndSemester($this->department, $this->semester));
     }
 
     public function getCount(): int
@@ -51,7 +70,7 @@ class AssistantHistoryData
 
     public function getPositionsCount(): int
     {
-        $assistantHistories = $this->assistantHistoryRepository->findBySemester($this->semester);
+        $assistantHistories = $this->assistantHistoryRepository->findByDepartmentAndSemester($this->department, $this->semester);
         $positionsCount = count($assistantHistories);
         foreach ($assistantHistories as $assistant) {
             if ($assistant->getBolk() === 'Bolk 1, Bolk 2') {

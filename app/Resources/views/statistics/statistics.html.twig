@@ -15,15 +15,12 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
-    {% include "common/department_semester_dropdowns.html.twig" with {
-    'path': 'statistics_application_by_semester',
-    'parameterName': 'id',
-    'currentSemester': semester} %}
+    {% include "common/department_semester_dropdowns.html.twig" with { 'path': 'statistics_application_show' } %}
 {% endblock %}
 
 
 {% block body %}
-    <h2 class="text-center my-5">Opptaksstatistikk {{ semester.department }} {{ semester.name }}</h2>
+    <h2 class="text-center my-5">Opptaksstatistikk {{ department }} {{ semester.name }}</h2>
     {% if applicationData.count %}
         <header>
             <h3>Søkerstatistikk</h3>
@@ -47,4 +44,3 @@
         </div>
     {% endif %}
 {% endblock %}
-

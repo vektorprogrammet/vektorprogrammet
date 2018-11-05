@@ -5,13 +5,14 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as CustomAssert;
+use AppBundle\Entity\AdmissionPeriod;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ApplicationRepository")
  * @ORM\Table(name="application")
  * @CustomAssert\ApplicationEmail(groups={"admission"})
  */
-class Application
+class Application implements DepartmentSemesterInterface
 {
     /**
      * @ORM\Column(type="integer")
@@ -21,12 +22,13 @@ class Application
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Semester")
+     * @var AdmissionPeriod
+     * @ORM\ManyToOne(targetEntity="AdmissionPeriod")
      */
-    private $semester;
+    private $admissionPeriod;
 
     /**
-     * @ORM\Column(type="string" , length=20)
+     * @ORM\Column(type="string", length=20)
      * @Assert\NotBlank(groups={"admission", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
      */
     private $yearOfStudy;
@@ -172,19 +174,22 @@ class Application
     }
 
     /**
-     * @return \AppBundle\Entity\Semester
+     * @return AdmissionPeriod
      */
-    public function getSemester()
+    public function getAdmissionPeriod()
     {
-        return $this->semester;
+        return $this->admissionPeriod;
     }
 
     /**
-     * @param \AppBundle\Entity\Semester $semester
+     * @param AdmissionPeriod $admissionPeriod
+     *
+     * @return Application
      */
-    public function setSemester($semester)
+    public function setAdmissionPeriod($admissionPeriod)
     {
-        $this->semester = $semester;
+        $this->admissionPeriod = $admissionPeriod;
+        return $this;
     }
 
     /**
@@ -510,5 +515,15 @@ class Application
     public function setPotentialTeams($potentialTeams)
     {
         $this->potentialTeams = $potentialTeams;
+    }
+
+    public function getSemester()
+    {
+        return $this->admissionPeriod->getSemester();
+    }
+
+    public function getDepartment()
+    {
+        return $this->admissionPeriod->getDepartment();
     }
 }

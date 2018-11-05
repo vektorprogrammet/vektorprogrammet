@@ -1,24 +1,11 @@
 @import "../modules/colors";
 @import "../colors";
 
-.text-alert {
-  color: $alert-color;
-}
+@import "../../../../../node_modules/bootstrap/scss/variables";
 
-.text-primary {
-  color: $primary-color;
-}
-
-.text-warning {
-  color: $warning-color;
-}
 
 .text-dark-grey {
   color: $admin-grey;
-}
-
-.text-success {
-  color: $success-color;
 }
 
 .text-bold {
@@ -30,7 +17,7 @@
 }
 
 .text-link {
-  color: $primary-color;
+  color: $primary;
   &:hover {
     text-decoration: underline;
     cursor: pointer;

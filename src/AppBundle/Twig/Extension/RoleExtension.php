@@ -32,16 +32,16 @@ class RoleExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'is_granted_assistant' => new \Twig_Function_Method($this, 'isGrantedAssistant'),
-            'is_granted_team_member' => new \Twig_Function_Method($this, 'isGrantedTeamMember'),
-            'is_granted_team_leader' => new \Twig_Function_Method($this, 'isGrantedTeamLeader'),
-            'is_granted_admin' => new \Twig_Function_Method($this, 'isGrantedAdmin'),
-            'can_edit_page' => new \Twig_Function_Method($this, 'userCanEditPage'),
-            'user_is_granted_assistant' => new \Twig_Function_Method($this, 'userIsGrantedAssistant'),
-            'user_is_granted_team_member' => new \Twig_Function_Method($this, 'userIsGrantedTeamMember'),
-            'user_is_granted_team_leader' => new \Twig_Function_Method($this, 'userIsGrantedTeamLeader'),
-            'user_is_granted_admin' => new \Twig_Function_Method($this, 'userIsGrantedAdmin'),
-            'user_is_in_executive_board' => new \Twig_Function_Method($this, 'userIsInExecutiveBoard'),
+            new \Twig_SimpleFunction('is_granted_assistant', [$this, 'isGrantedAssistant']),
+            new \Twig_SimpleFunction('is_granted_team_member', [$this, 'isGrantedTeamMember']),
+            new \Twig_SimpleFunction('is_granted_team_leader', [$this, 'isGrantedTeamLeader']),
+            new \Twig_SimpleFunction('is_granted_admin', [$this, 'isGrantedAdmin']),
+            new \Twig_SimpleFunction('can_edit_page', [$this, 'userCanEditPage']),
+            new \Twig_SimpleFunction('user_is_granted_assistant', [$this, 'userIsGrantedAssistant']),
+            new \Twig_SimpleFunction('user_is_granted_team_member', [$this, 'userIsGrantedTeamMember']),
+            new \Twig_SimpleFunction('user_is_granted_team_leader', [$this, 'userIsGrantedTeamLeader']),
+            new \Twig_SimpleFunction('user_is_granted_admin', [$this, 'userIsGrantedAdmin']),
+            new \Twig_SimpleFunction('user_is_in_executive_board', [$this, 'userIsInExecutiveBoard']),
         );
     }
 

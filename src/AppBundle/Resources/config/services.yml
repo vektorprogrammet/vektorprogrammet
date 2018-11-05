@@ -1,20 +1,27 @@
 services:
-#  app.beta_redirecter:
-#    class: AppBundle\Service\BetaRedirecter
-#    arguments: ['@security.token_storage', '@app.roles']
-#    tags:
-#        - {name: kernel.event_listener, event: kernel.request}
   app.sms:
+    class: AppBundle\Sms\SmsSender
+    arguments: ['%kernel.environment%', '@app.gateway_api_sms', '@app.slack_sms']
+
+  app.gateway_api_sms:
     class: AppBundle\Sms\GatewayAPI
-    arguments: ['%gateway_sms%', '@app.logger']
+    arguments: ['%gateway_sms%', '@app.logger', '@app.slack_sms']
+
+  app.slack_sms:
+    class: AppBundle\Sms\SlackSms
+    arguments: ['@app.slack_messenger']
 
   app.logger:
     class: AppBundle\Service\LogService
-    arguments: ['@logger', '@app.slack_messenger']
+    arguments: ['@logger', '@app.slack_messenger', '@app.user_service', '@request_stack', '%kernel.environment%']
 
   app.mailer:
     class: AppBundle\Mailer\Mailer
-    arguments: ['%kernel.environment%', '@app.google_gmail', '@mailer']
+    arguments: ['%kernel.environment%', '@app.google_gmail', '@mailer', '@app.slack_mailer']
+
+  app.slack_mailer:
+      class: AppBundle\Service\SlackMailer
+      arguments: ['@app.slack_messenger']
 
   app.google_service:
       class: AppBundle\Google\GoogleService
@@ -71,10 +78,6 @@ services:
     class: AppBundle\Service\InterviewManager
     arguments: ['@security.token_storage', '@security.authorization_checker', '@app.mailer', '@twig', '@app.logger', '@doctrine.orm.entity_manager', '@router', '@app.sms']
 
-  app.newsletter.manager:
-      class: AppBundle\Service\NewsletterManager
-      arguments: ['@app.mailer', '@twig', '@doctrine.orm.entity_manager']
-
   app.password_manager:
       class: AppBundle\Service\PasswordManager
       arguments: ['@doctrine.orm.default_entity_manager', '@app.mailer', '@twig', '@app.logger']
@@ -82,10 +85,6 @@ services:
   app.interview_notification_manager:
       class: AppBundle\Service\InterviewNotificationManager
       arguments: ['@app.slack_messenger', '@application.data', '@router']
-
-  app.assistants.data:
-    class: AppBundle\Service\AssistantsData
-    arguments: ['@doctrine.orm.default_entity_manager']
 
   app.interview_counter:
     class: AppBundle\Service\InterviewCounter
@@ -126,7 +125,7 @@ services:
 
   app.exception_subscriber:
     class: AppBundle\EventSubscriber\ExceptionSubscriber
-    arguments: ['@app.logger', '@logger', '@security.token_storage', '@router', '@request_stack']
+    arguments: ['@app.logger', '@logger']
     tags:
       - { name: kernel.event_subscriber }
 
@@ -204,7 +203,7 @@ services:
 
   app.db_subscriber:
     class: AppBundle\EventSubscriber\DbSubscriber
-    arguments: ['@app.logger', '@security.token_storage', '@request_stack', '@doctrine.orm.default_entity_manager']
+    arguments: ['@app.logger', '@doctrine.orm.default_entity_manager', '%kernel.environment%']
     tags:
       - { name: doctrine.event_subscriber }
 
@@ -246,7 +245,7 @@ services:
 
   app.twig.extension.assets:
         class: AppBundle\Twig\Extension\AssetExtension
-        arguments: ['@assets.packages', '%kernel.root_dir%']
+        arguments: ['@assets.packages', '%kernel.project_dir%']
         public: false
         tags:
           - { name: twig.extension }

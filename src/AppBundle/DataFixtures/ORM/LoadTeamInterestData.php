@@ -13,6 +13,7 @@ class LoadTeamInterestData extends AbstractFixture implements OrderedFixtureInte
     {
         $teamInterest1 = new TeamInterest();
         $teamInterest1
+            ->setDepartment($this->getReference('dep-1'))
             ->setSemester($this->getReference('semester-current'))
             ->setPotentialTeams(array(
                 $this->getReference('team-1'),
@@ -24,6 +25,7 @@ class LoadTeamInterestData extends AbstractFixture implements OrderedFixtureInte
 
         $teamInterest2 = new TeamInterest();
         $teamInterest2
+            ->setDepartment($this->getReference('dep-1'))
             ->setSemester($this->getReference('semester-previous'))
             ->setPotentialTeams(array($this->getReference('team-1')))
             ->setName('Morten Nome')

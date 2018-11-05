@@ -30,11 +30,12 @@ class AdmissionNotifier
     /**
      * @param Department $department
      * @param string $email
+     * @param bool $infoMeeting
      * @param bool $fromApplication
      *
      * @throws \InvalidArgumentException
      */
-    public function createSubscription(Department $department, string $email, bool $fromApplication = false)
+    public function createSubscription(Department $department, string $email, bool $infoMeeting = false, bool $fromApplication = false)
     {
         $alreadySubscribed = $this->em->getRepository('AppBundle:AdmissionSubscriber')->findByEmailAndDepartment($email, $department);
         if ($alreadySubscribed) {
@@ -44,6 +45,7 @@ class AdmissionNotifier
         $subscriber = new AdmissionSubscriber();
         $subscriber->setDepartment($department);
         $subscriber->setEmail($email);
+        $subscriber->setInfoMeeting($infoMeeting);
         $subscriber->setFromApplication($fromApplication);
 
         $errors = $this->validator->validate($subscriber);
@@ -58,16 +60,16 @@ class AdmissionNotifier
     public function sendAdmissionNotifications()
     {
         $departments = $this->em->getRepository('AppBundle:Department')->findActive();
+        $semester = $this->em->getRepository('AppBundle:Semester')->findCurrentSemester();
         try {
             foreach ($departments as $department) {
-                $semester = $department->getCurrentSemester();
-                if (!$semester || !$semester->hasActiveAdmission()) {
+                $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')->findOneByDepartmentAndSemester($department, $semester);
+                if ($admissionPeriod === null || !$admissionPeriod->hasActiveAdmission()) {
                     continue;
                 }
-
-                $applicationEmails = $this->em->getRepository('AppBundle:Application')->findEmailsBySemester($semester);
+                $applicationEmails = $this->em->getRepository('AppBundle:Application')->findEmailsByAdmissionPeriod($admissionPeriod);
                 $subscribers = $this->em->getRepository('AppBundle:AdmissionSubscriber')->findByDepartment($department);
-                $notificationEmails = $this->em->getRepository('AppBundle:AdmissionNotification')->findEmailsBySemester($semester);
+                $notificationEmails = $this->em->getRepository('AppBundle:AdmissionNotification')->findEmailsBySemesterAndDepartment($semester, $department);
 
                 $notificationsSent = 0;
                 foreach ($subscribers as $subscriber) {
@@ -84,18 +86,69 @@ class AdmissionNotifier
                     $this->emailSender->sendAdmissionStartedNotification($subscriber);
                     $notification = new AdmissionNotification();
                     $notification->setSemester($semester);
+                    $notification->setDepartment($department);
                     $notification->setSubscriber($subscriber);
                     $this->em->persist($notification);
                     $notificationsSent++;
-
-                    usleep(50 * 1000); // 50ms
                 }
                 if ($notificationsSent > 0) {
                     $this->logger->info("*$notificationsSent* admission notification emails sent to subscribers in *" . $department->getCity() . "*");
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->critical("Failed to send admission notifiction:\n".$e->getMessage());
+            $this->logger->critical("Failed to send admission notification:\n".$e->getMessage());
+        } finally {
+            $this->em->flush();
+        }
+    }
+
+    public function sendInfoMeetingNotifications()
+    {
+        $departments = $this->em->getRepository('AppBundle:Department')->findActive();
+        $semester = $this->em->getRepository('AppBundle:Semester')->findCurrentSemester();
+        try {
+            foreach ($departments as $department) {
+                $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')->findOneByDepartmentAndSemester($department, $semester);
+                if ($admissionPeriod === null || $admissionPeriod->getInfoMeeting() === null || !$admissionPeriod->getInfoMeeting()->isShowOnPage()) {
+                    continue;
+                }
+
+                $infoMeetingLessThanOneDay = $admissionPeriod->getInfoMeeting()->getDate()->diff(new \DateTime())->d <= 1;
+                if (!$infoMeetingLessThanOneDay) {
+                    continue;
+                }
+
+                $applicationEmails = $this->em->getRepository('AppBundle:Application')->findEmailsByAdmissionPeriod($admissionPeriod);
+                $subscribers = $this->em->getRepository('AppBundle:AdmissionSubscriber')->findByDepartment($department);
+                $notificationEmails = $this->em->getRepository('AppBundle:AdmissionNotification')
+                    ->findEmailsBySemesterAndDepartmentAndInfoMeeting($semester, $department);
+
+                $notificationsSent = 0;
+                foreach ($subscribers as $subscriber) {
+                    if ($notificationsSent > $this->sendLimit) {
+                        break;
+                    }
+                    $hasApplied = array_search($subscriber->getEmail(), $applicationEmails) !== false;
+                    $alreadyNotified = array_search($subscriber->getEmail(), $notificationEmails) !== false;
+                    $subscribedMoreThanOneYearAgo = $subscriber->getTimestamp()->diff(new \DateTime())->y >= 1;
+                    if ($hasApplied || $alreadyNotified || $subscribedMoreThanOneYearAgo || !$subscriber->getInfoMeeting()) {
+                        continue;
+                    }
+                    $this->emailSender->sendInfoMeetingNotification($subscriber);
+                    $notification = new AdmissionNotification();
+                    $notification->setSemester($semester);
+                    $notification->setDepartment($department);
+                    $notification->setSubscriber($subscriber);
+                    $notification->setInfoMeeting(true);
+                    $this->em->persist($notification);
+                    $notificationsSent++;
+                }
+                if ($notificationsSent > 0) {
+                    $this->logger->info("*$notificationsSent* info meeting notification emails sent to subscribers in *" . $department->getCity() . "*");
+                }
+            }
+        } catch (\Exception $e) {
+            $this->logger->critical("Failed to send info meeting notification:\n".$e->getMessage());
         } finally {
             $this->em->flush();
         }

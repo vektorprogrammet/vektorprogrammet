@@ -34,6 +34,13 @@ class LoadExecutiveBoardMembershipData extends AbstractFixture implements Ordere
         $boardMember->setEndSemester($this->getReference('semester-current'));
         $manager->persist($boardMember);
 
+        $boardMember = new ExecutiveBoardMembership();
+        $boardMember->setBoard($this->getReference('board'));
+        $boardMember->setPositionName('Medlem');
+        $boardMember->setUser($this->getReference('userInTeam1'));
+        $boardMember->setStartSemester($this->getReference('semester-previous'));
+        $manager->persist($boardMember);
+
         $manager->flush();
     }
 

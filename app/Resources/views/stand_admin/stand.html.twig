@@ -11,17 +11,9 @@
 
 {% block breadcrumb_menu %}
     {% if is_granted_team_leader() %}
-        {% include 'common/department_semester_dropdowns.html.twig' with {
-        'path': 'stand_by_semester',
-        'parameterName': 'id',
-        'currentSemester': semester
-        } %}
+        {% include 'common/department_semester_dropdowns.html.twig' with { 'path': 'stand' } %}
     {% else %}
-        {% include 'common/semester_dropdown.html.twig' with {
-            'pathForSemester': 'stand_by_semester',
-            'semesterParameterName': 'id',
-            'currentSemester': semester
-        } %}
+        {% include 'common/semester_dropdown.html.twig' with { 'pathForSemester': 'stand' } %}
     {% endif %}
 {% endblock %}
 
@@ -41,13 +33,15 @@
             <p class="text-faded">
                 Totalt antall søknader: <strong>{{ applications|length }}</strong><br>
                 Antall søknader {{ semester.name }}: <strong>{{ applications_in_semester|length }}</strong><br>
-                <a href="{{ path('admission_show_by_city_case_insensitive', {city: semester.department}) }}">
-                    Søknadsskjema for {{ semester.department }}
-                </a>
+                {% if department.activeAdmission %}
+                    <a href="{{ path('application_stand_form', {shortName: department.shortName}) }}">
+                        Søknadsskjema for {{ department }}
+                    </a>
+                {% endif %}
             </p>
         </div>
         <div class="col-12">
-            <h4 class="text-center">Søknader {{ semester.name }} - {{ semester.department }}</h4>
+            <h4 class="text-center">Søknader {{ semester.name }} - {{ department }}</h4>
             <canvas id="applicationsChart" width="400" height="125"></canvas>
         </div>
         <hr>
@@ -59,13 +53,13 @@
             <p class="text-faded">
                 Totalt antall påmeldte: <strong>{{ subscribers|length }}</strong><br>
                 Antall påmeldte {{ semester.name }}: <strong>{{ subscribers_in_semester|length }}</strong><br>
-                <a href="{{ path('interest_list', {shortName: semester.department.shortName}) }}">
-                    Påmeldingsside for {{ semester.department }}
+                <a href="{{ path('interest_list', {shortName: department.shortName}) }}">
+                    Påmeldingsside for {{ department }}
                 </a>
             </p>
         </div>
         <div class="col-12">
-            <h4 class="text-center">Påmeldte {{ semester.name }} - {{ semester.department }}</h4>
+            <h4 class="text-center">Påmeldte {{ semester.name }} - {{ department }}</h4>
             <canvas id="admissionSubscribersChart" width="400" height="125"></canvas>
         </div>
         <hr>
@@ -76,8 +70,8 @@
             <h3 class="mb-0">Interesseliste for team</h3>
             <p class="text-faded">
                 Her går det ann å legge inn navn og epost og huke av på de teamene man er interessert i.<br>
-                <a href="{{ path('team_interest_form', {id: semester.department.id}) }}">
-                    Påmeldingsside for {{ semester.department }}
+                <a href="{{ path('team_interest_form', {id: department.id}) }}">
+                    Påmeldingsside for {{ department }}
                 </a>
                 {% if is_granted_team_leader() %}
                     <br>En oversikt over påmeldte finnes under

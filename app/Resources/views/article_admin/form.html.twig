@@ -53,44 +53,39 @@
             {{ form_row(form.title) }}
             {{ form_row(form.article) }}
 
-            <div class="option-box">
-                <h5>Publisering</h5>
-                <div class="content">
-                    <div class="row">
-                        <div class="col-8">
+            <hr>
+            <h5>Publisering</h5>
+            <div class="row">
+                <div class="col-8">
                             <span class="has-tip"
                                   title="Hvilke regioner artikkelen er knyttet til. Velges ingen er artikkelen knyttet til alle.">
                                 Regioner
                             </span>
-                            {{ form_errors(form.departments) }}
-                            {{ form_widget(form.departments) }}
-                        </div>
-                        <div class="col-4">
-                            <div class="right">
+                    {{ form_errors(form.departments) }}
+                    {{ form_widget(form.departments) }}
+                </div>
+                <div class="col-4">
+                    <div class="right">
                                 <span class="has-tip"
                                       title="Artikkelen fryses på forsiden i nyhetskarusellen.">
                                     Sticky
                                 </span><br>
-                                {{ form_errors(form.sticky) }}
-                                {{ form_widget(form.sticky) }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer">
-                    <div class="row">
-                        <div class="col-6 col-md-2 offset-md-8 offset-lg-9">
-                            {{ form_row(form.published) }}
-                        </div>
-                        <div class="col-6 col-md-2 col-lg-1">
-                            <br>
-                            <button id="submitBtn" class="btn btn-primary right">Lagre</button>
-                        </div>
+                        {{ form_errors(form.sticky) }}
+                        {{ form_widget(form.sticky) }}
                     </div>
                 </div>
             </div>
-
-            {{ form_end(form) }}
+            <hr>
+            <div class="row">
+                <div class="col-6 col-md-2 offset-md-8 offset-lg-9">
+                    {{ form_row(form.published) }}
+                </div>
+                <div class="col-6 col-md-2 col-lg-1">
+                    <br>
+                    <button id="submitBtn" class="btn btn-primary right">Lagre</button>
+                </div>
+            </div>
+    {{ form_end(form) }}
         </div>
     </div>
 
@@ -98,7 +93,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset_with_version('js/optionbox.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script type="text/javascript" src="{{ asset_with_version('vendor/dropzone/dist/min/dropzone.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset_with_version('vendor/cropperjs/cropper.min.js') }}"></script>

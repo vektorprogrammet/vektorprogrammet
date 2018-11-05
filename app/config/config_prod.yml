@@ -7,7 +7,6 @@ parameters:
         client_secret: '%google_api_client_secret%'
         refresh_token: '%google_api_refresh_token%'
         disabled: false
-    slack.disable_delivery: false
 
 #framework:
 #    validation:
@@ -29,3 +28,11 @@ monolog:
             type:  stream
             path:  '%kernel.logs_dir%/%kernel.environment%.log'
             level: debug
+
+ewz_recaptcha:
+    enabled: true
+    public_key:  '%recaptcha_public_key%'
+    private_key: '%recaptcha_private_key%'
+
+sentry:
+    dsn: '%sentry_address%'

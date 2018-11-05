@@ -5,6 +5,7 @@
         <th></th>
         <th> Id</th>
         <th> Utleggsdato</th>
+        <th> Refusjonsdato</th>
         <th> Beskrivelse</th>
         <th> Sum</th>
         <th> Kvittering</th>
@@ -42,6 +43,7 @@
             </td>
             <td> {{ receipt.visualId }}</td>
             <td> {{ receipt.receiptDate|date('d.m.Y') }}</td>
+            <td> {{ receipt.refundDate is null ? '' : receipt.refundDate|date('d.m.Y') }}</td>
             <td> {{ receipt.description }} </td>
             <td> {{ receipt.sum|number_format(2, ',', ' ') }} kr</td>
             <td>
@@ -59,7 +61,9 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <img src="{{ receipt.picturePath }}">
+                                <a href="{{ receipt.picturePath }}" target="_blank">
+                                    <img class="img-fluid" src="{{ receipt.picturePath }}">
+                                </a>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Lukk</button>
@@ -83,9 +87,6 @@
                     {% endif %}
                     {% if is_granted_team_leader() %}
                 </span>
-                {% endif %}
-
-                {% if is_granted_team_leader() %}
                     <div class="modal fade" id="status-{{ receipt.id }}" tabindex="-1" role="dialog"
                          aria-labelledby="status-{{ receipt.id }}Label" aria-hidden="true">
                         <div class="modal-dialog" role="document">

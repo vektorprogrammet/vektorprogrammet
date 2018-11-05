@@ -41,23 +41,15 @@
 
 {% block breadcrumb_menu %}
     {% if is_granted_team_leader() %}
-        {% include 'common/department_semester_dropdowns.html.twig' with {
-            'path': 'substitute_show_by_semester',
-            'parameterName': 'semester',
-            'currentSemester': semester
-        } %}
+        {% include 'common/department_semester_dropdowns.html.twig' with { 'path': 'substitute_show' } %}
     {% else %}
-        {% include 'common/semester_dropdown.html.twig' with {
-            'pathForSemester': 'substitute_show_by_semester',
-            'semesterParameterName': 'semester',
-            'currentSemester': semester
-        } %}
+        {% include 'common/semester_dropdown.html.twig' with { 'pathForSemester': 'substitute_show' } %}
     {% endif %}
 {% endblock %}
 
 
 {% block body %}
-    <h2 class="text-center my-5">Vikarer {{ semester.department }} {{ semester.name }}</h2>
+    <h2 class="text-center my-5">Vikarer {{ department }} {{ semester.name }}</h2>
     <div class="row">
         <div class="col-12">
             <div class="card">

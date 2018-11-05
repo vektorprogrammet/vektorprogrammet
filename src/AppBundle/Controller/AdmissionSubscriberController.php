@@ -6,11 +6,10 @@ use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Department;
 use AppBundle\Form\Type\AdmissionSubscriberType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class AdmissionSubscriberController extends Controller
+class AdmissionSubscriberController extends BaseController
 {
     /**
      * @Route("/interesseliste/{shortName}", name="interest_list", requirements={"shortName"="\w+"})
@@ -31,7 +30,7 @@ class AdmissionSubscriberController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $this->get('app.admission_notifier')->createSubscription($department, $subscriber->getEmail());
+                $this->get('app.admission_notifier')->createSubscription($department, $subscriber->getEmail(), $subscriber->getInfoMeeting());
                 $this->addFlash('success', $subscriber->getEmail().' har blitt meldt på interesselisten. Du vil få en e-post når opptaket starter');
             } catch (\InvalidArgumentException $e) {
                 $this->addFlash('danger', 'Kunne ikke melde '.$subscriber->getEmail().' på interesselisten. Vennligst prøv igjen.');
@@ -57,6 +56,7 @@ class AdmissionSubscriberController extends Controller
     {
         $email = $request->request->get('email');
         $departmentId = $request->request->get('department');
+        $infoMeeting = filter_var($request->request->get('infoMeeting'), FILTER_VALIDATE_BOOLEAN);
         if (!$email || !$departmentId) {
             return new JsonResponse("Email or department missing", 400);
         }
@@ -66,7 +66,7 @@ class AdmissionSubscriberController extends Controller
         }
 
         try {
-            $this->get('app.admission_notifier')->createSubscription($department, $email);
+            $this->get('app.admission_notifier')->createSubscription($department, $email, $infoMeeting);
         } catch (\InvalidArgumentException $e) {
             return new JsonResponse($e->getMessage(), 400);
         }

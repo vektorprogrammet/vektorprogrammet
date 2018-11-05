@@ -36,10 +36,21 @@ class AdmissionNotification
      */
     private $semester;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $infoMeeting;
+
+    /**
+     * @var Department
+     * @ORM\ManyToOne(targetEntity="Department")
+     */
+    private $department;
 
     public function __construct()
     {
         $this->timestamp = new \DateTime();
+        $this->infoMeeting = false;
     }
 
     /**
@@ -98,5 +109,40 @@ class AdmissionNotification
     public function setSemester($semester)
     {
         $this->semester = $semester;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getInfoMeeting()
+    {
+        return $this->infoMeeting;
+    }
+
+    /**
+     * @param boolean $bool
+     */
+    public function setInfoMeeting($bool)
+    {
+        $this->infoMeeting = $bool;
+    }
+
+    /**
+     * @return Department
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return AdmissionNotification
+     */
+    public function setDepartment(Department $department)
+    {
+        $this->department = $department;
+        return $this;
     }
 }

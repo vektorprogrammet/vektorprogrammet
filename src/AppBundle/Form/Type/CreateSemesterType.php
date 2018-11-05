@@ -3,8 +3,11 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateSemesterType extends AbstractType
 {
@@ -18,40 +21,30 @@ class CreateSemesterType extends AbstractType
         $years = array_combine($years, $years);
 
         $builder
-            ->add('semesterTime', 'choice', array(
+            ->add('semesterTime', ChoiceType::class, array(
                 'choices' => array('Vår' => 'Vår', 'Høst' => 'Høst'),
                 'expanded' => true,
                 'label' => 'Semester type',
                 'required' => true,
             ))
-            ->add('year', 'choice', array(
+            ->add('year', ChoiceType::class, array(
                 'choices' => $years,
                 'label' => 'År',
                 'required' => true,
             ))
-            ->add('admissionStartDate', 'datetime', array(
-                'label' => 'Opptak starttidspunkt',
-                'widget' => 'single_text',
-                'format' => 'dd.MM.yyyy HH:mm',
-            ))
-            ->add('admissionEndDate', 'datetime', array(
-                'label' => 'Opptak sluttidspunkt',
-                'widget' => 'single_text',
-                'format' => 'dd.MM.yyyy HH:mm',
-            ))
-            ->add('save', 'submit', array(
+            ->add('save', SubmitType::class, array(
                 'label' => 'Opprett',
             ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Semester',
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'createSemester';
     }

@@ -6,7 +6,6 @@ use AppBundle\Entity\User;
 use AppBundle\Event\UserEvent;
 use AppBundle\Form\Type\NewUserType;
 use AppBundle\Form\Type\UserCompanyEmailType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\EditUserType;
 use AppBundle\Form\Type\EditUserPasswordType;
@@ -16,7 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use TFox\MpdfPortBundle\Response\PDFResponse;
 use AppBundle\Role\Roles;
 
-class ProfileController extends Controller
+class ProfileController extends BaseController
 {
     public function showAction()
     {
@@ -180,7 +179,7 @@ class ProfileController extends Controller
         $department = $this->getUser()->getDepartment();
 
         if ($signature === null) {
-            return $this->redirectToRoute('certificate_signature_picture_upload');
+            return $this->redirectToRoute('certificate_show');
         }
 
         $html        = $this->renderView('certificate/certificate.html.twig', array(
@@ -189,7 +188,7 @@ class ProfileController extends Controller
             'teamMembership'      => $teamMembership,
             'signature'        => $signature,
             'department'       => $department,
-            'base_dir'         => $this->get('kernel')->getRootDir() . '/../www' . $request->getBasePath(),
+            'base_dir'         => $this->get('kernel')->getRootDir() . '/../web' . $request->getBasePath(),
         ));
         $mpdfService = $this->get('t_fox_mpdf_port.pdf');
 

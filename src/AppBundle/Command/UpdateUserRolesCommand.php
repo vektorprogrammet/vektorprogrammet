@@ -34,7 +34,8 @@ class UpdateUserRolesCommand extends ContainerAwareCommand
             // a good practice is to use the 'app:' prefix to group all your custom application commands
             ->setName('app:update:roles')
             ->setDescription('Updates all user roles')
-            ->setHelp(<<<'HELP'
+            ->setHelp(
+                <<<'HELP'
 The <info>%command.name%</info> command will update all user roles:
   <info>php %command.full_name%</info>
 Assistant users that are in teams will be promoted to Team members.

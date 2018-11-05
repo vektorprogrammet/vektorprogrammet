@@ -5,20 +5,20 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\User;
 use AppBundle\Event\AssistantHistoryCreatedEvent;
+use AppBundle\Role\Roles;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\School;
 use AppBundle\Form\Type\CreateSchoolType;
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Form\Type\CreateAssistantHistoryType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class SchoolAdminController extends Controller
+class SchoolAdminController extends BaseController
 {
     public function showSpecificSchoolAction(School $school)
     {
         // This prevents admins to see other departments' schools
-        if (!$this->isGranted('ROLE_SUPER_ADMIN') &&
+        if (!$this->isGranted(Roles::TEAM_LEADER) &&
             !$school->belongsToDepartment($this->getUser()->getDepartment())
         ) {
             throw $this->createAccessDeniedException();
@@ -39,13 +39,15 @@ class SchoolAdminController extends Controller
         $department = $user->getDepartment();
 
         // Deny access if not super admin and trying to delegate user in other department
-        if (!$this->isGranted('ROLE_SUPER_ADMIN') && $department !== $this->getUser()->getDepartment()) {
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $department !== $this->getUser()->getDepartment()) {
             throw $this->createAccessDeniedException();
         }
 
         $assistantHistory = new AssistantHistory();
-
-        $form = $this->createForm(new CreateAssistantHistoryType($department), $assistantHistory);
+        $assistantHistory->setDepartment($department);
+        $form = $this->createForm(CreateAssistantHistoryType::class, $assistantHistory, [
+            'department' => $department
+        ]);
 
         $form->handleRequest($request);
 
@@ -137,7 +139,7 @@ class SchoolAdminController extends Controller
     public function updateSchoolAction(Request $request, School $school)
     {
         // Create the formType
-        $form = $this->createForm(new CreateSchoolType(), $school);
+        $form = $this->createForm(CreateSchoolType::class, $school);
 
         // Handle the form
         $form->handleRequest($request);
@@ -162,7 +164,7 @@ class SchoolAdminController extends Controller
     {
         $school = new School();
 
-        $form = $this->createForm(new CreateSchoolType(), $school);
+        $form = $this->createForm(CreateSchoolType::class, $school);
 
         $form->handleRequest($request);
 

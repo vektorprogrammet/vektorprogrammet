@@ -3,9 +3,10 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\Department;
-use Maknz\Slack\Client;
-use Maknz\Slack\Message;
 use Monolog\Logger;
+use Nexy\Slack\Attachment;
+use Nexy\Slack\Client;
+use Nexy\Slack\Message;
 
 class SlackMessenger
 {
@@ -44,13 +45,17 @@ class SlackMessenger
         $this->send($message);
     }
 
-    public function log(string $messageBody)
+    public function log(string $messageBody, array $attachmentData = [])
     {
         $message = $this->slackClient->createMessage();
+        $message->to($this->logChannel);
+        $attachment = $this->createAttachment($attachmentData);
 
-        $message
-            ->to($this->logChannel)
-            ->setText($messageBody);
+        if (empty($attachmentData) || $attachment === null) {
+            $message->setText($messageBody);
+        } else {
+            $message->setAttachments([$attachment]);
+        }
 
         $this->send($message);
     }
@@ -69,12 +74,15 @@ class SlackMessenger
 
         $this->send($message);
     }
-
-    private function send(Message $message)
+    
+    public function send(Message $message)
     {
+        if ($message->getChannel() === null) {
+            $message->setChannel($this->logChannel);
+        }
+
         if (!$this->disableDelivery) {
             try {
-                $message->setText($message->getText());
                 $this->slackClient->sendMessage($message);
             } catch (\Exception $e) {
                 $this->logger->error("Sending message to Slack failed! {$e->getMessage()}");
@@ -82,5 +90,47 @@ class SlackMessenger
         }
 
         $this->logger->info("Slack message sent to {$message->getChannel()}: {$message->getText()}");
+    }
+    
+    public function createMessage(): Message
+    {
+        return $this->slackClient->createMessage();
+    }
+
+    private function createAttachment(array $data)
+    {
+        $attachment = new Attachment();
+        $hasData = false;
+
+        if (isset($data['color'])) {
+            $attachment->setColor($data['color']);
+            $hasData = true;
+        }
+
+        if (isset($data['author_name'])) {
+            $attachment->setAuthorName($data['author_name']);
+            $hasData = true;
+        }
+
+        if (isset($data['author_icon'])) {
+            $attachment->setAuthorIcon($data['author_icon']);
+            $hasData = true;
+        }
+
+        if (isset($data['text'])) {
+            $attachment->setText($data['text']);
+            $hasData = true;
+        }
+
+        if (isset($data['footer'])) {
+            $attachment->setFooter($data['footer']);
+            $hasData = true;
+        }
+
+        if (!$hasData) {
+            return null;
+        }
+
+        return $attachment;
     }
 }

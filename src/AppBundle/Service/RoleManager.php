@@ -164,8 +164,7 @@ class RoleManager
 
     private function userIsInATeam(User $user, bool $teamLeader)
     {
-        $department = $user->getDepartment();
-        $semester = $department->getCurrentOrLatestSemester();
+        $semester = $this->em->getRepository('AppBundle:Semester')->findCurrentSemester();
         $teamMemberships = $user->getTeamMemberships();
 
         if ($semester === null) {

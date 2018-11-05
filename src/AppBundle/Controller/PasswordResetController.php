@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\NewPasswordType;
 use AppBundle\Form\Type\PasswordResetType;
@@ -10,7 +9,7 @@ use AppBundle\Form\Type\PasswordResetType;
 /**
  * Class PasswordResetController.
  */
-class PasswordResetController extends Controller
+class PasswordResetController extends BaseController
 {
     /**
      * @param Request $request
@@ -91,7 +90,7 @@ class PasswordResetController extends Controller
         $passwordReset = $passwordManager->getPasswordResetByResetCode($resetCode);
         $user = $passwordReset->getUser();
 
-        $form = $this->createForm(new NewPasswordType(), $user);
+        $form = $this->createForm(NewPasswordType::class, $user);
 
         $form->handleRequest($request);
 

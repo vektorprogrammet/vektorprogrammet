@@ -3,6 +3,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
 use Symfony\Component\Routing\Router;
 
 class InterviewNotificationManager
@@ -25,14 +26,17 @@ class InterviewNotificationManager
         $this->router = $router;
     }
 
-    public function sendApplicationCountNotification(Department $department)
+    public function sendApplicationCountNotification(Department $department, Semester $semester)
     {
         $interviewsCompletedCount = $this->applicationData->getInterviewedAssistantsCount();
         $interviewsLeftCount = $this->applicationData->getInterviewsLeftCount();
 
         $interviewsLink = $this->router->generate(
-            'applications_show_interviewed_by_semester',
-            array('id' => $department->getCurrentOrLatestSemester()->getId()),
+            'applications_show_interviewed',
+            array(
+                'department' => $department->getId(),
+                'semester' => $semester->getId(),
+            ),
             Router::ABSOLUTE_URL
         );
 
@@ -41,7 +45,7 @@ class InterviewNotificationManager
         );
     }
 
-    public function sendInterviewsCompletedNotification(Department $department)
+    public function sendInterviewsCompletedNotification(Department $department, Semester $semester)
     {
         $this->applicationData->setDepartment($department);
 
@@ -60,9 +64,13 @@ class InterviewNotificationManager
 
         $this->slackMessenger->notify(
             'Se alle intervjuene her: '.$this->router->generate(
-                'applications_show_interviewed_by_semester',
-                array('id' => $department->getCurrentOrLatestSemester()->getId(), 'status' => 'interviewed'),
+                'applications_show_interviewed',
+                array(
+                    'department' => $department->getId(),
+                    'semester' => $semester->getId(),
+                ),
                 Router::ABSOLUTE_URL
-            ));
+            )
+        );
     }
 }

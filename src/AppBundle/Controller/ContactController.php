@@ -8,10 +8,9 @@ use AppBundle\Event\SupportTicketCreatedEvent;
 use AppBundle\Form\Type\SupportTicketType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class ContactController extends Controller
+class ContactController extends BaseController
 {
 
     /**
@@ -33,10 +32,9 @@ class ContactController extends Controller
 
         $supportTicket = new SupportTicket();
         $supportTicket->setDepartment($department);
-        $form = $this->createForm(new SupportTicketType(), $supportTicket, array(
+        $form = $this->createForm(SupportTicketType::class, $supportTicket, array(
             'department_repository' => $this->getDoctrine()->getRepository('AppBundle:Department'),
         ));
-        $form->remove('captcha');
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $supportTicket->getDepartment() === null) {
@@ -50,11 +48,13 @@ class ContactController extends Controller
         }
 
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
+        $scrollToForm = $form->isSubmitted() && !$form->isValid();
 
         return $this->render('contact/index.html.twig', array(
             'form' => $form->createView(),
             'specific_department' => $department,
             'board' => $board,
+            'scrollToForm' => $scrollToForm
         ));
     }
 }

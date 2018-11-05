@@ -64,7 +64,7 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
             $email = $team->getDepartment()->getEmail();
         }
 
-        $receipt = \Swift_Message::newInstance()
+        $receipt = (new \Swift_Message())
             ->setSubject('Søknad til '.$team->getName().' mottatt')
             ->setFrom(array($email => $team->getName()))
             ->setReplyTo($email)
@@ -84,7 +84,7 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
             $email = $team->getDepartment()->getEmail();
         }
 
-        $receipt = \Swift_Message::newInstance()
+        $receipt = (new \Swift_Message())
             ->setSubject('Ny søker til '.$team->getName())
             ->setFrom(array('vektorprogrammet@vektorprogrammet.no' => 'Vektorprogrammet'))
             ->setReplyTo($application->getEmail())

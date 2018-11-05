@@ -3,8 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Semester;
+use AppBundle\Role\Roles;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Survey;
@@ -15,7 +15,7 @@ use AppBundle\Form\Type\SurveyExecuteType;
  * SurveyController is the controller responsible for survey actions,
  * such as showing, assigning and conducting surveys.
  */
-class SurveyController extends Controller
+class SurveyController extends BaseController
 {
     /**
      * Shows the given survey.
@@ -97,7 +97,7 @@ class SurveyController extends Controller
     {
         $survey = new Survey();
 
-        $form = $this->createForm(new SurveyType(), $survey);
+        $form = $this->createForm(SurveyType::class, $survey);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -119,11 +119,10 @@ class SurveyController extends Controller
     public function copySurveyAction(Request $request, Survey $survey)
     {
         $em = $this->getDoctrine()->getManager();
-        $department = $this->getUser()->getDepartment();
-        $semester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
+        $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
 
         $surveyClone = $survey->copy();
-        $surveyClone->setSemester($semester);
+        $surveyClone->setSemester($currentSemester);
 
         $form = $this->createForm(SurveyType::class, $surveyClone);
         $form->handleRequest($request);
@@ -143,23 +142,25 @@ class SurveyController extends Controller
 
     /**
      * @Route(
-     *     "/kontrollpanel/undersokelse/admin/{id}",
+     *     "/kontrollpanel/undersokelse/admin",
      *     name="surveys",
      *     methods={"GET"},
-     *     defaults={"id": null}
      * )
      *
      * @param Semester|null $semester
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showSurveysAction(Semester $semester = null)
+    public function showSurveysAction()
     {
-        if ($semester === null) {
-            $semester = $this->getUser()->getDepartment()->getCurrentOrLatestSemester();
-        }
+        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404();
         $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
-            ['semester' => $semester], ['id' => 'DESC']
+            [
+                'semester' => $semester,
+                'department' => $department,
+            ],
+            ['id' => 'DESC']
         );
         foreach ($surveys as $survey) {
             $totalAnswered = count($this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findBy(array('survey' => $survey)));
@@ -168,13 +169,14 @@ class SurveyController extends Controller
 
         return $this->render('survey/surveys.html.twig', array(
             'surveys' => $surveys,
-            'semester' => $semester
+            'department' => $department,
+            'semester' => $semester,
         ));
     }
 
     public function editSurveyAction(Request $request, Survey $survey)
     {
-        $form = $this->createForm(new SurveyType(), $survey);
+        $form = $this->createForm(SurveyType::class, $survey);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -204,7 +206,7 @@ class SurveyController extends Controller
     public function deleteSurveyAction(Survey $survey)
     {
         try {
-            if ($this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
+            if ($this->isGranted(Roles::TEAM_LEADER)) {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($survey);
                 $em->flush();

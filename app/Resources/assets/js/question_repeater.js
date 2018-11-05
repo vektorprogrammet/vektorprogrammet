@@ -61,7 +61,7 @@ const QuestionManager = {
 
     var qIndex = QuestionManager.questions.data('q-index');
     var newQuestion = $(QuestionManager.qPrototype.replace(/__q_prot__/g, qIndex));
-    var newAlternatives = $('<div></div>').addClass('alternatives col-12 col-md-8 col-lg-7 col-xl-6');
+    var newAlternatives = $('<div></div>').addClass('alternatives col-12');
     var newButtons = $('<div></div>').addClass('buttons col-8 col-md-6 col-lg-5');
 
     newAlternatives.data('a-index', 0);

@@ -2,15 +2,11 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Signature;
-use AppBundle\Form\Type\CreateSignatureType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class SignatureController extends Controller
+class SignatureController extends BaseController
 {
     public function showSignatureImageAction($imageName)
     {

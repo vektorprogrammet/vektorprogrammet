@@ -2,9 +2,9 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
-use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use AppBundle\Type\InterviewStatusType;
 use Doctrine\ORM\EntityRepository;
@@ -17,22 +17,22 @@ use Doctrine\ORM\EntityRepository;
  */
 class ApplicationRepository extends EntityRepository
 {
+
     /**
      * @param User $user
-     * @param Semester $semester
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return Application|null
-     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findByUserInSemester(User $user, Semester $semester)
+    public function findByUserInAdmissionPeriod(User $user, AdmissionPeriod $admissionPeriod)
     {
         return $this->createQueryBuilder('application')
             ->select('application')
             ->where('application.user = :user')
-            ->andWhere('application.semester = :semester')
+            ->andWhere('application.admissionPeriod = :admissionPeriod')
             ->setParameter('user', $user)
-            ->setParameter('semester', $semester)
+            ->setParameter('admissionPeriod', $admissionPeriod)
             ->getQuery()
             ->getOneOrNullResult();
     }
@@ -47,18 +47,23 @@ class ApplicationRepository extends EntityRepository
     public function findActiveByUser(User $user)
     {
         $department = $user->getDepartment();
-        $semester = $department->getCurrentOrLatestSemester();
+        $admissionPeriod = $department->getCurrentOrLatestAdmissionPeriod();
 
-        return $this->findByUserInSemester($user, $semester);
+        return $this->findByUserInAdmissionPeriod($user, $admissionPeriod);
     }
 
-    public function findEmailsBySemester(Semester $semester)
+    /**
+     * @param AdmissionPeriod $admissionPeriod
+     *
+     * @return array
+     */
+    public function findEmailsByAdmissionPeriod(AdmissionPeriod $admissionPeriod)
     {
         $res = $this->createQueryBuilder('application')
             ->select('user.email')
             ->join('application.user', 'user')
-            ->where('application.semester = :semester')
-            ->setParameter('semester', $semester)
+            ->where('application.admissionPeriod = :admissionPeriod')
+            ->setParameter('admissionPeriod', $admissionPeriod)
             ->getQuery()
             ->getArrayResult();
 
@@ -69,19 +74,19 @@ class ApplicationRepository extends EntityRepository
 
     /**
      * @param string $email
-     * @param Semester $semester
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return Application[]
      */
-    public function findByEmailInSemester($email, Semester $semester)
+    public function findByEmailInAdmissionPeriod($email, AdmissionPeriod $admissionPeriod)
     {
         return $this->createQueryBuilder('application')
             ->select('application')
             ->join('application.user', 'user')
             ->where('user.email = :email')
-            ->andWhere('application.semester = :semester')
+            ->andWhere('application.admissionPeriod = :admissionPeriod')
             ->setParameter('email', $email)
-            ->setParameter('semester', $semester)
+            ->setParameter('admissionPeriod', $admissionPeriod)
             ->getQuery()
             ->getResult();
     }
@@ -89,46 +94,37 @@ class ApplicationRepository extends EntityRepository
     /**
      * Finds all applications that have a conducted interview.
      *
-     * @param null $department
-     * @param null $semester
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return Application[]
      */
-    public function findInterviewedApplicants($department = null, $semester = null)
+    public function findInterviewedApplicants($admissionPeriod)
     {
-        $qb = $this->createQueryBuilder('a')
+        return $this->createQueryBuilder('a')
             ->select('a')
-            ->join('a.semester', 'sem')
-            ->join('sem.department', 'd')
+            ->join('a.admissionPeriod', 'ap')
+            ->join('ap.department', 'd')
             ->join('a.interview', 'i')
             ->where('i.interviewed = true')
-            ->andWhere('a.previousParticipation = 0');
-
-        if (null !== $department) {
-            $qb->andWhere('d = :department')
-               ->setParameter('department', $department);
-        }
-
-        if (null !== $semester) {
-            $qb->andWhere('sem = :semester')
-               ->setParameter('semester', $semester);
-        }
-
-        return $qb->getQuery()->getResult();
+            ->andWhere('a.previousParticipation = 0')
+            ->andWhere('ap = :admissionPeriod')
+            ->setParameter('admissionPeriod', $admissionPeriod)
+            ->getQuery()
+            ->getResult();
     }
 
     /**
      * @param null $department
-     * @param null $semester
+     * @param null $admissionPeriod
      *
      * @return Application[]
      */
-    public function findPreviousApplicants($department = null, $semester = null)
+    public function findPreviousApplicants($department = null, $admissionPeriod = null)
     {
         $qb = $this->createQueryBuilder('a')
             ->select('a')
-            ->join('a.semester', 'sem')
-            ->join('sem.department', 'd')
+            ->join('a.admissionPeriod', 'ap')
+            ->join('ap.department', 'd')
             ->andWhere('a.previousParticipation = 1');
 
         if (null !== $department) {
@@ -136,9 +132,9 @@ class ApplicationRepository extends EntityRepository
                ->setParameter('department', $department);
         }
 
-        if (null !== $semester) {
-            $qb->andWhere('sem = :semester')
-               ->setParameter('semester', $semester);
+        if (null !== $admissionPeriod) {
+            $qb->andWhere('ap = :admissionPeriod')
+               ->setParameter('admissionPeriod', $admissionPeriod);
         }
 
         return $qb->getQuery()->getResult();
@@ -147,45 +143,42 @@ class ApplicationRepository extends EntityRepository
     /**
      * Finds all applications that have been assigned an interview that has not yet been conducted.
      *
-     * @param null $semester
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return Application[]
      */
-    public function findAssignedApplicants($semester = null)
+    public function findAssignedApplicants($admissionPeriod)
     {
-        $qb = $this->createQueryBuilder('a')
+        return $this->createQueryBuilder('a')
             ->select('a')
-            ->join('a.semester', 'sem')
-            ->join('sem.department', 'd')
+            ->join('a.admissionPeriod', 'ap')
+            ->join('ap.department', 'd')
             ->join('a.user', 'u')
             ->join('a.interview', 'i')
             ->where('i.interviewed = 0')
             ->andWhere('i.interviewStatus is NULL OR NOT i.interviewStatus = :status')
-            ->setParameter('status', InterviewStatusType::CANCELLED);
-
-        if (null !== $semester) {
-            $qb->andWhere('sem = :semester')
-               ->setParameter('semester', $semester);
-        }
-
-        return $qb->getQuery()->getResult();
+            ->andWhere('ap = :admissionPeriod')
+            ->setParameter('admissionPeriod', $admissionPeriod)
+            ->setParameter('status', InterviewStatusType::CANCELLED)
+            ->getQuery()
+            ->getResult();
     }
 
     /**
      * @param User $user
-     * @param Semester $semester
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return Application[]
      */
-    public function findAssignedByUserAndSemester(User $user, Semester $semester)
+    public function findAssignedByUserAndAdmissionPeriod(User $user, AdmissionPeriod $admissionPeriod)
     {
         return $this->createQueryBuilder('a')
             ->join('a.interview', 'i')
-            ->where('a.semester = :semester')
+            ->where('a.admissionPeriod = :admissionPeriod')
             ->andWhere('i.interviewed = 0')
             ->andWhere('i.interviewStatus is NULL OR NOT i.interviewStatus = :status')
             ->andWhere('i.interviewer = :user OR i.coInterviewer = :user')
-            ->setParameter('semester', $semester)
+            ->setParameter('admissionPeriod', $admissionPeriod)
             ->setParameter('status', InterviewStatusType::CANCELLED)
             ->setParameter('user', $user)
             ->getQuery()
@@ -193,19 +186,19 @@ class ApplicationRepository extends EntityRepository
     }
 
     /**
-     * @param Semester $semester
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return Application[]
      */
-    public function findCancelledApplicants(Semester $semester)
+    public function findCancelledApplicants(AdmissionPeriod $admissionPeriod)
     {
         return $this->createQueryBuilder('a')
             ->select('a')
-            ->join('a.semester', 'sem')
+            ->join('a.admissionPeriod', 'ap')
             ->join('a.interview', 'i')
-            ->where('sem =:semester')
+            ->where('ap = :admissionPeriod')
             ->andWhere('i.interviewStatus = :status')
-            ->setParameter('semester', $semester)
+            ->setParameter('admissionPeriod', $admissionPeriod)
             ->setParameter('status', InterviewStatusType::CANCELLED)
             ->getQuery()
             ->getResult();
@@ -215,16 +208,16 @@ class ApplicationRepository extends EntityRepository
      * Finds all applications without an interview, or without a conducted interview.
      *
      * @param null $department
-     * @param null $semester
+     * @param null $admissionPeriod
      *
      * @return Application[]
      */
-    public function findNewApplicants($department = null, $semester = null)
+    public function findNewApplicants($department = null, $admissionPeriod = null)
     {
         $qb = $this->createQueryBuilder('a')
             ->select('a')
-            ->join('a.semester', 'sem')
-            ->join('sem.department', 'd')
+            ->join('a.admissionPeriod', 'ap')
+            ->join('ap.department', 'd')
             ->join('a.user', 'u')
             ->leftJoin('a.interview', 'i')
             ->where('a.previousParticipation = 0')
@@ -237,93 +230,66 @@ class ApplicationRepository extends EntityRepository
                ->setParameter('department', $department);
         }
 
-        if (null !== $semester) {
-            $qb->andWhere('sem = :semester')
-               ->setParameter('semester', $semester);
+        if (null !== $admissionPeriod) {
+            $qb->andWhere('ap = :admissionPeriod')
+               ->setParameter('admissionPeriod', $admissionPeriod);
         }
 
         return $qb->getQuery()->getResult();
     }
 
-    public function findNewApplicationsBySemester(Semester $semester)
+    /**
+     * @param AdmissionPeriod $admissionPeriod
+     *
+     * @return array
+     */
+    public function findNewApplicationsByAdmissionPeriod(AdmissionPeriod $admissionPeriod)
     {
         return $this->createQueryBuilder('a')
             ->leftJoin('a.interview', 'i')
             ->where('a.previousParticipation = 0')
             ->andWhere('i is NULL OR i.interviewed = 0')
             ->andWhere('i.interviewStatus is NULL OR NOT i.interviewStatus = :status')
-            ->andWhere('a.semester = :semester')
-            ->setParameter('semester', $semester)
+            ->andWhere('a.admissionPeriod = :admissionPeriod')
+            ->setParameter('admissionPeriod', $admissionPeriod)
             ->setParameter('status', InterviewStatusType::CANCELLED)
             ->getQuery()
             ->getResult();
     }
 
     /**
-     * @param Department $department
-     * @param Semester $semester
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return Application[]
      */
-    public function findExistingApplicants(Department $department, Semester $semester)
+    public function findExistingApplicants(AdmissionPeriod $admissionPeriod)
     {
         return $this->createQueryBuilder('a')
             ->select('a')
-            ->join('a.semester', 'sem')
-            ->join('sem.department', 'd')
+            ->join('a.admissionPeriod', 'ap')
             ->where('a.previousParticipation = 1')
-            ->andWhere('d= :department')
-            ->andWhere('sem = :semester')
-            ->setParameter('department', $department)
-            ->setParameter('semester', $semester)
+            ->andWhere('ap = :admissionPeriod')
+            ->setParameter('admissionPeriod', $admissionPeriod)
             ->getQuery()
             ->getResult();
     }
 
-    public function findApplicationByTeamInterestAndSemester(Semester $semester)
+    /**
+     * @param AdmissionPeriod $admissionPeriod
+     *
+     * @return array
+     */
+    public function findApplicationByTeamInterestAndAdmissionPeriod(AdmissionPeriod $admissionPeriod)
     {
         return $this->createQueryBuilder('application')
             ->select('application')
             ->where('application.teamInterest = :teamInt')
-            ->andWhere('application.semester = :sem')
+            ->andWhere('application.admissionPeriod = :ap')
             ->setParameter('teamInt', true)
-            ->setParameter('sem', $semester)
+            ->setParameter('ap', $admissionPeriod)
             ->getQuery()
             ->getResult();
     }
-
-    /* Disse brukes ikke lenger(?)
-    public function getAllApplicants(){
-
-        $applicants =  $this->getEntityManager()->createQuery("
-
-        SELECT a, s
-        FROM AppBundle:Application a
-        JOIN a.statistic s
-
-        ")
-            ->getResult();
-
-        return $applicants;
-    }
-
-    public function findAllApplicantsForDepartment($department){
-
-        $applicants =  $this->getEntityManager()->createQuery("
-
-        SELECT a, s
-        FROM AppBundle:Application a
-        JOIN a.statistic s
-        JOIN s.fieldOfStudy fos
-        JOIN fos.department department
-        WHERE s.fieldOfStudy = fos.id
-            AND fos.department = :department
-        ")
-            ->setParameter('department', $department)
-            ->getResult();
-
-        return $applicants;
-    }*/
 
     public function findApplicantById($id)
     {
@@ -346,70 +312,51 @@ class ApplicationRepository extends EntityRepository
     }
 
     /**
-     * @param Semester $semester
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return int
      */
-    public function numOfApplications(Semester $semester)
+    public function numOfApplications(AdmissionPeriod $admissionPeriod)
     {
         return $this->createQueryBuilder('Application')
             ->select('count(Application.id)')
-            ->where('Application.semester =:semester')
-            ->setParameter('semester', $semester)
-            ->getQuery()
-            ->getSingleScalarResult();
-    }
-
-    public function numOfSemesters()
-    {
-        return $this->createQueryBuilder('ApplicationStatistic')
-            ->select('count(ApplicationStatistic.semester)')
-            ->distinct()
-            ->getQuery()
-            ->getSingleScalarResult();
-    }
-
-    public function numOfSemester($semester)
-    {
-        return $this->createQueryBuilder('ApplicationStatistic')
-            ->select('count(ApplicationStatistic.semester)')
-            ->where('ApplicationStatistic.semester = :semester')
-            ->setParameter('semester', $semester)
+            ->where('Application.admissionPeriod = :admissionPeriod')
+            ->setParameter('admissionPeriod', $admissionPeriod)
             ->getQuery()
             ->getSingleScalarResult();
     }
 
     /**
-     * @param Semester $semester
+     * @param AdmissionPeriod $admissionPeriod
      * @param int $gender
      *
      * @return int
      */
-    public function numOfGender(Semester $semester, $gender)
+    public function numOfGender(AdmissionPeriod $admissionPeriod, $gender)
     {
         return $this->createQueryBuilder('Application')
             ->select('count(Application.id)')
             ->join('Application.user', 'user')
             ->where('user.gender = :gender')
-            ->andWhere('Application.semester = :semester')
+            ->andWhere('Application.admissionPeriod = :admissionPeriod')
             ->setParameter('gender', $gender)
-            ->setParameter('semester', $semester)
+            ->setParameter('admissionPeriod', $admissionPeriod)
             ->getQuery()
             ->getSingleScalarResult();
     }
 
     /**
-     * @param Semester $semester
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return int
      */
-    public function numOfPreviousParticipation(Semester $semester)
+    public function numOfPreviousParticipation(AdmissionPeriod $admissionPeriod)
     {
         return $this->createQueryBuilder('Application')
             ->select('count(Application.id)')
             ->where('Application.previousParticipation = 1')
-            ->andWhere('Application.semester = :semester')
-            ->setParameter('semester', $semester)
+            ->andWhere('Application.admissionPeriod = :admissionPeriod')
+            ->setParameter('admissionPeriod', $admissionPeriod)
             ->getQuery()
             ->getSingleScalarResult();
     }
@@ -450,8 +397,8 @@ class ApplicationRepository extends EntityRepository
 
 		SELECT COUNT (AppS.id)
 		FROM AppBundle:ApplicationStatistic AppS
-		JOIN AppS.semester s
-		JOIN s.department d
+		JOIN AppS.admissionPeriod ap
+		JOIN ap.department d
 		WHERE d.id = :department
 
 		')
@@ -462,34 +409,34 @@ class ApplicationRepository extends EntityRepository
     }
 
     /**
-     * @param Semester $semester
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return Application[]
      */
-    public function findAllAllocatableApplicationsBySemester(Semester $semester)
+    public function findAllAllocatableApplicationsByAdmissionPeriod(AdmissionPeriod $admissionPeriod)
     {
         return $this->createQueryBuilder('a')
             ->select('a')
             ->leftJoin('a.interview', 'i')
-            ->where('a.semester = :semester')
+            ->where('a.admissionPeriod = :admissionPeriod')
             ->andWhere('a.previousParticipation = 1 OR i.interviewed = 1')
-            ->setParameter('semester', $semester)
+            ->setParameter('admissionPeriod', $admissionPeriod)
             ->getQuery()
             ->getResult();
     }
 
     /**
-     * @param Semester $semester
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return Application[]
      */
-    public function findSubstitutesBySemester(Semester $semester)
+    public function findSubstitutesByAdmissionPeriod(AdmissionPeriod $admissionPeriod)
     {
         return $this->createQueryBuilder('Application')
             ->select('Application')
-            ->where('Application.semester = :semester')
+            ->where('Application.admissionPeriod = :admissionPeriod')
             ->andWhere('Application.substitute = TRUE')
-            ->setParameter('semester', $semester)
+            ->setParameter('admissionPeriod', $admissionPeriod)
             ->getQuery()
             ->getResult();
     }
@@ -503,24 +450,24 @@ class ApplicationRepository extends EntityRepository
     {
         return $this->createQueryBuilder('a')
             ->select('a')
-            ->join('a.semester', 's')
-            ->where('s.department = :department')
+            ->join('a.admissionPeriod', 'ap')
+            ->where('ap.department = :department')
             ->setParameter('department', $department)
             ->getQuery()
             ->getResult();
     }
 
     /**
-     * @param Semester $semester
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return Application[]
      */
-    public function findBySemester(Semester $semester)
+    public function findByAdmissionPeriod(AdmissionPeriod $admissionPeriod)
     {
         return $this->createQueryBuilder('a')
             ->select('a')
-            ->where('a.semester = :semester')
-            ->setParameter('semester', $semester)
+            ->where('a.admissionPeriod = :admissionPeriod')
+            ->setParameter('admissionPeriod', $admissionPeriod)
             ->getQuery()
             ->getResult();
     }

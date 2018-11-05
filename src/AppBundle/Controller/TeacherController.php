@@ -2,9 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-class TeacherController extends Controller
+class TeacherController extends BaseController
 {
     public function indexAction()
     {

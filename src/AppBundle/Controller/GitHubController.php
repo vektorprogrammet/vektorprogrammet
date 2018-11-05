@@ -2,12 +2,11 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class GitHubController extends Controller
+class GitHubController extends BaseController
 {
     private $repositoryName = 'vektorprogrammet/vektorprogrammet';
 
@@ -51,7 +50,9 @@ class GitHubController extends Controller
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, 'https://api.github.com/meta');
-        curl_setopt($ch, CURLOPT_HTTPHEADER,
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
             array(
                 'User-Agent: NoBrowser v0.1 beta',
             )

@@ -3,12 +3,11 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\SponsorType;
 use AppBundle\Entity\Sponsor;
 
-class SponsorsController extends Controller
+class SponsorsController extends BaseController
 {
     /**
      * @Route("/kontrollpanel/sponsorer", name="sponsors_show")
@@ -47,9 +46,7 @@ class SponsorsController extends Controller
         $form = $this->createForm(SponsorType::class, $sponsor);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $isImageUpload = $request->files->count() > 0;
-
-            if ($isImageUpload) {
+            if (!is_null($request->files->get('sponsor')['logoImagePath'])) {
                 $imgPath = $this->get('app.file_uploader')->uploadSponsor($request);
                 $this->get('app.file_uploader')->deleteSponsor($oldImgPath);
 
@@ -62,7 +59,10 @@ class SponsorsController extends Controller
             $em->persist($sponsor);
             $em->flush();
 
-            $this->addFlash("success", "Sponsor {$sponsor->getName()} ble ".$isCreate ? "opprettet" : "endret");
+            $this->addFlash(
+                "success",
+                "Sponsor {$sponsor->getName()} ble " . ($isCreate ? "opprettet" : "endret")
+            );
 
             return $this->redirectToRoute("sponsors_show");
         }

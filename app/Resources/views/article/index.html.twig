@@ -20,10 +20,10 @@
                 {% if pagination|first %}
                     <div class="row">
                         <div class="article-box col-12">
-                            <a href="{{ path('article_show', { 'id': pagination|first.id }) }}">
+                            <a href="{{ path('article_show', { 'slug': pagination|first.slug }) }}">
                                 <img src="{{ asset(pagination|first.imageLarge | imagine_filter('article_large')) }}"/>
                             </a>
-                            <h4><a href="{{ path('article_show', { 'id': pagination|first.id }) }}">
+                            <h4><a href="{{ path('article_show', { 'slug': pagination|first.slug }) }}">
                                     {{ pagination|first.title|safe_html }}</a></h4>
                         </div>
                     </div>
@@ -33,10 +33,10 @@
                             {% for column in row %}
                                 {% set images = [column.imageLarge, column.imageSmall] %}
                                 <div class="article-box col-12 {{ cycle(columns, loop.parent.loop.index0+loop.index0) }}">
-                                    <a href="{{ path('article_show', { 'id': column.id }) }}">
+                                    <a href="{{ path('article_show', { 'slug': column.slug }) }}">
                                         <img src="{{ asset(cycle(images, loop.parent.loop.index0+loop.index0) | imagine_filter('article_small')) }}">
                                     </a>
-                                    <h5><a href="{{ path('article_show', { 'id': column.id }) }}">
+                                    <h5><a href="{{ path('article_show', { 'slug': column.slug }) }}">
                                             {{ column.title|safe_html }}</a></h5>
                                 </div>
                             {% endfor %}

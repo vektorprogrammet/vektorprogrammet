@@ -3,6 +3,9 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class CropImageType extends AbstractType
@@ -10,19 +13,19 @@ class CropImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('image', 'text', array(
+            ->add('image', TextType::class, array(
                 'label' => false,
                 'attr' => array('placeholder' => 'Klikk for å velge bilde'),
             ))
-            ->add('largeCropData', 'hidden')
-            ->add('mediumCropData', 'hidden')
-            ->add('smallCropData', 'hidden')
-            ->add('crop', 'submit', array(
+            ->add('largeCropData', HiddenType::class)
+            ->add('mediumCropData', HiddenType::class)
+            ->add('smallCropData', HiddenType::class)
+            ->add('crop', SubmitType::class, array(
                 'label' => 'Crop & bruk',
             ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'crop';
     }

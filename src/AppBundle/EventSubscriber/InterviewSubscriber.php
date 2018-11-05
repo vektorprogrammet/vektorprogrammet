@@ -9,7 +9,7 @@ use AppBundle\Service\InterviewNotificationManager;
 use AppBundle\Mailer\MailerInterface;
 use AppBundle\Service\SbsData;
 use AppBundle\Sms\Sms;
-use AppBundle\Sms\SmsSender;
+use AppBundle\Sms\SmsSenderInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -35,7 +35,7 @@ class InterviewSubscriber implements EventSubscriberInterface
         SbsData $sbsData,
         InterviewNotificationManager $notificationManager,
         InterviewManager $interviewManager,
-        SmsSender $smsSender,
+        SmsSenderInterface $smsSender,
         RouterInterface $router
     ) {
         $this->mailer = $mailer;
@@ -79,7 +79,7 @@ class InterviewSubscriber implements EventSubscriberInterface
         $interviewer = $application->getInterview()->getInterviewer();
 
         // Send email to the interviewee with a summary of the interview
-        $emailMessage = \Swift_Message::newInstance()
+        $emailMessage = (new \Swift_Message())
             ->setSubject('Vektorprogrammet intervju')
             ->setReplyTo(array($interviewer->getDepartment()->getEmail() => 'Vektorprogrammet'))
             ->setTo($application->getUser()->getEmail())
@@ -115,14 +115,15 @@ class InterviewSubscriber implements EventSubscriberInterface
     {
         $application = $event->getApplication();
 
-        $department = $application->getUser()->getDepartment();
+        $department = $application->getDepartment();
+        $semester = $application->getSemester();
 
         if ($this->sbsData->getInterviewedAssistantsCount() === 10 || $this->sbsData->getInterviewedAssistantsCount() % 25 === 0) {
-            $this->notificationManager->sendApplicationCountNotification($department);
+            $this->notificationManager->sendApplicationCountNotification($department, $semester);
         }
 
         if ($this->sbsData->applicantsNotYetInterviewedCount() <= 0 && $this->sbsData->getStep() >= 4) {
-            $this->notificationManager->sendInterviewsCompletedNotification($department);
+            $this->notificationManager->sendInterviewsCompletedNotification($department, $semester);
         }
     }
 
@@ -145,15 +146,19 @@ class InterviewSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $campus = empty($data['campus']) ? "" : ("\nCampus: " . $data['campus']);
+
         $message =
             $data['message'] .
             "\n\n" .
             "Tid: ".$data['datetime']->format('d.m.Y - H:i') .
             "\n" .
             "Rom: ".$data['room'] .
+            $campus .
             "\n\n" .
             "Vennligst følg linken under for å godkjenne tidspunktet eller be om ny tid:\n" .
-            $this->router->generate('interview_response',
+            $this->router->generate(
+                'interview_response',
                 ['responseCode' => $interview->getResponseCode()],
                 RouterInterface::ABSOLUTE_URL
             ) .
@@ -174,7 +179,7 @@ class InterviewSubscriber implements EventSubscriberInterface
     public function sendCoAssignedEmail(InterviewEvent $event)
     {
         $interview = $event->getInterview();
-        $emailMessage = \Swift_Message::newInstance()
+        $emailMessage = (new \Swift_Message())
             ->setSubject('Vektorprogrammet intervju')
             ->setFrom(array('vektorbot@vektorprogrammet.no' => 'Vektorprogrammet'))
             ->setTo($interview->getInterviewer()->getEmail())

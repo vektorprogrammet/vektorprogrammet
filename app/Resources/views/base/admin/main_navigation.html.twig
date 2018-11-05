@@ -51,33 +51,31 @@
 
             <li class="nav-title">Opptak</li>
             {% include 'base/admin/nav_link.html.twig' with {
-                route: 'semester_show',
+                route: 'admission_period_admin_show',
                 icon: 'clock-o',
                 name: 'Opptaksperioder',
-                activeRoutes: ['semester_show_by_department', 'semester_create', 'semester_update']
+                activeRoutes: ['admission_period_admin_show', 'admission_period_create', 'admission_period_update']
             } %}
             <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle" href="#">
                     <i class="fa fa-users nav-icon"></i> Opptak</a>
                 <ul class="nav-dropdown-items">
                     {% include 'base/admin/nav_link.html.twig' with {
-                        route: 'applications_show_new',
+                        route: 'admissionadmin_show',
                         icon: 'users',
                         name: 'Nye søkere',
-                        activeRoutes: ['applications_show_by_semester']
+                        activeRoutes: ['applications_show_new']
                     } %}
                     {% include 'base/admin/nav_link.html.twig' with {
                         route: 'applications_show_existing',
                         icon: 'users',
                         name: 'Tidligere assistenter',
-                        activeRoutes: ['applications_show_existing_by_semester']
                     } %}
                     {% include 'base/admin/nav_link.html.twig' with {
                         route: 'applications_show_assigned',
                         icon: 'comments-o',
                         name: 'Intervjufordeling',
                         activeRoutes: [
-                            'applications_show_assigned_by_semester',
                             'interview_schedule'
                         ]
                     } %}
@@ -86,7 +84,6 @@
                         icon: 'comments-o',
                         name: 'Intervjuer',
                         activeRoutes: [
-                            'applications_show_interviewed_by_semester',
                             'interview_show'
                         ]
                     } %}
@@ -102,27 +99,24 @@
                     route: 'stand',
                     icon: 'bullhorn',
                     name: 'Stand',
-                    activeRoutes: ['stand_by_semester']
                 } %}
                 {% include 'base/admin/nav_link.html.twig' with {
                     route: 'statistics_application_show',
                     icon: 'bar-chart',
                     name: 'Opptaksstatistikk',
-                    activeRoutes: ['statistics_application_by_semester']
                 } %}
 
             <li class="nav-title">Assistenter</li>
             {% include 'base/admin/nav_link.html.twig' with {
                 route: 'participanthistory_show',
-                icon: 'history',
+                icon: 'users',
                 name: 'Assistenter',
-                activeRoutes: ['participanthistory_show_by_semester']
             } %}
             {% include 'base/admin/nav_link.html.twig' with {
                 route: 'substitute_show',
                 icon: 'user-secret',
                 name: 'Vikarer',
-                activeRoutes: ['substitute_show_by_semester']
+                activeRoutes: ['substitute_show']
             } %}
 
             {% if is_granted_team_leader() %}
@@ -171,7 +165,6 @@
                     route: 'admissionadmin_team_interest',
                     icon: 'star',
                     name: 'Teaminteresse',
-                    activeRoutes: ['admissionadmin_team_interest_by_semester',]
                 } %}
             {% endif %}
 
@@ -270,12 +263,29 @@
                 } %}
             {% endif %}
 
+            {% if is_granted_admin() %}
+                <li class="nav-title">Admin</li>
+                {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'access_rules_show',
+                    icon: 'shield-alt',
+                    name: 'Access Control',
+                    activeRoutes: [
+                        'access_rules_create',
+                    ]
+                } %}
+
+                {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'staging_servers_show',
+                    icon: 'server',
+                    name: 'Staging Servers',
+                } %}
+
+            {% endif %}
 
             <li class="nav-item mt-auto">
                 <div class="p-4">
 
                     {% include 'base/logo_link.html.twig' %}
-                    {#<img class="img-fluid" src="{{ asset_with_version('images/vektor.png') }}">#}
                     <a href="{{ path('home') }}">
                         <p class="text-center my-2 text-secondary"><i class="fa fa-chevron-left"></i> Tilbake til
                             forsiden</p>

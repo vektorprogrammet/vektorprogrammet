@@ -2,9 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-class BoardAndTeamController extends Controller
+class BoardAndTeamController extends BaseController
 {
     public function showAction()
     {
@@ -21,11 +19,11 @@ class BoardAndTeamController extends Controller
         $departmentStats = array();
         /** @var \AppBundle\Entity\Department $department */
         foreach ($departments as $department) {
-            $currentOrLatestSemester = $department->getCurrentOrLatestSemester();
+            $currentSemester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
             $userRepository = $this->getDoctrine()->getRepository('AppBundle:User');
             $departmentStats[$department->getCity()] = array(
-                'numTeamMembers' => sizeof($userRepository->findUsersWithTeamMembershipInSemester($currentOrLatestSemester)),
-                'numAssistants' => sizeof($userRepository->findUsersWithAssistantHistoryInSemester($currentOrLatestSemester)),
+                'numTeamMembers' => sizeof($userRepository->findUsersInDepartmentWithTeamMembershipInSemester($department, $currentSemester)),
+                'numAssistants' => sizeof($userRepository->findUsersWithAssistantHistoryInDepartmentAndSemester($department, $currentSemester)),
             );
         }
 

@@ -3,12 +3,7 @@
         <h1 class="text-dark-blue card-title"> {{ user.firstName }} {{ user.lastName }} </h1>
         <h6>
             {% for r in user.roles %}
-                {{ r.name | replace({
-                    'User': user.isActiveAssistant ? 'Assistent': 'Bruker',
-                    'Admin': 'Teammedlem',
-                    'Superadmin': 'Teamleder',
-                    'Highest admin': 'Admin'
-                }) }}
+                {{ r.name | replace({'Bruker': user.isActiveAssistant ? 'Assistent': 'Bruker'}) }}
             {% endfor %}
         </h6>
     </div>
