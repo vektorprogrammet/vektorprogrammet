@@ -21,9 +21,11 @@ class TwigSurveyController extends Controller
             $user->getLastPopUp()->diff(new \DateTime())->days >= 1;
 
         if ($userShouldSeePopUp) {
+            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
+
             $surveys = $this->getDoctrine()
                     ->getRepository('AppBundle:Survey')
-                    ->findOneByUserNotTaken($this->getUser());
+                    ->findOneByUserNotTaken($this->getUser(), $semester);
 
             if (!empty($surveys)) {
                 $survey=end($surveys);

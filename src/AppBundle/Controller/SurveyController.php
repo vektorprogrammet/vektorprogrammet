@@ -162,9 +162,8 @@ class SurveyController extends BaseController
     public function createSurveyAction(Request $request)
     {
         $survey = new Survey();
-        $form = $this->createForm(SurveyType::class, $survey, array(
-            'isGrantedTeamLeader' => $this->isGranted(Roles::TEAM_LEADER),
-        ));
+
+        $form = $this->createForm(SurveyType::class, $survey);
         $form->handleRequest($request);
 
 
@@ -189,17 +188,12 @@ class SurveyController extends BaseController
 
     public function copySurveyAction(Request $request, Survey $survey)
     {
-        if (!$this->isGranted(Roles::TEAM_LEADER) && $survey->isTeamSurvey()) {
-            throw $this->createAccessDeniedException();
-        }
         $em = $this->getDoctrine()->getManager();
         $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
         $surveyClone = $survey->copy();
         $surveyClone->setSemester($currentSemester);
 
-        $form = $this->createForm(SurveyType::class, $surveyClone, array(
-            'isGrantedTeamLeader' => $this->isGranted(Roles::TEAM_LEADER),
-        ));
+        $form = $this->createForm(SurveyType::class, $surveyClone);
 
         $em->flush();
 
@@ -261,13 +255,9 @@ class SurveyController extends BaseController
 
     public function editSurveyAction(Request $request, Survey $survey)
     {
-        if (!$this->isGranted(Roles::TEAM_LEADER) && $survey->isTeamSurvey()) {
-            throw $this->createAccessDeniedException();
-        }
 
-        $form = $this->createForm(SurveyType::class, $survey, array(
-            'isGrantedTeamLeader' => $this->isGranted(Roles::TEAM_LEADER),
-        ));
+
+        $form = $this->createForm(SurveyType::class, $survey);
 
         $form->handleRequest($request);
 
@@ -297,29 +287,20 @@ class SurveyController extends BaseController
      */
     public function deleteSurveyAction(Survey $survey)
     {
-        try {
-            if ($this->isGranted(Roles::TEAM_LEADER)) {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($survey);
                 $em->flush();
-
                 $response['success'] = true;
-            } else {
-                $response['success'] = false;
-                $response['cause'] = 'Ikke tilstrekkelig rettigheter';
-            }
-        } catch (\Exception $e) {
-            $response = ['success' => false,
-                'code' => $e->getCode(),
-                'cause' => 'Det oppstod en feil.',
-            ];
-        }
 
         return new JsonResponse($response);
     }
 
     public function resultSurveyAction(Survey $survey)
     {
+        if($survey->isConfidential() ||  $this->get('app.access_control')->checkAccess("survey_admin")){
+            throw new AccessDeniedException();
+        }
+
         if ($survey->isTeamSurvey()) {
             return $this->render('survey/survey_result.html.twig', array(
                 'textAnswers' => $this->get('survey.manager')->getTextAnswerWithTeamResults($survey),

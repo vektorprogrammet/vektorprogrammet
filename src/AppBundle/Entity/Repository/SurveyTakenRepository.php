@@ -32,6 +32,8 @@ class SurveyTakenRepository extends EntityRepository
      */
     public function findAllSurveyTakenBySurveyAndUser(Survey $survey, User $user):array
     {
+
+
         $qb = $this->createQueryBuilder('st')
             ->select('st')
             ->where('st.survey = :survey')

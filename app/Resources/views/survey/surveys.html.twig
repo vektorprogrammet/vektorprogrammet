@@ -36,7 +36,7 @@
                 </thead>
                 <tbody>
                 {% for survey in surveys
-                    if ((not survey.confidential) or is_granted_team_leader())  %}
+                    if ((not survey.confidential) or has_access_to('survey_admin'))  %}
                     <tr>
                         <td>
                             <div class="dropdown">
@@ -44,18 +44,16 @@
                                      aria-haspopup="true" aria-expanded="false">
                                     <i class="fa fa-ellipsis-v text-secondary"></i>
                                 </div>
+
+                                {% if has_access_to('survey_admin') %}
                                 <div class="dropdown-menu pt-0" aria-labelledby="options-{{ loop.index }}">
                                     <div class="dropdown-header mb-2"><strong>{{ survey.name }}</strong></div>
-                                    {% if is_granted_admin() or not survey.teamSurvey %}
                                     <a href="{{ path('survey_edit', {'id': survey.id }) }}"
                                        class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
                                     </a>
-                                    {% endif %}
-                                    {% if is_granted_team_leader() and (is_granted_admin() or not survey.teamSurvey) %}
                                         <a href="{{ path('survey_copy', {'id': survey.id }) }}" class="dropdown-item">
                                             <i class="fa fa-copy text-primary"></i> Kopier
                                         </a>
-                                    {% endif %}
 
                                     {% if not survey.teamSurvey %}
                                     <a href="{{ path('survey_show_admin', {'id': survey.id }) }}" class="dropdown-item">
@@ -63,6 +61,7 @@
                                     </a>
                                     {% endif %}
                                 </div>
+                                {% endif %}
                             </div>
                         </td>
                         <td>{{ survey.name }}</td>

@@ -12,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Utils\SemesterUtil;
 
 class SurveyType extends AbstractType
@@ -32,11 +31,14 @@ class SurveyType extends AbstractType
         ->add('department', EntityType::class, array(
             'label' => 'Region',
             'class' => 'AppBundle:Department',
+            'placeholder' => 'Alle regioner',
+            'empty_data' => null,
             'query_builder' => function (DepartmentRepository $er) {
                 return $er->createQueryBuilder('Department')
                     ->select('Department')
                     ->where('Department.active = true');
             },
+            'required' => false,
         ))
 
         ->add('name', TextType::class, array(
@@ -44,45 +46,18 @@ class SurveyType extends AbstractType
             'attr' => array('placeholder' => 'Fyll inn tittel til undersøkelse'),
         ))
 
-            ->add('showCustomFinishPage', ChoiceType::class, [
-                'label' => 'Sluttside som vises etter undersøkelsen er besvart.',
-                'multiple' => false,
-                'expanded' => true,
-                'choices' => [
-                    'Standard' => false,
-                    'Tilpasset' => true,
-                ]
-            ]);
+        ->add('showCustomFinishPage', ChoiceType::class, [
+            'label' => 'Sluttside som vises etter undersøkelsen er besvart.',
+            'multiple' => false,
+            'expanded' => true,
+            'choices' => [
+                'Standard' => false,
+                'Tilpasset' => true,
+            ]
+        ])
 
-        if ($options['isGrantedTeamLeader']) {
-            $builder->add('team_survey', ChoiceType::class, [
-                    'label' => 'Dette er en undersøkelse rettet mot teammedlem (popup)',
-                    'multiple' => false,
-                    'expanded' => true,
-                    'choices' => [
-                        'Ja' => true,
-                        'Nei' => false,
-                    ]
 
-                ])
-
-                ->add('showCustomPopUpMessage', ChoiceType::class, [
-                    'label' => 'Egen pop-up melding?',
-                    'multiple' => false,
-                    'expanded' => true,
-                    'choices' => [
-                        'Ja' => true,
-                        'Nei' => false,
-                    ]
-
-                ])
-
-                ->add('surveyPopUpMessage', CKEditorType::class, [
-                    'label' => 'Pop-up melding, vises kun hvis ja er valgt.',
-                ]);
-        }
-
-        $builder->add('confidential', ChoiceType::class, array(
+        ->add('confidential', ChoiceType::class, array(
                 'label' => 'Resultater kan leses av',
                 'multiple' => false,
                 'expanded' => true,
@@ -93,13 +68,37 @@ class SurveyType extends AbstractType
             ))
 
 
+        ->add('team_survey', ChoiceType::class, [
+            'label' => 'Dette er en undersøkelse rettet mot teammedlem (popup)',
+            'multiple' => false,
+            'expanded' => true,
+            'choices' => [
+                'Ja' => true,
+                'Nei' => false,
+            ]
 
+        ])
 
+            ->add('showCustomPopUpMessage', ChoiceType::class, [
+                'label' => 'Egen pop-up melding?',
+                'multiple' => false,
+                'expanded' => true,
+                'choices' => [
+                    'Ja' => true,
+                    'Nei' => false,
+                ]
 
-
-            ->add('finishPageContent', CKEditorType::class, [
-                'label' => 'Tilpasset sluttside. Vises kun hvis "Tilpasset" er valgt over.',
             ])
+
+            ->add('surveyPopUpMessage', CKEditorType::class, [
+                'label' => 'Pop-up melding, vises kun hvis ja er valgt.',
+            ])
+
+
+
+        ->add('finishPageContent', CKEditorType::class, [
+            'label' => 'Tilpasset sluttside. Vises kun hvis "Tilpasset" er valgt over.',
+        ])
 
         ->add('surveyQuestions', CollectionType::class, array(
             'entry_type' => SurveyQuestionType::class,
@@ -110,14 +109,6 @@ class SurveyType extends AbstractType
 
         ->add('save', SubmitType::class, array(
             'label' => 'Lagre',
-        ));
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Survey',
-            'isGrantedTeamLeader' => false,
         ));
     }
     
