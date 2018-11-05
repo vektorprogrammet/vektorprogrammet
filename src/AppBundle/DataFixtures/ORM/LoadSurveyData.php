@@ -50,9 +50,12 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $teamSurvey1 = new Survey();
         $schoolSurvey1 = new Survey();
 
-        $semester = $this->getReference('semester-4');
+        $semester = $this->getReference('semester-3');
+        $department = $this->getReference('dep-1');
+
 
         $teamSurvey1->setSemester($semester);
+        $teamSurvey1->setDepartment($department);
         $teamSurvey1->setShowCustomFinishPage(true);
         $teamSurvey1->setFinishPageContent("Takk for at du svarte på vår undersøkelse");
         $teamSurvey1->setName("Team Survey");
@@ -63,6 +66,7 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $teamSurvey1->addSurveyQuestion($surveyQuestion2);
 
         $schoolSurvey1->setSemester($semester);
+        $schoolSurvey1->setDepartment($department);
         $schoolSurvey1->setShowCustomFinishPage(false);
         $schoolSurvey1->setName("School Survey");
         $schoolSurvey1->setConfidential(false);

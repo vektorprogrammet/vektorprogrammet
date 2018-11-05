@@ -267,7 +267,6 @@ class Survey implements \JsonSerializable
 
         $surveyClone->setTeamSurvey($this->isTeamSurvey());
 
-
         return $surveyClone;
     }
 

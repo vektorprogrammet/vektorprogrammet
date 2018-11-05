@@ -4,7 +4,6 @@ namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Department;
-use AppBundle\Entity\Semester;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
 use AppBundle\Entity\TeamMembership;

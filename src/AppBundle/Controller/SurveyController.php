@@ -167,11 +167,15 @@ class SurveyController extends BaseController
         ));
         $form->handleRequest($request);
 
+
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $semester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
             $survey->setSemester($semester);
             $em->persist($survey);
+            $em->flush();
+
             // Need some form of redirect. Will cause wrong database entries if the form is rendered again
             // after a valid submit, without remaking the form with up to date question objects from the database.
             return $this->redirect($this->generateUrl('surveys'));
@@ -190,7 +194,6 @@ class SurveyController extends BaseController
         }
         $em = $this->getDoctrine()->getManager();
         $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
-
         $surveyClone = $survey->copy();
         $surveyClone->setSemester($currentSemester);
 
@@ -232,6 +235,7 @@ class SurveyController extends BaseController
     {
         $semester = $this->getSemesterOrThrow404();
         $department = $this->getDepartmentOrThrow404();
+
         $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
             [
                 'semester' => $semester,
@@ -239,6 +243,8 @@ class SurveyController extends BaseController
             ],
             ['id' => 'DESC']
         );
+
+
 
 
         foreach ($surveys as $survey) {
