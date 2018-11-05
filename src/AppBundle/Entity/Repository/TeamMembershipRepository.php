@@ -110,7 +110,6 @@ class TeamMembershipRepository extends EntityRepository
         return array_filter($teamMemberships, function (TeamMembership $teamMembership) use ($semester) {
             return $semester->isBetween($teamMembership->getStartSemester(), $teamMembership->getEndSemester());
         });
-
     }
 
     /**
