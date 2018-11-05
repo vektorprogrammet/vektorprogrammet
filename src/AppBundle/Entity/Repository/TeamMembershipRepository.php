@@ -97,9 +97,20 @@ class TeamMembershipRepository extends EntityRepository
             ->setYear(SemesterUtil::timeToYear($today))
             ->setSemesterTime(SemesterUtil::timeToSemesterTime($today));
 
-        return array_filter($teamMemberships, function (TeamMembership $teamMembership) use ($today, $currentSemester) {
-            return $currentSemester->isBetween($teamMembership->getStartSemester(), $teamMembership->getEndSemester());
+        return $this->filterNotInSemester($teamMemberships, $currentSemester);
+    }
+
+    /**
+     * @param TeamMembership[] $teamMemberships
+     * @param Semester $semester
+     * @return TeamMembership[]
+     */
+    private function filterNotInSemester(array $teamMemberships, Semester $semester) : array
+    {
+        return array_filter($teamMemberships, function (TeamMembership $teamMembership) use ($semester) {
+            return $semester->isBetween($teamMembership->getStartSemester(), $teamMembership->getEndSemester());
         });
+
     }
 
     /**
@@ -165,19 +176,16 @@ class TeamMembershipRepository extends EntityRepository
      */
     public function findTeamMembershipsByUserAndSemester($user, Semester $semester)
     {
-        $semesterStartDate = $semester->getSemesterStartDate();
-
-        return $this->createQueryBuilder('whistory')
+        $teamMemberships =  $this->createQueryBuilder('whistory')
             ->select('whistory')
             ->join('whistory.startSemester', 'startSemester')
             ->leftJoin('whistory.endSemester', 'endSemester')
-            ->where('startSemester.semesterStartDate <= :semesterStartDate')
             ->andWhere('whistory.user = :user')
-            ->andWhere('endSemester.semesterEndDate >= :semesterStartDate OR endSemester.semesterEndDate is NULL')
-            ->setParameter('semesterStartDate', $semesterStartDate)
             ->setParameter('user', $user)
             ->getQuery()
             ->getResult();
+
+        return $this->filterNotInSemester($teamMemberships, $semester);
     }
 
 
