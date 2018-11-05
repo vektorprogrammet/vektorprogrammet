@@ -55,13 +55,8 @@
 
 
 
-{% if 'survey_show' not in app.request.get('_route') %}
 
-    {{
-    render(controller("AppBundle:TwigSurvey:nextSurvey"))
-
-    }}
-{% endif %}
+    {{ render(controller("AppBundle:TwigSurvey:nextSurvey")) }}
 
 
 {% if googleAnalyticsId %}

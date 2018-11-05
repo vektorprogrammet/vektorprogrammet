@@ -6,10 +6,12 @@ namespace AppBundle\Controller;
 use AppBundle\Role\Roles;
 use AppBundle\Service\RoleManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TwigSurveyController extends Controller
 {
-    public function nextSurveyAction()
+    public function nextSurveyAction(Request $request)
     {
         $survey = null;
         $user = $this->getUser();
@@ -28,6 +30,12 @@ class TwigSurveyController extends Controller
             }
         }
 
+
+        $routeName = $this->container->get('request_stack')->getMasterRequest()->get('_route');
+        if(strpos($routeName, "survey_show") !== false){
+            return new Response();
+
+        }
         return $this->render(
             "base/popup_lower.twig",
             array('survey' => $survey)

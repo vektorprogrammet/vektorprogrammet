@@ -71,13 +71,8 @@
     </main>
 </div>
 
-{% if 'survey_show' not in app.request.get('_route') %}
 
-    {{
-    render(controller("AppBundle:TwigSurvey:nextSurvey"))
-
-    }}
-{% endif %}
+    {{ render(controller("AppBundle:TwigSurvey:nextSurvey")) }}
 
 <script src="{{ asset_with_version('js/access_control.js') }}"></script>
 
