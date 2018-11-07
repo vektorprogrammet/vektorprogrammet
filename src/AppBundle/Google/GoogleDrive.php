@@ -31,7 +31,7 @@ class GoogleDrive extends GoogleService
 
         $permission = new \Google_Service_Drive_Permission();
         $permission->setType('group');
-        $permission->setRole('owner');
+        $permission->setRole('fileOrganizer');
         $permission->setEmailAddress($team->getEmail());
 
         try {
