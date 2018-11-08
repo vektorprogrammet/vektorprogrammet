@@ -175,7 +175,7 @@ class AdmissionAdminController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteApplicationExistingAssistant(Application $application)
+    public function deleteApplicationExistingAssistantAction(Application $application)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($application);
