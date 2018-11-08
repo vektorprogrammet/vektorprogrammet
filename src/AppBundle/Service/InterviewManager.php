@@ -174,7 +174,8 @@ class InterviewManager
                 'text/html'
             );
 
-        $this->mailer->send($message);}
+            $this->mailer->send($message);
+        }
     }
 
     /**
