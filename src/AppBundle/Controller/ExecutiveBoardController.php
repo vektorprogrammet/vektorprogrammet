@@ -131,7 +131,7 @@ class ExecutiveBoardController extends BaseController
      *
      * @return Response
      */
-    public function editMemberHistory(Request $request, ExecutiveBoardMembership $member)
+    public function editMemberHistoryAction(Request $request, ExecutiveBoardMembership $member)
     {
         $user = $member->getUser(); // Store the $user object before the form touches our $member object with spooky user data
         $form = $this->createForm(CreateExecutiveBoardMembershipType::class, $member, [

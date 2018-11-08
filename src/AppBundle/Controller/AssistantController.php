@@ -31,7 +31,7 @@ class AssistantController extends BaseController
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function admissionActionByShortName(Request $request, Department $department)
+    public function admissionByShortNameAction(Request $request, Department $department)
     {
         return $this->indexAction($request, $department);
     }
@@ -45,7 +45,7 @@ class AssistantController extends BaseController
      *
      * @return Response
      */
-    public function admissionActionCaseInsensitive(Request $request, $city)
+    public function admissionCaseInsensitiveAction(Request $request, $city)
     {
         $city = str_replace(array('æ', 'ø','å'), array('Æ','Ø','Å'), $city); // Make sqlite happy
         $department = $this->getDoctrine()
