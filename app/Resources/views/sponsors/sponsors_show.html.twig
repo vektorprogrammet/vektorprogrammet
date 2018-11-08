@@ -1,0 +1,69 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Sponsorer
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Sponsorer</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    <a href="{{ path('sponsor_create') }}" class="btn btn-outline-success text-success">
+        <i class="fa fa-plus"></i> Legg til sponsor
+    </a>
+{% endblock %}
+
+
+{% block body %}
+    <div class="card">
+        <div class="card-header"><i class="fa fa-align-justify"></i> Sponsorer ({{ sponsors|length }})</div>
+        <div class="card-body table-responsive">
+            <table class="table">
+                <tr>
+                    <th></th>
+                    <th>Sponsornavn</th>
+                    <th>Sponsors hjemmeside</th>
+                    <th>Størrelse</th>
+                    <th colspan="2">Logo</th>
+                </tr>
+
+                {% for sponsor in sponsors %}
+                    <tr>
+                        <td>
+                            {% if is_granted_team_leader() %}
+                                <div class="dropdown">
+                                    <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"
+                                         aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v text-secondary"></i>
+                                    </div>
+                                    <div class="dropdown-menu pt-0" aria-labelledby="options-{{ loop.index }}">
+                                        <div class="dropdown-header mb-2"><strong>{{ sponsor.name }}</strong></div>
+                                        <a href="{{ path('sponsor_edit', { 'id': sponsor.id }) }}"
+                                           class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
+                                        </a>
+                                        <form method="POST"
+                                              onsubmit="return confirm('Vil du virkelig slette sponsor {{ sponsor.name }}?')"
+                                              action="{{ path('sponsor_delete', {'id': sponsor.id}) }}">
+                                            <button type="submit"
+                                                    class="dropdown-item">
+                                                <i class="fa fa-trash text-danger"></i> Slett
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            {% endif %}
+                        </td>
+                        <td>{{ sponsor.name }}</td>
+                        <td>{{ sponsor.url }}</td>
+                        <td>{{ sponsor.size }}</td>
+                        <td><img class="img-fluid" src="{{ asset_with_version(sponsor.logoImagePath) }}"
+                                 style="max-width: 200px; max-height: 150px;"></td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+{% endblock %}

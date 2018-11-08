@@ -6,12 +6,12 @@ use AppBundle\DataTransferObject\UserDto;
 use AppBundle\Entity\User;
 use Doctrine\ORM\NoResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-class AccountController extends Controller
+class AccountController extends BaseController
 {
 
     /**

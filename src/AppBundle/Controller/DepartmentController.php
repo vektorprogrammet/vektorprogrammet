@@ -3,12 +3,10 @@
 namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Department;
 use AppBundle\Form\Type\CreateDepartmentType;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
-class DepartmentController extends Controller
+class DepartmentController extends BaseController
 {
     public function showAction()
     {
@@ -19,7 +17,7 @@ class DepartmentController extends Controller
     {
         $department = new Department();
 
-        $form = $this->createForm(new CreateDepartmentType(), $department);
+        $form = $this->createForm(CreateDepartmentType::class, $department);
 
         $form->handleRequest($request);
 
@@ -27,6 +25,8 @@ class DepartmentController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($department);
             $em->flush();
+
+            $this->addFlash("success", "$department ble opprettet");
 
             return $this->redirectToRoute('departmentadmin_show');
         }
@@ -36,29 +36,20 @@ class DepartmentController extends Controller
         ));
     }
 
-    public function getAllDepartmentsForTopbarAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $departments = $em->getRepository('AppBundle:Department')->findActive();
-
-        return $this->render('home/department_loop.html.twig', array(
-            'departments' => $departments,
-        ));
-    }
-
     public function deleteDepartmentByIdAction(Department $department)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($department);
         $em->flush();
 
-        return new JsonResponse(array('success' => true));
+        $this->addFlash("success", "Avdelingen ble slettet");
+
+        return $this->redirectToRoute("departmentadmin_show");
     }
 
     public function updateDepartmentAction(Request $request, Department $department)
     {
-        $form = $this->createForm(new CreateDepartmentType(), $department);
+        $form = $this->createForm(CreateDepartmentType::class, $department);
 
         $form->handleRequest($request);
 
@@ -66,6 +57,8 @@ class DepartmentController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($department);
             $em->flush();
+
+            $this->addFlash("success", "$department ble oppdatert");
 
             return $this->redirectToRoute('departmentadmin_show');
         }

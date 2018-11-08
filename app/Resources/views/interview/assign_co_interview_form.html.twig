@@ -8,24 +8,41 @@
     <link rel="stylesheet" href="{{ asset_with_version('css/pages/assign_co_interviewer.css') }}">
 {% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('applications_show_assigned', {'department': interview.application.department.id, 'semester': interview.application.semester.id}) }}">Intervjufordeling</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{{ path('interview_schedule', {'id': interview.application.id}) }}">{{ interview.user }}</a>
+    </li>
+    <li class="breadcrumb-item active">Medintervjuer</li>
+{% endblock %}
+
 {% block body %}
-    {{ include('common/flash.html.twig') }}
-
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <div class="panel">
-                <h3>Rediger medintervjuer</h3>
-                <hr>
-                {{ form_start(form) }}
-                {{ form_end(form) }}
-
-                {% if interview.coInterviewer %}
+        <div class="col-12 col-lg-4">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-user-o"></i> Rediger medintervjuer for {{ interview.user }}
+                </div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+        {% if interview.coInterviewer %}
+        <div class="col-12 col-lg-4">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-user-o"></i> Medintervjuer</div>
+                <div class="card-body">
+                    <p><strong>{{ interview.coInterviewer }}</strong> er registrert som medintervjuer</p>
                     <div class="clear-button">
-                        <form method="POST" action="{{ path('interview_clear_co_interviewer', { id: interview.id }) }}">
+                        <form method="POST"
+                              action="{{ path('interview_clear_co_interviewer', { id: interview.id }) }}">
                             <div class="row">
-                                <div class="small-12 columns">
+                                <div class="col-12">
                                     <button type="submit"
-                                            class="button warning tiny">
+                                            class="btn btn-danger">
                                         <i class="fa fa-share-alt"></i>
                                         Fjern medintervjuer
                                     </button>
@@ -33,8 +50,9 @@
                             </div>
                         </form>
                     </div>
-                {% endif %}
+                </div>
             </div>
+            {% endif %}
         </div>
     </div>
 

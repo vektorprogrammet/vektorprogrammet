@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Team;
@@ -60,6 +61,20 @@ class TeamRepository extends EntityRepository
      *
      * @return Team[]
      */
+    public function findInActiveByDepartment(Department $department): array
+    {
+        return $this->findByDepartmentQueryBuilder($department)
+                    ->andWhere('team.active = false')
+                    ->orderBy('team.name', 'ASC')
+                    ->getQuery()
+                    ->getResult();
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return Team[]
+     */
     public function findByOpenApplicationAndDepartment(Department $department): array
     {
         return $this->createQueryBuilder('team')
@@ -81,15 +96,19 @@ class TeamRepository extends EntityRepository
         return array_column($result, 'email');
     }
 
-    public function findByTeamInterestAndSemester(Semester $semester)
+    public function findByTeamInterestAndAdmissionPeriod(AdmissionPeriod $admissionPeriod)
     {
         return $this->createQueryBuilder('team')
             ->select('team')
-            ->leftJoin('team.potentialMembers', 'application', Expr\Join::WITH, 'application.semester = :semester')
+            ->leftJoin('team.potentialMembers', 'application', Expr\Join::WITH, 'application.admissionPeriod = :admissionPeriod')
             ->leftJoin('team.potentialApplicants', 'potentialApplicant', Expr\Join::WITH, 'potentialApplicant.semester = :semester')
-            ->setParameter('semester', $semester)
-            ->where('application IS NOT NULL')
-            ->orWhere('potentialApplicant IS NOT NULL')
+            ->where('application IS NOT NULL AND application.admissionPeriod = :admissionPeriod')
+            ->orWhere('potentialApplicant IS NOT NULL AND potentialApplicant.department = :department')
+            ->setParameters(array(
+                'admissionPeriod' => $admissionPeriod,
+                'semester' => $admissionPeriod->getSemester(),
+                'department' => $admissionPeriod->getDepartment(),
+            ))
             ->getQuery()
             ->getResult();
     }

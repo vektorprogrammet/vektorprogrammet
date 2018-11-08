@@ -18,7 +18,7 @@ class TeamInterestType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $department = $options['department'];
+        $department = $builder->getData()->getDepartment();
 
         $builder
             ->add('name', TextType::class, array(
@@ -57,7 +57,7 @@ class TeamInterestType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'appbundle_teaminterest';
     }

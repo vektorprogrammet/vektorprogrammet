@@ -4,13 +4,11 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
-
     /**
      * @Route("/min-side", name="my_page")
      *
@@ -19,8 +17,20 @@ class UserController extends Controller
     public function myPageAction()
     {
         $user = $this->getUser();
-        $semester = $user->getDepartment()->getCurrentOrLatestSemester();
-        $activeApplication = $this->getDoctrine()->getRepository('AppBundle:Application')->findByUserInSemester($user, $semester);
+
+        $department = $user->getDepartment();
+        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $admissionPeriod = $this->getDoctrine()
+            ->getRepository('AppBundle:AdmissionPeriod')
+            ->findOneByDepartmentAndSemester($department, $semester);
+
+        $activeApplication = null;
+        if (null !== $admissionPeriod) {
+            $activeApplication = $this->getDoctrine()
+                ->getRepository('AppBundle:Application')
+                ->findByUserInAdmissionPeriod($user, $admissionPeriod);
+        }
+
         $applicationStatus = null;
         if (null !== $activeApplication) {
             $applicationStatus = $this->get('app.application_manager')->getApplicationStatus($activeApplication);
@@ -76,7 +86,7 @@ class UserController extends Controller
             ];
         }
 
-        $semester = $this->getUser()->getDepartment()->getCurrentSemester();
+        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
         return $this->render('user/my_partner.html.twig', [
             'partnerInformations' => $partnerInformations,
             'partnerCount' => $partnerCount,

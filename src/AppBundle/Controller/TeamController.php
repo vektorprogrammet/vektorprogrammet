@@ -4,10 +4,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Role\Roles;
 use AppBundle\Entity\Team;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class TeamController extends Controller
+class TeamController extends BaseController
 {
     public function showAction(Team $team)
     {

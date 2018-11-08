@@ -5,8 +5,10 @@ namespace AppBundle\Form\Type;
 use AppBundle\Entity\SurveyAnswer;
 use AppBundle\Entity\SurveyQuestionAlternative;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -24,7 +26,7 @@ class SurveyAnswerType extends AbstractType
                 case 'list': // This creates a dropdown list if the type is list
                     $choices = $this->createChoices($surveyAnswer);
 
-                    $form->add('answer', 'choice', array(
+                    $form->add('answer', ChoiceType::class, array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'placeholder' => 'Velg',
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
@@ -35,7 +37,7 @@ class SurveyAnswerType extends AbstractType
                     break;
                 case 'radio': // This creates a set of radio buttons if the type is radio
                     $choices = $this->createChoices($surveyAnswer);
-                    $form->add('answer', 'choice', array(
+                    $form->add('answer', ChoiceType::class, array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $choices,
@@ -45,7 +47,7 @@ class SurveyAnswerType extends AbstractType
                     break;
                 case 'check': // This creates a set of checkboxes if the type is check
                     $choices = $this->createChoices($surveyAnswer);
-                    $form->add('answerArray', 'choice', array(
+                    $form->add('answerArray', ChoiceType::class, array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $choices,
@@ -55,7 +57,7 @@ class SurveyAnswerType extends AbstractType
                     ));
                     break;
                 default: // This creates a textarea if the type is text (default)
-                    $form->add('answer', 'textarea', array(
+                    $form->add('answer', TextareaType::class, array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'required' => !$surveyAnswer->getSurveyQuestion()->getOptional(),
@@ -80,7 +82,7 @@ class SurveyAnswerType extends AbstractType
                     $choices[$data['answer']] = $data['answer'];
 
                     $form->remove('answer');
-                    $form->add('answer', 'choice', array(
+                    $form->add('answer', ChoiceType::class, array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $choices,
@@ -94,7 +96,7 @@ class SurveyAnswerType extends AbstractType
                     $choices[$data['answer']] = $data['answer'];
 
                     $form->remove('answer');
-                    $form->add('answer', 'choice', array(
+                    $form->add('answer', ChoiceType::class, array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $choices,
@@ -111,10 +113,10 @@ class SurveyAnswerType extends AbstractType
                     } else {
                         $answers = array_combine($data['answerArray'], $data['answerArray']);
                     }
-                    $newChoices = array_merge($choices, $answers);
+                    $newChoices = array_merge($answers, $choices);
 
                     $form->remove('answerArray');
-                    $form->add('answerArray', 'choice', array(
+                    $form->add('answerArray', ChoiceType::class, array(
                         'label' => $surveyAnswer->getSurveyQuestion()->getQuestion(),
                         'help' => $surveyAnswer->getSurveyQuestion()->getHelp(),
                         'choices' => $newChoices,
@@ -145,14 +147,14 @@ class SurveyAnswerType extends AbstractType
         return array_combine($values, $values);
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\SurveyAnswer',
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'surveyAnswer';
     }

@@ -4,261 +4,216 @@
     Intervju
 {% endblock %}
 
+{% block breadcrumb_menu %}
+    {% if not application.interview.cancelled and not application.interview.interviewed %}
+        <form
+                onsubmit="return confirm('Er du sikker på at du vil kansellere intervjuet?')"
+                action="{{ path('interview_cancel', {'id' : application.interview.id}) }}"
+                method="POST">
+            <button class="btn btn-outline-danger btn-sm text-danger" type="submit">Kansellér intervju</button>
+        </form>
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('applications_show_assigned', {'department': application.department.id, 'semester': application.semester.id}) }}">Intervjufordeling</a>
+    </li>
+    <li class="breadcrumb-item active">Intervju - {{ application.user }}</li>
+{% endblock %}
+
 {# Form themes user to modify the templates of the various form components #}
 {% form_theme form 'form/interview_layout.html.twig' %}
 {% form_theme form.applicationPractical.days 'form/components/days_checkbox.html.twig' %}
 
 {% block body %}
-    <p></p>
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <div class="panel">
-                <div class="row">
-                    <div class="small-12 medium-12 large-12 columns">
-                        {% if not application.interview.cancelled and not application.interview.interviewed %}
-                            <form action="{{ path('interview_cancel', {'id' : application.interview.id}) }}" method="POST">
-                                <button class="button alert tiny radius float-right" type="submit">Kansellér intervju</button>
-                            </form>
-                        {% endif %}
-                        <h1>Intervju</h1>
-                        <h3>Kandidat</h3>
-                        <table width="100%">
-                            <thead>
-                            <tr>
-                                <th> Fornavn</th>
-                                <th> Etternavn</th>
-                                <th> Tlf</th>
-                                <th> E-post</th>
-                                <th> Linje</th>
-                                <th> År</th>
-                                <th> Tidligere deltagelse</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                {% set u = application.user %}
-                                <td> {{ u.firstName }} </td>
-                                <td> {{ u.lastName }} </td>
-                                <td> {{ u.phone }} </td>
-                                <td> {{ u.email }} </td>
-                                <td> {{ u.fieldOfStudy }} </td>
-                                <td> {{ application.yearOfStudy }} </td>
-
-                                {% if u.assistantHistories|length %}
-                                    <td> Ja</td>
-                                {% else %}
-                                    <td> Nei</td>
-                                {% endif %}
-                            </tr>
-                            </tbody>
-                        </table>
-                        <h3>Intervjuet av</h3>
-                        <p>{{ application.interview.interviewer }}
-                            {% if application.interview.coInterviewer %} og {{ application.interview.coInterviewer }}{% endif %}</p>
-                    </div>
+        <div class="col-12 col-xl-8">
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="fa fa-comments-o"></i> Intervju - {{ application.user }}</span>
                 </div>
-                {{ form_start(form) }}
-                {{ form_errors(form) }}
-
-
-                <h3>Praktisk informasjon</h3>
-                <div class="row">
-                    <div class="small-12 columns">
-                        <h4>Introduksjon</h4>
-                        <ul>
-                            <li>En ungdomsskoledag er innenfor tidsrommet kl. 08.00 og 14.45. I tillegg kommer reisetid</li>
-                            <li>Det kan hende at du ikke har noe å gjøre deler av dagen pga timeplanen. Derfor er det
-                                lurt å ta med bøker hvis det blir pauser
-                            </li>
-                        </ul>
-                    </div>
+                <div class="card-body table-responsive">
+                    {% include 'interview/interviewee_table.html.twig' %}
                 </div>
-                <div class="row">
-                    <div class="small-12 columns">
-                        <label class="question-label">{{ form.applicationPractical.days.vars.label }}</label>
+            </div>
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Praktisk informasjon
+                </div>
+                <div class="card-body">
+                    <h4>Introduksjon</h4>
+                    <ul>
+                        <li>En ungdomsskoledag er innenfor tidsrommet kl. 08.00 og 14.45. I tillegg kommer reisetid</li>
+                        <li>Det kan hende at du ikke har noe å gjøre deler av dagen pga timeplanen. Derfor er det
+                            lurt å ta med bøker hvis det blir pauser
+                        </li>
+                    </ul>
+                    <div class="form-group">
                         {{ form_row(form.applicationPractical.days) }}
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="small-12 medium-12 large-4 columns">
-                        {{ form_row(form.applicationPractical.yearOfStudy) }}
+                    <div class="row">
+                        <div class="col-12 col-lg-4">
+                            {{ form_row(form.applicationPractical.yearOfStudy) }}
+                        </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
-                        {{ form_row(form.applicationPractical.doublePosition) }}
-                    </div>
-                </div>
+                    {{ form_row(form.applicationPractical.doublePosition) }}
 
-                <div class="row doublePositionRow">
-                    <div class="small-12 medium-12 large-9 columns">
-                        {{form_label(form.applicationPractical.preferredGroup, null, {'label_attr': {'class': 'question-label'}})}}
+                    <div class="form-group">
+                        {{ form_label(form.applicationPractical.preferredGroup, null, {'label_attr': {'class': 'question-label'}}) }}
+                        <br>
                         <span class="question-help">Dette kan være f.eks reise, studietur, lab, annet obligatorisk opplegg eller liknende.</span>
-                        {{form_errors(form.applicationPractical.preferredGroup)}}
-                        {{form_widget(form.applicationPractical.preferredGroup)}}
-
+                        {{ form_errors(form.applicationPractical.preferredGroup) }}
+                        {{ form_widget(form.applicationPractical.preferredGroup) }}
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
-                        {{ form_label(form.applicationPractical.teamInterest, null, {'label_attr': {'class': 'question-label'}}) }}
-                        <span class="question-help">Du kan gjerne spørre om de har mye å gjøre gjennom semesteret, og lede det inn i om de er interessert i team</span>
-                        {{ form_errors(form.applicationPractical.teamInterest) }}
-                        {{ form_widget(form.applicationPractical.teamInterest) }}
-                    </div>
+                    {{ form_row(form.applicationPractical.language) }}
+                    {{ form_row(form.heardAboutFrom) }}
+                    {{ form_label(form.applicationPractical.teamInterest, null, {'label_attr': {'class': 'question-label'}}) }}
+                    <br>
+                    <span class="question-help">Du kan gjerne spørre om de har mye å gjøre gjennom semesteret, og lede det inn i om de er interessert i team</span>
+                    {{ form_errors(form.applicationPractical.teamInterest) }}
+                    {{ form_widget(form.applicationPractical.teamInterest) }}
+                    {{ form_row(form.applicationPractical.potentialTeams) }}
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
-                        {{ form_row(form.applicationPractical.potentialTeams) }}
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="small-12 medium-12 large-4 columns">
-                        <label class="question-label" for="specialNeedsToggle">Spesielle behov</label>
-                        <input type="checkbox" id="specialNeedsToggle">
-                        <label for="specialNeedsToggle">Assistenten har spesielle behov</label>
-                    </div>
-                </div>
-
-                <div class="row" id="specialNeeds">
-                    <div class="small-12 medium-12 large-9 columns">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-align-justify"></i> Spesielle behov</div>
+                <div class="card-body">
+                    <input type="checkbox" id="specialNeedsToggle">
+                    <label for="specialNeedsToggle">Assistenten har spesielle behov</label>
+                    <div id="specialNeeds">
                         {{ form_row(form.specialNeeds) }}
                     </div>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
-                        {{ form_row(form.applicationPractical.language) }}
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
-                        {{ form_row(form.heardAboutFrom) }}
-                    </div>
-                </div>
-
-                <h3>Intervjuspørsmål
+            <div class="card">
+                <div class="card-header"><i class="fa fa-align-justify"></i> Intervjuspørsmål
                     <small>{{ application.interview.interviewSchema.name }}</small>
-                </h3>
-                {% for interviewAnswer in form.interview.interviewAnswers %}
+                </div>
+                <div class="card-body">
+                    {% for interviewAnswer in form.interview.interviewAnswers %}
+                        {{ form_row(interviewAnswer.answer) }}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fa fa-align-justify"></i> Evaluering</div>
+                <div class="card-body">
                     <div class="row">
-                        <div class="small-12 medium-12 large-9 columns">
-                            {{ form_row(interviewAnswer.answer) }}
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.interview.interviewScore.explanatoryPower) }}
                         </div>
                     </div>
-                {% endfor %}
 
-                <h3>Evaluering</h3>
-                <div class="row">
-                    <div class="small-12 medium-12 large-4 columns">
-                        {{ form_row(form.interview.interviewScore.explanatoryPower) }}
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.interview.interviewScore.roleModel) }}
+                        </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="small-12 medium-12 large-4 columns">
-                        {{ form_row(form.interview.interviewScore.roleModel) }}
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.interview.interviewScore.suitability) }}
+                        </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="small-12 medium-12 large-4 columns">
-                        {{ form_row(form.interview.interviewScore.suitability) }}
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.interview.interviewScore.suitableAssistant) }}
+                        </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="small-12 medium-12 large-4 columns end">
-                        {{ form_row(form.interview.interviewScore.suitableAssistant) }}
-                    </div>
                 </div>
-
-                <div class="row">
-                    <div class="small-12 medium-12 large-12 columns">
-                        {% if not application.interview.interviewed %}
-                            {{ form_widget(form.save, {'attr': {'class': 'button tiny'}}) }}
-                            {{ form_widget(form.saveAndSend, {'attr': {'class': 'button tiny success'}}) }}
-                            <div class="row">
-                                <div class="medium-6 columns">
-                                    <br>
-                                    <span class="text-alert">Obs!</span> Ved å trykke på 'Lagre og send kvittering' vil et sammendrag med praktisk informasjon (ikke
-                                    intervjuspørsmål eller evaluering)
-                                    fra dette intervjuet vil bli sendt på e-post til {{ u.firstName }}.
-                                </div>
-                            </div>
-                        {% else %}
-                            <button type="submit" class="button tiny">Oppdater</button>
-                            {{ form_widget(form.save, {'attr': {'class': 'button tiny hide'}}) }}
-                            {{ form_widget(form.saveAndSend, {'attr': {'class': 'button tiny success hide'}}) }}
-                            <div class="row">
-                                <div class="medium-6 columns">
-                                    <br>
-                                    <span class="text-alert">Obs!</span> Kvittering vil <b>ikke</b> bli sendt.
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-                {{ form_end(form) }}
             </div>
+            <div class="card">
+                <div class="card-header"><i class="fa fa-align-justify"></i> Lagre</div>
+                <div class="card-body">
+                    {% if not application.interview.interviewed %}
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <span class="text-danger text-bold">Obs!</span> Ved å trykke på 'Lagre og send
+                                kvittering' vil et
+                                sammendrag med praktisk informasjon (ikke
+                                intervjuspørsmål eller evaluering)
+                                fra dette intervjuet vil bli sendt på e-post til {{ application.user.firstName }}.
+                            </div>
+                        </div>
+                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-secondary'}}) }}
+                        {{ form_widget(form.saveAndSend, {'attr': {'class': 'btn btn-primary'}}) }}
+                    {% else %}
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <span class="text-danger text-bold">Obs!</span> Kvittering vil <strong>ikke</strong> bli
+                                sendt.
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Oppdater</button>
+                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-secondary hide'}}) }}
+                        {{ form_widget(form.saveAndSend, {'attr': {'class': 'btn btn-primary hide'}}) }}
+                    {% endif %}
+                </div>
+            </div>
+
+            {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}
 
 {% block javascripts %}
     <script>
-        const specialNeedsToggle = document.querySelector('#specialNeedsToggle');
-        const specialNeedsRow = $('#specialNeeds');
-        const specialNeedsInput = document.querySelector('#specialNeeds input');
+      const specialNeedsToggle = document.querySelector('#specialNeedsToggle');
+      const specialNeedsRow = $('#specialNeeds');
+      const specialNeedsInput = document.querySelector('#specialNeeds input');
 
-        const singlePositionToggle = document.querySelector('#application_applicationPractical_doublePosition_0');
-        const doublePositionToggle = document.querySelector('#application_applicationPractical_doublePosition_1');
-        const bothGroups = document.querySelector('#application_applicationPractical_preferredGroup_0');
-        const group1 = document.querySelector('#application_applicationPractical_preferredGroup_1');
-        const group2 = document.querySelector('#application_applicationPractical_preferredGroup_2');
+      const singlePositionToggle = document.querySelector('#application_applicationPractical_doublePosition_0');
+      const doublePositionToggle = document.querySelector('#application_applicationPractical_doublePosition_1');
+      const bothGroups = document.querySelector('#application_applicationPractical_preferredGroup_0');
+      const group1 = document.querySelector('#application_applicationPractical_preferredGroup_1');
+      const group2 = document.querySelector('#application_applicationPractical_preferredGroup_2');
 
-        const doublePositionRow = document.querySelector('.doublePositionRow');
+      const doublePositionRow = document.querySelector('.doublePositionRow');
 
-        specialNeedsToggle.addEventListener('change', toggleSpecialNeeds);
-        singlePositionToggle.addEventListener('change', toggleDoublePosition);
-        doublePositionToggle.addEventListener('change', toggleDoublePosition);
+      specialNeedsToggle.addEventListener('change', toggleSpecialNeeds);
+      singlePositionToggle.addEventListener('change', toggleDoublePosition);
+      doublePositionToggle.addEventListener('change', toggleDoublePosition);
 
-        document.addEventListener('DOMContentLoaded', function() {
-          if (specialNeedsInput.value) {
-            specialNeedsToggle.checked = true;
-            toggleSpecialNeeds();
-          }
-        });
-
-        function toggleSpecialNeeds() {
-          if (specialNeedsToggle.checked) {
-            specialNeedsRow.slideDown();
-          } else {
-            specialNeedsRow.slideUp();
-            specialNeedsInput.value = '';
-          }
+      document.addEventListener('DOMContentLoaded', function () {
+        if (specialNeedsInput.value) {
+          specialNeedsToggle.checked = true;
+          toggleSpecialNeeds();
         }
+      });
 
-        function toggleDoublePosition () {
-          if (doublePositionToggle.checked) {
-              bothGroups.checked=true;
-              bothGroups.setAttribute('disabled','disabled');
-              group1.setAttribute('disabled','disabled');
-              group2.setAttribute('disabled','disabled');
-              doublePositionRow.classList.add('textDisabled');
-          } else {
-              bothGroups.removeAttribute('disabled');
-              group1.removeAttribute('disabled');
-              group2.removeAttribute('disabled');
-              doublePositionRow.classList.remove('textDisabled');
-          }
+      function toggleSpecialNeeds() {
+        if (specialNeedsToggle.checked) {
+          specialNeedsRow.slideDown();
+        } else {
+          specialNeedsRow.slideUp();
+          specialNeedsInput.value = '';
         }
+      }
+
+      function toggleDoublePosition() {
+        if (doublePositionToggle.checked) {
+          bothGroups.checked = true;
+          bothGroups.setAttribute('disabled', 'disabled');
+          group1.setAttribute('disabled', 'disabled');
+          group2.setAttribute('disabled', 'disabled');
+          doublePositionRow.classList.add('textDisabled');
+        } else {
+          bothGroups.removeAttribute('disabled');
+          group1.removeAttribute('disabled');
+          group2.removeAttribute('disabled');
+          doublePositionRow.classList.remove('textDisabled');
+        }
+      }
 
     </script>
 {% endblock %}

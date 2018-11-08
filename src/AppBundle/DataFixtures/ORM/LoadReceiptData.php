@@ -69,7 +69,7 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($receiptAssistant);
 
         $receiptTeam = new Receipt();
-        $receiptTeam->setUser($this->getReference('user-team'));
+        $receiptTeam->setUser($this->getReference('user-team-member'));
         $receiptTeam->setSubmitDate(new \DateTime('2015-11-03'));
         $receiptTeam->setReceiptDate(new \DateTime('2015-11-02'));
         $receiptTeam->setDescription(
@@ -80,7 +80,7 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($receiptTeam);
 
         $receiptAdmin = new Receipt();
-        $receiptAdmin->setUser($this->getReference('user-admin'));
+        $receiptAdmin->setUser($this->getReference('user-team-leader'));
         $receiptAdmin->setSubmitDate(new \DateTime('2015-11-03'));
         $receiptAdmin->setReceiptDate(new \DateTime('2015-09-03'));
         $receiptAdmin->setDescription(
@@ -91,7 +91,7 @@ class LoadReceiptData extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($receiptAdmin);
 
         $receiptSuperAdmin = new Receipt();
-        $receiptSuperAdmin->setUser($this->getReference('user-superadmin'));
+        $receiptSuperAdmin->setUser($this->getReference('user-admin'));
         $receiptSuperAdmin->setSubmitDate(new \DateTime('2015-11-03'));
         $receiptSuperAdmin->setReceiptDate(new \DateTime('2015-10-03'));
         $receiptSuperAdmin->setDescription(

@@ -2,9 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-class ControlPanelController extends Controller
+class ControlPanelController extends BaseController
 {
     public function showAction()
     {
@@ -19,10 +17,10 @@ class ControlPanelController extends Controller
     public function showSBSAction()
     {
         $sbsData = $this->get('app.sbs_data');
-        $currentSemester = $this->getUser()->getDepartment()->getCurrentSemester();
+        $currentAdmissionPeriod = $this->getUser()->getDepartment()->getCurrentAdmissionPeriod();
 
-        if ($currentSemester) {
-            $sbsData->setSemester($currentSemester);
+        if ($currentAdmissionPeriod) {
+            $sbsData->setAdmissionPeriod($currentAdmissionPeriod);
         }
 
         // Return the view to be rendered

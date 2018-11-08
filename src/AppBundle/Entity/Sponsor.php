@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -19,11 +20,13 @@ class Sponsor
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Assert\NotBlank(message="Feletet kan ikke være tomt.")
      */
     protected $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message="Feletet kan ikke være tomt.")
      */
     protected $url;
 
@@ -31,6 +34,7 @@ class Sponsor
      * Available sizes: "small", "medium" and "large"
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message="Feletet kan ikke være tomt.")
      */
     protected $size;
 

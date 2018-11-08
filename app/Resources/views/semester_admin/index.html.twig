@@ -1,159 +1,47 @@
 {% extends 'adminBase.html.twig' %}
 
-{% block javascripts %}
-
-    {# Easy routing with FOSJsRouting bundle #}
-    <script src="{{ asset_with_version('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-    {# We need the deletetablerow.js file #}
-    <script src="{{ asset_with_version('js/deleteablerow.js') }}"></script>
-
-    <script>
-
-        $(document).ready(function () {
-            $('.delete').deleteablerow('semester_delete', {
-                confirmation: {
-                    modal: $('#confirmModal'),
-                    acceptButton: $('#modalAccept'),
-                    cancelButton: $('#modalCancel')
-                }
-            });
-        });
-
-        $("#search").keyup(function () {
-
-            _this = this;
-
-            $.each($("#table tbody").find("tr"), function () {
-
-                if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
-                    $(this).hide();
-                }
-                else {
-                    $(this).show();
-                }
-            });
-
-        });
-
-    </script>
-
-
+{% block title %}
+    Semester
 {% endblock %}
 
-{% block title %}
-    Opptaksperiode
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">
+        Semester
+    </li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+            <a class="btn text-success btn-sm" href="{{ path('semester_create') }}">
+                <i class="fa fa-plus"></i> Semester
+            </a>
 {% endblock %}
 
 {% block body %}
-    <p></p>
-
     <div class="row">
-    <div class="small-12 medium-12 large-12 columns">
-
-        <h1> Opptaksperioder {{ departmentName }}</h1>
-
-        <hr>
-
-        <div class="row">
-
-            {% if is_granted_team_leader() %}
-                <div class="small-12 medium-12 large-6 columns">
-
-
-                    <ul class="inline-list">
-
-                        {% include 'common/department_dropdown.html.twig' with {
-                            'pathForDepartment': 'semester_show_by_department',
-                            'departmentParameterName': 'id',
-                            'currentDepartment': departmentName
-                        } %}
-
-                        <li>
-                            <a class="button tiny" data-dropdown="createSemesterDropdown" aria-controls="createSemesterDropdown"
-                               aria-expanded="false">Opprett semester &raquo;</a>
-                            <ul id="createSemesterDropdown" class="f-dropdown" data-dropdown-content tabindex="-1"
-                                aria-hidden="true" aria-autoclose="false" tabindex="-1">
-
-                                {% for d in get_departments() %}
-
-                                    <li>
-                                        <a href="{{ path('semester_create', { 'id': d.id }) }}">{{ d.shortName }}</a>
-                                    </li>
-
-                                {% endfor %}
-
-                            </ul>
-                        </li>
-
-                    </ul>
-
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Semester
                 </div>
-            {% endif %}
+                <div class="card-body table-responsive">
+                    <table class="table">
 
-            {% if is_granted_team_leader() %}
-            <div class="small-12 medium-12 large-6 columns">
-                {% else %}
-                <div class="small-12 medium-12 large-12 columns">
-                    {% endif %}
-                    <input type="text" id="search" placeholder="Søk..."/>
-                </div>
-
-            </div>
-            <hr>
-
-            {% if semesters is defined %}
-
-                <table width="100%" id="table">
-
-                    <thead>
-                    <tr>
-                        <th> Navn</th>
-                        <th> Opptak start</th>
-                        <th> Opptak slutt</th>
-                        {% if is_granted_team_leader() %}
-                            <th colspan="{{ is_granted_admin() ? 2 : 1 }}"></th>
-                        {% endif %}
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    {% for s in semesters %}
+                        <thead>
                         <tr>
-                            <td> {{ s.name }} </td>
-                            <td> {{ s.admissionStartDate|date('d. M Y') }} </br>
-                                Kl. {{ s.admissionStartDate|date('H:i:s') }}</td>
-                            <td> {{ s.admissionEndDate|date('d. M Y') }} </br>
-                                Kl. {{ s.admissionEndDate|date('H:i:s') }}</td>
-
-                            {% if is_granted_team_leader() %}
-                                <td><a href="{{ path('semester_update', { 'id': s.id }) }}" class="button tiny"><i class="fa fa-pencil"></i> Rediger</a>
-                                </td>
-                                {% if is_granted_admin() %}
-                                    <td><a href="#" id="{{ s.id }}" class="button tiny alert delete"><i
-                                                    class="fa fa-trash-o"></i> Slett</a></td>
-                                {% endif %}
-                            {% endif %}
+                            <th> Navn</th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
+                        </thead>
 
-                </table>
-
-
-            {% endif %}
-
+                        <tbody>
+                        {% for s in semesters %}
+                            <tr class="text-nowrap">
+                                <td>{{ s }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div id="confirmModal" class="reveal-modal small" data-reveal aria-labelledby="confirmModalDelete"
-         aria-hidden="true" role="dialog">
-        <h2 id="modalMessage">Vil du virkelig slette elementet?</h2>
-        <ul class="inline-list">
-            <a id="modalAccept" href="#" class="button tiny">Slett</a>
-            <a id="modalCancel" href="#" class="button tiny">Avbryt</a>
-        </ul>
-    </div>
-
-
 {% endblock %}

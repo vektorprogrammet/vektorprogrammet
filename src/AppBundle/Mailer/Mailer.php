@@ -3,15 +3,18 @@
 namespace AppBundle\Mailer;
 
 use AppBundle\Google\Gmail;
+use AppBundle\Service\SlackMailer;
 
 class Mailer implements MailerInterface
 {
     private $mailer;
 
-    public function __construct(string $env, Gmail $gmail, \Swift_Mailer $swiftMailer)
+    public function __construct(string $env, Gmail $gmail, \Swift_Mailer $swiftMailer, SlackMailer $slackMailer)
     {
         if ($env === 'prod') {
             $this->mailer = $gmail;
+        } elseif ($env === 'staging') {
+            $this->mailer = $slackMailer;
         } else {
             $this->mailer = $swiftMailer;
         }

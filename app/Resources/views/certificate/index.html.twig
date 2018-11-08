@@ -4,25 +4,135 @@
     Attester
 {% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Attester</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    {% if is_granted_admin() %}
+        {% include "common/department_semester_dropdowns.html.twig" with {
+            'path': 'certificate_show',
+            'semester': currentSemester,
+        } %}
+    {% else %}
+        {% include "common/semester_dropdown.html.twig" with {
+            'pathForSemester': 'certificate_show',
+            'semester': currentSemester,
+        } %}
+    {% endif %}
+{% endblock %}
+
+
 {% block body %}
+
+    <h1> Attester </h1>
+    <h5> Her kan du laste ned attest for assistentene og oppdatere signaturen din</h5>
+
+    <hr>
+
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-
-            <h1> Attester </h1>
-            <h5>  Her kan du laste ned attest for assistentene og oppdatere signaturen din</h5></h5>
-
-            <hr>
-
-            <div class="row">
-                <div class="small-2 columns">
-                    <a href="{{ path('certificate_download', {id: currentSemester.id}) }}" class="button tiny"> Last ned attest    </a>
-                </div>
-                <div class="small-2 columns">
-                    <a href="{{ path('certificate_signature_picture_upload') }}" class="button tiny"> Oppdater signatur</a>
+        <div class="col-12 col-xl-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-align-justify"></i> Assistenter {{ currentSemester.name }}</div>
+                <div class="card-body table-responsive">
+                    <table class="table" id="substitute-table">
+                        <thead>
+                        <tr>
+                            <th>Navn</th>
+                            <th>E-post</th>
+                            <th>Skole</th>
+                            <th>Linje</th>
+                            <th>Attest</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for a in assistants %}
+                            <tr id="{{ a.id }}">
+                                <td><a href="{{ path('specific_profile', {'id': a.user.id}) }}">{{ a.user }}</a></td>
+                                <td>{{ a.user.email }}</td>
+                                <td>{{ a.school }}</td>
+                                <td>{{ a.user.fieldOfStudy }}</td>
+                                {% if is_granted_team_member() %}
+                                    {% if signature.signaturePath is not null %}
+                                        <td>
+                                            <a href="{{ path('profile_certificate', { 'id': a.user.id }) }}"
+                                               class="button tiny">
+                                                <i class="fa fa-download"></i> Last ned
+                                            </a>
+                                        </td>
+                                    {% else %}
+                                        <td>
+                                            <span class="text-danger">
+                                                Legg til signatur for å laste ned attest
+                                            </span>
+                                        </td>
+                                    {% endif %}
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        </div>
+        <div class="col-12 col-xl-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-file-signature"></i> Signatur</div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+                    <div class="hide">
+                        {{ form_row(form.signature_path) }}
+                    </div>
+                    <div>
+                        <img class="{{ signature.signaturePath is not null ? '' : 'hide' }}" src="{{ asset_with_version(signature.signaturePath) }}" style="max-height: 100px" id="signature_picture">
+                    </div>
+                    <div class="mt-3">
+                        <button type="button" class="btn btn-secondary" id="choose_picture">
+                            Velg bilde
+                        </button>
+                    </div>
+                    <div class="mt-5">
+                        <label>Beskrivelse (Feks. Leder, Vektorprogrammet)
+                            {{ form_row(form.description) }}</label>
+                    </div>
+                    <br>
+                    <button class="btn btn-primary">Lagre</button>
+                    {{ form_end(form) }}
 
+                </div>
+            </div>
         </div>
     </div>
+{% endblock %}
 
+{% block javascripts %}
+
+    <script>
+        var uploadButton = $('#choose_picture');
+        uploadButton.click(function () {
+            var realUploadButton = $('#create_signature_signature_path');
+            realUploadButton.click();
+        });
+
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#signature_picture').attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $('#create_signature_signature_path').change(function () {
+            $('#signature_picture').parent().removeClass('hide');
+            readURL(this);
+        });
+
+
+    </script>
 {% endblock %}

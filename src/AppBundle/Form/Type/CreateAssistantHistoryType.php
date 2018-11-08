@@ -2,34 +2,31 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\Repository\SemesterRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateAssistantHistoryType extends AbstractType
 {
     private $department;
 
-    public function __construct($department)
-    {
-        $this->department = $department;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->department = $options['department'];
         $builder
-            ->add('Semester', 'entity', array(
+            ->add('Semester', EntityType::class, array(
                 'label' => 'Semester',
                 'class' => 'AppBundle:Semester',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('s')
-                        ->orderBy('s.semesterStartDate', 'DESC')
-                        ->where('s.department = ?1')
-                        ->setParameter(1, $this->department);
+                'query_builder' => function (SemesterRepository $sr) {
+                    return $sr->queryForAllSemestersOrderedByAge();
                 },
             ))
-            ->add('workdays', 'choice', array(
+            ->add('workdays', ChoiceType::class, array(
                 'label' => 'Antall uker (4 ganger = 4 uker, 2 ganger i uken i 4 uker = 8 uker)',
                 'choices' => array(
                     '1' => '1',
@@ -42,7 +39,7 @@ class CreateAssistantHistoryType extends AbstractType
                     '8' => '8',
                 ),
             ))
-            ->add('School', 'entity', array(
+            ->add('School', EntityType::class, array(
                 'label' => 'Skole',
                 'class' => 'AppBundle:School',
                 'query_builder' => function (EntityRepository $er) {
@@ -55,15 +52,15 @@ class CreateAssistantHistoryType extends AbstractType
                         ->setParameter('department', $this->department);
                 },
             ))
-            ->add('bolk', 'choice', array(
+            ->add('bolk', ChoiceType::class, array(
                 'label' => 'Bolk',
                 'choices' => array(
                     'Bolk 1' => 'Bolk 1',
                     'Bolk 2' => 'Bolk 2',
-                    'Bolk 1, Bolk 2' => 'Bolk 1 og Bolk 2',
+                    'Bolk 1 og Bolk 2' => 'Bolk 1, Bolk 2',
                 ),
             ))
-            ->add('day', 'choice', array(
+            ->add('day', ChoiceType::class, array(
                 'label' => 'Dag',
                 'choices' => array(
                     'Mandag' => 'Mandag',
@@ -73,19 +70,20 @@ class CreateAssistantHistoryType extends AbstractType
                     'Fredag' => 'Fredag',
                 ),
             ))
-            ->add('save', 'submit', array(
+            ->add('save', SubmitType::class, array(
                 'label' => 'Opprett',
             ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\AssistantHistory',
+            'department' => null,
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'createAssistantHistory';
     }

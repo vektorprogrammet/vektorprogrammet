@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Article;
 
@@ -10,7 +9,7 @@ use AppBundle\Entity\Article;
  * ArticleController is the controller responsible for articles,
  * such as showing and article and the showing the news page.
  */
-class ArticleController extends Controller
+class ArticleController extends BaseController
 {
     // Number of articles shown on the news page.
     const NUM_ARTICLES = 10;

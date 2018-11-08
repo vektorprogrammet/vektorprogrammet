@@ -4,51 +4,26 @@
     Opprett semester
 {% endblock %}
 
-{% form_theme form 'form/foundation_layout.html.twig' %}
-
-{% block stylesheets %}
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.min.css">
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('semester_show') }}">Semester</a>
+    </li>
+    <li class="breadcrumb-item active">Opprett</li>
 {% endblock %}
 
+
 {% block body %}
-    <p></p>
-
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-
-            <h1> Opprett semester {{ department }}</h1>
-
-            <hr>
-
-
-            <div class="row">
-
-                <div class="small-12 medium-12 large-6 columns">
-
+        <div class="col-12 col-md-12 col-lg-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-industry"></i> Opprett semester</div>
+                <div class="card-body">
                     {{ form_start(form) }}
                     {{ form_widget(form) }}
                     {{ form_end(form) }}
-
                 </div>
-
             </div>
-
         </div>
     </div>
 
-{% endblock %}
-
-{% block javascripts %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.min.js"></script>
-    <script>
-        const options = {
-            format: 'd.m.Y H:i',
-            lang: 'no',
-            step: 1,
-        };
-
-        jQuery('#{{ form.admissionStartDate.vars.id }}').datetimepicker(options);
-        jQuery('#{{ form.admissionEndDate.vars.id }}').datetimepicker(options);
-    </script>
 {% endblock %}

@@ -1,13 +1,9 @@
-import { baseUrl } from '../../config';
-
 function get(path) {
-  return fetch(baseUrl + path, {
-    credentials: 'include',
-  });
+  return fetch(path);
 }
 
 function post(path, data) {
-  return fetch(baseUrl + path, {
+  return fetch(path, {
     method: 'POST',
     body: createSearchParams(data),
     credentials: 'include',
@@ -16,7 +12,7 @@ function post(path, data) {
 }
 
 function put(path, data) {
-  return fetch(baseUrl + path, {
+  return fetch(path, {
     method: 'PUT',
     credentials: 'include',
     body: JSON.stringify(data),
@@ -24,7 +20,7 @@ function put(path, data) {
 }
 
 function del(path) {
-  return fetch(baseUrl + path, {
+  return fetch(path, {
     credentials: 'include',
     method: 'DELETE',
   });

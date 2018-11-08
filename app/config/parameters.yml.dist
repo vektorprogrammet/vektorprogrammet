@@ -6,9 +6,7 @@ parameters:
     database_name:     symfony
     database_user:     root
     database_password: ~
-    database_path: "%kernel.root_dir%/data/dev.db"
-    # You should uncomment this if you want use pdo_sqlite
-    # database_path: "%kernel.root_dir%/data.db3"
+    database_path: "%kernel.root_dir%/../var/data/dev.db"
 
     mailer_transport:  smtp
     mailer_host:       127.0.0.1
@@ -23,6 +21,7 @@ parameters:
     newsletter_password: ~
 
     slack_endpoint: 'https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX'
+    slack_disabled: true
 
     gateway_api_token: 'xxxxxxx'
     sms_disable: true
@@ -53,6 +52,13 @@ parameters:
 
     ipinfo_token: ''
     geo_ignored_asns: []
+
+    recaptcha_private_key: ~
+    recaptcha_public_key: ~
+
+    log_channel: '#website_logs'
+
+    sentry_address: xxxx
 
     # Webhook from GitHub to automatically deploy on push to master
 

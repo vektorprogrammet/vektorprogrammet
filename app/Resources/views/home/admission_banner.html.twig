@@ -12,7 +12,7 @@
         </div>
         {% set semester = closestDepartment.currentSemester %}
         {% if semester is not null and semester.infoMeeting and semester.infoMeeting.showOnPage and semester.infoMeeting.date and date() < date(semester.infoMeeting.date) %}
-            {% set infoMeeting = closestDepartment.currentSemester.infoMeeting %}
+            {% set infoMeeting = closestDepartment.currentAdmissionPeriod.infoMeeting %}
             <div class="infomeeting-banner">
                 Husk infomøte {{ infoMeeting.date|date('d. M')|lower }} kl. {{ infoMeeting.date|date('H:i') }} {% if infoMeeting.room %}i rom  {{ infoMeeting.room }} {% endif %}.
                 {% if infoMeeting.link %}<a target="_blank" href="{{ infoMeeting.link }}"

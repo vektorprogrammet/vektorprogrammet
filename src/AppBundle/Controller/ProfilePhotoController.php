@@ -4,11 +4,10 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class ProfilePhotoController extends Controller
+class ProfilePhotoController extends BaseController
 {
     public function showEditProfilePhotoAction(User $user)
     {

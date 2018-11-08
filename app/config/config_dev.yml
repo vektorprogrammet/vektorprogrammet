@@ -1,10 +1,8 @@
 imports:
     - { resource: config.yml }
 
-parameters:
-    slack.disable_delivery: true
-
 framework:
+    translator:      { fallbacks: ["%locale%"] }
     router:
         resource: "%kernel.root_dir%/config/routing_dev.yml"
         strict_requirements: true
@@ -43,9 +41,6 @@ monolog:
         #chromephp:
         #    type:   chromephp
         #    level:  info
-
-assetic:
-    use_controller: true
 
 swiftmailer:
   disable_delivery: true

@@ -16,7 +16,7 @@ describe('Log in to the page manually', () => {
   it('Corretly logging in should put you in "min-side"', () => {
     cy.visit('localhost:8080/login');
     cy.get('#usernameInput')
-      .type('superadmin');
+      .type('admin');
     cy.get('#passwordInput')
       .type('1234');
     cy.get('.btn')
@@ -41,17 +41,17 @@ describe('Log in to the page with request', () => {
     cy.request({
       method: 'POST',
       url: 'localhost:8000/api/account/login',
-      body: 'username=superadmin&password=1234',
+      body: 'username=admin&password=1234',
       // This sets the header to Content-Type: application/x-www-form-urlencoded which is required
       form: true,
     });
   })
 
-  it('Corretly logged in as superadmin should allow you to gain acces to kontrollpanel/staging', () => {
+  it('Corretly logged in as admin should allow you to gain acces to kontrollpanel/staging', () => {
     cy.request({
       method: 'POST',
       url: 'localhost:8000/api/account/login',
-      body: 'username=superadmin&password=1234',
+      body: 'username=admin&password=1234',
       form: true,
     });
     cy.wait(1000);

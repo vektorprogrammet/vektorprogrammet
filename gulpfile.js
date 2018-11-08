@@ -12,7 +12,7 @@ var gulp = require('gulp'),
 var exec = require('child_process').exec;
 
 var path = {
-    dist: 'www/',
+    dist: 'web/',
     src: 'app/Resources/assets/',
     client: {
         src: 'client'
@@ -88,37 +88,40 @@ function imagesDev () {
 }
 
 function icons () {
-  var r = gulp.src('node_modules/font-awesome/fonts/**.*')
-      .pipe(gulp.dest('www/fonts/'));
-  return r && gulp.src(path.src + 'fonts/**.*')
-    .pipe(gulp.dest('www/fonts/'));
+  var r = gulp.src('node_modules/@fortawesome/fontawesome-free/webfonts/**.*')
+      .pipe(gulp.dest('web/webfonts/'));
+  return r && gulp.src(path.src + 'webfonts/**.*')
+    .pipe(gulp.dest('web/webfonts/'));
 }
 
 function files () {
   return gulp.src(path.src + 'files/*')
-      .pipe(changed('www/files/'))
-      .pipe(gulp.dest('www/files/'))
+      .pipe(changed('web/files/'))
+      .pipe(gulp.dest('web/files/'))
 }
 
 function vendor () {
 
   var r = gulp.src('node_modules/dropzone/**/*')
-      .pipe(gulp.dest('www/vendor/dropzone/'));
+      .pipe(gulp.dest('web/vendor/dropzone/'));
 
   r = r && gulp.src('node_modules/cropperjs/dist/*')
-    .pipe(gulp.dest('www/vendor/cropperjs/'));
+    .pipe(gulp.dest('web/vendor/cropperjs/'));
 
   r = r && gulp.src(['node_modules/ckeditor/**/*', path.src + 'js/ckeditor/**/*'])
-      .pipe(gulp.dest('www/vendor/ckeditor/'));
+      .pipe(gulp.dest('web/vendor/ckeditor/'));
 
-  r = r && gulp.src('node_modules/foundation-sites/js/foundation.min.js')
-    .pipe(gulp.dest('www/js'));
+  r = r && gulp.src(path.src + '/js/coreui.js')
+    .pipe(gulp.dest('web/vendor/'));
+
+  r = r && gulp.src('node_modules/@coreui/coreui/dist/js/coreui.min.js')
+    .pipe(gulp.dest('web/vendor/'));
 
   r = r && gulp.src('node_modules/bootstrap/dist/js/bootstrap.min.js')
-    .pipe(gulp.dest('www/js'));
+    .pipe(gulp.dest('web/js'));
 
   r = r && gulp.src('node_modules/jquery/dist/jquery.min.js')
-    .pipe(gulp.dest('www/js'));
+    .pipe(gulp.dest('web/js'));
 
   return r && gulp.src([
     'node_modules/jquery/dist/jquery.min.js',
@@ -132,9 +135,9 @@ function vendor () {
 
 function assistantSchedulingStaticFiles () {
   var r = gulp.src(path.scheduling.src + '/dist/build.js')
-        .pipe(gulp.dest('www/js/scheduling'));
+        .pipe(gulp.dest('web/js/scheduling'));
     return r && gulp.src(path.scheduling.src + '/dist/build.js.map')
-        .pipe(gulp.dest('www/js/scheduling'));
+        .pipe(gulp.dest('web/js/scheduling'));
 }
 
 function buildClientApp (cb) {
@@ -147,12 +150,21 @@ function buildClientApp (cb) {
 
 function clientStaticFiles () {
   return gulp.src(path.client.src + '/dist/app.js')
-    .pipe(gulp.dest('www/js/client'));
+    .pipe(gulp.dest('web/js/client'));
+}
+
+function clientStaticFilesProd () {
+  var r = gulp.src(path.client.src + '/dist/js/**/*.js')
+    .pipe(concat('app.js'))
+    .pipe(gulp.dest('web/js/client'));
+  return r && gulp.src(path.client.src + '/dist/css/**/*.css')
+    .pipe(concat('app.css'))
+    .pipe(gulp.dest('web/css/client'));
 }
 
 gulp.task('frontEnd', function () {
   gulp.src(path.frontEnd + '/**/*')
-      .pipe(gulp.dest('www/'));
+      .pipe(gulp.dest('web/'));
 });
 
 function watch () {
@@ -168,4 +180,5 @@ function watch () {
 gulp.task('build:prod', gulp.parallel([stylesProd, scriptsProd, imagesProd, files, icons, vendor]));
 gulp.task('build:dev', gulp.parallel([stylesDev, scriptsDev, imagesDev, files, icons, vendor]));
 gulp.task('default', gulp.series(['build:dev', watch]));
-gulp.task('build:client', gulp.series([buildClientApp, clientStaticFiles]));
+gulp.task('build:client', gulp.series([buildClientApp, clientStaticFilesProd]));
+gulp.task('build:scheduling', gulp.series([assistantSchedulingStaticFiles]));

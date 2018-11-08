@@ -2,32 +2,34 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Semester;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ApplicationStatisticsController extends Controller
+class ApplicationStatisticsController extends BaseController
 {
     /**
-     * @param Semester $semester
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Semester $semester = null)
+    public function showAction()
     {
-        if ($semester === null) {
-            $department = $this->getUser()->getDepartment();
-            $semester = $department->getCurrentOrLatestSemester();
-        }
+        $department = $this->getDepartmentOrThrow404();
+        $semester = $this->getSemesterOrThrow404();
+        $admissionPeriod = $this->getDoctrine()
+            ->getRepository('AppBundle:AdmissionPeriod')
+            ->findOneByDepartmentAndSemester($department, $semester);
+
+        $assistantHistoryData = $this->get('assistant_history.data');
+        $assistantHistoryData->setSemester($semester)->setDepartment($department);
 
         $applicationData = $this->get('application.data');
-        $applicationData->setSemester($semester);
-        $assistantHistoryData = $this->get('assistant_history.data');
-        $assistantHistoryData->setSemester($semester);
+        if ($admissionPeriod !== null) {
+            $applicationData->setAdmissionPeriod($admissionPeriod);
+        }
 
         return $this->render('statistics/statistics.html.twig', array(
             'applicationData' => $applicationData,
             'assistantHistoryData' => $assistantHistoryData,
             'semester' => $semester,
+            'department' => $department,
         ));
     }
 }

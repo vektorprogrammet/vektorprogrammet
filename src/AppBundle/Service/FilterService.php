@@ -39,7 +39,7 @@ class FilterService
     {
         $filtered = [];
         foreach ($departments as $department) {
-            $currentSemester = $department->getCurrentSemester();
+            $currentSemester = $department->getCurrentAdmissionPeriod();
             $departmentHasActiveAdmission = ($currentSemester !== null && $currentSemester->hasActiveAdmission());
             if ($departmentHasActiveAdmission === $hasActiveAdmission) {
                 $filtered[] = $department;

@@ -30,7 +30,7 @@ class EmailSender
 
     public function sendSupportTicketToDepartment(SupportTicket $supportTicket)
     {
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('Nytt kontaktskjema')
             ->setFrom($this->defaultEmail)
             ->setReplyTo($supportTicket->getEmail())
@@ -41,7 +41,7 @@ class EmailSender
 
     public function sendSupportTicketReceipt(SupportTicket $supportTicket)
     {
-        $receipt = \Swift_Message::newInstance()
+        $receipt = (new \Swift_Message())
             ->setSubject('Kvittering for kontaktskjema')
             ->setFrom($this->defaultEmail)
             ->setReplyTo($supportTicket->getDepartment()->getEmail())
@@ -52,7 +52,7 @@ class EmailSender
 
     public function sendPaidReceiptConfirmation(Receipt $receipt)
     {
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('Vi har tilbakebetalt penger for utlegget ditt')
             ->setFrom($this->economyEmail)
             ->setFrom(array($this->economyEmail => 'Økonomi - Vektorprogrammet'))
@@ -67,7 +67,7 @@ class EmailSender
 
     public function sendRejectedReceiptConfirmation(Receipt $receipt)
     {
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
                                  ->setSubject('Refusjon for utlegget ditt har blitt avvist')
                                  ->setFrom(array($this->economyEmail => 'Økonomi - Vektorprogrammet'))
                                  ->setReplyTo($this->economyEmail)
@@ -81,7 +81,7 @@ class EmailSender
 
     public function sendReceiptCreatedNotification(Receipt $receipt)
     {
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
                                  ->setSubject('Nytt utlegg fra '.$receipt->getUser())
                                  ->setFrom('vektorbot@vektorprogrammet.no')
                                  ->setTo($this->economyEmail)
@@ -97,17 +97,32 @@ class EmailSender
 
     public function sendAdmissionStartedNotification(AdmissionSubscriber $subscriber)
     {
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
              ->setSubject('Opptak for vektorassistenter har åpnet!')
              ->setFrom($this->defaultEmail)
              ->setTo($subscriber->getEmail())
              ->setBody($this->twig->render('admission/notification_email.html.twig', array(
                  'department' => $subscriber->getDepartment(),
-                 'infoMeeting' => $subscriber->getDepartment()->getCurrentSemester()->getInfoMeeting(),
+                 'infoMeeting' => $subscriber->getDepartment()->getCurrentAdmissionPeriod()->getInfoMeeting(),
                  'subscriber' => $subscriber,
              )))
              ->setContentType('text/html');
 
+        $this->mailer->send($message, true);
+    }
+
+    public function sendInfoMeetingNotification(AdmissionSubscriber $subscriber)
+    {
+        $message = (new \Swift_Message())
+            ->setSubject('Infomøte i morgen!')
+            ->setFrom($this->defaultEmail)
+            ->setTo($subscriber->getEmail())
+            ->setBody($this->twig->render('admission/info_meeting_email.html.twig', array(
+                'department' => $subscriber->getDepartment(),
+                'infoMeeting' => $subscriber->getDepartment()->getCurrentAdmissionPeriod()->getInfoMeeting(),
+                'subscriber' => $subscriber,
+            )))
+            ->setContentType('text/html');
         $this->mailer->send($message, true);
     }
 }

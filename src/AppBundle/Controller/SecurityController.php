@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Role\Roles;
 
-class SecurityController extends Controller
+class SecurityController extends BaseController
 {
     public function loginAction()
     {
@@ -26,9 +26,13 @@ class SecurityController extends Controller
         );
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function loginRedirectAction()
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.authorization_checker')->isGranted(Roles::TEAM_MEMBER)) {
             return $this->redirectToRoute('control_panel');
         } elseif ($this->getDoctrine()->getRepository('AppBundle:Application')->findActiveByUser($this->getUser())) {
             return $this->redirectToRoute('my_page');

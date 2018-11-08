@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Entity\Article;
@@ -13,7 +12,7 @@ use AppBundle\Form\Type\ArticleType;
  * ArticleAdminController is the controller responsible for the administrative article actions,
  * such as creating and deleting articles.
  */
-class ArticleAdminController extends Controller
+class ArticleAdminController extends BaseController
 {
     // Number of articles shown per page on the admin page
     const NUM_ARTICLES = 10;
@@ -41,11 +40,12 @@ class ArticleAdminController extends Controller
 
         return $this->render('article_admin/index.html.twig', array(
             'pagination' => $pagination,
+            'articles' => $articles->getQuery()->getResult()
         ));
     }
 
     /**
-     * @Route("/kontrollpanel/artikkel/kladd/{id}", name="article_show_draft")
+     * @Route("/kontrollpanel/artikkel/kladd/{slug}", name="article_show_draft")
      * @param Article $article
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -65,9 +65,13 @@ class ArticleAdminController extends Controller
     public function createAction(Request $request)
     {
         $article       = new Article();
-        $form          = $this->createForm(new ArticleType(), $article);
+        $form          = $this->createForm(ArticleType::class, $article);
 
         $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $this->get('app.slug_maker')->setSlugFor($article);
+        }
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -117,7 +121,7 @@ class ArticleAdminController extends Controller
      */
     public function editAction(Request $request, Article $article)
     {
-        $form = $this->createForm(new ArticleType(), $article);
+        $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -131,6 +135,7 @@ class ArticleAdminController extends Controller
             if ($imageLarge) {
                 $article->setImageLarge($imageLarge);
             }
+
             $em->persist($article);
             $em->flush();
 
@@ -189,29 +194,18 @@ class ArticleAdminController extends Controller
     }
 
     /**
-     * Deletes the given article.
-     * This method is intended to be called by an Ajax request.
-     *
      * @param Article $article
      *
-     * @return JsonResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteAction(Article $article)
     {
-        try {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($article);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($article);
+        $em->flush();
 
-            $response['success'] = true;
-        } catch (\Exception $e) {
-            $response = [
-                'success' => false,
-                'code'    => $e->getCode(),
-                'cause'   => 'Det oppstod en feil.',
-            ];
-        }
+        $this->addFlash("success", "Artikkelen ble slettet");
 
-        return new JsonResponse($response);
+        return $this->redirectToRoute('articleadmin_show');
     }
 }

@@ -5,14 +5,13 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Department;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\CreateExecutiveBoardType;
 use AppBundle\Form\Type\CreateExecutiveBoardMembershipType;
 use AppBundle\Entity\ExecutiveBoardMembership;
 use Symfony\Component\HttpFoundation\Response;
 
-class ExecutiveBoardController extends Controller
+class ExecutiveBoardController extends BaseController
 {
     public function showAction()
     {
@@ -53,7 +52,9 @@ class ExecutiveBoardController extends Controller
         $member->setUser($this->getUser());
 
         // Create a new formType with the needed variables
-        $form = $this->createForm(new CreateExecutiveBoardMembershipType($department), $member);
+        $form = $this->createForm(CreateExecutiveBoardMembershipType::class, $member, [
+            'departmentId' => $department
+        ]);
 
         // Handle the form
         $form->handleRequest($request);
@@ -94,7 +95,7 @@ class ExecutiveBoardController extends Controller
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
 
         // Create the form
-        $form = $this->createForm(new CreateExecutiveBoardType($board), $board);
+        $form = $this->createForm(CreateExecutiveBoardType::class, $board);
 
         // Handle the form
         $form->handleRequest($request);
@@ -133,7 +134,9 @@ class ExecutiveBoardController extends Controller
     public function editMemberHistory(Request $request, ExecutiveBoardMembership $member)
     {
         $user = $member->getUser(); // Store the $user object before the form touches our $member object with spooky user data
-        $form = $this->createForm(new CreateExecutiveBoardMembershipType($user->getDepartment()), $member);
+        $form = $this->createForm(CreateExecutiveBoardMembershipType::class, $member, [
+            'departmentId' => $user->getDepartment()
+        ]);
 
         $form->handleRequest($request);
 

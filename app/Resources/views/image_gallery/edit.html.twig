@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="col-12 col-md-12 col-lg-12">
             {% if is_granted_team_leader() %}
                 <form method="POST"
                       onsubmit="return confirm('Vil du virkelig slette bildegalleriet {{ image_gallery.title }}? Hvis bildegalleriet brukes av funksjonalitet på nettsiden kan sletting føre til at dette slutter å fungere. Alle tilhørende bilder vil bli slettet. Er du HELT sikker?')"
@@ -20,7 +20,7 @@
             <p>{{ image_gallery.description }}</p>
         </div>
 
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="col-12 col-md-12 col-lg-12">
             {% for flashMessage in app.session.flashbag.get('success') %}
                 <div data-alert class="alert-box success radius">
                     {{ flashMessage }}
@@ -32,13 +32,13 @@
         {% if is_granted_team_leader() %}
             <section class="hide" id="edit-gallery-form" {% if not form.vars.valid %} style="display: block" {% endif %}>
                 {{ form_start(form) }}
-                    <div class="small-12 medium-7 large-7 columns">
+                    <div class="col-12 col-md-7 col-lg-7">
                         {{ form_row(form.title) }}
                         {{ form_row(form.referenceName) }}
                         {{ form_row(form.description) }}
                     </div>
 
-                    <div class="small-12 medium-12 large-12 columns">
+                    <div class="col-12 col-md-12 col-lg-12">
                         <button class="success small">Lagre endringer</button>
                     </div>
                 {{ form_end(form) }}
@@ -47,21 +47,21 @@
     </div>
 
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="col-12 col-md-12 col-lg-12">
             <hr>
         </div>
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="col-12 col-md-12 col-lg-12">
             <a href="{{ path('image_upload', { 'id': image_gallery.id }) }}"><i class="fa fa-plus"></i> Last opp nytt bilde</a>
         </div>
     </div>
 
     <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
+        <div class="col-12 col-md-12 col-lg-12">
             <hr>
         </div>
 
-        <div class="small-12 medium-12 large-12 columns">
-            <ul class="small-block-grid-3 medium-block-grid-4 large-block-grid-4">
+        <div class="col-12 col-md-12 col-lg-12">
+            <ul class="col-block-grid-3 col-md-block-grid-4 col-lg-block-grid-4">
                 {% for image in image_gallery.images %}
                     <li class="image-gallery-grid-element">
                         <a href="{{ path('image_edit', {'id': image.id}) }}">

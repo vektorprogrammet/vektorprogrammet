@@ -4,188 +4,182 @@
     Intervju: {{ interview.user.firstName }} {{ interview.user.lastName }}
 {% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('applications_show_interviewed', {'department': application.department.id, 'semester': application.semester.id}) }}">Intervjuer</a>
+    </li>
+    <li class="breadcrumb-item active">{{ application.user }}</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    <a href="{{ path('interview_conduct', { 'id': application.id }) }}"
+       class="btn btn-outline-secondary">Rediger intervju</a>
+{% endblock %}
+
+
 {% block body %}
-    <p></p>
-    <div class="row">
-        <div class="small-12 medium-12 large-12 columns">
-            <div class="panel">
-                <div class="row">
-                    <div class="small-12 medium-12 large-12 columns">
-                        <a href="{{ path('interview_conduct', { 'id': application.id }) }}"
-                           class="button radius tiny info float-right clear">Endre</a>
-                        <h1>Intervju</h1>
-                        <h3>Intervjuet av</h3>
-                        <p>{{ interview.interviewer }}
-                            {% if interview.coInterviewer %} og {{ interview.coInterviewer }}{% endif %}</p>
-                        <h3>Kandidat</h3>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Fornavn</th>
-                                <th>Etternavn</th>
-                                <th>Tlf</th>
-                                <th>E-post</th>
-                                <th>Linje</th>
-                                <th>År</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                {% set u = interview.user %}
-                                <td> {{ u.firstName }} </td>
-                                <td> {{ u.lastName }} </td>
-                                <td> {{ u.phone }} </td>
-                                <td> {{ u.email }} </td>
-                                <td> {{ u.fieldOfStudy }} </td>
-                                <td> {{ application.yearOfStudy }} </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <h3>Dato</h3>
-                        <p>{{ interview.conducted|date("d.m.y - G:i") }}</p>
-                    </div>
+    <div class="card">
+        <div class="card-header">
+            <span><i class="fa fa-comments-o"></i> Intervju - {{ application.user }} <small>{{ interview.conducted|date("d.m.y - G:i") }}</small></span>
+        </div>
+        <div class="card-body table-responsive">
+            {% include 'interview/interviewee_table.html.twig' %}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-align-justify"></i> Praktisk informasjon
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-lg-4">
+                    <label class="question-label">Er det noen dager som IKKE passer for deg?</label>
+                    <table class="table table-sm">
+                        <thead>
+                        <tr>
+                            <th>Mandag</th>
+                            <th>Tirsdag</th>
+                            <th>Onsdag</th>
+                            <th>Torsdag</th>
+                            <th>Fredag</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{ application.monday ? "Bra" : "Ikke" }}</td>
+                            <td>{{ application.tuesday ? "Bra" : "Ikke" }}</td>
+                            <td>{{ application.wednesday ? "Bra" : "Ikke" }}</td>
+                            <td>{{ application.thursday ? "Bra" : "Ikke" }}</td>
+                            <td>{{ application.friday ? "Bra" : "Ikke" }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-                <h3>Praktisk informasjon</h3>
-
-                <div class="row">
-                    <div class="small-12 large-9 columns">
-                        {% if interview.application.specialNeeds %}
-                            <label class="question-label">
-                                <i class="fa fa-exclamation-triangle text-warning"></i>
-                                 Spesielle behov</label>
-                            <p>{{ interview.application.specialNeeds }}</p>
-                        {% endif %}
-                    </div>
+            <div class="row">
+                <div class="col-12 col-lg-9">
+                    <label class="question-label">
+                        Kunne du tenke deg enkel eller dobbel stilling?
+                    </label>
+                    <p>{{ application.doublePosition ? '8 uker':'4 uker' }}</p>
                 </div>
+            </div>
 
-
-                <div class="row">
-                    <div class="small-12 columns">
-                        <label class="question-label">Er det noen dager som IKKE passer for deg?</label>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Mandag</th>
-                                <th>Tirsdag</th>
-                                <th>Onsdag</th>
-                                <th>Torsdag</th>
-                                <th>Fredag</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>{{ application.monday ? "Bra" : "Ikke" }}</td>
-                                <td>{{ application.tuesday ? "Bra" : "Ikke" }}</td>
-                                <td>{{ application.wednesday ? "Bra" : "Ikke" }}</td>
-                                <td>{{ application.thursday ? "Bra" : "Ikke" }}</td>
-                                <td>{{ application.friday ? "Bra" : "Ikke" }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
-                        <label class="question-label">
-                            Kunne du tenke deg enkel eller dobbel stilling?
-                        </label>
-                        <p>{{ application.doublePosition ? '8 uker':'4 uker' }}</p>
-
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
-                        <label class="question-label">
-                            Er det noen tidspunkt i løpet av semesteret du ikke kan delta på?
-                        </label>
-                        <p>
-                            {% if application.preferredGroup == "Bolk 2" %}
-                            Kan ikke i bolk 1
-                            {% elseif application.preferredGroup == "Bolk 1" %}
-                            Kan ikke i bolk 2
-                            {% else %}
-                            Kan hele semesteret
-                            {% endif %}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
-                        <label class="question-label">Vil du undervise på norsk skole eller internasjonal skole?</label>
-                        <p>
-                            {{ application.language }}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
-                        <label class="question-label">Hvor hørte du om Vektorprogrammet?</label>
-                        <p>
-                            {% for from in application.heardAboutFrom %}
-                                {{ from }}{% if not loop.last %}, {% endif %}
-                            {% endfor %}
-                        </p>
-                    </div>
-                </div>
-
-                <h3>Intervjuspørsmål</h3>
-
-                {% for interviewAnswer in interview.interviewAnswers %}
-                    <label class="question-label">{{ interviewAnswer.interviewQuestion.question }}</label>
+            <div class="row doublePositionRow">
+                <div class="col-12 col-lg-9">
+                    <label class="question-label">
+                        Er det noen tidspunkt i løpet av semesteret du ikke kan delta på?
+                    </label>
                     <p>
-                        {{ interviewAnswer }}
+                        {% if application.preferredGroup == "Bolk 2" %}
+                            Kan ikke i bolk 1
+                        {% elseif application.preferredGroup == "Bolk 1" %}
+                            Kan ikke i bolk 2
+                        {% else %}
+                            Kan hele semesteret
+                        {% endif %}
                     </p>
-                {% endfor %}
-
-                <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
-                        <label class="question-label">Kan du tenke deg å være med i organiseringen av Vektorprogrammet?
-                            Dette inneholder teamarbeid</label>
-                        <p>
-                            {{ application.teamInterest ? 'Ja' : 'Nei' }}
-                        </p>
-                    </div>
-
                 </div>
+            </div>
 
-                <h3>Evaluering</h3>
-
-                <div class="row">
-                    <div class="small-12 columns">
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Forklaringsevne</th>
-                                <th><span class="has-tip"
-                                          title="Forbilde for ungdomsskoleelever">Forbilde</span></th>
-                                <th>Egnethet</th>
-                                <th>Sum</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>{{ interview.interviewScore.explanatoryPower }}</td>
-                                <td>{{ interview.interviewScore.roleModel }}</td>
-                                <td>{{ interview.interviewScore.suitability }}</td>
-                                <td>{{ interview.interviewScore.sum }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <div class="row">
+                <div class="col-12 col-lg-9">
+                    <label class="question-label">Vil du undervise på norsk skole eller internasjonal skole?</label>
+                    <p>
+                        {{ application.language }}
+                    </p>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="small-12 medium-12 large-9 columns">
-                        <label class="question-label">Passer studenten som assistent?</label>
-                        <p>{{ interview.interviewScore.suitableAssistant }}</p>
-                    </div>
+            <div class="row">
+                <div class="col-12 col-lg-9">
+                    <label class="question-label">Hvor hørte du om Vektorprogrammet?</label>
+                    <p>
+                        {{ application.heardAboutFrom|join(', ') }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-md-12 col-lg-9">
+                    <label class="question-label">Legg til personen i teaminteresse-listen?</label>
+                    <p>
+                        {{ application.teamInterest ? 'Ja' : 'Nei' }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-md-12 col-lg-9">
+                    <label class="question-label">Hvilke team er du eventuelt interessert i?</label>
+                    <p>
+                        {% if application.potentialTeams|length %}
+                            {{ application.potentialTeams|join(', ') }}
+                        {% else %}
+                            Ingen valgt
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {% if interview.application.specialNeeds %}
+    <div class="card" id="special">
+        <div class="card-header"><i class="fa fa-align-justify"></i> Spesielle behov</div>
+        <div class="card-body">
+            <label class="question-label">
+                <i class="fa fa-exclamation-triangle text-warning"></i>
+                Spesielle behov</label>
+            <p class="m-0">{{ interview.application.specialNeeds }}</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="card">
+        <div class="card-header"><i class="fa fa-align-justify"></i> Intervjuspørsmål <small>{{ application.interview.interviewSchema.name }}</small></div>
+        <div class="card-body">
+            {% for interviewAnswer in interview.interviewAnswers %}
+                <label class="question-label">{{ interviewAnswer.interviewQuestion.question }}</label>
+                <p>
+                    {{ interviewAnswer }}
+                </p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header"><i class="fa fa-align-justify"></i> Evaluering</div>
+        <div class="card-body">
+            <table class="table table-bordered w-auto">
+                <tr>
+                    <th>Forklaringsevne</th>
+                    <td>{{ interview.interviewScore.explanatoryPower }}</td>
+                </tr>
+                <tr>
+                    <th><span class="has-tip"
+                              title="Forbilde for ungdomsskoleelever">Forbilde</span></th>
+                    <td>{{ interview.interviewScore.roleModel }}</td>
+                </tr>
+                <tr>
+                    <th>Egnethet</th>
+                    <td>{{ interview.interviewScore.suitability }}</td>
+                </tr>
+                <tr>
+                    <th>Sum</th>
+                    <td><strong>{{ interview.interviewScore.sum }}</strong></td>
+                </tr>
+            </table>
+            <div class="row">
+                <div class="col-12 col-lg-9">
+                    <label class="question-label">Passer studenten som assistent?</label>
+                    <p class="m-0">{{ interview.interviewScore.suitableAssistant }}</p>
                 </div>
             </div>
         </div>
     </div>
+
 {% endblock %}

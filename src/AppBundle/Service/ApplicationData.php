@@ -2,9 +2,9 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Repository\ApplicationRepository;
-use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -16,9 +16,9 @@ class ApplicationData
      */
     private $department;
     /**
-     * @var Semester
+     * @var AdmissionPeriod
      */
-    private $semester;
+    private $admissionPeriod;
     /**
      * @var ApplicationRepository
      */
@@ -47,21 +47,21 @@ class ApplicationData
     public function setDepartment(Department $department)
     {
         $this->department = $department;
-        $this->semester = $department->getCurrentOrLatestSemester();
+        $this->admissionPeriod = $department->getCurrentOrLatestAdmissionPeriod();
     }
 
-    public function setSemester(Semester $semester)
+    public function setAdmissionPeriod(AdmissionPeriod $admissionPeriod)
     {
-        $this->semester = $semester;
+        $this->admissionPeriod = $admissionPeriod;
     }
 
     public function getApplicationCount(): int
     {
-        if (!$this->semester) {
+        if (!$this->admissionPeriod) {
             return 0;
         }
 
-        return $this->applicationRepository->numOfApplications($this->semester);
+        return $this->applicationRepository->numOfApplications($this->admissionPeriod);
     }
 
 
@@ -72,7 +72,7 @@ class ApplicationData
 
     public function getMaleCount(): int
     {
-        return $this->applicationRepository->numOfGender($this->semester, 0);
+        return $this->applicationRepository->numOfGender($this->admissionPeriod, 0);
     }
 
     public function getMalePercentage(): float
@@ -86,7 +86,7 @@ class ApplicationData
 
     public function getFemaleCount(): int
     {
-        return $this->applicationRepository->numOfGender($this->semester, 1);
+        return $this->applicationRepository->numOfGender($this->admissionPeriod, 1);
     }
 
     public function getFemalePercentage(): float
@@ -100,32 +100,32 @@ class ApplicationData
 
     public function getPreviousParticipationCount(): int
     {
-        return $this->applicationRepository->numOfPreviousParticipation($this->semester);
+        return $this->applicationRepository->numOfPreviousParticipation($this->admissionPeriod);
     }
 
     public function getCancelledInterviewsCount(): int
     {
-        return count($this->applicationRepository->findCancelledApplicants($this->semester));
+        return count($this->applicationRepository->findCancelledApplicants($this->admissionPeriod));
     }
 
     public function getInterviewedAssistantsCount(): int
     {
-        return count($this->em->getRepository('AppBundle:Application')->findInterviewedApplicants($this->department, $this->semester));
+        return count($this->em->getRepository('AppBundle:Application')->findInterviewedApplicants($this->department, $this->admissionPeriod));
     }
 
     public function getAssignedInterviewsCount(): int
     {
-        return count($this->em->getRepository('AppBundle:Application')->findAssignedApplicants($this->semester));
+        return count($this->em->getRepository('AppBundle:Application')->findAssignedApplicants($this->admissionPeriod));
     }
 
     public function getTotalAssistantsCount(): int
     {
-        return count($this->em->getRepository('AppBundle:AssistantHistory')->findAssistantHistoriesByDepartment($this->department, $this->semester));
+        return count($this->em->getRepository('AppBundle:AssistantHistory')->findByDepartmentAndSemester($this->department, $this->admissionPeriod->getSemester()));
     }
 
     public function getPositionsCount(): int
     {
-        $assistantHistories = $this->em->getRepository('AppBundle:AssistantHistory')->findAssistantHistoriesByDepartment($this->department, $this->semester);
+        $assistantHistories = $this->em->getRepository('AppBundle:AssistantHistory')->findByDepartmentAndSemester($this->department, $this->admissionPeriod->getSemester());
 
         return $this->countPositions($assistantHistories, $this->getTotalAssistantsCount());
     }
@@ -148,7 +148,7 @@ class ApplicationData
     public function getFieldsOfStudyCounts(): array
     {
         $fieldOfStudyCount = array();
-        $applicants = $this->applicationRepository->findBy(array('semester' => $this->semester));
+        $applicants = $this->applicationRepository->findBy(array('admissionPeriod' => $this->admissionPeriod));
         foreach ($applicants as $applicant) {
             $fieldOfStudyShortName = $applicant->getUser()->getFieldOfStudy()->getShortName();
             if (array_key_exists($fieldOfStudyShortName, $fieldOfStudyCount)) {
@@ -165,7 +165,7 @@ class ApplicationData
     public function getStudyYearCounts(): array
     {
         $studyYearCounts = array();
-        $applicants = $this->applicationRepository->findBy(array('semester' => $this->semester));
+        $applicants = $this->applicationRepository->findBy(array('admissionPeriod' => $this->admissionPeriod));
         foreach ($applicants as $applicant) {
             $studyYear = $applicant->getYearOfStudy();
             if (array_key_exists($studyYear, $studyYearCounts)) {
@@ -192,11 +192,11 @@ class ApplicationData
     }
 
     /**
-     * @return Semester
+     * @return AdmissionPeriod
      */
-    public function getSemester(): Semester
+    public function getAdmissionPeriod(): AdmissionPeriod
     {
-        return $this->semester;
+        return $this->admissionPeriod;
     }
 
     /**
@@ -210,7 +210,7 @@ class ApplicationData
     public function getHeardAboutFrom(): array
     {
         $heardAbout = array();
-        $applicants = $this->applicationRepository->findBy(array('semester' => $this->semester));
+        $applicants = $this->applicationRepository->findBy(array('admissionPeriod' => $this->admissionPeriod));
 
         foreach ($applicants as $applicant) {
             $allHeardAboutFrom = $applicant->getHeardAboutFrom();

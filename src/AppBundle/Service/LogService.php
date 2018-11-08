@@ -4,22 +4,35 @@ namespace AppBundle\Service;
 
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class LogService implements LoggerInterface
 {
     private $monoLogger;
     private $slackMessenger;
+    private $userService;
+    private $requestStack;
+    /**
+     * @var string
+     */
+    private $env;
 
     /**
      * LogService constructor.
      *
-     * @param Logger         $monoLogger
+     * @param Logger $monoLogger
      * @param SlackMessenger $slackMessenger
+     * @param UserService $userService
+     * @param RequestStack $requestStack
+     * @param string $env
      */
-    public function __construct(Logger $monoLogger, SlackMessenger $slackMessenger)
+    public function __construct(Logger $monoLogger, SlackMessenger $slackMessenger, UserService $userService, RequestStack $requestStack, string $env)
     {
         $this->monoLogger = $monoLogger;
         $this->slackMessenger = $slackMessenger;
+        $this->userService = $userService;
+        $this->requestStack = $requestStack;
+        $this->env = $env;
     }
 
     /**
@@ -31,7 +44,7 @@ class LogService implements LoggerInterface
     public function emergency($message, array $context = array())
     {
         $this->monoLogger->emergency($message, $context);
-        $this->slackMessenger->log('EMERGENCY: '.$message);
+        $this->log('EMERGENCY', $message, $context);
     }
 
     /**
@@ -46,7 +59,7 @@ class LogService implements LoggerInterface
     public function alert($message, array $context = array())
     {
         $this->monoLogger->alert($message, $context);
-        $this->slackMessenger->log('ALERT: '.$message);
+        $this->log('ALERT', $message, $context);
     }
 
     /**
@@ -60,7 +73,7 @@ class LogService implements LoggerInterface
     public function critical($message, array $context = array())
     {
         $this->monoLogger->critical($message, $context);
-        $this->slackMessenger->log('CRITICAL: '.$message);
+        $this->log('CRITICAL', $message, $context);
     }
 
     /**
@@ -73,7 +86,7 @@ class LogService implements LoggerInterface
     public function error($message, array $context = array())
     {
         $this->monoLogger->error($message, $context);
-        $this->slackMessenger->log('ERROR: '.$message);
+        $this->log('ERROR', $message, $context);
     }
 
     /**
@@ -88,7 +101,7 @@ class LogService implements LoggerInterface
     public function warning($message, array $context = array())
     {
         $this->monoLogger->warning($message, $context);
-        $this->slackMessenger->log('WARNING: '.$message);
+        $this->log('WARNING', $message, $context);
     }
 
     /**
@@ -100,7 +113,7 @@ class LogService implements LoggerInterface
     public function notice($message, array $context = array())
     {
         $this->monoLogger->notice($message, $context);
-        $this->slackMessenger->log('NOTICE: '.$message);
+        $this->log('NOTICE', $message, $context);
     }
 
     /**
@@ -114,7 +127,7 @@ class LogService implements LoggerInterface
     public function info($message, array $context = array())
     {
         $this->monoLogger->info($message, $context);
-        $this->slackMessenger->log('INFO: '.$message);
+        $this->log('INFO', $message, $context);
     }
 
     /**
@@ -126,7 +139,7 @@ class LogService implements LoggerInterface
     public function debug($message, array $context = array())
     {
         $this->monoLogger->debug($message, $context);
-        $this->slackMessenger->log('DEBUG: '.$message);
+        $this->log('DEBUG', $message, $context);
     }
 
     /**
@@ -138,7 +151,44 @@ class LogService implements LoggerInterface
      */
     public function log($level, $message, array $context = array())
     {
-        $this->monoLogger->log($message, $context);
-        $this->slackMessenger->log('LOG: '.$message);
+        $this->monoLogger->log(200, $message, $context);
+        $this->slackMessenger->log("", $this->createAttachmentData($level, $message, $context));
+    }
+
+    private function createAttachmentData($level, $message, array $data)
+    {
+        $request = $this->requestStack->getMasterRequest();
+        $method = $request ? $request->getMethod() : '';
+        $path = $request ? $request->getPathInfo() : '???';
+        if ('staging' === $this->env) {
+            $path = $request ? $request->getUri() : '???';
+        }
+
+        $default = [
+            'color' => $this->getLogColor($level),
+            'author_name' => $this->userService->getCurrentUserNameAndDepartment(),
+            'author_icon' => $this->userService->getCurrentProfilePicture(),
+            'text' => "$message",
+            'footer' => "$level - $method $path"
+        ];
+
+        return array_merge($default, $data);
+    }
+
+    private function getLogColor($level)
+    {
+        switch ($level) {
+            case 'INFO':
+                return '#6fceee';
+            case 'WARNING':
+                return '#fd7e14';
+            case 'CRITICAL':
+            case 'ERROR':
+            case 'ALERT':
+            case 'EMERGENCY':
+                return '#dc3545';
+            default:
+                return '#007bff';
+        }
     }
 }

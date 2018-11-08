@@ -51,7 +51,7 @@ class AssetExtension extends \Twig_Extension
         if ($path[0] !== '/') {
             $path = "/$path";
         }
-        $filePath = $this->rootDir."/../www$path";
+        $filePath = $this->rootDir."/web$path";
 
         $version = '';
         if (file_exists($filePath)) {
