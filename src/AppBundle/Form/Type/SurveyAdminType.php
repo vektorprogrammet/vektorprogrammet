@@ -8,7 +8,6 @@
 
 namespace AppBundle\Form\Type;
 
-
 use AppBundle\Entity\Repository\DepartmentRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,9 +30,5 @@ class SurveyAdminType extends SurveyType
     ));
 
         parent::buildForm($builder, $options);
-
-
-
     }
-
 }

@@ -281,7 +281,6 @@ class SurveyController extends BaseController
 
     public function editSurveyAction(Request $request, Survey $survey)
     {
-
         $this->ensureAccess($survey);
 
         if ($this->get('app.access_control')->checkAccess("survey_admin")) {
@@ -388,7 +387,5 @@ class SurveyController extends BaseController
         }
 
         throw new AccessDeniedException();
-
-
     }
 }
