@@ -51,8 +51,7 @@ class AssistantControllerTest extends BaseWebTestCase
         $applicationsAfterSecondDepartment = $this->countTableRows($secondDepartmentPath);
 
         $this->assertEquals($applicationsBeforeFirstDepartment + 1, $applicationsAfterFirstDepartment);
-        // A email can only be used once to send an application.
-        $this->assertEquals($applicationsBeforeSecondDepartment, $applicationsAfterSecondDepartment);
+        $this->assertEquals($applicationsBeforeSecondDepartment + 1, $applicationsAfterSecondDepartment);
     }
 
     private function createAndSubmitForm(int $departmentId = 1, int $fieldOfStudyId = 2)

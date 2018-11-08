@@ -83,22 +83,6 @@ class SurveyManager
         return $surveyTaken;
     }
 
-
-    public function getValidSurveysTaken(Survey $survey) : array
-    {
-        $surveysTaken = $this->em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
-        $validSurveysTaken = array();
-        foreach ($surveysTaken as $surveyTaken) {
-            if ($surveyTaken === null) {
-                continue;
-            }
-            $validSurveysTaken[] = $surveyTaken;
-        }
-
-        return $validSurveysTaken;
-    }
-
-
     public function getUserAffiliationOfSurveyAnswers(Survey $survey)
     {
         $surveysTaken = $this->em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
@@ -224,7 +208,8 @@ class SurveyManager
     public function surveyResultToJson(Survey $survey)
     {
         $userAffiliation = $this->getUserAffiliationOfSurveyAnswers($survey);
-        $validSurveysTaken = $this->getValidSurveysTaken($survey);
+        $surveysTaken = $this->em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
+
         $title = $survey->isTeamSurvey() ? 'Team' : 'Skole';
 
         //Inject the school/team question into question array
@@ -233,27 +218,15 @@ class SurveyManager
         $survey_decode = json_decode($survey_json, true);
         $survey_decode['questions'][] = $userAffiliationQuestion;
 
-        return array('survey' => $survey_decode, 'answers' => $validSurveysTaken);
+        return array('survey' => $survey_decode, 'answers' => $surveysTaken);
     }
 
-    public function toggleReservePopUp(User $user)
+    public function toggleReservedFromPopUp(User $user)
     {
         $user->setReservedFromPopUp(!$user->getReservedFromPopUp());
         $user->setLastPopUpTime(null);
+        $this->em->persist($user);
+        $this->em->flush();
 
-        try {
-            $this->em->persist($user);
-            $this->em->flush();
-        } catch (\Exception $e) {
-        }
-    }
-    public function closePopUp(User $user)
-    {
-        $user->setLastPopUpTime(new \DateTime());
-        try {
-            $this->em->persist($user);
-            $this->em->flush();
-        } catch (\Exception $e) {
-        }
     }
 }

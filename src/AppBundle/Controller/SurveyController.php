@@ -356,15 +356,18 @@ class SurveyController extends BaseController
     }
 
 
-    public function toggleReservePopUpAction()
+    public function toggleReservedFromPopUpAction()
     {
-        $this->get('survey.manager')->toggleReservePopUp($this->getUser());
+        $this->get('survey.manager')->toggleReservedFromPopUp($this->getUser());
         return new JsonResponse();
     }
 
     public function closePopUpAction()
     {
-        $this->get('survey.manager')->closePopUp($this->getUser());
+        $user = $this->getUser();
+        $user->setLastPopUpTime(new \DateTime());
+        $this->em->persist($user);
+        $this->em->flush();
         return new JsonResponse();
     }
 
