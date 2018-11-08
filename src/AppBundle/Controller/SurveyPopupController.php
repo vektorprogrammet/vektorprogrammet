@@ -4,12 +4,11 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Role\Roles;
-use AppBundle\Service\RoleManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class TwigSurveyController extends Controller
+class SurveyPopupController extends Controller
 {
     public function nextSurveyAction(Request $request)
     {
@@ -17,18 +16,18 @@ class TwigSurveyController extends Controller
         $user = $this->getUser();
         $userShouldSeePopUp = $user !== null &&
             $this->get("app.roles")->userIsGranted($user, Roles::TEAM_MEMBER) &&
-            !$user->getReservedPopUp()&&
-            $user->getLastPopUp()->diff(new \DateTime())->days >= 1;
+            !$user->getReservedFromPopUp() &&
+            $user->getLastPopUpTime()->diff(new \DateTime())->days >= 1;
 
         if ($userShouldSeePopUp) {
             $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
 
             $surveys = $this->getDoctrine()
-                    ->getRepository('AppBundle:Survey')
-                    ->findOneByUserNotTaken($this->getUser(), $semester);
+                ->getRepository('AppBundle:Survey')
+                ->findOneByUserNotTaken($this->getUser(), $semester);
 
             if (!empty($surveys)) {
-                $survey=end($surveys);
+                $survey = end($surveys);
             }
         }
 

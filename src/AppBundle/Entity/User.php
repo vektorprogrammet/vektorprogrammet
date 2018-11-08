@@ -114,15 +114,15 @@ class User implements AdvancedUserInterface, \Serializable
 
 
     /**
-     * @ORM\Column(type="boolean", name="reserved_pop_up", nullable=true)
+     * @ORM\Column(type="boolean", name="reserved_pop_up", nullable=false)
      */
-    private $reservedPopUp;
+    private $reservedFromPopUp;
 
 
     /**
-     * @ORM\Column(type="datetime", name="last_pop_up", nullable=true)
+     * @ORM\Column(type="datetime", name="last_pop_up", nullable=false)
      */
-    private $lastPopUp;
+    private $lastPopUpTime;
 
     /**
      * @var Role[]
@@ -179,6 +179,8 @@ class User implements AdvancedUserInterface, \Serializable
         $this->isActive = true;
         $this->picture_path = 'images/defaultProfile.png';
         $this->receipts = new ArrayCollection();
+        $this->reservedFromPopUp = false;
+        $this->lastPopUpTime = new \DateTime("2000-01-01");
     }
 
     public function getId()
@@ -788,39 +790,33 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @return boolean
      */
-    public function getReservedPopUp()
+    public function getReservedFromPopUp()
     {
-        if ($this->reservedPopUp === null) {
-            return false;
-        }
-        return $this->reservedPopUp;
+        return $this->reservedFromPopUp;
     }
 
     /**
-     * @param boolean $reservedPopUp
+     * @param boolean $reservedFromPopUp
      */
-    public function setReservedPopUp($reservedPopUp): void
+    public function setReservedFromPopUp($reservedFromPopUp): void
     {
-        $this->reservedPopUp = $reservedPopUp;
+        $this->reservedFromPopUp = $reservedFromPopUp;
     }
 
     /**
      * @return \DateTime
      */
-    public function getLastPopUp() : \DateTime
+    public function getLastPopUpTime() : \DateTime
     {
-        if ($this->lastPopUp === null) {
-            return new \DateTime("2000-01-01");
-        }
-        return $this->lastPopUp;
+        return $this->lastPopUpTime;
     }
 
     /**
-     * @param \DateTime $lastPopUp
+     * @param \DateTime $lastPopUpTime
      */
-    public function setLastPopUp($lastPopUp): void
+    public function setLastPopUpTime($lastPopUpTime): void
     {
-        $this->lastPopUp = $lastPopUp;
+        $this->lastPopUpTime = $lastPopUpTime;
     }
 
     /**

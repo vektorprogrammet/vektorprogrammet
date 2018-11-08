@@ -123,17 +123,6 @@ class SurveyManager
         return $userAffiliation;
     }
 
-
-
-    public function getSurveyTargetMainAffiliation(Survey $survey) : string
-    {
-        if ($survey->isTeamSurvey()) {
-            return "Team";
-        }
-        return "Skole";
-    }
-
-
     public function getTextAnswerWithSchoolResults($survey): array
     {
         $textQuestionArray = array();
@@ -236,7 +225,7 @@ class SurveyManager
     {
         $userAffiliation = $this->getUserAffiliationOfSurveyAnswers($survey);
         $validSurveysTaken = $this->getValidSurveysTaken($survey);
-        $title = $this->getSurveyTargetMainAffiliation($survey);
+        $title = $survey->isTeamSurvey() ? 'Team' : 'Skole';
 
         //Inject the school/team question into question array
         $userAffiliationQuestion = array('question_id' => 0, 'question_label' => $title, 'alternatives' => $userAffiliation);
@@ -249,8 +238,8 @@ class SurveyManager
 
     public function toggleReservePopUp(User $user)
     {
-        $user->setReservedPopUp(!$user->getReservedPopUp());
-        $user->setLastPopUp(null);
+        $user->setReservedFromPopUp(!$user->getReservedFromPopUp());
+        $user->setLastPopUpTime(null);
 
         try {
             $this->em->persist($user);
@@ -260,7 +249,7 @@ class SurveyManager
     }
     public function closePopUp(User $user)
     {
-        $user->setLastPopUp(new \DateTime());
+        $user->setLastPopUpTime(new \DateTime());
         try {
             $this->em->persist($user);
             $this->em->flush();

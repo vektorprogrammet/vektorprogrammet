@@ -4,9 +4,7 @@ namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Department;
-use AppBundle\Entity\Semester;
 use AppBundle\Entity\Team;
-use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
@@ -65,10 +63,10 @@ class TeamRepository extends EntityRepository
     public function findInActiveByDepartment(Department $department): array
     {
         return $this->findByDepartmentQueryBuilder($department)
-                    ->andWhere('team.active = false')
-                    ->orderBy('team.name', 'ASC')
-                    ->getQuery()
-                    ->getResult();
+            ->andWhere('team.active = false')
+            ->orderBy('team.name', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
     /**
@@ -126,4 +124,5 @@ class TeamRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
 }

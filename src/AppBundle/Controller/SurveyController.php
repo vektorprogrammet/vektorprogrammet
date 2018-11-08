@@ -3,16 +3,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Semester;
+use AppBundle\Entity\Survey;
 use AppBundle\Form\Type\SurveyAdminType;
-use AppBundle\Role\Roles;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use AppBundle\Form\Type\SurveyExecuteType;
 use AppBundle\Form\Type\SurveySchoolSpecificExecuteType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Form\Type\SurveyType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Survey;
-use AppBundle\Form\Type\SurveyType;
-use AppBundle\Form\Type\SurveyExecuteType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -26,7 +24,7 @@ class SurveyController extends BaseController
      * Shows the given survey.
      *
      * @param Request $request
-     * @param Survey  $survey
+     * @param Survey $survey
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -78,7 +76,7 @@ class SurveyController extends BaseController
         $user = $this->getUser();
         if (!$survey->isTeamSurvey()) {
             return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
-        } elseif ($user===null) {
+        } elseif ($user === null) {
             throw new AccessDeniedException("Dette er en teamundersøkese. Logg inn for å ta den!");
         }
         $surveyTaken = $this->get('survey.manager')->initializeTeamSurveyTaken($survey, $user);
@@ -99,7 +97,7 @@ class SurveyController extends BaseController
                         $em->remove($oldTakenSurvey);
                     }
                 }
-                $user->setLastPopUp(new \DateTime());
+                $user->setLastPopUpTime(new \DateTime());
                 $em->persist($user);
                 $em->persist($surveyTaken);
                 $em->flush();
@@ -283,6 +281,7 @@ class SurveyController extends BaseController
 
     public function editSurveyAction(Request $request, Survey $survey)
     {
+
         $this->ensureAccess($survey);
 
         if ($this->get('app.access_control')->checkAccess("survey_admin")) {
@@ -331,7 +330,7 @@ class SurveyController extends BaseController
 
     public function resultSurveyAction(Survey $survey)
     {
-        if ($survey->isConfidential() ||  $this->get('app.access_control')->checkAccess("survey_admin")) {
+        if ($survey->isConfidential() || !$this->get('app.access_control')->checkAccess("survey_admin")) {
             throw new AccessDeniedException();
         }
 
@@ -346,7 +345,7 @@ class SurveyController extends BaseController
         return $this->render('survey/survey_result.html.twig', array(
             'textAnswers' => $this->get('survey.manager')->getTextAnswerWithSchoolResults($survey),
             'survey' => $survey,
-            'teamSurvey' =>  $survey->isTeamSurvey(),
+            'teamSurvey' => $survey->isTeamSurvey(),
 
         ));
     }
@@ -386,5 +385,7 @@ class SurveyController extends BaseController
         }
 
         throw new AccessDeniedException();
+
+
     }
 }
