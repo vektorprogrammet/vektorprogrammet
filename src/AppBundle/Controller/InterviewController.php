@@ -558,8 +558,9 @@ class InterviewController extends BaseController
         $department = $interview->getApplication()->getDepartment();
         $teamUsers = $this->getDoctrine()->getRepository('AppBundle:User')
             ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
+        $coInterviewers = array_merge(array_diff($teamUsers, array($interview->getInterviewer(),$interview->getCoInterviewer())));
         $form = $this->createForm(AddCoInterviewerType::class, null, [
-            'teamUsers' => $teamUsers
+            'teamUsers' => $coInterviewers
         ]);
         $form->handleRequest($request);
 
