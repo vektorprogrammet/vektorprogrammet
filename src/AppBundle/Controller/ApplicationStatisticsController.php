@@ -2,7 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use AppBundle\Service\ApplicationData;
+use AppBundle\Service\AssistantHistoryData;
 
 class ApplicationStatisticsController extends BaseController
 {
@@ -17,10 +18,10 @@ class ApplicationStatisticsController extends BaseController
             ->getRepository('AppBundle:AdmissionPeriod')
             ->findOneByDepartmentAndSemester($department, $semester);
 
-        $assistantHistoryData = $this->get('assistant_history.data');
+        $assistantHistoryData = $this->get(AssistantHistoryData::class);
         $assistantHistoryData->setSemester($semester)->setDepartment($department);
 
-        $applicationData = $this->get('application.data');
+        $applicationData = $this->get(ApplicationData::class);
         if ($admissionPeriod !== null) {
             $applicationData->setAdmissionPeriod($admissionPeriod);
         }

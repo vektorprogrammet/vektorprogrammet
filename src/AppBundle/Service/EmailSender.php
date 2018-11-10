@@ -5,6 +5,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\SupportTicket;
 use AppBundle\Entity\Receipt;
+use AppBundle\Mailer\Mailer;
 use AppBundle\Mailer\MailerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Router;

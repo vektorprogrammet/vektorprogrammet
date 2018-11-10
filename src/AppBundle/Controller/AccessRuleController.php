@@ -4,9 +4,10 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\AccessRule;
 use AppBundle\Form\Type\AccessRuleType;
-use AppBundle\Form\Type\AccessRuleUserType;
 use AppBundle\Form\Type\RoutingAccessRuleType;
+use AppBundle\Role\ReversedRoleHierarchy;
 use AppBundle\Role\Roles;
+use AppBundle\Service\AccessControlService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -51,14 +52,14 @@ class AccessRuleController extends Controller
         if ($isCreate = $accessRule === null) {
             $accessRule = new AccessRule();
         }
-        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([ Roles::TEAM_MEMBER ]);
+        $roles = $this->get(ReversedRoleHierarchy::class)->getParentRoles([ Roles::TEAM_MEMBER ]);
         $form = $this->createForm(AccessRuleType::class, $accessRule, [
             'roles' => $roles
         ]);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.access_control')->createRule($accessRule);
+            $this->get(AccessControlService::class)->createRule($accessRule);
 
             if ($isCreate) {
                 $this->addFlash("success", "Access rule created");
@@ -95,8 +96,8 @@ class AccessRuleController extends Controller
         if ($isCreate = $accessRule === null) {
             $accessRule = new AccessRule();
         }
-        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([ Roles::TEAM_MEMBER ]);
-        $routes = $this->get('app.access_control')->getRoutes();
+        $roles = $this->get(ReversedRoleHierarchy::class)->getParentRoles([ Roles::TEAM_MEMBER ]);
+        $routes = $this->get(AccessControlService::class)->getRoutes();
         $form = $this->createForm(RoutingAccessRuleType::class, $accessRule, [
             'routes' => $routes,
             'roles' => $roles
@@ -105,7 +106,7 @@ class AccessRuleController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $accessRule->setIsRoutingRule(true);
-            $this->get('app.access_control')->createRule($accessRule);
+            $this->get(AccessControlService::class)->createRule($accessRule);
 
             if ($isCreate) {
                 $this->addFlash("success", "Access rule created");

@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        tags:
+            - { name: kernel.event_subscriber }
+        bind:
+            AppBundle\Mailer\MailerInterface: '@AppBundle\Mailer\Mailer'
+            AppBundle\Sms\SmsSenderInterface: '@AppBundle\Sms\SmsSender'
+            $env: '%kernel.environment%'
+
+    AppBundle\EventSubscriber\:
+        resource: "../../src/AppBundle/EventSubscriber"

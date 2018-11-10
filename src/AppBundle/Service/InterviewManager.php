@@ -6,7 +6,7 @@ use AppBundle\Entity\Application;
 use AppBundle\Entity\Interview;
 use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\User;
-use AppBundle\Mailer\MailerInterface;
+use AppBundle\Mailer\Mailer;
 use AppBundle\Role\Roles;
 use AppBundle\Sms\Sms;
 use AppBundle\Sms\SmsSenderInterface;
@@ -35,14 +35,14 @@ class InterviewManager
      *
      * @param TokenStorage $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param MailerInterface $mailer
+     * @param Mailer $mailer
      * @param \Twig_Environment $twig
      * @param LoggerInterface $logger
      * @param EntityManager $em
      * @param RouterInterface $router
      * @param SmsSenderInterface $smsSender
      */
-    public function __construct(TokenStorage $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, MailerInterface $mailer, \Twig_Environment $twig, LoggerInterface $logger, EntityManager $em, RouterInterface $router, SmsSenderInterface $smsSender)
+    public function __construct(TokenStorage $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, Mailer $mailer, \Twig_Environment $twig, LoggerInterface $logger, EntityManager $em, RouterInterface $router, SmsSenderInterface $smsSender)
     {
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;

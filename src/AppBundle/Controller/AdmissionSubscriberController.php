@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Department;
 use AppBundle\Form\Type\AdmissionSubscriberType;
+use AppBundle\Service\AdmissionNotifier;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +31,7 @@ class AdmissionSubscriberController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $this->get('app.admission_notifier')->createSubscription($department, $subscriber->getEmail(), $subscriber->getInfoMeeting());
+                $this->get(AdmissionNotifier::class)->createSubscription($department, $subscriber->getEmail(), $subscriber->getInfoMeeting());
                 $this->addFlash('success', $subscriber->getEmail().' har blitt meldt på interesselisten. Du vil få en e-post når opptaket starter');
             } catch (\InvalidArgumentException $e) {
                 $this->addFlash('danger', 'Kunne ikke melde '.$subscriber->getEmail().' på interesselisten. Vennligst prøv igjen.');
@@ -66,7 +67,7 @@ class AdmissionSubscriberController extends BaseController
         }
 
         try {
-            $this->get('app.admission_notifier')->createSubscription($department, $email, $infoMeeting);
+            $this->get(AdmissionNotifier::class)->createSubscription($department, $email, $infoMeeting);
         } catch (\InvalidArgumentException $e) {
             return new JsonResponse($e->getMessage(), 400);
         }

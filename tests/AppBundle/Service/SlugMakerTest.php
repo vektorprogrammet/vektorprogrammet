@@ -18,7 +18,7 @@ class SlugMakerTest extends KernelTestCase
         $kernel = $this->createKernel();
         $kernel->boot();
 
-        $this->slugMaker = $kernel->getContainer()->get('app.slug_maker');
+        $this->slugMaker = $kernel->getContainer()->get(SlugMaker::class);
     }
 
     public function testTitleAsSlug()
