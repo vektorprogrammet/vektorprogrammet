@@ -5,7 +5,7 @@ services:
 
   app.gateway_api_sms:
     class: AppBundle\Sms\GatewayAPI
-    arguments: ['%gateway_sms%', '@app.logger', '@app.slack_sms']
+    arguments: ['%gateway_sms%', '@app.logger']
 
   app.slack_sms:
     class: AppBundle\Sms\SlackSms
@@ -60,7 +60,7 @@ services:
 
   app.email_sender:
     class: AppBundle\Service\EmailSender
-    arguments: ['@app.mailer', '@twig', '@router', '@app.logger', '%default_from_email%', '%economy_email%']
+    arguments: ['@app.mailer', '@twig', '@router', '%default_from_email%', '%economy_email%']
 
   app.slack_messenger:
     class: AppBundle\Service\SlackMessenger
@@ -68,7 +68,7 @@ services:
 
   app.user.registration:
     class: AppBundle\Service\UserRegistration
-    arguments: ['@twig', '@doctrine.orm.default_entity_manager', '@app.mailer', '@app.logger']
+    arguments: ['@twig', '@doctrine.orm.default_entity_manager', '@app.mailer']
 
   app.roles:
     class: AppBundle\Service\RoleManager
@@ -80,7 +80,7 @@ services:
 
   app.password_manager:
       class: AppBundle\Service\PasswordManager
-      arguments: ['@doctrine.orm.default_entity_manager', '@app.mailer', '@twig', '@app.logger']
+      arguments: ['@doctrine.orm.default_entity_manager', '@app.mailer', '@twig']
 
   app.interview_notification_manager:
       class: AppBundle\Service\InterviewNotificationManager
@@ -131,13 +131,13 @@ services:
 
   app.application_subscriber:
     class: AppBundle\EventSubscriber\ApplicationSubscriber
-    arguments: ['@app.mailer', '@twig', '@app.logger', '@app.admission_notifier', '@app.user.registration']
+    arguments: ['@app.mailer', '@twig', '@app.admission_notifier', '@app.user.registration']
     tags:
       - { name: kernel.event_subscriber }
 
   app.team_application_subscriber:
     class: AppBundle\EventSubscriber\TeamApplicationSubscriber
-    arguments: ['@app.mailer', '@twig', '@session', '@app.logger', '@app.slack_messenger', '@router']
+    arguments: ['@app.mailer', '@twig', '@session']
     tags:
       - { name: kernel.event_subscriber }
 
@@ -149,7 +149,7 @@ services:
 
   app.assistant_history_subscriber:
     class: AppBundle\EventSubscriber\AssistantHistorySubscriber
-    arguments: ['@session', '@logger', '@doctrine.orm.default_entity_manager', '@app.user.registration']
+    arguments: ['@session', '@doctrine.orm.default_entity_manager', '@app.user.registration']
     tags:
       - { name: kernel.event_subscriber }
 

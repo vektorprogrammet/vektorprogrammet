@@ -7,7 +7,6 @@ use AppBundle\Type\InterviewStatusType;
 class InterviewDistribution
 {
     private $user;
-    private $admissionPeriod;
     private $interviews;
     private $totalCount;
 
@@ -20,7 +19,6 @@ class InterviewDistribution
     public function __construct(User $user, AdmissionPeriod $admissionPeriod)
     {
         $this->user = $user;
-        $this->admissionPeriod = $admissionPeriod;
         $allInterviews = $this->filterInterviewsInSemester($this->user->getInterviews(), $admissionPeriod);
         $this->totalCount = count($allInterviews);
         $this->interviews = $this->filterNotInterviewed($allInterviews);
