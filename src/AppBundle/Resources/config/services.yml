@@ -189,18 +189,6 @@ services:
     tags:
         - { name: kernel.event_subscriber }
 
-  app.image_gallery_subscriber:
-    class: AppBundle\EventSubscriber\ImageGallerySubscriber
-    arguments: ['@app.logger', '@session']
-    tags:
-        - { name: kernel.event_subscriber }
-
-  app.image_subscriber:
-    class: AppBundle\EventSubscriber\ImageSubscriber
-    arguments: ['@app.file_uploader']
-    tags:
-        - { name: doctrine.event_subscriber }
-
   app.db_subscriber:
     class: AppBundle\EventSubscriber\DbSubscriber
     arguments: ['@app.logger', '@doctrine.orm.default_entity_manager', '%kernel.environment%']
@@ -209,7 +197,7 @@ services:
 
   app.file_uploader:
       class: AppBundle\Service\FileUploader
-      arguments: ['%signature_images%', '%logo_images%', '%receipt_images%', '%gallery_images%', '%profile_photos%', '%article_images%', '%logo_images%']
+      arguments: ['%signature_images%', '%logo_images%', '%receipt_images%', '%profile_photos%', '%article_images%', '%logo_images%']
 
   security.login:
     class: AppBundle\Service\LoginManager
