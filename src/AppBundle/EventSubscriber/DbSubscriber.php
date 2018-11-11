@@ -11,6 +11,7 @@ use AppBundle\Entity\PasswordReset;
 use AppBundle\Entity\SurveyAnswer;
 use AppBundle\Entity\SurveyQuestion;
 use AppBundle\Entity\SurveyQuestionAlternative;
+use AppBundle\Entity\SurveyTaken;
 use AppBundle\Entity\UnhandledAccessRule;
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
@@ -38,6 +39,7 @@ class DbSubscriber implements EventSubscriber
             SurveyQuestion::class,
             SurveyQuestionAlternative::class,
             AdmissionNotification::class,
+            SurveyTaken::class,
         ];
         if ($env === 'staging') {
             $this->ignoredClasses[] = UnhandledAccessRule::class;
