@@ -64,7 +64,6 @@ services:
             $signatureFolder: '%signature_images%'
             $logoFolder: '%logo_images%'
             $receiptFolder: '%receipt_images%'
-            $galleryImageFolder: '%gallery_images%'
             $profilePhotoFolder: '%profile_photos%'
             $articleFolder: '%article_images%'
             $sponsorFolder: '%logo_images%'
