@@ -110,7 +110,7 @@ class ApplicationData
 
     public function getInterviewedAssistantsCount(): int
     {
-        return count($this->em->getRepository('AppBundle:Application')->findInterviewedApplicants($this->department, $this->admissionPeriod));
+        return count($this->em->getRepository('AppBundle:Application')->findInterviewedApplicants($this->admissionPeriod));
     }
 
     public function getAssignedInterviewsCount(): int
@@ -215,7 +215,7 @@ class ApplicationData
         foreach ($applicants as $applicant) {
             $allHeardAboutFrom = $applicant->getHeardAboutFrom();
 
-            if ($allHeardAboutFrom == null) {
+            if ($allHeardAboutFrom === null) {
                 $allHeardAboutFrom = array(0=>"Ingen");
             }
 
