@@ -20,7 +20,7 @@ class TeamInterestSubscriber implements EventSubscriberInterface
      * @param \Twig_Environment $twig
      * @param Session $session
      */
-    public function __construct($mailer, $twig, $session)
+    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, Session $session)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;

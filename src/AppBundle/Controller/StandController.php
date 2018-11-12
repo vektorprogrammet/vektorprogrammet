@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Service\AdmissionStatistics;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class StandController extends BaseController
@@ -16,7 +17,7 @@ class StandController extends BaseController
         $department = $this->getDepartmentOrThrow404();
         $semester = $this->getSemesterOrThrow404();
 
-        $admissionStatistics = $this->get('app.admission_statistics');
+        $admissionStatistics = $this->get(AdmissionStatistics::class);
 
         $subscribers = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')->findFromWebByDepartment($department);
         $subscribersInDepartmentAndSemester = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')

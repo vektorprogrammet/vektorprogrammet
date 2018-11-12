@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\StaticContent;
+use AppBundle\Twig\Extension\RoleExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -17,7 +18,7 @@ class StaticContentController extends BaseController
      */
     public function updateAction(Request $request)
     {
-        if (!$this->get('app.role_extension')->userCanEditPage()) {
+        if (!$this->get(RoleExtension::class)->userCanEditPage()) {
             throw $this->createAccessDeniedException();
         }
 

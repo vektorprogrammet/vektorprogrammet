@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Semester;
 use AppBundle\Role\Roles;
+use AppBundle\Service\SurveyManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +28,7 @@ class SurveyController extends BaseController
      */
     public function showAction(Request $request, Survey $survey)
     {
-        $surveyTaken = $this->get('survey.manager')->initializeSurveyTaken($survey);
+        $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
 
         $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
         $form->handleRequest($request);
@@ -64,8 +65,8 @@ class SurveyController extends BaseController
 
     public function showAdminAction(Request $request, Survey $survey)
     {
-        $surveyTaken = $this->get('survey.manager')->initializeSurveyTaken($survey);
-        $surveyTaken = $this->get('survey.manager')->predictSurveyTakenAnswers($surveyTaken);
+        $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
+        $surveyTaken = $this->get(SurveyManager::class)->predictSurveyTakenAnswers($surveyTaken);
 
         $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
         $form->handleRequest($request);
