@@ -2,12 +2,16 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-        tags:
-            - { name: kernel.event_subscriber }
         bind:
             AppBundle\Mailer\MailerInterface: '@AppBundle\Mailer\Mailer'
             AppBundle\Sms\SmsSenderInterface: '@AppBundle\Sms\SmsSender'
+            Psr\Log\LoggerInterface: '@AppBundle\Service\LogService'
             $env: '%kernel.environment%'
 
     AppBundle\EventSubscriber\:
         resource: "../../src/AppBundle/EventSubscriber"
+        tags:
+            - { name: kernel.event_subscriber }
+    AppBundle\EventSubscriber\DbSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber }
