@@ -6,7 +6,6 @@ use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\SupportTicket;
 use AppBundle\Entity\Receipt;
 use AppBundle\Mailer\MailerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Router;
 
 class EmailSender
@@ -14,16 +13,14 @@ class EmailSender
     private $mailer;
     private $twig;
     private $defaultEmail;
-    private $logger;
     private $economyEmail;
     private $router;
 
-    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, Router $router, LoggerInterface $logger, string $defaultEmail, string $economyEmail)
+    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, Router $router, string $defaultEmail, string $economyEmail)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->defaultEmail = $defaultEmail;
-        $this->logger = $logger;
         $this->economyEmail = $economyEmail;
         $this->router = $router;
     }

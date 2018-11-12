@@ -6,14 +6,12 @@ use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Service\AdmissionNotifier;
 use AppBundle\Mailer\MailerInterface;
 use AppBundle\Service\UserRegistration;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ApplicationSubscriber implements EventSubscriberInterface
 {
     private $mailer;
     private $twig;
-    private $logger;
     private $admissionNotifier;
     /**
      * @var UserRegistration
@@ -25,15 +23,13 @@ class ApplicationSubscriber implements EventSubscriberInterface
      *
      * @param MailerInterface $mailer
      * @param \Twig_Environment $twig
-     * @param LoggerInterface $logger
      * @param AdmissionNotifier $admissionNotifier
      * @param UserRegistration $userRegistrationService
      */
-    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, LoggerInterface $logger, AdmissionNotifier $admissionNotifier, UserRegistration $userRegistrationService)
+    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, AdmissionNotifier $admissionNotifier, UserRegistration $userRegistrationService)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
-        $this->logger = $logger;
         $this->admissionNotifier = $admissionNotifier;
         $this->userRegistrationService = $userRegistrationService;
     }

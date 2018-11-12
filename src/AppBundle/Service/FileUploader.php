@@ -24,17 +24,15 @@ class FileUploader
      * @param string $signatureFolder
      * @param string $logoFolder
      * @param string $receiptFolder
-     * @param string $galleryImageFolder
      * @param string $profilePhotoFolder
      * @param string $articleFolder
      * @param string $sponsorFolder
      */
-    public function __construct(string $signatureFolder, string $logoFolder, string $receiptFolder, string $galleryImageFolder, string $profilePhotoFolder, string $articleFolder, string $sponsorFolder)
+    public function __construct(string $signatureFolder, string $logoFolder, string $receiptFolder, string $profilePhotoFolder, string $articleFolder, string $sponsorFolder)
     {
         $this->signatureFolder = $signatureFolder;
         $this->logoFolder = $logoFolder;
         $this->receiptFolder = $receiptFolder;
-        $this->galleryImageFolder = $galleryImageFolder;
         $this->profilePhotoFolder = $profilePhotoFolder;
         $this->articleFolder = $articleFolder;
         $this->sponsorFolder = $sponsorFolder;
@@ -89,22 +87,6 @@ class FileUploader
         $fileType = explode('/', $mimeType)[0];
         if ($fileType === 'image') {
             return $this->uploadFile($file, $this->receiptFolder);
-        } else {
-            throw new BadRequestHttpException('Filtypen må være et bilde.');
-        }
-    }
-
-    /**
-     * @param UploadedFile $file
-     *
-     * @return string
-     */
-    public function uploadGalleryImage(UploadedFile $file)
-    {
-        $mimeType = $file->getMimeType();
-        $fileType = explode('/', $mimeType)[0];
-        if ($fileType === 'image') {
-            return $this->uploadFile($file, $this->galleryImageFolder);
         } else {
             throw new BadRequestHttpException('Filtypen må være et bilde.');
         }
@@ -209,17 +191,6 @@ class FileUploader
         $fileName = $this->getFileNameFromPath($path);
 
         $this->deleteFile("$this->receiptFolder/$fileName");
-    }
-
-    public function deleteGalleryImage(string $path)
-    {
-        if (empty($path)) {
-            return;
-        }
-
-        $fileName = $this->getFileNameFromPath($path);
-
-        $this->deleteFile("$this->galleryImageFolder/$fileName");
     }
 
     public function deleteProfileImage(string $path)

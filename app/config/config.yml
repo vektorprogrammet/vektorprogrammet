@@ -50,9 +50,6 @@ parameters:
   # Team images
   team_images: 'images/team_images'
 
-  # Gallery images
-  gallery_images: 'images/gallery_images'
-
 framework:
     #esi:             ~
     translator:      { fallbacks: ["%locale%"] }
