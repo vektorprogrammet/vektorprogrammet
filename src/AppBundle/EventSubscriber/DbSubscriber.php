@@ -15,12 +15,12 @@ use AppBundle\Entity\SurveyTaken;
 use AppBundle\Entity\UnhandledAccessRule;
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
+use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class DbSubscriber implements EventSubscriberInterface
+class DbSubscriber implements EventSubscriber
 {
     private $logger;
     private $ignoredClasses;
@@ -52,7 +52,7 @@ class DbSubscriber implements EventSubscriberInterface
      *
      * @return array
      */
-    public static function getSubscribedEvents()
+    public function getSubscribedEvents()
     {
         return array(
             'prePersist',
