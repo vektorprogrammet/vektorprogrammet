@@ -171,6 +171,13 @@ services:
     tags:
         - { name: kernel.event_subscriber }
 
+  app.introduction_email_subscriber:
+    class: AppBundle\EventSubscriber\IntroductionEmailSubscriber
+    arguments: ['@app.logger','@app.mailer', '@twig']
+    tags:
+        - { name: kernel.event_subscriber }
+
+
   app.user_subscriber:
     class: AppBundle\EventSubscriber\UserSubscriber
     arguments: ['@app.logger']
