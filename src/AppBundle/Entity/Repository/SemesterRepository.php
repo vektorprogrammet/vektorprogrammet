@@ -72,14 +72,13 @@ class SemesterRepository extends EntityRepository
      */
     public function getNextActive(Semester $semester): ? Semester
     {
-        if ($semester === $this->findCurrentSemester()){
+        if ($semester === $this->findCurrentSemester()) {
             return null;
-            }
-        if ($semester->getSemesterTime() === 'Høst'){
+        }
+        if ($semester->getSemesterTime() === 'Høst') {
             return $this->findByTimeAndYear('Vår', (string)((int)($semester->getYear()) + 1));
         } else {
             return $this->findByTimeAndYear('Høst', $semester->getYear());
         }
     }
-
 }

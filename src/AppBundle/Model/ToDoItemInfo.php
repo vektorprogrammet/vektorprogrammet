@@ -207,5 +207,4 @@ class ToDoItemInfo
     {
         return $this->isMandatory;
     }
-
 }

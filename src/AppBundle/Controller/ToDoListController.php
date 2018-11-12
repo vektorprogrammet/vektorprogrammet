@@ -123,7 +123,6 @@ class ToDoListController extends BaseController
                 $response['toDoCompleted'] = true;
             }
             $response['success'] = true;
-
         } catch (\Exception $e) {
             $response = [
                 'success' => false,

@@ -14,7 +14,6 @@ class ToggleToDoCompletedType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $option)
     {
-
         $builder
             ->add('department', 'entity', array(
                 'type' => 'hidden',

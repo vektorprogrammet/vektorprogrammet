@@ -51,7 +51,8 @@ class ToDoListService
      * @param ToDoItem[] $todoItems
      * @return array
      */
-    public function sortByPriority(array $todoItems){
+    public function sortByPriority(array $todoItems)
+    {
         $sortedArray = $todoItems;
         usort($sortedArray, function (ToDoItem $a, ToDoItem $b) {
             return ($a->getPriority() < $b->getPriority());
@@ -81,18 +82,16 @@ class ToDoListService
      */
     public function getMandatoryBySemester(ToDoItem $item, Semester $semester) : ? ToDoMandatory
     {
-
-            if (empty($item->getToDoMandatories())) {
-                return null;
-            }
-            $mandatories = $item->getToDoMandatories();
-            foreach ($mandatories as $mandatory){
-                if ($mandatory->getSemester() === $semester){
-                    return $mandatory;
-                }
-            }
+        if (empty($item->getToDoMandatories())) {
             return null;
-
+        }
+        $mandatories = $item->getToDoMandatories();
+        foreach ($mandatories as $mandatory) {
+            if ($mandatory->getSemester() === $semester) {
+                return $mandatory;
+            }
+        }
+        return null;
     }
 
     /**
@@ -135,7 +134,7 @@ class ToDoListService
      * @return array
      */
     public function getMandatoryToDoItemsWithInsignificantDeadline(array $toDoItems, Semester $semester)
-        {
+    {
         $items = array_filter($toDoItems, function (ToDoItem $a) use ($semester) {
             return ($a->isMandatoryBySemester($semester) and !($this->hasDeadLineShortly($a)));
         });
@@ -164,7 +163,7 @@ class ToDoListService
     public function getIncompletedToDoItems(array $toDoItems, Semester $semester, Department $department)
     {
         $items = array_filter($toDoItems, function (ToDoItem $a) use ($semester, $department) {
-            return !($a->isCompletedInSemesterByDepartment($semester,$department));
+            return !($a->isCompletedInSemesterByDepartment($semester, $department));
         });
         return array_values($items);
     }
@@ -189,7 +188,6 @@ class ToDoListService
      */
     public function generateEntities(ToDoItemInfo $itemInfo, EntityManager $em)
     {
-
         $toDoItem = new ToDoItem();
         $department = $itemInfo->getDepartment();
         $toDoItem
@@ -238,7 +236,6 @@ class ToDoListService
      */
     public function editEntities(ToDoItemInfo $itemInfo, Semester $semester)
     {
-
         $toDoItem = $itemInfo->getToDoItem();
         $toDoItem
             ->setPriority($itemInfo->getPriority())
@@ -255,9 +252,8 @@ class ToDoListService
         $currentSemester = $sr->findCurrentSemester();
 
 
-        if ($itemInfo->getIsMandatory() !== $previousMandatoryStatus){
-
-            if (empty($preExistingMandatory)){
+        if ($itemInfo->getIsMandatory() !== $previousMandatoryStatus) {
+            if (empty($preExistingMandatory)) {
                 $currentToDoMandatory = new ToDoMandatory();
                 $currentToDoMandatory
                     ->setIsMandatory($itemInfo->getIsMandatory())
@@ -281,7 +277,6 @@ class ToDoListService
                     $this->em->persist($newNextMandatory);
                 } //Else null problem: den neste mandatorien setter ting straight
             }
-
         }
         /*
                 //hvis endre: du MÅ opprette en ny for neste semester og endre til det den var fra før
@@ -373,61 +368,61 @@ class ToDoListService
                 $this->em->persist($previousDeadLine);
             }
             //hvis noen har fjernet datoen i endre:
-        } elseif (!empty($previousDeadLine)){
+        } elseif (!empty($previousDeadLine)) {
             $this->em->remove($previousDeadLine);
         }
         $this->em->flush();
     }
 
-/*   OLD CODE:
-    public function editEntities(ToDoItemInfo $itemInfo, ToDoItem $toDoItem, Department $department)
-    {
-        //$toDoItem = new ToDoItem();
-        //$toDoItem->setCreatedAt(new \DateTime());
-        $toDoItem->setPriority($itemInfo->getPriority());
-        $toDoItem->setTitle($itemInfo->getTitle());
-        $toDoItem->setDescription($itemInfo->getDescription());
-        $toDoItem->setSemester($itemInfo->getSemester());
-        $department = $itemInfo->getDepartment();
-        $toDoItem->setDepartment($department);
+    /*   OLD CODE:
+        public function editEntities(ToDoItemInfo $itemInfo, ToDoItem $toDoItem, Department $department)
+        {
+            //$toDoItem = new ToDoItem();
+            //$toDoItem->setCreatedAt(new \DateTime());
+            $toDoItem->setPriority($itemInfo->getPriority());
+            $toDoItem->setTitle($itemInfo->getTitle());
+            $toDoItem->setDescription($itemInfo->getDescription());
+            $toDoItem->setSemester($itemInfo->getSemester());
+            $department = $itemInfo->getDepartment();
+            $toDoItem->setDepartment($department);
 
-        $this->em->persist($toDoItem);
+            $this->em->persist($toDoItem);
 
-        // TOT DO: lag getCurrentSemester()
-        //$currentSemester = $this->em->getRepository('AppBundle:Semester')->getCurrentSemester();
-        //FOR NOW:
-        $currentSemester = $itemInfo->getSemester();
+            // TOT DO: lag getCurrentSemester()
+            //$currentSemester = $this->em->getRepository('AppBundle:Semester')->getCurrentSemester();
+            //FOR NOW:
+            $currentSemester = $itemInfo->getSemester();
 
-        if ($itemInfo->getIsMandatory()) {
-            $toDoMandatory = new ToDoMandatory();
-            $toDoMandatory->setToDoItem($toDoItem);
-            $toDoMandatory->setIsMandatory(true);
-            $toDoMandatory->setSemester($currentSemester);
+            if ($itemInfo->getIsMandatory()) {
+                $toDoMandatory = new ToDoMandatory();
+                $toDoMandatory->setToDoItem($toDoItem);
+                $toDoMandatory->setIsMandatory(true);
+                $toDoMandatory->setSemester($currentSemester);
 
-            $this->em->persist($toDoMandatory);
-        }
-        $deadlineDate = $itemInfo->getDeadlineDate();
-        if ($deadlineDate != null) {
-            if ($this->itemHasDeadlineThisSemesterByDepartment($toDoItem, $toDoItem->getDepartment())){
-                //if (($itemInfo->getDepartment() == null) or ($itemInfo->getDepartment() === $toDoItem->getDepartment())){
+                $this->em->persist($toDoMandatory);
+            }
+            $deadlineDate = $itemInfo->getDeadlineDate();
+            if ($deadlineDate != null) {
+                if ($this->itemHasDeadlineThisSemesterByDepartment($toDoItem, $toDoItem->getDepartment())){
+                    //if (($itemInfo->getDepartment() == null) or ($itemInfo->getDepartment() === $toDoItem->getDepartment())){
 
-                }
-                $oldDeadlines = $toDoItem->getToDoDeadlines();
-                foreach ($oldDeadlines as $deadline){
-                    if ($deadline->getSemester() === $currentSemester){
-                        $deadline->setDeadDate();
+                    }
+                    $oldDeadlines = $toDoItem->getToDoDeadlines();
+                    foreach ($oldDeadlines as $deadline){
+                        if ($deadline->getSemester() === $currentSemester){
+                            $deadline->setDeadDate();
+                        }
                     }
                 }
-            }
-            $toDoDeadLine = new ToDoDeadline();
-            $toDoDeadLine->setToDoItem($toDoItem);
-            $toDoDeadLine->setSemester($currentSemester);
-            $toDoDeadLine->setDeadDate($deadlineDate);
+                $toDoDeadLine = new ToDoDeadline();
+                $toDoDeadLine->setToDoItem($toDoItem);
+                $toDoDeadLine->setSemester($currentSemester);
+                $toDoDeadLine->setDeadDate($deadlineDate);
 
-            $this->em->persist($toDoDeadLine);
-        }
-        $this->em->flush();
-    }*/
+                $this->em->persist($toDoDeadLine);
+            }
+            $this->em->flush();
+        }*/
 
 
     /**
@@ -435,7 +430,8 @@ class ToDoListService
      * @param Semester $semester
      * @return ToDoItemInfo
      */
-    public function createToDoItemInfoFromItem(ToDoItem $item, Semester $semester){
+    public function createToDoItemInfoFromItem(ToDoItem $item, Semester $semester)
+    {
         $infoItem = new ToDoItemInfo();
         $infoItem
             ->setSemester($item->getSemester())
@@ -448,10 +444,10 @@ class ToDoListService
         $mandatory = $this->getMandatoryBySemester($item, $semester);
         $infoItem->setIsMandatory(empty($mandatory) ? false : $mandatory->isMandatory());
 
-        if ($infoItem->getIsMandatory()){
+        if ($infoItem->getIsMandatory()) {
             $mandatoryItems = $item->getToDoMandatories();
-            foreach ($mandatoryItems as $mandatory){
-                if ($mandatory->getSemester() === $semester){
+            foreach ($mandatoryItems as $mandatory) {
+                if ($mandatory->getSemester() === $semester) {
                     $infoItem->setToDoMandatory($mandatory);
                     break;
                 }
@@ -460,7 +456,7 @@ class ToDoListService
 
         $toDoDeadline = $item->getDeadlineBySemester($semester);
 
-        if (! empty($toDoDeadline)){
+        if (! empty($toDoDeadline)) {
             $infoItem
                 ->setToDoDeadline($toDoDeadline)
                 ->setDeadlineDate($toDoDeadline->getDeadDate());
@@ -490,7 +486,8 @@ class ToDoListService
 
     public function toggleCompletedItem(ToDoItem $item, Semester $semester, Department $department)
     {
-        $completedItem = $this->em->getRepository('AppBundle:ToDoCompleted')->findOneBy(array(
+        $completedItem = $this->em->getRepository('AppBundle:ToDoCompleted')->findOneBy(
+            array(
                 'semester' => $semester,
                 'department' => $department,
                 'toDoItem' => $item,
@@ -520,8 +517,8 @@ class ToDoListService
      * @param Semester $semester
      * @return ToDoItem[]
      */
-    public function getCorrectList(Department $department, Semester $semester){
-
+    public function getCorrectList(Department $department, Semester $semester)
+    {
         $repository = $this->em->getRepository('AppBundle:ToDoItem');
         $allToDoItems = $repository->findToDoListItemsBySemesterAndDepartment($semester, $department);
 
@@ -535,6 +532,4 @@ class ToDoListService
 
         return $correctOrder;
     }
-
-
 }

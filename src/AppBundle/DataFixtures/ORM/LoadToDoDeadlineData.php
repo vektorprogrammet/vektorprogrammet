@@ -39,10 +39,6 @@ class LoadToDoDeadlineData extends AbstractFixture implements OrderedFixtureInte
         $toDoDeadline->setToDoItem($this->getReference('to-do-item-mandatory-short-deadline'));
         $manager->persist($toDoDeadline);
         $manager->flush();
-
-
-
-
     }
 
     public function getOrder()

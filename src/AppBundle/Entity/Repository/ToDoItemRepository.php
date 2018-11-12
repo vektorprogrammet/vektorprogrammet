@@ -30,10 +30,10 @@ class ToDoItemRepository extends EntityRepository
             ->getResult();
 
         $filteredItems = array_filter($todoItems, function (ToDoItem $item) use ($semester) {
-            if (empty($item->getSemester())){
+            if (empty($item->getSemester())) {
                 return (
                     $item->getCreatedAt() < $semester->getSemesterEndDate() and
-                    (empty($item->getDeletedAt())? True : $item->getDeletedAt() > $semester->getSemesterStartDate()));
+                    (empty($item->getDeletedAt())? true : $item->getDeletedAt() > $semester->getSemesterStartDate()));
             } else {
                 return true;
             }
