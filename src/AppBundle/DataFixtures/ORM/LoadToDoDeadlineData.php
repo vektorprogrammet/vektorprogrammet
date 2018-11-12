@@ -11,14 +11,38 @@ class LoadToDoDeadlineData extends AbstractFixture implements OrderedFixtureInte
 {
     public function load(ObjectManager $manager)
     {
-        $toDoDeadline1 = new ToDoDeadline();
-        $toDoDeadline1->setSemester($this->getReference('semester-current'));
-        $toDoDeadline1->setDeadDate(new \DateTime("2018-09-22"));
-        $toDoDeadline1->setToDoItem($this->getReference('to-do-item-2'));
-        $manager->persist($toDoDeadline1);
+        $toDoDeadline = new ToDoDeadline();
+        $toDoDeadline->setSemester($this->getReference('semester-current'));
+        $toDoDeadline->setDeadDate(new \DateTime('+2 week'));
+        $toDoDeadline->setToDoItem($this->getReference('to-do-item-short-deadline'));
+        $manager->persist($toDoDeadline);
         $manager->flush();
 
-        $this->setReference('to-do-deadline-1', $toDoDeadline1);
+        $toDoDeadline = new ToDoDeadline();
+        $toDoDeadline->setSemester($this->getReference('semester-current'));
+        $toDoDeadline->setDeadDate(new \DateTime('+15 days'));
+        $toDoDeadline->setToDoItem($this->getReference('to-do-item-almost-short-deadline'));
+        $manager->persist($toDoDeadline);
+        $manager->flush();
+
+        $toDoDeadline = new ToDoDeadline();
+        $toDoDeadline->setSemester($this->getReference('semester-current'));
+        $toDoDeadline->setDeadDate(new \DateTime('-1 days'));
+        $toDoDeadline->setToDoItem($this->getReference('to-do-item-past-deadline'));
+        $manager->persist($toDoDeadline);
+        $manager->flush();
+
+
+        $toDoDeadline = new ToDoDeadline();
+        $toDoDeadline->setSemester($this->getReference('semester-current'));
+        $toDoDeadline->setDeadDate(new \DateTime('+1 week'));
+        $toDoDeadline->setToDoItem($this->getReference('to-do-item-mandatory-short-deadline'));
+        $manager->persist($toDoDeadline);
+        $manager->flush();
+
+
+
+
     }
 
     public function getOrder()

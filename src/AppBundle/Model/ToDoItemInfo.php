@@ -4,6 +4,8 @@ namespace AppBundle\Model;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Entity\ToDoItem;
+use AppBundle\Entity\ToDoMandatory;
 
 class ToDoItemInfo
 {
@@ -29,7 +31,7 @@ class ToDoItemInfo
     /**
      * @return Semester
      */
-    public function getSemester(): ?Semester
+    public function getSemester(): ? Semester
     {
         return $this->semester;
     }
@@ -38,7 +40,7 @@ class ToDoItemInfo
      * @param Semester $semester
      * @return ToDoItemInfo
      */
-    public function setSemester(Semester $semester): ToDoItemInfo
+    public function setSemester(? Semester $semester): ? ToDoItemInfo
     {
         $this->semester = $semester;
         return $this;
@@ -56,7 +58,7 @@ class ToDoItemInfo
      * @param Department $department
      * @return ToDoItemInfo
      */
-    public function setDepartment(Department $department): ToDoItemInfo
+    public function setDepartment(? Department $department): ? ToDoItemInfo
     {
         $this->department = $department;
         return $this;
@@ -83,7 +85,7 @@ class ToDoItemInfo
     /**
      * @return string
      */
-    public function getTitle(): ?string
+    public function getTitle(): ? string
     {
         return $this->title;
     }
@@ -101,7 +103,7 @@ class ToDoItemInfo
     /**
      * @return string
      */
-    public function getDescription(): ?string
+    public function getDescription(): ? string
     {
         return $this->description;
     }
@@ -135,9 +137,9 @@ class ToDoItemInfo
     }
 
     /**
-     * @return mixed
+     * @return ToDoItem
      */
-    public function getToDoItem()
+    public function getToDoItem() : ToDoItem
     {
         return $this->toDoItem;
     }
@@ -153,9 +155,9 @@ class ToDoItemInfo
     }
 
     /**
-     * @return mixed
+     * @return ToDoMandatory|null
      */
-    public function getToDoMandatory()
+    public function getToDoMandatory() : ? ToDoMandatory
     {
         return $this->toDoMandatory;
     }

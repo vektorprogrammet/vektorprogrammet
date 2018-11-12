@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AppBundle\Entity\Department;
+use AppBundle\Entity\ToDoItem;
 use \Doctrine\ORM\EntityRepository;
 use \AppBundle\Entity\Semester;
 
@@ -13,48 +15,32 @@ class ToDoItemRepository extends EntityRepository
 
     /**
      * @param Semester $semester
+     * @param Department $department
      * @return array
      */
-    public function findToDoListItemsBySemester(Semester $semester)
+    public function findToDoListItemsBySemesterAndDepartment(Semester $semester, Department $department)
     {
-        return $this->createQueryBuilder('toDoListItem')
+        $todoItems = $this->createQueryBuilder('toDoListItem')
             ->select('toDoListItem')
-            ->where('toDoListItem.semester = :semester')
-            ->orWhere('toDoListItem.semester IS NULL')
+            ->where('toDoListItem.semester = :semester or toDoListItem.semester is null')
+            ->andWhere('toDoListItem.department = :department or toDoListItem.department is null')
             ->setParameter('semester', $semester)
+            ->setParameter('department', $department)
             ->getQuery()
             ->getResult();
+
+        $filteredItems = array_filter($todoItems, function (ToDoItem $item) use ($semester) {
+            if (empty($item->getSemester())){
+                return (
+                    $item->getCreatedAt() < $semester->getSemesterEndDate() and
+                    (empty($item->getDeletedAt())? True : $item->getDeletedAt() > $semester->getSemesterStartDate()));
+            } else {
+                return true;
+            }
+        });
+        return $filteredItems;
     }
 
-    /**
-     * @param Semester $semester
-     * @return array
-     */
-    public function findCommonToDoListItems(Semester $semester)
-    {
-        return $this->createQueryBuilder('toDoListItem')
-            ->select('toDoListItem')
-            ->where('toDoListItem.semester = :semester')
-            ->orWhere('toDoListItem.semester IS NULL')
-            ->andWhere('toDoListItem.department IS NULL')
-            ->andWhere('toDoListItem.deletedAt IS NOT NULL')
-            ->setParameter('semester', $semester)
-            ->getQuery()
-            ->getResult();
-    }
-
-
-    /**
-     * @return array
-     */
-    public function findMandatoryToDoListItems()
-    {
-        return $this->createQueryBuilder('toDoListItem')
-                ->select('toDoMandatory')
-                ->join("toDoItem", 'toDoItem', Expr\Join::WITH, "toDoMandatory.getToDoItem = toDoItem")
-                ->getQuery()
-                ->getResult();
-    }
 
     /**
      * @param Semester $semester
@@ -65,22 +51,6 @@ class ToDoItemRepository extends EntityRepository
         return $this->createQueryBuilder('toDoListItem')
             ->join('toDoListItem.toDoCompleted', 'completed')
             ->where('completed.semester = :semester')
-            ->setParameter('semester', $semester)
-            ->getQuery()
-            ->getResult();
-    }
-
-
-
-    /**
-     * @param Semester $semester
-     * @return array
-     */
-    public function findToDoListItemsWithDeadLines(Semester $semester)
-    {
-        return $this->createQueryBuilder('toDoListItem')
-            ->join('toDoListItem.toDoDeadlines', 'deadlines')
-            ->where('deadlines.semester = :semester')
             ->setParameter('semester', $semester)
             ->getQuery()
             ->getResult();

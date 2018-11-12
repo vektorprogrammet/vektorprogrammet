@@ -26,12 +26,25 @@ class LoadToDoMandatoryData extends AbstractFixture implements OrderedFixtureInt
         $manager->flush();
 
         $toDoMandatory3 = new ToDoMandatory();
-        $toDoMandatory3->setSemester($this->getReference('semester-5'));
+        $toDoMandatory3->setSemester($this->getReference('semester-2'));
         $toDoMandatory3->setIsMandatory(false);
         $toDoMandatory3->setToDoItem($this->getReference('to-do-item-1'));
         $manager->persist($toDoMandatory3);
         $manager->flush();
 
+        $toDoMandatory4 = new ToDoMandatory();
+        $toDoMandatory4->setSemester($this->getReference('semester-current'));
+        $toDoMandatory4->setIsMandatory(true);
+        $toDoMandatory4->setToDoItem($this->getReference('to-do-item-mandatory-short-deadline'));
+        $manager->persist($toDoMandatory4);
+        $manager->flush();
+
+        $toDoMandatory4 = new ToDoMandatory();
+        $toDoMandatory4->setSemester($this->getReference('semester-current'));
+        $toDoMandatory4->setIsMandatory(true);
+        $toDoMandatory4->setToDoItem($this->getReference('to-do-item-mandatory'));
+        $manager->persist($toDoMandatory4);
+        $manager->flush();
 
         $this->setReference('to-do-mandatory-1', $toDoMandatory1);
         $this->setReference('to-do-mandatory-2', $toDoMandatory2);

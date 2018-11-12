@@ -341,21 +341,30 @@ class ToDoItem
         return $this;
     }
 
+
     /**
      * @param \AppBundle\Entity\Semester $semester
      * @return bool
      */
     public function isMandatoryBySemester(Semester $semester)
     {
-        if (empty($this->getToDoMandatories())) {
-            return false;
+        //first and second if is actually not necessary, but prevents searching through
+        //all mandatories in special cases... wait. The getMandatoryBySemester searches through all
+        // mandatories... nvm. These need to go.
+        $mandatory = $this->getMandatoryBySemester($semester);
+        if (!empty($mandatory)){
+            return $mandatory->isMandatory();
         }
         $mandatories = $this->getToDoMandatories();
-        foreach ($mandatories as $element){
-            if (($element->getSemester() === $semester)){
-                return $element->isMandatory();
+        if (empty($mandatories)){
+            return false;
+        }
+        foreach ($mandatories as $mandatory){
+            if ($mandatory->getSemester()->isBefore($semester)){
+                return $mandatory->isMandatory();
             }
         }
+        //case: there exists mandatories set after the semester one is seaching for
         return false;
     }
 
@@ -376,7 +385,7 @@ class ToDoItem
 
     /**
      * @param \AppBundle\Entity\Semester $semester
-     * @return ToDoDeadline|mixed|null
+     * @return ToDoDeadline|null
      */
     public function getDeadlineBySemester(Semester $semester){
         if (empty($this->getToDoDeadlines())) {
@@ -394,17 +403,26 @@ class ToDoItem
 
 
     /**
+     * @param \AppBundle\Entity\Semester $semester
      * @return bool
      */
-    public function hasDeadlineThisSemester()
+    public function hasDeadlineBySemester(Semester $semester)
     {
-        if (empty($this->getToDoDeadlines())) {
-            return false;
-        }
-        $deadlines = $this->getToDoDeadlines();
-        return ($deadlines[0]->getSemester()->getId() == $this->semester->getId());
+
+        $deadline = $this->getDeadlineBySemester($semester);
+
+        return $deadline !== null;
 
     }
+
+    public function hasShortDeadlineBySemester(Semester $semester){
+        $deadline = $this->getDeadlineBySemester($semester);
+        if ($deadline === null){
+            return false;
+        }
+        return ($deadline->getDeadDate() <= new \DateTime('+2 weeks'));
+    }
+
 
     /**
      * @param \AppBundle\Entity\Semester $semester
@@ -413,14 +431,16 @@ class ToDoItem
      */
     public function isCompletedInSemesterByDepartment(Semester $semester, Department $department)
     {
-        if (empty($this->getToDoCompleted())) {
+        $completes = $this->getToDoCompleted();
+        if ($completes === null) {
             return false;
         }
-        $completes = $this->getToDoCompleted();
-        return (($completes[0]->getSemester()->getId() == $semester->getId())) and ($completes[0]->getDepartment()->getId() == $department->getId());
+        foreach ($completes as $completed){
+            if (($completed->getSemester() === $semester) and ($completed->getDepartment() === $department)){
+                return true;
+            }
+        }
+        return false;
     }
 
-    public function getDeadDateBySemester(){
-
-    }
 }

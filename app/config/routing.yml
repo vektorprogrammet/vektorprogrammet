@@ -86,7 +86,7 @@ edit_toDoItem:
    id: \d+
 
 toggle_isCompleted:
-  path: /kontrollpanel/sjekkliste/utfør/{id}
+  path: /kontrollpanel/sjekkliste/utfor/{id}
   defaults: {_controller: AppBundle:ToDoList:toggle }
   methods: [POST]
   requirements:

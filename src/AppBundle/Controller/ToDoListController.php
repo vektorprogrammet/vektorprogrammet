@@ -6,56 +6,37 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\CreateToDoItemInfoType;
 use AppBundle\Model\ToDoItemInfo;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use AppBundle\Service\ToDoListService;
 use AppBundle\Entity\ToDoItem;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class ToDoListController extends Controller
+class ToDoListController extends BaseController
 {
     public function showAction()
     {
-
-        $repository = $this->getDoctrine()->getRepository('AppBundle:ToDoItem');
         $toDoListService = $this->get('app.to_do_list_service');
+        $department = $this->getDepartmentOrThrow404();
+        $semester = $this->getSemesterOrThrow404();
 
-        //TOOLBOX:
-        //Note: Although the creation of the lists below could be moved to the service,
-        //some of the lists are required in the twig file
-        $em = $this->getDoctrine()->getManager();
-        $department = $this->getUser()->getDepartment();
-        $semester = $em->getRepository('AppBundle:Semester')->findCurrentSemesterByDepartment($department);
-
-        $allToDoItems = $repository->findToDoListItemsBySemester($semester);
-        $incompletedToDoItems = $toDoListService->getIncompletedToDoItems($allToDoItems, $semester, $department);
-        $toDoShortDeadLines = $toDoListService->getToDoItemsWithShortDeadline($incompletedToDoItems);
-        $toDoMandaoryNoDeadLine = $toDoListService->getMandatoryToDoItemsWithInsignificantDeadline($incompletedToDoItems, $semester);
-        $toDoNonMandatoryNoDeadline = $toDoListService->getNonMandatoryToDoItemsWithInsignificantDeadline($incompletedToDoItems, $semester);
-        $completedToDoListItems = $repository->findCompletedToDoListItems($semester);
-        $correctOrderWithDeleted = array_merge($toDoShortDeadLines, $toDoMandaoryNoDeadLine, $toDoNonMandatoryNoDeadline, $completedToDoListItems);
-
-        $correctOrder = array_filter($correctOrderWithDeleted, function (ToDoItem $a) {
-            return $a->getDeletedAt() == null;
-        });
+        $toDosInOrder = $toDoListService->getCorrectList($department, $semester);
 
         return $this->render("todo_list/toDoList.html.twig", array(
-            'allToDoItems' => $allToDoItems,
-            'completedToDoListItems' => $completedToDoListItems,
             'department' => $department,
             'semester' => $semester,
-            'shortDeadlines' => $toDoShortDeadLines,
-            'correctList' => $correctOrder,
+            'correctList' => $toDosInOrder,
         ));
     }
 
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function createToDoAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
         $toDoListService = $this->get('app.to_do_list_service');
         $itemInfo = new ToDoItemInfo();
 
@@ -68,23 +49,36 @@ class ToDoListController extends Controller
 
         // The fields of the form is checked if they contain the correct information
         if ($form->isValid()) {
-            $toDoListService->generateEntities($itemInfo);
+            $toDoListService->generateEntities($itemInfo, $em);
             return $this->redirectToRoute('to_do_list');
         }
 
         // Render the view
         return $this->render('todo_list/create_todo_element.html.twig', array(
             'form' => $form->createView(),
+            'create_or_update_action' => 'Opprett',
+            'create_or_update_title' => 'Opprett nytt gjøremål',
         ));
     }
 
 
-
+    /**
+     * @param ToDoItem $item
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function editToDoAction(ToDoItem $item, Request $request)
     {
-        $toDoListService = $this->get('app.to_do_list_service');
-        $itemInfo = new ToDoItemInfo();
+        //Send inn via navigator. For now:
+        $em = $this->getDoctrine()->getManager();
+        $semester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
 
+
+        $toDoListService = $this->get('app.to_do_list_service');
+        $itemInfo = $toDoListService->createToDoItemInfoFromItem($item, $semester);
 
 
         $form = $this->createForm(CreateToDoItemInfoType::class, $itemInfo, array(
@@ -96,13 +90,15 @@ class ToDoListController extends Controller
 
         // The fields of the form is checked if they contain the correct information
         if ($form->isValid()) {
-            $toDoListService->generateEntities($itemInfo);
+            $toDoListService->editEntities($itemInfo, $semester);
             return $this->redirectToRoute('to_do_list');
         }
 
         // Render the view
         return $this->render('todo_list/create_todo_element.html.twig', array(
             'form' => $form->createView(),
+            'create_or_update_action' => 'Endre',
+            'create_or_update_title' => 'Endre eksisterende gjøremål',
         ));
     }
 
@@ -138,18 +134,16 @@ class ToDoListController extends Controller
         return new JsonResponse($response);
     }
 
-    public function toggleAction(ToDoItem $item, Request $request)
+    public function toggleAction(ToDoItem $item)
     {
-        $departmentID = $request->request->get('department');
-        $semesterID = $request->request->get('semester');
-        $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentID);
-        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterID);
+        $department = $this->getDepartmentOrThrow404();
+        $semester = $this->getSemesterOrThrow404();
 
         dump($department);
         dump($semester);
         $toDoListService = $this->get('app.to_do_list_service');
         $toDoListService->toggleCompletedItem($item, $semester, $department);
-        return $this->redirectToRoute('to_do_list');
+        return $this->redirectToRoute('to_do_list', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
     }
 
     public function deleteTodoItemAction(ToDoItem $item)

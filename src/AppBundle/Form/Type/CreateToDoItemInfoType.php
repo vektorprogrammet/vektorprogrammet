@@ -2,12 +2,16 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\Repository\SemesterRepository;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use AppBundle\Entity\Department;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CreateToDoItemInfoType extends AbstractType
 {
@@ -15,67 +19,60 @@ class CreateToDoItemInfoType extends AbstractType
     {
         $builder
 
-            ->add('priority', 'choice', array(
-                'label' => 'Hva er dette punktets prioritet?',
+            ->add('priority', ChoiceType::class, array(
+                'label' => 'Hva er gjøremålet sin prioritet?',
                 'choices' => array(
-                    0 => '0 - Lav',
-                    1 => '1',
-                    2 => '2',
-                    3 => '3',
-                    4 => '4',
-                    5 => '5 - Høy'
+                    '1 - Lav' => 1,
+                    '2' => 2,
+                    '3' => 3,
+                    '4' => 4,
+                    '5 - Høy' => 5
                 ),
+                'required' => true,
             ))
-            ->add('isMandatory', 'checkbox', array(
-                'label' => 'Dette punktet er påbudt',
+            ->add('isMandatory', CheckboxType::class, array(
+                'label' => 'Dette gjøremålet er påbudt',
                 'required' => false,
             ))
-            /*->add('deadlineDate', 'datetime', array(
-                'label' => 'Hvis dette punktet har deadline, vennligst før inn. Hvis ikke, la være blank:',
-                'required' => false,
-                'widget' => calen
-            ))*/
             ->add('deadlineDate', DateTimeType::class, array(
-                'label' => 'Hvis dette punktet har deadline, vennligst før inn. Hvis ikke, la være blank:',
+                'label' => 'Hvis dette gjøremålet har deadline, vennligst før inn. Hvis ikke, la være blank:',
                 'format' => 'dd.MM.yyyy HH:mm',
                 'widget' => 'single_text',
                 'attr' => [
                     'placeholder' => 'Klikk for å velge tidspunkt'
                 ],
                 'required' => false,
+                'auto_initialize' => false,
             ))
-            ->add('title', 'text', array(
-                'label' => 'Hva er denne sin tittel?',
+            ->add('title', TextType::class, array(
+                'label' => 'Hva er gjøremålet sin tittel?',
             ))
-            ->add('description', 'text', array(
+            ->add('description', TextType::class, array(
                 'label' => 'Beskrivelse av gjøremålet?',
             ))
-            ->add('department', 'entity', array(
-                'label' => 'Hvilken department skal denne gjelde for?',
+            ->add('department', EntityType::class, array(
+                'label' => 'Hvilken region skal gjøremålet gjelde for?',
                 'class' => 'AppBundle:Department',
-                'empty_value' => 'Alle departments',
+                'placeholder' => 'Alle regioner',
+                'empty_data' => null,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('d')
                         ->orderBy('d.city', 'ASC');
                 },
                 'required'=>false,
             ))
-            ->add('semester', 'entity', array(
-                'label' => 'Hvilket semester skal denne gjelde for?',
+            ->add('semester', EntityType::class, array(
+                'label' => 'Hvilket semester skal gjøremålet gjelde for?',
                 'class' => 'AppBundle:Semester',
-                'empty_value' => 'Alle semestre',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('s')
-                        ->orderBy('s.semesterStartDate', 'DESC');
+                'placeholder' => 'Alle semestre',
+                'query_builder' => function (SemesterRepository $sr) {
+                    return $sr->queryForAllSemestersOrderedByAge();
                 },
                 'required'=>false,
-            ))/*
-            ->add('save', 'submit', array(
-                'label' => 'Opprett1',
-            ))*/;
+            ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Model\ToDoItemInfo',
