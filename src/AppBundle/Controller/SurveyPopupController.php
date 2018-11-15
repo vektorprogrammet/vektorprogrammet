@@ -4,6 +4,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Role\Roles;
+use AppBundle\Service\RoleManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +16,7 @@ class SurveyPopupController extends Controller
         $survey = null;
         $user = $this->getUser();
         $userShouldSeePopUp = $user !== null &&
-            $this->get("app.roles")->userIsGranted($user, Roles::TEAM_MEMBER) &&
+            $this->get(RoleManager::class)->userIsGranted($user, Roles::TEAM_MEMBER) &&
             !$user->getReservedFromPopUp() &&
             $user->getLastPopUpTime()->diff(new \DateTime())->days >= 1;
 

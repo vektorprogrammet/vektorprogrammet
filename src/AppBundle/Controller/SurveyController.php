@@ -8,7 +8,7 @@ use AppBundle\Form\Type\SurveyAdminType;
 use AppBundle\Form\Type\SurveyExecuteType;
 use AppBundle\Form\Type\SurveySchoolSpecificExecuteType;
 use AppBundle\Form\Type\SurveyType;
-use AppBundle\Role\Roles;
+use AppBundle\Service\AccessControlService;
 use AppBundle\Service\SurveyManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -81,7 +81,7 @@ class SurveyController extends BaseController
         } elseif ($user === null) {
             throw new AccessDeniedException("Dette er en teamundersøkese. Logg inn for å ta den!");
         }
-        $surveyTaken = $this->get('survey.manager')->initializeTeamSurveyTaken($survey, $user);
+        $surveyTaken = $this->get(SurveyManager::class)->initializeTeamSurveyTaken($survey, $user);
         $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
         $form->handleRequest($request);
 
@@ -165,7 +165,7 @@ class SurveyController extends BaseController
         $survey = new Survey();
         $survey->setDepartment($this->getUser()->getDepartment());
 
-        if ($this->get('app.access_control')->checkAccess("survey_admin")) {
+        if ($this->get(AccessControlService::class)->checkAccess("survey_admin")) {
             $form = $this->createForm(SurveyAdminType::class, $survey);
         } else {
             $form = $this->createForm(SurveyType::class, $survey);
@@ -199,7 +199,7 @@ class SurveyController extends BaseController
         $surveyClone = $survey->copy();
         $surveyClone->setSemester($currentSemester);
 
-        if ($this->get('app.access_control')->checkAccess("survey_admin")) {
+        if ($this->get(AccessControlService::class)->checkAccess("survey_admin")) {
             $form = $this->createForm(SurveyAdminType::class, $survey);
         } else {
             $form = $this->createForm(SurveyType::class, $survey);
@@ -258,7 +258,7 @@ class SurveyController extends BaseController
 
 
         $globalSurveys = array();
-        if ($this->get('app.access_control')->checkAccess("survey_admin")) {
+        if ($this->get(AccessControlService::class)->checkAccess("survey_admin")) {
             $globalSurveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
                 [
                     'semester' => $semester,
@@ -285,7 +285,7 @@ class SurveyController extends BaseController
     {
         $this->ensureAccess($survey);
 
-        if ($this->get('app.access_control')->checkAccess("survey_admin")) {
+        if ($this->get(AccessControlService::class)->checkAccess("survey_admin")) {
             $form = $this->createForm(SurveyAdminType::class, $survey);
         } else {
             $form = $this->createForm(SurveyType::class, $survey);
@@ -331,20 +331,20 @@ class SurveyController extends BaseController
 
     public function resultSurveyAction(Survey $survey)
     {
-        if ($survey->isConfidential() || !$this->get('app.access_control')->checkAccess("survey_admin")) {
+        if ($survey->isConfidential() || !$this->get(AccessControlService::class)->checkAccess("survey_admin")) {
             throw new AccessDeniedException();
         }
 
         if ($survey->isTeamSurvey()) {
             return $this->render('survey/survey_result.html.twig', array(
-                'textAnswers' => $this->get('survey.manager')->getTextAnswerWithTeamResults($survey),
+                'textAnswers' => $this->get(SurveyManager::class)->getTextAnswerWithTeamResults($survey),
                 'survey' => $survey,
                 'teamSurvey' => $survey->isTeamSurvey(),
             ));
         }
 
         return $this->render('survey/survey_result.html.twig', array(
-            'textAnswers' => $this->get('survey.manager')->getTextAnswerWithSchoolResults($survey),
+            'textAnswers' => $this->get(SurveyManager::class)->getTextAnswerWithSchoolResults($survey),
             'survey' => $survey,
             'teamSurvey' => $survey->isTeamSurvey(),
 
@@ -353,13 +353,13 @@ class SurveyController extends BaseController
 
     public function getSurveyResultAction(Survey $survey)
     {
-        return new JsonResponse($this->get('survey.manager')->surveyResultToJson($survey));
+        return new JsonResponse($this->get(SurveyManager::class)->surveyResultToJson($survey));
     }
 
 
     public function toggleReservedFromPopUpAction()
     {
-        $this->get('survey.manager')->toggleReservedFromPopUp($this->getUser());
+        $this->get(SurveyManager::class)->toggleReservedFromPopUp($this->getUser());
         return new JsonResponse();
     }
 
@@ -381,7 +381,7 @@ class SurveyController extends BaseController
     {
         $user = $this->getUser();
 
-        $isSurveyAdmin = $this->get('app.access_control')->checkAccess("survey_admin");
+        $isSurveyAdmin = $this->get(AccessControlService::class)->checkAccess("survey_admin");
         $isSameDepartment = $survey->getDepartment() === $user->getDepartment();
 
         if ($isSameDepartment || $isSurveyAdmin) {
