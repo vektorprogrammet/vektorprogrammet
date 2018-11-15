@@ -35,7 +35,7 @@ class Survey implements \JsonSerializable
     private $department;
 
     /**
-     * @ORM\Column(type="datetime", name="createdTime", nullable=true)
+     * @ORM\Column(type="datetime", name="createdTime", nullable=false)
      */
     private $createdTime;
 
@@ -47,19 +47,16 @@ class Survey implements \JsonSerializable
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=false)
      */
     private $showCustomFinishPage;
 
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=false)
      */
     private $showCustomPopUpMessage;
-
-
-
 
 
     /**

@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Tests\BaseWebTestCase;
 
-class SurveyPopControllerTest extends BaseWebTestCase
+class SurveyPopUpControllerTest extends BaseWebTestCase
 {
     //Tests popup functionality
     protected function setUp()
@@ -18,7 +18,14 @@ class SurveyPopControllerTest extends BaseWebTestCase
         $client->request('POST', '/togglepopup');
         $client->request('POST', '/togglepopup');
 
-        $this->addNewTeamSurvey();
+        $crawler = $this->adminGoTo('/kontrollpanel/undersokelse/opprett');
+        $form = $crawler->filter('button:contains("Lagre")')->form();
+        $form['survey[name]'] = "Test2" ;
+        $form['survey[showCustomFinishPage]'] = false;
+        $form['survey[team_survey]'] = true;
+        $form['survey[surveyPopUpMessage]'] = "undersøkelse";
+        $form['survey[showCustomPopUpMessage]'] = false;
+        $this->createAdminClient()->submit($form);
     }
 
 
@@ -26,29 +33,26 @@ class SurveyPopControllerTest extends BaseWebTestCase
     public function testShowPopup()
     {
         $crawler = $this->anonymousGoTo('/');
-        $this->assertEquals(0, $crawler->filter('a:contains("undersøkelse!")')->count());
+        $this->assertEquals(0, $crawler->filter('a:contains("undersøkelse")')->count());
         $crawler = $this->teamMemberGoTo('/');
-        $this->assertEquals(1, $crawler->filter('a:contains("undersøkelse!")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("undersøkelse")')->count());
 
     }
 
     public function testSendingRemovesPopup(){
-        $this->addNewTeamSurvey();
-
         $crawler = $this->teamMemberGoTo('/');
-        $this->assertEquals(1, $crawler->filter('a:contains("undersøkelse!")')->count());
+        $this->assertEquals(1, $crawler->filter('a:contains("undersøkelse")')->count());
         $crawler = $this->teamMemberGoTo($crawler->filter('a:contains("undersøkelse")')->attr('href'));
         $form = $crawler->filter('button:contains("Send")')->form();
         $this->createTeamMemberClient()->submit($form);
         $crawler = $this->teamMemberGoTo('/');
-        $this->assertEquals(0, $crawler->filter('a:contains("undersøkelse!")')->count());
+        $this->assertEquals(0, $crawler->filter('a:contains("undersøkelse")')->count());
     }
 
 
 
 
     public function testSenereRemovesPopup(){
-
         $crawler = $this->teamMemberGoTo('/');
         $this->assertEquals(1, $crawler->filter('p:contains("Senere |")')->count());
         $this->createTeamMemberClient()->request('POST', '/closepopup');
@@ -79,24 +83,13 @@ class SurveyPopControllerTest extends BaseWebTestCase
       $form['survey[team_survey]'] = true;
       $form['survey[surveyPopUpMessage]'] = "rjwerjlewørwerjweørjewrjwere";
       $form['survey[showCustomPopUpMessage]'] = true;
-
       $this->createAdminClient()->submit($form);
       $crawler = $this->teamMemberGoTo('/');
+
+
       $this->assertEquals(3, $crawler->filter('div:contains("rjwerjlewørwerjweørjewrjwere")')->count());
 
   }
-
-  private function addNewTeamSurvey(){
-      $crawler = $this->adminGoTo('/kontrollpanel/undersokelse/opprett');
-      $form = $crawler->filter('button:contains("Lagre")')->form();
-      $form['survey[name]'] = "Test1234" ;
-      $form['survey[showCustomFinishPage]'] = false;
-      $form['survey[team_survey]'] = true;
-      $form['survey[confidential]'] = false;
-      $this->createAdminClient()->submit($form);
-  }
-
-
 
 
 }
