@@ -149,7 +149,7 @@ class TodoListController extends BaseController
     {
         $semester = $this->getSemesterOrThrow404();
         $department = $this->getDepartmentOrThrow404();
-        if ($semester === $this->getDoctrine()->getManager()->getRepository('AppBundle:Semester')->findCurrentSemester()){
+        if ($semester === $this->getDoctrine()->getManager()->getRepository('AppBundle:Semester')->findCurrentSemester()) {
             $item->setDeletedAt(new \DateTime());
         } else {
             $item->setDeletedAt($semester->getSemesterStartDate());
