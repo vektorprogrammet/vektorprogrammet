@@ -87,10 +87,10 @@
                         <td>{{ item.description }}</td>
                         <td>{{ item.isMandatoryBySemester(semester) ? 'Ja' : 'Nei' }}</td>
                         <td>
-                            {% if item.isPastDeadlineBySemester(semester) %}
-                                <span class="text-danger">{{ item.getTodoDeadlines()[0].getDeadDate.format('d/m-Y') }} </span>
-                            {% elseif item.hasShortDeadlineBySemester(semester) %}
-                                <span class="text-warning">{{ item.getTodoDeadlines()[0].getDeadDate.format('d/m-Y') }} </span>
+                            {% if item.hasShortDeadlineBySemester(semester) and not item.isCompletedInSemesterByDepartment(semester, department) %}
+                                <span class={{ item.isPastDeadlineBySemester(semester) ? "text-danger" : "text-warning" }}>
+                                    {{ item.getTodoDeadlines()[0].getDeadDate.format('d/m-Y') }}
+                                </span>
                             {% elseif item.getTodoDeadlines() != null %}
                                 {{ item.getTodoDeadlines()[0].getDeadDate.format('d/m-Y') }}
                             {% else %}

@@ -74,7 +74,6 @@ class TodoItem
      * @ORM\ManyToOne(targetEntity="Semester")
      * @ORM\JoinColumn(referencedColumnName="id", nullable=true)
      */
-    //New, non-department-specific semester:
     private $semester;
 
 
@@ -102,6 +101,9 @@ class TodoItem
     private $todoCompleted;
 
 
+    /**
+     * TodoItem constructor.
+     */
     public function __construct()
     {
         $this->todoMandatories = new ArrayCollection();
@@ -346,9 +348,6 @@ class TodoItem
      */
     public function isMandatoryBySemester(Semester $semester)
     {
-        //first and second if is actually not necessary, but prevents searching through
-        //all mandatories in special cases... wait. The getMandatoryBySemester searches through all
-        // mandatories... nvm. These need to go.
         $mandatory = $this->getMandatoryBySemester($semester);
         if (!empty($mandatory)) {
             return $mandatory->isMandatory();
@@ -362,7 +361,6 @@ class TodoItem
                 return $mandatory->isMandatory();
             }
         }
-        //case: there exists mandatories set after the semester one is seaching for
         return false;
     }
 
@@ -424,7 +422,10 @@ class TodoItem
     }
 
 
-
+    /**
+     * @param Semester $semester
+     * @return bool
+     */
     public function hasShortDeadlineBySemester(Semester $semester)
     {
         $deadline = $this->getDeadlineBySemester($semester);

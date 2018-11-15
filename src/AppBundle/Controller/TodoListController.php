@@ -17,7 +17,6 @@ class TodoListController extends BaseController
         $todoListService = $this->get('app.to_do_list_service');
         $department = $this->getDepartmentOrThrow404();
         $semester = $this->getSemesterOrThrow404();
-        dump($semester->getSemesterStartDate());
 
         $todosInOrder = $todoListService->getCorrectList($department, $semester);
 
@@ -32,9 +31,6 @@ class TodoListController extends BaseController
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function createTodoAction(Request $request)
     {
@@ -70,9 +66,6 @@ class TodoListController extends BaseController
      * @param TodoItem $item
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function editTodoAction(TodoItem $item, Request $request)
     {
@@ -137,9 +130,6 @@ class TodoListController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404();
         $semester = $this->getSemesterOrThrow404();
-
-        dump($department);
-        dump($semester);
         $todoListService = $this->get('app.to_do_list_service');
         $todoListService->toggleCompletedItem($item, $semester, $department);
         return $this->redirectToRoute('to_do_list', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
@@ -149,7 +139,7 @@ class TodoListController extends BaseController
     {
         $semester = $this->getSemesterOrThrow404();
         $department = $this->getDepartmentOrThrow404();
-        if ($semester === $this->getDoctrine()->getManager()->getRepository('AppBundle:Semester')->findCurrentSemester()){
+        if ($semester === $this->getDoctrine()->getManager()->getRepository('AppBundle:Semester')->findCurrentSemester()) {
             $item->setDeletedAt(new \DateTime());
         } else {
             $item->setDeletedAt($semester->getSemesterStartDate());

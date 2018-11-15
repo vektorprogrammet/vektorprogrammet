@@ -117,18 +117,6 @@ class TodoListService
         return $items;
     }
 
-    /*
-    /**
-     * @param TodoItem $a
-     * @param Semester $s
-     * @return bool
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * /
-    public function filterMandatoryAndInsignificantDeadline(TodoItem $a, Semester $s)
-    {
-        return ($a->isMandatoryBySemester($s) and !($this->hasDeadLineShortly($a)));
-    } */
-
     /**
      * @param array $todoItems
      * @param Semester $semester
@@ -168,19 +156,6 @@ class TodoListService
         });
         return array_values($items);
     }
-
-    /*
-    public function getDeletedTodoItems(array $todoItems)
-    {
-        $today = new \DateTime();
-        $items = array_filter($todoItems, function (TodoItem $a) use ($today) {
-            return !(($a->getDeletedAt() == null) or ($a->getDeletedAt() > $today));
-        });
-        return array_values($items);
-    }
-    */
-
-    // Generate appropriate items from TodoItemInfo, info from Type
 
     /**
      * @param TodoItemInfo $itemInfo
@@ -361,20 +336,15 @@ class TodoListService
         $this->em->flush();
     }
 
-    /*
+
     /**
      * @param TodoItem $item
+     * @param Semester $semester
+     * @param Department $department
+     * @return bool
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
-     * /
-    public function deleteTodoItem(TodoItem $item)
-    {
-        $item->setDeletedAt(new \DateTime());
-        $this->em->persist($item);
-        $this->em->flush();
-    }
-    */
-
+     */
     public function toggleCompletedItem(TodoItem $item, Semester $semester, Department $department)
     {
         $completedItem = $this->em->getRepository('AppBundle:TodoCompleted')->findOneBy(
@@ -412,13 +382,11 @@ class TodoListService
     {
         $repository = $this->em->getRepository('AppBundle:TodoItem');
         $allTodoItems = $repository->findTodoListItemsBySemesterAndDepartment($semester, $department);
-
-        dump($allTodoItems);
         $incompletedTodoItems = $this->getIncompletedTodoItems($allTodoItems, $semester, $department);
         $todoShortDeadLines = $this->getTodoItemsWithShortDeadline($incompletedTodoItems);
         $todoMandaoryNoDeadLine = $this->getMandatoryTodoItemsWithInsignificantDeadline($incompletedTodoItems, $semester);
         $todoNonMandatoryNoDeadline = $this->getNonMandatoryTodoItemsWithInsignificantDeadline($incompletedTodoItems, $semester);
-        $completedTodoListItems = $repository->findCompletedTodoListItems($semester);
+        $completedTodoListItems = $repository->findCompletedTodoListItemsBySemesterAndDepartment($semester, $department);
         $correctOrder = array_merge($todoShortDeadLines, $todoMandaoryNoDeadLine, $todoNonMandatoryNoDeadline, $completedTodoListItems);
 
         return $correctOrder;
