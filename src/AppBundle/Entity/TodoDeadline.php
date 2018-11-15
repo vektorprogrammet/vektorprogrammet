@@ -5,20 +5,20 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ToDoDeadline
+ * TodoDeadline
  *
- * @ORM\Table()
+ * @ORM\Table(name="todo_deadline")
  * @ORM\Entity
  */
-class ToDoDeadline
+class TodoDeadline
 {
 
     /**
-     * @var ToDoItem
+     * @var TodoItem
      *
-     * @ORM\ManyToOne(targetEntity="ToDoItem", inversedBy="toDoDeadlines")
+     * @ORM\ManyToOne(targetEntity="TodoItem", inversedBy="todoDeadlines")
      */
-    private $toDoItem;
+    private $todoItem;
 
     /**
      * @var Semester
@@ -59,7 +59,7 @@ class ToDoDeadline
      * Set deadDate
      *
      * @param \DateTime $deadDate
-     * @return ToDoDeadline
+     * @return TodoDeadline
      */
     public function setDeadDate($deadDate)
     {
@@ -79,21 +79,21 @@ class ToDoDeadline
     }
 
     /**
-     * @param ToDoItem $toDoItem
+     * @param TodoItem $todoItem
      * @return $this
      */
-    public function setToDoItem(ToDoItem $toDoItem)//: void
+    public function setTodoItem(TodoItem $todoItem)//: void
     {
-        $this->toDoItem = $toDoItem;
+        $this->todoItem = $todoItem;
         return $this;
     }
 
     /**
-     * @return ToDoItem
+     * @return TodoItem
      */
-    public function getToDoItem(): ToDoItem
+    public function getTodoItem(): TodoItem
     {
-        return $this->toDoItem;
+        return $this->todoItem;
     }
 
     /**

@@ -1,10 +1,10 @@
 <?php
 
-class ToDoListTest extends \Tests\BaseKernelTestCase
+class TodoListTest extends \Tests\BaseKernelTestCase
 {
 
     /**
-     * @var \AppBundle\Service\ToDoListService $service
+     * @var \AppBundle\Service\TodoListService $service
      */
     private $service;
     private $em;
@@ -29,17 +29,17 @@ class ToDoListTest extends \Tests\BaseKernelTestCase
         $this->service = $service;
         $em = $kernel->getContainer()->get('doctrine')->getManager();
         $this->em = $em;
-        $toDoRepo = $em->getRepository('AppBundle:ToDoItem');
-        $this->completedItem = $toDoRepo->findOneBy(['title' => 'completedToDoItem']);
-        $this->incompletedItem = $toDoRepo->findOneBy(['title' => 'incompletedToDoItem']);
+        $todoRepo = $em->getRepository('AppBundle:TodoItem');
+        $this->completedItem = $todoRepo->findOneBy(['title' => 'completedTodoItem']);
+        $this->incompletedItem = $todoRepo->findOneBy(['title' => 'incompletedTodoItem']);
         $this->currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
         $this->department = $em->getRepository('AppBundle:Department')->findOneBy(['shortName' => 'NTNU']);
 
-        $this->itemWithShortDeadline = $toDoRepo->findOneBy(['title' => 'shortDeadlineItem']);
-        $this->itemWithAlmostShortDeadline = $toDoRepo->findOneBy(['title' => 'almostShortDeadlineItem']);
-        $this->itemPastDeadline = $toDoRepo->findOneBy(['title' => 'pastDeadlineItem']);
-        $this->itemMandatoryShortDeadline = $toDoRepo->findOneBy(['title' => 'mandatoryShortDeadlineItem']);
-        $this->itemMandatory = $toDoRepo->findOneBy(['title' => 'mandatoryToDoItem']);
+        $this->itemWithShortDeadline = $todoRepo->findOneBy(['title' => 'shortDeadlineItem']);
+        $this->itemWithAlmostShortDeadline = $todoRepo->findOneBy(['title' => 'almostShortDeadlineItem']);
+        $this->itemPastDeadline = $todoRepo->findOneBy(['title' => 'pastDeadlineItem']);
+        $this->itemMandatoryShortDeadline = $todoRepo->findOneBy(['title' => 'mandatoryShortDeadlineItem']);
+        $this->itemMandatory = $todoRepo->findOneBy(['title' => 'mandatoryTodoItem']);
 
 
     }
@@ -49,38 +49,44 @@ class ToDoListTest extends \Tests\BaseKernelTestCase
     function testIsCompletedInSemesterByDepartment()
     {
         $todoItems = array($this->completedItem, $this->incompletedItem);
-        $incompletedItems = $this->service->getIncompletedToDoItems($todoItems, $this->currentSemester, $this->department);
+        $incompletedItems = $this->service->getIncompletedTodoItems($todoItems, $this->currentSemester, $this->department);
         $this->assertEquals(1, count($incompletedItems));
         $this->assertEquals($this->incompletedItem, $incompletedItems[0]);
 
     }
 
-    function testGetToDoItemsWithShortDeadline()
+    function testGetTodoItemsWithShortDeadline()
     {
         $todoItems = array($this->itemWithShortDeadline, $this->incompletedItem, $this->itemWithAlmostShortDeadline, $this->itemPastDeadline);
-        $shortDeadlines = $this->service->getToDoItemsWithShortDeadline($todoItems);
+        $shortDeadlines = $this->service->getTodoItemsWithShortDeadline($todoItems);
         $this->assertEquals(2, count($shortDeadlines));
         $this->assertContains($this->itemWithShortDeadline, $shortDeadlines);
         $this->assertContains($this->itemPastDeadline, $shortDeadlines);
     }
 
 
-    function testGetMandatoryToDoItemsWithInsignificantDeadline()
+    function testGetMandatoryTodoItemsWithInsignificantDeadline()
     {
         $itemMandatoryShortDeadline = $this->itemMandatoryShortDeadline;
         $itemMandatoryNoShortDeadline = $this->itemMandatory;
         $itemShortDeadline = $this->itemWithShortDeadline;
         $itemNotMandatoryNoDeadline = $this->incompletedItem;
-        $mandatoryResult = $this->service->getMandatoryToDoItemsWithInsignificantDeadline(
+        $mandatoryResult = $this->service->getMandatoryTodoItemsWithInsignificantDeadline(
             array($itemMandatoryShortDeadline, $itemMandatoryNoShortDeadline, $itemShortDeadline, $itemNotMandatoryNoDeadline), $this->currentSemester);
         $this->assertEquals(1, count($mandatoryResult));
         $this->assertContains($itemMandatoryNoShortDeadline, $mandatoryResult);
-        $nonMandatoryResult = $this->service->getNonMandatoryToDoItemsWithInsignificantDeadline(
+        $nonMandatoryResult = $this->service->getNonMandatoryTodoItemsWithInsignificantDeadline(
             array($itemMandatoryShortDeadline, $itemMandatoryNoShortDeadline, $itemShortDeadline, $itemNotMandatoryNoDeadline),
             $this->currentSemester);
         $this->assertEquals(1, count($nonMandatoryResult));
         $this->assertContains($itemNotMandatoryNoDeadline, $nonMandatoryResult);
 
+    }
+
+
+    function deleteTest()
+    {
+        //Sjekk slett, så status
     }
 
 

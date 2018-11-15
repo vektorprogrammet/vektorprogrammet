@@ -30,7 +30,7 @@
 
                     <div class="mt-3">
                         <button type="submit" class="btn btn-success cta-link">{{ create_or_update_action }}</button>
-                        <a href="{{ path('to_do_list') }}">
+                        <a href="{{ path('to_do_list', {'department': department.id, 'semester': semester.id}) }}">
                             <button type="button" class=" btn btn-primary">Avbryt</button>
                         </a>
                     </div>

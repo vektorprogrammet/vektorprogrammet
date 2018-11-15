@@ -9,13 +9,12 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
-    {# Needs to change, but: #}
     <div class="btn-group">
         {% if is_granted_team_leader() %}
-                {% include "common/department_semester_dropdowns.html.twig" with { 'path': 'to_do_list' } %}
+            {% include "common/department_semester_dropdowns.html.twig" with { 'path': 'to_do_list' } %}
         {% endif %}
         <a class="btn text-success"
-           href="{{ path('create_toDoItem') }}">
+           href="{{ path('create_todoItem', {'department': department.id, 'semester': semester.id}) }}">
             <i class="fa fa-plus text-success"></i>
             Nytt gjøremål
         </a>
@@ -58,8 +57,7 @@
                                     <div class="dropdown-menu pt-0" aria-labelledby="options-{{ item.id }}">
                                         <div class="dropdown-header mb-2"><strong>{{ item.title }}</strong></div>
                                         <form method="POST"
-                                                {#onsubmit="return confirm('Er du sikker på dette?')"#}
-                                              action="{{ path('edit_toDoItem', {'id': item.id}) }}">
+                                              action="{{ path('edit_todoItem', {'id': item.id, 'department': department.id, 'semester': semester.id}) }}">
                                             <button type="submit"
                                                     class="dropdown-item text-secondary">
                                                 <i class="fa fa-edit text-secondary"></i>
@@ -69,7 +67,7 @@
                                         {% if has_access_to('delete_todo') %}
                                             <form method="POST"
                                                   onsubmit="return confirm('Er du sikker på at du vil slette gjøremålet?')"
-                                                  action="{{ path('delete_todo_item', {'id': item.id}) }}">
+                                                  action="{{ path('delete_todo_item', {'id': item.id, 'department': department.id, 'semester': semester.id}) }}">
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <button type="submit"
@@ -86,14 +84,15 @@
                             {% endif %}
                         </td>
                         <td>{{ item.title }}</td>
-                        {#<a href="{{ path('specific_profile', {id: application.user.id}) }}">{{ application.user }}</a>#}
                         <td>{{ item.description }}</td>
                         <td>{{ item.isMandatoryBySemester(semester) ? 'Ja' : 'Nei' }}</td>
                         <td>
-                            {% if item.hasShortDeadlineBySemester(semester) %}
-                                <span class="text-warning">{{ item.getToDoDeadlines()[0].getDeadDate.format('d/m-Y') }} </span>
-                            {% elseif item.getToDoDeadlines() != null %}
-                                {{ item.getToDoDeadlines()[0].getDeadDate.format('d/m-Y') }}
+                            {% if item.isPastDeadlineBySemester(semester) %}
+                                <span class="text-danger">{{ item.getTodoDeadlines()[0].getDeadDate.format('d/m-Y') }} </span>
+                            {% elseif item.hasShortDeadlineBySemester(semester) %}
+                                <span class="text-warning">{{ item.getTodoDeadlines()[0].getDeadDate.format('d/m-Y') }} </span>
+                            {% elseif item.getTodoDeadlines() != null %}
+                                {{ item.getTodoDeadlines()[0].getDeadDate.format('d/m-Y') }}
                             {% else %}
                                 Ingen
                             {% endif %}
@@ -107,7 +106,7 @@
                                 <button class="btn btn-link" type="submit">
                                     <i class="far fa-check-square" style="color: forestgreen"></i>
                                 </button>
-                                {{ item.getToDoCompleted()[0].getCompletedAt().format('d/m-Y') }}
+                                {{ item.getTodoCompleted()[0].getCompletedAt().format('d/m-Y') }}
                                 {% else %}
                                     <form action="{{ path('toggle_isCompleted', {'id': item.id, 'semester': semester.id, 'department': department.id}) }}" method="post">
                                         <button class="btn btn-link" type="submit">

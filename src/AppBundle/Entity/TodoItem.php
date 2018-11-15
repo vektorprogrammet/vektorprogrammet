@@ -4,16 +4,14 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use AppBundle\Entity\Semester;
-use phpDocumentor\Reflection\Types\This;
 
 /**
- * ToDoItem
+ * TodoItem
  *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ToDoItemRepository")
+ * @ORM\Table(name="todo_item")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\TodoItemRepository")
  */
-class ToDoItem
+class TodoItem
 {
 
 
@@ -84,31 +82,31 @@ class ToDoItem
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="ToDoMandatory", mappedBy="toDoItem")
+     * @ORM\OneToMany(targetEntity="TodoMandatory", mappedBy="todoItem")
      */
-    private $toDoMandatories;
+    private $todoMandatories;
 
 
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="ToDoDeadline", mappedBy="toDoItem")
+     * @ORM\OneToMany(targetEntity="TodoDeadline", mappedBy="todoItem")
      */
-    private $toDoDeadlines;
+    private $todoDeadlines;
 
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="ToDoCompleted", mappedBy="toDoItem")
+     * @ORM\OneToMany(targetEntity="TodoCompleted", mappedBy="todoItem")
      */
-    private $toDoCompleted;
+    private $todoCompleted;
 
 
     public function __construct()
     {
-        $this->toDoMandatories = new ArrayCollection();
-        $this->toDoDeadlines = new ArrayCollection();
-        $this->toDoCompleted = new ArrayCollection();
+        $this->todoMandatories = new ArrayCollection();
+        $this->todoDeadlines = new ArrayCollection();
+        $this->todoCompleted = new ArrayCollection();
     }
 
     /**
@@ -125,7 +123,7 @@ class ToDoItem
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return ToDoItem
+     * @return TodoItem
      */
     public function setCreatedAt($createdAt)
     {
@@ -148,7 +146,7 @@ class ToDoItem
      * Set deletedAt
      *
      * @param \DateTime $deletedAt
-     * @return ToDoItem
+     * @return TodoItem
      */
     public function setDeletedAt($deletedAt)
     {
@@ -171,7 +169,7 @@ class ToDoItem
      * Set priority
      *
      * @param integer $priority
-     * @return ToDoItem
+     * @return TodoItem
      */
     public function setPriority($priority)
     {
@@ -194,7 +192,7 @@ class ToDoItem
      * Set title
      *
      * @param string $title
-     * @return ToDoItem
+     * @return TodoItem
      */
     public function setTitle($title)
     {
@@ -217,7 +215,7 @@ class ToDoItem
      * Set description
      *
      * @param string $description
-     * @return ToDoItem
+     * @return TodoItem
      */
     public function setDescription($description)
     {
@@ -272,12 +270,12 @@ class ToDoItem
     }
 
     /**
-     * @return ToDoMandatory[]
+     * @return TodoMandatory[]
      */
-    public function getToDoMandatories(): array
+    public function getTodoMandatories(): array
     {
-        $sortedArray = $this->toDoMandatories->toArray();
-        usort($sortedArray, function (ToDoMandatory $a, ToDoMandatory $b) {
+        $sortedArray = $this->todoMandatories->toArray();
+        usort($sortedArray, function (TodoMandatory $a, TodoMandatory $b) {
             return ($a->getSemester()->getSemesterStartDate() < $b->getSemester()->getSemesterStartDate());
         });
 
@@ -285,22 +283,22 @@ class ToDoItem
     }
 
     /**
-     * @param ToDoMandatory[] $toDoMandatories
+     * @param TodoMandatory[] $todoMandatories
      * @return $this
      */
-    public function setToDoMandatory(array $toDoMandatories)//: void
+    public function setTodoMandatory(array $todoMandatories)//: void
     {
-        $this->toDoMandatories = $toDoMandatories;
+        $this->todoMandatories = $todoMandatories;
         return $this;
     }
 
-    /** Gets List of ToDoDeadline objects (with this semester), ordered by semesters start date
-     * @return ToDoDeadline[]
+    /** Gets List of TodoDeadline objects (with this semester), ordered by semesters start date
+     * @return TodoDeadline[]
      */
-    public function getToDoDeadlines(): array
+    public function getTodoDeadlines(): array
     {
-        $sortedArray = $this->toDoDeadlines->toArray();
-        usort($sortedArray, function (ToDoDeadline $a, ToDoDeadline $b) {
+        $sortedArray = $this->todoDeadlines->toArray();
+        usort($sortedArray, function (TodoDeadline $a, TodoDeadline $b) {
             return ($a->getSemester()->getSemesterStartDate() < $b->getSemester()->getSemesterStartDate());
         });
         return $sortedArray;
@@ -308,36 +306,36 @@ class ToDoItem
 
 
     /**
-     * @param ToDoDeadline[] $toDoDeadlines
+     * @param TodoDeadline[] $todoDeadlines
      * @return $this
      */
-    public function setToDoDeadlines(array $toDoDeadlines)//: void
+    public function setTodoDeadlines(array $todoDeadlines)//: void
     {
-        $this->toDoDeadlines = $toDoDeadlines;
+        $this->todoDeadlines = $todoDeadlines;
         return $this;
     }
 
 
 
-    /** Gets List of ToDoCompleted objects (with this semester), ordered by semesters start date
-     * @return ToDoCompleted[]
+    /** Gets List of TodoCompleted objects (with this semester), ordered by semesters start date
+     * @return TodoCompleted[]
      */
-    public function getToDoCompleted(): array
+    public function getTodoCompleted(): array
     {
-        $sortedArray = $this->toDoCompleted->toArray();
-        usort($sortedArray, function (ToDoCompleted $a, ToDoCompleted $b) {
+        $sortedArray = $this->todoCompleted->toArray();
+        usort($sortedArray, function (TodoCompleted $a, TodoCompleted $b) {
             return ($a->getSemester()->getSemesterStartDate() < $b->getSemester()->getSemesterStartDate());
         });
         return $sortedArray;
     }
 
     /**
-     * @param array $toDoCompleted
+     * @param array $todoCompleted
      * @return $this
      */
-    public function setToDoCompleted(array $toDoCompleted) //: void
+    public function setTodoCompleted(array $todoCompleted) //: void
     {
-        $this->toDoCompleted = $toDoCompleted;
+        $this->todoCompleted = $todoCompleted;
         return $this;
     }
 
@@ -355,7 +353,7 @@ class ToDoItem
         if (!empty($mandatory)) {
             return $mandatory->isMandatory();
         }
-        $mandatories = $this->getToDoMandatories();
+        $mandatories = $this->getTodoMandatories();
         if (empty($mandatories)) {
             return false;
         }
@@ -370,11 +368,11 @@ class ToDoItem
 
     /**
      * @param \AppBundle\Entity\Semester $semester
-     * @return ToDoMandatory|mixed|null
+     * @return TodoMandatory|mixed|null
      */
     public function getMandatoryBySemester(Semester $semester)
     {
-        $mandatories = $this->getToDoMandatories();
+        $mandatories = $this->getTodoMandatories();
         foreach ($mandatories as $element) {
             if (($element->getSemester() === $semester)) {
                 return $element;
@@ -386,14 +384,14 @@ class ToDoItem
 
     /**
      * @param \AppBundle\Entity\Semester $semester
-     * @return ToDoDeadline|null
+     * @return TodoDeadline|null
      */
     public function getDeadlineBySemester(Semester $semester)
     {
-        if (empty($this->getToDoDeadlines())) {
+        if (empty($this->getTodoDeadlines())) {
             return null;
         }
-        $deadlines = $this->getToDoDeadlines();
+        $deadlines = $this->getTodoDeadlines();
         foreach ($deadlines as $deadline) {
             if ($deadline->getSemester() === $semester) {
                 return $deadline;
@@ -414,6 +412,19 @@ class ToDoItem
         return $deadline !== null;
     }
 
+    /**
+     * @param \AppBundle\Entity\Semester $semester
+     * @return bool
+     */
+    public function isPastDeadlineBySemester(Semester $semester)
+    {
+        $deadline = $this->getDeadlineBySemester($semester);
+
+        return $deadline === null ? false: $deadline->getDeadDate() < new \DateTime();
+    }
+
+
+
     public function hasShortDeadlineBySemester(Semester $semester)
     {
         $deadline = $this->getDeadlineBySemester($semester);
@@ -431,7 +442,7 @@ class ToDoItem
      */
     public function isCompletedInSemesterByDepartment(Semester $semester, Department $department)
     {
-        $completes = $this->getToDoCompleted();
+        $completes = $this->getTodoCompleted();
         if ($completes === null) {
             return false;
         }

@@ -4,10 +4,10 @@ namespace AppBundle\Model;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
-use AppBundle\Entity\ToDoItem;
-use AppBundle\Entity\ToDoMandatory;
+use AppBundle\Entity\TodoItem;
+use AppBundle\Entity\TodoMandatory;
 
-class ToDoItemInfo
+class TodoItemInfo
 {
     private $semester;
     private $department;
@@ -18,9 +18,9 @@ class ToDoItemInfo
     private $isMandatory;
     private $deadlineDate;
 
-    private $toDoItem;
-    private $toDoMandatory;
-    private $toDoDeadline;
+    private $todoItem;
+    private $todoMandatory;
+    private $todoDeadline;
 
     public function __construct()
     {
@@ -38,9 +38,9 @@ class ToDoItemInfo
 
     /**
      * @param Semester $semester
-     * @return ToDoItemInfo
+     * @return TodoItemInfo
      */
-    public function setSemester(? Semester $semester): ? ToDoItemInfo
+    public function setSemester(? Semester $semester): ? TodoItemInfo
     {
         $this->semester = $semester;
         return $this;
@@ -56,9 +56,9 @@ class ToDoItemInfo
 
     /**
      * @param Department $department
-     * @return ToDoItemInfo
+     * @return TodoItemInfo
      */
-    public function setDepartment(? Department $department): ? ToDoItemInfo
+    public function setDepartment(? Department $department): ? TodoItemInfo
     {
         $this->department = $department;
         return $this;
@@ -74,9 +74,9 @@ class ToDoItemInfo
 
     /**
      * @param int $priority
-     * @return ToDoItemInfo
+     * @return TodoItemInfo
      */
-    public function setPriority(int $priority): ToDoItemInfo
+    public function setPriority(int $priority): TodoItemInfo
     {
         $this->priority = $priority;
         return $this;
@@ -92,9 +92,9 @@ class ToDoItemInfo
 
     /**
      * @param string $title
-     * @return ToDoItemInfo
+     * @return TodoItemInfo
      */
-    public function setTitle(string $title): ToDoItemInfo
+    public function setTitle(string $title): TodoItemInfo
     {
         $this->title = $title;
         return $this;
@@ -110,9 +110,9 @@ class ToDoItemInfo
 
     /**
      * @param string $description
-     * @return ToDoItemInfo
+     * @return TodoItemInfo
      */
-    public function setDescription(string $description): ToDoItemInfo
+    public function setDescription(string $description): TodoItemInfo
     {
         $this->description = $description;
         return $this;
@@ -128,65 +128,65 @@ class ToDoItemInfo
 
     /**
      * @param \DateTime $deadlineDate
-     * @return ToDoItemInfo
+     * @return TodoItemInfo
      */
-    public function setDeadlineDate(\DateTime $deadlineDate = null): ToDoItemInfo
+    public function setDeadlineDate(\DateTime $deadlineDate = null): TodoItemInfo
     {
         $this->deadlineDate = $deadlineDate;
         return $this;
     }
 
     /**
-     * @return ToDoItem
+     * @return TodoItem
      */
-    public function getToDoItem() : ToDoItem
+    public function getTodoItem() : TodoItem
     {
-        return $this->toDoItem;
+        return $this->todoItem;
     }
 
     /**
-     * @param mixed $toDoItem
-     * @return ToDoItemInfo
+     * @param mixed $todoItem
+     * @return TodoItemInfo
      */
-    public function setToDoItem($toDoItem)
+    public function setTodoItem($todoItem)
     {
-        $this->toDoItem = $toDoItem;
+        $this->todoItem = $todoItem;
         return $this;
     }
 
     /**
-     * @return ToDoMandatory|null
+     * @return TodoMandatory|null
      */
-    public function getToDoMandatory() : ? ToDoMandatory
+    public function getTodoMandatory() : ? TodoMandatory
     {
-        return $this->toDoMandatory;
+        return $this->todoMandatory;
     }
 
     /**
-     * @param mixed $toDoMandatory
-     * @return ToDoItemInfo
+     * @param mixed $todoMandatory
+     * @return TodoItemInfo
      */
-    public function setToDoMandatory($toDoMandatory)
+    public function setTodoMandatory($todoMandatory)
     {
-        $this->toDoMandatory = $toDoMandatory;
+        $this->todoMandatory = $todoMandatory;
         return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getToDoDeadline()
+    public function getTodoDeadline()
     {
-        return $this->toDoDeadline;
+        return $this->todoDeadline;
     }
 
     /**
-     * @param mixed $toDoDeadline
-     * @return ToDoItemInfo
+     * @param mixed $todoDeadline
+     * @return TodoItemInfo
      */
-    public function setToDoDeadline($toDoDeadline)
+    public function setTodoDeadline($todoDeadline)
     {
-        $this->toDoDeadline = $toDoDeadline;
+        $this->todoDeadline = $todoDeadline;
         return $this;
     }
 

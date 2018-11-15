@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class CreateToDoItemInfoType extends AbstractType
+class CreateTodoItemInfoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $option)
     {
@@ -75,12 +75,12 @@ class CreateToDoItemInfoType extends AbstractType
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Model\ToDoItemInfo',
+            'data_class' => 'AppBundle\Model\TodoItemInfo',
         ));
     }
 
     public function getName()
     {
-        return 'createToDoItemInfo';
+        return 'createTodoItemInfo';
     }
 }

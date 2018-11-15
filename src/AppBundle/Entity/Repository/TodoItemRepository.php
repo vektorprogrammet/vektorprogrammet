@@ -3,14 +3,14 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Department;
-use AppBundle\Entity\ToDoItem;
+use AppBundle\Entity\TodoItem;
 use \Doctrine\ORM\EntityRepository;
 use \AppBundle\Entity\Semester;
 
 /**
- * Class ToDoItemRepository
+ * Class TodoItemRepository
  */
-class ToDoItemRepository extends EntityRepository
+class TodoItemRepository extends EntityRepository
 {
 
     /**
@@ -18,18 +18,20 @@ class ToDoItemRepository extends EntityRepository
      * @param Department $department
      * @return array
      */
-    public function findToDoListItemsBySemesterAndDepartment(Semester $semester, Department $department)
+    public function findTodoListItemsBySemesterAndDepartment(Semester $semester, Department $department)
     {
-        $todoItems = $this->createQueryBuilder('toDoListItem')
-            ->select('toDoListItem')
-            ->where('toDoListItem.semester = :semester or toDoListItem.semester is null')
-            ->andWhere('toDoListItem.department = :department or toDoListItem.department is null')
+        $todoItems = $this->createQueryBuilder('todoListItem')
+            ->select('todoListItem')
+            ->where('todoListItem.semester = :semester or todoListItem.semester is null')
+            ->andWhere('todoListItem.department = :department or todoListItem.department is null')
+            ->andWhere('todoListItem.deletedAt > :semesterEndDate or todoListItem.deletedAt is null')
             ->setParameter('semester', $semester)
             ->setParameter('department', $department)
+            ->setParameter('semesterEndDate', $semester->getSemesterEndDate())
             ->getQuery()
             ->getResult();
 
-        $filteredItems = array_filter($todoItems, function (ToDoItem $item) use ($semester) {
+        $filteredItems = array_filter($todoItems, function (TodoItem $item) use ($semester) {
             if (empty($item->getSemester())) {
                 return (
                     $item->getCreatedAt() < $semester->getSemesterEndDate() and
@@ -46,10 +48,10 @@ class ToDoItemRepository extends EntityRepository
      * @param Semester $semester
      * @return array
      */
-    public function findCompletedToDoListItems(Semester $semester)
+    public function findCompletedTodoListItems(Semester $semester)
     {
-        return $this->createQueryBuilder('toDoListItem')
-            ->join('toDoListItem.toDoCompleted', 'completed')
+        return $this->createQueryBuilder('todoListItem')
+            ->join('todoListItem.todoCompleted', 'completed')
             ->where('completed.semester = :semester')
             ->setParameter('semester', $semester)
             ->getQuery()

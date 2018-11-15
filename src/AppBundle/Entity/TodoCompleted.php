@@ -3,15 +3,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\This;
 
 /**
- * ToDoCompleted
+ * TodoCompleted
  *
- * @ORM\Table()
+ * @ORM\Table(name="todo_completed")
  * @ORM\Entity
  */
-class ToDoCompleted
+class TodoCompleted
 {
     /**
      * @var integer
@@ -23,11 +22,11 @@ class ToDoCompleted
     private $id;
 
     /**
-     * @var ToDoItem
+     * @var TodoItem
      *
-     * @ORM\ManyToOne(targetEntity="ToDoItem", inversedBy="toDoCompleted")
+     * @ORM\ManyToOne(targetEntity="TodoItem", inversedBy="todoCompleted")
      */
-    private $toDoItem;
+    private $todoItem;
 
     /**
      * @var \DateTime
@@ -65,7 +64,7 @@ class ToDoCompleted
      * Set completedAt
      *
      * @param \DateTime $completedAt
-     * @return ToDoCompleted
+     * @return TodoCompleted
      */
     public function setCompletedAt($completedAt)
     {
@@ -102,21 +101,21 @@ class ToDoCompleted
     }
 
     /**
-     * @param ToDoItem $toDoItem
+     * @param TodoItem $todoItem
      * @return $this
      */
-    public function setToDoItem(ToDoItem $toDoItem)//: void
+    public function setTodoItem(TodoItem $todoItem)//: void
     {
-        $this->toDoItem = $toDoItem;
+        $this->todoItem = $todoItem;
         return $this;
     }
 
     /**
-     * @return ToDoItem
+     * @return TodoItem
      */
-    public function getToDoItem(): ToDoItem
+    public function getTodoItem(): TodoItem
     {
-        return $this->toDoItem;
+        return $this->todoItem;
     }
 
     /**

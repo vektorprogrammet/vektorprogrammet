@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ToDoMandatory
+ * TodoMandatory
  *
- * @ORM\Table()
+ * @ORM\Table(name="todo_mandatory")
  * @ORM\Entity
  */
-class ToDoMandatory
+class TodoMandatory
 {
     /**
      * @var integer
@@ -22,11 +22,11 @@ class ToDoMandatory
     private $id;
 
     /**
-     * @var ToDoItem
+     * @var TodoItem
      *
-     * @ORM\ManyToOne(targetEntity="ToDoItem", inversedBy="toDoMandatories")
+     * @ORM\ManyToOne(targetEntity="TodoItem", inversedBy="todoMandatories")
      */
-    private $toDoItem;
+    private $todoItem;
 
     /**
      * @var Semester
@@ -66,7 +66,7 @@ class ToDoMandatory
      * Set isMandatory
      *
      * @param boolean $isMandatory
-     * @return ToDoMandatory
+     * @return TodoMandatory
      */
     public function setIsMandatory($isMandatory)
     {
@@ -86,20 +86,20 @@ class ToDoMandatory
     }
 
     /**
-     * @return ToDoItem
+     * @return TodoItem
      */
-    public function getToDoItem(): ToDoItem
+    public function getTodoItem(): TodoItem
     {
-        return $this->toDoItem;
+        return $this->todoItem;
     }
 
     /**
-     * @param ToDoItem $toDoItem
+     * @param TodoItem $todoItem
      * @return $this
      */
-    public function setToDoItem(ToDoItem $toDoItem)
+    public function setTodoItem(TodoItem $todoItem)
     {
-        $this->toDoItem = $toDoItem;
+        $this->todoItem = $todoItem;
         return $this;
     }
 
