@@ -244,7 +244,7 @@ profile_edit_password:
 profile_edit_photo:
   path: /profil/rediger/profilbilde/{id}
   defaults: { _controller: AppBundle:ProfilePhoto:showEditProfilePhoto }
-  methods: [GET, POST]
+  methods: [GET]
   requirements:
     id: \d+
 
@@ -827,55 +827,6 @@ school_capacity_edit:
     methods: [GET, POST]
     requirements:
         id: \d+
-
-##########################################
-#              ImageGallery              #
-##########################################
-
-image_gallery_create:
-  path: /kontrollpanel/bildegallerier
-  defaults: { _controller: AppBundle:ImageGallery:create }
-  methods: [GET, POST]
-
-image_gallery_edit:
-  path: /kontrollpanel/bildegallerier/galleri/{id}
-  defaults: { _controller: AppBundle:ImageGallery:edit }
-  methods: [GET, POST]
-  requirements:
-    id: \d+
-
-image_gallery_delete:
-  path: /kontrollpanel/bildegallerier/galleri/slett/{id}
-  defaults: { _controller: AppBundle:ImageGallery:delete }
-  methods: [POST]
-  requirements:
-    id: \d+
-
-image_gallery_api_get:
-  path: /api/image_gallery/{referenceName}
-  defaults: { _controller: AppBundle:ImageGallery:get }
-  methods: [GET]
-
-image_edit:
-  path: /kontrollpanel/bilde/rediger/{id}
-  defaults: { _controller: AppBundle:Image:edit }
-  methods: [GET, POST]
-  requirements:
-    id: \d+
-
-image_upload:
-  path: /kontrollpanel/bilde/upload/{id}
-  defaults: { _controller: AppBundle:Image:upload }
-  methods: [GET, POST]
-  requirements:
-    id: \d+
-
-image_delete:
-  path: /kontrollpanel/bilde/slett/{id}
-  defaults: { _controller: AppBundle:Image:delete }
-  methods: [POST]
-  requirements:
-    id: \d+
 
 ##########################################
 #              Interview                 #

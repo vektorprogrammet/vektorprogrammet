@@ -6,6 +6,8 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\SupportTicket;
 use AppBundle\Event\SupportTicketCreatedEvent;
 use AppBundle\Form\Type\SupportTicketType;
+use AppBundle\Service\GeoLocation;
+use AppBundle\Service\LogService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +28,7 @@ class ContactController extends BaseController
     public function indexAction(Request $request, Department $department = null)
     {
         if ($department === null) {
-            $department = $this->get('app.geolocation')
+            $department = $this->get(GeoLocation::class)
                 ->findNearestDepartment($this->getDoctrine()->getRepository('AppBundle:Department')->findAll());
         }
 
@@ -38,7 +40,7 @@ class ContactController extends BaseController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $supportTicket->getDepartment() === null) {
-            $this->get('app.logger')->error("Could not send support ticket. Department was null.\n$supportTicket");
+            $this->get(LogService::class)->error("Could not send support ticket. Department was null.\n$supportTicket");
         }
         if ($form->isValid()) {
             $this->get('event_dispatcher')

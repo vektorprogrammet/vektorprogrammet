@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Service\SbsData;
+
 class ControlPanelController extends BaseController
 {
     public function showAction()
@@ -16,7 +18,7 @@ class ControlPanelController extends BaseController
 
     public function showSBSAction()
     {
-        $sbsData = $this->get('app.sbs_data');
+        $sbsData = $this->get(SbsData::class);
         $currentAdmissionPeriod = $this->getUser()->getDepartment()->getCurrentAdmissionPeriod();
 
         if ($currentAdmissionPeriod) {

@@ -7,7 +7,7 @@
         <div class="dropdown-menu" aria-labelledby="departmentDropdown">
             {% set departmentParameterName = departmentParameterName is defined ? departmentParameterName : 'department' %}
         {% set semesterParameterName = semesterParameterName is defined ? semesterParameterName : 'semester' %}
-        {% for department in get_departments() %}
+        {% for department in is_granted_admin() ? get_departments() : get_active_departments() %}
                 {% if linkToSemester is defined and linkToSemester == true %}
                     <a class="dropdown-item" href="{{ path(pathForDepartment, { (departmentParameterName): department.id, (semesterParameterName): semester.id }) }}">{{ department }}</a>
                 {% else %}

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Service\LogService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -30,13 +31,13 @@ class GitHubController extends BaseController
 
         // Execute deploy script if there is a push to master
         if ($isCorrectRepository && $isMaster && $commit !== null) {
-            $this->get('app.logger')->info(
+            $this->get(LogService::class)->info(
                 "New commit on master by *$committer*:\n".
                 "```$message```\n".
                 "Deploying changes..."
             );
             shell_exec($this->getParameter('kernel.root_dir').'/../deploy.sh');
-            $this->get('app.logger')->info('Deploy complete');
+            $this->get(LogService::class)->info('Deploy complete');
 
             return new JsonResponse(['status' => 'Deployed']);
         } else {

@@ -9,11 +9,13 @@ use AppBundle\Event\InterviewEvent;
 use AppBundle\Form\InterviewNewTimeType;
 use AppBundle\Form\Type\AddCoInterviewerType;
 use AppBundle\Form\Type\ApplicationInterviewType;
-use AppBundle\Form\Type\AssignInterviewType;
 use AppBundle\Form\Type\CancelInterviewConfirmationType;
 use AppBundle\Form\Type\CreateInterviewType;
 use AppBundle\Form\Type\ScheduleInterviewType;
+use AppBundle\Role\ReversedRoleHierarchy;
 use AppBundle\Role\Roles;
+use AppBundle\Service\ApplicationManager;
+use AppBundle\Service\InterviewManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -51,10 +53,10 @@ class InterviewController extends BaseController
         }
 
         // If the interview has not yet been conducted, create up to date answer objects for all questions in schema
-        $interview = $this->get('app.interview.manager')->initializeInterviewAnswers($application->getInterview());
+        $interview = $this->get(InterviewManager::class)->initializeInterviewAnswers($application->getInterview());
 
         // Only admin and above, or the assigned interviewer, or the co interviewer should be able to conduct an interview
-        if (! $this->get('app.interview.manager')->loggedInUserCanSeeInterview($interview)) {
+        if (! $this->get(InterviewManager::class)->loggedInUserCanSeeInterview($interview)) {
             throw $this->createAccessDeniedException();
         }
 
@@ -123,8 +125,8 @@ class InterviewController extends BaseController
         }
 
         // Only accessible for admin and above, or team members belonging to the same department as the interview
-        if (! $this->get('app.interview.manager')->loggedInUserCanSeeInterview($interview) ||
-             $this->getUser() == $application->getUser()
+        if (! $this->get(InterviewManager::class)->loggedInUserCanSeeInterview($interview) ||
+             $this->getUser() === $application->getUser()
         ) {
             throw $this->createAccessDeniedException();
         }
@@ -204,12 +206,12 @@ class InterviewController extends BaseController
             throw $this->createNotFoundException('Interview not found.');
         }
         // Only admin and above, or the assigned interviewer should be able to book an interview
-        if (! $this->get('app.interview.manager')->loggedInUserCanSeeInterview($interview)) {
+        if (! $this->get(InterviewManager::class)->loggedInUserCanSeeInterview($interview)) {
             throw $this->createAccessDeniedException();
         }
 
         // Set the default data for the form
-        $defaultData = $this->get('app.interview.manager')->getDefaultScheduleFormData($interview);
+        $defaultData = $this->get(InterviewManager::class)->getDefaultScheduleFormData($interview);
 
         $form = $this->createForm(ScheduleInterviewType::class, $defaultData);
 
@@ -300,7 +302,7 @@ class InterviewController extends BaseController
         $application = $em->getRepository('AppBundle:Application')->find($id);
         $user = $application->getUser();
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
-        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([ Roles::TEAM_MEMBER ]);
+        $roles = $this->get(ReversedRoleHierarchy::class)->getParentRoles([ Roles::TEAM_MEMBER ]);
 
         $form = $this->createForm(CreateInterviewType::class, $application, [
             'roles' => $roles
@@ -342,7 +344,7 @@ class InterviewController extends BaseController
     public function bulkAssignAction(Request $request)
     {
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
-        $roles = $this->get('app.reversed_role_hierarchy')->getParentRoles([Roles::TEAM_MEMBER]);
+        $roles = $this->get(ReversedRoleHierarchy::class)->getParentRoles([Roles::TEAM_MEMBER]);
         $form = $this->createForm(CreateInterviewType::class, null, [
             'roles' => $roles
         ]);
@@ -358,7 +360,7 @@ class InterviewController extends BaseController
 
             // Update or create new interviews for all the given applications
             foreach ($applications as $application) {
-                $this->get('app.interview.manager')->assignInterviewerToApplication($interviewer, $application);
+                $this->get(InterviewManager::class)->assignInterviewerToApplication($interviewer, $application);
 
                 $application->getInterview()->setInterviewSchema($schema);
                 $em->persist($application);
@@ -430,7 +432,7 @@ class InterviewController extends BaseController
             $manager->persist($interview);
             $manager->flush();
 
-            $this->get('app.interview.manager')->sendRescheduleEmail($interview);
+            $this->get(InterviewManager::class)->sendRescheduleEmail($interview);
             $this->addFlash('success', "Forspørsel om ny intervjutid er sendt. Vi tar kontakt med deg når vi har funnet en ny intervjutid.");
 
             if ($interview->getUser() === $this->getUser()) {
@@ -453,7 +455,7 @@ class InterviewController extends BaseController
      */
     public function respondAction(Interview $interview)
     {
-        $applicationStatus = $this->get('app.application_manager')->getApplicationStatus($interview->getApplication());
+        $applicationStatus = $this->get(ApplicationManager::class)->getApplicationStatus($interview->getApplication());
 
         return $this->render('interview/response.html.twig', array(
             'interview'          => $interview,
@@ -484,7 +486,7 @@ class InterviewController extends BaseController
             $manager->persist($interview);
             $manager->flush();
 
-            $this->get('app.interview.manager')->sendCancelEmail($interview);
+            $this->get(InterviewManager::class)->sendCancelEmail($interview);
             $this->addFlash('success', "Du har kansellert intervjuet ditt.");
 
             if ($interview->getUser() === $this->getUser()) {
@@ -523,7 +525,7 @@ class InterviewController extends BaseController
         );
     }
 
-    public function assignCoInterviewerAction(Interview $interview, Request $request)
+    public function assignCoInterviewerAction(Interview $interview)
     {
         if ($interview->getUser() === $this->getUser()) {
             return $this->render('error/control_panel_error.html.twig', array(
@@ -558,8 +560,9 @@ class InterviewController extends BaseController
         $department = $interview->getApplication()->getDepartment();
         $teamUsers = $this->getDoctrine()->getRepository('AppBundle:User')
             ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
+        $coInterviewers = array_merge(array_diff($teamUsers, array($interview->getInterviewer(),$interview->getCoInterviewer())));
         $form = $this->createForm(AddCoInterviewerType::class, null, [
-            'teamUsers' => $teamUsers
+            'teamUsers' => $coInterviewers
         ]);
         $form->handleRequest($request);
 

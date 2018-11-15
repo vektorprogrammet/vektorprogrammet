@@ -97,7 +97,6 @@ security:
         - { path: ^/kontrollpanel/skoleadmin/brukere/avdeling, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/skoleadmin/historikk/slett, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/skole/timeplan, roles: ROLE_TEAM_LEADER }
-        - { path: ^/kontrollpanel/intervju/skjema, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/intervju/fordel, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/teamadmin/stillinger, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/teamadmin/rediger/stilling, roles: ROLE_TEAM_LEADER }

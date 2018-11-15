@@ -1,7 +1,7 @@
 <?php
 
 
-namespace AppBundle\Service;
+namespace AppBundle\Utils;
 
 use AppBundle\Entity\Receipt;
 

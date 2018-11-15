@@ -8,6 +8,8 @@ use AppBundle\Form\Type\SurveyAdminType;
 use AppBundle\Form\Type\SurveyExecuteType;
 use AppBundle\Form\Type\SurveySchoolSpecificExecuteType;
 use AppBundle\Form\Type\SurveyType;
+use AppBundle\Role\Roles;
+use AppBundle\Service\SurveyManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +37,7 @@ class SurveyController extends BaseController
         }
 
 
-        $surveyTaken = $this->get('survey.manager')->initializeSurveyTaken($survey);
+        $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
 
         $form = $this->createForm(SurveySchoolSpecificExecuteType::class, $surveyTaken, array(
             'validation_groups' => array('schoolSpecific'),
@@ -129,8 +131,8 @@ class SurveyController extends BaseController
         if ($survey->isTeamSurvey()) {
             throw new \InvalidArgumentException("Er team undersøkelse og har derfor ingen admin utfylling");
         }
-        $surveyTaken = $this->get('survey.manager')->initializeSurveyTaken($survey);
-        $surveyTaken = $this->get('survey.manager')->predictSurveyTakenAnswers($surveyTaken);
+        $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
+        $surveyTaken = $this->get(SurveyManager::class)->predictSurveyTakenAnswers($surveyTaken);
 
         $form = $this->createForm(SurveySchoolSpecificExecuteType::class, $surveyTaken);
         $form->handleRequest($request);

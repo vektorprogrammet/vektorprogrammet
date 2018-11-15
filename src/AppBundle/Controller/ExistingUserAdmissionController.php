@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationExistingUserType;
+use AppBundle\Service\ApplicationAdmission;
 use Doctrine\ORM\NoResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,7 @@ class ExistingUserAdmissionController extends BaseController
     {
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
-        $admissionManager = $this->get('app.application_admission');
+        $admissionManager = $this->get(ApplicationAdmission::class);
         if ($res = $admissionManager->renderErrorPage($user)) {
             return $res;
         }
