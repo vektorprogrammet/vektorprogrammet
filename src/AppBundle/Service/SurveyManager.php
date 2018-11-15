@@ -227,6 +227,5 @@ class SurveyManager
         $user->setLastPopUpTime(null);
         $this->em->persist($user);
         $this->em->flush();
-
     }
 }
