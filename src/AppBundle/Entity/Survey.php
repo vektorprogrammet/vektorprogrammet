@@ -47,7 +47,7 @@ class Survey implements \JsonSerializable
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $showCustomFinishPage;
 
@@ -388,9 +388,6 @@ class Survey implements \JsonSerializable
      */
     public function getCreatedTime() : \DateTime
     {
-        if ($this->createdTime === null) {
-            return new \DateTime("2000-01-01");
-        }
         return $this->createdTime;
     }
 }
