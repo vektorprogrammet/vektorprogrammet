@@ -180,6 +180,9 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
             array('/kontrollpanel/opptak/intervjuet'),
             array('/kontrollpanel/opptak/intervjuet?department=1&semester=1'),
 
+            array('/kontrollpanel/intervju/skjema'),
+            array('/kontrollpanel/intervju/skjema/1'),
+
             array('/kontrollpanel/stand'),
             array('/kontrollpanel/stand?department=1&semester=1'),
 
@@ -236,8 +239,6 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
             array('/kontrollpanel/intervju/settopp/6'),
             array('/kontrollpanel/intervju/conduct/6'),
             array('/kontrollpanel/intervju/vis/4'),
-            array('/kontrollpanel/intervju/skjema'),
-            array('/kontrollpanel/intervju/skjema/1'),
             array('/kontrollpanel/skole/timeplan/'),
 
             array('/kontrollpanel/teamadmin/stillinger'),

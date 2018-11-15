@@ -4,11 +4,11 @@ namespace AppBundle\EventSubscriber;
 
 use AppBundle\Entity\Image;
 use AppBundle\Service\FileUploader;
-use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ImageSubscriber implements EventSubscriber
+class ImageSubscriber implements EventSubscriberInterface
 {
     private $fileUploader;
 
@@ -17,7 +17,7 @@ class ImageSubscriber implements EventSubscriber
         $this->fileUploader = $fileUploader;
     }
 
-    public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return array(
             Events::preRemove,

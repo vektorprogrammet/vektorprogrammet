@@ -2,11 +2,13 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Service\GeoLocation;
+
 class HomeController extends BaseController
 {
     public function showAction()
     {
-        $geoLocation = $this->get('app.geolocation');
+        $geoLocation = $this->get(GeoLocation::class);
         $assistantsCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findAssistants());
         $teamMembersCount = count($this->getDoctrine()->getRepository('AppBundle:User')->findTeamMembers());
         $articles = $this->getDoctrine()->getRepository('AppBundle:Article')->findStickyAndLatestArticles();

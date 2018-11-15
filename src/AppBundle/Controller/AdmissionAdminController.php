@@ -77,7 +77,7 @@ class AdmissionAdminController extends BaseController
 
         if ($admissionPeriod !== null) {
             $applications = $applicationRepo->findAssignedApplicants($admissionPeriod);
-            $interviewDistributions = $this->get('app.interview_counter')
+            $interviewDistributions = $this->get(InterviewCounter::class)
                 ->createInterviewDistributions($applications, $admissionPeriod);
             $cancelledApplications = $applicationRepo->findCancelledApplicants($admissionPeriod);
             $applicationsAssignedToUser = $applicationRepo->findAssignedByUserAndAdmissionPeriod($this->getUser(), $admissionPeriod);
@@ -111,7 +111,7 @@ class AdmissionAdminController extends BaseController
                 ->findInterviewedApplicants($admissionPeriod);
         }
 
-        $counter = $this->get('app.interview_counter');
+        $counter = $this->get(InterviewCounter::class);
 
         return $this->render('admission_admin/interviewed_applications_table.html.twig', array(
             'status' => 'interviewed',
@@ -175,7 +175,7 @@ class AdmissionAdminController extends BaseController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteApplicationExistingAssistant(Application $application)
+    public function deleteApplicationExistingAssistantAction(Application $application)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($application);

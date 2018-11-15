@@ -5,7 +5,10 @@ namespace AppBundle\Controller;
 use AppBundle\Event\ReceiptEvent;
 use AppBundle\Form\Type\ReceiptType;
 use AppBundle\Role\Roles;
-use AppBundle\Service\ReceiptStatistics;
+use AppBundle\Service\FileUploader;
+use AppBundle\Service\RoleManager;
+use AppBundle\Service\Sorter;
+use AppBundle\Utils\ReceiptStatistics;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Receipt;
 use AppBundle\Entity\User;
@@ -28,7 +31,7 @@ class ReceiptController extends BaseController
         $pendingReceiptStatistics = new ReceiptStatistics($pendingReceipts);
         $rejectedReceiptStatistics = new ReceiptStatistics($rejectedReceipts);
 
-        $sorter = $this->container->get('app.sorter');
+        $sorter = $this->container->get(Sorter::class);
 
         $sorter->sortUsersByReceiptSubmitTime($usersWithReceipts);
         $sorter->sortUsersByReceiptStatus($usersWithReceipts);
@@ -48,7 +51,7 @@ class ReceiptController extends BaseController
     {
         $receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByUser($user);
 
-        $sorter = $this->container->get('app.sorter');
+        $sorter = $this->container->get(Sorter::class);
         $sorter->sortReceiptsBySubmitTime($receipts);
         $sorter->sortReceiptsByStatus($receipts);
 
@@ -65,7 +68,7 @@ class ReceiptController extends BaseController
 
         $receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByUser($this->getUser());
 
-        $sorter = $this->container->get('app.sorter');
+        $sorter = $this->container->get(Sorter::class);
         $sorter->sortReceiptsBySubmitTime($receipts);
         $sorter->sortReceiptsByStatus($receipts);
 
@@ -76,7 +79,7 @@ class ReceiptController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $isImageUpload = $request->files->get('receipt', ['picture_path']) !== null;
             if ($isImageUpload) {
-                $path = $this->get('app.file_uploader')->uploadReceipt($request);
+                $path = $this->get(FileUploader::class)->uploadReceipt($request);
                 $receipt->setPicturePath($path);
             }
             $em = $this->getDoctrine()->getManager();
@@ -120,9 +123,9 @@ class ReceiptController extends BaseController
 
             if ($isImageUpload) {
                 // Delete the old image file
-                $this->get('app.file_uploader')->deleteReceipt($oldPicturePath);
+                $this->get(FileUploader::class)->deleteReceipt($oldPicturePath);
 
-                $path = $this->get('app.file_uploader')->uploadReceipt($request);
+                $path = $this->get(FileUploader::class)->uploadReceipt($request);
                 $receipt->setPicturePath($path);
             } else {
                 $receipt->setPicturePath($oldPicturePath);
@@ -193,9 +196,9 @@ class ReceiptController extends BaseController
 
             if ($isImageUpload) {
                 // Delete the old image file
-                $this->get('app.file_uploader')->deleteReceipt($oldPicturePath);
+                $this->get(FileUploader::class)->deleteReceipt($oldPicturePath);
 
-                $path = $this->get('app.file_uploader')->uploadReceipt($request);
+                $path = $this->get(FileUploader::class)->uploadReceipt($request);
                 $receipt->setPicturePath($path);
             } else {
                 $receipt->setPicturePath($oldPicturePath);
@@ -224,16 +227,16 @@ class ReceiptController extends BaseController
     public function deleteAction(Request $request, Receipt $receipt)
     {
         $user = $this->getUser();
-        $isTeamLeader = $this->get('app.roles')->userIsGranted($user, Roles::TEAM_LEADER);
+        $isTeamLeader = $this->get(RoleManager::class)->userIsGranted($user, Roles::TEAM_LEADER);
 
-        $userCanDeleteReceipt = $isTeamLeader || ($user == $receipt->getUser() && $receipt->getStatus() === Receipt::STATUS_PENDING);
+        $userCanDeleteReceipt = $isTeamLeader || ($user === $receipt->getUser() && $receipt->getStatus() === Receipt::STATUS_PENDING);
 
         if (!$userCanDeleteReceipt) {
             throw new AccessDeniedException();
         }
 
         // Delete the image file
-        $this->get('app.file_uploader')->deleteReceipt($receipt->getPicturePath());
+        $this->get(FileUploader::class)->deleteReceipt($receipt->getPicturePath());
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($receipt);
