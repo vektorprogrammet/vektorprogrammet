@@ -169,7 +169,7 @@ class Survey implements \JsonSerializable
      *
      * @return Survey
      */
-    public function setDepartment(Department $department): Survey
+    public function setDepartment(?Department $department): Survey
     {
         $this->department = $department;
         return $this;
