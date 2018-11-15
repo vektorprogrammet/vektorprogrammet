@@ -29,6 +29,7 @@
     <link rel="icon" type="image/x-icon" href="{{ asset_with_version('favicon.ico') }}"/>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700&subset=latin" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700&subset=latin" rel="stylesheet">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-j8y0ITrvFafF4EkV1mPW0BKm6dp3c+J9Fky22Man50Ofxo2wNe5pT1oZejDH9/Dt" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset_with_version('css/app.css') }}">
     {% block stylesheets %}{% endblock %}
 
@@ -71,6 +72,7 @@
 
 <script src="{{ asset_with_version('/js/vendor.js') }}"></script>
 <script src="{{ asset_with_version('/js/mobile_nav.js') }}"></script>
+<script src="{{ asset_with_version('/js/button_deactivator.js') }}"></script>
 {% if can_edit_page() and is_edit_mode() %}
     <script> var url = "{{ path('update_static_content') }}"; </script>
     <script src="{{ asset_with_version('vendor/ckeditor/ckeditor.js') }}"></script>

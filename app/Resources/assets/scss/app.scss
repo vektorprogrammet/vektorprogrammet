@@ -1,9 +1,4 @@
 @import "bootstrap";
-@import "../../../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
-@import "../../../../node_modules/@fortawesome/fontawesome-free/scss/brands";
-@import "../../../../node_modules/@fortawesome/fontawesome-free/scss/regular";
-@import "../../../../node_modules/@fortawesome/fontawesome-free/scss/solid";
-@import "../../../../node_modules/@fortawesome/fontawesome-free/scss/v4-shims";
 @import "colors";
 @import "header";
 @import "mobile_nav";
@@ -19,9 +14,9 @@ body {
   font-family: 'Montserrat', sans-serif;
   color: #333;
   background: #fafdff;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .body {

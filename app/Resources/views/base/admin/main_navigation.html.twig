@@ -52,13 +52,13 @@
             <li class="nav-title">Opptak</li>
             {% include 'base/admin/nav_link.html.twig' with {
                 route: 'admission_period_admin_show',
-                icon: 'clock-o',
+                icon: 'clock',
                 name: 'Opptaksperioder',
                 activeRoutes: ['admission_period_admin_show', 'admission_period_create', 'admission_period_update']
             } %}
             <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle" href="#">
-                    <i class="fa fa-users nav-icon"></i> Opptak</a>
+                    <i class="fal fa-users nav-icon"></i> Opptak</a>
                 <ul class="nav-dropdown-items">
                     {% include 'base/admin/nav_link.html.twig' with {
                         route: 'admissionadmin_show',
@@ -73,7 +73,7 @@
                     } %}
                     {% include 'base/admin/nav_link.html.twig' with {
                         route: 'applications_show_assigned',
-                        icon: 'comments-o',
+                        icon: 'comments',
                         name: 'Intervjufordeling',
                         activeRoutes: [
                             'interview_schedule'
@@ -81,7 +81,7 @@
                     } %}
                     {% include 'base/admin/nav_link.html.twig' with {
                         route: 'applications_show_interviewed',
-                        icon: 'comments-o',
+                        icon: 'comments',
                         name: 'Intervjuer',
                         activeRoutes: [
                             'interview_show'
@@ -91,7 +91,7 @@
                 {% if is_granted_team_leader() %}
                     {% include 'base/admin/nav_link.html.twig' with {
                         route: 'interview_schema',
-                        icon: 'comments-o',
+                        icon: 'comments',
                         name: 'Intervjuskjema',
                     } %}
                 {% endif %}
@@ -102,7 +102,7 @@
                 } %}
                 {% include 'base/admin/nav_link.html.twig' with {
                     route: 'statistics_application_show',
-                    icon: 'bar-chart',
+                    icon: 'chart-bar',
                     name: 'Opptaksstatistikk',
                 } %}
 
@@ -128,7 +128,7 @@
 
                 {% include 'base/admin/nav_link.html.twig' with {
                     route: 'certificate_show',
-                    icon: 'sticky-note-o',
+                    icon: 'sticky-note',
                     name: 'Attester',
                 } %}
             {% endif %}
@@ -136,7 +136,7 @@
             <li class="nav-title">Team</li>
             {% include 'base/admin/nav_link.html.twig' with {
                 route: 'teamadmin_show',
-                icon: 'smile-o',
+                icon: 'smile',
                 name: 'Team',
                 activeRoutes: [
                     'teamadmin_show_position',
@@ -152,7 +152,7 @@
             {% if is_granted_team_leader() %}
                 {% include 'base/admin/nav_link.html.twig' with {
                     route: 'executive_board_show',
-                    icon: 'diamond',
+                    icon: 'users-crown',
                     name: 'Hovedstyret',
                     activeRoutes: [
                         'executive_board_update',
@@ -189,7 +189,7 @@
             <li class="nav-title">Økonomi</li>
             {% include 'base/admin/nav_link.html.twig' with {
                 route: 'sponsors_show',
-                icon: 'money',
+                icon: 'hand-holding-usd',
                 name: 'Sponsorer',
                 activeRoutes: [
                     'sponsor_edit',
@@ -198,7 +198,7 @@
             } %}
             {% include 'base/admin/nav_link.html.twig' with {
                 route: 'receipts_show',
-                icon: 'usd',
+                icon: 'dollar-sign',
                 name: 'Utlegg',
                 activeRoutes: [
                     'receipts_show_individual',
@@ -210,7 +210,7 @@
             <li class="nav-title">Annet</li>
             {% include 'base/admin/nav_link.html.twig' with {
                 route: 'surveys',
-                icon: 'comment-o',
+                icon: 'comment',
                 name: 'Undersøkelser',
                 activeRoutes: [
                     'survey_create',
