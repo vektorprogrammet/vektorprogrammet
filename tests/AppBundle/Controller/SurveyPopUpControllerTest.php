@@ -24,7 +24,7 @@ class SurveyPopUpControllerTest extends BaseWebTestCase
         $form['survey[showCustomFinishPage]'] = false;
         $form['survey[team_survey]'] = true;
         $form['survey[surveyPopUpMessage]'] = "undersøkelse";
-        $form['survey[showCustomPopUpMessage]'] = true;
+        $form['survey[showCustomPopUpMessage]'] = false;
         $this->createAdminClient()->submit($form);
     }
 
