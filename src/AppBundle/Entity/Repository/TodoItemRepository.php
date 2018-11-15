@@ -54,8 +54,10 @@ class TodoItemRepository extends EntityRepository
             ->join('todoListItem.todoCompleted', 'completed')
             ->where('completed.semester = :semester')
             ->andWhere('completed.department = :department')
+            ->andWhere('todoListItem.deletedAt > :semesterEndDate or todoListItem.deletedAt is null')
             ->setParameter('semester', $semester)
             ->setParameter('department', $department)
+            ->setParameter('semesterEndDate', $semester->getSemesterEndDate())
             ->getQuery()
             ->getResult();
     }
