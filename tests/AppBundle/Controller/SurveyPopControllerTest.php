@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Tests\BaseWebTestCase;
 
-class TwigSurveyControllerTest extends BaseWebTestCase
+class SurveyPopControllerTest extends BaseWebTestCase
 {
     //Tests popup functionality
     protected function setUp()

@@ -89,7 +89,7 @@ class SurveyController extends BaseController
             if ($form->isValid()) {
                 $allTakenSurveys = $em
                     ->getRepository('AppBundle:SurveyTaken')
-                    ->findAllSurveyTakenBySurveyAndUser($survey, $user);
+                    ->findAllBySurveyAndUser($survey, $user);
 
 
                 if (!empty($allTakenSurveys)) {

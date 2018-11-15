@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: amir
- * Date: 05.11.18
- * Time: 20:20
- */
 
 namespace AppBundle\Form\Type;
 

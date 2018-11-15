@@ -16,7 +16,7 @@ class SurveyRepository extends EntityRepository
      * @param Semester $semester
      * @return Survey[]
      */
-    public function findOneByUserNotTaken(User $user, Semester $semester)
+    public function findOneNotTakenByUserAndSemester(User $user, Semester $semester)
     {
         $department = $user->getDepartment();
 

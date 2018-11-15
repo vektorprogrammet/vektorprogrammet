@@ -24,7 +24,7 @@ class SurveyPopupController extends Controller
 
             $surveys = $this->getDoctrine()
                 ->getRepository('AppBundle:Survey')
-                ->findOneByUserNotTaken($this->getUser(), $semester);
+                ->findOneNotTakenByUserAndSemester($this->getUser(), $semester);
 
             if (!empty($surveys)) {
                 $survey = end($surveys);
