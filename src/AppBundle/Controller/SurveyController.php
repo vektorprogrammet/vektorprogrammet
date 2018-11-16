@@ -164,7 +164,7 @@ class SurveyController extends BaseController
             ['id' => 'DESC']
         );
         foreach ($surveys as $survey) {
-            $totalAnswered = count($this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findBy(array('survey' => $survey)));
+            $totalAnswered = count($this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey));
             $survey->setTotalAnswered($totalAnswered);
         }
 
