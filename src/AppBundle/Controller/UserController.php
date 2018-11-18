@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Service\ApplicationManager;
 use AppBundle\Service\ContentModeManager;
+use AppBundle\Twig\Extension\RoleExtension;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -106,7 +107,7 @@ class UserController extends BaseController
      */
     public function changeContentModeAction(Request $request, string $mode)
     {
-        if (!$this->get('app.role_extension')->userCanEditPage()) {
+        if (!$this->get(RoleExtension::class)->userCanEditPage()) {
             throw $this->createAccessDeniedException();
         }
 

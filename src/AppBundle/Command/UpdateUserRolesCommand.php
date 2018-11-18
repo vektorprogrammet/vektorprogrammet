@@ -50,7 +50,7 @@ HELP
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->entityManager = $this->getContainer()->get('doctrine')->getManager();
-        $this->roleManager = $this->getContainer()->get('app.roles');
+        $this->roleManager = $this->getContainer()->get(RoleManager::class);
 
         $this->rolesUpdatedCount = 0;
     }

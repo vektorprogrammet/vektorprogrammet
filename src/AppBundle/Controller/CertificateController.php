@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Signature;
 use AppBundle\Form\Type\CreateSignatureType;
+use AppBundle\Service\FileUploader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -45,8 +46,8 @@ class CertificateController extends BaseController
             $isImageUpload = $request->files->get('create_signature')['signature_path'] !== null;
 
             if ($isImageUpload) {
-                $signaturePath = $this->get('app.file_uploader')->uploadSignature($request);
-                $this->get('app.file_uploader')->deleteSignature($oldPath);
+                $signaturePath = $this->get(FileUploader::class)->uploadSignature($request);
+                $this->get(FileUploader::class)->deleteSignature($oldPath);
 
                 $signature->setSignaturePath($signaturePath);
             } else {
