@@ -29,7 +29,7 @@ class SendAdmissionNotificationsCommand extends ContainerAwareCommand
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->notifier = $this->getContainer()->get('app.admission_notifier');
+        $this->notifier = $this->getContainer()->get(AdmissionNotifier::class);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
