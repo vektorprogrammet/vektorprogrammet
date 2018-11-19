@@ -3,6 +3,9 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use http\Exception\InvalidArgumentException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -19,9 +22,18 @@ class SurveyTaken implements \JsonSerializable
     protected $id;
 
     /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
+     */
+    protected $user;
+
+
+    /**
+
      * @ORM\Column(type="datetime", nullable=false)
      *
-     * @var string
+     * @var \DateTime
      */
     protected $time;
 
@@ -29,11 +41,14 @@ class SurveyTaken implements \JsonSerializable
      * @var School
      *
      * @ORM\ManyToOne(targetEntity="School", cascade={"persist"})
+     * @Assert\NotNull(groups="schoolSpecific")
+     *
      */
     protected $school;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Survey", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Survey", cascade={"persist"}, inversedBy="surveysTaken")
+     *
      */
     protected $survey;
 
@@ -130,6 +145,33 @@ class SurveyTaken implements \JsonSerializable
     }
 
     /**
+     * @return User
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+
+    /**
+     * @return \DateTime
+     */
+    public function getTime(): ?\DateTime
+    {
+        return $this->time;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+
+
+    /**
      * Specify data which should be serialized to JSON.
      *
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
@@ -142,10 +184,32 @@ class SurveyTaken implements \JsonSerializable
     public function jsonSerialize()
     {
         $ret = array();
-        $schoolQuestion = array('question_id' => 0, 'answer' => $this->school->getName());
-        $ret[] = $schoolQuestion;
+
+        if ($this->survey->isTeamSurvey()) {
+            $semester = $this->getSurvey()->getSemester();
+            $teamMemberships = $this->getUser()->getTeamMemberships();
+            $teamNames = array();
+            foreach ($teamMemberships as $teamMembership) {
+                if (!$teamMembership->isActiveInSemester($semester)) {
+                    continue;
+                } elseif (!in_array($teamMembership->getTeamName(), $teamNames)) {
+                    $teamNames[] = $teamMembership->getTeamName();
+                }
+            }
+            if (empty($teamNames)) {
+                $teamNames[] = "Ikke teammedlem";
+            }
+
+            $affiliationQuestion = array('question_id' => 0, 'answerArray' => $teamNames);
+        } else {
+            $affiliationQuestion = array('question_id' => 0, 'answerArray' => [$this->school->getName()]);
+        }
+
+
+        $ret[] = $affiliationQuestion;
         foreach ($this->surveyAnswers as $a) {
-            if (!$a->getSurveyQuestion()->getOptional() && ($a->getSurveyQuestion()->getType() == 'radio' || $a->getSurveyQuestion()->getType() == 'list')) {
+            //!$a->getSurveyQuestion()->getOptional() && - If optional results are not wanted
+            if (($a->getSurveyQuestion()->getType() == 'radio' || $a->getSurveyQuestion()->getType() == 'list')) {
                 $ret[] = $a;
             } elseif ($a->getSurveyQuestion()->getType() == 'check') {
                 $ret[] = $a;
@@ -153,21 +217,5 @@ class SurveyTaken implements \JsonSerializable
         }
 
         return $ret;
-    }
-
-    public function isValid(): bool
-    {
-        if ($this->school === null) {
-            return false;
-        }
-
-        foreach ($this->getSurveyAnswers() as $answer) {
-            $question = $answer->getSurveyQuestion();
-            if (!$question->getOptional() && strlen($answer->getAnswer()) < 1 && $answer->getSurveyQuestion()->getType() !== 'check') {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

@@ -98,8 +98,6 @@ security:
         - { path: ^/kontrollpanel/skoleadmin/historikk/slett, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/skole/timeplan, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/intervju/fordel, roles: ROLE_TEAM_LEADER }
-        - { path: ^/kontrollpanel/undersokelse/slett, role: ROLE_TEAM_LEADER }
-        - { path: ^/kontrollpanel/undersokelse/kopier, role: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/teamadmin/stillinger, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/teamadmin/rediger/stilling, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/teamadmin/opprett/stilling, roles: ROLE_TEAM_LEADER }
@@ -142,6 +140,7 @@ security:
         - { path: ^/efconnect, role: ROLE_TEAM_MEMBER }
         - { path: ^/elfinder, role: ROLE_TEAM_MEMBER }
         - { path: ^/kontrollpanel, role: ROLE_TEAM_MEMBER }
+
 
           #ROLE_USER = assistant user
         - { path: ^/profil/rediger, roles: ROLE_USER }

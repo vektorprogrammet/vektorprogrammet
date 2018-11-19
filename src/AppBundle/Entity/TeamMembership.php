@@ -140,6 +140,7 @@ class TeamMembership implements TeamMembershipInterface
         return $this->team;
     }
 
+
     /**
      * Set position.
      *
@@ -225,6 +226,7 @@ class TeamMembership implements TeamMembershipInterface
         return $semesterStartLaterThanTeamMembership && $semesterEndsBeforeTeamMembership;
     }
 
+
     public function isActive()
     {
         $department = $this->team->getDepartment();
@@ -232,6 +234,7 @@ class TeamMembership implements TeamMembershipInterface
 
         return $this->isActiveInSemester($activeSemester);
     }
+
 
     /**
      * @return string

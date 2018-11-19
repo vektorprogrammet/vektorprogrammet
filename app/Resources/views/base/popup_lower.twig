@@ -1,0 +1,140 @@
+
+
+{% if survey %}
+
+<link rel="stylesheet" href="{{ asset_with_version('css/pages/popup_lower.css') }}">
+
+
+<div class="popup">
+    <div class="cta js-popup-toggle text-center popupAttention">
+        <span>
+            <a id="survey-link" href="{{ path('survey_show_team',{'id':survey.id}) }}" target="_blank" class="popup-dismiss survey-link">
+                <i class="fa fa-external-link"></i>
+
+                <p id="mobilethinshow">Ta undersøkelse</p>
+
+                <div id="mobilethinnone">
+                    {% if survey.showCustomPopUpMessage %}
+                        {{ survey.surveyPopUpMessage | safe_html}}
+                    {% else %}
+                        <p>Svar på undersøkelse!</p>
+                    {% endif %}
+                </div>
+            </a>
+
+        </span>
+
+        <span>
+            <p id="mobilenone">|</p>
+            <p id="popup-dismisstext" class="popup-dismiss"> Senere |</p>
+            <p class="popup-never"> Aldri </p>
+        </span>
+
+    </div>
+</div>
+
+
+    <script>
+            window.onload = function() {
+
+                $(".cta").on('click', function() {
+                    $(this).removeClass("popupAttentionUp");
+                });
+
+                $(".popup-dismiss").on('click', function() {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ path('survey_popup_close') }}",
+                    });
+                    runAnimationOut();
+                });
+
+                $(".popup-never").on('click', function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ path('survey_popup_reserve') }}",
+                    });
+                    runAnimationOut();
+
+                });
+
+
+                $(".popup").css("visibility", "visible");
+                runAnimationIn();
+
+                var scrollFromTop = true;
+                var scrollFromBot = true;
+
+
+                $(window).scroll(function() {
+                    if(window.scrollY==0){
+                        if(scrollFromBot) runAnimationUp();
+                        scrollFromBot = false;
+                    }else{
+                        scrollFromBot = true;
+                    }
+
+                    if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+                        if(scrollFromTop) runAnimationDown();
+                        scrollFromTop = false;
+                    }else{
+                        scrollFromTop = true;
+                    }
+
+
+                });
+
+
+                function runAnimationUp() {
+
+                    $(".cta").addClass("popupAttentionUp");
+
+                    window.setTimeout(function(){
+                        $(".cta").removeClass("popupAttentionUp");
+                    }, 500);
+
+                }
+
+                function runAnimationDown(){
+                    $(".cta").addClass("popupAttentionDown");
+
+                    window.setTimeout(function(){
+                        $(".cta").removeClass("popupAttentionDown");
+                    }, 500);
+
+                }
+
+                function runAnimationIn(){
+                    $(".cta").addClass("transitionIn");
+
+                    window.setTimeout(function(){
+                        $(".cta").removeClass("transitionIn");
+                    }, 500);
+
+                }
+
+                function runAnimationOut(){
+                    $(".cta").addClass("transitionOut");
+
+                    window.setTimeout(function(){
+                        $(".popup").css("display", "none");
+                        $(".cta").removeClass("transitionOut");
+                    }, 300);
+
+                }
+
+                document.getElementById("survey-link").onclick = function fun()
+                {
+                   runAnimationOut();
+                }
+
+            };
+
+
+
+
+    </script>
+
+
+{% endif %}
+

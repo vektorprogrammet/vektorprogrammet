@@ -71,12 +71,28 @@ survey_show:
   requirements:
     id: \d+
 
+survey_show_team:
+ path: /teamundersokelse/{id}
+ defaults: { _controller: AppBundle:Survey:showTeam }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+
 survey_show_admin:
+ path: /kontrollpanel/undersokelse/{id}
+ defaults: { _controller: AppBundle:Survey:showAdmin }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+survey_team_show_admin:
   path: /kontrollpanel/undersokelse/{id}
   defaults: { _controller: AppBundle:Survey:showAdmin }
   methods: [GET, POST]
   requirements:
-    id: \d+
+   id: \d+
+
 
 survey_create:
   path: /kontrollpanel/undersokelse/opprett
@@ -118,6 +134,19 @@ survey_get_all_results:
  requirements:
   id: \d+
 
+survey_popup_reserve:
+   path:   /togglepopup
+   defaults: { _controller: AppBundle:Survey:toggleReservedFromPopUp }
+   methods: [POST]
+   requirements:
+    id: \d+
+
+survey_popup_close:
+ path:   /closepopup
+ defaults: { _controller: AppBundle:Survey:closePopUp }
+ methods: [POST]
+ requirements:
+  id: \d+
 
 
 ##########################################

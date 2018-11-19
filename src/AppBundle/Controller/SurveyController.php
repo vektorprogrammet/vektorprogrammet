@@ -3,14 +3,17 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Semester;
-use AppBundle\Role\Roles;
+use AppBundle\Entity\Survey;
+use AppBundle\Form\Type\SurveyAdminType;
+use AppBundle\Form\Type\SurveyExecuteType;
+use AppBundle\Form\Type\SurveySchoolSpecificExecuteType;
+use AppBundle\Form\Type\SurveyType;
+use AppBundle\Service\AccessControlService;
 use AppBundle\Service\SurveyManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Survey;
-use AppBundle\Form\Type\SurveyType;
-use AppBundle\Form\Type\SurveyExecuteType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * SurveyController is the controller responsible for survey actions,
@@ -18,26 +21,32 @@ use AppBundle\Form\Type\SurveyExecuteType;
  */
 class SurveyController extends BaseController
 {
+
     /**
      * Shows the given survey.
      *
      * @param Request $request
-     * @param Survey  $survey
+     * @param Survey $survey
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Request $request, Survey $survey)
     {
+        if ($survey->isTeamSurvey()) {
+            return $this->redirectToRoute('survey_show_team', array('id' => $survey->getId()));
+        }
+
+
         $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
 
-        $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
+        $form = $this->createForm(SurveySchoolSpecificExecuteType::class, $surveyTaken, array(
+            'validation_groups' => array('schoolSpecific'),
+        ));
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
-            $surveyTaken->setTime(new \DateTime());
-
-            if ($surveyTaken->isValid()) {
+            if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($surveyTaken);
                 $em->flush();
@@ -48,34 +57,90 @@ class SurveyController extends BaseController
                     ]);
                 }
 
-                $this->addFlash('undersokelse-notice', 'Mottatt svar!');
+                $this->addFlash('success', 'Mottatt svar!');
             } else {
-                $this->addFlash('undersokelse-warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
+                $this->addFlash('warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
             }
-
             //New form without previous answers
             return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
         }
 
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView(),
+            'teamSurvey' => $survey->isTeamSurvey(),
+
+
+        ));
+    }
+
+    public function showTeamAction(Request $request, Survey $survey)
+    {
+        $user = $this->getUser();
+        if (!$survey->isTeamSurvey()) {
+            return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
+        } elseif ($user === null) {
+            throw new AccessDeniedException("Dette er en teamundersøkese. Logg inn for å ta den!");
+        }
+        $surveyTaken = $this->get(SurveyManager::class)->initializeTeamSurveyTaken($survey, $user);
+        $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $em = $this->getDoctrine()->getManager();
+            $surveyTaken->removeNullAnswers();
+            if ($form->isValid()) {
+                $allTakenSurveys = $em
+                    ->getRepository('AppBundle:SurveyTaken')
+                    ->findAllBySurveyAndUser($survey, $user);
+
+
+                if (!empty($allTakenSurveys)) {
+                    foreach ($allTakenSurveys as $oldTakenSurvey) {
+                        $em->remove($oldTakenSurvey);
+                    }
+                }
+                $user->setLastPopUpTime(new \DateTime());
+                $em->persist($user);
+                $em->persist($surveyTaken);
+                $em->flush();
+
+
+                if ($survey->isShowCustomFinishPage()) {
+                    return $this->render('survey/finish_page.html.twig', [
+                        'content' => $survey->getFinishPageContent(),
+                    ]);
+                }
+                $this->addFlash('success', 'Mottatt svar!');
+            } else {
+                $this->addFlash('warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
+            }
+
+            //New form without previous answers
+            return $this->redirectToRoute('survey_show_team', array('id' => $survey->getId()));
+        }
+
+        return $this->render('survey/takeSurvey.html.twig', array(
+            'form' => $form->createView(),
+            'teamSurvey' => $survey->isTeamSurvey(),
 
         ));
     }
 
     public function showAdminAction(Request $request, Survey $survey)
     {
+        if ($survey->isTeamSurvey()) {
+            throw new \InvalidArgumentException("Er team undersøkelse og har derfor ingen admin utfylling");
+        }
         $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
         $surveyTaken = $this->get(SurveyManager::class)->predictSurveyTakenAnswers($surveyTaken);
 
-        $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
+        $form = $this->createForm(SurveySchoolSpecificExecuteType::class, $surveyTaken);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
-            $surveyTaken->setTime(new \DateTime());
 
-            if ($surveyTaken->isValid()) {
+            if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($surveyTaken);
                 $em->flush();
@@ -91,17 +156,25 @@ class SurveyController extends BaseController
 
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView(),
+            'teamSurvey' => $survey->isTeamSurvey(),
         ));
     }
 
     public function createSurveyAction(Request $request)
     {
         $survey = new Survey();
+        $survey->setDepartment($this->getUser()->getDepartment());
 
-        $form = $this->createForm(SurveyType::class, $survey);
+        if ($this->get(AccessControlService::class)->checkAccess("survey_admin")) {
+            $form = $this->createForm(SurveyAdminType::class, $survey);
+        } else {
+            $form = $this->createForm(SurveyType::class, $survey);
+        }
+
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $this->ensureAccess($survey);
             $em = $this->getDoctrine()->getManager();
             $em->persist($survey);
             $em->flush();
@@ -119,14 +192,25 @@ class SurveyController extends BaseController
 
     public function copySurveyAction(Request $request, Survey $survey)
     {
+        $this->ensureAccess($survey);
+
         $em = $this->getDoctrine()->getManager();
         $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
-
         $surveyClone = $survey->copy();
         $surveyClone->setSemester($currentSemester);
 
-        $form = $this->createForm(SurveyType::class, $surveyClone);
+        if ($this->get(AccessControlService::class)->checkAccess("survey_admin")) {
+            $form = $this->createForm(SurveyAdminType::class, $survey);
+        } else {
+            $form = $this->createForm(SurveyType::class, $survey);
+        }
+
+
+        $em->flush();
+
         $form->handleRequest($request);
+
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($surveyClone);
@@ -156,7 +240,9 @@ class SurveyController extends BaseController
     {
         $semester = $this->getSemesterOrThrow404();
         $department = $this->getDepartmentOrThrow404();
-        $surveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
+
+
+        $surveysWithDepartment = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
             [
                 'semester' => $semester,
                 'department' => $department,
@@ -168,8 +254,26 @@ class SurveyController extends BaseController
             $survey->setTotalAnswered($totalAnswered);
         }
 
+
+        $globalSurveys = array();
+        if ($this->get(AccessControlService::class)->checkAccess("survey_admin")) {
+            $globalSurveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
+                [
+                    'semester' => $semester,
+                    'department' => null,
+                ],
+                ['id' => 'DESC']
+            );
+            foreach ($globalSurveys as $survey) {
+                $totalAnswered = count($this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findBy(array('survey' => $survey)));
+                $survey->setTotalAnswered($totalAnswered);
+            }
+        }
+
+
         return $this->render('survey/surveys.html.twig', array(
-            'surveys' => $surveys,
+            'surveysWithDepartment' => $surveysWithDepartment,
+            'globalSurveys' => $globalSurveys,
             'department' => $department,
             'semester' => $semester,
         ));
@@ -177,7 +281,14 @@ class SurveyController extends BaseController
 
     public function editSurveyAction(Request $request, Survey $survey)
     {
-        $form = $this->createForm(SurveyType::class, $survey);
+        $this->ensureAccess($survey);
+
+        if ($this->get(AccessControlService::class)->checkAccess("survey_admin")) {
+            $form = $this->createForm(SurveyAdminType::class, $survey);
+        } else {
+            $form = $this->createForm(SurveyType::class, $survey);
+        }
+
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -206,58 +317,75 @@ class SurveyController extends BaseController
      */
     public function deleteSurveyAction(Survey $survey)
     {
-        try {
-            if ($this->isGranted(Roles::TEAM_LEADER)) {
-                $em = $this->getDoctrine()->getManager();
-                $em->remove($survey);
-                $em->flush();
+        $this->ensureAccess($survey);
 
-                $response['success'] = true;
-            } else {
-                $response['success'] = false;
-                $response['cause'] = 'Ikke tilstrekkelig rettigheter';
-            }
-        } catch (\Exception $e) {
-            $response = ['success' => false,
-                'code' => $e->getCode(),
-                'cause' => 'Det oppstod en feil.',
-            ];
-        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($survey);
+        $em->flush();
+        $response['success'] = true;
 
         return new JsonResponse($response);
     }
 
     public function resultSurveyAction(Survey $survey)
     {
+        if ($survey->isConfidential() || !$this->get(AccessControlService::class)->checkAccess("survey_admin")) {
+            throw new AccessDeniedException();
+        }
+
+        if ($survey->isTeamSurvey()) {
+            return $this->render('survey/survey_result.html.twig', array(
+                'textAnswers' => $this->get(SurveyManager::class)->getTextAnswerWithTeamResults($survey),
+                'survey' => $survey,
+                'teamSurvey' => $survey->isTeamSurvey(),
+            ));
+        }
+
         return $this->render('survey/survey_result.html.twig', array(
-            'textAnswers' => $survey->getTextAnswerWithSchoolResults(),
+            'textAnswers' => $this->get(SurveyManager::class)->getTextAnswerWithSchoolResults($survey),
             'survey' => $survey,
+            'teamSurvey' => $survey->isTeamSurvey(),
+
         ));
     }
 
     public function getSurveyResultAction(Survey $survey)
     {
-        $surveysTaken = $this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
-        $validSurveysTaken = array();
-        $schools = [];
-        foreach ($surveysTaken as $surveyTaken) {
-            if (is_null($surveyTaken->getSchool())) {
-                continue;
-            }
-            if ($surveyTaken->isValid()) {
-                $validSurveysTaken[] = $surveyTaken;
-            }
-            if (!in_array($surveyTaken->getSchool()->getName(), $schools)) {
-                $schools[] = $surveyTaken->getSchool()->getName();
-            }
+        return new JsonResponse($this->get(SurveyManager::class)->surveyResultToJson($survey));
+    }
+
+
+    public function toggleReservedFromPopUpAction()
+    {
+        $this->get(SurveyManager::class)->toggleReservedFromPopUp($this->getUser());
+        return new JsonResponse();
+    }
+
+    public function closePopUpAction()
+    {
+        $user = $this->getUser();
+        $user->setLastPopUpTime(new \DateTime());
+        $this->em->persist($user);
+        $this->em->flush();
+        return new JsonResponse();
+    }
+
+    /**
+     * @param Survey $survey
+     *
+     * @throws AccessDeniedException
+     */
+    private function ensureAccess(Survey $survey)
+    {
+        $user = $this->getUser();
+
+        $isSurveyAdmin = $this->get(AccessControlService::class)->checkAccess("survey_admin");
+        $isSameDepartment = $survey->getDepartment() === $user->getDepartment();
+
+        if ($isSameDepartment || $isSurveyAdmin) {
+            return;
         }
 
-        //Inject the school question into question array
-        $schoolQuestion = array('question_id' => 0, 'question_label' => 'Skole', 'alternatives' => $schools);
-        $survey_json = json_encode($survey);
-        $survey_decode = json_decode($survey_json, true);
-        $survey_decode['questions'][] = $schoolQuestion;
-
-        return new JsonResponse(array('survey' => $survey_decode, 'answers' => $validSurveysTaken));
+        throw new AccessDeniedException();
     }
 }
