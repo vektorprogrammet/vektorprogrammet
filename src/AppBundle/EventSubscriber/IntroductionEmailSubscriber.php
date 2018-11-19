@@ -42,7 +42,7 @@ class IntroductionEmailSubscriber implements EventSubscriberInterface
         $team = $teamMembership->getTeam();
         $user = $teamMembership->getUser();
 
-        if (count($user->getTeamMemberships()) > 1){
+        if (count($user->getTeamMemberships()) > 1) {
             return;
         }
 
@@ -66,7 +66,7 @@ class IntroductionEmailSubscriber implements EventSubscriberInterface
         $teamMembership = $event->getTeamMembership();
         $user = $teamMembership->getUser();
 
-        if (count($user->getTeamMemberships()) > 1){
+        if (count($user->getTeamMemberships()) > 1) {
             return;
         }
 
