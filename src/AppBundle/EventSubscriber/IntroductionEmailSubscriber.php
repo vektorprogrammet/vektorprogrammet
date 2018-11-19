@@ -41,6 +41,11 @@ class IntroductionEmailSubscriber implements EventSubscriberInterface
 
         $team = $teamMembership->getTeam();
         $user = $teamMembership->getUser();
+
+        if (count($user->getTeamMemberships()) > 1){
+            return;
+        }
+
         $position = $teamMembership->getPositionName();
 
         $message = (new \Swift_Message())
@@ -59,8 +64,11 @@ class IntroductionEmailSubscriber implements EventSubscriberInterface
     public function sendGoogleEmail(TeamMembershipEvent $event)
     {
         $teamMembership = $event->getTeamMembership();
-
         $user = $teamMembership->getUser();
+
+        if (count($user->getTeamMemberships()) > 1){
+            return;
+        }
 
         $message = (new \Swift_Message())
             ->setSubject('Fullfør oppsettet med din Vektor-epost')
