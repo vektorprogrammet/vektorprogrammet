@@ -383,7 +383,4 @@ class Survey implements \JsonSerializable
     {
         $this->surveysTaken = $surveysTaken;
     }
-
-
-
 }
