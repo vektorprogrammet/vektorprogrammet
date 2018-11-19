@@ -2,6 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Service\ApplicationManager;
+use AppBundle\Service\ContentModeManager;
+use AppBundle\Twig\Extension\RoleExtension;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +36,7 @@ class UserController extends BaseController
 
         $applicationStatus = null;
         if (null !== $activeApplication) {
-            $applicationStatus = $this->get('app.application_manager')->getApplicationStatus($activeApplication);
+            $applicationStatus = $this->get(ApplicationManager::class)->getApplicationStatus($activeApplication);
         }
         $activeAssistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesByUser($user);
 
@@ -104,7 +107,7 @@ class UserController extends BaseController
      */
     public function changeContentModeAction(Request $request, string $mode)
     {
-        if (!$this->get('app.role_extension')->userCanEditPage()) {
+        if (!$this->get(RoleExtension::class)->userCanEditPage()) {
             throw $this->createAccessDeniedException();
         }
 
@@ -115,9 +118,9 @@ class UserController extends BaseController
         $isEditMode = $mode === 'edit-mode';
 
         if ($isEditMode) {
-            $this->get('app.content_mode')->changeToEditMode();
+            $this->get(ContentModeManager::class)->changeToEditMode();
         } else {
-            $this->get('app.content_mode')->changeToReadMode();
+            $this->get(ContentModeManager::class)->changeToReadMode();
         }
 
         $this->addFlash($isEditMode ? 'warning' : 'info', $isEditMode ? 'Du er nå i redigeringsmodus' : 'Du er nå i lesemodus');

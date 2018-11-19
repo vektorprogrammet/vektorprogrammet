@@ -2,6 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Service\FileUploader;
+use AppBundle\Service\LogService;
+use AppBundle\Service\SlugMaker;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -70,7 +73,7 @@ class ArticleAdminController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $this->get('app.slug_maker')->setSlugFor($article);
+            $this->get(SlugMaker::class)->setSlugFor($article);
         }
 
         if ($form->isValid()) {
@@ -79,8 +82,8 @@ class ArticleAdminController extends BaseController
             // Set the author to the currently logged in user
             $article->setAuthor($this->getUser());
 
-            $imageSmall = $this->get('app.file_uploader')->uploadArticleImage($request, 'imgsmall');
-            $imageLarge = $this->get('app.file_uploader')->uploadArticleImage($request, 'imglarge');
+            $imageSmall = $this->get(FileUploader::class)->uploadArticleImage($request, 'imgsmall');
+            $imageLarge = $this->get(FileUploader::class)->uploadArticleImage($request, 'imglarge');
             if (!$imageSmall || !$imageLarge) {
                 return new JsonResponse("Error", 400);
             }
@@ -96,7 +99,7 @@ class ArticleAdminController extends BaseController
                 'Artikkelen har blitt publisert.'
             );
 
-            $this->get('app.logger')->info("A new article \"{$article->getTitle()}\" by {$article->getAuthor()} has been published");
+            $this->get(LogService::class)->info("A new article \"{$article->getTitle()}\" by {$article->getAuthor()} has been published");
 
             return new JsonResponse("ok");
         } elseif ($form->isSubmitted()) {
@@ -127,11 +130,11 @@ class ArticleAdminController extends BaseController
         if ($form->isValid()) {
             $em      = $this->getDoctrine()->getManager();
 
-            $imageSmall = $this->get('app.file_uploader')->uploadArticleImage($request, 'imgsmall');
+            $imageSmall = $this->get(FileUploader::class)->uploadArticleImage($request, 'imgsmall');
             if ($imageSmall) {
                 $article->setImageSmall($imageSmall);
             }
-            $imageLarge = $this->get('app.file_uploader')->uploadArticleImage($request, 'imglarge');
+            $imageLarge = $this->get(FileUploader::class)->uploadArticleImage($request, 'imglarge');
             if ($imageLarge) {
                 $article->setImageLarge($imageLarge);
             }
@@ -144,7 +147,7 @@ class ArticleAdminController extends BaseController
                 'Endringene har blitt publisert.'
             );
 
-            $this->get('app.logger')->info("The article \"{$article->getTitle()}\" was edited by {$this->getUser()}");
+            $this->get(LogService::class)->info("The article \"{$article->getTitle()}\" was edited by {$this->getUser()}");
 
             return new JsonResponse("ok");
         } elseif ($form->isSubmitted()) {

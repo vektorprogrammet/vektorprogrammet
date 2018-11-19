@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
 use AppBundle\Role\Roles;
+use AppBundle\Service\UserRegistration;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\CreateUserType;
@@ -38,7 +39,7 @@ class UserAdminController extends BaseController
             $em->persist($user);
             $em->flush();
 
-            $this->get('app.user.registration')->sendActivationCode($user);
+            $this->get(UserRegistration::class)->sendActivationCode($user);
 
             return $this->redirectToRoute('useradmin_show');
         }
@@ -104,7 +105,7 @@ class UserAdminController extends BaseController
 
     public function sendActivationMailAction(User $user)
     {
-        $this->get('app.user.registration')->sendActivationCode($user);
+        $this->get(UserRegistration::class)->sendActivationCode($user);
 
         return $this->redirectToRoute('useradmin_show');
     }

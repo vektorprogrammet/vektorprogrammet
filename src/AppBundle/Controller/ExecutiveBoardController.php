@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
+use AppBundle\Service\RoleManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,7 +68,7 @@ class ExecutiveBoardController extends BaseController
             $em->persist($member);
             $em->flush();
 
-            $this->get('app.roles')->updateUserRole($member->getUser());
+            $this->get(RoleManager::class)->updateUserRole($member->getUser());
 
             return $this->redirect($this->generateUrl('executive_board_show'));
         }
@@ -85,7 +86,7 @@ class ExecutiveBoardController extends BaseController
         $em->remove($member);
         $em->flush();
 
-        $this->get('app.roles')->updateUserRole($member->getUser());
+        $this->get(RoleManager::class)->updateUserRole($member->getUser());
 
         return $this->redirect($this->generateUrl('executive_board_show'));
     }

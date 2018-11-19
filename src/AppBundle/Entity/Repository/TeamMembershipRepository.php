@@ -97,7 +97,7 @@ class TeamMembershipRepository extends EntityRepository
             ->setYear(SemesterUtil::timeToYear($today))
             ->setSemesterTime(SemesterUtil::timeToSemesterTime($today));
 
-        return array_filter($teamMemberships, function (TeamMembership $teamMembership) use ($today, $currentSemester) {
+        return array_filter($teamMemberships, function (TeamMembership $teamMembership) use ($currentSemester) {
             return $currentSemester->isBetween($teamMembership->getStartSemester(), $teamMembership->getEndSemester());
         });
     }

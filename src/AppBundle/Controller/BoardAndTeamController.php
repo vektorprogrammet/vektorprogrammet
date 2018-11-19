@@ -2,13 +2,15 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Service\GeoLocation;
+
 class BoardAndTeamController extends BaseController
 {
     public function showAction()
     {
         // Find all departments
         $departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findActive();
-        $departments = $this->get('app.geolocation')->sortDepartmentsByDistanceFromClient($departments);
+        $departments = $this->get(GeoLocation::class)->sortDepartmentsByDistanceFromClient($departments);
         $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
 
         $numberOfTeams = 0;

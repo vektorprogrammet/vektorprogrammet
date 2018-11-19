@@ -14,7 +14,7 @@ class Sorter
      *
      * @return int
      */
-    protected function userWithNewestReceipt($user1, $user2)
+    protected function userWithNewestReceipt(User $user1, User $user2)
     {
         $user1Receipts = $user1->getReceipts()->toArray();
         $user2Receipts = $user2->getReceipts()->toArray();
@@ -43,7 +43,7 @@ class Sorter
      *
      * @return int
      */
-    public function newestReceipt($receipt1, $receipt2)
+    public function newestReceipt(Receipt $receipt1, Receipt $receipt2)
     {
         if ($receipt1->getSubmitDate() === $receipt2->getSubmitDate()) {
             return 0;
@@ -116,7 +116,7 @@ class Sorter
      */
     public function sortUsersByActivePositions(&$users)
     {
-        usort($users, function ($user1, $user2) {
+        usort($users, function (User $user1, User $user2) {
             // Get team memberships
             $teamMemberships1 = $user1->getActiveMemberships();
             $teamMemberships2 = $user2->getActiveMemberships();
@@ -167,7 +167,7 @@ class Sorter
      *
      * @return int
      */
-    private function compareTeamMemberships($teamMembership1, $teamMembership2)
+    private function compareTeamMemberships(TeamMembershipInterface $teamMembership1, TeamMembershipInterface $teamMembership2)
     {
         return $this->comparePositions($teamMembership1->getPositionName(), $teamMembership2->getPositionName());
     }

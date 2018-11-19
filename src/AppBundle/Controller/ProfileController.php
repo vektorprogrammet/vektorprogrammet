@@ -6,6 +6,9 @@ use AppBundle\Entity\User;
 use AppBundle\Event\UserEvent;
 use AppBundle\Form\Type\NewUserType;
 use AppBundle\Form\Type\UserCompanyEmailType;
+use AppBundle\Service\LogService;
+use AppBundle\Service\RoleManager;
+use AppBundle\Service\UserRegistration;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\EditUserType;
 use AppBundle\Form\Type\EditUserPasswordType;
@@ -57,7 +60,7 @@ class ProfileController extends BaseController
         // Find the executive board history of the user
         $executiveBoardMemberships = $em->getRepository('AppBundle:ExecutiveBoardMembership')->findByUser($user);
 
-        $isGrantedAssistant = ($this->getUser() !== null && $this->get('app.roles')->userIsGranted($this->getUser(), Roles::ASSISTANT));
+        $isGrantedAssistant = ($this->getUser() !== null && $this->get(RoleManager::   class)->userIsGranted($this->getUser(), Roles::ASSISTANT));
 
         if (empty($teamMemberships) && empty($executiveBoardMemberships) && !$isGrantedAssistant) {
             throw $this->createAccessDeniedException();
@@ -97,7 +100,7 @@ class ProfileController extends BaseController
 
     public function activateNewUserAction(Request $request, $newUserCode)
     {
-        $user = $this->get('app.user.registration')->activateUserByNewUserCode($newUserCode);
+        $user = $this->get(UserRegistration::class)->activateUserByNewUserCode($newUserCode);
 
         if ($user === null) {
             return $this->render('error/error_message.html.twig', array(
@@ -121,7 +124,7 @@ class ProfileController extends BaseController
             $this->get('security.token_storage')->setToken($token);
             $this->get('session')->set('_security_secured_area', serialize($token));
 
-            $this->get('app.logger')->info("User $user activated with new user code");
+            $this->get(LogService::class)->info("User $user activated with new user code");
 
             return $this->redirectToRoute('my_page');
         }
@@ -136,7 +139,7 @@ class ProfileController extends BaseController
     {
         $response = array();
 
-        $roleManager = $this->get('app.roles');
+        $roleManager = $this->get(RoleManager::class);
         $roleName    = $roleManager->mapAliasToRole($request->request->get('role'));
 
         if (! $roleManager->loggedInUserCanChangeRoleOfUsersWithRole($user, $roleName)) {
