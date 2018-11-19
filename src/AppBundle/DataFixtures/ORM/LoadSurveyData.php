@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\DataFixtures\ORM;
+
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyQuestion;
 use AppBundle\Entity\SurveyQuestionAlternative;
