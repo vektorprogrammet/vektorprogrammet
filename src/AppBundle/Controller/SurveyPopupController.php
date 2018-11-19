@@ -6,12 +6,11 @@ namespace AppBundle\Controller;
 use AppBundle\Role\Roles;
 use AppBundle\Service\RoleManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class SurveyPopupController extends Controller
 {
-    public function nextSurveyAction(Request $request)
+    public function nextSurveyAction()
     {
         $survey = null;
         $user = $this->getUser();

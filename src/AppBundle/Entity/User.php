@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use AppBundle\Role\Roles;
 use AppBundle\Validator\Constraints as CustomAssert;
-use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
