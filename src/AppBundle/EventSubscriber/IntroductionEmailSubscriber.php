@@ -30,7 +30,7 @@ class IntroductionEmailSubscriber implements EventSubscriberInterface
         return array(
             TeamMembershipEvent::CREATED => array(
                 array('sendWelcomeToTeamEmail', 4),
-                array('sendStepByStemEmail', -2),
+                array('sendGoogleEmail', -2),
             ),
         );
     }
@@ -56,22 +56,18 @@ class IntroductionEmailSubscriber implements EventSubscriberInterface
         $this->mailer->send($message);
     }
 
-    public function sendStepByStemEmail(TeamMembershipEvent $event)
+    public function sendGoogleEmail(TeamMembershipEvent $event)
     {
         $teamMembership = $event->getTeamMembership();
 
-        $team = $teamMembership->getTeam();
         $user = $teamMembership->getUser();
 
         $message = (new \Swift_Message())
             ->setSubject('Fullfør oppsettet med din Vektor-epost')
             ->setFrom('vektorbot@vektorprogrammet.no')
-            ->setTo($user->getEmail())
+            ->setTo($user->getCompanyEmail())
             ->setBody($this->twig->render(':team_admin:welcome_google_mail.html.twig', array(
                 'name' => $user->getFirstName(),
-                'team' => $team->getName(),
-                'position' => $teamMembership->getPositionName(),
-                'companyEmail' => $user->getCompanyEmail()
             )));
         $this->mailer->send($message);
     }
