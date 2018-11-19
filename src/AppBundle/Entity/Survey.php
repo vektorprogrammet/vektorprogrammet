@@ -314,7 +314,7 @@ class Survey implements \JsonSerializable
      */
     public function setFinishPageContent($finishPageContent)
     {
-        if($finishPageContent === null){
+        if ($finishPageContent === null) {
             $finishPageContent = "";
         }
 
@@ -358,7 +358,7 @@ class Survey implements \JsonSerializable
      */
     public function setSurveyPopUpMessage(?String $message)
     {
-        if($message === null){
+        if ($message === null) {
             $message = "Svar på undersøkelse!";
         }
 
