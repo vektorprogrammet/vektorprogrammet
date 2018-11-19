@@ -12,7 +12,6 @@ class SurveyRepository extends EntityRepository
 {
     /**
      * @param User $user
-     * @param Department $department
      * @param Semester $semester
      * @return Survey[]
      */
@@ -30,7 +29,7 @@ class SurveyRepository extends EntityRepository
         return $this->createQueryBuilder('survey')
                 ->select("survey")
                 ->where('survey.teamSurvey = true')
-                ->where('survey.semester =:semester')
+                ->andWhere('survey.semester =:semester')
                 ->andWhere('survey.department =:department OR survey.department is NULL')
                 ->andWhere($qb->expr()->notIn('survey.id', $exclude->getDQL()))
                 ->setParameter('user', $user)

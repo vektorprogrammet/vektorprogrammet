@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use AppBundle\Role\Roles;
 use AppBundle\Validator\Constraints as CustomAssert;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -788,17 +789,17 @@ class User implements AdvancedUserInterface, \Serializable
 
 
     /**
-     * @return boolean
+     * @return bool
      */
-    public function getReservedFromPopUp()
+    public function getReservedFromPopUp() : bool
     {
         return $this->reservedFromPopUp;
     }
 
     /**
-     * @param boolean $reservedFromPopUp
+     * @param bool $reservedFromPopUp
      */
-    public function setReservedFromPopUp($reservedFromPopUp): void
+    public function setReservedFromPopUp(bool $reservedFromPopUp): void
     {
         $this->reservedFromPopUp = $reservedFromPopUp;
     }

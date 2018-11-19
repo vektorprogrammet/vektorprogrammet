@@ -8,8 +8,18 @@
 <div class="popup">
     <div class="cta js-popup-toggle text-center popupAttention">
         <span>
-            <a id="survey-link" href="{{ path('survey_show_team',{'id':survey.id}) }}" target="_blank" class="popup-dismiss">
-                <i class="fa fa-external-link"></i> <p id="mobilethinshow">Ta undersøkelse</p><div id="mobilethinnone">{{ survey.surveyPopUpMessage | safe_html}} </div>
+            <a id="survey-link" href="{{ path('survey_show_team',{'id':survey.id}) }}" target="_blank" class="popup-dismiss survey-link">
+                <i class="fa fa-external-link"></i>
+
+                <p id="mobilethinshow">Ta undersøkelse</p>
+
+                <div id="mobilethinnone">
+                    {% if survey.showCustomPopUpMessage %}
+                        {{ survey.surveyPopUpMessage | safe_html}}
+                    {% else %}
+                        <p>Svar på undersøkelse!</p>
+                    {% endif %}
+                </div>
             </a>
 
         </span>

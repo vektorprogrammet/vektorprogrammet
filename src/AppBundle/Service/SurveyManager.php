@@ -224,7 +224,7 @@ class SurveyManager
     public function toggleReservedFromPopUp(User $user)
     {
         $user->setReservedFromPopUp(!$user->getReservedFromPopUp());
-        $user->setLastPopUpTime(null);
+        $user->setLastPopUpTime(new \DateTime("2000-01-01"));
         $this->em->persist($user);
         $this->em->flush();
     }

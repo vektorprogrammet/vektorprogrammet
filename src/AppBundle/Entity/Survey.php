@@ -314,6 +314,10 @@ class Survey implements \JsonSerializable
      */
     public function setFinishPageContent($finishPageContent)
     {
+        if($finishPageContent === null){
+            $finishPageContent = "";
+        }
+
         $this->finishPageContent = $finishPageContent;
     }
 
@@ -352,8 +356,12 @@ class Survey implements \JsonSerializable
     /**
      * @param string surveyPopUpMessage
      */
-    public function setSurveyPopUpMessage($message)
+    public function setSurveyPopUpMessage(?String $message)
     {
+        if($message === null){
+            $message = "Svar på undersøkelse!";
+        }
+
         $this->surveyPopUpMessage = $message;
     }
 
@@ -387,9 +395,6 @@ class Survey implements \JsonSerializable
      */
     public function getCreatedTime() : \DateTime
     {
-        if ($this->createdTime === null) {
-            return new \DateTime("2000-01-01");
-        }
         return $this->createdTime;
     }
 }

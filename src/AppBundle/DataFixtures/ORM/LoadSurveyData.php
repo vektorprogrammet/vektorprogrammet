@@ -19,13 +19,13 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
 
         $surveyQuestion1->setQuestion('Hva heter du?');
         $surveyQuestion1->setHelp('Oppgi navn');
-        $surveyQuestion1->setOptional(false);
+        $surveyQuestion1->setOptional(true);
         $surveyQuestion1->setType('text');
 
 
         $surveyQuestion2->setQuestion('Ja eller nei?');
         $surveyQuestion2->setHelp('Svar ja eller nei');
-        $surveyQuestion2->setOptional(false);
+        $surveyQuestion2->setOptional(true);
         $surveyQuestion2->setType('check');
 
         $surveyQuestionAlternative1 = new SurveyQuestionAlternative();
@@ -50,7 +50,7 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $teamSurvey1 = new Survey();
         $schoolSurvey1 = new Survey();
 
-        $semester = $this->getReference('semester-3');
+        $semester = $this->getReference('semester-current');
         $department = $this->getReference('dep-1');
 
 
@@ -64,6 +64,52 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $teamSurvey1->setTeamSurvey(true);
         $teamSurvey1->addSurveyQuestion($surveyQuestion1);
         $teamSurvey1->addSurveyQuestion($surveyQuestion2);
+        $teamSurvey1->setShowCustomPopUpMessage(true);
+
+
+
+        $teamSurvey2 = new Survey();
+        $teamSurvey2->setSemester($semester);
+        $teamSurvey2->setDepartment($department);
+        $teamSurvey2->setShowCustomFinishPage(true);
+        $teamSurvey2->setFinishPageContent("Takk for at du svarte på vår undersøkelse");
+        $teamSurvey2->setName("Team Survey");
+        $teamSurvey2->setSurveyPopUpMessage("Svar på undersøkelse!");
+        $teamSurvey2->setConfidential(false);
+        $teamSurvey2->setTeamSurvey(true);
+        $teamSurvey2->addSurveyQuestion($surveyQuestion1);
+        $teamSurvey2->addSurveyQuestion($surveyQuestion2);
+        $teamSurvey2->setShowCustomPopUpMessage(true);
+
+
+        $teamSurvey3 = new Survey();
+        $teamSurvey3->setSemester($semester);
+        $teamSurvey3->setDepartment($department);
+        $teamSurvey3->setShowCustomFinishPage(true);
+        $teamSurvey3->setFinishPageContent("Takk for at du svarte på vår undersøkelse");
+        $teamSurvey3->setName("Team Survey");
+        $teamSurvey3->setSurveyPopUpMessage("Svar på undersøkelse!");
+        $teamSurvey3->setConfidential(false);
+        $teamSurvey3->setTeamSurvey(true);
+        $teamSurvey3->addSurveyQuestion($surveyQuestion1);
+        $teamSurvey3->addSurveyQuestion($surveyQuestion2);
+        $teamSurvey3->setShowCustomPopUpMessage(true);
+
+
+        $teamSurvey4 = new Survey();
+        $teamSurvey4->setSemester($semester);
+        $teamSurvey4->setDepartment($department);
+        $teamSurvey4->setShowCustomFinishPage(true);
+        $teamSurvey4->setFinishPageContent("Takk for at du svarte på vår undersøkelse");
+        $teamSurvey4->setName("Team Survey");
+        $teamSurvey4->setSurveyPopUpMessage("Svar på undersøkelse!");
+        $teamSurvey4->setConfidential(false);
+        $teamSurvey4->setTeamSurvey(true);
+        $teamSurvey4->addSurveyQuestion($surveyQuestion1);
+        $teamSurvey4->addSurveyQuestion($surveyQuestion2);
+        $teamSurvey4->setShowCustomPopUpMessage(true);
+
+
 
         $schoolSurvey1->setSemester($semester);
         $schoolSurvey1->setDepartment($department);
@@ -78,6 +124,9 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('$schoolSurvey1', $schoolSurvey1);
 
         $manager->persist($teamSurvey1);
+        $manager->persist($teamSurvey2);
+        $manager->persist($teamSurvey3);
+        $manager->persist($teamSurvey4);
         $manager->persist($schoolSurvey1);
         $manager->flush();
     }
