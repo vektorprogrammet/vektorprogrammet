@@ -14,7 +14,7 @@ class TodoListController extends BaseController
 {
     public function showAction()
     {
-        $todoListService = $this->get('app.to_do_list_service');
+        $todoListService = $this->get('app.todo_list_service');
         $department = $this->getDepartmentOrThrow404();
         $semester = $this->getSemesterOrThrow404();
 
@@ -35,7 +35,7 @@ class TodoListController extends BaseController
     public function createTodoAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $todoListService = $this->get('app.to_do_list_service');
+        $todoListService = $this->get('app.todo_list_service');
         $itemInfo = new TodoItemInfo();
 
         $form = $this->createForm(CreateTodoItemInfoType::class, $itemInfo, array(
@@ -49,7 +49,7 @@ class TodoListController extends BaseController
         $semester = $this->getSemesterOrThrow404();
         if ($form->isValid()) {
             $todoListService->generateEntities($itemInfo, $em);
-            return $this->redirectToRoute('to_do_list', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
+            return $this->redirectToRoute('todo_list', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
         }
 
         return $this->render('todo_list/create_todo_element.html.twig', array(
@@ -73,7 +73,7 @@ class TodoListController extends BaseController
         $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
 
 
-        $todoListService = $this->get('app.to_do_list_service');
+        $todoListService = $this->get('app.todo_list_service');
         $itemInfo = $todoListService->createTodoItemInfoFromItem($item, $currentSemester);
 
 
@@ -85,7 +85,7 @@ class TodoListController extends BaseController
         $semester = $this->getSemesterOrThrow404();
         if ($form->isValid()) {
             $todoListService->editEntities($itemInfo, $currentSemester);
-            return $this->redirectToRoute('to_do_list', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
+            return $this->redirectToRoute('todo_list', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
         }
 
         return $this->render('todo_list/create_todo_element.html.twig', array(
@@ -105,7 +105,7 @@ class TodoListController extends BaseController
      */
     public function completedAction(TodoItem $item, Semester $semester, Department $department)
     {
-        $todoListService = $this->get('app.to_do_list_service');
+        $todoListService = $this->get('app.todo_list_service');
         try {
             $todoListService->completedItem($item, $semester, $department);
             if ($item->isCompletedInSemesterByDepartment($semester, $department)) {
@@ -130,9 +130,9 @@ class TodoListController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404();
         $semester = $this->getSemesterOrThrow404();
-        $todoListService = $this->get('app.to_do_list_service');
+        $todoListService = $this->get('app.todo_list_service');
         $todoListService->toggleCompletedItem($item, $semester, $department);
-        return $this->redirectToRoute('to_do_list', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
+        return $this->redirectToRoute('todo_list', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
     }
 
     public function deleteTodoItemAction(TodoItem $item)
@@ -147,6 +147,6 @@ class TodoListController extends BaseController
         $this->getDoctrine()->getManager()->persist($item);
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->redirectToRoute('to_do_list', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
+        return $this->redirectToRoute('todo_list', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
     }
 }

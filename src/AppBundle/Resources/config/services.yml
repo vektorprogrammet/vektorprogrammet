@@ -231,7 +231,7 @@ services:
         class: AppBundle\Service\SurveyManager
         arguments: ['@doctrine.orm.default_entity_manager', '@form.factory']
 
-  app.to_do_list_service:
+  app.todo_list_service:
       class: AppBundle\Service\TodoListService
       arguments: ['@doctrine.orm.default_entity_manager']
 

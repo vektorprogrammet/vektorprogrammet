@@ -25,7 +25,7 @@ class TodoListTest extends \Tests\BaseKernelTestCase
         $kernel = $this->createKernel();
         $kernel->boot();
 
-        $service = $kernel->getContainer()->get('app.to_do_list_service');
+        $service = $kernel->getContainer()->get('app.todo_list_service');
         $this->service = $service;
         $em = $kernel->getContainer()->get('doctrine')->getManager();
         $this->em = $em;

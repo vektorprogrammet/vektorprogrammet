@@ -11,7 +11,7 @@
 {% block breadcrumb_menu %}
     <div class="btn-group">
         {% if is_granted_team_leader() %}
-            {% include "common/department_semester_dropdowns.html.twig" with { 'path': 'to_do_list' } %}
+            {% include "common/department_semester_dropdowns.html.twig" with { 'path': 'todo_list' } %}
         {% endif %}
         <a class="btn text-success"
            href="{{ path('create_todoItem', {'department': department.id, 'semester': semester.id}) }}">

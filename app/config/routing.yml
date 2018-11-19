@@ -65,7 +65,7 @@ control_panel:
 #               Todo List                #
 ##########################################
 
-to_do_list:
+todo_list:
  path: /kontrollpanel/sjekkliste
  defaults: { _controller: AppBundle:TodoList:show }
  methods: [GET]
