@@ -29,7 +29,7 @@ class IntroductionEmailSubscriber implements EventSubscriberInterface
     {
         return array(
             TeamMembershipEvent::CREATED => array(
-                array('sendWelcomeToTeamEmail', 4),
+                array('sendWelcomeToTeamEmail', -1),
                 array('sendGoogleEmail', -2),
             ),
         );
