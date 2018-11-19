@@ -7,6 +7,7 @@ use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\CreateTodoItemInfoType;
 use AppBundle\Model\TodoItemInfo;
 use AppBundle\Entity\TodoItem;
+use AppBundle\Service\TodoListService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -14,7 +15,7 @@ class TodoListController extends BaseController
 {
     public function showAction()
     {
-        $todoListService = $this->get('app.todo_list_service');
+        $todoListService = $this->get(TodoListService::class);
         $department = $this->getDepartmentOrThrow404();
         $semester = $this->getSemesterOrThrow404();
 
@@ -73,7 +74,7 @@ class TodoListController extends BaseController
         $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
 
 
-        $todoListService = $this->get('app.todo_list_service');
+        $todoListService = $this->get(TodoListService::class);
         $itemInfo = $todoListService->createTodoItemInfoFromItem($item, $currentSemester);
 
 
@@ -105,7 +106,7 @@ class TodoListController extends BaseController
      */
     public function completedAction(TodoItem $item, Semester $semester, Department $department)
     {
-        $todoListService = $this->get('app.todo_list_service');
+        $todoListService = $this->get(TodoListService::class);
         try {
             $todoListService->completedItem($item, $semester, $department);
             if ($item->isCompletedInSemesterByDepartment($semester, $department)) {
@@ -130,7 +131,7 @@ class TodoListController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404();
         $semester = $this->getSemesterOrThrow404();
-        $todoListService = $this->get('app.todo_list_service');
+        $todoListService = $this->get(TodoListService::class);
         $todoListService->toggleCompletedItem($item, $semester, $department);
         return $this->redirectToRoute('todo_list', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
     }

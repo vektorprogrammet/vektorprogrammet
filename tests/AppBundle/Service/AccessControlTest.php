@@ -37,7 +37,7 @@ class AccessControlTest extends BaseKernelTestCase {
 		$kernel = $this->createKernel();
 		$kernel->boot();
 
-		$this->service = $kernel->getContainer()->get('app.access_control');
+		$this->service = $kernel->getContainer()->get(AccessControlService::class);
 		$em = $kernel->getContainer()->get('doctrine')->getManager();
 		$this->unhandledRepo = $em->getRepository('AppBundle:UnhandledAccessRule');
 		$this->inactiveUser = $em->getRepository('AppBundle:User')->findUserByEmail('inactive@mail.com');

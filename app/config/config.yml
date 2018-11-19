@@ -2,8 +2,12 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: twig.yml }
+    - { resource: validators.yml }
     - { resource: image_filters.yml }
-    - { resource: "@AppBundle/Resources/config/services.yml" }
+    - { resource: services_google.yml }
+    - { resource: event_subscribers.yml }
+    - { resource: forms.yml }
     - { resource: automapper.yml }
 
 parameters:
@@ -49,9 +53,6 @@ parameters:
 
   # Team images
   team_images: 'images/team_images'
-
-  # Gallery images
-  gallery_images: 'images/gallery_images'
 
 framework:
     #esi:             ~

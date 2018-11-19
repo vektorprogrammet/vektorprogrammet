@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Service\FileUploader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\SponsorType;
@@ -47,8 +48,8 @@ class SponsorsController extends BaseController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if (!is_null($request->files->get('sponsor')['logoImagePath'])) {
-                $imgPath = $this->get('app.file_uploader')->uploadSponsor($request);
-                $this->get('app.file_uploader')->deleteSponsor($oldImgPath);
+                $imgPath = $this->get(FileUploader::class)->uploadSponsor($request);
+                $this->get(FileUploader::class)->deleteSponsor($oldImgPath);
 
                 $sponsor->setLogoImagePath($imgPath);
             } else {
@@ -83,7 +84,7 @@ class SponsorsController extends BaseController
     public function deleteSponsorAction(Sponsor $sponsor)
     {
         if ($sponsor->getLogoImagePath()) {
-            $this->get('app.file_uploader')->deleteSponsor($sponsor->getLogoImagePath());
+            $this->get(FileUploader::class)->deleteSponsor($sponsor->getLogoImagePath());
         }
 
         $em = $this->getDoctrine()->getManager();

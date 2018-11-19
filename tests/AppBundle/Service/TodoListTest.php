@@ -25,7 +25,7 @@ class TodoListTest extends \Tests\BaseKernelTestCase
         $kernel = $this->createKernel();
         $kernel->boot();
 
-        $service = $kernel->getContainer()->get('app.todo_list_service');
+        $service = $kernel->getContainer()->get(\AppBundle\Service\TodoListService::class);
         $this->service = $service;
         $em = $kernel->getContainer()->get('doctrine')->getManager();
         $this->em = $em;
@@ -44,8 +44,6 @@ class TodoListTest extends \Tests\BaseKernelTestCase
 
     }
 
-
-    //testGetIncompleted?
     function testIsCompletedInSemesterByDepartment()
     {
         $todoItems = array($this->completedItem, $this->incompletedItem);
@@ -86,7 +84,7 @@ class TodoListTest extends \Tests\BaseKernelTestCase
 
     function deleteTest()
     {
-        //Sjekk slett, så status
+        //Delete item, check deletedAt date
     }
 
 

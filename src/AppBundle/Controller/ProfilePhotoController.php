@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
+use AppBundle\Service\FileUploader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -28,12 +29,12 @@ class ProfilePhotoController extends BaseController
             throw $this->createAccessDeniedException();
         }
 
-        $picturePath = $this->get('app.file_uploader')->uploadProfileImage($request);
+        $picturePath = $this->get(FileUploader::class)->uploadProfileImage($request);
         if (!$picturePath) {
             return new JsonResponse("Kunne ikke laste inn bildet", 400);
         }
 
-        $this->get('app.file_uploader')->deleteProfileImage($user->getPicturePath());
+        $this->get(FileUploader::class)->deleteProfileImage($user->getPicturePath());
         $user->setPicturePath($picturePath);
 
         $this->getDoctrine()->getManager()->flush();

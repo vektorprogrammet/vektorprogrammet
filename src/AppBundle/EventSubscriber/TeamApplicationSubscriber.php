@@ -4,20 +4,14 @@ namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\TeamApplicationCreatedEvent;
 use AppBundle\Mailer\MailerInterface;
-use AppBundle\Service\SlackMessenger;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Routing\RouterInterface;
 
 class TeamApplicationSubscriber implements EventSubscriberInterface
 {
     private $mailer;
     private $twig;
     private $session;
-    private $logger;
-    private $slackMessenger;
-    private $router;
 
     /**
      * ApplicationAdmissionSubscriber constructor.
@@ -25,18 +19,12 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
      * @param MailerInterface   $mailer
      * @param \Twig_Environment $twig
      * @param Session           $session
-     * @param LoggerInterface   $logger
-     * @param SlackMessenger    $slackMessenger
-     * @param RouterInterface   $router
      */
-    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, Session $session, LoggerInterface $logger, SlackMessenger $slackMessenger, RouterInterface $router)
+    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, Session $session)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->session = $session;
-        $this->logger = $logger;
-        $this->slackMessenger = $slackMessenger;
-        $this->router = $router;
     }
 
     /**

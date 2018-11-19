@@ -18,7 +18,7 @@ class CompanyEmailMakerTest extends KernelTestCase
         $kernel = $this->createKernel();
         $kernel->boot();
 
-        $this->emailMaker = $kernel->getContainer()->get('app.company_email_maker');
+        $this->emailMaker = $kernel->getContainer()->get(CompanyEmailMaker::class);
     }
 
     public function testFirstNameAsEmail()

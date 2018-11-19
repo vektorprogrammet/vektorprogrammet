@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        tags:
+            - { name: validator.constraint_validator }
+
+    AppBundle\Validator\Constraints\:
+        resource: "../../src/AppBundle/Validator/Constraints"

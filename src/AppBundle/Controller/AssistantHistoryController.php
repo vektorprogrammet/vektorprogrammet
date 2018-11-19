@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Role\Roles;
 use AppBundle\Form\Type\CreateAssistantHistoryType;
+use AppBundle\Service\LogService;
 use Symfony\Component\HttpFoundation\Request;
 
 class AssistantHistoryController extends BaseController
@@ -19,7 +20,7 @@ class AssistantHistoryController extends BaseController
         $em->remove($assistantHistory);
         $em->flush();
 
-        $this->get('app.logger')->info(
+        $this->get(LogService::class)->info(
             "{$this->getUser()} deleted {$assistantHistory->getUser()}'s assistant history on ".
             "{$assistantHistory->getSchool()->getName()} {$assistantHistory->getSemester()->getName()}"
         );

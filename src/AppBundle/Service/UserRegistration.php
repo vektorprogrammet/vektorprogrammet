@@ -6,14 +6,12 @@ use AppBundle\Entity\User;
 use AppBundle\Mailer\MailerInterface;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManager;
-use Psr\Log\LoggerInterface;
 
 class UserRegistration
 {
     private $twig;
     private $em;
     private $mailer;
-    private $logger;
 
     /**
      * UserRegistration constructor.
@@ -21,14 +19,12 @@ class UserRegistration
      * @param \Twig_Environment $twig
      * @param EntityManager     $em
      * @param MailerInterface   $mailer
-     * @param LoggerInterface   $logger
      */
-    public function __construct(\Twig_Environment $twig, EntityManager $em, MailerInterface $mailer, LoggerInterface $logger)
+    public function __construct(\Twig_Environment $twig, EntityManager $em, MailerInterface $mailer)
     {
         $this->twig = $twig;
         $this->em = $em;
         $this->mailer = $mailer;
-        $this->logger = $logger;
     }
 
     public function setNewUserCode(User $user)

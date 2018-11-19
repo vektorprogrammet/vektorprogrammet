@@ -24,7 +24,7 @@
                     <p>Å fylle inn dette skjemaet er <b>helt uforpliktende</b>! Vi tar kontakt med deg med mer info om
                         teamene.</p>
                     <div class="form-group">
-                        {{ form_start(form) }}
+                        {{ form_start(form, { 'attr': {'autocomplete': 'nope'} }) }}
                         {{ form_widget(form) }}
                         <button class="btn btn-success btn-block p-4 mt-5 text-uppercase medium-bold">Send</button>
                         {{ form_end(form) }}
