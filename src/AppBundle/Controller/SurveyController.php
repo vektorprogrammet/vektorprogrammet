@@ -249,7 +249,7 @@ class SurveyController extends BaseController
             ],
             ['id' => 'DESC']
         );
-        foreach ($surveys as $survey) {
+        foreach ($surveysWithDepartment as $survey) {
             $totalAnswered = count($this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey));
             $survey->setTotalAnswered($totalAnswered);
         }
