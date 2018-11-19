@@ -38,7 +38,6 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $surveyQuestion2->addAlternative($surveyQuestionAlternative1);
         $surveyQuestion2->addAlternative($surveyQuestionAlternative2);
 
-
         $surveyQuestion3 = clone $surveyQuestion1;
 
         $manager->persist($surveyQuestion1);
@@ -46,14 +45,10 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($surveyQuestion3);
         $manager->flush();
 
-
-        $teamSurvey1 = new Survey();
-        $schoolSurvey1 = new Survey();
-
         $semester = $this->getReference('semester-current');
         $department = $this->getReference('dep-1');
 
-
+        $teamSurvey1 = new Survey();
         $teamSurvey1->setSemester($semester);
         $teamSurvey1->setDepartment($department);
         $teamSurvey1->setShowCustomFinishPage(true);
@@ -109,8 +104,7 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $teamSurvey4->addSurveyQuestion($surveyQuestion2);
         $teamSurvey4->setShowCustomPopUpMessage(true);
 
-
-
+        $schoolSurvey1 = new Survey();
         $schoolSurvey1->setSemester($semester);
         $schoolSurvey1->setDepartment($department);
         $schoolSurvey1->setShowCustomFinishPage(false);
@@ -120,8 +114,11 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $schoolSurvey1->addSurveyQuestion($surveyQuestion3);
 
 
-        $this->addReference('teamSurvey1', $teamSurvey1);
-        $this->addReference('$schoolSurvey1', $schoolSurvey1);
+        $this->addReference('team-survey-1', $teamSurvey1);
+        $this->addReference('team-survey-2', $teamSurvey2);
+        $this->addReference('team-survey-3', $teamSurvey3);
+        $this->addReference('team-survey-4', $teamSurvey4);
+        $this->addReference('school-survey-1', $schoolSurvey1);
 
         $manager->persist($teamSurvey1);
         $manager->persist($teamSurvey2);
