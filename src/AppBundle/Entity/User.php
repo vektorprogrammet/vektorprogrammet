@@ -115,13 +115,13 @@ class User implements AdvancedUserInterface, \Serializable
 
 
     /**
-     * @ORM\Column(type="boolean", name="reserved_pop_up", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
     private $reservedFromPopUp;
 
 
     /**
-     * @ORM\Column(type="datetime", name="last_pop_up", nullable=false)
+     * @ORM\Column(type="datetime", nullable=false)
      */
     private $lastPopUpTime;
 

@@ -33,10 +33,6 @@ class Survey implements \JsonSerializable
      */
     private $department;
 
-    /**
-     * @ORM\Column(type="datetime", name="createdTime", nullable=false)
-     */
-    private $createdTime;
 
     /**
      * @ORM\Column(type="string")
@@ -193,7 +189,6 @@ class Survey implements \JsonSerializable
         $this->teamSurvey = false;
         $this->surveysTaken = [];
         $this->showCustomPopUpMessage = false;
-        $this->createdTime = new \DateTime();
         $this->surveyPopUpMessage = "Svar på undersøkelse!";
     }
 
@@ -390,11 +385,5 @@ class Survey implements \JsonSerializable
     }
 
 
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedTime() : \DateTime
-    {
-        return $this->createdTime;
-    }
+
 }
