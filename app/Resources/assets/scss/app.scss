@@ -226,3 +226,7 @@ strong strong {
 .g-recaptcha ~ .invalid-feedback {
   display: block;
 }
+
+.popup{
+  z-index: 1020;
+}
