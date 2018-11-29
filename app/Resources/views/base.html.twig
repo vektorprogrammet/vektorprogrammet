@@ -54,11 +54,6 @@
 <script src="{{ asset_with_version('js/access_control.js') }}"></script>
 
 
-
-
-    {{ render(controller("AppBundle:SurveyPopup:nextSurvey")) }}
-
-
 {% if googleAnalyticsId %}
     <script>
       (function (i, s, o, g, r, a, m) {
@@ -98,6 +93,6 @@
 
 
 
-
+{{ render(controller("AppBundle:SurveyPopup:nextSurvey")) }}
 </body>
 </html>
