@@ -359,12 +359,6 @@ class SurveyController extends BaseController
     {
         $this->get(SurveyManager::class)->toggleReservedFromPopUp($this->getUser());
 
-        $user = $this->getUser();
-        $user->setLastPopUpTime(new \DateTime("30-12-2011"));
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
-
         return new JsonResponse();
     }
 
