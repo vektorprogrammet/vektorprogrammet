@@ -365,8 +365,9 @@ class SurveyController extends BaseController
     {
         $user = $this->getUser();
         $user->setLastPopUpTime(new \DateTime());
-        $this->em->persist($user);
-        $this->em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
         return new JsonResponse();
     }
 
