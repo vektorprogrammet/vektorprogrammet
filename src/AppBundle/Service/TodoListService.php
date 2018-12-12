@@ -125,7 +125,7 @@ class TodoListService
     public function getMandatoryTodoItemsWithInsignificantDeadline(array $todoItems, Semester $semester)
     {
         $items = array_filter($todoItems, function (TodoItem $a) use ($semester) {
-            return ($a->isMandatoryBySemester($semester) and !($this->hasDeadLineShortly($a)));
+            return ($a->isMandatoryBySemester($semester) && !($this->hasDeadLineShortly($a)));
         });
         return $this->sortByPriority($items);
     }
@@ -138,7 +138,7 @@ class TodoListService
     public function getNonMandatoryTodoItemsWithInsignificantDeadline(array $todoItems, Semester $semester)
     {
         $items = array_filter($todoItems, function (TodoItem $a) use ($semester) {
-            return !($a->isMandatoryBySemester($semester) or ($this->hasDeadLineShortly($a)));
+            return !($a->isMandatoryBySemester($semester) || ($this->hasDeadLineShortly($a)));
         });
         return $this->sortByPriority($items);
     }
@@ -163,7 +163,7 @@ class TodoListService
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function generateEntities(TodoItemInfo $itemInfo, EntityManager $em)
+    public function generateEntities(TodoItemInfo $itemInfo)
     {
         $todoItem = new TodoItem();
         $department = $itemInfo->getDepartment();
@@ -191,7 +191,7 @@ class TodoListService
         }
 
         $deadlineDate = $itemInfo->getDeadlineDate();
-        if ($deadlineDate != null) {
+        if ($deadlineDate !== null) {
             $todoDeadLine = new TodoDeadline();
             $todoDeadLine
                 ->setTodoItem($todoItem)
@@ -257,7 +257,7 @@ class TodoListService
 
         $deadlineDate = $itemInfo->getDeadlineDate();
         $previousDeadLine = $todoItem->getDeadlineBySemester($semester);
-        if ($deadlineDate != null) {
+        if ($deadlineDate !== null) {
             if (empty($previousDeadLine)) {
                 $todoDeadLine = new TodoDeadline();
                 $todoDeadLine
@@ -294,7 +294,7 @@ class TodoListService
             )
         );
 
-        if ($completedItem != null) {
+        if ($completedItem !== null) {
             $this->em->remove($completedItem);
             $this->em->flush();
             return true;

@@ -34,7 +34,7 @@ class TodoItemRepository extends EntityRepository
         $filteredItems = array_filter($todoItems, function (TodoItem $item) use ($semester) {
             if (empty($item->getSemester())) {
                 return (
-                    $item->getCreatedAt() < $semester->getSemesterEndDate() and
+                    $item->getCreatedAt() < $semester->getSemesterEndDate() &&
                     (empty($item->getDeletedAt())? true : $item->getDeletedAt() > $semester->getSemesterStartDate()));
             } else {
                 return true;

@@ -448,7 +448,7 @@ class TodoItem
             return false;
         }
         foreach ($completes as $completed) {
-            if (($completed->getSemester() === $semester) and ($completed->getDepartment() === $department)) {
+            if (($completed->getSemester() === $semester) && ($completed->getDepartment() === $department)) {
                 return true;
             }
         }
