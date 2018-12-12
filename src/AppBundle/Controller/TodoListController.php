@@ -36,7 +36,7 @@ class TodoListController extends BaseController
     public function createTodoAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $todoListService = $this->get('app.todo_list_service');
+        $todoListService = $this->get(TodoListService::class);
         $itemInfo = new TodoItemInfo();
 
         $form = $this->createForm(CreateTodoItemInfoType::class, $itemInfo, array(
@@ -127,6 +127,10 @@ class TodoListController extends BaseController
         return new JsonResponse($response);
     }
 
+    /**
+     * @param TodoItem $item
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function toggleAction(TodoItem $item)
     {
         $department = $this->getDepartmentOrThrow404();
@@ -136,6 +140,10 @@ class TodoListController extends BaseController
         return $this->redirectToRoute('todo_list', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
     }
 
+    /**
+     * @param TodoItem $item
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function deleteTodoItemAction(TodoItem $item)
     {
         $semester = $this->getSemesterOrThrow404();

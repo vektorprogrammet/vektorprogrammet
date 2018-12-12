@@ -64,7 +64,7 @@ class CreateTodoItemInfoType extends AbstractType
             ->add('semester', EntityType::class, array(
                 'label' => 'Hvilket semester skal gjøremålet gjelde for?',
                 'class' => 'AppBundle:Semester',
-                'placeholder' => 'Alle semestre',
+                'placeholder' => 'Alle semestre fra og med nåværende',
                 'query_builder' => function (SemesterRepository $sr) {
                     return $sr->queryForAllSemestersOrderedByAge();
                 },

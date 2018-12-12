@@ -104,11 +104,12 @@
                                   onsubmit="return confirm('Er du sikker på at du vil sette elementets status til ikke gjennomført?')"
                             >
                                 <button class="btn btn-link" type="submit">
-                                    <i class="far fa-check-square" style="color: forestgreen"></i>
+                                    <i class="far fa-check-square" style="color: forestgreen; size: 10em;"></i>
                                 </button>
                                 {{ item.getTodoCompleted()[0].getCompletedAt().format('d/m-Y') }}
                                 {% else %}
-                                    <form action="{{ path('toggle_isCompleted', {'id': item.id, 'semester': semester.id, 'department': department.id}) }}" method="post">
+                                    <form action="{{ path('toggle_isCompleted', {'id': item.id, 'semester': semester.id, 'department': department.id}) }}"
+                                          method="post">
                                         <button class="btn btn-link" type="submit">
                                             <i class="far fa-square" style="color: grey"></i>
                                         </button>

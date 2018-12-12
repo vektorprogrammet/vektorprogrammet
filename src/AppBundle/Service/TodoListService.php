@@ -276,67 +276,6 @@ class TodoListService
         $this->em->flush();
     }
 
-
-    /**
-     * @param TodoItem $item
-     * @param Semester $semester
-     * @return TodoItemInfo
-     */
-    public function createTodoItemInfoFromItem(TodoItem $item, Semester $semester)
-    {
-        $infoItem = new TodoItemInfo();
-        $infoItem
-            ->setSemester($item->getSemester())
-            ->setDepartment($item->getDepartment())
-            ->setPriority($item->getPriority())
-            ->setTitle($item->getTitle())
-            ->setDescription($item->getDescription())
-            ->setTodoItem($item);
-
-        $mandatory = $this->getMandatoryBySemester($item, $semester);
-        $infoItem->setIsMandatory(empty($mandatory) ? false : $mandatory->isMandatory());
-
-        if ($infoItem->getIsMandatory()) {
-            $mandatoryItems = $item->getTodoMandatories();
-            foreach ($mandatoryItems as $mandatory) {
-                if ($mandatory->getSemester() === $semester) {
-                    $infoItem->setTodoMandatory($mandatory);
-                    break;
-                }
-            }
-        }
-
-        $todoDeadline = $item->getDeadlineBySemester($semester);
-
-        if (! empty($todoDeadline)) {
-            $infoItem
-                ->setTodoDeadline($todoDeadline)
-                ->setDeadlineDate($todoDeadline->getDeadDate());
-        }
-        return $infoItem;
-    }
-
-    /**
-     * @param TodoItem $item
-     * @param Semester $semester
-     * @param Department $department
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function completedItem(TodoItem $item, Semester $semester, Department $department)
-    {
-        $completedItem = new TodoCompleted();
-        $completedItem
-            ->setTodoItem($item)
-            ->setSemester($semester)
-            ->setCompletedAt(new \DateTime())
-            ->setDepartment($department);
-
-        $this->em->persist($completedItem);
-        $this->em->flush();
-    }
-
-
     /**
      * @param TodoItem $item
      * @param Semester $semester
@@ -368,6 +307,7 @@ class TodoListService
                 ->setTodoItem($item);
             $this->em->persist($completedItem);
             $this->em->flush();
+
             return true;
         }
     }
