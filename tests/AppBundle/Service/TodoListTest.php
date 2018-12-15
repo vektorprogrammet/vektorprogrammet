@@ -120,6 +120,14 @@ class TodoListTest extends \Tests\BaseKernelTestCase
 
     }
 
+    /**
+     *
+     */
+    function testLegitimateIncompletion()
+    {
+        $incompletedItem = $this->incompletedItem;
+        $this->assertFalse($incompletedItem->isCompletedInSemesterByDepartment($this->currentSemester, $this->department));
+    }
 
     /**
      * @throws \Doctrine\ORM\ORMException
@@ -128,11 +136,12 @@ class TodoListTest extends \Tests\BaseKernelTestCase
     function testToggleCompletedItem()
     {
        $incompletedItem = $this->incompletedItem;
+
+       $this->assertTrue($this->service->toggleCompletedItem($incompletedItem,$this->currentSemester, $this->department));
+       $this->assertTrue($incompletedItem->isCompletedInSemesterByDepartment($this->currentSemester, $this->department));
+
+       $this->assertTrue($this->service->toggleCompletedItem($incompletedItem,$this->currentSemester, $this->department));
        $this->assertFalse($incompletedItem->isCompletedInSemesterByDepartment($this->currentSemester, $this->department));
-       $this->service->toggleCompletedItem($incompletedItem,$this->currentSemester, $this->department);
-       $updatedItem = $this->todoRepo->find($incompletedItem->getId());
-       $this->assertEquals($updatedItem->getId(), $incompletedItem->getId());
-       $this->assertTrue($updatedItem->isCompletedInSemesterByDepartment($this->currentSemester, $this->department));
     }
 
     //TODO: create tests for generateEntities (edit item) and deleteItem

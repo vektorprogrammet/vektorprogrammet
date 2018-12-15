@@ -38,7 +38,7 @@
                     <th>Beskrivelse</th>
                     <th>Påbudt</th>
                     <th>Deadline</th>
-                    <th>Completed</th>
+                    <th>Utført</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -101,7 +101,7 @@
                             {% if item.isCompletedInSemesterByDepartment(semester, department) %}
                             <form action="{{ path('toggle_isCompleted', {'id': item.id, 'semester': semester.id, 'department': department.id}) }}"
                                   method="post"
-                                  onsubmit="return confirm('Er du sikker på at du vil sette elementets status til ikke gjennomført?')"
+                                  onsubmit="return confirm('Er du sikker på at du vil sette elementets status til ikke utført?')"
                             >
                                 <button class="btn btn-link" type="submit">
                                     <i class="far fa-check-square" style="color: forestgreen; size: 10em;"></i>
