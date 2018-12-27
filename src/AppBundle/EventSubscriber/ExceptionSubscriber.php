@@ -2,6 +2,7 @@
 
 namespace AppBundle\EventSubscriber;
 
+use AppBundle\Service\JailService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -13,17 +14,13 @@ class ExceptionSubscriber implements EventSubscriberInterface
 {
     private $logger;
     private $fileLogger;
+	private $jailService;
 
-    /**
-     * ExceptionListener constructor.
-     *
-     * @param LoggerInterface $logger
-     * @param LoggerInterface $fileLogger
-     */
-    public function __construct(LoggerInterface $logger, LoggerInterface $fileLogger)
+	public function __construct(LoggerInterface $logger, LoggerInterface $fileLogger, JailService $jailService)
     {
         $this->logger = $logger;
         $this->fileLogger = $fileLogger;
+	    $this->jailService = $jailService;
     }
 
     public static function getSubscribedEvents()
@@ -65,8 +62,10 @@ class ExceptionSubscriber implements EventSubscriberInterface
 
         if ($statusCode === 403) {
             $this->logger->warning("Access denied");
+            $this->jailService->banCurrentIpIfForeign();
         } elseif ($statusCode === 405) {
             $this->logger->warning("Method not allowed");
+            $this->jailService->banCurrentIpIfForeign();
         } elseif ($this->httpExceptionShouldBeLogged($exception)) {
             $this->logger->critical("Code {$exception->getStatusCode()}: {$exception->getMessage()}");
         }
