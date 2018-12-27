@@ -14,13 +14,13 @@ class ExceptionSubscriber implements EventSubscriberInterface
 {
     private $logger;
     private $fileLogger;
-	private $jailService;
+    private $jailService;
 
-	public function __construct(LoggerInterface $logger, LoggerInterface $fileLogger, JailService $jailService)
+    public function __construct(LoggerInterface $logger, LoggerInterface $fileLogger, JailService $jailService)
     {
         $this->logger = $logger;
         $this->fileLogger = $fileLogger;
-	    $this->jailService = $jailService;
+        $this->jailService = $jailService;
     }
 
     public static function getSubscribedEvents()

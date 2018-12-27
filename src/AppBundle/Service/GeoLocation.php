@@ -87,7 +87,7 @@ class GeoLocation
     {
         $ip = $this->clientIp();
         if ($ip === null) {
-        	return null;
+            return null;
         }
 
         return $this->findCoordinates($ip);
@@ -107,7 +107,7 @@ class GeoLocation
         $coords = null;
         $ip = $this->clientIp();
         if ($ip !== null) {
-	        $coords = $this->findCoordinates($ip);
+            $coords = $this->findCoordinates($ip);
         }
 
         if ($coords === null) {
@@ -145,7 +145,7 @@ class GeoLocation
 
         $response = $this->fetchGeoData($ip);
         if ($response === null) {
-        	return null;
+            return null;
         }
 
         $coords = explode(',', $response['loc']);
@@ -174,18 +174,19 @@ class GeoLocation
         return $dist * 60 * 1.1515 * 1609.344;
     }
 
-    public function getCurrentCountryCode() {
-	    $ip = $this->clientIp();
-	    if ($ip === null) {
-	    	return null;
-	    }
+    public function getCurrentCountryCode()
+    {
+        $ip = $this->clientIp();
+        if ($ip === null) {
+            return null;
+        }
 
-	    $response = $this->fetchGeoData($ip);
-	    if ($response === null) {
-		    return null;
-	    }
+        $response = $this->fetchGeoData($ip);
+        if ($response === null) {
+            return null;
+        }
 
-	    return $response['country'];
+        return $response['country'];
     }
 
     public function clientIp()
@@ -207,41 +208,42 @@ class GeoLocation
         }
     }
 
-    private function fetchGeoData(string $ip) {
-	    if (isset($this->geoDataCache[$ip])) {
-		    return $this->geoDataCache[$ip];
-	    }
+    private function fetchGeoData(string $ip)
+    {
+        if (isset($this->geoDataCache[$ip])) {
+            return $this->geoDataCache[$ip];
+        }
 
-	    try {
-		    $rawResponse = file_get_contents("http://ipinfo.io/$ip?token={$this->ipinfoToken}");
-		    $response = json_decode($rawResponse, true);
-	    } catch (ContextErrorException $exception) {
-		    $this->logger->warning("Could not get location from 
+        try {
+            $rawResponse = file_get_contents("http://ipinfo.io/$ip?token={$this->ipinfoToken}");
+            $response = json_decode($rawResponse, true);
+        } catch (ContextErrorException $exception) {
+            $this->logger->warning("Could not get location from 
             ipinfo.io. The page returned an error.\nError:\n
             {$exception->getMessage()}");
-		    $this->geoDataCache[$ip] = null;
-		    return null;
-	    }
+            $this->geoDataCache[$ip] = null;
+            return null;
+        }
 
-	    if (!isset($response['org'])) {
-		    $this->logger->warning("Could not get org from 
+        if (!isset($response['org'])) {
+            $this->logger->warning("Could not get org from 
             ipinfo.io.\nResponse:\n$rawResponse");
-		    $response = null;
-	    } else if ($this->ipIsFromAnIgnoredAsn($response)) {
-		    $response = null;
-	    } else if (!isset($response['loc'])) {
-		    $this->logger->warning("Could not get location from 
+            $response = null;
+        } elseif ($this->ipIsFromAnIgnoredAsn($response)) {
+            $response = null;
+        } elseif (!isset($response['loc'])) {
+            $this->logger->warning("Could not get location from 
             ipinfo.io.\nResponse:\n$rawResponse");
-		    $response = null;
-	    } else if (!isset($response['country'])) {
-		    $this->logger->warning("Could not get country from 
+            $response = null;
+        } elseif (!isset($response['country'])) {
+            $this->logger->warning("Could not get country from 
             ipinfo.io.\nResponse:\n$rawResponse");
-		    $response = null;
-	    }
+            $response = null;
+        }
 
-	    $this->geoDataCache[$ip] = $response;
+        $this->geoDataCache[$ip] = $response;
 
-	    return $response;
+        return $response;
     }
 
     private function ipIsFromAnIgnoredAsn($response) : bool
