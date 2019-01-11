@@ -6,6 +6,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\AdmissionNotification;
 use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -83,12 +84,7 @@ class AdmissionNotifier
                         continue;
                     }
 
-                    $this->emailSender->sendAdmissionStartedNotification($subscriber);
-                    $notification = new AdmissionNotification();
-                    $notification->setSemester($semester);
-                    $notification->setDepartment($department);
-                    $notification->setSubscriber($subscriber);
-                    $this->em->persist($notification);
+                    $this->sendAdmissionNotification($subscriber, $semester, $department);
                     $notificationsSent++;
                 }
                 if ($notificationsSent > 0) {
@@ -97,9 +93,26 @@ class AdmissionNotifier
             }
         } catch (\Exception $e) {
             $this->logger->critical("Failed to send admission notification:\n".$e->getMessage());
-        } finally {
-            $this->em->flush();
         }
+    }
+
+    /**
+     * @param AdmissionSubscriber $subscriber
+     * @param Semester $semester
+     * @param Department $department
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    private function sendAdmissionNotification(AdmissionSubscriber $subscriber, Semester $semester, Department $department)
+    {
+        $this->emailSender->sendAdmissionStartedNotification($subscriber);
+        $notification = new AdmissionNotification();
+        $notification->setSemester($semester);
+        $notification->setDepartment($department);
+        $notification->setSubscriber($subscriber);
+        $this->em->persist($notification);
+        $this->em->flush();
     }
 
     public function sendInfoMeetingNotifications()
@@ -134,13 +147,7 @@ class AdmissionNotifier
                     if ($hasApplied || $alreadyNotified || $subscribedMoreThanOneYearAgo || !$subscriber->getInfoMeeting()) {
                         continue;
                     }
-                    $this->emailSender->sendInfoMeetingNotification($subscriber);
-                    $notification = new AdmissionNotification();
-                    $notification->setSemester($semester);
-                    $notification->setDepartment($department);
-                    $notification->setSubscriber($subscriber);
-                    $notification->setInfoMeeting(true);
-                    $this->em->persist($notification);
+                    $this->sendInfoMeetingNotification($subscriber, $semester, $department);
                     $notificationsSent++;
                 }
                 if ($notificationsSent > 0) {
@@ -149,8 +156,26 @@ class AdmissionNotifier
             }
         } catch (\Exception $e) {
             $this->logger->critical("Failed to send info meeting notification:\n".$e->getMessage());
-        } finally {
-            $this->em->flush();
         }
+    }
+
+    /**
+     * @param AdmissionSubscriber $subscriber
+     * @param Semester $semester
+     * @param Department $department
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    private function sendInfoMeetingNotification(AdmissionSubscriber $subscriber, Semester $semester, Department $department)
+    {
+        $this->emailSender->sendInfoMeetingNotification($subscriber);
+        $notification = new AdmissionNotification();
+        $notification->setSemester($semester);
+        $notification->setDepartment($department);
+        $notification->setSubscriber($subscriber);
+        $notification->setInfoMeeting(true);
+        $this->em->persist($notification);
+        $this->em->flush();
     }
 }
