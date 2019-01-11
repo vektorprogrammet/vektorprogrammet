@@ -74,7 +74,7 @@ class AdmissionNotifier
 
                 $notificationsSent = 0;
                 foreach ($subscribers as $subscriber) {
-                    if ($notificationsSent > $this->sendLimit) {
+                    if ($notificationsSent >= $this->sendLimit) {
                         break;
                     }
                     $hasApplied = array_search($subscriber->getEmail(), $applicationEmails) !== false;
@@ -138,7 +138,7 @@ class AdmissionNotifier
 
                 $notificationsSent = 0;
                 foreach ($subscribers as $subscriber) {
-                    if ($notificationsSent > $this->sendLimit) {
+                    if ($notificationsSent >= $this->sendLimit) {
                         break;
                     }
                     $hasApplied = array_search($subscriber->getEmail(), $applicationEmails) !== false;
