@@ -27,7 +27,7 @@ class StandController extends BaseController
         $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findByDepartment($department);
         $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
             ->findOneByDepartmentAndSemester($department, $semester);
-        $applicationsInSemester = null;
+        $applicationsInSemester = [];
         if ($admissionPeriod !== null) {
             $applicationsInSemester = $this->getDoctrine()
                 ->getRepository('AppBundle:Application')
