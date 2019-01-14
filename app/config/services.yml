@@ -19,7 +19,7 @@ services:
 
     AppBundle\Service\AdmissionNotifier:
         arguments:
-            $sendLimit: '%daily_admission_notifier_limit%'
+            $sendLimit: '%admission_notifier_limit%'
 
     guzzle.slack:
         class: GuzzleHttp\Client
