@@ -107,7 +107,7 @@ class SurveyManager
         return $userAffiliation;
     }
 
-    public function getTextAnswerWithSchoolResults($survey): array
+    public function getTextAnswerWithSchoolResults(Survey $survey): array
     {
         $textQuestionArray = array();
         $textQAarray = array();
@@ -138,7 +138,7 @@ class SurveyManager
     }
 
 
-    public function getTextAnswerWithTeamResults($survey): array
+    public function getTextAnswerWithTeamResults(Survey $survey): array
     {
         $textQuestionArray = array();
         $textQAarray = array();
