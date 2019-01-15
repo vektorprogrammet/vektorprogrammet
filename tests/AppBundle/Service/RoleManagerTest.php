@@ -28,7 +28,7 @@ class RoleManagerTest extends KernelTestCase
         $kernel->boot();
 
         $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
-        $this->roleManager = $kernel->getContainer()->get('app.roles');
+        $this->roleManager = $kernel->getContainer()->get(RoleManager::class);
 
         $this->mockUsers = [
             // Assistants

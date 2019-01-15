@@ -29,7 +29,7 @@ class SendAcceptInterviewReminderCommand extends ContainerAwareCommand
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->interviewManager = $this->getContainer()->get('app.interview.manager');
+        $this->interviewManager = $this->getContainer()->get(InterviewManager::class);
     }
 
     /**

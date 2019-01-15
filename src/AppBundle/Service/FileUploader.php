@@ -14,7 +14,6 @@ class FileUploader
     private $logoFolder;
     private $receiptFolder;
     private $profilePhotoFolder;
-    private $galleryImageFolder;
     private $articleFolder;
     private $sponsorFolder;
 

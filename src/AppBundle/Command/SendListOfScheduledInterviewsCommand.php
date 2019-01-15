@@ -32,7 +32,7 @@ class SendListOfScheduledInterviewsCommand extends ContainerAwareCommand
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->interviewManager = $this->getContainer()->get('app.interview.manager');
+        $this->interviewManager = $this->getContainer()->get(InterviewManager::class);
         $this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
     }
 

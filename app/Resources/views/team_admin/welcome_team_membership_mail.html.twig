@@ -1,0 +1,88 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/foundation-emails/2.2.1/foundation-emails.min.css" rel="stylesheet">
+
+<table class="spacer">
+    <tbody>
+    <tr>
+        <td height="10px">&#xA0;</td>
+    </tr>
+    </tbody>
+</table>
+
+<table align="center" class="container">
+    <tbody>
+    <tr>
+        <td>
+            <h3>Hei {{ name }}!</h3>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Du har blitt lagt til som {{ position|lower }} i {{ team }} og har derfor blitt tildelt din egen Vektormail. Denne gir deg tilgang til team-drive, Slack og epost!</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p class="lead"><b>Hva må jeg gjøre?</b></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <ol>
+                <li>Gå til <a href="https://google.com" target="_blank" rel="noreferrer"><b>google.com</b></a></li>
+                <li>Logg inn</li>
+                <li>
+                    <ul>
+                        <li>
+                            Hvis du <b>ikke</b> er logget inn:
+                            <img src="https://vektorprogrammet.no{{ asset('images/email_images/signin.png') }}" alt="Sign in" class="float-center" style="max-width: 400px; margin: 2px">
+                        </li>
+                        <li>
+                            Hvis du er logget inn:
+                            <img src="https://vektorprogrammet.no{{ asset('images/email_images/add_account.png') }}" alt="Add account" class="float-center" style="max-width: 400px; margin: 2px">
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Skriv inn Vektormailen din ({{ companyEmail }})
+                    <img src="https://vektorprogrammet.no{{ asset('images/email_images/vektormail_signin.PNG')}}" alt="Vektormail" class="float-center" style="max-width: 400px; margin: 2px">
+                </li>
+                <li>
+                    Logg inn på samme måte som på vektorprogrammet.no
+                    <img src="https://vektorprogrammet.no{{ asset('images/email_images/vektor_signin.PNG') }}" alt="Sign in" class="float-center" style="max-width: 400px; margin: 2px">
+                </li>
+                <li>Du er nå logget inn i <b>gsuite</b>!</li>
+                <li>Gå til gmail.com og pass på at Vektorkontoen din er valgt (bytt ved å klikke på profilikonet øverst i høyre hjørne)</li>
+            </ol>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table class="spacer">
+                <tbody>
+                <tr>
+                    <td height="30px">&#xA0;</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <footer>
+                Hilsen
+                Vektorprogrammet
+
+                <a href="https://vektorprogrammet.no{{ path('home') }}">
+                    <img src="https://vektorprogrammet.no/images/vektor.png" alt="https://vektorprogrammet.no{{ path('home') }}">
+                </a>
+
+            </footer>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="spacer">
+    <tbody>
+    <tr>
+        <td height="30px">&#xA0;</td>
+    </tr>
+    </tbody>
+</table>

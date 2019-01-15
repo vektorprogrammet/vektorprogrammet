@@ -6,6 +6,9 @@ use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationType;
+use AppBundle\Service\ApplicationAdmission;
+use AppBundle\Service\FilterService;
+use AppBundle\Service\GeoLocation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -85,12 +88,12 @@ class AssistantController extends BaseController
      */
     public function indexAction(Request $request, Department $specificDepartment = null, $scrollToAdmissionForm = false)
     {
-        $admissionManager = $this->get('app.application_admission');
+        $admissionManager = $this->get(ApplicationAdmission::class);
         $em = $this->getDoctrine()->getManager();
 
         $departments = $em->getRepository('AppBundle:Department')->findActive();
-        $departments = $this->get('app.geolocation')->sortDepartmentsByDistanceFromClient($departments);
-        $departmentsWithActiveAdmission = $this->get('app.filter_service')->filterDepartmentsByActiveAdmission($departments, true);
+        $departments = $this->get(GeoLocation::class)->sortDepartmentsByDistanceFromClient($departments);
+        $departmentsWithActiveAdmission = $this->get(FilterService::class)->filterDepartmentsByActiveAdmission($departments, true);
 
         $departmentInUrl = $specificDepartment !== null;
         if (!$departmentInUrl) {
@@ -173,7 +176,7 @@ class AssistantController extends BaseController
         if (!$department->activeAdmission()) {
             return $this->indexAction($request, $department);
         }
-        $admissionManager = $this->get('app.application_admission');
+        $admissionManager = $this->get(ApplicationAdmission::class);
         $em = $this->getDoctrine()->getManager();
         $application = new Application();
 
