@@ -366,7 +366,7 @@ class TodoItem
 
     /**
      * @param \AppBundle\Entity\Semester $semester
-     * @return TodoMandatory|mixed|null
+     * @return TodoMandatory|null
      */
     public function getMandatoryBySemester(Semester $semester)
     {

@@ -4,6 +4,7 @@ namespace AppBundle\Model;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Entity\TodoDeadline;
 use AppBundle\Entity\TodoItem;
 use AppBundle\Entity\TodoMandatory;
 
@@ -145,7 +146,7 @@ class TodoItemInfo
     }
 
     /**
-     * @param mixed $todoItem
+     * @param TodoItem $todoItem
      * @return TodoItemInfo
      */
     public function setTodoItem($todoItem)
@@ -163,7 +164,7 @@ class TodoItemInfo
     }
 
     /**
-     * @param mixed $todoMandatory
+     * @param TodoMandatory $todoMandatory
      * @return TodoItemInfo
      */
     public function setTodoMandatory($todoMandatory)
@@ -173,7 +174,7 @@ class TodoItemInfo
     }
 
     /**
-     * @return mixed
+     * @return TodoDeadline
      */
     public function getTodoDeadline()
     {
@@ -181,7 +182,7 @@ class TodoItemInfo
     }
 
     /**
-     * @param mixed $todoDeadline
+     * @param TodoDeadline $todoDeadline
      * @return TodoItemInfo
      */
     public function setTodoDeadline($todoDeadline)
@@ -191,7 +192,7 @@ class TodoItemInfo
     }
 
     /**
-     * @param $isMandatory
+     * @param bool $isMandatory
      * @return $this
      */
     public function setIsMandatory($isMandatory)
@@ -201,7 +202,7 @@ class TodoItemInfo
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function getIsMandatory()
     {

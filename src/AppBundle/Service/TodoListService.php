@@ -49,7 +49,7 @@ class TodoListService
 
     /**
      * @param TodoItem[] $todoItems
-     * @return array
+     * @return TodoItem[]
      */
     public function sortByPriority(array $todoItems)
     {
@@ -62,8 +62,8 @@ class TodoListService
 
     /**
      * @param TodoItem[] $todoItems
-     * @param $semester
-     * @return array
+     * @param Semester $semester
+     * @return TodoItem[]
      */
     public function getMandatoryTodoItems(array $todoItems, $semester)
     {
@@ -99,13 +99,13 @@ class TodoListService
      * @return bool
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function hasDeadLineShortly(TodoItem $a) //department d
+    public function hasDeadLineShortly(TodoItem $a)
     {
         return ($a->hasShortDeadlineBySemester($this->em->getRepository('AppBundle:Semester')->findCurrentSemester()));
     }
 
     /**
-     * @param array $todoItems
+     * @param TodoItem[] $todoItems
      * @return TodoItem[]
      */
     public function getTodoItemsWithShortDeadline(array $todoItems)
@@ -118,9 +118,9 @@ class TodoListService
     }
 
     /**
-     * @param array $todoItems
+     * @param TodoItem[] $todoItems
      * @param Semester $semester
-     * @return array
+     * @return TodoItem[]
      */
     public function getMandatoryTodoItemsWithInsignificantDeadline(array $todoItems, Semester $semester)
     {
@@ -131,9 +131,9 @@ class TodoListService
     }
 
     /**
-     * @param array $todoItems
+     * @param TodoItem[] $todoItems
      * @param Semester $semester
-     * @return array
+     * @return TodoItem[]
      */
     public function getNonMandatoryTodoItemsWithInsignificantDeadline(array $todoItems, Semester $semester)
     {
@@ -144,10 +144,10 @@ class TodoListService
     }
 
     /**
-     * @param array $todoItems
+     * @param TodoItem[] $todoItems
      * @param Semester $semester
      * @param Department $department
-     * @return array
+     * @return TodoItem[]
      */
     public function getIncompletedTodoItems(array $todoItems, Semester $semester, Department $department)
     {
