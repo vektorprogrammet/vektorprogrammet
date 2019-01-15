@@ -9,8 +9,6 @@
     });
 
     function disableElement($ele){
-        var outerWidth = $ele.outerWidth();
-        $ele.css("width", outerWidth);
         $ele.attr('disabled', true);
     }
 })();
