@@ -38,6 +38,9 @@ class TodoListTest extends \Tests\BaseKernelTestCase
     private $itemPastDeadline;
     private $itemMandatoryShortDeadline;
     private $itemMandatory;
+    /**
+     * @var TodoItem
+     */
     private $itemDeleted;
 
     /**
@@ -146,13 +149,21 @@ class TodoListTest extends \Tests\BaseKernelTestCase
 
     //TODO: create tests for generateEntities (edit item) and deleteItem
     /*function testGenerateEntities()
+
     {
 
-    }
+    }*/
 
+    /*
     function testDeleteItem()
     {
-
+     $deletedItem = $this->itemDeleted;
+     $this->assertEquals(null, $deletedItem->getDeletedAt());
+     $deletedTimestamp = new DateTime();
+     $deletedItem->setDeletedAt($deletedTimestamp);
+     $this->assertEquals($deletedTimestamp, $deletedItem->getDeletedAt());
     }
     */
+
+
 }

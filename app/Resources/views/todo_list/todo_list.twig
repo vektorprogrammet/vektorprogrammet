@@ -25,9 +25,11 @@
 
 {% block body %}
 
+    <h2 class="text-center my-5">Sjekkliste</h2>
+
     <div class="card">
 
-        <div class="card-header"><i class="fa fa-clipboard-list"></i> Todo Items ({{ correctList|length }})</div>
+        <div class="card-header"><i class="fa fa-clipboard-list"></i> Gjøremål ({{ correctList|length }})</div>
         <div class="card-body table-responsive">
 
             <table width="100%" class="application-table table table-striped">
@@ -73,7 +75,7 @@
                                                         <button type="submit"
                                                                 class="dropdown-item text-danger">
                                                             <i class="fa fa-trash text-danger"></i>
-                                                            Slett element
+                                                            Slett
                                                         </button>
                                                     </div>
                                                 </div>
