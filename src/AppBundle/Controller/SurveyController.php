@@ -357,6 +357,12 @@ class SurveyController extends BaseController
 
     public function toggleReservedFromPopUpAction()
     {
+        $user = $this->getUser();
+        if($user === null)
+        {
+            return null;
+        }
+
         $this->get(SurveyManager::class)->toggleReservedFromPopUp($this->getUser());
 
         return new JsonResponse();
