@@ -16,11 +16,11 @@ final class Version20181119182727 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE user ADD reservedFromPopUp TINYINT(1) NOT NULL DEFAULT \'0\',
-                                            ADD lastPopUpTime DATETIME NOT NULL DEFAULT GETDATE()');
+                                            ADD lastPopUpTime DATETIME NOT NULL DEFAULT NOW()');
         $this->addSql('ALTER TABLE survey_taken ADD user_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE survey_taken ADD CONSTRAINT FK_B3982430A76ED395 FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE SET NULL');
         $this->addSql('CREATE INDEX IDX_B3982430A76ED395 ON survey_taken (user_id)');
-        $this->addSql('ALTER TABLE survey ADD showCustomPopUpMessage TINYINT(1) NOT NULL, ADD teamSurvey TINYINT(1) DEFAULT \'0\' NOT NULL, ADD surveyPopUpMessage LONGTEXT NOT NULL DEFAULT \'\', CHANGE showCustomFinishPage showCustomFinishPage TINYINT(1) NOT NULL DEFAULT \'0\'');
+        $this->addSql('ALTER TABLE survey ADD showCustomPopUpMessage TINYINT(1) NOT NULL, ADD teamSurvey TINYINT(1) DEFAULT \'0\' NOT NULL, ADD surveyPopUpMessage LONGTEXT NOT NULL , CHANGE showCustomFinishPage showCustomFinishPage TINYINT(1) NOT NULL DEFAULT \'0\'');
     }
 
     public function down(Schema $schema) : void
