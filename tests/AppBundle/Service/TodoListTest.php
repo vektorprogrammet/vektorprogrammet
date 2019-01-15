@@ -147,14 +147,6 @@ class TodoListTest extends \Tests\BaseKernelTestCase
        $this->assertFalse($incompletedItem->isCompletedInSemesterByDepartment($this->currentSemester, $this->department));
     }
 
-    //TODO: create tests for generateEntities (edit item) and deleteItem
-    /*function testGenerateEntities()
-
-    {
-
-    }*/
-
-    /*
     function testDeleteItem()
     {
      $deletedItem = $this->itemDeleted;
@@ -163,7 +155,6 @@ class TodoListTest extends \Tests\BaseKernelTestCase
      $deletedItem->setDeletedAt($deletedTimestamp);
      $this->assertEquals($deletedTimestamp, $deletedItem->getDeletedAt());
     }
-    */
 
 
 }

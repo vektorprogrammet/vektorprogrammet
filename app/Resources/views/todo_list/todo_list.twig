@@ -58,14 +58,13 @@
                                     </div>
                                     <div class="dropdown-menu pt-0" aria-labelledby="options-{{ item.id }}">
                                         <div class="dropdown-header mb-2"><strong>{{ item.title }}</strong></div>
-                                        <form method="POST"
-                                              action="{{ path('edit_todoItem', {'id': item.id, 'department': department.id, 'semester': semester.id}) }}">
+                                        <a href="{{ path('edit_todoItem', {'id': item.id, 'department': department.id, 'semester': semester.id}) }}">
                                             <button type="submit"
                                                     class="dropdown-item text-secondary">
                                                 <i class="fa fa-edit text-secondary"></i>
                                                 Endre
                                             </button>
-                                        </form>
+                                        </a>
                                         {% if has_access_to('delete_todo') %}
                                             <form method="POST"
                                                   onsubmit="return confirm('Er du sikker på at du vil slette gjøremålet?')"

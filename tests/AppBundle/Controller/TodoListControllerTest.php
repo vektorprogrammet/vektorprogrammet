@@ -36,4 +36,20 @@ class TodoListControllerTest extends BaseWebTestCase
         $this->assertEquals($beforeDelete,$afterDelete + 1);
     }
 
+    public function testEdit()
+    {
+        $crawler = $this->teamLeaderGoTo('/kontrollpanel/sjekkliste');
+        $before = $crawler->filter('td:contains("Endret Gjøremål")')->count();
+        $this->assertEquals(0,$before);
+        $client = $this->createTeamLeaderClient();
+        $crawler = $client->click($crawler->selectLink('Endre')->link());
+        $form = $crawler->selectButton('Endre')->form();
+
+        $form['create_todo_item_info[description]'] = 'Endret Gjøremål';
+        $client->submit($form);
+        $crawler = $this->teamLeaderGoTo('/kontrollpanel/sjekkliste');
+        $after = $crawler->filter('table.application-table td:contains("Endret Gjøremål")')->count();
+        $this->assertEquals(1,$after);
+    }
+
 }
