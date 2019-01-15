@@ -87,6 +87,13 @@ function imagesDev () {
       .pipe(gulp.dest(dest))
 }
 
+function icons () {
+  var r = gulp.src('node_modules/@fortawesome/fontawesome-free/webfonts/**.*')
+      .pipe(gulp.dest('web/webfonts/'));
+  return r && gulp.src(path.src + 'webfonts/**.*')
+    .pipe(gulp.dest('web/webfonts/'));
+}
+
 function files () {
   return gulp.src(path.src + 'files/*')
       .pipe(changed('web/files/'))
@@ -170,8 +177,8 @@ function watch () {
 
 
 
-gulp.task('build:prod', gulp.parallel([stylesProd, scriptsProd, imagesProd, files,vendor]));
-gulp.task('build:dev', gulp.parallel([stylesDev, scriptsDev, imagesDev, files, vendor]));
+gulp.task('build:prod', gulp.parallel([stylesProd, scriptsProd, imagesProd, files, icons, vendor]));
+gulp.task('build:dev', gulp.parallel([stylesDev, scriptsDev, imagesDev, files, icons, vendor]));
 gulp.task('default', gulp.series(['build:dev', watch]));
 gulp.task('build:client', gulp.series([buildClientApp, clientStaticFilesProd]));
 gulp.task('build:scheduling', gulp.series([assistantSchedulingStaticFiles]));

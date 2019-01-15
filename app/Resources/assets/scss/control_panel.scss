@@ -1,5 +1,10 @@
 @import "custom";
 @import "../../../../node_modules/@coreui/coreui/scss/coreui";
+@import "../../../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
+@import "../../../../node_modules/@fortawesome/fontawesome-free/scss/brands";
+@import "../../../../node_modules/@fortawesome/fontawesome-free/scss/regular";
+@import "../../../../node_modules/@fortawesome/fontawesome-free/scss/solid";
+@import "../../../../node_modules/@fortawesome/fontawesome-free/scss/v4-shims";
 @import "partials/fonts";
 @import "partials/typography";
 @import "footer";
@@ -60,9 +65,6 @@ html:not([dir=rtl]) {
         ul.nav {
           width: $sidebar-width;
           .nav-link {
-            .nav-icon{
-              color: $gray-500;
-            }
             &:hover {
               background: $info;
               &.active .nav-icon {

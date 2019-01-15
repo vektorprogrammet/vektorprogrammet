@@ -10,19 +10,13 @@
 
     {% elseif is_granted_team_leader() %}
         <div class="card-body">
-            <p><a href="{{ path('profile_edit_photo', {'id': user.getId()}) }}">
-                <i class="fal fa-image"></i>
-                Bytt profilbilde
-            </a></p>
-            <p class="mb-0"><a href="{{ path('profile_edit_admin', { 'id': user.id }) }}">
-                <i class="fal fa-user-edit"></i>
-                Rediger profil
-            </a></p>
+            <p><a href="{{ path('profile_edit_photo', {'id': user.getId()}) }}">Rediger
+                    bilde</a></p>
+            <p class="mb-0"><a href="{{ path('profile_edit_admin', { 'id': user.id }) }}">Rediger
+                    profil</a></p>
             {% if user.hasBeenAssistant %}
-                <p class="mb-0 mt-3"><a href="{{ path('profile_certificate', { id: user.id} ) }}">
-                    <i class="fal fa-file-download"></i>
-                    Last ned attest
-                </a></p>
+                <p class="mb-0 mt-3"><a href="{{ path('profile_certificate', { id: user.id} ) }}">Last
+                        ned attest</a></p>
             {% endif %}
         </div>
     {% endif %}
