@@ -9,7 +9,7 @@ class TodoListControllerTest extends BaseWebTestCase
     public function testShow()
     {
         $crawler = $this->teamLeaderGoTo('/kontrollpanel/sjekkliste');
-        $this->assertEquals(1, $crawler->filter('h1:contains("Sjekkliste")')->count());
+        $this->assertEquals(1, $crawler->filter('h2:contains("Sjekkliste")')->count());
     }
 
     public function testToggle()
