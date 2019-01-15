@@ -41,7 +41,14 @@ class AdmissionPeriodController extends BaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        $exists = $department->getAdmissionPeriods()->exists(function($key, $value) use ($admissionPeriod){
+            return $value->getSemester() === $admissionPeriod->getSemester();
+        });
+
+        if ($exists) {
+            $this->addFlash('warning', 'Opptaksperioden ' . $admissionPeriod->getSemester() . ' finnes allerede.');
+        }
+        if ($form->isValid() and !$exists) {
             $admissionPeriod->setDepartment($department);
 
             $em = $this->getDoctrine()->getManager();
