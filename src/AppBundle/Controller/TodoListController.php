@@ -19,7 +19,7 @@ class TodoListController extends BaseController
         $department = $this->getDepartmentOrThrow404();
         $semester = $this->getSemesterOrThrow404();
 
-        $todosInOrder = $todoListService->getCorrectList($department, $semester);
+        $todosInOrder = $todoListService->getOrderedList($department, $semester);
 
         return $this->render("todo_list/todo_list.twig", array(
             'department' => $department,

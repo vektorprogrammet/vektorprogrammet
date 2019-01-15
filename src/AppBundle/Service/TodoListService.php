@@ -378,7 +378,7 @@ class TodoListService
      * @param Semester $semester
      * @return TodoItem[]
      */
-    public function getCorrectList(Department $department, Semester $semester)
+    public function getOrderedList(Department $department, Semester $semester)
     {
         $repository = $this->em->getRepository('AppBundle:TodoItem');
         $allTodoItems = $repository->findTodoListItemsBySemesterAndDepartment($semester, $department);
@@ -387,8 +387,8 @@ class TodoListService
         $todoMandaoryNoDeadLine = $this->getMandatoryTodoItemsWithInsignificantDeadline($incompletedTodoItems, $semester);
         $todoNonMandatoryNoDeadline = $this->getNonMandatoryTodoItemsWithInsignificantDeadline($incompletedTodoItems, $semester);
         $completedTodoListItems = $repository->findCompletedTodoListItemsBySemesterAndDepartment($semester, $department);
-        $correctOrder = array_merge($todoShortDeadLines, $todoMandaoryNoDeadLine, $todoNonMandatoryNoDeadline, $completedTodoListItems);
+        $orderedList = array_merge($todoShortDeadLines, $todoMandaoryNoDeadLine, $todoNonMandatoryNoDeadline, $completedTodoListItems);
 
-        return $correctOrder;
+        return $orderedList;
     }
 }
