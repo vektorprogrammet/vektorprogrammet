@@ -60,6 +60,46 @@ control_panel:
   defaults: { _controller: AppBundle:ControlPanel:show }
   methods: [GET]
 
+
+##########################################
+#               Todo List                #
+##########################################
+
+todo_list:
+ path: /kontrollpanel/sjekkliste
+ defaults: { _controller: AppBundle:TodoList:show }
+ methods: [GET]
+
+
+create_todoItem:
+  path: /kontrollpanel/sjekkliste/opprett
+  defaults: {_controller: AppBundle:TodoList:createTodo, id: null }
+  methods: [GET, POST]
+  requirements:
+   id: \d+
+
+edit_todoItem:
+  path: /kontrollpanel/sjekkliste/endre/{id}
+  defaults: {_controller: AppBundle:TodoList:editTodo }
+  methods: [GET, POST]
+  requirements:
+   id: \d+
+
+toggle_isCompleted:
+  path: /kontrollpanel/sjekkliste/utfor/{id}
+  defaults: {_controller: AppBundle:TodoList:toggle }
+  methods: [POST]
+  requirements:
+   id: \d+
+
+delete_todo_item:
+  path: /kontrollpanel/sjekkliste/slett/{id}
+  defaults: {_controller: AppBundle:TodoList:deleteTodoItem }
+  methods: [POST]
+  requirements:
+   id: \d+
+
+
 ##########################################
 #                Survey                  #
 ##########################################

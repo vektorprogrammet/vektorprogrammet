@@ -48,10 +48,10 @@ class SemesterRepository extends EntityRepository
     /**
      * @param string $semesterTime
      * @param string $year
-     *
-     * @return Semester[]
+     * @return Semester|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findByTimeAndYear(string $semesterTime, string $year)
+    public function findByTimeAndYear(string $semesterTime, string $year) : ? Semester
     {
         return $this->createQueryBuilder('Semester')
             ->select('Semester')
@@ -62,6 +62,23 @@ class SemesterRepository extends EntityRepository
                 'year' => $year,
             ))
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * @param Semester $semester
+     * @return Semester|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getNextActive(Semester $semester): ? Semester
+    {
+        if ($semester === $this->findCurrentSemester()) {
+            return null;
+        }
+        if ($semester->getSemesterTime() === 'Høst') {
+            return $this->findByTimeAndYear('Vår', (string)((int)($semester->getYear()) + 1));
+        } else {
+            return $this->findByTimeAndYear('Høst', $semester->getYear());
+        }
     }
 }
