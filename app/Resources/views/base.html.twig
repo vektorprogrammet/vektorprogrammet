@@ -30,6 +30,8 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700&subset=latin" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700&subset=latin" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset_with_version('css/app.css') }}">
+
+
     {% block stylesheets %}{% endblock %}
 
 </head>
@@ -47,7 +49,10 @@
     {% include 'base/footer.html.twig' %}
 {% endblock %}
 
+
+
 <script src="{{ asset_with_version('js/access_control.js') }}"></script>
+
 
 {% if googleAnalyticsId %}
     <script>
@@ -84,5 +89,10 @@
 {% endif %}
 {% block javascripts %}{% endblock %}
 
+
+
+
+
+{{ render(controller("AppBundle:SurveyPopup:nextSurvey")) }}
 </body>
 </html>

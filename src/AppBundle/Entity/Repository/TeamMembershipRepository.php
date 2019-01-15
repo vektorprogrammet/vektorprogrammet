@@ -2,8 +2,8 @@
 
 namespace AppBundle\Entity\Repository;
 
-use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Entity\Department;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
 use AppBundle\Entity\TeamMembership;
@@ -97,8 +97,18 @@ class TeamMembershipRepository extends EntityRepository
             ->setYear(SemesterUtil::timeToYear($today))
             ->setSemesterTime(SemesterUtil::timeToSemesterTime($today));
 
-        return array_filter($teamMemberships, function (TeamMembership $teamMembership) use ($currentSemester) {
-            return $currentSemester->isBetween($teamMembership->getStartSemester(), $teamMembership->getEndSemester());
+        return $this->filterNotInSemester($teamMemberships, $currentSemester);
+    }
+
+    /**
+     * @param TeamMembership[] $teamMemberships
+     * @param Semester $semester
+     * @return TeamMembership[]
+     */
+    private function filterNotInSemester(array $teamMemberships, Semester $semester) : array
+    {
+        return array_filter($teamMemberships, function (TeamMembership $teamMembership) use ($semester) {
+            return $semester->isBetween($teamMembership->getStartSemester(), $teamMembership->getEndSemester());
         });
     }
 
@@ -155,6 +165,30 @@ class TeamMembershipRepository extends EntityRepository
 
         return $this->filterOutInactive($teamMemberships);
     }
+
+
+    /**
+     * @param $user
+     * @param $semester
+     *
+     * @return TeamMembership[]
+     */
+    public function findTeamMembershipsByUserAndSemester($user, Semester $semester)
+    {
+        $teamMemberships =  $this->createQueryBuilder('whistory')
+            ->select('whistory')
+            ->join('whistory.startSemester', 'startSemester')
+            ->leftJoin('whistory.endSemester', 'endSemester')
+            ->andWhere('whistory.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+
+        return $this->filterNotInSemester($teamMemberships, $semester);
+    }
+
+
+
 
     /**
      * @param Department $department

@@ -33,7 +33,11 @@
                 {% if textAnswers[key] %}
                     <h4>{{ key }}</h4>
                     {% for answer in textAnswers[key] %}
-                        <p>{{ loop.index }}: {{ answer.answerText }} <b>{{  answer.schoolName }}</b></p>
+                        {% if survey.teamsurvey %}
+                            <p>{{ loop.index }}: {{ answer.answerText }} <b>{{  answer.teamName }}</b></p>
+                        {% else %}
+                            <p>{{ loop.index }}: {{ answer.answerText }} <b>{{  answer.schoolName }}</b></p>
+                        {% endif %}
                     {% endfor %}
                 {% endif %}
             {% endfor %}
@@ -91,6 +95,7 @@
             var filterDiv = $('<div></div>');
             filterDiv.addClass('row');
 
+
             // Create a multiple select box with alternatives for each question
             var questions = surveyData.survey.questions;
             for (var i = 0; i < questions.length; i++) {
@@ -99,7 +104,8 @@
                 title.html(question.question_label);
                 var filterList = $('<select class="form-control" multiple></select>');
                 filterList.attr('id', question.question_id.toString());
-                for (var j = 0; j < question.alternatives.length; j++) {
+
+                for (var j = 0 ; j < question.alternatives.length; j++) {
                     // Add alternative to the multiple select box
                     var alternative = question.alternatives[j];
                     var filterOption = $('<option></option>');
@@ -114,6 +120,7 @@
                     });
 
                     filterList.append(filterOption);
+
                 }
                 // Wrapper for the multiple select box and question text
                 var selectWrapper = $('<div></div>');
@@ -151,6 +158,8 @@
 
                     }
                 })
+
+
 
                 // Get the filtered data and re-render the charts
                 var filteredSurveyData = filterSurveyData(surveyData, filter);
@@ -191,6 +200,7 @@
 
                 chartData.push(questionData);
             }
+
             return chartData;
         }
 
@@ -208,34 +218,51 @@
                 }
             }
 
+
+
             // Count occurrences of different alternatives
             var answers = surveyData.answers;
+            var newAnswers = [];
+            //Take each group occurence as new answers
             for (var k = 0; k < answers.length; k++) {
-                for (var l = 0; l < answers[k].length; l++) {
-                    var answer = answers[k][l];
-                    var answerArray = answer.answerArray;
-                    if (answerArray && answerArray.length > 0) {
-                        for (var m = 0; m < answerArray.length; m++) {
-                          if (data[answer.question_id].hasOwnProperty(answerArray[m])) {
-                            data[answer.question_id][answerArray[m]]++;
-                          }
-                        }
-                    } else if (answer.answer) {
-                        data[answer.question_id][answer.answer]++;
-                    }
+                for (var b = 0; b < answers[k][0].answerArray.length; b++) {
+                    var newAnswer = JSON.parse(JSON.stringify(answers[k]));
+                    newAnswer[0].answerArray = [newAnswer[0].answerArray[b].toString()];
+                    newAnswers.push(newAnswer);
                 }
             }
+
+            answers = newAnswers;
+
+            for (var k = 0; k < answers.length; k++) {
+                    var groupId = answers[k][0].answerArray[0].toString();
+                   data[0][groupId] += 1;
+                    for (var l = 1; l < answers[k].length; l++) {
+                        var answer = answers[k][l];
+                        var answerArray = answer.answerArray;
+                        if (answerArray && answerArray.length > 0) {
+                            for (var m = 0; m < answerArray.length; m++) {
+                                if (data[answer.question_id].hasOwnProperty(answerArray[m])) {
+                                    data[answer.question_id][answerArray[m]]++;
+                                }
+                            }
+                        } else if (answer.answer) {
+                            data[answer.question_id][answer.answer]++;
+                        }
+                    }
+            }
+
             return data;
         }
 
         function renderCharts(surveyData) {
             // Clear all previous charts and loading text
             $('#charts').empty();
-
             // Get chartData
             var countedData = countAnswers(surveyData);
             var chartData = generateChartData(countedData);
             chartData = removeUnansweredQuestions(chartData);
+
 
             // Create charts
             for (var i = 0; i < chartData.length; i++) {
@@ -287,27 +314,27 @@
         function filterSurveyData(surveyData, filterObject) {
           var filteredSurveyData = {};
 
+
           // A submission is a survey that has been submitted with answers
           var submissions = surveyData.answers;
-          const filteredQuestionIds = Object.keys(filterObject);
-
-
+            const filteredQuestionIds = Object.keys(filterObject);
             // Remove all submissions that doesn't match filter criteria
             var filteredSubmissions = submissions.filter(function (submission) {
               const answeredQuestionIds = submission.map(function (q) {
                 return q.question_id.toString()
               });
               for (let i = 0; i < filteredQuestionIds.length; i++) {
-                if (answeredQuestionIds.indexOf(filteredQuestionIds[i]) === -1) {
+                  if (answeredQuestionIds.indexOf(filteredQuestionIds[i]) === -1) {
                   return false;
                 }
               }
               let hasAnsweredQuestion = false;
-              for (var i = 0; i < submission.length; i++) {
+              for (let i = 0; i < submission.length; i++) {
                 var answerObject = submission[i];
                 var questionId = answerObject.question_id;
                 if (filterObject.hasOwnProperty(questionId)) {
-                  hasAnsweredQuestion = true;
+                    //Filter when answer given as answerObject.answer[0] is a list
+                    hasAnsweredQuestion = true;
                   if (answerObject.hasOwnProperty('answerArray') && answerObject.answerArray.length > 0) {
                     var hasAnswer = false;
                     for (var j = 0; j < answerObject.answerArray.length; j++) {
@@ -320,8 +347,7 @@
                       return false;
                     }
                   } else if (filterObject[questionId].indexOf(answerObject.answer) === -1) {
-                    return false;
-                  }
+                      return false;}
                 }
               }
               return hasAnsweredQuestion;
