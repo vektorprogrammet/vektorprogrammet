@@ -70,8 +70,6 @@ security:
         - { path: ^/kontrollpanel/semesteradmin, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/avdelingadmin/opprett, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/avdelingadmin/slett, roles: ROLE_ADMIN }
-        - { path: ^/kontrollpanel/opptaksperiode/slett, roles: ROLE_ADMIN }
-        - { path: ^/kontrollpanel/opptaksperiode/opprett, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/teamadmin/stilling/slett, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/skoleadmin/slett, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/intervju/slett, roles: ROLE_ADMIN }
