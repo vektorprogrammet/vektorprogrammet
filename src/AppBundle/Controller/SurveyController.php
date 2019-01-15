@@ -358,8 +358,7 @@ class SurveyController extends BaseController
     public function toggleReservedFromPopUpAction()
     {
         $user = $this->getUser();
-        if($user === null)
-        {
+        if ($user === null) {
             return null;
         }
 
