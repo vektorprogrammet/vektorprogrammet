@@ -1,0 +1,136 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Sjekkliste
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Sjekkliste</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    <div class="btn-group">
+        {% if is_granted_team_leader() %}
+            {% include "common/department_semester_dropdowns.html.twig" with { 'path': 'todo_list' } %}
+        {% endif %}
+        <a class="btn text-success"
+           href="{{ path('create_todoItem', {'department': department.id, 'semester': semester.id}) }}">
+            <i class="fa fa-plus text-success"></i>
+            Nytt gjøremål
+        </a>
+
+    </div>
+{% endblock %}
+
+
+{% block body %}
+
+    <h2 class="text-center my-5">Sjekkliste</h2>
+
+    <div class="card">
+
+        <div class="card-header"><i class="fa fa-clipboard-list"></i> Gjøremål ({{ correctList|length }})</div>
+        <div class="card-body table-responsive">
+
+            <table width="100%" class="application-table table table-striped">
+                <thead>
+                <tr>
+                    <th/>
+                    <th>Tittel</th>
+                    <th>Beskrivelse</th>
+                    <th>Påbudt</th>
+                    <th>Deadline</th>
+                    <th>Utført</th>
+                </tr>
+                </thead>
+                <tbody>
+
+
+                {% for item in correctList %}
+
+                    <tr id="{{ item.id }}">
+                        <td>
+                            {% if has_access_to('edit_todo') %}
+                                <div class="dropdown">
+                                    <div class="clickable px-2" id="options-{{ item.id }}" data-toggle="dropdown"
+                                         aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v text-secondary"></i>
+                                    </div>
+                                    <div class="dropdown-menu pt-0" aria-labelledby="options-{{ item.id }}">
+                                        <div class="dropdown-header mb-2"><strong>{{ item.title }}</strong></div>
+                                        <a href="{{ path('edit_todoItem', {'id': item.id, 'department': department.id, 'semester': semester.id}) }}">
+                                            <button type="submit"
+                                                    class="dropdown-item text-secondary">
+                                                <i class="fa fa-edit text-secondary"></i>
+                                                Endre
+                                            </button>
+                                        </a>
+                                        {% if has_access_to('delete_todo') %}
+                                            <form method="POST"
+                                                  onsubmit="return confirm('Er du sikker på at du vil slette gjøremålet?')"
+                                                  action="{{ path('delete_todo_item', {'id': item.id, 'department': department.id, 'semester': semester.id}) }}">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <button type="submit"
+                                                                class="dropdown-item text-danger">
+                                                            <i class="fa fa-trash text-danger"></i>
+                                                            Slett
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td>{{ item.title }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.isMandatoryBySemester(semester) ? 'Ja' : 'Nei' }}</td>
+                        <td>
+                            {% if item.hasShortDeadlineBySemester(semester) and not item.isCompletedInSemesterByDepartment(semester, department) %}
+                                <span class={{ item.isPastDeadlineBySemester(semester) ? "text-danger" : "text-warning" }}>
+                                    {{ item.getTodoDeadlines()[0].getDeadDate.format('d/m-Y') }}
+                                </span>
+                            {% elseif item.getDeadlineBySemester(semester) != null %}
+                                {{ item.getDeadlineBySemester(semester).getDeadDate.format('d/m-Y') }}
+                            {% else %}
+                                Ingen
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if item.isCompletedInSemesterByDepartment(semester, department) %}
+                            <form action="{{ path('toggle_isCompleted', {'id': item.id, 'semester': semester.id, 'department': department.id}) }}"
+                                  method="post"
+                                  onsubmit="return confirm('Er du sikker på at du vil sette elementets status til ikke utført?')"
+                            >
+                                <button class="btn btn-link" type="submit">
+                                    <i class="far fa-check-square" style="color: forestgreen; size: 10em;"></i>
+                                </button>
+                                {{ item.getTodoCompleted()[0].getCompletedAt().format('d/m-Y') }}
+                                {% else %}
+                                    <form action="{{ path('toggle_isCompleted', {'id': item.id, 'semester': semester.id, 'department': department.id}) }}"
+                                          method="post">
+                                        <button class="btn btn-link" type="submit">
+                                            <i class="far fa-square" style="color: grey"></i>
+                                        </button>
+                                    </form>
+                                {% endif %}
+                                <input type="hidden" name="semester" value="{{ semester.id }}">
+                                <input type="hidden" name="department" value="{{ department.id }}">
+
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
