@@ -56,7 +56,7 @@ class LoadTodoItemData extends AbstractFixture implements OrderedFixtureInterfac
         $todoItem5->setCreatedAt(new DateTime('2015-01-01'));
         //$todoItem5->setDeletedAt(new DateTime('2017-12-12'));
         $todoItem5->setTitle("completedTodoItem");
-        $todoItem5->setDescription("Is completed by Trondheim in høst 2018");
+        $todoItem5->setDescription("Is completed by Trondheim in the current semester");
         $todoItem5->setPriority(5);
         $todoItem5->setDepartment(null); // Nå er denne global (for alle departments)
         $todoItem5->setSemester(null); // Nå er denne global (for alle semestre)
