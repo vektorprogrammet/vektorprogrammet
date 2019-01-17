@@ -39,7 +39,8 @@ class CreateTodoItemInfoType extends AbstractType
                 'format' => 'dd.MM.yyyy HH:mm',
                 'widget' => 'single_text',
                 'attr' => [
-                    'placeholder' => 'Klikk for å velge tidspunkt'
+                    'placeholder' => 'Klikk for å velge tidspunkt',
+                    'autocomplete' => 'off',
                 ],
                 'required' => false,
                 'auto_initialize' => false,
