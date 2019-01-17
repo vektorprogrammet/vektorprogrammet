@@ -37,11 +37,21 @@ class AdmissionPeriodController extends BaseController
     public function createAdmissionPeriodAction(Request $request, Department $department)
     {
         $admissionPeriod = new AdmissionPeriod();
-        $form = $this->createForm(CreateAdmissionPeriodType::class, $admissionPeriod);
+        $admissionPeriods = $department->getAdmissionPeriods()->toArray();
+        $form = $this->createForm(CreateAdmissionPeriodType::class, $admissionPeriod, [
+            'admissionPeriods' => $admissionPeriods
+        ]);
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        $exists = $department->getAdmissionPeriods()->exists(function ($key, $value) use ($admissionPeriod) {
+            return $value->getSemester() === $admissionPeriod->getSemester();
+        });
+
+        if ($exists) {
+            $this->addFlash('warning', 'Opptaksperioden ' . $admissionPeriod->getSemester() . ' finnes allerede.');
+        }
+        if ($form->isValid() && !$exists) {
             $admissionPeriod->setDepartment($department);
 
             $em = $this->getDoctrine()->getManager();

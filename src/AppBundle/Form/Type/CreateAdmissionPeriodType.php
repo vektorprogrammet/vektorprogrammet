@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Repository\SemesterRepository;
 use AppBundle\Entity\Semester;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -15,12 +16,18 @@ class CreateAdmissionPeriodType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $semesters = array_map(function (AdmissionPeriod $admissionPeriod) {
+            return $admissionPeriod->getSemester()->getId();
+        }, $options['admissionPeriods']);
+
         $builder
             ->add('Semester', EntityType::class, array(
                 'label' => 'Semester',
                 'class' => Semester::class,
-                'query_builder' => function (SemesterRepository $sr) {
-                    return $sr->queryForAllSemestersOrderedByAge();
+                'query_builder' => function (SemesterRepository $sr) use ($semesters) {
+                    return $sr->queryForAllSemestersOrderedByAge()
+                        ->where('Semester.id NOT IN (:Semesters)')
+                        ->setParameter('Semesters', $semesters);
                 },
             ))
             ->add('admissionStartDate', DateTimeType::class, array(
@@ -38,10 +45,11 @@ class CreateAdmissionPeriodType extends AbstractType
             ));
     }
 
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\AdmissionPeriod',
+            'admissionPeriods' => []
         ));
     }
 
