@@ -16,7 +16,7 @@ class CreateAdmissionPeriodType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $semesters = array_map(function(AdmissionPeriod $admissionPeriod){
+        $semesters = array_map(function (AdmissionPeriod $admissionPeriod) {
             return $admissionPeriod->getSemester()->getId();
         }, $options['admissionPeriods']);
 

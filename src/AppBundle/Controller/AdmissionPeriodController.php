@@ -44,7 +44,7 @@ class AdmissionPeriodController extends BaseController
 
         $form->handleRequest($request);
 
-        $exists = $department->getAdmissionPeriods()->exists(function($key, $value) use ($admissionPeriod){
+        $exists = $department->getAdmissionPeriods()->exists(function ($key, $value) use ($admissionPeriod) {
             return $value->getSemester() === $admissionPeriod->getSemester();
         });
 
