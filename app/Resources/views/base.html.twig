@@ -30,6 +30,8 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700&subset=latin" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700&subset=latin" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset_with_version('css/app.css') }}">
+
+
     {% block stylesheets %}{% endblock %}
 
 </head>
@@ -47,7 +49,10 @@
     {% include 'base/footer.html.twig' %}
 {% endblock %}
 
+
+
 <script src="{{ asset_with_version('js/access_control.js') }}"></script>
+
 
 {% if googleAnalyticsId %}
     <script>
@@ -71,6 +76,7 @@
 
 <script src="{{ asset_with_version('/js/vendor.js') }}"></script>
 <script src="{{ asset_with_version('/js/mobile_nav.js') }}"></script>
+<script src="{{ asset_with_version('/js/button_deactivator.js') }}"></script>
 {% if can_edit_page() and is_edit_mode() %}
     <script> var url = "{{ path('update_static_content') }}"; </script>
     <script src="{{ asset_with_version('vendor/ckeditor/ckeditor.js') }}"></script>
@@ -84,5 +90,10 @@
 {% endif %}
 {% block javascripts %}{% endblock %}
 
+
+
+
+
+{{ render(controller("AppBundle:SurveyPopup:nextSurvey")) }}
 </body>
 </html>
