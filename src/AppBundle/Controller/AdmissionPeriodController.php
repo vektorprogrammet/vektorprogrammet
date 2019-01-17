@@ -37,7 +37,10 @@ class AdmissionPeriodController extends BaseController
     public function createAdmissionPeriodAction(Request $request, Department $department)
     {
         $admissionPeriod = new AdmissionPeriod();
-        $form = $this->createForm(CreateAdmissionPeriodType::class, $admissionPeriod);
+        $admissionPeriods = $department->getAdmissionPeriods()->toArray();
+        $form = $this->createForm(CreateAdmissionPeriodType::class, $admissionPeriod, [
+            'admissionPeriods' => $admissionPeriods
+        ]);
 
         $form->handleRequest($request);
 
